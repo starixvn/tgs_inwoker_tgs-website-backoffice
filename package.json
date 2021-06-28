@@ -1,19 +1,19 @@
 {
   "name": "backoffice",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "start": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack dev --reload",
     "start:docker": "docker-compose -f ../../docker-compose.yml up --build --force-recreate --always-recreate-deps --remove-orphans",
     "build": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack build",
     "postversion": "npm-run-all build:docker push:docker",
-    "build:docker": "cross-var docker build . -t registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-site:$npm_package_version",
-    "push:docker": "cross-var docker push registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-site:$npm_package_version",
+    "build:docker": "cross-var docker build . -t registry.gitlab.com/rayprosoft/tgs-website-backoffice:$npm_package_version",
+    "push:docker": "cross-var docker push registry.gitlab.com/rayprosoft/tgs-website-backoffice:$npm_package_version",
     "test": "npx mocha -r esm spec/**/*.spec.js",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx}\"",
     "tag:docker:dev": "cross-env-shell GIT_COMMIT_HASH=$(git show --no-patch --format=%h) \"npm-run-all build:docker:dev push:docker:dev\"",
-    "build:docker:dev": "cross-var docker build . -t registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-site:$npm_package_version-$GIT_COMMIT_HASH",
-    "push:docker:dev": "docker push registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-site:$npm_package_version-$GIT_COMMIT_HASH"
+    "build:docker:dev": "cross-var docker build . -t registry.gitlab.com/rayprosoft/tgs-website-backoffice:$npm_package_version-$GIT_COMMIT_HASH",
+    "push:docker:dev": "docker push registry.gitlab.com/rayprosoft/tgs-website-backoffice:$npm_package_version-$GIT_COMMIT_HASH"
   },
   "dependencies": {
     "chai": "4.3.4",
