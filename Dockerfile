@@ -3,15 +3,15 @@ FROM node:14.17.0-stretch-slim AS build
 WORKDIR /dest
 
 # Copy package.json and package-lock.json
-COPY ./src/Web/backoffice/package* ./
+COPY ./package* .
 # Copy snowpack env file
-COPY ./src/Web/backoffice/snowpack.env ./.env
+COPY ./snowpack.env ./.env
 
 # Install packages
 RUN npm install
 
 # Copy source code
-COPY ./src/Web/backoffice/ .
+COPY . .
 
 # TODO: RUN npm run test
 RUN npm run build
