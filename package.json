@@ -1,6 +1,6 @@
 {
   "name": "backoffice",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {
     "start": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack dev --reload",
     "build": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack build",
