@@ -111,4 +111,5 @@ artifacts
 
 # 
 .playwright/
+build/
 .docker/

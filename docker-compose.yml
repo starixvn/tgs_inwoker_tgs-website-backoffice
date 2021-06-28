@@ -11,8 +11,6 @@ services:
       - 9090:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      tgs:
 
   backoffice-site:
     build: .
@@ -34,10 +32,17 @@ services:
       PromotionLocalization: "true"
     labels:
       - traefik.http.routers.backoffice-site.rule=Host(`backoffice.localhost`)
-    networks:
-      tgs:
     depends_on:
+      - mocksite
       - backoffice-api
+
+  mocksite:
+    image: mocksite
+    container_name: mocksite
+    labels:
+      - traefik.http.routers.mocksite.rule=Host(`mocksite.localhost`)
+    depends_on:
+      - global-api
 
   backoffice-api:
     image: backoffice-api
@@ -48,25 +53,32 @@ services:
       ASPNETCORE_ENVIRONMENT: "Docker"
       File__FileServiceBaseUrl: "http://fileservice"
       Promotion__Url: "http://promotion-api"
-    # For crash debug
-    # entrypoint: ["sh", "-c", "sleep infinity"]
     ports:
       - 32667:80
-    networks:
-      tgs:
     depends_on:
       - fileservice
       - promotion-api
       - report-api
       - log-api
 
+  global-api:
+    image: global-api
+    container_name: global-api
+    labels:
+      - traefik.http.routers.global-api.rule=Host(`mocksite.localhost`) && PathPrefix(`/global-api`)
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Docker"
+    ports:
+      - 32666:80
+    depends_on:
+      - operator-api
+      - postgres
+
   fileservice:
     image: fileservice
     container_name: fileservice
     environment:
       ASPNETCORE_ENVIRONMENT: "Docker"
-    networks:
-      tgs:
     depends_on:
       - mongodb
 
@@ -80,8 +92,6 @@ services:
       - ./.docker/mongodb/db:/data/db
       - ./.docker/mongodb/config:/etc/mongod.conf
       - ./.docker/mongodb/log:/var/log/mongodb/
-    networks:
-      tgs:
     ports:
       - 27017:27017
 
@@ -95,14 +105,14 @@ services:
       File__FileServiceBaseUrl: "http://fileservice"
     ports:
       - 5201:80
-    networks:
-      tgs:
     depends_on:
       - postgres
 
   operator-api:
     image: operator-api
     container_name: operator-api
+    labels:
+      - traefik.http.routers.operator-api.rule=Host(`mocksite.localhost`) && PathPrefix(`/api`)
     environment:
       ASPNETCORE_ENVIRONMENT: "Docker"
       Operator__FileServiceBaseUrl: "http://fileservice"
@@ -111,8 +121,6 @@ services:
     # entrypoint: ["sh", "-c", "sleep infinity"]
     ports:
       - 32670:80
-    networks:
-      tgs:
     depends_on:
       - postgres
       - redis
@@ -124,8 +132,6 @@ services:
       ASPNETCORE_ENVIRONMENT: "Docker"
     ports:
       - 5051:80
-    networks:
-      tgs:
     depends_on:
       - postgres
 
@@ -138,8 +144,6 @@ services:
     # entrypoint: ["sh", "-c", "sleep infinity"]
     ports:
       - 32668:80
-    networks:
-      tgs:
     depends_on:
       - postgres
       - nats
@@ -155,16 +159,12 @@ services:
     ports:
       - "8222:8222"
       - 4222:4222
-    networks:
-      tgs:
 
   redis:
     image: "redis:alpine"
     container_name: redis
     ports:
       - "6379:6379"
-    networks:
-      tgs:
 
   postgres:
     image: postgres:13.2-alpine
@@ -177,9 +177,3 @@ services:
       - ./.docker/postgres:/data/postgres
     ports:
       - "5432:5432"
-    networks:
-      - tgs
-
-networks:
-  tgs:
-    driver: bridge
