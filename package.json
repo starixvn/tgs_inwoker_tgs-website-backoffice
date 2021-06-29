@@ -1,7 +1,7 @@
 {
   "name": "backoffice-site",
   "version": "1.0.0",
-  "registry": "registry.gitlab.com/rayprosoft/tgs-website-backoffice",
+  "registry": "registry.gitlab.com/rayprosoft/turnkey-gaming-system",
   "scripts": {
     "start": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack dev --reload",
     "build": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack build",
