@@ -113,3 +113,6 @@ artifacts
 .playwright/
 build/
 .docker/
+
+# garden.io for k8s
+.garden

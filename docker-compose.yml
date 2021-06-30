@@ -6,7 +6,7 @@ services:
     command: --api.insecure=true --providers.docker
     ports:
       # The HTTP port
-      - 80:80
+      - 8090:80
       # The Web UI http://localhost:9090/dashboard#/ (enabled by --api.insecure=true)
       - 9090:8080
     volumes:
@@ -51,12 +51,12 @@ services:
       - traefik.http.routers.backoffice-api.rule=Host(`backoffice.localhost`) && (PathPrefix(`/api`))
     environment:
       ASPNETCORE_ENVIRONMENT: "Docker"
-      File__FileServiceBaseUrl: "http://fileservice"
+      File__FileServiceBaseUrl: "http://file-service"
       Promotion__Url: "http://promotion-api"
     ports:
       - 32667:80
     depends_on:
-      - fileservice
+      - file-service
       - promotion-api
       - report-api
       - log-api
@@ -74,9 +74,9 @@ services:
       - operator-api
       - postgres
 
-  fileservice:
-    image: fileservice
-    container_name: fileservice
+  file-service:
+    image: file-service
+    container_name: file-service
     environment:
       ASPNETCORE_ENVIRONMENT: "Docker"
     depends_on:
@@ -102,7 +102,7 @@ services:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
       NatsSetting__Urls: "nats://nats:4222"
-      File__FileServiceBaseUrl: "http://fileservice"
+      File__FileServiceBaseUrl: "http://file-service"
     ports:
       - 5201:80
     depends_on:
@@ -115,7 +115,7 @@ services:
       - traefik.http.routers.operator-api.rule=Host(`mocksite.localhost`) && PathPrefix(`/api`)
     environment:
       ASPNETCORE_ENVIRONMENT: "Docker"
-      Operator__FileServiceBaseUrl: "http://fileservice"
+      Operator__FileServiceBaseUrl: "http://file-service"
       Promotion__Url: "http://promotion-api"
     # For crash debug
     # entrypoint: ["sh", "-c", "sleep infinity"]
@@ -157,7 +157,7 @@ services:
     expose:
       - "4222"
     ports:
-      - "8222:8222"
+      # - "8222:8222"
       - 4222:4222
 
   redis:
