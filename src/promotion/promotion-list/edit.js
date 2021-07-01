@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import {
-    Box,
-    Text,
-    Button,
-    Set,
-    Icon,
-    useModalState,
-    Dialog,
-    Card,
-    Flex,
-    Heading,
-    FieldStack
+  Box,
+  Text,
+  Button,
+  Set,
+  Icon,
+  useModalState,
+  Dialog,
+  Card,
+  Flex,
+  Heading,
+  FieldStack
 } from "bumbag"
 import { Update as UpdateMenu, View as ViewMenu } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, {
-    AddDisclosure,
-    EditDisclosure,
-    NewDisclosure,
-    ViewDisclosure
+  AddDisclosure,
+  EditDisclosure,
+  NewDisclosure,
+  ViewDisclosure
 } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { Trans, useTrans } from "../../i18n"
@@ -35,16 +35,16 @@ import { VipLevelCheckboxGroup } from "../../vip-levels/CheckboxGroup"
 import AlertDialog from "../../dialog/Alert"
 import Checkbox from "../../checkbox"
 import {
-    GameTypeGroupSelect,
-    GameTypeSelect,
-    useGameTypeGroupValueOf
+  GameTypeGroupSelect,
+  GameTypeSelect,
+  useGameTypeGroupValueOf
 } from "../../game/GameType"
 import Separator from "../../layout/Separator"
 import {
-    PromotionTypeGroup,
-    PromotionTypeGroupSelect,
-    PromotionTypeSelect,
-    usePromotionGroupValueOf
+  PromotionTypeGroup,
+  PromotionTypeGroupSelect,
+  PromotionTypeSelect,
+  usePromotionGroupValueOf
 } from "../PromotionType"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
 import { BrandGameProviderCheckboxGroupTable } from "../../game/brandproviders/BrandGameProviderCheckboxGroup"
@@ -53,12 +53,12 @@ import { today } from "../../date/range"
 import { useBrandGameProviderList } from "../../game/brandproviders/client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import {
-    NumberInput,
-    NumberInputField,
-    PercentageNumberInputField
+  NumberInput,
+  NumberInputField,
+  PercentageNumberInputField
 } from "../../input/NumberInput"
 import { Switch } from "../../switch/Switch"
-import { useBrand } from "../../merchant/brands/client"
+import { useBrand } from "../../merchant/platforms/client"
 import { ImageUploadButton } from "../../file/upload/ImageUploadButton"
 import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import Backdrop from "../../dialog/Backdrop"
@@ -66,793 +66,770 @@ import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { parseJSON } from "../../text/json"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted }) => {
-    let dialog = useModalState()
+  let dialog = useModalState()
 
-    let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
+  if (!isDisplay) {
+    return null
+  }
 
-    return (
-        <>
-            <NewDisclosure {...dialog} />
-            {dialog.visible && (
-                <AddDialog
-                    brandId={brandId}
-                    onSubmitted={onSubmitted}
-                    dialog={dialog}
-                />
-            )}
-        </>
-    )
+  return (
+    <>
+      <NewDisclosure {...dialog} />
+      {dialog.visible && (
+        <AddDialog
+          brandId={brandId}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
+      )}
+    </>
+  )
 }
 
 const DialogCss = css`
-    & .bb-DialogContent {
-        position: relative;
-        padding: 1.5rem 3rem;
-    }
+  & .bb-DialogContent {
+    position: relative;
+    padding: 1.5rem 3rem;
+  }
 `
 
 const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
-    let [formData, setSubmit] = useState()
+  let [formData, setSubmit] = useState()
 
-    let { result, isLoading, error, mutate, deleteCache } =
-        useAddPromotion(formData)
+  let { result, isLoading, error, mutate, deleteCache } =
+    useAddPromotion(formData)
 
-    let title = useTrans({
-        zh: "新增活动",
-        en: "Create Promotion"
+  let title = useTrans({
+    zh: "新增活动",
+    en: "Create Promotion"
+  })
+
+  const onSubmit = (data) => {
+    let formData = normalizeFormData(data)
+    setSubmit({
+      ...formData,
+      brandId
     })
+  }
 
-    const onSubmit = (data) => {
-        let formData = normalizeFormData(data)
-        setSubmit({
-            ...formData,
-            brandId
-        })
-    }
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
 
-    const reset = () => {
-        deleteCache()
-        mutate(undefined, false)
-        setSubmit(undefined)
-    }
-
-    return (
-        <FormDialog
-            defaultValues={{
-                autoSentPlayerBonus: true,
-                localization: {}
-            }}
-            onSubmit={onSubmit}
-            isLoading={isLoading}
-            result={result}
-            error={error}
-            onCloseErrorAlert={reset}
-            onSubmitted={onSubmitted}
-            title={title}
-            dialog={dialog}
-            maxWidth="80vw"
-            css={DialogCss}
-        >
-            <FormBody brandId={brandId} isAdd />
-        </FormDialog>
-    )
+  return (
+    <FormDialog
+      defaultValues={{
+        autoSentPlayerBonus: true,
+        localization: {}
+      }}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      onSubmitted={onSubmitted}
+      title={title}
+      dialog={dialog}
+      maxWidth="80vw"
+      css={DialogCss}
+    >
+      <FormBody brandId={brandId} isAdd />
+    </FormDialog>
+  )
 }
 
 const normalizeFormData = ({ gameProviders = [], ...data }) => {
-    let gameProviderIds = toCheckedGameProviderIds(
-        "gameProviderId",
-        gameProviders
-    )
+  let gameProviderIds = toCheckedGameProviderIds(
+    "gameProviderId",
+    gameProviders
+  )
 
-    return {
-        gameProviderIds,
-        ...data
-    }
+  return {
+    gameProviderIds,
+    ...data
+  }
 }
 
 export const EditPromotionDisclosure = ({
-    brandId,
-    record,
-    onSubmitted,
-    ...props
+  brandId,
+  record,
+  onSubmitted,
+  ...props
 }) => {
-    let dialog = useModalState()
+  let dialog = useModalState()
 
-    let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
+  if (!isDisplay) {
+    return null
+  }
 
-    return (
-        <>
-            <EditDisclosure {...dialog} />
-            {dialog.visible && (
-                <EditDialog
-                    brandId={brandId}
-                    record={record}
-                    onSubmitted={onSubmitted}
-                    dialog={dialog}
-                />
-            )}
-        </>
-    )
+  return (
+    <>
+      <EditDisclosure {...dialog} />
+      {dialog.visible && (
+        <EditDialog
+          brandId={brandId}
+          record={record}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
+      )}
+    </>
+  )
 }
 
 const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
-    let [formData, setSubmit] = useState()
+  let [formData, setSubmit] = useState()
 
-    let {
-        isLoading: isLoadingFormData,
-        data,
-        error: loadingFormDataError
-    } = usePromotionFormData(brandId, record)
-    let { result, isLoading, error, mutate, deleteCache } = useUpdatePromotion(
-        record?.id,
-        formData
-    )
+  let {
+    isLoading: isLoadingFormData,
+    data,
+    error: loadingFormDataError
+  } = usePromotionFormData(brandId, record)
+  let { result, isLoading, error, mutate, deleteCache } = useUpdatePromotion(
+    record?.id,
+    formData
+  )
 
-    let title = useTrans({
-        zh: "编辑活动",
-        en: "Edit Promotion"
+  let title = useTrans({
+    zh: "编辑活动",
+    en: "Edit Promotion"
+  })
+
+  if (isLoadingFormData) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (loadingFormDataError) {
+    return <AlertDialog {...loadingFormDataError} onClickClose={dialog.hide} />
+  }
+
+  const onSubmit = (data) => {
+    setSubmit({
+      ...normalizeFormData(data),
+      brandId
     })
+  }
 
-    if (isLoadingFormData) {
-        return <LoadingBackdrop {...dialog} />
-    }
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
 
-    if (loadingFormDataError) {
-        return (
-            <AlertDialog {...loadingFormDataError} onClickClose={dialog.hide} />
-        )
-    }
-
-    const onSubmit = (data) => {
-        setSubmit({
-            ...normalizeFormData(data),
-            brandId
-        })
-    }
-
-    const reset = () => {
-        deleteCache()
-        mutate(undefined, false)
-        setSubmit(undefined)
-    }
-
-    return (
-        <FormDialog
-            defaultValues={clone(data)}
-            onSubmit={onSubmit}
-            isLoading={isLoading}
-            result={result}
-            error={error}
-            onCloseErrorAlert={reset}
-            onSubmitted={onSubmitted}
-            title={title}
-            dialog={dialog}
-            maxWidth="80vw"
-            css={DialogCss}
-        >
-            <FormBody brandId={brandId} />
-        </FormDialog>
-    )
+  return (
+    <FormDialog
+      defaultValues={clone(data)}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      onSubmitted={onSubmitted}
+      title={title}
+      dialog={dialog}
+      maxWidth="80vw"
+      css={DialogCss}
+    >
+      <FormBody brandId={brandId} />
+    </FormDialog>
+  )
 }
 
 const usePromotionFormData = (
-    brandId,
-    {
-        from,
-        to,
-        gameProviderIds = [],
-        vipLevels = [],
-        localization = {},
-        ...record
-    } = {}
+  brandId,
+  {
+    from,
+    to,
+    gameProviderIds = [],
+    vipLevels = [],
+    localization = {},
+    ...record
+  } = {}
 ) => {
-    let {
-        data = {},
-        isLoading: isLoadingBrandGameProviderList,
-        error: brandGameProviderError,
-        ...rest
-    } = useBrandGameProviderList(
-        brandId
-            ? {
-                  brandId,
-                  showAll: true,
-                  sortby: "gameProviderName"
-              }
-            : undefined
-    )
+  let {
+    data = {},
+    isLoading: isLoadingBrandGameProviderList,
+    error: brandGameProviderError,
+    ...rest
+  } = useBrandGameProviderList(
+    brandId
+      ? {
+          brandId,
+          showAll: true,
+          sortby: "gameProviderName"
+        }
+      : undefined
+  )
 
-    let gameProviders =
-        data?.items?.map((gameProvider) => {
-            let checked = gameProviderIds.includes(gameProvider.gameProviderId)
-            return {
-                ...gameProvider,
-                checked
-            }
-        }) ?? []
+  let gameProviders =
+    data?.items?.map((gameProvider) => {
+      let checked = gameProviderIds.includes(gameProvider.gameProviderId)
+      return {
+        ...gameProvider,
+        checked
+      }
+    }) ?? []
 
-    let promotionTypeGroup = usePromotionGroupValueOf(record?.promotionType)
-    let gameTypeGroup = useGameTypeGroupValueOf(record?.gameType)
+  let promotionTypeGroup = usePromotionGroupValueOf(record?.promotionType)
+  let gameTypeGroup = useGameTypeGroupValueOf(record?.gameType)
 
-    vipLevels = vipLevels.map((vipLevel) => `${vipLevel}`)
+  vipLevels = vipLevels.map((vipLevel) => `${vipLevel}`)
 
-    data = {
-        ...record,
-        vipLevels,
-        gameProviders,
-        promotionTypeGroup,
-        gameTypeGroup,
-        localization: parseJSON(localization),
-        from: parseISO(from),
-        to: parseISO(to)
-    }
+  data = {
+    ...record,
+    vipLevels,
+    gameProviders,
+    promotionTypeGroup,
+    gameTypeGroup,
+    localization: parseJSON(localization),
+    from: parseISO(from),
+    to: parseISO(to)
+  }
 
-    return {
-        isLoading: isLoadingBrandGameProviderList,
-        error: brandGameProviderError,
-        ...rest,
-        data
-    }
+  return {
+    isLoading: isLoadingBrandGameProviderList,
+    error: brandGameProviderError,
+    ...rest,
+    data
+  }
 }
 
 export const ViewPromotionDisclosure = ({
-    brandId,
-    record,
-    onSubmitted,
-    ...props
+  brandId,
+  record,
+  onSubmitted,
+  ...props
 }) => {
-    let dialog = useModalState()
+  let dialog = useModalState()
 
-    let isDisplay = useIsDisplayMenuByRoute([ViewMenu])
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute([ViewMenu])
+  if (!isDisplay) {
+    return null
+  }
 
-    return (
-        <>
-            <ViewDisclosure {...dialog} />
-            {dialog.visible && (
-                <ViewDialog brandId={brandId} record={record} dialog={dialog} />
-            )}
-        </>
-    )
+  return (
+    <>
+      <ViewDisclosure {...dialog} />
+      {dialog.visible && (
+        <ViewDialog brandId={brandId} record={record} dialog={dialog} />
+      )}
+    </>
+  )
 }
 
 const ViewDialog = ({ brandId, record, dialog, ...props }) => {
-    let { isLoading, data, error } = usePromotionFormData(brandId, record)
+  let { isLoading, data, error } = usePromotionFormData(brandId, record)
 
-    let title = useTrans({
-        zh: "查看活动",
-        en: "View Promotion"
-    })
+  let title = useTrans({
+    zh: "查看活动",
+    en: "View Promotion"
+  })
 
-    if (isLoading) {
-        return <LoadingBackdrop {...dialog} />
-    }
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
 
-    if (error) {
-        return <AlertDialog {...error} onClickClose={dialog.hide} />
-    }
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
 
-    return (
-        <FormDialog
-            defaultValues={clone(data)}
-            title={title}
-            showActionButtons={false}
-            footer={<CloseButtonFooter dialog={dialog} alignX="right" />}
-            dialog={dialog}
-            maxWidth="80vw"
-            css={DialogCss}
-        >
-            <FormBody brandId={brandId} readOnly={true} />
-        </FormDialog>
-    )
+  return (
+    <FormDialog
+      defaultValues={clone(data)}
+      title={title}
+      showActionButtons={false}
+      footer={<CloseButtonFooter dialog={dialog} alignX="right" />}
+      dialog={dialog}
+      maxWidth="80vw"
+      css={DialogCss}
+    >
+      <FormBody brandId={brandId} readOnly={true} />
+    </FormDialog>
+  )
 }
 
 const AutoSentPlayerBonusFieldName = "autoSentPlayerBonus"
 const AutoOrManualPayoutSwitch = ({
-    name = AutoSentPlayerBonusFieldName,
-    readOnly = false,
-    disabled,
-    ...props
+  name = AutoSentPlayerBonusFieldName,
+  readOnly = false,
+  disabled,
+  ...props
 }) => {
-    let { control, setValue } = useFormContext()
+  let { control, setValue } = useFormContext()
 
-    let checked = useWatch({
-        control,
-        name: AutoSentPlayerBonusFieldName,
-        defaultValue: props.checked ?? props?.defaultValue
-    })
+  let checked = useWatch({
+    control,
+    name: AutoSentPlayerBonusFieldName,
+    defaultValue: props.checked ?? props?.defaultValue
+  })
 
-    let autoPayoutLabel = useTrans({
-        zh: "自動",
-        en: "Automatic"
-    })
-    let manualPayoutLabel = useTrans({
-        zh: "手动",
-        en: "Manual"
-    })
-    let label = checked ? autoPayoutLabel : manualPayoutLabel
+  let autoPayoutLabel = useTrans({
+    zh: "自動",
+    en: "Automatic"
+  })
+  let manualPayoutLabel = useTrans({
+    zh: "手动",
+    en: "Manual"
+  })
+  let label = checked ? autoPayoutLabel : manualPayoutLabel
 
-    if (readOnly || disabled) {
-        return (
-            <>
-                <Switch label={label} checked={checked} disabled={disabled} />
-                <Switch
-                    name={name}
-                    label={label}
-                    checked={checked}
-                    display="none"
-                />
-            </>
-        )
-    }
-
+  if (readOnly || disabled) {
     return (
-        <Switch
-            name={name}
-            label={label}
-            checked={checked}
-            onChange={(event) => {
-                let checked = event.target.checked
-                setValue(name, checked)
-            }}
-        />
+      <>
+        <Switch label={label} checked={checked} disabled={disabled} />
+        <Switch name={name} label={label} checked={checked} display="none" />
+      </>
     )
+  }
+
+  return (
+    <Switch
+      name={name}
+      label={label}
+      checked={checked}
+      onChange={(event) => {
+        let checked = event.target.checked
+        setValue(name, checked)
+      }}
+    />
+  )
 }
 
 const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
-    let { start: startOfToday } = today()
-    let formMethods = useFormContext()
-    let { control, setValue } = formMethods
+  let { start: startOfToday } = today()
+  let formMethods = useFormContext()
+  let { control, setValue } = formMethods
 
-    let TotalAmountLimitFieldName = "totalAmountLimit"
-    let totalAmountLimit = useWatch({
-        control,
-        name: TotalAmountLimitFieldName
-    })
+  let TotalAmountLimitFieldName = "totalAmountLimit"
+  let totalAmountLimit = useWatch({
+    control,
+    name: TotalAmountLimitFieldName
+  })
 
-    let UnlimitedFieldName = "unlimited"
-    let unlimitedTotalAmount = useWatch({
-        control,
-        name: UnlimitedFieldName
-    })
-    let limitedTotalAmount = !unlimitedTotalAmount
+  let UnlimitedFieldName = "unlimited"
+  let unlimitedTotalAmount = useWatch({
+    control,
+    name: UnlimitedFieldName
+  })
+  let limitedTotalAmount = !unlimitedTotalAmount
 
-    let unlimiteTotalAmountLabel = useTrans({
-        zh: "无限",
-        en: "Unlimited"
-    })
+  let unlimiteTotalAmountLabel = useTrans({
+    zh: "无限",
+    en: "Unlimited"
+  })
 
-    let PromotionTypeGroupFieldName = "promotionTypeGroup"
-    let promotionTypeGroup = useWatch({
-        control,
-        name: PromotionTypeGroupFieldName
-    })
+  let PromotionTypeGroupFieldName = "promotionTypeGroup"
+  let promotionTypeGroup = useWatch({
+    control,
+    name: PromotionTypeGroupFieldName
+  })
 
-    let isDepositPromotion = promotionTypeGroup === PromotionTypeGroup.Deposit
-    useEffect(() => {
-        if (isDepositPromotion) {
-            setValue(AutoSentPlayerBonusFieldName, true)
-        }
-    }, [isDepositPromotion])
+  let isDepositPromotion = promotionTypeGroup === PromotionTypeGroup.Deposit
+  useEffect(() => {
+    if (isDepositPromotion) {
+      setValue(AutoSentPlayerBonusFieldName, true)
+    }
+  }, [isDepositPromotion])
 
-    let isPromotionTypeTurnoverRelated =
-        promotionTypeGroup === PromotionTypeGroup.Turnover ||
-        promotionTypeGroup === PromotionTypeGroup.ReliefMoney
+  let isPromotionTypeTurnoverRelated =
+    promotionTypeGroup === PromotionTypeGroup.Turnover ||
+    promotionTypeGroup === PromotionTypeGroup.ReliefMoney
 
-    let PromotionTypeFieldName = "promotionType"
-    let promotionType = useWatch({
-        control,
-        name: PromotionTypeFieldName
-    })
+  let PromotionTypeFieldName = "promotionType"
+  let promotionType = useWatch({
+    control,
+    name: PromotionTypeFieldName
+  })
 
-    let GameTypeGroupFieldName = "gameTypeGroup"
-    let gameTypeGroup = useWatch({
-        control,
-        name: GameTypeGroupFieldName
-    })
+  let GameTypeGroupFieldName = "gameTypeGroup"
+  let gameTypeGroup = useWatch({
+    control,
+    name: GameTypeGroupFieldName
+  })
 
-    let disabled = readOnly
-    let editable = !readOnly
+  let disabled = readOnly
+  let editable = !readOnly
 
-    return (
-        <FieldStack marginLeft="1rem">
-            <FieldValues>
-                <NormalLabel>
-                    <Trans zh="活动名称" en="Promotion Name" />
-                </NormalLabel>
-                <Box alignY="center">
-                    <InputField
-                        name="name"
-                        brandId={brandId}
-                        showLocalizationAddonAfter
-                        disabled={disabled}
-                    />
-                </Box>
+  return (
+    <FieldStack marginLeft="1rem">
+      <FieldValues>
+        <NormalLabel>
+          <Trans zh="活动名称" en="Promotion Name" />
+        </NormalLabel>
+        <Box alignY="center">
+          <InputField
+            name="name"
+            brandId={brandId}
+            showLocalizationAddonAfter
+            disabled={disabled}
+          />
+        </Box>
 
-                <NormalLabel>
-                    <Trans zh="活动时间" en="Promotion Period" />
-                </NormalLabel>
-                <Box alignY="center">
-                    <DateInputRange
-                        startProps={{
-                            name: "from"
-                        }}
-                        endProps={{
-                            name: "to",
-                            minDate: startOfToday
-                        }}
-                        minDate={isAdd ? startOfToday : undefined}
-                        disabled={disabled}
-                    />
-                </Box>
+        <NormalLabel>
+          <Trans zh="活动时间" en="Promotion Period" />
+        </NormalLabel>
+        <Box alignY="center">
+          <DateInputRange
+            startProps={{
+              name: "from"
+            }}
+            endProps={{
+              name: "to",
+              minDate: startOfToday
+            }}
+            minDate={isAdd ? startOfToday : undefined}
+            disabled={disabled}
+          />
+        </Box>
 
-                <NormalLabel>
-                    <Trans zh="活动用户群" en="User Group" />
-                </NormalLabel>
-                <Box alignY="center">
-                    <VipLevelCheckboxGroup
-                        name="vipLevels"
-                        valueFieldName="level"
-                        brandId={brandId}
-                        disabled={disabled}
-                    />
-                </Box>
+        <NormalLabel>
+          <Trans zh="活动用户群" en="User Group" />
+        </NormalLabel>
+        <Box alignY="center">
+          <VipLevelCheckboxGroup
+            name="vipLevels"
+            valueFieldName="level"
+            brandId={brandId}
+            disabled={disabled}
+          />
+        </Box>
 
-                <NormalLabel>
-                    <Trans zh="活动类型" en="Promotion Type" />
-                </NormalLabel>
-                <Box alignY="center">
-                    {editable && (
-                        <PromotionTypeGroupSelect
-                            name={PromotionTypeGroupFieldName}
-                            onChange={(event) => {
-                                setValue(PromotionTypeFieldName, "")
-                            }}
-                        />
-                    )}
-                    {disabled && (
-                        <>
-                            <PromotionTypeGroupSelect
-                                name={PromotionTypeGroupFieldName}
-                                value={promotionTypeGroup}
-                                display="none"
-                            />
-                            <PromotionTypeGroupSelect
-                                value={promotionTypeGroup}
-                                disabled="none"
-                            />
-                        </>
-                    )}
-                </Box>
+        <NormalLabel>
+          <Trans zh="活动类型" en="Promotion Type" />
+        </NormalLabel>
+        <Box alignY="center">
+          {editable && (
+            <PromotionTypeGroupSelect
+              name={PromotionTypeGroupFieldName}
+              onChange={(event) => {
+                setValue(PromotionTypeFieldName, "")
+              }}
+            />
+          )}
+          {disabled && (
+            <>
+              <PromotionTypeGroupSelect
+                name={PromotionTypeGroupFieldName}
+                value={promotionTypeGroup}
+                display="none"
+              />
+              <PromotionTypeGroupSelect
+                value={promotionTypeGroup}
+                disabled="none"
+              />
+            </>
+          )}
+        </Box>
 
-                <NormalLabel>
-                    <Trans zh="活动子类型" en="Promotion SubType" />
-                </NormalLabel>
-                <Box alignY="center">
-                    {editable && (
-                        <PromotionTypeSelect
-                            name={PromotionTypeFieldName}
-                            group={promotionTypeGroup}
-                            required
-                        />
-                    )}
-                    {disabled && (
-                        <>
-                            <PromotionTypeSelect
-                                name={PromotionTypeFieldName}
-                                value={promotionType}
-                                display="none"
-                            />
-                            <PromotionTypeSelect
-                                value={promotionType}
-                                disabled
-                            />
-                        </>
-                    )}
-                </Box>
+        <NormalLabel>
+          <Trans zh="活动子类型" en="Promotion SubType" />
+        </NormalLabel>
+        <Box alignY="center">
+          {editable && (
+            <PromotionTypeSelect
+              name={PromotionTypeFieldName}
+              group={promotionTypeGroup}
+              required
+            />
+          )}
+          {disabled && (
+            <>
+              <PromotionTypeSelect
+                name={PromotionTypeFieldName}
+                value={promotionType}
+                display="none"
+              />
+              <PromotionTypeSelect value={promotionType} disabled />
+            </>
+          )}
+        </Box>
 
-                <NormalLabel>
-                    <Trans zh="活动派发" en="Distribution Method" />
-                </NormalLabel>
-                <Box>
-                    {isDepositPromotion && (
-                        <AutoOrManualPayoutSwitch
-                            readOnly
-                            disabled
-                            checked={true}
-                        />
-                    )}
-                    {!isDepositPromotion && (
-                        <AutoOrManualPayoutSwitch
-                            readOnly={readOnly}
-                            disabled={disabled}
-                        />
-                    )}
-                </Box>
+        <NormalLabel>
+          <Trans zh="活动派发" en="Distribution Method" />
+        </NormalLabel>
+        <Box>
+          {isDepositPromotion && (
+            <AutoOrManualPayoutSwitch readOnly disabled checked={true} />
+          )}
+          {!isDepositPromotion && (
+            <AutoOrManualPayoutSwitch readOnly={readOnly} disabled={disabled} />
+          )}
+        </Box>
 
-                <NormalLabel>
-                    <Trans zh="活动总费用" en="Promotion Funds" />
-                </NormalLabel>
-                <Set orientation="horizontal" alignY="center">
-                    {limitedTotalAmount && (
-                        <>
-                            <NumberInput
-                                name={TotalAmountLimitFieldName}
-                                required
-                                disabled={disabled}
-                            />
-                        </>
-                    )}
-                    <Checkbox
-                        name={UnlimitedFieldName}
-                        label={unlimiteTotalAmountLabel}
-                        disabled={disabled}
-                    />
-                </Set>
+        <NormalLabel>
+          <Trans zh="活动总费用" en="Promotion Funds" />
+        </NormalLabel>
+        <Set orientation="horizontal" alignY="center">
+          {limitedTotalAmount && (
+            <>
+              <NumberInput
+                name={TotalAmountLimitFieldName}
+                required
+                disabled={disabled}
+              />
+            </>
+          )}
+          <Checkbox
+            name={UnlimitedFieldName}
+            label={unlimiteTotalAmountLabel}
+            disabled={disabled}
+          />
+        </Set>
 
-                {isPromotionTypeTurnoverRelated && (
-                    <>
-                        <NormalLabel>
-                            <Trans zh="活动游戏类型" en="Game Type" />
-                        </NormalLabel>
-                        <Box>
-                            {editable && (
-                                <GameTypeGroupSelect
-                                    name={GameTypeGroupFieldName}
-                                    disabled={disabled}
-                                />
-                            )}
-                            {disabled && (
-                                <>
-                                    <GameTypeGroupSelect
-                                        name={GameTypeGroupFieldName}
-                                        value={gameTypeGroup}
-                                        display="none"
-                                    />
-                                    <GameTypeGroupSelect
-                                        value={gameTypeGroup}
-                                        disabled
-                                    />
-                                </>
-                            )}
-                        </Box>
-                    </>
-                )}
-
-                {isPromotionTypeTurnoverRelated && (
-                    <>
-                        <NormalLabel>
-                            <Trans zh="活动游戏子类型" en="Game SubType" />
-                        </NormalLabel>
-                        <GameTypeSelect
-                            name="gameType"
-                            group={gameTypeGroup}
-                            disabled={disabled}
-                            required
-                        />
-                    </>
-                )}
-
-                {isPromotionTypeTurnoverRelated && (
-                    <>
-                        <NormalLabel>
-                            <Trans zh="活动厂商" en="GP Participation" />
-                        </NormalLabel>
-                        <Box>
-                            <BrandGameProviderCheckboxGroupTable
-                                brandId={brandId}
-                                disabled={disabled}
-                            />
-                        </Box>
-                    </>
-                )}
-            </FieldValues>
-
-            <Separator />
-
-            <Heading use="h5">
-                <Trans zh="活动内容" en="Promotion Content" />
-            </Heading>
-            <FieldValues>
-                <NormalLabel>
-                    <Trans zh="活动子标题" en="Promotion SubTitle" />
-                </NormalLabel>
-                <Box alignY="center">
-                    <InputField
-                        name="subSubject"
-                        brandId={brandId}
-                        showLocalizationAddonAfter
-                        disabled={disabled}
-                        readOnly={readOnly}
-                    />
-                </Box>
-
-                <NormalLabel>
-                    <Trans zh="活动 Banner (PC)" en="Promotion Banner (PC)" />
-                </NormalLabel>
-                <Box alignY="center">
-                    <ImageUploadButton
-                        brandId={brandId}
-                        name="desktopBanner"
-                        prefix="promotion"
-                        disabled={disabled}
-                        readOnly={readOnly}
-                    />
-                </Box>
-
-                <NormalLabel>
-                    <Trans
-                        zh="活动 Banner (Mobile)"
-                        en="Promotion Banner (Mobile)"
-                    />
-                </NormalLabel>
-                <Box alignY="center">
-                    <ImageUploadButton
-                        brandId={brandId}
-                        name="mobileBanner"
-                        prefix="promotion"
-                        disabled={disabled}
-                        readOnly={readOnly}
-                    />
-                </Box>
-
-                <NormalLabel>
-                    <Trans zh="活动内容" en="Promotion Content" />
-                </NormalLabel>
-                <Box alignY="center">
-                    <HtmlEditorDisclosure
-                        brandId={brandId}
-                        name="content"
-                        disabled={disabled}
-                        readOnly={readOnly}
-                    />
-                </Box>
-
-                <NormalLabel>
-                    <Trans zh="活动条款与条规" en="Promotion Rules" />
-                </NormalLabel>
-                <Box alignY="center">
-                    <HtmlEditorDisclosure
-                        brandId={brandId}
-                        name="terms"
-                        disabled={disabled}
-                        readOnly={readOnly}
-                    />
-                </Box>
-            </FieldValues>
-
-            <Separator />
-
-            <Heading use="h5">
-                <Trans zh="活动规则" en="Promotion Rules" />
-            </Heading>
-
-            <FieldValues>
-                <NormalLabel>
-                    <Trans zh="彩金百分比" en="Bonus Percentage" />
-                </NormalLabel>
-                <PercentageNumberInputField
-                    name="percentage"
-                    required
-                    disabled={disabled}
+        {isPromotionTypeTurnoverRelated && (
+          <>
+            <NormalLabel>
+              <Trans zh="活动游戏类型" en="Game Type" />
+            </NormalLabel>
+            <Box>
+              {editable && (
+                <GameTypeGroupSelect
+                  name={GameTypeGroupFieldName}
+                  disabled={disabled}
                 />
+              )}
+              {disabled && (
+                <>
+                  <GameTypeGroupSelect
+                    name={GameTypeGroupFieldName}
+                    value={gameTypeGroup}
+                    display="none"
+                  />
+                  <GameTypeGroupSelect value={gameTypeGroup} disabled />
+                </>
+              )}
+            </Box>
+          </>
+        )}
 
-                <NormalLabel>
-                    <Trans zh="彩金上限" en="Bonus Limit" />
-                </NormalLabel>
-                <NumberInput
-                    name="bonusAmountLimit"
-                    min="0"
-                    max={limitedTotalAmount ? totalAmountLimit : undefined}
-                    required
-                    disabled={disabled}
-                />
+        {isPromotionTypeTurnoverRelated && (
+          <>
+            <NormalLabel>
+              <Trans zh="活动游戏子类型" en="Game SubType" />
+            </NormalLabel>
+            <GameTypeSelect
+              name="gameType"
+              group={gameTypeGroup}
+              disabled={disabled}
+              required
+            />
+          </>
+        )}
 
-                <NormalLabel>
-                    <Trans zh="流水倍数" en="Turnover Requirement" />
-                </NormalLabel>
-                <NumberInputField
-                    name="turnoverMultiple"
-                    min="0"
-                    required
-                    disabled={disabled}
-                    addonAfter={
-                        <Button isStatic tabIndex="-1">
-                            <Trans zh="倍" en="Multipliers" />
-                        </Button>
-                    }
-                />
-            </FieldValues>
-        </FieldStack>
-    )
+        {isPromotionTypeTurnoverRelated && (
+          <>
+            <NormalLabel>
+              <Trans zh="活动厂商" en="GP Participation" />
+            </NormalLabel>
+            <Box>
+              <BrandGameProviderCheckboxGroupTable
+                brandId={brandId}
+                disabled={disabled}
+              />
+            </Box>
+          </>
+        )}
+      </FieldValues>
+
+      <Separator />
+
+      <Heading use="h5">
+        <Trans zh="活动内容" en="Promotion Content" />
+      </Heading>
+      <FieldValues>
+        <NormalLabel>
+          <Trans zh="活动子标题" en="Promotion SubTitle" />
+        </NormalLabel>
+        <Box alignY="center">
+          <InputField
+            name="subSubject"
+            brandId={brandId}
+            showLocalizationAddonAfter
+            disabled={disabled}
+            readOnly={readOnly}
+          />
+        </Box>
+
+        <NormalLabel>
+          <Trans zh="活动 Banner (PC)" en="Promotion Banner (PC)" />
+        </NormalLabel>
+        <Box alignY="center">
+          <ImageUploadButton
+            brandId={brandId}
+            name="desktopBanner"
+            prefix="promotion"
+            disabled={disabled}
+            readOnly={readOnly}
+          />
+        </Box>
+
+        <NormalLabel>
+          <Trans zh="活动 Banner (Mobile)" en="Promotion Banner (Mobile)" />
+        </NormalLabel>
+        <Box alignY="center">
+          <ImageUploadButton
+            brandId={brandId}
+            name="mobileBanner"
+            prefix="promotion"
+            disabled={disabled}
+            readOnly={readOnly}
+          />
+        </Box>
+
+        <NormalLabel>
+          <Trans zh="活动内容" en="Promotion Content" />
+        </NormalLabel>
+        <Box alignY="center">
+          <HtmlEditorDisclosure
+            brandId={brandId}
+            name="content"
+            disabled={disabled}
+            readOnly={readOnly}
+          />
+        </Box>
+
+        <NormalLabel>
+          <Trans zh="活动条款与条规" en="Promotion Rules" />
+        </NormalLabel>
+        <Box alignY="center">
+          <HtmlEditorDisclosure
+            brandId={brandId}
+            name="terms"
+            disabled={disabled}
+            readOnly={readOnly}
+          />
+        </Box>
+      </FieldValues>
+
+      <Separator />
+
+      <Heading use="h5">
+        <Trans zh="活动规则" en="Promotion Rules" />
+      </Heading>
+
+      <FieldValues>
+        <NormalLabel>
+          <Trans zh="彩金百分比" en="Bonus Percentage" />
+        </NormalLabel>
+        <PercentageNumberInputField
+          name="percentage"
+          required
+          disabled={disabled}
+        />
+
+        <NormalLabel>
+          <Trans zh="彩金上限" en="Bonus Limit" />
+        </NormalLabel>
+        <NumberInput
+          name="bonusAmountLimit"
+          min="0"
+          max={limitedTotalAmount ? totalAmountLimit : undefined}
+          required
+          disabled={disabled}
+        />
+
+        <NormalLabel>
+          <Trans zh="流水倍数" en="Turnover Requirement" />
+        </NormalLabel>
+        <NumberInputField
+          name="turnoverMultiple"
+          min="0"
+          required
+          disabled={disabled}
+          addonAfter={
+            <Button isStatic tabIndex="-1">
+              <Trans zh="倍" en="Multipliers" />
+            </Button>
+          }
+        />
+      </FieldValues>
+    </FieldStack>
+  )
 }
 
 const HtmlEditorDisclosure = ({ brandId, name, readOnly }) => {
-    let dialog = useModalState()
+  let dialog = useModalState()
 
-    let editTitle = useTrans({
-        zh: "编辑",
-        en: "Edit"
-    })
-    let viewTitle = useTrans({
-        zh: "查看",
-        en: "View"
-    })
-    let title = readOnly ? viewTitle : editTitle
-    return (
-        <>
-            <Disclosure width="fit-content" {...dialog}>
-                {title}
-            </Disclosure>
-            {dialog.visible && (
-                <HtmlEditorDialog
-                    brandId={brandId}
-                    name={name}
-                    readOnly={readOnly}
-                    dialog={dialog}
-                    title={title}
-                />
-            )}
-        </>
-    )
+  let editTitle = useTrans({
+    zh: "编辑",
+    en: "Edit"
+  })
+  let viewTitle = useTrans({
+    zh: "查看",
+    en: "View"
+  })
+  let title = readOnly ? viewTitle : editTitle
+  return (
+    <>
+      <Disclosure width="fit-content" {...dialog}>
+        {title}
+      </Disclosure>
+      {dialog.visible && (
+        <HtmlEditorDialog
+          brandId={brandId}
+          name={name}
+          readOnly={readOnly}
+          dialog={dialog}
+          title={title}
+        />
+      )}
+    </>
+  )
 }
 
 const HtmlEditorDialog = ({
-    brandId,
-    name,
-    readOnly,
-    dialog,
-    title,
-    ...props
+  brandId,
+  name,
+  readOnly,
+  dialog,
+  title,
+  ...props
 }) => {
-    let { visible } = props
-    return (
-        <Backdrop
-            {...dialog}
-            css={css`
-                .tox-fullscreen & {
-                    top: 0;
-                    left: 0;
-                    transform: none;
-                }
-            `}
-        >
-            <Dialog.Modal
-                {...dialog}
-                hideBackdrop
-                hideOnClickOutside={false}
-                showCloseButton
-                title={title}
-                width="70vw"
-                maxWidth="80vw"
-                css={css`
-                    & .bb-DialogContent {
-                        max-height: 80vh;
-                    }
-                    .tox-fullscreen & {
-                        top: 0;
-                        left: 0;
-                        transform: none;
-                    }
-                `}
-            >
-                <HtmlEditor
-                    brandId={brandId}
-                    name={name}
-                    imagesUploadUrl={toFileUploadPath("promotion")}
-                    readOnly={readOnly}
-                    height="480"
-                    active={visible}
-                    showLocalizationAddonAfter
-                />
-            </Dialog.Modal>
-        </Backdrop>
-    )
+  let { visible } = props
+  return (
+    <Backdrop
+      {...dialog}
+      css={css`
+        .tox-fullscreen & {
+          top: 0;
+          left: 0;
+          transform: none;
+        }
+      `}
+    >
+      <Dialog.Modal
+        {...dialog}
+        hideBackdrop
+        hideOnClickOutside={false}
+        showCloseButton
+        title={title}
+        width="70vw"
+        maxWidth="80vw"
+        css={css`
+          & .bb-DialogContent {
+            max-height: 80vh;
+          }
+          .tox-fullscreen & {
+            top: 0;
+            left: 0;
+            transform: none;
+          }
+        `}
+      >
+        <HtmlEditor
+          brandId={brandId}
+          name={name}
+          imagesUploadUrl={toFileUploadPath("promotion")}
+          readOnly={readOnly}
+          height="480"
+          active={visible}
+          showLocalizationAddonAfter
+        />
+      </Dialog.Modal>
+    </Backdrop>
+  )
 }

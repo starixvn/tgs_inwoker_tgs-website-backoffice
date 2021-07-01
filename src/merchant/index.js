@@ -4,14 +4,16 @@ import { Code, Menu, DefaultPaths } from "./menu"
 import { Switch } from "../content"
 import { Code as ResellerCode, Content as ResellerContent } from "./resellers"
 import { Code as LicenseeCode, Content as LicenseeContent } from "./licensees"
-import { Code as BrandCode, Content as BrandContent } from "./brands"
+import { Code as BrandCode } from "./brands/menu"
+import { Code as PlatformCode, Content as PlatformContent } from "./platforms"
 
 export { Code }
 
 const pairs = () => [
   [ResellerCode, ResellerContent],
   [LicenseeCode, LicenseeContent],
-  [BrandCode, BrandContent]
+  [BrandCode, PlatformContent] /* TODO: rm */,
+  [PlatformCode, PlatformContent]
 ]
 
 export const Content = ({ codes, path = DefaultPaths, ...props }) => (

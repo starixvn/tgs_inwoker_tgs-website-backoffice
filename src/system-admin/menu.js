@@ -2,28 +2,28 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Menu as _Menu, findlLabel } from "../menu"
 import {
-    Code as GameProviderCode,
-    codeLabelPair as gameProviderPair
+  Code as GameProviderCode,
+  codeLabelPair as gameProviderPair
 } from "./game-provider/menu"
 import {
-    Code as BrandPaymentsCode,
-    codeLabelPair as brandPaymentsPair
+  Code as BrandPaymentsCode,
+  codeLabelPair as brandPaymentsPair
 } from "./brand-payment/menu"
 import {
-    Code as LanguageCode,
-    codeLabelPair as languagePair
+  Code as LanguageCode,
+  codeLabelPair as languagePair
 } from "./language/menu"
 import {
-    Code as CurrencyCode,
-    codeLabelPair as currencyPair
+  Code as CurrencyCode,
+  codeLabelPair as currencyPair
 } from "./currency/menu"
 import {
-    Code as BetLimitCode,
-    codeLabelPair as betLimitPair
+  Code as BetLimitCode,
+  codeLabelPair as betLimitPair
 } from "./betlimit/menu"
 import {
-    Code as SettingsCode,
-    codeLabelPair as settingsPair
+  Code as SettingsCode,
+  codeLabelPair as settingsPair
 } from "./setting/menu"
 import { getTrans, useTrans } from "../i18n"
 
@@ -36,95 +36,95 @@ export const DefaultCodePath = [Code]
 export const Name = ({}) => useTrans(nameMessages)
 
 export const nameMessages = {
-    zh: "系统管理",
-    en: "System Admin"
+  zh: "系统管理",
+  en: "System Admin"
 }
 
 export const Menu = ({
-    title = <Name />,
-    url = DefaultUrl,
-    codes,
-    codePaths = DefaultCodePath,
-    ...props
+  title = <Name />,
+  url = DefaultUrl,
+  codes,
+  codePaths = DefaultCodePath,
+  ...props
 }) => (
-    <_Menu
-        title={title}
-        url={url}
-        codes={codes}
-        codePaths={codePaths}
-        itemLabel={labelOf}
-    />
+  <_Menu
+    title={title}
+    url={url}
+    codes={codes}
+    codePaths={codePaths}
+    itemLabel={labelOf}
+  />
 )
 
 const labelOf = ({ locale, code }) => {
-    switch (code) {
-        case GameProviderCode:
-            return getTrans(
-                {
-                    zh: "游戏商管理",
-                    en: "Game Provider Management"
-                },
-                locale
-            )
-        case BrandPaymentsCode:
-            return getTrans(
-                {
-                    zh: "品牌支付管理",
-                    en: "Brand Payment Management"
-                },
-                locale
-            )
-        case LanguageCode:
-            return getTrans(
-                {
-                    zh: "语系",
-                    en: "Language"
-                },
-                locale
-            )
-        case CurrencyCode:
-            return getTrans(
-                {
-                    zh: "币种",
-                    en: "Currency"
-                },
-                locale
-            )
-        case BetLimitCode:
-            return getTrans(
-                {
-                    zh: "限红",
-                    en: "Bet Limit"
-                },
-                locale
-            )
-        case SettingsCode:
-            return getTrans(
-                {
-                    zh: "设定",
-                    en: "Settings"
-                },
-                locale
-            )
-        default:
-            return ""
-    }
+  switch (code) {
+    case GameProviderCode:
+      return getTrans(
+        {
+          zh: "游戏商管理",
+          en: "Game Provider Management"
+        },
+        locale
+      )
+    case BrandPaymentsCode:
+      return getTrans(
+        {
+          zh: "平台支付管理",
+          en: "Platform Payment Management"
+        },
+        locale
+      )
+    case LanguageCode:
+      return getTrans(
+        {
+          zh: "语系",
+          en: "Language"
+        },
+        locale
+      )
+    case CurrencyCode:
+      return getTrans(
+        {
+          zh: "币种",
+          en: "Currency"
+        },
+        locale
+      )
+    case BetLimitCode:
+      return getTrans(
+        {
+          zh: "限红",
+          en: "Bet Limit"
+        },
+        locale
+      )
+    case SettingsCode:
+      return getTrans(
+        {
+          zh: "设定",
+          en: "Settings"
+        },
+        locale
+      )
+    default:
+      return ""
+  }
 }
 
 export const codeLabelPair = [
-    Code,
-    ({ locale, codes }) =>
-        findlLabel({
-            locale,
-            codes,
-            label: labelOf,
-            subLabelPairs: [
-                gameProviderPair,
-                brandPaymentsPair,
-                languagePair,
-                currencyPair,
-                betLimitPair,
-                settingsPair
-            ]
-        })
+  Code,
+  ({ locale, codes }) =>
+    findlLabel({
+      locale,
+      codes,
+      label: labelOf,
+      subLabelPairs: [
+        gameProviderPair,
+        brandPaymentsPair,
+        languagePair,
+        currencyPair,
+        betLimitPair,
+        settingsPair
+      ]
+    })
 ]

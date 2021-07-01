@@ -5,8 +5,8 @@ import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
-    useIsDisplayMenuByRoute,
-    useHasSubMenuByRoute
+  useIsDisplayMenuByRoute,
+  useHasSubMenuByRoute
 } from "../../user/context"
 import { Code, Update } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
@@ -23,12 +23,12 @@ import { PaymentProviderLabel } from "../../payment/PaymentProvider"
 import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import {
-    BrandPaymentStatusSelect,
-    BrandPaymentStatusToggleButton
+  BrandPaymentStatusSelect,
+  BrandPaymentStatusToggleButton
 } from "../../system/brandpayments/BrandPaymentStatus"
 import {
-    AddBrandPaymentDisclosure,
-    EditBrandPaymentDisclosure
+  AddBrandPaymentDisclosure,
+  EditBrandPaymentDisclosure
 } from "./BrandPayment"
 import AlertDialog from "../../dialog/Alert"
 import { PaymentMethodChannelListDisclosure } from "./PaymentMethodChannelList"
@@ -37,162 +37,157 @@ import { SortOrder } from "../../table/order"
 export { Code }
 
 export const Content = () => {
-    let isDisplay = useIsDisplayMenuByRoute()
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute()
+  if (!isDisplay) {
+    return null
+  }
 
-    return <Body />
+  return <Body />
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-    let { state, setState, setPageIndex, setSortOrder } = useTable({
-        brandId: "",
-        transferType: "",
-        keyword: ""
-    })
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId: "",
+    transferType: "",
+    keyword: ""
+  })
 
-    let { isLoading, data, error, mutate, deleteCache } = useBrandPaymentList({
-        ...toApiParams(state),
-        sortby: "createdOn",
-        orderby: SortOrder.Descending
-    })
+  let { isLoading, data, error, mutate, deleteCache } = useBrandPaymentList({
+    ...toApiParams(state),
+    sortby: "createdOn",
+    orderby: SortOrder.Descending
+  })
 
-    let items = data?.items
-    let columns = useColumns({ items, mutate })
+  let items = data?.items
+  let columns = useColumns({ items, mutate })
 
-    return (
-        <PageContent
-            title={<Trans zh="品牌支付管理" en="Brand Payment Management" />}
-            actionBar={
-                <Level>
-                    <SearchBar
-                        search={(newState) => {
-                            setState({ pageIndex: 0, ...newState })
-                            mutate()
-                        }}
-                        isLoading={isLoading}
-                    />
-                    <Set orientation="horizontal">
-                        <PaymentMethodChannelListDisclosure
-                            onSubmitted={mutate}
-                        />
-                        <AddBrandPaymentDisclosure
-                            brandId={state.brandId}
-                            onSubmitted={mutate}
-                        />
-                    </Set>
-                </Level>
-            }
-        >
-            <Table
-                columns={columns}
-                data={items}
-                initialState={state}
-                controlledState={state}
-                pageCount={pageCount(state.pageSize, data?.totalCount)}
-                setPageIndex={setPageIndex}
-                setSortOrder={setSortOrder}
-                isLoading={isLoading}
+  return (
+    <PageContent
+      title={<Trans zh="平台支付管理" en="Platform Payment Management" />}
+      actionBar={
+        <Level>
+          <SearchBar
+            search={(newState) => {
+              setState({ pageIndex: 0, ...newState })
+              mutate()
+            }}
+            isLoading={isLoading}
+          />
+          <Set orientation="horizontal">
+            <PaymentMethodChannelListDisclosure onSubmitted={mutate} />
+            <AddBrandPaymentDisclosure
+              brandId={state.brandId}
+              onSubmitted={mutate}
             />
-            {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-        </PageContent>
-    )
+          </Set>
+        </Level>
+      }
+    >
+      <Table
+        columns={columns}
+        data={items}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+      />
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+    </PageContent>
+  )
 }
 
 const SearchBar = ({ search, isLoading, ...props }) => {
-    let formMethods = useForm()
-    const onSubmit = (data) => search?.(data)
+  let formMethods = useForm()
+  const onSubmit = (data) => search?.(data)
 
-    return (
-        <FormProvider {...formMethods}>
-            <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-                <Set>
-                    <MerchantIdSelect required={false} />
-                    <BrandPaymentTransferTypeSelect name="transferType" />
-                    <BrandPaymentStatusSelect name="paymentStatus" />
-                    <InputField
-                        name="keyword"
-                        showEmptyFieldValueAddonAfter
-                        placeholder="Keyword"
-                    />
-                    <SearchButton isLoading={isLoading} disabled={isLoading} />
-                </Set>
-            </form>
-        </FormProvider>
-    )
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Set>
+          <MerchantIdSelect required={false} />
+          <BrandPaymentTransferTypeSelect name="transferType" />
+          <BrandPaymentStatusSelect name="paymentStatus" />
+          <InputField
+            name="keyword"
+            showEmptyFieldValueAddonAfter
+            placeholder="Keyword"
+          />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
 }
 
 const useColumns = ({ items = [], mutate }) => {
-    let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
-    return useMemo(() => {
-        let columns = [
-            textColumn({
-                accessor: "transferType",
-                Header: <Trans zh="Transfer Type" en="Transfer Type" />,
-                disableSortBy: true,
-                Cell: ({ value }) => value
-            }),
-            textColumn({
-                accessor: "paymentId",
-                Header: <Trans zh="支付厂商" en="Payment Name" />,
-                disableSortBy: true,
-                Cell: ({ value }) => <PaymentProviderLabel value={value} />
-            }),
-            textColumn({
-                accessor: "paymentMethodId",
-                Header: <Trans zh="支付方式" en="Payment Method" />,
-                disableSortBy: true,
-                Cell: ({ value }) => <PaymentMethodLabel value={value} />
-            }),
-            textColumn({
-                accessor: "paymentChannelId",
-                Header: <Trans zh="支付通道" en="Payment Channel" />,
-                disableSortBy: true,
-                Cell: ({ value }) => <PaymentChannelLabel value={value} />
-            }),
-            textColumn({
-                accessor: "channelName",
-                Header: <Trans zh="通道名称" en="Channel Name" />,
-                disableSortBy: true
-            }),
-            textColumn({
-                id: "paymentStatus",
-                accessor: (record) => record,
-                Header: <Trans zh="状态" en="Status" />,
-                disableSortBy: true,
-                Cell: ({ value }) => {
-                    return (
-                        <BrandPaymentStatusToggleButton
-                            record={value}
-                            onSubmitted={mutate}
-                        />
-                    )
-                }
-            })
-        ]
-
-        if (hasUpdateAuth) {
-            columns.push(
-                textColumn({
-                    id: "actions",
-                    accessor: (row) => row,
-                    Header: <Trans zh="Actions" en="Actions" />,
-                    disableSortBy: true,
-                    Cell: ({ value }) => {
-                        return (
-                            <EditBrandPaymentDisclosure
-                                record={value}
-                                onSubmitted={mutate}
-                            />
-                        )
-                    }
-                })
-            )
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        accessor: "transferType",
+        Header: <Trans zh="Transfer Type" en="Transfer Type" />,
+        disableSortBy: true,
+        Cell: ({ value }) => value
+      }),
+      textColumn({
+        accessor: "paymentId",
+        Header: <Trans zh="支付厂商" en="Payment Name" />,
+        disableSortBy: true,
+        Cell: ({ value }) => <PaymentProviderLabel value={value} />
+      }),
+      textColumn({
+        accessor: "paymentMethodId",
+        Header: <Trans zh="支付方式" en="Payment Method" />,
+        disableSortBy: true,
+        Cell: ({ value }) => <PaymentMethodLabel value={value} />
+      }),
+      textColumn({
+        accessor: "paymentChannelId",
+        Header: <Trans zh="支付通道" en="Payment Channel" />,
+        disableSortBy: true,
+        Cell: ({ value }) => <PaymentChannelLabel value={value} />
+      }),
+      textColumn({
+        accessor: "channelName",
+        Header: <Trans zh="通道名称" en="Channel Name" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        id: "paymentStatus",
+        accessor: (record) => record,
+        Header: <Trans zh="状态" en="Status" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          return (
+            <BrandPaymentStatusToggleButton
+              record={value}
+              onSubmitted={mutate}
+            />
+          )
         }
+      })
+    ]
 
-        return columns
-    }, [JSON.stringify(items)])
+    if (hasUpdateAuth) {
+      columns.push(
+        textColumn({
+          id: "actions",
+          accessor: (row) => row,
+          Header: <Trans zh="Actions" en="Actions" />,
+          disableSortBy: true,
+          Cell: ({ value }) => {
+            return (
+              <EditBrandPaymentDisclosure record={value} onSubmitted={mutate} />
+            )
+          }
+        })
+      )
+    }
+
+    return columns
+  }, [JSON.stringify(items)])
 }

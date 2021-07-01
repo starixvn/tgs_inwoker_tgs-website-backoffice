@@ -10,6 +10,14 @@ import {
   codeLabelPair as licenseePair
 } from "./licensees/menu"
 import { Code as BrandCode, codeLabelPair as brandPair } from "./brands/menu"
+import {
+  Code as PlatformCode,
+  codeLabelPair as platformPair
+} from "./platforms/menu"
+import {
+  Code as PlatformCreditCode,
+  codeLabelPair as platformCreditPair
+} from "./platform-credit/menu"
 import { getTrans, useTrans } from "../i18n"
 
 export const nameMessages = {
@@ -60,10 +68,19 @@ const label = ({ locale, code }) => {
         locale
       )
     case BrandCode:
+    case PlatformCode:
       return getTrans(
         {
-          zh: "品牌列表",
-          en: "Brands"
+          zh: "平台列表",
+          en: "Platforms"
+        },
+        locale
+      )
+    case PlatformCreditCode:
+      return getTrans(
+        {
+          zh: "平台额度",
+          en: "Platform Credit"
         },
         locale
       )
@@ -79,6 +96,12 @@ export const codeLabelPair = [
       locale,
       codes,
       label: label,
-      subLabelPairs: [resellerPair, licenseePair, brandPair]
+      subLabelPairs: [
+        resellerPair,
+        licenseePair,
+        brandPair /* TODO: rm */,
+        platformPair,
+        platformCreditPair
+      ]
     })
 ]
