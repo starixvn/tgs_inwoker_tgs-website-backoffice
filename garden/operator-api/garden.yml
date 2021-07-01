@@ -11,6 +11,7 @@ services:
       - file-service
       - promotion-api
     env:
+      ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
       NatsSetting__Urls: "nats://nats:4222"

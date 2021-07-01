@@ -1,7 +1,7 @@
 import React from "react"
 import { Locales, getTrans } from "../../i18n"
 
-export const Code = "platform-credit"
+export const Code = "platformcredit"
 
 export const View = "view"
 

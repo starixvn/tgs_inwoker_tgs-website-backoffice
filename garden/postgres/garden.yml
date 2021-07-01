@@ -4,9 +4,6 @@ name: postgres
 image: postgres:13.2-alpine
 services:
   - name: postgres
-    # ingresses:
-    #   - hostname: postgres.localhost
-    #     port: postgres-port
     env:
       POSTGRES_USER: "tgs"
       POSTGRES_PASSWORD: "1qaz2wsx!@"
