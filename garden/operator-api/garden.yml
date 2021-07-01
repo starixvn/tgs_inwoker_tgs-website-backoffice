@@ -1,0 +1,22 @@
+kind: Module
+type: container
+name: operator-api
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/operator-api:dev-202106291026
+services:
+  - name: operator-api
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - file-service
+      - promotion-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
+      NatsSetting__Urls: "nats://nats:4222"
+      Operator__FileServiceBaseUrl: "http://file-service"
+      Promotion__Url: "http://promotion-api"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

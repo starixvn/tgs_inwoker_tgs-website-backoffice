@@ -1,0 +1,19 @@
+kind: Module
+type: container
+name: postgres
+image: postgres:13.2-alpine
+services:
+  - name: postgres
+    # ingresses:
+    #   - hostname: postgres.localhost
+    #     port: postgres-port
+    env:
+      POSTGRES_USER: "tgs"
+      POSTGRES_PASSWORD: "1qaz2wsx!@"
+      PGDATA: /data/postgres
+    ports:
+      - name: postgres-port
+        containerPort: 5432
+    volumes:
+      - name: data
+        containerPath: /data/postgres

@@ -1,0 +1,13 @@
+---
+kind: Module
+type: container
+name: mongodb
+image: mongo:4.2.0
+services:
+  - name: mongodb
+    env:
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "1qaz2wsx!@"
+    ports:
+      - name: mongodb
+        containerPort: 27017

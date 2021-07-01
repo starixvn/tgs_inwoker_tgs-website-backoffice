@@ -152,8 +152,6 @@ services:
   nats:
     image: nats
     container_name: nats
-    environment:
-      ASPNETCORE_ENVIRONMENT: "Docker"
     expose:
       - "4222"
     ports:

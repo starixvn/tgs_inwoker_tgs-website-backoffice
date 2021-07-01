@@ -1,0 +1,29 @@
+kind: Module
+type: container
+name: backoffice-api
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-api:dev-202107010149
+services:
+  - name: backoffice-api
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - operator-api
+      - file-service
+      - promotion-api
+      - report-api
+      - log-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
+      NatsSetting__Urls: "nats://nats:4222"
+      File__FileServiceBaseUrl: "http://file-service"
+      Promotion__Url: "http://promotion-api"
+    ingresses:
+      - hostname: backoffice.localhost
+        path: /api
+        port: http
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

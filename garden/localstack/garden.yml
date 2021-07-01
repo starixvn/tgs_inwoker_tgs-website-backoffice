@@ -1,0 +1,16 @@
+kind: Module
+type: container
+name: localstack
+image: localstack/localstack-full
+services:
+  - name: localstack
+    env:
+      SERVICES: "s3"
+      DATA_DIR: "/tmp/localstack/data"
+    ports:
+      - name: localstack
+        containerPort: 4566
+        servicePort: 4566
+    volumes:
+      - name: data
+        containerPath: /tmp/localstack

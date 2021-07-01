@@ -1,0 +1,17 @@
+kind: Module
+type: container
+name: log-api
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/log-api:prod
+services:
+  - name: log-api
+    dependencies:
+      - postgres
+      - nats
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
+      NatsSetting__Urls: "nats://nats:4222"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

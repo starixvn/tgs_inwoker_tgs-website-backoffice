@@ -1,0 +1,10 @@
+kind: Module
+type: container
+name: nats
+image: nats
+services:
+  - name: nats
+    ports:
+      - name: nats
+        containerPort: 4222
+        servicePort: 4222

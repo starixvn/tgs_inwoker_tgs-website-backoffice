@@ -1,0 +1,9 @@
+kind: Module
+type: container
+name: redis
+image: redis:alpine
+services:
+  - name: redis
+    ports:
+      - name: redis
+        containerPort: 6379
