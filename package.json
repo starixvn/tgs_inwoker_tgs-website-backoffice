@@ -17,7 +17,8 @@
     "prepare": "husky install"
   },
   "hooks": {
-    "pre-commit": "npm-run-all test"
+    "pre-commit": "npm-run-all test",
+    "pre-push": "npm-run-all test"
   },
   "dependencies": {
     "chai": "4.3.4",
