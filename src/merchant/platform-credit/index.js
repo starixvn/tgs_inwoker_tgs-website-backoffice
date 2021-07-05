@@ -7,29 +7,21 @@ import {
   useHasSubMenuByRoute
 } from "../../user/context"
 import { Code, Update as UpdateMenu } from "./menu"
-import { Trans, useTrans } from "../../i18n"
+import { Trans, useTrans, FormattedNumberDecimal } from "../../i18n"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { usePlatformCreditList } from "./client"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { AddButton, EditButton, ViewButton } from "./edit"
 import { SearchButton } from "../../button/SearchButton"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import equals from "fast-deep-equal"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
+import { EditPlatformCreditDialogDisclosure } from "./PlatformCreditDialog"
+import { PlatformCreditPaymentDialogDisclosure } from "./PlatformCreditPaymentDialog"
 
 export { Code }
-
-export const Brand = "Brand"
-
-export const BrandTrans = {
-  zh: "平台",
-  en: "Platforms"
-}
-
-export const useBrandLabel = () => useTrans(BrandTrans)
 
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
@@ -75,6 +67,7 @@ const Body = () => {
       }
     >
       <Table
+        id="platform-credit"
         columns={columns}
         data={data?.items}
         initialState={state}
@@ -150,7 +143,8 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         accessor: "code",
         Header: <Trans zh="平台代码" en="Code" />,
-        disableSortBy: true
+        disableSortBy: true,
+        dataColumn: "code"
       }),
       textColumn({
         accessor: "credit",
@@ -174,7 +168,18 @@ const useColumns = ({ items = [], mutate }) => {
           Header: <Trans zh="操作" en="Actions" />,
           accessor: (row) => row,
           Cell: ({ value }) => {
-            return <Set orientation="horizontal" alignX="center"></Set>
+            return (
+              <Set orientation="horizontal" alignX="center">
+                <EditPlatformCreditDialogDisclosure
+                  record={value}
+                  onSubmitted={mutate}
+                />
+                <PlatformCreditPaymentDialogDisclosure
+                  record={value}
+                  onSubmitted={mutate}
+                />
+              </Set>
+            )
           }
         })
       )

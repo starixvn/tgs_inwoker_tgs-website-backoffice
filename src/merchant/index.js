@@ -6,6 +6,10 @@ import { Code as ResellerCode, Content as ResellerContent } from "./resellers"
 import { Code as LicenseeCode, Content as LicenseeContent } from "./licensees"
 import { Code as BrandCode } from "./brands/menu"
 import { Code as PlatformCode, Content as PlatformContent } from "./platforms"
+import {
+  Code as PlatformCreditCode,
+  Content as PlatformCreditContent
+} from "./platform-credit"
 
 export { Code }
 
@@ -13,7 +17,8 @@ const pairs = () => [
   [ResellerCode, ResellerContent],
   [LicenseeCode, LicenseeContent],
   [BrandCode, PlatformContent] /* TODO: rm */,
-  [PlatformCode, PlatformContent]
+  [PlatformCode, PlatformContent],
+  [PlatformCreditCode, PlatformCreditContent]
 ]
 
 export const Content = ({ codes, path = DefaultPaths, ...props }) => (

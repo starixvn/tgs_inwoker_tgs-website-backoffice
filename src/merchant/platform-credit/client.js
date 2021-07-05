@@ -16,7 +16,7 @@ export const usePlatformCreditList = (searchParams) =>
 
 export const usePlatformCredit = (id) => useBrand(id)
 
-export const useEditPlatformCredit = (id, data) => {
+export const useUpdatePlatformCredit = (id, data) => {
   let url = id ? `${API}/${id}/credit` : ""
   return usePutData(url, data)
 }
