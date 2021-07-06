@@ -84,6 +84,7 @@ export const toApiParams = (state) => {
 export const Table = ({
   columns,
   data = [],
+  getRowId,
   initialState,
   controlledState,
   useSortBy = ReactTable.useSortBy,
@@ -107,6 +108,7 @@ export const Table = ({
     {
       columns,
       data,
+      getRowId,
       initialState,
       useControlledState: (state) => {
         let pageIndex = controlledState?.pageIndex ?? state.pageIndex

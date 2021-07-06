@@ -35,15 +35,22 @@ describe("Admin user", () => {
     expect(code).to.equal("GPI")
   })
 
+  /* TODO
+  it("should search platform credit by licensee name", async () => {
+    await gotoPlatformCreditPage()
+
+    //TODO: search by licensee name
+  })
+  */
+
   it("should seach platform credit by keyword", async () => {
     await gotoPlatformCreditPage()
 
-    await Promise.all([
-      await page.fill(`input[name="keyword"]`, "gpi"),
-      await page.click(`button[type="submit"]`),
-      page.waitForLoadState("networkidle"),
-      page.waitForSelector("#platform-credit tbody")
-    ])
+    await searchByInputNameValue({
+      name: "keyword",
+      value: "gpi",
+      page
+    })
 
     let code = await page.evaluate(() =>
       Array.from(window.document.querySelectorAll(`[data-column="code"]`))
@@ -54,10 +61,11 @@ describe("Admin user", () => {
 
     await Promise.all([
       await page.click(`#clear-keyword-button`),
-      await page.fill(`input[name="keyword"]`, "something something not exist"),
-      await page.click(`button[type="submit"]`),
-      page.waitForLoadState("networkidle"),
-      page.waitForSelector("#platform-credit tbody")
+      await searchByInputNameValue({
+        name: "keyword",
+        value: "something something not exist",
+        page
+      })
     ])
 
     let rows = await page.$$(`[data-column="code"]`)
@@ -73,4 +81,12 @@ describe("Admin user", () => {
       page.waitForSelector("#platform-credit tbody")
     ])
   }
+
+  const searchByInputNameValue = async ({ name = "", value = "", page }) =>
+    await Promise.all([
+      await page.fill(`input[name="${name}"]`, value),
+      await page.click(`button[type="submit"]`),
+      page.waitForLoadState("networkidle"),
+      page.waitForSelector("#platform-credit tbody")
+    ])
 })

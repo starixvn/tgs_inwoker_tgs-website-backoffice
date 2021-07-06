@@ -36,7 +36,7 @@ export const CodeContentPair = [Code, Content]
 
 const Body = () => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    licensee: "",
+    licenseeName: "",
     keyword: ""
   })
   let { pageIndex, pageSize, keyword } = state
@@ -70,6 +70,9 @@ const Body = () => {
         id="platform-credit"
         columns={columns}
         data={data?.items}
+        getRowId={(row, index) => {
+          return row.code
+        }}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
@@ -85,7 +88,7 @@ const Body = () => {
 const SearchForm = ({ search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {
-      licensee: "",
+      licenseeName: "",
       keyword: ""
     }
   })
@@ -107,7 +110,7 @@ const SearchForm = ({ search, isLoading, ...props }) => {
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <InputField
-            name="licensee"
+            name="licenseeName"
             showEmptyFieldValueAddonAfter
             placeholder={licenseePlaceholder}
           />
@@ -150,13 +153,15 @@ const useColumns = ({ items = [], mutate }) => {
         accessor: "credit",
         Header: <Trans zh="平台额度" en="Credit" />,
         disableSortBy: true,
-        Cell: ({ value }) => <FormattedNumberDecimal value={value} />
+        Cell: ({ value }) => <FormattedNumberDecimal value={value} />,
+        dataColumn: "credit"
       }),
       textColumn({
         accessor: "balance",
         Header: <Trans zh="额度余额" en="Balance" />,
         disableSortBy: true,
-        Cell: ({ value }) => <FormattedNumberDecimal value={value} />
+        Cell: ({ value }) => <FormattedNumberDecimal value={value} />,
+        dataColumn: "balance"
       })
     ]
 
