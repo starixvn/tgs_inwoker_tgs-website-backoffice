@@ -250,14 +250,20 @@ const Body = ({ table }) => {
     <_Table.Body {...getTableBodyProps()}>
       {rows.map((row, i) => {
         prepareRow(row)
+
         return (
-          <_Table.Row {...row.getRowProps()}>
+          <_Table.Row
+            data-row-id={row.id}
+            data-row-index={i}
+            {...row.getRowProps()}
+          >
             {row.cells.map((cell) => {
               let props = cell.getCellProps({
                 ...cell?.column?.cell
               })
+              let columnId = cell?.column?.id || cell?.column?.accessor
               return (
-                <_Table.Cell {...props} data-column={cell?.column?.dataColumn}>
+                <_Table.Cell {...props} data-column-id={columnId}>
                   {cell.render("Cell")}
                 </_Table.Cell>
               )

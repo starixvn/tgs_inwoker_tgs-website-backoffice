@@ -146,22 +146,19 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         accessor: "code",
         Header: <Trans zh="平台代码" en="Code" />,
-        disableSortBy: true,
-        dataColumn: "code"
+        disableSortBy: true
       }),
       textColumn({
         accessor: "credit",
         Header: <Trans zh="平台额度" en="Credit" />,
         disableSortBy: true,
-        Cell: ({ value }) => <FormattedNumberDecimal value={value} />,
-        dataColumn: "credit"
+        Cell: ({ value }) => <FormattedNumberDecimal value={value} />
       }),
       textColumn({
         accessor: "balance",
         Header: <Trans zh="额度余额" en="Balance" />,
         disableSortBy: true,
-        Cell: ({ value }) => <FormattedNumberDecimal value={value} />,
-        dataColumn: "balance"
+        Cell: ({ value }) => <FormattedNumberDecimal value={value} />
       })
     ]
 

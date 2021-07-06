@@ -28,7 +28,7 @@ describe("Admin user", () => {
     await gotoPlatformCreditPage()
 
     let code = await page.evaluate(() =>
-      Array.from(window.document.querySelectorAll(`[data-column="code"]`))
+      Array.from(window.document.querySelectorAll(`[data-column-id="code"]`))
         .map(({ textContent }) => textContent)
         .find((code) => code === "GPI")
     )
@@ -53,7 +53,7 @@ describe("Admin user", () => {
     })
 
     let code = await page.evaluate(() =>
-      Array.from(window.document.querySelectorAll(`[data-column="code"]`))
+      Array.from(window.document.querySelectorAll(`[data-column-id="code"]`))
         .map(({ textContent }) => textContent)
         .find((code) => code === "GPI")
     )
@@ -68,7 +68,7 @@ describe("Admin user", () => {
       })
     ])
 
-    let rows = await page.$$(`[data-column="code"]`)
+    let rows = await page.$$(`[data-column-id="code"]`)
     expect(rows.length).to.equal(0)
   })
 
