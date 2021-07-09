@@ -24,7 +24,7 @@ describe("Admin user", () => {
     }
   })
 
-  it("should show platform credit list", async () => {
+  it("should show platform credit list and able to search by keyword", async () => {
     await gotoPlatformCreditPage()
 
     let code = await page.evaluate(() =>
@@ -33,18 +33,6 @@ describe("Admin user", () => {
         .find((code) => code === "GPI")
     )
     expect(code).to.equal("GPI")
-  })
-
-  /* TODO
-  it("should search platform credit by licensee name", async () => {
-    await gotoPlatformCreditPage()
-
-    //TODO: search by licensee name
-  })
-  */
-
-  it("should seach platform credit by keyword", async () => {
-    await gotoPlatformCreditPage()
 
     await searchByInputNameValue({
       name: "keyword",
@@ -52,7 +40,7 @@ describe("Admin user", () => {
       page
     })
 
-    let code = await page.evaluate(() =>
+    code = await page.evaluate(() =>
       Array.from(window.document.querySelectorAll(`[data-column-id="code"]`))
         .map(({ textContent }) => textContent)
         .find((code) => code === "GPI")

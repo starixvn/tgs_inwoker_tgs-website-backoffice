@@ -1,6 +1,6 @@
 {
   "name": "backoffice-site",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "registry": "registry.gitlab.com/rayprosoft/turnkey-gaming-system",
   "scripts": {
     "start": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack dev --reload",
@@ -24,8 +24,10 @@
     "chai": "4.3.4",
     "chromedriver": "^91.0.1",
     "esm": "3.2.25",
+    "lodash": "^4.17.21",
     "mocha": "8.4.0",
     "playwright": "^1.12.3",
+    "ramda": "^0.27.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   },

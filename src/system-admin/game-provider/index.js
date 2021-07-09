@@ -72,7 +72,11 @@ const Body = () => {
       }
     >
       <Table
+        id="game-provider"
         columns={columns}
+        getRowId={(row, index) => {
+          return row.code
+        }}
         data={data?.items}
         initialState={state}
         controlledState={state}
@@ -193,6 +197,7 @@ const useColumns = ({ items = [], mutate }) => {
                 />
                 <GameProviderConfigListDisclosure gameProviderId={value?.id} />
                 <GameProviderGameListDisclosure
+                  id={`${value?.code}-game-list-dialog-disclosure`}
                   gameProviderId={value?.id}
                   gameProviderCode={value?.code}
                 />

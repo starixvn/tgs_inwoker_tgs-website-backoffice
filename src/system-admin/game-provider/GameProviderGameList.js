@@ -56,7 +56,8 @@ import { useDropzone } from "react-dropzone"
 
 export const GameProviderGameListDisclosure = ({
   gameProviderId,
-  gameProviderCode
+  gameProviderCode,
+  ...props
 }) => {
   let dialog = useModalState()
 
@@ -67,7 +68,7 @@ export const GameProviderGameListDisclosure = ({
 
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure {...dialog} {...props}>
         <Trans zh="游戏列表" en="Game List" />
       </Disclosure>
       {dialog.visible && (
@@ -111,6 +112,7 @@ const GameListDialog = ({
 
   return (
     <Dialog.Modal
+      id="game-list-dialog"
       title={title}
       {...dialog}
       footer={<CloseButtonFooter alignX="right" dialog={dialog} />}
@@ -137,6 +139,7 @@ const GameListDialog = ({
           mutate={mutate}
         />
         <Table
+          id="game-list"
           columns={columns}
           data={items}
           initialState={state}
@@ -269,16 +272,21 @@ const LocalizationMenuButton = ({ gameProviderCode }) => {
   return (
     <>
       <DropdownMenu
+        id="game-localization-menu"
         menu={
           <>
             <DropdownMenu.Item
+              id="export-game-localization"
               use="a"
               href={`/api/game/localization/export?gameProviderCode=${gameProviderCode}`}
               download={`${gameProviderCode}.xlsx`}
             >
               <Trans zh="汇出" en="Export" />
             </DropdownMenu.Item>
-            <DropdownMenu.Item onClick={uploadGameLocalizationListDialog.show}>
+            <DropdownMenu.Item
+              id="upload-game-localization-dialog-disclosure"
+              onClick={uploadGameLocalizationListDialog.show}
+            >
               <Trans zh="上传" en="Upload" />
             </DropdownMenu.Item>
           </>
@@ -344,6 +352,7 @@ const UploadGameLocalizationListDialog = ({ dialog }) => {
   return (
     <Backdrop {...dialog}>
       <Dialog.Modal
+        id="upload-game-localization-dialog"
         {...dialog}
         title={title}
         showCloseButton
@@ -353,6 +362,7 @@ const UploadGameLocalizationListDialog = ({ dialog }) => {
         {notSelectFile && (
           <Card
             {...getRootProps({
+              id: "file-upload-dropzone",
               refKey: "elementRef "
             })}
           >
