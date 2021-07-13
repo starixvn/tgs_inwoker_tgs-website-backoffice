@@ -159,11 +159,11 @@ const LocalizationMenuButton = ({ gameProviderCode }) => {
   return (
     <>
       <DropdownMenu
-        id="game-localization-menu"
+        id="game-provider-localization-menu"
         menu={
           <>
             <DropdownMenu.Item
-              id="export-game-localization"
+              id="export-game-provider-localization"
               use="a"
               href={`/api/gameprovider/localization/export`}
               download={`game-provider-localization.xlsx`}
