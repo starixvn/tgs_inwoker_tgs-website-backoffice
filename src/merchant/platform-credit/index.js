@@ -20,6 +20,7 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { EditPlatformCreditDialogDisclosure } from "./PlatformCreditDialog"
 import { PlatformCreditPaymentDialogDisclosure } from "./PlatformCreditPaymentDialog"
+import { PlatformCreditPaymentListDialogDisclosure } from "./PlatformCreditPaymentListDialog"
 
 export { Code }
 
@@ -43,7 +44,7 @@ const Body = () => {
 
   let { isLoading, data, error, mutate, deleteCache } = usePlatformCreditList({
     ...toApiParams(state),
-    sortby: "code"
+    sortby: "brandCode"
   })
 
   let columns = useColumns({ items: data?.items, mutate })
@@ -70,9 +71,6 @@ const Body = () => {
         id="platform-credit"
         columns={columns}
         data={data?.items}
-        getRowId={(row, index) => {
-          return row.code
-        }}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
@@ -139,12 +137,12 @@ const useColumns = ({ items = [], mutate }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "name",
+        accessor: "brandName",
         Header: <Trans zh="平台名称" en="Name" />,
         disableSortBy: true
       }),
       textColumn({
-        accessor: "code",
+        accessor: "brandCode",
         Header: <Trans zh="平台代码" en="Code" />,
         disableSortBy: true
       }),
@@ -173,12 +171,18 @@ const useColumns = ({ items = [], mutate }) => {
             return (
               <Set orientation="horizontal" alignX="center">
                 <EditPlatformCreditDialogDisclosure
+                  id={`${value?.brandCode}-platform-credit-dialog-disclosure`}
                   record={value}
                   onSubmitted={mutate}
                 />
                 <PlatformCreditPaymentDialogDisclosure
+                  id={`${value?.brandCode}-platform-credit-payment-dialog-disclosure`}
                   record={value}
                   onSubmitted={mutate}
+                />
+                <PlatformCreditPaymentListDialogDisclosure
+                  id={`${value?.brandCode}-platform-credit-payment-list-dialog-disclosure`}
+                  record={value}
                 />
               </Set>
             )

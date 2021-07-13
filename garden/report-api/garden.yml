@@ -6,6 +6,10 @@ services:
   - name: report-api
     dependencies:
       - postgres
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
+      NatsSetting__Urls: "nats://nats:4222"
     ports:
       - name: http
         containerPort: 80

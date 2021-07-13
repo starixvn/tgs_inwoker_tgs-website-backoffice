@@ -74,9 +74,6 @@ const Body = () => {
       <Table
         id="game-provider"
         columns={columns}
-        getRowId={(row, index) => {
-          return row.code
-        }}
         data={data?.items}
         initialState={state}
         controlledState={state}

@@ -16,7 +16,7 @@ import { useIsDisplayMenuByRoute, useUserLicenseeId } from "../../user/context"
 import { Disclosure, EditDisclosure } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { Update as UpdateMenu } from "./menu"
-import { usePayPlatformCredit } from "./client"
+import { usePlatformCreditPayment } from "./client"
 import clone from "clone-deep"
 import { useTrans, Trans, FormattedNumber } from "../../i18n"
 import { FieldValues } from "../../layout/Grid"
@@ -39,7 +39,7 @@ export const PlatformCreditPaymentDialogDisclosure = ({
 
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure {...dialog} {...props}>
         <Trans zh="付款" en="Payment" />
       </Disclosure>
       {dialog.visible && (
@@ -57,10 +57,10 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
-    usePayPlatformCredit(formData)
+    usePlatformCreditPayment(record?.id, formData)
 
-  const onSubmit = (data) => {
-    setSubmit(data)
+  const onSubmit = ({ amount = 0 } = {}) => {
+    setSubmit(amount)
   }
 
   const reset = () => {
@@ -71,6 +71,7 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="platform-credit-payment-dialog"
       defaultValues={clone(record)}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -90,8 +91,8 @@ const FormBody = () => {
   let { getValues } = useFormContext()
   let [licenseeName, brandName, brandCode, credit, balance] = getValues([
     "licenseeName",
-    "name",
-    "code",
+    "brandName",
+    "brandCode",
     "credit",
     "balance"
   ])

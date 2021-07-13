@@ -9,24 +9,32 @@ import {
 } from "../../client"
 import { useBrandList, useBrand } from "../platforms/client"
 
-const API = "/api/brand"
+const API = "/api/PlatformCredit"
 
-export const usePlatformCreditList = (searchParams) =>
-  useBrandList(searchParams)
-
-export const usePlatformCredit = (id) => useBrand(id)
-
-export const useUpdatePlatformCredit = (id, data) => {
-  let url = id ? `${API}/${id}/credit` : ""
-  return usePutData(url, data)
+export const usePlatformCreditList = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, API) : ""
+  return useGet(url)
 }
 
-export const usePayPlatformCredit = (id, formData) => {
-  let url = id && formData ? `${API}/${id}/pay` : ""
-  return usePostData(url, formData)
+export const usePlatformCredit = (id) => {
+  let url = id ? `${API}/${id}` : ""
+  return useGet(url)
 }
 
-export const usePlatformCreditHistoryList = (searchParams) => {
-  let url = searchParams ? urlWith(searchParams, `${API}/history`) : ""
+export const useUpdatePlatformCredit = (id, amount) => {
+  let url = id && amount ? `${API}/${id}/${amount}` : ""
+  return usePutData(url, amount)
+}
+
+export const usePlatformCreditPayment = (id, amount) => {
+  let url = id && amount ? `${API}/${id}/pay/${amount}` : ""
+  return usePutData(url, amount)
+}
+
+export const usePlatformCreditPaymentList = (id, searchParams) => {
+  let url =
+    id && searchParams
+      ? urlWith(searchParams, `${API}/${id}/paymentRecords`)
+      : ""
   return useGet(url)
 }

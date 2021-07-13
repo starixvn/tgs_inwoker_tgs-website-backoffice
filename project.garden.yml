@@ -14,8 +14,8 @@ exclude:
   - garden
 services:
   - name: backoffice-site
-    # dependencies:
-    #   - backoffice-api
+    dependencies:
+      - backoffice-api
     ingresses:
       - hostname: backoffice.localhost
         path: /

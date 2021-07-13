@@ -39,7 +39,7 @@ export const EditPlatformCreditDialogDisclosure = ({
 
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <EditDialog record={record} dialog={dialog} onSubmitted={onSubmitted} />
       )}
@@ -55,10 +55,10 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
-    useUpdatePlatformCredit(formData)
+    useUpdatePlatformCredit(record?.id, formData)
 
-  const onSubmit = (data) => {
-    setSubmit(data)
+  const onSubmit = ({ credit } = {}) => {
+    setSubmit(credit)
   }
 
   const reset = () => {
@@ -69,6 +69,7 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="platform-credit-dialog"
       defaultValues={clone(record)}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -88,8 +89,8 @@ const FormBody = () => {
   let { getValues } = useFormContext()
   let [licenseeName, brandName, brandCode] = getValues([
     "licenseeName",
-    "name",
-    "code"
+    "brandName",
+    "brandCode"
   ])
   return (
     <FieldValues marginLeft="1rem">

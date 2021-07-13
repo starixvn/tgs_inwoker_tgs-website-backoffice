@@ -11,22 +11,30 @@ let page
 describe("Admin user", () => {
   before(async () => {
     browser = await chromium.launch({ headless: headless() })
-    context = await browser.newContext({ storageState: StorageState.Admin })
+    context = await browser.newContext({
+      acceptDownloads: true,
+      storageState: StorageState.Admin
+    })
+  })
+
+  beforeEach(async () => {
     page = await context.newPage()
 
     await page.goto(host(), {
       waitUntil: "networkidle0"
     })
+    await gotoSystemAdminGameProviderPage()
+  })
+
+  afterEach(async () => {
+    await page.close()
   })
 
   after(async () => {
-    if (!page.isClosed()) {
-      await browser.close()
-    }
+    await browser.close()
   })
 
   it("should list system game providers and able to search by code or name", async () => {
-    await gotoSystemAdminGameProviderPage()
     let gameProviderCodes = await getGameProviderCodes()
     expect(gameProviderCodes).to.not.be.empty
 
@@ -37,7 +45,7 @@ describe("Admin user", () => {
       ({ textContent }) => textContent
     )
 
-    await searchByInputNameValue({
+    await searchGameProviderByInputNameValue({
       name: "code",
       value: gameProviderCode,
       page
@@ -51,7 +59,7 @@ describe("Admin user", () => {
 
     await Promise.all([
       await page.click("#clear-code-button"),
-      await searchByInputNameValue({
+      await searchGameProviderByInputNameValue({
         name: "name",
         value: gameProviderName,
         page
@@ -66,7 +74,6 @@ describe("Admin user", () => {
   })
 
   it("should list system game provider games and able to search by code", async () => {
-    await gotoSystemAdminGameProviderPage()
     let gameProviderCodes = await getGameProviderCodes()
 
     let index = random(gameProviderCodes.length - 1)
@@ -76,12 +83,57 @@ describe("Admin user", () => {
     let gameCodes = await getGameListCodes()
     expect(gameCodes).to.be.not.empty
 
-    //TODO: test search by game code
     let gameCode = gameCodes[index]
+    await searchGameByInputNameValue({
+      name: "code",
+      value: gameCode,
+      page
+    })
+
+    let code = await page.$eval(
+      `#game-list [data-row-id="0"] [data-column-id="code"]`,
+      ({ textContent }) => textContent
+    )
+    expect(code).to.equal(gameCode)
   })
 
-  //TODO
-  it("shold able to download and update game provider game localization list", async () => {})
+  it("shold able to download and update game provider game localization list", async () => {
+    await showRandomGameProviderGameList()
+
+    let [download] = await Promise.all([
+      page.waitForEvent("download"),
+      page.click(`#game-localization-menu`),
+      page.click(`#export-game-localization`)
+    ])
+
+    let path = await download.path()
+    expect(path).to.be.not.empty
+
+    /* TODO: playwright's issue?
+    await Promise.all([
+      page.click(`#game-localization-menu`),
+      page.click("#upload-game-localization-dialog-disclosure"),
+      page.waitForEvent("filechooser", async (fileChooser) => {
+        await fileChooser.setFiles(path)
+      }),
+      page.click(
+        `#upload-game-localization-dialog #file-upload-dropzone .bb-Box`
+      )
+    ])
+
+    let [uplaodResponse] = await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().endsWith("/api/Game/localization/upload") &&
+          response.status() === 200
+        )
+      })
+    ])
+
+    let result = await uplaodResponse.json()
+    expect(result.valid).to.equal(true)
+     */
+  })
 
   const gotoSystemAdminGameProviderPage = async () => {
     let SideMenuSelector = `#sidebar a[href="/systemadmin/gameproviders"]`
@@ -109,6 +161,15 @@ describe("Admin user", () => {
       ).map(({ textContent }) => textContent)
     )
 
+  const showRandomGameProviderGameList = async () => {
+    let gameProviderCodes = await getGameProviderCodes()
+
+    let index = random(gameProviderCodes.length - 1)
+    let gameProviderCode = gameProviderCodes[index]
+
+    await showGameListDialog(gameProviderCode)
+  }
+
   const showGameListDialog = async (gameProviderCode) =>
     await Promise.all([
       await page.click(`#${gameProviderCode}-game-list-dialog-disclosure`),
@@ -116,7 +177,19 @@ describe("Admin user", () => {
       page.waitForSelector(`#game-list-dialog #game-list tbody`)
     ])
 
-  const searchByInputNameValue = async ({ name = "", value = "", page }) =>
+  const searchGameByInputNameValue = async ({ name = "", value = "", page }) =>
+    await Promise.all([
+      await page.fill(`#game-list-dialog input[name="${name}"]`, value),
+      await page.click(`#game-list-dialog button[type="submit"]`),
+      page.waitForLoadState("networkidle"),
+      page.waitForSelector("#game-list tbody")
+    ])
+
+  const searchGameProviderByInputNameValue = async ({
+    name = "",
+    value = "",
+    page
+  }) =>
     await Promise.all([
       await page.fill(`input[name="${name}"]`, value),
       await page.click(`button[type="submit"]`),

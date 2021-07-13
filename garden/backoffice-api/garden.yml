@@ -19,6 +19,7 @@ services:
       NatsSetting__Urls: "nats://nats:4222"
       File__FileServiceBaseUrl: "http://file-service"
       Promotion__Url: "http://promotion-api"
+      Report__Url: "http://report-api"
     ingresses:
       - hostname: backoffice.localhost
         path: /api
