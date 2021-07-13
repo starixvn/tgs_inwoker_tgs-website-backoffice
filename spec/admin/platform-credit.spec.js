@@ -124,7 +124,7 @@ describe("Admin user", () => {
 
     await Promise.all([
       page.waitForLoadState("networkidle"),
-      await page.waitForTimeout(1000) /* wait for render update*/
+      page.waitForTimeout(1000) /* FIXME: wait for render update*/
     ])
 
     let creditString = await page.$eval(

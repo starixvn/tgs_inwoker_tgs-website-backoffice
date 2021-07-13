@@ -90,6 +90,11 @@ describe("Admin user", () => {
       page
     })
 
+    await Promise.all([
+      page.waitForLoadState("networkidle"),
+      page.waitForTimeout(1000) /* FIXME: wait for render update*/
+    ])
+
     let code = await page.$eval(
       `#game-list [data-row-id="0"] [data-column-id="code"]`,
       ({ textContent }) => textContent
@@ -179,10 +184,8 @@ describe("Admin user", () => {
 
   const searchGameByInputNameValue = async ({ name = "", value = "", page }) =>
     await Promise.all([
-      await page.fill(`#game-list-dialog input[name="${name}"]`, value),
-      await page.click(`#game-list-dialog button[type="submit"]`),
-      page.waitForLoadState("networkidle"),
-      page.waitForSelector("#game-list tbody")
+      page.fill(`#game-list-dialog input[name="${name}"]`, value),
+      page.click(`#game-list-dialog button[type="submit"]`)
     ])
 
   const searchGameProviderByInputNameValue = async ({
