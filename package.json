@@ -1,19 +1,23 @@
 {
   "name": "backoffice-site",
   "version": "1.0.9",
-  "registry": "registry.gitlab.com/rayprosoft/turnkey-gaming-system",
+  "config": {
+    "container": {
+      "registry": "registry.gitlab.com/rayprosoft/turnkey-gaming-system"
+    }
+  },
   "scripts": {
     "start": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack dev --reload",
     "build": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack build",
-    "build:docker": "cross-var docker build . -t $npm_package_registry/$npm_package_name:$npm_package_version",
-    "push:docker": "cross-var docker push $npm_package_registry/$npm_package_name:$npm_package_version",
-    "deploy:k8s": "kubectl set image deployment/$npm_package_name $npm_package_name=$npm_package_registry/$npm_package_name:$npm_package_version --record -n=$ENV",
+    "build:docker": "cross-var docker build . -t $npm_package_config_container_registry/$npm_package_name:$npm_package_version",
+    "push:docker": "cross-var docker push $npm_package_config_container_registry/$npm_package_name:$npm_package_version",
+    "deploy:k8s": "kubectl set image deployment/$npm_package_name $npm_package_name=$npm_package_config_container_registry/$npm_package_name:$npm_package_version --record -n=$ENV",
     "test": "npx mocha -r esm spec/**/*.spec.js",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx}\"",
     "tag:docker:dev": "cross-env-shell GIT_COMMIT_HASH=$(git show --no-patch --format=%h) \"npm-run-all build:docker:dev push:docker:dev\"",
-    "build:docker:dev": "cross-var docker build . -t $npm_package_registry/$npm_package_name:$npm_package_version-$GIT_COMMIT_HASH",
-    "push:docker:dev": "docker push $npm_package_registry/$npm_package_name:$npm_package_version-$GIT_COMMIT_HASH",
+    "build:docker:dev": "cross-var docker build . -t $npm_package_config_container_registry/$npm_package_name:$npm_package_version-$GIT_COMMIT_HASH",
+    "push:docker:dev": "docker push $npm_package_config_container_registry/$npm_package_name:$npm_package_version-$GIT_COMMIT_HASH",
     "prepare": "husky install"
   },
   "hooks": {
