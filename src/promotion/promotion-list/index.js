@@ -2,11 +2,11 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box, Button, Set, Text, Flex } from "bumbag"
 import {
-    useIsDisplayMenuByRoute,
-    useHasSubMenuByRoute,
-    useUserRoleType,
-    useUserRoleId,
-    useUserBrandId
+  useIsDisplayMenuByRoute,
+  useHasSubMenuByRoute,
+  useUserRoleType,
+  useUserRoleId,
+  useUserBrandId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Code, View, Update } from "./menu"
@@ -19,9 +19,9 @@ import { PageContent } from "../../page/Content"
 import AlertDialog from "../../dialog/Alert"
 import { Trans, useTrans } from "../../i18n"
 import {
-    AddPromotionDisclosure,
-    EditPromotionDisclosure,
-    ViewPromotionDisclosure
+  AddPromotionDisclosure,
+  EditPromotionDisclosure,
+  ViewPromotionDisclosure
 } from "./edit"
 import equals from "fast-deep-equal"
 import { usePromotionList } from "./client"
@@ -33,275 +33,284 @@ import { GameProviderListDialogDisclosure } from "../../game/providers/GameProvi
 import { VipLevelListDialogDisclosure } from "../../vip-levels/VipLevelList"
 import { formatNumber } from "../../number/format"
 import { PromotionStatusSelect, PromotionStatusSwitch } from "./PromotionStatus"
+import { DateInputRange } from "../../date/DateTimeRangeInput"
+import { SortOrder } from "../../table/order"
 
 export { Code }
 
 export const Content = () => {
-    let isDisplay = useIsDisplayMenuByRoute()
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute()
+  if (!isDisplay) {
+    return null
+  }
 
-    return <Body />
+  return <Body />
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-    let userBrandId = useUserBrandId()
-    let [brandId, setBrandId] = useState(userBrandId)
+  let userBrandId = useUserBrandId()
+  let [brandId, setBrandId] = useState(userBrandId)
 
-    return (
-        <Set orientation="vertical" isFilled>
-            <BrandBar
-                onBrandChange={(value) => {
-                    setBrandId(value)
-                }}
-            />
-            {brandId && <BodyContent brandId={brandId} />}
-        </Set>
-    )
+  return (
+    <Set orientation="vertical" isFilled>
+      <BrandBar
+        onBrandChange={(value) => {
+          setBrandId(value)
+        }}
+      />
+      {brandId && <BodyContent brandId={brandId} />}
+    </Set>
+  )
 }
 
 const BodyContent = ({ brandId }) => {
-    let { state, setState, setPageIndex, setSortOrder } = useTable({
-        status: "",
-        name: "",
-        brandId
-    })
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    status: "",
+    name: "",
+    brandId,
+    from: undefined,
+    to: undefined
+  })
 
-    useEffect(() => {
-        setState({ pageIndex: 0, brandId })
-    }, [brandId])
+  useEffect(() => {
+    setState({ pageIndex: 0, brandId })
+  }, [brandId])
 
-    let { isLoading, data, error, mutate, deleteCache } = usePromotionList(
-        brandId ? { ...toApiParams(state), sortby: "name" } : undefined
-    )
+  let { isLoading, data, error, mutate, deleteCache } = usePromotionList(
+    brandId
+      ? { ...toApiParams(state), sortby: "to", orderby: SortOrder.Descending }
+      : undefined
+  )
 
-    let columns = useColumns({ mutate, brandId, items: data?.items })
-    return (
-        <PageContent
-            title={<Trans zh="活动管理" en="Promotion" />}
-            actionBar={
-                <Flex justifyContent="space-between">
-                    <SearchBar
-                        status={state?.status}
-                        name={state?.name}
-                        search={(data = {}) => {
-                            setState({
-                                pageIndex: 0,
-                                ...data
-                            })
-                            mutate()
-                        }}
-                        isLoading={isLoading}
-                    />
-                    <AddPromotionDisclosure
-                        brandId={brandId}
-                        onSubmitted={mutate}
-                    />
-                </Flex>
-            }
-        >
-            <Table
-                columns={columns}
-                data={data?.items}
-                initialState={state}
-                controlledState={state}
-                pageCount={pageCount(state?.pageSize, data?.totalCount)}
-                setPageIndex={setPageIndex}
-                setSortOrder={setSortOrder}
-                isLoading={isLoading}
-            />
-            {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-        </PageContent>
-    )
+  let columns = useColumns({ mutate, brandId, items: data?.items })
+  return (
+    <PageContent
+      title={<Trans zh="活动管理" en="Promotion" />}
+      actionBar={
+        <Flex justifyContent="space-between">
+          <SearchBar
+            status={state?.status}
+            name={state?.name}
+            search={({ start, end, ...data } = {}) => {
+              setState({
+                pageIndex: 0,
+                from: start,
+                to: end,
+                ...data
+              })
+              mutate()
+            }}
+            isLoading={isLoading}
+          />
+          <AddPromotionDisclosure brandId={brandId} onSubmitted={mutate} />
+        </Flex>
+      }
+    >
+      <Table
+        columns={columns}
+        data={data?.items}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(state?.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+      />
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+    </PageContent>
+  )
 }
 
-const SearchBar = ({ status = "", name = "", search, isLoading }) => {
-    let namePlaceholder = useTrans({
-        zh: "名称",
-        en: "Name"
-    })
-    let formMethods = useForm({
-        defaultValues: { status, name }
-    })
+const SearchBar = ({
+  status = "",
+  name = "",
+  start,
+  end,
+  search,
+  isLoading
+}) => {
+  let namePlaceholder = useTrans({
+    zh: "名称",
+    en: "Name"
+  })
+  let formMethods = useForm({
+    defaultValues: { status, name, start, end }
+  })
 
-    return (
-        <FormProvider {...formMethods}>
-            <form onSubmit={formMethods.handleSubmit(search)}>
-                <Set>
-                    <PromotionStatusSelect name="status" />
-                    <InputField
-                        name="name"
-                        showEmptyFieldValueAddonAfter
-                        placeholder={namePlaceholder}
-                    />
-                    <SearchButton isLoading={isLoading} disabled={isLoading} />
-                </Set>
-            </form>
-        </FormProvider>
-    )
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(search)}>
+        <Set>
+          <DateInputRange />
+          <PromotionStatusSelect name="status" />
+          <InputField
+            name="name"
+            showEmptyFieldValueAddonAfter
+            placeholder={namePlaceholder}
+          />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
 }
 
 const useColumns = ({ brandId, items = [], mutate }) => {
-    let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
-    let hasViewAuth = useIsDisplayMenuByRoute([View])
-    let hasAnyMenu = hasUpdateAuth || hasViewAuth
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+  let hasViewAuth = useIsDisplayMenuByRoute([View])
+  let hasAnyMenu = hasUpdateAuth || hasViewAuth
 
-    return useMemo(() => {
-        let columns = [
-            textColumn({
-                accessor: "name",
-                Header: <Trans zh="活动名称" en="Promotion Name" />,
-                disableSortBy: true
-            }),
-            textColumn({
-                id: "promotionTypeGroup",
-                accessor: (row) => row,
-                Header: <Trans zh="活动类型" en="Promotion Type" />,
-                disableSortBy: true,
-                Cell: ({ value }) => {
-                    let group =
-                        usePromotionGroupLabelOf(value?.promotionType) ?? ""
-                    return group
-                }
-            }),
-            textColumn({
-                accessor: "promotionType",
-                Header: <Trans zh="活动子类型" en="Promotion SubType" />,
-                disableSortBy: true,
-                Cell: ({ value }) => <PromotionTypeLabel value={value} />
-            }),
-            textColumn({
-                id: "promotionTime",
-                accessor: (row) => row,
-                Header: <Trans zh="活动时间" en="Promotion Period" />,
-                disableSortBy: true,
-                Cell: ({ value }) => {
-                    let from = formatDayMonthYear(value?.from)
-                    let to = formatDayMonthYear(value?.to)
-                    return `${from} - ${to}`
-                }
-            }),
-            textColumn({
-                id: "gameTypeGroup",
-                accessor: (row) => row,
-                Header: <Trans zh="游戏类型" en="Game Type" />,
-                disableSortBy: true,
-                Cell: ({ value }) => {
-                    let group = useGameTypeGroupLabelOf(value?.gameType) ?? ""
-                    return group
-                }
-            }),
-            textColumn({
-                accessor: "gameType",
-                Header: <Trans zh="游戏子类型" en="Game SubType" />,
-                disableSortBy: true,
-                Cell: ({ value }) => <GameTypeLabel value={value} />
-            }),
-            textColumn({
-                accessor: "gameProviderIds",
-                Header: <Trans zh="活动厂商" en="GP Participation" />,
-                disableSortBy: true,
-                Cell: ({ value: gameProviderIds }) => {
-                    let dialogTitle = useTrans({
-                        zh: "活动厂商",
-                        en: "GP Participation"
-                    })
-
-                    if (!gameProviderIds || gameProviderIds?.length == 0) {
-                        return "-"
-                    }
-
-                    return (
-                        <GameProviderListDialogDisclosure
-                            gameProviderIds={gameProviderIds}
-                            dialogTitle={dialogTitle}
-                        />
-                    )
-                }
-            }),
-            textColumn({
-                accessor: "vipLevels",
-                Header: <Trans zh="活动用户群" en="User Group" />,
-                disableSortBy: true,
-                Cell: ({ value: vipLevels }) => {
-                    let dialogTitle = useTrans({
-                        zh: "活动用户群",
-                        en: "User Group"
-                    })
-
-                    if (!vipLevels || vipLevels?.length === 0) {
-                        return "-"
-                    }
-
-                    return (
-                        <VipLevelListDialogDisclosure
-                            dialogTitle={dialogTitle}
-                            vipLevels={vipLevels}
-                        />
-                    )
-                }
-            }),
-            textColumn({
-                id: "amounts",
-                accessor: (row) => row,
-                Header: <Trans zh="活动费用" en="Promotion Fund" />,
-                disableSortBy: true,
-                Cell: ({ value }) => {
-                    let unlimited = value?.unlimited
-                    let amountUsed = formatNumber(value?.amountUsed)
-                    let totalAmountLimit = formatNumber(value?.totalAmountLimit)
-                    return unlimited ? "-" : `${amountUsed}/${totalAmountLimit}`
-                }
-            })
-        ]
-
-        if (hasAnyMenu) {
-            columns.push(
-                textColumn({
-                    id: "status",
-                    Header: <Trans zh="状态" en="Status" />,
-                    accessor: (row) => row,
-                    disableSortBy: true,
-                    Cell: ({ value: record }) => {
-                        return (
-                            <PromotionStatusSwitch
-                                record={record}
-                                value={record?.status}
-                                onSubmitted={mutate}
-                            />
-                        )
-                    }
-                })
-            )
-
-            columns.push(
-                textColumn({
-                    id: "actions",
-                    Header: <Trans zh="操作" en="Action" />,
-                    accessor: (row) => row,
-                    disableSortBy: true,
-                    Cell: ({ value: record }) => {
-                        return (
-                            <Set orientation="horizontal" alignX="center">
-                                <ViewPromotionDisclosure
-                                    brandId={brandId}
-                                    record={record}
-                                />
-                                <EditPromotionDisclosure
-                                    brandId={brandId}
-                                    record={record}
-                                    onSubmitted={mutate}
-                                />
-                            </Set>
-                        )
-                    }
-                })
-            )
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        accessor: "name",
+        Header: <Trans zh="活动名称" en="Promotion Name" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        id: "promotionTypeGroup",
+        accessor: (row) => row,
+        Header: <Trans zh="活动类型" en="Promotion Type" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          let group = usePromotionGroupLabelOf(value?.promotionType) ?? ""
+          return group
         }
+      }),
+      textColumn({
+        accessor: "promotionType",
+        Header: <Trans zh="活动子类型" en="Promotion SubType" />,
+        disableSortBy: true,
+        Cell: ({ value }) => <PromotionTypeLabel value={value} />
+      }),
+      textColumn({
+        id: "promotionTime",
+        accessor: (row) => row,
+        Header: <Trans zh="活动时间" en="Promotion Period" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          let from = formatDayMonthYear(value?.from)
+          let to = formatDayMonthYear(value?.to)
+          return `${from} - ${to}`
+        }
+      }),
+      textColumn({
+        id: "gameTypeGroup",
+        accessor: (row) => row,
+        Header: <Trans zh="游戏类型" en="Game Type" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          let group = useGameTypeGroupLabelOf(value?.gameType) ?? ""
+          return group
+        }
+      }),
+      textColumn({
+        accessor: "gameType",
+        Header: <Trans zh="游戏子类型" en="Game SubType" />,
+        disableSortBy: true,
+        Cell: ({ value }) => <GameTypeLabel value={value} />
+      }),
+      textColumn({
+        accessor: "gameProviderIds",
+        Header: <Trans zh="活动厂商" en="GP Participation" />,
+        disableSortBy: true,
+        Cell: ({ value: gameProviderIds }) => {
+          let dialogTitle = useTrans({
+            zh: "活动厂商",
+            en: "GP Participation"
+          })
 
-        return columns
-    }, [JSON.stringify(items)])
+          if (!gameProviderIds || gameProviderIds?.length == 0) {
+            return "-"
+          }
+
+          return (
+            <GameProviderListDialogDisclosure
+              gameProviderIds={gameProviderIds}
+              dialogTitle={dialogTitle}
+            />
+          )
+        }
+      }),
+      textColumn({
+        accessor: "vipLevels",
+        Header: <Trans zh="活动用户群" en="User Group" />,
+        disableSortBy: true,
+        Cell: ({ value: vipLevels }) => {
+          let dialogTitle = useTrans({
+            zh: "活动用户群",
+            en: "User Group"
+          })
+
+          if (!vipLevels || vipLevels?.length === 0) {
+            return "-"
+          }
+
+          return (
+            <VipLevelListDialogDisclosure
+              dialogTitle={dialogTitle}
+              vipLevels={vipLevels}
+            />
+          )
+        }
+      }),
+      textColumn({
+        id: "amounts",
+        accessor: (row) => row,
+        Header: <Trans zh="活动费用" en="Promotion Fund" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          let unlimited = value?.unlimited
+          let amountUsed = formatNumber(value?.amountUsed)
+          let totalAmountLimit = formatNumber(value?.totalAmountLimit)
+          return unlimited ? "-" : `${amountUsed}/${totalAmountLimit}`
+        }
+      })
+    ]
+
+    if (hasAnyMenu) {
+      columns.push(
+        textColumn({
+          id: "status",
+          Header: <Trans zh="状态" en="Status" />,
+          accessor: (row) => row,
+          disableSortBy: true,
+          Cell: ({ value: record }) => {
+            return (
+              <PromotionStatusSwitch
+                record={record}
+                value={record?.status}
+                onSubmitted={mutate}
+              />
+            )
+          }
+        })
+      )
+
+      columns.push(
+        textColumn({
+          id: "actions",
+          Header: <Trans zh="操作" en="Action" />,
+          accessor: (row) => row,
+          disableSortBy: true,
+          Cell: ({ value: record }) => {
+            return (
+              <Set orientation="horizontal" alignX="center">
+                <ViewPromotionDisclosure brandId={brandId} record={record} />
+                <EditPromotionDisclosure
+                  brandId={brandId}
+                  record={record}
+                  onSubmitted={mutate}
+                />
+              </Set>
+            )
+          }
+        })
+      )
+    }
+
+    return columns
+  }, [JSON.stringify(items)])
 }

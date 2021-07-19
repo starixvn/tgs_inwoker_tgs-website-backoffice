@@ -3,25 +3,30 @@ import { css } from "@emotion/react"
 import { Code, Menu, DefaultPaths } from "./menu"
 import { Switch } from "../content"
 import {
-    Code as AnnouncementCode,
-    Content as AnnouncementContent
+  Code as AnnouncementCode,
+  Content as AnnouncementContent
 } from "./announcement"
 import {
-    Code as StationLetterCode,
-    Content as StationLetterContent
+  Code as StationLetterCode,
+  Content as StationLetterContent
 } from "./station-letter"
 import { Code as VipLevelCode, Content as VipLevelContent } from "./viplevel"
+import {
+  Code as IMSettingsCode,
+  Content as IMSettingsContent
+} from "./im-settings"
 
 export { Code }
 
 const pairs = () => [
-    [AnnouncementCode, AnnouncementContent],
-    [StationLetterCode, StationLetterContent],
-    [VipLevelCode, VipLevelContent]
+  [AnnouncementCode, AnnouncementContent],
+  [StationLetterCode, StationLetterContent],
+  [VipLevelCode, VipLevelContent],
+  [IMSettingsCode, IMSettingsContent]
 ]
 
 export const Content = ({ codes, path = DefaultPaths, ...props }) => (
-    <Switch path={path} pairs={pairs()} />
+  <Switch path={path} pairs={pairs()} />
 )
 
 export const codeMenuContentPair = [Code, [Menu, Content]]

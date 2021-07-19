@@ -2,24 +2,28 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Menu as _Menu, findlLabel } from "../menu"
 import {
-    Code as AnnouncementCode,
-    codeLabelPair as announcementPair
+  Code as AnnouncementCode,
+  codeLabelPair as announcementPair
 } from "./announcement/menu"
 import {
-    Code as StationLetterCode,
-    codeLabelPair as stationLetterPair
+  Code as StationLetterCode,
+  codeLabelPair as stationLetterPair
 } from "./station-letter/menu"
 import {
-    Code as VipLevelCode,
-    codeLabelPair as vipLevelPair
+  Code as VipLevelCode,
+  codeLabelPair as vipLevelPair
 } from "./viplevel/menu"
+import {
+  Code as IMSettingsCode,
+  codeLabelPair as imSettingsPair
+} from "./im-settings/menu"
 import { getTrans, useTrans } from "../i18n"
 
 export const Name = () => useTrans(nameMessage)
 
 export const nameMessage = {
-    zh: "平台管理",
-    en: "Platform"
+  zh: "平台管理",
+  en: "Platform"
 }
 
 export const Code = "platform"
@@ -29,59 +33,72 @@ export const DefaultUrl = `/${Code}`
 export const DefaultPaths = [Code]
 
 export const Menu = ({
-    title = <Name />,
-    url = DefaultUrl,
-    codes,
-    paths = DefaultPaths,
-    ...props
+  title = <Name />,
+  url = DefaultUrl,
+  codes,
+  paths = DefaultPaths,
+  ...props
 }) => (
-    <_Menu
-        title={title}
-        url={url}
-        codes={codes}
-        codePaths={paths}
-        itemLabel={labelOf}
-    />
+  <_Menu
+    title={title}
+    url={url}
+    codes={codes}
+    codePaths={paths}
+    itemLabel={labelOf}
+  />
 )
 
 const labelOf = ({ locale, code }) => {
-    switch (code) {
-        case AnnouncementCode:
-            return getTrans(
-                {
-                    zh: "公告管理",
-                    en: "Announcements"
-                },
-                locale
-            )
-        case StationLetterCode:
-            return getTrans(
-                {
-                    zh: "站内信",
-                    en: "Station Letters"
-                },
-                locale
-            )
-        case VipLevelCode:
-            return getTrans(
-                {
-                    zh: "VIP等级",
-                    en: "VIP Levels"
-                },
-                locale
-            )
-        default:
-            return ""
-    }
+  switch (code) {
+    case AnnouncementCode:
+      return getTrans(
+        {
+          zh: "公告管理",
+          en: "Announcements"
+        },
+        locale
+      )
+    case StationLetterCode:
+      return getTrans(
+        {
+          zh: "站内信",
+          en: "Station Letters"
+        },
+        locale
+      )
+    case VipLevelCode:
+      return getTrans(
+        {
+          zh: "VIP等级",
+          en: "VIP Levels"
+        },
+        locale
+      )
+    case IMSettingsCode:
+      return getTrans(
+        {
+          zh: "平台运营设置",
+          en: "IM Settings"
+        },
+        locale
+      )
+    default:
+      return ""
+  }
 }
 
 export const codeLabelPair = [
-    Code,
-    ({ locale, codes }) =>
-        findlLabel({
-            locale,
-            codes,
-            label: labelOf,
-            subLabelPairs: [announcementPair, stationLetterPair, vipLevelPair]
-        })
+  Code,
+  ({ locale, codes }) =>
+    findlLabel({
+      locale,
+      codes,
+      label: labelOf,
+      subLabelPairs: [
+        announcementPair,
+        stationLetterPair,
+        vipLevelPair,
+        imSettingsPair
+      ]
+    })
 ]

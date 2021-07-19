@@ -243,7 +243,7 @@ const EmptyPlaceholderValue = () => (
 const GameRoundDataCard = ({ value: items = [], ...props }) => {
   return (
     <Card
-      title={<Trans zh="投注内容" en="Data" />}
+      title={<Trans zh="开奖结果" en="Result" />}
       variant="bordered"
       spacing="major-1"
     >
