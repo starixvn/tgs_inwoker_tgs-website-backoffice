@@ -35,6 +35,7 @@ import { formatNumber } from "../../number/format"
 import { PromotionStatusSelect, PromotionStatusSwitch } from "./PromotionStatus"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { SortOrder } from "../../table/order"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -131,6 +132,7 @@ const SearchBar = ({
   search,
   isLoading
 }) => {
+  let dev = isDev()
   let namePlaceholder = useTrans({
     zh: "名称",
     en: "Name"
@@ -143,7 +145,7 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
         <Set>
-          <DateInputRange />
+          {dev && <DateInputRange />}
           <PromotionStatusSelect name="status" />
           <InputField
             name="name"

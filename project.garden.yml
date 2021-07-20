@@ -16,6 +16,8 @@ services:
   - name: backoffice-site
     dependencies:
       - backoffice-api
+    env:
+      MODE: "development"
     ingresses:
       - hostname: backoffice.localhost
         path: /
