@@ -34,10 +34,14 @@ export const PlayerPromotionPanel = ({ playerCode, ...props }) => {
     to: dateRange.end
   })
 
-  //TODO: sortby
   let { isLoading, data, error, mutate, deleteCache } = usePlayerPromotions(
+    playerCode,
     isActive
-      ? toApiParams({ ...state, orderby: SortOrder.Descending })
+      ? toApiParams({
+          ...state,
+          sortby: "createdOn",
+          orderby: SortOrder.Descending
+        })
       : undefined
   )
 
@@ -46,8 +50,8 @@ export const PlayerPromotionPanel = ({ playerCode, ...props }) => {
     <TabPanel tabId={Key} {...props}>
       <Stack spacing="major-2">
         <SearchBar
-          start={from}
-          end={to}
+          start={state.from}
+          end={state.to}
           search={({ start, end, ...data } = {}) => {
             setState({
               pageIndex: 0,
@@ -101,7 +105,7 @@ const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
       textColumn({
-        accessor: "name",
+        accessor: "promotionName",
         Header: <Trans zh="活动名称" en="Promotion" />,
         disableSortBy: true
       }),

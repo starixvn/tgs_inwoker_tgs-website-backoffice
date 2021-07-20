@@ -76,7 +76,10 @@ export const useClearPlayerWageringRequirement = (playerCode) => {
   return usePutData(url, true)
 }
 
-export const usePlayerPromotions = (searchParams) => {
-  let url = searchParams ? urlWith(searchParams, `${API}/promotions`) : ""
+export const usePlayerPromotions = (playerCode, searchParams) => {
+  let url =
+    playerCode && searchParams
+      ? urlWith(searchParams, `${API}/${playerCode}/joinedPromotions`)
+      : ""
   return useGet(url)
 }

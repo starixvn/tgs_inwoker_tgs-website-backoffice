@@ -27,6 +27,7 @@ import { useForm, useFormContext, FormProvider } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
+import { Features, isDev, isFeatureEnabled } from "../../env"
 
 export { Code }
 
@@ -149,34 +150,36 @@ const useColumns = ({ mutate, items = [] }) => {
       }
     ]
 
-    if (adminUser) {
-      columns.push(
-        textColumn({
-          accessor: "resellerName",
-          Header: <Trans zh="总公司" en="Reseller" />,
-          disableSortBy: true
-        })
-      )
-    }
+    if (isDev()) {
+      if (adminUser) {
+        columns.push(
+          textColumn({
+            accessor: "resellerName",
+            Header: <Trans zh="总公司" en="Reseller" />,
+            disableSortBy: true
+          })
+        )
+      }
 
-    if (adminUser || resellerUser) {
-      columns.push(
-        textColumn({
-          accessor: "licenseeName",
-          Header: <Trans zh="公司" en="Licensee" />,
-          disableSortBy: true
-        })
-      )
-    }
+      if (adminUser || resellerUser) {
+        columns.push(
+          textColumn({
+            accessor: "licenseeName",
+            Header: <Trans zh="公司" en="Licensee" />,
+            disableSortBy: true
+          })
+        )
+      }
 
-    if (adminUser || resellerUser || licenseeUser) {
-      columns.push(
-        textColumn({
-          accessor: "brandName",
-          Header: <Trans zh="平台" en="Platform" />,
-          disableSortBy: true
-        })
-      )
+      if (adminUser || resellerUser || licenseeUser) {
+        columns.push(
+          textColumn({
+            accessor: "brandName",
+            Header: <Trans zh="平台" en="Platform" />,
+            disableSortBy: true
+          })
+        )
+      }
     }
 
     columns.push({
