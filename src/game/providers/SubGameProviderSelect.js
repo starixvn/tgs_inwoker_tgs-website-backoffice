@@ -1,0 +1,69 @@
+import React, { useState, useEffect, useMemo, useRef } from "react"
+import { css, Global } from "@emotion/react"
+import { Select, SelectField } from "../../select/Select"
+import { Locales, Trans, useTrans } from "../../i18n"
+import { useSubGameProviderList } from "./client"
+
+export const SubGameProviderSelect = ({
+  placeholder,
+  gameProviderId,
+  valueField = "id",
+  ...props
+}) => {
+  let defaultPlaceholder = useTrans({
+    zh: "子游戏厂商",
+    en: "Sub Game Provider"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
+
+  let { data, isLoading, error } = useSubGameProviderList(gameProviderId, {
+    showAll: true,
+    sortby: "name"
+  })
+  let options = data?.items.map((item) => ({
+    label: item.name,
+    value: item[valueField]
+  }))
+
+  return (
+    <Select
+      placeholder={placeholder}
+      isLoading={isLoading}
+      options={options}
+      {...props}
+    />
+  )
+}
+
+export const SubGameProviderSelectField = ({
+  placeholder,
+  gameProviderId,
+  valueField = "id",
+  ...props
+}) => {
+  let defaultPlaceholder = useTrans({
+    zh: "子游戏厂商",
+    en: "Sub Game Provider"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
+
+  let { data, isLoading, error } = useSubGameProviderList(gameProviderId, {
+    showAll: true,
+    sortby: "name"
+  })
+  let options = data?.items.map((item) => ({
+    label: item.name,
+    value: item[valueField]
+  }))
+
+  return (
+    <SelectField
+      placeholder={placeholder}
+      isLoading={isLoading}
+      options={options}
+      {...props}
+    />
+  )
+}
+
+export default GameProviderSelect

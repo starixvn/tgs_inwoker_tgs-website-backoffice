@@ -45,6 +45,7 @@ export const InputField = ({
   showEmptyFieldValueAddonAfter = false,
   brandId,
   localizationField,
+  localizationFieldName,
   showLocalizationAddonAfter = false,
   register,
   registerOptions = {},
@@ -93,6 +94,7 @@ export const InputField = ({
             readOnly={props?.readOnly}
             disabled={props?.disabled}
             localizationField={localizationField}
+            localizationFieldName={localizationFieldName}
             name={name}
           />
         )}

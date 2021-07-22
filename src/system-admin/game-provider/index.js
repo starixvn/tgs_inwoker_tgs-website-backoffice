@@ -41,6 +41,7 @@ import { GameProviderConfigListDisclosure } from "./GameProviderConfigList"
 import AlertDialog from "../../dialog/Alert"
 import Backdrop from "../../dialog/Backdrop"
 import { useDropzone } from "react-dropzone"
+import { SubGameProviderListDisclosure } from "./SubGameProviderList"
 
 export { Code }
 
@@ -327,6 +328,7 @@ const useColumns = ({ items = [], mutate }) => {
                   onSubmitted={mutate}
                 />
                 <GameProviderConfigListDisclosure gameProviderId={value?.id} />
+                {/* <SubGameProviderListDisclosure gameProviderId={value?.id} /> */}
                 <GameProviderGameListDisclosure
                   id={`${value?.code}-game-list-dialog-disclosure`}
                   gameProviderId={value?.id}

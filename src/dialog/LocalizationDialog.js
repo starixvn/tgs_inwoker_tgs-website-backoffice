@@ -36,12 +36,16 @@ export const LocalizationDialogMode = {
 
 const LocalizationFieldName = "localization"
 
-const toLocalizationFieldName = (code, name) =>
-  `${LocalizationFieldName}.${code}.${name}`
+const toLocalizationFieldName = (
+  code,
+  name,
+  localizationFieldName = LocalizationFieldName
+) => `${localizationFieldName}.${code}.${name}`
 
 export const LocalizationDialogDisclosure = ({
   brandId = "",
   localizationField = LocalizationInputField,
+  localizationFieldName = LocalizationFieldName,
   localizationFieldProps = {},
   name = "",
   readOnly,
@@ -61,7 +65,9 @@ export const LocalizationDialogDisclosure = ({
 
   let dialog = useModalState()
   let { watch, setValue } = useFormContext()
-  let fieldNames = codes.map((code) => toLocalizationFieldName(code, name))
+  let fieldNames = codes.map((code) =>
+    toLocalizationFieldName(code, name, localizationFieldName)
+  )
 
   let values = watch(fieldNames)
 
@@ -93,7 +99,11 @@ export const LocalizationDialogDisclosure = ({
             let editable = !(readOnly || disabled)
             if (editable) {
               Object.entries(data).map(([code, value]) => {
-                let fieldName = toLocalizationFieldName(code, name)
+                let fieldName = toLocalizationFieldName(
+                  code,
+                  name,
+                  localizationFieldName
+                )
                 setValue(fieldName, value)
               })
             }
