@@ -66,4 +66,4 @@ export const SubGameProviderSelectField = ({
   )
 }
 
-export default GameProviderSelect
+export default SubGameProviderSelect
