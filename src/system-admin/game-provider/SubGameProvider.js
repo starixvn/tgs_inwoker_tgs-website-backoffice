@@ -30,7 +30,7 @@ import AlertDialog from "../../dialog/Alert"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import { Input, InputField } from "../../input/Input"
-import { Textarea } from "../../textarea"
+import { TextareaField } from "../../textarea"
 import GameProviderStatus, {
   GameProviderStatusSelect
 } from "./GameProviderStatus"
@@ -50,12 +50,10 @@ import { GameProviderCurrencyBetLimitFieldsBox } from "./GameProviderCurrencyBet
 import clone from "clone-deep"
 import Backdrop from "../../dialog/Backdrop"
 
-const FormBody = ({ readOnly }) => {
+const FormBody = ({ readOnly, isAdd = false }) => {
   let { getValues } = useFormContext()
 
   let IdFieldName = "id"
-  let id = getValues(IdFieldName)
-  let isAdd = !id
   return (
     <>
       <FieldValues>
@@ -81,7 +79,7 @@ const FormBody = ({ readOnly }) => {
         <NormalLabel>
           <Trans zh="子游戏商简介" en="Description" />
         </NormalLabel>
-        <Input name="description" readOnly={readOnly} />
+        <TextareaField name="description" readOnly={readOnly} />
       </FieldValues>
       <Input type="hidden" name={IdFieldName} />
     </>
@@ -120,10 +118,8 @@ const AddDialog = ({ gameProviderId, dialog, onSubmitted, ...props }) => {
   })
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } = useAddSubGameProvider(
-    gameProviderId,
-    formData
-  )
+  let { isLoading, result, error, mutate, deleteCache } =
+    useAddSubGameProvider(formData)
 
   const onSubmit = (data) => {
     setSubmit(data)
@@ -155,7 +151,7 @@ const AddDialog = ({ gameProviderId, dialog, onSubmitted, ...props }) => {
         dialog={dialog}
         hideBackdrop
       >
-        <FormBody />
+        <FormBody isAdd={true} />
       </FormDialog>
     </Backdrop>
   )
@@ -188,9 +184,10 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
     en: "Edit Sub Game Provider"
   })
 
+  let { gameProviderId, code } = record
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateSubGameProvider(formData)
+    useUpdateSubGameProvider(gameProviderId, code, formData)
 
   const onSubmit = (data) => {
     setSubmit(data)

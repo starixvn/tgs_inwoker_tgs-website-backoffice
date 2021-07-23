@@ -7,7 +7,7 @@ import { useSubGameProviderList } from "./client"
 export const SubGameProviderSelect = ({
   placeholder,
   gameProviderId,
-  valueField = "id",
+  valueField = "code",
   ...props
 }) => {
   let defaultPlaceholder = useTrans({
@@ -16,9 +16,10 @@ export const SubGameProviderSelect = ({
   })
   placeholder = placeholder ?? defaultPlaceholder
 
-  let { data, isLoading, error } = useSubGameProviderList(gameProviderId, {
+  let { data, isLoading, error } = useSubGameProviderList({
     showAll: true,
-    sortby: "name"
+    sortby: "code",
+    gameProviderId
   })
   let options = data?.items.map((item) => ({
     label: item.name,
@@ -38,7 +39,7 @@ export const SubGameProviderSelect = ({
 export const SubGameProviderSelectField = ({
   placeholder,
   gameProviderId,
-  valueField = "id",
+  valueField = "code",
   ...props
 }) => {
   let defaultPlaceholder = useTrans({
@@ -47,9 +48,10 @@ export const SubGameProviderSelectField = ({
   })
   placeholder = placeholder ?? defaultPlaceholder
 
-  let { data, isLoading, error } = useSubGameProviderList(gameProviderId, {
+  let { data, isLoading, error } = useSubGameProviderList({
     showAll: true,
-    sortby: "name"
+    sortby: "code",
+    gameProviderId
   })
   let options = data?.items.map((item) => ({
     label: item.name,

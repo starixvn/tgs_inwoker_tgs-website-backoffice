@@ -51,7 +51,7 @@ import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { SubGameProviderSelectField } from "../../game/providers/SubGameProviderSelect"
 
-export const ViewGameProviderGameDisclosure = ({ record }) => {
+export const ViewGameProviderGameDisclosure = ({ gameProviderId, record }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([View])
@@ -62,12 +62,18 @@ export const ViewGameProviderGameDisclosure = ({ record }) => {
   return (
     <>
       <ViewDisclosure {...dialog} />
-      {dialog.visible && <ViewDialog record={record} dialog={dialog} />}
+      {dialog.visible && (
+        <ViewDialog
+          gameProviderId={gameProviderId}
+          record={record}
+          dialog={dialog}
+        />
+      )}
     </>
   )
 }
 
-const ViewDialog = ({ record, dialog }) => {
+const ViewDialog = ({ gameProviderId, record, dialog }) => {
   let title = useTrans({
     zh: "View Game",
     en: "View Game"
@@ -76,7 +82,7 @@ const ViewDialog = ({ record, dialog }) => {
   return (
     <Backdrop {...dialog}>
       <FormDialog
-        defaultValues={clone(record)}
+        defaultValues={{ gameProviderId, ...clone(record) }}
         title={title}
         hideBackdrop
         title={title}
@@ -96,7 +102,11 @@ const ViewDialog = ({ record, dialog }) => {
   )
 }
 
-export const EditGameProviderGameDisclosure = ({ record, onSubmitted }) => {
+export const EditGameProviderGameDisclosure = ({
+  gameProviderId,
+  record,
+  onSubmitted
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([Update])
@@ -109,6 +119,7 @@ export const EditGameProviderGameDisclosure = ({ record, onSubmitted }) => {
       <EditDisclosure {...dialog} />
       {dialog.visible && (
         <EditGameDialog
+          gameProviderId={gameProviderId}
           record={record}
           onSubmitted={onSubmitted}
           dialog={dialog}
@@ -193,7 +204,7 @@ const AddGameDialog = ({ gameProviderId, onSubmitted, dialog }) => {
   )
 }
 
-const EditGameDialog = ({ record, onSubmitted, dialog }) => {
+const EditGameDialog = ({ gameProviderId, record, onSubmitted, dialog }) => {
   let title = useTrans({
     zh: "Edit Game",
     en: "Edit Game"
@@ -215,7 +226,7 @@ const EditGameDialog = ({ record, onSubmitted, dialog }) => {
   return (
     <Backdrop {...dialog}>
       <FormDialog
-        defaultValues={clone(record)}
+        defaultValues={{ gameProviderId, ...clone(record) }}
         title={title}
         onSubmit={onSubmit}
         onSubmitted={onSubmitted}
@@ -260,18 +271,18 @@ export const GameProviderGameFormBody = ({ readOnly = false }) => {
           readOnly={readOnly}
           label="External Id"
         />
-        {/* <SubGameProviderSelectField
-          name="subGameProvider"
-          gameProviderId={gameProviderId}
-          required
-          readOnly={readOnly}
-          label="Sub Game Provider"
-        /> */}
       </FieldStack>
       <FieldStack orientation="horizontal">
+        <SubGameProviderSelectField
+          name="subGpCode"
+          gameProviderId={gameProviderId}
+          required
+          disabled={disabled}
+          label="Sub Game Provider"
+        />
         <InputField name="code" required readOnly={readOnly} label="Code" />
-        <InputField name="name" required readOnly={readOnly} label="Name" />
       </FieldStack>
+      <InputField name="name" required readOnly={readOnly} label="Name" />
       <InputField name="description" readOnly={readOnly} label="Description" />
       <FieldStack orientation="horizontal">
         <GameStatusSelectField

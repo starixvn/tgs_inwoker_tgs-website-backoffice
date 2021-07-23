@@ -15,13 +15,9 @@ export const useGameProviderList = (searchParams) => {
   return useGet(url)
 }
 
-export const useSubGameProviderList = (gameProviderId, searchParams) => {
-  return useGameProviderList(searchParams)
-
-  let url =
-    gameProviderId && searchParams
-      ? urlWith(searchParams, `API/${gameProviderId}`)
-      : ""
+const SUB_PROVIDER_API = "/api/SubGameProvider"
+export const useSubGameProviderList = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${SUB_PROVIDER_API}`) : ""
   return useGet(url)
 }
 
@@ -38,9 +34,8 @@ export const useAddGameProvider = (data) => {
   return usePostData(API, data)
 }
 
-export const useAddSubGameProvider = (gameProviderId, data) => {
-  let url = gameProviderId ? `${API}/${gameProviderId}` : ""
-  return usePostData(url, data)
+export const useAddSubGameProvider = (data) => {
+  return usePostData(SUB_PROVIDER_API, data)
 }
 
 export const useUpdateGameProvider = (id, data) => {
@@ -48,8 +43,11 @@ export const useUpdateGameProvider = (id, data) => {
   return usePutData(url, data)
 }
 
-export const useUpdateSubGameProvider = (id, data) => {
-  let url = id ? `${API}/subGameProvider/${id}` : ""
+export const useUpdateSubGameProvider = (gameProviderId, code, data) => {
+  let url =
+    gameProviderId && code
+      ? `${SUB_PROVIDER_API}/${gameProviderId}/${code}`
+      : ""
   return usePutData(url, data)
 }
 
@@ -60,5 +58,10 @@ export const useChangeGameProviderStatus = (id, status) => {
 
 export const useUploadGameProviderLocalizationList = (body) => {
   let url = body ? `${API}/localization/upload` : undefined
+  return usePostFormData(url, body)
+}
+
+export const useUploadSubGameProviderLocalizationList = (body) => {
+  let url = body ? `${SUB_PROVIDER_API}/localization/upload` : undefined
   return usePostFormData(url, body)
 }

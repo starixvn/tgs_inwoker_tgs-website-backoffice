@@ -42,12 +42,15 @@ import SearchButton from "../../button/SearchButton"
 import dateTimeColumn from "../../table/column/dateTime"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
-import { useDropzone } from "react-dropzone"
-import { useSubGameProviderList } from "../../game/providers/client"
+import {
+  useSubGameProviderList,
+  useUploadSubGameProviderLocalizationList
+} from "../../game/providers/client"
 import {
   AddSubGameProviderDisclosure,
   EditSubGameProviderDisclosure
 } from "./SubGameProvider"
+import { useDropzone } from "react-dropzone"
 
 export const SubGameProviderListDisclosure = ({ gameProviderId, ...props }) => {
   let dialog = useModalState()
@@ -75,14 +78,13 @@ const ListDialog = ({ gameProviderId, gameProviderCode, dialog, ...props }) => {
     en: "Sub Game Provider List"
   })
 
-  let { state, setState, setPageIndex, setSortOrder } = useTable()
-  let { isLoading, data, error, mutate, deleteCache } = useSubGameProviderList(
-    gameProviderId,
-    {
-      ...toApiParams(state),
-      sortby: "code"
-    }
-  )
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    gameProviderId
+  })
+  let { isLoading, data, error, mutate, deleteCache } = useSubGameProviderList({
+    ...toApiParams(state),
+    sortby: "code"
+  })
   let items = data?.items ?? []
   let columns = useColumns({ gameProviderId, items, mutate })
 
@@ -145,8 +147,8 @@ const ActionBar = ({ gameProviderId, search, mutate, isLoading, ...props }) => {
               name="code"
               showEmptyFieldValueAddonAfter
               placeholder="Code"
-            /> */}
-            <SearchButton isLoading={isLoading} disabled={isLoading} />
+            />
+            <SearchButton isLoading={isLoading} disabled={isLoading} /> */}
           </Set>
         </form>
       </FormProvider>
@@ -155,8 +157,126 @@ const ActionBar = ({ gameProviderId, search, mutate, isLoading, ...props }) => {
           gameProviderId={gameProviderId}
           onSubmitted={mutate}
         />
+        <LocalizationMenuButton />
       </Set>
     </Level>
+  )
+}
+
+//TODO: gameProviderId?
+const LocalizationMenuButton = ({}) => {
+  let uploadGameProviderLocalizationListDialog = useModalState()
+
+  return (
+    <>
+      <DropdownMenu
+        id="sub-game-provider-localization-menu"
+        menu={
+          <>
+            <DropdownMenu.Item
+              id="export-sub-game-provider-localization"
+              use="a"
+              href={`/api/SubGameProvider/localization/export`}
+              download={`sub-game-provider-localization.xlsx`}
+            >
+              <Trans zh="汇出" en="Export" />
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              id="upload-sub-game-provider-localization-dialog-disclosure"
+              onClick={uploadGameProviderLocalizationListDialog.show}
+            >
+              <Trans zh="上传" en="Upload" />
+            </DropdownMenu.Item>
+          </>
+        }
+      >
+        <Button iconAfter="chevron-down">
+          <Trans zh="多语系" en="Localization" />
+        </Button>
+      </DropdownMenu>
+      {uploadGameProviderLocalizationListDialog.visible && (
+        <UploadGameProviderLocalizationListDialog
+          dialog={uploadGameProviderLocalizationListDialog}
+        />
+      )}
+    </>
+  )
+}
+
+const UploadGameProviderLocalizationListDialog = ({ dialog }) => {
+  let title = useTrans({
+    zh: "上传子游戏商多语系",
+    en: "Upload Sub Game Provider Localization"
+  })
+
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, deleteCache, mutate } =
+    useUploadSubGameProviderLocalizationList(formData)
+
+  useEffect(() => {
+    if (result && !error) {
+      dialog.hide()
+    }
+  }, [result, error])
+
+  const {
+    acceptedFiles,
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject
+  } = useDropzone({
+    maxFiles: 1,
+    accept: ".xlsx",
+    onDrop: (files) => {
+      if (files.length > 0) {
+        let [file] = files
+        let formData = new FormData()
+        formData.append("file", file, file.name)
+        setSubmit(formData)
+      }
+    }
+  })
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+
+  let notSelectFile = !formData
+  return (
+    <Backdrop {...dialog}>
+      <Dialog.Modal
+        id="upload-sub-game-provider-localization-dialog"
+        {...dialog}
+        title={title}
+        showCloseButton
+        hideOnClickOutside={false}
+        hideBackdrop
+      >
+        {notSelectFile && (
+          <Card
+            {...getRootProps({
+              id: "file-upload-dropzone",
+              refKey: "elementRef "
+            })}
+          >
+            <input {...getInputProps()} />
+            <p>
+              <Trans zh="选择档案" en="Select File" />
+            </p>
+          </Card>
+        )}
+        {isLoading && (
+          <Card alignX="center">
+            <Spinner />
+          </Card>
+        )}
+      </Dialog.Modal>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+    </Backdrop>
   )
 }
 

@@ -256,11 +256,11 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="游戏厂商" en="Game Provider" />,
         disableSortBy: true
       }),
-      // textColumn({
-      //     accessor: "subGameProviderCode",
-      //     Header: <Trans zh="子游戏商" en="Sub Game Provider" />,
-      //     disableSortBy: true
-      // }),
+      textColumn({
+        accessor: "subGameProviderName",
+        Header: <Trans zh="子游戏厂商" en="Sub Game Provider" />,
+        disableSortBy: true
+      }),
       textColumn({
         accessor: "gameName",
         Header: <Trans zh="游戏名称" en="Game Name" />,

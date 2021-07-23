@@ -199,8 +199,12 @@ export const GameRoundDialog = ({
           </Columns.Column>
           <Columns.Column>
             <FieldValues>
-              <EmptyPlaceholderField />
-              <EmptyPlaceholderValue />
+              <NormalLabel>
+                <Trans zh="子游戏厂商" en="Sub Game Providedr" />
+              </NormalLabel>
+              <Box alignY="center" whiteSpace="nowrap">
+                {record.subGameProviderName}
+              </Box>
 
               <NormalLabel>
                 <Trans zh="游戏局号" en="Id" />

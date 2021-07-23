@@ -104,7 +104,7 @@ const GameListDialog = ({
   )
 
   let items = data?.items ?? []
-  let columns = useColumns({ items, mutate })
+  let columns = useColumns({ gameProviderId, items, mutate })
 
   if (error) {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
@@ -203,7 +203,7 @@ const ActionBar = ({
   )
 }
 
-const useColumns = ({ items = [], mutate }) => {
+const useColumns = ({ gameProviderId, items = [], mutate }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   return useMemo(() => {
     let columns = [
@@ -250,8 +250,12 @@ const useColumns = ({ items = [], mutate }) => {
           Cell: ({ value: record }) => {
             return (
               <Set orientation="horizontal" alignX="center">
-                <ViewGameProviderGameDisclosure record={record} />
+                <ViewGameProviderGameDisclosure
+                  gameProviderId={gameProviderId}
+                  record={record}
+                />
                 <EditGameProviderGameDisclosure
+                  gameProviderId={gameProviderId}
                   record={record}
                   onSubmitted={mutate}
                 />
@@ -263,7 +267,7 @@ const useColumns = ({ items = [], mutate }) => {
     }
 
     return columns
-  }, [JSON.stringify(items)])
+  }, [gameProviderId, JSON.stringify(items)])
 }
 
 const LocalizationMenuButton = ({ gameProviderCode }) => {

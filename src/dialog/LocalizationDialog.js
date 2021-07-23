@@ -28,6 +28,7 @@ import {
 } from "../tab"
 import { HtmlEditor } from "../text/editor/HtmlEditor"
 import { CloseButtonFooter } from "../form/ConfirmButtonFooter"
+import { useLanguageList } from "../language/client"
 
 export const LocalizationDialogMode = {
   List: "list",
@@ -58,10 +59,20 @@ export const LocalizationDialogDisclosure = ({
   ...props
 }) => {
   let { isLoading, data: brand, error } = useBrand(brandId)
+  let {
+    isLoading: isLoadingLang,
+    data: langData,
+    error: langError
+  } = useLanguageList({ showAll: true, sortby: "cultureCode" })
+
   let codes =
     sortBy(brand?.languages, ["brandCultureCode"])?.map(
       ({ brandCultureCode }) => brandCultureCode
     ) ?? []
+
+  if (codes.length == 0) {
+    codes = langData?.items?.map(({ cultureCode }) => cultureCode) ?? []
+  }
 
   let dialog = useModalState()
   let { watch, setValue } = useFormContext()
@@ -80,8 +91,8 @@ export const LocalizationDialogDisclosure = ({
     <>
       <Disclosure
         use={Button}
-        isLoading={isLoading}
-        disabled={isLoading || error}
+        isLoading={isLoading || isLoadingLang}
+        disabled={isLoading || isLoadingLang || error}
         flex="0"
         {...dialog}
       >

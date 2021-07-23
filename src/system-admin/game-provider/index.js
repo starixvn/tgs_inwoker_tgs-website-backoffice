@@ -328,7 +328,7 @@ const useColumns = ({ items = [], mutate }) => {
                   onSubmitted={mutate}
                 />
                 <GameProviderConfigListDisclosure gameProviderId={value?.id} />
-                {/* <SubGameProviderListDisclosure gameProviderId={value?.id} /> */}
+                <SubGameProviderListDisclosure gameProviderId={value?.id} />
                 <GameProviderGameListDisclosure
                   id={`${value?.code}-game-list-dialog-disclosure`}
                   gameProviderId={value?.id}
