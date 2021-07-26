@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, Children, isValidElement } from "react"
 import { css } from "@emotion/react"
+import { Icon, Flex } from "bumbag"
 import { Menu as _Menu, findlLabel } from "../menu"
 import {
   Code as ResellerCode,
@@ -19,6 +20,7 @@ import {
   codeLabelPair as platformCreditPair
 } from "./platform-credit/menu"
 import { getTrans, useTrans } from "../i18n"
+import { faBriefcase } from "@fortawesome/free-solid-svg-icons"
 
 export const nameMessages = {
   zh: "商户管理",
@@ -34,7 +36,18 @@ export const DefaultUrl = `/${Code}`
 export const DefaultPaths = [Code]
 
 export const Menu = ({
-  title = <Name />,
+  title = (
+    <Flex alignY="center" color="black200">
+      <Icon
+        icon={faBriefcase}
+        type="font-awesome"
+        marginRight="0.5rem"
+        fontSize="1.1rem"
+        color="black200"
+      />
+      <Name />
+    </Flex>
+  ),
   url = DefaultUrl,
   codes,
   paths = DefaultPaths,

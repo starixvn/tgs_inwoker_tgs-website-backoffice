@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
+import { Icon, Flex } from "bumbag"
 import { Menu as _Menu, findlLabel } from "../menu"
 import {
   Code as GameProviderCode,
@@ -26,6 +27,7 @@ import {
   codeLabelPair as settingsPair
 } from "./setting/menu"
 import { getTrans, useTrans } from "../i18n"
+import { faCogs } from "@fortawesome/free-solid-svg-icons"
 
 export const Code = "systemadmin"
 
@@ -41,7 +43,18 @@ export const nameMessages = {
 }
 
 export const Menu = ({
-  title = <Name />,
+  title = (
+    <Flex alignY="center" color="black200">
+      <Icon
+        icon={faCogs}
+        type="font-awesome"
+        marginRight="0.5rem"
+        fontSize="1.1rem"
+        color="black200"
+      />
+      <Name />
+    </Flex>
+  ),
   url = DefaultUrl,
   codes,
   codePaths = DefaultCodePath,

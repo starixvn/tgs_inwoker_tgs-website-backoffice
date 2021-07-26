@@ -207,11 +207,9 @@ const Sidebar = () => {
   let { pathname: selectedId } = useLocation()
 
   return (
-    <Stack spacing="major-1" paddingY="major-2">
-      <SideNav id="sidebar" selectedId={selectedId}>
-        <AllMenus />
-      </SideNav>
-    </Stack>
+    <SideNav id="sidebar" selectedId={selectedId}>
+      <AllMenus />
+    </SideNav>
   )
 }
 

@@ -1,243 +1,280 @@
 import React, { useRef, useEffect, Children, isValidElement } from "react"
 import { css } from "@emotion/react"
 import {
-    Switch,
-    Route,
-    Link,
-    useRouteMatch,
-    useLocation
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useLocation
 } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
-import { SideNav } from "bumbag"
+import { SideNav, Box } from "bumbag"
 import memoize from "fast-memoize"
 import { codeMenuContentPair as platformPair } from "./platform-management"
 import {
-    Code as PlatformCode,
-    nameMessage as PlatformNameMessages,
-    codeLabelPair as platformLabelPair
+  Code as PlatformCode,
+  nameMessage as PlatformNameMessages,
+  codeLabelPair as platformLabelPair
 } from "./platform-management/menu"
 import { codeMenuContentPair as promotionPair } from "./promotion"
 import {
-    Code as PromotionCode,
-    nameMessages as PromotionNameMessages,
-    codeLabelPair as promotionLabelPair
+  Code as PromotionCode,
+  nameMessages as PromotionNameMessages,
+  codeLabelPair as promotionLabelPair
 } from "./promotion/menu"
 import { codeMenuContentPair as playerManagementPair } from "./player-management"
 import {
-    Code as PlayerManagementCode,
-    nameMessages as PlayerManagementNameMessages,
-    codeLabelPair as playerManagementLabelPair
+  Code as PlayerManagementCode,
+  nameMessages as PlayerManagementNameMessages,
+  codeLabelPair as playerManagementLabelPair
 } from "./player-management/menu"
 import { codeMenuContentPair as agentManagementPair } from "./agent"
 import {
-    Code as AgentManagementCode,
-    nameMessages as AgentManagementNameMessages,
-    codeLabelPair as agentManagementLabelPair
+  Code as AgentManagementCode,
+  nameMessages as AgentManagementNameMessages,
+  codeLabelPair as agentManagementLabelPair
 } from "./agent/menu"
 import { codeMenuContentPair as gameManagementPair } from "./game"
 import {
-    Code as GameManagementCode,
-    nameMessages as GameManagementNameMessages,
-    codeLabelPair as gameManagementLabelPair
+  Code as GameManagementCode,
+  nameMessages as GameManagementNameMessages,
+  codeLabelPair as gameManagementLabelPair
 } from "./game/menu"
 import { codeMenuContentPair as reportManagementPair } from "./report"
 import {
-    Code as ReportManagementCode,
-    nameMessages as ReportManagementNameMessages,
-    codeLabelPair as reportManagementLabelPair
+  Code as ReportManagementCode,
+  nameMessages as ReportManagementNameMessages,
+  codeLabelPair as reportManagementLabelPair
 } from "./report/menu"
 import { codeMenuContentPair as merchantPair } from "./merchant"
 import {
-    Code as MerchantCode,
-    nameMessages as MerchantName,
-    codeLabelPair as merchantLabelPair
+  Code as MerchantCode,
+  nameMessages as MerchantName,
+  codeLabelPair as merchantLabelPair
 } from "./merchant/menu"
 import { codeMenuContentPair as fundPair } from "./fund"
 import {
-    Code as FundCode,
-    nameMessages as FundName,
-    codeLabelPair as fundLabelPair
+  Code as FundCode,
+  nameMessages as FundName,
+  codeLabelPair as fundLabelPair
 } from "./fund/menu"
 import { codeMenuContentPair as systemPair } from "./system"
 import {
-    Code as SystemCode,
-    nameMessages as SystemNameMessages,
-    codeLabelPair as systemLabelPair
+  Code as SystemCode,
+  nameMessages as SystemNameMessages,
+  codeLabelPair as systemLabelPair
 } from "./system/menu"
 import { codeMenuContentPair as systemAdminPair } from "./system-admin"
 import {
-    Code as SystemAdminCode,
-    nameMessages as SystemAdminNameMessages,
-    codeLabelPair as systemAdminLabelPair
+  Code as SystemAdminCode,
+  nameMessages as SystemAdminNameMessages,
+  codeLabelPair as systemAdminLabelPair
 } from "./system-admin/menu"
 import { codeMenuContentPair as logPair } from "./log"
 import {
-    Code as LogCode,
-    nameMessages as LogNameMessages,
-    codeLabelPair as logLabelPair
+  Code as LogCode,
+  nameMessages as LogNameMessages,
+  codeLabelPair as logLabelPair
 } from "./log/menu"
 import { useLocale, getTrans } from "./i18n"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
-    let locale = useLocale()
-    let authCodes = useMenuCodes(codePaths)
-    codes = codes ?? authCodes
-    let items = codes
-        .map((code) => {
-            let label = itemLabel({ code, locale })
+  let locale = useLocale()
+  let authCodes = useMenuCodes(codePaths)
+  codes = codes ?? authCodes
+  let items = codes
+    .map((code) => {
+      let label = itemLabel({ code, locale })
 
-            return label ? (
-                <MenuItem
-                    key={code}
-                    code={code}
-                    path={`${url}/${code}`}
-                    label={label}
-                />
-            ) : undefined
-        })
-        .filter((item) => !!item)
+      return label ? (
+        <MenuItem
+          key={code}
+          code={code}
+          path={`${url}/${code}`}
+          label={label}
+        />
+      ) : undefined
+    })
+    .filter((item) => !!item)
 
-    return items && items.length ? (
-        <SideNav.Level title={title}>
-            <SideNav.Level>{items}</SideNav.Level>
-        </SideNav.Level>
-    ) : null
+  return items && items.length ? (
+    <SideNav.Level
+      title={title}
+      css={css`
+        border-bottom: 1px solid #edf1f7;
+
+        .bb-SideNavLevelTitle {
+          display: flex;
+          align-items: center;
+          line-height: 1.25rem;
+          min-height: 2.75em;
+          margin-bottom: 0;
+          padding-left: 0.6rem;
+          text-transform: none;
+        }
+      `}
+    >
+      <SideNav.Level
+        css={css`
+          li.bb-ListItem {
+            border-top: 1px solid #edf1f7;
+            margin-bottom: 0;
+          }
+        `}
+      >
+        {items}
+      </SideNav.Level>
+    </SideNav.Level>
+  ) : null
 }
 
 const MenuItem = ({ code, path, label, ...props }) => {
-    let ref = useRef()
-    let { pathname } = useLocation()
-    let isActive = path == pathname
+  let ref = useRef()
+  let { pathname } = useLocation()
+  let isActive = path == pathname
 
-    useEffect(() => {
-        isActive ? ref?.current?.focus() : ref?.current?.blur()
-    }, [path, isActive])
+  useEffect(() => {
+    isActive ? ref?.current?.focus() : ref?.current?.blur()
+  }, [path, isActive])
 
-    if (!label) {
-        return null
-    }
+  if (!label) {
+    return null
+  }
 
-    return (
-        <SideNav.Item navId={path} isActive={isActive}>
-            <Link ref={ref} to={path}>
-                {label}
-            </Link>
-        </SideNav.Item>
-    )
+  return (
+    <SideNav.Item
+      navId={path}
+      isActive={isActive}
+      css={css`
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+      `}
+    >
+      <Link
+        ref={ref}
+        to={path}
+        css={css`
+          padding-left: 2.2rem;
+        `}
+      >
+        {label}
+      </Link>
+    </SideNav.Item>
+  )
 }
 
 export const allMenuContentPairs = () => [
-    platformPair,
-    promotionPair,
-    playerManagementPair,
-    agentManagementPair,
-    gameManagementPair,
-    reportManagementPair,
-    merchantPair,
-    fundPair,
-    systemPair,
-    systemAdminPair,
-    logPair
+  platformPair,
+  promotionPair,
+  playerManagementPair,
+  agentManagementPair,
+  gameManagementPair,
+  reportManagementPair,
+  merchantPair,
+  fundPair,
+  systemPair,
+  systemAdminPair,
+  logPair
 ]
 
 export const AllMenus = ({ codes }) => {
-    let authCodes = useMenuCodes()
-    codes = codes ?? authCodes
-    let list = allMenuContentPairs()
-    return codes
-        .map((code) => {
-            return <MenuByCode key={code} code={code} pairs={list} />
-        })
-        .filter((item) => !!item)
+  let authCodes = useMenuCodes()
+  codes = codes ?? authCodes
+  let list = allMenuContentPairs()
+  return codes
+    .map((code) => {
+      return <MenuByCode key={code} code={code} pairs={list} />
+    })
+    .filter((item) => !!item)
 }
 
 export const useLabel = ({ codes = [] }) => {
-    let locale = useLocale()
-    let label = moduleLabel
-    let subLabelPairs = [
-        playerManagementLabelPair,
-        agentManagementLabelPair,
-        systemLabelPair,
-        gameManagementLabelPair,
-        reportManagementLabelPair,
-        merchantLabelPair,
-        fundLabelPair,
-        platformLabelPair,
-        promotionLabelPair,
-        logLabelPair,
-        systemAdminLabelPair
-    ]
-    return findlLabel({
-        locale,
-        codes,
-        label,
-        subLabelPairs
-    })
+  let locale = useLocale()
+  let label = moduleLabel
+  let subLabelPairs = [
+    playerManagementLabelPair,
+    agentManagementLabelPair,
+    systemLabelPair,
+    gameManagementLabelPair,
+    reportManagementLabelPair,
+    merchantLabelPair,
+    fundLabelPair,
+    platformLabelPair,
+    promotionLabelPair,
+    logLabelPair,
+    systemAdminLabelPair
+  ]
+  return findlLabel({
+    locale,
+    codes,
+    label,
+    subLabelPairs
+  })
 }
 
 //TODO: cache?
 export const findlLabel = ({ locale, codes = [], label, subLabelPairs }) => {
-    let [code = "", ...rest] = codes
-    code = code.toLowerCase()
+  let [code = "", ...rest] = codes
+  code = code.toLowerCase()
 
-    if (rest.length === 0) {
-        return label({ locale, code })
-    }
+  if (rest.length === 0) {
+    return label({ locale, code })
+  }
 
-    let [, subLabel] = subLabelPairs.find(([id]) => id === code) ?? []
+  let [, subLabel] = subLabelPairs.find(([id]) => id === code) ?? []
 
-    return subLabel && subLabel({ locale, code, codes: rest })
+  return subLabel && subLabel({ locale, code, codes: rest })
 }
 
 const moduleLabel = ({ code = "", locale }) => {
-    switch (code) {
-        case PlatformCode:
-            return getTrans(PlatformNameMessages, locale)
-        case PromotionCode:
-            return getTrans(PromotionNameMessages, locale)
-        case PlayerManagementCode:
-            return getTrans(PlayerManagementNameMessages, locale)
-        case AgentManagementCode:
-            return getTrans(AgentManagementNameMessages, locale)
-        case GameManagementCode:
-            return getTrans(GameManagementNameMessages, locale)
-        case ReportManagementCode:
-            return getTrans(ReportManagementNameMessages, locale)
-        case MerchantCode:
-            return getTrans(MerchantName, locale)
-        case FundCode:
-            return getTrans(FundName, locale)
-        case SystemCode:
-            return getTrans(SystemNameMessages, locale)
-        case SystemAdminCode:
-            return getTrans(SystemAdminNameMessages, locale)
-        case LogCode:
-            return getTrans(LogNameMessages, locale)
-        default:
-            return ""
-    }
+  switch (code) {
+    case PlatformCode:
+      return getTrans(PlatformNameMessages, locale)
+    case PromotionCode:
+      return getTrans(PromotionNameMessages, locale)
+    case PlayerManagementCode:
+      return getTrans(PlayerManagementNameMessages, locale)
+    case AgentManagementCode:
+      return getTrans(AgentManagementNameMessages, locale)
+    case GameManagementCode:
+      return getTrans(GameManagementNameMessages, locale)
+    case ReportManagementCode:
+      return getTrans(ReportManagementNameMessages, locale)
+    case MerchantCode:
+      return getTrans(MerchantName, locale)
+    case FundCode:
+      return getTrans(FundName, locale)
+    case SystemCode:
+      return getTrans(SystemNameMessages, locale)
+    case SystemAdminCode:
+      return getTrans(SystemAdminNameMessages, locale)
+    case LogCode:
+      return getTrans(LogNameMessages, locale)
+    default:
+      return ""
+  }
 }
 
 const MenuByCode = ({ code = "", pairs = [] }) => {
-    let [, pair] = pairs.find(([id]) => id === code) ?? []
-    if (pair) {
-        let [Menu] = pair
-        return <Menu />
-    }
+  let [, pair] = pairs.find(([id]) => id === code) ?? []
+  if (pair) {
+    let [Menu] = pair
+    return <Menu />
+  }
 
-    return null
+  return null
 }
 
 export const find = (path = [], list = []) => {
-    let [code, ...restPath] = path
-    code = code.toLowerCase()
-    let menu = list.find((item) => item?.code?.toLowerCase() === code) ?? {}
+  let [code, ...restPath] = path
+  code = code.toLowerCase()
+  let menu = list.find((item) => item?.code?.toLowerCase() === code) ?? {}
 
-    if (restPath.length === 0) {
-        return menu
-    }
+  if (restPath.length === 0) {
+    return menu
+  }
 
-    return find(restPath, menu?.subMenus)
+  return find(restPath, menu?.subMenus)
 }
 
 export const memoizedFind = memoize(find)

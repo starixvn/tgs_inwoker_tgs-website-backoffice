@@ -48,7 +48,7 @@ describe.skip("Admin user", () => {
 
   const selectRandomPlatform = async () => {
     await page.waitForSelector(
-      `#page-merchant-bar select[brandId="brandId"] option[value*="-"]`
+      `#page-merchant-bar select[brandId="brandId"] option[value*="-"]:not(:first-child)`
     )
   }
 
