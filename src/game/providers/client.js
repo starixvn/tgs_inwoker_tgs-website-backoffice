@@ -38,6 +38,11 @@ export const useAddSubGameProvider = (data) => {
   return usePostData(SUB_PROVIDER_API, data)
 }
 
+export const useSubGameProvider = (code) => {
+  let url = code ? `${SUB_PROVIDER_API}/${code}` : undefined
+  return useGet(url)
+}
+
 export const useUpdateGameProvider = (id, data) => {
   let url = id ? `${API}/${id}` : ""
   return usePutData(url, data)

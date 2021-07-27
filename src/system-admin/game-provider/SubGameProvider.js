@@ -22,6 +22,7 @@ import {
 import FormDialog from "../../form/FormDialog"
 import { Trans, useTrans } from "../../i18n"
 import {
+  useSubGameProvider,
   useAddSubGameProvider,
   useUpdateSubGameProvider
 } from "../../game/providers/client"
@@ -185,9 +186,23 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
   })
 
   let { gameProviderId, code } = record
+  let {
+    isLoading: isLoadingSubGameProvider,
+    data,
+    error: subGameProviderError
+  } = useSubGameProvider(code)
+
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
     useUpdateSubGameProvider(gameProviderId, code, formData)
+
+  if (isLoadingSubGameProvider) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (subGameProviderError) {
+    return <AlertDialog {...subGameProviderError} onClickClose={dialog.hide} />
+  }
 
   const onSubmit = (data) => {
     setSubmit(data)
@@ -202,7 +217,7 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
   return (
     <Backdrop {...dialog}>
       <FormDialog
-        defaultValues={clone(record)}
+        defaultValues={clone(data)}
         onSubmit={onSubmit}
         result={result}
         isLoading={isLoading}

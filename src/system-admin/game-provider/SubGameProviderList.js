@@ -157,13 +157,12 @@ const ActionBar = ({ gameProviderId, search, mutate, isLoading, ...props }) => {
           gameProviderId={gameProviderId}
           onSubmitted={mutate}
         />
-        <LocalizationMenuButton />
       </Set>
     </Level>
   )
 }
 
-//TODO: gameProviderId?
+//TODO: rm
 const LocalizationMenuButton = ({}) => {
   let uploadGameProviderLocalizationListDialog = useModalState()
 

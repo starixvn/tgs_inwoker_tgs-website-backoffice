@@ -132,7 +132,6 @@ const SearchBar = ({
   search,
   isLoading
 }) => {
-  let dev = isDev()
   let namePlaceholder = useTrans({
     zh: "名称",
     en: "Name"
@@ -145,7 +144,7 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
         <Set>
-          {dev && <DateInputRange />}
+          <DateInputRange />
           <PromotionStatusSelect name="status" />
           <InputField
             name="name"

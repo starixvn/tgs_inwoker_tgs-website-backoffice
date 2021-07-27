@@ -228,7 +228,6 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
 }
 
 const EditBody = ({ readOnly = false } = {}) => {
-  let dev = isDev()
   const { control, getValues } = useFormContext()
   let brandId = getValues("brandId")
 
@@ -253,7 +252,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         brandId={brandId}
         required={required}
         disabled={readOnly}
-        showLocalizationAddonAfter={dev}
+        showLocalizationAddonAfter
       />
 
       <Label name="from" required={required}>
@@ -285,7 +284,7 @@ const EditBody = ({ readOnly = false } = {}) => {
       </Label>
       <TextareaField
         name="content"
-        showLocalizationAddonAfter={dev}
+        showLocalizationAddonAfter
         brandId={brandId}
         required={required}
         disabled={readOnly}

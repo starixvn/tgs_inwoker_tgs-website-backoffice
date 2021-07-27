@@ -93,36 +93,34 @@ const useColumns = ({ mutate, items = [] }) => {
       }
     ]
 
-    if (isDev()) {
-      if (adminUser) {
-        columns.push(
-          textColumn({
-            accessor: "resellerName",
-            Header: <Trans zh="总公司" en="Reseller" />,
-            disableSortBy: true
-          })
-        )
-      }
+    if (adminUser) {
+      columns.push(
+        textColumn({
+          accessor: "resellerName",
+          Header: <Trans zh="总公司" en="Reseller" />,
+          disableSortBy: true
+        })
+      )
+    }
 
-      if (adminUser || resellerUser) {
-        columns.push(
-          textColumn({
-            accessor: "licenseeName",
-            Header: <Trans zh="公司" en="Licensee" />,
-            disableSortBy: true
-          })
-        )
-      }
+    if (adminUser || resellerUser) {
+      columns.push(
+        textColumn({
+          accessor: "licenseeName",
+          Header: <Trans zh="公司" en="Licensee" />,
+          disableSortBy: true
+        })
+      )
+    }
 
-      if (adminUser || resellerUser || licenseeUser) {
-        columns.push(
-          textColumn({
-            accessor: "brandName",
-            Header: <Trans zh="平台" en="Platform" />,
-            disableSortBy: true
-          })
-        )
-      }
+    if (adminUser || resellerUser || licenseeUser) {
+      columns.push(
+        textColumn({
+          accessor: "brandName",
+          Header: <Trans zh="平台" en="Platform" />,
+          disableSortBy: true
+        })
+      )
     }
 
     if (hasAnyMenu) {

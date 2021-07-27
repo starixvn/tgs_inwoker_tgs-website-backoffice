@@ -127,7 +127,6 @@ const DialogCss = css`
 `
 
 const EditBody = ({ readOnly = false } = {}) => {
-  let dev = isDev()
   let { setValue, control, getValues } = useFormContext()
   let brandId = getValues("brandId")
   let target = useWatch({
@@ -255,7 +254,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         brandId={brandId}
         required={required}
         disabled={readOnly}
-        showLocalizationAddonAfter={dev}
+        showLocalizationAddonAfter
       />
 
       <Label name="content" required={required} flex="1 auto">
@@ -266,7 +265,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         brandId={brandId}
         imagesUploadUrl={toFileUploadPath("stationLetter")}
         readOnly={readOnly}
-        showLocalizationAddonAfter={dev}
+        showLocalizationAddonAfter
       />
     </FieldValues>
   )

@@ -159,7 +159,6 @@ const TabsDialog = ({
 }
 
 const ViewTabs = ({ playerCode, brandId, player, tab }) => {
-  let dev = isDev()
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -169,7 +168,7 @@ const ViewTabs = ({ playerCode, brandId, player, tab }) => {
         <BettingTab {...tab} />
         <PlayerOperationTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
-        {dev && <PlayerPromotionTab {...tab} />}
+        <PlayerPromotionTab {...tab} />
       </TabList>
       <PlayerPanel player={player} {...tab} />
       <ContractPanel player={player} {...tab} />
@@ -186,13 +185,11 @@ const ViewTabs = ({ playerCode, brandId, player, tab }) => {
         brandId={brandId}
         {...tab}
       />
-      {dev && (
-        <PlayerPromotionPanel
-          playerCode={playerCode}
-          brandId={brandId}
-          {...tab}
-        />
-      )}
+      <PlayerPromotionPanel
+        playerCode={playerCode}
+        brandId={brandId}
+        {...tab}
+      />
     </Tabs>
   )
 }
