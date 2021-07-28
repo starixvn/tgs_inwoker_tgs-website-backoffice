@@ -160,7 +160,7 @@ export const GameRoundDialog = ({
                 <Trans zh="游戏厂商" en="Game Providedr" />
               </NormalLabel>
               <Box alignY="center" whiteSpace="nowrap">
-                {record.gameProviderCode}
+                {record.gameProviderName}
               </Box>
 
               <NormalLabel>
