@@ -107,7 +107,7 @@ const BatchAddGameListDialog = ({ gameProviderId, onSubmitted, dialog }) => {
   let { isLoading, result, error, mutate, deleteCache } =
     useAddGameProviderGameList(formData)
 
-  let columns = useColumns({ items, formMethods })
+  let columns = useColumns({ gameProviderId, items, formMethods })
   const onSubmit = ({ games = [], ...rest }) => {
     setSubmit({ gameProviderId, games })
   }
@@ -150,7 +150,7 @@ const BatchAddGameListDialog = ({ gameProviderId, onSubmitted, dialog }) => {
   )
 }
 
-const useColumns = ({ items = [], formMethods }) => {
+const useColumns = ({ gameProviderId, items = [], formMethods }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
@@ -195,6 +195,7 @@ const useColumns = ({ items = [], formMethods }) => {
           return (
             <Set orientation="horizontal" alignX="center">
               <EditGameDisclosure
+                gameProviderId={gameProviderId}
                 record={record}
                 onChange={(game) => {
                   formMethods?.setValue(`${GameListFieldName}.${index}`, game)
@@ -207,16 +208,17 @@ const useColumns = ({ items = [], formMethods }) => {
     ]
 
     return columns
-  }, [JSON.stringify(items)])
+  }, [gameProviderId, JSON.stringify(items)])
 }
 
-const EditGameDisclosure = ({ record, onChange }) => {
+const EditGameDisclosure = ({ gameProviderId, record, onChange }) => {
   let dialog = useModalState()
   return (
     <>
       <EditDisclosure {...dialog} />
       {dialog.visible && (
         <EditGameDialog
+          gameProviderId={gameProviderId}
           record={record}
           submitText={<ConfirmText />}
           onChange={onChange}
@@ -227,7 +229,7 @@ const EditGameDisclosure = ({ record, onChange }) => {
   )
 }
 
-const EditGameDialog = ({ record, onChange, dialog }) => {
+const EditGameDialog = ({ gameProviderId, record, onChange, dialog }) => {
   let title = useTrans({
     zh: "Edit Game",
     en: "Edit Game"
@@ -241,7 +243,7 @@ const EditGameDialog = ({ record, onChange, dialog }) => {
   return (
     <Backdrop {...dialog}>
       <FormDialog
-        defaultValues={clone(record)}
+        defaultValues={{ gameProviderId, ...clone(record) }}
         submitText={<ConfirmText />}
         title={title}
         onSubmit={onSubmit}
