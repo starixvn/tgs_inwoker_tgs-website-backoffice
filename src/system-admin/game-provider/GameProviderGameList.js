@@ -194,6 +194,7 @@ const ActionBar = ({
 
         <BatchAddGameProviderGameListDisclosure
           gameProviderId={gameProviderId}
+          gameProviderCode={gameProviderCode}
           onSubmitted={mutate}
         />
 

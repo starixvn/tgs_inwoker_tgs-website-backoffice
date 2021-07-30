@@ -14,7 +14,8 @@ import {
   Dialog,
   Card,
   Spinner,
-  Alert
+  Alert,
+  DropdownMenu
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, {
@@ -49,29 +50,46 @@ import { useDropzone } from "react-dropzone"
 import { GameProviderGameFormBody } from "./GameProviderGame"
 import { ConfirmText } from "../../button/ActionButtons"
 import sequenceColumn from "../../table/column/sequence"
-import { Update } from "./menu"
+import { View, Update } from "./menu"
 
 export const BatchAddGameProviderGameListDisclosure = ({
   gameProviderId,
+  gameProviderCode,
   onSubmitted
 }) => {
-  let dialog = useModalState()
+  let uploadDialog = useModalState()
 
-  let isDisplay = useIsDisplayMenuByRoute([Update])
-  if (!isDisplay) {
+  let viewable = useIsDisplayMenuByRoute([View])
+  let editable = useIsDisplayMenuByRoute([Update])
+  if (!viewable) {
     return null
   }
 
   return (
     <>
-      <Disclosure {...dialog}>
-        <Trans zh="批量" en="Batch" />
-      </Disclosure>
-      {dialog.visible && (
+      <DropdownMenu
+        menu={
+          <>
+            {editable && (
+              <DropdownMenu.Item
+                id="batch-upload-game-list-dialog-disclosure"
+                onClick={uploadDialog.show}
+              >
+                <Trans zh="上传" en="Upload" />
+              </DropdownMenu.Item>
+            )}
+          </>
+        }
+      >
+        <Button iconAfter="chevron-down">
+          <Trans zh="批量" en="Batch" />
+        </Button>
+      </DropdownMenu>
+      {uploadDialog.visible && (
         <BatchAddGameListDialog
           gameProviderId={gameProviderId}
           onSubmitted={onSubmitted}
-          dialog={dialog}
+          dialog={uploadDialog}
         />
       )}
     </>
