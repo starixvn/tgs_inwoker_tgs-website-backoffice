@@ -90,10 +90,8 @@ describe("Admin user", () => {
       page
     })
 
-    await Promise.all([
-      page.waitForLoadState("networkidle"),
-      page.waitForTimeout(1000) /* FIXME: wait for render update*/
-    ])
+    await page.waitForLoadState("networkidle")
+    await page.waitForLoadState("domcontentloaded")
 
     let code = await page.$eval(
       `#game-list [data-row-id="0"] [data-column-id="code"]`,

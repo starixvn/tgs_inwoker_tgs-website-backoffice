@@ -80,6 +80,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="add-announcement-dialog"
       defaultValues={{
         brandId,
         subject: "",
@@ -158,6 +159,7 @@ const ViewDialog = ({ record, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="view-announcement-dialog"
       defaultValues={{
         ...record,
         from,
@@ -206,6 +208,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="edit-announcement-dialog"
       defaultValues={{
         ...record,
         from: parseDate(record.from),
@@ -258,7 +261,7 @@ const EditBody = ({ readOnly = false } = {}) => {
       <Label name="from" required={required}>
         <Trans zh="开始时间" en="Start" />
       </Label>
-      <Box>
+      <Box id="from-date-box">
         <DateTimeInput
           name="from"
           maxDate={maxDate}
@@ -270,7 +273,7 @@ const EditBody = ({ readOnly = false } = {}) => {
       <Label name="to" required={required}>
         <Trans zh="结束时间" en="End" />
       </Label>
-      <Box>
+      <Box id="to-date-box">
         <DateTimeInput
           name="to"
           minDate={minDate}
@@ -368,14 +371,21 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="verify-announcement-dialog"
       formMethods={formMethods}
       onSubmit={onSubmit}
+      actionButtonsProps={{
+        submitProps: {
+          "data-type": "approve"
+        }
+      }}
       onClickSubmit={(event) => {
         setType("pass")
       }}
       addonButtons={
         <Button
           type="submit"
+          data-type="reject"
           onClick={() => {
             setType("reject")
           }}

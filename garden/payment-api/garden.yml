@@ -1,0 +1,16 @@
+kind: Module
+type: container
+name: payment-api
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-api:stag-1.2.3
+services:
+  - name: payment-api
+    dependencies:
+      - postgres
+      - nats
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Nats: "nats://nats:4222"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

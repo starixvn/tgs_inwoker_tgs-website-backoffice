@@ -12,6 +12,7 @@ name: backoffice-site
 dockerfile: Dockerfile
 exclude:
   - garden
+  - spec
 services:
   - name: backoffice-site
     dependencies:

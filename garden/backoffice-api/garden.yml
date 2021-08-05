@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: backoffice-api
-image: backoffice-api #registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-api:dev-202107010149
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-api:stag-1.2.4 #backoffice-api #registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-api:dev-202107010149
 services:
   - name: backoffice-api
     dependencies:
@@ -13,6 +13,7 @@ services:
       - promotion-api
       - report-api
       - log-api
+      - payment-api
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
@@ -20,6 +21,7 @@ services:
       File__FileServiceBaseUrl: "http://file-service"
       Promotion__Url: "http://promotion-api"
       Report__Url: "http://report-api"
+      BackOffice__PaymentServiceBaseUrl: "http://payment-api"
     ingresses:
       - hostname: backoffice.localhost
         path: /api

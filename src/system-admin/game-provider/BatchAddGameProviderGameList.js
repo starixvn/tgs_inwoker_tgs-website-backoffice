@@ -51,6 +51,7 @@ import { GameProviderGameFormBody } from "./GameProviderGame"
 import { ConfirmText } from "../../button/ActionButtons"
 import sequenceColumn from "../../table/column/sequence"
 import { View, Update } from "./menu"
+import { isDev } from "../../env"
 
 export const BatchAddGameProviderGameListDisclosure = ({
   gameProviderId,
@@ -70,9 +71,19 @@ export const BatchAddGameProviderGameListDisclosure = ({
       <DropdownMenu
         menu={
           <>
+            {isDev && (
+              <DropdownMenu.Item
+                id="download-game-list"
+                use="a"
+                href={`/api/game/export/${gameProviderId}`}
+                download={`${gameProviderCode}.xlsx`}
+              >
+                <Trans zh="汇出" en="Export" />
+              </DropdownMenu.Item>
+            )}
             {editable && (
               <DropdownMenu.Item
-                id="batch-upload-game-list-dialog-disclosure"
+                id="upload-game-list-dialog-disclosure"
                 onClick={uploadDialog.show}
               >
                 <Trans zh="上传" en="Upload" />

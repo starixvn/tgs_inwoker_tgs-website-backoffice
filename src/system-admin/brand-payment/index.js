@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { Heading, Stack, Button, Set, Text, Box, Level } from "bumbag"
+import {
+  Stack,
+  Button,
+  Set,
+  Text,
+  Box,
+  Level,
+  DropdownMenu,
+  useModalState
+} from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -8,7 +17,7 @@ import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute
 } from "../../user/context"
-import { Code, Update } from "./menu"
+import { Code, Update, View } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Trans, useTrans } from "../../i18n"
 import { SearchButton } from "../../button/SearchButton"
@@ -31,8 +40,9 @@ import {
   EditBrandPaymentDisclosure
 } from "./BrandPayment"
 import AlertDialog from "../../dialog/Alert"
-import { PaymentMethodChannelListDisclosure } from "./PaymentMethodChannelList"
+import { PaymentMethodChannelListDialog } from "./PaymentMethodChannelList"
 import { SortOrder } from "../../table/order"
+import { PaymentListDialog } from "./PaymentList"
 
 export { Code }
 
@@ -76,7 +86,7 @@ const Body = () => {
             isLoading={isLoading}
           />
           <Set orientation="horizontal">
-            <PaymentMethodChannelListDisclosure onSubmitted={mutate} />
+            <PaymentListDropdownMenu onSubmitted={mutate} />
             <AddBrandPaymentDisclosure
               brandId={state.brandId}
               onSubmitted={mutate}
@@ -97,6 +107,53 @@ const Body = () => {
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const PaymentListDropdownMenu = ({ onSubmitted }) => {
+  let paymentListDialog = useModalState()
+  let paymentMethodListDialog = useModalState()
+  let paymentChannelListDialog = useModalState()
+  let paymentMethodChannelListDialogdialog = useModalState()
+
+  let isDisplay = useIsDisplayMenuByRoute([View])
+  if (!isDisplay) {
+    return null
+  }
+
+  return (
+    <>
+      <DropdownMenu
+        menu={
+          <>
+            <DropdownMenu.Item onClick={paymentListDialog.show}>
+              <Trans zh="支付厂商" en="Payment Provider" />
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onClick={paymentMethodChannelListDialogdialog.show}
+            >
+              <Trans zh="Payment Method Channel" en="Payment Method Channel" />
+            </DropdownMenu.Item>
+          </>
+        }
+      >
+        <Button iconAfter="chevron-down">
+          <Trans zh="支付列表" en="Payment  List" />
+        </Button>
+      </DropdownMenu>
+      {paymentListDialog.visible && (
+        <PaymentListDialog
+          dialog={paymentListDialog}
+          onSubmitted={onSubmitted}
+        />
+      )}
+      {paymentMethodChannelListDialogdialog.visible && (
+        <PaymentMethodChannelListDialog
+          dialog={paymentMethodChannelListDialogdialog}
+          onSubmitted={onSubmitted}
+        />
+      )}
+    </>
   )
 }
 

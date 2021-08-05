@@ -31,14 +31,14 @@ import { ImageLinkButton } from "../../button/LinkButton"
 export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
 
-  let isDisplay = useIsDisplayMenuByRoute([View])
+  let isDisplay = useIsDisplayMenuByRoute([Update])
   if (!isDisplay) {
     return null
   }
 
   return (
     <>
-      <Disclosure palette="primary" {...dialog}>
+      <Disclosure palette="primary" {...dialog} {...props}>
         <Trans zh="客服 QR 设置" en="Instant Messaging" />
       </Disclosure>
       {dialog.visible && (

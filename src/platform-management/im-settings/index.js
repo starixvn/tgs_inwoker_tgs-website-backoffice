@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { Dialog, useModalState, Set } from "bumbag"
+import { Set } from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -12,6 +12,8 @@ import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { Trans } from "../../i18n"
 import { MessengerDialogDisclosure } from "./MessengerDialog"
+import { EditLiveChatDialogDisclosure } from "./LiveChatDialog"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -43,7 +45,10 @@ const Body = () => {
 const BodyContent = ({ brandId }) => {
   return (
     <PageContent title={<Trans en="IM Settings" zh="平台运营设置" />}>
-      <MessengerDialogDisclosure brandId={brandId} />
+      <Set>
+        <MessengerDialogDisclosure brandId={brandId} />
+        {isDev() && <EditLiveChatDialogDisclosure brandId={brandId} />}
+      </Set>
     </PageContent>
   )
 }

@@ -32,3 +32,19 @@ export const useDeletePlatformMessenger = (id) => {
   let url = id ? `${API}/${id}` : ""
   return useDelete(url)
 }
+
+const LiveChatAPI = "/api/BrandLiveChat"
+export const usePlatformLiveChat = (brandId) => {
+  let url = brandId ? `${LiveChatAPI}/${brandId}` : ""
+  return useGet(url)
+}
+
+export const useAddPlatformLiveChat = (brandId, formData) => {
+  let url = brandId ? `${LiveChatAPI}/${brandId}` : ""
+  return usePostData(url, formData)
+}
+
+export const useUpdatePlatformLiveChat = (brandId, data) => {
+  let url = brandId && data ? `${LiveChatAPI}/${brandId}` : ""
+  return usePutData(url, data)
+}

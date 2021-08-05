@@ -33,6 +33,7 @@ import { useGameRoundList } from "../../game/round/client"
 import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -72,6 +73,7 @@ const ReportContent = ({ brandId }) => {
     to: dateRange.end,
     username: "",
     roundId: "",
+    externalRoundId: "",
     status: "",
     gameProviderId: ""
   })
@@ -117,6 +119,7 @@ const ReportContent = ({ brandId }) => {
           end={to}
           username={username}
           roundId={roundId}
+          externalRoundId={state?.externalRoundId}
           status={status}
           gameProviderId={gameProviderId}
           minDate={minDate}
@@ -156,6 +159,7 @@ const SearchBar = ({
   end,
   username,
   roundId,
+  externalRoundId,
   status,
   gameProviderId,
   minDate,
@@ -171,6 +175,7 @@ const SearchBar = ({
       end,
       username,
       roundId,
+      externalRoundId,
       status,
       gameProviderId
     }
@@ -186,6 +191,11 @@ const SearchBar = ({
   let roundIdPlaceholder = useTrans({
     zh: "订单ID",
     en: "Round ID"
+  })
+
+  let externalRoundIdPlaceholder = useTrans({
+    zh: "三方订单ID",
+    en: "External Id"
   })
   return (
     <FormProvider {...formMethods}>
@@ -208,6 +218,13 @@ const SearchBar = ({
             showEmptyFieldValueAddonAfter
             placeholder={roundIdPlaceholder}
           />
+          {isDev && (
+            <InputField
+              name="externalRoundId"
+              showEmptyFieldValueAddonAfter
+              placeholder={externalRoundIdPlaceholder}
+            />
+          )}
           <GameRoundStatusSelect name="status" />
           {/* TODO: filter by brandId? or use BrandGameProviderSelect? */}
           <GameProviderSelect name="gameProviderId" />

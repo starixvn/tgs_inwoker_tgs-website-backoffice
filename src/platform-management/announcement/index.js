@@ -139,7 +139,11 @@ const BodyContent = ({ brandId }) => {
       title={<Trans zh="公告管理" en="Announcements" />}
       actionBar={
         <Box alignX="right">
-          <AddButton brandId={brandId} onSubmitted={mutate} />
+          <AddButton
+            id="add-announcement-dialog-disclosure"
+            brandId={brandId}
+            onSubmitted={mutate}
+          />
         </Box>
       }
     >
@@ -170,9 +174,10 @@ const BodyContent = ({ brandId }) => {
           </Tab>
         </TabList>
         {hasVerifyAuth && (
-          <TabPanel tabId={InVerifyName} {...tab}>
+          <TabPanel id="in-verify-tab-panel" tabId={InVerifyName} {...tab}>
             {statusName === InVerifyName && (
               <AsyncTable
+                id="announcement"
                 statusName={statusName}
                 data={data}
                 state={state}
@@ -185,9 +190,10 @@ const BodyContent = ({ brandId }) => {
             )}
           </TabPanel>
         )}
-        <TabPanel tabId={EffectiveName} {...tab}>
+        <TabPanel id="effective-tab-panel" tabId={EffectiveName} {...tab}>
           {statusName === EffectiveName && (
             <EffectiveTable
+              id="announcement"
               statusName={statusName}
               data={data}
               setPageIndex={setPageIndex}
@@ -200,9 +206,10 @@ const BodyContent = ({ brandId }) => {
             />
           )}
         </TabPanel>
-        <TabPanel tabId={ExpiredName} {...tab}>
+        <TabPanel id="expired-tab-panel" tabId={ExpiredName} {...tab}>
           {statusName === ExpiredName && (
             <AsyncTable
+              id="announcement"
               statusName={statusName}
               data={data}
               state={state}
@@ -214,9 +221,10 @@ const BodyContent = ({ brandId }) => {
             />
           )}
         </TabPanel>
-        <TabPanel tabId={RejectedName} {...tab}>
+        <TabPanel id="rejected-tab-panel" tabId={RejectedName} {...tab}>
           {statusName === RejectedName && (
             <AsyncTable
+              id="announcement"
               statusName={statusName}
               data={data}
               state={state}
@@ -235,6 +243,7 @@ const BodyContent = ({ brandId }) => {
 }
 
 const AsyncTable = ({
+  id,
   statusName,
   state,
   setPageIndex,
@@ -254,6 +263,7 @@ const AsyncTable = ({
 
   return (
     <Table
+      id={id}
       columns={columns}
       data={data?.items}
       initialState={state}
@@ -267,6 +277,7 @@ const AsyncTable = ({
 }
 
 const EffectiveTable = ({
+  id,
   statusName,
   state,
   setPageIndex,
@@ -325,6 +336,7 @@ const EffectiveTable = ({
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
       <Stack spacing="minor-1">
         <Table
+          id={id}
           columns={columns}
           data={data?.items}
           initialState={state}
@@ -502,10 +514,15 @@ const useColumns = ({
           return (
             <Set alignX="center">
               {tabStatusName === InVerifyName && (
-                <VerifyButton record={value} onSubmitted={mutate} />
+                <VerifyButton
+                  id="verify-announcement-dialog-disclosure"
+                  record={value}
+                  onSubmitted={mutate}
+                />
               )}
               {tabStatusName === EffectiveName && (
                 <EditButton
+                  id="edit-announcement-dialog-disclosure"
                   brandId={brandId}
                   record={value}
                   onSubmitted={mutate}
@@ -514,7 +531,10 @@ const useColumns = ({
               {(tabStatusName === EffectiveName ||
                 tabStatusName === ExpiredName ||
                 tabStatusName === RejectedName) && (
-                <ViewButton record={value} />
+                <ViewButton
+                  id="view-announcement-dialog-disclosure"
+                  record={value}
+                />
               )}
             </Set>
           )

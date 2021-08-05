@@ -3,52 +3,62 @@ import { urlWith, useGet, usePostData, usePutData, useDelete } from "../client"
 let API = "/api/Payment"
 
 let CodeTranPairs = [
-    [
-        "Manual",
-        {
-            zh: "手动支付",
-            en: "Manual Payment"
-        }
-    ]
+  [
+    "Manual",
+    {
+      zh: "手动支付",
+      en: "Manual Payment"
+    }
+  ]
 ]
 
 export const usePaymentList = () => {
-    let { data, ...rest } = useGet(API)
+  let { data, ...rest } = useGet(API)
 
-    let items = []
-    if (data?.data?.length > 0) {
-        items = data?.data?.map((item) => {
-            let [code, trans] =
-                CodeTranPairs.find(([code, trans]) => code === item.code) ?? []
+  let items = []
+  if (data?.data?.length > 0) {
+    items = data?.data?.map((item) => {
+      let [code, trans] =
+        CodeTranPairs.find(([code, trans]) => code === item.code) ?? []
 
-            return {
-                ...item,
-                trans: trans
-            }
-        })
-    }
+      return {
+        ...item,
+        trans: trans
+      }
+    })
+  }
 
-    return {
-        data: items,
-        ...rest
-    }
+  return {
+    data: items,
+    ...rest
+  }
+}
+
+export const useAddPayment = (data) => {
+  let url = data ? `/api/payment` : ""
+  return usePostData(url, data)
+}
+
+export const useUpdatePayment = (data) => {
+  let url = data ? `/api/payment` : ""
+  return usePutData(url, data)
 }
 
 export const usePaymentMethodChannelList = () => {
-    let { data, ...rest } = useGet(`/api/pmc`)
+  let { data, ...rest } = useGet(`/api/pmc`)
 
-    return {
-        data: data?.data,
-        ...rest
-    }
+  return {
+    data: data?.data,
+    ...rest
+  }
 }
 
 export const useAddPaymentMethodChannel = (data) => {
-    let url = data ? `/api/pmc` : ""
-    return usePostData(url, data)
+  let url = data ? `/api/pmc` : ""
+  return usePostData(url, data)
 }
 
 export const useDeletePaymentMethodChannel = (id) => {
-    let url = id ? `/api/pmc/${id}` : ""
-    return useDelete(url)
+  let url = id ? `/api/pmc/${id}` : ""
+  return useDelete(url)
 }

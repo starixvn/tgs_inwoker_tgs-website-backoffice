@@ -34,8 +34,9 @@ import Textarea from "../../textarea"
 import formatXml from "xml-formatter"
 import { stringifyJSON } from "../../text/json"
 
+//TODO: replace monaco config
 loader.config({
-  paths: { vs: "/monaco-editor@0.24.0/min/vs" }
+  paths: { vs: "/monaco-editor@0.25.2/min/vs" }
 })
 
 export const GameRoundDialog = ({

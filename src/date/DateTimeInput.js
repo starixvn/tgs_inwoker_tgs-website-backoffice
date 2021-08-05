@@ -12,68 +12,69 @@ import "./react-datepicker.css"
 registerLocale("zh", zh)
 
 export const DateTimeInput = ({
-    name,
-    required,
-    value,
-    dateFormat = DateTimeFormat,
-    showTimeInput = true,
-    disabled,
-    minDate,
-    maxDate,
-    validate,
-    ...props
+  id,
+  name,
+  required,
+  value,
+  dateFormat = DateTimeFormat,
+  showTimeInput = true,
+  disabled,
+  minDate,
+  maxDate,
+  validate,
+  ...props
 }) => {
-    let locale = useLocale()
+  let locale = useLocale()
 
-    let formMethods = useFormContext()
-    let {
-        control,
-        formState: { errors }
-    } = formMethods
+  let formMethods = useFormContext()
+  let {
+    control,
+    formState: { errors }
+  } = formMethods
 
-    return (
-        <Controller
-            control={control}
-            name={name}
-            defaultValue={props?.defaultValue}
-            rules={{ required, validate }}
-            shouldUnregister={true}
-            render={({
-                field: { onChange, onBlur, value, ref },
-                fieldState: { invalid, isTouched, isDirty }
-            }) => {
-                if (disabled) {
-                    return (
-                        <Input
-                            defaultValue={formatDateTime(dateFormat, value)}
-                            disabled={disabled}
-                        />
-                    )
-                }
+  return (
+    <Controller
+      control={control}
+      name={name}
+      defaultValue={props?.defaultValue}
+      rules={{ required, validate }}
+      shouldUnregister={true}
+      render={({
+        field: { onChange, onBlur, value, ref },
+        fieldState: { invalid, isTouched, isDirty }
+      }) => {
+        if (disabled) {
+          return (
+            <Input
+              defaultValue={formatDateTime(dateFormat, value)}
+              disabled={disabled}
+            />
+          )
+        }
 
-                let error = errors[name]
-                let state = error && "danger"
+        let error = errors[name]
+        let state = error && "danger"
 
-                return (
-                    <DatePicker
-                        selected={value}
-                        dateFormat={dateFormat}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        minDate={minDate}
-                        maxDate={maxDate}
-                        locale={locale}
-                        customInput={
-                            <Input name={name} inputRef={ref} state={state} />
-                        }
-                        showTimeInput={showTimeInput}
-                        timeInputLabel=""
-                        {...props}
-                    />
-                )
-            }}
-        />
-    )
+        return (
+          <DatePicker
+            selected={value}
+            dateFormat={dateFormat}
+            onChange={onChange}
+            onBlur={onBlur}
+            minDate={minDate}
+            maxDate={maxDate}
+            locale={locale}
+            customInput={
+              <Input id={id} name={name} inputRef={ref} state={state} />
+            }
+            showTimeInput={showTimeInput}
+            timeInputLabel=""
+            {...props}
+          />
+        )
+      }}
+    />
+  )
 }
 
 export default DateTimeInput

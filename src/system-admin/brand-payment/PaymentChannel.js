@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import {
-    Stack,
-    Heading,
-    Box,
-    Button,
-    Text,
-    Group,
-    Set,
-    Flex,
-    FieldStack,
-    useModalState,
-    Dialog,
-    Card,
-    FieldWrapper,
-    Columns,
-    DropdownMenu
+  Stack,
+  Heading,
+  Box,
+  Button,
+  Text,
+  Group,
+  Set,
+  Flex,
+  FieldStack,
+  useModalState,
+  Dialog,
+  Card,
+  FieldWrapper,
+  Columns,
+  DropdownMenu
 } from "bumbag"
-import Disclosure from "../../dialog/Disclosure"
+import { AddDisclosure } from "../../dialog/Disclosure"
 import { usePaymentMethodChannelList } from "../../payment/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { Table } from "../../table"
@@ -28,13 +28,11 @@ import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import { Trans } from "../../i18n"
 
 export const AddPaymentChannelDisclosure = ({ onSubmitted }) => {
-    let dialog = useModalState()
+  let dialog = useModalState()
 
-    return (
-        <>
-            <Disclosure>
-                <Trans zh="Add Payment Channel" en="Add Payment Channel" />
-            </Disclosure>
-        </>
-    )
+  return (
+    <>
+      <AddDisclosure {...dialog} />
+    </>
+  )
 }
