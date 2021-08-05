@@ -47,7 +47,7 @@ const BodyContent = ({ brandId }) => {
     <PageContent title={<Trans en="IM Settings" zh="平台运营设置" />}>
       <Set>
         <MessengerDialogDisclosure brandId={brandId} />
-        {isDev() && <EditLiveChatDialogDisclosure brandId={brandId} />}
+        {/* {isDev() && <EditLiveChatDialogDisclosure brandId={brandId} />} */}
       </Set>
     </PageContent>
   )
