@@ -47,7 +47,8 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
   let { isLoading, data, error, mutate, deleteCache } =
     usePlatformLiveChat(brandId)
 
-  let hasLiveChat = !!(!isLoading && data && !error)
+  let record = data?.data
+  let hasLiveChat = !!(!isLoading && record)
 
   let isDisplay = useIsDisplayMenuByRoute([ViewLiveChat])
   if (!isDisplay) {
@@ -107,7 +108,7 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
       {updateDialog.visible && (
         <EditLiveChatDialog
           brandId={brandId}
-          record={data}
+          record={record}
           dialog={updateDialog}
           onSubmitted={onSubmitted}
         />

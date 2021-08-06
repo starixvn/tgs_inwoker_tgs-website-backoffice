@@ -210,15 +210,6 @@ const FormBody = ({}) => {
           </NormalLabel>
           <PasswordInputField name="confirmPassword" matchPassword={password} />
 
-          <NormalLabel>
-            <Trans zh="代理种类" en="Level Type" />
-          </NormalLabel>
-          <AgentLevelSelect
-            name={LevelTypeFieldName}
-            required
-            placeholder={false}
-          />
-
           {!parentAgentRequired && (
             <>
               <NormalLabel>
@@ -227,6 +218,15 @@ const FormBody = ({}) => {
               <AgentTypeSelect name={AgentTypeFieldName} required />
             </>
           )}
+
+          <NormalLabel>
+            <Trans zh="代理种类" en="Level Type" />
+          </NormalLabel>
+          <AgentLevelSelect
+            name={LevelTypeFieldName}
+            required
+            placeholder={false}
+          />
 
           {parentAgentRequired && (
             <>
