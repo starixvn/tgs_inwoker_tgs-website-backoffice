@@ -12,7 +12,7 @@ import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { Trans } from "../../i18n"
 import { MessengerDialogDisclosure } from "./MessengerDialog"
-import { EditLiveChatDialogDisclosure } from "./LiveChatDialog"
+import { CreateOrEditLiveChatDialogDisclosure } from "./LiveChatDialog"
 import { isDev } from "../../env"
 
 export { Code }
@@ -47,7 +47,7 @@ const BodyContent = ({ brandId }) => {
     <PageContent title={<Trans en="IM Settings" zh="平台运营设置" />}>
       <Set>
         <MessengerDialogDisclosure brandId={brandId} />
-        {/* {isDev() && <EditLiveChatDialogDisclosure brandId={brandId} />} */}
+        <CreateOrEditLiveChatDialogDisclosure brandId={brandId} />
       </Set>
     </PageContent>
   )

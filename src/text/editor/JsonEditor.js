@@ -32,7 +32,7 @@ loader.config({
 const DefaultJsonOptions = {
   colorDecorators: true,
   contextmenu: false,
-  minimap: { enabled: true },
+  minimap: { enabled: false },
   hideCursorInOverviewRuler: false
 }
 

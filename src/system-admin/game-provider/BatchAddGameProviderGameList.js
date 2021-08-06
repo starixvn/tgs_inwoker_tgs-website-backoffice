@@ -71,16 +71,14 @@ export const BatchAddGameProviderGameListDisclosure = ({
       <DropdownMenu
         menu={
           <>
-            {isDev && (
-              <DropdownMenu.Item
-                id="download-game-list"
-                use="a"
-                href={`/api/game/export/${gameProviderId}`}
-                download={`${gameProviderCode}.xlsx`}
-              >
-                <Trans zh="汇出" en="Export" />
-              </DropdownMenu.Item>
-            )}
+            <DropdownMenu.Item
+              id="download-game-list"
+              use="a"
+              href={`/api/game/export/${gameProviderId}`}
+              download={`${gameProviderCode}.xlsx`}
+            >
+              <Trans zh="汇出" en="Export" />
+            </DropdownMenu.Item>
             {editable && (
               <DropdownMenu.Item
                 id="upload-game-list-dialog-disclosure"

@@ -218,13 +218,11 @@ const SearchBar = ({
             showEmptyFieldValueAddonAfter
             placeholder={roundIdPlaceholder}
           />
-          {isDev && (
-            <InputField
-              name="externalRoundId"
-              showEmptyFieldValueAddonAfter
-              placeholder={externalRoundIdPlaceholder}
-            />
-          )}
+          <InputField
+            name="externalRoundId"
+            showEmptyFieldValueAddonAfter
+            placeholder={externalRoundIdPlaceholder}
+          />
           <GameRoundStatusSelect name="status" />
           {/* TODO: filter by brandId? or use BrandGameProviderSelect? */}
           <GameProviderSelect name="gameProviderId" />
