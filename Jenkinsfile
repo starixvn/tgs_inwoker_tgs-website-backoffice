@@ -62,7 +62,7 @@ pipeline {
             steps {	  
                 script {			
                     withKubeConfig([credentialsId: env.k8s_config]) {
-						sh "kubectl set image deployment/${componentArray[i]} ${componentArray[i]}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
+						sh "kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
                     }
                 }
             }
