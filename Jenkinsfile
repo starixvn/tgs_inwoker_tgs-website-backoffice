@@ -33,7 +33,7 @@ pipeline {
                     }
 					TAG = env.kube_ns + '-' + TAG
                     message += "\nBranch: ${env.GIT_BRANCH}" 
-                    message += "\nTag: ${env.TAG}"
+                    message += "\nTag: ${TAG}"
                     message += "\nEnv: $env.kube_ns"
                 }
                 sh "echo 'env: $env.kube_ns'"
