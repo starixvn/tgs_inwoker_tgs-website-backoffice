@@ -3,9 +3,9 @@ pipeline {
 	agent any
 	
 	environment {
-		TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
-		gitlab_user_pwd = credentials('gitlab-user-pwd')
-		GitUrl = "gitlab.com/rayprosoft/tgs-website-backoffice.git"
+        TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
+        gitlab_user_pwd = credentials('gitlab-user-pwd')
+        GitUrl = "gitlab.com/rayprosoft/tgs-website-backoffice.git"
         ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2154554/tags"
 	}
 	
@@ -20,7 +20,7 @@ pipeline {
                             env.ENV = "prod";
                             env.k8s_config = 'stag-k8s-config';
                             break;
-                        case ['release/current', 'origin/release/current']:
+                        case ['release/current', 'origin/release']:
                             env.ENV = "staging";
                             env.k8s_config = 'stag-k8s-config';
                             break;
@@ -29,13 +29,13 @@ pipeline {
                             env.k8s_config = 'k8s-kube-config' 
                             break;
                     }
-					TAG = env.ENV + '-' + TAG
+					env.TAG = env.ENV + '-' + env.TAG
                     message += "\nBranch: ${env.GIT_BRANCH}" 
-                    message += "\nTag: ${TAG}"
+                    message += "\nTag: ${env.TAG}"
                     message += "\nEnv: $env.kube_ns"
                 }
                 sh "echo 'env: $env.ENV'"
-                sh "echo 'tag: ${TAG}'"
+                sh "echo 'tag: $env.TAG'"
             }
         }
 	
