@@ -19,24 +19,24 @@ pipeline {
                     switch(env.GIT_BRANCH)
                     {
                         case ['main', 'origin/main']:
-                            env.ENV = "prod";
+                            env.kube_ns = "prod";
                             env.k8s_config = 'stag-k8s-config';
                             break;
                         case ['release/current', 'origin/release']:
-                            env.ENV = "staging";
+                            env.kube_ns = "staging";
                             env.k8s_config = 'stag-k8s-config';
                             break;
                         default:
-                            env.ENV = "dev";
+                            env.kube_ns = "dev";
                             env.k8s_config = 'k8s-kube-config' 
                             break;
                     }
-					env.TAG = env.ENV + '-' + env.TAG
+					TAG = env.kube_ns + '-' + TAG
                     message += "\nBranch: ${env.GIT_BRANCH}" 
                     message += "\nTag: ${env.TAG}"
                     message += "\nEnv: $env.kube_ns"
                 }
-                sh "echo 'env: $env.ENV'"
+                sh "echo 'env: $env.kube_ns'"
                 sh "echo 'tag: $env.TAG'"
             }
         }
@@ -70,7 +70,7 @@ pipeline {
 		stage('Add Tag on Prod') {
             when {
                 expression {
-                    return env.ENV == 'prod';
+                    return env.kube_ns == 'prod';
                 }
             }			
             steps {	
