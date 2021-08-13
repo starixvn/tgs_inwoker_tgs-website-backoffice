@@ -4,7 +4,9 @@ pipeline {
 	
 	environment {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
+		Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
         gitlab_user_pwd = credentials('gitlab-user-pwd')
+		Image = "backoffice-site"
         GitUrl = "gitlab.com/rayprosoft/tgs-website-backoffice.git"
         ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2154554/tags"
 	}
@@ -39,17 +41,32 @@ pipeline {
             }
         }
 	
-		stage('Build') {   
+		stage('Run npm install') {   
 			steps {	  
 				sh 'npm install'
-				sh 'npm run build:docker'
-				sh 'npm run push:docker'
-							
-				withKubeConfig([credentialsId:  env.k8s_config ]) {
-					sh "npm run deploy:k8s"
-				}
 			}
 		}
+		stage('Docker Build') {   
+            steps {	  			    
+                sh "sudo docker build -t ${Registry}${Image}:${TAG} ."
+                sh "sudo docker build -t ${Registry}${Image}:$env.kube_ns ."
+            }
+        }			
+        stage('Docker Push') {   
+            steps {	  
+                sh "sudo docker push ${Registry}${Image}:${TAG}"
+                sh "sudo docker push ${Registry}${Image}:$env.kube_ns"
+            }
+        }	
+        stage('Deployment') {   
+            steps {	  
+                script {			
+                    withKubeConfig([credentialsId: env.k8s_config]) {
+						sh "kubectl set image deployment/${componentArray[i]} ${componentArray[i]}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
+                    }
+                }
+            }
+        }
 		stage('Add Tag on Prod') {
             when {
                 expression {
