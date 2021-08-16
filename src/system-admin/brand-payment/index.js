@@ -43,6 +43,8 @@ import AlertDialog from "../../dialog/Alert"
 import { PaymentMethodChannelListDialog } from "./PaymentMethodChannelList"
 import { SortOrder } from "../../table/order"
 import { PaymentListDialog } from "./PaymentList"
+import { PaymentMethodListDialog } from "./PaymentMethodList"
+import { PaymentChannelListDialog } from "./PaymentChannelList"
 
 export { Code }
 
@@ -127,7 +129,13 @@ const PaymentListDropdownMenu = ({ onSubmitted }) => {
         menu={
           <>
             <DropdownMenu.Item onClick={paymentListDialog.show}>
-              <Trans zh="支付厂商" en="Payment Provider" />
+              <Trans zh="支付厂商" en="Payment Providers" />
+            </DropdownMenu.Item>
+            <DropdownMenu.Item onClick={paymentMethodListDialog.show}>
+              <Trans zh="支付方式" en="Payment Methods" />
+            </DropdownMenu.Item>
+            <DropdownMenu.Item onClick={paymentChannelListDialog.show}>
+              <Trans zh="支付通道" en="Payment Channels" />
             </DropdownMenu.Item>
             <DropdownMenu.Item
               onClick={paymentMethodChannelListDialogdialog.show}
@@ -144,6 +152,18 @@ const PaymentListDropdownMenu = ({ onSubmitted }) => {
       {paymentListDialog.visible && (
         <PaymentListDialog
           dialog={paymentListDialog}
+          onSubmitted={onSubmitted}
+        />
+      )}
+      {paymentMethodListDialog.visible && (
+        <PaymentMethodListDialog
+          dialog={paymentMethodListDialog}
+          onSubmitted={onSubmitted}
+        />
+      )}
+      {paymentChannelListDialog.visible && (
+        <PaymentChannelListDialog
+          dialog={paymentChannelListDialog}
           onSubmitted={onSubmitted}
         />
       )}

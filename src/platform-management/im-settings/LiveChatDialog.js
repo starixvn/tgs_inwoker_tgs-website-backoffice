@@ -12,7 +12,8 @@ import {
   Alert,
   FieldStack,
   Group,
-  Spinner
+  Spinner,
+  FieldWrapper
 } from "bumbag"
 import { ViewLiveChat, UpdateLiveChat } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -73,7 +74,7 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
               {...addDialog}
               {...props}
             >
-              <Trans zh="即时客服厂商" en="Live Chat Service Provider" />
+              <Trans zh="三方即時客服廠商" en="3rd Party Live Chat Provider" />
             </Disclosure>
           )}
           {hasLiveChat && (
@@ -85,7 +86,10 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
                 {...updateDialog}
                 {...props}
               >
-                <Trans zh="即时客服厂商" en="Live Chat Service Provider" />
+                <Trans
+                  zh="三方即時客服廠商"
+                  en="3rd Party Live Chat Provider"
+                />
               </Disclosure>
               <Disclosure
                 color="danger"
@@ -169,8 +173,8 @@ const AddLiveChatDialog = ({ brandId, dialog, onSubmitted }) => {
   let readOnly = !useIsDisplayMenuByRoute([UpdateLiveChat])
 
   let title = useTrans({
-    zh: "新增即时客服厂商",
-    en: "Add Live Chat Service Provider"
+    zh: "新增三方即時客服廠商",
+    en: "Add 3rd Party Live Chat Provider"
   })
 
   let [formData, setSubmit] = useState()
@@ -216,8 +220,8 @@ const EditLiveChatDialog = ({ brandId, record, dialog, onSubmitted }) => {
   let readOnly = !useIsDisplayMenuByRoute([UpdateLiveChat])
 
   let title = useTrans({
-    zh: "即时客服厂商",
-    en: "Live Chat Service Provider"
+    zh: "编辑三方即時客服廠商",
+    en: "Edit 3rd Party Live Chat Provider"
   })
 
   let [formData, setSubmit] = useState()
@@ -245,7 +249,6 @@ const EditLiveChatDialog = ({ brandId, record, dialog, onSubmitted }) => {
       result={result}
       error={error}
       onSubmitted={() => {
-        console.log("onSubmitted formData", formData)
         onSubmitted?.(formData)
 
         reset()
@@ -266,13 +269,19 @@ const EditLiveChatDialog = ({ brandId, record, dialog, onSubmitted }) => {
 const FormBody = ({ readOnly }) => {
   return (
     <FieldStack>
-      <InputField name="name" readOnly={readOnly} />
-      <JsonEditor
-        name="setting"
-        height="40vh"
+      <InputField
+        name="name"
         readOnly={readOnly}
-        disabled={readOnly}
+        label={<Trans zh="名称" en="Name" />}
       />
+      <FieldWrapper label={<Trans zh="设定" en="Setting" />}>
+        <JsonEditor
+          name="setting"
+          height="40vh"
+          readOnly={readOnly}
+          disabled={readOnly}
+        />
+      </FieldWrapper>
     </FieldStack>
   )
 }

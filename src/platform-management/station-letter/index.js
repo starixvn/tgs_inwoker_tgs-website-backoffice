@@ -3,10 +3,10 @@ import { css, Global } from "@emotion/react"
 import { Box, Flex, Set, Button, Text, Stack } from "bumbag"
 import PageContent from "../../page/Content"
 import {
-    useIsDisplayMenuByRoute,
-    useHasSubMenuByRoute,
-    useUserBrandId,
-    useUserRoleType
+  useIsDisplayMenuByRoute,
+  useHasSubMenuByRoute,
+  useUserBrandId,
+  useUserRoleType
 } from "../../user/context"
 import { useStationLetterList } from "./client"
 import { Code } from "./menu"
@@ -16,14 +16,14 @@ import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { Trans } from "../../i18n"
 import {
-    from as statusFrom,
-    Label as StatusLabel,
-    InVerify,
-    InVerifyName,
-    Published,
-    PublishedName,
-    Rejected,
-    RejectedName
+  from as statusFrom,
+  Label as StatusLabel,
+  InVerify,
+  InVerifyName,
+  Published,
+  PublishedName,
+  Rejected,
+  RejectedName
 } from "./status"
 import { AddButton, VerifyButton, ViewButton } from "./edit"
 import { Verify as VerifyMenu, View as ViewMenu } from "./menu"
@@ -35,265 +35,252 @@ import { SortOrder } from "../../table/order"
 export { Code }
 
 export const Content = () => {
-    let isDisplay = useIsDisplayMenuByRoute()
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute()
+  if (!isDisplay) {
+    return null
+  }
 
-    return <Body />
+  return <Body />
 }
 
 const Body = () => {
-    let userBrandId = useUserBrandId()
-    let [brandId, setBrandId] = useState(userBrandId)
+  let userBrandId = useUserBrandId()
+  let [brandId, setBrandId] = useState(userBrandId)
 
-    return (
-        <Set orientation="vertical" isFilled>
-            <BrandBar
-                onBrandChange={(value) => {
-                    setBrandId(value)
-                }}
-            />
-            {brandId && <BodyContent brandId={brandId} />}
-        </Set>
-    )
+  return (
+    <Set orientation="vertical" isFilled>
+      <BrandBar
+        onBrandChange={(value) => {
+          setBrandId(value)
+        }}
+      />
+      {brandId && <BodyContent brandId={brandId} />}
+    </Set>
+  )
 }
 
 const BodyContent = ({ brandId }) => {
-    let hasVerifyAuth = useIsDisplayMenuByRoute([VerifyMenu])
-    let hasViewAuth = useIsDisplayMenuByRoute([ViewMenu])
+  let hasVerifyAuth = useIsDisplayMenuByRoute([VerifyMenu])
+  let hasViewAuth = useIsDisplayMenuByRoute([ViewMenu])
 
-    let { state, setState, setPageIndex, setSortOrder } = useTable({
-        brandId,
-        statusName: hasVerifyAuth
-            ? InVerifyName
-            : hasViewAuth
-            ? PublishedName
-            : null
-    })
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
+    statusName: hasVerifyAuth
+      ? InVerifyName
+      : hasViewAuth
+      ? PublishedName
+      : null
+  })
 
-    useEffect(() => {
-        setState({ pageIndex: 0, brandId })
-    }, [brandId])
+  useEffect(() => {
+    setState({ pageIndex: 0, brandId })
+  }, [brandId])
 
-    let { pageSize, statusName } = state
-    let {
-        isLoading,
-        data = {},
-        error,
-        mutate,
-        deleteCache
-    } = useStationLetterList({
-        ...toApiParams(state),
-        status: statusFrom(statusName),
-        sortby: "createdOn",
-        orderby: SortOrder.Descending
-    })
+  let { pageSize, statusName } = state
+  let {
+    isLoading,
+    data = {},
+    error,
+    mutate,
+    deleteCache
+  } = useStationLetterList({
+    ...toApiParams(state),
+    status: statusFrom(statusName),
+    sortby: "createdOn",
+    orderby: SortOrder.Descending
+  })
 
-    let columns = useColumns({ mutate, statusName, items: data?.items })
+  let columns = useColumns({ mutate, statusName, items: data?.items })
 
-    let tab = useTabState({
-        selectedId: statusName
-    })
+  let tab = useTabState({
+    selectedId: statusName
+  })
 
-    const activeTab = (newStatusName) => () => {
-        if (newStatusName === statusName) {
-            mutate()
-        }
-        setState({
-            pageIndex: 0,
-            statusName: newStatusName,
-            sortBy: []
-        })
+  const activeTab = (newStatusName) => () => {
+    if (newStatusName === statusName) {
+      mutate()
     }
+    setState({
+      pageIndex: 0,
+      statusName: newStatusName,
+      sortBy: []
+    })
+  }
 
-    return (
-        <PageContent
-            title={<Trans zh="站内信" en="Station Letter" />}
-            actionBar={
-                <Box alignX="right">
-                    <AddButton brandId={brandId} onSubmitted={mutate} />
-                </Box>
-            }
-        >
-            <Tabs>
-                <TabList {...tab}>
-                    {hasVerifyAuth && (
-                        <Tab
-                            tabId={InVerifyName}
-                            onClick={activeTab(InVerifyName)}
-                            {...tab}
-                        >
-                            <StatusLabel value={InVerify} />
-                        </Tab>
-                    )}
-                    <Tab
-                        tabId={PublishedName}
-                        onClick={activeTab(PublishedName)}
-                        {...tab}
-                    >
-                        <StatusLabel value={Published} />
-                    </Tab>
-                    <Tab
-                        tabId={RejectedName}
-                        onClick={activeTab(RejectedName)}
-                        {...tab}
-                    >
-                        <StatusLabel value={Rejected} />
-                    </Tab>
-                </TabList>
-                {hasVerifyAuth && (
-                    <TabPanel tabId={InVerifyName} {...tab}>
-                        {statusName === InVerifyName && (
-                            <Table
-                                columns={columns}
-                                data={data?.items}
-                                initialState={state}
-                                controlledState={state}
-                                pageCount={pageCount(
-                                    pageSize,
-                                    data?.totalCount
-                                )}
-                                setPageIndex={setPageIndex}
-                                setSortOrder={setSortOrder}
-                                isLoading={isLoading}
-                            />
-                        )}
-                    </TabPanel>
-                )}
+  return (
+    <PageContent
+      title={<Trans zh="站内信" en="Station Letter" />}
+      actionBar={
+        <Box alignX="right">
+          <AddButton brandId={brandId} onSubmitted={mutate} />
+        </Box>
+      }
+    >
+      <Tabs>
+        <TabList {...tab}>
+          {hasVerifyAuth && (
+            <Tab
+              tabId={InVerifyName}
+              onClick={activeTab(InVerifyName)}
+              {...tab}
+            >
+              <StatusLabel value={InVerify} />
+            </Tab>
+          )}
+          <Tab
+            tabId={PublishedName}
+            onClick={activeTab(PublishedName)}
+            {...tab}
+          >
+            <StatusLabel value={Published} />
+          </Tab>
+          <Tab tabId={RejectedName} onClick={activeTab(RejectedName)} {...tab}>
+            <StatusLabel value={Rejected} />
+          </Tab>
+        </TabList>
+        {hasVerifyAuth && (
+          <TabPanel tabId={InVerifyName} {...tab}>
+            {statusName === InVerifyName && (
+              <Table
+                columns={columns}
+                data={data?.items}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+              />
+            )}
+          </TabPanel>
+        )}
 
-                <TabPanel tabId={PublishedName} {...tab}>
-                    {statusName === PublishedName && (
-                        <Table
-                            columns={columns}
-                            data={data?.items}
-                            initialState={state}
-                            controlledState={state}
-                            pageCount={pageCount(pageSize, data?.totalCount)}
-                            setPageIndex={setPageIndex}
-                            setSortOrder={setSortOrder}
-                            isLoading={isLoading}
-                        />
-                    )}
-                </TabPanel>
+        <TabPanel tabId={PublishedName} {...tab}>
+          {statusName === PublishedName && (
+            <Table
+              columns={columns}
+              data={data?.items}
+              initialState={state}
+              controlledState={state}
+              pageCount={pageCount(pageSize, data?.totalCount)}
+              setPageIndex={setPageIndex}
+              setSortOrder={setSortOrder}
+              isLoading={isLoading}
+            />
+          )}
+        </TabPanel>
 
-                <TabPanel tabId={RejectedName} {...tab}>
-                    {statusName === RejectedName && (
-                        <Table
-                            columns={columns}
-                            data={data?.items}
-                            initialState={state}
-                            controlledState={state}
-                            pageCount={pageCount(pageSize, data?.totalCount)}
-                            setPageIndex={setPageIndex}
-                            setSortOrder={setSortOrder}
-                            isLoading={isLoading}
-                        />
-                    )}
-                </TabPanel>
-            </Tabs>
-            {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-        </PageContent>
-    )
+        <TabPanel tabId={RejectedName} {...tab}>
+          {statusName === RejectedName && (
+            <Table
+              columns={columns}
+              data={data?.items}
+              initialState={state}
+              controlledState={state}
+              pageCount={pageCount(pageSize, data?.totalCount)}
+              setPageIndex={setPageIndex}
+              setSortOrder={setSortOrder}
+              isLoading={isLoading}
+            />
+          )}
+        </TabPanel>
+      </Tabs>
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+    </PageContent>
+  )
 }
 
 const useColumns = ({ mutate, statusName, items = [] }) => {
-    let hasVerifyAuth = useIsDisplayMenuByRoute([VerifyMenu])
-    let hasViewAuth = useIsDisplayMenuByRoute([ViewMenu])
+  let hasVerifyAuth = useIsDisplayMenuByRoute([VerifyMenu])
+  let hasViewAuth = useIsDisplayMenuByRoute([ViewMenu])
 
-    return useMemo(() => {
-        let columns = [
-            sequenceColumn(),
-            {
-                accessor: "subject",
-                Header: <Trans zh="主题" en="Subject" />,
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                }
-            },
-            {
-                accessor: "createdByUsername",
-                Header: <Trans zh="操作人" en="Operator" />,
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                }
-            },
-            dateTimeColumn({
-                accessor: "createdOn",
-                Header: <Trans zh="创建时间" en="Created On" />,
-                disableSortBy: true
-            }),
-            {
-                id: "status",
-                accessor: (record) => record,
-                Header: <Trans zh="状态" en="Status" />,
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                },
-                Cell: ({ value }) => {
-                    let { status } = value
-                    return (
-                        <Text.Block
-                            css={css`
-                                white-space: nowrap;
-                            `}
-                        >
-                            <StatusLabel value={status} />
-                        </Text.Block>
-                    )
-                }
-            }
-        ]
-
-        let hasAnyMenu =
-            statusName === InVerifyName ? hasVerifyAuth : hasViewAuth
-
-        if (hasAnyMenu) {
-            columns.push({
-                id: "actions",
-                disableSortBy: true,
-                Header: <Trans zh="操作" en="Actions" />,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                },
-                accessor: (row) => {
-                    return row
-                },
-                Cell: ({ value }) => {
-                    return (
-                        <Box alignX="center">
-                            <Set>
-                                {statusName === InVerifyName && (
-                                    <VerifyButton
-                                        record={value}
-                                        onSubmitted={mutate}
-                                    />
-                                )}
-                                {(statusName === PublishedName ||
-                                    statusName === RejectedName) && (
-                                    <ViewButton record={value} />
-                                )}
-                            </Set>
-                        </Box>
-                    )
-                }
-            })
+  return useMemo(() => {
+    let columns = [
+      sequenceColumn(),
+      {
+        accessor: "subject",
+        Header: <Trans zh="主题" en="Subject" />,
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
         }
-        return columns
-    }, [statusName, JSON.stringify(items)])
+      },
+      {
+        accessor: "createdByUsername",
+        Header: <Trans zh="操作人" en="Operator" />,
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        }
+      },
+      dateTimeColumn({
+        accessor: "createdOn",
+        Header: <Trans zh="创建时间" en="Created On" />,
+        disableSortBy: true
+      }),
+      {
+        id: "status",
+        accessor: (record) => record,
+        Header: <Trans zh="状态" en="Status" />,
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        },
+        Cell: ({ value }) => {
+          let { status } = value
+          return (
+            <Text.Block
+              css={css`
+                white-space: nowrap;
+              `}
+            >
+              <StatusLabel value={status} />
+            </Text.Block>
+          )
+        }
+      }
+    ]
+
+    let hasAnyMenu = statusName === InVerifyName ? hasVerifyAuth : hasViewAuth
+
+    if (hasAnyMenu) {
+      columns.push({
+        id: "actions",
+        disableSortBy: true,
+        Header: <Trans zh="操作" en="Actions" />,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        },
+        accessor: (row) => {
+          return row
+        },
+        Cell: ({ value }) => {
+          return (
+            <Box alignX="center">
+              <Set>
+                {statusName === InVerifyName && (
+                  <VerifyButton record={value} onSubmitted={mutate} />
+                )}
+                {(statusName === PublishedName ||
+                  statusName === RejectedName) && <ViewButton record={value} />}
+              </Set>
+            </Box>
+          )
+        }
+      })
+    }
+    return columns
+  }, [statusName, JSON.stringify(items)])
 }

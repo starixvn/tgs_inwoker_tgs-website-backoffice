@@ -36,11 +36,34 @@ export const usePaymentList = () => {
 
 export const useAddPayment = (data) => {
   let url = data ? `/api/payment` : ""
-  return usePostData(url, data)
+  return usePutData(url, data)
 }
 
-export const useUpdatePayment = (data) => {
-  let url = data ? `/api/payment` : ""
+let PAYMENT_CHANNEL_API = "/api/PaymentChannel"
+export const usePaymentChannelList = () => {
+  let { data, ...rest } = useGet(PAYMENT_CHANNEL_API)
+  return {
+    data: data?.data,
+    ...rest
+  }
+}
+
+export const useAddPaymentChannel = (data) => {
+  let url = data ? `${PAYMENT_CHANNEL_API}` : ""
+  return usePutData(url, data)
+}
+
+let PAYMENT_METHOD_API = "/api/PaymentMethod"
+export const usePaymentMethodList = () => {
+  let { data, ...rest } = useGet(PAYMENT_METHOD_API)
+  return {
+    data: data?.data,
+    ...rest
+  }
+}
+
+export const useAddPaymentMethod = (data) => {
+  let url = data ? `${PAYMENT_METHOD_API}` : ""
   return usePutData(url, data)
 }
 

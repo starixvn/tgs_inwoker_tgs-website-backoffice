@@ -39,7 +39,7 @@ export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
   return (
     <>
       <Disclosure palette="primary" {...dialog} {...props}>
-        <Trans zh="客服 QR 设置" en="Instant Messaging" />
+        <Trans zh="一般通訊軟體" en="Instant Messaging" />
       </Disclosure>
       {dialog.visible && (
         <InstantMessagingDialog brandId={brandId} dialog={dialog} />
@@ -50,7 +50,7 @@ export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
 
 const InstantMessagingDialog = ({ brandId, dialog }) => {
   let title = useTrans({
-    zh: "客服 QR 设置",
+    zh: "一般通訊軟體",
     en: "Instant Messaging"
   })
 

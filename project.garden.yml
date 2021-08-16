@@ -18,7 +18,7 @@ services:
     dependencies:
       - backoffice-api
     env:
-      MODE: "development" #"production"
+      MODE: "production" #"development" #"production"
     ingresses:
       - hostname: backoffice.localhost
         path: /

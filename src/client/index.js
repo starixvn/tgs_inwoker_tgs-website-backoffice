@@ -115,11 +115,25 @@ const DefaultUpdateOptions = {
   dedupingInterval: 100
 }
 
-const deleteCacheBy = (key = "") => {
+const deleteCacheBy = (source = "") => {
+  let [key, args, errorKey, isValidatingKey] = cache.serializeKey(source)
+
   if (key) {
     cache.delete(key)
-    cache.delete(`err@${key}`)
-    cache.delete(`req@${key}`)
+  }
+  if (errorKey) {
+    cache.delete(errorKey)
+  }
+  if (isValidatingKey) {
+    cache.delete(isValidatingKey)
+  }
+}
+
+const deleteErrorCacheBy = (source = "") => {
+  let [key, args, errorKey, isValidatingKey] = cache.serializeKey(source)
+
+  if (errorKey) {
+    cache.delete(errorKey)
   }
 }
 
@@ -136,6 +150,7 @@ export const useGet = (url, options = DefaultUpdateOptions) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(key),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -158,6 +173,7 @@ export const usePostData = (url, data, options = DefaultUpdateOptions) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -191,6 +207,7 @@ export const usePostFormData = (
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -213,6 +230,7 @@ export const usePutData = (url, data, options = DefaultUpdateOptions) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -229,6 +247,7 @@ export const usePut = (url, settings, options = DefaultUpdateOptions) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -251,6 +270,7 @@ export const useDelete = (url, settings) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(key),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }

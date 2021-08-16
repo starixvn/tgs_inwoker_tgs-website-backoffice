@@ -48,6 +48,8 @@ import AlertDialog from "../../dialog/Alert"
 import { ToggleButton as StatusToggleButton } from "./status"
 import BrandBar from "../../report/BrandBar"
 import { SortOrder } from "../../table/order"
+import { NumberInput } from "../../input/NumberInput"
+import { useForm, FormProvider, useFormContext } from "react-hook-form"
 
 export { Code }
 
@@ -101,7 +103,6 @@ const BodyContent = ({ brandId }) => {
     data = {},
     error,
     mutate,
-    clearCache,
     deleteCache
   } = useAnnouncementList(
     isEffectiveTab
@@ -287,19 +288,37 @@ const EffectiveTable = ({
   mutate,
   brandId
 }) => {
-  let { pageSize } = state
-  let [displayOrders, setDisplayOrder] = useState({})
-  let [submitData, setSubmit] = useState()
+  let editable = useIsDisplayMenuByRoute([UpdateMenu])
 
+  let { pageSize } = state
+
+  let formMethods = useForm()
+  let [displayOrders, setDisplayOrders] = useState({})
+  const setDisplayOrder = (id, displayOrder) => {
+    setDisplayOrders((state) => {
+      Reflect.set(state, id, displayOrder)
+      return state
+    })
+  }
+
+  let [formData, setSubmit] = useState()
   let {
     result,
     isLoading: isChangingDisplayOrder,
     error,
     deleteCache
-  } = useChangeAnnouncementOrders(submitData)
+  } = useChangeAnnouncementOrders(formData)
+
+  const onSubmit = () => {
+    let orders = Object.entries(displayOrders).map(([key, value]) => ({
+      id: key,
+      displayOrder: value
+    }))
+    setSubmit({ orders })
+  }
 
   const reset = () => {
-    setDisplayOrder({})
+    setDisplayOrders({})
     setSubmit(null)
   }
 
@@ -316,52 +335,40 @@ const EffectiveTable = ({
     }
   }, [statusName])
 
-  const changeDisplayOrder = ({ id, value }) => {
-    let newDisplayOrders = {
-      ...displayOrders
-    }
-    Reflect.set(newDisplayOrders, id, value)
-    setDisplayOrder(newDisplayOrders)
-  }
-
   let columns = useColumns({
     mutate,
-    changeDisplayOrder,
+    displayOrders,
+    setDisplayOrder,
     statusName,
     items: data?.items,
     brandId
   })
   return (
-    <>
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Stack spacing="minor-1">
+          <Table
+            id={id}
+            columns={columns}
+            data={data?.items}
+            initialState={state}
+            controlledState={state}
+            pageCount={pageCount(pageSize, data?.totalCount)}
+            setPageIndex={setPageIndex}
+            setSortOrder={setSortOrder}
+            isLoading={isLoading}
+          />
+          {editable && (
+            <Dialog.Footer position="sticky" bottom="0">
+              <Button isLoading={isChangingDisplayOrder} type="submit">
+                <Trans zh="确认排序" en="Confirm Order" />
+              </Button>
+            </Dialog.Footer>
+          )}
+        </Stack>
+      </form>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-      <Stack spacing="minor-1">
-        <Table
-          id={id}
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-        />
-        <Dialog.Footer position="sticky" bottom="0">
-          <Button
-            isLoading={isChangingDisplayOrder}
-            onClick={() => {
-              let list = Object.entries(displayOrders).map(([key, value]) => ({
-                id: key,
-                displayOrder: value
-              }))
-              setSubmit({ orders: list })
-            }}
-          >
-            <Trans zh="确认排序" en="Confirm Order" />
-          </Button>
-        </Dialog.Footer>
-      </Stack>
-    </>
+    </FormProvider>
   )
 }
 
@@ -369,7 +376,8 @@ const useColumns = ({
   mutate,
   brandId,
   statusName: tabStatusName,
-  changeDisplayOrder,
+  displayOrders,
+  setDisplayOrder,
   items = []
 }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([UpdateMenu])
@@ -392,23 +400,25 @@ const useColumns = ({
               textAlign: "center"
             },
             Cell: ({ value }) => {
-              let { id, displayOrder = "" } = value
+              if (!hasUpdateAuth) {
+                return value.displayOrder ?? null
+              }
+
+              let { id } = value
+              let displayOrder = displayOrders[id] ?? value.displayOrder
               return (
-                <Input
-                  type="number"
+                <NumberInput
+                  name={id}
                   size="small"
+                  required
                   min="1"
                   minLength="1"
                   width="5em"
                   defaultValue={displayOrder}
                   onChange={(event) => {
-                    let value = event.target.value
-                    let number = parseInt(value)
-                    if (Number.isFinite(number)) {
-                      changeDisplayOrder({
-                        id,
-                        value: number
-                      })
+                    let displayOrder = parseInt(event.target.value)
+                    if (Number.isFinite(displayOrder)) {
+                      setDisplayOrder(id, displayOrder)
                     }
                   }}
                 />

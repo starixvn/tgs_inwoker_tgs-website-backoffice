@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Icon, Flex } from "bumbag"
 import { Menu as _Menu, findlLabel } from "../menu"
+import { Code as BannerCode, codeLabelPair as bannerPair } from "./banner/menu"
 import {
   Code as AnnouncementCode,
   codeLabelPair as announcementPair
@@ -63,6 +64,14 @@ export const Menu = ({
 
 const labelOf = ({ locale, code }) => {
   switch (code) {
+    case BannerCode:
+      return getTrans(
+        {
+          zh: "Banner 管理",
+          en: "Banners"
+        },
+        locale
+      )
     case AnnouncementCode:
       return getTrans(
         {
@@ -90,8 +99,8 @@ const labelOf = ({ locale, code }) => {
     case IMSettingsCode:
       return getTrans(
         {
-          zh: "平台运营设置",
-          en: "IM Settings"
+          zh: "客服管理",
+          en: " Customer Service Management"
         },
         locale
       )
@@ -108,6 +117,7 @@ export const codeLabelPair = [
       codes,
       label: labelOf,
       subLabelPairs: [
+        bannerPair,
         announcementPair,
         stationLetterPair,
         vipLevelPair,
