@@ -121,7 +121,12 @@ export const ToggleButton = ({ record, onSubmitted, disabled, ...props }) => {
       : "default"
   if (!editable) {
     return (
-      <Button isLoading={isLoading} palette={palette} isStatic>
+      <Button
+        data-status={record.status}
+        isLoading={isLoading}
+        palette={palette}
+        isStatic
+      >
         <Label value={record.status} />
       </Button>
     )
@@ -136,6 +141,7 @@ export const ToggleButton = ({ record, onSubmitted, disabled, ...props }) => {
   return (
     <>
       <Button
+        data-status={record.status}
         isLoading={isLoading}
         disabled={isLoading || disabled}
         palette={palette}

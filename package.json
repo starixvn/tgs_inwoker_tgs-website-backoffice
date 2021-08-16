@@ -31,7 +31,7 @@
     "faker": "^5.5.3",
     "lodash": "^4.17.21",
     "mocha": "8.4.0",
-    "playwright": "^1.13.1",
+    "playwright": "^1.14.0",
     "ramda": "^0.27.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"

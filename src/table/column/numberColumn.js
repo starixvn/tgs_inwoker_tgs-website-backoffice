@@ -1,6 +1,6 @@
 import React from "react"
 import { css, Global } from "@emotion/react"
-import { Text } from "bumbag"
+import { Text, Tooltip } from "bumbag"
 import { FormattedNumber, FormattedNumberDecimal } from "../../i18n"
 import { sumColumn, sumColumnValue } from "../sumColumn"
 
@@ -9,89 +9,91 @@ const DefaultNumberFormat = "0,0"
 const defaultValueFn = (value) => value
 
 export const numberColumn = ({
-    Cell,
-    format = DefaultNumberFormat,
-    postfix = "",
-    sumColumn: sumColumnName = "",
-    toValue = defaultValueFn,
-    ...props
+  Cell,
+  format = DefaultNumberFormat,
+  postfix = "",
+  sumColumn: sumColumnName = "",
+  toValue = defaultValueFn,
+  tooltipContent,
+  ...props
 }) => {
-    const DefaultCell = ({ value }) => (
-        <FormattedNumber value={value} format={format} postfix={postfix} />
-    )
-    Cell = Cell ?? DefaultCell
-    let basic = {
-        Cell,
-        headCell: {
-            textAlign: "center",
-            whiteSpace: "nowrap"
-        },
-        cell: {
-            textAlign: "center",
-            whiteSpace: "nowrap"
-        }
+  const DefaultCell = ({ value }) => (
+    <FormattedNumber
+      value={value}
+      format={format}
+      postfix={postfix}
+      title={tooltipContent}
+    />
+  )
+  Cell = Cell ?? DefaultCell
+  let basic = {
+    Cell,
+    headCell: {
+      textAlign: "center",
+      whiteSpace: "nowrap"
+    },
+    cell: {
+      textAlign: "center",
+      whiteSpace: "nowrap"
     }
+  }
 
-    if (sumColumnName) {
-        basic = {
-            ...basic,
-            Footer: (table) => {
-                return (
-                    <FormattedNumber
-                        value={sumColumnValue(
-                            sumColumnName,
-                            toValue,
-                            table.rows
-                        )}
-                        format={format}
-                    />
-                )
-            },
-            footerCellProps: {
-                textAlign: "center"
-            }
-        }
+  if (sumColumnName) {
+    basic = {
+      ...basic,
+      Footer: (table) => {
+        return (
+          <FormattedNumber
+            value={sumColumnValue(sumColumnName, toValue, table.rows)}
+            format={format}
+          />
+        )
+      },
+      footerCellProps: {
+        textAlign: "center"
+      }
     }
+  }
 
-    return {
-        ...basic,
-        ...props
-    }
+  return {
+    ...basic,
+    ...props
+  }
 }
 
 const DefaultNumberDecimal = "0,0.00"
 export const numberDecimalColumn = ({
-    format = DefaultNumberDecimal,
-    ...props
+  format = DefaultNumberDecimal,
+  ...props
 }) => numberColumn({ format, ...props })
 
 export const coloredNumberDecimalColumn = ({
-    value,
-    format = DefaultNumberDecimal,
-    postfix,
-    ...props
+  value,
+  format = DefaultNumberDecimal,
+  postfix,
+  ...props
 }) =>
-    numberDecimalColumn({
-        format,
-        Cell: ({ value }) => {
-            let isPositive = value >= 0
-            return (
-                <Text color={isPositive ? "success" : "danger"}>
-                    <FormattedNumberDecimal
-                        value={value}
-                        format={format}
-                        postfix={postfix}
-                    />
-                </Text>
-            )
-        },
-        ...props
-    })
+  numberDecimalColumn({
+    format,
+    Cell: ({ value }) => {
+      let isPositive = value >= 0
+      return (
+        <Text color={isPositive ? "success" : "danger"}>
+          <FormattedNumberDecimal
+            value={value}
+            format={format}
+            postfix={postfix}
+          />
+        </Text>
+      )
+    },
+    ...props
+  })
 
 export const numberDecimalPercentageColumn = ({
-    format = DefaultNumberDecimal,
-    postfix = "%",
-    ...props
+  format = DefaultNumberDecimal,
+  postfix = "%",
+  ...props
 }) => numberColumn({ format, postfix, ...props })
 
 export default numberColumn
