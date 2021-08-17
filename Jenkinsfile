@@ -60,10 +60,18 @@ pipeline {
         }	
         stage('Deployment') {   
             steps {	  
-                script {			
-                    withKubeConfig([credentialsId: env.k8s_config]) {
-                        sh "kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
+                script {	
+                    if (env.kube_ns != 'prod') {
+                        withKubeConfig([credentialsId: env.k8s_config]) {
+                            sh "kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
+                        }
+                    } else {
+                        input message: 'Ready to deploy?', ok: 'yes';
                     }
+                }
+
+                withKubeConfig([credentialsId: env.k8s_config]) {
+                    sh "kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
                 }
             }
         }
