@@ -1,6 +1,6 @@
 def message = "";
 pipeline {
-	agent any
+    agent any
 	
     environment {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
