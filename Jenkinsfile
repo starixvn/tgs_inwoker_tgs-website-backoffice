@@ -4,9 +4,9 @@ pipeline {
 	
 	environment {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
-		Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
+        Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
         gitlab_user_pwd = credentials('gitlab-user-pwd')
-		Image = "backoffice-site"
+        Image = "backoffice-site"
         GitUrl = "gitlab.com/rayprosoft/tgs-website-backoffice.git"
         ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2154554/tags"
 	}
@@ -31,7 +31,7 @@ pipeline {
                             env.k8s_config = 'k8s-kube-config' 
                             break;
                     }
-					TAG = env.kube_ns + '-' + TAG
+                    TAG = env.kube_ns + '-' + TAG
                     message += "\nBranch: ${env.GIT_BRANCH}" 
                     message += "\nTag: ${TAG}"
                     message += "\nEnv: $env.kube_ns"
@@ -43,7 +43,7 @@ pipeline {
 	
 		stage('Run npm install') {   
 			steps {	  
-				sh 'npm install'
+			    sh 'npm install'
 			}
 		}
 		stage('Docker Build') {   
