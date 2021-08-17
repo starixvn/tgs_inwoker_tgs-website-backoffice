@@ -2,16 +2,16 @@ def message = "";
 pipeline {
 	agent any
 	
-	environment {
+    environment {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
         Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
         gitlab_user_pwd = credentials('gitlab-user-pwd')
         Image = "backoffice-site"
         GitUrl = "gitlab.com/rayprosoft/tgs-website-backoffice.git"
         ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2154554/tags"
-	}
+    }
 	
-	stages {	
+    stages {	
         stage('Prepare Env') {
             steps {
                 sh "echo 'Branch: ${env.GIT_BRANCH}'";
