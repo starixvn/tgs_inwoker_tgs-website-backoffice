@@ -87,7 +87,7 @@ pipeline {
                 }
             }
         }
-	}
+    }
     post {
         success {
              sendTelegram("Pipeline: ${currentBuild.fullDisplayName} OK! ${message} \n${currentBuild.getBuildCauses()[0].shortDescription}\n")
