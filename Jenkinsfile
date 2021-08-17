@@ -12,7 +12,7 @@ pipeline {
 	}
 	
 	stages {	
-		stage('Prepare Env') {
+        stage('Prepare Env') {
             steps {
                 sh "echo 'Branch: ${env.GIT_BRANCH}'";
                 script {
@@ -41,10 +41,10 @@ pipeline {
             }
         }
 	
-		stage('Run npm install') {   
-			steps {	  
+        stage('Run npm install') {   
+            steps {	  
 			    sh 'npm install'
-			}
+            }
 		}
 		stage('Docker Build') {   
             steps {	  			    
@@ -67,7 +67,7 @@ pipeline {
                 }
             }
         }
-		stage('Add Tag on Prod') {
+        stage('Add Tag on Prod') {
             when {
                 expression {
                     return env.kube_ns == 'prod';
@@ -88,7 +88,7 @@ pipeline {
             }
         }
 	}
-	post {
+    post {
         success {
              sendTelegram("Pipeline: ${currentBuild.fullDisplayName} OK! ${message} \n${currentBuild.getBuildCauses()[0].shortDescription}\n")
         }
