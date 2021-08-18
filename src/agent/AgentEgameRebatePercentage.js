@@ -6,20 +6,20 @@ import { PercentageNumberInputField } from "../input/NumberInput"
 export const Name = "slotRebatePercentage"
 
 const AgentEgameRebateMessages = {
-    zh: "电子返佣",
-    en: "EGame Rebate"
+  zh: "电子返佣",
+  en: "EGame Rebate"
 }
 
 export const AgentEgameRebateText = () => (
-    <Trans {...AgentEgameRebateMessages} />
+  <Trans {...AgentEgameRebateMessages} />
 )
 
 export const AgentEgameRebatePercentageInputField = ({
-    name = Name,
-    required = true,
-    ...props
+  name = Name,
+  required = true,
+  ...props
 }) => <PercentageNumberInputField name={name} required={required} {...props} />
 
 export default {
-    Name
+  Name
 }

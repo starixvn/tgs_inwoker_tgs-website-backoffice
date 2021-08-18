@@ -89,9 +89,10 @@ describe("Admin user", () => {
       value: gameCode,
       page
     })
-
     await page.waitForLoadState("networkidle")
-    await page.waitForLoadState("domcontentloaded")
+    await page.waitForSelector(
+      `#game-list tbody [data-row-id="0"] [data-column-id="code"]`
+    )
 
     let code = await page.$eval(
       `#game-list [data-row-id="0"] [data-column-id="code"]`,
@@ -180,11 +181,14 @@ describe("Admin user", () => {
       page.waitForSelector(`#game-list-dialog #game-list tbody`)
     ])
 
-  const searchGameByInputNameValue = async ({ name = "", value = "", page }) =>
-    await Promise.all([
-      page.fill(`#game-list-dialog input[name="${name}"]`, value),
-      page.click(`#game-list-dialog button[type="submit"]`)
-    ])
+  const searchGameByInputNameValue = async ({
+    name = "",
+    value = "",
+    page
+  }) => {
+    await page.fill(`#game-list-dialog input[name="${name}"]`, value)
+    await page.click(`#game-list-dialog button[type="submit"]`)
+  }
 
   const searchGameProviderByInputNameValue = async ({
     name = "",

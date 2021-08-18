@@ -6,6 +6,7 @@ import { random } from "lodash"
 import numeral from "numeral"
 import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { lorem } from "faker"
+import clone from "clone-deep"
 
 let browser
 let context
@@ -36,31 +37,92 @@ describe("Admin user", () => {
   })
 
   it("should able to add -> approve -> change status -> update -> reject announcement", async () => {
-    //TODO
-    // change announcement display order
-    // reject announcement
-    // reject tab
     let announcement = await addAnnouncement()
 
+    await toInVerifyTab()
     let approve = "approve"
     await verifyAnnouncement(announcement, approve)
 
-    await changeEffectiveAnnouncementStatus()
+    await toggleChangeEffectiveAnnouncementStatus()
+    await toggleChangeEffectiveAnnouncementStatus()
 
-    await editEffectiveAnnouncement()
+    await changeEffectiveAnnouncementDisplayOrder()
+
+    let updatedAnnouncement = await editEffectiveAnnouncement(announcement)
+    await rejectAnnouncement(updatedAnnouncement)
+
+    //TODO: expired announcement?
   })
 
-  const toEffectiveTab = async (index = 0) => {
-    await page.click(`button#Effective`)
+  const toInVerifyTab = async () => {
+    await page.click(`button#InVerify`)
 
     await Promise.all([
       page.waitForLoadState("networkidle"),
-      page.waitForLoadState("domcontentloaded"),
       page.waitForSelector(`#announcement tbody`)
     ])
   }
 
-  const changeEffectiveAnnouncementStatus = async (index = 0) => {
+  const toRejectedTab = async () => {
+    await page.click(`button#Rejected`)
+
+    await Promise.all([
+      page.waitForLoadState("networkidle"),
+      page.waitForSelector(`#announcement tbody`)
+    ])
+  }
+
+  const toEffectiveTab = async () => {
+    await page.click(`button#Effective`)
+
+    await Promise.all([
+      page.waitForLoadState("networkidle"),
+      page.waitForSelector(`#announcement tbody`)
+    ])
+  }
+
+  const changeEffectiveAnnouncementDisplayOrder = async (index = 0) => {
+    await toEffectiveTab()
+
+    let displayOrder = await page.$eval(
+      `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+      ({ value }) => parseInt(value)
+    )
+
+    expect(displayOrder).to.be.above(0)
+
+    let ExpectedOrder = displayOrder + 1
+    await page.fill(
+      `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+      `${ExpectedOrder}`
+    )
+
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().endsWith("/api/announcement/changeorders") &&
+          response.status() === 200
+        )
+      }),
+      page.click(`#change-announcement-display-order-button`)
+    ])
+
+    await page.reload({ waitUntil: "networkidle" })
+    await toEffectiveTab()
+
+    await page.fill(
+      `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+      `${ExpectedOrder}`
+    )
+
+    let order = await page.$eval(
+      `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+      ({ value }) => parseInt(value)
+    )
+    expect(order).to.equal(ExpectedOrder)
+  }
+
+  const toggleChangeEffectiveAnnouncementStatus = async (index = 0) => {
     await toEffectiveTab()
 
     let Status = ["Effective", "Invalid"]
@@ -73,12 +135,19 @@ describe("Admin user", () => {
 
     Status = Status.filter((value) => value != status)
     let [ExpectedStatus] = Status
-    await page.click(
-      `[data-row-index="${index}"] [data-column-id="status"] button`
-    )
 
-    await page.waitForLoadState("networkidle")
-    await page.waitForLoadState("domcontentloaded")
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().endsWith(`/status/${ExpectedStatus}`) &&
+          response.status() === 200
+        )
+      }),
+      page.click(`[data-row-index="${index}"] [data-column-id="status"] button`)
+    ])
+
+    await page.reload({ waitUntil: "networkidle" })
+    await toEffectiveTab()
 
     let toggledStatus = await page.$eval(
       `[data-row-index="${index}"] [data-column-id="status"] button`,
@@ -87,39 +156,45 @@ describe("Admin user", () => {
     expect(toggledStatus).to.equal(ExpectedStatus)
   }
 
-  const editEffectiveAnnouncement = async (index = 0) => {
+  const editEffectiveAnnouncement = async (announcement, index = 0) => {
     await toEffectiveTab()
 
     await page.click(
-      `[data-row-index="${index}]" #edit-announcement-dialog-disclosure`
+      `[data-row-index="${index}"] #edit-announcement-dialog-disclosure`
     )
 
     const NewAnnouncement = {
+      ...announcement,
       subject: lorem.word(),
       content: lorem.sentence()
     }
 
     await page.fill(
-      `#add-announcement-dialog textarea[name="content"]`,
+      `#edit-announcement-dialog input[name="subject"]`,
+      NewAnnouncement.subject
+    )
+
+    await page.fill(
+      `#edit-announcement-dialog textarea[name="content"]`,
       NewAnnouncement.content
     )
 
-    await Promise.all([
-      page.waitForResponse((response) => {
-        return (
-          response.url().endsWith("/api/announcement") &&
-          response.status() === 200
-        )
-      }),
-      page.click(`#add-announcement-dialog button[type="submit"]`)
-    ])
+    await page.click(`#edit-announcement-dialog button[type="submit"]`)
+    await page.waitForLoadState("networkidle")
+    return NewAnnouncement
+  }
+
+  const rejectAnnouncement = async (announcement) => {
+    await toInVerifyTab()
+    await verifyAnnouncement(announcement, "reject")
+
+    await toRejectedTab()
   }
 
   const verifyAnnouncement = async (announcement, type = "approve") => {
     await page.click(`#verify-announcement-dialog-disclosure`)
     await page.waitForSelector(`#verify-announcement-dialog`)
     await page.waitForLoadState("networkidle")
-    await page.waitForLoadState("domcontentloaded")
 
     let verifySubject = await page.$eval(
       `#verify-announcement-dialog input[name="subject"]`,
@@ -199,11 +274,7 @@ describe("Admin user", () => {
       page.click(`#add-announcement-dialog button[type="submit"]`)
     ])
 
-    await page.waitForLoadState("networkidle")
-    await page.waitForLoadState("domcontentloaded")
-
-    await page.click(`buttonb#InVerify`)
-    await page.waitForSelector("#announcement tbody")
+    await toInVerifyTab()
 
     let FirstRowIndex = 0
     let subject = await page.$eval(

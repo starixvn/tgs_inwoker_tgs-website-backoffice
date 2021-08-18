@@ -7,89 +7,51 @@ import { useChangeAnnouncementStatus } from "./client"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
 
-export const InVerify = 0
-export const InVerifyName = "InVerify"
+export const InVerify = "InVerify"
 const InVerifyTrans = {
   zh: "审核中",
   en: "Under review"
 }
 
-export const Effective = 1
-export const EffectiveName = "Effective"
+export const Effective = "Effective"
 const EffectiveTrans = {
   zh: "有效",
   en: "Effective"
 }
 
-export const Invalid = 2
-export const InvalidName = "Invalid"
+export const Invalid = "Invalid"
 const InvalidTrans = {
   zh: "无效",
   en: "Invalid"
 }
 
-export const Expired = 3
-export const ExpiredName = "Expired"
+export const Expired = "Expired"
 const ExpiredTrans = {
   zh: "过期",
   en: "Expired"
 }
 
-export const Rejected = 4
-export const RejectedName = "Rejected"
+export const Rejected = "Rejected"
 const RejectedTrans = {
   zh: "拒绝",
   en: "Rejected"
 }
 
-//string -> number
-export const from = (value) => {
-  switch (value) {
-    case InVerifyName:
-    case `${InVerify}`:
-      return InVerify
-
-    case EffectiveName:
-    case `${Effective}`:
-      return Effective
-
-    case InvalidName:
-    case `${Invalid}`:
-      return Invalid
-
-    case ExpiredName:
-    case `${Expired}`:
-      return Expired
-
-    case RejectedName:
-    case `${Rejected}`:
-      return Rejected
-
-    default:
-      return value
-  }
-}
-
-export const Label = ({ value }) => {
+export const AnnouncementStatusLabel = ({ value = "" }) => {
   switch (value) {
     case InVerify:
-    case InVerifyName:
       return <Trans {...InVerifyTrans} />
 
     case Effective:
-    case EffectiveName:
       return <Trans {...EffectiveTrans} />
 
     case Invalid:
-    case InvalidName:
       return <Trans {...InvalidTrans} />
 
     case Expired:
-    case ExpiredName:
       return <Trans {...ExpiredTrans} />
 
     case Rejected:
-    case RejectedName:
       return <Trans {...RejectedTrans} />
 
     default:
@@ -98,7 +60,12 @@ export const Label = ({ value }) => {
 }
 
 // Effective <-> Invalid toggle
-export const ToggleButton = ({ record, onSubmitted, disabled, ...props }) => {
+export const AnnouncementStatusToggleButton = ({
+  record,
+  onSubmitted,
+  disabled,
+  ...props
+}) => {
   let editable = useIsDisplayMenuByRoute([Update])
 
   let { id, status } = record
@@ -114,11 +81,7 @@ export const ToggleButton = ({ record, onSubmitted, disabled, ...props }) => {
   }, [result, error])
 
   let palette =
-    status === InvalidName
-      ? "danger"
-      : status === EffectiveName
-      ? "success"
-      : "default"
+    status === Invalid ? "danger" : status === Effective ? "success" : "default"
   if (!editable) {
     return (
       <Button
@@ -127,7 +90,7 @@ export const ToggleButton = ({ record, onSubmitted, disabled, ...props }) => {
         palette={palette}
         isStatic
       >
-        <Label value={record.status} />
+        <AnnouncementStatusLabel value={record.status} />
       </Button>
     )
   }
@@ -148,14 +111,14 @@ export const ToggleButton = ({ record, onSubmitted, disabled, ...props }) => {
         onClick={() => {
           reset()
 
-          let newStatus = status === InvalidName ? Effective : Invalid
+          let newStatus = status === Invalid ? Effective : Invalid
           setSubmit(newStatus)
         }}
         css={css`
           white-space: nowrap;
         `}
       >
-        <Label value={record.status} />
+        <AnnouncementStatusLabel value={record.status} />
       </Button>
       {error && <AlertDialog {...error} onClickClose={reset} />}
     </>
