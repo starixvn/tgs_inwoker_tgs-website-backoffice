@@ -311,6 +311,11 @@ const useColumns = ({
     zh: "反水(VIP) + 紅利(活動)",
     en: "Rebate (VIP) + Bonus (Promotion)"
   })
+
+  let netProfitTooltip = useTrans({
+    zh: "輸贏-調帳-紅利",
+    en: "Win loss - Adjustment - Bonus"
+  })
   return useMemo(
     () => [
       textColumn({
@@ -372,7 +377,7 @@ const useColumns = ({
         sumColumn: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
         disableSortBy: true,
-        tooltipContent: bonusAmountTooltip
+        tooltip: bonusAmountTooltip
       }),
       numberDecimalColumn({
         accessor: "adjustmentAmount",
@@ -402,9 +407,15 @@ const useColumns = ({
         accessor: "netProfit",
         sumColumn: "netProfit",
         Header: <Trans zh="净盈利" en="Net Profit" />,
-        disableSortBy: true
+        disableSortBy: true,
+        tooltip: netProfitTooltip
       })
     ],
-    [JSON.stringify(items), JSON.stringify(usernames)]
+    [
+      JSON.stringify(items),
+      JSON.stringify(usernames),
+      bonusAmountTooltip,
+      netProfitTooltip
+    ]
   )
 }

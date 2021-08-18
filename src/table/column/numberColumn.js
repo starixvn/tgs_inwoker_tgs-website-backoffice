@@ -14,7 +14,7 @@ export const numberColumn = ({
   postfix = "",
   sumColumn: sumColumnName = "",
   toValue = defaultValueFn,
-  tooltipContent,
+  tooltip,
   ...props
 }) => {
   const DefaultCell = ({ value }) => (
@@ -22,7 +22,7 @@ export const numberColumn = ({
       value={value}
       format={format}
       postfix={postfix}
-      title={tooltipContent}
+      title={tooltip}
     />
   )
   Cell = Cell ?? DefaultCell
