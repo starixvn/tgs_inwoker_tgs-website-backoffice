@@ -35,6 +35,8 @@ pipeline {
                     message += "\nBranch: ${env.GIT_BRANCH}" 
                     message += "\nTag: ${TAG}"
                     message += "\nEnv: $env.kube_ns"
+                    env.commit_url = "${env.GIT_URL}".replace(".git","/-/commit/") + "${env.GIT_COMMIT}"
+                    message += "\n Commit: ${env.commit_url}"
                 }
                 sh "echo 'env: $env.kube_ns'"
                 sh "echo 'tag: $env.TAG'"
