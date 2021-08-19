@@ -6,7 +6,7 @@ import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute
 } from "../../user/context"
-import { Code, Update as UpdateMenu } from "./menu"
+import { Code, Update } from "./menu"
 import { Trans, useTrans } from "../../i18n"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import {
@@ -128,6 +128,7 @@ const SearchForm = ({ search, isLoading, ...props }) => {
 
 const useColumns = ({ items = [], mutate }) => {
   let hasAnyMenu = useHasSubMenuByRoute()
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
 
   return useMemo(() => {
     let columns = [
@@ -183,6 +184,8 @@ const useColumns = ({ items = [], mutate }) => {
                 record={value}
                 useChangeStatus={useChangeBrandStatus}
                 onSubmitted={mutate}
+                readOnly={!hasUpdateAuth}
+                disabled={!hasUpdateAuth}
               />
             </Box>
           )

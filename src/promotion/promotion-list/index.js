@@ -105,11 +105,16 @@ const BodyContent = ({ brandId }) => {
             }}
             isLoading={isLoading}
           />
-          <AddPromotionDisclosure brandId={brandId} onSubmitted={mutate} />
+          <AddPromotionDisclosure
+            id="add-promotion-dialog-disclosure"
+            brandId={brandId}
+            onSubmitted={mutate}
+          />
         </Flex>
       }
     >
       <Table
+        id="promotion"
         columns={columns}
         data={data?.items}
         initialState={state}
@@ -281,6 +286,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
           Cell: ({ value: record }) => {
             return (
               <PromotionStatusSwitch
+                name="status"
                 record={record}
                 value={record?.status}
                 onSubmitted={mutate}
@@ -299,8 +305,13 @@ const useColumns = ({ brandId, items = [], mutate }) => {
           Cell: ({ value: record }) => {
             return (
               <Set orientation="horizontal" alignX="center">
-                <ViewPromotionDisclosure brandId={brandId} record={record} />
+                <ViewPromotionDisclosure
+                  id="view-promotion-dialog-disclosure"
+                  brandId={brandId}
+                  record={record}
+                />
                 <EditPromotionDisclosure
+                  id="edit-promotion-dialog-disclosure"
                   brandId={brandId}
                   record={record}
                   onSubmitted={mutate}

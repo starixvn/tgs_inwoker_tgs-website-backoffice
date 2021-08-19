@@ -91,6 +91,7 @@ export const StatusMenu = ({ record = {}, onSubmitted, ...props }) => {
         isLoading={isLoading}
         disabled={isLoading}
         isStatic
+        disabled
       >
         <Label value={status} />
       </Button>

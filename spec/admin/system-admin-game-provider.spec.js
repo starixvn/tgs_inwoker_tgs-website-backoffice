@@ -94,6 +94,7 @@ describe("Admin user", () => {
       `#game-list tbody [data-row-id="0"] [data-column-id="code"]`
     )
 
+    //FIXED: sometimes ok, sometimes not
     let code = await page.$eval(
       `#game-list [data-row-id="0"] [data-column-id="code"]`,
       ({ textContent }) => textContent

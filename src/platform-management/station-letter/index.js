@@ -50,6 +50,7 @@ const Body = () => {
   return (
     <Set orientation="vertical" isFilled>
       <BrandBar
+        id="page-merchant-bar"
         onBrandChange={(value) => {
           setBrandId(value)
         }}
@@ -112,7 +113,11 @@ const BodyContent = ({ brandId }) => {
       title={<Trans zh="站内信" en="Station Letter" />}
       actionBar={
         <Box alignX="right">
-          <AddButton brandId={brandId} onSubmitted={mutate} />
+          <AddButton
+            id="add-station-letter-dialog-disclosure"
+            brandId={brandId}
+            onSubmitted={mutate}
+          />
         </Box>
       }
     >
@@ -142,6 +147,7 @@ const BodyContent = ({ brandId }) => {
           <TabPanel tabId={InVerifyName} {...tab}>
             {statusName === InVerifyName && (
               <Table
+                id="station-letter"
                 columns={columns}
                 data={data?.items}
                 initialState={state}
@@ -158,6 +164,7 @@ const BodyContent = ({ brandId }) => {
         <TabPanel tabId={PublishedName} {...tab}>
           {statusName === PublishedName && (
             <Table
+              id="station-letter"
               columns={columns}
               data={data?.items}
               initialState={state}
@@ -173,6 +180,7 @@ const BodyContent = ({ brandId }) => {
         <TabPanel tabId={RejectedName} {...tab}>
           {statusName === RejectedName && (
             <Table
+              id="station-letter"
               columns={columns}
               data={data?.items}
               initialState={state}
@@ -271,10 +279,19 @@ const useColumns = ({ mutate, statusName, items = [] }) => {
             <Box alignX="center">
               <Set>
                 {statusName === InVerifyName && (
-                  <VerifyButton record={value} onSubmitted={mutate} />
+                  <VerifyButton
+                    id="verify-station-letter-dialog-disclosure"
+                    record={value}
+                    onSubmitted={mutate}
+                  />
                 )}
                 {(statusName === PublishedName ||
-                  statusName === RejectedName) && <ViewButton record={value} />}
+                  statusName === RejectedName) && (
+                  <ViewButton
+                    id="view-station-letter-dialog-disclosure"
+                    record={value}
+                  />
+                )}
               </Set>
             </Box>
           )

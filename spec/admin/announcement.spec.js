@@ -7,6 +7,7 @@ import numeral from "numeral"
 import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { lorem } from "faker"
 import clone from "clone-deep"
+import { fillDatePicker } from "../fill"
 
 let browser
 let context
@@ -250,14 +251,16 @@ describe("Admin user", () => {
       Announcement.subject
     )
 
-    await fill(
-      `#add-announcement-dialog #from-date-box input[type="text"]`,
-      Announcement.from
-    )
-    await fill(
-      `#add-announcement-dialog #to-date-box input[type="text"]`,
-      Announcement.to
-    )
+    await fillDatePicker({
+      page,
+      selector: `#add-announcement-dialog #from-date-box input[type="text"]`,
+      value: Announcement.from
+    })
+    await fillDatePicker({
+      page,
+      selector: `#add-announcement-dialog #to-date-box input[type="text"]`,
+      value: Announcement.to
+    })
 
     await page.fill(
       `#add-announcement-dialog textarea[name="content"]`,
@@ -300,12 +303,6 @@ describe("Admin user", () => {
     await Promise.all([
       page.selectOption(`#page-merchant-bar select[name="brandId"]`, option)
     ])
-  }
-
-  const fill = async (selector, value) => {
-    await page.click(selector)
-    await page.fill(selector, value)
-    await page.keyboard.press("Enter")
   }
 
   const gotoPlatformAnnouncementPage = async () => {
