@@ -113,13 +113,13 @@ export const useTrans = (messages = {}) => {
   return messages[locale]
 }
 
-export const Trans = ({ en, zh }) => {
+export const Trans = ({ en = "", zh = "", ...props }) => {
   let locale = useLocale()
   switch (locale) {
     case Locales.en:
-      return en ?? zh
+      return <span {...props}>{en}</span> ?? <span {...props}>{zh}</span>
     default:
-      return zh ?? en
+      return <span {...props}>{zh}</span> ?? <span {...props}>{en}</span>
   }
 }
 

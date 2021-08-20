@@ -375,9 +375,13 @@ const useColumns = ({
       numberDecimalColumn({
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
-        disableSortBy: true,
+        Header: (
+          <Trans zh="红利金额" en="Bonus Amount" title={bonusAmountTooltip} />
+        ),
+        disableSortBy: true
+        /*
         tooltip: bonusAmountTooltip
+        */
       }),
       numberDecimalColumn({
         accessor: "adjustmentAmount",
@@ -406,9 +410,11 @@ const useColumns = ({
       numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
-        disableSortBy: true,
+        Header: <Trans zh="净盈利" en="Net Profit" title={netProfitTooltip} />,
+        disableSortBy: true
+        /*
         tooltip: netProfitTooltip
+        */
       })
     ],
     [
