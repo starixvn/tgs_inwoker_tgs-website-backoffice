@@ -90,6 +90,7 @@ describe("Admin user", () => {
       page
     })
     await page.waitForLoadState("networkidle")
+    await page.waitForLoadState("domcontentloaded")
     await page.waitForSelector(
       `#game-list tbody [data-row-id="0"] [data-column-id="code"]`
     )

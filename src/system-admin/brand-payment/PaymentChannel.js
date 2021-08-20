@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { FieldStack, useModalState } from "bumbag"
 import { AddDisclosure } from "../../dialog/Disclosure"
-import { useAddPaymentMethod } from "../../payment/client"
+import { useAddPaymentChannel } from "../../payment/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { Trans, useTrans } from "../../i18n"
 import { FormDialog } from "../../form/FormDialog"
@@ -30,10 +30,10 @@ const AddDialog = ({ dialog, onSubmitted }) => {
   })
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
-    useAddPaymentMethod(formData)
+    useAddPaymentChannel(formData)
 
-  const onSubmit = (data) => {
-    setSubmit(data)
+  const onSubmit = ({ code = "" }) => {
+    setSubmit(code)
   }
 
   const reset = () => {
