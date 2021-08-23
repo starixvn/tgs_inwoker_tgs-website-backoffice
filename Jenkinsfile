@@ -63,11 +63,7 @@ pipeline {
         stage('Deployment') {   
             steps {	  
                 script {	
-                    if (env.kube_ns != 'staging') {
-                        withKubeConfig([credentialsId: env.k8s_config]) {
-                            sh "kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
-                        }
-                    } else  {
+                    if (env.kube_ns == 'dev') {
                         input message: 'Ready to deploy?', ok: 'yes';
                     }
                 }
