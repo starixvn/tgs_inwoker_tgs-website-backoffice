@@ -63,9 +63,9 @@ pipeline {
         stage('Deployment') {   
             steps {	  
                 script {	
-                    if (env.kube_ns == 'dev') {
+                    if (env.kube_ns == 'prod') {
                         input message: 'Ready to deploy?', ok: 'yes';
-                    }
+                    } 
                 }
 
                 withKubeConfig([credentialsId: env.k8s_config]) {
