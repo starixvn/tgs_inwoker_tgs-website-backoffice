@@ -63,7 +63,7 @@ pipeline {
         stage('Deployment') {   
             steps {	  
                 script {	
-                    if (env.kube_ns == 'staging') {
+                    if (env.kube_ns == 'prod') {
                         input message: 'Ready to deploy?', ok: 'yes';
                     } 
                 }
