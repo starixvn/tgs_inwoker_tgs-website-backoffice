@@ -242,7 +242,7 @@ const EditBody = ({ readOnly = false } = {}) => {
   let required = !readOnly
   let textareaHeight = readOnly ? "15vh" : "30vh"
   return (
-    <FieldValues>
+    <FieldValues marginLeft="1rem" paddingBottom="1rem">
       <Label name="subject" required={required}>
         <Trans zh="主题" en="Subject" />
       </Label>

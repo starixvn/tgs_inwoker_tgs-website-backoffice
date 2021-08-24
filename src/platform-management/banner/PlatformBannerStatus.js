@@ -7,25 +7,24 @@ import { useChangePlatformBannerStatus } from "./client"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
 
-export const InVerify = "InVerify"
+export const InVerify = "WaitApprving"
 const InVerifyTrans = {
   zh: "审核中",
   en: "Under review"
 }
 
-export const Effective = "Effective"
+export const Effective = "Approved"
 const EffectiveTrans = {
   zh: "有效",
   en: "Effective"
 }
 
-export const Invalid = "Invalid"
 const InvalidTrans = {
   zh: "无效",
   en: "Invalid"
 }
 
-export const Expired = "Expired"
+export const Expired = "expired"
 const ExpiredTrans = {
   zh: "过期",
   en: "Expired"
@@ -45,9 +44,6 @@ export const PlatformBannerStatusLabel = ({ value }) => {
     case Effective:
       return <Trans {...EffectiveTrans} />
 
-    case Invalid:
-      return <Trans {...InvalidTrans} />
-
     case Expired:
       return <Trans {...ExpiredTrans} />
 
@@ -60,6 +56,7 @@ export const PlatformBannerStatusLabel = ({ value }) => {
 }
 
 export const PlatformBannerStatusToggleButton = ({
+  brandId,
   record,
   onSubmitted,
   disabled,
@@ -67,27 +64,24 @@ export const PlatformBannerStatusToggleButton = ({
 }) => {
   let editable = useIsDisplayMenuByRoute([Update])
 
-  let { id, status } = record
+  let { id, isEnabled } = record
   let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache, deleteErrorCache } =
-    useChangePlatformBannerStatus(id, formData)
+  let { result, isLoading, error, mutate, deleteCache } =
+    useChangePlatformBannerStatus(brandId, id, formData)
 
   useEffect(() => {
     if (result && !error) {
-      console.log("reset & onSubmitted?")
       reset()
       onSubmitted?.()
     }
-    console.log("result", result, "error", error)
   }, [result, error])
 
-  let palette =
-    status === Invalid ? "danger" : status === Effective ? "success" : "default"
+  let palette = isEnabled ? "success" : "danger"
 
   if (!editable) {
     return (
-      <Button isLoading={isLoading} palette={palette} isStatic>
-        <PlatformBannerStatusLabel value={record.status} />
+      <Button isLoading={isLoading} palette={palette} disabled isStatic>
+        <BannerLabel value={isEnabled} />
       </Button>
     )
   }
@@ -107,17 +101,19 @@ export const PlatformBannerStatusToggleButton = ({
         palette={palette}
         onClick={() => {
           reset()
-          let newStatus = status === Invalid ? Effective : Invalid
-
+          let newStatus = isEnabled ? "disable" : "enable"
           setSubmit(newStatus)
         }}
         css={css`
           white-space: nowrap;
         `}
       >
-        <PlatformBannerStatusLabel value={record.status} />
+        <BannerLabel value={isEnabled} />
       </Button>
       {error && <AlertDialog {...error} onClickClose={reset} />}
     </>
   )
 }
+
+const BannerLabel = ({ value, ...props }) =>
+  value ? <Trans {...EffectiveTrans} /> : <Trans {...InvalidTrans} />

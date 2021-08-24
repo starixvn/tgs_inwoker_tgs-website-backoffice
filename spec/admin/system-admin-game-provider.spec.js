@@ -84,6 +84,7 @@ describe("Admin user", () => {
     expect(gameCodes).to.be.not.empty
 
     let gameCode = gameCodes[index]
+    console.log("gameCode", gameCode, "index", index, "gameCodes", gameCodes)
     await searchGameByInputNameValue({
       name: "code",
       value: gameCode,
@@ -189,7 +190,14 @@ describe("Admin user", () => {
     page
   }) => {
     await page.fill(`#game-list-dialog input[name="${name}"]`, value)
-    await page.click(`#game-list-dialog button[type="submit"]`)
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes("/api/Game?") && response.status() === 200
+        )
+      }),
+      page.click(`#game-list-dialog button[type="submit"]`)
+    ])
   }
 
   const searchGameProviderByInputNameValue = async ({

@@ -11,6 +11,7 @@ const DefaultTimeFormat = "HH:mm:ss"
 export const dateTimeColumn = ({
   dateFormat = DefaultDateFormat,
   timeFormat = DefaultTimeFormat,
+  placeholder = "",
   ...props
 }) =>
   textColumn({
@@ -29,6 +30,7 @@ export const dateTimeColumn = ({
               {formattedTime}
             </Text.Block>
           )}
+          {!formattedDate && !formattedTime && placeholder}
         </Set>
       )
     },

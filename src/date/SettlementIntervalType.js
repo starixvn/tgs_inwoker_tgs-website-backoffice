@@ -2,59 +2,80 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Select } from "../select/Select"
 import { useTrans } from "../i18n"
+import { range } from "lodash"
 
 const Daily = "Daily"
 const DailyTrans = {
-    zh: "每日",
-    en: "Daily"
+  zh: "每日",
+  en: "Daily"
 }
 
 const Weekly = "Weekly"
 const WeeklyTrans = {
-    zh: "每周",
-    en: "Weekly"
+  zh: "每周",
+  en: "Weekly"
 }
 
 const Monthly = "Monthly"
 const MonthlyTrans = {
-    zh: "每月",
-    en: "Monthly"
+  zh: "每月",
+  en: "Monthly"
 }
 
 const Instantly = "Instantly"
 
+export const isMonthlySettlementInterval = (value) => value == Monthly
+
 export const SettlementIntervalTypeSelect = ({
-    placeholder,
-    placeholderDisabled = false,
-    ...props
+  placeholder,
+  placeholderDisabled = false,
+  ...props
 }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "周期",
-        en: "Interval"
-    })
-    placeholder = placeholder ?? defaultPlaceholder
+  let defaultPlaceholder = useTrans({
+    zh: "周期",
+    en: "Interval"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
 
-    let options = [
-        {
-            label: useTrans(DailyTrans),
-            value: Daily
-        },
-        {
-            label: useTrans(WeeklyTrans),
-            value: Weekly
-        },
-        {
-            label: useTrans(MonthlyTrans),
-            value: Monthly
-        }
-    ]
+  let options = [
+    {
+      label: useTrans(DailyTrans),
+      value: Daily
+    },
+    {
+      label: useTrans(WeeklyTrans),
+      value: Weekly
+    },
+    {
+      label: useTrans(MonthlyTrans),
+      value: Monthly
+    }
+  ]
 
-    return <Select placeholder={placeholder} options={options} {...props} />
+  return <Select placeholder={placeholder} options={options} {...props} />
+}
+
+export const MonthlyDaySelect = ({ ...props }) => {
+  let options = range(1, 29).map((day) => ({
+    label: day,
+    value: `${day}`
+  }))
+
+  return (
+    <Select
+      placeholder={useTrans({
+        zh: "每月最後一天",
+        en: "Last day of the month"
+      })}
+      options={options}
+      {...props}
+    />
+  )
 }
 
 export default {
-    Daily,
-    Weekly,
-    Monthly,
-    Instantly
+  Daily,
+  Weekly,
+  Monthly,
+  Instantly
 }

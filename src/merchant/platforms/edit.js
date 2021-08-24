@@ -7,7 +7,8 @@ import {
   Box,
   Text,
   FieldStack,
-  Button
+  Button,
+  Set
 } from "bumbag"
 import { useIsDisplayMenuByRoute, useUserLicenseeId } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
@@ -24,7 +25,12 @@ import { Input, InputField } from "../../input/Input"
 import { MerchantIdSelect } from "../MerchantSelect"
 import { RoleTypes } from "../../system/roles/type"
 import { useAddBrand, useBrand, useUpdateBrand } from "./client"
-import { useFormContext, useFieldArray, useForm } from "react-hook-form"
+import {
+  useFormContext,
+  useFieldArray,
+  useForm,
+  useWatch
+} from "react-hook-form"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import Textarea from "../../textarea"
@@ -41,6 +47,8 @@ import CurrencyBetLimitFieldsBox, {
   flatCheckedCurrencyBetLimits
 } from "../CurrencyBetLimitFieldsBox"
 import SettlementIntervalType, {
+  isMonthlySettlementInterval,
+  MonthlyDaySelect,
   SettlementIntervalTypeSelect
 } from "../../date/SettlementIntervalType"
 import BusinessType from "../BusinessType"
@@ -425,17 +433,29 @@ const normalizeFormData = ({
 }
 
 const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
-  let { watch, getValues } = useFormContext()
+  let { getValues, control } = useFormContext()
 
   let userLicenseeId = useUserLicenseeId()
 
-  let licensee = watch("licensee")
+  let licensee = useWatch({
+    control,
+    name: "licensee"
+  })
+
+  let SettlementIntervalTypeFieldName = "settlementIntervalType"
+  let settlementIntervalType = useWatch({
+    control,
+    name: SettlementIntervalTypeFieldName
+  })
+  let isMonthly = isMonthlySettlementInterval(settlementIntervalType)
+
   let editable = !readonly
 
   let apiKeyInputRef = useRef()
 
   let isB2C = businessType === BusinessType.B2C
   let isB2B = businessType === BusinessType.B2B
+
   return (
     <Stack orientation="vertical">
       <Heading use="h5" marginBottom="major-1">
@@ -487,20 +507,6 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           {readonly && <Text.Block>{record.operationalEmail}</Text.Block>}
         </Box>
 
-        {/* <NormalLabel>
-                    <Trans zh="微信号" en="WeChat" />
-                </NormalLabel>
-                <Box>
-                    <Input name="wechat" />
-                </Box>
-
-                <NormalLabel>
-                    <Trans zh="Telegram" en="Telegram" />
-                </NormalLabel>
-                <Box>
-                    <Input name="telegram" />
-                </Box> */}
-
         <NormalLabel>
           <Trans zh="平台域名" en="Brand Domain" />
         </NormalLabel>
@@ -546,26 +552,14 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
               <Trans zh="代理分红周期" en="Agent Profit Sharing Interval" />
             </NormalLabel>
             <Box alignY="center">
-              {isAdd && (
+              <Set orientation="horizontal">
                 <SettlementIntervalTypeSelect
-                  name="settlementIntervalType"
+                  name={SettlementIntervalTypeFieldName}
                   required
                   disabled={readonly}
                 />
-              )}
-              {!isAdd && (
-                <>
-                  <SettlementIntervalTypeSelect
-                    name="settlementIntervalType"
-                    value={getValues("settlementIntervalType")}
-                    display="none"
-                  />
-                  <SettlementIntervalTypeSelect
-                    value={getValues("settlementIntervalType")}
-                    disabled
-                  />
-                </>
-              )}
+                {isMonthly && <MonthlyDaySelect name="settlementDay" />}
+              </Set>
             </Box>
           </>
         )}
@@ -584,7 +578,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
 }
 
 const LanguageFieldsBox = ({ readonly, brandCultureCodeReadOnly }) => {
-  let { watch, control } = useFormContext()
+  let { control } = useFormContext()
 
   let fieldsName = "languages"
   let fieldArrayContext = useFieldArray({
@@ -592,7 +586,10 @@ const LanguageFieldsBox = ({ readonly, brandCultureCodeReadOnly }) => {
     name: fieldsName,
     keyName: "_id"
   })
-  let languages = watch(fieldsName)
+  let languages = useWatch({
+    control,
+    name: fieldsName
+  })
 
   if (!languages || languages.length == 0) {
     return null
@@ -613,7 +610,7 @@ const LanguageFieldsBox = ({ readonly, brandCultureCodeReadOnly }) => {
 }
 
 const BrandGameProviderFieldsBox = ({ readonly }) => {
-  let { watch, control } = useFormContext()
+  let { control } = useFormContext()
 
   let fieldsName = "gameProviders"
   let fieldArrayContext = useFieldArray({
@@ -621,7 +618,10 @@ const BrandGameProviderFieldsBox = ({ readonly }) => {
     name: fieldsName,
     keyName: "_id"
   })
-  let gameProviders = watch(fieldsName)
+  let gameProviders = useWatch({
+    control,
+    name: fieldsName
+  })
 
   if (!gameProviders || gameProviders.length == 0) {
     return null

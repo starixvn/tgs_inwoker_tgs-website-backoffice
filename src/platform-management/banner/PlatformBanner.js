@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Stack, Box, Button, Text, Modal, useModalState } from "bumbag"
-import { Create as CreateMenu, Update as UpdateMenu } from "./menu"
+import { Stack, Box, Button, Text, Modal, useModalState, Set } from "bumbag"
+import { Create as CreateMenu, Update as UpdateMenu, View } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
@@ -10,7 +10,11 @@ import Disclosure, {
   EditDisclosure,
   ViewDisclosure
 } from "../../dialog/Disclosure"
-import { useAddPlatformBanner, useUpdatePlatformBanner } from "./client"
+import {
+  useAddPlatformBanner,
+  usePlatformBanner,
+  useUpdatePlatformBanner
+} from "./client"
 import { Trans, useTrans } from "../../i18n"
 import parseDate from "date-fns/fp/parseISO"
 import { CancelText } from "../../button/ActionButtons"
@@ -19,7 +23,15 @@ import Input, { InputField } from "../../input/Input"
 import DateTimeInput from "../../date/DateTimeInput"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import Textarea, { TextareaField } from "../../textarea"
-import ImageUploadButton from "../../file/upload/ImageUploadButton"
+import ImageUploadButton, {
+  ImageLocalizationDialogDisclosure
+} from "../../file/upload/ImageUploadButton"
+import Checkbox from "../../checkbox"
+import { LocalizationDialogDisclosure } from "../../dialog/LocalizationDialog"
+import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import AlertDialog from "../../dialog/Alert"
+import { clone } from "lodash"
+import { InVerify } from "./PlatformBannerStatus"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,
@@ -35,7 +47,7 @@ export const AddPlatformBannerDisclosure = ({
 
   return (
     <>
-      <AddDisclosure {...dialog} />
+      <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <AddDialog
           brandId={brandId}
@@ -49,14 +61,13 @@ export const AddPlatformBannerDisclosure = ({
 
 const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
-    useAddPlatformBanner(formData)
+  let { isLoading, result, error, mutate, deleteCache } = useAddPlatformBanner(
+    brandId,
+    formData
+  )
 
   const onSubmit = (formData) => {
-    setSubmit({
-      brandId,
-      ...formData
-    })
+    setSubmit(formData)
   }
 
   const reset = () => {
@@ -75,10 +86,9 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       id="add-banner-dialog"
       defaultValues={{
         brandId,
-        subject: "",
-        from: null,
-        to: null,
-        content: "",
+        title: "",
+        beginTime: null,
+        endTime: null,
         localization: {}
       }}
       onSubmit={onSubmit}
@@ -91,7 +101,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       dialog={dialog}
       placement="top"
     >
-      <FormBody />
+      <FormBody marginLeft="1rem" paddingBottom="1rem" />
     </FormDialog>
   )
 }
@@ -125,19 +135,25 @@ export const EditPlatformBannerDisclosure = ({
 }
 
 const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
-  let { id } = record
+  let { id: bannerId } = record
+
+  let {
+    isLoading: isLoadingBanner,
+    data: banner,
+    error: bannerError
+  } = usePlatformBanner(brandId, bannerId)
+
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
-    useUpdatePlatformBanner(id, formData)
+    useUpdatePlatformBanner(brandId, bannerId, formData)
 
-  const onSubmit = (formData) => {
-    setSubmit({
-      brandId,
-      ...formData
-    })
+  const onSubmit = (data) => {
+    setSubmit(data)
   }
 
   const reset = () => {
+    mutate(undefined, false)
+    deleteCache()
     setSubmit(undefined)
   }
 
@@ -146,13 +162,22 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
     en: "Edit Banner"
   })
 
+  if (isLoadingBanner) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (bannerError) {
+    return <AlertDialog {...bannerError} onClickClose={dialog.hide} />
+  }
+
   return (
     <FormDialog
       id="edit-banner-dialog"
       defaultValues={{
-        ...record,
-        from: parseDate(record.from),
-        to: parseDate(record.to)
+        ...clone(banner),
+        beginTime: parseDate(record.beginTime),
+        endTime: parseDate(record.endTime),
+        permanent: !record.endTime
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -164,33 +189,111 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       dialog={dialog}
       placement="top"
     >
-      <FormBody />
+      <FormBody marginLeft="1rem" paddingBottom="1rem" />
     </FormDialog>
   )
 }
 
-export const FormBody = ({ readOnly = false } = {}) => {
-  const { control, getValues } = useFormContext()
+export const ViewPlatformBannerDisclosure = ({ brandId, record, ...props }) => {
+  let dialog = useModalState()
+
+  let isDisplay = useIsDisplayMenuByRoute([View])
+  if (!isDisplay) {
+    return null
+  }
+
+  return (
+    <>
+      <ViewDisclosure {...dialog} {...props} />
+      {dialog.visible && (
+        <ViewDialog brandId={brandId} record={record} dialog={dialog} />
+      )}
+    </>
+  )
+}
+
+const ViewDialog = ({ brandId, record, dialog, ...props }) => {
+  let { id: bannerId } = record
+
+  let { isLoading, data: banner, error } = usePlatformBanner(brandId, bannerId)
+
+  let title = useTrans({
+    zh: "修改 Banner",
+    en: "Edit Banner"
+  })
+
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
+
+  return (
+    <FormDialog
+      id="view-banner-dialog"
+      defaultValues={{
+        ...clone(banner),
+        beginTime: parseDate(record.beginTime),
+        endTime: parseDate(record.endTime),
+        permanent: !record.endTime
+      }}
+      isLoading={isLoading}
+      title={title}
+      dialog={dialog}
+      placement="top"
+      showActionButtons={false}
+      footer={
+        <Box alignX="right" width="100%">
+          <Button onClick={dialog.hide}>
+            <CancelText />
+          </Button>
+        </Box>
+      }
+    >
+      <FormBody marginLeft="1rem" paddingBottom="1rem" readOnly />
+    </FormDialog>
+  )
+}
+
+export const FormBody = ({ readOnly = false, ...props } = {}) => {
+  const { control, getValues, setValue } = useFormContext()
   let brandId = getValues("brandId")
 
+  let BeginTimeFieldName = "beginTime"
   let minDate = useWatch({
     control,
-    name: "from"
+    name: BeginTimeFieldName
   })
+
+  let EndTimeFieldName = "endTime"
   let maxDate = useWatch({
     control,
-    name: "to"
+    name: EndTimeFieldName
   })
+
+  let PermanentFieldName = "permanent"
+  let isPermanent = useWatch({
+    control,
+    name: PermanentFieldName
+  })
+
+  useEffect(() => {
+    if (isPermanent) {
+      setValue(EndTimeFieldName, "")
+    }
+  }, [isPermanent])
 
   let required = !readOnly
   let disabled = readOnly
   return (
-    <FieldValues>
+    <FieldValues {...props}>
       <Label name="subject" required={required}>
         <Trans zh="主题" en="Subject" />
       </Label>
       <InputField
-        name="subject"
+        name="title"
         brandId={brandId}
         required={required}
         disabled={readOnly}
@@ -202,7 +305,7 @@ export const FormBody = ({ readOnly = false } = {}) => {
       </Label>
       <Box id="from-date-box">
         <DateTimeInput
-          name="from"
+          name={BeginTimeFieldName}
           maxDate={maxDate}
           required={required}
           disabled={readOnly}
@@ -213,21 +316,29 @@ export const FormBody = ({ readOnly = false } = {}) => {
         <Trans zh="结束时间" en="End" />
       </Label>
       <Box id="to-date-box">
-        <DateTimeInput
-          name="to"
-          minDate={minDate}
-          required={required}
-          disabled={readOnly}
-        />
+        <Set orientation="horizontal">
+          <DateTimeInput
+            name={EndTimeFieldName}
+            minDate={minDate}
+            required={!isPermanent}
+            disabled={isPermanent || readOnly}
+          />
+          <Checkbox
+            name="permanent"
+            label={<Trans zh="永久" en="Permanent" />}
+            readOnly={readOnly}
+            disabled={readOnly}
+          />
+        </Set>
       </Box>
 
       <Label name="desktopBanner" required={required}>
         <Trans zh="Desktop Banner" en="Desktop Banner" />
       </Label>
       <Box alignY="center">
-        <ImageUploadButton
+        <ImageLocalizationDialogDisclosure
           brandId={brandId}
-          name="desktopBanner"
+          name="desktopBannerUrl"
           prefix="banner"
           disabled={disabled}
           readOnly={readOnly}
@@ -238,9 +349,9 @@ export const FormBody = ({ readOnly = false } = {}) => {
         <Trans zh="Mobile Banner" en="Mobile Banner" />
       </Label>
       <Box alignY="center">
-        <ImageUploadButton
+        <ImageLocalizationDialogDisclosure
           brandId={brandId}
-          name="mobileBanner"
+          name="mobileBannerUrl"
           prefix="banner"
           disabled={disabled}
           readOnly={readOnly}
@@ -250,21 +361,21 @@ export const FormBody = ({ readOnly = false } = {}) => {
       <Label name="bannerUrl">
         <Trans zh="Banner URL" en="Banner URL" />
       </Label>
-      <InputField
-        name="bannerUrl"
-        disabled={disabled}
+      <LocalizationDialogDisclosure
+        name="navigateUrl"
+        brandId={brandId}
         readOnly={readOnly}
-        showLocalizationAddonAfter
+        disabled={disabled}
       />
 
       <Label name="bannerAlt">
         <Trans zh="Banner ALT" en="Banner ALT" />
       </Label>
-      <InputField
-        name="bannerAlt"
-        disabled={disabled}
+      <LocalizationDialogDisclosure
+        name="pictureAlt"
+        brandId={brandId}
         readOnly={readOnly}
-        showLocalizationAddonAfter
+        disabled={disabled}
       />
     </FieldValues>
   )

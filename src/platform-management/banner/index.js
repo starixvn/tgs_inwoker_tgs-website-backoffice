@@ -27,11 +27,6 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { Trans } from "../../i18n"
 import {
   PlatformBannerStatusLabel,
-  InVerify,
-  Effective,
-  Expired,
-  Rejected,
-  Invalid,
   PlatformBannerStatusToggleButton
 } from "./PlatformBannerStatus"
 import { Verify, View, Update } from "./menu"
@@ -43,11 +38,36 @@ import textColumn from "../../table/column/textColumn"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
   AddPlatformBannerDisclosure,
-  EditPlatformBannerDisclosure
+  EditPlatformBannerDisclosure,
+  ViewPlatformBannerDisclosure
 } from "./PlatformBanner"
 import { VerifyPlatformBannerDisclosure } from "./VerifyPlatformBanner"
 
 export { Code }
+
+const InVerify = "reviewing"
+const InVerifyTrans = {
+  zh: "审核中",
+  en: "Under review"
+}
+
+const Effective = "valid"
+const EffectiveTrans = {
+  zh: "有效",
+  en: "Effective"
+}
+
+const Expired = "expired"
+const ExpiredTrans = {
+  zh: "过期",
+  en: "Expired"
+}
+
+const Rejected = "rejected"
+const RejectedTrans = {
+  zh: "拒绝",
+  en: "Rejected"
+}
 
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
@@ -80,26 +100,26 @@ const BodyContent = ({ brandId }) => {
   let hasViewAuth = useIsDisplayMenuByRoute([View])
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    brandId,
     status: hasVerifyAuth ? InVerify : hasViewAuth ? Effective : null
   })
 
   useEffect(() => {
-    setState({ pageIndex: 0, brandId })
+    setState({ pageIndex: 0 })
   }, [brandId])
 
-  let { status } = state
+  let { status, ...apiParamState } = state
   let isEffectiveTab = status === Effective
   let { isLoading, data, error, mutate, deleteCache } = usePlatformBannerList(
+    brandId,
+    status,
     isEffectiveTab
       ? {
-          ...toApiParams(state),
-          sortby: "displayOrder",
-          status: [Effective, Invalid]
+          ...toApiParams(apiParamState),
+          sortby: "DisplayOrder"
         }
       : toApiParams({
-          ...state,
-          sortby: "updatedOn",
+          ...apiParamState,
+          sortby: "UpdatedOn",
           orderby: SortOrder.Descending
         })
   )
@@ -134,18 +154,18 @@ const BodyContent = ({ brandId }) => {
         <TabList {...tab}>
           {hasVerifyAuth && (
             <Tab tabId={InVerify} onClick={activeTab(InVerify)} {...tab}>
-              <PlatformBannerStatusLabel value={InVerify} />
+              <Trans {...InVerifyTrans} />
             </Tab>
           )}
 
           <Tab tabId={Effective} onClick={activeTab(Effective)} {...tab}>
-            <PlatformBannerStatusLabel value={Effective} />
+            <Trans {...EffectiveTrans} />
           </Tab>
           <Tab tabId={Expired} onClick={activeTab(Expired)} {...tab}>
-            <PlatformBannerStatusLabel value={Expired} />
+            <Trans {...ExpiredTrans} />
           </Tab>
           <Tab tabId={Rejected} onClick={activeTab(Rejected)} {...tab}>
-            <PlatformBannerStatusLabel value={Rejected} />
+            <Trans {...RejectedTrans} />
           </Tab>
         </TabList>
         {hasVerifyAuth && (
@@ -171,9 +191,9 @@ const BodyContent = ({ brandId }) => {
               id="banner"
               status={status}
               data={data}
+              state={state}
               setPageIndex={setPageIndex}
               setSortOrder={setSortOrder}
-              state={state}
               isLoading={isLoading}
               mutate={mutate}
               brandId={brandId}
@@ -228,6 +248,7 @@ const AsyncTable = ({
   brandId
 }) => {
   let { pageSize } = state
+
   let columns = useColumns({
     mutate,
     status,
@@ -261,101 +282,35 @@ const EffectiveTable = ({
   mutate,
   brandId
 }) => {
-  let editable = useIsDisplayMenuByRoute([Update])
-
-  let { pageSize } = state
-
   let formMethods = useForm()
-  let [displayOrders, setDisplayOrders] = useState({})
-  const setDisplayOrder = (id, displayOrder) => {
-    setDisplayOrders((state) => {
-      Reflect.set(state, id, displayOrder)
-      return state
-    })
-  }
-
-  let [formData, setSubmit] = useState()
-
-  let {
-    result,
-    isLoading: isChangingDisplayOrder,
-    error,
-    mutate: mutateChangingDisplayOrder,
-    deleteCache
-  } = useChangePlatformBannerOrders(formData)
-
-  const onSubmit = () => {
-    let orders = Object.entries(displayOrders).map(([key, value]) => ({
-      id: key,
-      displayOrder: value
-    }))
-    setSubmit({ orders })
-  }
-
-  useEffect(() => {
-    if (result && !error) {
-      reset()
-      mutate()
-    }
-  }, [result, error])
-
-  useEffect(() => {
-    if (status != Effective) {
-      reset()
-    }
-  }, [status])
-
+  let { pageSize } = state
   let columns = useColumns({
     mutate,
-    displayOrders,
-    setDisplayOrder,
     status,
     items: data?.items,
     brandId
   })
 
-  const reset = () => {
-    setDisplayOrders({})
-    setSubmit(undefined)
-  }
-
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-        <Stack spacing="minor-1">
-          <Table
-            id={id}
-            columns={columns}
-            data={data?.items}
-            initialState={state}
-            controlledState={state}
-            pageCount={pageCount(pageSize, data?.totalCount)}
-            setPageIndex={setPageIndex}
-            setSortOrder={setSortOrder}
-            isLoading={isLoading}
-          />
-          {editable && (
-            <Dialog.Footer position="sticky" bottom="0">
-              <Button isLoading={isChangingDisplayOrder} type="submit">
-                <Trans zh="确认排序" en="Confirm Order" />
-              </Button>
-            </Dialog.Footer>
-          )}
-        </Stack>
-      </form>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      <Stack spacing="minor-1">
+        <Table
+          id={id}
+          columns={columns}
+          data={data?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+        />
+      </Stack>
     </FormProvider>
   )
 }
 
-const useColumns = ({
-  mutate,
-  brandId,
-  status: tabStatusName,
-  displayOrders,
-  setDisplayOrder,
-  items = []
-}) => {
+const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   let hasVerifyAuth = useIsDisplayMenuByRoute([Verify])
   let hasViewAuth = useIsDisplayMenuByRoute([View])
@@ -375,39 +330,69 @@ const useColumns = ({
             cell: {
               textAlign: "center"
             },
-            Cell: ({ value }) => {
+            Cell: ({ value: record }) => {
+              let { id } = record
+              let [formData, setSubmit] = useState()
+              let { isLoading, result, error, mutate, deleteCache } =
+                useChangePlatformBannerOrders(brandId, id, formData)
+
+              useEffect(() => {
+                if (result) {
+                  reset()
+                  mutate()
+                }
+              }, [result])
+
+              const reset = () => {
+                deleteCache()
+                mutate(undefined, false)
+                setSubmit(undefined)
+              }
+
               if (!hasUpdateAuth) {
                 return value.displayOrder ?? null
               }
 
-              let { id } = value
-              let displayOrder = displayOrders[id] ?? value.displayOrder
               return (
-                <NumberInput
-                  name={id}
-                  size="small"
-                  required
-                  min="1"
-                  minLength="1"
-                  width="5em"
-                  defaultValue={displayOrder}
-                  onChange={(event) => {
-                    let displayOrder = parseInt(event.target.value)
-                    if (Number.isFinite(displayOrder)) {
-                      setDisplayOrder(id, displayOrder)
-                    }
-                  }}
-                />
+                <Box>
+                  <NumberInput
+                    name={id}
+                    size="small"
+                    required
+                    min="1"
+                    minLength="1"
+                    width="5em"
+                    defaultValue={record.displayOrder}
+                    disabled={isLoading}
+                    onKeyPress={(event) => {
+                      if (event.key === "Enter") {
+                        event.target.blur()
+                      }
+                    }}
+                    onBlur={(event) => {
+                      //TODO: validation
+                      let displayOrder = parseInt(event.target.value)
+                      if (
+                        Number.isFinite(displayOrder) &&
+                        displayOrder > 0 &&
+                        displayOrder != record.displayOrder
+                      ) {
+                        setSubmit(displayOrder)
+                      }
+                    }}
+                  />
+                  {error && <AlertDialog {...error} onClickClose={reset} />}
+                </Box>
               )
             }
           },
       textColumn({
-        accessor: "subject",
+        accessor: "title",
         Header: <Trans zh="主题" en="Subject" />,
         disableSortBy: true
       }),
       textColumn({
-        accessor: "createdByUsername",
+        accessor: "modifier",
         Header: <Trans zh="操作人" en="Operator" />,
         disableSortBy: true
       }),
@@ -417,14 +402,15 @@ const useColumns = ({
         disableSortBy: true
       }),
       dateTimeColumn({
-        accessor: "from",
+        accessor: "beginTime",
         Header: <Trans zh="开始时间" en="Start" />,
         disableSortBy: true
       }),
       dateTimeColumn({
-        accessor: "to",
+        accessor: "endTime",
         Header: <Trans zh="结束时间" en="End" />,
-        disableSortBy: true
+        disableSortBy: true,
+        placeholder: <Trans zh="永久" en="Permanent" />
       }),
       {
         id: "status",
@@ -442,6 +428,7 @@ const useColumns = ({
           if (tabStatusName === Effective) {
             return (
               <PlatformBannerStatusToggleButton
+                brandId={brandId}
                 record={value}
                 onSubmitted={() => {
                   //clearCache()
@@ -477,12 +464,21 @@ const useColumns = ({
           textAlign: "center"
         },
         Cell: ({ value }) => {
-          //TODO: view disclosure
           return (
             <Set alignX="center">
+              {(tabStatusName === Effective ||
+                tabStatusName === Expired ||
+                tabStatusName === Rejected) && (
+                <ViewPlatformBannerDisclosure
+                  id="view-banner-dialog-disclosure"
+                  brandId={brandId}
+                  record={value}
+                />
+              )}
               {tabStatusName === InVerify && (
                 <VerifyPlatformBannerDisclosure
                   id="verify-banner-dialog-disclosure"
+                  brandId={brandId}
                   record={value}
                   onSubmitted={mutate}
                 />
@@ -495,11 +491,6 @@ const useColumns = ({
                   onSubmitted={mutate}
                 />
               )}
-              {/* {(tabStatusName === Effective ||
-                tabStatusName === Expired ||
-                tabStatusName === Rejected) && (
-                <ViewButton id="view-banner-dialog-disclosure" record={value} />
-              )} */}
             </Set>
           )
         }

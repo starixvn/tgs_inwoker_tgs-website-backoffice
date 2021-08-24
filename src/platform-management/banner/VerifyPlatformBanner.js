@@ -6,7 +6,7 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
 import { Disclosure, VerifyDisclosure } from "../../dialog/Disclosure"
-import { useVerifyPlatformBanner } from "./client"
+import { useVerifyPlatformBanner, usePlatformBanner } from "./client"
 import { Trans, useTrans } from "../../i18n"
 import parseDate from "date-fns/fp/parseISO"
 import { CancelText } from "../../button/ActionButtons"
@@ -17,8 +17,11 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import Textarea, { TextareaField } from "../../textarea"
 import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { FormBody } from "./PlatformBanner"
+import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import { clone } from "lodash"
 
 export const VerifyPlatformBannerDisclosure = ({
+  brandId,
   record,
   onSubmitted,
   ...props
@@ -35,6 +38,7 @@ export const VerifyPlatformBannerDisclosure = ({
       <VerifyDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <VerifyDialog
+          brandId={brandId}
           record={record}
           onSubmitted={onSubmitted}
           dialog={dialog}
@@ -44,30 +48,65 @@ export const VerifyPlatformBannerDisclosure = ({
   )
 }
 
-const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
+const VerifyDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
+  let {
+    isLoading: isLoadingBanner,
+    data: banner = {},
+    error: bannerError
+  } = usePlatformBanner(brandId, record?.id)
+
   let defaultValues = {
-    ...record,
-    from: parseDate(record.from),
-    to: parseDate(record.to),
+    ...clone(banner),
+    beginTime: parseDate(record.beginTime),
+    endTime: record.endTime && parseDate(record.endTime),
+    permanent: !record.endTime,
     remarks: ""
   }
+
+  if (isLoadingBanner) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (bannerError) {
+    return <AlertDialog {...bannerError} onClickClose={dialog.hide} />
+  }
+
+  return (
+    <EditVerifyDialog
+      brandId={brandId}
+      record={record}
+      defaultValues={defaultValues}
+      onSubmitted={onSubmitted}
+      dialog={dialog}
+    />
+  )
+}
+
+const EditVerifyDialog = ({
+  brandId,
+  record,
+  defaultValues,
+  onSubmitted,
+  dialog,
+  ...props
+}) => {
+  let title = useTrans({
+    zh: "审核 Banner",
+    en: "Verify Banner"
+  })
+
   let formMethods = useForm({ defaultValues })
 
-  let [type, setType] = useState()
   let [formData, setSubmit] = useState()
 
   let { isLoading, result, error, mutate, deleteCache } =
-    useVerifyPlatformBanner(
-      {
-        id: record?.id,
-        type
-      },
-      formData
-    )
+    useVerifyPlatformBanner(brandId, record?.id, formData)
 
-  const onSubmit = ({ remarks }) => {
+  const onSubmit = ({ remarks, reviewState }) => {
+    console.log("reviewState", reviewState)
     let data = {
-      remarks
+      remarks,
+      reviewState
     }
     setSubmit(data)
   }
@@ -75,11 +114,6 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     setSubmit(null)
   }
-
-  let title = useTrans({
-    zh: "审核 Banner",
-    en: "Verify Banner"
-  })
 
   return (
     <FormDialog
@@ -92,14 +126,14 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
         }
       }}
       onClickSubmit={(event) => {
-        setType("pass")
+        formMethods.setValue("reviewState", "approve")
       }}
       addonButtons={
         <Button
           type="submit"
           data-type="reject"
           onClick={() => {
-            setType("reject")
+            formMethods.setValue("reviewState", "reject")
           }}
           palette="danger"
           variant="outlined"
@@ -122,12 +156,13 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
 }
 
 export const ViewVerifyPlatformBannerDisclosure = ({
+  brandId,
   record,
   dialog,
   ...props
 }) => {
-  let from = parseDate(record.from)
-  let to = parseDate(record.to)
+  let beginTime = parseDate(record.beginTime)
+  let endTime = parseDate(record.endTime)
 
   let title = useTrans({
     zh: "查看 Banner",
@@ -139,8 +174,8 @@ export const ViewVerifyPlatformBannerDisclosure = ({
       id="view-banner-dialog"
       defaultValues={{
         ...record,
-        from,
-        to
+        beginTime,
+        endTime
       }}
       title={title}
       placement="top"
@@ -161,11 +196,11 @@ export const ViewVerifyPlatformBannerDisclosure = ({
 
 const VerifyBody = ({ readOnly = false } = {}) => {
   return (
-    <Stack spacing="major-2">
+    <Stack spacing="major-2" marginLeft="1rem">
       <FormBody readOnly={true} />
       <Box border="default" height="1px" width="100%" borderBottom="none"></Box>
 
-      <FieldValues>
+      <FieldValues paddingBottom="1rem">
         <Label name="remarks">
           <Trans zh="备注" en="Remarks" />
         </Label>

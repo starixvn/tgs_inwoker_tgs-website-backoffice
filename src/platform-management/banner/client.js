@@ -8,55 +8,61 @@ import client, {
   usePut,
   usePostData,
   usePutData,
-  usePostFormData
+  usePostFormData,
+  usePatchData
 } from "../../client"
-import {
-  useAnnouncementList,
-  useChangeAnnouncementOrders
-} from "../announcement/client"
 
 let API = "/api/banner"
 
-export const usePlatformBannerList = (searchParams) => {
-  return useAnnouncementList(searchParams)
+export const usePlatformBannerList = (brandId, status, searchParams) => {
+  let url =
+    brandId && status && searchParams
+      ? urlWith(searchParams, `${API}/${status}/${brandId}`)
+      : ""
 
-  let url = searchParams ? urlWith(searchParams, API) : ""
   return useGet(url)
 }
 
-export const useVerifyePlatformBanner = ({ id, type }, data) => {
-  let url = !!id && !!type ? `${API}/${id}/${type}` : ""
+export const usePlatformBanner = (brandId, bannerId) => {
+  let url = brandId && bannerId ? `${API}/${brandId}/${bannerId}` : ""
+  let { data, ...rest } = useGet(url)
+  return {
+    data: data?.data,
+    ...rest
+  }
+}
+
+export const useAddPlatformBanner = (brandId, data) => {
+  let url = brandId && data ? `${API}/${brandId}` : ""
   return usePutData(url, data)
 }
 
-export const usePlatformBanner = (id, data) => {
-  let url = id ? `${API}/${id}` : ""
-  return usePutData(url, data)
+export const useUpdatePlatformBanner = (brandId, bannerId, data) => {
+  let url = brandId && bannerId && data ? `${API}/${brandId}/${bannerId}` : ""
+  return usePatchData(url, data)
 }
 
-export const useAddPlatformBanner = (data) => {
-  return usePostData(API, data)
+export const useVerifyPlatformBanner = (brandId, bannerId, data) => {
+  let url = brandId && bannerId && data ? `${API}/${brandId}/${bannerId}` : ""
+  return usePostData(url, data)
 }
 
-export const useUpdatePlatformBanner = (id, data) => {
-  let url = id ? `${API}/${id}` : ""
-  return usePutData(url, data)
+export const useChangePlatformBannerOrders = (
+  brandId,
+  bannerId,
+  orderNumber
+) => {
+  let url =
+    brandId && bannerId && orderNumber
+      ? `${API}/${brandId}/${bannerId}/${orderNumber}`
+      : ""
+  return usePatchData(url)
 }
 
-export const useVerifyPlatformBanner = ({ id, type }, data) => {
-  let url = !!id && !!type ? `${API}/${id}/${type}` : ""
-  return usePutData(url, data)
-}
-
-export const useChangePlatformBannerOrders = (data) => {
-  return useChangeAnnouncementOrders(data)
-
-  let url = `${API}/changeorders`
-  return usePutData(url, data)
-}
-
-export const useChangePlatformBannerStatus = (id, status) => {
-  let url = id && status ? `${API}/${id}/status/${status}` : ""
-
-  return usePut(url)
+export const useChangePlatformBannerStatus = (brandId, bannerId, status) => {
+  let url =
+    brandId && bannerId && status
+      ? `${API}/${status}/${brandId}/${bannerId}`
+      : ""
+  return usePatchData(url)
 }

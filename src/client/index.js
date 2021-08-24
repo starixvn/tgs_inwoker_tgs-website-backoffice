@@ -66,6 +66,8 @@ export const put = (url, options) => fetchApi("PUT", url, options)
 
 export const post = (url, options) => fetchApi("POST", url, options)
 
+export const patch = (url, options) => fetchApi("PATCH", url, options)
+
 const fetchApi = (
   method = "",
   url,
@@ -242,6 +244,28 @@ export const usePut = (url, settings, options = DefaultUpdateOptions) => {
   return {
     result,
     isLoading: keys && !error && !result,
+    isValidating,
+    error,
+    isError: error,
+    mutate,
+    deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
+    clearCache: () => cache.clear()
+  }
+}
+
+export const usePatchData = (url, data, options = DefaultUpdateOptions) => {
+  let keys = url ? [url, data] : null
+  let {
+    data: result,
+    error,
+    isValidating,
+    mutate
+  } = useSWR(keys, (url, data) => patch(url, { data }), options)
+
+  return {
+    result,
+    isLoading: !error && !result && keys,
     isValidating,
     error,
     isError: error,

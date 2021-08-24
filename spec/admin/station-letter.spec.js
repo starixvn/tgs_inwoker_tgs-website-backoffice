@@ -13,7 +13,7 @@ let context
 let page
 
 //FIXME: how to input text to html editor
-describe.skip("Admin user", async () => {
+describe("Admin user", async () => {
   before(async () => {
     browser = await chromium.launch({ headless: headless() })
     context = await browser.newContext({ storageState: StorageState.Admin })
@@ -45,6 +45,17 @@ describe.skip("Admin user", async () => {
     await verifyStationLetter(stationLetter, "reject")
   })
 
+  const toVerifyTab = async () => {
+    await page.click(`button#InVerify`)
+
+    await Promise.all([
+      /*
+      page.waitForLoadState("networkidle"),
+      */
+      page.waitForSelector(`#station-letter tbody`)
+    ])
+  }
+
   const toPublishedTab = async () => {
     await page.click(`button#Published`)
 
@@ -59,7 +70,7 @@ describe.skip("Admin user", async () => {
 
     await Promise.all([
       page.waitForLoadState("networkidle"),
-      page.waitForSelector(`##station-letter tbody`)
+      page.waitForSelector(`#station-letter tbody`)
     ])
   }
 
@@ -68,22 +79,30 @@ describe.skip("Admin user", async () => {
     type = "approve",
     index = 0
   ) => {
+    await toVerifyTab()
     await page.click(`#verify-station-letter-dialog-disclosure`)
     await page.waitForSelector(`#verify-station-letter-dialog`)
     await page.waitForLoadState("networkidle")
 
     let verifySubject = await page.$eval(
-      `#verify-announcement-dialog input[name="subject"]`,
+      `#verify-station-letter-dialog input[name="subject"]`,
       ({ value }) => value
     )
     expect(verifySubject).to.equal(stationLetter.subject)
 
-    //TODO: verify editor content
+    //TODO: input remark
+    //TODO: verify editor content?
+    let [frame] = page.mainFrame().childFrames()
+    let content = await frame.$eval(
+      `#tinymce`,
+      ({ textContent }) => textContent
+    )
+    console.log("content", content)
 
     await Promise.all([
       page.waitForResponse((response) => {
         return (
-          response.url().includes("/api/announcement") &&
+          response.url().includes("/api/stationletter") &&
           response.status() === 200
         )
       }),
@@ -107,6 +126,7 @@ describe.skip("Admin user", async () => {
       ({ value }) => value
     )
     expect(subject).to.equal(stationLetter.subject)
+    await page.click(".bb-ButtonClose")
   }
 
   const addStationLetter = async () => {
@@ -122,8 +142,8 @@ describe.skip("Admin user", async () => {
       letter.subject
     )
 
-    //TODO: how to input content
-    await page.fill(`textarea[name="content"]`, letter.content, { force: true })
+    let [frame] = page.mainFrame().childFrames()
+    await frame.fill(`#tinymce`, letter.content)
 
     await Promise.all([
       page.waitForResponse((response) => {
@@ -135,7 +155,7 @@ describe.skip("Admin user", async () => {
       page.click(`#add-station-letter-dialog button[type="submit"]`)
     ])
 
-    await page.waitForLoadState("networkidle")
+    // await page.waitForLoadState("networkidle")
     await page.waitForSelector(`#station-letter tbody`)
     return letter
   }
