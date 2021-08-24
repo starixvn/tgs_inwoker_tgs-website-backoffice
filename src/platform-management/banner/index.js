@@ -350,11 +350,11 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
               }
 
               if (!hasUpdateAuth) {
-                return value.displayOrder ?? null
+                return record.displayOrder ?? null
               }
 
               return (
-                <Box>
+                <Box alignX="center">
                   <NumberInput
                     name={id}
                     size="small"
