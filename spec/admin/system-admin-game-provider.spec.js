@@ -159,14 +159,16 @@ describe("Admin user", () => {
       ).map(({ textContent }) => textContent)
     )
 
-  const getGameListCodes = async () =>
-    await page.evaluate(() =>
+  const getGameListCodes = async () => {
+    await page.waitForSelector(`#game-list-dialog #game-list`)
+    return await page.evaluate(() =>
       Array.from(
         window.document.querySelectorAll(
           `#game-list-dialog #game-list [data-column-id="code"]`
         )
       ).map(({ textContent }) => textContent)
     )
+  }
 
   const showRandomGameProviderGameList = async () => {
     let gameProviderCodes = await getGameProviderCodes()
