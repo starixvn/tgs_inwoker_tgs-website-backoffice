@@ -80,6 +80,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="add-station-letter-dialog"
       defaultValues={{
         brandId,
         target: AllPlayers,
@@ -113,7 +114,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
 
 const DialogCss = css`
   min-width: 80vw;
-  max-height: 90vh;
+  max-height: 95vh;
 
   & .bb-DialogContent {
     max-height: 80vh;
@@ -297,6 +298,7 @@ const ViewDialog = ({ record, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="view-station-letter-dialog"
       defaultValues={{
         ...record,
         target: record.assignedAllPlayers ? AllPlayers : DesignatedPlayers
@@ -370,14 +372,21 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="verify-station-letter-dialog"
       formMethods={formMethods}
       onSubmit={setSubmit}
       onClickSubmit={(event) => {
         setType("pass")
       }}
+      actionButtonsProps={{
+        submitProps: {
+          "data-type": "approve"
+        }
+      }}
       addonButtons={
         <Button
           type="submit"
+          data-type="reject"
           onClick={() => {
             setType("reject")
           }}
@@ -404,7 +413,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
 const VerifyBody = ({ readOnly = false, dialog }) => {
   return (
-    <Stack spacing="major-2">
+    <Stack spacing="major-2" paddingBottom="1.5rem">
       <EditBody readOnly={true} dialog={dialog} />
       <Box border="default" height="1px" width="100%"></Box>
       <FieldValues>

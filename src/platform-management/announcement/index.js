@@ -26,18 +26,13 @@ import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { Trans } from "../../i18n"
 import {
-  from as statusFrom,
-  Label as StatusLabel,
+  AnnouncementStatusLabel,
   InVerify,
-  InVerifyName,
   Effective,
-  EffectiveName,
+  Invalid,
   Expired,
-  ExpiredName,
-  Rejected,
-  RejectedName,
-  InvalidName
-} from "./status"
+  Rejected
+} from "./AnnouncementStatus"
 import { AddButton, VerifyButton, EditButton, ViewButton } from "./edit"
 import {
   Verify as VerifyMenu,
@@ -45,9 +40,11 @@ import {
   Update as UpdateMenu
 } from "./menu"
 import AlertDialog from "../../dialog/Alert"
-import { ToggleButton as StatusToggleButton } from "./status"
+import { AnnouncementStatusToggleButton as StatusToggleButton } from "./AnnouncementStatus"
 import BrandBar from "../../report/BrandBar"
 import { SortOrder } from "../../table/order"
+import { NumberInput } from "../../input/NumberInput"
+import { useForm, FormProvider, useFormContext } from "react-hook-form"
 
 export { Code }
 
@@ -83,53 +80,48 @@ const BodyContent = ({ brandId }) => {
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
-    statusName: hasVerifyAuth
-      ? InVerifyName
-      : hasViewAuth
-      ? EffectiveName
-      : null
+    status: hasVerifyAuth ? InVerify : hasViewAuth ? Effective : null
   })
 
   useEffect(() => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { statusName } = state
-  let isEffectiveTab = statusName === EffectiveName
+  let { status } = state
+  let isEffectiveTab = status === Effective
   let {
     isLoading,
     data = {},
     error,
     mutate,
-    clearCache,
     deleteCache
   } = useAnnouncementList(
     isEffectiveTab
       ? {
           ...toApiParams(state),
           sortby: "displayOrder",
-          status: [statusFrom(EffectiveName), statusFrom(InvalidName)]
+          status: [Effective, Invalid]
         }
       : toApiParams({
           ...state,
           sortby: "updatedOn",
           orderby: SortOrder.Descending,
-          status: statusFrom(statusName)
+          status: status
         })
   )
 
   let tab = useTabState({
-    selectedId: statusName
+    selectedId: status
   })
 
-  const activeTab = (newStatusName) => () => {
-    if (newStatusName === statusName) {
+  const activeTab = (newStatus) => () => {
+    if (newStatus === status) {
       mutate()
     }
 
     setState({
       pageIndex: 0,
-      statusName: newStatusName,
+      status: newStatus,
       sortBy: []
     })
   }
@@ -150,35 +142,27 @@ const BodyContent = ({ brandId }) => {
       <Tabs>
         <TabList {...tab}>
           {hasVerifyAuth && (
-            <Tab
-              tabId={InVerifyName}
-              onClick={activeTab(InVerifyName)}
-              {...tab}
-            >
-              <StatusLabel value={InVerify} />
+            <Tab tabId={InVerify} onClick={activeTab(InVerify)} {...tab}>
+              <AnnouncementStatusLabel value={InVerify} />
             </Tab>
           )}
 
-          <Tab
-            tabId={EffectiveName}
-            onClick={activeTab(EffectiveName)}
-            {...tab}
-          >
-            <StatusLabel value={Effective} />
+          <Tab tabId={Effective} onClick={activeTab(Effective)} {...tab}>
+            <AnnouncementStatusLabel value={Effective} />
           </Tab>
-          <Tab tabId={ExpiredName} onClick={activeTab(ExpiredName)} {...tab}>
-            <StatusLabel value={Expired} />
+          <Tab tabId={Expired} onClick={activeTab(Expired)} {...tab}>
+            <AnnouncementStatusLabel value={Expired} />
           </Tab>
-          <Tab tabId={RejectedName} onClick={activeTab(RejectedName)} {...tab}>
-            <StatusLabel value={Rejected} />
+          <Tab tabId={Rejected} onClick={activeTab(Rejected)} {...tab}>
+            <AnnouncementStatusLabel value={Rejected} />
           </Tab>
         </TabList>
         {hasVerifyAuth && (
-          <TabPanel id="in-verify-tab-panel" tabId={InVerifyName} {...tab}>
-            {statusName === InVerifyName && (
+          <TabPanel id="in-verify-tab-panel" tabId={InVerify} {...tab}>
+            {status === InVerify && (
               <AsyncTable
                 id="announcement"
-                statusName={statusName}
+                status={status}
                 data={data}
                 state={state}
                 setPageIndex={setPageIndex}
@@ -190,11 +174,11 @@ const BodyContent = ({ brandId }) => {
             )}
           </TabPanel>
         )}
-        <TabPanel id="effective-tab-panel" tabId={EffectiveName} {...tab}>
-          {statusName === EffectiveName && (
+        <TabPanel id="effective-tab-panel" tabId={Effective} {...tab}>
+          {status === Effective && (
             <EffectiveTable
               id="announcement"
-              statusName={statusName}
+              status={status}
               data={data}
               setPageIndex={setPageIndex}
               setSortOrder={setSortOrder}
@@ -206,11 +190,11 @@ const BodyContent = ({ brandId }) => {
             />
           )}
         </TabPanel>
-        <TabPanel id="expired-tab-panel" tabId={ExpiredName} {...tab}>
-          {statusName === ExpiredName && (
+        <TabPanel id="expired-tab-panel" tabId={Expired} {...tab}>
+          {status === Expired && (
             <AsyncTable
               id="announcement"
-              statusName={statusName}
+              status={status}
               data={data}
               state={state}
               setPageIndex={setPageIndex}
@@ -221,11 +205,11 @@ const BodyContent = ({ brandId }) => {
             />
           )}
         </TabPanel>
-        <TabPanel id="rejected-tab-panel" tabId={RejectedName} {...tab}>
-          {statusName === RejectedName && (
+        <TabPanel id="rejected-tab-panel" tabId={Rejected} {...tab}>
+          {status === Rejected && (
             <AsyncTable
               id="announcement"
-              statusName={statusName}
+              status={status}
               data={data}
               state={state}
               setPageIndex={setPageIndex}
@@ -244,7 +228,7 @@ const BodyContent = ({ brandId }) => {
 
 const AsyncTable = ({
   id,
-  statusName,
+  status,
   state,
   setPageIndex,
   setSortOrder,
@@ -256,7 +240,7 @@ const AsyncTable = ({
   let { pageSize } = state
   let columns = useColumns({
     mutate,
-    statusName,
+    status,
     items: data?.items,
     brandId
   })
@@ -278,7 +262,7 @@ const AsyncTable = ({
 
 const EffectiveTable = ({
   id,
-  statusName,
+  status,
   state,
   setPageIndex,
   setSortOrder,
@@ -287,19 +271,37 @@ const EffectiveTable = ({
   mutate,
   brandId
 }) => {
-  let { pageSize } = state
-  let [displayOrders, setDisplayOrder] = useState({})
-  let [submitData, setSubmit] = useState()
+  let editable = useIsDisplayMenuByRoute([UpdateMenu])
 
+  let { pageSize } = state
+
+  let formMethods = useForm()
+  let [displayOrders, setDisplayOrders] = useState({})
+  const setDisplayOrder = (id, displayOrder) => {
+    setDisplayOrders((state) => {
+      Reflect.set(state, id, displayOrder)
+      return state
+    })
+  }
+
+  let [formData, setSubmit] = useState()
   let {
     result,
     isLoading: isChangingDisplayOrder,
     error,
     deleteCache
-  } = useChangeAnnouncementOrders(submitData)
+  } = useChangeAnnouncementOrders(formData)
+
+  const onSubmit = () => {
+    let orders = Object.entries(displayOrders).map(([key, value]) => ({
+      id: key,
+      displayOrder: value
+    }))
+    setSubmit({ orders })
+  }
 
   const reset = () => {
-    setDisplayOrder({})
+    setDisplayOrders({})
     setSubmit(null)
   }
 
@@ -311,65 +313,58 @@ const EffectiveTable = ({
   }, [result, error])
 
   useEffect(() => {
-    if (statusName != EffectiveName) {
+    if (status != Effective) {
       reset()
     }
-  }, [statusName])
-
-  const changeDisplayOrder = ({ id, value }) => {
-    let newDisplayOrders = {
-      ...displayOrders
-    }
-    Reflect.set(newDisplayOrders, id, value)
-    setDisplayOrder(newDisplayOrders)
-  }
+  }, [status])
 
   let columns = useColumns({
     mutate,
-    changeDisplayOrder,
-    statusName,
+    displayOrders,
+    setDisplayOrder,
+    status,
     items: data?.items,
     brandId
   })
   return (
-    <>
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Stack spacing="minor-1">
+          <Table
+            id={id}
+            columns={columns}
+            data={data?.items}
+            initialState={state}
+            controlledState={state}
+            pageCount={pageCount(pageSize, data?.totalCount)}
+            setPageIndex={setPageIndex}
+            setSortOrder={setSortOrder}
+            isLoading={isLoading}
+          />
+          {editable && (
+            <Dialog.Footer position="sticky" bottom="0">
+              <Button
+                isLoading={isChangingDisplayOrder}
+                type="submit"
+                id="change-announcement-display-order-button"
+              >
+                <Trans zh="确认排序" en="Confirm Order" />
+              </Button>
+            </Dialog.Footer>
+          )}
+        </Stack>
+      </form>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-      <Stack spacing="minor-1">
-        <Table
-          id={id}
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-        />
-        <Dialog.Footer position="sticky" bottom="0">
-          <Button
-            isLoading={isChangingDisplayOrder}
-            onClick={() => {
-              let list = Object.entries(displayOrders).map(([key, value]) => ({
-                id: key,
-                displayOrder: value
-              }))
-              setSubmit({ orders: list })
-            }}
-          >
-            <Trans zh="确认排序" en="Confirm Order" />
-          </Button>
-        </Dialog.Footer>
-      </Stack>
-    </>
+    </FormProvider>
   )
 }
 
 const useColumns = ({
   mutate,
   brandId,
-  statusName: tabStatusName,
-  changeDisplayOrder,
+  status: tabStatus,
+  displayOrders,
+  setDisplayOrder,
   items = []
 }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([UpdateMenu])
@@ -378,7 +373,7 @@ const useColumns = ({
 
   return useMemo(() => {
     let columns = [
-      tabStatusName != EffectiveName
+      tabStatus != Effective
         ? sequenceColumn()
         : {
             id: "displayOrder",
@@ -392,23 +387,25 @@ const useColumns = ({
               textAlign: "center"
             },
             Cell: ({ value }) => {
-              let { id, displayOrder = "" } = value
+              if (!hasUpdateAuth) {
+                return value.displayOrder ?? null
+              }
+
+              let { id } = value
+              let displayOrder = displayOrders[id] ?? value.displayOrder
               return (
-                <Input
-                  type="number"
+                <NumberInput
+                  name={id}
                   size="small"
+                  required
                   min="1"
                   minLength="1"
                   width="5em"
                   defaultValue={displayOrder}
                   onChange={(event) => {
-                    let value = event.target.value
-                    let number = parseInt(value)
-                    if (Number.isFinite(number)) {
-                      changeDisplayOrder({
-                        id,
-                        value: number
-                      })
+                    let displayOrder = parseInt(event.target.value)
+                    if (Number.isFinite(displayOrder)) {
+                      setDisplayOrder(id, displayOrder)
                     }
                   }}
                 />
@@ -465,7 +462,7 @@ const useColumns = ({
         },
         Cell: ({ value }) => {
           let { status } = value
-          if (tabStatusName === EffectiveName) {
+          if (tabStatus === Effective) {
             return (
               <StatusToggleButton
                 record={value}
@@ -484,7 +481,7 @@ const useColumns = ({
                 white-space: nowrap;
               `}
             >
-              <StatusLabel value={status} />
+              <AnnouncementStatusLabel value={status} />
             </Text.Block>
           )
         }
@@ -492,8 +489,8 @@ const useColumns = ({
     ]
 
     let hasAnyMenu = hasViewAuth
-    switch (tabStatusName) {
-      case InVerifyName:
+    switch (tabStatus) {
+      case InVerify:
         hasAnyMenu = hasVerifyAuth
         break
     }
@@ -513,14 +510,14 @@ const useColumns = ({
         Cell: ({ value }) => {
           return (
             <Set alignX="center">
-              {tabStatusName === InVerifyName && (
+              {tabStatus === InVerify && (
                 <VerifyButton
                   id="verify-announcement-dialog-disclosure"
                   record={value}
                   onSubmitted={mutate}
                 />
               )}
-              {tabStatusName === EffectiveName && (
+              {tabStatus === Effective && (
                 <EditButton
                   id="edit-announcement-dialog-disclosure"
                   brandId={brandId}
@@ -528,9 +525,9 @@ const useColumns = ({
                   onSubmitted={mutate}
                 />
               )}
-              {(tabStatusName === EffectiveName ||
-                tabStatusName === ExpiredName ||
-                tabStatusName === RejectedName) && (
+              {(tabStatus === Effective ||
+                tabStatus === Expired ||
+                tabStatus === Rejected) && (
                 <ViewButton
                   id="view-announcement-dialog-disclosure"
                   record={value}
@@ -543,5 +540,5 @@ const useColumns = ({
     }
 
     return columns
-  }, [tabStatusName, JSON.stringify(items)])
+  }, [tabStatus, JSON.stringify(items)])
 }

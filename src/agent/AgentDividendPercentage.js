@@ -6,11 +6,11 @@ import { PercentageNumberInputField } from "../input/NumberInput"
 export const Name = "dividendPercentage"
 
 export const AgentDividendPercentageInputField = ({
-    name = Name,
-    required = true,
-    ...props
+  name = Name,
+  required = true,
+  ...props
 }) => <PercentageNumberInputField name={name} required={required} {...props} />
 
 export default {
-    Name
+  Name
 }

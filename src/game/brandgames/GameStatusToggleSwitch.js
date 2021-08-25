@@ -14,7 +14,8 @@ import {
 import { useTrans, Trans } from "../../i18n"
 import { GameStatus } from "../games/GameStatus"
 import { useChangeBrandGameStatus } from "./client"
-import { mutate } from "swr"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { Update } from "./menu"
 
 export const GameStatusToggleSwitch = ({
   id,
@@ -22,12 +23,13 @@ export const GameStatusToggleSwitch = ({
   onSubmitted,
   ...props
 }) => {
+  let editable = useIsDisplayMenuByRoute([Update])
+
   let isActive = value == GameStatus.Active
 
   let [formData, setSubmit] = useState()
-  let { result, isLoading, error, deleteCache } = useChangeBrandGameStatus(
-    formData
-  )
+  let { result, isLoading, error, mutate, deleteCache } =
+    useChangeBrandGameStatus(formData)
 
   useEffect(() => {
     if (result) {
@@ -38,6 +40,10 @@ export const GameStatusToggleSwitch = ({
 
   if (isLoading) {
     return <Spinner />
+  }
+
+  if (!editable) {
+    return <Switch checked={isActive} disabled />
   }
 
   return (

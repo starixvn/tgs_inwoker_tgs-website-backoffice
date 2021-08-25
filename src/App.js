@@ -44,7 +44,11 @@ import { AdminUserChangePasswordDialog } from "./system/admins/edit"
 import {
   getHeaderBackground,
   getHeaderButtonBackground,
-  getHeaderButtonColor
+  getHeaderButtonColor,
+  getHeaderTitle,
+  getHeaderTitleColor,
+  getHeaderTitleFontSize,
+  getHeaderTitleFontWeight
 } from "./env"
 
 function App() {
@@ -125,11 +129,24 @@ const Header = () => {
     location.replace(LoginPath)
   }
 
+  let title = getHeaderTitle()
   return (
     <>
       <TopNav id="app-header" background={getHeaderBackground()}>
         <TopNav.Section>
-          <TopNav.Item href="/" fontWeight="semibold"></TopNav.Item>
+          <TopNav.Item href="/">
+            {title && (
+              <Text.Block
+                lineHeight="normal"
+                color={getHeaderTitleColor()}
+                fontSize={getHeaderTitleFontSize()}
+                fontWeight={getHeaderTitleFontWeight()}
+                marginLeft="1.4rem"
+              >
+                {title}
+              </Text.Block>
+            )}
+          </TopNav.Item>
         </TopNav.Section>
         <TopNav.Section marginRight="major-2">
           <TopNav.Item>

@@ -84,15 +84,19 @@ describe("Admin user", () => {
     expect(gameCodes).to.be.not.empty
 
     let gameCode = gameCodes[index]
+    console.log("gameCode", gameCode, "index", index, "gameCodes", gameCodes)
     await searchGameByInputNameValue({
       name: "code",
       value: gameCode,
       page
     })
-
     await page.waitForLoadState("networkidle")
     await page.waitForLoadState("domcontentloaded")
+    await page.waitForSelector(
+      `#game-list tbody [data-row-id="0"] [data-column-id="code"]`
+    )
 
+    //FIXED: sometimes ok, sometimes not
     let code = await page.$eval(
       `#game-list [data-row-id="0"] [data-column-id="code"]`,
       ({ textContent }) => textContent
@@ -155,14 +159,16 @@ describe("Admin user", () => {
       ).map(({ textContent }) => textContent)
     )
 
-  const getGameListCodes = async () =>
-    await page.evaluate(() =>
+  const getGameListCodes = async () => {
+    await page.waitForSelector(`#game-list-dialog #game-list`)
+    return await page.evaluate(() =>
       Array.from(
         window.document.querySelectorAll(
           `#game-list-dialog #game-list [data-column-id="code"]`
         )
       ).map(({ textContent }) => textContent)
     )
+  }
 
   const showRandomGameProviderGameList = async () => {
     let gameProviderCodes = await getGameProviderCodes()
@@ -180,11 +186,21 @@ describe("Admin user", () => {
       page.waitForSelector(`#game-list-dialog #game-list tbody`)
     ])
 
-  const searchGameByInputNameValue = async ({ name = "", value = "", page }) =>
+  const searchGameByInputNameValue = async ({
+    name = "",
+    value = "",
+    page
+  }) => {
+    await page.fill(`#game-list-dialog input[name="${name}"]`, value)
     await Promise.all([
-      page.fill(`#game-list-dialog input[name="${name}"]`, value),
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes("/api/Game?") && response.status() === 200
+        )
+      }),
       page.click(`#game-list-dialog button[type="submit"]`)
     ])
+  }
 
   const searchGameProviderByInputNameValue = async ({
     name = "",

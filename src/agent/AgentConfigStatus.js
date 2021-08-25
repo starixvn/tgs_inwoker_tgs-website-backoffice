@@ -6,56 +6,56 @@ import Select from "../select/Select"
 
 const Done = "DoneForConfigurePercentage"
 const DoneTrans = {
-    zh: "正常",
-    en: "Normal"
+  zh: "正常",
+  en: "Normal"
 }
 
 const WaitForConfigurePercentage = "WaitForConfigurePercentage"
 const WaitForConfigurePercentageTrans = {
-    zh: "需要配置比例",
-    en: "Config Required"
+  zh: "需要配置比例",
+  en: "Config Required"
 }
 
 export const isAgentConfigDone = (value) => value === Done
 
 export const isAgentConfigRequired = (value) =>
-    value === WaitForConfigurePercentage
+  value === WaitForConfigurePercentage
 
 export const AgentConfigStatusSelect = ({ placeholder, ...props }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "配置状态",
-        en: "Config Status"
-    })
-    placeholder = placeholder ?? defaultPlaceholder
+  let defaultPlaceholder = useTrans({
+    zh: "配置状态",
+    en: "Config Status"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
 
-    let options = [
-        {
-            label: useTrans(DoneTrans),
-            value: Done
-        },
-        {
-            label: useTrans(WaitForConfigurePercentageTrans),
-            value: WaitForConfigurePercentage
-        }
-    ]
-    return <Select placeholder={placeholder} options={options} {...props} />
+  let options = [
+    {
+      label: useTrans(DoneTrans),
+      value: Done
+    },
+    {
+      label: useTrans(WaitForConfigurePercentageTrans),
+      value: WaitForConfigurePercentage
+    }
+  ]
+  return <Select placeholder={placeholder} options={options} {...props} />
 }
 
 export const AgentConfigStatusLabel = ({ value = "", ...props }) => {
-    switch (value) {
-        case Done:
-            return (
-                <Text {...props}>
-                    <Trans {...DoneTrans} />
-                </Text>
-            )
-        case WaitForConfigurePercentage:
-            return (
-                <Text {...props}>
-                    <Trans {...WaitForConfigurePercentageTrans} />
-                </Text>
-            )
-        default:
-            return value
-    }
+  switch (value) {
+    case Done:
+      return (
+        <Text {...props}>
+          <Trans {...DoneTrans} />
+        </Text>
+      )
+    case WaitForConfigurePercentage:
+      return (
+        <Text {...props}>
+          <Trans {...WaitForConfigurePercentageTrans} />
+        </Text>
+      )
+    default:
+      return value
+  }
 }

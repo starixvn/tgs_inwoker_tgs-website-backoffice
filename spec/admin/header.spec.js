@@ -8,28 +8,30 @@ let context
 let page
 
 describe("Admin user header", () => {
-    before(async () => {
-        browser = await chromium.launch({ headless: headless() })
-        context = await browser.newContext({ storageState: StorageState.Admin })
-        page = await context.newPage()
+  before(async () => {
+    browser = await chromium.launch({ headless: headless() })
+    context = await browser.newContext({ storageState: StorageState.Admin })
+    page = await context.newPage()
 
-        await page.goto(host(), {
-            waitUntil: "networkidle0"
-        })
+    await page.goto(host(), {
+      waitUntil: "networkidle0"
     })
+    await page.waitForLoadState("domcontentloaded")
+  })
 
-    after(async () => {
-        if (!page.isClosed()) {
-            await browser.close()
-        }
-    })
+  after(async () => {
+    if (!page.isClosed()) {
+      await browser.close()
+    }
+  })
 
-    it("should display user name", async () => {
-        let username = await page.$eval(
-            "#app-header #username",
-            ({ textContent }) => textContent
-        )
+  it("should display user name", async () => {
+    await page.waitForSelector("#app-header #username")
+    let username = await page.$eval(
+      "#app-header #username",
+      ({ textContent }) => textContent
+    )
 
-        expect(username).to.equal(UserName.Admin)
-    })
+    expect(username).to.equal(UserName.Admin)
+  })
 })

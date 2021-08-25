@@ -65,7 +65,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { parseJSON } from "../../text/json"
 
-export const AddPromotionDisclosure = ({ brandId, onSubmitted }) => {
+export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -75,7 +75,7 @@ export const AddPromotionDisclosure = ({ brandId, onSubmitted }) => {
 
   return (
     <>
-      <NewDisclosure {...dialog} />
+      <NewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <AddDialog
           brandId={brandId}
@@ -121,6 +121,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="add-promotion-dialog"
       defaultValues={{
         autoSentPlayerBonus: true,
         localization: {}
@@ -168,7 +169,7 @@ export const EditPromotionDisclosure = ({
 
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <EditDialog
           brandId={brandId}
@@ -313,7 +314,7 @@ export const ViewPromotionDisclosure = ({
 
   return (
     <>
-      <ViewDisclosure {...dialog} />
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <ViewDialog brandId={brandId} record={record} dialog={dialog} />
       )}
@@ -455,7 +456,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let editable = !readOnly
 
   return (
-    <FieldStack marginLeft="1rem">
+    <FieldStack marginLeft="1rem" paddingBottom="1.5rem">
       <FieldValues>
         <NormalLabel>
           <Trans zh="活动名称" en="Promotion Name" />
@@ -472,7 +473,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         <NormalLabel>
           <Trans zh="活动时间" en="Promotion Period" />
         </NormalLabel>
-        <Box alignY="center">
+        <Box id="promotion-period-box" alignY="center">
           <DateInputRange
             startProps={{
               name: "from"
@@ -708,7 +709,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
       <Separator />
 
       <Heading use="h5">
-        <Trans zh="活动规则" en="Promotion Rules" />
+        <Trans zh="規則設定" en="Rule Settings" />
       </Heading>
 
       <FieldValues>

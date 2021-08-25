@@ -24,7 +24,6 @@ import {
 } from "../../user/context"
 import { Code } from "./menu"
 import { AgentStatusSelect } from "../AgentStatus"
-import { VipLevelSelect } from "../../vip-levels/VipLevelSelect"
 import { ViewButton, EditButton, ConfigButton, AddAgentButton } from "./button"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"

@@ -22,7 +22,7 @@ import Disclosure, {
   EditDisclosure
 } from "../../dialog/Disclosure"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import { useAddPayment, useUpdatePayment } from "../../payment/client"
+import { useAddPayment } from "../../payment/client"
 import { Trans, useTrans } from "../../i18n"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { Table } from "../../table"
@@ -107,45 +107,6 @@ export const EditPaymentDisclosure = ({ record, onSubmitted }) => {
         <EditDialog record={record} dialog={dialog} onSubmitted={onSubmitted} />
       )}
     </>
-  )
-}
-
-const EditDialog = ({ record, dialog, onSubmitted }) => {
-  let title = useTrans({
-    zh: "支付厂商",
-    en: "Payment Provider"
-  })
-  let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
-    useUpdatePayment(formData)
-
-  const onSubmit = (data) => {
-    setSubmit(data)
-  }
-
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
-  }
-
-  return (
-    <Backdrop {...dialog}>
-      <FormDialog
-        defaultValues={clone(record)}
-        onSubmit={onSubmit}
-        isLoading={isLoading}
-        result={result}
-        error={error}
-        onSubmitted={onSubmitted}
-        onCloseErrorAlert={reset}
-        title={title}
-        dialog={dialog}
-        width="40vw"
-      >
-        <FormBody />
-      </FormDialog>
-    </Backdrop>
   )
 }
 

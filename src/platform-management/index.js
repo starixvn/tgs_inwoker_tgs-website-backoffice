@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Code, Menu, DefaultPaths } from "./menu"
 import { Switch } from "../content"
+import { Code as BannerCode, Content as BannerContent } from "./banner"
 import {
   Code as AnnouncementCode,
   Content as AnnouncementContent
@@ -19,6 +20,7 @@ import {
 export { Code }
 
 const pairs = () => [
+  [BannerCode, BannerContent],
   [AnnouncementCode, AnnouncementContent],
   [StationLetterCode, StationLetterContent],
   [VipLevelCode, VipLevelContent],

@@ -60,16 +60,14 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   let [data, setSubmit] = useState()
   let { result, error, mutate, isLoading } = useAddAnnouncement(data)
 
-  const onSubmit = ({ form, to, ...formData }) => {
+  const onSubmit = (formData) => {
     setSubmit({
       brandId,
-      form: form ? form.toISOString() : form,
-      to: to ? to.toISOString() : to,
       ...formData
     })
   }
 
-  const clearResult = () => {
+  const reset = () => {
     setSubmit(undefined)
   }
 
@@ -93,7 +91,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
+      onCloseErrorAlert={reset}
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
@@ -185,14 +183,12 @@ const ViewDialog = ({ record, dialog, ...props }) => {
 
 const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   let { id } = record
-  let [data, setSubmit] = useState()
-  let { result, error, mutate, isLoading } = useEditAnnouncement(id, data)
+  let [formData, setSubmit] = useState()
+  let { result, error, mutate, isLoading } = useEditAnnouncement(id, formData)
 
-  const onSubmit = ({ from, to, ...formData }) => {
+  const onSubmit = (formData) => {
     setSubmit({
       brandId,
-      from: from?.toISOString(),
-      to: to?.toISOString(),
       ...formData
     })
   }
@@ -246,7 +242,7 @@ const EditBody = ({ readOnly = false } = {}) => {
   let required = !readOnly
   let textareaHeight = readOnly ? "15vh" : "30vh"
   return (
-    <FieldValues>
+    <FieldValues marginLeft="1rem" paddingBottom="1rem">
       <Label name="subject" required={required}>
         <Trans zh="主题" en="Subject" />
       </Label>
@@ -360,7 +356,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
     setSubmit(data)
   }
 
-  const clearResult = () => {
+  const reset = () => {
     setSubmit(null)
   }
 
@@ -398,7 +394,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
+      onCloseErrorAlert={reset}
       onSubmitted={onSubmitted}
       title={title}
       placement="top"
