@@ -1,6 +1,6 @@
 {
   "name": "backoffice-site",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "config": {
     "container": {
       "registry": "registry.gitlab.com/rayprosoft/turnkey-gaming-system"
