@@ -50,13 +50,44 @@ describe("Admin user", () => {
     await toggleStatus(brandId)
     await toggleStatus(brandId)
 
+    await changeOrder(brandId)
+
+    let updatedBanner = await editValidBanner(brandId, banner)
     //TODO:
-    // 1. change order
-    // 2. edit banner
-    // 3. reject banner
+    // reject banner
   })
 
-  const changeOrder = async (index = 0) => {
+  const editValidBanner = async (brandId, banner, index = 0) => {
+    await toEffectiveTab()
+
+    const EditBannerDialogSelector = "#edit-banner-dialog"
+    await page.click(
+      `[data-row-index="${index}"] ${EditBannerDialogSelector}-disclosure`
+    )
+
+    const NewBanner = {
+      ...banner,
+      title: lorem.word()
+    }
+
+    await page.fill(
+      `${EditBannerDialogSelector} input[name="title"]`,
+      NewBanner.title
+    )
+
+    await Promise.all([
+      page.waitForResponse((response) => {
+        let url = response.url()
+        return (
+          url.includes(`/api/banner/${brandId}`) && response.status() === 200
+        )
+      }),
+      page.click(`${EditBannerDialogSelector} button[type="submit"]`)
+    ])
+    return NewBanner
+  }
+
+  const changeOrder = async (brandId, index = 0) => {
     await toEffectiveTab()
 
     let displayOrder = await page.$eval(
@@ -72,7 +103,17 @@ describe("Admin user", () => {
       `${ExpectedOrder}`
     )
 
-    await page.keyboard.press("Enter")
+    await Promise.all([
+      page.waitForResponse((response) => {
+        let url = response.url()
+        return (
+          url.includes(`/api/banner/${brandId}`) &&
+          url.endsWith(`/${ExpectedOrder}`) &&
+          response.status() === 200
+        )
+      }),
+      page.keyboard.press("Enter")
+    ])
   }
 
   const toggleStatus = async (brandId, index = 0) => {

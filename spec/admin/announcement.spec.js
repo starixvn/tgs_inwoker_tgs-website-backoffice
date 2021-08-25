@@ -53,8 +53,6 @@ describe("Admin user", () => {
 
     let updatedAnnouncement = await editEffectiveAnnouncement(announcement)
     await rejectAnnouncement(updatedAnnouncement)
-
-    //TODO: expired announcement?
   })
 
   const toInVerifyTab = async () => {
