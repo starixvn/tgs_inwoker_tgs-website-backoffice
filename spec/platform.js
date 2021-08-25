@@ -10,8 +10,11 @@ export const selectFirst = async ({ page }) => {
     (element) => element.value
   )
   await Promise.all([
-    page.selectOption(`#page-merchant-bar select[name="brandId"]`, option)
+    page.selectOption(`#page-merchant-bar select[name="brandId"]`, option),
+    page.waitForLoadState("networkidle")
   ])
+  await page.waitForLoadState("domcontentloaded")
+  return option
 }
 
 export default {

@@ -8,6 +8,8 @@ import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { lorem } from "faker"
 import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
+import { goto } from "../sidebar"
+import platform from "../platform"
 
 let browser
 let context
@@ -289,29 +291,8 @@ describe("Admin user", () => {
     return Announcement
   }
 
-  const selectPlatform = async () => {
-    await page.waitForSelector(
-      `#page-merchant-bar select[name="brandId"] option[value*="-"]:not(:first-child)`,
-      {
-        state: "attached"
-      }
-    )
-    let option = await page.$eval(
-      `#page-merchant-bar select[name="brandId"] option[value*="-"]:not(:first-child)`,
-      (element) => element.value
-    )
-    await Promise.all([
-      page.selectOption(`#page-merchant-bar select[name="brandId"]`, option)
-    ])
-  }
-
   const gotoPlatformAnnouncementPage = async () => {
-    let PlatformCreditSelector = `#sidebar a[href="/platform/announcement"]`
-    await Promise.all([
-      page.waitForNavigation(),
-      page.click(PlatformCreditSelector),
-      page.waitForLoadState("networkidle")
-    ])
-    await selectPlatform()
+    await goto({ page, value: "/platform/announcement" })
+    await platform.selectFirst({ page })
   }
 })

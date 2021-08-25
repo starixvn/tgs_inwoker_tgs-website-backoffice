@@ -333,8 +333,13 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
             Cell: ({ value: record }) => {
               let { id } = record
               let [formData, setSubmit] = useState()
-              let { isLoading, result, error, mutate, deleteCache } =
-                useChangePlatformBannerOrders(brandId, id, formData)
+              let {
+                isLoading,
+                result,
+                error,
+                mutate: mutateChangeOrder,
+                deleteCache
+              } = useChangePlatformBannerOrders(brandId, id, formData)
 
               useEffect(() => {
                 if (result) {
@@ -345,7 +350,7 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
 
               const reset = () => {
                 deleteCache()
-                mutate(undefined, false)
+                mutateChangeOrder(undefined, false)
                 setSubmit(undefined)
               }
 

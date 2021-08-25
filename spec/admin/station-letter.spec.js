@@ -7,12 +7,13 @@ import numeral from "numeral"
 import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { lorem } from "faker"
 import clone from "clone-deep"
+import { goto } from "../sidebar"
+import platform from "../platform"
 
 let browser
 let context
 let page
 
-//FIXME: how to input text to html editor
 describe("Admin user", async () => {
   before(async () => {
     browser = await chromium.launch({ headless: headless() })
@@ -161,28 +162,7 @@ describe("Admin user", async () => {
   }
 
   const gotoPlatformStationLetterPage = async () => {
-    let Menu = `#sidebar a[href="/platform/stationletter"]`
-    await Promise.all([
-      page.waitForNavigation(),
-      page.click(Menu),
-      page.waitForLoadState("networkidle")
-    ])
-    await selectPlatform()
-  }
-
-  const selectPlatform = async () => {
-    await page.waitForSelector(
-      `#page-merchant-bar select[name="brandId"] option[value*="-"]:not(:first-child)`,
-      {
-        state: "attached"
-      }
-    )
-    let option = await page.$eval(
-      `#page-merchant-bar select[name="brandId"] option[value*="-"]:not(:first-child)`,
-      (element) => element.value
-    )
-    await Promise.all([
-      page.selectOption(`#page-merchant-bar select[name="brandId"]`, option)
-    ])
+    await goto({ page, value: "/platform/stationletter" })
+    await platform.selectFirst({ page })
   }
 })

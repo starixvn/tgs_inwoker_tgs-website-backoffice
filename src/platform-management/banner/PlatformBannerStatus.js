@@ -96,6 +96,7 @@ export const PlatformBannerStatusToggleButton = ({
   return (
     <>
       <Button
+        data-status={isEnabled ? "enable" : "disable"}
         isLoading={isLoading}
         disabled={isLoading || disabled}
         palette={palette}
