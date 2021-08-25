@@ -63,7 +63,7 @@ export const PaymentListDialog = ({ dialog, onSubmitted }) => {
 const ActionBar = ({ onSubmitted }) => {
   return (
     <Box alignX="right">
-      {/* <AddPaymentDisclosure onSubmitted={onSubmitted} /> */}
+      <AddPaymentDisclosure onSubmitted={onSubmitted} />
     </Box>
   )
 }
@@ -99,23 +99,6 @@ const useColumns = ({ items = [], mutate }) => {
         disableSortBy: true
       })
     ]
-
-    if (hasUpdateAuth) {
-      columns.push(
-        textColumn({
-          id: "actions",
-          accessor: (row) => row,
-          Header: <Trans zh="Actions" en="Actions" />,
-          disableSortBy: true,
-          Cell: ({ value }) => (
-            <Set alignX="center">
-              {/* <EditPaymentDisclosure record={value} /> */}
-              {/* <DeleteDialogDisclosure record={value} onSubmitted={mutate} /> */}
-            </Set>
-          )
-        })
-      )
-    }
 
     return columns
   }, [JSON.stringify(items)])

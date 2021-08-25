@@ -38,7 +38,7 @@ export const useChangeAnnouncementOrders = (data) => {
 }
 
 export const useChangeAnnouncementStatus = (id, status) => {
-  let url = id && Number.isFinite(status) ? `${API}/${id}/status/${status}` : ""
+  let url = id && status ? `${API}/${id}/status/${status}` : ""
 
   return usePut(url)
 }

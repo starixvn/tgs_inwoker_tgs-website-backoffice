@@ -44,7 +44,9 @@ const Body = () => {
 
 const BodyContent = ({ brandId }) => {
   return (
-    <PageContent title={<Trans en="IM Settings" zh="平台运营设置" />}>
+    <PageContent
+      title={<Trans en="Customer Service Management" zh="客服管理" />}
+    >
       <Set>
         <MessengerDialogDisclosure brandId={brandId} />
         <CreateOrEditLiveChatDialogDisclosure brandId={brandId} />

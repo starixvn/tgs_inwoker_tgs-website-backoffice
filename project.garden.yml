@@ -18,7 +18,16 @@ services:
     dependencies:
       - backoffice-api
     env:
-      MODE: "development" #"production"
+      MODE: "production"
+      LOGIN_TITLE: "PG"
+      LOGIN_SUB_TITLE: "ADMIN"
+      HEADER_TITLE: "PG ADMIN"
+      HEADER_TITLE_COLOR: "#FFF"
+      # MODE: "development"
+      # LOGIN_TITLE: "PG"
+      # LOGIN_SUB_TITLE: "ADMIN"
+      # HEADER_TITLE: "PG ADMIN"
+      # HEADER_TITLE_COLOR: "#000"
     ingresses:
       - hostname: backoffice.localhost
         path: /

@@ -1,18 +1,18 @@
 def message = "";
 pipeline {
-	agent any
+    agent any
 	
-	environment {
+    environment {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
-		Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
+        Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
         gitlab_user_pwd = credentials('gitlab-user-pwd')
-		Image = "backoffice-site"
+        Image = "backoffice-site"
         GitUrl = "gitlab.com/rayprosoft/tgs-website-backoffice.git"
         ImageTagUrl = "https://gitlab.com/api/v4/projects/20478010/registry/repositories/2154554/tags"
-	}
+    }
 	
-	stages {	
-		stage('Prepare Env') {
+    stages {	
+        stage('Prepare Env') {
             steps {
                 sh "echo 'Branch: ${env.GIT_BRANCH}'";
                 script {
@@ -31,20 +31,22 @@ pipeline {
                             env.k8s_config = 'k8s-kube-config' 
                             break;
                     }
-					TAG = env.kube_ns + '-' + TAG
+                    TAG = env.kube_ns + '-' + TAG
                     message += "\nBranch: ${env.GIT_BRANCH}" 
                     message += "\nTag: ${TAG}"
                     message += "\nEnv: $env.kube_ns"
+                    env.commit_url = "${env.GIT_URL}".replace(".git","/-/commit/") + "${env.GIT_COMMIT}"
+                    message += "\n Commit: ${env.commit_url}"
                 }
                 sh "echo 'env: $env.kube_ns'"
                 sh "echo 'tag: $env.TAG'"
             }
         }
 	
-		stage('Run npm install') {   
-			steps {	  
-				sh 'npm install'
-			}
+        stage('Run npm install') {   
+            steps {	  
+			    sh 'npm install'
+            }
 		}
 		stage('Docker Build') {   
             steps {	  			    
@@ -60,14 +62,18 @@ pipeline {
         }	
         stage('Deployment') {   
             steps {	  
-                script {			
-                    withKubeConfig([credentialsId: env.k8s_config]) {
-						sh "kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
-                    }
+                script {	
+                    if (env.kube_ns == 'prod') {
+                        input message: 'Ready to deploy?', ok: 'yes';
+                    } 
+                }
+
+                withKubeConfig([credentialsId: env.k8s_config]) {
+                    sh "kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
                 }
             }
         }
-		stage('Add Tag on Prod') {
+        stage('Add Tag on Prod') {
             when {
                 expression {
                     return env.kube_ns == 'prod';
@@ -87,8 +93,8 @@ pipeline {
                 }
             }
         }
-	}
-	post {
+    }
+    post {
         success {
              sendTelegram("Pipeline: ${currentBuild.fullDisplayName} OK! ${message} \n${currentBuild.getBuildCauses()[0].shortDescription}\n")
         }

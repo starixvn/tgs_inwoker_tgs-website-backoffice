@@ -52,9 +52,11 @@ export const LocalizationDialogDisclosure = ({
   readOnly,
   disabled,
   mode = LocalizationDialogMode.List,
-  width,
+  width = "fit-content",
+  /*
   maxWidth,
   height,
+  */
   dialogProps = {},
   ...props
 }) => {
@@ -93,6 +95,7 @@ export const LocalizationDialogDisclosure = ({
         use={Button}
         isLoading={isLoading || isLoadingLang}
         disabled={isLoading || isLoadingLang || error}
+        width={width}
         flex="0"
         {...dialog}
       >
@@ -161,7 +164,6 @@ const LocalizationDialog = ({
         }
         css={css`
           & .bb-DialogContent {
-            min-height: 70vh;
             max-height: 80vh;
           }
 

@@ -5,11 +5,11 @@ import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
-    useIsDisplayMenuByRoute,
-    useHasSubMenuByRoute,
-    useUserBrandId
+  useIsDisplayMenuByRoute,
+  useHasSubMenuByRoute,
+  useUserBrandId
 } from "../../user/context"
-import { Code } from "./menu"
+import { Code, Update } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Trans, useTrans } from "../../i18n"
 import { SearchButton } from "../../button/SearchButton"
@@ -28,206 +28,199 @@ import BrandBar from "../../report/BrandBar"
 export { Code }
 
 export const Content = () => {
-    let isDisplay = useIsDisplayMenuByRoute()
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute()
+  if (!isDisplay) {
+    return null
+  }
 
-    return <Body />
+  return <Body />
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-    let userBrandId = useUserBrandId()
-    let [brandId, setBrandId] = useState(userBrandId)
+  let userBrandId = useUserBrandId()
+  let [brandId, setBrandId] = useState(userBrandId)
 
-    return (
-        <Set orientation="vertical" isFilled>
-            <BrandBar
-                onBrandChange={(value) => {
-                    setBrandId(value)
-                }}
-            />
-            {brandId && <BodyContent brandId={brandId} />}
-        </Set>
-    )
+  return (
+    <Set orientation="vertical" isFilled>
+      <BrandBar
+        onBrandChange={(value) => {
+          setBrandId(value)
+        }}
+      />
+      {brandId && <BodyContent brandId={brandId} />}
+    </Set>
+  )
 }
 
 const BodyContent = ({ brandId }) => {
-    let { state, setState, setPageIndex, setSortOrder } = useTable({
-        keyword: ""
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    keyword: ""
+  })
+  let { pageIndex, pageSize, keyword } = state
+
+  let { isLoading, data, error, mutate, deleteCache } =
+    useBrandGameProviderList({
+      ...toApiParams(state),
+      brandId,
+      sortby: "gameProviderName"
     })
-    let { pageIndex, pageSize, keyword } = state
 
-    let { isLoading, data, error, mutate, deleteCache } =
-        useBrandGameProviderList({
-            ...toApiParams(state),
-            brandId,
-            sortby: "gameProviderName"
-        })
+  let columns = useColumns({ items: data?.items, mutate })
 
-    let columns = useColumns({ items: data?.items, mutate })
-
-    return (
-        <PageContent
-            title={<Trans zh="厂商管理" en="Vendor Management" />}
-            actionBar={
-                <SearchBar
-                    keyword={keyword}
-                    search={(data = {}) => {
-                        setState({
-                            pageIndex: 0,
-                            ...data
-                        })
-                        mutate()
-                    }}
-                />
-            }
-        >
-            <Table
-                columns={columns}
-                data={data?.items}
-                pageCount={pageCount(pageSize, data?.totalCount)}
-                setPageIndex={setPageIndex}
-                setSortOrder={setSortOrder}
-                isLoading={isLoading}
-            />
-            {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-        </PageContent>
-    )
+  return (
+    <PageContent
+      title={<Trans zh="厂商管理" en="Vendor Management" />}
+      actionBar={
+        <SearchBar
+          keyword={keyword}
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+        />
+      }
+    >
+      <Table
+        columns={columns}
+        data={data?.items}
+        pageCount={pageCount(pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+      />
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+    </PageContent>
+  )
 }
 
 const SearchBar = ({ name: keyword = "", search, isLoading, ...props }) => {
-    let formMethods = useForm({
-        defaultValues: {
-            keyword: ""
-        }
-    })
+  let formMethods = useForm({
+    defaultValues: {
+      keyword: ""
+    }
+  })
 
-    let searchPlaceHolder = useTrans({
-        zh: "厂商输入框",
-        en: "Input vendor name"
-    })
+  let searchPlaceHolder = useTrans({
+    zh: "厂商输入框",
+    en: "Input vendor name"
+  })
 
-    const onSubmit = (data) => search(data)
+  const onSubmit = (data) => search(data)
 
-    return (
-        <FormProvider {...formMethods}>
-            <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-                <Set>
-                    <InputField
-                        name="keyword"
-                        showEmptyFieldValueAddonAfter
-                        placeholder={searchPlaceHolder}
-                        autocomplete="off"
-                    />
-                    <SearchButton isLoading={isLoading} disabled={isLoading} />
-                </Set>
-            </form>
-        </FormProvider>
-    )
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Set>
+          <InputField
+            name="keyword"
+            showEmptyFieldValueAddonAfter
+            placeholder={searchPlaceHolder}
+            autocomplete="off"
+          />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
 }
 
 const useColumns = ({ items = [], mutate }) => {
-    let hasAnyMenu = useHasSubMenuByRoute()
+  let hasUpdateMenu = useIsDisplayMenuByRoute([Update])
 
-    return useMemo(() => {
-        let columns = [
-            {
-                accessor: "id",
-                Header: <Trans zh="ID" en="ID" />,
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                }
-            },
-            {
-                accessor: "gameProviderName",
-                Header: <Trans zh="厂商名称" en="Name" />,
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                }
-            },
-            {
-                id: "maintenanceTime",
-                accessor: (record) => record,
-                Header: (
-                    <Trans zh="定期维护时间" en="Periodic Maintenance Time" />
-                ),
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                },
-                Cell: ({ value }) => {
-                    let { dayOfWeek, from, to } = value
-                    return (
-                        <Text.Block whiteSpace="nowrap">
-                            {`${useFormattedDay(
-                                dayOfWeek
-                            )} ${useFormattedTimeString(
-                                from
-                            )} - ${useFormattedTimeString(to)}`}
-                        </Text.Block>
-                    )
-                }
-            },
-            {
-                id: "status",
-                accessor: (record) => record,
-                Header: <Trans zh="状态" en="Status" />,
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                },
-                Cell: ({ value }) => {
-                    return (
-                        <Box alignX="center">
-                            <StatusMenu record={value} onSubmitted={mutate} />
-                        </Box>
-                    )
-                }
-            }
-        ]
-
-        if (hasAnyMenu) {
-            columns.push({
-                id: "actions",
-                accessor: (row) => row,
-                disableSortBy: true,
-                Header: <Trans zh="操作" en="Actions" />,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                },
-                Cell: ({ value }) => {
-                    return (
-                        <Set orientation="vertical" alignX="center">
-                            <EditButton record={value} onSubmitted={mutate} />
-                            <EditPresetButton
-                                record={value}
-                                onSubmitted={mutate}
-                            />
-                        </Set>
-                    )
-                }
-            })
+  return useMemo(() => {
+    let columns = [
+      {
+        accessor: "id",
+        Header: <Trans zh="ID" en="ID" />,
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
         }
-        return columns
-    }, [JSON.stringify(items)])
+      },
+      {
+        accessor: "gameProviderName",
+        Header: <Trans zh="厂商名称" en="Name" />,
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "maintenanceTime",
+        accessor: (record) => record,
+        Header: <Trans zh="定期维护时间" en="Periodic Maintenance Time" />,
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        },
+        Cell: ({ value }) => {
+          let { dayOfWeek, from, to } = value
+          return (
+            <Text.Block whiteSpace="nowrap">
+              {`${useFormattedDay(dayOfWeek)} ${useFormattedTimeString(
+                from
+              )} - ${useFormattedTimeString(to)}`}
+            </Text.Block>
+          )
+        }
+      },
+      {
+        id: "status",
+        accessor: (record) => record,
+        Header: <Trans zh="状态" en="Status" />,
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        },
+        Cell: ({ value }) => {
+          return (
+            <Box alignX="center">
+              <StatusMenu record={value} onSubmitted={mutate} />
+            </Box>
+          )
+        }
+      }
+    ]
+
+    if (hasUpdateMenu) {
+      columns.push({
+        id: "actions",
+        accessor: (row) => row,
+        disableSortBy: true,
+        Header: <Trans zh="操作" en="Actions" />,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        },
+        Cell: ({ value }) => {
+          return (
+            <Set orientation="vertical" alignX="center">
+              <EditButton record={value} onSubmitted={mutate} />
+              <EditPresetButton record={value} onSubmitted={mutate} />
+            </Set>
+          )
+        }
+      })
+    }
+    return columns
+  }, [JSON.stringify(items)])
 }

@@ -66,6 +66,8 @@ export const put = (url, options) => fetchApi("PUT", url, options)
 
 export const post = (url, options) => fetchApi("POST", url, options)
 
+export const patch = (url, options) => fetchApi("PATCH", url, options)
+
 const fetchApi = (
   method = "",
   url,
@@ -115,11 +117,25 @@ const DefaultUpdateOptions = {
   dedupingInterval: 100
 }
 
-const deleteCacheBy = (key = "") => {
+const deleteCacheBy = (source = "") => {
+  let [key, args, errorKey, isValidatingKey] = cache.serializeKey(source)
+
   if (key) {
     cache.delete(key)
-    cache.delete(`err@${key}`)
-    cache.delete(`req@${key}`)
+  }
+  if (errorKey) {
+    cache.delete(errorKey)
+  }
+  if (isValidatingKey) {
+    cache.delete(isValidatingKey)
+  }
+}
+
+const deleteErrorCacheBy = (source = "") => {
+  let [key, args, errorKey, isValidatingKey] = cache.serializeKey(source)
+
+  if (errorKey) {
+    cache.delete(errorKey)
   }
 }
 
@@ -136,6 +152,7 @@ export const useGet = (url, options = DefaultUpdateOptions) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(key),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -158,6 +175,7 @@ export const usePostData = (url, data, options = DefaultUpdateOptions) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -191,6 +209,7 @@ export const usePostFormData = (
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -213,6 +232,7 @@ export const usePutData = (url, data, options = DefaultUpdateOptions) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -229,6 +249,29 @@ export const usePut = (url, settings, options = DefaultUpdateOptions) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
+    clearCache: () => cache.clear()
+  }
+}
+
+export const usePatchData = (url, data, options = DefaultUpdateOptions) => {
+  let keys = url ? [url, data] : null
+  let {
+    data: result,
+    error,
+    isValidating,
+    mutate
+  } = useSWR(keys, (url, data) => patch(url, { data }), options)
+
+  return {
+    result,
+    isLoading: !error && !result && keys,
+    isValidating,
+    error,
+    isError: error,
+    mutate,
+    deleteCache: () => deleteCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }
@@ -251,6 +294,7 @@ export const useDelete = (url, settings) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(key),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }
 }

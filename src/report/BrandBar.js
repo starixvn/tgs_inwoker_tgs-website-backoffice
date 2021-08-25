@@ -21,7 +21,12 @@ import { MerchantIdSelect } from "../merchant/MerchantSelect"
 import { nextRoleType } from "../system/roles/type"
 import equals from "fast-deep-equal"
 
-export const BrandBar = ({ name = "brandBar", onBrandChange, ...props }) => {
+export const BrandBar = ({
+  id = "page-merchant-bar",
+  name = "brandBar",
+  onBrandChange,
+  ...props
+}) => {
   let { url } = useRouteMatch()
   let { location, ...history } = useHistory()
 
@@ -56,6 +61,7 @@ export const BrandBar = ({ name = "brandBar", onBrandChange, ...props }) => {
   return (
     <FormProvider {...formMethods}>
       <MerchantIdSelect
+        id={id}
         start={nextRoleType(userRoleType)}
         resellerProps={{
           value: state?.resellerId,

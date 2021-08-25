@@ -24,6 +24,31 @@ export const isDev = () => window?.env?.mode === Development
 
 export const isProduction = () => window?.env?.mode === Production
 
+export const getLoginTitle = () => window?.env?.loginTitle || ""
+
+export const getLoginTitleColor = () => window?.env?.loginTitleColor || "#000"
+
+export const getLoginTitleFontSize = () =>
+  window?.env?.loginTitleFontSize || "5rem"
+
+export const getLoginTitleFontWeight = () =>
+  window?.env?.loginTitleFontWeight || "800"
+
+export const getLoginSubTitle = () => window?.env?.loginSubTitle || ""
+
+export const getLoginSubTitleFontSize = () =>
+  window?.env?.loginSubTitleFontSize || "1.7rem"
+
+export const getHeaderTitle = () => window?.env?.headerTitle || ""
+
+export const getHeaderTitleColor = () => window?.env?.headerTitleColor || "#FFF"
+
+export const getHeaderTitleFontSize = () =>
+  window?.env?.headerTitleFontSize || "2rem"
+
+export const getHeaderTitleFontWeight = () =>
+  window?.env?.headerTitleFontWeight || "800"
+
 export const getLoginButtonColor = () =>
   window?.env?.loginButtonColor || "#ffffff"
 

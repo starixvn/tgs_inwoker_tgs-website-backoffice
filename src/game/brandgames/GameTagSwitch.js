@@ -13,12 +13,15 @@ import {
 } from "bumbag"
 import { useTrans, Trans } from "../../i18n"
 import { useUpdateBrandGameTag } from "./client"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { Update } from "./menu"
 
 export const GameTagSwitch = ({ id, tag, checked, onSubmitted, ...props }) => {
+  let editable = useIsDisplayMenuByRoute([Update])
+
   let [formData, setSubmit] = useState()
-  let { result, isLoading, error, deleteCache } = useUpdateBrandGameTag(
-    formData
-  )
+  let { result, isLoading, error, deleteCache } =
+    useUpdateBrandGameTag(formData)
 
   useEffect(() => {
     if (result) {
@@ -29,6 +32,10 @@ export const GameTagSwitch = ({ id, tag, checked, onSubmitted, ...props }) => {
 
   if (isLoading) {
     return <Spinner />
+  }
+
+  if (!editable) {
+    return <Switch checked={checked} disabled={true} />
   }
 
   return (

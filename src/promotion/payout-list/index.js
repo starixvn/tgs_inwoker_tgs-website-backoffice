@@ -9,7 +9,7 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { Code } from "./menu"
+import { Code, Update } from "./menu"
 import textColumn from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useForm, FormProvider } from "react-hook-form"
@@ -84,6 +84,8 @@ const includePayout = (record = {}, list = []) => {
 }
 
 const BodyContent = ({ brandId }) => {
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+
   let todayRange = today()
   let [batchPayouts, setBatchPayouts] = useState([])
 
@@ -179,6 +181,7 @@ const BodyContent = ({ brandId }) => {
     >
       <Stack>
         <Table
+          id="payout"
           columns={columns}
           data={data?.items}
           initialState={state}
@@ -188,24 +191,26 @@ const BodyContent = ({ brandId }) => {
           setSortOrder={setSortOrder}
           isLoading={isLoading}
         />
-        <Dialog.Footer position="sticky" bottom="0">
-          <Button
-            isLoading={isLoadingSendPromotionPayout}
-            onClick={() => {
-              let players = batchPayouts.map(
-                ({ promotionBonusId, playerCode, ...record }) => {
-                  return {
-                    promotionBonusId,
-                    playerCode
+        {hasUpdateAuth && (
+          <Dialog.Footer position="sticky" bottom="0">
+            <Button
+              isLoading={isLoadingSendPromotionPayout}
+              onClick={() => {
+                let players = batchPayouts.map(
+                  ({ promotionBonusId, playerCode, ...record }) => {
+                    return {
+                      promotionBonusId,
+                      playerCode
+                    }
                   }
-                }
-              )
-              setSubmit({ players })
-            }}
-          >
-            <Trans zh="批量派发" en="Batch Payout" />
-          </Button>
-        </Dialog.Footer>
+                )
+                setSubmit({ players })
+              }}
+            >
+              <Trans zh="批量派发" en="Batch Payout" />
+            </Button>
+          </Dialog.Footer>
+        )}
       </Stack>
 
       {error && (
@@ -290,47 +295,55 @@ const useColumns = ({
   resetBatchPayout
 }) => {
   let hasAnyMenu = useHasSubMenuByRoute()
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   return useMemo(() => {
-    let columns = [
-      textColumn({
-        id: "batchPayout",
-        accessor: (row) => row,
-        Header: () => {
-          let isAllChecked =
-            items.length > 0 && items.length === batchPayouts.length
-          return (
-            <Checkbox
-              checked={isAllChecked}
-              onChange={(event) => {
-                let checked = event.target.checked
-                if (checked) {
-                  let records = items.map((promotion) => clone(promotion))
-                  setBatchPayouts(records)
-                } else {
-                  resetBatchPayout()
-                }
-              }}
-            />
-          )
-        },
-        disableSortBy: true,
-        Cell: ({ value: record }) => {
-          let checked = includePayout(record, batchPayouts)
-          return (
-            <Checkbox
-              checked={checked}
-              onChange={(event) => {
-                let checked = event.target.checked
-                if (checked) {
-                  appendBatchPayout(record)
-                } else {
-                  dropBatchPayout(record)
-                }
-              }}
-            />
-          )
-        }
-      }),
+    let columns = []
+    if (hasUpdateAuth) {
+      columns.push(
+        textColumn({
+          id: "batchPayout",
+          accessor: (row) => row,
+          Header: () => {
+            let isAllChecked =
+              items.length > 0 && items.length === batchPayouts.length
+            return (
+              <Checkbox
+                checked={isAllChecked}
+                onChange={(event) => {
+                  let checked = event.target.checked
+                  if (checked) {
+                    let records = items.map((promotion) => clone(promotion))
+                    setBatchPayouts(records)
+                  } else {
+                    resetBatchPayout()
+                  }
+                }}
+              />
+            )
+          },
+          disableSortBy: true,
+          Cell: ({ value: record }) => {
+            let checked = includePayout(record, batchPayouts)
+            return (
+              <Checkbox
+                checked={checked}
+                onChange={(event) => {
+                  let checked = event.target.checked
+                  if (checked) {
+                    appendBatchPayout(record)
+                  } else {
+                    dropBatchPayout(record)
+                  }
+                }}
+              />
+            )
+          }
+        })
+      )
+    }
+
+    columns = [
+      ...columns,
       textColumn({
         accessor: "username",
         Header: <Trans zh="用户名" en="Username" />,
@@ -403,11 +416,13 @@ const useColumns = ({
             return (
               <Set orientation="horizontal" alignX="center">
                 <PromotionManualPayoutDisclosure
+                  id="promotion-payout-dialog-disclosure"
                   brandId={brandId}
                   record={record}
                   onSubmitted={mutate}
                 />
                 <ViewPromotionManualPayoutDisclosure
+                  id="view-promotion-payout-dialog-disclosure"
                   brandId={brandId}
                   record={record}
                 />

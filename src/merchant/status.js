@@ -64,6 +64,8 @@ export const MerchantStatusMenu = ({
   record = {},
   useChangeStatus,
   onSubmitted,
+  readOnly,
+  disabled,
   ...props
 }) => {
   let { id, status } = record
@@ -85,6 +87,20 @@ export const MerchantStatusMenu = ({
       onSubmitted?.()
     }
   }, [result, error])
+
+  if (readOnly || disabled) {
+    return (
+      <Button
+        palette={toPalette(status)}
+        isLoading={isLoading}
+        disabled
+        whiteSpace="nowrap"
+        isStatic
+      >
+        <MerchantStatusLabel value={status} />
+      </Button>
+    )
+  }
 
   return (
     <>

@@ -48,6 +48,33 @@ export const ImageUploadButton = ({
   )
 }
 
+export const ImageLocalizationDialogDisclosure = ({
+  name = "",
+  label,
+  brandId = "",
+  prefix = "",
+  disabled = false,
+  readOnly = false,
+  onUploaded,
+  ...props
+}) => {
+  return (
+    <Set {...props}>
+      <LocalizationDialogDisclosure
+        brandId={brandId}
+        name={name}
+        localizationField={LocalizationUploadImageField}
+        localizationFieldProps={{
+          prefix
+        }}
+        disabled={disabled}
+        readOnly={readOnly}
+      />
+      <OpenLinkButton name={name} disabled={disabled} />
+    </Set>
+  )
+}
+
 const LocalizationUploadImageField = ({ code, prefix, disabled }) => {
   let name = code
   return (
