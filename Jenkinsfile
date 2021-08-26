@@ -22,7 +22,7 @@ pipeline {
                             env.kube_ns = "prod";
                             env.k8s_config = 'stag-k8s-config';
                             break;
-                        case ['release', 'origin/release']:
+                        case ['release/current', 'origin/release', 'release']:
                             env.kube_ns = "staging";
                             env.k8s_config = 'stag-k8s-config';
                             break;
