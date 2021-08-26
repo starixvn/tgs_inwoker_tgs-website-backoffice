@@ -31,6 +31,10 @@ export const toDataOrError = (response) => {
     }
   }
 
+  if (response.headers.get("Content-Length") == "0") {
+    return response?.ok
+  }
+
   return response
     .json()
     .then((data) => {
@@ -44,7 +48,7 @@ export const toDataOrError = (response) => {
     })
     .catch((error) => {
       console.warn(error)
-      return response?.ok ? true : Promise.reject(error)
+      return Promise.reject(error)
     })
 }
 
