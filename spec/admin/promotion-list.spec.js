@@ -77,6 +77,10 @@ describe("Admin user", () => {
     ])
 
     await page.reload({ waitUntil: "networkidle" })
+    await page.waitForSelector(
+      `#promotion [data-row-index="${index}"] [data-column-id="status"]`
+    )
+
     let toggledStatus = await page.$eval(
       `#promotion [data-row-index="${index}"] [data-column-id="status"] label`,
       ({ dataset }) => dataset.status

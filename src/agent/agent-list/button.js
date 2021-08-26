@@ -15,7 +15,7 @@ import { View as ViewMenu, Update as UpdateMenu } from "./menu"
 import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import { useAddAgent, useAgent, useUpdateAgent } from "./client"
+import { useAddAgent, useAgent, useUpdateAgent, useAgentList } from "./client"
 import {
   Trans,
   FormattedDateTime,
@@ -91,6 +91,7 @@ import {
   AgentBalanceChangePanel,
   AgentBalanceChangeTab
 } from "./AgentBalanceChange"
+import { isAgentConfigRequired } from "../AgentConfigStatus"
 
 export const AddAgentButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -115,17 +116,11 @@ export const AddAgentButton = ({ brandId, onSubmitted, ...props }) => {
 }
 
 const AddDialog = ({ brandId, onSubmitted, dialog }) => {
-  let userBrandId = useUserBrandId()
-  brandId = brandId ?? userBrandId
-
   let [formData, setSubmit] = useState()
   let { result, error, mutate, deleteCache, isLoading } = useAddAgent(formData)
 
   const onSubmit = (data) => {
-    setSubmit({
-      ...data,
-      brandId
-    })
+    setSubmit(data)
   }
 
   const reset = () => {
@@ -165,8 +160,10 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
+const BrandIdField = "brandId"
+const ParentUsernameFieldName = "parentUsername"
 const FormBody = ({}) => {
-  let { control } = useFormContext()
+  let { control, getValues } = useFormContext()
 
   const LevelTypeFieldName = "levelType"
   let levelType = useWatch({
@@ -188,6 +185,7 @@ const FormBody = ({}) => {
   })
   let isCash = isAgentTypeCash(agentType)
   let isCredit = isAgentTypeCredit(agentType)
+
   return (
     <Set orientation="vertical" isFilled marginLeft="1rem">
       <Heading use="h5">
@@ -233,18 +231,11 @@ const FormBody = ({}) => {
               <NormalLabel required>
                 <Trans zh="上级用户名" en="Upper Level Username" />
               </NormalLabel>
-              <InputField name="parentUsername" required />
+              <InputField name={ParentUsernameFieldName} required />
             </>
           )}
 
-          {isCash && (
-            <>
-              <NormalLabel required>
-                <Trans zh="代理分红" en="Profit Sharing" />
-              </NormalLabel>
-              <AgentDividendPercentageInputField />
-            </>
-          )}
+          {isCash && <ProfitSharingBox />}
 
           {isCredit && (
             <>
@@ -315,9 +306,61 @@ const FormBody = ({}) => {
           <Textarea name="remarks" required />
         </FieldValues>
       </Set>
+      <Input
+        type="hidden"
+        name={BrandIdField}
+        value={getValues(BrandIdField)}
+      />
     </Set>
   )
 }
+
+const ProfitSharingBox = ({}) => {
+  let { control, getValues } = useFormContext()
+
+  let parentUsername = useWatch({
+    control,
+    name: ParentUsernameFieldName
+  })
+
+  let brandId = getValues(BrandIdField)
+  let { isLoading, data, error } = useAgentList({
+    brandId,
+    username: parentUsername,
+    rows: 1
+  })
+
+  let parentAgent = data?.items?.[0]
+  let validParentAgent =
+    parentUsername &&
+    parentAgent &&
+    !isAgentConfigRequired(parentAgent.agentStatus)
+  let parentAgentProfitSharing =
+    (validParentAgent && parentAgent.dividendPercentage) ?? undefined
+
+  return (
+    <>
+      <NormalLabel required>
+        <Trans zh="代理分红" en="Profit Sharing" />
+      </NormalLabel>
+      <Set orientation="horizontal">
+        <AgentDividendPercentageInputField max={parentAgentProfitSharing} />
+        {/* {validParentAgent && parentAgentProfitSharing >= 0 && (
+          <FormattedNumberDecimal
+            prefix={
+              <Trans zh="上级代理分红：" en="Upper Level Profit Sharing：" />
+            }
+            value={parentAgentProfitSharing}
+            postfix="%"
+            color="danger"
+          />
+        )} */}
+      </Set>
+    </>
+  )
+}
+
+const ParentAgentProfitSharing = ({ value }) => {}
 
 const ConfigFormBody = ({ record }) => {
   let isCash = isAgentTypeCash(record?.type)

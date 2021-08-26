@@ -19,10 +19,12 @@ services:
       - backoffice-api
     env:
       MODE: "production"
-      LOGIN_TITLE: "PG"
-      LOGIN_SUB_TITLE: "ADMIN"
-      HEADER_TITLE: "PG ADMIN"
-      HEADER_TITLE_COLOR: "#FFF"
+      LOGIN_IMAGE_URL: "https://via.placeholder.com/500x175.png"
+      HEADER_IMAGE_URL: "https://via.placeholder.com/500x175.png"
+      # LOGIN_TITLE: "PG"
+      # LOGIN_SUB_TITLE: "ADMIN"
+      # HEADER_TITLE: "PG ADMIN"
+      # HEADER_TITLE_COLOR: "#FFF"
       # MODE: "development"
       # LOGIN_TITLE: "PG"
       # LOGIN_SUB_TITLE: "ADMIN"

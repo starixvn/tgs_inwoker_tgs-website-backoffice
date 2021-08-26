@@ -24,6 +24,8 @@ export const isDev = () => window?.env?.mode === Development
 
 export const isProduction = () => window?.env?.mode === Production
 
+export const getLoginImageUrl = () => window?.env?.loginImageUrl || ""
+
 export const getLoginTitle = () => window?.env?.loginTitle || ""
 
 export const getLoginTitleColor = () => window?.env?.loginTitleColor || "#000"
@@ -38,6 +40,8 @@ export const getLoginSubTitle = () => window?.env?.loginSubTitle || ""
 
 export const getLoginSubTitleFontSize = () =>
   window?.env?.loginSubTitleFontSize || "1.7rem"
+
+export const getHeaderImageUrl = () => window?.env?.headerImageUrl || ""
 
 export const getHeaderTitle = () => window?.env?.headerTitle || ""
 
