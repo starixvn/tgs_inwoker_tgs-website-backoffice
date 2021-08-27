@@ -45,13 +45,13 @@ export const AgentConfigStatusLabel = ({ value = "", ...props }) => {
   switch (value) {
     case Done:
       return (
-        <Text {...props}>
+        <Text data-status={value} {...props}>
           <Trans {...DoneTrans} />
         </Text>
       )
     case WaitForConfigurePercentage:
       return (
-        <Text {...props}>
+        <Text data-status={value} {...props}>
           <Trans {...WaitForConfigurePercentageTrans} />
         </Text>
       )

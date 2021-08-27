@@ -98,7 +98,6 @@ describe("Admin user", async () => {
       `#tinymce`,
       ({ textContent }) => textContent
     )
-    console.log("content", content)
 
     await Promise.all([
       page.waitForResponse((response) => {

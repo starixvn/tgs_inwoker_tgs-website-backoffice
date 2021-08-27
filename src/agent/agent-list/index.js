@@ -132,11 +132,16 @@ const BodyContent = ({ brandId = "" }) => {
             }}
             isLoading={isLoading}
           />
-          <AddAgentButton brandId={brandId} onSubmitted={mutate} />
+          <AddAgentButton
+            id="add-agent-dialog-disclosure"
+            brandId={brandId}
+            onSubmitted={mutate}
+          />
         </Flex>
       }
     >
       <Table
+        id="agent"
         columns={columns}
         data={data?.items}
         initialState={state}
@@ -420,8 +425,13 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
             <Set alignX="center">
               {configDone && (
                 <>
-                  <ViewButton record={value} brandId={brandId} />
+                  <ViewButton
+                    id="view-agent-dialog-disclosure"
+                    record={value}
+                    brandId={brandId}
+                  />
                   <EditButton
+                    id="edit-agent-dialog-disclosure"
                     brandId={brandId}
                     record={value}
                     onSubmitted={mutate}
@@ -430,6 +440,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
               )}
               {configRequired && (
                 <ConfigButton
+                  id="config-agent-dialog-disclosure"
                   palette="warning"
                   variant="outlined"
                   brandId={brandId}

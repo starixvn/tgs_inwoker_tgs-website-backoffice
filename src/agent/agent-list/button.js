@@ -103,7 +103,7 @@ export const AddAgentButton = ({ brandId, onSubmitted, ...props }) => {
 
   return (
     <>
-      <AddDisclosure {...dialog} />
+      <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <AddDialog
           brandId={brandId}
@@ -136,6 +136,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
 
   return (
     <FormDialog
+      id="add-agent-dialog"
       defaultValues={{
         levelType: AgentLevel.Chief,
         type: AgentType.Cash,
@@ -491,7 +492,7 @@ export const ViewButton = ({ record, brandId, ...props }) => {
 
   return (
     <>
-      <ViewDisclosure {...dialog} />
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <TabsDialog
           record={record}
@@ -514,7 +515,7 @@ export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
 
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <TabsDialog
           brandId={brandId}
