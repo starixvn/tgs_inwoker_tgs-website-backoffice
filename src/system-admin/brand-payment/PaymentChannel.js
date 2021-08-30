@@ -9,9 +9,16 @@ import { FormDialog } from "../../form/FormDialog"
 import Backdrop from "../../dialog/Backdrop"
 import { useFormContext } from "react-hook-form"
 import { Input, InputField } from "../../input/Input"
+import { Update } from "./menu"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 
 export const AddPaymentChannelDisclosure = ({ onSubmitted }) => {
   let dialog = useModalState()
+
+  let isDisplay = useIsDisplayMenuByRoute([Update])
+  if (!isDisplay) {
+    return null
+  }
 
   return (
     <>

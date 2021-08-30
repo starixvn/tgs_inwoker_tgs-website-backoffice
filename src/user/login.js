@@ -11,7 +11,8 @@ import {
   Dialog,
   Modal,
   Text,
-  Heading
+  Heading,
+  Image
 } from "bumbag"
 import Input from "../input/Input"
 import { PasswordInputField } from "../input/PasswordInput"
@@ -25,7 +26,8 @@ import {
   getLoginTitleFontSize,
   getLoginTitleFontWeight,
   getLoginSubTitle,
-  getLoginSubTitleFontSize
+  getLoginSubTitleFontSize,
+  getLoginImageUrl
 } from "../env"
 
 export const Path = "/login"
@@ -65,8 +67,9 @@ export const Form = () => {
     en: "Password"
   })
 
-  let title = getLoginTitle()
-  let subTitle = getLoginSubTitle()
+  let imgUrl = getLoginImageUrl()
+  // let title = getLoginTitle()
+  // let subTitle = getLoginSubTitle()
   return (
     <Box
       alignX="center"
@@ -75,7 +78,18 @@ export const Form = () => {
         height: 80vh;
       `}
     >
-      {title && (
+      {imgUrl && (
+        <Box
+          marginBottom="3rem"
+          width="200px"
+          css={css`
+            aspect-ratio: 500 / 175;
+          `}
+        >
+          <Image src={imgUrl} width="100%" filter="none" />
+        </Box>
+      )}
+      {/* {title && (
         <Box marginBottom="1rem" alignX="center">
           <Text.Block
             color={getLoginTitleColor()}
@@ -94,7 +108,7 @@ export const Form = () => {
             </Text.Block>
           )}
         </Box>
-      )}
+      )} */}
       <Card
         title={loginLabel}
         headerAddon={

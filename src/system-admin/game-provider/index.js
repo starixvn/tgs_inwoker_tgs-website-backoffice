@@ -154,7 +154,8 @@ const SearchBar = ({
   )
 }
 
-const LocalizationMenuButton = ({ gameProviderCode }) => {
+const LocalizationMenuButton = ({}) => {
+  let editable = useIsDisplayMenuByRoute([Update])
   let uploadGameProviderLocalizationListDialog = useModalState()
 
   return (
@@ -171,12 +172,14 @@ const LocalizationMenuButton = ({ gameProviderCode }) => {
             >
               <Trans zh="汇出" en="Export" />
             </DropdownMenu.Item>
-            <DropdownMenu.Item
-              id="upload-game-provider-localization-dialog-disclosure"
-              onClick={uploadGameProviderLocalizationListDialog.show}
-            >
-              <Trans zh="上传" en="Upload" />
-            </DropdownMenu.Item>
+            {editable && (
+              <DropdownMenu.Item
+                id="upload-game-provider-localization-dialog-disclosure"
+                onClick={uploadGameProviderLocalizationListDialog.show}
+              >
+                <Trans zh="上传" en="Upload" />
+              </DropdownMenu.Item>
+            )}
           </>
         }
       >

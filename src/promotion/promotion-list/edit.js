@@ -452,6 +452,12 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     name: GameTypeGroupFieldName
   })
 
+  let GameTypeFieldName = "gameType"
+  let gameType = useWatch({
+    control,
+    name: GameTypeFieldName
+  })
+
   let disabled = readOnly
   let editable = !readOnly
 
@@ -613,7 +619,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
               <Trans zh="活动游戏子类型" en="Game SubType" />
             </NormalLabel>
             <GameTypeSelect
-              name="gameType"
+              name={GameTypeFieldName}
               group={gameTypeGroup}
               disabled={disabled}
               required
@@ -630,6 +636,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
               <BrandGameProviderCheckboxGroupTable
                 brandId={brandId}
                 disabled={disabled}
+                gameType={gameType}
               />
             </Box>
           </>

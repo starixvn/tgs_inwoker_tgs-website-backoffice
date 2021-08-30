@@ -55,9 +55,10 @@ const BodyContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { isLoading, data, error, mutate, deleteCache } = useVipLevelList(
-    toApiParams(state)
-  )
+  let { isLoading, data, error, mutate, deleteCache } = useVipLevelList({
+    ...toApiParams(state),
+    sortby: "level"
+  })
 
   let columns = useColumns({ brandId, items: data?.items, mutate })
   return (

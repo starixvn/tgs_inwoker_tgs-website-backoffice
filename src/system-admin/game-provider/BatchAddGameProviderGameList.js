@@ -188,7 +188,7 @@ const useColumns = ({ gameProviderId, items = [], formMethods }) => {
       }),
       textColumn({
         accessor: "externalId",
-        Header: <Trans zh="External Id" en="External Id" />,
+        Header: <Trans zh="External ID" en="External Id" />,
         disableSortBy: true
       }),
       textColumn({

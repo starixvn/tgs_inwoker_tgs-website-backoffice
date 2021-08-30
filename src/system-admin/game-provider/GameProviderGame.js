@@ -269,7 +269,7 @@ export const GameProviderGameFormBody = ({ readOnly = false }) => {
           name="externalId"
           required
           readOnly={readOnly}
-          label="External Id"
+          label="External ID"
         />
       </FieldStack>
       <FieldStack orientation="horizontal">

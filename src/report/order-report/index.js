@@ -195,7 +195,7 @@ const SearchBar = ({
 
   let externalRoundIdPlaceholder = useTrans({
     zh: "三方订单ID",
-    en: "External Id"
+    en: "External ID"
   })
   return (
     <FormProvider {...formMethods}>

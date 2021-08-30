@@ -26,7 +26,8 @@ import {
   Modal,
   Icon,
   Flex,
-  useModalState
+  useModalState,
+  Image
 } from "bumbag"
 import {
   useIsAuthed as useUserIsAuthed,
@@ -48,7 +49,8 @@ import {
   getHeaderTitle,
   getHeaderTitleColor,
   getHeaderTitleFontSize,
-  getHeaderTitleFontWeight
+  getHeaderTitleFontWeight,
+  getHeaderImageUrl
 } from "./env"
 
 function App() {
@@ -129,23 +131,25 @@ const Header = () => {
     location.replace(LoginPath)
   }
 
-  let title = getHeaderTitle()
+  let imgUrl = getHeaderImageUrl()
+  // let title = getHeaderTitle()
   return (
     <>
       <TopNav id="app-header" background={getHeaderBackground()}>
         <TopNav.Section>
-          <TopNav.Item href="/">
-            {title && (
+          <TopNav.Item marginLeft="2.2rem">
+            {imgUrl && <Image src={imgUrl} height="30px" filter="none" />}
+            {/* {title && (
               <Text.Block
                 lineHeight="normal"
                 color={getHeaderTitleColor()}
                 fontSize={getHeaderTitleFontSize()}
                 fontWeight={getHeaderTitleFontWeight()}
-                marginLeft="1.4rem"
+                marginLeft="0.8rem"
               >
                 {title}
               </Text.Block>
-            )}
+            )} */}
           </TopNav.Item>
         </TopNav.Section>
         <TopNav.Section marginRight="major-2">
