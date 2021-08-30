@@ -132,14 +132,14 @@ const Header = () => {
   }
 
   let imgUrl = getHeaderImageUrl()
-  let title = getHeaderTitle()
+  // let title = getHeaderTitle()
   return (
     <>
       <TopNav id="app-header" background={getHeaderBackground()}>
         <TopNav.Section>
           <TopNav.Item marginLeft="2.2rem">
-            {imgUrl && <Image src={imgUrl} height="40px" filter="none" />}
-            {title && (
+            {imgUrl && <Image src={imgUrl} height="30px" filter="none" />}
+            {/* {title && (
               <Text.Block
                 lineHeight="normal"
                 color={getHeaderTitleColor()}
@@ -149,7 +149,7 @@ const Header = () => {
               >
                 {title}
               </Text.Block>
-            )}
+            )} */}
           </TopNav.Item>
         </TopNav.Section>
         <TopNav.Section marginRight="major-2">
