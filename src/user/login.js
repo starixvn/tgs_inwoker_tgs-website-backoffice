@@ -68,8 +68,8 @@ export const Form = () => {
   })
 
   let imgUrl = getLoginImageUrl()
-  let title = getLoginTitle()
-  let subTitle = getLoginSubTitle()
+  // let title = getLoginTitle()
+  // let subTitle = getLoginSubTitle()
   return (
     <Box
       alignX="center"
@@ -79,11 +79,17 @@ export const Form = () => {
       `}
     >
       {imgUrl && (
-        <Box aspectRatio="500/175" marginBottom="1rem" width="200px">
+        <Box
+          marginBottom="3rem"
+          width="200px"
+          css={css`
+            aspect-ratio: 500 / 175;
+          `}
+        >
           <Image src={imgUrl} width="100%" filter="none" />
         </Box>
       )}
-      {title && (
+      {/* {title && (
         <Box marginBottom="1rem" alignX="center">
           <Text.Block
             color={getLoginTitleColor()}
@@ -102,7 +108,7 @@ export const Form = () => {
             </Text.Block>
           )}
         </Box>
-      )}
+      )} */}
       <Card
         title={loginLabel}
         headerAddon={
