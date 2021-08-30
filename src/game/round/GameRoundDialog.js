@@ -125,7 +125,7 @@ export const GameRoundDialog = ({
               </Box>
 
               <NormalLabel>
-                <Trans zh="三方订单ID" en="External Id" />
+                <Trans zh="三方订单ID" en="External ID" />
               </NormalLabel>
               <Box alignY="center" whiteSpace="nowrap">
                 {record.externalRoundId}
@@ -208,7 +208,7 @@ export const GameRoundDialog = ({
               </Box>
 
               <NormalLabel>
-                <Trans zh="游戏局号" en="Id" />
+                <Trans zh="游戏局号" en="ID" />
               </NormalLabel>
               <Box alignY="center" whiteSpace="nowrap">
                 {record.id}

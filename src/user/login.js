@@ -11,7 +11,8 @@ import {
   Dialog,
   Modal,
   Text,
-  Heading
+  Heading,
+  Image
 } from "bumbag"
 import Input from "../input/Input"
 import { PasswordInputField } from "../input/PasswordInput"
@@ -25,7 +26,8 @@ import {
   getLoginTitleFontSize,
   getLoginTitleFontWeight,
   getLoginSubTitle,
-  getLoginSubTitleFontSize
+  getLoginSubTitleFontSize,
+  getLoginImageUrl
 } from "../env"
 
 export const Path = "/login"
@@ -65,6 +67,7 @@ export const Form = () => {
     en: "Password"
   })
 
+  let imgUrl = getLoginImageUrl()
   let title = getLoginTitle()
   let subTitle = getLoginSubTitle()
   return (
@@ -75,6 +78,11 @@ export const Form = () => {
         height: 80vh;
       `}
     >
+      {imgUrl && (
+        <Box aspectRatio="500/175" marginBottom="1rem" width="200px">
+          <Image src={imgUrl} width="100%" filter="none" />
+        </Box>
+      )}
       {title && (
         <Box marginBottom="1rem" alignX="center">
           <Text.Block

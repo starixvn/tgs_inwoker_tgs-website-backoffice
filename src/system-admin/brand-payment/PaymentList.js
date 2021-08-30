@@ -87,16 +87,6 @@ const useColumns = ({ items = [], mutate }) => {
         accessor: "description",
         Header: <Trans zh="简介" en="Description" />,
         disableSortBy: true
-      }),
-      dateTimeColumn({
-        accessor: "updatedOn",
-        Header: <Trans zh="最新更新" en="Updated On" />,
-        disableSortBy: true
-      }),
-      textColumn({
-        accessor: "updatedByUsername",
-        Header: <Trans zh="更改者" en="Updated By" />,
-        disableSortBy: true
       })
     ]
 

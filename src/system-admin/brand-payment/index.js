@@ -32,6 +32,7 @@ import { PaymentProviderLabel } from "../../payment/PaymentProvider"
 import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import {
+  BrandPaymentStatusLabel,
   BrandPaymentStatusSelect,
   BrandPaymentStatusToggleButton
 } from "../../system/brandpayments/BrandPaymentStatus"
@@ -239,6 +240,10 @@ const useColumns = ({ items = [], mutate }) => {
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
         Cell: ({ value }) => {
+          if (!hasUpdateAuth) {
+            return <BrandPaymentStatusLabel value={value.paymentStatus} />
+          }
+
           return (
             <BrandPaymentStatusToggleButton
               record={value}

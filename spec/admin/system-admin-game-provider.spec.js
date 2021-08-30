@@ -76,15 +76,15 @@ describe("Admin user", () => {
   it("should list system game provider games and able to search by code", async () => {
     let gameProviderCodes = await getGameProviderCodes()
 
-    let index = random(gameProviderCodes.length - 1)
-    let gameProviderCode = gameProviderCodes[index]
+    let gameProviderIndex = random(gameProviderCodes.length - 1)
+    let gameProviderCode = gameProviderCodes[gameProviderIndex]
     await showGameListDialog(gameProviderCode)
 
     let gameCodes = await getGameListCodes()
     expect(gameCodes).to.be.not.empty
 
-    let gameCode = gameCodes[index]
-    console.log("gameCode", gameCode, "index", index, "gameCodes", gameCodes)
+    let gameIndex = random(gameCodes.length - 1)
+    let gameCode = gameCodes[gameIndex]
     await searchGameByInputNameValue({
       name: "code",
       value: gameCode,
@@ -96,7 +96,6 @@ describe("Admin user", () => {
       `#game-list tbody [data-row-id="0"] [data-column-id="code"]`
     )
 
-    //FIXED: sometimes ok, sometimes not
     let code = await page.$eval(
       `#game-list [data-row-id="0"] [data-column-id="code"]`,
       ({ textContent }) => textContent
@@ -160,7 +159,9 @@ describe("Admin user", () => {
     )
 
   const getGameListCodes = async () => {
-    await page.waitForSelector(`#game-list-dialog #game-list`)
+    await page.waitForSelector(
+      `#game-list-dialog #game-list [data-column-id="code"]`
+    )
     return await page.evaluate(() =>
       Array.from(
         window.document.querySelectorAll(

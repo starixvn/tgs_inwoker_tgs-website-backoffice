@@ -9,6 +9,7 @@ import {
   formatHourMinuteSecondDayMonthYear,
   HourMinuteSecondDayMonthYear
 } from "./date/format"
+
 registerLocale("en", en)
 registerLocale("zh", zh)
 
@@ -178,7 +179,9 @@ export const FormattedNumberDecimal = ({
   value,
   digits = 2,
   format = "0,0.00",
-  postfix = ""
+  prefix = "",
+  postfix = "",
+  ...props
 }) => {
   if (!Number.isFinite(value)) {
     return null
@@ -188,7 +191,8 @@ export const FormattedNumberDecimal = ({
     value = value.toFixed(digits)
   }
   return (
-    <Text>
+    <Text {...props}>
+      {prefix}
       {numeral(value).format(format)}
       {postfix}
     </Text>

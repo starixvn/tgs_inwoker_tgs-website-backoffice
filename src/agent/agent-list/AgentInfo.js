@@ -44,7 +44,10 @@ import {
 } from "../AgentType"
 import clone from "clone-deep"
 import Select from "../../select/Select"
-import { AgentDividendPercentageInputField } from "../AgentDividendPercentage"
+import {
+  AgentDividendPercentageInputField,
+  Name as AgentDividendPercentageField
+} from "../AgentDividendPercentage"
 import {
   AgentLiveDealerRebatePercentageInputField,
   AgentLiveDealerRebateText
@@ -266,6 +269,11 @@ const EditPanel = ({ record, onSubmitted, onClickClose, ...props }) => {
                 </RebateBox>
               )}
             </FieldValues>
+            <Input
+              type="hidden"
+              name="id"
+              value={formMethods.getValues("id")}
+            />
             <Box alignX="right">
               <SubmitCancel
                 isLoading={isLoading}
@@ -308,7 +316,11 @@ const ViewPanel = ({ record, ...props }) => {
 
         <LevelTypeBox value={record?.levelType} />
 
-        <DividendBox value={record?.dividendPercentage} type={record?.type} />
+        <DividendBox
+          id={AgentDividendPercentageField}
+          value={record?.dividendPercentage}
+          type={record?.type}
+        />
 
         <AccumulatedProfitSharingBox value={record?.accumulatedProfitSharing} />
 
@@ -380,19 +392,29 @@ const AgentLevelBox = ({ value = "", children }) => {
       <Box alignY="center">
         <Trans zh="代理种类" en="Level Type" />
       </Box>
-      {children ? children : <AgentLevelLabel value={value} />}
+      {children ? (
+        children
+      ) : (
+        <AgentLevelLabel data-value={value} value={value} />
+      )}
     </>
   )
 }
 
-const ParentAgentUsername = ({ value = "", children, display }) => {
+const ParentAgentUsername = ({ value = "", children, display, ...props }) => {
   return (
     <>
       <Box alignY="center" display={display}>
         <Trans zh="上级代理" en="Upper level agent" />
       </Box>
 
-      {children ? children : <Text display={display}>{value}</Text>}
+      {children ? (
+        children
+      ) : (
+        <Text data-value={value} display={display} {...props}>
+          {value}
+        </Text>
+      )}
     </>
   )
 }
@@ -408,18 +430,18 @@ const RegistrationBox = ({ value }) => {
   )
 }
 
-const BalanceBox = ({ value = "" }) => {
+const BalanceBox = ({ value = "", ...props }) => {
   return (
     <>
       <Trans zh="余额" en="Balance" />
       <Text>
-        <FormattedNumberDecimal value={value} />
+        <FormattedNumberDecimal data-value={value} value={value} {...props} />
       </Text>
     </>
   )
 }
 
-const AgentStatusBox = ({ value = "", children }) => {
+const AgentStatusBox = ({ value = "", children, ...props }) => {
   return (
     <>
       <Trans zh="状态" en="Status" />
@@ -428,14 +450,14 @@ const AgentStatusBox = ({ value = "", children }) => {
         children
       ) : (
         <Text>
-          <AgentStatusLabel value={value} />
+          <AgentStatusLabel data-value={value} value={value} {...props} />
         </Text>
       )}
     </>
   )
 }
 
-const LevelTypeBox = ({ value = "", children }) => {
+const LevelTypeBox = ({ value = "", children, ...props }) => {
   return (
     <>
       <Trans zh="代理种类" en="Level Type" />
@@ -444,14 +466,14 @@ const LevelTypeBox = ({ value = "", children }) => {
         children
       ) : (
         <Text>
-          <AgentLevelLabel value={value} />
+          <AgentLevelLabel data-value={value} value={value} {...props} />
         </Text>
       )}
     </>
   )
 }
 
-const AgentTypeBox = ({ value, children }) => {
+const AgentTypeBox = ({ value, children, ...props }) => {
   return (
     <>
       <Trans zh="代理类型" en="Agent Type" />
@@ -459,14 +481,14 @@ const AgentTypeBox = ({ value, children }) => {
         children
       ) : (
         <Text>
-          <AgentTypeLabel value={value} />
+          <AgentTypeLabel data-value={value} value={value} {...props} />
         </Text>
       )}
     </>
   )
 }
 
-const DividendBox = ({ value, type, children }) => {
+const DividendBox = ({ value, type, children, ...props }) => {
   let isCash = isAgentTypeCash(type)
   if (!isCash) {
     return null
@@ -479,19 +501,24 @@ const DividendBox = ({ value, type, children }) => {
         children
       ) : (
         <Text>
-          <FormattedNumberDecimal value={value} postfix="%" />
+          <FormattedNumberDecimal
+            data-value={value}
+            value={value}
+            postfix="%"
+            {...props}
+          />
         </Text>
       )}
     </>
   )
 }
 
-const AccumulatedProfitSharingBox = ({ value }) => {
+const AccumulatedProfitSharingBox = ({ value, ...props }) => {
   return (
     <>
       <Trans zh="累计结算分红金额" en="Accumulated Profit Sharing" />
       <Text>
-        <FormattedNumberDecimal value={value} />
+        <FormattedNumberDecimal data-value={value} value={value} {...props} />
       </Text>
     </>
   )

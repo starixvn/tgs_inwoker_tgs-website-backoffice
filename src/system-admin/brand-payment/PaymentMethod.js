@@ -38,6 +38,11 @@ import Backdrop from "../../dialog/Backdrop"
 export const AddPaymentMethodDisclosure = ({ onSubmitted }) => {
   let dialog = useModalState()
 
+  let isDisplay = useIsDisplayMenuByRoute([Update])
+  if (!isDisplay) {
+    return null
+  }
+
   return (
     <>
       <AddDisclosure {...dialog} />
