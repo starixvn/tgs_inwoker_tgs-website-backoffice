@@ -26,6 +26,8 @@ services:
       # HEADER_TITLE: "PG ADMIN"
       # HEADER_TITLE_COLOR: "#FFF"
       # MODE: "development"
+      # LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
+      # HEADER_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
       # LOGIN_TITLE: "PG"
       # LOGIN_SUB_TITLE: "ADMIN"
       # HEADER_TITLE: "PG ADMIN"

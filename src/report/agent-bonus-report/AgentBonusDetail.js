@@ -149,8 +149,8 @@ const ReportDialog = ({
 
 const useAgentBonusColumns = ({ username = "", items = [] }) => {
   let payoutAmountTooltip = useTrans({
-    zh: "反水(VIP) + 紅利(活動)",
-    en: "Rebate (VIP) + Bonus (Promotion)"
+    zh: "紅利金額(活動 + VIP返水) + 調帳",
+    en: "Bouns(Promotion + Rebate VIP) + Adjustment"
   })
 
   return useMemo(
@@ -238,7 +238,7 @@ const useAgentBonusColumns = ({ username = "", items = [] }) => {
       numberDecimalColumn({
         accessor: "agentPayoutAmount",
         Header: (
-          <Trans zh="支出金额" en="Payout Amount" title={payoutAmountTooltip} />
+          <Trans zh="支出金额" en="Expenditure Amount" title={payoutAmountTooltip} />
         ),
         sumColumn: "agentPayoutAmount",
         disableSortBy: true

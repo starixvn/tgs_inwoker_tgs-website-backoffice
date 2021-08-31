@@ -16,9 +16,11 @@ import {
 import { useBrandGameProviderList } from "./client"
 import { Trans, useTrans } from "../../i18n"
 import Checkbox from "../../checkbox"
-import { useFormContext } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 import Input from "../../input/Input"
 import { isAllPropChecked } from "../../checkbox/isAllChecked"
+import { differenceWith } from "lodash-es"
+import clone from "clone-deep"
 
 export const BrandGameProviderCheckboxGroupTable = ({
   brandId,
@@ -27,6 +29,7 @@ export const BrandGameProviderCheckboxGroupTable = ({
   disabled,
   ...props
 }) => {
+  let { control, watch, reset, getValues } = useFormContext()
   let { isLoading, data, error } = useBrandGameProviderList({
     brandId,
     showAll: true,
@@ -34,26 +37,60 @@ export const BrandGameProviderCheckboxGroupTable = ({
     gameType
   })
 
+  let gameProviders = watch(name)
+  let items = data?.items
+
+  useEffect(() => {
+    if (
+      !isLoading &&
+      gameProviders &&
+      gameProviders.length > 0 &&
+      items &&
+      Number.isFinite(items.length)
+    ) {
+      let diffs = differenceWith(gameProviders, items, (a, b) => {
+        return a.gameProviderId === b.gameProviderId
+      })
+
+      if (diffs.length) {
+        gameProviders = clone(items).map((gameProvider) => ({
+          ...clone(gameProvider),
+          checked: false
+        }))
+
+        let defaultValue = clone(getValues())
+        Reflect.set(defaultValue, name, gameProviders)
+        reset(defaultValue)
+      }
+    }
+  }, [brandId, gameType, isLoading])
+
   if (isLoading) {
     return <Spinner />
   }
 
-  return <Body name={name} items={data?.items} disabled={disabled} />
+  return (
+    <Body
+      name={name}
+      gameProviders={gameProviders}
+      items={data?.items}
+      disabled={disabled}
+    />
+  )
 }
 
-const Body = ({ name, items = [], disabled, ...props }) => {
-  let { control, setValue, watch, register } = useFormContext()
+const Body = ({ name, gameProviders, items = [], disabled, ...props }) => {
+  let { control, setValue, watch } = useFormContext()
 
-  let selection = watch(name)
-  let allChecked = isAllPropChecked(selection)
-
+  let allChecked = isAllPropChecked(gameProviders)
   return (
-    <Table>
+    <Table id={`${name}-table`}>
       <Table.Head>
         <Table.Row>
           <Table.HeadCell textAlign="center">
             <Box>
               <Checkbox
+                id={`all-${name}`}
                 checked={allChecked}
                 onChange={(event) => {
                   let checked = event.target.checked
