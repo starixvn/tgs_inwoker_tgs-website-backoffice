@@ -147,12 +147,7 @@ const normalizeFormData = ({ gameProviders = [], ...data }) => {
     "gameProviderId",
     gameProviders
   )
-  console.log(
-    "select ",
-    gameProviderIds.length,
-    " game providers",
-    gameProviderIds
-  )
+
   return {
     gameProviderIds,
     ...data
