@@ -52,6 +52,7 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
   let hasLiveChat = !!(!isLoading && record)
 
   let isDisplay = useIsDisplayMenuByRoute([ViewLiveChat])
+  let editable = useIsDisplayMenuByRoute([UpdateLiveChat])
   if (!isDisplay) {
     return null
   }
@@ -67,35 +68,24 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
       {!isLoading && (
         <>
           {!hasLiveChat && (
-            <Disclosure
-              palette="primary"
-              isLoading={isLoading}
-              disabled={isLoading}
-              {...addDialog}
-              {...props}
-            >
+            <Disclosure palette="primary" {...addDialog} {...props}>
               <Trans zh="三方即時客服廠商" en="3rd Party Live Chat Provider" />
             </Disclosure>
           )}
-          {hasLiveChat && (
+          {hasLiveChat && !editable && (
+            <Disclosure palette="primary" {...updateDialog} {...props}>
+              <Trans zh="三方即時客服廠商" en="3rd Party Live Chat Provider" />
+            </Disclosure>
+          )}
+          {hasLiveChat && editable && (
             <Group>
-              <Disclosure
-                palette="primary"
-                isLoading={isLoading}
-                disabled={isLoading}
-                {...updateDialog}
-                {...props}
-              >
+              <Disclosure palette="primary" {...updateDialog} {...props}>
                 <Trans
                   zh="三方即時客服廠商"
                   en="3rd Party Live Chat Provider"
                 />
               </Disclosure>
-              <Disclosure
-                color="danger"
-                isLoading={isLoading}
-                {...deleteDialog}
-              >
+              <Disclosure color="danger" {...deleteDialog}>
                 <Icon icon={faTimes} type="font-awesome" />
               </Disclosure>
             </Group>

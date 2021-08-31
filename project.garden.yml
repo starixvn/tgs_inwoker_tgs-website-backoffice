@@ -18,20 +18,16 @@ services:
     dependencies:
       - backoffice-api
     env:
-      MODE: "production"
+      # MODE: "production"
       LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
       HEADER_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS-w.png"
       # LOGIN_TITLE: "PG"
       # LOGIN_SUB_TITLE: "ADMIN"
       # HEADER_TITLE: "PG ADMIN"
       # HEADER_TITLE_COLOR: "#FFF"
-      # MODE: "development"
+      MODE: "development"
       # LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
       # HEADER_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
-      # LOGIN_TITLE: "PG"
-      # LOGIN_SUB_TITLE: "ADMIN"
-      # HEADER_TITLE: "PG ADMIN"
-      # HEADER_TITLE_COLOR: "#000"
     ingresses:
       - hostname: backoffice.localhost
         path: /
