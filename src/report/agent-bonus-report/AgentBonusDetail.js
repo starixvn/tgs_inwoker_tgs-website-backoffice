@@ -234,16 +234,18 @@ const useAgentBonusColumns = ({ username = "", items = [] }) => {
         disableSortBy: true
       }),
 
-      /*
       numberDecimalColumn({
-        accessor: "agentPayoutAmount",
+        accessor: "expenditureAmount",
         Header: (
-          <Trans zh="支出金额" en="Expenditure Amount" title={payoutAmountTooltip} />
+          <Trans
+            zh="支出金额"
+            en="Expenditure Amount"
+            title={payoutAmountTooltip}
+          />
         ),
-        sumColumn: "agentPayoutAmount",
+        sumColumn: "expenditureAmount",
         disableSortBy: true
       }),
-      */
 
       numberDecimalColumn({
         accessor: "agentDividendAmount",
