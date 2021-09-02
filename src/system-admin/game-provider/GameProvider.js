@@ -49,6 +49,7 @@ import ConfirmButtonFooter, {
 import Checkbox from "../../checkbox"
 import { GameProviderCurrencyBetLimitFieldsBox } from "./GameProviderCurrencyBetLimitFieldsBox"
 import clone from "clone-deep"
+import { sortBy } from "lodash-es"
 
 export const ViewGameProviderDisclosure = ({ gameProviderId }) => {
   let dialog = useModalState()
@@ -317,7 +318,6 @@ const normalizeFormData = ({ currencies, languages, ...data }) => {
     []
   )
 
-  console.log("data", data)
   return {
     currencies,
     languages,
@@ -332,7 +332,7 @@ const FormBody = ({ readOnly, isAdd = false }) => {
   let editable = !readOnly
   let disabled = readOnly
   return (
-    <Stack orientation="vertical" marginLeft="1rem">
+    <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
         <Trans zh="基本资料" en="Basic Information" />
       </Heading>
@@ -468,6 +468,14 @@ const useFormDataInit = (gameProviderId) => {
     gameProvider?.currencies ?? [],
     currencyData?.items ?? []
   )
+
+  if (gameProvider && gameProvider.betLimts) {
+    gameProvider.betLimts = sortBy(gameProvider.betLimts, [
+      "minBet",
+      "maxBet",
+      "maxBetPerMatch"
+    ])
+  }
 
   return {
     gameProvider: clone(gameProvider),

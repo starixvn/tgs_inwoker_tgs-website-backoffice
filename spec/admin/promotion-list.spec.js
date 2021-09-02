@@ -104,7 +104,7 @@ describe("Admin user", () => {
     )
 
     let promotion = {
-      name: lorem.word(),
+      name: `${lorem.word()}-${Date.now()}`,
       promotionTypeGroup:
         PromotionTypeGroupOptions[
           random(0, otherPromotionTypeGroups.length - 1)
@@ -126,11 +126,15 @@ describe("Admin user", () => {
       (item) => item != promotionType
     )
     promotion.promotionType =
-      otherPromotionTypes[random(0, otherPromotionTypes.length - 1)]
+      otherPromotionTypes.length > 0
+        ? otherPromotionTypes[random(0, otherPromotionTypes.length - 1)]
+        : PromotionTypeOptions[0]
     await setPromotionType(promotion.promotionType)
 
     let hasGameTypeOption = await isGameTypeSelectVisible()
     if (hasGameTypeOption) {
+      //TODO: select other game type group
+
       let GameTypeOptions = await getGameTypeOptions()
       let gameType = await getGameType()
       let otherGameTypeOptions = GameTypeOptions.filter(
@@ -138,9 +142,12 @@ describe("Admin user", () => {
       )
 
       promotion.gameType =
-        otherGameTypeOptions[random(0, otherGameTypeOptions.length - 1)]
+        otherGameTypeOptions.length > 0
+          ? otherGameTypeOptions[random(0, otherGameTypeOptions.length - 1)]
+          : GameTypeOptions[0]
 
       let [response] = await Promise.all([
+        /* TODO: if game type doesn't change, won't trigger get api
         page.waitForResponse((response) => {
           let url = response.url()
           return (
@@ -149,12 +156,14 @@ describe("Admin user", () => {
             response.status() === 200
           )
         }),
+        */
         setGameType(promotion.gameType)
       ])
 
+      /* TODO: select brand game providers?
       let brandGameProviders = await response.json()
-      //TODO: select brand game providers?
       console.log("brandGameProviders", brandGameProviders)
+      */
     }
 
     await page.fill(
@@ -181,7 +190,7 @@ describe("Admin user", () => {
     let from = startOfDay(new Date())
     let to = endOfTomorrow(new Date())
     let promotion = {
-      name: lorem.word(),
+      name: `${lorem.word()}-${Date.now()}`,
       from: format(from, "yyyy/MM/dd"),
       to: format(to, "yyyy/MM/dd"),
       totalAmountLimit: 1000,

@@ -28,7 +28,6 @@ import Disclosure, { ConfigIconDisclosure } from "../../dialog/Disclosure"
 import { CloseText, ConfirmText } from "../../button/ActionButtons"
 import Backdrop from "../../dialog/Backdrop"
 import FormDialog from "../../form/FormDialog"
-import { sortBy } from "lodash-es"
 
 export const GameProviderCurrencyBetLimitFieldsBox = ({
   currencyFieldName = "currencies",
@@ -185,7 +184,8 @@ const CurrencyBetLimitsRow = ({
                       setValue(currencyCheckedFieldName, checked)
 
                       if (!checked) {
-                        removeCurrencyBetLimitFields()
+                        // Note: backend api not support delete bet limit, so no need to remove bet limit fields
+                        // removeCurrencyBetLimitFields()
                       }
                     }}
                   />
@@ -266,13 +266,7 @@ const BetLimitRows = ({
   betLimitFieldArray,
   disabled
 }) => {
-  let sortedFieldIndexPairs = sortBy(betLimitFieldIndexPairs, [
-    ([a]) => a.minBet,
-    ([a]) => a.maxBet,
-    ([a]) => a.maxBetPerMatch
-  ])
-
-  return sortedFieldIndexPairs.map(([betLimitField, betLimitFieldIndex]) => (
+  return betLimitFieldIndexPairs.map(([betLimitField, betLimitFieldIndex]) => (
     <BetLimitRow
       betLimitFieldName={betLimitFieldName}
       betLimitFieldArray={betLimitFieldArray}
@@ -333,6 +327,7 @@ const BetLimitRow = ({
     <Table.Cell></Table.Cell>
     <Table.Cell>
       <Button
+        display="none" //note. backend api not support delete bet limit
         size="small"
         palette="danger"
         variant="ghost"
