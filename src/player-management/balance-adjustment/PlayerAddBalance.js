@@ -103,9 +103,11 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
   }
   return (
     <FormDialog
+      id="add-balance-dialog"
       defaultValues={{
         brandId,
         username,
+        playerCode,
         transactionType: PlayerAddBalanceType.Other
       }}
       onSubmit={onSubmit}
@@ -133,7 +135,11 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
 const FormBody = ({}) => {
   let { control, getValues } = useFormContext()
 
-  let [username, brandId] = getValues(["username", "brandId"])
+  let [username, brandId, playerCode] = getValues([
+    "username",
+    "brandId",
+    "playerCode"
+  ])
 
   let TransactionAmountField = "amount"
   let transactionAmount = useWatch({
@@ -175,6 +181,7 @@ const FormBody = ({}) => {
       </FieldValues>
       <Input type="hidden" name="brandId" value={brandId} />
       <Input type="hidden" name="username" value={username} />
+      <Input type="hidden" name="playerCode" value={playerCode} />
     </>
   )
 }
