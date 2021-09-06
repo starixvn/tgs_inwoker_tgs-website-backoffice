@@ -7,9 +7,13 @@ services:
     env:
       SERVICES: "s3"
       DATA_DIR: "/tmp/localstack/data"
+    ingresses:
+      - hostname: localstack
+        port: localstack
     ports:
       - name: localstack
         containerPort: 4566
+        localPort: 4566
         servicePort: 4566
     volumes:
       - name: data

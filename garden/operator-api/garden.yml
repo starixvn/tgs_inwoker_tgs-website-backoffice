@@ -16,8 +16,16 @@ services:
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
       NatsSetting__Urls: "nats://nats:4222"
       Operator__FileServiceBaseUrl: "http://file-service"
+      Operator__PaymentServiceBaseUrl: "http://payment-api"
       Promotion__Url: "http://promotion-api"
+    ingresses:
+      - hostname: mocksite.localhost
+        path: /api
+        port: http
+      - hostname: operator-api.localhost
+        port: http
     ports:
       - name: http
         containerPort: 80
+        localPort: 32670
         servicePort: 80
