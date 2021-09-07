@@ -48,8 +48,14 @@ const BodyContent = ({ brandId }) => {
       title={<Trans en="Customer Service Management" zh="客服管理" />}
     >
       <Set>
-        <MessengerDialogDisclosure brandId={brandId} />
-        <CreateOrEditLiveChatDialogDisclosure brandId={brandId} />
+        <MessengerDialogDisclosure
+          id="instant-messaging-dialog-disclosure"
+          brandId={brandId}
+        />
+        <CreateOrEditLiveChatDialogDisclosure
+          id="live-chat-dialog-disclosure"
+          brandId={brandId}
+        />
       </Set>
     </PageContent>
   )
