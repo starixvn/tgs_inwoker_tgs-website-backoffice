@@ -1,0 +1,18 @@
+kind: Module
+type: container
+name: payment-leepay
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-leepay:prod-1.3
+services:
+  - name: payment-leepay
+    dependencies:
+      - postgres
+      - nats
+    env:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      LeePay__NatsUrl: "nats://nats:4222"
+      LeePay__CallbackBaseUrl: "http://operator-api.localhost"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

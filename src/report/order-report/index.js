@@ -9,7 +9,7 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { Trans, useTrans } from "../../i18n"
+import { Trans, useTrans, getAcceptLangCulture, useLangCode } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -93,6 +93,7 @@ const ReportContent = ({ brandId }) => {
     gameProviderId
   } = state
 
+  let culture = useLangCode()
   let {
     isLoading,
     data = {},
@@ -104,7 +105,8 @@ const ReportContent = ({ brandId }) => {
     sortby: "createdOn",
     orderby: "descending",
     from,
-    to: startOfNextDay(to)
+    to: startOfNextDay(to),
+    culture
   })
 
   let DataRetentionDays = 180

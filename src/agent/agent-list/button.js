@@ -325,43 +325,32 @@ const ProfitSharingBox = ({}) => {
   })
 
   let brandId = getValues(BrandIdField)
-  let { isLoading, data, error } = useAgentList({
-    brandId,
-    username: parentUsername,
-    rows: 1
-  })
+  // let { isLoading, data, error } = useAgentList({
+  //   brandId,
+  //   username: parentUsername,
+  //   rows: 1
+  // })
 
-  let parentAgent = data?.items?.[0]
-  let validParentAgent =
-    parentUsername &&
-    parentAgent &&
-    !isAgentConfigRequired(parentAgent.agentStatus)
-  let parentAgentProfitSharing =
-    (validParentAgent && parentAgent.dividendPercentage) ?? undefined
+  // let parentAgent = data?.items?.[0]
+  // let validParentAgent =
+  //   parentUsername &&
+  //   parentAgent &&
+  //   !isAgentConfigRequired(parentAgent.agentStatus)
+  // let parentAgentProfitSharing =
+  //   (validParentAgent && parentAgent.dividendPercentage) ?? undefined
 
   return (
     <>
       <NormalLabel required>
         <Trans zh="代理分红" en="Profit Sharing" />
       </NormalLabel>
-      <Set orientation="horizontal">
-        <AgentDividendPercentageInputField max={parentAgentProfitSharing} />
-        {/* {validParentAgent && parentAgentProfitSharing >= 0 && (
-          <FormattedNumberDecimal
-            prefix={
-              <Trans zh="上级代理分红：" en="Upper Level Profit Sharing：" />
-            }
-            value={parentAgentProfitSharing}
-            postfix="%"
-            color="danger"
-          />
-        )} */}
-      </Set>
+      <AgentDividendPercentageInputField
+        brandId={brandId}
+        parentUsername={parentUsername}
+      />
     </>
   )
 }
-
-const ParentAgentProfitSharing = ({ value }) => {}
 
 const ConfigFormBody = ({ record }) => {
   let isCash = isAgentTypeCash(record?.type)
@@ -414,14 +403,7 @@ const ConfigFormBody = ({ record }) => {
             <AgentLevelLabel value={record?.levelType} />
           </Text.Block>
 
-          {isCash && (
-            <>
-              <NormalLabel required>
-                <Trans zh="分红比例" en="Profit Sharing %" />
-              </NormalLabel>
-              <AgentDividendPercentageInputField />
-            </>
-          )}
+          {isCash && <ProfitSharingBox />}
 
           {isCredit && (
             <>
@@ -723,7 +705,7 @@ const ViewTabs = ({ brandId, record, tab }) => {
         <AgentBalanceChangeTab {...tab} />
       </TabList>
 
-      <AgentInfoPanel record={record} readonly {...tab} />
+      <AgentInfoPanel brandId={brandId} record={record} readonly {...tab} />
       <AgentContactInfoPanel record={record} readonly {...tab} />
       <AgentBankInfoPanel record={record} readonly {...tab} />
       <AgentOperationListPanel agentId={record?.id} {...tab} />

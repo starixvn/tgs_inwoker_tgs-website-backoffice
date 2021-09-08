@@ -8,6 +8,8 @@ import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { lorem } from "faker"
 import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
+import { goto } from "../sidebar"
+import platform from "../platform"
 
 let browser
 let context
@@ -38,10 +40,10 @@ describe("Admin user", () => {
   })
 
   it("should able to add and edit promotion", async () => {
-    let promotion = await addPromotion()
+    await addPromotion()
 
-    //TODO: fix data seeding
-    // await editPromotion()
+    let promotion = await editPromotion()
+    //TODO: view promotion
   })
 
   it("should able to toggle promotion status", async () => {
@@ -88,17 +90,86 @@ describe("Admin user", () => {
     expect(toggledStatus).to.equal(ExpectedStatus)
   }
 
-  //TODO
+  let MinTotalAmountLimit = 10000000
   const editPromotion = async () => {
+    let EditDialogSelector = `#edit-promotion-dialog`
     await page.click(`#edit-promotion-dialog-disclosure`)
-    await page.waitForSelector("#edit-promotion-dialog")
+    await page.waitForSelector(EditDialogSelector)
+    await page.waitForLoadState()
 
-    let from = startOfDay(new Date())
-    let to = endOfTomorrow(new Date())
+    let PromotionTypeGroupOptions = await getPromotionTypeGroupOptions()
+    let promotionTypeGroup = await getPromotionTypeGroup()
+    let otherPromotionTypeGroups = PromotionTypeGroupOptions.filter(
+      (item) => item != promotionTypeGroup
+    )
+
     let promotion = {
-      name: lorem.word()
+      name: `${lorem.word()}-${Date.now()}`,
+      promotionTypeGroup:
+        PromotionTypeGroupOptions[
+          random(0, otherPromotionTypeGroups.length - 1)
+        ],
+      totalAmountLimit: random(MinTotalAmountLimit, MinTotalAmountLimit + 1000),
+      bonusAmountLimit: random(0, 100)
     }
-    await page.fill(`#edit-promotion-dialog input[name="name"]`, promotion.name)
+    await page.fill(`${EditDialogSelector} input[name="name"]`, promotion.name)
+    await page.fill(
+      `${EditDialogSelector} input[name="totalAmountLimit"]`,
+      `${promotion.totalAmountLimit}`
+    )
+
+    await setPromotionTypeGroup(promotion.promotionTypeGroup)
+
+    let PromotionTypeOptions = await getPromotionTypeOptions()
+    let promotionType = await getPromotionType()
+    let otherPromotionTypes = PromotionTypeOptions.filter(
+      (item) => item != promotionType
+    )
+    promotion.promotionType =
+      otherPromotionTypes.length > 0
+        ? otherPromotionTypes[random(0, otherPromotionTypes.length - 1)]
+        : PromotionTypeOptions[0]
+    await setPromotionType(promotion.promotionType)
+
+    let hasGameTypeOption = await isGameTypeSelectVisible()
+    if (hasGameTypeOption) {
+      //TODO: select other game type group
+
+      let GameTypeOptions = await getGameTypeOptions()
+      let gameType = await getGameType()
+      let otherGameTypeOptions = GameTypeOptions.filter(
+        (item) => item != gameType
+      )
+
+      promotion.gameType =
+        otherGameTypeOptions.length > 0
+          ? otherGameTypeOptions[random(0, otherGameTypeOptions.length - 1)]
+          : GameTypeOptions[0]
+
+      let [response] = await Promise.all([
+        /* TODO: if game type doesn't change, won't trigger get api
+        page.waitForResponse((response) => {
+          let url = response.url()
+          return (
+            url.includes("/api/brandgameprovider") &&
+            url.includes(`gameType=${promotion.gameType}`) &&
+            response.status() === 200
+          )
+        }),
+        */
+        setGameType(promotion.gameType)
+      ])
+
+      /* TODO: select brand game providers?
+      let brandGameProviders = await response.json()
+      console.log("brandGameProviders", brandGameProviders)
+      */
+    }
+
+    await page.fill(
+      `${EditDialogSelector} input[name="bonusAmountLimit"]`,
+      `${promotion.bonusAmountLimit}`
+    )
 
     await Promise.all([
       page.waitForResponse((response) => {
@@ -108,6 +179,9 @@ describe("Admin user", () => {
       }),
       page.click(`#edit-promotion-dialog button[type="submit"]`)
     ])
+    await page.waitForLoadState("networkidle")
+    await page.waitForLoadState("domcontentloaded")
+    return promotion
   }
 
   const addPromotion = async () => {
@@ -116,7 +190,7 @@ describe("Admin user", () => {
     let from = startOfDay(new Date())
     let to = endOfTomorrow(new Date())
     let promotion = {
-      name: lorem.word(),
+      name: `${lorem.word()}-${Date.now()}`,
       from: format(from, "yyyy/MM/dd"),
       to: format(to, "yyyy/MM/dd"),
       totalAmountLimit: 1000,
@@ -166,14 +240,76 @@ describe("Admin user", () => {
     ])
   }
 
+  const PromotionTypeGroupSelectSelector = `select[name="promotionTypeGroup"]`
+  const getPromotionTypeGroupOptions = async (
+    selectSelector = PromotionTypeGroupSelectSelector
+  ) => {
+    let Selector = `${selectSelector} option:not(:first-child)`
+    await page.waitForSelector(Selector, { state: "attached" })
+    return page.$$eval(Selector, (options) => options.map(({ value }) => value))
+  }
+
+  const getPromotionTypeGroup = async (
+    selectSelector = PromotionTypeGroupSelectSelector
+  ) => {
+    return page.$eval(selectSelector, ({ value }) => value)
+  }
+
+  const setPromotionTypeGroup = async (
+    option = "",
+    selectSelector = PromotionTypeGroupSelectSelector
+  ) => {
+    return page.selectOption(selectSelector, option)
+  }
+
+  const PromotionTypeSelectSelector = `select[name="promotionType"]`
+  const getPromotionTypeOptions = async (
+    selectSelector = PromotionTypeSelectSelector
+  ) => {
+    let Selector = `${selectSelector} option:not(:first-child)`
+    await page.waitForSelector(Selector, { state: "attached" })
+    return page.$$eval(Selector, (options) => options.map(({ value }) => value))
+  }
+
+  const getPromotionType = async (
+    selectSelector = PromotionTypeSelectSelector
+  ) => {
+    return page.$eval(selectSelector, ({ value }) => value)
+  }
+
+  const setPromotionType = async (
+    option,
+    selectSelector = PromotionTypeSelectSelector
+  ) => {
+    return page.selectOption(selectSelector, option)
+  }
+
+  const GameTypeSelectSelector = `select[name="gameType"]`
+  const isGameTypeSelectVisible = async () => {
+    return page.isVisible(GameTypeSelectSelector)
+  }
+
+  const getGameTypeOptions = async (
+    selectSelector = GameTypeSelectSelector
+  ) => {
+    let Selector = `${selectSelector} option:not(:first-child)`
+    return page.$$eval(Selector, (options) => options.map(({ value }) => value))
+  }
+
+  const getGameType = async (selectSelector = GameTypeSelectSelector) => {
+    return page.$eval(selectSelector, ({ value }) => value)
+  }
+
+  const setGameType = async (
+    option,
+    selectSelector = GameTypeSelectSelector
+  ) => {
+    return page.selectOption(selectSelector, option)
+  }
+
   const gotoPromotionPage = async () => {
-    let Menu = `#sidebar a[href="/promotion/promotionlist"]`
-    await Promise.all([
-      page.waitForNavigation(),
-      page.click(Menu),
-      page.waitForLoadState("networkidle")
-    ])
-    await selectPlatform()
+    await goto({ page, value: "/promotion/promotionlist" })
+    await platform.selectFirst({ page })
   }
 
   const PromotionType = {
@@ -183,21 +319,5 @@ describe("Admin user", () => {
     option = PromotionType.DailyFirstDeposit
   ) => {
     return page.selectOption(`select[name="promotionType"]`, option)
-  }
-
-  const selectPlatform = async () => {
-    await page.waitForSelector(
-      `#page-merchant-bar select[name="brandId"] option[value*="-"]:not(:first-child)`,
-      {
-        state: "attached"
-      }
-    )
-    let option = await page.$eval(
-      `#page-merchant-bar select[name="brandId"] option[value*="-"]:not(:first-child)`,
-      (element) => element.value
-    )
-    await Promise.all([
-      page.selectOption(`#page-merchant-bar select[name="brandId"]`, option)
-    ])
   }
 })

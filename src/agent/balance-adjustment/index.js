@@ -201,12 +201,14 @@ const useColumns = ({ brandId, items = [], mutate }) => {
             return (
               <Set alignX="center">
                 <AgentAddBalanceDisclosure
+                  id="add-balance-dialog-disclosure"
                   brandId={brandId}
                   agentId={value?.id}
                   username={username}
                   onSubmitted={mutate}
                 />
                 <AgentDeductBalanceDisclosure
+                  id="deduct-balance-dialog-disclosure"
                   brandId={brandId}
                   agentId={value?.id}
                   username={username}
