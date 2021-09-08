@@ -108,6 +108,7 @@ const DeductDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
 
   return (
     <FormDialog
+      id="deduct-balance-dialog"
       defaultValues={{}}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -126,12 +127,12 @@ const DeductDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
         />
       }
     >
-      <FormBody brandId={brandId} username={username} />
+      <FormBody brandId={brandId} username={username} agentId={agentId} />
     </FormDialog>
   )
 }
 
-const FormBody = ({ brandId, username }) => {
+const FormBody = ({ brandId, username, agentId }) => {
   let { watch } = useFormContext()
 
   let typeFieldName = "transactionType"
@@ -141,6 +142,7 @@ const FormBody = ({ brandId, username }) => {
     <>
       <Input type="hidden" name="brandId" value={brandId} />
       <Input type="hidden" name="username" value={username} />
+      <Input type="hidden" name="id" value={agentId} />
       <FieldValues margin="1rem">
         <Text.Block alignY="center">
           <Trans zh="代理用户名" en="Agent Username" />

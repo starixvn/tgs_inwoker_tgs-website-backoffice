@@ -102,7 +102,10 @@ const AddMessengerCard = ({ brandId, onSubmitted }) => {
 
   return (
     <Card alignX="center">
-      <AddIconDisclosure {...dialog} />
+      <AddIconDisclosure
+        id="add-instant-messaging-dialog-disclosure"
+        {...dialog}
+      />
       {dialog.visible && (
         <AddDialog
           brandId={brandId}
@@ -132,6 +135,7 @@ const AddDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
   return (
     <Backdrop {...dialog}>
       <FormDialog
+        id="add-instant-messaging-dialog"
         defaultValues={{ brandId }}
         onSubmit={onSubmit}
         isLoading={isLoading}
@@ -188,7 +192,10 @@ const DeleteDialogDisclosure = ({ id, onSubmitted, ...props }) => {
 
   return (
     <>
-      <DeleteIconDisclosure {...dialog} />
+      <DeleteIconDisclosure
+        id="delete-instant-messaging-dialog-disclosure"
+        {...dialog}
+      />
       {dialog.visible && (
         <DeleteDialog id={id} onSubmitted={onSubmitted} dialog={dialog} />
       )}
@@ -214,6 +221,8 @@ const DeleteDialog = ({ id, onSubmitted, dialog }) => {
   return (
     <Backdrop {...dialog}>
       <FormDialog
+        id="delete-instant-messaging-dialog"
+        defaultValues={{ id }}
         onSubmit={onSubmit}
         isLoading={isLoading}
         result={result}
@@ -226,13 +235,22 @@ const DeleteDialog = ({ id, onSubmitted, dialog }) => {
         dialog={dialog}
         hideBackdrop={true}
       >
-        <Alert
-          title={<Trans zh={`确认删除`} en={`Confirm delete？`} />}
-          type="warning"
-          variant=""
-        ></Alert>
+        <DeleteFormBody />
       </FormDialog>
     </Backdrop>
+  )
+}
+
+const DeleteFormBody = () => {
+  return (
+    <>
+      <Alert
+        title={<Trans zh={`确认删除`} en={`Confirm delete？`} />}
+        type="warning"
+        variant=""
+      ></Alert>
+      <Input type="hidden" name="id" />
+    </>
   )
 }
 
@@ -246,7 +264,11 @@ const EditDialogDisclosure = ({ brandId, record, onSubmitted, ...props }) => {
 
   return (
     <>
-      <ConfigIconDisclosure {...dialog} {...props} />
+      <ConfigIconDisclosure
+        id="edit-instant-messaging-dialog-disclosure"
+        {...dialog}
+        {...props}
+      />
       {dialog.visible && (
         <EditDialog
           brandId={brandId}
@@ -278,6 +300,7 @@ const EditDialog = ({ brandId, record, dialog, onSubmitted, ...props }) => {
   return (
     <Backdrop {...dialog}>
       <FormDialog
+        id="edit-instant-messaging-dialog"
         defaultValues={{ ...clone(record), brandId }}
         onSubmit={onSubmit}
         isLoading={isLoading}
@@ -306,6 +329,7 @@ const EditFormBody = ({ brandId }) => {
   return (
     <>
       <Input type="hidden" name="brandId" />
+      <Input type="hidden" name="id" />
       <FieldValues>
         <AppLabel />
         <MessengerTypeSelect name="type" required />

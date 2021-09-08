@@ -89,7 +89,13 @@ export const AgentInfoTab = ({ ...props }) => {
 export const AgentInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
-const EditPanel = ({ record, onSubmitted, onClickClose, ...props }) => {
+const EditPanel = ({
+  brandId,
+  record,
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
   let formMethods = useForm({
     defaultValues: clone(record)
   })
@@ -223,7 +229,10 @@ const EditPanel = ({ record, onSubmitted, onClickClose, ...props }) => {
 
               {!willChangeParent && (
                 <DividendBox type={agentType}>
-                  <AgentDividendPercentageInputField />
+                  <AgentDividendPercentageInputField
+                    brandId={brandId}
+                    parentUsername={record.parentUsername}
+                  />
                 </DividendBox>
               )}
 

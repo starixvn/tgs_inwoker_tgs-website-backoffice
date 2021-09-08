@@ -25,6 +25,7 @@ import { MerchantStatusMenu } from "../status"
 import { EditBrandBetLimitGameProviderBetLimit } from "./BrandBetLimitGameProviderBetLimitDialog"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
+import { BrandLogoDialogDisclosure } from "./BrandLogoDialog"
 
 export { Code }
 
@@ -148,6 +149,7 @@ const useColumns = ({ items = [], mutate }) => {
         Header: <Trans zh="平台名称" en="Name" />,
         disableSortBy: true
       }),
+      /*
       {
         accessor: "description",
         Header: <Trans zh="平台简介" en="Description" />,
@@ -160,6 +162,7 @@ const useColumns = ({ items = [], mutate }) => {
           textAlign: "center"
         }
       },
+      */
       {
         accessor: "operationalEmail",
         Header: <Trans zh="平台邮箱" en="Email" />,
@@ -213,11 +216,23 @@ const useColumns = ({ items = [], mutate }) => {
           Cell: ({ value }) => {
             return (
               <Set orientation="horizontal" alignX="center">
-                <ViewButton record={value} />
-                <EditButton record={value} onSubmitted={mutate} />
-                <EditBrandBetLimitGameProviderBetLimit
+                <ViewButton
+                  id="view-platform-dialog-disclosure"
+                  record={value}
+                />
+                <EditButton
+                  id="edit-platform-dialog-disclosure"
                   record={value}
                   onSubmitted={mutate}
+                />
+                <EditBrandBetLimitGameProviderBetLimit
+                  id="edit-platform-betlimit-dialog-disclosure"
+                  record={value}
+                  onSubmitted={mutate}
+                />
+                <BrandLogoDialogDisclosure
+                  id="platform-logo-dialog-disclosure"
+                  brandId={value.id}
                 />
               </Set>
             )

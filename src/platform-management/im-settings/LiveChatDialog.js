@@ -52,6 +52,7 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
   let hasLiveChat = !!(!isLoading && record)
 
   let isDisplay = useIsDisplayMenuByRoute([ViewLiveChat])
+  let editable = useIsDisplayMenuByRoute([UpdateLiveChat])
   if (!isDisplay) {
     return null
   }
@@ -67,33 +68,26 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
       {!isLoading && (
         <>
           {!hasLiveChat && (
-            <Disclosure
-              palette="primary"
-              isLoading={isLoading}
-              disabled={isLoading}
-              {...addDialog}
-              {...props}
-            >
+            <Disclosure palette="primary" {...addDialog} {...props}>
               <Trans zh="三方即時客服廠商" en="3rd Party Live Chat Provider" />
             </Disclosure>
           )}
-          {hasLiveChat && (
+          {hasLiveChat && !editable && (
+            <Disclosure palette="primary" {...updateDialog} {...props}>
+              <Trans zh="三方即時客服廠商" en="3rd Party Live Chat Provider" />
+            </Disclosure>
+          )}
+          {hasLiveChat && editable && (
             <Group>
-              <Disclosure
-                palette="primary"
-                isLoading={isLoading}
-                disabled={isLoading}
-                {...updateDialog}
-                {...props}
-              >
+              <Disclosure palette="primary" {...updateDialog} {...props}>
                 <Trans
                   zh="三方即時客服廠商"
                   en="3rd Party Live Chat Provider"
                 />
               </Disclosure>
               <Disclosure
+                id="delete-live-chat-dialog-disclosure"
                 color="danger"
-                isLoading={isLoading}
                 {...deleteDialog}
               >
                 <Icon icon={faTimes} type="font-awesome" />
@@ -148,6 +142,8 @@ const DeleteDialog = ({ brandId, dialog, onSubmitted }) => {
 
   return (
     <FormDialog
+      id="delete-live-chat-dialog"
+      defaultValues={{ brandId }}
       onSubmit={onSubmit}
       isLoading={isLoading}
       result={result}
@@ -160,12 +156,24 @@ const DeleteDialog = ({ brandId, dialog, onSubmitted }) => {
       }}
       dialog={dialog}
     >
+      <ConfirmDeleteFormBody />
+    </FormDialog>
+  )
+}
+
+const ConfirmDeleteFormBody = () => {
+  let { getValues } = useFormContext()
+  let BrandIdField = "brandId"
+  let brandId = getValues("brandId")
+  return (
+    <>
       <Alert
         title={<Trans zh={`确认删除`} en={`Confirm delete？`} />}
         type="warning"
         variant=""
       ></Alert>
-    </FormDialog>
+      <Input type="hidden" name={BrandIdField} value={brandId} />
+    </>
   )
 }
 
@@ -182,7 +190,7 @@ const AddLiveChatDialog = ({ brandId, dialog, onSubmitted }) => {
     useAddPlatformLiveChat(formData)
 
   const onSubmit = (data) => {
-    setSubmit({ brandId, ...data })
+    setSubmit(data)
   }
 
   const reset = () => {
@@ -193,6 +201,7 @@ const AddLiveChatDialog = ({ brandId, dialog, onSubmitted }) => {
 
   return (
     <FormDialog
+      id="add-live-chat-dialog"
       defaultValues={{ brandId, setting: stringifyJSON({}) }}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -240,8 +249,10 @@ const EditLiveChatDialog = ({ brandId, record, dialog, onSubmitted }) => {
 
   return (
     <FormDialog
+      id="edit-live-chat-dialog"
       defaultValues={{
         ...clone(record),
+        brandId,
         setting: stringifyJSON(record?.setting)
       }}
       onSubmit={onSubmit}
@@ -267,21 +278,27 @@ const EditLiveChatDialog = ({ brandId, record, dialog, onSubmitted }) => {
 }
 
 const FormBody = ({ readOnly }) => {
+  let { getValues } = useFormContext()
+  let BrandIdField = "brandId"
+  let brandId = getValues("brandId")
   return (
-    <FieldStack>
-      <InputField
-        name="name"
-        readOnly={readOnly}
-        label={<Trans zh="名称" en="Name" />}
-      />
-      <FieldWrapper label={<Trans zh="设定" en="Setting" />}>
-        <JsonEditor
-          name="setting"
-          height="40vh"
+    <>
+      <FieldStack>
+        <InputField
+          name="name"
           readOnly={readOnly}
-          disabled={readOnly}
+          label={<Trans zh="名称" en="Name" />}
         />
-      </FieldWrapper>
-    </FieldStack>
+        <FieldWrapper label={<Trans zh="设定" en="Setting" />}>
+          <JsonEditor
+            name="setting"
+            height="40vh"
+            readOnly={readOnly}
+            disabled={readOnly}
+          />
+        </FieldWrapper>
+      </FieldStack>
+      <Input type="hidden" name={BrandIdField} value={brandId} />
+    </>
   )
 }

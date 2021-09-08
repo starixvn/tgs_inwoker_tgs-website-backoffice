@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: postgres
-image: postgres:13.2-alpine
+image: postgres:13.4-alpine
 services:
   - name: postgres
     env:

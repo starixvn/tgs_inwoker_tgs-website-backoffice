@@ -223,6 +223,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="edit-promotion-dialog"
       defaultValues={clone(data)}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -245,6 +246,7 @@ const usePromotionFormData = (
   {
     from,
     to,
+    gameType,
     gameProviderIds = [],
     vipLevels = [],
     localization = {},
@@ -261,7 +263,8 @@ const usePromotionFormData = (
       ? {
           brandId,
           showAll: true,
-          sortby: "gameProviderName"
+          sortby: "gameProviderName",
+          gameType
         }
       : undefined
   )
@@ -276,7 +279,7 @@ const usePromotionFormData = (
     }) ?? []
 
   let promotionTypeGroup = usePromotionGroupValueOf(record?.promotionType)
-  let gameTypeGroup = useGameTypeGroupValueOf(record?.gameType)
+  let gameTypeGroup = useGameTypeGroupValueOf(gameType)
 
   vipLevels = vipLevels.map((vipLevel) => `${vipLevel}`)
 
@@ -286,6 +289,7 @@ const usePromotionFormData = (
     gameProviders,
     promotionTypeGroup,
     gameTypeGroup,
+    gameType,
     localization: parseJSON(localization),
     from: parseISO(from),
     to: parseISO(to)
@@ -340,6 +344,7 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="view-promotion-dialog"
       defaultValues={clone(data)}
       title={title}
       showActionButtons={false}
