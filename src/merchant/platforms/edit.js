@@ -262,7 +262,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure {...dialog} {...props}>
         <Trans zh="修改" en="Edit" />
       </Disclosure>
       {dialog.visible && (
@@ -457,7 +457,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
   let isB2B = businessType === BusinessType.B2B
 
   return (
-    <Stack orientation="vertical">
+    <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
         <Trans zh="基本资料" en="Basic Information" />
       </Heading>
@@ -491,13 +491,13 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           {readonly && <Text.Block>{record?.name}</Text.Block>}
         </Box>
 
-        <NormalLabel>
+        {/* <NormalLabel>
           <Trans zh="平台简介" en="Description" />
         </NormalLabel>
         <Box alignY="center">
           {editable && <Textarea name="description" />}
           {readonly && <Text.Block>{record.description}</Text.Block>}
-        </Box>
+        </Box> */}
 
         <NormalLabel>
           <Trans zh="平台邮箱" en="Email" />
@@ -546,23 +546,19 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           </>
         )}
 
-        {isB2C && (
-          <>
-            <NormalLabel>
-              <Trans zh="代理分红周期" en="Agent Profit Sharing Interval" />
-            </NormalLabel>
-            <Box alignY="center">
-              <Set orientation="horizontal">
-                <SettlementIntervalTypeSelect
-                  name={SettlementIntervalTypeFieldName}
-                  required
-                  disabled={readonly}
-                />
-                {isMonthly && <MonthlyDaySelect name="settlementDay" />}
-              </Set>
-            </Box>
-          </>
-        )}
+        <NormalLabel>
+          <Trans zh="代理分红周期" en="Agent Profit Sharing Interval" />
+        </NormalLabel>
+        <Box alignY="center">
+          <Set orientation="horizontal">
+            <SettlementIntervalTypeSelect
+              name={SettlementIntervalTypeFieldName}
+              required
+              disabled={readonly}
+            />
+            {isMonthly && <MonthlyDaySelect name="settlementDay" />}
+          </Set>
+        </Box>
 
         <LanguageFieldsBox
           readonly={readonly}

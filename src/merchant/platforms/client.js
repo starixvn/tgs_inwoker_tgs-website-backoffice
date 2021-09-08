@@ -46,16 +46,20 @@ export const useSyncBrandGameList = (id) => {
 }
 
 export const useBrandLogo = (id) => {
-  let url = id ? `${API}/${id}/logo` : ""
-  return useGet(url)
+  let url = id ? `${API}/logo/${id}` : ""
+  let { data, ...rest } = useGet(url)
+  return {
+    data: data?.data,
+    ...rest
+  }
 }
 
-export const useUpdateBrandLogo = (id, formData) => {
-  let url = id ? `${API}/${id}/logo` : ""
+export const useUpdateBrandLogo = (formData) => {
+  let url = formData ? `${API}/logo` : ""
   return usePutData(url, formData)
 }
 
 export const useDeleteBrandLogo = (id) => {
-  let url = id ? `${API}/${id}/logo` : ""
+  let url = id ? `${API}/${id}` : ""
   return useDelete(url)
 }
