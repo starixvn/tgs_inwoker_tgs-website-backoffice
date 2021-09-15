@@ -263,6 +263,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
         <EditDialog
           id={record?.id}
           resellerId={record?.resellerId}
+          onSubmitted={onSubmitted}
           dialog={dialog}
         />
       )}
