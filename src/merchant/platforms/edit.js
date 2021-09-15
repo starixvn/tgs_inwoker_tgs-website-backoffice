@@ -491,13 +491,13 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           {readonly && <Text.Block>{record?.name}</Text.Block>}
         </Box>
 
-        {/* <NormalLabel>
+        <NormalLabel>
           <Trans zh="平台简介" en="Description" />
         </NormalLabel>
         <Box alignY="center">
           {editable && <Textarea name="description" />}
           {readonly && <Text.Block>{record.description}</Text.Block>}
-        </Box> */}
+        </Box>
 
         <NormalLabel>
           <Trans zh="平台邮箱" en="Email" />

@@ -1,6 +1,6 @@
 {
   "name": "backoffice-site",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "config": {
     "container": {
       "registry": "registry.gitlab.com/rayprosoft/turnkey-gaming-system"
@@ -48,6 +48,7 @@
     "@snowpack/plugin-dotenv": "^2.1.0",
     "@snowpack/plugin-react-refresh": "^2.5.0",
     "@testing-library/react": "^11.2.7",
+    "animejs": "^3.2.1",
     "big.js": "^6.1.1",
     "bumbag": "2.2.1",
     "camelcase": "^6.2.0",

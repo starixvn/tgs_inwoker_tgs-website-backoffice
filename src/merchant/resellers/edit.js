@@ -475,13 +475,13 @@ const EditBody = ({ record = {}, readonly = false, isAdd = false }) => {
           {readonly && <Text.Block>{record?.name}</Text.Block>}
         </Box>
 
-        {/* <NormalLabel>
-                    <Trans zh="总公司简介" en="Description" />
-                </NormalLabel>
-                <Box alignY="center">
-                    {editable && <Textarea name="description" />}
-                    {readonly && <Text.Block>{record.description}</Text.Block>}
-                </Box> */}
+        <NormalLabel>
+          <Trans zh="总公司简介" en="Description" />
+        </NormalLabel>
+        <Box alignY="center">
+          {editable && <Textarea name="description" />}
+          {readonly && <Text.Block>{record.description}</Text.Block>}
+        </Box>
 
         <NormalLabel>
           <Trans zh="总公司邮箱" en="Email" />
