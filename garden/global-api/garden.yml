@@ -17,8 +17,9 @@ services:
       - hostname: mocksite.localhost
         path: /global-api
         port: http
+      - hostname: global-api.localhost
+        port: http
     ports:
       - name: http
         containerPort: 80
-        localPort: 32666
         servicePort: 80

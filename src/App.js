@@ -52,6 +52,8 @@ import {
   getHeaderTitleFontWeight,
   getHeaderImageUrl
 } from "./env"
+import FundDepositTopNavItem from "./fund/deposit/FundDepositTopNavItem"
+import FundWithdrawTopNavItem from "./fund/withdraw/FundWithdrawTopNavItem"
 
 function App() {
   let isUserAuthed = useUserIsAuthed()
@@ -153,6 +155,16 @@ const Header = () => {
           </TopNav.Item>
         </TopNav.Section>
         <TopNav.Section marginRight="major-2">
+          <FundDepositTopNavItem
+            id="fund-deposit-notify"
+            color={getHeaderButtonColor()}
+            background={getHeaderButtonBackground()}
+          />
+          <FundWithdrawTopNavItem
+            id="fund-withdraw-notify"
+            color={getHeaderButtonColor()}
+            background={getHeaderButtonBackground()}
+          />
           <TopNav.Item>
             <DropdownMenu
               id="user-menu"

@@ -19,6 +19,10 @@ import {
   Code as IMSettingsCode,
   codeLabelPair as imSettingsPair
 } from "./im-settings/menu"
+import {
+  Code as IPAddressCode,
+  codeLabelPair as ipAddressPair
+} from "./ip-address/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUniversity } from "@fortawesome/free-solid-svg-icons"
 
@@ -104,6 +108,14 @@ const labelOf = ({ locale, code }) => {
         },
         locale
       )
+    case IPAddressCode:
+      return getTrans(
+        {
+          zh: "檢核IP地址",
+          en: "Check IP"
+        },
+        locale
+      )
     default:
       return ""
   }
@@ -121,7 +133,8 @@ export const codeLabelPair = [
         announcementPair,
         stationLetterPair,
         vipLevelPair,
-        imSettingsPair
+        imSettingsPair,
+        ipAddressPair
       ]
     })
 ]

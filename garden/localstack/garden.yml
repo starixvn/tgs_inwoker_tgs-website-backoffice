@@ -6,9 +6,10 @@ services:
   - name: localstack
     env:
       SERVICES: "s3"
+      LS_LOG: "trace"
       DATA_DIR: "/tmp/localstack/data"
     ingresses:
-      - hostname: localstack
+      - hostname: localstack.localhost
         port: localstack
     ports:
       - name: localstack
@@ -18,3 +19,5 @@ services:
     volumes:
       - name: data
         containerPath: /tmp/localstack
+      - name: init
+        containerPath: /docker-entrypoint-initaws.d

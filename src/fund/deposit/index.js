@@ -2,6 +2,15 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
+  Switch,
+  Route,
+  Link,
+  useLocation,
+  useHistory,
+  useParams,
+  useRouteMatch
+} from "react-router-dom"
+import {
   Heading,
   Stack,
   Box,
@@ -94,12 +103,14 @@ const SecondInMilliseconds = 1000
 const MinuteInMilliseconds = 60000
 
 const BodyContent = ({ brandId }) => {
+  let { location } = useHistory()
+
   let todayRange = today()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     username: "",
     channelName: "",
     method: "",
-    status: "",
+    status: location?.state?.status ?? "",
     beginCreateOn: todayRange.start,
     endCreateOn: todayRange.end,
     beginUpdateOn: undefined,
@@ -146,6 +157,27 @@ const BodyContent = ({ brandId }) => {
     */
   )
 
+  useEffect(() => {
+    if (location?.state?.fromNotify) {
+      deleteCache()
+
+      todayRange = today()
+      setState({
+        pageIndex: 0,
+        username: "",
+        channelName: "",
+        method: "",
+        status: location?.state?.status ?? "",
+        beginCreateOn: todayRange.start,
+        endCreateOn: todayRange.end,
+        beginUpdateOn: undefined,
+        endUpdateOn: undefined
+      })
+
+      mutateFormList(undefined)
+    }
+  }, [location?.state?.fromNotify])
+
   let newOrder = useTrans({
     zh: "新订单",
     en: "new order"
@@ -155,6 +187,7 @@ const BodyContent = ({ brandId }) => {
     en: "Multiple new orders"
   })
   let toasts = useToasts()
+
   let [items, setItems] = useState([])
   let [isUpdateAvailable, setUpdateAvailable] = useState(false)
   let [delayUpdate, setDelayUpdate] = useState(false)
@@ -162,21 +195,7 @@ const BodyContent = ({ brandId }) => {
   const showUpdates = () => {
     let newApplications = newApplicationsFromToday(data.items, items)
     if (newApplications.length) {
-      if (newApplications.length < 3) {
-        toasts.info({
-          title: `${newOrder}`
-        })
-        /*
-        newApplications.map((application) =>
-          toasts.info({
-            title: `${newOrder}`,
-            message: `${application.userName}`
-          })
-        )
-        */
-      } else {
-        toasts.info({ title: multipleOrder })
-      }
+      // notifyAudio.play()
     }
 
     setItems(clone(data.items))
@@ -218,36 +237,11 @@ const BodyContent = ({ brandId }) => {
           beginUpdateOn={beginUpdateOn}
           endUpdateOn={endUpdateOn}
           search={(data) => {
-            let newState = {
-              pageIndex: 0,
-              username: data.username,
-              channelName: data.channelName,
-              method: data.method,
-              status: data.status,
-              beginCreateOn: data.beginCreateOn,
-              endCreateOn: data.endCreateOn,
-              beginUpdateOn: data.beginUpdateOn,
-              endUpdateOn: data.endUpdateOn
-            }
-            if (
-              equals(newState, {
-                pageIndex,
-                username,
-                channelName,
-                method,
-                status,
-                beginCreateOn,
-                endCreateOn,
-                beginUpdateOn,
-                endUpdateOn
-              })
-            ) {
-              mutate()
-            }
             setState({
               pageIndex: 0,
               ...data
             })
+            mutate()
           }}
           isLoading={isLoading}
         />
@@ -265,16 +259,11 @@ const BodyContent = ({ brandId }) => {
         getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-      <ActionFooter
-        brandId={brandId}
-        items={items}
-        mutate={mutate}
-        setDelayUpdate={setDelayUpdate}
-      />
     </PageContent>
   )
 }
 
+/*
 const ActionFooter = ({ brandId, items = [], mutate, setDelayUpdate }) => {
   return null //POC
 
@@ -311,6 +300,7 @@ const nextVerifiable = (items = []) => {
   let result = head(sortedItems)
   return result ? clone(result) : undefined
 }
+*/
 
 const newApplicationsFromToday = (first = [], second = []) => {
   if (!second || second.length === 0) {
@@ -369,6 +359,28 @@ const SearchBar = ({
       endUpdateOn
     }
   })
+
+  useEffect(() => {
+    formMethods.reset({
+      username,
+      channelName,
+      method,
+      status,
+      beginCreateOn,
+      endCreateOn,
+      beginUpdateOn,
+      endUpdateOn
+    })
+  }, [
+    username,
+    channelName,
+    method,
+    status,
+    beginCreateOn,
+    endCreateOn,
+    beginUpdateOn,
+    endUpdateOn
+  ])
 
   let usernameInputPlaceholder = useTrans({
     zh: "用户名",
