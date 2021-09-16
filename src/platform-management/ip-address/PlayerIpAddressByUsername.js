@@ -85,7 +85,7 @@ const Body = ({ brandId, table = {}, onClickIpAddress }) => {
     items,
     mutate,
     onClickIpAddress,
-    ipAddressType: state.ipAddressType
+    ipType: state.ipType
   })
   return (
     <FieldStack>

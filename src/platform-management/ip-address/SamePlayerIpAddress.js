@@ -33,10 +33,7 @@ import AlertDialog from "../../dialog/Alert"
 import { SortOrder } from "../../table/order"
 import SearchButton from "../../button/SearchButton"
 import { InputField } from "../../input/Input"
-import IpAddressType, {
-  IpAddressTypeSelect,
-  IpAddressTypeLabel
-} from "./IpAddressType"
+import { IpAddressTypeSelect, IpAddressTypeLabel } from "./IpAddressType"
 
 export const SamePlayerIpAddressTabId = "SamePlayerIpAddress"
 
@@ -74,7 +71,7 @@ const Body = ({ brandId, table = {}, onClickIpAddress }) => {
 
   let { isLoading, data, error, mutate, deleteCache } =
     useSamePlayerIPAddressList(
-      state?.ipAddressType
+      state?.ipType
         ? {
             ...toApiParams(state),
             sortby: "memberCount",
@@ -87,14 +84,14 @@ const Body = ({ brandId, table = {}, onClickIpAddress }) => {
   let columns = useColumns({
     items,
     mutate,
-    ipAddressType: state?.ipAddressType,
+    ipType: state?.ipType,
     onClickIpAddress
   })
 
   return (
     <FieldStack>
       <ActionBar
-        ipAddressType={state.ipAddressType}
+        ipType={state.ipType}
         search={(data = {}) => {
           setState({
             pageIndex: 0,
@@ -104,7 +101,7 @@ const Body = ({ brandId, table = {}, onClickIpAddress }) => {
         }}
         isLoading={isLoading}
       />
-      {state?.ipAddressType && (
+      {state?.ipType && (
         <Table
           columns={columns}
           data={items}
@@ -121,10 +118,10 @@ const Body = ({ brandId, table = {}, onClickIpAddress }) => {
   )
 }
 
-const ActionBar = ({ ipAddressType, search, isLoading, ...props }) => {
+const ActionBar = ({ ipType, search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {
-      ipAddressType
+      ipType
     }
   })
 

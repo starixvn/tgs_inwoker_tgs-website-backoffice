@@ -74,7 +74,7 @@ const Body = ({ brandId, table = {} }) => {
   return (
     <FieldStack>
       <ActionBar
-        ipAddressType={state.ipAddressType}
+        ipType={state.ipType}
         ipAddress={state.ipAddress}
         search={(data = {}) => {
           setState({
@@ -102,16 +102,10 @@ const Body = ({ brandId, table = {} }) => {
   )
 }
 
-const ActionBar = ({
-  ipAddressType,
-  ipAddress,
-  search,
-  isLoading,
-  ...props
-}) => {
+const ActionBar = ({ ipType, ipAddress, search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {
-      ipAddressType,
+      ipType,
       ipAddress
     }
   })

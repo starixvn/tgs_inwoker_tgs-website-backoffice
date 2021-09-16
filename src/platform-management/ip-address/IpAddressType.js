@@ -26,7 +26,7 @@ const LoginIPTrans = {
   en: "Login IP"
 }
 
-export const FieldName = "ipAddressType"
+export const FieldName = "ipType"
 
 export const setIpAddressType = (value, target = {}) => {
   Reflect.set(target, FieldName, value)
@@ -50,12 +50,10 @@ export const IpAddressTypeSelect = ({
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
-    /*
     {
       label: useTrans(RegisterIPTrans),
       value: RegisterIP
     },
-    */
     {
       label: useTrans(LoginIPTrans),
       value: LoginIP
