@@ -41,7 +41,6 @@ describe("Admin user", () => {
     )
     let index = random(licenseeNames.length - 1)
     let licenseeName = licenseeNames[index]
-
     await searchByInputNameValue({
       name: "licenseeName",
       value: licenseeName,
@@ -205,6 +204,7 @@ describe("Admin user", () => {
         )
       }),
       page.click(`button[type="submit"]`),
-      page.waitForSelector(`#platform-credit tbody`)
+      page.waitForLoadState("networkidle"),
+      page.waitForSelector("#platform-credit tbody")
     ])
 })
