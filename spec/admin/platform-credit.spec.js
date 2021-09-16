@@ -47,6 +47,7 @@ describe("Admin user", () => {
       page
     })
 
+    await page.waitForSelector(`[data-column-id="licenseeName"]`)
     let name = await page.$eval(
       `[data-column-id="licenseeName"]`,
       ({ textContent }) => textContent
@@ -77,6 +78,7 @@ describe("Admin user", () => {
       page
     })
 
+    await page.waitForSelector(`[data-column-id="brandCode"]`)
     let code = await page.$eval(
       `[data-column-id="brandCode"]`,
       ({ textContent }) => textContent
@@ -204,7 +206,6 @@ describe("Admin user", () => {
         )
       }),
       page.click(`button[type="submit"]`),
-      page.waitForLoadState("networkidle"),
-      page.waitForSelector("#platform-credit tbody")
+      page.waitForLoadState("networkidle")
     ])
 })
