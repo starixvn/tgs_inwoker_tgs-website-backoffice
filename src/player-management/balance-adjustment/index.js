@@ -35,6 +35,7 @@ import numberColumn, {
 import { PlayerAddBalanceDisclosure } from "./PlayerAddBalance"
 import { PlayerDeductBalanceDisclosure } from "./PlayerDeductBalance"
 import { usePlayerList } from "../player-list/client"
+import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirement"
 
 export { Code }
 
@@ -194,6 +195,12 @@ const useColumns = ({ brandId, items = [], mutate }) => {
                   username={username}
                   playerCode={playerCode}
                   onSubmitted={mutate}
+                />
+                <PlayerWageringRequirementDialogDisclosure
+                  id="wagering-requirement-dialog-disclosure"
+                  brandId={brandId}
+                  username={username}
+                  playerCode={playerCode}
                 />
               </Set>
             )

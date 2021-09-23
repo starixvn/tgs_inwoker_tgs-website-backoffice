@@ -114,6 +114,11 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
           <Box alignY="center">{record?.id}</Box>
 
           <NormalLabel>
+            <Trans zh="三方订单号" en="3rd Party Id" />
+          </NormalLabel>
+          <Box alignY="center">{record?.thirdPartyOrderNo}</Box>
+
+          <NormalLabel>
             <Trans zh="充值类型 " en="Payment Method" />
           </NormalLabel>
           <Box alignY="center">

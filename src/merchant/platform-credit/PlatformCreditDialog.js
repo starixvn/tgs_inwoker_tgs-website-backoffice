@@ -93,24 +93,27 @@ const FormBody = () => {
     "brandCode"
   ])
   return (
-    <FieldValues marginLeft="1rem">
-      <NormalLabel>
-        <Trans zh="所属公司" en="Licensee Name" />
-      </NormalLabel>
-      <Box alignY="center">{licenseeName}</Box>
+    <>
+      <FieldValues marginLeft="1rem">
+        <NormalLabel>
+          <Trans zh="所属公司" en="Licensee Name" />
+        </NormalLabel>
+        <Box alignY="center">{licenseeName}</Box>
 
-      <Trans zh="平台名称" en="Name" />
-      <Box alignY="center">{brandName}</Box>
+        <Trans zh="平台名称" en="Name" />
+        <Box alignY="center">{brandName}</Box>
 
-      <Trans zh="平台代码" en="Code" />
-      <Box alignY="center">{brandCode}</Box>
+        <Trans zh="平台代码" en="Code" />
+        <Box alignY="center">{brandCode}</Box>
 
-      <NormalLabel>
-        <Trans zh="平台额度" en="Credit" />
-      </NormalLabel>
-      <Box alignY="center">
-        <NumberInput name="credit" required min="0" />
-      </Box>
-    </FieldValues>
+        <NormalLabel>
+          <Trans zh="平台额度" en="Credit" />
+        </NormalLabel>
+        <Box alignY="center">
+          <NumberInput name="credit" required min="0" />
+        </Box>
+      </FieldValues>
+      <Input type="hidden" name="id" />
+    </>
   )
 }

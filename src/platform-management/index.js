@@ -16,6 +16,10 @@ import {
   Code as IMSettingsCode,
   Content as IMSettingsContent
 } from "./im-settings"
+import {
+  Code as IPAddressCode,
+  Content as IPAddressContent
+} from "./ip-address"
 
 export { Code }
 
@@ -24,7 +28,8 @@ const pairs = () => [
   [AnnouncementCode, AnnouncementContent],
   [StationLetterCode, StationLetterContent],
   [VipLevelCode, VipLevelContent],
-  [IMSettingsCode, IMSettingsContent]
+  [IMSettingsCode, IMSettingsContent],
+  [IPAddressCode, IPAddressContent]
 ]
 
 export const Content = ({ codes, path = DefaultPaths, ...props }) => (

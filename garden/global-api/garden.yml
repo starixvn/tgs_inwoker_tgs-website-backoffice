@@ -17,8 +17,10 @@ services:
       - hostname: mocksite.localhost
         path: /global-api
         port: http
+      # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 global-api.localhost` to host file
+      - hostname: global-api.localhost
+        port: http
     ports:
       - name: http
         containerPort: 80
-        localPort: 32666
         servicePort: 80

@@ -41,13 +41,13 @@ describe("Admin user", () => {
     )
     let index = random(licenseeNames.length - 1)
     let licenseeName = licenseeNames[index]
-
     await searchByInputNameValue({
       name: "licenseeName",
       value: licenseeName,
       page
     })
 
+    await page.waitForSelector(`[data-column-id="licenseeName"]`)
     let name = await page.$eval(
       `[data-column-id="licenseeName"]`,
       ({ textContent }) => textContent
@@ -55,8 +55,8 @@ describe("Admin user", () => {
     expect(name).to.equal(licenseeName)
 
     await Promise.all([
-      await page.click(`#clear-licenseeName-button`),
-      await searchByInputNameValue({
+      page.click(`#clear-licenseeName-button`),
+      searchByInputNameValue({
         name: "licenseeName",
         value: "something something not exist",
         page
@@ -78,53 +78,50 @@ describe("Admin user", () => {
       page
     })
 
+    await page.waitForSelector(`[data-column-id="brandCode"]`)
     let code = await page.$eval(
       `[data-column-id="brandCode"]`,
       ({ textContent }) => textContent
     )
     expect(code).to.equal(brandCode)
 
-    await Promise.all([
-      await page.click(`#clear-keyword-button`),
-      await searchByInputNameValue({
-        name: "keyword",
-        value: "something something not exist",
-        page
-      })
-    ])
+    await page.click(`#clear-keyword-button`)
+    await searchByInputNameValue({
+      name: "keyword",
+      value: "something something not exist",
+      page
+    })
 
     let rows = await page.$$(`[data-column-id="code"]`)
     expect(rows.length).to.equal(0)
   })
 
   it("should able to update platform credit", async () => {
+    let DialogSelector = `#platform-credit-dialog`
     let brandCodes = await getPlatformCodes()
     let index = random(brandCodes.length - 1)
     let brandCode = brandCodes[index]
 
     await Promise.all([
       page.click(`#${brandCode}-platform-credit-dialog-disclosure`),
-      page.waitForSelector(`#platform-credit-dialog input[name="credit"]`)
+      page.waitForSelector(`${DialogSelector} input[name="credit"]`)
     ])
     let inputValueInString = await page.$eval(
-      `#platform-credit-dialog input[name="credit"]`,
+      `${DialogSelector} input[name="credit"]`,
       (input) => input.value
     )
     let platformCredit = numeral(inputValueInString).value()
-    expect(platformCredit).to.be.above(0)
-
     let expectedValue = platformCredit + 10
-    await Promise.all([
-      page.fill(
-        `#platform-credit-dialog input[name="credit"]`,
-        `${expectedValue}`
-      ),
-      page.click(`#platform-credit-dialog button[type="submit"]`)
-    ])
+
+    let id = await page.inputValue(`${DialogSelector} input[name="id"]`)
+    let expectedUrl = `/api/PlatformCredit/${id}/${expectedValue}`
 
     await Promise.all([
-      page.waitForLoadState("networkidle"),
-      page.waitForTimeout(1000) /* FIXME: wait for render update*/
+      page.fill(`${DialogSelector} input[name="credit"]`, `${expectedValue}`),
+      page.waitForResponse((response) => {
+        return response.url().endsWith(expectedUrl) && response.status() === 200
+      }),
+      page.click(`${DialogSelector} button[type="submit"]`)
     ])
 
     let creditString = await page.$eval(
@@ -136,6 +133,8 @@ describe("Admin user", () => {
   })
 
   it("should able to pay platform credit and list payment list", async () => {
+    let DialogSelector = `#platform-credit-payment-dialog`
+
     let brandCodes = await getPlatformCodes()
     let index = random(brandCodes.length - 1)
     let brandCode = brandCodes[index]
@@ -143,13 +142,8 @@ describe("Admin user", () => {
     let amount = 10
     await Promise.all([
       page.click(`#${brandCode}-platform-credit-payment-dialog-disclosure`),
-      page.waitForSelector(
-        `#platform-credit-payment-dialog input[name="amount"]`
-      ),
-      page.fill(
-        `#platform-credit-payment-dialog input[name="amount"]`,
-        `${amount}`
-      )
+      page.waitForSelector(`${DialogSelector} input[name="amount"]`),
+      page.fill(`${DialogSelector} input[name="amount"]`, `${amount}`)
     ])
 
     let [paymentResponse] = await Promise.all([
@@ -158,7 +152,7 @@ describe("Admin user", () => {
           response.url().endsWith(`/pay/${amount}`) && response.status() === 200
         )
       }),
-      page.click(`#platform-credit-payment-dialog button[type="submit"]`),
+      page.click(`${DialogSelector} button[type="submit"]`),
       page.waitForLoadState("networkidle")
     ])
 
@@ -204,9 +198,14 @@ describe("Admin user", () => {
 
   const searchByInputNameValue = async ({ name = "", value = "", page }) =>
     await Promise.all([
-      await page.fill(`input[name="${name}"]`, value),
-      await page.click(`button[type="submit"]`),
-      page.waitForLoadState("networkidle"),
-      page.waitForSelector("#platform-credit tbody")
+      page.fill(`input[name="${name}"]`, value),
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`/api/PlatformCredit?`) &&
+          response.status() === 200
+        )
+      }),
+      page.click(`button[type="submit"]`),
+      page.waitForLoadState("networkidle")
     ])
 })

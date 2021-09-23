@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: file-service
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/file-service:dev-2021901-0413
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/file-service:prod-2021901-0833
 services:
   - name: file-service
     dependencies:
@@ -11,9 +11,9 @@ services:
     env:
       ConnectionStrings__File: "mongodb://root:1qaz2wsx!%40@mongodb/filedb?retryWrites=true&w=majority&authSource=admin"
       ConnectionStrings__Nats: "nats://nats:4222"
-      AWS__Public__ExternalServiceUrl: "http://localstack:4566"
+      AWS__Public__ExternalServiceUrl: "http://localstack.localhost"
       AWS__Public__ServiceUrl: "http://localstack:4566"
-      AWS__Private__ExternalServiceUrl: "http://localstack:4566"
+      AWS__Private__ExternalServiceUrl: "http://localstack.localhost"
       AWS__Private__ServiceUrl: "http://localstack:4566"
     ports:
       - name: http

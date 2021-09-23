@@ -77,7 +77,7 @@ const ReportContent = ({ brandId }) => {
   let agentUsername = headOf(usernames)
 
   let dateRange = yesterday()
-  let QueryMaxRangeDays = 30
+  let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     pageSize: QueryMaxRangeDays,
