@@ -111,6 +111,7 @@ const BodyContent = ({ brandId }) => {
     channelName: "",
     method: "",
     status: location?.state?.status ?? "",
+    thirdOrderNo: "",
     beginCreateOn: todayRange.start,
     endCreateOn: todayRange.end,
     beginUpdateOn: undefined,
@@ -168,6 +169,7 @@ const BodyContent = ({ brandId }) => {
         channelName: "",
         method: "",
         status: location?.state?.status ?? "",
+        thirdOrderNo: "",
         beginCreateOn: todayRange.start,
         endCreateOn: todayRange.end,
         beginUpdateOn: undefined,
@@ -232,6 +234,7 @@ const BodyContent = ({ brandId }) => {
           channelName={channelName}
           method={method}
           status={status}
+          thirdOrderNo={state.thirdOrderNo}
           beginCreateOn={beginCreateOn}
           endCreateOn={endCreateOn}
           beginUpdateOn={beginUpdateOn}
@@ -339,6 +342,7 @@ const SearchBar = ({
   channelName,
   method,
   status,
+  thirdOrderNo,
   beginCreateOn,
   endCreateOn,
   beginUpdateOn,
@@ -353,6 +357,7 @@ const SearchBar = ({
       channelName,
       method,
       status,
+      thirdOrderNo,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -366,6 +371,7 @@ const SearchBar = ({
       channelName,
       method,
       status,
+      thirdOrderNo,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -376,6 +382,7 @@ const SearchBar = ({
     channelName,
     method,
     status,
+    thirdOrderNo,
     beginCreateOn,
     endCreateOn,
     beginUpdateOn,
@@ -395,6 +402,11 @@ const SearchBar = ({
   let paymentMethodPlaceholder = useTrans({
     zh: "充值类型",
     en: "Deposit Method"
+  })
+
+  let externalIdPlaceholder = useTrans({
+    zh: "三方订单编号",
+    en: "3rd Party Id"
   })
   return (
     <FormProvider {...formMethods}>
@@ -416,6 +428,11 @@ const SearchBar = ({
               placeholder={paymentMethodPlaceholder}
             />
             <FundReviewStatusSelect name="status" />
+            <InputField
+              name="thirdOrderNo"
+              placeholder={externalIdPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
           </Set>
           <Set orientation="horizontal">
             <DateInputRangeField
@@ -464,6 +481,11 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <Trans zh="订单号" en="Id" />,
         disableSortBy: true,
         Cell: ({ value }) => value
+      }),
+      textColumn({
+        accessor: "thirdPartyOrderNo",
+        Header: <Trans zh="三方单号" en="3rd Party Id" />,
+        disableSortBy: true
       }),
       textColumn({
         id: "paymentMethod",
