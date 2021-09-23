@@ -84,7 +84,10 @@ const BodyContent = ({ brandId }) => {
   useEffect(() => {
     setState({
       brandId,
-      pageIndex: 0
+      pageIndex: 0,
+      ipType: undefined,
+      userName: undefined,
+      ipAddress: undefined
     })
     tab.select(DefaultTab)
   }, [brandId])

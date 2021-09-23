@@ -115,8 +115,13 @@ const ActionBar = ({ ipType, ipAddress, search, isLoading, ...props }) => {
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(search)}>
           <Set>
-            <IpAddressTypeSelect />
-            <InputField name="ipAddress" showEmptyFieldValueAddonAfter />
+            <IpAddressTypeSelect required />
+            <InputField
+              name="ipAddress"
+              required
+              placeholder="IP"
+              showEmptyFieldValueAddonAfter
+            />
             <SearchButton isLoading={isLoading} disabled={isLoading} />
           </Set>
         </form>

@@ -22,7 +22,7 @@ import {
 import { View } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
-import { Trans } from "../../i18n"
+import { Trans, useTrans } from "../../i18n"
 import { usePlayerIPAddressListByUsername } from "./client"
 import { useForm, useFormContext, FormProvider } from "react-hook-form"
 import textColumn from "../../table/column/textColumn"
@@ -87,10 +87,11 @@ const Body = ({ brandId, table = {}, onClickIpAddress }) => {
     onClickIpAddress,
     ipType: state.ipType
   })
+
   return (
     <FieldStack>
       <ActionBar
-        userNanme={state.userName}
+        userName={state.userName}
         search={(data = {}) => {
           let state = setLoginIpType({
             pageIndex: 0,
@@ -118,11 +119,16 @@ const Body = ({ brandId, table = {}, onClickIpAddress }) => {
   )
 }
 
-const ActionBar = ({ userNanme, search, isLoading, ...props }) => {
+const ActionBar = ({ userName, search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {
-      userNanme
+      userName
     }
+  })
+
+  let usernamePlaceholder = useTrans({
+    zh: "用户名",
+    en: "Username"
   })
 
   return (
@@ -130,7 +136,12 @@ const ActionBar = ({ userNanme, search, isLoading, ...props }) => {
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(search)}>
           <Set>
-            <InputField name="userName" showEmptyFieldValueAddonAfter />
+            <InputField
+              name="userName"
+              required
+              placeholder={usernamePlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
             <SearchButton isLoading={isLoading} disabled={isLoading} />
           </Set>
         </form>

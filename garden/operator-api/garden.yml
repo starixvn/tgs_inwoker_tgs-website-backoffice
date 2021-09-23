@@ -22,6 +22,7 @@ services:
       - hostname: mocksite.localhost
         path: /api
         port: http
+      # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 operator-api.localhost` to host file
       - hostname: operator-api.localhost
         port: http
     ports:
