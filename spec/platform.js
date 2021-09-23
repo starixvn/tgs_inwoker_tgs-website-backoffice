@@ -1,4 +1,4 @@
-import fetch from "node-fetch"
+import fetcher from "./fetcher"
 import { globalApi, operatorApi } from "./env"
 
 export const selectFirst = async ({ page }) => {
@@ -20,46 +20,58 @@ export const selectFirst = async ({ page }) => {
   return option
 }
 
-//TODO: rm page?
-const apiKeys = async ({ page }) => {
-  let response = await fetch(`${globalApi()}/brand/apikeys`)
-  return await response.json()
+export const selectByCode = async ({ page, brandCode }) => {
+  await page.waitForSelector(
+    `#page-merchant-bar select[name="brandId"] option[value*="-"]:not(:first-child)`,
+    {
+      state: "attached"
+    }
+  )
+  await Promise.all([
+    page.selectOption(`#page-merchant-bar select[name="brandId"]`, {
+      label: brandCode
+    }),
+    page.waitForLoadState("networkidle")
+  ])
+  await page.waitForLoadState("domcontentloaded")
 }
 
-//TODO: rm page?
-export const apiKey = async ({ page, brandCode = "GPI" }) => {
-  let response = await apiKeys({ page })
+const apiKeys = async () => {
+  return await fetcher(`${globalApi()}/brand/apikeys`)
+}
+
+export const apiKey = async (brandCode = "GPI") => {
+  let response = await apiKeys()
   let { items = [] } = response
   let item = items.find((item) => item.brandCode == brandCode)
   return item && item.apiKey
 }
 
-//TODO: rm page?
 export const token = async ({
-  page,
   brandCode = "GPI",
   apiKey: client,
   currency = "CNY"
 }) => {
   if (!client) {
-    client = await apiKey({ page, brandCode })
+    client = await apiKey(brandCode)
   }
   let payload = {
     client,
     currency
   }
 
-  let response = await fetch(`${operatorApi()}/auth/jwt`, {
+  let result = await fetcher(`${operatorApi()}/auth/jwt`, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: { "Content-Type": "application/json" }
   })
-  let result = await response.json()
+
   return result.token
 }
 
 export default {
   selectFirst,
+  selectByCode,
   apiKey,
   token
 }

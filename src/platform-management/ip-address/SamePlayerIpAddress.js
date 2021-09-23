@@ -139,19 +139,14 @@ const ActionBar = ({ ipType, search, isLoading, ...props }) => {
   )
 }
 
-const useColumns = ({
-  items = [],
-  mutate,
-  onClickIpAddress,
-  ipAddressType
-}) => {
+const useColumns = ({ items = [], mutate, onClickIpAddress, ipType }) => {
   let readable = useIsDisplayMenuByRoute([View])
   return useMemo(
     () => [
       sequenceColumn(),
       textColumn({
         accessor: "ipAddress",
-        Header: <IpAddressTypeLabel value={ipAddressType} />,
+        Header: <IpAddressTypeLabel />,
         disableSortBy: true,
         Cell: ({ value: ipAddress }) => {
           return (
