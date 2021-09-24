@@ -23,10 +23,9 @@ import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
 import { Code } from "./menu"
-import BrandBar from "../BrandBar"
+import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
-import { useVipReportList } from "./client"
 import dateTimeColumn from "../../table/column/dateTime"
 import subDays from "date-fns/subDays"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -37,7 +36,8 @@ import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import VipLevelSelect from "../../vip-levels/VipLevelSelect"
-import { PlayerRebatDialogDisclosure } from "./PlayerRebateReport"
+import { usePlayerContributionList } from "./client"
+import { VipLevelLabel } from "../../vip-levels/VipLevel"
 
 export { Code }
 
@@ -63,12 +63,17 @@ export const Body = () => {
           setBrandId(value)
         }}
       />
-      {brandId && <ReportContent brandId={brandId} />}
+      {brandId && (
+        <PlayerContributionReport
+          brandId={brandId}
+          useFetch={usePlayerContributionList}
+        />
+      )}
     </Set>
   )
 }
 
-const ReportContent = ({ brandId }) => {
+export const PlayerContributionReport = ({ brandId, useFetch }) => {
   let dateRange = yesterday()
   let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
@@ -91,7 +96,7 @@ const ReportContent = ({ brandId }) => {
     error,
     mutate,
     deleteCache
-  } = useVipReportList({
+  } = useFetch({
     ...toApiParams(state),
     sortby: "username",
     from,
@@ -122,31 +127,18 @@ const ReportContent = ({ brandId }) => {
           maxDate={maxDate}
           maxRangeDays={QueryMaxRangeDays}
           isLoading={isLoading}
-          search={({ username, level, start, end }) => {
-            let newState = {
+          search={({ start, end, ...rest }) => {
+            setState({
               pageIndex: 0,
-              username,
-              level,
               from: start,
-              to: end
-            }
-
-            if (
-              equals(newState, {
-                pageIndex,
-                username: state?.username,
-                level: state?.level,
-                from: state?.from,
-                to: state?.to
-              })
-            ) {
-              mutate()
-            }
-            setState(newState)
+              to: end,
+              ...rest
+            })
+            mutate()
           }}
         />
       }
-      title={<Trans zh="VIP报表" en="VIP Report" />}
+      title={<Trans zh="玩家贡献报表" en="Player Contribution Report" />}
     >
       <Table
         columns={columns}
@@ -187,8 +179,8 @@ const SearchBar = ({
   })
 
   let usernamePlaceholder = useTrans({
-    zh: "用户名输入框",
-    en: "Input user name"
+    zh: "玩家用户名",
+    en: "Player username"
   })
 
   const onSubmit = (data) => search?.(data)
@@ -220,7 +212,7 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ brandId, start, end, items = [] }) => {
+const useColumns = ({ items = [] }) => {
   return useMemo(
     () => [
       textColumn({
@@ -234,19 +226,31 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "level",
-        Header: <Trans zh="VIP 等级" en="VIP Level" />,
-        Cell: ({ value }) => <Text.Block>VIP {value}</Text.Block>,
+        id: "type",
+        accessor: (row) => row,
+        Header: <Trans zh="账户类型" en="Type" />,
+        Cell: ({ value }) => (
+          <Text.Block>
+            <Trans zh="玩家" en="Player" />
+          </Text.Block>
+        ),
         Footer: () => <Box />,
         disableSortBy: true
       }),
-      numberColumn({
+      textColumn({
+        accessor: "level",
+        Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        disableSortBy: true,
+        Cell: ({ value }) => <VipLevelLabel value={value} />,
+        Footer: () => <Box />
+      }),
+      numberDecimalColumn({
         accessor: "depositAmount",
         sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
         disableSortBy: true
       }),
-      numberColumn({
+      numberDecimalColumn({
         accessor: "withdrawalAmount",
         sumColumn: "withdrawalAmount",
         Header: <Trans zh="提款金额" en="Withdrawal Amount" />,
@@ -264,29 +268,16 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         Header: <Trans zh="调账" en="Adjustment Amount" />,
         disableSortBy: true
       }),
-      textColumn({
-        id: "rebateAmount",
-        accessor: (row) => row,
-        sumColumn: "rebateAmount",
-        Header: <Trans zh="返水金额" en="Commission Rebate Amount" />,
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          return (
-            <PlayerRebatDialogDisclosure
-              use={Link}
-              brandId={brandId}
-              username={value?.username}
-              start={start}
-              end={end}
-              value={value?.rebateAmount}
-            />
-          )
-        }
+      numberDecimalColumn({
+        accessor: "betAmount",
+        sumColumn: "betAmount",
+        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "turnover",
-        sumColumn: "turnover",
-        Header: <Trans zh="有效投注" en="Turnover" />,
+        accessor: "validBetAmount",
+        sumColumn: "validBetAmount",
+        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

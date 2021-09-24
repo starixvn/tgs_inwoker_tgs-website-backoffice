@@ -23,9 +23,10 @@ import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
 import { Code } from "./menu"
-import BrandBar from "../BrandBar"
+import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
+import { useVipReportList } from "./client"
 import dateTimeColumn from "../../table/column/dateTime"
 import subDays from "date-fns/subDays"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -36,10 +37,7 @@ import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import VipLevelSelect from "../../vip-levels/VipLevelSelect"
-import { useAgentDividendList } from "./client"
-import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
-import { AgentBonusDetailDialogDisclosure } from "./AgentBonusDetail"
-import { AgentTypeSelect } from "../../agent/AgentType"
+import { PlayerRebatDialogDisclosure } from "./PlayerRebateReport"
 
 export { Code }
 
@@ -76,8 +74,8 @@ const ReportContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     pageSize: QueryMaxRangeDays,
-    username: "",
-    type: "",
+    username: undefined,
+    level: undefined,
     from: dateRange.start,
     to: dateRange.end
   })
@@ -86,17 +84,19 @@ const ReportContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { pageIndex, pageSize, username, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = useAgentDividendList(
-    username
-      ? {
-          ...toApiParams(state),
-          sortby: "username",
-          from,
-          to: startOfNextDay(to)
-        }
-      : undefined
-  )
+  let { pageIndex, pageSize, from, to } = state
+  let {
+    isLoading,
+    data = {},
+    error,
+    mutate,
+    deleteCache
+  } = useVipReportList({
+    ...toApiParams(state),
+    sortby: "username",
+    from,
+    to: startOfNextDay(to)
+  })
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
@@ -115,39 +115,50 @@ const ReportContent = ({ brandId }) => {
         <SearchBar
           brandId={brandId}
           username={state?.username}
-          type={state?.type}
+          level={state?.level}
           start={from}
           end={to}
           minDate={minDate}
           maxDate={maxDate}
           maxRangeDays={QueryMaxRangeDays}
           isLoading={isLoading}
-          search={({ start, end, ...data }) => {
-            setState({
+          search={({ username, level, start, end }) => {
+            let newState = {
               pageIndex: 0,
+              username,
+              level,
               from: start,
-              to: end,
-              ...data
-            })
-            mutate()
+              to: end
+            }
+
+            if (
+              equals(newState, {
+                pageIndex,
+                username: state?.username,
+                level: state?.level,
+                from: state?.from,
+                to: state?.to
+              })
+            ) {
+              mutate()
+            }
+            setState(newState)
           }}
         />
       }
-      title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
+      title={<Trans zh="VIP报表" en="VIP Report" />}
     >
-      {username && (
-        <Table
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-          foot={data?.items?.length > 0}
-        />
-      )}
+      <Table
+        columns={columns}
+        data={data?.items}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+        foot={data?.items?.length > 0}
+      />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -156,7 +167,7 @@ const ReportContent = ({ brandId }) => {
 const SearchBar = ({
   brandId,
   username,
-  type,
+  level,
   start,
   end,
   minDate,
@@ -169,15 +180,15 @@ const SearchBar = ({
   let formMethods = useForm({
     defaultValues: {
       username,
-      type,
+      level,
       start,
       end
     }
   })
 
   let usernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent username"
+    zh: "用户名输入框",
+    en: "Input user name"
   })
 
   const onSubmit = (data) => search?.(data)
@@ -190,11 +201,12 @@ const SearchBar = ({
             name="username"
             showEmptyFieldValueAddonAfter
             placeholder={usernamePlaceholder}
-            requiredMessage=""
-            required
-            autoFocus
           />
-          <AgentTypeSelect name="type" />
+          <VipLevelSelect
+            name="level"
+            brandId={brandId}
+            optionValue={({ level }) => level}
+          />
           <DateInputRange
             minDate={minDate}
             maxDate={maxDate}
@@ -213,7 +225,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
     () => [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        Header: <Trans zh="用户名" en="Username" />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
         Footer: () => <Trans zh="总计" en="Total" />,
         footerCellProps: {
@@ -221,13 +233,20 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         },
         disableSortBy: true
       }),
-      numberDecimalColumn({
+      textColumn({
+        accessor: "level",
+        Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        Cell: ({ value }) => <Text.Block>VIP {value}</Text.Block>,
+        Footer: () => <Box />,
+        disableSortBy: true
+      }),
+      numberColumn({
         accessor: "depositAmount",
         sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
         disableSortBy: true
       }),
-      numberDecimalColumn({
+      numberColumn({
         accessor: "withdrawalAmount",
         sumColumn: "withdrawalAmount",
         Header: <Trans zh="提款金额" en="Withdrawal Amount" />,
@@ -245,65 +264,42 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         Header: <Trans zh="调账" en="Adjustment Amount" />,
         disableSortBy: true
       }),
-      numberDecimalColumn({
-        accessor: "betAmount",
-        sumColumn: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "validBetAmount",
-        sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        id: "winLossAmount",
+      textColumn({
+        id: "rebateAmount",
         accessor: (row) => row,
-        sumColumn: "winLossAmount",
-        toValue: (row) => row?.winLossAmount,
-        Header: <Trans zh="输赢金额" en="Win Loss Amount" />,
+        sumColumn: "rebateAmount",
+        Header: <Trans zh="返水金额" en="Commission Rebate Amount" />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (
-            <AgentWinLossDialogDisclosure
+            <PlayerRebatDialogDisclosure
+              use={Link}
               brandId={brandId}
-              agentId={value?.id}
+              username={value?.username}
               start={start}
               end={end}
-              username={value?.username}
-              value={value?.winLossAmount}
-              use={Link}
+              value={value?.rebateAmount}
             />
           )
         }
+      }),
+      numberDecimalColumn({
+        accessor: "turnover",
+        sumColumn: "turnover",
+        Header: <Trans zh="有效投注" en="Turnover" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "winLossAmount",
+        sumColumn: "winLossAmount",
+        Header: <Trans zh="输赢金额" en="Win Loss Amount" />,
+        disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
         Header: <Trans zh="净盈利" en="Net Profit" />,
         disableSortBy: true
-      }),
-      numberDecimalColumn({
-        id: "agentDividendAmount",
-        accessor: (row) => row,
-        sumColumn: "agentDividendAmount",
-        toValue: (row) => row?.agentDividendAmount,
-        Header: <Trans zh="分红金额" en="Profit Sharing Amount" />,
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          return (
-            <AgentBonusDetailDialogDisclosure
-              brandId={brandId}
-              agentId={value?.id}
-              start={start}
-              end={end}
-              username={value?.username}
-              value={value?.agentDividendAmount}
-              use={Link}
-            />
-          )
-        }
       })
     ],
     [JSON.stringify(items)]
