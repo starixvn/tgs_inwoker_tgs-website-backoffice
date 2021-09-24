@@ -2,14 +2,14 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
+  Heading,
+  Stack,
   Box,
-  Breadcrumb,
+  Button,
   Set,
   useModalState,
   Text,
-  Link,
-  FieldStack,
-  Icon
+  Link
 } from "bumbag"
 import PageContent from "../../page/Content"
 import {
@@ -23,7 +23,7 @@ import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
 import { Code } from "./menu"
-import BrandBar from "../BrandBar"
+import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -35,12 +35,11 @@ import numberColumn, {
 import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { useAgentContributionList } from "./client"
+import VipLevelSelect from "../../vip-levels/VipLevelSelect"
+import { useAgentDividendList } from "./client"
+import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
+import { AgentBonusDetailDialogDisclosure } from "./AgentBonusDetail"
 import { AgentTypeSelect } from "../../agent/AgentType"
-import Checkbox from "../../checkbox"
-import headOf from "../../list/head"
-import lastOf, { isLastIndex } from "../../list/last"
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons"
 
 export { Code }
 
@@ -72,17 +71,13 @@ export const Body = () => {
 }
 
 const ReportContent = ({ brandId }) => {
-  let [usernames, setUsernames] = useState([])
-  let username = lastOf(usernames)
-  let agentUsername = headOf(usernames)
-
   let dateRange = yesterday()
   let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     pageSize: QueryMaxRangeDays,
-    agentType: undefined,
-    includeAgents: true,
+    username: "",
+    type: "",
     from: dateRange.start,
     to: dateRange.end
   })
@@ -91,22 +86,11 @@ const ReportContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  useEffect(() => {
-    setPageIndex(0)
-  }, [JSON.stringify(usernames)])
-
-  let { pageIndex, pageSize, from, to } = state
-  let {
-    isLoading,
-    data = {},
-    error,
-    mutate,
-    deleteCache
-  } = useAgentContributionList(
+  let { pageIndex, pageSize, username, from, to } = state
+  let { isLoading, data, error, mutate, deleteCache } = useAgentDividendList(
     username
       ? {
           ...toApiParams(state),
-          username,
           sortby: "username",
           from,
           to: startOfNextDay(to)
@@ -119,8 +103,6 @@ const ReportContent = ({ brandId }) => {
 
   let columns = useColumns({
     brandId,
-    usernames,
-    setUsernames,
     start: from,
     end: to,
     items: data?.items
@@ -132,110 +114,49 @@ const ReportContent = ({ brandId }) => {
       actionBar={
         <SearchBar
           brandId={brandId}
-          agentUsername={agentUsername}
-          agentType={state?.agentType}
-          includeAgents={state?.includeAgents}
+          username={state?.username}
+          type={state?.type}
           start={from}
           end={to}
           minDate={minDate}
           maxDate={maxDate}
           maxRangeDays={QueryMaxRangeDays}
           isLoading={isLoading}
-          search={({ agentUsername, agentType, includeAgents, start, end }) => {
-            let newState = {
-              pageIndex: 0,
-              agentType,
-              includeAgents,
-              from: start,
-              to: end
-            }
-
-            if (
-              equals(newState, {
-                pageIndex,
-                agentType: state?.agentType,
-                includeAgents: state?.includeAgents,
-                from: state?.from,
-                to: state?.to
-              })
-            ) {
-              mutate()
-            }
-
-            setUsernames([agentUsername])
-
+          search={({ start, end, ...data }) => {
             setState({
               pageIndex: 0,
-              agentType,
-              includeAgents,
               from: start,
-              to: end
+              to: end,
+              ...data
             })
+            mutate()
           }}
         />
       }
-      title={<Trans zh="代理贡献报表" en="Agent Contribution Report" />}
+      title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
     >
-      <FieldStack>
-        <AgentBreadcrumb usernames={usernames} setUsernames={setUsernames} />
-        {username && (
-          <Table
-            columns={columns}
-            data={data?.items}
-            initialState={state}
-            controlledState={state}
-            pageCount={pageCount(pageSize, data?.totalCount)}
-            setPageIndex={setPageIndex}
-            setSortOrder={setSortOrder}
-            isLoading={isLoading}
-            foot={data?.items?.length > 0}
-          />
-        )}
-      </FieldStack>
+      {username && (
+        <Table
+          columns={columns}
+          data={data?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          foot={data?.items?.length > 0}
+        />
+      )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
 }
 
-const AgentBreadcrumb = ({ usernames = [], setUsernames }) => {
-  if (usernames.length === 0) {
-    return null
-  }
-
-  return (
-    <Breadcrumb
-      marginLeft="1rem"
-      separator={
-        <Icon icon={faChevronRight} type="font-awesome" color="gray" />
-      }
-    >
-      {usernames.map((username, index, list) => {
-        let path = list.slice(0, index + 1)
-
-        let isCurrent = isLastIndex(index, list)
-        return (
-          <Breadcrumb.Item isCurrent={isCurrent}>
-            <Breadcrumb.Link
-              onClick={(event) => {
-                if (!isCurrent) {
-                  setUsernames(path)
-                }
-              }}
-            >
-              {username}
-            </Breadcrumb.Link>
-          </Breadcrumb.Item>
-        )
-      })}
-    </Breadcrumb>
-  )
-}
-
 const SearchBar = ({
   brandId,
-  agentUsername,
-  agentType,
-  includeAgents,
+  username,
+  type,
   start,
   end,
   minDate,
@@ -247,9 +168,8 @@ const SearchBar = ({
 }) => {
   let formMethods = useForm({
     defaultValues: {
-      agentUsername,
-      agentType,
-      includeAgents,
+      username,
+      type,
       start,
       end
     }
@@ -260,11 +180,6 @@ const SearchBar = ({
     en: "Agent username"
   })
 
-  let includeAgentCheckboxLabel = useTrans({
-    zh: "包含代理资讯",
-    en: "Include Agent Info"
-  })
-
   const onSubmit = (data) => search?.(data)
 
   return (
@@ -272,21 +187,20 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <InputField
-            name="agentUsername"
+            name="username"
             showEmptyFieldValueAddonAfter
             placeholder={usernamePlaceholder}
             requiredMessage=""
             required
             autoFocus
           />
-          <AgentTypeSelect name="agentType" />
+          <AgentTypeSelect name="type" />
           <DateInputRange
             minDate={minDate}
             maxDate={maxDate}
             maxRangeDays={maxRangeDays}
             required
           />
-          <Checkbox name="includeAgents" label={includeAgentCheckboxLabel} />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
@@ -294,70 +208,17 @@ const SearchBar = ({
   )
 }
 
-const AgentType = "Agent"
-const PlayerType = "Player"
-const isPlayer = (type = "") => type === PlayerType
-const isAgent = (type = "") => type === AgentType
-
-const useColumns = ({
-  brandId,
-  start,
-  end,
-  usernames = [],
-  setUsernames,
-  items = []
-}) => {
-  let bonusAmountTooltip = useTrans({
-    zh: "反水(VIP) + 紅利(活動)",
-    en: "Rebate (VIP) + Bonus (Promotion)"
-  })
-
-  let netProfitTooltip = useTrans({
-    zh: "輸贏-調帳-紅利",
-    en: "Win loss - Adjustment - Bonus"
-  })
+const useColumns = ({ brandId, start, end, items = [] }) => {
   return useMemo(
     () => [
       textColumn({
-        id: "username",
-        accessor: (row) => row,
-        Header: <Trans zh="用户名" en="Username" />,
-        Cell: ({ value }) => {
-          let { type } = value
-          if (isAgent(type)) {
-            return (
-              <Link
-                onClick={(event) => {
-                  let path = [...usernames, value?.username]
-                  setUsernames(path)
-                }}
-              >
-                {value?.username}
-              </Link>
-            )
-          }
-          return <Text.Block>{value?.username}</Text.Block>
-        },
+        accessor: "username",
+        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
         Footer: () => <Trans zh="总计" en="Total" />,
         footerCellProps: {
           textAlign: "center"
         },
-        disableSortBy: true
-      }),
-      textColumn({
-        accessor: "type",
-        Header: <Trans zh="账户类型" en="Account Type" />,
-        Cell: ({ value = "" }) => {
-          switch (value) {
-            case "Player":
-              return <Trans zh="玩家" en="Player" />
-            case AgentType:
-              return <Trans zh="代理" en="Agent" />
-            default:
-              return value
-          }
-        },
-        Footer: () => <Box />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -375,13 +236,8 @@ const useColumns = ({
       numberDecimalColumn({
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
-        Header: (
-          <Trans zh="红利金额" en="Bonus Amount" title={bonusAmountTooltip} />
-        ),
+        Header: <Trans zh="红利金额" en="Bonus Amount" />,
         disableSortBy: true
-        /*
-        tooltip: bonusAmountTooltip
-        */
       }),
       numberDecimalColumn({
         accessor: "adjustmentAmount",
@@ -402,26 +258,54 @@ const useColumns = ({
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "winLossAmount",
+        id: "winLossAmount",
+        accessor: (row) => row,
         sumColumn: "winLossAmount",
+        toValue: (row) => row?.winLossAmount,
         Header: <Trans zh="输赢金额" en="Win Loss Amount" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          return (
+            <AgentWinLossDialogDisclosure
+              brandId={brandId}
+              agentId={value?.id}
+              start={start}
+              end={end}
+              username={value?.username}
+              value={value?.winLossAmount}
+              use={Link}
+            />
+          )
+        }
       }),
       numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" title={netProfitTooltip} />,
+        Header: <Trans zh="净盈利" en="Net Profit" />,
         disableSortBy: true
-        /*
-        tooltip: netProfitTooltip
-        */
+      }),
+      numberDecimalColumn({
+        id: "agentDividendAmount",
+        accessor: (row) => row,
+        sumColumn: "agentDividendAmount",
+        toValue: (row) => row?.agentDividendAmount,
+        Header: <Trans zh="分红金额" en="Profit Sharing Amount" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          return (
+            <AgentBonusDetailDialogDisclosure
+              brandId={brandId}
+              agentId={value?.id}
+              start={start}
+              end={end}
+              username={value?.username}
+              value={value?.agentDividendAmount}
+              use={Link}
+            />
+          )
+        }
       })
     ],
-    [
-      JSON.stringify(items),
-      JSON.stringify(usernames),
-      bonusAmountTooltip,
-      netProfitTooltip
-    ]
+    [JSON.stringify(items)]
   )
 }

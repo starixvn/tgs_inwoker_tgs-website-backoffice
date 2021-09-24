@@ -21,7 +21,7 @@ import {
 import {
   Code as AgentBonusReportCode,
   codeLabelPair as agentBonusReportPair
-} from "./agent-bonus-report/menu"
+} from "./agent-profit-sharing-report/menu"
 import {
   Code as VipReportCode,
   codeLabelPair as vipReportPair
