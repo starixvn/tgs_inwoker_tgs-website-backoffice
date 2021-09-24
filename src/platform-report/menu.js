@@ -36,8 +36,8 @@ export const DefaultUrl = `/${Code}`
 export const DefaultCodePath = [Code]
 
 export const nameMessages = {
-  zh: "报表管理",
-  en: "Report Management"
+  zh: "平台报表",
+  en: "Platform Report"
 }
 
 export const Menu = ({
