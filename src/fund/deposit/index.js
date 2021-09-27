@@ -69,6 +69,7 @@ import isValidTime from "date-fns/isValid"
 import { SortOrder } from "../../table/order"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { sortBy, head } from "lodash-es"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -136,6 +137,7 @@ const BodyContent = ({ brandId }) => {
   } = state
   let {
     data = {},
+    isValidating,
     isLoading,
     mutate: mutateFormList,
     error,
@@ -150,12 +152,12 @@ const BodyContent = ({ brandId }) => {
       eu: startOfNextDay(state.endUpdateOn),
       sortby: "CreatedOn",
       orderby: SortOrder.Descending
-    }
-    /*
-    {
-      refreshInterval: 5 * SecondInMilliseconds //5s
-    }
-    */
+    },
+    isDev()
+      ? {
+          refreshInterval: 10 * SecondInMilliseconds //10s
+        }
+      : undefined
   )
 
   useEffect(() => {
@@ -194,13 +196,20 @@ const BodyContent = ({ brandId }) => {
   let [isUpdateAvailable, setUpdateAvailable] = useState(false)
   let [delayUpdate, setDelayUpdate] = useState(false)
 
+  let [autoLoading, setAutoLoading] = useState(false)
+
   const showUpdates = () => {
     let newApplications = newApplicationsFromToday(data.items, items)
     if (newApplications.length) {
-      // notifyAudio.play()
     }
 
+    setAutoLoading(true)
     setItems(clone(data.items))
+    setUpdateAvailable(false)
+
+    setTimeout(() => {
+      setAutoLoading(false)
+    }, 0.5 * SecondInMilliseconds)
   }
 
   useEffect(() => {
@@ -246,7 +255,7 @@ const BodyContent = ({ brandId }) => {
             })
             mutate()
           }}
-          isLoading={isLoading}
+          isLoading={isLoading || autoLoading}
         />
       }
     >
@@ -258,7 +267,7 @@ const BodyContent = ({ brandId }) => {
         pageCount={pageCount(pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
-        isLoading={isLoading}
+        isLoading={isLoading || autoLoading}
         getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}

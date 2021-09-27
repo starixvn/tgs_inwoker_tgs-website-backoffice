@@ -46,6 +46,12 @@ import {
   nameMessages as PlatformReportManagementNameMessages,
   codeLabelPair as platformReportManagementLabelPair
 } from "./platform-report/menu"
+import { codeMenuContentPair as licenseeReportManagementPair } from "./licensee-report"
+import {
+  Code as LicenseeReportManagementCode,
+  nameMessages as LicenseeReportManagementNameMessages,
+  codeLabelPair as licenseeReportManagementLabelPair
+} from "./licensee-report/menu"
 import { codeMenuContentPair as merchantPair } from "./merchant"
 import {
   Code as MerchantCode,
@@ -170,6 +176,7 @@ export const allMenuContentPairs = () => [
   agentManagementPair,
   gameManagementPair,
   platformReportManagementPair,
+  licenseeReportManagementPair,
   merchantPair,
   fundPair,
   systemPair,
@@ -197,6 +204,7 @@ export const useLabel = ({ codes = [] }) => {
     systemLabelPair,
     gameManagementLabelPair,
     platformReportManagementLabelPair,
+    licenseeReportManagementLabelPair,
     merchantLabelPair,
     fundLabelPair,
     platformLabelPair,
@@ -240,6 +248,8 @@ const moduleLabel = ({ code = "", locale }) => {
       return getTrans(GameManagementNameMessages, locale)
     case PlatformReportManagementCode:
       return getTrans(PlatformReportManagementNameMessages, locale)
+    case LicenseeReportManagementCode:
+      return getTrans(LicenseeReportManagementNameMessages, locale)
     case MerchantCode:
       return getTrans(MerchantName, locale)
     case FundCode:
