@@ -7,41 +7,45 @@ import { Input, InputField } from "./Input"
 
 //Note: ((10^6)-1)/(10^18) -> 1,000,000,000,000,000,000?
 
+export const MaxNumber = 10000000000
+
+export const MaxNumberInString = `${MaxNumber}`
+
 export const NumberInput = ({
-    type = "number",
-    max = "10000000000",
-    ...props
+  type = "number",
+  max = MaxNumberInString,
+  ...props
 }) => <Input type={type} max={max} {...props} />
 
 export const NumberInputField = ({
-    type = "number",
-    max = "10000000000",
-    ...props
+  type = "number",
+  max = MaxNumberInString,
+  ...props
 }) => <InputField type={type} max={max} {...props} />
 
 export const PercentageNumberInput = () => {}
 
 const DefaultPercentageAddon = () => (
-    <Button isStatic tabIndex="-1">
-        %
-    </Button>
+  <Button isStatic tabIndex="-1">
+    %
+  </Button>
 )
 
 export const PercentageNumberInputField = ({
-    addonAfter,
-    min = "0",
-    max = "100",
-    step = "0.01",
-    ...props
+  addonAfter,
+  min = "0",
+  max = "100",
+  step = "0.01",
+  ...props
 }) => {
-    addonAfter = addonAfter ?? <DefaultPercentageAddon />
-    return (
-        <NumberInputField
-            step={step}
-            min={min}
-            max={max}
-            addonAfter={addonAfter}
-            {...props}
-        />
-    )
+  addonAfter = addonAfter ?? <DefaultPercentageAddon />
+  return (
+    <NumberInputField
+      step={step}
+      min={min}
+      max={max}
+      addonAfter={addonAfter}
+      {...props}
+    />
+  )
 }

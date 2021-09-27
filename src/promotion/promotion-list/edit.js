@@ -730,6 +730,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         </NormalLabel>
         <PercentageNumberInputField
           name="percentage"
+          max="999"
           required
           disabled={disabled}
         />
