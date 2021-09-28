@@ -21,7 +21,8 @@ import { SubmitCancel } from "../../button/ActionButtons"
 import { Tab as _Tab, TabPanel } from "../../tab"
 import Input from "../../input/Input"
 import EmailInput from "../../input/EmailInput"
-import PhoneInput from "../../input/PhoneInput"
+import { AreaPhoneInputGruop } from "../../input/PhoneInput"
+import clone from "clone-deep"
 
 export const Key = "contact"
 
@@ -39,7 +40,9 @@ export const Panel = ({ player = {}, ...props }) => {
     <TabPanel tabId={Key} {...props}>
       <FieldValues spacing="major-2">
         <MobileLabel />
-        <Text>{phone}</Text>
+        <Text>
+          {player?.areaCode ? `+${player?.areaCode}` : ""} {phone}
+        </Text>
 
         <EmailLabel />
         <Text>{email}</Text>
@@ -61,14 +64,8 @@ export const EditPanel = ({
   onClickClose,
   ...props
 }) => {
-  let { phone, email, qq, weChat } = player
   let formMethods = useForm({
-    defaultValues: {
-      phone: phone ?? "",
-      email: email ?? "",
-      qq: qq ?? "",
-      weChat: weChat ?? ""
-    }
+    defaultValues: clone(player)
   })
 
   let [submitData, setSubmit] = useState()
@@ -101,7 +98,7 @@ const Body = ({ onClickClose }) => {
       <FieldValues>
         <MobileLabel />
         <Box>
-          <PhoneInput name="phone" />
+          <AreaPhoneInputGruop name="phone" />
         </Box>
 
         <EmailLabel />
