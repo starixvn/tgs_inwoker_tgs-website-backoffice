@@ -22,6 +22,7 @@ import { Tab as _Tab, TabPanel } from "../../tab"
 import Input from "../../input/Input"
 import EmailInput from "../../input/EmailInput"
 import { AreaPhoneInputGruop } from "../../input/PhoneInput"
+import clone from "clone-deep"
 
 export const Key = "contact"
 
@@ -63,14 +64,8 @@ export const EditPanel = ({
   onClickClose,
   ...props
 }) => {
-  let { phone, email, qq, weChat } = player
   let formMethods = useForm({
-    defaultValues: {
-      phone: phone ?? "",
-      email: email ?? "",
-      qq: qq ?? "",
-      weChat: weChat ?? ""
-    }
+    defaultValues: clone(player)
   })
 
   let [submitData, setSubmit] = useState()
