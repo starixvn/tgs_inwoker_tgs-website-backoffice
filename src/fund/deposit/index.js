@@ -2,6 +2,15 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
+  Switch,
+  Route,
+  Link,
+  useLocation,
+  useHistory,
+  useParams,
+  useRouteMatch
+} from "react-router-dom"
+import {
   Heading,
   Stack,
   Box,
@@ -60,6 +69,7 @@ import isValidTime from "date-fns/isValid"
 import { SortOrder } from "../../table/order"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { sortBy, head } from "lodash-es"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -94,12 +104,15 @@ const SecondInMilliseconds = 1000
 const MinuteInMilliseconds = 60000
 
 const BodyContent = ({ brandId }) => {
+  let { location } = useHistory()
+
   let todayRange = today()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     username: "",
     channelName: "",
     method: "",
-    status: "",
+    status: location?.state?.status ?? "",
+    thirdOrderNo: "",
     beginCreateOn: todayRange.start,
     endCreateOn: todayRange.end,
     beginUpdateOn: undefined,
@@ -124,6 +137,7 @@ const BodyContent = ({ brandId }) => {
   } = state
   let {
     data = {},
+    isValidating,
     isLoading,
     mutate: mutateFormList,
     error,
@@ -138,13 +152,35 @@ const BodyContent = ({ brandId }) => {
       eu: startOfNextDay(state.endUpdateOn),
       sortby: "CreatedOn",
       orderby: SortOrder.Descending
-    }
-    /*
-    {
-      refreshInterval: 5 * SecondInMilliseconds //5s
-    }
-    */
+    },
+    isDev()
+      ? {
+          refreshInterval: 10 * SecondInMilliseconds //10s
+        }
+      : undefined
   )
+
+  useEffect(() => {
+    if (location?.state?.fromNotify) {
+      deleteCache()
+
+      todayRange = today()
+      setState({
+        pageIndex: 0,
+        username: "",
+        channelName: "",
+        method: "",
+        status: location?.state?.status ?? "",
+        thirdOrderNo: "",
+        beginCreateOn: todayRange.start,
+        endCreateOn: todayRange.end,
+        beginUpdateOn: undefined,
+        endUpdateOn: undefined
+      })
+
+      mutateFormList(undefined)
+    }
+  }, [location?.state?.fromNotify])
 
   let newOrder = useTrans({
     zh: "新订单",
@@ -155,31 +191,25 @@ const BodyContent = ({ brandId }) => {
     en: "Multiple new orders"
   })
   let toasts = useToasts()
+
   let [items, setItems] = useState([])
   let [isUpdateAvailable, setUpdateAvailable] = useState(false)
   let [delayUpdate, setDelayUpdate] = useState(false)
 
+  let [autoLoading, setAutoLoading] = useState(false)
+
   const showUpdates = () => {
     let newApplications = newApplicationsFromToday(data.items, items)
     if (newApplications.length) {
-      if (newApplications.length < 3) {
-        toasts.info({
-          title: `${newOrder}`
-        })
-        /*
-        newApplications.map((application) =>
-          toasts.info({
-            title: `${newOrder}`,
-            message: `${application.userName}`
-          })
-        )
-        */
-      } else {
-        toasts.info({ title: multipleOrder })
-      }
     }
 
+    setAutoLoading(true)
     setItems(clone(data.items))
+    setUpdateAvailable(false)
+
+    setTimeout(() => {
+      setAutoLoading(false)
+    }, 0.5 * SecondInMilliseconds)
   }
 
   useEffect(() => {
@@ -213,43 +243,19 @@ const BodyContent = ({ brandId }) => {
           channelName={channelName}
           method={method}
           status={status}
+          thirdOrderNo={state.thirdOrderNo}
           beginCreateOn={beginCreateOn}
           endCreateOn={endCreateOn}
           beginUpdateOn={beginUpdateOn}
           endUpdateOn={endUpdateOn}
           search={(data) => {
-            let newState = {
-              pageIndex: 0,
-              username: data.username,
-              channelName: data.channelName,
-              method: data.method,
-              status: data.status,
-              beginCreateOn: data.beginCreateOn,
-              endCreateOn: data.endCreateOn,
-              beginUpdateOn: data.beginUpdateOn,
-              endUpdateOn: data.endUpdateOn
-            }
-            if (
-              equals(newState, {
-                pageIndex,
-                username,
-                channelName,
-                method,
-                status,
-                beginCreateOn,
-                endCreateOn,
-                beginUpdateOn,
-                endUpdateOn
-              })
-            ) {
-              mutate()
-            }
             setState({
               pageIndex: 0,
               ...data
             })
+            mutate()
           }}
-          isLoading={isLoading}
+          isLoading={isLoading || autoLoading}
         />
       }
     >
@@ -261,20 +267,15 @@ const BodyContent = ({ brandId }) => {
         pageCount={pageCount(pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
-        isLoading={isLoading}
+        isLoading={isLoading || autoLoading}
         getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-      <ActionFooter
-        brandId={brandId}
-        items={items}
-        mutate={mutate}
-        setDelayUpdate={setDelayUpdate}
-      />
     </PageContent>
   )
 }
 
+/*
 const ActionFooter = ({ brandId, items = [], mutate, setDelayUpdate }) => {
   return null //POC
 
@@ -311,6 +312,7 @@ const nextVerifiable = (items = []) => {
   let result = head(sortedItems)
   return result ? clone(result) : undefined
 }
+*/
 
 const newApplicationsFromToday = (first = [], second = []) => {
   if (!second || second.length === 0) {
@@ -349,6 +351,7 @@ const SearchBar = ({
   channelName,
   method,
   status,
+  thirdOrderNo,
   beginCreateOn,
   endCreateOn,
   beginUpdateOn,
@@ -363,12 +366,37 @@ const SearchBar = ({
       channelName,
       method,
       status,
+      thirdOrderNo,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
       endUpdateOn
     }
   })
+
+  useEffect(() => {
+    formMethods.reset({
+      username,
+      channelName,
+      method,
+      status,
+      thirdOrderNo,
+      beginCreateOn,
+      endCreateOn,
+      beginUpdateOn,
+      endUpdateOn
+    })
+  }, [
+    username,
+    channelName,
+    method,
+    status,
+    thirdOrderNo,
+    beginCreateOn,
+    endCreateOn,
+    beginUpdateOn,
+    endUpdateOn
+  ])
 
   let usernameInputPlaceholder = useTrans({
     zh: "用户名",
@@ -383,6 +411,11 @@ const SearchBar = ({
   let paymentMethodPlaceholder = useTrans({
     zh: "充值类型",
     en: "Deposit Method"
+  })
+
+  let externalIdPlaceholder = useTrans({
+    zh: "三方订单编号",
+    en: "3rd Party Id"
   })
   return (
     <FormProvider {...formMethods}>
@@ -404,6 +437,11 @@ const SearchBar = ({
               placeholder={paymentMethodPlaceholder}
             />
             <FundReviewStatusSelect name="status" />
+            <InputField
+              name="thirdOrderNo"
+              placeholder={externalIdPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
           </Set>
           <Set orientation="horizontal">
             <DateInputRangeField
@@ -452,6 +490,11 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <Trans zh="订单号" en="Id" />,
         disableSortBy: true,
         Cell: ({ value }) => value
+      }),
+      textColumn({
+        accessor: "thirdPartyOrderNo",
+        Header: <Trans zh="三方单号" en="3rd Party Id" />,
+        disableSortBy: true
       }),
       textColumn({
         id: "paymentMethod",

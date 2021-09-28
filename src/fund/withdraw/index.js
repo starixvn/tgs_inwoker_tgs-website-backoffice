@@ -2,6 +2,15 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
+  Switch,
+  Route,
+  Link,
+  useLocation,
+  useHistory,
+  useParams,
+  useRouteMatch
+} from "react-router-dom"
+import {
   Heading,
   Stack,
   Box,
@@ -47,6 +56,15 @@ import { ViewFundWithdrawDisclosure } from "./ViewFundWithdraw"
 import { VerifyFundWithdrawDisclosure } from "./VerifyFundWithdraw"
 import { PaymentMethodSelect } from "../../payment/method/PaymentMethod"
 import { UserTypeLabel } from "./UserType"
+import maxTime from "date-fns/max"
+import isEqualTime from "date-fns/isEqual"
+import isSameDay from "date-fns/isSameDay"
+import isAfter from "date-fns/isAfter"
+import parseISO from "date-fns/parseISO"
+import isValidTime from "date-fns/isValid"
+import { sortBy, head } from "lodash-es"
+import clone from "clone-deep"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -77,17 +95,27 @@ const Body = () => {
   )
 }
 
+const SecondInMilliseconds = 1000
+const MinuteInMilliseconds = 60000
+
 const BodyContent = ({ brandId }) => {
+  let { location } = useHistory()
+
   let todayRange = today()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     username: "",
     channelName: "",
-    status: "",
+    status: location?.state?.status ?? "",
+    thirdOrderNo: "",
     beginCreateOn: todayRange.start,
     endCreateOn: todayRange.end,
     beginUpdateOn: undefined,
     endUpdateOn: undefined
   })
+
+  useEffect(() => {
+    setState({ pageIndex: 0 })
+  }, [brandId])
 
   let {
     pageIndex,
@@ -102,26 +130,93 @@ const BodyContent = ({ brandId }) => {
   } = state
 
   let {
-    data: { items, ...data } = {},
+    data = {},
+    isValidating,
     isLoading,
-    mutate,
+    mutate: mutateFormList,
     error,
     deleteCache
-  } = useFundWithdrawFormList(brandId, {
-    ...toApiParams(state),
-    bc: state.beginCreateOn,
-    ec: startOfNextDay(state.endCreateOn),
-    bu: state.beginUpdateOn,
-    eu: startOfNextDay(state.endUpdateOn),
-    sortby: "CreatedOn",
-    orderby: SortOrder.Descending
-  })
+  } = useFundWithdrawFormList(
+    brandId,
+    {
+      ...toApiParams(state),
+      bc: state.beginCreateOn,
+      ec: startOfNextDay(state.endCreateOn),
+      bu: state.beginUpdateOn,
+      eu: startOfNextDay(state.endUpdateOn),
+      sortby: "CreatedOn",
+      orderby: SortOrder.Descending
+    },
+    isDev()
+      ? {
+          refreshInterval: 10 * SecondInMilliseconds
+        }
+      : undefined
+  )
 
   useEffect(() => {
-    setState({ pageIndex: 0 })
-  }, [brandId])
+    if (location?.state?.fromNotify) {
+      deleteCache()
 
-  let columns = useColumns({ mutate, items, brandId })
+      todayRange = today()
+      setState({
+        pageIndex: 0,
+        username: "",
+        channelName: "",
+        status: location?.state?.status ?? "",
+        thirdOrderNo: "",
+        beginCreateOn: todayRange.start,
+        endCreateOn: todayRange.end,
+        beginUpdateOn: undefined,
+        endUpdateOn: undefined
+      })
+
+      mutateFormList(undefined)
+    }
+  }, [location?.state?.fromNotify])
+
+  let [items, setItems] = useState([])
+  let [isUpdateAvailable, setUpdateAvailable] = useState(false)
+  let [delayUpdate, setDelayUpdate] = useState(false)
+
+  let [autoLoading, setAutoLoading] = useState(false)
+
+  const showUpdates = () => {
+    let newApplications = newApplicationsFromToday(data.items, items)
+    if (newApplications.length) {
+      // notifyAudio.play()
+    }
+
+    setAutoLoading(true)
+    setItems(clone(data.items))
+    setUpdateAvailable(false)
+
+    setTimeout(() => {
+      setAutoLoading(false)
+    }, 0.5 * SecondInMilliseconds)
+  }
+
+  useEffect(() => {
+    if (!delayUpdate && isUpdateAvailable) {
+      showUpdates()
+    }
+  }, [delayUpdate, isUpdateAvailable])
+
+  const mutate = () => {
+    mutateFormList()
+    setDelayUpdate(false)
+  }
+
+  useEffect(() => {
+    let hasUpdate = data?.items && !equals(items, data?.items)
+    setUpdateAvailable(hasUpdate)
+
+    if (hasUpdate && !delayUpdate) {
+      showUpdates()
+    }
+  }, [JSON.stringify(data?.items)])
+
+  let columns = useColumns({ mutate, items, brandId, setDelayUpdate })
   return (
     <PageContent
       title={<Trans zh="提款列表" en="Withdraw List" />}
@@ -131,6 +226,7 @@ const BodyContent = ({ brandId }) => {
           username={username}
           channelName={channelName}
           status={status}
+          thirdOrderNo={state.thirdOrderNo}
           beginCreateOn={beginCreateOn}
           endCreateOn={endCreateOn}
           beginUpdateOn={beginUpdateOn}
@@ -142,7 +238,7 @@ const BodyContent = ({ brandId }) => {
             })
             mutate()
           }}
-          isLoading={isLoading}
+          isLoading={isLoading || autoLoading}
         />
       }
     >
@@ -154,7 +250,7 @@ const BodyContent = ({ brandId }) => {
         pageCount={pageCount(pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
-        isLoading={isLoading}
+        isLoading={isLoading || autoLoading}
         getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
@@ -162,11 +258,43 @@ const BodyContent = ({ brandId }) => {
   )
 }
 
+const newApplicationsFromToday = (first = [], second = []) => {
+  if (!second || second.length === 0) {
+    return []
+  }
+
+  let today = new Date()
+  let lastMaxApplicationTime = maxTime(
+    second.reduce((times, { createdOn }) => {
+      let value = parseISO(createdOn)
+      if (isValidTime(value)) {
+        times.push(value)
+      }
+
+      return times
+    }, [])
+  )
+
+  const findSameById = (id, list = []) => list.find((item) => item.id === id)
+
+  let result = first.filter(({ createdOn, id }) => {
+    createdOn = parseISO(createdOn)
+    return (
+      isSameDay(today, createdOn) &&
+      isAfter(createdOn, lastMaxApplicationTime) &&
+      !findSameById(id, second)
+    )
+  })
+
+  return result
+}
+
 const SearchBar = ({
   brandId,
   username,
   channelName,
   status,
+  thirdOrderNo,
   beginCreateOn,
   endCreateOn,
   beginUpdateOn,
@@ -180,12 +308,35 @@ const SearchBar = ({
       username,
       channelName,
       status,
+      thirdOrderNo,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
       endUpdateOn
     }
   })
+
+  useEffect(() => {
+    formMethods.reset({
+      username,
+      channelName,
+      status,
+      thirdOrderNo,
+      beginCreateOn,
+      endCreateOn,
+      beginUpdateOn,
+      endUpdateOn
+    })
+  }, [
+    username,
+    channelName,
+    status,
+    thirdOrderNo,
+    beginCreateOn,
+    endCreateOn,
+    beginUpdateOn,
+    endUpdateOn
+  ])
 
   let usernameInputPlaceholder = useTrans({
     zh: "用户名",
@@ -202,6 +353,10 @@ const SearchBar = ({
     en: "Withdraw Method"
   })
 
+  let externalIdPlaceholder = useTrans({
+    zh: "三方订单编号",
+    en: "3rd Party Id"
+  })
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
@@ -222,6 +377,11 @@ const SearchBar = ({
               placeholder={paymentMethodPlaceholder}
             />
             <FundReviewStatusSelect name="status" />
+            <InputField
+              name="thirdOrderNo"
+              placeholder={externalIdPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
           </Set>
           <Set orientation="horizontal">
             <DateInputRangeField
@@ -254,7 +414,7 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ brandId, items = [], mutate }) => {
+const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
   let hasUpdateMenu = useIsDisplayMenuByRoute([Update])
   return useMemo(() => {
     let columns = [
@@ -274,6 +434,11 @@ const useColumns = ({ brandId, items = [], mutate }) => {
         Header: <Trans zh="订单号" en="Id" />,
         disableSortBy: true,
         Cell: ({ value }) => value
+      }),
+      textColumn({
+        accessor: "thirdPartyOrderNo",
+        Header: <Trans zh="三方单号" en="3rd Party Id" />,
+        disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "amount",
@@ -320,11 +485,19 @@ const useColumns = ({ brandId, items = [], mutate }) => {
                     brandId={brandId}
                     formId={value.id}
                     onSubmitted={mutate}
+                    onVisibleChange={(visible) => {
+                      let delayUpdate = visible
+                      setDelayUpdate(delayUpdate)
+                    }}
                   />
                 )}
                 <ViewFundWithdrawDisclosure
                   brandId={brandId}
                   formId={value.id}
+                  onVisibleChange={(visible) => {
+                    let delayUpdate = visible
+                    setDelayUpdate(delayUpdate)
+                  }}
                 />
               </Set>
             )

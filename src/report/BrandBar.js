@@ -36,7 +36,9 @@ export const BrandBar = ({
   let userLicenseeId = useUserLicenseeId()
   let userBrandId = useUserBrandId()
 
+  let initialState = location?.state ?? {}
   let [state, setState] = useState({
+    ...initialState,
     resellerId: userResellerId ?? location?.state?.resellerId,
     licenseeId: userLicenseeId ?? location?.state?.licenseeId,
     brandId: userBrandId ?? location?.state?.brandId
@@ -44,7 +46,10 @@ export const BrandBar = ({
 
   useEffect(() => {
     if (!equals(state, location?.state)) {
-      history.replace(url, state)
+      history.replace(url, {
+        ...location?.state,
+        ...state
+      })
     }
   }, [JSON.stringify(state), JSON.stringify(location?.state ?? {})])
 

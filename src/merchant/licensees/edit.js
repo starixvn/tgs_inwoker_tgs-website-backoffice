@@ -263,6 +263,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
         <EditDialog
           id={record?.id}
           resellerId={record?.resellerId}
+          onSubmitted={onSubmitted}
           dialog={dialog}
         />
       )}
@@ -436,13 +437,13 @@ const EditBody = ({
           {readonly && <Text.Block>{record?.name}</Text.Block>}
         </Box>
 
-        {/* <NormalLabel>
-                    <Trans zh="公司简介" en="Description" />
-                </NormalLabel>
-                <Box alignY="center">
-                    {editable && <Textarea name="description" />}
-                    {readonly && <Text.Block>{record.description}</Text.Block>}
-                </Box> */}
+        <NormalLabel>
+          <Trans zh="公司简介" en="Description" />
+        </NormalLabel>
+        <Box alignY="center">
+          {editable && <Textarea name="description" />}
+          {readonly && <Text.Block>{record.description}</Text.Block>}
+        </Box>
 
         <NormalLabel>
           <Trans zh="公司邮箱" en="Email" />

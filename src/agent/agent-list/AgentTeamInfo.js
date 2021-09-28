@@ -17,7 +17,7 @@ import SearchButton from "../../button/SearchButton"
 import isSameDate from "date-fns/isEqual"
 import { Ascending, Descending } from "../../table/order"
 import { coloredNumberDecimalColumn } from "../../table/column/numberColumn"
-import { useAgentTeamInfo } from "../../report/agent-contribution-report/client"
+import { useAgentTeamInfo } from "../../platform-report/agent-contribution-report/client"
 
 const Key = "AgentTeamInfo"
 

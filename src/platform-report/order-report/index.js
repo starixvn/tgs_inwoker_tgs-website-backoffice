@@ -14,7 +14,7 @@ import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
 import { Code } from "./menu"
-import BrandBar from "../BrandBar"
+import BrandBar from "../../report/BrandBar"
 import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { ellipsisTextColumn, textColumn } from "../../table/column/textColumn"
@@ -66,7 +66,7 @@ export const Body = () => {
 
 const ReportContent = ({ brandId }) => {
   let dateRange = today()
-  let QueryMaxRangeDays = 30
+  let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     from: dateRange.start,

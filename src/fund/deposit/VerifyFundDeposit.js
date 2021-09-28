@@ -15,6 +15,13 @@ import { NormalLabel } from "../../form/Label"
 import { FormBody } from "./ViewFundDeposit"
 import ReviewFund from "../ReviewFund"
 
+export const FundDepositVerified = "FundDepositVerified"
+
+const fireVerifiedEvent = () => {
+  let event = new Event(FundDepositVerified)
+  document.dispatchEvent(event)
+}
+
 export const VerifyFundDepositDisclosure = ({
   brandId,
   formId,
@@ -35,7 +42,7 @@ export const VerifyFundDepositDisclosure = ({
 
   return (
     <>
-      <VerifyDisclosure {...dialog} />
+      <VerifyDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <VerifyFundDepositDialog
           brandId={brandId}
@@ -128,7 +135,10 @@ const VerifyFundDepositDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        onSubmitted?.()
+        fireVerifiedEvent()
+      }}
       title={title}
       dialog={dialog}
     >

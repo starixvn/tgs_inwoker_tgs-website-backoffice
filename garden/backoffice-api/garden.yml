@@ -9,7 +9,7 @@ services:
       - redis
       - nats
       - operator-api
-      # - file-service
+      - file-service
       - promotion-api
       - report-api
       - log-api

@@ -100,6 +100,6 @@ describe("Admin user", () => {
   })
 
   const gotoPlatformListPage = async () => {
-    await goto({ page, value: "/merchant/platforms" })
+    await goto({ page, value: "/merchant/brands" })
   }
 })

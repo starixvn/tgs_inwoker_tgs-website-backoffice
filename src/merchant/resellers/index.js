@@ -138,7 +138,6 @@ const useColumns = ({ items = [], mutate }) => {
         Header: <Trans zh="总公司名称" en="Name" />,
         disableSortBy: true
       }),
-      /*
       {
         accessor: "description",
         Header: <Trans zh="总公司简介" en="Description" />,
@@ -151,7 +150,6 @@ const useColumns = ({ items = [], mutate }) => {
           textAlign: "center"
         }
       },
-      */
       {
         accessor: "operationalEmail",
         Header: <Trans zh="总公司邮箱" en="Email" />,

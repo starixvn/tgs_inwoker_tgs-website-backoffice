@@ -1,0 +1,16 @@
+kind: Module
+type: container
+name: payment-manual
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-manual:202109150320-staging
+services:
+  - name: payment-manual
+    dependencies:
+      - nats
+    env:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      Manual__NatsUrl: "nats://nats:4222"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

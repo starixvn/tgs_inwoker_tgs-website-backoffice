@@ -21,7 +21,7 @@ import {
 import {
   Code as AgentBonusReportCode,
   codeLabelPair as agentBonusReportPair
-} from "./agent-bonus-report/menu"
+} from "./agent-profit-sharing-report/menu"
 import {
   Code as VipReportCode,
   codeLabelPair as vipReportPair
@@ -36,8 +36,8 @@ export const DefaultUrl = `/${Code}`
 export const DefaultCodePath = [Code]
 
 export const nameMessages = {
-  zh: "报表管理",
-  en: "Report Management"
+  zh: "平台报表",
+  en: "Platform Report"
 }
 
 export const Menu = ({
