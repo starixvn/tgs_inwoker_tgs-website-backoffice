@@ -38,15 +38,10 @@ export const AreaPhoneInputGruop = ({
 }) => {
   return (
     <Group>
-      <InputField
-        name={areaName}
-        addonBefore={
-          <Button isStatic>
-            <Icon icon={faPlus} type="font-awesome" />
-          </Button>
-        }
-        {...areaProps}
-      />
+      <Button isStatic>
+        <Icon icon={faPlus} type="font-awesome" />
+      </Button>
+      <Input use="input" name={areaName} width="60px" {...areaProps} />
       <PhoneInput {...props} />
     </Group>
   )
