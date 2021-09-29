@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, Children } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, useFormContext } from "react-hook-form"
-import { useTrans } from "../i18n"
+import { Trans, useTrans } from "../i18n"
 import Input, { InputField } from "./Input"
 import { Group, Button, Icon } from "bumbag"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
@@ -36,12 +36,18 @@ export const AreaPhoneInputGruop = ({
   area: { name: areaName = "areaCode", ...areaProps } = {},
   ...props
 }) => {
+  let areaCodePlaceholder = useTrans({
+    zh: "区号",
+    en: "Area Code"
+  })
   return (
     <Group>
-      <Button isStatic>
-        <Icon icon={faPlus} type="font-awesome" />
-      </Button>
-      <Input use="input" name={areaName} width="60px" {...areaProps} />
+      <Input
+        name={areaName}
+        width="80px"
+        placeholder={areaCodePlaceholder}
+        {...areaProps}
+      />
       <PhoneInput {...props} />
     </Group>
   )
