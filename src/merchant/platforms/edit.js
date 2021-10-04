@@ -53,6 +53,8 @@ import SettlementIntervalType, {
 } from "../../date/SettlementIntervalType"
 import BusinessType from "../BusinessType"
 import Select from "../../select/Select"
+import { PercentageNumberInputField } from "../../input/NumberInput"
+import { isDev } from "../../env"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -559,6 +561,22 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
             {isMonthly && <MonthlyDaySelect name="settlementDay" />}
           </Set>
         </Box>
+
+        {isDev() && (
+          <>
+            <NormalLabel>
+              <Trans zh="产品费用" en="Product Fee" />
+            </NormalLabel>
+            <Box>
+              <PercentageNumberInputField
+                name="platformCharge"
+                readOnly={readonly}
+                disabled={!editable}
+                width="fit-content"
+              />
+            </Box>
+          </>
+        )}
 
         <LanguageFieldsBox
           readonly={readonly}

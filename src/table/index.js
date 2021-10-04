@@ -85,6 +85,7 @@ export const Table = ({
   columns,
   data = [],
   getRowId,
+  getRowProps,
   initialState,
   controlledState,
   useSortBy = ReactTable.useSortBy,
@@ -109,6 +110,7 @@ export const Table = ({
       columns,
       data,
       getRowId,
+      getRowProps,
       initialState,
       useControlledState: (state) => {
         let pageIndex = controlledState?.pageIndex ?? state.pageIndex
@@ -245,17 +247,17 @@ const Foot = ({ table }) => {
 
 const Body = ({ table }) => {
   let { rows, getTableBodyProps, prepareRow, columns } = table
-
   return (
     <_Table.Body {...getTableBodyProps()}>
       {rows.map((row, i) => {
         prepareRow(row)
 
+        let rowProps = table.getRowProps?.(row) || {}
         return (
           <_Table.Row
             data-row-id={row.id}
             data-row-index={i}
-            {...row.getRowProps()}
+            {...row.getRowProps(rowProps)}
           >
             {row.cells.map((cell) => {
               let props = cell.getCellProps({

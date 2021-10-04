@@ -172,6 +172,7 @@ const BodyContent = ({ brandId }) => {
         method: "",
         status: location?.state?.status ?? "",
         thirdOrderNo: "",
+        id: "",
         beginCreateOn: todayRange.start,
         endCreateOn: todayRange.end,
         beginUpdateOn: undefined,
@@ -244,6 +245,7 @@ const BodyContent = ({ brandId }) => {
           method={method}
           status={status}
           thirdOrderNo={state.thirdOrderNo}
+          id={state.id}
           beginCreateOn={beginCreateOn}
           endCreateOn={endCreateOn}
           beginUpdateOn={beginUpdateOn}
@@ -352,6 +354,7 @@ const SearchBar = ({
   method,
   status,
   thirdOrderNo,
+  id,
   beginCreateOn,
   endCreateOn,
   beginUpdateOn,
@@ -367,6 +370,7 @@ const SearchBar = ({
       method,
       status,
       thirdOrderNo,
+      id,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -381,6 +385,7 @@ const SearchBar = ({
       method,
       status,
       thirdOrderNo,
+      id,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -392,6 +397,7 @@ const SearchBar = ({
     method,
     status,
     thirdOrderNo,
+    id,
     beginCreateOn,
     endCreateOn,
     beginUpdateOn,
@@ -417,6 +423,10 @@ const SearchBar = ({
     zh: "三方订单编号",
     en: "3rd Party Id"
   })
+  let idPlaceholder = useTrans({
+    zh: "系统订单编号",
+    en: "System Id"
+  })
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
@@ -440,6 +450,11 @@ const SearchBar = ({
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
+            <InputField
+              name="id"
+              placeholder={idPlaceholder}
               showEmptyFieldValueAddonAfter
             />
           </Set>
@@ -553,7 +568,9 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
           disableSortBy: true,
           Header: <Trans zh="操作" en="Actions" />,
           Cell: ({ value }) => {
-            let underReview = value?.status === FundReviewStatus.Review
+            let underReview =
+              value?.status === FundReviewStatus.Review ||
+              value?.status === FundReviewStatus.WaitingPayment
             return (
               <Set alignX="center">
                 {underReview && (

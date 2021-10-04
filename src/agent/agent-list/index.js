@@ -22,7 +22,7 @@ import {
   useHasSubMenuByRoute,
   useUserBrandId
 } from "../../user/context"
-import { Code } from "./menu"
+import { Code, View } from "./menu"
 import { AgentStatusSelect } from "../AgentStatus"
 import { ViewButton, EditButton, ConfigButton, AddAgentButton } from "./button"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
@@ -55,6 +55,8 @@ import AgentLotteryRebatePercentage from "../AgentLotteryRebatePercentage"
 import AgentSportsRebatePercentage from "../AgentSportsRebatePercentage"
 import AgentVirtualSportsRebatePercentage from "../AgentVirtualSportsRebatePercentage"
 import AgentDividendPercentage from "../AgentDividendPercentage"
+import { isDev } from "../../env"
+import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentDividendConditionDialog"
 
 export { Code }
 
@@ -186,6 +188,7 @@ const useSearchInputPlaceHolder = () =>
 
 const useColumns = ({ mutate, items = [], brandId } = {}) => {
   let hasAnyMenu = useHasSubMenuByRoute()
+  let viewable = useIsDisplayMenuByRoute([View])
 
   return useMemo(() => {
     let columns = [
@@ -229,6 +232,15 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
             return "-"
           }
 
+          if (isDev()) {
+            return (
+              <ViewAgentProfitSharingSettingDialogDisclosure
+                agentId={value?.id}
+                disabled={!viewable}
+              />
+            )
+          }
+
           return (
             <FormattedNumberDecimal
               value={value?.dividendPercentage}
@@ -237,6 +249,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
           )
         }
       }),
+      /*
       textColumn({
         id: AgentLiveDealerRebatePercentage.Name,
         accessor: (row) => row,
@@ -381,6 +394,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
           )
         }
       }),
+      */
       textColumn({
         accessor: "agentStatus",
         Header: <Trans zh="配置状态" en="Config Status" />,

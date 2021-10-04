@@ -1,22 +1,26 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, useModalState } from "bumbag"
-import PageContent from "../page/Content"
-import { useTable, Table, pageCount, toApiParams } from "../table"
-import { FormattedNumber, Trans, useTrans } from "../i18n"
-import SearchButton from "../button/SearchButton"
+import { Heading, Stack, Box, Button, Set, useModalState, Level } from "bumbag"
+import PageContent from "../../page/Content"
+import { useTable, Table, pageCount, toApiParams } from "../../table"
+import { FormattedNumber, Trans, useLangCode, useTrans } from "../../i18n"
+import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
-import { DateInputRange } from "../date/DateTimeRangeInput"
-import { yesterday } from "../date/range"
-import dateTimeColumn from "../table/column/dateTime"
+import { DateInputRange } from "../../date/DateTimeRangeInput"
+import { yesterday } from "../../date/range"
+import dateTimeColumn from "../../table/column/dateTime"
 import subDays from "date-fns/subDays"
-import { startOfNextDay } from "../date/startOfNextDay"
-import numberColumn, { numberDecimalColumn } from "../table/column/numberColumn"
+import { startOfNextDay } from "../../date/startOfNextDay"
+import numberColumn, {
+  numberDecimalColumn
+} from "../../table/column/numberColumn"
 import startOfToday from "date-fns/startOfToday"
-import AlertDialog from "../dialog/Alert"
+import AlertDialog from "../../dialog/Alert"
+import { urlWith } from "../../client/index"
+import { isDev } from "../../env"
 
-export const MarketReport = ({ brandId, useFetch }) => {
+export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
   let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
@@ -31,18 +35,24 @@ export const MarketReport = ({ brandId, useFetch }) => {
   }, [brandId])
 
   let { pageIndex, pageSize, from, to } = state
+
+  let culture = useLangCode()
+
+  let toSearchParams = () => ({
+    ...toApiParams(state),
+    sortby: "reportDate",
+    from,
+    to: startOfNextDay(to),
+    culture
+  })
+
   let {
     isLoading,
     data = {},
     error,
     mutate,
     deleteCache
-  } = useFetch({
-    ...toApiParams(state),
-    sortby: "reportDate",
-    from,
-    to: startOfNextDay(to)
-  })
+  } = useFetch(toSearchParams())
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
@@ -53,23 +63,40 @@ export const MarketReport = ({ brandId, useFetch }) => {
   return (
     <PageContent
       actionBar={
-        <SearchBar
-          start={from}
-          end={to}
-          minDate={minDate}
-          maxDate={maxDate}
-          maxRangeDays={QueryMaxRangeDays}
-          isLoading={isLoading}
-          search={({ start, end, ...rest }) => {
-            setState({
-              pageIndex: 0,
-              from: start,
-              to: end,
-              ...rest
-            })
-            mutate()
-          }}
-        />
+        <Level alignY="bottom">
+          <SearchBar
+            start={from}
+            end={to}
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={QueryMaxRangeDays}
+            isLoading={isLoading}
+            search={({ start, end, ...rest }) => {
+              setState({
+                pageIndex: 0,
+                from: start,
+                to: end,
+                ...rest
+              })
+              mutate()
+            }}
+          />
+          {isDev() && data?.items?.length > 0 && (
+            <Box>
+              {exportUrl && (
+                <Button
+                  id="export-report"
+                  disabled={isLoading}
+                  use="a"
+                  href={urlWith(toSearchParams(), exportUrl)}
+                  download
+                >
+                  <Trans zh="汇出" en="Export" />
+                </Button>
+              )}
+            </Box>
+          )}
+        </Level>
       }
       title={<Trans zh="市场报表" en="Market Report" />}
       paddingTop="1em"
@@ -183,8 +210,8 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "turnover",
-        sumColumn: "turnover",
+        accessor: isDev() ? "validBetAmount" : "turnover",
+        sumColumn: isDev() ? "validBetAmount" : "turnover",
         Header: <Trans zh="有效投注" en="Turnover" />,
         disableSortBy: true
       }),

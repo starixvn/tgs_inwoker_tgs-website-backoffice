@@ -92,6 +92,8 @@ import {
   AgentBalanceChangeTab
 } from "./AgentBalanceChange"
 import { isAgentConfigRequired } from "../AgentConfigStatus"
+import { isDev } from "../../env"
+import { AgentProfitSharingSettingDialogDisclosure } from "../AgentDividendConditionDialog"
 
 export const AddAgentButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -238,7 +240,7 @@ const FormBody = ({}) => {
 
           {isCash && <ProfitSharingBox />}
 
-          {isCredit && (
+          {/* {isCredit && (
             <>
               <NormalLabel required>
                 <AgentLiveDealerRebateText />
@@ -299,7 +301,7 @@ const FormBody = ({}) => {
                 </FieldValues>
               </TwoColumns>
             </>
-          )}
+          )} */}
 
           <NormalLabel required>
             <Trans zh="备注" en="Remarks" />
@@ -325,29 +327,25 @@ const ProfitSharingBox = ({}) => {
   })
 
   let brandId = getValues(BrandIdField)
-  // let { isLoading, data, error } = useAgentList({
-  //   brandId,
-  //   username: parentUsername,
-  //   rows: 1
-  // })
-
-  // let parentAgent = data?.items?.[0]
-  // let validParentAgent =
-  //   parentUsername &&
-  //   parentAgent &&
-  //   !isAgentConfigRequired(parentAgent.agentStatus)
-  // let parentAgentProfitSharing =
-  //   (validParentAgent && parentAgent.dividendPercentage) ?? undefined
-
   return (
     <>
       <NormalLabel required>
         <Trans zh="代理分红" en="Profit Sharing" />
       </NormalLabel>
-      <AgentDividendPercentageInputField
-        brandId={brandId}
-        parentUsername={parentUsername}
-      />
+      {isDev() && (
+        <Box>
+          <AgentProfitSharingSettingDialogDisclosure
+            brandId={brandId}
+            parentUsername={parentUsername}
+          />
+        </Box>
+      )}
+      {!isDev() && (
+        <AgentDividendPercentageInputField
+          brandId={brandId}
+          parentUsername={parentUsername}
+        />
+      )}
     </>
   )
 }
@@ -405,7 +403,7 @@ const ConfigFormBody = ({ record }) => {
 
           {isCash && <ProfitSharingBox />}
 
-          {isCredit && (
+          {/* {isCredit && (
             <>
               <NormalLabel required>
                 <AgentLiveDealerRebateText />
@@ -457,7 +455,7 @@ const ConfigFormBody = ({ record }) => {
               </NormalLabel>
               <AgentVirtualSportsRebatePercentageInputField />
             </>
-          )}
+          )} */}
         </FieldValues>
       </Set>
     </Set>

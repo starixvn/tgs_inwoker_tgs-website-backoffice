@@ -15,7 +15,7 @@ let browser
 let context
 let page
 
-describe("Admin user", () => {
+describe.skip("Admin user", () => {
   before(async () => {
     browser = await chromium.launch({ headless: headless() })
     context = await browser.newContext({ storageState: StorageState.Admin })

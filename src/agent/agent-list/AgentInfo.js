@@ -73,6 +73,11 @@ import {
   AgentVirtualSportsRebateText
 } from "../AgentVirtualSportsRebatePercentage"
 import AgentLevel from "../AgentLevel"
+import { isDev } from "../../env"
+import {
+  AgentProfitSharingSettingDialogDisclosure,
+  AgentProfitSharingSettingRecordDialogDisclosure
+} from "../AgentDividendConditionDialog"
 
 const Key = "AgentInfo"
 
@@ -227,16 +232,32 @@ const EditPanel = ({
                 <AgentStatusSelect name="status" placeholder={false} required />
               </AgentStatusBox>
 
-              {!willChangeParent && (
-                <DividendBox type={agentType}>
-                  <AgentDividendPercentageInputField
-                    brandId={brandId}
-                    parentUsername={record.parentUsername}
-                  />
-                </DividendBox>
+              {isDev() && (
+                <>
+                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <Box>
+                    <AgentProfitSharingSettingDialogDisclosure
+                      brandId={brandId}
+                      parentUsername={record.parentUsername}
+                    />
+                  </Box>
+                </>
               )}
 
-              {!willChangeParent && (
+              {!isDev() && (
+                <>
+                  {!willChangeParent && (
+                    <DividendBox type={agentType}>
+                      <AgentDividendPercentageInputField
+                        brandId={brandId}
+                        parentUsername={record.parentUsername}
+                      />
+                    </DividendBox>
+                  )}
+                </>
+              )}
+
+              {/* {!willChangeParent && (
                 <RebateBox
                   label={<AgentLiveDealerRebateText />}
                   type={agentType}
@@ -276,7 +297,7 @@ const EditPanel = ({
                 >
                   <AgentVirtualSportsRebatePercentageInputField />
                 </RebateBox>
-              )}
+              )} */}
             </FieldValues>
             <Input
               type="hidden"
@@ -325,15 +346,30 @@ const ViewPanel = ({ record, ...props }) => {
 
         <LevelTypeBox value={record?.levelType} />
 
-        <DividendBox
-          id={AgentDividendPercentageField}
-          value={record?.dividendPercentage}
-          type={record?.type}
-        />
+        {isDev() && (
+          <>
+            <Box alignY="center">
+              <Trans zh="分红比例" en="Profit Sharing Percentage" />
+            </Box>
+            <Box>
+              <AgentProfitSharingSettingRecordDialogDisclosure
+                record={record?.agentDividendConditions}
+              />
+            </Box>
+          </>
+        )}
+
+        {!isDev() && (
+          <DividendBox
+            id={AgentDividendPercentageField}
+            value={record?.dividendPercentage}
+            type={record?.type}
+          />
+        )}
 
         <AccumulatedProfitSharingBox value={record?.accumulatedProfitSharing} />
 
-        <RebateBox
+        {/* <RebateBox
           label={<AgentLiveDealerRebateText />}
           value={record?.liveDealerRebatePercentage}
           type={record?.type}
@@ -367,7 +403,7 @@ const ViewPanel = ({ record, ...props }) => {
           label={<AgentVirtualSportsRebateText />}
           value={record?.virtualSportsRebatePercentage}
           type={record?.type}
-        />
+        /> */}
       </FieldValues>
     </TabPanel>
   )
