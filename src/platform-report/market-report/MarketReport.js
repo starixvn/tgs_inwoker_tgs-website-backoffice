@@ -81,7 +81,7 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
               mutate()
             }}
           />
-          {isDev() && data?.items?.length > 0 && (
+          {data?.items?.length > 0 && (
             <Box>
               {exportUrl && (
                 <Button
@@ -210,8 +210,8 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: isDev() ? "validBetAmount" : "turnover",
-        sumColumn: isDev() ? "validBetAmount" : "turnover",
+        accessor: "validBetAmount",
+        sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Turnover" />,
         disableSortBy: true
       }),

@@ -153,11 +153,9 @@ const BodyContent = ({ brandId }) => {
       sortby: "CreatedOn",
       orderby: SortOrder.Descending
     },
-    isDev()
-      ? {
-          refreshInterval: 10 * SecondInMilliseconds //10s
-        }
-      : undefined
+    {
+      refreshInterval: 10 * SecondInMilliseconds //10s
+    }
   )
 
   useEffect(() => {

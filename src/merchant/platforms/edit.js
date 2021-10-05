@@ -562,21 +562,17 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           </Set>
         </Box>
 
-        {isDev() && (
-          <>
-            <NormalLabel>
-              <Trans zh="产品费用" en="Product Fee" />
-            </NormalLabel>
-            <Box>
-              <PercentageNumberInputField
-                name="platformCharge"
-                readOnly={readonly}
-                disabled={!editable}
-                width="fit-content"
-              />
-            </Box>
-          </>
-        )}
+        <NormalLabel>
+          <Trans zh="产品费用" en="Product Fee" />
+        </NormalLabel>
+        <Box>
+          <PercentageNumberInputField
+            name="platformCharge"
+            readOnly={readonly}
+            disabled={!editable}
+            width="fit-content"
+          />
+        </Box>
 
         <LanguageFieldsBox
           readonly={readonly}

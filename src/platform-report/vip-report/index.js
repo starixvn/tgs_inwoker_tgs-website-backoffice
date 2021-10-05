@@ -126,7 +126,7 @@ const ReportContent = ({ brandId }) => {
               mutate()
             }}
           />
-          {isDev() && data?.items?.length > 0 && (
+          {data?.items?.length > 0 && (
             <Box>
               <Button
                 id="export-report"

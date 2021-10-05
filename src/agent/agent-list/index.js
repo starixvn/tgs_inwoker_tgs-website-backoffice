@@ -232,19 +232,10 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
             return "-"
           }
 
-          if (isDev()) {
-            return (
-              <ViewAgentProfitSharingSettingDialogDisclosure
-                agentId={value?.id}
-                disabled={!viewable}
-              />
-            )
-          }
-
           return (
-            <FormattedNumberDecimal
-              value={value?.dividendPercentage}
-              postfix="%"
+            <ViewAgentProfitSharingSettingDialogDisclosure
+              agentId={value?.id}
+              disabled={!viewable}
             />
           )
         }

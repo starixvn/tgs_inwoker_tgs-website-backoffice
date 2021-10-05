@@ -332,20 +332,14 @@ const ProfitSharingBox = ({}) => {
       <NormalLabel required>
         <Trans zh="代理分红" en="Profit Sharing" />
       </NormalLabel>
-      {isDev() && (
+      {
         <Box>
           <AgentProfitSharingSettingDialogDisclosure
             brandId={brandId}
             parentUsername={parentUsername}
           />
         </Box>
-      )}
-      {!isDev() && (
-        <AgentDividendPercentageInputField
-          brandId={brandId}
-          parentUsername={parentUsername}
-        />
-      )}
+      }
     </>
   )
 }

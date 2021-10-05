@@ -232,7 +232,7 @@ const EditPanel = ({
                 <AgentStatusSelect name="status" placeholder={false} required />
               </AgentStatusBox>
 
-              {isDev() && (
+              {
                 <>
                   <Trans zh="分红比例" en="Profit Sharing Percentage" />
                   <Box>
@@ -242,20 +242,7 @@ const EditPanel = ({
                     />
                   </Box>
                 </>
-              )}
-
-              {!isDev() && (
-                <>
-                  {!willChangeParent && (
-                    <DividendBox type={agentType}>
-                      <AgentDividendPercentageInputField
-                        brandId={brandId}
-                        parentUsername={record.parentUsername}
-                      />
-                    </DividendBox>
-                  )}
-                </>
-              )}
+              }
 
               {/* {!willChangeParent && (
                 <RebateBox
@@ -346,7 +333,7 @@ const ViewPanel = ({ record, ...props }) => {
 
         <LevelTypeBox value={record?.levelType} />
 
-        {isDev() && (
+        {
           <>
             <Box alignY="center">
               <Trans zh="分红比例" en="Profit Sharing Percentage" />
@@ -357,15 +344,7 @@ const ViewPanel = ({ record, ...props }) => {
               />
             </Box>
           </>
-        )}
-
-        {!isDev() && (
-          <DividendBox
-            id={AgentDividendPercentageField}
-            value={record?.dividendPercentage}
-            type={record?.type}
-          />
-        )}
+        }
 
         <AccumulatedProfitSharingBox value={record?.accumulatedProfitSharing} />
 
