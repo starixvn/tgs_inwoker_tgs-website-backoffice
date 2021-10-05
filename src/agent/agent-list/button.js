@@ -93,7 +93,7 @@ import {
 } from "./AgentBalanceChange"
 import { isAgentConfigRequired } from "../AgentConfigStatus"
 import { isDev } from "../../env"
-import { AgentProfitSharingSettingDialogDisclosure } from "../AgentDividendConditionDialog"
+import { AgentProfitSharingSettingDialogDisclosure } from "../AgentProfitSharingSettingDialog"
 
 export const AddAgentButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()

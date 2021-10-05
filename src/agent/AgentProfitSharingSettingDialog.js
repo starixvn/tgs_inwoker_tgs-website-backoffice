@@ -176,6 +176,7 @@ const SettingDisclosure = ({
         return (
           <>
             <Disclosure
+              id="agent-profit-sharing-setting-dialog-disclosure"
               {...dialog}
               palette={palette}
               variant={variant}
@@ -227,6 +228,7 @@ const SettingDialog = ({
   return (
     <Backdrop {...dialog}>
       <FormDialog
+        id="agent-profit-sharing-setting-dialog"
         defaultValues={defaultValues}
         onSubmit={(data) => {
           onChange?.(Reflect.get(data, FieldName))
@@ -318,6 +320,7 @@ const AddRow = ({ fieldArray }) =>
       <Table.Row id={`add-agent-profit-sharing-setting`}>
         <Table.HeadCell>
           <Button
+            id="add-agent-profit-sharing-setting"
             size="small"
             variant="ghost"
             onClick={(event) => {

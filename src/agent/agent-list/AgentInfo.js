@@ -77,7 +77,7 @@ import { isDev } from "../../env"
 import {
   AgentProfitSharingSettingDialogDisclosure,
   AgentProfitSharingSettingRecordDialogDisclosure
-} from "../AgentDividendConditionDialog"
+} from "../AgentProfitSharingSettingDialog"
 
 const Key = "AgentInfo"
 

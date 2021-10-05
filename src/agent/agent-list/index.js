@@ -56,7 +56,7 @@ import AgentSportsRebatePercentage from "../AgentSportsRebatePercentage"
 import AgentVirtualSportsRebatePercentage from "../AgentVirtualSportsRebatePercentage"
 import AgentDividendPercentage from "../AgentDividendPercentage"
 import { isDev } from "../../env"
-import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentDividendConditionDialog"
+import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentProfitSharingSettingDialog"
 
 export { Code }
 
