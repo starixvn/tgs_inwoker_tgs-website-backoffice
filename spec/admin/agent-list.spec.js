@@ -28,6 +28,7 @@ describe("Admin user", () => {
       waitUntil: "networkidle0"
     })
 
+    //TODO: gotoBrand page and set montnly
     await gotoAgentListPage()
   })
 
@@ -47,10 +48,13 @@ describe("Admin user", () => {
     // agents = await addAgent(agents)
     // agents = await addAgent(agents)
 
+    //TODO: wait for backend fix
+    /*
     let lastAgent = clone(last(agents))
     await searchBy({ field: "username", value: lastAgent.username })
     let newLastAgent = await editAgentInfo(lastAgent)
     await viewAgentInfo(newLastAgent)
+    */
   })
 
   const API = "/api/agent"
@@ -144,16 +148,74 @@ describe("Admin user", () => {
     ])
   }
 
-  const addAgent = async (agents = []) => {
+  /*
+  - 總代: 第一列: 1萬rmb以內/活躍3人/35%；第二列: 10萬rmb以內/活躍10人/65%；第三列: 30萬rmb以內/活躍15人/90%
+  - 一代: 第一列: 2萬rmb以內/活躍3人/25%；第二列: 20萬rmb以內/活躍10人/50%；第三列: 50萬rmb以內/活躍20人/70%
+  - 二代: 第一列: 5萬rmb以內/活躍3人/15%；第二列: 30萬rmb以內/活躍10人/35%；第三列: 60萬rmb以內/活躍25人/50%
+  */
+  const DefaultProfitSharingSettings = [
+    [
+      {
+        netProfit: "10000",
+        activeNumber: "3",
+        dividendPercentage: "35"
+      },
+      {
+        netProfit: "100000",
+        activeNumber: "10",
+        dividendPercentage: "65"
+      },
+      {
+        netProfit: "300000",
+        activeNumber: "15",
+        dividendPercentage: "90"
+      }
+    ],
+    [
+      {
+        netProfit: "20000",
+        activeNumber: "3",
+        dividendPercentage: "25"
+      },
+      {
+        netProfit: "200000",
+        activeNumber: "10",
+        dividendPercentage: "55"
+      },
+      {
+        netProfit: "500000",
+        activeNumber: "20",
+        dividendPercentage: "70"
+      }
+    ],
+    [
+      {
+        netProfit: "50000",
+        activeNumber: "3",
+        dividendPercentage: "15"
+      },
+      {
+        netProfit: "300000",
+        activeNumber: "10",
+        dividendPercentage: "35"
+      },
+      {
+        netProfit: "600000",
+        activeNumber: "25",
+        dividendPercentage: "50"
+      }
+    ]
+  ]
+
+  //TODO: a brand for add 3 layer DefaultProfitSharingSettings
+  const addAgent = async (
+    agents = [],
+    profitSharingSettingList = DefaultProfitSharingSettings
+  ) => {
+    let index = agents.length
+    let profitSharingSettings = profitSharingSettingList[index]
     let levelType = agents.length === 0 ? "Chief" : "Agent"
     let parentAgent = last(agents)
-    let MaxDividendPercentage = 100 - agents.length * 10
-    let MinDividendPercentage =
-      MaxDividendPercentage - (agents.length + 1) * 10 + 1
-    let dividendPercentage = random(
-      MinDividendPercentage,
-      MaxDividendPercentage
-    )
 
     let password = `${internet.password(8)}a1`
     let agent = {
@@ -162,10 +224,8 @@ describe("Admin user", () => {
       confirmPassword: password,
       levelType,
       parentUsername: parentAgent && parentAgent.username,
-      dividendPercentage,
-      remarks: lorem.sentence(),
-      MinDividendPercentage,
-      MaxDividendPercentage
+      profitSharingSettings,
+      remarks: lorem.sentence()
     }
 
     const AddAgentDialogSelector = `#add-agent-dialog`
@@ -193,10 +253,9 @@ describe("Admin user", () => {
         agent.parentUsername
       )
     }
-    await page.fill(
-      `${AddAgentDialogSelector} input[name="dividendPercentage"]`,
-      `${agent.dividendPercentage}`
-    )
+
+    await addProfitSharingSettings(0, profitSharingSettings)
+
     await page.fill(
       `${AddAgentDialogSelector} textarea[name="remarks"]`,
       agent.remarks
@@ -215,6 +274,33 @@ describe("Admin user", () => {
 
     let result = [...agents, agent]
     return result
+  }
+
+  const addProfitSharingSettings = async (index, list = []) => {
+    let DialogSelector = `#agent-profit-sharing-setting-dialog`
+    if (index == 0) {
+      await page.click(`button#agent-profit-sharing-setting-dialog-disclosure`)
+      await page.waitForSelector(DialogSelector)
+    }
+
+    await page.click(
+      `${DialogSelector} button#add-agent-profit-sharing-setting`
+    )
+    let RowSelector = `list.${index}`
+    let profitSharingSetting = list[index]
+    await page.fill(
+      `input[name="${RowSelector}.netProfit"]`,
+      profitSharingSetting.netProfit
+    )
+    await page.fill(
+      `input[name="${RowSelector}.activeNumber"]`,
+      profitSharingSetting.activeNumber
+    )
+    await page.fill(
+      `input[name="${RowSelector}.dividendPercentage"]`,
+      profitSharingSetting.dividendPercentage
+    )
+    await page.click(`${DialogSelector} button[type="submit"]`)
   }
 
   const gotoAgentListPage = async () => {

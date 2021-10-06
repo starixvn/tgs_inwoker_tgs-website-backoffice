@@ -24,6 +24,7 @@ import equals from "fast-deep-equal"
 export const BrandBar = ({
   id = "page-merchant-bar",
   name = "brandBar",
+  onLicenseeChange,
   onBrandChange,
   ...props
 }) => {
@@ -56,6 +57,10 @@ export const BrandBar = ({
   useEffect(() => {
     onBrandChange?.(state?.brandId)
   }, [state?.brandId])
+
+  useEffect(() => {
+    onLicenseeChange?.(state?.licenseeId)
+  }, [state?.licenseeId])
 
   let formMethods = useForm()
 

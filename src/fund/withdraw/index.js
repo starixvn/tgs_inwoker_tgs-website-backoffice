@@ -42,11 +42,11 @@ import numberColumn, {
   numberDecimalPercentageColumn
 } from "../../table/column/numberColumn"
 import { today } from "../../date/range"
-import FundReviewStatus, {
-  FundReviewStatusLabel,
-  FundReviewStatusSelect,
+import {
+  FundWithdrawStatusLabel,
+  FundWithdrawStatusSelect,
   isFundUnderReview
-} from "../FundReviewStatus"
+} from "./FundWithdrawStatus"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { useFundWithdrawFormList } from "./client"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -147,11 +147,9 @@ const BodyContent = ({ brandId }) => {
       sortby: "CreatedOn",
       orderby: SortOrder.Descending
     },
-    isDev()
-      ? {
-          refreshInterval: 10 * SecondInMilliseconds
-        }
-      : undefined
+    {
+      refreshInterval: 10 * SecondInMilliseconds
+    }
   )
 
   useEffect(() => {
@@ -165,6 +163,7 @@ const BodyContent = ({ brandId }) => {
         channelName: "",
         status: location?.state?.status ?? "",
         thirdOrderNo: "",
+        id: "",
         beginCreateOn: todayRange.start,
         endCreateOn: todayRange.end,
         beginUpdateOn: undefined,
@@ -227,6 +226,7 @@ const BodyContent = ({ brandId }) => {
           channelName={channelName}
           status={status}
           thirdOrderNo={state.thirdOrderNo}
+          id={state.id}
           beginCreateOn={beginCreateOn}
           endCreateOn={endCreateOn}
           beginUpdateOn={beginUpdateOn}
@@ -295,6 +295,7 @@ const SearchBar = ({
   channelName,
   status,
   thirdOrderNo,
+  id,
   beginCreateOn,
   endCreateOn,
   beginUpdateOn,
@@ -309,6 +310,7 @@ const SearchBar = ({
       channelName,
       status,
       thirdOrderNo,
+      id,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -322,6 +324,7 @@ const SearchBar = ({
       channelName,
       status,
       thirdOrderNo,
+      id,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -357,6 +360,10 @@ const SearchBar = ({
     zh: "三方订单编号",
     en: "3rd Party Id"
   })
+  let idPlaceholder = useTrans({
+    zh: "系统订单编号",
+    en: "System Id"
+  })
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
@@ -376,10 +383,15 @@ const SearchBar = ({
               name="method"
               placeholder={paymentMethodPlaceholder}
             />
-            <FundReviewStatusSelect name="status" />
+            <FundWithdrawStatusSelect name="status" />
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
+            <InputField
+              name="id"
+              placeholder={idPlaceholder}
               showEmptyFieldValueAddonAfter
             />
           </Set>
@@ -459,7 +471,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         accessor: "status",
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
-        Cell: ({ value }) => <FundReviewStatusLabel value={value} />
+        Cell: ({ value }) => <FundWithdrawStatusLabel value={value} />
       }),
       textColumn({
         accessor: "remark",

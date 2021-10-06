@@ -8,6 +8,8 @@ services:
       - mongodb
       - nats
       - localstack
+      - init-public-bucket
+      - init-private-bucket
     env:
       ConnectionStrings__File: "mongodb://root:1qaz2wsx!%40@mongodb/filedb?retryWrites=true&w=majority&authSource=admin"
       ConnectionStrings__Nats: "nats://nats:4222"

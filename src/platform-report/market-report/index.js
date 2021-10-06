@@ -10,8 +10,8 @@ import {
 } from "../../user/context"
 import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
-import MarketReport from "../../report/MarketReport"
-import { useMarketReportList } from "./client"
+import MarketReport from "./MarketReport"
+import { useMarketReportList, API } from "./client"
 
 export { Code }
 
@@ -38,7 +38,11 @@ export const Body = () => {
         }}
       />
       {brandId && (
-        <MarketReport brandId={brandId} useFetch={useMarketReportList} />
+        <MarketReport
+          brandId={brandId}
+          useFetch={useMarketReportList}
+          exportUrl={`${API}/exportMarkets`}
+        />
       )}
     </Set>
   )

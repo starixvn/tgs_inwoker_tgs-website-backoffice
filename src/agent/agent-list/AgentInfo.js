@@ -73,6 +73,11 @@ import {
   AgentVirtualSportsRebateText
 } from "../AgentVirtualSportsRebatePercentage"
 import AgentLevel from "../AgentLevel"
+import { isDev } from "../../env"
+import {
+  AgentProfitSharingSettingDialogDisclosure,
+  AgentProfitSharingSettingRecordDialogDisclosure
+} from "../AgentProfitSharingSettingDialog"
 
 const Key = "AgentInfo"
 
@@ -227,16 +232,19 @@ const EditPanel = ({
                 <AgentStatusSelect name="status" placeholder={false} required />
               </AgentStatusBox>
 
-              {!willChangeParent && (
-                <DividendBox type={agentType}>
-                  <AgentDividendPercentageInputField
-                    brandId={brandId}
-                    parentUsername={record.parentUsername}
-                  />
-                </DividendBox>
-              )}
+              {
+                <>
+                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <Box>
+                    <AgentProfitSharingSettingDialogDisclosure
+                      brandId={brandId}
+                      parentUsername={record.parentUsername}
+                    />
+                  </Box>
+                </>
+              }
 
-              {!willChangeParent && (
+              {/* {!willChangeParent && (
                 <RebateBox
                   label={<AgentLiveDealerRebateText />}
                   type={agentType}
@@ -276,7 +284,7 @@ const EditPanel = ({
                 >
                   <AgentVirtualSportsRebatePercentageInputField />
                 </RebateBox>
-              )}
+              )} */}
             </FieldValues>
             <Input
               type="hidden"
@@ -325,15 +333,22 @@ const ViewPanel = ({ record, ...props }) => {
 
         <LevelTypeBox value={record?.levelType} />
 
-        <DividendBox
-          id={AgentDividendPercentageField}
-          value={record?.dividendPercentage}
-          type={record?.type}
-        />
+        {
+          <>
+            <Box alignY="center">
+              <Trans zh="分红比例" en="Profit Sharing Percentage" />
+            </Box>
+            <Box>
+              <AgentProfitSharingSettingRecordDialogDisclosure
+                record={record?.agentDividendConditions}
+              />
+            </Box>
+          </>
+        }
 
         <AccumulatedProfitSharingBox value={record?.accumulatedProfitSharing} />
 
-        <RebateBox
+        {/* <RebateBox
           label={<AgentLiveDealerRebateText />}
           value={record?.liveDealerRebatePercentage}
           type={record?.type}
@@ -367,7 +382,7 @@ const ViewPanel = ({ record, ...props }) => {
           label={<AgentVirtualSportsRebateText />}
           value={record?.virtualSportsRebatePercentage}
           type={record?.type}
-        />
+        /> */}
       </FieldValues>
     </TabPanel>
   )

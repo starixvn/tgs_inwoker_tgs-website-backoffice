@@ -16,7 +16,7 @@ let browser
 let context
 let page
 
-describe("Admin user", () => {
+describe.skip("Admin user", () => {
   before(async () => {
     browser = await chromium.launch({ headless: headless() })
     context = await browser.newContext({ storageState: StorageState.Admin })
@@ -29,7 +29,7 @@ describe("Admin user", () => {
       waitUntil: "networkidle0"
     })
 
-    await gotoPlatformGameListPage()
+    await gotoPlatformGameProviderListPage()
   })
 
   afterEach(async () => {
@@ -45,7 +45,18 @@ describe("Admin user", () => {
     await editLogo(record)
   })
 
-  const gotoPlatformGameListPage = async () => {
-    await goto({ page, value: "/game/brandgames" })
+  const getGameProviderNames = async () => {
+    let gameProviderNameSelector = `[data-column-id="gameProviderName"]`
+    page.waitForSelector(``)
+  }
+
+  const searchGameProvider = async (keyword) => {}
+
+  const editGameProvider = async () => {}
+
+  const editDefaultMaintenance = async () => {}
+
+  const gotoPlatformGameProviderListPage = async () => {
+    await goto({ page, value: "/game/brandproviders" })
   }
 })

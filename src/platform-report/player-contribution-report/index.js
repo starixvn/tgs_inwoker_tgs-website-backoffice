@@ -9,7 +9,7 @@ import {
   Set,
   useModalState,
   Text,
-  Link
+  Level
 } from "bumbag"
 import PageContent from "../../page/Content"
 import {
@@ -36,8 +36,10 @@ import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import VipLevelSelect from "../../vip-levels/VipLevelSelect"
-import { usePlayerContributionList } from "./client"
+import { usePlayerContributionList, API } from "./client"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
+import { isDev } from "../../env"
+import { urlWith } from "../../client"
 
 export { Code }
 
@@ -90,18 +92,19 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
   }, [brandId])
 
   let { pageIndex, pageSize, from, to } = state
+  const toSearchParams = () => ({
+    ...toApiParams(state),
+    sortby: "username",
+    from,
+    to: startOfNextDay(to)
+  })
   let {
     isLoading,
     data = {},
     error,
     mutate,
     deleteCache
-  } = useFetch({
-    ...toApiParams(state),
-    sortby: "username",
-    from,
-    to: startOfNextDay(to)
-  })
+  } = useFetch(toSearchParams())
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
@@ -117,26 +120,44 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
   return (
     <PageContent
       actionBar={
-        <SearchBar
-          brandId={brandId}
-          username={state?.username}
-          level={state?.level}
-          start={from}
-          end={to}
-          minDate={minDate}
-          maxDate={maxDate}
-          maxRangeDays={QueryMaxRangeDays}
-          isLoading={isLoading}
-          search={({ start, end, ...rest }) => {
-            setState({
-              pageIndex: 0,
-              from: start,
-              to: end,
-              ...rest
-            })
-            mutate()
-          }}
-        />
+        <Level alignY="bottom">
+          <SearchBar
+            brandId={brandId}
+            username={state?.username}
+            level={state?.level}
+            start={from}
+            end={to}
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={QueryMaxRangeDays}
+            isLoading={isLoading}
+            search={({ start, end, ...rest }) => {
+              setState({
+                pageIndex: 0,
+                from: start,
+                to: end,
+                ...rest
+              })
+              mutate()
+            }}
+          />
+          {data?.items?.length > 0 && (
+            <Box>
+              <Button
+                id="export-report"
+                disabled={isLoading}
+                use="a"
+                href={urlWith(
+                  toSearchParams(),
+                  `${API}/exportPlayerContributions`
+                )}
+                download
+              >
+                <Trans zh="汇出" en="Export" />
+              </Button>
+            </Box>
+          )}
+        </Level>
       }
       title={<Trans zh="玩家贡献报表" en="Player Contribution Report" />}
     >

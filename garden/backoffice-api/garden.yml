@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: backoffice-api
-image: backoffice-api #registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-api:stag-1.2.4
+image: backoffice-api #registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-api:staging
 services:
   - name: backoffice-api
     dependencies:

@@ -119,12 +119,16 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
+  const DefaultVipLevel = "1"
   return (
     <FormDialog
       id="add-promotion-dialog"
       defaultValues={{
         autoSentPlayerBonus: true,
         localization: {}
+        /*
+        vipLevels: [DefaultVipLevel]
+        */
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
