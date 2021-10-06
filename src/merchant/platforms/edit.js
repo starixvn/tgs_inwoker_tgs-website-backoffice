@@ -55,6 +55,7 @@ import BusinessType from "../BusinessType"
 import Select from "../../select/Select"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import { isDev } from "../../env"
+import Checkbox from "../../checkbox"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -458,6 +459,17 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
   let isB2C = businessType === BusinessType.B2C
   let isB2B = businessType === BusinessType.B2B
 
+  let CheckDividendActiveCountFieldName = "checkDividendActiveCount"
+  let checkDividendActiveCount = useWatch({
+    control,
+    name: CheckDividendActiveCountFieldName
+  })
+
+  let checkDividendActiveCountLabel = useTrans({
+    zh: "分紅比例需判斷活躍人數",
+    en: "Profit sharing affected by active player"
+  })
+
   return (
     <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
@@ -559,6 +571,11 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
               disabled={readonly}
             />
             {isMonthly && <MonthlyDaySelect name="settlementDay" />}
+            <Checkbox
+              name={CheckDividendActiveCountFieldName}
+              label={checkDividendActiveCountLabel}
+              disabled={readonly}
+            />
           </Set>
         </Box>
 
