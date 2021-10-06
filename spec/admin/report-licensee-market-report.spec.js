@@ -43,16 +43,8 @@ describe.skip("Admin user", () => {
   })
 
   //TODO: test footer?
-  it("should able to view and download market report", async () => {
-    await page.waitForSelector(
-      `[data-column-id="reportDate"] [data-type="date"]`
-    )
-
-    let firstFundInCountString = await page.textContent(
-      `[data-column-id="firstFundInCount"] span`
-    )
-    let firstFundInCount = numeral(firstFundInCountString).value()
-    expect(firstFundInCount).to.be.a("number")
+  it("should able to view and download licensee market report", async () => {
+    await page.waitForSelector(`[data-column-id="depositAmount"] span`)
 
     let depositAmountString = await page.textContent(
       `[data-column-id="depositAmount"] span`
