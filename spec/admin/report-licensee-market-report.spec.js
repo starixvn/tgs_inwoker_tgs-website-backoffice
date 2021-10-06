@@ -10,12 +10,13 @@ import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
 import platform from "../platform"
+import { selectFirst } from "../licensee"
 
 let browser
 let context
 let page
 
-describe.skip("Admin user", () => {
+describe("Admin user", () => {
   before(async () => {
     browser = await chromium.launch({ headless: headless() })
     context = await browser.newContext({
@@ -76,7 +77,7 @@ describe.skip("Admin user", () => {
     expect(betAmount).to.be.a("number")
 
     let validBetAmountString = await page.textContent(
-      `[data-column-id="validBetAmount"] span`
+      `[data-column-id="turnover"] span`
     )
     let validBetAmount = numeral(validBetAmountString).value()
     expect(validBetAmount).to.be.a("number")
@@ -107,6 +108,6 @@ describe.skip("Admin user", () => {
 
   const gotoLicenseeMarketReportPage = async () => {
     await goto({ page, value: "/licenseereport/marketreport" })
-    await platform.selectFirst({ page })
+    await selectFirst({ page })
   }
 })
