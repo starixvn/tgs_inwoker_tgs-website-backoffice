@@ -27,8 +27,6 @@ export const isFundApproved = (value) => value === Approved
 
 export const FundWithdrawStatusLabel = ({ value }) => {
   switch (value) {
-    case WaitingPayment:
-      return <Trans {...WaitingPaymentTrans} />
     case Review:
       return <Trans {...ReviewTrans} />
     case Approved:
