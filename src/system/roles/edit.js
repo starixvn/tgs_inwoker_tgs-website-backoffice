@@ -87,6 +87,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
   let { register, watch, setValue, getValues } = formMethods
 
   let userRoleType = useUserRoleType()
+
   let roleType = watch("roleType")
   let sameRoleType = userRoleType === roleType
 
@@ -211,6 +212,14 @@ const AddDialog = ({ dialog, onSubmitted }) => {
       `}
     >
       <>
+        {roleTypeOptions.length == 1 && (
+          <RoleTypeSelect
+            name="roleType"
+            required
+            value={userRoleType}
+            display="none"
+          />
+        )}
         {roleTypeOptions.length > 1 && (
           <FieldValues margin="major-1">
             <Label name="roleType">
