@@ -374,7 +374,7 @@ const SettingRow = ({
           <Input
             type="hidden"
             name={`${FieldName}.${index}.rank`}
-            value={index}
+            value={index + 1}
           />
           {editable && (
             <Button
