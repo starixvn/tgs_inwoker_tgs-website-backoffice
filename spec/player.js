@@ -1,10 +1,13 @@
 import fetcher from "./fetcher"
 import faker from "faker"
 import { globalApi, operatorApi } from "./env"
-// import { fileFromSync } from "fetch-blob/from.js"
-// import { FormData } from "formdata-polyfill"
-
-// const dummyImage = fileFromSync("./dummy.png")
+import { fileFromPath } from "formdata-node/lib/cjs/fileFromPath"
+import { isFile } from "formdata-node/lib/cjs/isFile"
+import { FormData } from "formdata-node/lib/cjs/FormData"
+import { fileURLToPath } from "url"
+import got from "got"
+import { createReadStream } from "fs"
+import fetch from "node-fetch"
 
 export const DefaultPassword = "TgsP@ssw0rd"
 
@@ -99,13 +102,21 @@ export const depositPaymentList = async (platformToken, token) => {
   return result && result.data
 }
 
-//TODO: auto upload proof
-//TODO: auto get manual payment id?
 export const manualDeposit = async (
   platformToken,
   token,
   { paymentid, account, amount }
 ) => {
+  if (!paymentid) {
+    let paymentList = await depositPaymentList(platformToken, token)
+
+    let payment = paymentList.find(
+      ({ paymentcode }) => paymentcode === "Manual"
+    )
+
+    paymentid = payment && payment.id
+  }
+
   let payload = {
     paymentid,
     account,
@@ -119,12 +130,50 @@ export const manualDeposit = async (
     Token: token
   }
 
-  //TODO: FormData in node.js?
-  //TODO: get data -> /api/deposit/manual/43e8e093-962d-48fc-9435-0c6a8fd37f39 POST & FormData
   //{"data":"43e8e093-962d-48fc-9435-0c6a8fd37f39","err":0,"errmsg":"","errmsgid":null}
   let result = await fetcher(url, {
-    method: "POST",
+    method: "PUT",
     body: JSON.stringify(payload),
     headers
   })
+
+  return result.data
+}
+
+const dummyImageStream = createReadStream(
+  fileURLToPath(new URL("./dummy.png", import.meta.url))
+)
+export const applyManualDepositForm = async (platformToken, token, formId) => {
+  let url = `${operatorApi()}/deposit/manual/${formId}`
+
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${platformToken}`,
+    Token: token
+  }
+
+  let path = fileURLToPath(new URL("./dummy.png", import.meta.url))
+  const dummyImage = await fileFromPath(path)
+
+  const form = new FormData()
+  form.set("file", dummyImage, "dummy.png")
+
+  return await fetch(url, {
+    method: "POST",
+    body: form,
+    headers
+  })
+  /*
+  let path = fileURLToPath(new URL("./dummy.png", import.meta.url))
+  const dummyImage = await fileFromPath(path)
+
+  const body = new FormData()
+  body.set("file", dummyImage)
+
+  return await fetcher(url, {
+    method: "POST",
+    body,
+    headers
+  })
+  */
 }

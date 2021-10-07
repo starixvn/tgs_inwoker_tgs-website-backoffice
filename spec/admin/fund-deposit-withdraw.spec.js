@@ -11,7 +11,12 @@ import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
 import platform from "../platform"
 import select from "../select"
-import { register, login } from "../player"
+import {
+  register,
+  login,
+  manualDeposit,
+  applyManualDepositForm
+} from "../player"
 
 let browser
 let context
@@ -21,7 +26,6 @@ let brandCode = "GPI"
 let platformToken
 let player
 
-//TODO: test file upload
 describe.skip("Admin user", () => {
   before(async () => {
     browser = await chromium.launch({ headless: headless() })
@@ -57,6 +61,19 @@ describe.skip("Admin user", () => {
   })
 
   const verifyDeposit = async () => {
+    const DepositAccount = "account"
+    const DepositAmount = 10
+    let formId = await manualDeposit(platformToken, player.token, {
+      account: DepositAccount,
+      amount: DepositAmount
+    })
+
+    let applyFormResult = await applyManualDepositForm(
+      platformToken,
+      player.token,
+      formId
+    )
+    console.log("applyFormResult", applyFormResult)
     //TODO:
     //1. player > deposit payment list
     //2. player > apply manualDeposit

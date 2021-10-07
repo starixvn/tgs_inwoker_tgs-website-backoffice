@@ -1,6 +1,6 @@
 {
   "name": "backoffice-site",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "config": {
     "container": {
       "registry": "registry.gitlab.com/rayprosoft/turnkey-gaming-system"
@@ -29,14 +29,15 @@
     "chromedriver": "^93.0.1",
     "esm": "3.2.25",
     "faker": "^5.5.3",
-    "fetch-blob": "^3.1.2",
-    "form-data": "^3.0.1",
+    "fetch-blob": "2.1.2",
+    "form-data": "^4.0.0",
+    "formdata-node": "^4.3.0",
     "formdata-polyfill": "^4.0.10",
     "fs-extra": "^10.0.0",
     "got": "^11.8.2",
     "lodash": "^4.17.21",
     "mocha": "8.4.0",
-    "node-fetch": "^2.6.4",
+    "node-fetch": "^2.6.5",
     "playwright": "^1.15.0",
     "ramda": "^0.27.1",
     "react": "^16.14.0",
