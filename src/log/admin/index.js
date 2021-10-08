@@ -61,8 +61,8 @@ export const CodeContentPair = [Code, Content]
 const Body = ({}) => {
   let todayRange = today()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    from: todayRange.start,
-    to: todayRange.end,
+    from: "", //todayRange.start,
+    to: "", //todayRange.end,
     responseCode: "",
     trackingId: "",
     ip: "",
