@@ -170,7 +170,15 @@ describe("Admin user", () => {
     let playerBalance = await wallet(platformToken, player.token)
     let expectedBalance = playerBalance - withdraw
 
-    await addManualBankCard(platformToken, player.token)
+    let expectBankCard = {
+      bankAccount: finance.account(),
+      name: finance.accountName(),
+      bankName: "bankName",
+      bankBranch: "bankBranch"
+    }
+    await addManualBankCard(platformToken, player.token, {
+      detail: expectBankCard
+    })
     let expectedFormId = await applyManualWithdrawForm(
       platformToken,
       player.token,

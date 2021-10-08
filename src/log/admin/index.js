@@ -120,6 +120,7 @@ const Body = ({}) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
