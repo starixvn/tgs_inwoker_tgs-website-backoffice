@@ -119,7 +119,6 @@ describe("Admin user", () => {
     ])
 
     let StatusSelector = `${TableSelector} [data-column-id="status"] [data-status]`
-    console.log("StatusSelector", StatusSelector)
     await page.waitForSelector(StatusSelector)
     /*
     //FIXME: not work
@@ -139,13 +138,40 @@ describe("Admin user", () => {
   const approvePendingDeposit = async () => {}
 
   const approveWithdraw = async (withdraw) => {
+    await gotoPlayerListPage()
+    await page.fill(`input[name="username"]`, player.username)
+
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`username=${player.username}`) &&
+          response.status() === 200
+        )
+      }),
+      page.click(`button[type="submit"]`)
+    ])
+
+    let EditPlayerDialog = `#edit-player-dialog`
+    await page.click(`${EditPlayerDialog}-disclosure`)
+
+    let ClearPlayerWageringRequirementDialogSelector = `#clear-player-wagering-requirement-dialog`
+    await page.click(
+      `${ClearPlayerWageringRequirementDialogSelector}-disclosure`
+    )
+    await page.click(
+      `${ClearPlayerWageringRequirementDialogSelector} button[type="submit"]`
+    )
+    await page.click(`${EditPlayerDialog} button[type="submit"]`)
+
+    let playerBalance = await wallet(platformToken, player.token)
+    let expectedPlayerBalance = playerBalance - withdraw
+
     //TODO:
-    //1. clear wagering requirement
-    //2. get player balance
-    //3. player init bank card
+    //1. player init bank card
+    //2. apply withdraw
     await gotoFundWithdraw()
-    //4. bo > fund withdraw > verify
-    //5. get player balance
+    //2. bo > fund withdraw > verify
+    //3. get player balance
   }
 
   const rejectWithdraw = async () => {}
@@ -157,6 +183,11 @@ describe("Admin user", () => {
 
   const gotoFundWithdraw = async () => {
     await goto({ page, value: "/fundmanagement/withdraw" })
+    await platform.selectByCode({ page, brandCode })
+  }
+
+  const gotoPlayerListPage = async () => {
+    await goto({ page, value: "/playermanagement/playerlist" })
     await platform.selectByCode({ page, brandCode })
   }
 })

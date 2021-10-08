@@ -176,6 +176,7 @@ const EditForm = ({
           <FormattedNumberDecimal value={wageringRequirement} />
           <Input type="hidden" name={WageringRequirementFieldName} />
           <PlayerClearWageringRequirementDisclosure
+            id="clear-player-wagering-requirement-dialog-disclosure"
             playerCode={player?.playerCode}
             onSubmitted={() => {
               setValue(WageringRequirementFieldName, 0)

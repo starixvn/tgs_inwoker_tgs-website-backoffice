@@ -42,11 +42,12 @@ export const ViewButton = ({ player, brandId, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure {...dialog} {...props}>
         <Trans zh="查看" en="View" />
       </Disclosure>
       {dialog.visible && (
         <TabsDialog
+          id="view-player-dialog"
           playerCode={player.playerCode}
           brandId={brandId}
           dialog={dialog}
@@ -66,11 +67,12 @@ export const EditButton = ({ brandId, player, onSubmitted, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure {...dialog} {...props}>
         <Trans zh="修改" en="Edit" />
       </Disclosure>
       {dialog.visible && (
         <TabsDialog
+          id="edit-player-dialog"
           edit={true}
           brandId={brandId}
           playerCode={player.playerCode}
@@ -87,6 +89,7 @@ const TabsDialog = ({
   brandId,
   edit = false,
   dialog,
+  onSubmitted,
   ...props
 }) => {
   const readonly = !edit
@@ -100,12 +103,6 @@ const TabsDialog = ({
   })
 
   const { data, isLoading, isError, error, mutate } = usePlayer(playerCode)
-
-  const onSubmitted = () => {
-    props?.onSubmitted()
-    dialog.hide()
-    mutate()
-  }
 
   const onBankSubmitted = () => {
     mutate()
@@ -124,6 +121,7 @@ const TabsDialog = ({
           showCloseButton={true}
           placement="top"
           {...dialog}
+          {...props}
           css={css`
             min-width: 80vw;
             min-height: 85vh;
@@ -147,7 +145,11 @@ const TabsDialog = ({
               brandId={brandId}
               player={data}
               tab={tab}
-              onSubmitted={onSubmitted}
+              onSubmitted={() => {
+                onSubmitted?.()
+                dialog.hide()
+                mutate()
+              }}
               onBankSubmitted={onBankSubmitted}
               onClickClose={onClickClose}
             />
