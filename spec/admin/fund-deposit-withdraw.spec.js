@@ -64,7 +64,7 @@ describe("Admin user", () => {
 
     let withdrawAmount = depositAmount
     //FIXME:
-    //await approveWithdraw(withdrawAmount)
+    await approveWithdraw(withdrawAmount)
 
     //TODO
     /*
@@ -179,9 +179,7 @@ describe("Admin user", () => {
       bankName: "bankName",
       bankBranch: "bankBranch"
     }
-    await addManualBankCard(platformToken, player.token, {
-      detail: expectBankCard
-    })
+    await addManualBankCard(platformToken, player.token, expectBankCard)
     let expectedFormId = await applyManualWithdrawForm(
       platformToken,
       player.token,
@@ -213,6 +211,8 @@ describe("Admin user", () => {
     let VerifyDialogSelector = `#verify-withdraw-dialog`
     await page.click(`${VerifyDialogSelector}-disclosure`)
 
+    await selectFirstBrandPayment()
+
     await Promise.all([
       page.waitForResponse((response) => {
         return (
@@ -228,6 +228,21 @@ describe("Admin user", () => {
 
     let balance = await wallet(platformToken, player.token)
     expect(balance).to.equal(expectedBalance)
+  }
+
+  //TODO: how to select manual brand payment
+  //FIXME: if first brand payment not manual, it may fail
+  const selectFirstBrandPayment = async () => {
+    let SelectSelector = `select[name="brandPaymentId"]`
+    await page.waitForSelector(`${SelectSelector} option`, {
+      state: "attached"
+    })
+    let option = await page.$eval(
+      `${SelectSelector} option`,
+      (element) => element.value
+    )
+
+    await page.selectOption(SelectSelector, option)
   }
 
   const rejectWithdraw = async () => {}
