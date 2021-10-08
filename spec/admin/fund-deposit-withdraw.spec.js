@@ -5,7 +5,7 @@ import { host, headless } from "../env"
 import { random } from "lodash"
 import numeral from "numeral"
 import { startOfDay, endOfTomorrow, format } from "date-fns"
-import { lorem, phone, datatype, image } from "faker"
+import { lorem, phone, datatype, image, finance } from "faker"
 import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
@@ -16,7 +16,9 @@ import {
   login,
   manualDeposit,
   applyManualDepositForm,
-  wallet
+  wallet,
+  addManualBankCard,
+  applyManualWithdrawForm
 } from "../player"
 
 let browser
@@ -60,11 +62,16 @@ describe("Admin user", () => {
     let depositAmount = 10
     let balance = await approveDeposit(depositAmount)
 
+    let withdrawAmount = depositAmount
+    //FIXME:
+    //await approveWithdraw(withdrawAmount)
+
     //TODO
+    /*
     await rejectDeposit()
     await approvePendingDeposit()
-    await approveWithdraw(depositAmount)
     await rejectWithdraw()
+    */
   })
 
   const approveDeposit = async (deposit) => {
@@ -164,14 +171,63 @@ describe("Admin user", () => {
     await page.click(`${EditPlayerDialog} button[type="submit"]`)
 
     let playerBalance = await wallet(platformToken, player.token)
-    let expectedPlayerBalance = playerBalance - withdraw
+    let expectedBalance = playerBalance - withdraw
 
-    //TODO:
-    //1. player init bank card
-    //2. apply withdraw
+    let expectBankCard = {
+      bankAccount: finance.account(),
+      name: finance.accountName(),
+      bankName: "bankName",
+      bankBranch: "bankBranch"
+    }
+    await addManualBankCard(platformToken, player.token, {
+      detail: expectBankCard
+    })
+    let expectedFormId = await applyManualWithdrawForm(
+      platformToken,
+      player.token,
+      {
+        amount: withdraw
+      }
+    )
+
     await gotoFundWithdraw()
-    //2. bo > fund withdraw > verify
-    //3. get player balance
+
+    await page.fill(`input[name="id"]`, expectedFormId)
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`id=${expectedFormId}`) &&
+          response.status() === 200
+        )
+      }),
+      page.click(`button[type="submit"]`)
+    ])
+
+    let TableSelector = `#withdraw`
+    let FormIdSelector = `${TableSelector} [data-column-id="id"]`
+    await page.waitForSelector(FormIdSelector)
+
+    let formId = await page.textContent(FormIdSelector)
+    expect(formId).to.equal(expectedFormId)
+
+    let VerifyDialogSelector = `#verify-withdraw-dialog`
+    await page.click(`${VerifyDialogSelector}-disclosure`)
+
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`/api/withdraw/${formId}`) &&
+          response.status() === 200
+        )
+      }),
+      page.click(`${VerifyDialogSelector} button[data-type="approve"]`)
+    ])
+
+    let StatusSelector = `${TableSelector} [data-column-id="status"] [data-status]`
+    await page.waitForSelector(StatusSelector)
+
+    let balance = await wallet(platformToken, player.token)
+    expect(balance).to.equal(expectedBalance)
   }
 
   const rejectWithdraw = async () => {}
