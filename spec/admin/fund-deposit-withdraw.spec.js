@@ -62,9 +62,12 @@ describe("Admin user", () => {
     let depositAmount = 10
     let balance = await approveDeposit(depositAmount)
 
+    let withdrawAmount = depositAmount
+    //FIXME:
+    //await approveWithdraw(withdrawAmount)
+
     //TODO
     /*
-    await approveWithdraw(depositAmount)
     await rejectDeposit()
     await approvePendingDeposit()
     await rejectWithdraw()
