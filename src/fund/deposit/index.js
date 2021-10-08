@@ -260,6 +260,7 @@ const BodyContent = ({ brandId }) => {
       }
     >
       <Table
+        id="deposit"
         columns={columns}
         data={items}
         initialState={state}
@@ -548,7 +549,9 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         accessor: "status",
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
-        Cell: ({ value }) => <FundReviewStatusLabel value={value} />
+        Cell: ({ value }) => (
+          <FundReviewStatusLabel value={value} data-status={value} />
+        )
       }),
       textColumn({
         accessor: "remark",
@@ -573,6 +576,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
               <Set alignX="center">
                 {underReview && (
                   <VerifyFundDepositDisclosure
+                    id="verify-deposit-dialog-disclosure"
                     brandId={brandId}
                     formId={value.id}
                     onSubmitted={mutate}
@@ -583,6 +587,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
                   />
                 )}
                 <ViewFundDepositDisclosure
+                  id="view-deposit-dialog-disclosure"
                   brandId={brandId}
                   formId={value.id}
                   onVisibleChange={(visible) => {

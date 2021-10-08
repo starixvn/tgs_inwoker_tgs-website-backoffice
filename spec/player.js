@@ -1,13 +1,9 @@
 import fetcher from "./fetcher"
 import faker from "faker"
 import { globalApi, operatorApi } from "./env"
-import { fileFromPath } from "formdata-node/lib/cjs/fileFromPath"
-import { isFile } from "formdata-node/lib/cjs/isFile"
-import { FormData } from "formdata-node/lib/cjs/FormData"
+import FormData from "form-data"
 import { fileURLToPath } from "url"
-import got from "got"
 import { createReadStream } from "fs"
-import fetch from "node-fetch"
 
 export const DefaultPassword = "TgsP@ssw0rd"
 
@@ -140,40 +136,44 @@ export const manualDeposit = async (
   return result.data
 }
 
-const dummyImageStream = createReadStream(
-  fileURLToPath(new URL("./dummy.png", import.meta.url))
-)
+const dummyImagePath = fileURLToPath(new URL("./dummy.png", import.meta.url))
+const dummyImageStream = createReadStream(dummyImagePath)
 export const applyManualDepositForm = async (platformToken, token, formId) => {
-  let url = `${operatorApi()}/deposit/manual/${formId}`
+  const form = new FormData()
+  form.append("file", dummyImageStream, "dummy.png")
 
   let headers = {
-    "Content-Type": "application/json",
+    ...form.getHeaders(),
     Authorization: `Bearer ${platformToken}`,
     Token: token
   }
 
-  let path = fileURLToPath(new URL("./dummy.png", import.meta.url))
-  const dummyImage = await fileFromPath(path)
-
-  const form = new FormData()
-  form.set("file", dummyImage, "dummy.png")
-
-  return await fetch(url, {
+  let url = `${operatorApi()}/deposit/manual/${formId}`
+  return await fetcher(url, {
     method: "POST",
     body: form,
     headers
   })
-  /*
-  let path = fileURLToPath(new URL("./dummy.png", import.meta.url))
-  const dummyImage = await fileFromPath(path)
+}
 
-  const body = new FormData()
-  body.set("file", dummyImage)
+export const wallet = async (platformToken, token) => {
+  let url = `${operatorApi()}/wallet`
 
-  return await fetcher(url, {
-    method: "POST",
-    body,
+  let headers = {
+    Authorization: `Bearer ${platformToken}`,
+    Token: token
+  }
+
+  let result = await fetcher(url, {
+    method: "GET",
     headers
   })
-  */
+
+  return result && result.data && result.data.main
 }
+
+export const addBankCard = async (platformToken, token) => {}
+
+export const withdrawList = async () => {}
+
+export const withdraw = async () => {}

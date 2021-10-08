@@ -84,6 +84,7 @@ const ViewFundDepositDialog = ({ brandId, formId, dialog, ...props }) => {
 
   return (
     <Dialog.Modal
+      id="view-deposit-dialog"
       title={title}
       showCloseButton
       hideOnClickOutside={false}

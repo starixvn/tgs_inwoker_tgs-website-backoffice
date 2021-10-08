@@ -108,6 +108,7 @@ const ViewFundWithdrawDialog = ({ brandId, formId, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="view-withdraw-dialog"
       title={title}
       defaultValues={clone(data)}
       showCloseButton

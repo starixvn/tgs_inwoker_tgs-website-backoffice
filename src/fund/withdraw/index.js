@@ -243,6 +243,7 @@ const BodyContent = ({ brandId }) => {
       }
     >
       <Table
+        id="withdraw"
         columns={columns}
         data={items}
         initialState={state}
@@ -471,7 +472,9 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         accessor: "status",
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
-        Cell: ({ value }) => <FundWithdrawStatusLabel value={value} />
+        Cell: ({ value }) => (
+          <FundWithdrawStatusLabel value={value} data-status={value} />
+        )
       }),
       textColumn({
         accessor: "remark",
@@ -494,6 +497,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
               <Set alignX="center">
                 {underReview && (
                   <VerifyFundWithdrawDisclosure
+                    id="verify-withdraw-dialog-disclosure"
                     brandId={brandId}
                     formId={value.id}
                     onSubmitted={mutate}
@@ -504,6 +508,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
                   />
                 )}
                 <ViewFundWithdrawDisclosure
+                  id="view-withdraw-dialog-disclosure"
                   brandId={brandId}
                   formId={value.id}
                   onVisibleChange={(visible) => {

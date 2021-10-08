@@ -9,10 +9,10 @@ import { usePlayerList } from "./client"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { PlayerStatusLabel } from "../PlayerStatus"
 import {
-    useIsDisplayMenuByRoute,
-    useHasSubMenuByRoute,
-    useUserBrandId,
-    useIsAdminUser
+  useIsDisplayMenuByRoute,
+  useHasSubMenuByRoute,
+  useUserBrandId,
+  useIsAdminUser
 } from "../../user/context"
 import { Code, View, Update } from "./menu"
 import { PlayerStatusSelect } from "../PlayerStatus"
@@ -30,202 +30,205 @@ import { VipLevelLabel } from "../../vip-levels/VipLevel"
 export { Code }
 
 export const Content = () => {
-    let isDisplay = useIsDisplayMenuByRoute()
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute()
+  if (!isDisplay) {
+    return null
+  }
 
-    return <Body />
+  return <Body />
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-    let userBrandId = useUserBrandId()
-    let [brandId, setBrandId] = useState(userBrandId)
+  let userBrandId = useUserBrandId()
+  let [brandId, setBrandId] = useState(userBrandId)
 
-    return (
-        <Set orientation="vertical" isFilled>
-            <BrandBar
-                onBrandChange={(value) => {
-                    setBrandId(value)
-                }}
-            />
-            {brandId && <BodyContent brandId={brandId} />}
-        </Set>
-    )
+  return (
+    <Set orientation="vertical" isFilled>
+      <BrandBar
+        onBrandChange={(value) => {
+          setBrandId(value)
+        }}
+      />
+      {brandId && <BodyContent brandId={brandId} />}
+    </Set>
+  )
 }
 
 const BodyContent = ({ brandId = "" }) => {
-    let { state, setState, setPageIndex, setSortOrder } = useTable({
-        status: "",
-        vipId: "",
-        username: ""
-    })
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    status: "",
+    vipId: "",
+    username: ""
+  })
 
-    useEffect(() => {
-        setState({ pageIndex: 0, brandId })
-    }, [brandId])
+  useEffect(() => {
+    setState({ pageIndex: 0, brandId })
+  }, [brandId])
 
-    let { pageIndex, pageSize, status, vipId, username = "" } = state
-    let {
-        data = {},
-        isLoading,
-        mutate,
-        error,
-        deleteCache
-    } = usePlayerList({
-        ...toApiParams(state),
-        sortby: "username",
-        brandId
-    })
-    let columns = useColumns({ mutate, items: data?.items, brandId })
+  let { pageIndex, pageSize, status, vipId, username = "" } = state
+  let {
+    data = {},
+    isLoading,
+    mutate,
+    error,
+    deleteCache
+  } = usePlayerList({
+    ...toApiParams(state),
+    sortby: "username",
+    brandId
+  })
+  let columns = useColumns({ mutate, items: data?.items, brandId })
 
-    return (
-        <PageContent
-            title={<Trans zh="玩家列表" en="Players" />}
-            actionBar={
-                <SearchBar
-                    brandId={brandId}
-                    search={(data = {}) => {
-                        setState({
-                            pageIndex: 0,
-                            ...data
-                        })
-                        mutate()
-                    }}
-                    isLoading={isLoading}
-                />
-            }
-        >
-            <Table
-                columns={columns}
-                data={data?.items}
-                initialState={state}
-                controlledState={state}
-                pageCount={pageCount(pageSize, data?.totalCount)}
-                setPageIndex={setPageIndex}
-                setSortOrder={setSortOrder}
-                isLoading={isLoading}
-            />
-            {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-        </PageContent>
-    )
+  return (
+    <PageContent
+      title={<Trans zh="玩家列表" en="Players" />}
+      actionBar={
+        <SearchBar
+          brandId={brandId}
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+      }
+    >
+      <Table
+        columns={columns}
+        data={data?.items}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+      />
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+    </PageContent>
+  )
 }
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
-    let usernameInputPlaceholder = useSearchInputPlaceHolder()
+  let usernameInputPlaceholder = useSearchInputPlaceHolder()
 
-    let formMethods = useForm()
+  let formMethods = useForm()
 
-    const onSubmit = (data) => search(data)
+  const onSubmit = (data) => search(data)
 
-    return (
-        <FormProvider {...formMethods}>
-            <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-                <Set>
-                    <PlayerStatusSelect name="status" />
-                    <VipLevelSelect name="vipId" brandId={brandId} />
-                    <InputField
-                        name="username"
-                        showEmptyFieldValueAddonAfter
-                        placeholder={usernameInputPlaceholder}
-                        autocomplete="off"
-                    />
-                    <SearchButton isLoading={isLoading} disabled={isLoading} />
-                </Set>
-            </form>
-        </FormProvider>
-    )
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Set>
+          <PlayerStatusSelect name="status" />
+          <VipLevelSelect name="vipId" brandId={brandId} />
+          <InputField
+            name="username"
+            showEmptyFieldValueAddonAfter
+            placeholder={usernameInputPlaceholder}
+            autocomplete="off"
+          />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
 }
 
 const useSearchInputPlaceHolder = () =>
-    useTrans({ zh: "用户名输入框", en: "Input user name" })
+  useTrans({ zh: "用户名输入框", en: "Input user name" })
 
 const useColumns = ({ mutate, items = [], brandId } = {}) => {
-    let isAdminUser = useIsAdminUser()
+  let isAdminUser = useIsAdminUser()
 
-    let hasViewAuth = useIsDisplayMenuByRoute([View])
-    let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
-    let hasAnyMenu = hasViewAuth || hasUpdateAuth
+  let hasViewAuth = useIsDisplayMenuByRoute([View])
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+  let hasAnyMenu = hasViewAuth || hasUpdateAuth
 
-    return useMemo(() => {
-        let columns = [sequenceColumn()]
+  return useMemo(() => {
+    let columns = [sequenceColumn()]
 
-        if (isAdminUser) {
-            columns.push(
-                textColumn({
-                    Header: <Trans zh="Player Code" en="Player Code" />,
-                    accessor: "playerCode",
-                    disableSortBy: true
-                })
-            )
+    if (isAdminUser) {
+      columns.push(
+        textColumn({
+          Header: <Trans zh="Player Code" en="Player Code" />,
+          accessor: "playerCode",
+          disableSortBy: true
+        })
+      )
+    }
+
+    columns = [
+      ...columns,
+      {
+        Header: <Trans zh="用户名" en="Username" />,
+        accessor: "username",
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
         }
+      },
+      textColumn({
+        accessor: "vipLevel",
+        Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        disableSortBy: true,
+        Cell: ({ value }) => <VipLevelLabel value={value} placeholder="-" />
+      }),
+      {
+        disableSortBy: true,
+        Header: <Trans zh="状态" en="Status" />,
+        accessor: "status",
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        },
+        Cell: ({ value }) => <PlayerStatusLabel value={value} />
+      }
+    ]
 
-        columns = [
-            ...columns,
-            {
-                Header: <Trans zh="用户名" en="Username" />,
-                accessor: "username",
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                }
-            },
-            textColumn({
-                accessor: "vipLevel",
-                Header: <Trans zh="VIP 等级" en="VIP Level" />,
-                disableSortBy: true,
-                Cell: ({ value }) => (
-                    <VipLevelLabel value={value} placeholder="-" />
-                )
-            }),
-            {
-                disableSortBy: true,
-                Header: <Trans zh="状态" en="Status" />,
-                accessor: "status",
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                },
-                Cell: ({ value }) => <PlayerStatusLabel value={value} />
-            }
-        ]
-
-        if (hasAnyMenu) {
-            columns.push({
-                id: "actions",
-                disableSortBy: true,
-                Header: <Trans zh="操作" en="Actions" />,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                },
-                accessor: (row) => row,
-                Cell: ({ value }) => {
-                    return (
-                        <Box alignX="center">
-                            <Set>
-                                <ViewButton player={value} brandId={brandId} />
-                                <EditButton
-                                    brandId={brandId}
-                                    player={value}
-                                    onSubmitted={mutate}
-                                />
-                            </Set>
-                        </Box>
-                    )
-                }
-            })
+    if (hasAnyMenu) {
+      columns.push({
+        id: "actions",
+        disableSortBy: true,
+        Header: <Trans zh="操作" en="Actions" />,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        },
+        accessor: (row) => row,
+        Cell: ({ value }) => {
+          return (
+            <Box alignX="center">
+              <Set>
+                <ViewButton
+                  id="view-player-dialog-disclosure"
+                  player={value}
+                  brandId={brandId}
+                />
+                <EditButton
+                  id="edit-player-dialog-disclosure"
+                  brandId={brandId}
+                  player={value}
+                  onSubmitted={mutate}
+                />
+              </Set>
+            </Box>
+          )
         }
+      })
+    }
 
-        return columns
-    }, [JSON.stringify(items)])
+    return columns
+  }, [JSON.stringify(items)])
 }

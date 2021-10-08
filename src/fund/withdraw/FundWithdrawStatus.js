@@ -25,14 +25,14 @@ export const isFundUnderReview = (value) => value === Review
 
 export const isFundApproved = (value) => value === Approved
 
-export const FundWithdrawStatusLabel = ({ value }) => {
+export const FundWithdrawStatusLabel = ({ value, ...props }) => {
   switch (value) {
     case Review:
-      return <Trans {...ReviewTrans} />
+      return <Trans {...ReviewTrans} {...props} />
     case Approved:
-      return <Trans {...ApprovedTrans} />
+      return <Trans {...ApprovedTrans} {...props} />
     case Rejected:
-      return <Trans {...RejectedTrans} />
+      return <Trans {...RejectedTrans} {...props} />
     default:
       return value ?? ""
   }
