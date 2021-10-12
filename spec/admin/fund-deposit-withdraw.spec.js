@@ -63,13 +63,12 @@ describe("Admin user", () => {
     let balance = await approveDeposit(depositAmount)
 
     let withdrawAmount = depositAmount
-    //FIXME:
     await approveWithdraw(withdrawAmount)
 
     //TODO
     /*
-    await rejectDeposit()
     await approvePendingDeposit()
+    await rejectDeposit()
     await rejectWithdraw()
     */
   })
@@ -140,9 +139,13 @@ describe("Admin user", () => {
     expect(balance).to.equal(expectedBalance)
   }
 
-  const rejectDeposit = async () => {}
+  const rejectDeposit = async () => {
+    //TODO
+  }
 
-  const approvePendingDeposit = async () => {}
+  const approvePendingDeposit = async () => {
+    //TODO
+  }
 
   const approveWithdraw = async (withdraw) => {
     await gotoPlayerListPage()
@@ -211,7 +214,7 @@ describe("Admin user", () => {
     let VerifyDialogSelector = `#verify-withdraw-dialog`
     await page.click(`${VerifyDialogSelector}-disclosure`)
 
-    await selectFirstBrandPayment()
+    await selectManualBrandPayment()
 
     await Promise.all([
       page.waitForResponse((response) => {
@@ -230,22 +233,21 @@ describe("Admin user", () => {
     expect(balance).to.equal(expectedBalance)
   }
 
-  //TODO: how to select manual brand payment
-  //FIXME: if first brand payment not manual, it may fail
-  const selectFirstBrandPayment = async () => {
+  const selectManualBrandPayment = async () => {
     let SelectSelector = `select[name="brandPaymentId"]`
     await page.waitForSelector(`${SelectSelector} option`, {
       state: "attached"
     })
-    let option = await page.$eval(
-      `${SelectSelector} option`,
-      (element) => element.value
-    )
 
-    await page.selectOption(SelectSelector, option)
+    //TODO: how to prevent hardcode: Manual_BankTransfer_Custom
+    await page.selectOption(SelectSelector, {
+      label: "Manual_BankTransfer_Custom"
+    })
   }
 
-  const rejectWithdraw = async () => {}
+  const rejectWithdraw = async () => {
+    //TODO
+  }
 
   const gotoFundDepositPage = async () => {
     await goto({ page, value: "/fundmanagement/deposit" })
