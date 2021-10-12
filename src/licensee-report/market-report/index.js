@@ -26,7 +26,7 @@ import SearchButton from "../../button/SearchButton"
 import sequence, { SequenceCell } from "../../table/column/sequence"
 import subDays from "date-fns/subDays"
 import { isDev } from "../../env"
-import textColumn from "../../table/column/textColumn"
+import textColumn, { wrapTextColumn } from "../../table/column/textColumn"
 import { LicenseeCurrencySelect } from "../LicenseeCurrencySelect"
 
 export { Code }
@@ -199,7 +199,7 @@ const useColumns = ({ items = [] }) => {
           // return isTotal ? <Trans zh="共计" en="Total" /> : brandCode
         }
       }),
-      textColumn({
+      wrapTextColumn({
         id: "currencyCode",
         accessor: (row) => row,
         Header: <Trans zh="币种" en="Currency" />,

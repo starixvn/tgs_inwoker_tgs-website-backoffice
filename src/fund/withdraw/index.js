@@ -18,7 +18,8 @@ import {
   Set,
   Flex,
   Level,
-  FieldStack
+  FieldStack,
+  Blockquote
 } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
@@ -30,7 +31,7 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { Code } from "./menu"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -242,6 +243,7 @@ const BodyContent = ({ brandId }) => {
         />
       }
     >
+      <Summary />
       <Table
         id="withdraw"
         columns={columns}
@@ -256,6 +258,21 @@ const BodyContent = ({ brandId }) => {
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const Summary = ({ total }) => {
+  if (!Number.isFinite(total)) {
+    return null
+  }
+
+  return (
+    <Blockquote borderColor="primary">
+      <Heading use="h5">
+        <Trans zh="提款金额总计：" en="Total Withdraw Amount：" />
+        <FormattedNumberDecimal value={total} />
+      </Heading>
+    </Blockquote>
   )
 }
 

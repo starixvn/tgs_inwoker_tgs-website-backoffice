@@ -13,7 +13,10 @@ import {
   faMinus,
   faEdit,
   faCog,
-  faBell
+  faBell,
+  faBars,
+  faUser,
+  faLanguage
 } from "@fortawesome/free-solid-svg-icons"
 
 const theme = {
@@ -25,7 +28,17 @@ const theme = {
   icons: {
     iconSets: [
       {
-        icons: [faTrash, faTrashAlt, faMinus, faEdit, faCog, faBell],
+        icons: [
+          faTrash,
+          faTrashAlt,
+          faMinus,
+          faEdit,
+          faCog,
+          faBell,
+          faBars,
+          faUser,
+          faLanguage
+        ],
         prefix: "solid-",
         type: "font-awesome"
       }
