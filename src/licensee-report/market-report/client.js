@@ -23,6 +23,10 @@ export const useLicenseeMarketReportList = (searchParams) => {
 
   items = items?.reduce?.((acc, items, index, list) => {
     let [{ currencyCode }] = items
+    if (includesMultipleCurrency(currencyCode)) {
+      return acc //filter out platfrom contains multiple currency
+    }
+
     let sortedByBrandCodeItems = sortBy(items, ["brandCode"])
     acc.push(...clone(sortedByBrandCodeItems))
 
@@ -48,3 +52,6 @@ export const useLicenseeMarketReportList = (searchParams) => {
     ...rest
   }
 }
+
+const includesMultipleCurrency = (currencyCode = "") =>
+  currencyCode.split(",").length > 1
