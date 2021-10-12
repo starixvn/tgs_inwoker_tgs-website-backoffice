@@ -65,7 +65,7 @@ const ReportContent = ({ licenseeId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     pageSize: QueryMaxRangeDays,
     licenseeId,
-    currencyCodes: undefined,
+    currencyCode: undefined,
     from: dateRange.start,
     to: dateRange.end
   })
@@ -101,7 +101,7 @@ const ReportContent = ({ licenseeId }) => {
         <Level alignY="bottom">
           <SearchBar
             licenseeId={licenseeId}
-            currencyCodes={state?.currencyCodes}
+            currencyCode={state?.currencyCode}
             start={from}
             end={to}
             minDate={minDate}
@@ -148,7 +148,7 @@ const ReportContent = ({ licenseeId }) => {
 
 const SearchBar = ({
   licenseeId,
-  currencyCodes,
+  currencyCode,
   start,
   end,
   minDate,
@@ -160,7 +160,7 @@ const SearchBar = ({
 }) => {
   let formMethods = useForm({
     defaultValues: {
-      currencyCodes,
+      currencyCode,
       start,
       end
     }
@@ -172,10 +172,7 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          <LicenseeCurrencySelect
-            name="currencyCodes"
-            licenseeId={licenseeId}
-          />
+          <LicenseeCurrencySelect name="currencyCode" licenseeId={licenseeId} />
           <DateInputRange
             minDate={minDate}
             maxDate={maxDate}

@@ -83,7 +83,7 @@ export const login = async (
   return result
 }
 
-export const withdrawPaymentList = async ({ platformToken, token }) => {
+export const withdrawPaymentList = async (platformToken, token) => {
   let url = `${operatorApi()}/withdraw`
   let headers = {
     "Content-Type": "application/json",
@@ -126,7 +126,6 @@ export const listBankInfos = async (platformToken, token) => {
   let result = await fetcher(url, {
     headers
   })
-
   return result && result.data
 }
 
@@ -145,7 +144,7 @@ export const applyManualWithdrawForm = async (
     amount
   }
 
-  let url = `${operatorApi()}/deposit/withdraw`
+  let url = `${operatorApi()}/withdraw`
   let headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${platformToken}`,
@@ -239,11 +238,10 @@ export const wallet = async (platformToken, token) => {
 export const addManualBankCard = async (
   platformToken,
   token,
-  { paymentchannelid, detail: { bankName, bankBranch, name, bankAccount } = {} }
+  { paymentchannelid, bankName, bankBranch, name, bankAccount }
 ) => {
   if (!paymentchannelid) {
     let paymentList = await withdrawPaymentList(platformToken, token)
-
     let payment = paymentList.find(
       ({ paymentcode }) => paymentcode === "Manual"
     )
@@ -255,7 +253,12 @@ export const addManualBankCard = async (
   let payload = {
     banktype: "Bank",
     paymentchannelid,
-    detail
+    detail: {
+      bankName,
+      bankBranch,
+      name,
+      bankAccount
+    }
   }
 
   let headers = {
