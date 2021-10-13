@@ -26,6 +26,10 @@ import {
   Code as VipReportCode,
   codeLabelPair as vipReportPair
 } from "./vip-report/menu"
+import {
+  Code as BalanceChangeReportCode,
+  codeLabelPair as balanceChangeReportPair
+} from "./balance-change-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 
@@ -121,6 +125,16 @@ const label = ({ locale, code }) => {
         },
         locale
       )
+
+    case BalanceChangeReportCode:
+      return getTrans(
+        {
+          zh: "帳變報表",
+          en: "Balance Change Report"
+        },
+        locale
+      )
+
     default:
       return ""
   }
@@ -139,7 +153,8 @@ export const codeLabelPair = [
         agentContributionReportPair,
         playerContributionReportPair,
         agentBonusReportPair,
-        vipReportPair
+        vipReportPair,
+        balanceChangeReportPair
       ]
     })
 ]

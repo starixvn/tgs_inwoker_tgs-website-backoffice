@@ -23,7 +23,6 @@ import { useLicenseeMarketReportList } from "./client"
 import { Licensee } from "../../merchant/licensees"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
-import sequence, { SequenceCell } from "../../table/column/sequence"
 import subDays from "date-fns/subDays"
 import { isDev } from "../../env"
 import textColumn, { wrapTextColumn } from "../../table/column/textColumn"
@@ -98,7 +97,7 @@ const ReportContent = ({ licenseeId }) => {
   return (
     <PageContent
       actionBar={
-        <Level alignY="bottom">
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
             licenseeId={licenseeId}
             currencyCode={state?.currencyCode}
