@@ -250,7 +250,7 @@ const LangItem = ({ ...props }) => {
           background={getHeaderButtonBackground()}
         >
           <Hide above={collapseBelow}>
-            <Icon icon="solid-language" />
+            <Icon icon="solid-language" fontSize="500" />
           </Hide>
           <Hide below={collapseBelow}>
             {locale === Locales.zh && chinese}
@@ -264,6 +264,14 @@ const LangItem = ({ ...props }) => {
 
 const Sidebar = () => {
   let { pathname: selectedId } = useLocation()
+  let { isCollapsed, sidebar } = usePage()
+
+  //TODO: report bug to bumbag?
+  useEffect(() => {
+    if (!isCollapsed) {
+      sidebar.drawer.hide()
+    }
+  }, [isCollapsed])
 
   return (
     <SideNav id="sidebar" selectedId={selectedId}>

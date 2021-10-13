@@ -120,7 +120,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
   return (
     <PageContent
       actionBar={
-        <Level alignY="bottom">
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
             brandId={brandId}
             username={state?.username}

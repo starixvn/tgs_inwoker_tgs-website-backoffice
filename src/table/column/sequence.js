@@ -5,7 +5,7 @@ import { Trans } from "../../i18n"
 
 export const SequenceHeader = () => <Trans zh="序" en="Sequence" />
 
-export const SequenceCell = ({
+const SequenceCell = ({
   state = {},
   value = {},
   row: { index: rowIndex }

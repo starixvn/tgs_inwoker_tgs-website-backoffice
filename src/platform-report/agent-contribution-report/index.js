@@ -128,7 +128,7 @@ const ReportContent = ({ brandId }) => {
   return (
     <PageContent
       actionBar={
-        <Level alignY="bottom">
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
             brandId={brandId}
             agentUsername={agentUsername}
