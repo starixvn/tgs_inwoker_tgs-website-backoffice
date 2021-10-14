@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: operator-api
-image: operator-api #registry.gitlab.com/rayprosoft/turnkey-gaming-system/operator-api:dev-202106291026
+image: operator-api #registry.gitlab.com/rayprosoft/turnkey-gaming-system/operator-api:2021.1007.0727-staging
 services:
   - name: operator-api
     dependencies:

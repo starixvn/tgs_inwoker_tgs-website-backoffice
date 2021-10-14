@@ -10,7 +10,6 @@ import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
 import platform, { selectFirst } from "../platform"
-import select from "../select"
 import { mapColumnCellTextContents } from "../page/table"
 
 let browser
