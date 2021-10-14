@@ -10,7 +10,7 @@ import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
 import platform from "../platform"
-import select from "../select"
+import { selectRandomOption } from "../page/select"
 
 let browser
 let context
@@ -64,12 +64,10 @@ describe("Admin user", () => {
     await page.click(`${AddDialogSelector}-disclosure`)
     await page.waitForSelector(AddDialogSelector)
 
-    let options = await getTypeOptions()
-    let type = await select.randomOption({
+    let type = await selectRandomOption(
       page,
-      selectSelector: `${AddDialogSelector} ${InstantMessagingSelectSelector}`,
-      options
-    })
+      `${AddDialogSelector} ${InstantMessagingSelectSelector}`
+    )
 
     let instantMessaging = {
       type,
@@ -102,12 +100,10 @@ describe("Admin user", () => {
     await page.click(`${EditDialogSelector}-disclosure`)
     await page.waitForSelector(EditDialogSelector)
 
-    let options = await getTypeOptions()
-    let type = await select.randomOption({
+    let type = await selectRandomOption(
       page,
-      selectSelector: `${EditDialogSelector} ${InstantMessagingSelectSelector}`,
-      options
-    })
+      `${EditDialogSelector} ${InstantMessagingSelectSelector}`
+    )
 
     let instantMessaging = {
       type,
@@ -152,9 +148,6 @@ describe("Admin user", () => {
   }
 
   let InstantMessagingSelectSelector = `select[name="type"]`
-  const getTypeOptions = async (
-    selectSelector = InstantMessagingSelectSelector
-  ) => select.optionValue.allExceptFirst({ page, selectSelector })
 
   const SettingType = {
     Url: "url",
