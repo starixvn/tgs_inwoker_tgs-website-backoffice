@@ -31,7 +31,12 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { Code } from "./menu"
-import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
+import {
+  FormattedNumberDecimal,
+  Trans,
+  useLangCode,
+  useTrans
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -49,7 +54,7 @@ import {
   isFundUnderReview
 } from "./FundWithdrawStatus"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
-import { useFundWithdrawFormList } from "./client"
+import { useFundWithdrawFormList, API } from "./client"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { SortOrder } from "../../table/order"
 import { Update } from "./menu"
@@ -66,6 +71,9 @@ import isValidTime from "date-fns/isValid"
 import { sortBy, head } from "lodash-es"
 import clone from "clone-deep"
 import { isDev } from "../../env"
+import DownloadButton from "../../button/DownloadButton"
+import { urlWith } from "../../client"
+import subDays from "date-fns/subDays"
 
 export { Code }
 
@@ -130,6 +138,19 @@ const BodyContent = ({ brandId }) => {
     endUpdateOn
   } = state
 
+  let culture = useLangCode()
+
+  const toSearchParams = () => ({
+    ...toApiParams(state),
+    bc: state.beginCreateOn,
+    ec: startOfNextDay(state.endCreateOn),
+    bu: state.beginUpdateOn,
+    eu: startOfNextDay(state.endUpdateOn),
+    sortby: "CreatedOn",
+    orderby: SortOrder.Descending,
+    culture
+  })
+
   let {
     data = {},
     isValidating,
@@ -137,21 +158,9 @@ const BodyContent = ({ brandId }) => {
     mutate: mutateFormList,
     error,
     deleteCache
-  } = useFundWithdrawFormList(
-    brandId,
-    {
-      ...toApiParams(state),
-      bc: state.beginCreateOn,
-      ec: startOfNextDay(state.endCreateOn),
-      bu: state.beginUpdateOn,
-      eu: startOfNextDay(state.endUpdateOn),
-      sortby: "CreatedOn",
-      orderby: SortOrder.Descending
-    },
-    {
-      refreshInterval: 10 * SecondInMilliseconds
-    }
-  )
+  } = useFundWithdrawFormList(brandId, toSearchParams(), {
+    refreshInterval: 10 * SecondInMilliseconds
+  })
 
   useEffect(() => {
     if (location?.state?.fromNotify) {
@@ -216,34 +225,57 @@ const BodyContent = ({ brandId }) => {
     }
   }, [JSON.stringify(data?.items)])
 
+  let QueryMaxRangeDays = 31
+  let DataRetentionDays = 90
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+
   let columns = useColumns({ mutate, items, brandId, setDelayUpdate })
   return (
     <PageContent
       title={<Trans zh="提款列表" en="Withdraw List" />}
       actionBar={
-        <SearchBar
-          brandId={brandId}
-          username={username}
-          channelName={channelName}
-          status={status}
-          thirdOrderNo={state.thirdOrderNo}
-          id={state.id}
-          beginCreateOn={beginCreateOn}
-          endCreateOn={endCreateOn}
-          beginUpdateOn={beginUpdateOn}
-          endUpdateOn={endUpdateOn}
-          search={(data = {}) => {
-            setState({
-              pageIndex: 0,
-              ...data
-            })
-            mutate()
-          }}
-          isLoading={isLoading || autoLoading}
-        />
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            brandId={brandId}
+            username={username}
+            channelName={channelName}
+            status={status}
+            thirdOrderNo={state.thirdOrderNo}
+            id={state.id}
+            beginCreateOn={beginCreateOn}
+            endCreateOn={endCreateOn}
+            beginUpdateOn={beginUpdateOn}
+            endUpdateOn={endUpdateOn}
+            minDate={minDate}
+            maxRangeDays={QueryMaxRangeDays}
+            search={(data = {}) => {
+              setState({
+                pageIndex: 0,
+                ...data
+              })
+              mutate()
+            }}
+            isLoading={isLoading || autoLoading}
+          />
+          {data?.items?.length > 0 && (
+            <Box>
+              {isDev() && (
+                <DownloadButton
+                  id="export-report"
+                  isLoading={isLoading}
+                  href={urlWith(
+                    toSearchParams(),
+                    `${API}/exportWithdraw/${brandId}`
+                  )}
+                  download="Withdraw.xlsx"
+                />
+              )}
+            </Box>
+          )}
+        </Level>
       }
     >
-      <Summary />
+      <Summary total={data?.sum} />
       <Table
         id="withdraw"
         columns={columns}
@@ -318,6 +350,8 @@ const SearchBar = ({
   endCreateOn,
   beginUpdateOn,
   endUpdateOn,
+  minDate,
+  maxRangeDays,
   search,
   isLoading,
   ...props
@@ -422,6 +456,8 @@ const SearchBar = ({
               endProps={{
                 name: "endCreateOn"
               }}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
             />
             <DateInputRangeField
               label={<Trans zh="更新时间" en="Updated Time" />}
@@ -431,6 +467,8 @@ const SearchBar = ({
               endProps={{
                 name: "endUpdateOn"
               }}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
             />
             <SearchButton
               isLoading={isLoading}
