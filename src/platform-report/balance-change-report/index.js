@@ -9,7 +9,7 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { FormattedNumber, Trans, useTrans } from "../../i18n"
+import { FormattedNumber, Trans, useLangCode, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -17,7 +17,7 @@ import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { today, yesterday } from "../../date/range"
-import { API } from "./client"
+import { useBalanceChangeReportList, API } from "./client"
 import subDays from "date-fns/subDays"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
@@ -29,6 +29,7 @@ import textColumn from "../../table/column/textColumn"
 import { urlWith } from "../../client"
 import { isDev } from "../../env"
 import sequenceColumn from "../../table/column/sequence"
+import { TransactionTypeSelect } from "./TransactionTypeSelect"
 
 export { Code }
 
@@ -61,12 +62,36 @@ export const Body = () => {
 
 const ReportContent = ({ brandId }) => {
   let dateRange = today()
-  let DataRetentionDays = 14
-  let minDate = subDays(dateRange.start, DataRetentionDays)
-  let maxDate = startOfToday()
+  let QueryMaxRangeDays = 14
+
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
+    from: dateRange.start,
+    to: dateRange.end,
+    username: "",
+    transactionType: ""
+  })
+
+  useEffect(() => {
+    setState({ pageIndex: 0, brandId })
+  }, [brandId])
+
+  let { from, to } = state
+  let culture = useLangCode()
+  const toSearchParams = () => ({
+    ...toApiParams(state),
+    sortby: "recordedOn",
+    orderby: "descending",
+    from,
+    to: startOfNextDay(to),
+    culture
+  })
+
+  let { isLoading, data, error, mutate, deleteCache } =
+    useBalanceChangeReportList(toSearchParams())
 
   let columns = useColumns({
-    // items: data?.items
+    items: data?.items
   })
 
   return (
@@ -75,56 +100,45 @@ const ReportContent = ({ brandId }) => {
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
             brandId={brandId}
-            minDate={minDate}
-            maxDate={maxDate}
-            // maxRangeDays={QueryMaxRangeDays}
-            // isLoading={isLoading}
-            // search={({ start, end, ...data }) => {
-            //   setState({
-            //     pageIndex: 0,
-            //     from: start,
-            //     to: end,
-            //     ...data
-            //   })
-            //   mutate()
-            // }}
+            start={from}
+            end={to}
+            username={state.username}
+            transactionType={state.transactionType}
+            maxRangeDays={QueryMaxRangeDays}
+            isLoading={isLoading}
+            search={({ start, end, ...data }) => {
+              setState({
+                pageIndex: 0,
+                from: start,
+                to: end,
+                ...data
+              })
+              mutate()
+            }}
           />
-          {/* {data?.items?.length > 0 && (
-            <Box>
-              <Button
-                id="export-report"
-                disabled={isLoading}
-                use="a"
-                href={urlWith(toSearchParams(), `${API}/export`)}
-                download
-              >
-                <Trans zh="汇出" en="Export" />
-              </Button>
-            </Box>
-          )} */}
         </Level>
       }
       title={<Trans zh="帳變報表" en="Balance Change Report" />}
     >
-      {/* <Table
+      <Table
         columns={columns}
         data={data?.items}
         initialState={state}
         controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        foot={data?.items?.length > 0}
+        // foot={data?.items?.length > 0}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />} */}
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
 }
 
 const SearchBar = ({
-  brandId,
   username,
+  transactionType,
   start,
   end,
   minDate,
@@ -158,6 +172,7 @@ const SearchBar = ({
             showEmptyFieldValueAddonAfter
             placeholder={usernamePlaceholder}
           />
+          <TransactionTypeSelect name="transactionType" />
           <DateInputRange
             minDate={minDate}
             maxDate={maxDate}
@@ -171,7 +186,7 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ brandId, start, end, items = [] }) => {
+const useColumns = ({ brandId, items = [] }) => {
   return useMemo(
     () => [
       sequenceColumn(),
@@ -181,27 +196,27 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "transactionAmount",
-        Header: <Trans zh="交易金额" en="Transaction amount" />,
+        accessor: "amount",
+        Header: <Trans zh="交易金额" en="amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "beforeAmount",
+        accessor: "beforeBalance",
         Header: <Trans zh="余额 (前)" en="Before" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "afterAmount",
+        accessor: "afterBalance",
         Header: <Trans zh="余额 (后)" en="After" />,
         disableSortBy: true
       }),
       textColumn({
-        accessor: "createdByUsername",
+        accessor: "operator",
         Header: <Trans zh="操作者" en="Operator" />,
         disableSortBy: true
       }),
       textColumn({
-        accessor: "remark",
+        accessor: "description",
         Header: <Trans zh="备注" en="Remark" />,
         disableSortBy: true
       })
