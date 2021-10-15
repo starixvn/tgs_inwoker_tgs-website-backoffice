@@ -609,14 +609,28 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Cell: ({ value }) => (
           <FundReviewStatusLabel value={value} data-status={value} />
         )
-      }),
+      })
+    ]
+
+    if (isDev()) {
+      //TODO: rm isDev() for v1.8
+      columns.push(
+        textColumn({
+          accessor: "reviewedUserName",
+          Header: <Trans zh="操作者" en="Operator" />,
+          disableSortBy: true
+        })
+      )
+    }
+
+    columns.push(
       textColumn({
         accessor: "remark",
         Header: <Trans zh="备注" en="Remark" />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       })
-    ]
+    )
 
     if (hasUpdateMenu) {
       columns.push(
