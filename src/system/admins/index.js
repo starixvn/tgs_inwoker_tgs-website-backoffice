@@ -7,9 +7,9 @@ import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { AdminStatusLabel } from "./AdminStatus"
 import {
-    useIsDisplayMenuByRoute,
-    useHasSubMenuByRoute,
-    useUserId
+  useIsDisplayMenuByRoute,
+  useHasSubMenuByRoute,
+  useUserId
 } from "../../user/context"
 import { Code, View, Update } from "./menu"
 import { useAdminList } from "./client"
@@ -24,218 +24,223 @@ import AlertDialog from "../../dialog/Alert"
 export { Code }
 
 export const Content = () => {
-    let isDisplay = useIsDisplayMenuByRoute()
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute()
+  if (!isDisplay) {
+    return null
+  }
 
-    return <Body />
+  return <Body />
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-    let userId = useUserId()
-    let { state, setState, setPageIndex, setSortOrder } = useTable({
-        username: ""
-    })
+  let userId = useUserId()
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    username: ""
+  })
 
-    let { pageIndex, pageSize, username = "" } = state
+  let { pageIndex, pageSize, username = "" } = state
 
-    let { isLoading, data, error, mutate, deleteCache } = useAdminList({
-        ...toApiParams(state),
-        sortby: "username"
-    })
+  let { isLoading, data, error, mutate, deleteCache } = useAdminList({
+    ...toApiParams(state),
+    sortby: "username"
+  })
 
-    const filterOutCurrentUser = (items = []) =>
-        items.filter((item) => item.id != userId)
+  const filterOutCurrentUser = (items = []) =>
+    items.filter((item) => item.id != userId)
 
-    let items = filterOutCurrentUser(data?.items)
-    let columns = useColumns({ mutate, items })
+  let items = filterOutCurrentUser(data?.items)
+  let columns = useColumns({ mutate, items })
 
-    return (
-        <PageContent
-            title={<Trans zh="管理员列表" en="Admins" />}
-            actionBar={
-                <>
-                    <SearchBar
-                        username={username}
-                        search={(data = {}) => {
-                            setState({
-                                pageIndex: 0,
-                                ...data
-                            })
-                            mutate()
-                        }}
-                        isPending={isLoading}
-                    />
-                    <AddButton onSubmitted={mutate} />
-                </>
-            }
-        >
-            <Table
-                columns={columns}
-                data={items}
-                initialState={state}
-                controlledState={state}
-                pageCount={pageCount(pageSize, data?.totalCount)}
-                setPageIndex={setPageIndex}
-                setSortOrder={setSortOrder}
-                isLoading={isLoading}
-            />
-            {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-        </PageContent>
-    )
+  return (
+    <PageContent
+      title={<Trans zh="管理员列表" en="Admins" />}
+      actionBar={
+        <>
+          <SearchBar
+            username={username}
+            search={(data = {}) => {
+              setState({
+                pageIndex: 0,
+                ...data
+              })
+              mutate()
+            }}
+            isPending={isLoading}
+          />
+          <AddButton id="add-user-dialog-disclosure" onSubmitted={mutate} />
+        </>
+      }
+    >
+      <Table
+        columns={columns}
+        data={items}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+      />
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+    </PageContent>
+  )
 }
 
 const SearchBar = ({ username = "", search, isLoading, ...props }) => {
-    let formMethods = useForm({
-        defaultValues: { username }
-    })
+  let formMethods = useForm({
+    defaultValues: { username }
+  })
 
-    return (
-        <FormProvider {...formMethods}>
-            <form onSubmit={formMethods.handleSubmit(search)}>
-                <Set>
-                    <InputField
-                        name="username"
-                        showEmptyFieldValueAddonAfter
-                        placeholder={useSearchInputPlaceHolder()}
-                    />
-                    <SearchButton isLoading={isLoading} />
-                </Set>
-            </form>
-        </FormProvider>
-    )
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(search)}>
+        <Set>
+          <InputField
+            name="username"
+            showEmptyFieldValueAddonAfter
+            placeholder={useSearchInputPlaceHolder()}
+          />
+          <SearchButton isLoading={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
 }
 
 const useSearchInputPlaceHolder = () =>
-    useTrans({
-        zh: "管理员用户名输入框",
-        en: "Input admin user name"
-    })
+  useTrans({
+    zh: "管理员用户名输入框",
+    en: "Input admin user name"
+  })
 
 const useColumns = ({ mutate, items = [] }) => {
-    let hasUpdate = useIsDisplayMenuByRoute([Update])
-    let hasAnyMenu = hasUpdate
+  let hasUpdate = useIsDisplayMenuByRoute([Update])
+  let hasAnyMenu = hasUpdate
 
-    return useMemo(() => {
-        let columns = [
-            sequenceColumn(),
-            {
-                Header: <Trans zh="用户名" en="Username" />,
-                accessor: "username",
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                }
-            },
-            {
-                Header: <Trans zh="姓名" en="Name" />,
-                accessor: "name",
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                }
-            },
-            {
-                Header: <Trans zh="部门" en="Department" />,
-                accessor: "departmentName",
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center",
-                    whiteSpace: "nowrap"
-                }
-            },
-            {
-                Header: <Trans zh="权限组" en="Role" />,
-                accessor: "role",
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center",
-                    whiteSpace: "nowrap"
-                }
-            },
-            {
-                Header: <Trans zh="最近登入IP" en="Last Login IP" />,
-                accessor: "lastLoginIp",
-                disableSortBy: true,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                }
-            },
-            dateTimeColumn({
-                Header: <Trans zh="最近登入时间" en="Last Login Time" />,
-                accessor: "lastLoginTime",
-                disableSortBy: true
-            }),
-            dateTimeColumn({
-                Header: <Trans zh="创建时间" en="Created On" />,
-                accessor: "createdOn",
-                disableSortBy: true
-            }),
-            {
-                disableSortBy: true,
-                Header: <Trans zh="状态" en="Status" />,
-                accessor: "status",
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                },
-                Cell: ({ value }) => (
-                    <Text.Block
-                        css={css`
-                            white-space: nowrap;
-                        `}
-                    >
-                        <AdminStatusLabel value={value} />
-                    </Text.Block>
-                )
-            }
-        ]
-
-        if (hasAnyMenu) {
-            columns.push({
-                id: "actions",
-                accessor: (row) => row,
-                disableSortBy: true,
-                Header: <Trans zh="操作" en="Actions" />,
-                headCell: {
-                    textAlign: "center"
-                },
-                cell: {
-                    textAlign: "center"
-                },
-                Cell: ({ value }) => {
-                    return (
-                        <Set orientation="vertical" alignX="center">
-                            <EditButton user={value} onSubmitted={mutate} />
-                            <EditPasswordButton
-                                user={value}
-                                onSubmitted={mutate}
-                            />
-                        </Set>
-                    )
-                }
-            })
+  return useMemo(() => {
+    let columns = [
+      sequenceColumn(),
+      {
+        Header: <Trans zh="用户名" en="Username" />,
+        accessor: "username",
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
         }
-        return columns
-    }, [JSON.stringify(items)])
+      },
+      {
+        Header: <Trans zh="姓名" en="Name" />,
+        accessor: "name",
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        }
+      },
+      {
+        Header: <Trans zh="部门" en="Department" />,
+        accessor: "departmentName",
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center",
+          whiteSpace: "nowrap"
+        }
+      },
+      {
+        Header: <Trans zh="权限组" en="Role" />,
+        accessor: "role",
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center",
+          whiteSpace: "nowrap"
+        }
+      },
+      {
+        Header: <Trans zh="最近登入IP" en="Last Login IP" />,
+        accessor: "lastLoginIp",
+        disableSortBy: true,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        }
+      },
+      dateTimeColumn({
+        Header: <Trans zh="最近登入时间" en="Last Login Time" />,
+        accessor: "lastLoginTime",
+        disableSortBy: true
+      }),
+      dateTimeColumn({
+        Header: <Trans zh="创建时间" en="Created On" />,
+        accessor: "createdOn",
+        disableSortBy: true
+      }),
+      {
+        disableSortBy: true,
+        Header: <Trans zh="状态" en="Status" />,
+        accessor: "status",
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        },
+        Cell: ({ value }) => (
+          <Text.Block
+            css={css`
+              white-space: nowrap;
+            `}
+          >
+            <AdminStatusLabel value={value} />
+          </Text.Block>
+        )
+      }
+    ]
+
+    if (hasAnyMenu) {
+      columns.push({
+        id: "actions",
+        accessor: (row) => row,
+        disableSortBy: true,
+        Header: <Trans zh="操作" en="Actions" />,
+        headCell: {
+          textAlign: "center"
+        },
+        cell: {
+          textAlign: "center"
+        },
+        Cell: ({ value }) => {
+          return (
+            <Set orientation="vertical" alignX="center">
+              <EditButton
+                id="edit-user-dialog-disclosure"
+                user={value}
+                onSubmitted={mutate}
+              />
+              <EditPasswordButton
+                id="edit-user-password-dialog-disclosure"
+                user={value}
+                onSubmitted={mutate}
+              />
+            </Set>
+          )
+        }
+      })
+    }
+    return columns
+  }, [JSON.stringify(items)])
 }

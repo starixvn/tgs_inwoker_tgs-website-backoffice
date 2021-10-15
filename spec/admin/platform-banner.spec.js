@@ -44,8 +44,7 @@ describe("Admin user", () => {
     let banner = await addBanner(brandId)
 
     await toInVerifyTab()
-    let approve = "approve"
-    await verifyBanner(brandId, banner, approve)
+    await verifyBanner(brandId, banner, "approve")
 
     await toggleStatus(brandId)
     await toggleStatus(brandId)
@@ -53,9 +52,23 @@ describe("Admin user", () => {
     await changeOrder(brandId)
 
     let updatedBanner = await editValidBanner(brandId, banner)
-    //TODO:
-    // reject banner
+
+    //TODO: banner should back to verify tab?
+    // await reject(brandId, updatedBanner)
   })
+
+  const reject = async (brandId, banner) => {
+    await toInVerifyTab()
+    await verifyBanner(brandId, banner, "reject")
+
+    await toRejectedTab()
+
+    let SubjectSelector = `[data-column-id="subject"]`
+    await page.waitForSelector(SubjectSelector)
+
+    let subject = await page.textContent(SubjectSelector)
+    expect(subject).to.equal(banner.subject)
+  }
 
   const editValidBanner = async (brandId, banner, index = 0) => {
     await toEffectiveTab()

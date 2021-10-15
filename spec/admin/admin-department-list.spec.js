@@ -22,6 +22,7 @@ let browser
 let context
 let page
 
+//TODO: bo-api need add search function to able to test add department
 describe.skip("Admin user", () => {
   before(async () => {
     browser = await chromium.launch({ headless: headless() })

@@ -7,13 +7,13 @@ import { useChangePlatformBannerStatus } from "./client"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
 
-export const InVerify = "WaitApprving"
+const InVerify = "WaitApproving"
 const InVerifyTrans = {
   zh: "审核中",
   en: "Under review"
 }
 
-export const Effective = "Approved"
+const Effective = "Approved"
 const EffectiveTrans = {
   zh: "有效",
   en: "Effective"
@@ -24,20 +24,21 @@ const InvalidTrans = {
   en: "Invalid"
 }
 
-export const Expired = "expired"
+const Expired = "expired"
 const ExpiredTrans = {
   zh: "过期",
   en: "Expired"
 }
 
-export const Rejected = "Rejected"
+const Rejected = "Rejected"
 const RejectedTrans = {
   zh: "拒绝",
   en: "Rejected"
 }
 
-export const PlatformBannerStatusLabel = ({ value }) => {
+export const PlatformBannerStatusLabel = ({ value = "" }) => {
   switch (value) {
+    case "WaitApprving": //TODO: rm after 1.8
     case InVerify:
       return <Trans {...InVerifyTrans} />
 

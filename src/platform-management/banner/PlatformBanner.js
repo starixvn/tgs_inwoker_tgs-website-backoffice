@@ -31,7 +31,6 @@ import { LocalizationDialogDisclosure } from "../../dialog/LocalizationDialog"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { clone } from "lodash"
-import { InVerify } from "./PlatformBannerStatus"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,

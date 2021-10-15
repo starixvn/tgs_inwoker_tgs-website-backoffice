@@ -66,3 +66,8 @@ export const useChangePlatformBannerStatus = (brandId, bannerId, status) => {
       : ""
   return usePatchData(url)
 }
+
+export const useDeleteBanner = (bannerId) => {
+  let url = bannerId ? `${API}/archive/${bannerId}` : ""
+  return usePut(url)
+}
