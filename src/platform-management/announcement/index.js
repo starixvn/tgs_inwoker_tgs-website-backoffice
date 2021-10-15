@@ -18,7 +18,11 @@ import {
   useUserBrandId,
   useUserRoleType
 } from "../../user/context"
-import { useChangeAnnouncementOrders, useAnnouncementList } from "./client"
+import {
+  useChangeAnnouncementOrders,
+  useAnnouncementList,
+  useDeleteAnnouncement
+} from "./client"
 import { Code } from "./menu"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
@@ -45,6 +49,7 @@ import BrandBar from "../../report/BrandBar"
 import { SortOrder } from "../../table/order"
 import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 
 export { Code }
 
@@ -517,6 +522,14 @@ const useColumns = ({
                   onSubmitted={mutate}
                 />
               )}
+              {(tabStatus === Effective ||
+                tabStatus === Expired ||
+                tabStatus === Rejected) && (
+                <ViewButton
+                  id="view-announcement-dialog-disclosure"
+                  record={value}
+                />
+              )}
               {tabStatus === Effective && (
                 <EditButton
                   id="edit-announcement-dialog-disclosure"
@@ -528,9 +541,14 @@ const useColumns = ({
               {(tabStatus === Effective ||
                 tabStatus === Expired ||
                 tabStatus === Rejected) && (
-                <ViewButton
-                  id="view-announcement-dialog-disclosure"
-                  record={value}
+                <ConfirmDeleteDialogDisclosure
+                  id="delete-announcement-dialog-disclosure"
+                  dialogId="delete-announcement-dialog"
+                  useFetch={useDeleteAnnouncement}
+                  onSubmit={() => {
+                    return value.id
+                  }}
+                  onSubmitted={mutate}
                 />
               )}
             </Set>

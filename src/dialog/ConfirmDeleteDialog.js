@@ -4,9 +4,10 @@ import { Trans, useTrans } from "../i18n"
 import { faCog, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { DeleteDisclosure } from "./Disclosure"
 import FormDialog from "../form/FormDialog"
+import { isDev } from "../env"
 
 export const ConfirmDeleteDialogDisclosure = ({
-  confirmDeleteDialog: ConfirmDeleteDialog = ConfirmDeleteDialog,
+  dialogId,
   defaultValues,
   addonAfter,
   useFetch,
@@ -16,11 +17,17 @@ export const ConfirmDeleteDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
+  if (!isDev()) {
+    //TODO: remove for v1.8
+    return null
+  }
+
   return (
     <>
       <DeleteDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <ConfirmDeleteDialog
+          id={dialogId}
           defaultValues={defaultValues}
           useFetch={useFetch}
           dialog={dialog}
@@ -39,6 +46,7 @@ export const ConfirmDeleteDialog = ({
   addonAfter,
   onSubmit,
   onSubmitted,
+  dialog,
   ...props
 }) => {
   let [formData, setSubmit] = useState()

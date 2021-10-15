@@ -18,7 +18,11 @@ import {
   useUserBrandId,
   useUserRoleType
 } from "../../user/context"
-import { useChangePlatformBannerOrders, usePlatformBannerList } from "./client"
+import {
+  useChangePlatformBannerOrders,
+  usePlatformBannerList,
+  useDeleteBanner
+} from "./client"
 import { Code } from "./menu"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
@@ -42,6 +46,7 @@ import {
   ViewPlatformBannerDisclosure
 } from "./PlatformBanner"
 import { VerifyPlatformBannerDisclosure } from "./VerifyPlatformBanner"
+import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 
 export { Code }
 
@@ -496,6 +501,20 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
                   onSubmitted={mutate}
                 />
               )}
+              {hasUpdateAuth &&
+                (tabStatusName === Effective ||
+                  tabStatusName === Expired ||
+                  tabStatusName === Rejected) && (
+                  <ConfirmDeleteDialogDisclosure
+                    id="delete-banner-dialog-disclosure"
+                    dialogId="delete-banner-dialog"
+                    useFetch={useDeleteBanner}
+                    onSubmit={() => {
+                      return value.id
+                    }}
+                    onSubmitted={mutate}
+                  />
+                )}
             </Set>
           )
         }
