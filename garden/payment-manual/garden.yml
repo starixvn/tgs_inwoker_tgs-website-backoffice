@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-manual
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-manual:202109150320-staging
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-manual:202110120301-dev
 services:
   - name: payment-manual
     dependencies:

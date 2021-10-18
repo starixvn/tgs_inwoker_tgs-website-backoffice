@@ -22,7 +22,10 @@ import {
   FieldStack,
   FieldWrapper,
   useToasts,
-  Dialog
+  Dialog,
+  Card,
+  Alert,
+  Blockquote
 } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
@@ -34,7 +37,12 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { Code } from "./menu"
-import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
+import {
+  FormattedNumberDecimal,
+  Trans,
+  useLangCode,
+  useTrans
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import clone from "clone-deep"
@@ -48,7 +56,7 @@ import numberColumn, {
 } from "../../table/column/numberColumn"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
-import { useFundDepositFormList } from "./client"
+import { useFundDepositFormList, API } from "./client"
 import { Update } from "./menu"
 import {
   PaymentMethodLabel,
@@ -70,6 +78,9 @@ import { SortOrder } from "../../table/order"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { sortBy, head } from "lodash-es"
 import { isDev } from "../../env"
+import DownloadButton from "../../button/DownloadButton"
+import { urlWith } from "../../client"
+import subDays from "date-fns/subDays"
 
 export { Code }
 
@@ -123,6 +134,19 @@ const BodyContent = ({ brandId }) => {
     setState({ pageIndex: 0 })
   }, [brandId])
 
+  let culture = useLangCode()
+
+  const toSearchParams = () => ({
+    ...toApiParams(state),
+    bc: state.beginCreateOn,
+    ec: startOfNextDay(state.endCreateOn),
+    bu: state.beginUpdateOn,
+    eu: startOfNextDay(state.endUpdateOn),
+    sortby: "CreatedOn",
+    orderby: SortOrder.Descending,
+    culture
+  })
+
   let {
     pageIndex,
     pageSize,
@@ -142,23 +166,9 @@ const BodyContent = ({ brandId }) => {
     mutate: mutateFormList,
     error,
     deleteCache
-  } = useFundDepositFormList(
-    brandId,
-    {
-      ...toApiParams(state),
-      bc: state.beginCreateOn,
-      ec: startOfNextDay(state.endCreateOn),
-      bu: state.beginUpdateOn,
-      eu: startOfNextDay(state.endUpdateOn),
-      sortby: "CreatedOn",
-      orderby: SortOrder.Descending
-    },
-    isDev()
-      ? {
-          refreshInterval: 10 * SecondInMilliseconds //10s
-        }
-      : undefined
-  )
+  } = useFundDepositFormList(brandId, toSearchParams(), {
+    refreshInterval: 10 * SecondInMilliseconds //10s
+  })
 
   useEffect(() => {
     if (location?.state?.fromNotify) {
@@ -172,6 +182,7 @@ const BodyContent = ({ brandId }) => {
         method: "",
         status: location?.state?.status ?? "",
         thirdOrderNo: "",
+        id: "",
         beginCreateOn: todayRange.start,
         endCreateOn: todayRange.end,
         beginUpdateOn: undefined,
@@ -232,34 +243,60 @@ const BodyContent = ({ brandId }) => {
     }
   }, [JSON.stringify(data?.items)])
 
+  let QueryMaxRangeDays = 31
+  let DataRetentionDays = 90
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+
   let columns = useColumns({ mutate, items, brandId, setDelayUpdate })
   return (
     <PageContent
       title={<Trans zh="充值列表" en="Deposit List" />}
       actionBar={
-        <SearchBar
-          brandId={brandId}
-          username={username}
-          channelName={channelName}
-          method={method}
-          status={status}
-          thirdOrderNo={state.thirdOrderNo}
-          beginCreateOn={beginCreateOn}
-          endCreateOn={endCreateOn}
-          beginUpdateOn={beginUpdateOn}
-          endUpdateOn={endUpdateOn}
-          search={(data) => {
-            setState({
-              pageIndex: 0,
-              ...data
-            })
-            mutate()
-          }}
-          isLoading={isLoading || autoLoading}
-        />
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            brandId={brandId}
+            username={username}
+            channelName={channelName}
+            method={method}
+            status={status}
+            thirdOrderNo={state.thirdOrderNo}
+            id={state.id}
+            beginCreateOn={beginCreateOn}
+            endCreateOn={endCreateOn}
+            beginUpdateOn={beginUpdateOn}
+            endUpdateOn={endUpdateOn}
+            minDate={minDate}
+            maxRangeDays={QueryMaxRangeDays}
+            search={(data) => {
+              setState({
+                pageIndex: 0,
+                ...data
+              })
+              mutate()
+            }}
+            isLoading={isLoading || autoLoading}
+          />
+          {data?.items?.length > 0 && (
+            <Box>
+              {isDev() && (
+                <DownloadButton
+                  id="export-report"
+                  isLoading={isLoading}
+                  href={urlWith(
+                    toSearchParams(),
+                    `${API}/exportDeposit/${brandId}`
+                  )}
+                  download="Deposit.xlsx"
+                />
+              )}
+            </Box>
+          )}
+        </Level>
       }
     >
+      <Summary total={data?.sum} />
       <Table
+        id="deposit"
         columns={columns}
         data={items}
         initialState={state}
@@ -272,6 +309,21 @@ const BodyContent = ({ brandId }) => {
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const Summary = ({ total }) => {
+  if (!Number.isFinite(total)) {
+    return null
+  }
+
+  return (
+    <Blockquote borderColor="primary">
+      <Heading use="h5">
+        <Trans zh="充值金额总计：" en="Total Deposit Amount：" />
+        <FormattedNumberDecimal value={total} />
+      </Heading>
+    </Blockquote>
   )
 }
 
@@ -352,10 +404,13 @@ const SearchBar = ({
   method,
   status,
   thirdOrderNo,
+  id,
   beginCreateOn,
   endCreateOn,
   beginUpdateOn,
   endUpdateOn,
+  minDate,
+  maxRangeDays,
   search,
   isLoading,
   ...props
@@ -367,6 +422,7 @@ const SearchBar = ({
       method,
       status,
       thirdOrderNo,
+      id,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -381,6 +437,7 @@ const SearchBar = ({
       method,
       status,
       thirdOrderNo,
+      id,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -392,6 +449,7 @@ const SearchBar = ({
     method,
     status,
     thirdOrderNo,
+    id,
     beginCreateOn,
     endCreateOn,
     beginUpdateOn,
@@ -416,6 +474,10 @@ const SearchBar = ({
   let externalIdPlaceholder = useTrans({
     zh: "三方订单编号",
     en: "3rd Party Id"
+  })
+  let idPlaceholder = useTrans({
+    zh: "系统订单编号",
+    en: "System Id"
   })
   return (
     <FormProvider {...formMethods}>
@@ -442,6 +504,11 @@ const SearchBar = ({
               placeholder={externalIdPlaceholder}
               showEmptyFieldValueAddonAfter
             />
+            <InputField
+              name="id"
+              placeholder={idPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
           </Set>
           <Set orientation="horizontal">
             <DateInputRangeField
@@ -452,6 +519,8 @@ const SearchBar = ({
               endProps={{
                 name: "endCreateOn"
               }}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
             />
             <DateInputRangeField
               label={<Trans zh="更新时间" en="Updated Time" />}
@@ -461,6 +530,8 @@ const SearchBar = ({
               endProps={{
                 name: "endUpdateOn"
               }}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
             />
             <SearchButton
               isLoading={isLoading}
@@ -535,15 +606,31 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         accessor: "status",
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
-        Cell: ({ value }) => <FundReviewStatusLabel value={value} />
-      }),
+        Cell: ({ value }) => (
+          <FundReviewStatusLabel value={value} data-status={value} />
+        )
+      })
+    ]
+
+    if (isDev()) {
+      //TODO: rm isDev() for v1.8
+      columns.push(
+        textColumn({
+          accessor: "reviewedUserName",
+          Header: <Trans zh="操作者" en="Operator" />,
+          disableSortBy: true
+        })
+      )
+    }
+
+    columns.push(
       textColumn({
         accessor: "remark",
         Header: <Trans zh="备注" en="Remark" />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       })
-    ]
+    )
 
     if (hasUpdateMenu) {
       columns.push(
@@ -553,11 +640,14 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
           disableSortBy: true,
           Header: <Trans zh="操作" en="Actions" />,
           Cell: ({ value }) => {
-            let underReview = value?.status === FundReviewStatus.Review
+            let underReview =
+              value?.status === FundReviewStatus.Review ||
+              value?.status === FundReviewStatus.WaitingPayment
             return (
               <Set alignX="center">
                 {underReview && (
                   <VerifyFundDepositDisclosure
+                    id="verify-deposit-dialog-disclosure"
                     brandId={brandId}
                     formId={value.id}
                     onSubmitted={mutate}
@@ -568,6 +658,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
                   />
                 )}
                 <ViewFundDepositDisclosure
+                  id="view-deposit-dialog-disclosure"
                   brandId={brandId}
                   formId={value.id}
                   onVisibleChange={(visible) => {

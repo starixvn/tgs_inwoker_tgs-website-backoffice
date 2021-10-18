@@ -19,3 +19,20 @@ services:
     volumes:
       - name: data
         containerPath: /tmp/localstack
+tasks:
+  - name: init-public-bucket
+    command: [/bin/sh, -c]
+    args:
+      [
+        "sleep 10 && awslocal --endpoint-url=http://localstack:4566 s3 mb s3://tgs-secret"
+      ]
+    dependencies:
+      - localstack
+  - name: init-private-bucket
+    command: [/bin/sh, -c]
+    args:
+      [
+        "sleep 10 && awslocal --endpoint-url=http://localstack:4566 s3 mb s3://tgs-secret"
+      ]
+    dependencies:
+      - localstack

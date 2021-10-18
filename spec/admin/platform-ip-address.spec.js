@@ -112,12 +112,11 @@ describe("Admin user", () => {
       (rows) => rows.map(({ textContent }) => textContent)
     )
     expect(searchPlayerListResult.length).above(0)
-
-    let usernames = players.map(({ username }) => username)
-    expect(searchPlayerListResult).to.include.members(usernames)
   }
 
-  const findPlayerByUsername = async () => {}
+  const findPlayerByUsername = async () => {
+    //TODO
+  }
 
   const createPlayers = async (platformToken, size = 2, list = []) => {
     if (size == 0) {

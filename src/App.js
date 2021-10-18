@@ -27,7 +27,9 @@ import {
   Icon,
   Flex,
   useModalState,
-  Image
+  Image,
+  usePage,
+  Hide
 } from "bumbag"
 import {
   useIsAuthed as useUserIsAuthed,
@@ -125,6 +127,7 @@ const Header = () => {
   let userId = useUserId()
   let usename = useUsername()
   let deauth = useDeauth()
+  let { collapseBelow, ...page } = usePage()
 
   let changePasswordDialog = useModalState()
 
@@ -188,11 +191,27 @@ const Header = () => {
                 color={getHeaderButtonColor()}
                 background={getHeaderButtonBackground()}
               >
-                <span id="username">{usename}</span>
+                <Hide above={collapseBelow}>
+                  <Icon icon="solid-user" />
+                </Hide>
+                <Hide below={collapseBelow}>
+                  <span id="username">{usename}</span>
+                </Hide>
               </Button>
             </DropdownMenu>
           </TopNav.Item>
           <LangItem />
+          <Hide above={collapseBelow}>
+            <TopNav.Item>
+              <Button
+                color={getHeaderButtonColor()}
+                onClick={page.sidebar.open}
+                variant="ghost"
+              >
+                <Icon icon="solid-bars" />
+              </Button>
+            </TopNav.Item>
+          </Hide>
         </TopNav.Section>
       </TopNav>
       {changePasswordDialog.visible && (
@@ -206,6 +225,8 @@ const Header = () => {
 }
 
 const LangItem = ({ ...props }) => {
+  let { collapseBelow, ...page } = usePage()
+
   let locale = useLocale()
   let chinese = "中文"
   let english = "English"
@@ -228,8 +249,13 @@ const LangItem = ({ ...props }) => {
           color={getHeaderButtonColor()}
           background={getHeaderButtonBackground()}
         >
-          {locale === Locales.zh && chinese}
-          {locale === Locales.en && english}
+          <Hide above={collapseBelow}>
+            <Icon icon="solid-language" fontSize="500" />
+          </Hide>
+          <Hide below={collapseBelow}>
+            {locale === Locales.zh && chinese}
+            {locale === Locales.en && english}
+          </Hide>
         </Button>
       </DropdownMenu>
     </TopNav.Item>
@@ -238,6 +264,14 @@ const LangItem = ({ ...props }) => {
 
 const Sidebar = () => {
   let { pathname: selectedId } = useLocation()
+  let { isCollapsed, sidebar } = usePage()
+
+  //TODO: report bug to bumbag?
+  useEffect(() => {
+    if (!isCollapsed) {
+      sidebar.drawer.hide()
+    }
+  }, [isCollapsed])
 
   return (
     <SideNav id="sidebar" selectedId={selectedId}>

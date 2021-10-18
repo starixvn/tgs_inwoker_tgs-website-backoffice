@@ -18,7 +18,8 @@ import {
   Set,
   Flex,
   Level,
-  FieldStack
+  FieldStack,
+  Blockquote
 } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
@@ -30,7 +31,12 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { Code } from "./menu"
-import { Trans, useTrans } from "../../i18n"
+import {
+  FormattedNumberDecimal,
+  Trans,
+  useLangCode,
+  useTrans
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -42,13 +48,13 @@ import numberColumn, {
   numberDecimalPercentageColumn
 } from "../../table/column/numberColumn"
 import { today } from "../../date/range"
-import FundReviewStatus, {
-  FundReviewStatusLabel,
-  FundReviewStatusSelect,
+import {
+  FundWithdrawStatusLabel,
+  FundWithdrawStatusSelect,
   isFundUnderReview
-} from "../FundReviewStatus"
+} from "./FundWithdrawStatus"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
-import { useFundWithdrawFormList } from "./client"
+import { useFundWithdrawFormList, API } from "./client"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { SortOrder } from "../../table/order"
 import { Update } from "./menu"
@@ -65,6 +71,9 @@ import isValidTime from "date-fns/isValid"
 import { sortBy, head } from "lodash-es"
 import clone from "clone-deep"
 import { isDev } from "../../env"
+import DownloadButton from "../../button/DownloadButton"
+import { urlWith } from "../../client"
+import subDays from "date-fns/subDays"
 
 export { Code }
 
@@ -129,6 +138,19 @@ const BodyContent = ({ brandId }) => {
     endUpdateOn
   } = state
 
+  let culture = useLangCode()
+
+  const toSearchParams = () => ({
+    ...toApiParams(state),
+    bc: state.beginCreateOn,
+    ec: startOfNextDay(state.endCreateOn),
+    bu: state.beginUpdateOn,
+    eu: startOfNextDay(state.endUpdateOn),
+    sortby: "CreatedOn",
+    orderby: SortOrder.Descending,
+    culture
+  })
+
   let {
     data = {},
     isValidating,
@@ -136,23 +158,9 @@ const BodyContent = ({ brandId }) => {
     mutate: mutateFormList,
     error,
     deleteCache
-  } = useFundWithdrawFormList(
-    brandId,
-    {
-      ...toApiParams(state),
-      bc: state.beginCreateOn,
-      ec: startOfNextDay(state.endCreateOn),
-      bu: state.beginUpdateOn,
-      eu: startOfNextDay(state.endUpdateOn),
-      sortby: "CreatedOn",
-      orderby: SortOrder.Descending
-    },
-    isDev()
-      ? {
-          refreshInterval: 10 * SecondInMilliseconds
-        }
-      : undefined
-  )
+  } = useFundWithdrawFormList(brandId, toSearchParams(), {
+    refreshInterval: 10 * SecondInMilliseconds
+  })
 
   useEffect(() => {
     if (location?.state?.fromNotify) {
@@ -165,6 +173,7 @@ const BodyContent = ({ brandId }) => {
         channelName: "",
         status: location?.state?.status ?? "",
         thirdOrderNo: "",
+        id: "",
         beginCreateOn: todayRange.start,
         endCreateOn: todayRange.end,
         beginUpdateOn: undefined,
@@ -216,33 +225,59 @@ const BodyContent = ({ brandId }) => {
     }
   }, [JSON.stringify(data?.items)])
 
+  let QueryMaxRangeDays = 31
+  let DataRetentionDays = 90
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+
   let columns = useColumns({ mutate, items, brandId, setDelayUpdate })
   return (
     <PageContent
       title={<Trans zh="提款列表" en="Withdraw List" />}
       actionBar={
-        <SearchBar
-          brandId={brandId}
-          username={username}
-          channelName={channelName}
-          status={status}
-          thirdOrderNo={state.thirdOrderNo}
-          beginCreateOn={beginCreateOn}
-          endCreateOn={endCreateOn}
-          beginUpdateOn={beginUpdateOn}
-          endUpdateOn={endUpdateOn}
-          search={(data = {}) => {
-            setState({
-              pageIndex: 0,
-              ...data
-            })
-            mutate()
-          }}
-          isLoading={isLoading || autoLoading}
-        />
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            brandId={brandId}
+            username={username}
+            channelName={channelName}
+            status={status}
+            thirdOrderNo={state.thirdOrderNo}
+            id={state.id}
+            beginCreateOn={beginCreateOn}
+            endCreateOn={endCreateOn}
+            beginUpdateOn={beginUpdateOn}
+            endUpdateOn={endUpdateOn}
+            minDate={minDate}
+            maxRangeDays={QueryMaxRangeDays}
+            search={(data = {}) => {
+              setState({
+                pageIndex: 0,
+                ...data
+              })
+              mutate()
+            }}
+            isLoading={isLoading || autoLoading}
+          />
+          {data?.items?.length > 0 && (
+            <Box>
+              {isDev() && (
+                <DownloadButton
+                  id="export-report"
+                  isLoading={isLoading}
+                  href={urlWith(
+                    toSearchParams(),
+                    `${API}/exportWithdraw/${brandId}`
+                  )}
+                  download="Withdraw.xlsx"
+                />
+              )}
+            </Box>
+          )}
+        </Level>
       }
     >
+      <Summary total={data?.sum} />
       <Table
+        id="withdraw"
         columns={columns}
         data={items}
         initialState={state}
@@ -255,6 +290,21 @@ const BodyContent = ({ brandId }) => {
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const Summary = ({ total }) => {
+  if (!Number.isFinite(total)) {
+    return null
+  }
+
+  return (
+    <Blockquote borderColor="primary">
+      <Heading use="h5">
+        <Trans zh="提款金额总计：" en="Total Withdraw Amount：" />
+        <FormattedNumberDecimal value={total} />
+      </Heading>
+    </Blockquote>
   )
 }
 
@@ -295,10 +345,13 @@ const SearchBar = ({
   channelName,
   status,
   thirdOrderNo,
+  id,
   beginCreateOn,
   endCreateOn,
   beginUpdateOn,
   endUpdateOn,
+  minDate,
+  maxRangeDays,
   search,
   isLoading,
   ...props
@@ -309,6 +362,7 @@ const SearchBar = ({
       channelName,
       status,
       thirdOrderNo,
+      id,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -322,6 +376,7 @@ const SearchBar = ({
       channelName,
       status,
       thirdOrderNo,
+      id,
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
@@ -357,6 +412,10 @@ const SearchBar = ({
     zh: "三方订单编号",
     en: "3rd Party Id"
   })
+  let idPlaceholder = useTrans({
+    zh: "系统订单编号",
+    en: "System Id"
+  })
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
@@ -376,10 +435,15 @@ const SearchBar = ({
               name="method"
               placeholder={paymentMethodPlaceholder}
             />
-            <FundReviewStatusSelect name="status" />
+            <FundWithdrawStatusSelect name="status" />
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
+            <InputField
+              name="id"
+              placeholder={idPlaceholder}
               showEmptyFieldValueAddonAfter
             />
           </Set>
@@ -392,6 +456,8 @@ const SearchBar = ({
               endProps={{
                 name: "endCreateOn"
               }}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
             />
             <DateInputRangeField
               label={<Trans zh="更新时间" en="Updated Time" />}
@@ -401,6 +467,8 @@ const SearchBar = ({
               endProps={{
                 name: "endUpdateOn"
               }}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
             />
             <SearchButton
               isLoading={isLoading}
@@ -459,15 +527,31 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         accessor: "status",
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
-        Cell: ({ value }) => <FundReviewStatusLabel value={value} />
-      }),
+        Cell: ({ value }) => (
+          <FundWithdrawStatusLabel value={value} data-status={value} />
+        )
+      })
+    ]
+
+    if (isDev()) {
+      //TODO: rm isDev() for v1.8
+      columns.push(
+        textColumn({
+          accessor: "reviewedUserName",
+          Header: <Trans zh="操作者" en="Operator" />,
+          disableSortBy: true
+        })
+      )
+    }
+
+    columns.push(
       textColumn({
         accessor: "remark",
         Header: <Trans zh="备注" en="Remark" />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       })
-    ]
+    )
 
     if (hasUpdateMenu) {
       columns.push(
@@ -482,6 +566,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
               <Set alignX="center">
                 {underReview && (
                   <VerifyFundWithdrawDisclosure
+                    id="verify-withdraw-dialog-disclosure"
                     brandId={brandId}
                     formId={value.id}
                     onSubmitted={mutate}
@@ -492,6 +577,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
                   />
                 )}
                 <ViewFundWithdrawDisclosure
+                  id="view-withdraw-dialog-disclosure"
                   brandId={brandId}
                   formId={value.id}
                   onVisibleChange={(visible) => {

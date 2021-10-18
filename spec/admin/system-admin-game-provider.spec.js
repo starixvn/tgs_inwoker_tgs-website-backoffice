@@ -182,7 +182,9 @@ describe("Admin user", () => {
 
   const showGameListDialog = async (gameProviderCode) =>
     await Promise.all([
-      await page.click(`#${gameProviderCode}-game-list-dialog-disclosure`),
+      await page.click(
+        `#game-list-dialog-disclosure[data-game-provider-code="${gameProviderCode}"]`
+      ),
       page.waitForLoadState("networkidle"),
       page.waitForSelector(`#game-list-dialog #game-list tbody`)
     ])

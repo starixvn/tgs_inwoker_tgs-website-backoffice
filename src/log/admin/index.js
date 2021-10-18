@@ -61,8 +61,8 @@ export const CodeContentPair = [Code, Content]
 const Body = ({}) => {
   let todayRange = today()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    from: todayRange.start,
-    to: todayRange.end,
+    from: "", //todayRange.start,
+    to: "", //todayRange.end,
     responseCode: "",
     trackingId: "",
     ip: "",
@@ -120,6 +120,7 @@ const Body = ({}) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>

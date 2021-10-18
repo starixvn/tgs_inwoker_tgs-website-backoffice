@@ -109,11 +109,15 @@ const VerifyFundDepositDialog = ({
 
   return (
     <FormDialog
+      id="verify-deposit-dialog"
       formMethods={formMethods}
       defaultValues={clone(fundDepositForm)}
       actionButtonsProps={{
         submitText: approveLabel,
-        palette: "success"
+        palette: "success",
+        submitProps: {
+          "data-type": "approve"
+        }
       }}
       onClickSubmit={(event) => {
         setValue("reviewResponse", ReviewFund.Approve)
@@ -121,6 +125,7 @@ const VerifyFundDepositDialog = ({
       addonButtons={
         <Button
           type="submit"
+          data-type="reject"
           onClick={() => {
             setValue("reviewResponse", ReviewFund.Reject)
           }}

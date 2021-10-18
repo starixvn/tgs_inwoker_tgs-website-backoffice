@@ -1,16 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import {
-  Heading,
-  Stack,
-  Box,
-  Button,
-  Set,
-  useModalState,
-  Text,
-  Link
-} from "bumbag"
+import { Heading, Stack, Box, Button, Set, Level, Text, Link } from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -26,20 +17,18 @@ import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
-import dateTimeColumn from "../../table/column/dateTime"
 import subDays from "date-fns/subDays"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import numberColumn, {
-  numberDecimalColumn
-} from "../../table/column/numberColumn"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
 import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import VipLevelSelect from "../../vip-levels/VipLevelSelect"
-import { useAgentDividendList } from "./client"
+import { useAgentDividendList, API } from "./client"
 import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
 import { AgentBonusDetailDialogDisclosure } from "./AgentBonusDetail"
 import { AgentTypeSelect } from "../../agent/AgentType"
+import { isDev } from "../../env"
+import { urlWith } from "../../client"
 
 export { Code }
 
@@ -87,15 +76,14 @@ const ReportContent = ({ brandId }) => {
   }, [brandId])
 
   let { pageIndex, pageSize, username, from, to } = state
+  const toSearchParams = () => ({
+    ...toApiParams(state),
+    sortby: "username",
+    from,
+    to: startOfNextDay(to)
+  })
   let { isLoading, data, error, mutate, deleteCache } = useAgentDividendList(
-    username
-      ? {
-          ...toApiParams(state),
-          sortby: "username",
-          from,
-          to: startOfNextDay(to)
-        }
-      : undefined
+    username ? toSearchParams() : undefined
   )
 
   let DataRetentionDays = 180
@@ -112,26 +100,41 @@ const ReportContent = ({ brandId }) => {
   return (
     <PageContent
       actionBar={
-        <SearchBar
-          brandId={brandId}
-          username={state?.username}
-          type={state?.type}
-          start={from}
-          end={to}
-          minDate={minDate}
-          maxDate={maxDate}
-          maxRangeDays={QueryMaxRangeDays}
-          isLoading={isLoading}
-          search={({ start, end, ...data }) => {
-            setState({
-              pageIndex: 0,
-              from: start,
-              to: end,
-              ...data
-            })
-            mutate()
-          }}
-        />
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            brandId={brandId}
+            username={state?.username}
+            type={state?.type}
+            start={from}
+            end={to}
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={QueryMaxRangeDays}
+            isLoading={isLoading}
+            search={({ start, end, ...data }) => {
+              setState({
+                pageIndex: 0,
+                from: start,
+                to: end,
+                ...data
+              })
+              mutate()
+            }}
+          />
+          {data?.items?.length > 0 && (
+            <Box>
+              <Button
+                id="export-report"
+                disabled={isLoading}
+                use="a"
+                href={urlWith(toSearchParams(), `${API}/exportAgentDividends`)}
+                download
+              >
+                <Trans zh="汇出" en="Export" />
+              </Button>
+            </Box>
+          )}
+        </Level>
       }
       title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
     >

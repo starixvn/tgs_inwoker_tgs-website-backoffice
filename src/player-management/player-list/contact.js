@@ -41,7 +41,7 @@ export const Panel = ({ player = {}, ...props }) => {
       <FieldValues spacing="major-2">
         <MobileLabel />
         <Text>
-          {player?.areaCode ? `+${player?.areaCode}` : ""} {phone}
+          {player.areaCode} {phone}
         </Text>
 
         <EmailLabel />

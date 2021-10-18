@@ -8,6 +8,7 @@ import {
   useLocation
 } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
+import { usePage } from "bumbag"
 import { SideNav, Box } from "bumbag"
 import memoize from "fast-memoize"
 import { codeMenuContentPair as platformPair } from "./platform-management"
@@ -85,19 +86,28 @@ import {
 import { useLocale, getTrans } from "./i18n"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
+  let { sidebar, isCollapsed } = usePage()
+
   let locale = useLocale()
   let authCodes = useMenuCodes(codePaths)
   codes = codes ?? authCodes
+
+  let { pathname } = useLocation()
+
   let items = codes
     .map((code) => {
       let label = itemLabel({ code, locale })
+      let path = `${url}/${code}`
+      let isActive = path == pathname
 
       return label ? (
         <MenuItem
           key={code}
           code={code}
-          path={`${url}/${code}`}
+          path={path}
+          isActive={isActive}
           label={label}
+          sidebar={sidebar}
         />
       ) : undefined
     })
@@ -134,14 +144,14 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   ) : null
 }
 
-const MenuItem = ({ code, path, label, ...props }) => {
+const MenuItem = ({ code, path, label, sidebar, isActive, ...props }) => {
   let ref = useRef()
-  let { pathname } = useLocation()
-  let isActive = path == pathname
 
   useEffect(() => {
-    isActive ? ref?.current?.focus() : ref?.current?.blur()
-  }, [path, isActive])
+    if (sidebar?.isOpen && ref?.current && isActive) {
+      ref.current?.focus()
+    }
+  }, [sidebar?.isOpen, ref?.current, isActive])
 
   if (!label) {
     return null
@@ -151,10 +161,12 @@ const MenuItem = ({ code, path, label, ...props }) => {
     <SideNav.Item
       navId={path}
       isActive={isActive}
+      onClick={() => setTimeout(sidebar.drawer.hide, 100)}
       css={css`
         font-size: 0.875rem;
         line-height: 1.25rem;
       `}
+      {...props}
     >
       <Link
         ref={ref}

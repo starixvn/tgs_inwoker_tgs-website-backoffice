@@ -1,4 +1,6 @@
 import { set } from "lodash-es"
+import { boolean } from "boolean"
+
 /**
  * env =
  * {
@@ -68,9 +70,13 @@ export const getHeaderButtonColor = () =>
 export const getHeaderButtonBackground = () =>
   window?.env?.loginButtonBackground || "transparent"
 
-const PromotionLocalization = "PromotionLocalization" //TODO: also remove env.html -> env.features.PromotionLocalization
+const AgentMonthlyProfitSharingSetting = "AgentMonthlyProfitSharingSetting" //TODO: remove env.html -> env.features.AgentMonthlyProfitSharingSetting & isAgentMonthlyProfitSharingSettingEnabled
 export const Features = {
-  PromotionLocalization
+  AgentMonthlyProfitSharingSetting
+}
+
+export const isAgentMonthlyProfitSharingSettingEnabled = () => {
+  return boolean(window?.env?.features?.[AgentMonthlyProfitSharingSetting])
 }
 
 const listFeatures = () => {
@@ -99,12 +105,13 @@ const enableFeatures = (...features) => {
 window.featureX = {
   list: listFeatures,
   enable: {
-    promotionLocalization: () => enableFeatures(PromotionLocalization)
+    agentMonthlyProfitSharingSetting: () =>
+      enableFeatures(AgentMonthlyProfitSharingSetting)
   }
 }
 
 export const isFeatureEnabled = (feature = "") => {
-  return window?.env?.features?.[feature] ?? false
+  return boolean(window?.env?.features?.[feature])
 }
 
 export default {

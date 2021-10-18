@@ -190,6 +190,11 @@ describe("Admin user", () => {
     await verifyAnnouncement(announcement, "reject")
 
     await toRejectedTab()
+
+    let SubjectSelector = `[data-column-id="subject"]`
+    await page.waitForSelector(SubjectSelector)
+    let subject = await page.textContent(SubjectSelector)
+    expect(subject).to.equal(announcement.subject)
   }
 
   const verifyAnnouncement = async (announcement, type = "approve") => {

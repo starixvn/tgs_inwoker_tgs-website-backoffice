@@ -5,11 +5,12 @@ import {
   Box,
   Breadcrumb,
   Set,
-  useModalState,
+  Button,
   Text,
   Link,
   FieldStack,
-  Icon
+  Icon,
+  Level
 } from "bumbag"
 import PageContent from "../../page/Content"
 import {
@@ -31,13 +32,15 @@ import { numberDecimalColumn } from "../../table/column/numberColumn"
 import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { useAgentContributionList } from "./client"
+import { useAgentContributionList, API } from "./client"
 import { AgentTypeSelect } from "../../agent/AgentType"
 import Checkbox from "../../checkbox"
 import headOf from "../../list/head"
 import lastOf, { isLastIndex } from "../../list/last"
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons"
 import BrandBar from "../../report/BrandBar"
+import { isDev } from "../../env"
+import { urlWith } from "../../client"
 
 export { Code }
 
@@ -93,23 +96,21 @@ const ReportContent = ({ brandId }) => {
   }, [JSON.stringify(usernames)])
 
   let { pageIndex, pageSize, from, to } = state
+
+  const toSearchParams = () => ({
+    ...toApiParams(state),
+    username,
+    sortby: "username",
+    from,
+    to: startOfNextDay(to)
+  })
   let {
     isLoading,
     data = {},
     error,
     mutate,
     deleteCache
-  } = useAgentContributionList(
-    username
-      ? {
-          ...toApiParams(state),
-          username,
-          sortby: "username",
-          from,
-          to: startOfNextDay(to)
-        }
-      : undefined
-  )
+  } = useAgentContributionList(username ? toSearchParams() : undefined)
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
@@ -127,49 +128,47 @@ const ReportContent = ({ brandId }) => {
   return (
     <PageContent
       actionBar={
-        <SearchBar
-          brandId={brandId}
-          agentUsername={agentUsername}
-          agentType={state?.agentType}
-          includeAgents={state?.includeAgents}
-          start={from}
-          end={to}
-          minDate={minDate}
-          maxDate={maxDate}
-          maxRangeDays={QueryMaxRangeDays}
-          isLoading={isLoading}
-          search={({ agentUsername, agentType, includeAgents, start, end }) => {
-            let newState = {
-              pageIndex: 0,
-              agentType,
-              includeAgents,
-              from: start,
-              to: end
-            }
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            brandId={brandId}
+            agentUsername={agentUsername}
+            agentType={state?.agentType}
+            includeAgents={state?.includeAgents}
+            start={from}
+            end={to}
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={QueryMaxRangeDays}
+            isLoading={isLoading}
+            search={({ agentUsername, start, end, ...data }) => {
+              setUsernames([agentUsername])
 
-            if (
-              equals(newState, {
-                pageIndex,
-                agentType: state?.agentType,
-                includeAgents: state?.includeAgents,
-                from: state?.from,
-                to: state?.to
+              setState({
+                pageIndex: 0,
+                from: start,
+                to: end,
+                ...data
               })
-            ) {
               mutate()
-            }
-
-            setUsernames([agentUsername])
-
-            setState({
-              pageIndex: 0,
-              agentType,
-              includeAgents,
-              from: start,
-              to: end
-            })
-          }}
-        />
+            }}
+          />
+          {data?.items?.length > 0 && (
+            <Box>
+              <Button
+                id="export-report"
+                disabled={isLoading}
+                use="a"
+                href={urlWith(
+                  toSearchParams(),
+                  `${API}/exportAgentContributions`
+                )}
+                download
+              >
+                <Trans zh="汇出" en="Export" />
+              </Button>
+            </Box>
+          )}
+        </Level>
       }
       title={<Trans zh="代理贡献报表" en="Agent Contribution Report" />}
     >
@@ -376,9 +375,6 @@ const useColumns = ({
           <Trans zh="红利金额" en="Bonus Amount" title={bonusAmountTooltip} />
         ),
         disableSortBy: true
-        /*
-        tooltip: bonusAmountTooltip
-        */
       }),
       numberDecimalColumn({
         accessor: "adjustmentAmount",
@@ -409,9 +405,6 @@ const useColumns = ({
         sumColumn: "netProfit",
         Header: <Trans zh="净盈利" en="Net Profit" title={netProfitTooltip} />,
         disableSortBy: true
-        /*
-        tooltip: netProfitTooltip
-        */
       })
     ],
     [

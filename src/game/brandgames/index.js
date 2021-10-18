@@ -184,6 +184,7 @@ const DataTable = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Stack spacing="major-1">
           <Table
+            id="games"
             columns={columns}
             data={items}
             controlledState={controlledState}
@@ -350,7 +351,7 @@ const useColumns = ({
         },
         Cell: ({ value }) => {
           return (
-            <Text.Block whiteSpace="nowrap">
+            <Text.Block whiteSpace="nowrap" data-game-type={value}>
               <GameTypeLabel value={value} />
             </Text.Block>
           )
@@ -497,7 +498,11 @@ const useColumns = ({
         Cell: ({ value }) => {
           return (
             <Set orientation="vertical" alignX="center">
-              <EditButton record={value} onSubmitted={mutate} />
+              <EditButton
+                id="edit-game-dialog-disclosure"
+                record={value}
+                onSubmitted={mutate}
+              />
             </Set>
           )
         }

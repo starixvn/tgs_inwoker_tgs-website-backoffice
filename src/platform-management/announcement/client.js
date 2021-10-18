@@ -42,3 +42,7 @@ export const useChangeAnnouncementStatus = (id, status) => {
 
   return usePut(url)
 }
+
+export const useDeleteAnnouncement = (id) => {
+  return useChangeAnnouncementStatus(id, "Archived")
+}

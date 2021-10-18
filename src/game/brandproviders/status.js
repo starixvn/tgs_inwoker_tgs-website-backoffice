@@ -34,16 +34,16 @@ const MaintenanceTrans = {
   en: Maintenance
 }
 
-export const Label = ({ value = "" }) => {
+export const Label = ({ value = "", ...props }) => {
   switch (value) {
     case Active:
-      return <Trans {...ActiveTrans} />
+      return <Trans {...ActiveTrans} {...props} />
 
     case Inactive:
-      return <Trans {...InactiveTrans} />
+      return <Trans {...InactiveTrans} {...props} />
 
     case Maintenance:
-      return <Trans {...MaintenanceTrans} />
+      return <Trans {...MaintenanceTrans} {...props} />
 
     default:
       return value
@@ -87,6 +87,7 @@ export const StatusMenu = ({ record = {}, onSubmitted, ...props }) => {
   if (!editable) {
     return (
       <Button
+        data-status={status}
         palette={toPalette(status)}
         isLoading={isLoading}
         disabled={isLoading}
@@ -104,17 +105,26 @@ export const StatusMenu = ({ record = {}, onSubmitted, ...props }) => {
         menu={
           <>
             {status != Active && (
-              <DropdownMenu.Item onClick={() => setSubmit(Active)}>
+              <DropdownMenu.Item
+                data-status={Active}
+                onClick={() => setSubmit(Active)}
+              >
                 <Label value={Active} />
               </DropdownMenu.Item>
             )}
             {status != Inactive && (
-              <DropdownMenu.Item onClick={() => setSubmit(Inactive)}>
+              <DropdownMenu.Item
+                data-status={Inactive}
+                onClick={() => setSubmit(Inactive)}
+              >
                 <Label value={Inactive} />
               </DropdownMenu.Item>
             )}
             {status != Maintenance && (
-              <DropdownMenu.Item onClick={() => setSubmit(Maintenance)}>
+              <DropdownMenu.Item
+                data-status={Maintenance}
+                onClick={() => setSubmit(Maintenance)}
+              >
                 <Label value={Maintenance} />
               </DropdownMenu.Item>
             )}
@@ -122,6 +132,7 @@ export const StatusMenu = ({ record = {}, onSubmitted, ...props }) => {
         }
       >
         <Button
+          data-status={status}
           palette={toPalette(status)}
           isLoading={isLoading}
           disabled={isLoading}
@@ -149,24 +160,38 @@ export const StatusMenuField = ({ name, size, ...props }) => {
           menu={
             <>
               {value != Active && (
-                <DropdownMenu.Item onClick={() => setValue(name, Active)}>
+                <DropdownMenu.Item
+                  data-status={Active}
+                  onClick={() => setValue(name, Active)}
+                >
                   <Label value={Active} />
                 </DropdownMenu.Item>
               )}
               {value != Inactive && (
-                <DropdownMenu.Item onClick={() => setValue(name, Inactive)}>
+                <DropdownMenu.Item
+                  data-status={Inactive}
+                  onClick={() => setValue(name, Inactive)}
+                >
                   <Label value={Inactive} />
                 </DropdownMenu.Item>
               )}
               {value != Maintenance && (
-                <DropdownMenu.Item onClick={() => setValue(name, Maintenance)}>
+                <DropdownMenu.Item
+                  data-status={Maintenance}
+                  onClick={() => setValue(name, Maintenance)}
+                >
                   <Label value={Maintenance} />
                 </DropdownMenu.Item>
               )}
             </>
           }
         >
-          <Button palette={toPalette(value)} size={size} {...props}>
+          <Button
+            data-status={status}
+            palette={toPalette(value)}
+            size={size}
+            {...props}
+          >
             <Label value={value} />
           </Button>
         </DropdownMenu>

@@ -103,7 +103,6 @@ const EditVerifyDialog = ({
     useVerifyPlatformBanner(brandId, record?.id, formData)
 
   const onSubmit = ({ remarks, reviewState }) => {
-    console.log("reviewState", reviewState)
     let data = {
       remarks,
       reviewState

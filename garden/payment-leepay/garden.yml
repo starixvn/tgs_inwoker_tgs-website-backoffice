@@ -11,7 +11,10 @@ services:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       LeePay__NatsUrl: "nats://nats:4222"
-      LeePay__CallbackBaseUrl: "http://operator-api.localhost"
+      LeePay__CallbackBaseUrl: "http://leepay.localhost"
+    ingresses:
+      - hostname: leepay.localhost
+        port: http
     ports:
       - name: http
         containerPort: 80

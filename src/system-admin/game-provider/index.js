@@ -333,7 +333,8 @@ const useColumns = ({ items = [], mutate }) => {
                 <GameProviderConfigListDisclosure gameProviderId={value?.id} />
                 <SubGameProviderListDisclosure gameProviderId={value?.id} />
                 <GameProviderGameListDisclosure
-                  id={`${value?.code}-game-list-dialog-disclosure`}
+                  id={`game-list-dialog-disclosure`}
+                  data-game-provider-code={value?.code}
                   gameProviderId={value?.id}
                   gameProviderCode={value?.code}
                 />

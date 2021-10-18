@@ -12,7 +12,7 @@ import AlertDialog from "../../dialog/Alert"
 export const PlayerClearWageringRequirementDisclosure = ({
   playerCode,
   onSubmitted,
-  ...prop
+  ...props
 }) => {
   let dialog = useModalState()
   let label = useTrans({
@@ -22,7 +22,9 @@ export const PlayerClearWageringRequirementDisclosure = ({
 
   return (
     <>
-      <Disclosure {...dialog}>{label}</Disclosure>
+      <Disclosure {...dialog} {...props}>
+        {label}
+      </Disclosure>
       {dialog.visible && (
         <ResetDialog
           playerCode={playerCode}
@@ -57,6 +59,7 @@ const ResetDialog = ({ playerCode, username, onSubmitted, dialog }) => {
     <>
       <Backdrop {...dialog}>
         <WarningConfirmFormDialog
+          id="clear-player-wagering-requirement-dialog"
           onSubmit={onSubmit}
           stopPropagation={true}
           onSubmitted={() => {
