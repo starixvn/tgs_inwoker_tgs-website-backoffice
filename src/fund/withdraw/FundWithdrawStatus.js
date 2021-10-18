@@ -12,8 +12,20 @@ const ReviewTrans = {
 
 const Approved = "Approved"
 const ApprovedTrans = {
+  zh: "待支付",
+  en: "Waiting Payment"
+}
+
+//TODO: rm DeprecatedApprovedTrans for v1.8
+const DeprecatedApprovedTrans = {
   zh: "已通过",
   en: "Approved"
+}
+
+const Paid = "Paid"
+const PaidTrans = {
+  zh: "已支付",
+  en: "Paid"
 }
 
 const Rejected = "Rejected"
@@ -31,7 +43,14 @@ export const FundWithdrawStatusLabel = ({ value, ...props }) => {
     case Review:
       return <Trans {...ReviewTrans} {...props} />
     case Approved:
-      return <Trans {...ApprovedTrans} {...props} />
+      if (isDev()) {
+        return <Trans {...ApprovedTrans} {...props} />
+      }
+
+      //TODO: rm DeprecatedApprovedTrans for v1.8
+      return <Trans {...DeprecatedApprovedTrans} {...props} />
+    case Paid:
+      return <Trans {...PaidTrans} {...props} />
     case Rejected:
       return <Trans {...RejectedTrans} {...props} />
     default:
@@ -52,14 +71,22 @@ export const FundWithdrawStatusSelect = ({ placeholder, ...props }) => {
       value: Review
     },
     {
-      label: useTrans(ApprovedTrans),
+      label: useTrans(isDev() ? ApprovedTrans : DeprecatedApprovedTrans), //TODO: rm DeprecatedApprovedTrans for v1.8
       value: Approved
-    },
-    {
-      label: useTrans(RejectedTrans),
-      value: Rejected
     }
   ]
+
+  if (isDev()) {
+    options.push({
+      label: useTrans(PaidTrans),
+      value: Paid
+    })
+  }
+
+  options.push({
+    label: useTrans(RejectedTrans),
+    value: Rejected
+  })
 
   return <Select placeholder={placeholder} options={options} {...props} />
 }
@@ -67,5 +94,6 @@ export const FundWithdrawStatusSelect = ({ placeholder, ...props }) => {
 export default {
   Review,
   Approved,
+  Paid,
   Rejected
 }
