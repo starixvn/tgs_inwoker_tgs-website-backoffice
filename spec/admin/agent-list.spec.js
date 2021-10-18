@@ -28,7 +28,6 @@ describe("Admin user", () => {
       waitUntil: "networkidle0"
     })
 
-    //TODO: gotoBrand page and set montnly
     await gotoAgentListPage()
   })
 

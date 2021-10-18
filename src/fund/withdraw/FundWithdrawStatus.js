@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import { isDev } from "../../env"
 
 const Review = "Review"
 const ReviewTrans = {
