@@ -135,7 +135,11 @@ const BodyContent = ({ brandId }) => {
             isLoading={isLoading}
           />
           {isDepositTab && (
-            <AddBrandPaymentButton brandId={brandId} onSubmitted={mutate} />
+            <AddBrandPaymentButton
+              id="add-payment-dialog-disclosure"
+              brandId={brandId}
+              onSubmitted={mutate}
+            />
           )}
         </Level>
       }
