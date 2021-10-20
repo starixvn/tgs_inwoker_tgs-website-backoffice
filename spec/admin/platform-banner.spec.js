@@ -51,12 +51,35 @@ describe("Admin user", () => {
 
     await changeOrder(brandId)
 
-    let updatedBanner = await editValidBanner(brandId, banner)
+    await editValidBanner(brandId, banner)
+    await toEffectiveTab()
+    await deleteBanner()
 
-    //TODO: banner should back to verify tab?
-    // await reject(brandId, updatedBanner)
+    banner = await addBanner(brandId)
+    await verifyBanner(brandId, banner, "reject")
+    await toRejectedTab()
+    await deleteBanner()
   })
 
+  const deleteBanner = async () => {
+    let Dialog = `#delete-banner-dialog`
+    await page.click(`${Dialog}-disclosure`)
+    await page.waitForSelector(Dialog)
+
+    let id = await page.inputValue(`${Dialog} input[name="id"]`)
+    let ExpectedOrder = `/api/banner/archive/${id}`
+
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().endsWith(ExpectedOrder) && response.status() === 200
+        )
+      }),
+      page.click(`${Dialog} button[type="submit"]`)
+    ])
+  }
+
+  /*
   const reject = async (brandId, banner) => {
     await toInVerifyTab()
     await verifyBanner(brandId, banner, "reject")
@@ -69,6 +92,7 @@ describe("Admin user", () => {
     let subject = await page.textContent(SubjectSelector)
     expect(subject).to.equal(banner.subject)
   }
+  */
 
   const editValidBanner = async (brandId, banner, index = 0) => {
     await toEffectiveTab()

@@ -278,17 +278,15 @@ const BodyContent = ({ brandId }) => {
           />
           {data?.items?.length > 0 && (
             <Box>
-              {isDev() && (
-                <DownloadButton
-                  id="export-report"
-                  isLoading={isLoading}
-                  href={urlWith(
-                    toSearchParams(),
-                    `${API}/exportDeposit/${brandId}`
-                  )}
-                  download="Deposit.xlsx"
-                />
-              )}
+              <DownloadButton
+                id="export-report"
+                isLoading={isLoading}
+                href={urlWith(
+                  toSearchParams(),
+                  `${API}/exportDeposit/${brandId}`
+                )}
+                download="Deposit.xlsx"
+              />
             </Box>
           )}
         </Level>
@@ -321,7 +319,7 @@ const Summary = ({ total }) => {
     <Blockquote borderColor="primary">
       <Heading use="h5">
         <Trans zh="充值金额总计：" en="Total Deposit Amount：" />
-        <FormattedNumberDecimal value={total} />
+        <FormattedNumberDecimal id="total-amount" value={total} />
       </Heading>
     </Blockquote>
   )
@@ -612,16 +610,13 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       })
     ]
 
-    if (isDev()) {
-      //TODO: rm isDev() for v1.8
-      columns.push(
-        textColumn({
-          accessor: "reviewedUserName",
-          Header: <Trans zh="操作者" en="Operator" />,
-          disableSortBy: true
-        })
-      )
-    }
+    columns.push(
+      textColumn({
+        accessor: "reviewedUserName",
+        Header: <Trans zh="操作者" en="Operator" />,
+        disableSortBy: true
+      })
+    )
 
     columns.push(
       textColumn({

@@ -19,6 +19,7 @@ import {
   addManualBankCard,
   applyManualWithdrawForm
 } from "../player"
+import { AdminUserName } from "../auth"
 
 let browser
 let context
@@ -31,7 +32,10 @@ let player
 describe("Admin user", () => {
   before(async () => {
     browser = await chromium.launch({ headless: headless() })
-    context = await browser.newContext({ storageState: StorageState.Admin })
+    context = await browser.newContext({
+      acceptDownloads: true,
+      storageState: StorageState.Admin
+    })
   })
 
   beforeEach(async () => {
@@ -123,19 +127,36 @@ describe("Admin user", () => {
       page.click(`${VerifyDepositDialogSelector} button[data-type="approve"]`)
     ])
 
-    let StatusSelector = `${TableSelector} [data-column-id="status"] [data-status]`
+    await page.waitForSelector(VerifyDepositDialogSelector, {
+      state: "detached"
+    })
+
+    let StatusSelector = `${TableSelector} [data-column-id="status"] span`
     await page.waitForSelector(StatusSelector)
-    /*
-    //FIXME: not work
     let status = await page.$eval(
       StatusSelector,
       ({ dataset }) => dataset.status
     )
     expect(status).to.equal("Approved")
-    */
+
+    let OperatorSelector = `${TableSelector} [data-column-id="reviewedUserName"]`
+    let operator = await page.textContent(OperatorSelector)
+    expect(operator).to.equal(AdminUserName)
+
+    let TotalAmountSelector = `#total-amount`
+    let totalAmountString = await page.textContent(TotalAmountSelector)
+    expect(depositAmountString).to.equal(totalAmountString)
 
     let balance = await wallet(platformToken, player.token)
     expect(balance).to.equal(expectedBalance)
+
+    let [download] = await Promise.all([
+      page.waitForEvent("download"),
+      page.click(`#export-report`)
+    ])
+
+    let path = await download.path()
+    expect(path).to.be.not.empty
   }
 
   const rejectDeposit = async () => {
@@ -225,11 +246,33 @@ describe("Admin user", () => {
       page.click(`${VerifyDialogSelector} button[data-type="approve"]`)
     ])
 
+    await page.waitForSelector(VerifyDialogSelector, {
+      state: "detached"
+    })
+
     let StatusSelector = `${TableSelector} [data-column-id="status"] [data-status]`
     await page.waitForSelector(StatusSelector)
+    await page.waitForSelector(StatusSelector)
+    let status = await page.$eval(
+      StatusSelector,
+      ({ dataset }) => dataset.status
+    )
+    expect(status).to.equal("Approved")
+
+    let OperatorSelector = `${TableSelector} [data-column-id="reviewedUserName"]`
+    let operator = await page.textContent(OperatorSelector)
+    expect(operator).to.equal(AdminUserName)
 
     let balance = await wallet(platformToken, player.token)
     expect(balance).to.equal(expectedBalance)
+
+    let [download] = await Promise.all([
+      page.waitForEvent("download"),
+      page.click(`#export-report`)
+    ])
+
+    let path = await download.path()
+    expect(path).to.be.not.empty
   }
 
   const selectManualBrandPayment = async () => {

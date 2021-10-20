@@ -17,11 +17,6 @@ export const ConfirmDeleteDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
-  if (!isDev()) {
-    //TODO: remove for v1.8
-    return null
-  }
-
   return (
     <>
       <DeleteDisclosure {...dialog} {...props} />

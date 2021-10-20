@@ -51,6 +51,7 @@ import { today } from "../../date/range"
 import {
   FundWithdrawStatusLabel,
   FundWithdrawStatusSelect,
+  isFundApproved,
   isFundUnderReview
 } from "./FundWithdrawStatus"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
@@ -74,6 +75,9 @@ import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
 import subDays from "date-fns/subDays"
+import { useBrandPaymentList } from "../../system/brandpayments/client"
+import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
+import { FundWithdrawPaidDialogDisclosure } from "./FundWithdrawPaid"
 
 export { Code }
 
@@ -150,6 +154,20 @@ const BodyContent = ({ brandId }) => {
     orderby: SortOrder.Descending,
     culture
   })
+
+  let {
+    isLoading: isLoadingBrandPayment,
+    data: brandPaymentList,
+    error: brandPaymentListError
+  } = useBrandPaymentList({
+    brandId,
+    transferType: BrandPaymentTransferType.Withdrawal,
+    showAll: true
+  })
+
+  let manualBrandPaymentIdList = brandPaymentList?.items
+    ?.filter?.(({ paymentName, ...rest }) => paymentName == "Manual")
+    .map(({ id }) => id)
 
   let {
     data = {},
@@ -229,7 +247,13 @@ const BodyContent = ({ brandId }) => {
   let DataRetentionDays = 90
   let minDate = subDays(todayRange.start, DataRetentionDays)
 
-  let columns = useColumns({ mutate, items, brandId, setDelayUpdate })
+  let columns = useColumns({
+    mutate,
+    items,
+    brandId,
+    setDelayUpdate,
+    manualBrandPaymentIdList
+  })
   return (
     <PageContent
       title={<Trans zh="提款列表" en="Withdraw List" />}
@@ -259,17 +283,15 @@ const BodyContent = ({ brandId }) => {
           />
           {data?.items?.length > 0 && (
             <Box>
-              {isDev() && (
-                <DownloadButton
-                  id="export-report"
-                  isLoading={isLoading}
-                  href={urlWith(
-                    toSearchParams(),
-                    `${API}/exportWithdraw/${brandId}`
-                  )}
-                  download="Withdraw.xlsx"
-                />
-              )}
+              <DownloadButton
+                id="export-report"
+                isLoading={isLoading}
+                href={urlWith(
+                  toSearchParams(),
+                  `${API}/exportWithdraw/${brandId}`
+                )}
+                download="Withdraw.xlsx"
+              />
             </Box>
           )}
         </Level>
@@ -302,7 +324,7 @@ const Summary = ({ total }) => {
     <Blockquote borderColor="primary">
       <Heading use="h5">
         <Trans zh="提款金额总计：" en="Total Withdraw Amount：" />
-        <FormattedNumberDecimal value={total} />
+        <FormattedNumberDecimal id="total-amount" value={total} />
       </Heading>
     </Blockquote>
   )
@@ -482,7 +504,13 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
+const useColumns = ({
+  brandId,
+  items = [],
+  mutate,
+  setDelayUpdate,
+  manualBrandPaymentIdList = []
+}) => {
   let hasUpdateMenu = useIsDisplayMenuByRoute([Update])
   return useMemo(() => {
     let columns = [
@@ -533,16 +561,13 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       })
     ]
 
-    if (isDev()) {
-      //TODO: rm isDev() for v1.8
-      columns.push(
-        textColumn({
-          accessor: "reviewedUserName",
-          Header: <Trans zh="操作者" en="Operator" />,
-          disableSortBy: true
-        })
-      )
-    }
+    columns.push(
+      textColumn({
+        accessor: "reviewedUserName",
+        Header: <Trans zh="操作者" en="Operator" />,
+        disableSortBy: true
+      })
+    )
 
     columns.push(
       textColumn({
@@ -560,13 +585,30 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
           accessor: (row) => row,
           disableSortBy: true,
           Header: <Trans zh="操作" en="Actions" />,
-          Cell: ({ value }) => {
+          Cell: ({ value, status }) => {
+            let { brandPaymentId } = value
             let underReview = isFundUnderReview(value?.status)
+
+            let reviewManualPaid =
+              isFundApproved(value?.status) &&
+              manualBrandPaymentIdList.includes(brandPaymentId)
             return (
               <Set alignX="center">
                 {underReview && (
                   <VerifyFundWithdrawDisclosure
                     id="verify-withdraw-dialog-disclosure"
+                    brandId={brandId}
+                    formId={value.id}
+                    onSubmitted={mutate}
+                    onVisibleChange={(visible) => {
+                      let delayUpdate = visible
+                      setDelayUpdate(delayUpdate)
+                    }}
+                  />
+                )}
+                {reviewManualPaid && (
+                  <FundWithdrawPaidDialogDisclosure
+                    id="fund-withdraw-paid-dialog-disclosure"
                     brandId={brandId}
                     formId={value.id}
                     onSubmitted={mutate}
@@ -593,5 +635,5 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
     }
 
     return columns
-  }, [JSON.stringify(items)])
+  }, [JSON.stringify(items), JSON.stringify(manualBrandPaymentIdList)])
 }
