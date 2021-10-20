@@ -8,9 +8,11 @@ import {
   usePostFormData
 } from "../../client"
 
-export const API = "/api/balanceChangeReport"
+export const API = "/api/PlayerReport"
 
 export const useBalanceChangeReportList = (searchParams) => {
-  let url = searchParams ? urlWith(searchParams, API) : ""
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/playersAccountChanges`)
+    : ""
   return useGet(url)
 }

@@ -26,6 +26,7 @@ import { EditBrandBetLimitGameProviderBetLimit } from "./BrandBetLimitGameProvid
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { BrandLogoDialogDisclosure } from "./BrandLogoDialog"
+import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
 
 export { Code }
 
@@ -228,6 +229,10 @@ const useColumns = ({ items = [], mutate }) => {
                   record={value}
                   onSubmitted={mutate}
                 />
+                {/* <PlatformDomainDialogDisclosure
+                  id="platform-domain-dialog-disclosure"
+                  brandId={value.id}
+                /> */}
                 <BrandLogoDialogDisclosure
                   id="platform-logo-dialog-disclosure"
                   brandId={value.id}

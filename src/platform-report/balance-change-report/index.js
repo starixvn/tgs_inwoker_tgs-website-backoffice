@@ -30,6 +30,7 @@ import { urlWith } from "../../client"
 import { isDev } from "../../env"
 import sequenceColumn from "../../table/column/sequence"
 import { TransactionTypeSelect } from "./TransactionTypeSelect"
+import dateTimeColumn from "../../table/column/dateTime"
 
 export { Code }
 
@@ -193,6 +194,11 @@ const useColumns = ({ brandId, items = [] }) => {
       textColumn({
         accessor: "username",
         Header: <Trans zh="用户名" en="Username" />,
+        disableSortBy: true
+      }),
+      dateTimeColumn({
+        accessor: "recordedOn",
+        Header: <Trans zh="操作时间" en="Time" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

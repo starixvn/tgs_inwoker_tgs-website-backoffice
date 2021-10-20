@@ -29,6 +29,7 @@ import { InputField } from "../../input/Input"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { useFormContext, useWatch, useFieldArray } from "react-hook-form"
+import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
 
 export const PlatformDomainDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -51,7 +52,13 @@ export const PlatformDomainDialogDisclosure = ({ brandId, ...props }) => {
 }
 
 const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
-  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
+  let {
+    isLoading,
+    data: record,
+    error,
+    mutate,
+    deleteCache
+  } = useBrand(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -137,6 +144,8 @@ const ViewOrEditDialog = ({
 
 const DomainFieldArrayName = "domains"
 const FormBody = ({ readOnly }) => {
+  let editable = !readOnly
+
   let { control } = useFormContext()
   let fieldArray = useFieldArray({
     name: DomainFieldArrayName,
@@ -157,6 +166,16 @@ const FormBody = ({ readOnly }) => {
       ))}
       {readOnly && !fieldArray.fields.length && (
         <Trans zh="无资料" en="No Data" />
+      )}
+      {editable && (
+        <Button
+          id="add-platform-domain"
+          onClick={(event) => {
+            fieldArray.append("")
+          }}
+        >
+          <Icon icon={faPlus} type="font-awesome" />
+        </Button>
       )}
     </FieldStack>
   )
