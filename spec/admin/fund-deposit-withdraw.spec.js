@@ -127,9 +127,18 @@ describe("Admin user", () => {
       page.click(`${VerifyDepositDialogSelector} button[data-type="approve"]`)
     ])
 
-    await page.waitForSelector(VerifyDepositDialogSelector, {
-      state: "detached"
-    })
+    let brandId = await page.inputValue(`select[name="brandId"]`)
+    await Promise.all([
+      page.waitForSelector(VerifyDepositDialogSelector, {
+        state: "detached"
+      }),
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`/api/deposit/${brandId}?`) &&
+          response.status() === 200
+        )
+      })
+    ])
 
     let StatusSelector = `${TableSelector} [data-column-id="status"] span`
     await page.waitForSelector(StatusSelector)
@@ -246,12 +255,20 @@ describe("Admin user", () => {
       page.click(`${VerifyDialogSelector} button[data-type="approve"]`)
     ])
 
-    await page.waitForSelector(VerifyDialogSelector, {
-      state: "detached"
-    })
+    let brandId = await page.inputValue(`select[name="brandId"]`)
+    await Promise.all([
+      page.waitForSelector(VerifyDialogSelector, {
+        state: "detached"
+      }),
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`/api/withdraw/${brandId}?`) &&
+          response.status() === 200
+        )
+      })
+    ])
 
     let StatusSelector = `${TableSelector} [data-column-id="status"] [data-status]`
-    await page.waitForSelector(StatusSelector)
     await page.waitForSelector(StatusSelector)
     let status = await page.$eval(
       StatusSelector,
@@ -265,6 +282,36 @@ describe("Admin user", () => {
 
     let balance = await wallet(platformToken, player.token)
     expect(balance).to.equal(expectedBalance)
+
+    let PaidDialogSelector = `#fund-withdraw-paid-dialog`
+    await page.click(`${PaidDialogSelector}-disclosure`)
+    await page.waitForSelector(PaidDialogSelector)
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`/api/withdraw/${formId}`) &&
+          response.status() === 200
+        )
+      }),
+      page.click(`${PaidDialogSelector} button[type="submit"]`)
+    ])
+
+    await Promise.all([
+      page.waitForSelector(PaidDialogSelector, {
+        state: "detached"
+      }),
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`/api/withdraw/${brandId}?`) &&
+          response.status() === 200
+        )
+      })
+    ])
+
+    status = ""
+    await page.waitForSelector(StatusSelector)
+    status = await page.$eval(StatusSelector, ({ dataset }) => dataset.status)
+    expect(status).to.equal("Paid")
 
     let [download] = await Promise.all([
       page.waitForEvent("download"),
