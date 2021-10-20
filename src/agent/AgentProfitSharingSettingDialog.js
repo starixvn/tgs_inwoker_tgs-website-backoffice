@@ -82,12 +82,7 @@ export const AgentProfitSharingSettingDialogDisclosure = ({
     return <Disclosure disabled isLoading></Disclosure>
   }
 
-  let maxLevelSize =
-    MaxNumber /*isMonthlySettlementInterval(brand?.settlementIntervalType)
-    ? MaxNumber
-    : 1
-    */
-
+  let maxLevelSize = 1 //MaxNumber
   return (
     <SettingDisclosure
       name={name}
