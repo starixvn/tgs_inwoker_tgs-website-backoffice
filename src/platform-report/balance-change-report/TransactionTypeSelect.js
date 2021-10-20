@@ -137,16 +137,16 @@ export const TransactionTypeSelect = ({ placeholder, ...props }) => {
 
   let options = [
     {
-      label: useTrans(GameProviderDepositTrans),
-      value: GameProviderDeposit
+      label: useTrans(AdjustTrans),
+      value: Adjust
     },
     {
-      label: useTrans(GameProviderWithdrawalTrans),
-      value: GameProviderWithdrawal
+      label: useTrans(RebateTrans),
+      value: Rebate
     },
     {
-      label: useTrans(BonusTrans),
-      value: Bonus
+      label: useTrans(PromotionTrans),
+      value: Promotion
     }
   ]
 
@@ -161,8 +161,6 @@ export const TransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...GameProviderDepositTrans} />
     case GameProviderWithdrawal:
       return <Trans {...GameProviderWithdrawalTrans} />
-
-    //TODO: able to remve the following?
     case Deposit:
       return <Trans {...DepositTrans} />
     case Withdrawal:
