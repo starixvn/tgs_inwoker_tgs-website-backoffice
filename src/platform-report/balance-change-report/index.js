@@ -29,7 +29,10 @@ import textColumn from "../../table/column/textColumn"
 import { urlWith } from "../../client"
 import { isDev } from "../../env"
 import sequenceColumn from "../../table/column/sequence"
-import { TransactionTypeSelect } from "./TransactionTypeSelect"
+import {
+  TransactionTypeLabel,
+  TransactionTypeSelect
+} from "./TransactionTypeSelect"
 import dateTimeColumn from "../../table/column/dateTime"
 
 export { Code }
@@ -197,9 +200,15 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       dateTimeColumn({
+        Header: <Trans zh="操作时间" en="Operation Time" />,
         accessor: "recordedOn",
-        Header: <Trans zh="操作时间" en="Time" />,
         disableSortBy: true
+      }),
+      textColumn({
+        accessor: "transactionType",
+        Header: <Trans zh="交易类型" en="Transaction Type" />,
+        disableSortBy: true,
+        Cell: ({ value }) => <TransactionTypeLabel value={value} />
       }),
       numberDecimalColumn({
         accessor: "amount",

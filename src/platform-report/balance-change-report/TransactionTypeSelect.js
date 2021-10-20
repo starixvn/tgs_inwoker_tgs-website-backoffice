@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { useTrans } from "../../i18n"
+import { useTrans, Trans } from "../../i18n"
 import { Select } from "../../select/Select"
 
 const GameProviderDeposit = "GameProviderDeposit"
