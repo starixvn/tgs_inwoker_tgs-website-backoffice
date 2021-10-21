@@ -53,7 +53,33 @@ describe("Admin user", () => {
 
     let updatedAnnouncement = await editEffectiveAnnouncement(announcement)
     await rejectAnnouncement(updatedAnnouncement)
+    await deleteAnnouncement()
+
+    announcement = await addAnnouncement()
+    await toInVerifyTab()
+    await verifyAnnouncement(announcement, "approve")
+    await toEffectiveTab()
+    await deleteAnnouncement()
   })
+
+  const deleteAnnouncement = async () => {
+    let Dialog = `#delete-announcement-dialog`
+    await page.click(`${Dialog}-disclosure`)
+    await page.waitForSelector(Dialog)
+
+    let id = await page.inputValue(`${Dialog} input[name="id"]`)
+    let ExpectedOrder = `/api/announcement/${id}/status/archived`
+
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().toLowerCase().endsWith(ExpectedOrder) &&
+          response.status() === 200
+        )
+      }),
+      page.click(`${Dialog} button[type="submit"]`)
+    ])
+  }
 
   const toInVerifyTab = async () => {
     await page.click(`button#InVerify`)

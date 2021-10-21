@@ -50,14 +50,14 @@ pipeline {
 		}
 		stage('Docker Build') {   
             steps {	  			    
-                sh "sudo docker build -t ${Registry}${Image}:${TAG} ."
-                sh "sudo docker build -t ${Registry}${Image}:$env.kube_ns ."
+                sh "docker build -t ${Registry}${Image}:${TAG} ."
+                sh "docker build -t ${Registry}${Image}:$env.kube_ns ."
             }
         }			
         stage('Docker Push') {   
             steps {	  
-                sh "sudo docker push ${Registry}${Image}:${TAG}"
-                sh "sudo docker push ${Registry}${Image}:$env.kube_ns"
+                sh "docker push ${Registry}${Image}:${TAG}"
+                sh "docker push ${Registry}${Image}:$env.kube_ns"
             }
         }	
         stage('Deployment') {   
