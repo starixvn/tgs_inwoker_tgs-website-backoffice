@@ -34,7 +34,6 @@ import {
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import clone from "clone-deep"
 import { useFundWithdrawFormList } from "./client"
-import FundReviewStatus from "../FundReviewStatus"
 import { SortOrder } from "../../table/order"
 import { sortBy, head, differenceBy } from "lodash-es"
 import { subDays, addSeconds, setMilliseconds } from "date-fns"
@@ -43,6 +42,7 @@ import { Code, View, Update } from "./menu"
 import TopNavNotifyItem from "../TopNavNotifyItem"
 import { withdraw } from "../../audio/withdraw"
 import { FundWithdrawVerified } from "./VerifyFundWithdraw"
+import FundWithdrawStatus from "./FundWithdrawStatus"
 
 export const FundWithdrawTopNavItem = ({
   href = `${DefaultUrl}/${Code}`,
@@ -60,11 +60,14 @@ export const FundWithdrawTopNavItem = ({
 
 const Body = ({ brandId, ...props }) => {
   let playAlertSound = useIsDisplayMenuByCodes([ParentCode, Code, Update])
+
   return (
     <TopNavNotifyItem
       brandId={brandId}
       audio={playAlertSound ? withdraw() : undefined}
       useFetch={useFundWithdrawFormList}
+      status={FundWithdrawStatus.Review} //for v1.8
+      // status={[FundWithdrawStatus.Review, FundWithdrawStatus.Approved]} //for v1.9
       updateFetchEventName={FundWithdrawVerified}
       {...props}
     >

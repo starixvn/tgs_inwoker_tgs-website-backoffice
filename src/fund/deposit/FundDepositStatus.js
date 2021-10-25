@@ -1,7 +1,10 @@
 import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
-import { Trans, useTrans } from "../i18n"
-import Select from "../select/Select"
+import { Select } from "../../select/Select"
+import { MultiSelect } from "../../select/MultiSelect"
+import { Trans, useTrans } from "../../i18n"
+import { useForm, useFormContext, Controller, useWatch } from "react-hook-form"
+import { isDev } from "../../env"
 
 const WaitingPayment = "WaitingPayment"
 const WaitingPaymentTrans = {
@@ -27,11 +30,11 @@ const RejectedTrans = {
   en: "Rejected"
 }
 
-export const isFundUnderReview = (value) => value === Review
+export const isFundDepositUnderReview = (value) => value === Review
 
-export const isFundApproved = (value) => value === Approved
+export const isFundDepositApproved = (value) => value === Approved
 
-export const FundReviewStatusLabel = ({ value, ...props }) => {
+export const FundDepositStatusLabel = ({ value, ...props }) => {
   switch (value) {
     case WaitingPayment:
       return <Trans {...WaitingPaymentTrans} {...props} />
@@ -46,7 +49,12 @@ export const FundReviewStatusLabel = ({ value, ...props }) => {
   }
 }
 
-export const FundReviewStatusSelect = ({ placeholder, ...props }) => {
+export const FundDepositStatusSelect = ({
+  name = "status",
+  placeholder,
+  isMulti = true,
+  ...props
+}) => {
   let defaultPlaceholder = useTrans({
     zh: "状态",
     en: "Status"
@@ -72,7 +80,26 @@ export const FundReviewStatusSelect = ({ placeholder, ...props }) => {
     }
   ]
 
-  return <Select placeholder={placeholder} options={options} {...props} />
+  //TODO: for v1.8, rm for v1.9
+  return (
+    <Select
+      name={name}
+      placeholder={placeholder}
+      options={options}
+      {...props}
+    />
+  )
+
+  //TODO: wait for bo-api support
+  return (
+    <MultiSelect
+      name={name}
+      placeholder={placeholder}
+      options={options}
+      isMulti={isMulti}
+      {...props}
+    />
+  )
 }
 
 export default {

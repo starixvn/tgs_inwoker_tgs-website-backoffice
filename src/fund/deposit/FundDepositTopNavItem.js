@@ -39,6 +39,7 @@ import { Code, View, Update } from "./menu"
 import TopNavNotifyItem from "../TopNavNotifyItem"
 import { deposit } from "../../audio/deposit"
 import { FundDepositVerified } from "./VerifyFundDeposit"
+import FundDepositStatus from "./FundDepositStatus"
 
 export const FundDepositTopNavItem = ({
   href = `${DefaultUrl}/${Code}`,
@@ -61,6 +62,8 @@ const Body = ({ brandId, ...props }) => {
       brandId={brandId}
       audio={playAlertSound ? deposit() : undefined}
       useFetch={useFundDepositFormList}
+      status={FundDepositStatus.Review} //v1.8
+      // status={[FundDepositStatus.Review, FundDepositStatus.WaitingPayment]} //v1.9
       updateFetchEventName={FundDepositVerified}
       {...props}
     >

@@ -311,8 +311,11 @@ describe("Admin user", () => {
     await toInVerifyTab()
 
     let FirstRowIndex = 0
+    let SubjectSelector = `[data-row-index="${FirstRowIndex}"] [data-column-id="subject"]`
+    await page.waitForSelector(SubjectSelector)
+
     let subject = await page.$eval(
-      `[data-row-index="${FirstRowIndex}"] [data-column-id="subject"]`,
+      SubjectSelector,
       ({ textContent }) => textContent
     )
     expect(subject).to.equal(Announcement.subject)
