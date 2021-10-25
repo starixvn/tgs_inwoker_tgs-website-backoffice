@@ -28,7 +28,6 @@ import {
 } from "bumbag"
 import { FormattedNumberDecimal, Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
-import FundReviewStatus from "./FundReviewStatus"
 import { SortOrder } from "../table/order"
 import { sortBy, head, differenceBy } from "lodash-es"
 import { subDays, addSeconds, setMilliseconds, formatISO } from "date-fns"
@@ -43,6 +42,7 @@ export const TopNavNotifyItem = ({
   href,
   color,
   useFetch,
+  status,
   updateFetchEventName = "",
   audio,
   children,
@@ -56,7 +56,7 @@ export const TopNavNotifyItem = ({
     sortby: "CreatedOn",
     orderby: SortOrder.Descending,
     rows: 20,
-    status: FundReviewStatus.Review,
+    status,
     bc: queryStartTime(),
     ec: queryEndTime()
   })
@@ -125,7 +125,7 @@ export const TopNavNotifyItem = ({
             let state = {
               fromNotify: params.ec.getTime(),
               brandId,
-              status: FundReviewStatus.Review
+              status
             }
 
             let samePage = pathname == href

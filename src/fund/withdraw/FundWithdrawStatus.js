@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import { MultiSelect } from "../../select/MultiSelect"
 import { isDev } from "../../env"
 
 const Review = "Review"
@@ -47,7 +48,11 @@ export const FundWithdrawStatusLabel = ({ value, ...props }) => {
   }
 }
 
-export const FundWithdrawStatusSelect = ({ placeholder, ...props }) => {
+export const FundWithdrawStatusSelect = ({
+  placeholder,
+  isMulti = true,
+  ...props
+}) => {
   let defaultPlaceholder = useTrans({
     zh: "状态",
     en: "Status"
@@ -75,7 +80,18 @@ export const FundWithdrawStatusSelect = ({ placeholder, ...props }) => {
     value: Rejected
   })
 
+  // TODO: for v1.8, rm for v1.9
   return <Select placeholder={placeholder} options={options} {...props} />
+
+  // v1.9
+  return (
+    <MultiSelect
+      placeholder={placeholder}
+      options={options}
+      isMulti={isMulti}
+      {...props}
+    />
+  )
 }
 
 export default {

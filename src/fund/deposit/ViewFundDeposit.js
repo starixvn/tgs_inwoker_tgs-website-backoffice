@@ -31,7 +31,7 @@ import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import Separator from "../../layout/Separator"
-import { FundReviewStatusLabel } from "../FundReviewStatus"
+import { FundDepositStatusLabel } from "./FundDepositStatus"
 import Textarea, { TextareaField } from "../../textarea"
 import Input from "../../input/Input"
 
@@ -156,7 +156,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
             <Trans zh="状态" en="Status" />
           </NormalLabel>
           <Box alignY="center">
-            <FundReviewStatusLabel value={record?.status} />
+            <FundDepositStatusLabel value={record?.status} />
           </Box>
 
           {hasAttachment && (
