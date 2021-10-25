@@ -425,10 +425,12 @@ const SearchBar = ({
     en: "Channel Name"
   })
 
+  /*
   let paymentMethodPlaceholder = useTrans({
     zh: "提款类型",
     en: "Withdraw Method"
   })
+  */
 
   let externalIdPlaceholder = useTrans({
     zh: "三方订单编号",
@@ -453,10 +455,10 @@ const SearchBar = ({
               showEmptyFieldValueAddonAfter
               placeholder={channelNameInputPlaceholder}
             />
-            <PaymentMethodSelect
+            {/* <PaymentMethodSelect
               name="method"
               placeholder={paymentMethodPlaceholder}
-            />
+            /> */}
             <FundWithdrawStatusSelect name="status" />
             <InputField
               name="thirdOrderNo"
