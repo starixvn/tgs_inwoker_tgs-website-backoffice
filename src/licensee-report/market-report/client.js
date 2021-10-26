@@ -11,7 +11,7 @@ import { sortBy, groupBy } from "lodash"
 import { groupWith, eqProps, propEq } from "ramda"
 import clone from "clone-deep"
 
-const API = "/api/LicenseeMarketReport"
+export const API = "/api/LicenseeMarketReport"
 
 export const useLicenseeMarketReportList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""

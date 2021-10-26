@@ -16,6 +16,19 @@ export const MultiSelect = ({
   let formContext = useFormContext()
   control = control ?? formContext.control
 
+  if (name && control && props.isLoading) {
+    return (
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={props?.defaultValue}
+        render={() => {
+          return <Select isLoading options={[]} />
+        }}
+      />
+    )
+  }
+
   //let autoRegisterFormField = name && control
   return (
     <Controller
@@ -50,7 +63,7 @@ export const MultiSelect = ({
             value={controlledValue}
             onChange={(data) => {
               let value = data.map(({ value }) => value)
-              formContext.setValue("status", value)
+              formContext.setValue(name, value)
             }}
             isMulti={isMulti}
             styles={{

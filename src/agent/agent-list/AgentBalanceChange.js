@@ -191,10 +191,12 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
+    /*
     {
       label: useTrans(DepositTrans),
       value: Deposit
     },
+    */
     {
       label: useTrans(WithdrawalTrans),
       value: Withdrawal
