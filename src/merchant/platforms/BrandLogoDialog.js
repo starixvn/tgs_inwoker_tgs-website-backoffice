@@ -125,7 +125,9 @@ const ViewOrEditDialog = ({
       dialog={dialog}
       title={title}
       showActionButtons={readOnly ? false : true}
-      footer={readOnly ? <CloseButtonFooter alignX="right" /> : null}
+      footer={
+        readOnly ? <CloseButtonFooter alignX="right" dialog={dialog} /> : null
+      }
       minWidth="40vw"
       maxWidth="70vw"
     >

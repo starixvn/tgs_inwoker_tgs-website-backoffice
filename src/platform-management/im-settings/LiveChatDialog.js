@@ -218,7 +218,9 @@ const AddLiveChatDialog = ({ brandId, dialog, onSubmitted }) => {
       width="60vw"
       maxWidth="80vw"
       showActionButtons={readOnly ? false : true}
-      footer={readOnly ? <CloseButtonFooter alignX="right" /> : null}
+      footer={
+        readOnly ? <CloseButtonFooter alignX="right" dialog={dialog} /> : null
+      }
     >
       <FormBody readOnly={readOnly} />
     </FormDialog>
@@ -270,7 +272,9 @@ const EditLiveChatDialog = ({ brandId, record, dialog, onSubmitted }) => {
       width="60vw"
       maxWidth="80vw"
       showActionButtons={readOnly ? false : true}
-      footer={readOnly ? <CloseButtonFooter alignX="right" /> : null}
+      footer={
+        readOnly ? <CloseButtonFooter alignX="right" dialog={dialog} /> : null
+      }
     >
       <FormBody readOnly={readOnly} />
     </FormDialog>

@@ -27,9 +27,10 @@ import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
 import { InputField } from "../../input/Input"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
-import { faTimes } from "@fortawesome/free-solid-svg-icons"
+import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { useFormContext, useWatch, useFieldArray } from "react-hook-form"
 import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { DomainListDialog } from "../../dialog/DomainListDialog"
 
 export const PlatformDomainDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -52,6 +53,9 @@ export const PlatformDomainDialogDisclosure = ({ brandId, ...props }) => {
 }
 
 const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
+  let editable = useIsDisplayMenuByRoute([Update])
+  let readOnly = !editable
+
   let {
     isLoading,
     data: record,
@@ -68,119 +72,26 @@ const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
     return <AlertDialog {...error} onClickClose={deleteCache} />
   }
 
+  const onSubmit = (domains) => {
+    let currencyCodes = (record?.currencies ?? []).map(({ code }) => code)
+    let result = { ...record, domains, currencyCodes }
+    return result
+  }
+
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
   }
 
   return (
-    <ViewOrEditDialog
-      brandId={brandId}
-      record={record}
+    <DomainListDialog
+      domains={record.domains}
+      readOnly={readOnly}
+      onSubmit={onSubmit}
+      useFetch={(formData) => useUpdateBrand(brandId, formData)}
       onSubmitted={reset}
       dialog={dialog}
       {...props}
     />
   )
-}
-
-const ViewOrEditDialog = ({
-  brandId,
-  record = {},
-  dialog,
-  onSubmitted,
-  ...props
-}) => {
-  let editable = useIsDisplayMenuByRoute([Update])
-  let readOnly = !editable
-
-  let title = useTrans({
-    zh: "域名",
-    en: "Domain"
-  })
-
-  let { domains = [] } = record
-  let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } = useUpdateBrand(
-    brandId,
-    formData
-  )
-
-  const onSubmit = ({ domains: [] }) => {
-    setSubmit({
-      ...record,
-      domains
-    })
-  }
-
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
-  }
-
-  return (
-    <FormDialog
-      defaultValues={{ domains: clone(domains) }}
-      onSubmit={onSubmit}
-      result={result}
-      isLoading={isLoading}
-      error={error}
-      onCloseErrorAlert={reset}
-      onSubmitted={() => {
-        reset()
-        onSubmitted?.()
-      }}
-      onClickClose={reset}
-      dialog={dialog}
-      title={title}
-      showActionButtons={readOnly ? false : true}
-      footer={readOnly ? <CloseButtonFooter alignX="right" /> : null}
-    >
-      <FormBody />
-    </FormDialog>
-  )
-}
-
-const DomainFieldArrayName = "domains"
-const FormBody = ({ readOnly }) => {
-  let editable = !readOnly
-
-  let { control } = useFormContext()
-  let fieldArray = useFieldArray({
-    name: DomainFieldArrayName,
-    control,
-    keyName: "_id"
-  })
-
-  return (
-    <FieldStack>
-      {fieldArray.fields.map((field, index) => (
-        <DomainInputField
-          key={field._id}
-          field={field}
-          index={index}
-          fieldArray={fieldArray}
-          readOnly={readOnly}
-        />
-      ))}
-      {readOnly && !fieldArray.fields.length && (
-        <Trans zh="无资料" en="No Data" />
-      )}
-      {editable && (
-        <Button
-          id="add-platform-domain"
-          onClick={(event) => {
-            fieldArray.append("")
-          }}
-        >
-          <Icon icon={faPlus} type="font-awesome" />
-        </Button>
-      )}
-    </FieldStack>
-  )
-}
-
-const DomainInputField = ({ field, index, fieldArray, readOnly, ...props }) => {
-  return <InputField name={`${DomainFieldArrayName}.${index}`} />
 }
