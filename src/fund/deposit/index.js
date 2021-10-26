@@ -64,10 +64,10 @@ import {
 } from "../../payment/method/PaymentMethod"
 import { VerifyFundDepositDisclosure } from "./VerifyFundDeposit"
 import { ViewFundDepositDisclosure } from "./ViewFundDeposit"
-import FundReviewStatus, {
-  FundReviewStatusLabel,
-  FundReviewStatusSelect
-} from "../FundReviewStatus"
+import FundDepositStatus, {
+  FundDepositStatusLabel,
+  FundDepositStatusSelect
+} from "./FundDepositStatus"
 import maxTime from "date-fns/max"
 import isEqualTime from "date-fns/isEqual"
 import isSameDay from "date-fns/isSameDay"
@@ -278,17 +278,15 @@ const BodyContent = ({ brandId }) => {
           />
           {data?.items?.length > 0 && (
             <Box>
-              {isDev() && (
-                <DownloadButton
-                  id="export-report"
-                  isLoading={isLoading}
-                  href={urlWith(
-                    toSearchParams(),
-                    `${API}/exportDeposit/${brandId}`
-                  )}
-                  download="Deposit.xlsx"
-                />
-              )}
+              <DownloadButton
+                id="export-report"
+                isLoading={isLoading}
+                href={urlWith(
+                  toSearchParams(),
+                  `${API}/exportDeposit/${brandId}`
+                )}
+                download="Deposit.xlsx"
+              />
             </Box>
           )}
         </Level>
@@ -321,7 +319,7 @@ const Summary = ({ total }) => {
     <Blockquote borderColor="primary">
       <Heading use="h5">
         <Trans zh="充值金额总计：" en="Total Deposit Amount：" />
-        <FormattedNumberDecimal value={total} />
+        <FormattedNumberDecimal id="total-amount" value={total} />
       </Heading>
     </Blockquote>
   )
@@ -498,7 +496,7 @@ const SearchBar = ({
               name="method"
               placeholder={paymentMethodPlaceholder}
             />
-            <FundReviewStatusSelect name="status" />
+            <FundDepositStatusSelect name="status" />
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}
@@ -607,21 +605,18 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
         Cell: ({ value }) => (
-          <FundReviewStatusLabel value={value} data-status={value} />
+          <FundDepositStatusLabel value={value} data-status={value} />
         )
       })
     ]
 
-    if (isDev()) {
-      //TODO: rm isDev() for v1.8
-      columns.push(
-        textColumn({
-          accessor: "reviewedUserName",
-          Header: <Trans zh="操作者" en="Operator" />,
-          disableSortBy: true
-        })
-      )
-    }
+    columns.push(
+      textColumn({
+        accessor: "reviewedUserName",
+        Header: <Trans zh="操作者" en="Operator" />,
+        disableSortBy: true
+      })
+    )
 
     columns.push(
       textColumn({
@@ -641,8 +636,8 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
           Header: <Trans zh="操作" en="Actions" />,
           Cell: ({ value }) => {
             let underReview =
-              value?.status === FundReviewStatus.Review ||
-              value?.status === FundReviewStatus.WaitingPayment
+              value?.status === FundDepositStatus.Review ||
+              value?.status === FundDepositStatus.WaitingPayment
             return (
               <Set alignX="center">
                 {underReview && (

@@ -150,10 +150,20 @@ describe("Admin user", () => {
       page.click(`${DialogSelector} button[type="submit"]`)
     ])
 
+    await Promise.all([
+      page.waitForSelector(DialogSelector, {
+        state: "detached"
+      }),
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes("/api/users") && response.status() === 200
+        )
+      })
+    ])
+
     let NameSelector = `[data-column-id="name"]`
     await page.waitForSelector(NameSelector)
     let value = await page.textContent(NameSelector)
-    console.log("name cell", value)
     expect(value).to.equal(user.name)
 
     return user

@@ -35,13 +35,11 @@ import { useFundWithdrawForm } from "./client"
 import Separator from "../../layout/Separator"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
-import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import {
-  FundReviewStatusLabel,
+  FundWithdrawStatusLabel,
   isFundApproved,
   isFundUnderReview
-} from "../FundReviewStatus"
-import { WithdrawMethodSelect } from "./WithdrawMethod"
+} from "./FundWithdrawStatus"
 import {
   PaymentChannelLabel,
   PaymentChannelSelect
@@ -174,7 +172,7 @@ export const FormBody = ({ brandId, record, readonly }) => {
             <Trans zh="状态" en="Status" />
           </NormalLabel>
           <Box alignY="center">
-            <FundReviewStatusLabel value={record?.status} />
+            <FundWithdrawStatusLabel value={record?.status} />
           </Box>
         </FieldValues>
         <Separator />

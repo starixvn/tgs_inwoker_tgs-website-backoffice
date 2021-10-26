@@ -549,6 +549,9 @@ const useColumns = ({
                     return value.id
                   }}
                   onSubmitted={mutate}
+                  addonAfter={
+                    <Input type="hidden" name="id" value={value.id} />
+                  }
                 />
               )}
             </Set>

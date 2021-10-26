@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import { MultiSelect } from "../../select/MultiSelect"
 import { isDev } from "../../env"
 
 const Review = "Review"
@@ -14,12 +15,6 @@ const Approved = "Approved"
 const ApprovedTrans = {
   zh: "待支付",
   en: "Waiting Payment"
-}
-
-//TODO: rm DeprecatedApprovedTrans for v1.8
-const DeprecatedApprovedTrans = {
-  zh: "已通过",
-  en: "Approved"
 }
 
 const Paid = "Paid"
@@ -43,12 +38,7 @@ export const FundWithdrawStatusLabel = ({ value, ...props }) => {
     case Review:
       return <Trans {...ReviewTrans} {...props} />
     case Approved:
-      if (isDev()) {
-        return <Trans {...ApprovedTrans} {...props} />
-      }
-
-      //TODO: rm DeprecatedApprovedTrans for v1.8
-      return <Trans {...DeprecatedApprovedTrans} {...props} />
+      return <Trans {...ApprovedTrans} {...props} />
     case Paid:
       return <Trans {...PaidTrans} {...props} />
     case Rejected:
@@ -58,7 +48,11 @@ export const FundWithdrawStatusLabel = ({ value, ...props }) => {
   }
 }
 
-export const FundWithdrawStatusSelect = ({ placeholder, ...props }) => {
+export const FundWithdrawStatusSelect = ({
+  placeholder,
+  isMulti = true,
+  ...props
+}) => {
   let defaultPlaceholder = useTrans({
     zh: "状态",
     en: "Status"
@@ -71,24 +65,33 @@ export const FundWithdrawStatusSelect = ({ placeholder, ...props }) => {
       value: Review
     },
     {
-      label: useTrans(isDev() ? ApprovedTrans : DeprecatedApprovedTrans), //TODO: rm DeprecatedApprovedTrans for v1.8
+      label: useTrans(ApprovedTrans),
       value: Approved
     }
   ]
 
-  if (isDev()) {
-    options.push({
-      label: useTrans(PaidTrans),
-      value: Paid
-    })
-  }
+  options.push({
+    label: useTrans(PaidTrans),
+    value: Paid
+  })
 
   options.push({
     label: useTrans(RejectedTrans),
     value: Rejected
   })
 
+  // TODO: for v1.8, rm for v1.9
   return <Select placeholder={placeholder} options={options} {...props} />
+
+  // v1.9
+  return (
+    <MultiSelect
+      placeholder={placeholder}
+      options={options}
+      isMulti={isMulti}
+      {...props}
+    />
+  )
 }
 
 export default {
