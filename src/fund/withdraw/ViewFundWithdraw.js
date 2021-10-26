@@ -295,6 +295,9 @@ const PayeeInfo = ({ record }) => {
 
   let hasAddress = !!record?.bankInfo?.detail?.address
   let isCrypto = hasAddress
+
+  let hasUsername = !!record?.bankInfo?.detail?.username
+  let hasPhone = !!record?.bankInfo?.detail?.phone
   return (
     <>
       <Heading use="h6">
@@ -351,6 +354,28 @@ const PayeeInfo = ({ record }) => {
                 <Trans zh="钱包地址" en="Wallet address" />
               </NormalLabel>
               <Box alignY="center">{record?.bankInfo?.detail?.address}</Box>
+            </>
+          </>
+        )}
+
+        {hasUsername && (
+          <>
+            <>
+              <NormalLabel>
+                <Trans zh="名字" en="Name" />
+              </NormalLabel>
+              <Box alignY="center">{record?.bankInfo?.detail?.username}</Box>
+            </>
+          </>
+        )}
+
+        {hasPhone && (
+          <>
+            <>
+              <NormalLabel>
+                <Trans zh="电话号码" en="Phone" />
+              </NormalLabel>
+              <Box alignY="center">{record?.bankInfo?.detail?.phone}</Box>
             </>
           </>
         )}

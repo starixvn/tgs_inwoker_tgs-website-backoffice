@@ -19,7 +19,7 @@ import numberColumn, {
 } from "../../table/column/numberColumn"
 import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
-import { useLicenseeMarketReportList } from "./client"
+import { useLicenseeMarketReportList, API } from "./client"
 import { Licensee } from "../../merchant/licensees"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
@@ -27,6 +27,9 @@ import subDays from "date-fns/subDays"
 import { isDev } from "../../env"
 import textColumn, { wrapTextColumn } from "../../table/column/textColumn"
 import { LicenseeCurrencySelect } from "../LicenseeCurrencySelect"
+import { LicenseeMultiCurrencySelect } from "../LicenseeMultiCurrencySelect"
+import DownloadButton from "../../button/DownloadButton"
+import { urlWith } from "../../client/index"
 
 export { Code }
 
@@ -117,6 +120,20 @@ const ReportContent = ({ licenseeId }) => {
               mutate()
             }}
           />
+          {data?.items?.length > 0 && (
+            <Box>
+              {isDev() && (
+                <DownloadButton
+                  id="export-report"
+                  isLoading={isLoading}
+                  href={urlWith(
+                    toSearchParams(),
+                    `${API}/exportLicenseeMarkets`
+                  )}
+                />
+              )}
+            </Box>
+          )}
         </Level>
       }
       title={<Trans zh="市场报表 - 公司" en="Market Report - Licensee" />}
@@ -172,6 +189,12 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <LicenseeCurrencySelect name="currencyCode" licenseeId={licenseeId} />
+          {/* 
+          //TODO: use multi select instead?
+          <LicenseeMultiCurrencySelect
+            name="currencyCodes"
+            licenseeId={licenseeId}
+          /> */}
           <DateInputRange
             minDate={minDate}
             maxDate={maxDate}
