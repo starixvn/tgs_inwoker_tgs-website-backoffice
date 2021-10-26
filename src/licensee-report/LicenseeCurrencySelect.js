@@ -29,30 +29,6 @@ export const LicenseeCurrencySelect = ({
 
   options = sortBy(options, ["label"])
 
-  //TODO:
-  /*
-  //1. popover issue
-  //2. renderDisclosure -> `${option.label[0]}, ${option.label[1]}, ${option.label[2]}...`
-  return (
-    <SelectMenu
-      placeholder={placeholder}
-      isLoading={isLoading}
-      isMultiSelect
-      options={options}
-      popoverProps={{
-        usePortal: false
-      }}
-      onChange={(data) => {
-        if (props?.name) {
-          formMethods?.setValue(props?.name, value)
-        }
-        props?.onChange?.(data)
-      }}
-      {...props}
-    />
-  )
-  */
-
   return (
     <Select
       placeholder={placeholder}

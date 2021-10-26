@@ -93,7 +93,7 @@ describe("Admin user", () => {
   let MinTotalAmountLimit = 10000000
   const editPromotion = async () => {
     let EditDialogSelector = `#edit-promotion-dialog`
-    await page.click(`#edit-promotion-dialog-disclosure`)
+    await page.click(`${EditDialogSelector}-disclosure`)
     await page.waitForSelector(EditDialogSelector)
     await page.waitForLoadState()
 
