@@ -9,13 +9,18 @@ export const urlWith = (searchParams = {}, url) => {
         return searchParams
       }
 
-      if (Array.isArray(value) && value.length > 0) {
+      if (Array.isArray(value)) {
         let result = value.reduce((result, item) => {
+          //TODO: need to check `stringOf(item)` is not empty string?
           return result
             ? `${result}&${key}=${stringOf(item)}`
             : `${key}=${stringOf(item)}`
         }, "")
-        return searchParams ? `${searchParams}&${result}` : result
+        return searchParams
+          ? result
+            ? `${searchParams}&${result}`
+            : searchParams
+          : result
       }
 
       return searchParams
