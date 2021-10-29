@@ -30,6 +30,8 @@ const RejectedTrans = {
   en: "Rejected"
 }
 
+export const UnprocessedStatus = [Review, WaitingPayment]
+
 export const isFundDepositUnderReview = (value) => value === Review
 
 export const isFundDepositApproved = (value) => value === Approved
@@ -80,17 +82,6 @@ export const FundDepositStatusSelect = ({
     }
   ]
 
-  //TODO: for v1.8, rm for v1.9
-  return (
-    <Select
-      name={name}
-      placeholder={placeholder}
-      options={options}
-      {...props}
-    />
-  )
-
-  //TODO: wait for bo-api support
   return (
     <MultiSelect
       name={name}
@@ -106,5 +97,6 @@ export default {
   WaitingPayment,
   Review,
   Approved,
-  Rejected
+  Rejected,
+  UnprocessedStatus
 }

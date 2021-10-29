@@ -29,6 +29,8 @@ const RejectedTrans = {
   en: "Rejected"
 }
 
+export const UnprocessedStatus = [Review, Approved]
+
 export const isFundUnderReview = (value) => value === Review
 
 export const isFundApproved = (value) => value === Approved
@@ -80,10 +82,6 @@ export const FundWithdrawStatusSelect = ({
     value: Rejected
   })
 
-  // TODO: for v1.8, rm for v1.9
-  return <Select placeholder={placeholder} options={options} {...props} />
-
-  // v1.9
   return (
     <MultiSelect
       placeholder={placeholder}
@@ -98,5 +96,6 @@ export default {
   Review,
   Approved,
   Paid,
-  Rejected
+  Rejected,
+  UnprocessedStatus
 }

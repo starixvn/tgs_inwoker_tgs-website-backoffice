@@ -11,12 +11,14 @@ import FileUploadButton from "./FileUploadButton"
 const DefaultAccept = "image/jpeg, image/png"
 
 export const ImageUploadButton = ({
+  id,
   name = "",
   label,
   brandId = "",
   prefix = "",
   disabled = false,
   readOnly = false,
+  required = false,
   onUploaded,
   showLocalizationAddonAfter = true,
   ...props
@@ -25,10 +27,12 @@ export const ImageUploadButton = ({
     <Set {...props}>
       <Group>
         <UploadButton
+          id={id}
           name={name}
           label={label}
           prefix={prefix}
           disabled={disabled}
+          required={required}
         />
         {showLocalizationAddonAfter && (
           <LocalizationDialogDisclosure
@@ -115,23 +119,11 @@ const OpenLinkButton = ({ name, disabled }) => {
   )
 }
 
-const UploadButton = ({
-  name,
-  label,
-  prefix,
-  disabled,
-  onUploaded,
-  ...props
-}) => {
+const UploadButton = ({ label, prefix, ...props }) => {
   const useUpload = (body) => useUploadImage(prefix, body)
+
   return (
-    <FileUploadButton
-      name={name}
-      disabled={disabled}
-      accept={DefaultAccept}
-      useUpload={useUpload}
-      onUploaded={onUploaded}
-    >
+    <FileUploadButton accept={DefaultAccept} useUpload={useUpload} {...props}>
       {label || <Trans zh="图片上传" en="Image Upload" />}
     </FileUploadButton>
   )

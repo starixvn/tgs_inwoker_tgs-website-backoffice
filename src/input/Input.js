@@ -107,6 +107,13 @@ export const InputField = ({
       state={state}
       validationText={validationText}
       addonAfter={addonAfter}
+      inputProps={{
+        required: props.required,
+        min: props.min,
+        max: props.max,
+        minLength: props.minLength,
+        maxLength: props.maxLength
+      }}
       {...formProps}
       {...props}
     />

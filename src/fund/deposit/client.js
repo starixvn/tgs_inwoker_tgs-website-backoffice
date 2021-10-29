@@ -32,3 +32,8 @@ export const useVerifyFundDepositForm = (brandId, formId, formData) => {
 
   return usePostData(url, formData)
 }
+
+export const useUnprocessedFundDepositForm = (brandId, options) => {
+  let url = brandId ? `${API}/untreated/${brandId}` : ""
+  return useGet(url, options)
+}

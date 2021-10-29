@@ -105,9 +105,18 @@ const Layout = ({ children }) => {
           & .bb-PageWithSidebarSidebarExpandedWrapper {
             width: ${getSidebarWidth()}px;
           }
+
+          & .bb-PageWithSidebarContent {
+            min-height: calc(100vh - ${HeaderHeight});
+          }
         `}
       >
-        <Box maxHeight={`calc(100vh - ${HeaderHeight})`} overflow="auto">
+        <Box
+          id="page-content"
+          height={`calc(100vh - ${HeaderHeight})`}
+          maxHeight={`calc(100vh - ${HeaderHeight})`}
+          overflow="auto"
+        >
           {children}
         </Box>
         {/* <Footer /> */}

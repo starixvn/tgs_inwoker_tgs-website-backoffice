@@ -33,13 +33,14 @@ import {
 } from "../../user/context"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import clone from "clone-deep"
-import { useFundDepositFormList } from "./client"
+import { useFundDepositFormList, useUnprocessedFundDepositForm } from "./client"
 import { DefaultUrl, Code as ParentCode } from "../menu"
 import { Code, View, Update } from "./menu"
 import TopNavNotifyItem from "../TopNavNotifyItem"
 import { deposit } from "../../audio/deposit"
 import { FundDepositVerified } from "./VerifyFundDeposit"
 import FundDepositStatus from "./FundDepositStatus"
+import { isDev } from "../../env"
 
 export const FundDepositTopNavItem = ({
   href = `${DefaultUrl}/${Code}`,
@@ -57,17 +58,21 @@ export const FundDepositTopNavItem = ({
 
 const Body = ({ brandId, ...props }) => {
   let playAlertSound = useIsDisplayMenuByCodes([ParentCode, Code, Update])
+  let label = useTrans({
+    zh: "充值",
+    en: "Deposit"
+  })
+
   return (
     <TopNavNotifyItem
       brandId={brandId}
       audio={playAlertSound ? deposit() : undefined}
-      useFetch={useFundDepositFormList}
-      status={FundDepositStatus.Review} //v1.8
-      // status={[FundDepositStatus.Review, FundDepositStatus.WaitingPayment]} //v1.9
+      useFetch={useUnprocessedFundDepositForm}
+      status={FundDepositStatus.UnprocessedStatus}
       updateFetchEventName={FundDepositVerified}
       {...props}
     >
-      <Trans zh="充值" en="Deposit" />
+      {label}
     </TopNavNotifyItem>
   )
 }

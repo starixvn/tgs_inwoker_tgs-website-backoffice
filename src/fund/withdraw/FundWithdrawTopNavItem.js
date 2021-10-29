@@ -33,7 +33,10 @@ import {
 } from "../../user/context"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import clone from "clone-deep"
-import { useFundWithdrawFormList } from "./client"
+import {
+  useFundWithdrawFormList,
+  useUnprocessedFundWithdrawForm
+} from "./client"
 import { SortOrder } from "../../table/order"
 import { sortBy, head, differenceBy } from "lodash-es"
 import { subDays, addSeconds, setMilliseconds } from "date-fns"
@@ -43,6 +46,7 @@ import TopNavNotifyItem from "../TopNavNotifyItem"
 import { withdraw } from "../../audio/withdraw"
 import { FundWithdrawVerified } from "./VerifyFundWithdraw"
 import FundWithdrawStatus from "./FundWithdrawStatus"
+import { isDev } from "../../env"
 
 export const FundWithdrawTopNavItem = ({
   href = `${DefaultUrl}/${Code}`,
@@ -60,18 +64,21 @@ export const FundWithdrawTopNavItem = ({
 
 const Body = ({ brandId, ...props }) => {
   let playAlertSound = useIsDisplayMenuByCodes([ParentCode, Code, Update])
+  let label = useTrans({
+    zh: "提款",
+    en: "Withdraw"
+  })
 
   return (
     <TopNavNotifyItem
       brandId={brandId}
       audio={playAlertSound ? withdraw() : undefined}
-      useFetch={useFundWithdrawFormList}
-      status={FundWithdrawStatus.Review} //for v1.8
-      // status={[FundWithdrawStatus.Review, FundWithdrawStatus.Approved]} //for v1.9
+      useFetch={useUnprocessedFundWithdrawForm}
+      status={FundWithdrawStatus.UnprocessedStatus}
       updateFetchEventName={FundWithdrawVerified}
       {...props}
     >
-      <Trans zh="提款" en="Withdraw" />
+      {label}
     </TopNavNotifyItem>
   )
 }
