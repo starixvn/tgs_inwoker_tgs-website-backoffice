@@ -42,6 +42,7 @@ describe("Admin user", () => {
   it("should able to add and edit promotion", async () => {
     let promotion = await addPromotion()
 
+    //TODO: edit promotion also upload banner?
     let updatedPromotion = await editPromotion(promotion)
     await toggleStatus()
     await toggleStatus()
@@ -207,7 +208,7 @@ describe("Admin user", () => {
     await page.click(`${DialogSelector}-disclosure`)
 
     let from = startOfDay(new Date())
-    let to = addWeeks(new Date(), 1)
+    let to = addWeeks(new Date(), 2)
     let promotion = {
       name: `${lorem.word()}-${Date.now()}`,
       from: format(from, "yyyy/MM/dd"),
