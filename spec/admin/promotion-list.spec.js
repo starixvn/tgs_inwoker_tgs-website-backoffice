@@ -43,12 +43,11 @@ describe("Admin user", () => {
     let promotion = await addPromotion()
 
     let updatedPromotion = await editPromotion(promotion)
-    //TODO: view promotion
-  })
+    await toggleStatus()
+    await toggleStatus()
 
-  it("should able to toggle promotion status", async () => {
-    await toggleStatus()
-    await toggleStatus()
+    await toggleStatus() //Note. only disabled status could get deleted
+    await deletePromotion()
   })
 
   const deletePromotion = async () => {
@@ -57,7 +56,7 @@ describe("Admin user", () => {
     await page.waitForSelector(Dialog)
 
     let id = await page.inputValue(`${Dialog} input[name="id"]`)
-    let ExpectedOrder = `/api/announcement/${id}/status/archived`
+    let ExpectedOrder = `/api/promotion/${id}/archived`
 
     await Promise.all([
       page.waitForResponse((response) => {

@@ -32,7 +32,10 @@ import { GameTypeLabel, useGameTypeGroupLabelOf } from "../../game/GameType"
 import { GameProviderListDialogDisclosure } from "../../game/providers/GameProviderList"
 import { VipLevelListDialogDisclosure } from "../../vip-levels/VipLevelList"
 import { formatNumber } from "../../number/format"
-import { PromotionStatusSelect, PromotionStatusSwitch } from "./PromotionStatus"
+import PromotionStatus, {
+  PromotionStatusSelect,
+  PromotionStatusSwitch
+} from "./PromotionStatus"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { SortOrder } from "../../table/order"
 import { isDev } from "../../env"
@@ -319,6 +322,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
                 />
                 {hasUpdateAuth && (
                   <ConfirmDeleteDialogDisclosure
+                    disabled={record.status != PromotionStatus.Disabled}
                     id="delete-promotion-dialog-disclosure"
                     dialogId="delete-promotion-dialog"
                     useFetch={useDeletePromotion}
