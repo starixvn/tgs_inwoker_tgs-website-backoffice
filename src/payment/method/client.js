@@ -31,6 +31,13 @@ let CodeTranPairs = [
     }
   ],
   [
+    "FPS",
+    {
+      zh: "轉數快",
+      en: "FPS"
+    }
+  ],
+  [
     "WeChatPay",
     {
       zh: "微信支付",
