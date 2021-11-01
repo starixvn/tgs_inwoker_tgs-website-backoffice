@@ -5,6 +5,7 @@ export async function mochaGlobalSetup() {
   let browser = await chromium.launch({ headless: false, slowMo: 10 })
   await auth.admin({ browser })
   await auth.reseller({ browser })
+  await auth.platform({ browser })
   await browser.close()
 }
 
