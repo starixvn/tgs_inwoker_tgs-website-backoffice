@@ -52,8 +52,6 @@ describe("Admin user", () => {
     //TODO: how to search payment by keyword?
     //TODO: edit deposit payment
     //TODO: change deposit payment order
-
-
   })
 
   const addDepositPayment = async () => {
