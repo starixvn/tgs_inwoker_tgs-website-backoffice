@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-api
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-api:202110290115-dev
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-api:202111020457-dev
 services:
   - name: payment-api
     dependencies:
