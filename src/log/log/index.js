@@ -61,7 +61,7 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const StateQueryName = "state"
-const Body = ({}) => {
+const Body = ({ }) => {
   let todayRange = today()
 
   let {
@@ -78,6 +78,13 @@ const Body = ({}) => {
     initState.to = parseISO(initState.to)
   }
   let { state, setState, setPageIndex, setSortOrder } = useTable(initState)
+
+  const syncSearchParams = record => {
+    let search = `${StateQueryName}=${JSON.stringify(record)}`
+    history.replace({
+      search
+    })
+  }
 
   let { pageIndex, pageSize } = state
   let {
@@ -114,10 +121,7 @@ const Body = ({}) => {
             setState(record)
             mutate()
 
-            let search = `${StateQueryName}=${JSON.stringify(record)}`
-            history.replace({
-              search
-            })
+            syncSearchParams(record)
           }}
           isLoading={isLoading}
         />
@@ -128,7 +132,11 @@ const Body = ({}) => {
         columns={columns}
         data={data?.items}
         pageCount={pageCount(pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
+        setPageIndex={(pageIndex) => {
+          setPageIndex(pageIndex)
+
+          syncSearchParams(record)
+        }}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         getRowId={(row) => row.id}

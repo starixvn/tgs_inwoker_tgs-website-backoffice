@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-leepay
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-leepay:202109100140-dev
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-leepay:202111040209-dev
 services:
   - name: payment-leepay
     dependencies:

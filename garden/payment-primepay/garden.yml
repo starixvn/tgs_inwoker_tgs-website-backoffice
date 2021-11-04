@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-primepay
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-primepay:2021.09.09.0833-prod
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-primepay:2021.11.04.0218-dev
 services:
   - name: payment-primepay
     dependencies:
