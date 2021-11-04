@@ -42,7 +42,7 @@ import { useApiLogList } from "./client"
 import { LogDetailDialogDisclosure } from "../LogDetailDialog"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { SortOrder } from "../../table/order"
-import { useHistory, useParams } from "react-router"
+import { useHistory, useParams } from "react-router-dom"
 import { parseJSON } from "../../text/json"
 import { parseISO } from "date-fns"
 

@@ -43,7 +43,7 @@ import LogLevel, { LogLevelSelect } from "./LogLevel"
 import { LogMessageDialogDisclosure } from "../LogMessageDialog"
 import { LogExceptionDialogDisclosure } from "../LogExceptionDialog"
 import { SortOrder } from "../../table/order"
-import { useHistory, useParams } from "react-router"
+import { useHistory, useParams } from "react-router-dom"
 import { parseJSON } from "../../text/json"
 import { parseISO } from "date-fns"
 

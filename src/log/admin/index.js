@@ -44,7 +44,7 @@ import { LogDetailDialogDisclosure } from "../LogDetailDialog"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { SortOrder } from "../../table/order"
 import { LogExceptionDialogDisclosure } from "../LogExceptionDialog"
-import { useHistory, useParams } from "react-router"
+import { useHistory, useParams } from "react-router-dom"
 import { parseJSON } from "../../text/json"
 import { parseISO } from "date-fns"
 
