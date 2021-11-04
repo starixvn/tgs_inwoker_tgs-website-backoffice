@@ -8,7 +8,7 @@ import {
   useUserBrandId,
   useUserRoleType
 } from "../../user/context"
-import { useStationLetterList } from "./client"
+import { useStationLetterList, useDeleteStationLetter } from "./client"
 import { Code } from "./menu"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
@@ -26,11 +26,13 @@ import {
   RejectedName
 } from "./status"
 import { AddButton, VerifyButton, ViewButton } from "./edit"
-import { Verify as VerifyMenu, View as ViewMenu } from "./menu"
+import { Verify as VerifyMenu, View as ViewMenu, Create } from "./menu"
 import { useFormContext, useForm, FormProvider } from "react-hook-form"
 import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import { SortOrder } from "../../table/order"
+import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
+import { Input } from "../../input/Input"
 
 export { Code }
 
@@ -201,6 +203,9 @@ const BodyContent = ({ brandId }) => {
 const useColumns = ({ mutate, statusName, items = [] }) => {
   let hasVerifyAuth = useIsDisplayMenuByRoute([VerifyMenu])
   let hasViewAuth = useIsDisplayMenuByRoute([ViewMenu])
+  let hasAddAuth = useIsDisplayMenuByRoute([Create])
+
+  let editable = hasVerifyAuth || hasAddAuth
 
   return useMemo(() => {
     let columns = [
@@ -287,10 +292,26 @@ const useColumns = ({ mutate, statusName, items = [] }) => {
                 )}
                 {(statusName === PublishedName ||
                   statusName === RejectedName) && (
-                  <ViewButton
-                    id="view-station-letter-dialog-disclosure"
-                    record={value}
-                  />
+                  <>
+                    <ViewButton
+                      id="view-station-letter-dialog-disclosure"
+                      record={value}
+                    />
+                    {editable && (
+                      <ConfirmDeleteDialogDisclosure
+                        id="delete-station-letter-dialog-disclosure"
+                        dialogId="delete-station-letter-dialog"
+                        useFetch={useDeleteStationLetter}
+                        onSubmit={() => {
+                          return value.id
+                        }}
+                        onSubmitted={mutate}
+                        addonAfter={
+                          <Input type="hidden" name="id" value={value.id} />
+                        }
+                      />
+                    )}
+                  </>
                 )}
               </Set>
             </Box>

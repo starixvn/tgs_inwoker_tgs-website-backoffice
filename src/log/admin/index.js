@@ -44,6 +44,9 @@ import { LogDetailDialogDisclosure } from "../LogDetailDialog"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { SortOrder } from "../../table/order"
 import { LogExceptionDialogDisclosure } from "../LogExceptionDialog"
+import { useHistory, useParams } from "react-router-dom"
+import { parseJSON } from "../../text/json"
+import { parseISO } from "date-fns"
 
 export { Code }
 
@@ -58,18 +61,24 @@ export const Content = () => {
 
 export const CodeContentPair = [Code, Content]
 
+const StateQueryName = "state"
 const Body = ({}) => {
+  let {
+    location: { search },
+    ...history
+  } = useHistory()
+
   let todayRange = today()
-  let { state, setState, setPageIndex, setSortOrder } = useTable({
-    from: "", //todayRange.start,
-    to: "", //todayRange.end,
-    responseCode: "",
-    trackingId: "",
-    ip: "",
-    path: "",
-    method: "",
-    serverName: ""
-  })
+
+  let stateString = new URLSearchParams(search).get(StateQueryName)
+  let initState = parseJSON(stateString) ?? {}
+  if (typeof initState.from === "string") {
+    initState.from = parseISO(initState.from)
+  }
+  if (typeof initState.to === "string") {
+    initState.to = parseISO(initState.to)
+  }
+  let { state, setState, setPageIndex, setSortOrder } = useTable(initState)
 
   let { pageIndex, pageSize } = state
   let {
@@ -100,13 +109,19 @@ const Body = ({}) => {
           method={state?.method}
           serverName={state?.serverName}
           search={({ start, end, ...data } = {}) => {
-            setState({
+            let record = {
               pageIndex: 0,
               from: start,
               to: end,
               ...data
-            })
+            }
+            setState(record)
             mutate()
+
+            let search = `${StateQueryName}=${JSON.stringify(record)}`
+            history.replace({
+              search
+            })
           }}
           isLoading={isLoading}
         />

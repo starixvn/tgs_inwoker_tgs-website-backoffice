@@ -24,7 +24,8 @@ import {
   useToasts,
   Dialog,
   TopNav,
-  Icon
+  Icon,
+  Text
 } from "bumbag"
 import { FormattedNumberDecimal, Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
@@ -34,6 +35,7 @@ import { subDays, addSeconds, setMilliseconds, formatISO } from "date-fns"
 import { faBell } from "@fortawesome/free-solid-svg-icons"
 import anime from "animejs/lib/anime.es.js"
 import { play } from "../audio/player"
+import { isDev } from "../env"
 
 const SecondInMilliseconds = 1000
 
@@ -51,71 +53,34 @@ export const TopNavNotifyItem = ({
   let history = useHistory()
   let { pathname } = useLocation()
 
-  let [params, setParams] = useState({
-    page: 1,
-    sortby: "CreatedOn",
-    orderby: SortOrder.Descending,
-    rows: 20,
-    status,
-    bc: queryStartTime(),
-    ec: queryEndTime()
+  let { data, isLoading, error, mutate, deleteCache } = useFetch(brandId, {
+    refreshInterval: 15 * SecondInMilliseconds
   })
 
-  const updateFetch = () => {
-    let time = queryEndTime()
-    setParams((state) => ({ ...state, ec: time }))
+  let [unprocessed, setUnprocessed] = useState(0)
+
+  const reset = () => {
+    deleteCache()
+    mutate()
   }
 
   useEffect(() => {
-    let id = setInterval(updateFetch, 15 * SecondInMilliseconds)
-
-    return () => {
-      clearInterval(id)
-    }
-  }, [])
-
-  let { data, isLoading, error, mutate, deleteCache } = useFetch(
-    brandId,
-    params
-  )
-
-  useEffect(() => {
     if (updateFetchEventName) {
-      document.addEventListener(updateFetchEventName, () => {
-        updateFetch()
-      })
+      document.addEventListener(updateFetchEventName, reset)
       return () => {
-        document.removeEventListener(updateFetchEventName, updateFetch)
+        document.removeEventListener(updateFetchEventName, reset)
       }
     }
   }, [updateFetchEventName])
 
-  let [items, setItems] = useState([])
-
   useEffect(() => {
-    let diff = differenceBy(data?.items, items, "id")
-    if (diff.length > 0) {
-      if (audio) {
-        play(audio, {
-          onPlay: () => {
-            if (props.id) {
-              let animationDelay = SecondInMilliseconds * 0.01
-              setTimeout(() => {
-                bellAnime(props.id)
-              }, animationDelay)
-            }
-          }
-        })
-      }
+    if (Number.isFinite(data)) {
+      setUnprocessed(data)
     }
-
-    if (data?.items) {
-      setItems(clone(data.items))
-    }
-  }, [JSON.stringify(data?.items)])
+  }, [JSON.stringify(data)])
 
   return (
-    items.length > 0 && (
+    unprocessed > 0 && (
       <TopNav.Item {...props}>
         <Button
           variant="link"
@@ -123,7 +88,7 @@ export const TopNavNotifyItem = ({
           color={color}
           onClick={(event) => {
             let state = {
-              fromNotify: params.ec.getTime(),
+              fromNotify: queryEndTime(),
               brandId,
               status
             }
@@ -134,15 +99,9 @@ export const TopNavNotifyItem = ({
             } else {
               history.push(href, state)
             }
-
-            /*
-            if (samePage) {
-              history.go()
-            }
-            */
           }}
         >
-          {children}
+          {children} {unprocessed}
         </Button>
       </TopNav.Item>
     )

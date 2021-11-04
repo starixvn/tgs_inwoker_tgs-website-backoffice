@@ -94,8 +94,6 @@ describe("Admin user", () => {
     let netProfit = numeral(netProfitString).value()
     expect(netProfit).to.be.a("number")
 
-    /*
-    //TODO: wait for backend impl
     let [download] = await Promise.all([
       page.waitForEvent("download"),
       page.click(`#export-report`)
@@ -103,7 +101,6 @@ describe("Admin user", () => {
 
     let path = await download.path()
     expect(path).to.be.not.empty
-    */
   })
 
   const gotoLicenseeMarketReportPage = async () => {

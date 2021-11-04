@@ -43,6 +43,9 @@ import LogLevel, { LogLevelSelect } from "./LogLevel"
 import { LogMessageDialogDisclosure } from "../LogMessageDialog"
 import { LogExceptionDialogDisclosure } from "../LogExceptionDialog"
 import { SortOrder } from "../../table/order"
+import { useHistory, useParams } from "react-router-dom"
+import { parseJSON } from "../../text/json"
+import { parseISO } from "date-fns"
 
 export { Code }
 
@@ -57,15 +60,24 @@ export const Content = () => {
 
 export const CodeContentPair = [Code, Content]
 
+const StateQueryName = "state"
 const Body = ({}) => {
   let todayRange = today()
-  let { state, setState, setPageIndex, setSortOrder } = useTable({
-    from: "", //todayRange.start,
-    to: "", //todayRange.end,
-    trackingId: "",
-    serverName: "",
-    level: LogLevel.All
-  })
+
+  let {
+    location: { search },
+    ...history
+  } = useHistory()
+
+  let stateString = new URLSearchParams(search).get(StateQueryName)
+  let initState = parseJSON(stateString) ?? { level: LogLevel.All }
+  if (typeof initState.from === "string") {
+    initState.from = parseISO(initState.from)
+  }
+  if (typeof initState.to === "string") {
+    initState.to = parseISO(initState.to)
+  }
+  let { state, setState, setPageIndex, setSortOrder } = useTable(initState)
 
   let { pageIndex, pageSize } = state
   let {
@@ -93,13 +105,19 @@ const Body = ({}) => {
           serverName={state?.serverName}
           level={state?.level}
           search={({ start, end, ...data } = {}) => {
-            setState({
+            let record = {
               pageIndex: 0,
               from: start,
               to: end,
               ...data
-            })
+            }
+            setState(record)
             mutate()
+
+            let search = `${StateQueryName}=${JSON.stringify(record)}`
+            history.replace({
+              search
+            })
           }}
           isLoading={isLoading}
         />

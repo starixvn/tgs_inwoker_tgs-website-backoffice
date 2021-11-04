@@ -98,3 +98,10 @@ export const PromotionStatusSwitch = ({
     </>
   )
 }
+
+export default {
+  Enabled,
+  Disabled,
+  PromotionStatusSelect,
+  PromotionStatusSwitch
+}

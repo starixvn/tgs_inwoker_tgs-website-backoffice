@@ -469,7 +469,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
   let disabled = readOnly
   let editable = !readOnly
-
+  let required = editable
   return (
     <FieldStack marginLeft="1rem" paddingBottom="1.5rem">
       <FieldValues>
@@ -480,6 +480,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <InputField
             name="name"
             brandId={brandId}
+            required={required}
             showLocalizationAddonAfter
             disabled={disabled}
           />
@@ -499,6 +500,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             }}
             minDate={isAdd ? startOfToday : undefined}
             disabled={disabled}
+            required={required}
           />
         </Box>
 
@@ -507,10 +509,12 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         </NormalLabel>
         <Box alignY="center">
           <VipLevelCheckboxGroup
+            id="vipLevels"
             name="vipLevels"
             valueFieldName="level"
             brandId={brandId}
             disabled={disabled}
+            required={required}
           />
         </Box>
 
@@ -674,28 +678,41 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         <NormalLabel>
           <Trans zh="活动 Banner (PC)" en="Promotion Banner (PC)" />
         </NormalLabel>
-        <Box alignY="center">
+        <Set orientation="vertical" alignY="center">
           <ImageUploadButton
+            id="desktopBanner"
             brandId={brandId}
             name="desktopBanner"
             prefix="promotion"
             disabled={disabled}
             readOnly={readOnly}
+            required={required}
           />
-        </Box>
+          <Text.Block color="warning" fontWeight="bold" fontSize="150">
+            <Trans
+              zh="建議尺寸: T1,T3,T4: 1920 x 600px；T2 1920 x 400px"
+              en="Recommended size: T1,T3,T4: 1920 x 600px；T2 1920 x 400px"
+            />
+          </Text.Block>
+        </Set>
 
         <NormalLabel>
           <Trans zh="活动 Banner (Mobile)" en="Promotion Banner (Mobile)" />
         </NormalLabel>
-        <Box alignY="center">
+        <Set orientation="vertical" alignY="center">
           <ImageUploadButton
+            id="mobileBanner"
             brandId={brandId}
             name="mobileBanner"
             prefix="promotion"
             disabled={disabled}
             readOnly={readOnly}
+            required={required}
           />
-        </Box>
+          <Text.Block color="warning" fontWeight="bold" fontSize="150">
+            <Trans zh="建議尺寸: 750x310px" en="Recommended size: 750x310px" />
+          </Text.Block>
+        </Set>
 
         <NormalLabel>
           <Trans zh="活动内容" en="Promotion Content" />

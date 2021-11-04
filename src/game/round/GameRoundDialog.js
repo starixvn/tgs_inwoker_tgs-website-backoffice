@@ -33,10 +33,10 @@ import MonacoEditor, { loader } from "@monaco-editor/react"
 import Textarea from "../../textarea"
 import formatXml from "xml-formatter"
 import { stringifyJSON } from "../../text/json"
+import { ConfigPaths } from "../../text/editor/MonacoEditor"
 
-//TODO: replace monaco config
 loader.config({
-  paths: { vs: "/monaco-editor@0.25.2/min/vs" }
+  paths: ConfigPaths
 })
 
 export const GameRoundDialog = ({
