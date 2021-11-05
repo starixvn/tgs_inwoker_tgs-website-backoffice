@@ -76,9 +76,12 @@ export const UserName = {
   Reseller: ResellerUserName
 }
 
+export const PlatformCode = "TGS"
+
 export default {
   admin,
   reseller,
   StorageState,
-  UserName
+  UserName,
+  PlatformCode
 }

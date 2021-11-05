@@ -11,6 +11,7 @@ const defaultValueFn = (value) => value
 export const numberColumn = ({
   Cell,
   format = DefaultNumberFormat,
+  digits,
   postfix = "",
   sumColumn: sumColumnName = "",
   toValue = defaultValueFn,
@@ -21,6 +22,7 @@ export const numberColumn = ({
     <FormattedNumber
       value={value}
       format={format}
+      digits={digits}
       postfix={postfix}
       title={tooltip}
     />
@@ -46,6 +48,7 @@ export const numberColumn = ({
           <FormattedNumber
             value={sumColumnValue(sumColumnName, toValue, table.rows)}
             format={format}
+            digits={digits}
           />
         )
       },
@@ -64,12 +67,14 @@ export const numberColumn = ({
 const DefaultNumberDecimal = "0,0.00"
 export const numberDecimalColumn = ({
   format = DefaultNumberDecimal,
+  digits = 2,
   ...props
-}) => numberColumn({ format, ...props })
+}) => numberColumn({ format, digits, ...props })
 
 export const coloredNumberDecimalColumn = ({
   value,
   format = DefaultNumberDecimal,
+  digits = 2,
   postfix,
   ...props
 }) =>
@@ -81,6 +86,7 @@ export const coloredNumberDecimalColumn = ({
         <Text color={isPositive ? "success" : "danger"}>
           <FormattedNumberDecimal
             value={value}
+            digits={digits}
             format={format}
             postfix={postfix}
           />
@@ -92,8 +98,9 @@ export const coloredNumberDecimalColumn = ({
 
 export const numberDecimalPercentageColumn = ({
   format = DefaultNumberDecimal,
+  digits = 2,
   postfix = "%",
   ...props
-}) => numberColumn({ format, postfix, ...props })
+}) => numberColumn({ format, digits, postfix, ...props })
 
 export default numberColumn
