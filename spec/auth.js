@@ -88,10 +88,13 @@ export const UserName = {
   Platform: PlatformUserName
 }
 
+export const PlatformCode = "TGS"
+
 export default {
   admin,
   reseller,
   platform,
   StorageState,
-  UserName
+  UserName,
+  PlatformCode
 }

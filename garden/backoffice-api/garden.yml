@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: backoffice-api
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-api:2021.1104.0245-dev
+image: backoffice-api
 services:
   - name: backoffice-api
     dependencies:
