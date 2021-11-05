@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-api
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/promotion-api:2021.1028.0944-dev
+image: promotion-api
 services:
   - name: promotion-api
     dependencies:
