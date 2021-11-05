@@ -188,7 +188,7 @@ export const FormattedNumberDecimal = ({
   }
 
   if (Number.isInteger(digits) && digits >= 0 && digits <= MaxDigits) {
-    value = value.toFixed(digits)
+    value = value.toFixed(digits + 1).slice(0, -1)
   }
   return (
     <Text {...props}>
