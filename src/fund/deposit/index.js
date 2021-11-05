@@ -639,7 +639,17 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <Trans zh="备注" en="Remark" />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
-      })
+      }),
+      textColumn({
+        accessor: "promotionName",
+        Header: <Trans zh="活动名称" en="Promotion Name" />,
+        disableSortBy: true,
+      }),
+      numberDecimalColumn({
+        accessor: "bonus",
+        Header: <Trans zh="优惠金额" en="Promotion Bonus" />,
+        disableSortBy: true,
+      }),
     )
 
     if (hasUpdateMenu) {
