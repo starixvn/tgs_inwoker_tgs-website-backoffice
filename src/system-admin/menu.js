@@ -26,6 +26,10 @@ import {
   Code as SettingsCode,
   codeLabelPair as settingsPair
 } from "./setting/menu"
+import {
+  Code as GameRoundCode,
+  codeLabelPair as gameRoundPair
+} from "./game-round/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faCogs } from "@fortawesome/free-solid-svg-icons"
 
@@ -116,6 +120,14 @@ const labelOf = ({ locale, code }) => {
         {
           zh: "设定",
           en: "Settings"
+        },
+        locale
+      )
+    case GameRoundCode:
+      return getTrans(
+        {
+          zh: "Game Round",
+          en: "Game Round"
         },
         locale
       )
