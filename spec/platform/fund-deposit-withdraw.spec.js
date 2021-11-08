@@ -38,7 +38,11 @@ let page
 let platformToken
 let player
 
-describe("Platform user", () => {
+describe("Platform user", function () {
+  
+  const SecondInMilliseconds = 1000
+  this.timeout(40 * SecondInMilliseconds)
+
   before(async () => {
     browser = await chromium.launch({ headless: headless() })
     context = await browser.newContext({ storageState: StorageState.Platform })
@@ -67,8 +71,6 @@ describe("Platform user", () => {
     await browser.close()
   })
 
-  const SecondInMilliseconds = 1000
-
   it("should show deposit and withdraw alarm on header", async () => {
     let depositAmount = 10
     let balance = await depositAlarm(depositAmount)
@@ -80,11 +82,11 @@ describe("Platform user", () => {
   const depositAlarm = async (amount) => {
     const DepositAccount = "account"
     const ExpectedDepositAmount = amount
+    
     let formId = await manualDeposit(platformToken, player.token, {
       account: DepositAccount,
       amount: ExpectedDepositAmount
     })
-
     await applyManualDepositForm(platformToken, player.token, formId)
 
     let AlarmSelector = `#fund-deposit-notify`

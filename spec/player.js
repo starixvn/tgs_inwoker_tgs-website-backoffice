@@ -3,7 +3,7 @@ import faker from "faker"
 import { globalApi, operatorApi } from "./env"
 import FormData from "form-data"
 import { fileURLToPath } from "url"
-import { createReadStream } from "fs"
+import { createReadStream } from "fs-extra"
 
 export const DefaultPassword = "TgsP@ssw0rd"
 
@@ -200,9 +200,9 @@ export const manualDeposit = async (
 }
 
 const dummyImagePath = fileURLToPath(new URL("./dummy.png", import.meta.url))
-const dummyImageStream = createReadStream(dummyImagePath)
 export const applyManualDepositForm = async (platformToken, token, formId) => {
   const form = new FormData()
+  let dummyImageStream = await createReadStream(dummyImagePath)
   form.append("file", dummyImageStream, "dummy.png")
 
   let headers = {
