@@ -81,7 +81,7 @@ export const TopNavNotifyItem = ({
 
   return (
     unprocessed > 0 && (
-      <TopNav.Item {...props}>
+      <TopNav.Item data-unprocessed={unprocessed} {...props}>
         <Button
           variant="link"
           iconBefore="solid-bell"
