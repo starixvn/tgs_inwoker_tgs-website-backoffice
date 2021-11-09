@@ -1,4 +1,4 @@
-import { selectRandomOption } from "../page/select"
+import { selectRandomOption, selectByLabel } from "../page/select"
 
 export const PlatformSelectSelector = `select[name="brandId"]`
 
@@ -10,5 +10,6 @@ export const selectRandomPlatform = async (
   selectSelector = PlatformSelectSelector
 ) => selectRandomOption(page, selectSelector)
 
-//TODO: select TGP platform?
-export const selectPlatform = async () => {}
+export const selectPlatformByCode = async (page, code, selectSelector = PlatformSelectSelector) => {
+    return selectByLabel(page, selectSelector, code)
+}
