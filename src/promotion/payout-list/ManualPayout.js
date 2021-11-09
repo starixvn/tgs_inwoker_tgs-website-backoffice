@@ -23,7 +23,8 @@ import {
 export const PromotionManualPayoutDisclosure = ({
     brandId,
     record,
-    onSubmitted
+    onSubmitted,
+    ...props
 }) => {
     let dialog = useModalState()
 
@@ -34,7 +35,7 @@ export const PromotionManualPayoutDisclosure = ({
 
     return (
         <>
-            <Disclosure {...dialog}>
+            <Disclosure {...dialog} {...props}>
                 <Trans zh="手动派发" en="Manual Payout" />
             </Disclosure>
             {dialog.visible && (
@@ -49,7 +50,7 @@ export const PromotionManualPayoutDisclosure = ({
     )
 }
 
-export const ViewPromotionManualPayoutDisclosure = ({ brandId, record }) => {
+export const ViewPromotionManualPayoutDisclosure = ({ brandId, record, ...props }) => {
     let dialog = useModalState()
 
     let isDisplay = useIsDisplayMenuByRoute([View])
@@ -59,7 +60,7 @@ export const ViewPromotionManualPayoutDisclosure = ({ brandId, record }) => {
 
     return (
         <>
-            <ViewDisclosure {...dialog} />
+            <ViewDisclosure {...dialog} {...props}/>
             {dialog.visible && (
                 <ViewPayoutDialog
                     brandId={brandId}
@@ -96,6 +97,7 @@ const ManualPayoutDialog = ({ brandId, record, onSubmitted, dialog }) => {
 
     return (
         <FormDialog
+            id="payout-promotion-dialog"
             defaultValues={clone(record)}
             onSubmit={onSubmit}
             onSubmitted={onSubmitted}

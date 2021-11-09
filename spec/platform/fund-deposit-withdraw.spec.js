@@ -30,7 +30,6 @@ import {
   applyManualWithdrawForm
 } from "../player"
 
-
 let browser
 let context
 let page
@@ -39,7 +38,6 @@ let platformToken
 let player
 
 describe("Platform user", function () {
-  
   const SecondInMilliseconds = 1000
   this.timeout(40 * SecondInMilliseconds)
 
@@ -82,7 +80,7 @@ describe("Platform user", function () {
   const depositAlarm = async (amount) => {
     const DepositAccount = "account"
     const ExpectedDepositAmount = amount
-    
+
     let formId = await manualDeposit(platformToken, player.token, {
       account: DepositAccount,
       amount: ExpectedDepositAmount
@@ -90,14 +88,19 @@ describe("Platform user", function () {
     await applyManualDepositForm(platformToken, player.token, formId)
 
     let AlarmSelector = `#fund-deposit-notify`
-    await page.waitForSelector(AlarmSelector, { timeout: 16 * SecondInMilliseconds })
-    let unprocessedString = await page.$eval(AlarmSelector, ({ dataset }) => dataset.unprocessed)
+    await page.waitForSelector(AlarmSelector, {
+      timeout: 16 * SecondInMilliseconds
+    })
+    let unprocessedString = await page.$eval(
+      AlarmSelector,
+      ({ dataset }) => dataset.unprocessed
+    )
     let unprocessed = numeral(unprocessedString).value()
     expect(unprocessed).to.be.above(0)
 
     await approveFundDeposit(formId)
   }
-  
+
   const approveFundDeposit = async (formId) => {
     await gotoFundDepositPage()
     await page.fill(`input[name="id"]`, formId)
@@ -129,8 +132,7 @@ describe("Platform user", function () {
       }),
       page.waitForResponse((response) => {
         return (
-          response.url().includes(`/api/deposit/`) &&
-          response.status() === 200
+          response.url().includes(`/api/deposit/`) && response.status() === 200
         )
       })
     ])
@@ -152,8 +154,13 @@ describe("Platform user", function () {
     })
 
     let AlarmSelector = `#fund-withdraw-notify`
-    await page.waitForSelector(AlarmSelector, { timeout: 16 * SecondInMilliseconds })
-    let unprocessedString = await page.$eval(AlarmSelector, ({ dataset }) => dataset.unprocessed)
+    await page.waitForSelector(AlarmSelector, {
+      timeout: 16 * SecondInMilliseconds
+    })
+    let unprocessedString = await page.$eval(
+      AlarmSelector,
+      ({ dataset }) => dataset.unprocessed
+    )
     let unprocessed = numeral(unprocessedString).value()
     expect(unprocessed).to.be.above(0)
 
@@ -195,8 +202,7 @@ describe("Platform user", function () {
       }),
       page.waitForResponse((response) => {
         return (
-          response.url().includes(`/api/withdraw`) &&
-          response.status() === 200
+          response.url().includes(`/api/withdraw`) && response.status() === 200
         )
       })
     ])
@@ -239,10 +245,8 @@ describe("Platform user", function () {
       `${ClearPlayerWageringRequirementDialogSelector} button[type="submit"]`
     )
     await page.click(`${EditPlayerDialog} button[type="submit"]`)
-
   }
 
-  
   const gotoFundDepositPage = async () => {
     await goto({ page, value: "/fundmanagement/deposit" })
   }
