@@ -167,7 +167,7 @@ const FormBody = ({}) => {
         <Box alignY="center">
           <Trans zh="交易金额" en="Amount" />
         </Box>
-        <NumberInputField name={TransactionAmountField} min="0" />
+        <NumberInputField name={TransactionAmountField} min="0" step="0.01"/>
 
         <Box alignY="center">
           <Trans zh="流水金额" en="Turnover Requirement Amount" />
