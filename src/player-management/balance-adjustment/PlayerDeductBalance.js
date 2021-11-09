@@ -147,14 +147,14 @@ const FormBody = ({ brandId, username, playerCode }) => {
       <Input type="hidden" name="username" value={username} />
       <Input type="hidden" name="playerCode" value={playerCode} />
       <FieldValues margin="1rem">
-        <Text.Block alignY="center">
+        <Box alignY="center">
           <Trans zh="用户名" en="Username" />
-        </Text.Block>
-        <Text.Block alignY="center">{username}</Text.Block>
+        </Box>
+        <Box alignY="center">{username}</Box>
 
-        <Text.Block alignY="center">
+        <Box alignY="center">
           <Trans zh="交易类型" en="Transaction Type" />
-        </Text.Block>
+        </Box>
         <PlayerDeductBalanceTypeSelect
           name={typeFieldName}
           playerCode={playerCode}
@@ -164,21 +164,21 @@ const FormBody = ({ brandId, username, playerCode }) => {
         {transactionType == PlayerDeductBalanceType.Transfer &&
           player?.agentUsername && (
             <>
-              <Text.Block alignY="center">
+              <Box alignY="center">
                 <Trans zh="转账代理用户名" en="Transfer Agent Username" />
-              </Text.Block>
+              </Box>
               <Input value={player?.agentUsername} readOnly />
             </>
           )}
 
-        <Text.Block alignY="center">
+        <Box alignY="center">
           <Trans zh="交易金额" en="Amount" />
-        </Text.Block>
+        </Box>
         <NumberInputField name="amount" min="0" required />
 
-        <Text.Block alignY="center">
+        <Box alignY="center">
           <Trans zh="备注" en="Remark" />
-        </Text.Block>
+        </Box>
 
         <Input name="remark" />
       </FieldValues>
