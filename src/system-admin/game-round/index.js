@@ -19,7 +19,7 @@ import AlertDialog from "../../dialog/Alert"
 import { Trans, useTrans, getAcceptLangCulture, useLangCode } from "../../i18n"
 import { useLanguageList } from "../../language/client"
 import equals from "fast-deep-equal"
-import { useGameRoundList } from "../../game/round/client"
+import { useOpenGameRoundList } from "./client"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
@@ -27,6 +27,10 @@ import {
     GameRoundStatusLabel,
     GameRoundStatusSelect
   } from "../../game/round/GameRoundStatus"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
+import { today, yesterday } from "../../date/range"
+import { startOfNextDay } from "../../date/startOfNextDay"
+import subDays from "date-fns/subDays"
 
 export { Code }
 
@@ -42,17 +46,41 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-    //TODO: open round status
+    let dateRange = today()
+    let QueryMaxRangeDays = 31
+    
     let { state, setState, setPageIndex, setSortOrder } = useTable({
+        from: dateRange.start,
+        to: dateRange.end
     })
 
-    let { isLoading, data, error, mutate, deleteCache } = useGameRoundList(toApiParams(state))
+    let {
+        from,
+        to
+      } = state
+
+    let culture = useLangCode()
+    let { isLoading, data, error, mutate, deleteCache } = useOpenGameRoundList({
+        ...toApiParams(state),
+        sortby: "createdOn",
+        orderby: "descending",
+        from,
+        to: startOfNextDay(to),
+        culture
+      })
     let columns = useColumns({ items: data?.items })
 
+    let DataRetentionDays = 180
+    let minDate = subDays(dateRange.start, DataRetentionDays)
     return <PageContent
             actionBar={<SearchBar
-            start={state.from}
-            end={state.to}
+            start={from}
+            end={to}
+            gameProviderId={state.gameProviderId}
+            minDate={minDate}
+            maxDate={dateRange.end}
+            maxRangeDays={QueryMaxRangeDays}
+            isLoading={isLoading}
             search={({ start, end, ...rest }) => {
                 setState({
                     pageIndex: 0,
@@ -63,7 +91,7 @@ const Body = () => {
                 mutate()
             }}
         />}
-        title={<Trans zh="Game Round" en="Game Round" />}
+        title={<Trans zh="游戏订单" en="Game Round" />}
     >
         <Table
             columns={columns}
@@ -82,6 +110,10 @@ const Body = () => {
 const SearchBar = ({
     start,
     end,
+    minDate,
+    maxDate,
+    maxRangeDays,
+    gameProviderId,
     search, 
     isLoading,
     ...props }) => {
@@ -89,6 +121,7 @@ const SearchBar = ({
         defaultValues: {
             start,
             end,
+            gameProviderId
         }
     })
 
@@ -109,22 +142,16 @@ const SearchBar = ({
           <form onSubmit={formMethods.handleSubmit(onSubmit)}>
             <Set>
               <DateInputRange
-                // minDate={minDate}
-                // maxDate={maxDate}
-                // maxRangeDays={maxRangeDays}
+                minDate={minDate}
+                maxDate={maxDate}
+                maxRangeDays={maxRangeDays}
                 required
-              />
-              <InputField
-                name="roundId"
-                showEmptyFieldValueAddonAfter
-                placeholder={roundIdPlaceholder}
               />
               <InputField
                 name="externalRoundId"
                 showEmptyFieldValueAddonAfter
                 placeholder={externalRoundIdPlaceholder}
               />
-              <GameRoundStatusSelect name="status" />
               <GameProviderSelect name="gameProviderId" />
               <SearchButton isLoading={isLoading} disabled={isLoading} />
             </Set>
@@ -137,19 +164,72 @@ const useColumns = ({ items = [] }) => {
     let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
     return useMemo(() => {
         let columns = [
-            ellipsisTextColumn({
+            dateTimeColumn({
+                accessor: "createdOn",
+                Header: <Trans zh="投注时间" en="Created On" />,
+                disableSortBy: true
+            }),
+            dateTimeColumn({
+                accessor: "externalCreatedOn",
+                Header: <Trans zh="三方投注时间" en="External Created On" />,
+                disableSortBy: true
+            }),
+            textColumn({
                 accessor: "externalRoundId",
                 Header: <Trans zh="三方订单ID" en="External Id" />,
                 disableSortBy: true,
-                maxWidth: "8rem",
                 Cell: ({ value = "" }) => <CopyTextBox value={value} />
             }),
-            ellipsisTextColumn({
-                accessor: "id",
-                Header: <Trans zh="订单ID" en="Id" />,
+            textColumn({
+                accessor: "brandCode",
+                Header: <Trans zh="平台" en="Platfrom" />,
                 disableSortBy: true,
-                maxWidth: "8rem",
-                Cell: ({ value = "" }) => <CopyTextBox value={value} />
+            }),
+            textColumn({
+                accessor: "playerName",
+                Header: <Trans zh="玩家" en="Player" />,
+                disableSortBy: true,
+            }),
+            textColumn({
+                accessor: "playerCode",
+                Header: <Trans zh="Player Code" en="Player Code" />,
+                disableSortBy: true,
+            }),
+            numberDecimalColumn({
+                accessor: "betAmount",
+                Header: <Trans zh="投注金额" en="Bet Amount" />,
+                disableSortBy: true
+            }),
+            numberDecimalColumn({
+                accessor: "status",
+                Header: <Trans zh="状态" en="Status" />,
+                disableSortBy: true,
+                Cell: GameRoundStatusLabel
+            }),
+            textColumn({
+                accessor: "gameProviderName",
+                Header: <Trans zh="游戏厂商" en="Game Provider" />,
+                disableSortBy: true
+            }),
+            textColumn({
+                accessor: "subGameProviderName",
+                Header: <Trans zh="子游戏厂商" en="Sub Game Provider" />,
+                disableSortBy: true
+            }),
+            textColumn({
+                accessor: "gameName",
+                Header: <Trans zh="游戏名称" en="Game Name" />,
+                disableSortBy: true
+            }),
+            textColumn({
+                accessor: "device",
+                Header: <Trans zh="支持设备" en="Supporting Device" />,
+                disableSortBy: true
+            }),
+            textColumn({
+                accessor: "currencyCode",
+                Header: <Trans zh="币种" en="Currency" />,
+                disableSortBy: true
             }),
         ]
 

@@ -126,7 +126,7 @@ const labelOf = ({ locale, code }) => {
     case GameRoundCode:
       return getTrans(
         {
-          zh: "Game Round",
+          zh: "游戏订单",
           en: "Game Round"
         },
         locale
