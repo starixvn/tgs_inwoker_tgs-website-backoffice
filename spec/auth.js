@@ -23,6 +23,16 @@ const reseller = async ({ browser }) =>
     storageStatePath: ResellerAuthPath
   })
 
+const PlatformAuthPath = `${Path}/platform-auth.json`
+const PlatformUserName = "brand.enabled"
+const platform = async ({ browser }) =>
+  login({
+    username: PlatformUserName,
+    password: "TgsP@ssw0rd",
+    browser,
+    storageStatePath: PlatformAuthPath
+  })
+
 const login = async ({
   browser,
   storageStatePath,
@@ -68,12 +78,14 @@ const login = async ({
 
 export const StorageState = {
   Admin: AdminAuthPath,
-  Reseller: ResellerAuthPath
+  Reseller: ResellerAuthPath,
+  Platform: PlatformAuthPath
 }
 
 export const UserName = {
   Admin: AdminUserName,
-  Reseller: ResellerUserName
+  Reseller: ResellerUserName,
+  Platform: PlatformUserName
 }
 
 export const PlatformCode = "TGS"
@@ -81,6 +93,7 @@ export const PlatformCode = "TGS"
 export default {
   admin,
   reseller,
+  platform,
   StorageState,
   UserName,
   PlatformCode

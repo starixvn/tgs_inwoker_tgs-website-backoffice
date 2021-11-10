@@ -4,7 +4,7 @@ import { StorageState } from "../auth"
 import { host, headless } from "../env"
 import { random } from "lodash"
 import numeral from "numeral"
-import { startOfDay, endOfTomorrow, format } from "date-fns"
+import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
 import { lorem } from "faker"
 import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
@@ -40,16 +40,35 @@ describe("Admin user", () => {
   })
 
   it("should able to add and edit promotion", async () => {
-    await addPromotion()
+    let promotion = await addPromotion()
 
-    let promotion = await editPromotion()
-    //TODO: view promotion
-  })
-
-  it("should able to toggle promotion status", async () => {
+    //TODO: edit promotion also upload banner?
+    let updatedPromotion = await editPromotion(promotion)
     await toggleStatus()
     await toggleStatus()
+
+    await toggleStatus() //Note. only disabled status could get deleted
+    await deletePromotion()
   })
+
+  const deletePromotion = async () => {
+    let Dialog = `#delete-promotion-dialog`
+    await page.click(`${Dialog}-disclosure`)
+    await page.waitForSelector(Dialog)
+
+    let id = await page.inputValue(`${Dialog} input[name="id"]`)
+    let ExpectedOrder = `/api/promotion/${id}/archived`
+
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().toLowerCase().endsWith(ExpectedOrder) &&
+          response.status() === 200
+        )
+      }),
+      page.click(`${Dialog} button[type="submit"]`)
+    ])
+  }
 
   const toggleStatus = async (index = 0) => {
     await page.waitForSelector(
@@ -185,10 +204,11 @@ describe("Admin user", () => {
   }
 
   const addPromotion = async () => {
-    await page.click(`#add-promotion-dialog-disclosure`)
+    let DialogSelector = `#add-promotion-dialog`
+    await page.click(`${DialogSelector}-disclosure`)
 
     let from = startOfDay(new Date())
-    let to = endOfTomorrow(new Date())
+    let to = addWeeks(new Date(), 2)
     let promotion = {
       name: `${lorem.word()}-${Date.now()}`,
       from: format(from, "yyyy/MM/dd"),
@@ -199,34 +219,63 @@ describe("Admin user", () => {
       turnoverMultiple: 2
     }
 
-    await page.fill(`#add-promotion-dialog input[name="name"]`, promotion.name)
+    await page.fill(`${DialogSelector} input[name="name"]`, promotion.name)
 
     await fillDatePicker({
       page,
-      selector: `#add-promotion-dialog #promotion-period-box .react-datepicker-wrapper:first-child input`,
+      selector: `${DialogSelector} #promotion-period-box .react-datepicker-wrapper:first-child input`,
       value: promotion.from
     })
     await fillDatePicker({
       page,
-      selector: `#add-promotion-dialog #promotion-period-box .react-datepicker-wrapper:not(:first-child) input`,
+      selector: `${DialogSelector} #promotion-period-box .react-datepicker-wrapper:not(:first-child) input`,
       value: promotion.to
     })
 
+    await page.click(
+      `${DialogSelector} #vipLevels input[type="checkbox"] + .bb-CheckboxIcon`
+    )
+
     await selectPromotionType()
     await page.fill(
-      `#add-promotion-dialog input[name="totalAmountLimit"]`,
+      `${DialogSelector} input[name="totalAmountLimit"]`,
       `${promotion.totalAmountLimit}`
     )
+
+    const [desktopFileChooser] = await Promise.all([
+      page.waitForEvent("filechooser"),
+      page.click(`${DialogSelector} #desktopBanner`)
+    ])
+    await desktopFileChooser.setFiles("./spec/dummy.png")
+    await page.waitForResponse((response) => {
+      return (
+        response.url().endsWith(`/api/fs/upload/promotion`) &&
+        response.status() === 200
+      )
+    })
+
+    const [mobileFileChooser] = await Promise.all([
+      page.waitForEvent("filechooser"),
+      page.click(`${DialogSelector} #mobileBanner`)
+    ])
+    await mobileFileChooser.setFiles("./spec/dummy.png")
+    await page.waitForResponse((response) => {
+      return (
+        response.url().endsWith(`/api/fs/upload/promotion`) &&
+        response.status() === 200
+      )
+    })
+
     await page.fill(
-      `#add-promotion-dialog input[name="percentage"]`,
+      `${DialogSelector} input[name="percentage"]`,
       `${promotion.percentage}`
     )
     await page.fill(
-      `#add-promotion-dialog input[name="bonusAmountLimit"]`,
+      `${DialogSelector} input[name="bonusAmountLimit"]`,
       `${promotion.bonusAmountLimit}`
     )
     await page.fill(
-      `#add-promotion-dialog input[name="turnoverMultiple"]`,
+      `${DialogSelector} input[name="turnoverMultiple"]`,
       `${promotion.turnoverMultiple}`
     )
 
@@ -236,8 +285,11 @@ describe("Admin user", () => {
           response.url().endsWith("/api/promotion") && response.status() === 200
         )
       }),
-      page.click(`#add-promotion-dialog button[type="submit"]`)
+      page.click(`${DialogSelector} button[type="submit"]`)
     ])
+
+    await page.waitForSelector(DialogSelector, { state: "detached" })
+    return promotion
   }
 
   const PromotionTypeGroupSelectSelector = `select[name="promotionTypeGroup"]`

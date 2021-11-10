@@ -81,6 +81,8 @@ export const toApiParams = (state) => {
   }
 }
 
+// const isSticky = (position = "") => position == "sticky"
+
 export const Table = ({
   columns,
   data = [],
@@ -103,6 +105,7 @@ export const Table = ({
   body = true,
   foot = false,
   children,
+  isSticky = false,
   ...props
 }) => {
   let table = _useTable(
@@ -133,7 +136,7 @@ export const Table = ({
     },
     useFilters,
     useSortBy,
-    usePagination
+    usePagination,
   )
 
   let { getTableProps, gotoPage, state: tableState } = table
@@ -162,12 +165,23 @@ export const Table = ({
         </Box>
       )}
       {!isLoading && (
-        <Set orientation="vertical" position="relative">
-          <_Table width="100%" overflow="auto" {...getTableProps()} {...props}>
-            {head === true && <Head table={table} />}
+        <Set orientation="vertical" position="relative" css={css`
+          & div.bb-Table {
+            overflow: ${isSticky ? "visible" : "auto"};
+            border: 0;
+          }
+
+          & table.bb-Table {
+            border-radius: 6px;
+            overflow: ${isSticky ? "visible" : "auto"};
+            border: 1px solid var(--bb-palette-white800, #000000);
+          }
+          `}>
+          <_Table width="100%" {...getTableProps()} {...props}>
+            {head === true && <Head table={table} isSticky={isSticky} />}
             {body === true && <Body table={table} />}
             {children}
-            {foot === true && <Foot table={table} />}
+            {foot === true && <Foot table={table} isSticky={isSticky} />}
           </_Table>
           {usePagination && pageCount > 0 && (
             <Pagination
@@ -192,10 +206,13 @@ export const Table = ({
   )
 }
 
-const Head = ({ table }) => {
+const Head = ({ table, isSticky }) => {
   let { headerGroups } = table
   return (
-    <_Table.Head>
+    <_Table.Head css={css`
+        position: ${isSticky ? "sticky" : "relative"};
+        top: 0;
+      `}>
       {headerGroups.map((headerGroup) => (
         <_Table.Row {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map((column) => {
@@ -224,7 +241,7 @@ const Head = ({ table }) => {
   )
 }
 
-const Foot = ({ table }) => {
+const Foot = ({ table, isSticky }) => {
   let { footerGroups } = table
   return (
     <_Table.Foot fontWeight="semibold">

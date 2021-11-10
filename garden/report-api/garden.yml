@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: report-api
-image: report-api #registry.gitlab.com/rayprosoft/turnkey-gaming-system/report-api:prod
+image: report-api
 services:
   - name: report-api
     dependencies:

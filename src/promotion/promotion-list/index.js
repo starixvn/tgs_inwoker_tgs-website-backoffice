@@ -13,7 +13,7 @@ import { Code, View, Update } from "./menu"
 import textColumn from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useForm, FormProvider } from "react-hook-form"
-import { InputField } from "../../input/Input"
+import { Input, InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
 import { PageContent } from "../../page/Content"
 import AlertDialog from "../../dialog/Alert"
@@ -24,7 +24,7 @@ import {
   ViewPromotionDisclosure
 } from "./edit"
 import equals from "fast-deep-equal"
-import { usePromotionList } from "./client"
+import { usePromotionList, useDeletePromotion } from "./client"
 import BrandBar from "../../report/BrandBar"
 import { formatDateTime, formatDayMonthYear } from "../../date/format"
 import { PromotionTypeLabel, usePromotionGroupLabelOf } from "../PromotionType"
@@ -32,10 +32,14 @@ import { GameTypeLabel, useGameTypeGroupLabelOf } from "../../game/GameType"
 import { GameProviderListDialogDisclosure } from "../../game/providers/GameProviderList"
 import { VipLevelListDialogDisclosure } from "../../vip-levels/VipLevelList"
 import { formatNumber } from "../../number/format"
-import { PromotionStatusSelect, PromotionStatusSwitch } from "./PromotionStatus"
+import PromotionStatus, {
+  PromotionStatusSelect,
+  PromotionStatusSwitch
+} from "./PromotionStatus"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { SortOrder } from "../../table/order"
 import { isDev } from "../../env"
+import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 
 export { Code }
 
@@ -123,6 +127,7 @@ const BodyContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -304,7 +309,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
           disableSortBy: true,
           Cell: ({ value: record }) => {
             return (
-              <Set orientation="horizontal" alignX="center">
+              <Set alignX="center">
                 <ViewPromotionDisclosure
                   id="view-promotion-dialog-disclosure"
                   brandId={brandId}
@@ -316,6 +321,21 @@ const useColumns = ({ brandId, items = [], mutate }) => {
                   record={record}
                   onSubmitted={mutate}
                 />
+                {hasUpdateAuth && (
+                  <ConfirmDeleteDialogDisclosure
+                    disabled={record.status != PromotionStatus.Disabled}
+                    id="delete-promotion-dialog-disclosure"
+                    dialogId="delete-promotion-dialog"
+                    useFetch={useDeletePromotion}
+                    onSubmit={() => {
+                      return record.id
+                    }}
+                    onSubmitted={mutate}
+                    addonAfter={
+                      <Input type="hidden" name="id" value={record.id} />
+                    }
+                  />
+                )}
               </Set>
             )
           }

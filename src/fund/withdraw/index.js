@@ -48,7 +48,7 @@ import numberColumn, {
   numberDecimalPercentageColumn
 } from "../../table/column/numberColumn"
 import { today } from "../../date/range"
-import {
+import FundWithdrawStatus, {
   FundWithdrawStatusLabel,
   FundWithdrawStatusSelect,
   isFundApproved,
@@ -118,8 +118,9 @@ const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     username: "",
     channelName: "",
-    status: location?.state?.status ?? "",
+    status: location?.state?.status ?? FundWithdrawStatus.UnprocessedStatus,
     thirdOrderNo: "",
+    orderNo: "",
     beginCreateOn: todayRange.start,
     endCreateOn: todayRange.end,
     beginUpdateOn: undefined,
@@ -191,6 +192,7 @@ const BodyContent = ({ brandId }) => {
         channelName: "",
         status: location?.state?.status ?? "",
         thirdOrderNo: "",
+        orderNo: "",
         id: "",
         beginCreateOn: todayRange.start,
         endCreateOn: todayRange.end,
@@ -265,6 +267,7 @@ const BodyContent = ({ brandId }) => {
             channelName={channelName}
             status={status}
             thirdOrderNo={state.thirdOrderNo}
+            orderNo={state.orderNo}
             id={state.id}
             beginCreateOn={beginCreateOn}
             endCreateOn={endCreateOn}
@@ -367,6 +370,7 @@ const SearchBar = ({
   channelName,
   status,
   thirdOrderNo,
+  orderNo,
   id,
   beginCreateOn,
   endCreateOn,
@@ -384,6 +388,7 @@ const SearchBar = ({
       channelName,
       status,
       thirdOrderNo,
+      orderNo,
       id,
       beginCreateOn,
       endCreateOn,
@@ -398,6 +403,7 @@ const SearchBar = ({
       channelName,
       status,
       thirdOrderNo,
+      orderNo,
       id,
       beginCreateOn,
       endCreateOn,
@@ -409,6 +415,8 @@ const SearchBar = ({
     channelName,
     status,
     thirdOrderNo,
+    orderNo,
+    id,
     beginCreateOn,
     endCreateOn,
     beginUpdateOn,
@@ -435,6 +443,10 @@ const SearchBar = ({
   let externalIdPlaceholder = useTrans({
     zh: "三方订单编号",
     en: "3rd Party Id"
+  })
+  let orderIdPlaceholder = useTrans({
+    zh: "GMS订单号",
+    en: "GMS Id"
   })
   let idPlaceholder = useTrans({
     zh: "系统订单编号",
@@ -463,6 +475,11 @@ const SearchBar = ({
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
+            <InputField
+              name="orderNo"
+              placeholder={orderIdPlaceholder}
               showEmptyFieldValueAddonAfter
             />
             <InputField
@@ -528,10 +545,9 @@ const useColumns = ({
         Cell: ({ value }) => <UserTypeLabel value={value} />
       }),
       textColumn({
-        accessor: "id",
-        Header: <Trans zh="订单号" en="Id" />,
-        disableSortBy: true,
-        Cell: ({ value }) => value
+        accessor: "orderNo",
+        Header: <Trans zh="GMS订单号" en="GMS Id" />,
+        disableSortBy: true
       }),
       textColumn({
         accessor: "thirdPartyOrderNo",

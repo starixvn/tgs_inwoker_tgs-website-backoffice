@@ -24,7 +24,7 @@ tasks:
     command: [/bin/sh, -c]
     args:
       [
-        "sleep 10 && awslocal --endpoint-url=http://localstack:4566 s3 mb s3://tgs-secret"
+        "sleep 10 && awslocal --endpoint-url=http://localstack:4566 s3 mb s3://tgs-project"
       ]
     dependencies:
       - localstack

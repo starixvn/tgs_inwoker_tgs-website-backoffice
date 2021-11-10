@@ -110,7 +110,12 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
           <Box alignY="center">{record?.userName}</Box>
 
           <NormalLabel>
-            <Trans zh="订单号" en="Order Id" />
+            <Trans zh="GMS订单号" en="GMS Id" />
+          </NormalLabel>
+          <Box alignY="center">{record?.orderNo}</Box>
+
+          <NormalLabel>
+            <Trans zh="订单号" en="Id" />
           </NormalLabel>
           <Box alignY="center">{record?.id}</Box>
 

@@ -6,6 +6,7 @@ import client, {
   post,
   useGet,
   usePostData,
+  usePut,
   usePutData,
   usePostFormData
 } from "../../client"
@@ -29,4 +30,14 @@ export const useAddStationLetter = (data) => {
 export const useStationLetterUpload = (body) => {
   let url = body ? `${API}/upload` : ""
   return usePostFormData(url, body)
+}
+
+export const useChangeStationLetterStatus = (id, status) => {
+  let url = id && status ? `${API}/${id}/status/${status}` : ""
+
+  return usePut(url)
+}
+
+export const useDeleteStationLetter = (id) => {
+  return useChangeStationLetterStatus(id, "Archived")
 }

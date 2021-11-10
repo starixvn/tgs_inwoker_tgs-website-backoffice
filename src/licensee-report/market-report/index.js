@@ -122,16 +122,11 @@ const ReportContent = ({ licenseeId }) => {
           />
           {data?.items?.length > 0 && (
             <Box>
-              {isDev() && (
-                <DownloadButton
-                  id="export-report"
-                  isLoading={isLoading}
-                  href={urlWith(
-                    toSearchParams(),
-                    `${API}/exportLicenseeMarkets`
-                  )}
-                />
-              )}
+              <DownloadButton
+                id="export-report"
+                isLoading={isLoading}
+                href={urlWith(toSearchParams(), `${API}/exportLicenseeMarkets`)}
+              />
             </Box>
           )}
         </Level>
@@ -156,6 +151,7 @@ const ReportContent = ({ licenseeId }) => {
           }
           return {}
         }}
+        isSticky={isDev() ? true : false}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -189,9 +185,8 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <LicenseeCurrencySelect name="currencyCode" licenseeId={licenseeId} />
-          {/* 
-          //TODO: use multi select instead?
-          <LicenseeMultiCurrencySelect
+          {/* TODO: use multi select v1.9 */}
+          {/* <LicenseeMultiCurrencySelect
             name="currencyCodes"
             licenseeId={licenseeId}
           /> */}

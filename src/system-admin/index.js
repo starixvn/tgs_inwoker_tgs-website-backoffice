@@ -5,6 +5,7 @@ import { CodeContentPair as LanguagePair } from "./language"
 import { CodeContentPair as CurrencyPair } from "./currency"
 import { CodeContentPair as BetLimitPair } from "./betlimit"
 import { CodeContentPair as SettingsPair } from "./setting"
+import { CodeContentPair as GameRoundPair } from "./game-round"
 import { Switch } from "../content"
 import { Code, DefaultCodePath, Menu } from "./menu"
 
@@ -16,7 +17,8 @@ const pairs = () => [
     LanguagePair,
     CurrencyPair,
     BetLimitPair,
-    SettingsPair
+    SettingsPair,
+    GameRoundPair
 ]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => (

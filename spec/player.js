@@ -3,7 +3,7 @@ import faker from "faker"
 import { globalApi, operatorApi } from "./env"
 import FormData from "form-data"
 import { fileURLToPath } from "url"
-import { createReadStream } from "fs"
+import { createReadStream } from "fs-extra"
 
 export const DefaultPassword = "TgsP@ssw0rd"
 
@@ -164,7 +164,7 @@ export const applyManualWithdrawForm = async (
 export const manualDeposit = async (
   platformToken,
   token,
-  { paymentid, account, amount }
+  { paymentid, account, amount, promotionid }
 ) => {
   if (!paymentid) {
     let paymentList = await depositPaymentList(platformToken, token)
@@ -179,7 +179,8 @@ export const manualDeposit = async (
   let payload = {
     paymentid,
     account,
-    amount
+    amount,
+    promotionid
   }
 
   let url = `${operatorApi()}/deposit/manual`
@@ -200,9 +201,9 @@ export const manualDeposit = async (
 }
 
 const dummyImagePath = fileURLToPath(new URL("./dummy.png", import.meta.url))
-const dummyImageStream = createReadStream(dummyImagePath)
 export const applyManualDepositForm = async (platformToken, token, formId) => {
   const form = new FormData()
+  let dummyImageStream = await createReadStream(dummyImagePath)
   form.append("file", dummyImageStream, "dummy.png")
 
   let headers = {
@@ -274,4 +275,20 @@ export const addManualBankCard = async (
     headers
   })
   return result
+}
+
+export const promotionList = async (platformToken, token, lang = "en-US") => {
+  let url = `${operatorApi()}/playerpromotion/${lang}?all=true`
+
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${platformToken}`,
+    Token: token
+  }
+
+  let result = await fetcher(url, {
+    method: "GET",
+    headers
+  })
+  return result && result.data
 }

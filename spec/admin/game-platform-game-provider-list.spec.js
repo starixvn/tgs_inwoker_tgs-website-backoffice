@@ -115,6 +115,12 @@ describe("Admin user", () => {
       page.click(MenuItemSelector)
     ])
 
+    await page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/brandgameprovider?`) &&
+        response.status() === 200
+      )
+    })
     await page.waitForSelector(StatusSelector)
 
     status = await page.$eval(StatusSelector, ({ dataset }) => dataset.status)

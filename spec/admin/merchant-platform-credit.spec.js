@@ -124,6 +124,16 @@ describe("Admin user", () => {
       page.click(`${DialogSelector} button[type="submit"]`)
     ])
 
+    await Promise.all([
+      page.waitForSelector(DialogSelector, { state: "detached" }),
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`/api/PlatformCredit?`) &&
+          response.status() === 200
+        )
+      })
+    ])
+
     let creditString = await page.$eval(
       `[data-row-index="${index}"] [data-column-id="credit"]`,
       ({ textContent }) => textContent

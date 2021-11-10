@@ -16,6 +16,21 @@ export const selectRandomOption = async (page, selectSelector) => {
   return option
 }
 
+export const selectByValue = async (page, selectSelector, value) => {
+  let OptionSelector = `${selectSelector} ${OptionValueNotEmptySelector}`
+  await page.waitForSelector(OptionSelector, { state: "attached" })
+
+  await page.selectOption(selectSelector, value)
+  return value
+}
+
+export const selectByLabel = async (page, selectSelector, label) => {
+  let OptionSelector = `${selectSelector} ${OptionValueNotEmptySelector}`
+  await page.waitForSelector(OptionSelector, { state: "attached" })
+  
+  await page.selectOption(selectSelector, { label })
+}
+
 export const optionValues = async (page, selectSelector) => {
   let OptionSelector = `${selectSelector} ${OptionValueNotEmptySelector}`
   await page.waitForSelector(OptionSelector, { state: "attached" })

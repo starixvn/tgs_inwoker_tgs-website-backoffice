@@ -42,6 +42,9 @@ import { useApiLogList } from "./client"
 import { LogDetailDialogDisclosure } from "../LogDetailDialog"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { SortOrder } from "../../table/order"
+import { useHistory, useParams } from "react-router-dom"
+import { parseJSON } from "../../text/json"
+import { parseISO } from "date-fns"
 
 export { Code }
 
@@ -56,19 +59,31 @@ export const Content = () => {
 
 export const CodeContentPair = [Code, Content]
 
-const Body = ({}) => {
+const StateQueryName = "state"
+const Body = ({ }) => {
   let todayRange = today()
-  let { state, setState, setPageIndex, setSortOrder } = useTable({
-    from: "", //todayRange.start,
-    to: "", //todayRange.end,
-    responseCode: "",
-    trackingId: "",
-    ip: "",
-    path: "",
-    prefix: "",
-    serverName: "",
-    method: ""
-  })
+
+  let {
+    location: { search },
+    ...history
+  } = useHistory()
+  let stateString = new URLSearchParams(search).get(StateQueryName)
+  let initState = parseJSON(stateString) ?? {}
+  if (typeof initState.from === "string") {
+    initState.from = parseISO(initState.from)
+  }
+  if (typeof initState.to === "string") {
+    initState.to = parseISO(initState.to)
+  }
+
+  let { state, setState, setPageIndex, setSortOrder } = useTable(initState)
+
+  const syncSearchParams = record => {
+    let search = `${StateQueryName}=${JSON.stringify(record)}`
+    history.replace({
+      search
+    })
+  }
 
   let { pageIndex, pageSize } = state
   let {
@@ -100,13 +115,16 @@ const Body = ({}) => {
           serverName={state?.serverName}
           method={state?.method}
           search={({ start, end, ...data } = {}) => {
-            setState({
+            let record = {
               pageIndex: 0,
               from: start,
               to: end,
               ...data
-            })
+            }
+            setState(record)
             mutate()
+
+            syncSearchParams(record)
           }}
           isLoading={isLoading}
         />
@@ -117,7 +135,11 @@ const Body = ({}) => {
         columns={columns}
         data={data?.items}
         pageCount={pageCount(pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
+        setPageIndex={(pageIndex) => {
+          setPageIndex(pageIndex)
+
+          syncSearchParams({ ...state, pageIndex })
+        }}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         getRowId={(row) => row.id}

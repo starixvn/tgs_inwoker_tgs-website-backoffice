@@ -4,7 +4,8 @@ import {
   useForm,
   FormProvider,
   useFormContext,
-  Controller
+  Controller,
+  useWatch
 } from "react-hook-form"
 import {
   Stack,
@@ -71,6 +72,7 @@ import {
   PaymentChannelSelect
 } from "../../payment/channel/PaymentChannel"
 import { parseJSON } from "../../text/json"
+import { head } from "lodash-es"
 
 export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -110,10 +112,10 @@ const EditDialog = ({
   let {
     isLoading: isLoadingPayment,
     manualPayment,
-    bankTransferPaymentMethod,
-    bankTransferPaymentMethodChannels,
+    manualPaymentMethodList,
+    manualPaymentMethodChannelList,
     error: loadingPaymentError
-  } = useBankTransferPayment()
+  } = useManualPayment()
 
   let [submitData, setSubmit] = useState()
 
@@ -198,8 +200,8 @@ const EditDialog = ({
         brandId={brandId}
         record={record}
         manualPayment={manualPayment}
-        bankTransferPaymentMethod={bankTransferPaymentMethod}
-        bankTransferPaymentMethodChannels={bankTransferPaymentMethodChannels}
+        manualPaymentMethodList={manualPaymentMethodList}
+        manualPaymentMethodChannelList={manualPaymentMethodChannelList}
       />
     </FormDialog>
   )
@@ -228,7 +230,7 @@ export const AddBrandPaymentButton = ({ brandId, onSubmitted, ...props }) => {
   )
 }
 
-const useBankTransferPayment = () => {
+const useManualPayment = () => {
   let {
     isLoading: isLoadingPaymentList,
     data: paymentListData,
@@ -247,20 +249,24 @@ const useBankTransferPayment = () => {
 
   let manualPayment = paymentListData?.find(({ code }) => code === "Manual")
 
-  let bankTransferPaymentMethod = paymentMethodChannelList?.methods?.find(
-    ({ code }) => code === "BankTransfer"
+  let manualPaymentMethodChannelList =
+    paymentMethodChannelList?.allData?.filter?.(
+      ({ paymentId }) => manualPayment.id === paymentId
+    )
+
+  let manualPaymentMethodIds = manualPaymentMethodChannelList?.map(
+    ({ methodId }) => methodId
   )
 
-  let bankTransferPaymentMethodChannels =
-    paymentMethodChannelList?.allData?.filter((item) => {
-      return item.methodId === bankTransferPaymentMethod.id
-    })
+  let manualPaymentMethodList = paymentMethodChannelList?.methods?.filter?.(
+    ({ id }) => manualPaymentMethodIds?.includes(id)
+  )
 
   return {
     isLoading: isLoadingPaymentList || isLoadingBrandPaymentMethodChannelList,
     manualPayment,
-    bankTransferPaymentMethod,
-    bankTransferPaymentMethodChannels,
+    manualPaymentMethodList,
+    manualPaymentMethodChannelList,
     error: paymentListError || paymentMethodChannelListError,
     mutatePaymentList,
     mutatePaymentMethodChannelList,
@@ -275,10 +281,10 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   let {
     isLoading: isLoadingPayment,
     manualPayment,
-    bankTransferPaymentMethod,
-    bankTransferPaymentMethodChannels,
+    manualPaymentMethodList,
+    manualPaymentMethodChannelList,
     error: loadingPaymentError
-  } = useBankTransferPayment()
+  } = useManualPayment()
 
   let title = useTrans({
     zh: "新增",
@@ -311,6 +317,10 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
     <FormDialog
       defaultValues={{
         paymentStatus: BrandPaymentStatus.Enabled,
+        paymentMethodId:
+          manualPaymentMethodList?.length == 1
+            ? head(manualPaymentMethodList)?.id
+            : "",
         playerListCondition: PlayerListCondition.MatchOne,
         allPlayers: true,
         depositedAmountMin: "0",
@@ -359,8 +369,8 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
         brandId={brandId}
         isAdd={true}
         manualPayment={manualPayment}
-        bankTransferPaymentMethod={bankTransferPaymentMethod}
-        bankTransferPaymentMethodChannels={bankTransferPaymentMethodChannels}
+        manualPaymentMethodList={manualPaymentMethodList}
+        manualPaymentMethodChannelList={manualPaymentMethodChannelList}
       />
     </FormDialog>
   )
@@ -371,36 +381,75 @@ const EditBody = ({
   isAdd = false,
   record = {},
   manualPayment = {},
-  bankTransferPaymentMethod,
-  bankTransferPaymentMethodChannels = [],
+  manualPaymentMethodList = [],
+  manualPaymentMethodChannelList = [],
   dialog,
   ...props
 }) => {
-  let { watch, setValue, getValues } = useFormContext()
-  let transferLimitTo = watch("transferLimitTo")
-  let transferLimitFrom = watch("transferLimitFrom")
+  let { watch, setValue, getValues, control } = useFormContext()
+
+  const TransferLimitToFieldName = "transferLimitTo"
+  let transferLimitTo = useWatch({
+    name: TransferLimitToFieldName,
+    control
+  })
+
+  const TransferLimitFromFieldName = "transferLimitFrom"
+  let transferLimitFrom = useWatch({
+    name: TransferLimitFromFieldName,
+    control
+  })
 
   const PaymentChannelIdFieldName = "paymentChannelId"
-  let paymentChannelId = watch("paymentChannelId")
+  let paymentChannelId = useWatch({
+    name: PaymentChannelIdFieldName,
+    control
+  })
 
-  let paymentMethodId = watch("paymentMethodId")
+  const PaymentMethodFieldName = "paymentMethodId"
+  let paymentMethodId = useWatch({
+    name: PaymentMethodFieldName,
+    control
+  })
+
+  let paymentChannelListRange = paymentMethodId
+    ? manualPaymentMethodChannelList.filter(
+        ({ methodId }) => methodId == paymentMethodId
+      )
+    : manualPaymentMethodChannelList
+
+  let paymentChanneIdRange = paymentChannelListRange?.map?.(
+    ({ channelId }) => channelId
+  )
+
   const PaymentMethodChannelIdFieldName = "paymentMethodChannelId"
-  let paymentMethodChannelId = watch(PaymentMethodChannelIdFieldName)
+  let paymentMethodChannelId = useWatch({
+    name: PaymentMethodChannelIdFieldName,
+    control
+  })
+
   let isEdit = !isAdd
   let paymentId = isAdd ? manualPayment?.id : record?.paymentId
-  let isManualPayment = paymentId == manualPayment?.id
-  let isBankTransferMethod = paymentMethodId === bankTransferPaymentMethod?.id
+
+  let paymentMethod = manualPaymentMethodList?.find(
+    ({ id }) => id == paymentMethodId
+  )
+
+  let isBankTransferMethod = paymentMethod?.code === "BankTransfer"
+  let isThirdPartyMethod = paymentMethod?.code === "ThirdParty"
+
+  let manualPaymentMethodIdList = manualPaymentMethodList?.map(({ id }) => id)
+
+  let isManualMethod = manualPaymentMethodIdList?.includes(paymentMethodId)
   useEffect(() => {
-    if (isBankTransferMethod) {
-      let paymentMethodChannel = bankTransferPaymentMethodChannels.find(
-        (item) => {
-          return (
-            item.paymentId === paymentId &&
-            item.methodId === paymentMethodId &&
-            item.channelId === paymentChannelId
-          )
-        }
-      )
+    if (isManualMethod) {
+      let paymentMethodChannel = manualPaymentMethodChannelList.find((item) => {
+        return (
+          item.paymentId === paymentId &&
+          item.methodId === paymentMethodId &&
+          item.channelId === paymentChannelId
+        )
+      })
       setValue(PaymentMethodChannelIdFieldName, paymentMethodChannel?.id ?? "")
     }
   }, [paymentChannelId, paymentMethodId])
@@ -437,22 +486,21 @@ const EditBody = ({
               <Box alignY="center">
                 {isAdd && (
                   <PaymentMethodSelect
-                    name="paymentMethodId"
-                    placeholder={false}
-                    range={[bankTransferPaymentMethod.id]}
-                    value={bankTransferPaymentMethod?.id}
-                  />
-                )}
-                {isEdit && isBankTransferMethod && (
-                  <PaymentMethodSelect
-                    name="paymentMethodId"
-                    range={[bankTransferPaymentMethod.id]}
+                    name={PaymentMethodFieldName}
+                    range={manualPaymentMethodIdList}
                     required
                   />
                 )}
-                {isEdit && !isBankTransferMethod && (
+                {isEdit && isManualMethod && (
+                  <PaymentMethodSelect
+                    name={PaymentMethodFieldName}
+                    range={manualPaymentMethodIdList}
+                    required
+                  />
+                )}
+                {isEdit && !isManualMethod && (
                   <PaymentMethodLabel
-                    range={[bankTransferPaymentMethod.id]}
+                    range={manualPaymentMethodIdList}
                     value={record?.paymentMethodId}
                   />
                 )}
@@ -470,16 +518,18 @@ const EditBody = ({
                 {isAdd && (
                   <PaymentChannelSelect
                     name={PaymentChannelIdFieldName}
+                    range={paymentChanneIdRange}
                     required
                   />
                 )}
-                {isEdit && isBankTransferMethod && (
+                {isEdit && isManualMethod && (
                   <PaymentChannelSelect
                     name={PaymentChannelIdFieldName}
+                    range={paymentChanneIdRange}
                     required
                   />
                 )}
-                {isEdit && !isBankTransferMethod && (
+                {isEdit && !isManualMethod && (
                   <PaymentChannelLabel value={record?.paymentChannelId} />
                 )}
               </Box>
@@ -489,7 +539,7 @@ const EditBody = ({
               </Label>
               <Input name="channelName" size="small" required />
 
-              {isManualPayment && (
+              {isBankTransferMethod && (
                 <>
                   <Label required>
                     <Trans zh="帐号名称" en="Account Name" />
@@ -500,6 +550,15 @@ const EditBody = ({
                     <Trans zh="银行卡号" en="Bank Account" />
                   </Label>
                   <Input name="extendedData.bankAccount" required />
+                </>
+              )}
+
+              {isThirdPartyMethod && (
+                <>
+                  <Label required>
+                    <Trans zh="QR Code" en="QR Code" />
+                  </Label>
+                  <Input name="extendedData.qrCode" required />
                 </>
               )}
 

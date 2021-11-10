@@ -279,6 +279,7 @@ describe("Admin user", () => {
   const toInVerifyTab = async () => {
     await page.click(`button#reviewing`)
 
+    //TODO: wait for get api and table selector
     await Promise.all([
       page.waitForLoadState("networkidle"),
       page.waitForSelector(`#banner tbody`)

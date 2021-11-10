@@ -122,8 +122,9 @@ const BodyContent = ({ brandId }) => {
     username: "",
     channelName: "",
     method: "",
-    status: location?.state?.status ?? "",
+    status: location?.state?.status ?? FundDepositStatus.UnprocessedStatus,
     thirdOrderNo: "",
+    orderNo: "",
     beginCreateOn: todayRange.start,
     endCreateOn: todayRange.end,
     beginUpdateOn: undefined,
@@ -182,6 +183,7 @@ const BodyContent = ({ brandId }) => {
         method: "",
         status: location?.state?.status ?? "",
         thirdOrderNo: "",
+        orderNo: "",
         id: "",
         beginCreateOn: todayRange.start,
         endCreateOn: todayRange.end,
@@ -260,6 +262,7 @@ const BodyContent = ({ brandId }) => {
             method={method}
             status={status}
             thirdOrderNo={state.thirdOrderNo}
+            orderNo={state.orderNo}
             id={state.id}
             beginCreateOn={beginCreateOn}
             endCreateOn={endCreateOn}
@@ -402,6 +405,7 @@ const SearchBar = ({
   method,
   status,
   thirdOrderNo,
+  orderNo,
   id,
   beginCreateOn,
   endCreateOn,
@@ -420,6 +424,7 @@ const SearchBar = ({
       method,
       status,
       thirdOrderNo,
+      orderNo,
       id,
       beginCreateOn,
       endCreateOn,
@@ -435,6 +440,7 @@ const SearchBar = ({
       method,
       status,
       thirdOrderNo,
+      orderNo,
       id,
       beginCreateOn,
       endCreateOn,
@@ -447,6 +453,7 @@ const SearchBar = ({
     method,
     status,
     thirdOrderNo,
+    orderNo,
     id,
     beginCreateOn,
     endCreateOn,
@@ -472,6 +479,10 @@ const SearchBar = ({
   let externalIdPlaceholder = useTrans({
     zh: "三方订单编号",
     en: "3rd Party Id"
+  })
+  let orderIdPlaceholder = useTrans({
+    zh: "GMS订单号",
+    en: "GMS Id"
   })
   let idPlaceholder = useTrans({
     zh: "系统订单编号",
@@ -500,6 +511,11 @@ const SearchBar = ({
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
+            <InputField
+              name="orderNo"
+              placeholder={orderIdPlaceholder}
               showEmptyFieldValueAddonAfter
             />
             <InputField
@@ -555,10 +571,9 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "id",
-        Header: <Trans zh="订单号" en="Id" />,
-        disableSortBy: true,
-        Cell: ({ value }) => value
+        accessor: "orderNo",
+        Header: <Trans zh="GMS订单号" en="GMS Id" />,
+        disableSortBy: true
       }),
       textColumn({
         accessor: "thirdPartyOrderNo",
@@ -624,7 +639,17 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <Trans zh="备注" en="Remark" />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
-      })
+      }),
+      textColumn({
+        accessor: "promotionName",
+        Header: <Trans zh="活动名称" en="Promotion Name" />,
+        disableSortBy: true,
+      }),
+      numberDecimalColumn({
+        accessor: "bonus",
+        Header: <Trans zh="优惠金额" en="Promotion Bonus" />,
+        disableSortBy: true,
+      }),
     )
 
     if (hasUpdateMenu) {

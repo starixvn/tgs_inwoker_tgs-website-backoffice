@@ -324,8 +324,10 @@ const useColumns = ({
           disableSortBy: true,
           Cell: ({ value: record }) => {
             let checked = includePayout(record, batchPayouts)
+            let paid = !!record?.sentOn
             return (
               <Checkbox
+                disabled={paid}
                 checked={checked}
                 onChange={(event) => {
                   let checked = event.target.checked
@@ -413,14 +415,16 @@ const useColumns = ({
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {
+            let paid = !!record?.sentOn
             return (
               <Set orientation="horizontal" alignX="center">
+                {!paid && 
                 <PromotionManualPayoutDisclosure
-                  id="promotion-payout-dialog-disclosure"
+                  id="payout-promotion-dialog-disclosure"
                   brandId={brandId}
                   record={record}
                   onSubmitted={mutate}
-                />
+                />}
                 <ViewPromotionManualPayoutDisclosure
                   id="view-promotion-payout-dialog-disclosure"
                   brandId={brandId}
