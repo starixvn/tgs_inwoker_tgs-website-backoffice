@@ -444,7 +444,6 @@ const EditBody = ({
   let isManualMethod = manualPaymentMethodIdList?.includes(paymentMethodId)
   useEffect(() => {
     if (isManualMethod) {
-      console.log("isManualMethod", isManualMethod)
       let paymentMethodChannel = manualPaymentMethodChannelList.find((item) => {
         return (
           item.paymentId === paymentId &&
@@ -452,7 +451,6 @@ const EditBody = ({
           item.channelId === paymentChannelId
         )
       })
-      console.log("paymentMethodChannel", paymentMethodChannel, "paymentId", paymentId, "methodId", methodId, "paymentChannelId", paymentChannelId)
       setValue(PaymentMethodChannelIdFieldName, paymentMethodChannel?.id ?? "")
     }
   }, [paymentChannelId, paymentMethodId])
