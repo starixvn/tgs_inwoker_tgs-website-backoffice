@@ -150,6 +150,7 @@ const ReportContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        isSticky={isDev() ? true : false}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
