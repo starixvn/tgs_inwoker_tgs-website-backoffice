@@ -50,7 +50,7 @@ const Body = () => {
     let columns = useColumns({ items: data?.items })
 
     return <PageContent
-        actionBar={<SearchBar
+            actionBar={<SearchBar
             start={state.from}
             end={state.to}
             search={({ start, end, ...rest }) => {
@@ -63,7 +63,7 @@ const Body = () => {
                 mutate()
             }}
         />}
-        title={<Trans zh="Open Round" en="Open Round" />}
+        title={<Trans zh="Game Round" en="Game Round" />}
     >
         <Table
             columns={columns}
