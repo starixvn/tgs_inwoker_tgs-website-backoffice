@@ -169,7 +169,7 @@ const FormBody = ({ brandId, username, agentId }) => {
         <Text.Block alignY="center">
           <Trans zh="交易金额" en="Amount" />
         </Text.Block>
-        <NumberInput name="amount" min="0" required />
+        <NumberInput name="amount" min="0" step="0.01" required />
 
         <Text.Block alignY="center">
           <Trans zh="备注" en="Remark" />
