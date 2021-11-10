@@ -74,6 +74,7 @@ import {
 import { parseJSON } from "../../text/json"
 import { head } from "lodash-es"
 import ImageUploadButton from "../../file/upload/ImageUploadButton"
+import { isDev } from "../../env"
 
 export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -552,16 +553,19 @@ const EditBody = ({
                   </Label>
                   <Input name="extendedData.bankAccount" required />
 
-                  <Label>
-                    <Trans zh="銀行Logo" en="Bank Logo" />
-                  </Label>
-                  <ImageUploadButton
-                    brandId={brandId}
-                    name="extendedData.bankLogo"
-                    //TODO: change prefix
-                    prefix="messengerQRCode"
-                    showLocalizationAddonAfter={false}
-                  />
+                  {isDev() && 
+                  <>
+                    <Label>
+                      <Trans zh="銀行Logo" en="Bank Logo" />
+                    </Label>
+                    <ImageUploadButton
+                      brandId={brandId}
+                      name="extendedData.bankLogo"
+                      //TODO: change prefix
+                      prefix="messengerQRCode"
+                      showLocalizationAddonAfter={false}
+                    />
+                  </>}
                 </>
               )}
 
@@ -570,14 +574,14 @@ const EditBody = ({
                   <Label required>
                     <Trans zh="QR Code" en="QR Code" />
                   </Label>
-                  {/* <Input name="extendedData.qrCode" required /> */}
-                  <ImageUploadButton
+                  {!isDev() && <Input name="extendedData.qrCode" required />}
+                  {isDev() && <ImageUploadButton
                     brandId={brandId}
                     name="extendedData.qrCode"
                     //TODO: change prefix
                     prefix="messengerQRCode"
                     showLocalizationAddonAfter={false}
-                  />
+                  />}
                 </>
               )}
 
