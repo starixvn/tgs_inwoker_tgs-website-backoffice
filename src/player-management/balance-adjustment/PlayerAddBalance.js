@@ -172,7 +172,7 @@ const FormBody = ({}) => {
         <Box alignY="center">
           <Trans zh="流水金额" en="Turnover Requirement Amount" />
         </Box>
-        <NumberInputField name="bucketAmount" min="0" />
+        <NumberInputField name="bucketAmount" min="0" step="0.01"/>
 
         <Box alignY="center">
           <Trans zh="备注" en="Remark" />
