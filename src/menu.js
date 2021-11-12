@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, Children, isValidElement } from "react"
+import React, { useRef, useEffect, Children, isValidElement, useState } from "react"
 import { css } from "@emotion/react"
 import {
   Switch,
@@ -9,7 +9,7 @@ import {
 } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
 import { usePage } from "bumbag"
-import { SideNav, Box } from "bumbag"
+import { SideNav, Box, Level, Icon, Button } from "bumbag"
 import memoize from "fast-memoize"
 import { codeMenuContentPair as platformPair } from "./platform-management"
 import {
@@ -84,9 +84,16 @@ import {
   codeLabelPair as logLabelPair
 } from "./log/menu"
 import { useLocale, getTrans } from "./i18n"
+import {
+faChevronCircleDown,
+faChevronCircleUp,
+faAngleUp,
+faAngleDown
+} from "@fortawesome/free-solid-svg-icons"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   let { sidebar, isCollapsed } = usePage()
+  let [show, setShow] = useState(true)
 
   let locale = useLocale()
   let authCodes = useMenuCodes(codePaths)
@@ -115,7 +122,20 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
 
   return items && items.length ? (
     <SideNav.Level
-      title={title}
+      title={<Level orientation="horizontal" alignY="center" width="100%">
+                {title} 
+                <Button variant="ghost" 
+                 size="small"
+                 marginRight="0.3rem"
+                 display="none"
+                  onClick={() => {
+                    setShow(!show)
+                  }}
+                >
+                <Icon icon={show ? faAngleUp : faAngleDown} type="font-awesome"/>
+                </Button>
+              </Level>
+            }
       css={css`
         border-bottom: 1px solid #edf1f7;
 
@@ -138,7 +158,7 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
           }
         `}
       >
-        {items}
+        {show && items}
       </SideNav.Level>
     </SideNav.Level>
   ) : null
