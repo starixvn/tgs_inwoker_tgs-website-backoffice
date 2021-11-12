@@ -16,7 +16,9 @@ import {
   faBell,
   faBars,
   faUser,
-  faLanguage
+  faLanguage,
+  faChevronCircleDown,
+  faChevronCircleUp
 } from "@fortawesome/free-solid-svg-icons"
 
 const theme = {
@@ -37,7 +39,9 @@ const theme = {
           faBell,
           faBars,
           faUser,
-          faLanguage
+          faLanguage,
+          faChevronCircleUp,
+          faChevronCircleDown
         ],
         prefix: "solid-",
         type: "font-awesome"

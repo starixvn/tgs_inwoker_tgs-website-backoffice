@@ -106,18 +106,18 @@ export const DomainListDialog = ({
         readOnly ? <CloseButtonFooter alignX="right" dialog={dialog} /> : null
       }
     >
-      <FormBody readOnly={readOnly} />
+      <DomainListFormBody readOnly={readOnly} />
     </FormDialog>
   )
 }
 
 const DomainFieldArrayName = "domains"
-const FormBody = ({ readOnly = false }) => {
+export const DomainListFormBody = ({ name = DomainFieldArrayName, readOnly = false }) => {
   let editable = !readOnly
 
   let { control, watch, getValues, setValue } = useFormContext()
   let list = useWatch({
-    name: DomainFieldArrayName,
+    name,
     control
   })
 
@@ -135,7 +135,7 @@ const FormBody = ({ readOnly = false }) => {
                 onClick={() => {
                   let clonedList = clone(list)
                   clonedList.splice(index, 1)
-                  setValue(DomainFieldArrayName, clonedList)
+                  setValue(name, clonedList)
                 }}
               >
                 <Icon icon={faTimes} type="font-awesome" />
@@ -150,7 +150,7 @@ const FormBody = ({ readOnly = false }) => {
           id="add-domain"
           onClick={(event) => {
             let defaultValue = ""
-            setValue(DomainFieldArrayName, [...list, defaultValue])
+            setValue(name, [...list, defaultValue])
           }}
         >
           <Icon icon={faPlus} type="font-awesome" />
@@ -160,6 +160,6 @@ const FormBody = ({ readOnly = false }) => {
   )
 }
 
-const DomainInputField = ({ index, ...props }) => {
-  return <InputField name={`${DomainFieldArrayName}.${index}`} {...props} />
+const DomainInputField = ({ name, index, ...props }) => {
+  return <InputField name={`${name}.${index}`} {...props} />
 }
