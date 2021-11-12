@@ -52,10 +52,12 @@ import {
   getHeaderTitleColor,
   getHeaderTitleFontSize,
   getHeaderTitleFontWeight,
-  getHeaderImageUrl
+  getHeaderImageUrl,
+  isDev
 } from "./env"
 import FundDepositTopNavItem from "./fund/deposit/FundDepositTopNavItem"
 import FundWithdrawTopNavItem from "./fund/withdraw/FundWithdrawTopNavItem"
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
 
 function App() {
   let isUserAuthed = useUserIsAuthed()
@@ -115,13 +117,39 @@ const Layout = ({ children }) => {
           id="page-content"
           height={`calc(100vh - ${HeaderHeight})`}
           maxHeight={`calc(100vh - ${HeaderHeight})`}
+          position="relative"
           overflow="auto"
         >
+          <SidebarToggleButton />
           {children}
         </Box>
         {/* <Footer /> */}
       </PageWithSidebar>
     </PageWithHeader>
+  )
+}
+
+const SidebarToggleButton = () => {
+  let { sidebar, isCollapsed } = usePage()
+  //if (!isDev()) {
+  return null
+  //}
+
+  return (
+    <Button
+      onClick={sidebar.toggle}
+      css={css`
+        position: absolute;
+        top: 1rem;
+        left: -6px;
+        padding: 0 1px;
+      `}
+    >
+      <Icon
+        icon={sidebar.isOpen ? faAngleRight : faAngleLeft}
+        type="font-awesome"
+      />
+    </Button>
   )
 }
 

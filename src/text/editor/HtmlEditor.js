@@ -224,7 +224,7 @@ const Body = ({
           if (formState.isSubmitting && invalid) {
             editor?.focus()
           }
-        }, [formState.isSubmitting])
+        }, [formState.isSubmitting, invalid])
 
         return (
           <textarea

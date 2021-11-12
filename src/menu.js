@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, Children, isValidElement, useState } from "react"
+import React, {
+  useRef,
+  useEffect,
+  Children,
+  isValidElement,
+  useState
+} from "react"
 import { css } from "@emotion/react"
 import {
   Switch,
@@ -85,11 +91,12 @@ import {
 } from "./log/menu"
 import { useLocale, getTrans } from "./i18n"
 import {
-faChevronCircleDown,
-faChevronCircleUp,
-faAngleUp,
-faAngleDown
+  faChevronCircleDown,
+  faChevronCircleUp,
+  faAngleUp,
+  faAngleDown
 } from "@fortawesome/free-solid-svg-icons"
+import { isDev } from "./env"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   let { sidebar, isCollapsed } = usePage()
@@ -122,20 +129,23 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
 
   return items && items.length ? (
     <SideNav.Level
-      title={<Level orientation="horizontal" alignY="center" width="100%">
-                {title} 
-                <Button variant="ghost" 
-                 size="small"
-                 marginRight="0.3rem"
-                 display="none"
-                  onClick={() => {
-                    setShow(!show)
-                  }}
-                >
-                <Icon icon={show ? faAngleUp : faAngleDown} type="font-awesome"/>
-                </Button>
-              </Level>
-            }
+      title={
+        <Level orientation="horizontal" alignY="center" width="100%">
+          {title}
+          <Button
+            display="none"
+            //display={isDev() ? "inline-flex" : "none"}
+            variant="ghost"
+            size="small"
+            marginRight="0.3rem"
+            onClick={() => {
+              setShow(!show)
+            }}
+          >
+            <Icon icon={show ? faAngleUp : faAngleDown} type="font-awesome" />
+          </Button>
+        </Level>
+      }
       css={css`
         border-bottom: 1px solid #edf1f7;
 
