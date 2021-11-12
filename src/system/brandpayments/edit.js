@@ -560,9 +560,8 @@ const EditBody = ({
                     </Label>
                     <ImageUploadButton
                       brandId={brandId}
-                      name="extendedData.bankLogo"
-                      //TODO: change prefix
-                      prefix="messengerQRCode"
+                      name="extendedData.logo"
+                      prefix="payment"
                       showLocalizationAddonAfter={false}
                     />
                   </>}
@@ -574,14 +573,12 @@ const EditBody = ({
                   <Label required>
                     <Trans zh="QR Code" en="QR Code" />
                   </Label>
-                  {!isDev() && <Input name="extendedData.qrCode" required />}
-                  {isDev() && <ImageUploadButton
+                  <ImageUploadButton
                     brandId={brandId}
-                    name="extendedData.qrCode"
-                    //TODO: change prefix
-                    prefix="messengerQRCode"
+                    name="extendedData.qrCodeFileUrl"
+                    prefix="payment"
                     showLocalizationAddonAfter={false}
-                  />}
+                  />
                 </>
               )}
 
