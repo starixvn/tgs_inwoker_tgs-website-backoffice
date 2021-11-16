@@ -1,15 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global, keyframes } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import {
-  Switch,
-  Route,
-  Link,
-  useLocation,
-  useHistory,
-  useParams,
-  useRouteMatch
-} from "react-router-dom"
+import { useLocation, useHistory } from "react-router-dom"
 import {
   Heading,
   Stack,

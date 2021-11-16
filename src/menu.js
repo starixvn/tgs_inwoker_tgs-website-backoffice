@@ -6,13 +6,7 @@ import React, {
   useState
 } from "react"
 import { css } from "@emotion/react"
-import {
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useLocation
-} from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
 import { usePage } from "bumbag"
 import { SideNav, Box, Level, Icon, Button } from "bumbag"

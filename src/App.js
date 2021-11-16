@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Global, css } from "@emotion/react"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-  useHistory,
-  useLocation,
-  useRouteMatch
-} from "react-router-dom"
+import { Switch, Route, useLocation } from "react-router-dom"
 import {
   Container,
   PageContent,
