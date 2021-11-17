@@ -1,98 +1,118 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useTrans, Trans } from "../../i18n"
-import Select from "../../select/Select"
+import Select, { SelectField } from "../../select/Select"
 
 const Win = "Win"
 const WinTrans = {
-    zh: "赢",
-    en: "Win"
+  zh: "赢",
+  en: "Win"
 }
 
 const Loss = "Loss"
 const LossTrans = {
-    zh: "输",
-    en: "Loss"
+  zh: "输",
+  en: "Loss"
 }
 
 const Draw = "Draw"
 const DrawTrans = {
-    zh: "和",
-    en: "Draw"
+  zh: "和",
+  en: "Draw"
 }
 
 const Open = "Open"
 const OpenTrans = {
-    zh: "未结算",
-    en: "Open"
+  zh: "未结算",
+  en: "Open"
 }
 
 const Void = "Void"
 const VoidTrans = {
-    zh: "作废",
-    en: "Void"
+  zh: "作废",
+  en: "Void"
 }
 
 export const GameRoundStatus = {
-    Win,
-    Loss,
-    Draw,
-    Void,
-    Open
+  Win,
+  Loss,
+  Draw,
+  Void,
+  Open
 }
 
 export const GameRoundStatusLabel = ({ value }) => {
-    switch (value) {
-        case Win:
-            return <Trans {...WinTrans} />
+  switch (value) {
+    case Win:
+      return <Trans {...WinTrans} />
 
-        case Loss:
-            return <Trans {...LossTrans} />
+    case Loss:
+      return <Trans {...LossTrans} />
 
-        case Draw:
-            return <Trans {...DrawTrans} />
+    case Draw:
+      return <Trans {...DrawTrans} />
 
-        case Void:
-            return <Trans {...VoidTrans} />
+    case Void:
+      return <Trans {...VoidTrans} />
 
-        case Open:
-            return <Trans {...OpenTrans} />
+    case Open:
+      return <Trans {...OpenTrans} />
 
-        default:
-            return value
-    }
+    default:
+      return value
+  }
 }
 
+export const useGameRoundStatusOptions = () => {
+  return [
+    {
+      value: Win,
+      label: useTrans(WinTrans)
+    },
+    {
+      value: Loss,
+      label: useTrans(LossTrans)
+    },
+    {
+      value: Draw,
+      label: useTrans(DrawTrans)
+    },
+    {
+      value: Void,
+      label: useTrans(VoidTrans)
+    },
+    {
+      value: Open,
+      label: useTrans(OpenTrans)
+    }
+  ]
+}
 export const GameRoundStatusSelect = ({ placeholder, ...props }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "状态",
-        en: "Status"
-    })
-    placeholder = placeholder ?? defaultPlaceholder
+  let defaultPlaceholder = useTrans({
+    zh: "状态",
+    en: "Status"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
 
-    let options = [
-        {
-            value: Win,
-            label: useTrans(WinTrans)
-        },
-        {
-            value: Loss,
-            label: useTrans(LossTrans)
-        },
-        {
-            value: Draw,
-            label: useTrans(DrawTrans)
-        },
-        {
-            value: Void,
-            label: useTrans(VoidTrans)
-        },
-        {
-            value: Open,
-            label: useTrans(OpenTrans)
-        }
-    ]
-    return <Select placeholder={placeholder} options={options} {...props} />
+  let options = useGameRoundStatusOptions()
+  return <Select placeholder={placeholder} options={options} {...props} />
+}
+
+export const GameRoundStatusSelectField = ({
+  placeholder,
+  option,
+  ...props
+}) => {
+  let defaultPlaceholder = useTrans({
+    zh: "状态",
+    en: "Status"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
+
+  let defaultOptions = useGameRoundStatusOptions()
+  option = option ?? defaultOptions
+
+  return <SelectField placeholder={placeholder} option={option} {...props} />
 }
 
 export default GameRoundStatus

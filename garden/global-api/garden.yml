@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: global-api
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/global-api:2021.1006.0556-prod
+image: global-api
 services:
   - name: global-api
     dependencies:
@@ -12,7 +12,7 @@ services:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
-      NatsSetting__Urls: "nats://nats:4222"
+      ConnectionStrings__Nats: "nats://nats:4222"
     ingresses:
       - hostname: mocksite.localhost
         path: /global-api

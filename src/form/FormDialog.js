@@ -13,6 +13,7 @@ import { CancelText, ConfirmText, SubmitText } from "../button/ActionButtons"
 import AlertDialog from "../dialog/Alert"
 
 export const FormDialog = ({
+  formRef,
   defaultValues,
   onSubmit,
   onClickSubmit,
@@ -52,6 +53,7 @@ export const FormDialog = ({
         wrap={(children) => (
           <FormProvider {...formMethods}>
             <form
+              ref={formRef}
               onSubmit={(event) => {
                 if (stopPropagation) {
                   event.stopPropagation()

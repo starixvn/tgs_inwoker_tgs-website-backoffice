@@ -31,6 +31,7 @@ import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import subDays from "date-fns/subDays"
+import { CloseGameOpenRoundDialogDisclosure } from "./CloseGameOpenRound"
 
 export { Code }
 
@@ -91,7 +92,7 @@ const Body = () => {
           }}
         />
       }
-      title={<Trans zh="游戏订单" en="Game Round" />}
+      title={<Trans zh="游戏未结算订单" en="Game Open Round" />}
     >
       <Table
         columns={columns}
@@ -102,6 +103,7 @@ const Body = () => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -199,14 +201,33 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <Trans zh="Bet Amount" en="Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
-        disableSortBy: true,
-        Cell: GameRoundStatusLabel
+        accessor: "validBetAmount",
+        Header: <Trans zh="Valid Bet Amount" en="Valid Bet Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "settleAmount",
+        Header: <Trans zh="Settle Amount" en="Settle Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "commission",
+        Header: <Trans zh="Commission" en="Commission" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "turnover",
+        Header: <Trans zh="Turnover" en="Turnover" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "winLoss",
+        Header: <Trans zh="WinLoss" en="WinLoss" />,
+        disableSortBy: true
       }),
       textColumn({
         accessor: "gameProviderName",
@@ -224,7 +245,7 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "device",
+        accessor: "platformType",
         Header: <Trans zh="支持设备" en="Supporting Device" />,
         disableSortBy: true
       }),
@@ -243,7 +264,13 @@ const useColumns = ({ items = [] }) => {
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {
-            return <Set></Set>
+            let { id: roundId } = record
+            return (
+              <CloseGameOpenRoundDialogDisclosure
+                roundId={roundId}
+                record={record}
+              />
+            )
           }
         })
       )
