@@ -553,18 +553,15 @@ const EditBody = ({
                   </Label>
                   <Input name="extendedData.bankAccount" required />
 
-                  {isDev() && 
-                  <>
-                    <Label>
-                      <Trans zh="銀行Logo" en="Bank Logo" />
-                    </Label>
-                    <ImageUploadButton
-                      brandId={brandId}
-                      name="extendedData.logo"
-                      prefix="payment"
-                      showLocalizationAddonAfter={false}
-                    />
-                  </>}
+                  <Label>
+                    <Trans zh="銀行Logo" en="Bank Logo" />
+                  </Label>
+                  <ImageUploadButton
+                    brandId={brandId}
+                    name="extendedData.logo"
+                    prefix="payment"
+                    showLocalizationAddonAfter={false}
+                  />
                 </>
               )}
 

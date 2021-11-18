@@ -151,7 +151,7 @@ const ReportContent = ({ licenseeId }) => {
           }
           return {}
         }}
-        isSticky={isDev() ? true : false}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>

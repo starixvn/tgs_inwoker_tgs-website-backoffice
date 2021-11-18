@@ -728,7 +728,7 @@ const EditTabs = ({
         <AgentContactInfoTab {...tab} />
         <AgentBankInfoTab {...tab} />
         <AgentPasswordTab {...tab} />
-        {isDev() && <AgentDomainListTab {...tab} />}
+        <AgentDomainListTab {...tab} />
       </TabList>
       <AgentInfoPanel
         record={record}
@@ -761,15 +761,13 @@ const EditTabs = ({
         onClickClose={onClickClose}
         {...tab}
       />
-      {isDev() && (
-        <AgentDomainListPanel
-          brandId={brandId}
-          agentId={agentId}
-          onSubmitted={onSubmitted}
-          onClickClose={onClickClose}
-          {...tab}
-        />
-      )}
+      <AgentDomainListPanel
+        brandId={brandId}
+        agentId={agentId}
+        onSubmitted={onSubmitted}
+        onClickClose={onClickClose}
+        {...tab}
+      />
     </Tabs>
   )
 }

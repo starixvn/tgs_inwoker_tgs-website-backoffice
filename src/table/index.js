@@ -106,6 +106,7 @@ export const Table = ({
   foot = false,
   children,
   isSticky = false,
+  isHoverable,
   ...props
 }) => {
   let table = _useTable(
@@ -136,10 +137,10 @@ export const Table = ({
     },
     useFilters,
     useSortBy,
-    usePagination,
+    usePagination
   )
 
-  let { getTableProps, gotoPage, state: tableState } = table
+  let { gotoPage, state: tableState } = table
   let { pageIndex } = tableState
 
   useEffect(() => {
@@ -165,19 +166,28 @@ export const Table = ({
         </Box>
       )}
       {!isLoading && (
-        <Set orientation="vertical" position="relative" css={css`
-          & div.bb-Table {
-            overflow: ${isSticky ? "visible" : "auto"};
-            border: 0;
-          }
+        <Set
+          orientation="vertical"
+          position="relative"
+          css={css`
+            & div.bb-Table {
+              overflow: ${isSticky ? "visible" : "auto"};
+              border: 0;
+            }
 
-          & table.bb-Table {
-            border-radius: 6px;
-            overflow: ${isSticky ? "visible" : "auto"};
-            border: 1px solid var(--bb-palette-white800, #000000);
-          }
-          `}>
-          <_Table width="100%" {...getTableProps()} {...props}>
+            & table.bb-Table {
+              border-radius: 6px;
+              overflow: ${isSticky ? "visible" : "auto"};
+              border: 1px solid var(--bb-palette-white800, #000000);
+            }
+          `}
+        >
+          <_Table
+            width="100%"
+            {...table.getTableProps()}
+            isHoverable={isHoverable}
+            {...props}
+          >
             {head === true && <Head table={table} isSticky={isSticky} />}
             {body === true && <Body table={table} />}
             {children}
@@ -209,10 +219,13 @@ export const Table = ({
 const Head = ({ table, isSticky }) => {
   let { headerGroups } = table
   return (
-    <_Table.Head css={css`
+    <_Table.Head
+      css={css`
         position: ${isSticky ? "sticky" : "relative"};
         top: 0;
-      `}>
+        z-index: ${isSticky ? "1" : "auto"};
+      `}
+    >
       {headerGroups.map((headerGroup) => (
         <_Table.Row {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map((column) => {

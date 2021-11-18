@@ -32,6 +32,7 @@ import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import subDays from "date-fns/subDays"
 import { CloseGameOpenRoundDialogDisclosure } from "./CloseGameOpenRound"
+import copy from "clipboard-copy"
 
 export { Code }
 
@@ -104,6 +105,23 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         isSticky
+        css={css`
+          tr td:last-child,
+          tr th:last-child {
+            position: sticky;
+            inset-inline-end: 0;
+          }
+
+          tr th {
+            border-bottom: 1px solid var(--bb-palette-white800, #000000);
+            background-color: var(--bb-palette-white600, #000000);
+            z-index: 1;
+          }
+
+          tr td:last-child {
+            background-color: #fff;
+          }
+        `}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -181,8 +199,10 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         accessor: "externalRoundId",
         Header: <Trans zh="三方订单ID" en="External Id" />,
-        disableSortBy: true,
+        disableSortBy: true
+        /* TODO: popup cause page scroll
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
+        */
       }),
       textColumn({
         accessor: "brandCode",
