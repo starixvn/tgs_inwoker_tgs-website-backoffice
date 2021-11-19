@@ -262,6 +262,12 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
+        accessor: "turnover",
+        sumColumn: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
         id: "winLossAmount",
         accessor: (row) => row,
         sumColumn: "winLossAmount",

@@ -265,7 +265,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="有效投注" en="Turnover" />,
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

@@ -303,6 +303,12 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
+        accessor: "turnover",
+        sumColumn: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",
         Header: <Trans zh="输赢金额" en="Win Loss Amount" />,
