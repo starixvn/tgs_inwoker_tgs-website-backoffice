@@ -173,7 +173,7 @@ const FormBody = () => {
       <FieldWrapper
         label={<Trans zh="三方结算时间" en="External Closed Time" />}
       >
-        <DateTimeInput name="externalClosedOn" />
+        <DateTimeInput name="externalClosedOn" required />
       </FieldWrapper>
 
       <FieldStack orientation="horizontal">
