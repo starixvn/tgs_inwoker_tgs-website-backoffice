@@ -13,9 +13,7 @@ import {
   useModalState,
   Dialog,
   Card,
-  FieldWrapper,
-  Columns,
-  DropdownMenu
+  FieldWrapper
 } from "bumbag"
 import { Disclosure } from "../../dialog/Disclosure"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -37,6 +35,7 @@ import GameRoundStatus, {
   useGameRoundStatusOptions
 } from "../../game/round/GameRoundStatus"
 import { ConfirmText } from "../../button/ActionButtons"
+import DateTimeInput from "../../date/DateTimeInput"
 
 export const CloseGameOpenRoundDialogDisclosure = ({
   roundId,
@@ -101,7 +100,10 @@ const CloseGameOpenRoundDialog = ({
   return (
     <FormDialog
       formRef={formRef}
-      defaultValues={clone(record)}
+      defaultValues={{
+        ...clone(record),
+        externalClosedOn: null
+      }}
       onSubmit={onSubmit}
       isLoading={isLoading}
       result={result}
@@ -168,6 +170,12 @@ const FormBody = () => {
       <FieldWrapper label={<Trans zh="三方订单ID" en="External Id" />}>
         <Box fontWeight="bold">{externalRoundId}</Box>
       </FieldWrapper>
+      <FieldWrapper
+        label={<Trans zh="三方结算时间" en="External Closed Time" />}
+      >
+        <DateTimeInput name="externalClosedOn" />
+      </FieldWrapper>
+
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="betAmount"

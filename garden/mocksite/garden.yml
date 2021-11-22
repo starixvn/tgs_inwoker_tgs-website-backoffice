@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: mocksite
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/mocksite:prod-1.2.1
+image: mocksite #registry.gitlab.com/rayprosoft/turnkey-gaming-system/mocksite:prod-1.2.1
 exclude:
   - garden
   - spec

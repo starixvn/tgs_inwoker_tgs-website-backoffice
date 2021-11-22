@@ -13,6 +13,7 @@ services:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
       ConnectionStrings__Nats: "nats://nats:4222"
+      Global__BrandCertificateBaseUrl: "http://brand-cert-api.localhost"
     ingresses:
       - hostname: mocksite.localhost
         path: /global-api
