@@ -75,6 +75,10 @@ const ReportContent = ({ brandId }) => {
     gameType: ""
   })
 
+  useEffect(() => {
+    setState({ pageIndex: 0, brandId })
+  }, [brandId])
+
   let { from, to } = state
 
   let culture = useLangCode()
