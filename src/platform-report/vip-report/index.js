@@ -280,6 +280,18 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         }
       }),
       numberDecimalColumn({
+        accessor: "betAmount",
+        sumColumn: "betAmount",
+        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "validBetAmount",
+        sumColumn: "validBetAmount",
+        Header: <Trans zh="有效投注" en="Turnover" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
         Header: <Trans zh="流水" en="Turnover" />,
