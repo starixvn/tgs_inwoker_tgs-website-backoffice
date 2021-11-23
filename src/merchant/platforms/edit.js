@@ -489,6 +489,17 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           </>
         )}
 
+        {!isAdd && (
+          <>
+            <NormalLabel>
+              <Trans zh="ID" en="ID" />
+            </NormalLabel>
+            <Box alignY="center">
+              <Text.Block>{getValues("id")}</Text.Block>
+            </Box>
+          </>
+        )}
+
         <NormalLabel>
           <Trans zh="平台代码" en="Code" />
         </NormalLabel>
