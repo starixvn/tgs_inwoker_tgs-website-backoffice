@@ -149,7 +149,8 @@ export const codeLabelPair = [
         languagePair,
         currencyPair,
         betLimitPair,
-        settingsPair
+        settingsPair,
+        gameRoundPair
       ]
     })
 ]

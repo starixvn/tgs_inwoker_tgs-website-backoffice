@@ -1,0 +1,22 @@
+kind: Module
+type: container
+name: brand-cert-api
+image: brand-cert-api
+services:
+  - name: brand-cert-api
+    dependencies:
+      - postgres
+      - redis
+      - nats
+    env:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
+    ingresses:
+      # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 brand-cert-api.localhost` to host file
+      - hostname: brand-cert-api.localhost
+        port: http
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

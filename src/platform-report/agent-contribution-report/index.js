@@ -185,7 +185,7 @@ const ReportContent = ({ brandId }) => {
             setSortOrder={setSortOrder}
             isLoading={isLoading}
             foot={data?.items?.length > 0}
-            isSticky={isDev() ? true : false}
+            isSticky
           />
         )}
       </FieldStack>
@@ -393,6 +393,12 @@ const useColumns = ({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "turnover",
+        sumColumn: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

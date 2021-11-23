@@ -94,6 +94,7 @@ import {
 import { isAgentConfigRequired } from "../AgentConfigStatus"
 import { isDev } from "../../env"
 import { AgentProfitSharingSettingDialogDisclosure } from "../AgentProfitSharingSettingDialog"
+import { AgentDomainListTab, AgentDomainListPanel } from "./AgentDomainList"
 
 export const AddAgentButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -727,6 +728,7 @@ const EditTabs = ({
         <AgentContactInfoTab {...tab} />
         <AgentBankInfoTab {...tab} />
         <AgentPasswordTab {...tab} />
+        <AgentDomainListTab {...tab} />
       </TabList>
       <AgentInfoPanel
         record={record}
@@ -753,6 +755,13 @@ const EditTabs = ({
       />
       <AgentPasswordPanel
         record={record}
+        brandId={brandId}
+        agentId={agentId}
+        onSubmitted={onSubmitted}
+        onClickClose={onClickClose}
+        {...tab}
+      />
+      <AgentDomainListPanel
         brandId={brandId}
         agentId={agentId}
         onSubmitted={onSubmitted}

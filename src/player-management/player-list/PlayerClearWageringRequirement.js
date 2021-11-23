@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { useLocation, useRouteMatch } from "react-router-dom"
 import { Stack, Box, Text, Dialog, useModalState, Alert } from "bumbag"
 import Disclosure from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"

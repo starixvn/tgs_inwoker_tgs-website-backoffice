@@ -150,7 +150,7 @@ const ReportContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        isSticky={isDev() ? true : false}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -227,7 +227,6 @@ const SearchBar = ({
             placeholder={externalRoundIdPlaceholder}
           />
           <GameRoundStatusSelect name="status" />
-          {/* TODO: filter by brandId? or use BrandGameProviderSelect? */}
           <GameProviderSelect name="gameProviderId" />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -311,6 +310,11 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

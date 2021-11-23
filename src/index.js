@@ -5,7 +5,7 @@ import "./reset.css"
 import "./index.css"
 import { Provider as BumbagProvider, ToastManager } from "bumbag"
 import { Provider as UserProvider } from "./user/context"
-import { BrowserRouter as Router } from "react-router-dom"
+import { BrowserRouter } from "react-router-dom"
 import { Provider as I18nProvider } from "./i18n"
 import {
   faTrash,
@@ -52,7 +52,7 @@ const theme = {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    <BrowserRouter>
       <BumbagProvider theme={theme}>
         <UserProvider>
           <I18nProvider>
@@ -61,7 +61,7 @@ ReactDOM.render(
         </UserProvider>
         <ToastManager />
       </BumbagProvider>
-    </Router>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 )

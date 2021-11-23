@@ -153,7 +153,7 @@ const ReportContent = ({ brandId }) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         foot={data?.items?.length > 0}
-        isSticky={isDev() ? true : false}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -282,7 +282,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
-        Header: <Trans zh="有效投注" en="Turnover" />,
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import {
-  Switch,
-  Route,
-  Link,
-  useLocation,
-  useHistory,
-  useParams,
-  useRouteMatch
-} from "react-router-dom"
+import { useLocation, useHistory, useRouteMatch } from "react-router-dom"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { Heading, Stack, Box, Button, Set, useModalState } from "bumbag"
 import {
@@ -29,7 +21,8 @@ export const BrandBar = ({
   ...props
 }) => {
   let { url } = useRouteMatch()
-  let { location, ...history } = useHistory()
+  let location = useLocation()
+  let history = useHistory()
 
   let userRoleType = useUserRoleType()
 

@@ -1,14 +1,5 @@
 import React, { createContext, useContext, useState } from "react"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route as RouteBase,
-  Redirect,
-  Link,
-  useHistory,
-  useLocation,
-  useRouteMatch
-} from "react-router-dom"
+import { Route as RouteBase, Redirect } from "react-router-dom"
 import { useIsAuthed } from "./context"
 import { Path as LoginPath } from "./login"
 

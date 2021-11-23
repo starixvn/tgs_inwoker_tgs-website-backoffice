@@ -1,12 +1,6 @@
 import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
-import {
-  Switch as _Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useLocation
-} from "react-router-dom"
+import { Switch as _Switch, Route, useRouteMatch } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
 import { Route as AuthRouter } from "./user/auth"
 import PageNotFound from "./page/NotFound"

@@ -81,21 +81,10 @@ export const DateTimeRangeInput = ({
   let start = toDate(formMethods?.watch(startName))
   let end = toDate(formMethods?.watch(endName))
 
-  let validate = Number.isInteger(maxRangeDays)
-    ? {
-        range: () => {
-          let shallValidateRange =
-            isValid(start) && isValid(end) && Number.isInteger(maxRangeDays)
-          if (shallValidateRange) {
-            return validateRange(maxRangeDays, start, end)
-          }
-        }
-      }
-    : undefined
-
   const toasts = useToasts()
   const hasRangeError = (name) =>
     formMethods?.formState?.errors?.[name]?.type === "range"
+
   let rangeError = hasRangeError(startName) || hasRangeError(endName)
   let rangeErrorTitle = useRangeErrorTitle(maxRangeDays)
   useEffect(() => {
@@ -118,7 +107,25 @@ export const DateTimeRangeInput = ({
           maxDate={startMaxDate([startProps?.maxDate, maxDate, end])}
           required={required}
           disabled={disabled}
-          validate={validate}
+          validate={
+            Number.isInteger(maxRangeDays)
+              ? {
+                  range: (start) => {
+                    let shallValidateRange =
+                      isValid(start) &&
+                      isValid(end) &&
+                      Number.isInteger(maxRangeDays)
+                    if (shallValidateRange) {
+                      let pass = validateRange(maxRangeDays, start, end)
+                      if (pass) {
+                        formMethods.clearErrors(endName)
+                      }
+                      return pass
+                    }
+                  }
+                }
+              : undefined
+          }
         />
         <Button isStatic tabIndex="-1">
           -
@@ -132,7 +139,25 @@ export const DateTimeRangeInput = ({
           maxDate={maxDate}
           required={required}
           disabled={disabled}
-          validate={validate}
+          validate={
+            Number.isInteger(maxRangeDays)
+              ? {
+                  range: (end) => {
+                    let shallValidateRange =
+                      isValid(start) &&
+                      isValid(end) &&
+                      Number.isInteger(maxRangeDays)
+                    if (shallValidateRange) {
+                      let pass = validateRange(maxRangeDays, start, end)
+                      if (pass) {
+                        formMethods.clearErrors(startName)
+                      }
+                      return pass
+                    }
+                  }
+                }
+              : undefined
+          }
         />
       </Group>
     </>

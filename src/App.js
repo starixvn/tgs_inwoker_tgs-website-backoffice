@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Global, css } from "@emotion/react"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-  useHistory,
-  useLocation,
-  useRouteMatch
-} from "react-router-dom"
+import { Switch, Route, useLocation } from "react-router-dom"
 import {
   Container,
   PageContent,
@@ -52,10 +43,12 @@ import {
   getHeaderTitleColor,
   getHeaderTitleFontSize,
   getHeaderTitleFontWeight,
-  getHeaderImageUrl
+  getHeaderImageUrl,
+  isDev
 } from "./env"
 import FundDepositTopNavItem from "./fund/deposit/FundDepositTopNavItem"
 import FundWithdrawTopNavItem from "./fund/withdraw/FundWithdrawTopNavItem"
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
 
 function App() {
   let isUserAuthed = useUserIsAuthed()
@@ -115,13 +108,39 @@ const Layout = ({ children }) => {
           id="page-content"
           height={`calc(100vh - ${HeaderHeight})`}
           maxHeight={`calc(100vh - ${HeaderHeight})`}
+          position="relative"
           overflow="auto"
         >
+          <SidebarToggleButton />
           {children}
         </Box>
         {/* <Footer /> */}
       </PageWithSidebar>
     </PageWithHeader>
+  )
+}
+
+const SidebarToggleButton = () => {
+  let { sidebar, isCollapsed } = usePage()
+  //if (!isDev()) {
+  return null
+  //}
+
+  return (
+    <Button
+      onClick={sidebar.toggle}
+      css={css`
+        position: absolute;
+        top: 1rem;
+        left: -6px;
+        padding: 0 1px;
+      `}
+    >
+      <Icon
+        icon={sidebar.isOpen ? faAngleRight : faAngleLeft}
+        type="font-awesome"
+      />
+    </Button>
   )
 }
 

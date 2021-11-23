@@ -2,6 +2,7 @@ import {
   urlWith,
   useGet,
   usePostData,
+  usePut,
   usePutData,
   useDelete
 } from "../../client"
@@ -55,4 +56,29 @@ export const useAgentOperations = (agentId, searchParams) => {
 export const useAgentBalanceChanges = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/accountChanges`) : ""
   return useGet(url)
+}
+
+export const useAgentDomainList = (brandId, agentId) => {
+  let url = brandId && agentId ? `${API}/domain/${brandId}/${agentId}` : ""
+  let { data, ...rest } = useGet(url)
+  return {
+    data: data?.data,
+    ...rest
+  }
+}
+
+export const useAddAgentDomain = (brandId, agentId, domain) => {
+  let url =
+    brandId && agentId && domain
+      ? `${API}/domain/${brandId}/${agentId}?domain=${domain}`
+      : ""
+  return usePut(url)
+}
+
+export const useDeleteAgentDomain = (brandId, agentId, domain) => {
+  let url =
+    brandId && agentId && domain
+      ? `${API}/domain/${brandId}/${agentId}?domain=${domain}`
+      : ""
+  return useDelete(url)
 }

@@ -1,15 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import {
-  Switch,
-  Route,
-  Link,
-  useLocation,
-  useHistory,
-  useParams,
-  useRouteMatch
-} from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import {
   Heading,
   Stack,
@@ -112,7 +104,7 @@ const SecondInMilliseconds = 1000
 const MinuteInMilliseconds = 60000
 
 const BodyContent = ({ brandId }) => {
-  let { location } = useHistory()
+  let location = useLocation()
 
   let todayRange = today()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
