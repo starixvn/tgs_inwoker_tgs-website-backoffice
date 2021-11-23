@@ -18,6 +18,7 @@ services:
       Operator__FileServiceBaseUrl: "http://file-service"
       Operator__PaymentServiceBaseUrl: "http://payment-api"
       Operator__BrandCertificateBaseUrl: "http://brand-cert-api"
+      Operator__CashBaseUrl: "http://cash-service"
       Promotion__Url: "http://promotion-api"
     ingresses:
       - hostname: mocksite.localhost

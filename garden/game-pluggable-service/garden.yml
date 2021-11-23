@@ -10,7 +10,7 @@ services:
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__NatsMQ: "nats://nats:4222"
-      ConnectionStrings__CashService: "https://localhost:44331"
+      ConnectionStrings__CashService: "https://cash-service"
     ports:
       - name: http
         containerPort: 80
