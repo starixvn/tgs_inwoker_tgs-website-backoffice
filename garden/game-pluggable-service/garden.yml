@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-pluggable-service
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/game-pluggable-service:202111230616-dev
+image: game/gamepluggableservice #registry.gitlab.com/rayprosoft/turnkey-gaming-system/game-pluggable-service:202111230839-dev
 services:
   - name: game-pluggable-service
     dependencies:
@@ -10,7 +10,9 @@ services:
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__NatsMQ: "nats://nats:4222"
-      ConnectionStrings__CashService: "https://cash-service"
+      ConnectionStrings__TGSGameProviders: "http://game-gameproviders"
+      ConnectionStrings__CashService: "http://cash-service"
+      ConnectionStrings__TGSGameProviderKickPlayerServer: "http://game-kickplayer-server"
     ports:
       - name: http
         containerPort: 80

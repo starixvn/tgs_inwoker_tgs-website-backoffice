@@ -23,6 +23,7 @@ services:
       Promotion__Url: "http://promotion-api"
       Report__Url: "http://report-api"
       BackOffice__PaymentServiceBaseUrl: "http://payment-api"
+      BackOffice__CashBaseUrl: "http://cash-service"
     ingresses:
       - hostname: backoffice.localhost
         path: /api

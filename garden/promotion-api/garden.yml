@@ -12,8 +12,10 @@ services:
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
+      Promotion__PaymentServiceBaseUrl: "http://payment-api"
+      Promotion__FileServiceBaseUrl: "http://file-service"
+      Promotion__CashBaseUrl: "http://cash-service"
       NatsSetting__Urls: "nats://nats:4222"
-      File__FileServiceBaseUrl: "http://file-service"
       RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
     ports:
       - name: http

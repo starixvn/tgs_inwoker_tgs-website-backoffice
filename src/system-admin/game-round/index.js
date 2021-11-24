@@ -216,37 +216,37 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "playerCode",
-        Header: <Trans zh="Player Code" en="Player Code" />,
+        Header: <Trans zh="玩家代码" en="Player Code" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="Bet Amount" en="Bet Amount" />,
+        Header: <Trans zh="投注金额" en="Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="Valid Bet Amount" en="Valid Bet Amount" />,
+        Header: <Trans zh="有效投注金额" en="Valid Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <Trans zh="Settle Amount" en="Settle Amount" />,
+        Header: <Trans zh="结算金额" en="Settle Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "commission",
-        Header: <Trans zh="Commission" en="Commission" />,
+        Header: <Trans zh="佣金" en="Commission" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="Turnover" en="Turnover" />,
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "winLoss",
-        Header: <Trans zh="WinLoss" en="WinLoss" />,
+        Header: <Trans zh="输赢金额" en="WinLoss" />,
         disableSortBy: true
       }),
       textColumn({

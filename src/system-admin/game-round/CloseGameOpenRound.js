@@ -13,7 +13,8 @@ import {
   useModalState,
   Dialog,
   Card,
-  FieldWrapper
+  FieldWrapper,
+  Alert
 } from "bumbag"
 import { Disclosure } from "../../dialog/Disclosure"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -151,8 +152,8 @@ const ConfirmSubmitDialog = ({ dialog, onSubmit }) => {
         type="danger"
         hideOnClickOutside={false}
       >
-        The Round will be canceled permanently and player balance will be
-        changed Immediately.
+        Are You Sure? The Round will be canceled permanently, and still need to
+        proceed player’s balance adjustment for the player.
       </Dialog.Modal>
     </Backdrop>
   )
@@ -167,6 +168,15 @@ const FormBody = () => {
   let externalRoundId = getValues("externalRoundId")
   return (
     <FieldStack>
+      <Alert
+        title={
+          <Trans
+            zh={`*将该订单结算后，还须至"玩家调帐"页面，针对该玩家执行调帐动作`}
+            en={`*When close the settlement, still need to proceed player’s balance adjustment  for the player.`}
+          />
+        }
+        variant="bordered"
+      />
       <FieldWrapper label={<Trans zh="三方订单ID" en="External Id" />}>
         <Box fontWeight="bold">{externalRoundId}</Box>
       </FieldWrapper>
@@ -179,14 +189,14 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="betAmount"
-          label="Bet Amount"
+          label="投注金额"
           required
           min="0"
           step="0.01"
         />
         <NumberInputField
           name="validBetAmount"
-          label="Valid Bet Amount"
+          label="有效投注金额"
           min="0"
           step="0.01"
           required
@@ -195,36 +205,44 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
-          label="Settle Amount"
+          label="结算金额"
           min="0"
           step="0.01"
           required
         />
-        <NumberInputField
-          name="commission"
-          label="Commission"
-          step="0.01"
-          required
-        />
+        <NumberInputField name="commission" label="佣金" step="0.01" required />
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="turnover"
-          label="Turnover"
+          label="流水"
           min="0"
           step="0.01"
           required
         />
-        <NumberInputField name="winLoss" label="WinLoss" step="0.01" required />
+        <NumberInputField
+          name="winLoss"
+          label="输赢金额"
+          hint={
+            <Text fontWeight="bold" color="warning">
+              <Trans
+                zh="输赢金额 > 0,代表公司赢"
+                en="Winloss > 0 means company win."
+              />
+            </Text>
+          }
+          step="0.01"
+          required
+        />
       </FieldStack>
 
       <GameRoundStatusSelectField
         name="clientRoundStatus"
         options={statusOptions}
-        label="Round Status"
+        label="状态"
         required
       />
-      <TextareaField name="remark" label="Remark" required />
+      <TextareaField name="remark" label="备注" required />
     </FieldStack>
   )
 }
