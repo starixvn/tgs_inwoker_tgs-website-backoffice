@@ -32,7 +32,7 @@ export const register = async (
   let url = `${operatorApi()}/player/create`
   let headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`
+    "brand-token": token
   }
 
   //TODO: check err = 0?
@@ -69,7 +69,7 @@ export const login = async (
   let url = `${operatorApi()}/player/login`
   let headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${platformToken}`
+    "brand-token": platformToken
   }
 
   //TODO: check err = 0?
@@ -87,7 +87,7 @@ export const withdrawPaymentList = async (platformToken, token) => {
   let url = `${operatorApi()}/withdraw`
   let headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${platformToken}`,
+    "brand-token": platformToken,
     Token: token
   }
 
@@ -103,7 +103,7 @@ export const depositPaymentList = async (platformToken, token) => {
   let url = `${operatorApi()}/deposit`
   let headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${platformToken}`,
+    "brand-token": platformToken,
     Token: token
   }
 
@@ -118,7 +118,7 @@ export const listBankInfos = async (platformToken, token) => {
   let url = `${operatorApi()}/bankinfo`
   let headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${platformToken}`,
+    "brand-token": platformToken,
     Token: token
   }
 
@@ -147,7 +147,7 @@ export const applyManualWithdrawForm = async (
   let url = `${operatorApi()}/withdraw`
   let headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${platformToken}`,
+    "brand-token": platformToken,
     Token: token
   }
 
@@ -186,7 +186,7 @@ export const manualDeposit = async (
   let url = `${operatorApi()}/deposit/manual`
   let headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${platformToken}`,
+    "brand-token": platformToken,
     Token: token
   }
 
@@ -208,7 +208,7 @@ export const applyManualDepositForm = async (platformToken, token, formId) => {
 
   let headers = {
     ...form.getHeaders(),
-    Authorization: `Bearer ${platformToken}`,
+    "brand-token": platformToken,
     Token: token
   }
 
@@ -224,7 +224,7 @@ export const wallet = async (platformToken, token) => {
   let url = `${operatorApi()}/wallet`
 
   let headers = {
-    Authorization: `Bearer ${platformToken}`,
+    "brand-token": platformToken,
     Token: token
   }
 
@@ -264,7 +264,7 @@ export const addManualBankCard = async (
 
   let headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${platformToken}`,
+    "brand-token": platformToken,
     Token: token
   }
 
@@ -282,7 +282,7 @@ export const promotionList = async (platformToken, token, lang = "en-US") => {
 
   let headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${platformToken}`,
+    "brand-token": platformToken,
     Token: token
   }
 

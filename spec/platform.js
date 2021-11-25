@@ -52,6 +52,9 @@ export const token = async ({
   apiKey: client,
   currency = "CNY"
 }) => {
+  let result = await fetcher(`${globalApi()}/brand/token/${brandCode}`)
+  return result
+  /*
   if (!client) {
     client = await apiKey(brandCode)
   }
@@ -67,6 +70,7 @@ export const token = async ({
   })
 
   return result.token
+  */
 }
 
 export default {

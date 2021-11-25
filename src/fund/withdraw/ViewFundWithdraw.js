@@ -56,6 +56,7 @@ import {
 import { parseJSON } from "../../text/json"
 import Input from "../../input/Input"
 import BrandPaymentStatus from "../../system/brandpayments/BrandPaymentStatus"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 
 export const ViewFundWithdrawDisclosure = ({
   brandId,
@@ -110,6 +111,7 @@ const ViewFundWithdrawDialog = ({ brandId, formId, dialog, ...props }) => {
       title={title}
       defaultValues={clone(data)}
       showCloseButton
+      showActionButtons={false}
       hideOnClickOutside={false}
       {...dialog}
       maxWidth="80vw"
