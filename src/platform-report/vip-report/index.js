@@ -194,7 +194,7 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          {isDev && (
+          {isDev() && (
             <DateButtons
               onClick={({ type, start, end }) => {
                 formMethods.setValue("start", start)
