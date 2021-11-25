@@ -45,6 +45,7 @@ import GameProviderFieldsBox from "../GameProviderFieldsBox"
 import CurrencyBetLimitFieldsBox, {
   flatCheckedCurrencyBetLimitIds
 } from "../CurrencyBetLimitFieldsBox"
+import { isDev } from "../../env"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -463,6 +464,20 @@ const EditBody = ({ record = {}, readonly = false, isAdd = false }) => {
             name="code"
             type={isAdd ? "input" : "hidden"}
             required={isAdd}
+            inputProps={
+              isDev()
+                ? {
+                    textTransform: "uppercase"
+                  }
+                : {}
+            }
+            registerOptions={
+              isDev()
+                ? {
+                    setValueAs: (value = "") => value?.toUpperCase?.()
+                  }
+                : {}
+            }
           />
           {!isAdd && <Text.Block>{getValues("code")}</Text.Block>}
         </Box>

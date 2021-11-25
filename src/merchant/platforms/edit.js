@@ -504,7 +504,24 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           <Trans zh="平台代码" en="Code" />
         </NormalLabel>
         <Box alignY="center">
-          <Input name="code" type={isAdd ? "input" : "hidden"} />
+          <Input
+            name="code"
+            type={isAdd ? "input" : "hidden"}
+            inputProps={
+              isDev()
+                ? {
+                    textTransform: "uppercase"
+                  }
+                : {}
+            }
+            registerOptions={
+              isDev()
+                ? {
+                    setValueAs: (value = "") => value?.toUpperCase?.()
+                  }
+                : {}
+            }
+          />
           {!isAdd && <Text.Block>{getValues("code")}</Text.Block>}
         </Box>
 
