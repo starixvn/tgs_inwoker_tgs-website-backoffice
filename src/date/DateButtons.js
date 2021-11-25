@@ -6,6 +6,12 @@ import startOfYesterday from "date-fns/startOfYesterday"
 import endOfYesterday from "date-fns/endOfYesterday"
 import startOfToday from "date-fns/startOfToday"
 import endOfToday from "date-fns/endOfToday"
+import startOfWeek from "date-fns/startOfWeek"
+import endOfWeek from "date-fns/endOfWeek"
+import subWeeks from "date-fns/subWeeks"
+import subMonths from "date-fns/subMonths"
+import startOfMonth from "date-fns/startOfMonth"
+import endOfMonth from "date-fns/endOfMonth"
 
 const Yesterday = "Yesterday"
 export const YesterdayButton = ({ onClick, ...props }) => {
@@ -14,14 +20,15 @@ export const YesterdayButton = ({ onClick, ...props }) => {
       <Trans
         zh="昨日"
         en="Yesterday"
-        onClick={() => {
+        onClick={(event) => {
           let start = startOfYesterday()
-          let end = endOfToday()
+          let end = endOfYesterday()
           onClick?.({
             type: Yesterday,
             start,
             end
           })
+          event.target.blur()
         }}
       />
     </Button>
@@ -31,26 +38,116 @@ export const YesterdayButton = ({ onClick, ...props }) => {
 const Today = "Today"
 export const TodayButton = ({ onClick, ...props }) => {
   return (
-    <Button {...props}>
-      <Trans
-        zh="昨日"
-        en="Yesterday"
-        onClick={() => {
-          let start = startOfToday()
-          let end = endOfYesterday()
-          onClick?.({
-            type: Today,
-            start,
-            end
-          })
-        }}
-      />
+    <Button
+      onClick={() => {
+        let start = startOfToday()
+        let end = endOfToday()
+        onClick?.({
+          type: Today,
+          start,
+          end
+        })
+      }}
+      {...props}
+    >
+      <Trans zh="今日" en="Today" />
+    </Button>
+  )
+}
+
+const LastWeek = "LastWeek"
+export const LastWeekButton = ({ onClick, ...props }) => {
+  return (
+    <Button
+      onClick={() => {
+        let lastWeekDay = subWeeks(new Date(), 1)
+        let start = startOfWeek(lastWeekDay)
+        let end = endOfWeek(lastWeekDay)
+        onClick?.({
+          type: LastWeek,
+          start,
+          end
+        })
+      }}
+      {...props}
+    >
+      <Trans zh="上周" en="Last Week" />
+    </Button>
+  )
+}
+
+const ThisWeek = "ThisWeek"
+export const ThisWeekButton = ({ onClick, ...props }) => {
+  return (
+    <Button
+      onClick={() => {
+        let now = new Date()
+        let start = startOfWeek(now)
+        let end = endOfWeek(now)
+        onClick?.({
+          type: ThisWeek,
+          start,
+          end
+        })
+      }}
+      {...props}
+    >
+      <Trans zh="本周" en="This Week" />
+    </Button>
+  )
+}
+
+const LastMonth = "LastMonth"
+export const LastMonthButton = ({ onClick, ...props }) => {
+  return (
+    <Button
+      onClick={() => {
+        let lastMonthDay = subMonths(new Date(), 1)
+        let start = startOfMonth(lastMonthDay)
+        let end = endOfMonth(lastMonthDay)
+        onClick?.({
+          type: LastMonth,
+          start,
+          end
+        })
+      }}
+      {...props}
+    >
+      <Trans zh="上月" en="Last Month" />
+    </Button>
+  )
+}
+
+const ThisMonth = "ThisMonth"
+export const ThisMonthButton = ({ onClick, ...props }) => {
+  return (
+    <Button
+      onClick={() => {
+        let now = new Date()
+        let start = startOfMonth(now)
+        let end = endOfMonth(now)
+        onClick?.({
+          type: ThisMonth,
+          start,
+          end
+        })
+      }}
+      {...props}
+    >
+      <Trans zh="本月" en="This Month" />
     </Button>
   )
 }
 
 export const DateButtons = ({
-  buttons = [YesterdayButton, TodayButton],
+  buttons = [
+    YesterdayButton,
+    TodayButton,
+    LastWeekButton,
+    ThisWeekButton,
+    LastMonthButton,
+    ThisMonthButton
+  ],
   onClick,
   ...props
 }) => {

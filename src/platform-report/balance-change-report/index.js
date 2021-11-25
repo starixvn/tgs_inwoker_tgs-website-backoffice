@@ -34,6 +34,7 @@ import {
   TransactionTypeSelect
 } from "./TransactionTypeSelect"
 import dateTimeColumn from "../../table/column/dateTime"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -172,18 +173,25 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          {isDev && (
+            <DateButtons
+              onClick={({ type, start, end }) => {
+                formMethods.setValue("start", start)
+                formMethods.setValue("end", end)
+              }}
+            />
+          )}
+          <DateInputRange
+            minDate={minDate}
+            maxRangeDays={maxRangeDays}
+            required
+          />
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
             placeholder={usernamePlaceholder}
           />
           <TransactionTypeSelect name="transactionType" />
-          <DateInputRange
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={maxRangeDays}
-            required
-          />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>

@@ -40,6 +40,7 @@ import { usePlayerContributionList, API } from "./client"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -211,6 +212,19 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          {isDev && (
+            <DateButtons
+              onClick={({ type, start, end }) => {
+                formMethods.setValue("start", start)
+                formMethods.setValue("end", end)
+              }}
+            />
+          )}
+          <DateInputRange
+            minDate={minDate}
+            maxRangeDays={maxRangeDays}
+            required
+          />
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
@@ -220,12 +234,6 @@ const SearchBar = ({
             name="level"
             brandId={brandId}
             optionValue={({ level }) => level}
-          />
-          <DateInputRange
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={maxRangeDays}
-            required
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>

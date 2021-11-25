@@ -41,6 +41,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons"
 import BrandBar from "../../report/BrandBar"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -268,6 +269,19 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          {isDev && (
+            <DateButtons
+              onClick={({ type, start, end }) => {
+                formMethods.setValue("start", start)
+                formMethods.setValue("end", end)
+              }}
+            />
+          )}
+          <DateInputRange
+            minDate={minDate}
+            maxRangeDays={maxRangeDays}
+            required
+          />
           <InputField
             name="agentUsername"
             showEmptyFieldValueAddonAfter
@@ -277,12 +291,6 @@ const SearchBar = ({
             autoFocus
           />
           <AgentTypeSelect name="agentType" />
-          <DateInputRange
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={maxRangeDays}
-            required
-          />
           <Checkbox name="includeAgents" label={includeAgentCheckboxLabel} />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>

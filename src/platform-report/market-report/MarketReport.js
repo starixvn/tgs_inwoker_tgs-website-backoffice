@@ -19,6 +19,7 @@ import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
 import { urlWith } from "../../client/index"
 import { isDev } from "../../env"
+import { DateButtons } from "../../date/DateButtons"
 
 export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
@@ -141,9 +142,16 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          {isDev && (
+            <DateButtons
+              onClick={({ type, start, end }) => {
+                formMethods.setValue("start", start)
+                formMethods.setValue("end", end)
+              }}
+            />
+          )}
           <DateInputRange
             minDate={minDate}
-            maxDate={maxDate}
             maxRangeDays={maxRangeDays}
             required
           />
