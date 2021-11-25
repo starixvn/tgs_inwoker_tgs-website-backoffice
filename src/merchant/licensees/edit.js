@@ -46,6 +46,7 @@ import CurrencyBetLimitFieldsBox, {
   flatCheckedCurrencyBetLimitIds
 } from "../CurrencyBetLimitFieldsBox"
 import { sortBy } from "lodash-es"
+import { isDev } from "../../env"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -425,6 +426,20 @@ const EditBody = ({
             name="code"
             type={isAdd ? "input" : "hidden"}
             required={isAdd}
+            inputProps={
+              isDev()
+                ? {
+                    textTransform: "uppercase"
+                  }
+                : {}
+            }
+            registerOptions={
+              isDev()
+                ? {
+                    setValueAs: (value = "") => value?.toUpperCase?.()
+                  }
+                : {}
+            }
           />
           {!isAdd && <Text.Block>{getValues("code")}</Text.Block>}
         </Box>
