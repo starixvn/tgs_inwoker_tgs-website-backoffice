@@ -30,6 +30,7 @@ import { LicenseeCurrencySelect } from "../LicenseeCurrencySelect"
 import { LicenseeMultiCurrencySelect } from "../LicenseeMultiCurrencySelect"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client/index"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -184,18 +185,20 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          <LicenseeCurrencySelect name="currencyCode" licenseeId={licenseeId} />
-          {/* TODO: use multi select v1.9 */}
-          {/* <LicenseeMultiCurrencySelect
-            name="currencyCodes"
-            licenseeId={licenseeId}
-          /> */}
+          {isDev && (
+            <DateButtons
+              onClick={({ type, start, end }) => {
+                formMethods.setValue("start", start)
+                formMethods.setValue("end", end)
+              }}
+            />
+          )}
           <DateInputRange
             minDate={minDate}
-            maxDate={maxDate}
             maxRangeDays={maxRangeDays}
             required
           />
+          <LicenseeCurrencySelect name="currencyCode" licenseeId={licenseeId} />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>

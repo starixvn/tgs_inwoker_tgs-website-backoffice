@@ -34,6 +34,7 @@ import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { isDev } from "../../env"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -204,9 +205,16 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          {isDev && (
+            <DateButtons
+              onClick={({ type, start, end }) => {
+                formMethods.setValue("start", start)
+                formMethods.setValue("end", end)
+              }}
+            />
+          )}
           <DateInputRange
             minDate={minDate}
-            maxDate={maxDate}
             maxRangeDays={maxRangeDays}
             required
           />
