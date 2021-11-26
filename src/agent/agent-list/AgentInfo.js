@@ -319,6 +319,11 @@ const ViewPanel = ({ record, ...props }) => {
       <FieldValues>
         <UsernameBox value={record?.username} />
 
+        <Box alignY="center">
+          <Trans zh="邀请码" en="Invitation Code" />
+        </Box>
+        <Text>{record?.invitationCode}</Text>
+
         <RealNameBox value={record?.realName} />
 
         <ParentAgentUsername value={record?.parentUsername} />

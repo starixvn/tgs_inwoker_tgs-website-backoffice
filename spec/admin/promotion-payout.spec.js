@@ -65,11 +65,12 @@ describe("Admin user", function () {
     let promotion = await addDepositPromotion()
     let promotionid = await findPromotionId(promotion)
     await approveDeposit(promotionid)
+    await checkAutoPayoutPromotion()
 
-    await payoutPromotion()
+    //TODO: other promotion type that use auto payout
   })
 
-  const payoutPromotion = async () => {
+  const checkAutoPayoutPromotion = async () => {
     await gotoPromotionPayoutListPage()
 
     await page.fill(`input[name="username"]`, player.username)
@@ -83,6 +84,15 @@ describe("Admin user", function () {
       page.click(`button[type="submit"]`)
     ])
 
+    let DataStatusSelector = `[data-column-id="status"] span`
+    await page.waitForSelector(DataStatusSelector)
+    let statusString = await page.$eval(
+      DataStatusSelector,
+      ({ dataset }) => dataset.sent
+    )
+
+    expect(statusString).to.equal("true")
+    /*
     let PayoutDialogSelector = `#payout-promotion-dialog`
     await page.click(`${PayoutDialogSelector}-disclosure`)
     await Promise.all([
@@ -94,6 +104,7 @@ describe("Admin user", function () {
       }),
       page.click(`${PayoutDialogSelector} button[type="submit"]`)
     ])
+    */
   }
 
   const findPromotionId = async (promotion) => {
@@ -160,9 +171,11 @@ describe("Admin user", function () {
       "FirstDeposit"
     )
 
+    /*TODO: other promotion type for disabled autoSent
     await page.click(
       `${DialogSelector} [name="autoSentPlayerBonus"] + .bb-SwitchIcon`
     )
+    */
 
     await page.fill(
       `${DialogSelector} input[name="totalAmountLimit"]`,
