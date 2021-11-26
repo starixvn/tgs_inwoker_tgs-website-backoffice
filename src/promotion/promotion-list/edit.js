@@ -438,7 +438,16 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     name: PromotionTypeGroupFieldName
   })
 
-  let isDepositPromotion = promotionTypeGroup === PromotionTypeGroup.Deposit
+  let PromotionTypeFieldName = "promotionType"
+  let promotionType = useWatch({
+    control,
+    name: PromotionTypeFieldName
+  })
+  let promotionTypeGroupValue = usePromotionGroupValueOf(promotionType)
+
+  let isDepositPromotion =
+    promotionTypeGroup === PromotionTypeGroup.Deposit ||
+    promotionTypeGroupValue === PromotionTypeGroup.Deposit
   useEffect(() => {
     if (isDepositPromotion) {
       setValue(AutoSentPlayerBonusFieldName, true)
@@ -448,12 +457,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let isPromotionTypeTurnoverRelated =
     promotionTypeGroup === PromotionTypeGroup.Turnover ||
     promotionTypeGroup === PromotionTypeGroup.ReliefMoney
-
-  let PromotionTypeFieldName = "promotionType"
-  let promotionType = useWatch({
-    control,
-    name: PromotionTypeFieldName
-  })
 
   let GameTypeGroupFieldName = "gameTypeGroup"
   let gameTypeGroup = useWatch({
