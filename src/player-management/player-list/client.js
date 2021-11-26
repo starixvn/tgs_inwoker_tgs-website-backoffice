@@ -83,3 +83,9 @@ export const usePlayerPromotions = (playerCode, searchParams) => {
       : ""
   return useGet(url)
 }
+
+export const usePlayerTransferWalletList = (playerCode) => {
+  let url = playerCode ? `${API}/${playerCode}/transferwallet` : ""
+
+  return useGet(url)
+}
