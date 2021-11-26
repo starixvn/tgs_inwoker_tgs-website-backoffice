@@ -29,7 +29,7 @@ export const PlayerWalletListPanel = ({ player, playerCode, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === Key
 
-  let { isLoading, data, error, mutate, clearCache } =
+  let { isLoading, data, error, mutate, deleteCache } =
     usePlayerTransferWalletList(playerCode)
 
   let mainWallet = data?.find(({ isMainWallet }) => isMainWallet)
