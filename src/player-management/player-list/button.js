@@ -21,7 +21,13 @@ import { Tab as PasswordTab, Panel as PasswordPanel } from "./password"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { usePlayer } from "./client"
-import { Trans, FormattedDateTime, FormattedNumber, useTrans } from "../../i18n"
+import {
+  Trans,
+  FormattedDateTime,
+  FormattedNumber,
+  useTrans,
+  FormattedNumberDecimal
+} from "../../i18n"
 import Disclosure from "../../dialog/Disclosure"
 import { Modal, useModalState } from "../../dialog/Modal"
 import { Tabs, TabList, useTabState } from "../../tab"
@@ -31,6 +37,8 @@ import {
 } from "./PlayerBalanceChange"
 import { PlayerPromotionPanel, PlayerPromotionTab } from "./PlayerPromotion"
 import { Features, isDev, isFeatureEnabled } from "../../env"
+import { PlayerWalletListPanel, PlayerWalletListTab } from "./PlayerWalletList"
+import textColumn from "../../table/column/textColumn"
 
 export const ViewButton = ({ player, brandId, ...props }) => {
   let dialog = useModalState()
@@ -171,6 +179,7 @@ const ViewTabs = ({ playerCode, brandId, player, tab }) => {
         <PlayerOperationTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
+        {isDev() && <PlayerWalletListTab {...tab} />}
       </TabList>
       <PlayerPanel player={player} {...tab} />
       <ContractPanel player={player} {...tab} />
@@ -192,6 +201,14 @@ const ViewTabs = ({ playerCode, brandId, player, tab }) => {
         brandId={brandId}
         {...tab}
       />
+      {isDev() && (
+        <PlayerWalletListPanel
+          playerCode={playerCode}
+          player={player}
+          brandId={brandId}
+          {...tab}
+        />
+      )}
     </Tabs>
   )
 }

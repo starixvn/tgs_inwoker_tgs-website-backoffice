@@ -181,10 +181,11 @@ export const FormattedNumberDecimal = ({
   format = "0,0.00",
   prefix = "",
   postfix = "",
+  placeholder = "",
   ...props
 }) => {
   if (!Number.isFinite(value)) {
-    return null
+    return placeholder
   }
 
   if (Number.isInteger(digits) && digits >= 0 && digits <= MaxDigits) {
