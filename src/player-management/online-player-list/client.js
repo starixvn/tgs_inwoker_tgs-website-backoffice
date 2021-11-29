@@ -6,7 +6,7 @@ import {
   useDelete
 } from "../../client"
 
-let API = "/api/player"
+let API = "/api/playeronline"
 
 export const useOnlinePlayerList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
