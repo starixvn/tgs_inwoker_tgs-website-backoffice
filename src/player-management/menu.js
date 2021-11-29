@@ -7,6 +7,10 @@ import {
   codeLabelPair as playerListPair
 } from "./player-list/menu"
 import {
+  Code as OnlinePlayerListCode,
+  codeLabelPair as onlinePlayerListPair
+} from "./online-player-list/menu"
+import {
   Code as BalanceAdjustmentCode,
   codeLabelPair as balanceAdjustmentPair
 } from "./balance-adjustment/menu"
@@ -63,6 +67,14 @@ const label = ({ locale, code }) => {
         },
         locale
       )
+    case OnlinePlayerListCode:
+      return getTrans(
+        {
+          zh: "在线玩家列表",
+          en: "Online Players"
+        },
+        locale
+      )
     case BalanceAdjustmentCode:
       return getTrans(
         {
@@ -83,6 +95,10 @@ export const codeLabelPair = [
       locale,
       codes,
       label,
-      subLabelPairs: [playerListPair, balanceAdjustmentPair]
+      subLabelPairs: [
+        playerListPair,
+        balanceAdjustmentPair,
+        onlinePlayerListPair
+      ]
     })
 ]

@@ -132,7 +132,7 @@ const EditForm = ({
       <FieldValues>
         {isAdmin && (
           <>
-            <Trans zh="Player Code" en="Player Code" />
+            <Trans zh="玩家代码" en="Player Code" />
             <Text>{player.playerCode}</Text>
           </>
         )}
@@ -212,7 +212,7 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
       <FieldValues spacing="major-2">
         {isAdmin && (
           <>
-            <Trans zh="Player Code" en="Player Code" />
+            <Trans zh="玩家代码" en="Player Code" />
             <Text>{player.playerCode}</Text>
           </>
         )}
