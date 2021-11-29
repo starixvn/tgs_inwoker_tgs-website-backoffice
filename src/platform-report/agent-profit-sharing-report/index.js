@@ -30,6 +30,7 @@ import { AgentTypeSelect } from "../../agent/AgentType"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import { DateButtons } from "../../date/DateButtons"
+import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
 
 export { Code }
 
@@ -221,8 +222,8 @@ const SearchBar = ({
 }
 
 const useColumns = ({ brandId, start, end, items = [] }) => {
-  return useMemo(
-    () => [
+  return useMemo(() => {
+    let columns = [
       textColumn({
         accessor: "username",
         Header: <Trans zh="代理用户名" en="Agent Username" />,
@@ -323,7 +324,42 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
           )
         }
       })
-    ],
-    [JSON.stringify(items)]
-  )
+    ]
+
+    if (isDev()) {
+      columns.push(
+        ...[
+          numberDecimalColumn({
+            accessor: "fromPlayerAgentDividendAmount",
+            sumColumn: "fromPlayerAgentDividendAmount",
+            Header: <Trans zh="玩家贡献" en="Player Contribution" />,
+            disableSortBy: true
+          }),
+          numberDecimalColumn({
+            id: "fromTeamAgentDividendAmount",
+            accessor: (row) => row,
+            sumColumn: "fromTeamAgentDividendAmount",
+            toValue: (row) => row?.fromTeamAgentDividendAmount,
+            Header: <Trans zh="团队贡献" en="Team Contribution" />,
+            disableSortBy: true,
+            Cell: ({ value }) => {
+              return (
+                <AgentTeamContributionDialogDisclosure
+                  brandId={brandId}
+                  agentId={value?.id}
+                  start={start}
+                  end={end}
+                  username={value?.username}
+                  value={value?.fromTeamAgentDividendAmount}
+                  use={Link}
+                />
+              )
+            }
+          })
+        ]
+      )
+    }
+
+    return columns
+  }, [JSON.stringify(items)])
 }
