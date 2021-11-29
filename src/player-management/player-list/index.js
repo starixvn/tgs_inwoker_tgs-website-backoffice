@@ -155,7 +155,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
     if (isAdminUser) {
       columns.push(
         textColumn({
-          Header: <Trans zh="Player Code" en="Player Code" />,
+          Header: <Trans zh="玩家代码" en="Player Code" />,
           accessor: "playerCode",
           disableSortBy: true
         })
