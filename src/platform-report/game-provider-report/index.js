@@ -170,15 +170,8 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          {isDev() && (
-            <DateButtons
-              onClick={({ type, start, end }) => {
-                formMethods.setValue("start", start)
-                formMethods.setValue("end", end)
-              }}
-            />
-          )}
           <DateInputRange
+            showDateDropdownMenu={isDev() ? true : false}
             minDate={minDate}
             maxRangeDays={maxRangeDays}
             required

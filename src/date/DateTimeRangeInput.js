@@ -23,6 +23,7 @@ import isValid from "date-fns/isValid"
 import addDays from "date-fns/addDays"
 import subDays from "date-fns/subDays"
 import differenceInDays from "date-fns/differenceInDays"
+import { DateDropdownMenu } from "./DateDropdownMenu"
 
 export const DateInputRange = ({ dateFormat = "yyyy/MM/dd", ...props }) => (
   <DateTimeRangeInput
@@ -71,6 +72,7 @@ export const DateTimeRangeInput = ({
   maxRangeDays,
   dateFormat,
   showTimeInput = true,
+  showDateDropdownMenu = false,
   required,
   disabled
 } = {}) => {
@@ -98,6 +100,21 @@ export const DateTimeRangeInput = ({
   return (
     <>
       <Group>
+        {showDateDropdownMenu && (
+          <DateDropdownMenu
+            onClick={({ type, start, end }) => {
+              formMethods?.setValue(startName, start)
+              formMethods?.setValue(endName, end)
+            }}
+            css={css`
+              button {
+                border-radius: 0px;
+                border-bottom-left-radius: 6px;
+                border-top-left-radius: 6px;
+              }
+            `}
+          />
+        )}
         <DateTimeInput
           id={startProps?.id}
           name={startName}
