@@ -16,21 +16,19 @@ import endOfMonth from "date-fns/endOfMonth"
 const Yesterday = "Yesterday"
 export const YesterdayButton = ({ onClick, ...props }) => {
   return (
-    <Button {...props}>
-      <Trans
-        zh="昨日"
-        en="Yesterday"
-        onClick={(event) => {
-          let start = startOfYesterday()
-          let end = endOfYesterday()
-          onClick?.({
-            type: Yesterday,
-            start,
-            end
-          })
-          event.target.blur()
-        }}
-      />
+    <Button
+      onClick={(event) => {
+        let start = startOfYesterday()
+        let end = endOfYesterday()
+        onClick?.({
+          type: Yesterday,
+          start,
+          end
+        })
+      }}
+      {...props}
+    >
+      <Trans zh="昨日" en="Yesterday" />
     </Button>
   )
 }
