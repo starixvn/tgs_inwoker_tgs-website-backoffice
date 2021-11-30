@@ -44,7 +44,7 @@ import { LogDetailDialogDisclosure } from "../LogDetailDialog"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { SortOrder } from "../../table/order"
 import { LogExceptionDialogDisclosure } from "../LogExceptionDialog"
-import { useHistory, useParams } from "react-router-dom"
+import { useLocation, useHistory } from "react-router-dom"
 import { parseJSON } from "../../text/json"
 import { parseISO } from "date-fns"
 
@@ -62,11 +62,9 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const StateQueryName = "state"
-const Body = ({ }) => {
-  let {
-    location: { search },
-    ...history
-  } = useHistory()
+const Body = ({}) => {
+  let { search, ...location } = useLocation()
+  let history = useHistory()
 
   let todayRange = today()
 
@@ -80,7 +78,7 @@ const Body = ({ }) => {
   }
   let { state, setState, setPageIndex, setSortOrder } = useTable(initState)
 
-  const syncSearchParams = record => {
+  const syncSearchParams = (record) => {
     let search = `${StateQueryName}=${JSON.stringify(record)}`
     history.replace({
       search

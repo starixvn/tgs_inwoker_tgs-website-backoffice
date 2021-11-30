@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Stack, Box, Button, Text, Modal } from "bumbag"
+import { Stack, Box, Button, Text, Modal, Alert, FieldStack } from "bumbag"
 import {
   Create as CreateMenu,
   Update as UpdateMenu,
@@ -242,63 +242,77 @@ const EditBody = ({ readOnly = false } = {}) => {
   let required = !readOnly
   let textareaHeight = readOnly ? "15vh" : "30vh"
   return (
-    <FieldValues marginLeft="1rem" paddingBottom="1rem">
-      <Label name="subject" required={required}>
-        <Trans zh="主题" en="Subject" />
-      </Label>
-      <InputField
-        name="subject"
-        brandId={brandId}
-        required={required}
-        disabled={readOnly}
-        showLocalizationAddonAfter
-      />
-
-      <Label name="from" required={required}>
-        <Trans zh="开始时间" en="Start" />
-      </Label>
-      <Box id="from-date-box">
-        <DateTimeInput
-          name="from"
-          maxDate={maxDate}
-          required={required}
-          disabled={readOnly}
-        />
-      </Box>
-
-      <Label name="to" required={required}>
-        <Trans zh="结束时间" en="End" />
-      </Label>
-      <Box id="to-date-box">
-        <DateTimeInput
-          name="to"
-          minDate={minDate}
-          required={required}
-          disabled={readOnly}
-        />
-      </Box>
-
-      <Label name="content" required={required}>
-        <Trans zh="内容" en="Content" />
-      </Label>
-      <TextareaField
-        name="content"
-        showLocalizationAddonAfter
-        brandId={brandId}
-        required={required}
-        disabled={readOnly}
-        height={textareaHeight}
-        css={css`
-          height: ${textareaHeight};
-
-          & .bb-FieldWrapper,
-          & .bb-TextareaWrapper,
-          & .bb-Textarea {
-            height: ${textareaHeight};
+    <FieldStack>
+      {required && (
+        <Alert
+          type="info"
+          variant="bordered"
+          title={
+            <Trans
+              zh="*点击「多语系」按钮以新增其他语系内容。"
+              en={`*Click on “multi-language” button and fill fields in other languages.(optional)`}
+            />
           }
-        `}
-      />
-    </FieldValues>
+        ></Alert>
+      )}
+      <FieldValues marginLeft="1rem" paddingBottom="1rem">
+        <Label name="subject" required={required}>
+          <Trans zh="主题" en="Subject" />
+        </Label>
+        <InputField
+          name="subject"
+          brandId={brandId}
+          required={required}
+          disabled={readOnly}
+          showLocalizationAddonAfter
+        />
+
+        <Label name="from" required={required}>
+          <Trans zh="开始时间" en="Start" />
+        </Label>
+        <Box id="from-date-box">
+          <DateTimeInput
+            name="from"
+            maxDate={maxDate}
+            required={required}
+            disabled={readOnly}
+          />
+        </Box>
+
+        <Label name="to" required={required}>
+          <Trans zh="结束时间" en="End" />
+        </Label>
+        <Box id="to-date-box">
+          <DateTimeInput
+            name="to"
+            minDate={minDate}
+            required={required}
+            disabled={readOnly}
+          />
+        </Box>
+
+        <Label name="content" required={required}>
+          <Trans zh="内容" en="Content" />
+        </Label>
+        <TextareaField
+          name="content"
+          showLocalizationAddonAfter
+          brandId={brandId}
+          required={required}
+          disabled={readOnly}
+          height={textareaHeight}
+          css={css`
+            height: ${textareaHeight};
+
+            & .bb-FieldWrapper,
+            & .bb-TextareaWrapper,
+            & .bb-Textarea {
+              height: ${textareaHeight};
+            }
+          `}
+        />
+      </FieldValues>
+    </FieldStack>
   )
 }
 

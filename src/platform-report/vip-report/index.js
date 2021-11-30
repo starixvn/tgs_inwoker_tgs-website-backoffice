@@ -30,6 +30,7 @@ import VipLevelSelect from "../../vip-levels/VipLevelSelect"
 import { PlayerRebatDialogDisclosure } from "./PlayerRebateReport"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -153,7 +154,7 @@ const ReportContent = ({ brandId }) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         foot={data?.items?.length > 0}
-        isSticky={isDev() ? true : false}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -193,6 +194,12 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          <DateInputRange
+            showDateDropdownMenu={isDev() ? true : false}
+            minDate={minDate}
+            maxRangeDays={maxRangeDays}
+            required
+          />
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
@@ -202,12 +209,6 @@ const SearchBar = ({
             name="level"
             brandId={brandId}
             optionValue={({ level }) => level}
-          />
-          <DateInputRange
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={maxRangeDays}
-            required
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -280,9 +281,21 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         }
       }),
       numberDecimalColumn({
+        accessor: "betAmount",
+        sumColumn: "betAmount",
+        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "validBetAmount",
+        sumColumn: "validBetAmount",
+        Header: <Trans zh="有效投注" en="Turnover" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
-        Header: <Trans zh="有效投注" en="Turnover" />,
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

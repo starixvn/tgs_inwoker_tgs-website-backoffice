@@ -1,0 +1,14 @@
+kind: Module
+type: container
+name: game-kickplayer-server
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/game-kickplayer-server:202111230604-staging
+services:
+  - name: game-kickplayer-server
+    dependencies:
+      - rabbitmq
+    env:
+      RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

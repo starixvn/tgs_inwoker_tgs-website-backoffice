@@ -19,6 +19,7 @@ import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
 import { urlWith } from "../../client/index"
 import { isDev } from "../../env"
+import { DateButtons } from "../../date/DateButtons"
 
 export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
@@ -111,7 +112,7 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         foot={data?.items?.length > 0}
-        isSticky={isDev() ? true : false}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -142,8 +143,8 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
+            showDateDropdownMenu={isDev() ? true : false}
             minDate={minDate}
-            maxDate={maxDate}
             maxRangeDays={maxRangeDays}
             required
           />
@@ -214,6 +215,12 @@ const useColumns = ({ items = [] }) => {
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Turnover" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "turnover",
+        sumColumn: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

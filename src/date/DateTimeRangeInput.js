@@ -23,6 +23,7 @@ import isValid from "date-fns/isValid"
 import addDays from "date-fns/addDays"
 import subDays from "date-fns/subDays"
 import differenceInDays from "date-fns/differenceInDays"
+import { DateDropdownMenu } from "./DateDropdownMenu"
 
 export const DateInputRange = ({ dateFormat = "yyyy/MM/dd", ...props }) => (
   <DateTimeRangeInput
@@ -71,6 +72,7 @@ export const DateTimeRangeInput = ({
   maxRangeDays,
   dateFormat,
   showTimeInput = true,
+  showDateDropdownMenu = false,
   required,
   disabled
 } = {}) => {
@@ -81,21 +83,10 @@ export const DateTimeRangeInput = ({
   let start = toDate(formMethods?.watch(startName))
   let end = toDate(formMethods?.watch(endName))
 
-  let validate = Number.isInteger(maxRangeDays)
-    ? {
-        range: () => {
-          let shallValidateRange =
-            isValid(start) && isValid(end) && Number.isInteger(maxRangeDays)
-          if (shallValidateRange) {
-            return validateRange(maxRangeDays, start, end)
-          }
-        }
-      }
-    : undefined
-
   const toasts = useToasts()
   const hasRangeError = (name) =>
     formMethods?.formState?.errors?.[name]?.type === "range"
+
   let rangeError = hasRangeError(startName) || hasRangeError(endName)
   let rangeErrorTitle = useRangeErrorTitle(maxRangeDays)
   useEffect(() => {
@@ -109,6 +100,21 @@ export const DateTimeRangeInput = ({
   return (
     <>
       <Group>
+        {showDateDropdownMenu && (
+          <DateDropdownMenu
+            onClick={({ type, start, end }) => {
+              formMethods?.setValue(startName, start)
+              formMethods?.setValue(endName, end)
+            }}
+            css={css`
+              button {
+                border-radius: 0px;
+                border-bottom-left-radius: 6px;
+                border-top-left-radius: 6px;
+              }
+            `}
+          />
+        )}
         <DateTimeInput
           id={startProps?.id}
           name={startName}
@@ -118,7 +124,25 @@ export const DateTimeRangeInput = ({
           maxDate={startMaxDate([startProps?.maxDate, maxDate, end])}
           required={required}
           disabled={disabled}
-          validate={validate}
+          validate={
+            Number.isInteger(maxRangeDays)
+              ? {
+                  range: (start) => {
+                    let shallValidateRange =
+                      isValid(start) &&
+                      isValid(end) &&
+                      Number.isInteger(maxRangeDays)
+                    if (shallValidateRange) {
+                      let pass = validateRange(maxRangeDays, start, end)
+                      if (pass) {
+                        formMethods.clearErrors(endName)
+                      }
+                      return pass
+                    }
+                  }
+                }
+              : undefined
+          }
         />
         <Button isStatic tabIndex="-1">
           -
@@ -132,7 +156,25 @@ export const DateTimeRangeInput = ({
           maxDate={maxDate}
           required={required}
           disabled={disabled}
-          validate={validate}
+          validate={
+            Number.isInteger(maxRangeDays)
+              ? {
+                  range: (end) => {
+                    let shallValidateRange =
+                      isValid(start) &&
+                      isValid(end) &&
+                      Number.isInteger(maxRangeDays)
+                    if (shallValidateRange) {
+                      let pass = validateRange(maxRangeDays, start, end)
+                      if (pass) {
+                        formMethods.clearErrors(startName)
+                      }
+                      return pass
+                    }
+                  }
+                }
+              : undefined
+          }
         />
       </Group>
     </>

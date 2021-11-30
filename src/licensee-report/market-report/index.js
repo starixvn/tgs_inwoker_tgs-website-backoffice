@@ -30,6 +30,7 @@ import { LicenseeCurrencySelect } from "../LicenseeCurrencySelect"
 import { LicenseeMultiCurrencySelect } from "../LicenseeMultiCurrencySelect"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client/index"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -151,7 +152,7 @@ const ReportContent = ({ licenseeId }) => {
           }
           return {}
         }}
-        isSticky={isDev() ? true : false}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -184,18 +185,13 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          <LicenseeCurrencySelect name="currencyCode" licenseeId={licenseeId} />
-          {/* TODO: use multi select v1.9 */}
-          {/* <LicenseeMultiCurrencySelect
-            name="currencyCodes"
-            licenseeId={licenseeId}
-          /> */}
           <DateInputRange
+            showDateDropdownMenu={isDev() ? true : false}
             minDate={minDate}
-            maxDate={maxDate}
             maxRangeDays={maxRangeDays}
             required
           />
+          <LicenseeCurrencySelect name="currencyCode" licenseeId={licenseeId} />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
@@ -265,7 +261,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="有效投注" en="Turnover" />,
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

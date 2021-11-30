@@ -1,14 +1,5 @@
 import React, { createContext, useContext, useState } from "react"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route as RouteBase,
-  Redirect,
-  Link,
-  useHistory,
-  useLocation,
-  useRouteMatch
-} from "react-router-dom"
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom"
 import client from "../client"
 import memoize from "fast-memoize"
 import { memoizedFind as findMenu } from "../menu"

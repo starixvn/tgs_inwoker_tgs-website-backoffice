@@ -73,6 +73,8 @@ export const post = (url, options) => fetchApi("POST", url, options)
 
 export const patch = (url, options) => fetchApi("PATCH", url, options)
 
+export const fetchDelete = (url, options) => fetchApi("DELETE", url, options)
+
 const fetchApi = (
   method = "",
   url,
@@ -299,6 +301,28 @@ export const useDelete = (url, settings) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(key),
+    deleteErrorCache: () => deleteErrorCacheBy(keys),
+    clearCache: () => cache.clear()
+  }
+}
+
+export const useDeleteData = (url, data, options = DefaultUpdateOptions) => {
+  let keys = url ? [url, data] : null
+  let {
+    data: result,
+    error,
+    isValidating,
+    mutate
+  } = useSWR(keys, (url, data) => fetchDelete(url, { data }), options)
+
+  return {
+    result,
+    isLoading: !error && !result && keys,
+    isValidating,
+    error,
+    isError: error,
+    mutate,
+    deleteCache: () => deleteCacheBy(keys),
     deleteErrorCache: () => deleteErrorCacheBy(keys),
     clearCache: () => cache.clear()
   }

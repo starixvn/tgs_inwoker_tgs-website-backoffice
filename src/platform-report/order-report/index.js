@@ -34,6 +34,7 @@ import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { isDev } from "../../env"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -150,7 +151,7 @@ const ReportContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        isSticky={isDev() ? true : false}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -205,8 +206,8 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
+            showDateDropdownMenu={isDev() ? true : false}
             minDate={minDate}
-            maxDate={maxDate}
             maxRangeDays={maxRangeDays}
             required
           />
@@ -227,7 +228,6 @@ const SearchBar = ({
             placeholder={externalRoundIdPlaceholder}
           />
           <GameRoundStatusSelect name="status" />
-          {/* TODO: filter by brandId? or use BrandGameProviderSelect? */}
           <GameProviderSelect name="gameProviderId" />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -311,6 +311,11 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

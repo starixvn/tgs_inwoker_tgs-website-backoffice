@@ -6,16 +6,16 @@ import { Switch } from "../../switch/Switch"
 import { Select } from "../../select/Select"
 
 export const PayoutStatusLabel = ({ value }) => {
-    let sentLabel = useTrans({
-        zh: "已派发",
-        en: "Sent"
-    })
+  let sentLabel = useTrans({
+    zh: "已派发",
+    en: "Sent"
+  })
 
-    let notSentLabel = useTrans({
-        zh: "未派发",
-        en: "Not Sent"
-    })
+  let notSentLabel = useTrans({
+    zh: "未派发",
+    en: "Not Sent"
+  })
 
-    let isSent = !!value
-    return isSent ? sentLabel : notSentLabel
+  let isSent = !!value
+  return <span data-sent={isSent}>{isSent ? sentLabel : notSentLabel}</span>
 }

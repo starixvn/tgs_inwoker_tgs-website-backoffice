@@ -29,6 +29,8 @@ import { AgentBonusDetailDialogDisclosure } from "./AgentBonusDetail"
 import { AgentTypeSelect } from "../../agent/AgentType"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
+import { DateButtons } from "../../date/DateButtons"
+import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
 
 export { Code }
 
@@ -149,7 +151,7 @@ const ReportContent = ({ brandId }) => {
           setSortOrder={setSortOrder}
           isLoading={isLoading}
           foot={data?.items?.length > 0}
-          isSticky={isDev() ? true : false}
+          isSticky
         />
       )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
@@ -190,6 +192,12 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          <DateInputRange
+            showDateDropdownMenu={isDev() ? true : false}
+            minDate={minDate}
+            maxRangeDays={maxRangeDays}
+            required
+          />
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
@@ -199,12 +207,6 @@ const SearchBar = ({
             autoFocus
           />
           <AgentTypeSelect name="type" />
-          <DateInputRange
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={maxRangeDays}
-            required
-          />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
@@ -213,8 +215,8 @@ const SearchBar = ({
 }
 
 const useColumns = ({ brandId, start, end, items = [] }) => {
-  return useMemo(
-    () => [
+  return useMemo(() => {
+    let columns = [
       textColumn({
         accessor: "username",
         Header: <Trans zh="代理用户名" en="Agent Username" />,
@@ -259,6 +261,12 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "turnover",
+        sumColumn: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -309,7 +317,42 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
           )
         }
       })
-    ],
-    [JSON.stringify(items)]
-  )
+    ]
+
+    if (isDev()) {
+      columns.push(
+        ...[
+          numberDecimalColumn({
+            accessor: "fromPlayerAgentDividendAmount",
+            sumColumn: "fromPlayerAgentDividendAmount",
+            Header: <Trans zh="玩家贡献" en="Player Contribution" />,
+            disableSortBy: true
+          }),
+          numberDecimalColumn({
+            id: "fromTeamAgentDividendAmount",
+            accessor: (row) => row,
+            sumColumn: "fromTeamAgentDividendAmount",
+            toValue: (row) => row?.fromTeamAgentDividendAmount,
+            Header: <Trans zh="团队贡献" en="Team Contribution" />,
+            disableSortBy: true,
+            Cell: ({ value }) => {
+              return (
+                <AgentTeamContributionDialogDisclosure
+                  brandId={brandId}
+                  agentId={value?.id}
+                  start={start}
+                  end={end}
+                  username={value?.username}
+                  value={value?.fromTeamAgentDividendAmount}
+                  use={Link}
+                />
+              )
+            }
+          })
+        ]
+      )
+    }
+
+    return columns
+  }, [JSON.stringify(items)])
 }

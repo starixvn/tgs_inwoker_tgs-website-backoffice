@@ -89,16 +89,12 @@ export const GameRoundDialog = ({
               <NormalLabel>
                 <Trans zh="用户名" en="Player Name" />
               </NormalLabel>
-              <Box alignY="center">
-                {record.playerName}
-              </Box>
+              <Box alignY="center">{record.playerName}</Box>
 
               <NormalLabel>
                 <Trans zh="订单ID" en="Order ID" />
               </NormalLabel>
-              <Box alignY="center">
-                {record.id}
-              </Box>
+              <Box alignY="center">{record.id}</Box>
 
               <NormalLabel>
                 <Trans zh="投注时间" en="Created On" />
@@ -120,16 +116,12 @@ export const GameRoundDialog = ({
               <NormalLabel>
                 <Trans zh="三方用户名" en="Player Code" />
               </NormalLabel>
-              <Box alignY="center">
-                {record.playerCode}
-              </Box>
+              <Box alignY="center">{record.playerCode}</Box>
 
               <NormalLabel>
                 <Trans zh="三方订单ID" en="External ID" />
               </NormalLabel>
-              <Box alignY="center">
-                {record.externalRoundId}
-              </Box>
+              <Box alignY="center">{record.externalRoundId}</Box>
 
               <NormalLabel>
                 <Trans zh="三方投注时间" en="External Created On" />
@@ -160,22 +152,32 @@ export const GameRoundDialog = ({
               <NormalLabel>
                 <Trans zh="游戏厂商" en="Game Providedr" />
               </NormalLabel>
-              <Box alignY="center">
-                {record.gameProviderName}
-              </Box>
+              <Box alignY="center">{record.gameProviderName}</Box>
 
               <NormalLabel>
                 <Trans zh="游戏名称" en="Game Name" />
               </NormalLabel>
-              <Box alignY="center">
-                {record.gameName}
-              </Box>
+              <Box alignY="center">{record.gameName}</Box>
 
               <NormalLabel>
                 <Trans zh="投注金额" en="Bet Amount" />
               </NormalLabel>
               <Box alignY="center">
                 <FormattedNumberDecimal value={record.betAmount} />
+              </Box>
+
+              <NormalLabel>
+                <Trans zh="有效投注" en="Valid Bet Amount" />
+              </NormalLabel>
+              <Box alignY="center">
+                <FormattedNumberDecimal value={record.validBetAmount} />
+              </Box>
+
+              <NormalLabel>
+                <Trans zh="流水" en="Turnover" />
+              </NormalLabel>
+              <Box alignY="center">
+                <FormattedNumberDecimal value={record.turnover} />
               </Box>
 
               <NormalLabel>
@@ -203,16 +205,12 @@ export const GameRoundDialog = ({
               <NormalLabel>
                 <Trans zh="子游戏厂商" en="Sub Game Providedr" />
               </NormalLabel>
-              <Box alignY="center">
-                {record.subGameProviderName}
-              </Box>
+              <Box alignY="center">{record.subGameProviderName}</Box>
 
               <NormalLabel>
                 <Trans zh="游戏局号" en="ID" />
               </NormalLabel>
-              <Box alignY="center">
-                {record.id}
-              </Box>
+              <Box alignY="center">{record.id}</Box>
 
               <NormalLabel>
                 <Trans zh="有效投注" en="Valid Bet Amount" />

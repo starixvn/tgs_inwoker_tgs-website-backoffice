@@ -34,6 +34,7 @@ import {
   TransactionTypeSelect
 } from "./TransactionTypeSelect"
 import dateTimeColumn from "../../table/column/dateTime"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -134,7 +135,7 @@ const ReportContent = ({ brandId }) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         // foot={data?.items?.length > 0}
-        isSticky={isDev() ? true : false}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -172,18 +173,18 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          <DateInputRange
+            showDateDropdownMenu={isDev() ? true : false}
+            minDate={minDate}
+            maxRangeDays={maxRangeDays}
+            required
+          />
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
             placeholder={usernamePlaceholder}
           />
           <TransactionTypeSelect name="transactionType" />
-          <DateInputRange
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={maxRangeDays}
-            required
-          />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>

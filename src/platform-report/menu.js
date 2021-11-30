@@ -30,6 +30,10 @@ import {
   Code as BalanceChangeReportCode,
   codeLabelPair as balanceChangeReportPair
 } from "./balance-change-report/menu"
+import {
+  Code as GameProviderReportCode,
+  codeLabelPair as gameProviderReportPair
+} from "./game-provider-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 
@@ -135,6 +139,15 @@ const label = ({ locale, code }) => {
         locale
       )
 
+    case GameProviderReportCode:
+      return getTrans(
+        {
+          zh: "游戏商報表",
+          en: "Game Provider Report"
+        },
+        locale
+      )
+
     default:
       return ""
   }
@@ -154,7 +167,8 @@ export const codeLabelPair = [
         playerContributionReportPair,
         agentBonusReportPair,
         vipReportPair,
-        balanceChangeReportPair
+        balanceChangeReportPair,
+        gameProviderReportPair
       ]
     })
 ]

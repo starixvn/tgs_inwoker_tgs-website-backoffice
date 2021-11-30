@@ -41,6 +41,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons"
 import BrandBar from "../../report/BrandBar"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -185,7 +186,7 @@ const ReportContent = ({ brandId }) => {
             setSortOrder={setSortOrder}
             isLoading={isLoading}
             foot={data?.items?.length > 0}
-            isSticky={isDev() ? true : false}
+            isSticky
           />
         )}
       </FieldStack>
@@ -268,6 +269,12 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          <DateInputRange
+            showDateDropdownMenu={isDev() ? true : false}
+            minDate={minDate}
+            maxRangeDays={maxRangeDays}
+            required
+          />
           <InputField
             name="agentUsername"
             showEmptyFieldValueAddonAfter
@@ -277,12 +284,6 @@ const SearchBar = ({
             autoFocus
           />
           <AgentTypeSelect name="agentType" />
-          <DateInputRange
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={maxRangeDays}
-            required
-          />
           <Checkbox name="includeAgents" label={includeAgentCheckboxLabel} />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -393,6 +394,12 @@ const useColumns = ({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "turnover",
+        sumColumn: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

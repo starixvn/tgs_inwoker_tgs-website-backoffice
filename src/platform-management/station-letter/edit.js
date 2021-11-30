@@ -263,6 +263,7 @@ const EditBody = ({ readOnly = false } = {}) => {
       </Label>
       <HtmlEditor
         name="content"
+        required={required}
         brandId={brandId}
         imagesUploadUrl={toFileUploadPath("stationLetter")}
         readOnly={readOnly}

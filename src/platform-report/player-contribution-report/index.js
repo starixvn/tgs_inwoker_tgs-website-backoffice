@@ -40,6 +40,7 @@ import { usePlayerContributionList, API } from "./client"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
+import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -171,7 +172,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         foot={data?.items?.length > 0}
-        isSticky={isDev() ? true : false}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -211,6 +212,12 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          <DateInputRange
+            showDateDropdownMenu={isDev() ? true : false}
+            minDate={minDate}
+            maxRangeDays={maxRangeDays}
+            required
+          />
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
@@ -220,12 +227,6 @@ const SearchBar = ({
             name="level"
             brandId={brandId}
             optionValue={({ level }) => level}
-          />
-          <DateInputRange
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={maxRangeDays}
-            required
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -300,6 +301,12 @@ const useColumns = ({ items = [] }) => {
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "turnover",
+        sumColumn: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
