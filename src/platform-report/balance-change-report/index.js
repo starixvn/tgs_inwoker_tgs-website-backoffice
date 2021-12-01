@@ -67,7 +67,7 @@ export const Body = () => {
 
 const ReportContent = ({ brandId }) => {
   let dateRange = today()
-  let QueryMaxRangeDays = 14
+  let QueryMaxRangeDays = 31
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,

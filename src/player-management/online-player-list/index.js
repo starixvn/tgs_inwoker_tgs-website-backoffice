@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, useModalState } from "bumbag"
+import {
+  Heading,
+  Stack,
+  Box,
+  Button,
+  Set,
+  useModalState,
+  Blockquote
+} from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -17,7 +25,7 @@ import {
 import { Code, View } from "./menu"
 import { PlayerStatusSelect } from "../PlayerStatus"
 import { VipLevelSelect } from "../../vip-levels/VipLevelSelect"
-import { Trans, useTrans } from "../../i18n"
+import { Trans, useTrans, FormattedNumber } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -92,6 +100,7 @@ const BodyContent = ({ brandId = "" }) => {
         />
       }
     >
+      <Summary onlineUsers={data?.onlineUsers} />
       <Table
         columns={columns}
         data={data?.items}
@@ -104,6 +113,21 @@ const BodyContent = ({ brandId = "" }) => {
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const Summary = ({ onlineUsers }) => {
+  if (!Number.isFinite(onlineUsers)) {
+    return null
+  }
+
+  return (
+    <Blockquote borderColor="primary">
+      <Heading use="h5">
+        <Trans zh="在线玩家总数：" en="Total Online Players：" />
+        <FormattedNumber value={onlineUsers} />
+      </Heading>
+    </Blockquote>
   )
 }
 
