@@ -81,7 +81,7 @@ const BodyContent = ({ brandId = "" }) => {
     brandId
   })
 
-  let columns = useColumns({ mutate, items: data?.items, brandId })
+  let columns = useColumns({ mutate, items: data?.datas?.items, brandId })
 
   return (
     <PageContent
@@ -103,10 +103,10 @@ const BodyContent = ({ brandId = "" }) => {
       <Summary onlineUsers={data?.onlineUsers} />
       <Table
         columns={columns}
-        data={data?.items}
+        data={data?.datas?.items}
         initialState={state}
         controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        pageCount={pageCount(state.pageSize, data?.datas?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
@@ -158,7 +158,7 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
   )
 }
 
-const useColumns = ({ items = [], brandId } = {}) => {
+const useColumns = ({ items = [] } = {}) => {
   return useMemo(() => {
     return [
       sequenceColumn(),
