@@ -1,8 +1,11 @@
 export const globalApi = () =>
-  process.env.GLOBALAPI || "http://global-api.localhost/global-api"
+  process.env.GLOBAL_API || "http://global-api.localhost/global-api"
 
 export const operatorApi = () =>
-  process.env.GLOBALAPI || "http://operator-api.localhost/api"
+  process.env.OPERATOR_API || "http://operator-api.localhost/api"
+
+export const sboApi = () =>
+  process.env.SBO_API || "http://sbo-api.localhost/api/sbo"
 
 export const host = () => process.env.HOST || "http://backoffice.localhost"
 
