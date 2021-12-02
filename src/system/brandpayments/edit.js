@@ -319,7 +319,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   return (
     <FormDialog
       defaultValues={{
-        code: ManualCode,
+        paymentName: ManualCode,
         paymentStatus: BrandPaymentStatus.Enabled,
         paymentMethodId:
           manualPaymentMethodList?.length == 1
@@ -392,7 +392,7 @@ const EditBody = ({
 }) => {
   let { watch, setValue, getValues, control } = useFormContext()
 
-  const code = getValues("code")
+  const paymentName = getValues("paymentName")
   const TransferLimitToFieldName = "transferLimitTo"
   let transferLimitTo = useWatch({
     name: TransferLimitToFieldName,
@@ -445,10 +445,10 @@ const EditBody = ({
 
   let manualPaymentMethodIdList = manualPaymentMethodList?.map(({ id }) => id)
 
-  let isManualCode = code == ManualCode
+  let isManualPaymentCode = paymentName == ManualCode
   let isManualMethod = manualPaymentMethodIdList?.includes(paymentMethodId)
   useEffect(() => {
-    if (isManualCode && isManualMethod) {
+    if (isManualPaymentCode && isManualMethod) {
       let paymentMethodChannel = manualPaymentMethodChannelList.find((item) => {
         return (
           item.paymentId === paymentId &&
@@ -458,7 +458,7 @@ const EditBody = ({
       })
       setValue(PaymentMethodChannelIdFieldName, paymentMethodChannel?.id ?? "")
     }
-  }, [isManualCode, paymentChannelId, paymentMethodId])
+  }, [isManualPaymentCode, paymentChannelId, paymentMethodId])
   return (
     <Stack
       orientation="vertical"
@@ -547,7 +547,7 @@ const EditBody = ({
 
               {isBankTransferMethod && (
                 <>
-                  {isManualCode && (
+                  {isManualPaymentCode && (
                     <>
                       <Label required>
                         <Trans zh="帐号名称" en="Account Name" />
@@ -556,7 +556,7 @@ const EditBody = ({
                     </>
                   )}
 
-                  {isManualCode && (
+                  {isManualPaymentCode && (
                     <>
                       <Label required>
                         <Trans zh="银行卡号" en="Bank Account" />
