@@ -83,6 +83,12 @@ describe("Admin user", function () {
 
     await gotoGameRoundPage()
 
+    await closeGameRoundBy(externalRoundId)
+
+    //TODO: search player balance change record by filter = UnsettledBetManual
+  })
+
+  const closeGameRoundBy = async (externalRoundId) => {
     await page.fill(`input[name="externalRoundId"]`, externalRoundId)
 
     await Promise.all([
@@ -112,7 +118,7 @@ describe("Admin user", function () {
 
     await fillDatePicker({
       page,
-      selector: `${DialogSelector} .react-datepicker-wrapper:first-child input`,
+      selector: `${DialogSelector} .react-datepicker-wrapper input`,
       value: round.externalClosedOn
     })
 
@@ -147,20 +153,20 @@ describe("Admin user", function () {
       round.clientRoundStatus
     )
 
-    await page.fill(`${DialogSelector} [name="remark"]`, remark.remark)
+    await page.fill(`${DialogSelector} [name="remark"]`, round.remark)
 
     await page.click(`${DialogSelector} button[data-type="confirm"]`)
 
     await Promise.all([
       page.waitForResponse((response) => {
         return (
-          result.url().toLowerCase().endsWith("/closegameround") &&
+          response.url().toLowerCase().endsWith("/closegameround") &&
           response.status() === 200
         )
       }),
       page.click(`#confirm-dialog button[type="submit"]`)
     ])
-  })
+  }
 
   const getPlayerCode = async (username) => {
     await gotoPlayerListPage()
