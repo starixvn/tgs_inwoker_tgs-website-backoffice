@@ -56,7 +56,7 @@ import AgentSportsRebatePercentage from "../AgentSportsRebatePercentage"
 import AgentVirtualSportsRebatePercentage from "../AgentVirtualSportsRebatePercentage"
 import AgentDividendPercentage from "../AgentDividendPercentage"
 import { isDev } from "../../env"
-import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentProfitSharingSettingDialog"
+import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentProfitSharingSetting"
 
 export { Code }
 
@@ -186,7 +186,12 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
 const useSearchInputPlaceHolder = () =>
   useTrans({ zh: "用户名输入框", en: "Input user name" })
 
-const useColumns = ({ mutate, items = [], brandId } = {}) => {
+const useColumns = ({
+  mutate,
+  items = [],
+  brandId,
+  agentProfitSharingType
+} = {}) => {
   let hasAnyMenu = useHasSubMenuByRoute()
   let viewable = useIsDisplayMenuByRoute([View])
 
@@ -236,6 +241,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
             <ViewAgentProfitSharingSettingDialogDisclosure
               agentId={value?.id}
               disabled={!viewable}
+              agentProfitSharingType={agentProfitSharingType}
             />
           )
         }

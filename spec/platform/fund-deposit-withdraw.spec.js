@@ -17,9 +17,7 @@ import {
 import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
-import { selectRandomOption } from "../page/select"
 import platform from "../platform"
-import { selectRandomPlatform } from "./index"
 import {
   register,
   login,

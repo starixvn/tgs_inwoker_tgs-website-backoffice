@@ -19,7 +19,7 @@ import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
 import { selectByValue, selectRandomOption } from "../page/select"
 import platform from "../platform"
-import { selectPlatformByCode } from "../platform/index"
+import { selectPlatformByCode } from "../page/content"
 import {
   register,
   login,

@@ -93,7 +93,7 @@ import {
 } from "./AgentBalanceChange"
 import { isAgentConfigRequired } from "../AgentConfigStatus"
 import { isDev } from "../../env"
-import { AgentProfitSharingSettingDialogDisclosure } from "../AgentProfitSharingSettingDialog"
+import { AgentProfitSharingSettingDialogDisclosure } from "../AgentProfitSharingSetting"
 import { AgentDomainListTab, AgentDomainListPanel } from "./AgentDomainList"
 
 export const AddAgentButton = ({ brandId, onSubmitted, ...props }) => {
