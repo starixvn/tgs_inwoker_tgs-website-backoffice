@@ -23,7 +23,7 @@ services:
       Report__Url: "http://report-api"
       BackOffice__PaymentServiceBaseUrl: "http://payment-api"
       BackOffice__CashBaseUrl: "http://cash-service"
-      BackOffice__GameProvidersPluggable: "http://game-pluggable-service"
+      BackOffice__GameProvidersPluggableBaseUrl: "http://game-pluggable-service"
     ingresses:
       - hostname: backoffice.localhost
         path: /api
