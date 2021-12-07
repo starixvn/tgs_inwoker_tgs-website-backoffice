@@ -179,7 +179,7 @@ const ViewTabs = ({ playerCode, brandId, player, tab }) => {
         <PlayerOperationTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
-        {isDev() && <PlayerWalletListTab {...tab} />}
+        <PlayerWalletListTab {...tab} />
       </TabList>
       <PlayerPanel player={player} {...tab} />
       <ContractPanel player={player} {...tab} />
@@ -201,14 +201,12 @@ const ViewTabs = ({ playerCode, brandId, player, tab }) => {
         brandId={brandId}
         {...tab}
       />
-      {isDev() && (
-        <PlayerWalletListPanel
-          playerCode={playerCode}
-          player={player}
-          brandId={brandId}
-          {...tab}
-        />
-      )}
+      <PlayerWalletListPanel
+        playerCode={playerCode}
+        player={player}
+        brandId={brandId}
+        {...tab}
+      />
     </Tabs>
   )
 }

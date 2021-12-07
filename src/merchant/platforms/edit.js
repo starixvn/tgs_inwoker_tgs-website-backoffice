@@ -518,6 +518,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           <Input
             name="code"
             type={isAdd ? "input" : "hidden"}
+            /*
             inputProps={
               isDev()
                 ? {
@@ -532,6 +533,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
                   }
                 : {}
             }
+             */
           />
           {!isAdd && <Text.Block>{getValues("code")}</Text.Block>}
         </Box>

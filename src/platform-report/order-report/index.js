@@ -234,7 +234,7 @@ const SearchBar = ({
           <Set orientation="horizontal">
             <DateInputRangeField
               label={<Trans zh="投注时间" en="Created On" />}
-              showDateDropdownMenu={isDev() ? true : false}
+              showDateDropdownMenu
               minDate={minDate}
               maxRangeDays={maxRangeDays}
               startProps={{
@@ -243,13 +243,7 @@ const SearchBar = ({
               endProps={{
                 name: "end"
               }}
-              required={!isDev()}
               validate={(createdOn) => {
-                //TODO: rm for v1.11
-                if (isDev()) {
-                  return true //pass
-                }
-
                 let hasCreatedOn =
                   isValid(createdOn.start) && isValid(createdOn.end)
 
@@ -265,36 +259,34 @@ const SearchBar = ({
                 return pass ? true : "one-of-date-range-required"
               }}
             />
-            {isDev() && (
-              <DateInputRangeField
-                label={<Trans zh="结算时间" en="Closed On" />}
-                showDateDropdownMenu
-                minDate={minDate}
-                maxRangeDays={maxRangeDays}
-                startProps={{
-                  name: "closedFrom"
-                }}
-                endProps={{
-                  name: "closedTo"
-                }}
-                validate={{
-                  validate: (closedOn) => {
-                    let hasClosedOn =
-                      isValid(closedOn.start) && isValid(closedOn.end)
+            <DateInputRangeField
+              label={<Trans zh="结算时间" en="Closed On" />}
+              showDateDropdownMenu
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
+              startProps={{
+                name: "closedFrom"
+              }}
+              endProps={{
+                name: "closedTo"
+              }}
+              validate={{
+                validate: (closedOn) => {
+                  let hasClosedOn =
+                    isValid(closedOn.start) && isValid(closedOn.end)
 
-                    let start = getValues("start")
-                    let end = getValues("end")
-                    let hasCreatedOn = isValid(start) && isValid(end)
+                  let start = getValues("start")
+                  let end = getValues("end")
+                  let hasCreatedOn = isValid(start) && isValid(end)
 
-                    let pass = hasCreatedOn || hasClosedOn
-                    if (pass) {
-                      clearErrors(["start", "end"])
-                    }
-                    return pass ? true : "one-of-date-range-required"
+                  let pass = hasCreatedOn || hasClosedOn
+                  if (pass) {
+                    clearErrors(["start", "end"])
                   }
-                }}
-              />
-            )}
+                  return pass ? true : "one-of-date-range-required"
+                }
+              }}
+            />
           </Set>
           <Set orientation="horizontal">
             <InputField

@@ -138,6 +138,7 @@ const Body = ({}) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         getRowId={(row) => row.id}
+        isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -170,7 +171,7 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          <DateTimeRangeInput />
+          <DateTimeRangeInput showDateDropdownMenu />
           <InputField
             name="trackingId"
             showEmptyFieldValueAddonAfter

@@ -464,6 +464,7 @@ const EditBody = ({ record = {}, readonly = false, isAdd = false }) => {
             name="code"
             type={isAdd ? "input" : "hidden"}
             required={isAdd}
+            /*
             inputProps={
               isDev()
                 ? {
@@ -478,6 +479,7 @@ const EditBody = ({ record = {}, readonly = false, isAdd = false }) => {
                   }
                 : {}
             }
+             */
           />
           {!isAdd && <Text.Block>{getValues("code")}</Text.Block>}
         </Box>
