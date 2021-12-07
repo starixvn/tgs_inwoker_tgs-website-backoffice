@@ -43,15 +43,16 @@ import { isMonthlySettlementInterval } from "../date/SettlementIntervalType"
 import { AlertDialog } from "../dialog/Alert"
 import LoadingBackdrop from "../dialog/LoadingBackdrop"
 
-export const AgentProfitSharingSettingDialogDisclosure = ({
+export const AgentMultipleLayerProfitSharingSettingDialogDisclosure = ({
   name = "agentDividendConditions",
   brandId = "",
   parentUsername = "",
   readOnly,
   ...props
 }) => {
+  /* Note: ```MultipleLayer setting is independent, no need to check parent or child agents```
+  
   let { isLoading: isLoadingBrand, data: brand, brandError } = useBrand(brandId)
-  /*
   let {
     isLoading: isLoadingAgent,
     data: agentData,
@@ -67,7 +68,7 @@ export const AgentProfitSharingSettingDialogDisclosure = ({
       : undefined
   )
   let parentAgent = agentData?.items?.[0]
-  console.log("parentAgent", parentAgent)
+
   let validParentAgent = !!(
     parentUsername &&
     parentAgent &&
@@ -77,12 +78,13 @@ export const AgentProfitSharingSettingDialogDisclosure = ({
   let parentAgentProfitSharingSettings = validParentAgent
     ? parentAgent.agentDividendConditions
     : undefined
-  */
+  
   if (isLoadingBrand) {
     return <Disclosure disabled isLoading></Disclosure>
   }
+  */
 
-  let maxLevelSize = 1 //MaxNumber
+  let maxLevelSize = MaxNumber
   return (
     <SettingDisclosure
       name={name}

@@ -21,7 +21,8 @@ import {
   FormattedDateTime,
   FormattedNumber,
   useTrans,
-  FormattedNumberDecimal
+  FormattedNumberDecimal,
+  FormattedNumberDecimalPercentage
 } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import { SubmitCancel } from "../../button/ActionButtons"
@@ -45,9 +46,9 @@ import {
 import clone from "clone-deep"
 import Select from "../../select/Select"
 import {
-  AgentDividendPercentageInputField,
+  AgentOneLayerDividendPercentageInputField,
   Name as AgentDividendPercentageField
-} from "../AgentDividendPercentage"
+} from "../AgentOneLayerDividendPercentage"
 import {
   AgentLiveDealerRebatePercentageInputField,
   AgentLiveDealerRebateText
@@ -75,9 +76,14 @@ import {
 import AgentLevel from "../AgentLevel"
 import { isDev } from "../../env"
 import {
-  AgentProfitSharingSettingDialogDisclosure,
+  AgentMultipleLayerProfitSharingSettingDialogDisclosure,
   AgentProfitSharingSettingRecordDialogDisclosure
-} from "../AgentProfitSharingSetting"
+} from "../AgentMultipleLayerProfitSharingSetting"
+import {
+  isAgentProfitSharingMultipleLayer,
+  isAgentProfitSharingOneLayer
+} from "../AgentProfitSharingType"
+import { PercentageNumberInput } from "../../input/NumberInput"
 
 const Key = "AgentInfo"
 
@@ -96,6 +102,7 @@ export const AgentInfoPanel = ({ readonly = false, ...props }) =>
 
 const EditPanel = ({
   brandId,
+  agentProfitSharingType,
   record,
   onSubmitted,
   onClickClose,
@@ -167,6 +174,9 @@ const EditPanel = ({
     control,
     name: AgentTypeField
   })
+
+  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
   return (
     <TabPanel tabId={Key} {...props}>
       <FormProvider {...formMethods}>
@@ -232,17 +242,28 @@ const EditPanel = ({
                 <AgentStatusSelect name="status" placeholder={false} required />
               </AgentStatusBox>
 
-              {
+              {oneLayer && (
                 <>
                   <Trans zh="分红比例" en="Profit Sharing Percentage" />
                   <Box>
-                    <AgentProfitSharingSettingDialogDisclosure
+                    <AgentOneLayerDividendPercentageInputField
                       brandId={brandId}
                       parentUsername={record.parentUsername}
                     />
                   </Box>
                 </>
-              }
+              )}
+              {multipleLayer && (
+                <>
+                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <Box>
+                    <AgentMultipleLayerProfitSharingSettingDialogDisclosure
+                      brandId={brandId}
+                      parentUsername={record.parentUsername}
+                    />
+                  </Box>
+                </>
+              )}
 
               {/* {!willChangeParent && (
                 <RebateBox
@@ -313,7 +334,9 @@ const ChangeParentWarning = () => {
   return <Alert variant="tint" title={warning} type="warning" />
 }
 
-const ViewPanel = ({ record, ...props }) => {
+const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
+  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues>
@@ -338,7 +361,20 @@ const ViewPanel = ({ record, ...props }) => {
 
         <LevelTypeBox value={record?.levelType} />
 
-        {
+        {oneLayer && (
+          <>
+            <Box alignY="center">
+              <Trans zh="分红比例" en="Profit Sharing Percentage" />
+            </Box>
+            <Box>
+              <FormattedNumberDecimalPercentage
+                value={record?.dividendPercentage}
+              />
+            </Box>
+          </>
+        )}
+
+        {multipleLayer && (
           <>
             <Box alignY="center">
               <Trans zh="分红比例" en="Profit Sharing Percentage" />
@@ -349,7 +385,7 @@ const ViewPanel = ({ record, ...props }) => {
               />
             </Box>
           </>
-        }
+        )}
 
         <AccumulatedProfitSharingBox value={record?.accumulatedProfitSharing} />
 

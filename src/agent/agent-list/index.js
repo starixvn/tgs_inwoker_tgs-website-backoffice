@@ -9,7 +9,8 @@ import {
   Set,
   useModalState,
   Flex,
-  Level
+  Level,
+  Spinner
 } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
@@ -25,7 +26,13 @@ import {
 import { Code, View } from "./menu"
 import { AgentStatusSelect } from "../AgentStatus"
 import { ViewButton, EditButton, ConfigButton, AddAgentButton } from "./button"
-import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
+import {
+  FormattedNumber,
+  FormattedNumberDecimal,
+  FormattedNumberDecimalPercentage,
+  Trans,
+  useTrans
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -54,9 +61,10 @@ import AgentCardGameRebatePercentage from "../AgentCardGameRebatePercentage"
 import AgentLotteryRebatePercentage from "../AgentLotteryRebatePercentage"
 import AgentSportsRebatePercentage from "../AgentSportsRebatePercentage"
 import AgentVirtualSportsRebatePercentage from "../AgentVirtualSportsRebatePercentage"
-import AgentDividendPercentage from "../AgentDividendPercentage"
 import { isDev } from "../../env"
-import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentProfitSharingSetting"
+import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
+import { isAgentProfitSharingOneLayer } from "../AgentProfitSharingType"
+import { useBrand } from "../../merchant/platforms/client"
 
 export { Code }
 
@@ -74,6 +82,7 @@ export const CodeContentPair = [Code, Content]
 const Body = () => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
+  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
 
   return (
     <Set orientation="vertical" isFilled>
@@ -82,22 +91,26 @@ const Body = () => {
           setBrandId(value)
         }}
       />
-      {brandId && <BodyContent brandId={brandId} />}
+      {isLoading && (
+        <Box alignY="center" alignX="center">
+          <Spinner />
+        </Box>
+      )}
+      {!isLoading && brandId && brand && (
+        <BodyContent brandId={brandId} brand={brand} />
+      )}
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
   )
 }
 
-const BodyContent = ({ brandId = "" }) => {
+const BodyContent = ({ brandId = "", brand }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: "",
     levelType: "",
     type: "",
     username: ""
   })
-
-  useEffect(() => {
-    setState({ pageIndex: 0, brandId })
-  }, [brandId])
 
   let { pageIndex, pageSize, status, levelType, type, username } = state
   let {
@@ -116,7 +129,23 @@ const BodyContent = ({ brandId = "" }) => {
       : undefined
   )
 
-  let columns = useColumns({ mutate, items: data?.items, brandId })
+  const reset = () => {
+    mutate(null)
+    deleteCache()
+  }
+
+  useEffect(() => {
+    reset()
+    setState({ pageIndex: 0, brandId })
+  }, [brandId, brand])
+
+  let agentProfitSharingType = brand?.agentDividendType
+  let columns = useColumns({
+    mutate,
+    items: data?.items,
+    brandId,
+    agentProfitSharingType
+  })
 
   return (
     <PageContent
@@ -137,6 +166,7 @@ const BodyContent = ({ brandId = "" }) => {
           <AddAgentButton
             id="add-agent-dialog-disclosure"
             brandId={brandId}
+            agentProfitSharingType={agentProfitSharingType}
             onSubmitted={mutate}
           />
         </Flex>
@@ -222,7 +252,7 @@ const useColumns = ({
         Cell: ({ value }) => <AgentStatusLabel value={value} />
       }),
       textColumn({
-        id: AgentDividendPercentage.Name,
+        id: "profitSharing",
         accessor: (row) => row,
         Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
         disableSortBy: true,
@@ -237,11 +267,19 @@ const useColumns = ({
             return "-"
           }
 
+          let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+          if (oneLayer) {
+            return (
+              <FormattedNumberDecimalPercentage
+                value={value?.dividendPercentage}
+              />
+            )
+          }
+
           return (
             <ViewAgentProfitSharingSettingDialogDisclosure
               agentId={value?.id}
               disabled={!viewable}
-              agentProfitSharingType={agentProfitSharingType}
             />
           )
         }
@@ -440,10 +478,12 @@ const useColumns = ({
                     id="view-agent-dialog-disclosure"
                     record={value}
                     brandId={brandId}
+                    agentProfitSharingType={agentProfitSharingType}
                   />
                   <EditButton
                     id="edit-agent-dialog-disclosure"
                     brandId={brandId}
+                    agentProfitSharingType={agentProfitSharingType}
                     record={value}
                     onSubmitted={mutate}
                   />
@@ -455,6 +495,7 @@ const useColumns = ({
                   palette="warning"
                   variant="outlined"
                   brandId={brandId}
+                  agentProfitSharingType={agentProfitSharingType}
                   agentId={value?.id}
                   onSubmitted={mutate}
                 />

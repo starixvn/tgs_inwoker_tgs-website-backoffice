@@ -183,7 +183,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
         Cell: ({ value }) => <AgentStatusLabel value={value} />
       }),
       textColumn({
-        id: AgentDividendPercentage.Name,
+        id: "profitSharing",
         accessor: (row) => row,
         Header: <Trans zh="占成比例" en="Profit Sharing Percentage" />,
         disableSortBy: true,

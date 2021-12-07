@@ -200,6 +200,11 @@ export const FormattedNumberDecimal = ({
   )
 }
 
+export const FormattedNumberDecimalPercentage = ({
+  postfix = "%",
+  ...props
+}) => <FormattedNumberDecimal postfix={postfix} {...props} />
+
 export const getTrans = (messages = {}, locale = Locales.zh) =>
   Reflect.get(messages, locale) ?? ""
 

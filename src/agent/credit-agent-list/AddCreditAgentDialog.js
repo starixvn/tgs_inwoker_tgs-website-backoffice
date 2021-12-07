@@ -40,7 +40,7 @@ import Input, { InputField } from "../../input/Input"
 import { PasswordInputField } from "../../input/PasswordInput"
 import { useFormContext, useWatch } from "react-hook-form"
 import Textarea from "../../textarea"
-import { AgentDividendPercentageInputField } from "../AgentDividendPercentage"
+import { AgentDividendPercentageInputField } from "../AgentOneLayerDividendPercentage"
 import {
   AgentLiveDealerRebatePercentageInputField,
   AgentLiveDealerRebateText
