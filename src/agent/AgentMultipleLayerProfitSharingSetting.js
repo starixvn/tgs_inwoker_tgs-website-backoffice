@@ -37,11 +37,11 @@ import {
   PercentageNumberInputField
 } from "../input/NumberInput"
 import { useAgentList, useAgent } from "./agent-list/client"
-import { useBrand } from "../merchant/platforms/client"
 import { isNil } from "lodash-es"
 import { isMonthlySettlementInterval } from "../date/SettlementIntervalType"
 import { AlertDialog } from "../dialog/Alert"
 import LoadingBackdrop from "../dialog/LoadingBackdrop"
+import { Name } from "./AgentEgameRebatePercentage"
 
 export const AgentMultipleLayerProfitSharingSettingDialogDisclosure = ({
   name = "agentDividendConditions",
@@ -107,7 +107,11 @@ export const AgentProfitSharingSettingRecordDialogDisclosure = ({
         <Trans zh="分红设置" en="Profit Sharing Setting" />
       </Disclosure>
       {dialog.visible && (
-        <SettingDialog record={record} readOnly dialog={dialog} />
+        <AgentMultipleLayerProfitSharingSettingDialog
+          record={record}
+          readOnly
+          dialog={dialog}
+        />
       )}
     </>
   )
@@ -140,7 +144,7 @@ const AgentDialog = ({ agentId, dialog, ...props }) => {
   }
 
   return (
-    <SettingDialog
+    <AgentMultipleLayerProfitSharingSettingDialog
       record={data?.agentDividendConditions}
       readOnly
       dialog={dialog}
@@ -184,7 +188,7 @@ const SettingDisclosure = ({
               <Trans zh="分红设置" en="Profit Sharing Setting" />
             </Disclosure>
             {dialog.visible && (
-              <SettingDialog
+              <AgentMultipleLayerProfitSharingSettingDialog
                 record={value}
                 parentAgentProfitSharingSettings={
                   parentAgentProfitSharingSettings
@@ -208,7 +212,7 @@ const SettingDisclosure = ({
 }
 
 const FieldName = "list"
-const SettingDialog = ({
+const AgentMultipleLayerProfitSharingSettingDialog = ({
   record = [],
   parentAgentProfitSharingSettings,
   maxLevelSize,
@@ -244,7 +248,7 @@ const SettingDialog = ({
         }
         minWidth="50vw"
       >
-        <FormBody
+        <AgentMultipleLayerProfitSharingSettingFormBody
           maxLevelSize={maxLevelSize}
           parentAgentProfitSharingSettings={parentAgentProfitSharingSettings}
           readOnly={readOnly}
@@ -254,8 +258,9 @@ const SettingDialog = ({
   )
 }
 
-const FormBody = ({
-  maxLevelSize,
+export const AgentMultipleLayerProfitSharingSettingFormBody = ({
+  name = FieldName,
+  maxLevelSize = MaxNumber,
   parentAgentProfitSharingSettings,
   readOnly
 }) => {
@@ -264,7 +269,7 @@ const FormBody = ({
 
   let fieldArray = useFieldArray({
     control,
-    name: FieldName,
+    name,
     keyName: "_id"
   })
 
@@ -290,6 +295,7 @@ const FormBody = ({
       <Table.Body>
         {fieldArray.fields.map((field, index) => (
           <SettingRow
+            name={name}
             key={field._id}
             field={field}
             index={index}
@@ -346,6 +352,7 @@ const DefaultMinSetting = {
 }
 
 const SettingRow = ({
+  name,
   field,
   index,
   fieldArray,
@@ -355,11 +362,11 @@ const SettingRow = ({
   let { control } = useFormContext()
   let previous = useWatch({
     control,
-    name: `${FieldName}.${index - 1}`
+    name: `${name}.${index - 1}`
   })
   let next = useWatch({
     control,
-    name: `${FieldName}.${index + 1}`
+    name: `${name}.${index + 1}`
   })
 
   let parentAgentSetting = parentAgentProfitSharingSettings?.[index]
@@ -372,7 +379,7 @@ const SettingRow = ({
         <Table.Cell>
           <Input
             type="hidden"
-            name={`${FieldName}.${index}.rank`}
+            name={`${name}.${index}.rank`}
             value={index + 1}
           />
           {editable && (
@@ -390,7 +397,7 @@ const SettingRow = ({
         </Table.Cell>
         <Table.Cell>
           <NumberInput
-            name={`${FieldName}.${index}.netProfit`}
+            name={`${name}.${index}.netProfit`}
             readOnly={readOnly}
             disabled={disabled}
             defaultValue={field.netProfit}
@@ -416,7 +423,7 @@ const SettingRow = ({
         </Table.Cell>
         <Table.Cell>
           <NumberInput
-            name={`${FieldName}.${index}.activeNumber`}
+            name={`${name}.${index}.activeNumber`}
             readOnly={readOnly}
             disabled={disabled}
             defaultValue={field.activeNumber}
@@ -442,7 +449,7 @@ const SettingRow = ({
         </Table.Cell>
         <Table.Cell>
           <PercentageNumberInputField
-            name={`${FieldName}.${index}.dividendPercentage`}
+            name={`${name}.${index}.dividendPercentage`}
             readOnly={readOnly}
             disabled={disabled}
             registerOptions={{
