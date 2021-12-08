@@ -130,6 +130,13 @@ const ReportDialog = ({
           {data?.items?.map((record) => (
             <Row record={record} />
           ))}
+          {!data?.items?.length && (
+            <Table.Row>
+              <Table.Cell textAlign="center" colSpan={12}>
+                <Trans zh="查无资料" en="No Search Result" />
+              </Table.Cell>
+            </Table.Row>
+          )}
         </Table>
       </FieldStack>
     </Dialog.Modal>
