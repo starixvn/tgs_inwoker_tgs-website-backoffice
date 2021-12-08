@@ -26,8 +26,8 @@ let CodeTranPairs = [
   [
     "ThirdParty",
     {
-      zh: "三方廠商",
-      en: "3rd Party Provider"
+      zh: "三方支付",
+      en: "Third-party Payment"
     }
   ],
   [
