@@ -91,7 +91,9 @@ export const useAgentWinLossList = (id, searchParams) => {
 }
 
 export const useAgentTeamContributionList = (searchParams) => {
-  let url = searchParams ? `${API}/dividendTeamDetails` : ""
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/dividendTeamDetails`)
+    : ""
 
   let { data, ...rest } = useGet(url)
 
