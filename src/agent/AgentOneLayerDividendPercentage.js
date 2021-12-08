@@ -8,7 +8,7 @@ import { isNil } from "lodash-es"
 
 export const Name = "dividendPercentage"
 
-export const AgentDividendPercentageInputField = ({
+export const AgentOneLayerDividendPercentageInputField = ({
   name = Name,
   required = true,
   brandId = "",
@@ -21,7 +21,8 @@ export const AgentDividendPercentageInputField = ({
       ? {
           brandId,
           username: parentUsername,
-          rows: 1
+          rows: 1,
+          page: 1
         }
       : undefined
   )

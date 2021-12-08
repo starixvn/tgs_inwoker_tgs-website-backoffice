@@ -140,6 +140,7 @@ const Body = ({}) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         getRowId={(row) => row.id}
+        isSticky
       />
       {error && (
         <AlertDialog
@@ -186,7 +187,7 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          <DateTimeRangeInput />
+          <DateTimeRangeInput showDateDropdownMenu />
           <InputField
             name="responseCode"
             showEmptyFieldValueAddonAfter

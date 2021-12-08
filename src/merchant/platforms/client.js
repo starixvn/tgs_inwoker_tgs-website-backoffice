@@ -63,3 +63,8 @@ export const useDeleteBrandLogo = (id) => {
   let url = id ? `${API}/${id}` : ""
   return useDelete(url)
 }
+
+/*
+export const useBrandAgentProfitSharingType = (brandId) => {
+}
+*/

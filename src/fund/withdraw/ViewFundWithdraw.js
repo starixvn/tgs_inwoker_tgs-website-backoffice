@@ -169,10 +169,17 @@ export const FormBody = ({ brandId, record, readonly }) => {
           </Box>
 
           <NormalLabel>
-            <Trans zh="更新时间" en="Updated Time" />
+            <Trans zh="审核时间" en="Review Time" />
           </NormalLabel>
           <Box alignY="center">
-            <FormattedDateTime value={record?.updatedOn} placeholder="-" />
+            <FormattedDateTime value={record?.reviewedOn} placeholder="-" />
+          </Box>
+
+          <NormalLabel>
+            <Trans zh="已支付时间" en="Paid Time" />
+          </NormalLabel>
+          <Box alignY="center">
+            <FormattedDateTime value={record?.paidOn} placeholder="-" />
           </Box>
 
           <NormalLabel>

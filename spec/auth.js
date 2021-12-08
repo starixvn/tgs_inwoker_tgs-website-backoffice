@@ -43,6 +43,9 @@ const login = async ({
   let page = await context.newPage()
   await page.goto(`${host()}/login`, {
     waitUntil: "networkidle0"
+    /*
+    timeout: 0// -> disable timeout
+    */
   })
 
   let userNameInputSelector = `form input[name='username']`

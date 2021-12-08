@@ -1,7 +1,20 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, useModalState } from "bumbag"
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  useWatch
+} from "react-hook-form"
+import {
+  Heading,
+  Stack,
+  Box,
+  Button,
+  Set,
+  useModalState,
+  FieldStack
+} from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -23,7 +36,10 @@ import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
 import subDays from "date-fns/subDays"
-import { DateInputRange } from "../../date/DateTimeRangeInput"
+import {
+  DateInputRange,
+  DateInputRangeField
+} from "../../date/DateTimeRangeInput"
 import {
   GameRoundStatusLabel,
   GameRoundStatusSelect
@@ -34,7 +50,7 @@ import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { isDev } from "../../env"
-import { DateButtons } from "../../date/DateButtons"
+import isValid from "date-fns/isValid"
 
 export { Code }
 
@@ -72,6 +88,8 @@ const ReportContent = ({ brandId }) => {
     brandId,
     from: dateRange.start,
     to: dateRange.end,
+    closedFrom: undefined,
+    closedTo: undefined,
     username: "",
     roundId: "",
     externalRoundId: "",
@@ -120,6 +138,8 @@ const ReportContent = ({ brandId }) => {
         <SearchBar
           start={from}
           end={to}
+          closedFrom={state?.closedFrom}
+          closedTo={state?.closedTo}
           username={username}
           roundId={roundId}
           externalRoundId={state?.externalRoundId}
@@ -161,6 +181,8 @@ const ReportContent = ({ brandId }) => {
 const SearchBar = ({
   start,
   end,
+  closedFrom,
+  closedTo,
   username,
   roundId,
   externalRoundId,
@@ -177,6 +199,8 @@ const SearchBar = ({
     defaultValues: {
       start,
       end,
+      closedFrom,
+      closedTo,
       username,
       roundId,
       externalRoundId,
@@ -184,6 +208,7 @@ const SearchBar = ({
       gameProviderId
     }
   })
+  let { control, getValues, clearErrors } = formMethods
 
   const onSubmit = (data) => search?.(data)
 
@@ -201,36 +226,90 @@ const SearchBar = ({
     zh: "三方订单ID",
     en: "External ID"
   })
+
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-        <Set>
-          <DateInputRange
-            showDateDropdownMenu={isDev() ? true : false}
-            minDate={minDate}
-            maxRangeDays={maxRangeDays}
-            required
-          />
-          <InputField
-            name="username"
-            showEmptyFieldValueAddonAfter
-            placeholder={playerNamePlaceholder}
-            showEmptyFieldValueAddonAfter
-          />
-          <InputField
-            name="roundId"
-            showEmptyFieldValueAddonAfter
-            placeholder={roundIdPlaceholder}
-          />
-          <InputField
-            name="externalRoundId"
-            showEmptyFieldValueAddonAfter
-            placeholder={externalRoundIdPlaceholder}
-          />
-          <GameRoundStatusSelect name="status" />
-          <GameProviderSelect name="gameProviderId" />
-          <SearchButton isLoading={isLoading} disabled={isLoading} />
-        </Set>
+        <FieldStack orientation="vertical">
+          <Set orientation="horizontal">
+            <DateInputRangeField
+              label={<Trans zh="投注时间" en="Created On" />}
+              showDateDropdownMenu
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
+              startProps={{
+                name: "start"
+              }}
+              endProps={{
+                name: "end"
+              }}
+              validate={(createdOn) => {
+                let hasCreatedOn =
+                  isValid(createdOn.start) && isValid(createdOn.end)
+
+                let closedFrom = getValues("closedFrom")
+                let closedTo = getValues("closedTo")
+                let hasClosedOn = isValid(closedFrom) && isValid(closedTo)
+
+                let pass = hasCreatedOn || hasClosedOn
+                if (pass) {
+                  clearErrors(["closedFrom", "closedTo"])
+                }
+
+                return pass ? true : "one-of-date-range-required"
+              }}
+            />
+            <DateInputRangeField
+              label={<Trans zh="结算时间" en="Closed On" />}
+              showDateDropdownMenu
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
+              startProps={{
+                name: "closedFrom"
+              }}
+              endProps={{
+                name: "closedTo"
+              }}
+              validate={{
+                validate: (closedOn) => {
+                  let hasClosedOn =
+                    isValid(closedOn.start) && isValid(closedOn.end)
+
+                  let start = getValues("start")
+                  let end = getValues("end")
+                  let hasCreatedOn = isValid(start) && isValid(end)
+
+                  let pass = hasCreatedOn || hasClosedOn
+                  if (pass) {
+                    clearErrors(["start", "end"])
+                  }
+                  return pass ? true : "one-of-date-range-required"
+                }
+              }}
+            />
+          </Set>
+          <Set orientation="horizontal">
+            <InputField
+              name="username"
+              showEmptyFieldValueAddonAfter
+              placeholder={playerNamePlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
+            <InputField
+              name="roundId"
+              showEmptyFieldValueAddonAfter
+              placeholder={roundIdPlaceholder}
+            />
+            <InputField
+              name="externalRoundId"
+              showEmptyFieldValueAddonAfter
+              placeholder={externalRoundIdPlaceholder}
+            />
+            <GameRoundStatusSelect name="status" />
+            <GameProviderSelect name="gameProviderId" />
+            <SearchButton isLoading={isLoading} disabled={isLoading} />
+          </Set>
+        </FieldStack>
       </form>
     </FormProvider>
   )

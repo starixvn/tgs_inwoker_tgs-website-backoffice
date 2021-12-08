@@ -426,6 +426,7 @@ const EditBody = ({
             name="code"
             type={isAdd ? "input" : "hidden"}
             required={isAdd}
+            /*
             inputProps={
               isDev()
                 ? {
@@ -440,6 +441,7 @@ const EditBody = ({
                   }
                 : {}
             }
+             */
           />
           {!isAdd && <Text.Block>{getValues("code")}</Text.Block>}
         </Box>

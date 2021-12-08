@@ -1,6 +1,7 @@
 import fetcher from "./fetcher"
 import { globalApi, operatorApi } from "./env"
 
+//TODO: remove
 export const selectFirst = async ({ page }) => {
   await page.waitForSelector(
     `#page-merchant-bar select[name="brandId"] option[value*="-"]:not(:first-child)`,
@@ -20,6 +21,7 @@ export const selectFirst = async ({ page }) => {
   return option
 }
 
+//TODO: remove
 export const selectByCode = async ({ page, brandCode }) => {
   await page.waitForSelector(
     `#page-merchant-bar select[name="brandId"] option[value*="-"]:not(:first-child)`,

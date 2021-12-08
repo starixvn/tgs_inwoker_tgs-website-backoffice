@@ -557,9 +557,10 @@ const useColumns = ({
         disableSortBy: true
       }),
       dateTimeColumn({
-        accessor: "updatedOn",
-        Header: <Trans zh="更新时间" en="Update Time" />,
-        disableSortBy: true
+        accessor: "paidOn",
+        Header: <Trans zh="已支付时间" en="Paid Time" />,
+        disableSortBy: true,
+        placeholder: "-"
       }),
       textColumn({
         accessor: "status",

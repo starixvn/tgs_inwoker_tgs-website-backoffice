@@ -1,6 +1,6 @@
 import { chromium } from "playwright"
 import { expect } from "chai"
-import { StorageState } from "../auth"
+import { StorageState, PlatformCode } from "../auth"
 import { host, headless } from "../env"
 import { random } from "lodash"
 import numeral from "numeral"
@@ -9,7 +9,7 @@ import { lorem } from "faker"
 import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
-import platform from "../platform"
+import { selectPlatformByCode } from "../page/content"
 
 let browser
 let context
@@ -124,6 +124,6 @@ describe("Admin user", () => {
 
   const gotoPlayerBalanceAdjustmentPage = async () => {
     await goto({ page, value: "/playermanagement/balanceadjustment" })
-    await platform.selectFirst({ page })
+    await selectPlatformByCode(page, PlatformCode)
   }
 })

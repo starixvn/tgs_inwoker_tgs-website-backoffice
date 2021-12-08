@@ -89,3 +89,9 @@ export const usePlayerTransferWalletList = (playerCode) => {
 
   return useGet(url)
 }
+
+export const usePlayerMainWallet = (playerCode) => {
+  let url = playerCode ? `${API}/${playerCode}/mainwallet` : ""
+
+  return useGet(url)
+}

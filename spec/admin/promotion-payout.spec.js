@@ -43,6 +43,9 @@ describe("Admin user", function () {
 
     await page.goto(host(), {
       waitUntil: "networkidle0"
+      /*
+      timeout: 0 // -> disable timeout
+      */
     })
 
     platformToken = await platform.token({ brandCode })

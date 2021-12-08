@@ -56,6 +56,11 @@ import Select from "../../select/Select"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import { isDev } from "../../env"
 import Checkbox from "../../checkbox"
+import {
+  AgentProfitSharingTypeLabel,
+  AgentProfitSharingTypeSelect,
+  isAgentProfitSharingMultipleLayer
+} from "../../agent/AgentProfitSharingType"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -459,6 +464,12 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
   let isB2C = businessType === BusinessType.B2C
   let isB2B = businessType === BusinessType.B2B
 
+  let AgentDividendTypeFieldName = "agentDividendType"
+  let agentDividendType = useWatch({
+    control,
+    name: AgentDividendTypeFieldName
+  })
+
   let CheckDividendActiveCountFieldName = "checkDividendActiveCount"
   let checkDividendActiveCount = useWatch({
     control,
@@ -507,6 +518,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           <Input
             name="code"
             type={isAdd ? "input" : "hidden"}
+            /*
             inputProps={
               isDev()
                 ? {
@@ -521,6 +533,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
                   }
                 : {}
             }
+             */
           />
           {!isAdd && <Text.Block>{getValues("code")}</Text.Block>}
         </Box>
@@ -547,6 +560,21 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
         <Box alignY="center">
           {editable && <Input type="email" name="operationalEmail" required />}
           {readonly && <Text.Block>{record.operationalEmail}</Text.Block>}
+        </Box>
+
+        <NormalLabel>
+          <Trans zh="分紅模式" en="Profit Sharing Type" />
+        </NormalLabel>
+        <Box alignY="center">
+          {isAdd && (
+            <AgentProfitSharingTypeSelect
+              name={AgentDividendTypeFieldName}
+              required
+            />
+          )}
+          {!isAdd && (
+            <AgentProfitSharingTypeLabel value={record.agentDividendType} />
+          )}
         </Box>
 
         <NormalLabel>
@@ -599,11 +627,13 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
               disabled={readonly}
             />
             {isMonthly && <MonthlyDaySelect name="settlementDay" />}
-            <Checkbox
-              name={CheckDividendActiveCountFieldName}
-              label={checkDividendActiveCountLabel}
-              disabled={readonly}
-            />
+            {isAgentProfitSharingMultipleLayer(agentDividendType) && (
+              <Checkbox
+                name={CheckDividendActiveCountFieldName}
+                label={checkDividendActiveCountLabel}
+                disabled={readonly}
+              />
+            )}
           </Set>
         </Box>
 

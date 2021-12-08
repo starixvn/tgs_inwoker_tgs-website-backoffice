@@ -223,6 +223,12 @@ const GameProviderWithdrawalTrans = {
   en: "Game Withdrawal"
 }
 
+const UnsettledBetManual = "UnsettledBetManual"
+const UnsettledBetManualTrans = {
+  zh: "未结算单手动处理",
+  en: "Unsettled Bet(Manual)"
+}
+
 const CancelWithdrawal = "CancelWithdrawal"
 const CancelWithdrawalTrans = {
   zh: "取消提款",
@@ -280,6 +286,10 @@ const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
     {
       label: useTrans(GameProviderWithdrawalTrans),
       value: GameProviderWithdrawal
+    },
+    {
+      label: useTrans(UnsettledBetManualTrans),
+      value: UnsettledBetManual
     },
     {
       label: useTrans(GameProviderDepositTrans),
@@ -350,6 +360,8 @@ const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...GameProviderDepositTrans} />
     case GameProviderWithdrawal:
       return <Trans {...GameProviderWithdrawalTrans} />
+    case UnsettledBetManual:
+      return <Trans {...UnsettledBetManualTrans} />
     case CancelWithdrawal:
       return <Trans {...CancelWithdrawalTrans} />
     default:

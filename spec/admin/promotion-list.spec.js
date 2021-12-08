@@ -246,25 +246,31 @@ describe("Admin user", () => {
       page.waitForEvent("filechooser"),
       page.click(`${DialogSelector} #desktopBanner`)
     ])
-    await desktopFileChooser.setFiles("./spec/dummy.png")
-    await page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/fs/upload/promotion`) &&
-        response.status() === 200
-      )
-    })
+
+    await Promise.all([
+      desktopFileChooser.setFiles("./spec/dummy.png"),
+      page.waitForResponse((response) => {
+        return (
+          response.url().endsWith(`/api/fs/upload/promotion`) &&
+          response.status() === 200
+        )
+      })
+    ])
 
     const [mobileFileChooser] = await Promise.all([
       page.waitForEvent("filechooser"),
       page.click(`${DialogSelector} #mobileBanner`)
     ])
-    await mobileFileChooser.setFiles("./spec/dummy.png")
-    await page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/fs/upload/promotion`) &&
-        response.status() === 200
-      )
-    })
+
+    await Promise.all([
+      mobileFileChooser.setFiles("./spec/dummy.png"),
+      page.waitForResponse((response) => {
+        return (
+          response.url().endsWith(`/api/fs/upload/promotion`) &&
+          response.status() === 200
+        )
+      })
+    ])
 
     await page.fill(
       `${DialogSelector} input[name="percentage"]`,
