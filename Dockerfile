@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Copy build to caddy server
-FROM caddy:2.4.1-alpine
+FROM caddy:2.4.6-alpine
 
 # Debug Tool
 # RUN apk --no-cache add curl
