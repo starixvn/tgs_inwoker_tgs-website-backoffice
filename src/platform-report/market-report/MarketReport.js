@@ -146,6 +146,7 @@ const SearchBar = ({
             showDateDropdownMenu
             minDate={minDate}
             maxRangeDays={maxRangeDays}
+            fakeTimeLabel
             required
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />

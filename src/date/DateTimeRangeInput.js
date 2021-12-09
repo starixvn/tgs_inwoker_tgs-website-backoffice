@@ -26,13 +26,35 @@ import differenceInDays from "date-fns/differenceInDays"
 import { DateDropdownMenu } from "./DateDropdownMenu"
 import { mapObjIndexed } from "ramda"
 
-export const DateInputRange = ({ dateFormat = "yyyy/MM/dd", ...props }) => (
-  <DateTimeRangeInput
-    dateFormat={dateFormat}
-    showTimeInput={false}
-    {...props}
-  />
-)
+export const DateInputRange = ({
+  dateFormat = "yyyy/MM/dd",
+  fakeTimeLabel = false,
+  startProps = {},
+  endProps = {},
+  ...props
+}) => {
+  if (fakeTimeLabel) {
+    startProps = {
+      addonAfter: <Button isStatic>00:00</Button>,
+      ...startProps
+    }
+
+    endProps = {
+      addonAfter: <Button isStatic>23:59</Button>,
+      ...endProps
+    }
+  }
+
+  return (
+    <DateTimeRangeInput
+      dateFormat={dateFormat}
+      showTimeInput={false}
+      startProps={startProps}
+      endProps={endProps}
+      {...props}
+    />
+  )
+}
 
 export const DateInputRangeField = ({
   label,
@@ -170,6 +192,7 @@ export const DateTimeRangeInput = ({
               : startRules
           }
         />
+        {startProps?.addonAfter}
         <Button isStatic tabIndex="-1">
           -
         </Button>
@@ -203,6 +226,7 @@ export const DateTimeRangeInput = ({
               : endRules
           }
         />
+        {endProps?.addonAfter}
       </Group>
     </>
   )
