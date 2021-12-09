@@ -216,6 +216,7 @@ const SearchBar = ({
             showDateDropdownMenu
             minDate={minDate}
             maxRangeDays={maxRangeDays}
+            fakeTimeLabel
             required
           />
           <InputField

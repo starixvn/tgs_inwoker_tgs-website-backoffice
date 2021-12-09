@@ -189,6 +189,7 @@ const SearchBar = ({
             showDateDropdownMenu
             minDate={minDate}
             maxRangeDays={maxRangeDays}
+            fakeTimeLabel
             required
           />
           <LicenseeCurrencySelect name="currencyCode" licenseeId={licenseeId} />

@@ -237,6 +237,7 @@ const SearchBar = ({
               showDateDropdownMenu
               minDate={minDate}
               maxRangeDays={maxRangeDays}
+              fakeTimeLabel
               startProps={{
                 name: "start"
               }}
@@ -264,6 +265,7 @@ const SearchBar = ({
               showDateDropdownMenu
               minDate={minDate}
               maxRangeDays={maxRangeDays}
+              fakeTimeLabel
               startProps={{
                 name: "closedFrom"
               }}
