@@ -5,64 +5,66 @@ import Select, { SelectField } from "../../select/Select"
 
 export const Deposit = "Deposit"
 const DepositTrans = {
-    zh: "Deposit",
-    en: "Deposit"
+  zh: "Deposit",
+  en: "Deposit"
 }
 
 export const Withdrawal = "Withdrawal"
 const WithdrawalTrans = {
-    zh: "Withdrawal",
-    en: "Withdrawal"
+  zh: "Withdrawal",
+  en: "Withdrawal"
 }
 
+export const isDepositPlatformPayment = (value) => value === Deposit
+
+export const isWithdrawalPlatformPayment = (value) => value === Deposit
+
 export default {
-    Deposit,
-    Withdrawal
+  Deposit,
+  Withdrawal
 }
 
 export const BrandPaymentTransferTypeSelect = ({ placeholder, ...props }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "Transfer Type",
-        en: "Transfer Type"
-    })
-    placeholder = placeholder ?? defaultPlaceholder
+  let defaultPlaceholder = useTrans({
+    zh: "Transfer Type",
+    en: "Transfer Type"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
 
-    let options = [
-        {
-            label: useTrans(DepositTrans),
-            value: Deposit
-        },
-        {
-            label: useTrans(WithdrawalTrans),
-            value: Withdrawal
-        }
-    ]
+  let options = [
+    {
+      label: useTrans(DepositTrans),
+      value: Deposit
+    },
+    {
+      label: useTrans(WithdrawalTrans),
+      value: Withdrawal
+    }
+  ]
 
-    return <Select placeholder={placeholder} options={options} {...props} />
+  return <Select placeholder={placeholder} options={options} {...props} />
 }
 
 export const BrandPaymentTransferTypeSelectField = ({
-    placeholder,
-    ...props
+  placeholder,
+  ...props
 }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "Transfer Type",
-        en: "Transfer Type"
-    })
-    placeholder = placeholder ?? defaultPlaceholder
+  let defaultPlaceholder = useTrans({
+    zh: "Transfer Type",
+    en: "Transfer Type"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
 
-    let options = [
-        {
-            label: useTrans(DepositTrans),
-            value: Deposit
-        },
-        {
-            label: useTrans(WithdrawalTrans),
-            value: Withdrawal
-        }
-    ]
+  let options = [
+    {
+      label: useTrans(DepositTrans),
+      value: Deposit
+    },
+    {
+      label: useTrans(WithdrawalTrans),
+      value: Withdrawal
+    }
+  ]
 
-    return (
-        <SelectField placeholder={placeholder} options={options} {...props} />
-    )
+  return <SelectField placeholder={placeholder} options={options} {...props} />
 }

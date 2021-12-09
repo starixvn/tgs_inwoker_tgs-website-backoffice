@@ -137,6 +137,7 @@ const BodyContent = ({ brandId }) => {
           {isDepositTab && (
             <AddBrandPaymentButton
               id="add-payment-dialog-disclosure"
+              transferType={TransferType.Deposit}
               brandId={brandId}
               onSubmitted={mutate}
             />
