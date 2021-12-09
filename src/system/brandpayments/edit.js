@@ -75,6 +75,7 @@ import { parseJSON } from "../../text/json"
 import { head } from "lodash-es"
 import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { isDev } from "../../env"
+import { isDepositPlatformPayment } from "./BrandPaymentTransferType"
 
 export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -209,7 +210,12 @@ const EditDialog = ({
   )
 }
 
-export const AddBrandPaymentButton = ({ brandId, onSubmitted, ...props }) => {
+export const AddBrandPaymentButton = ({
+  brandId,
+  transferType,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -224,6 +230,7 @@ export const AddBrandPaymentButton = ({ brandId, onSubmitted, ...props }) => {
         <AddDialog
           id="add-payment-dialog"
           brandId={brandId}
+          transferType={transferType}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -280,7 +287,13 @@ const useManualPayment = () => {
 }
 
 const ManualCode = "Manual"
-const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
+const AddDialog = ({
+  brandId,
+  transferType,
+  onSubmitted,
+  dialog,
+  ...props
+}) => {
   let {
     isLoading: isLoadingPayment,
     manualPayment,
@@ -320,6 +333,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
     <FormDialog
       defaultValues={{
         paymentName: ManualCode,
+        transferType,
         paymentStatus: BrandPaymentStatus.Enabled,
         paymentMethodId:
           manualPaymentMethodList?.length == 1
@@ -392,6 +406,8 @@ const EditBody = ({
 }) => {
   let { watch, setValue, getValues, control } = useFormContext()
 
+  const transferType = getValues("transferType")
+  let isDeposit = isDepositPlatformPayment(transferType)
   const paymentName = getValues("paymentName")
   const TransferLimitToFieldName = "transferLimitTo"
   let transferLimitTo = useWatch({
@@ -549,19 +565,22 @@ const EditBody = ({
                 <>
                   {isManualPaymentCode && (
                     <>
-                      <Label required>
+                      <Label required={isDeposit}>
                         <Trans zh="帐号名称" en="Account Name" />
                       </Label>
-                      <Input name="extendedData.name" required />
+                      <Input name="extendedData.name" required={isDeposit} />
                     </>
                   )}
 
                   {isManualPaymentCode && (
                     <>
-                      <Label required>
+                      <Label required={isDeposit}>
                         <Trans zh="银行卡号" en="Bank Account" />
                       </Label>
-                      <Input name="extendedData.bankAccount" required />
+                      <Input
+                        name="extendedData.bankAccount"
+                        required={isDeposit}
+                      />
                     </>
                   )}
 

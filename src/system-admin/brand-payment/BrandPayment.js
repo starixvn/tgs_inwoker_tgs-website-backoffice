@@ -63,6 +63,7 @@ import { JsonEditor } from "../../text/editor/JsonEditor"
 import NumberRangeInputGroup from "../../number/RangeInput"
 import { parseJSON, stringifyJSON } from "../../text/json"
 import { Update } from "./menu"
+import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 
 export const EditBrandPaymentDisclosure = ({ record, onSubmitted }) => {
   let dialog = useModalState()
@@ -216,6 +217,7 @@ const AddDepositDialog = ({ title, brandId, dialog, onSubmitted }) => {
   return (
     <FormDialog
       defaultValues={{
+        transferType: BrandPaymentTransferType.Deposit,
         paymentStatus: BrandPaymentStatus.Enabled,
         playerListCondition: PlayerListCondition.MatchOne,
         allPlayers: true,
@@ -262,6 +264,7 @@ const AddWithdrawDialog = ({ title, brandId, dialog, onSubmitted }) => {
   return (
     <FormDialog
       defaultValues={{
+        transferType: BrandPaymentTransferType.Withdrawal,
         paymentStatus: BrandPaymentStatus.Enabled,
         playerListCondition: PlayerListCondition.MatchOne,
         allPlayers: true,
