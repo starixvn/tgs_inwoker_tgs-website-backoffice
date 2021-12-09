@@ -52,13 +52,20 @@ export const TodayDropdownMenuItem = ({ onClick, ...props }) => {
 }
 
 const LastWeek = "LastWeek"
+const WeekStartsOn = {
+  Monday: 1
+}
 export const LastWeekDropdownMenuItem = ({ onClick, ...props }) => {
   return (
     <DropdownMenu.Item
       onClick={() => {
         let lastWeekDay = subWeeks(new Date(), 1)
-        let start = startOfWeek(lastWeekDay)
-        let end = endOfWeek(lastWeekDay)
+        let start = startOfWeek(lastWeekDay, {
+          weekStartsOn: WeekStartsOn.Monday
+        })
+        let end = endOfWeek(lastWeekDay, {
+          weekStartsOn: WeekStartsOn.Monday
+        })
         onClick?.({
           type: LastWeek,
           start,
@@ -78,8 +85,12 @@ export const ThisWeekDropdownMenuItem = ({ onClick, ...props }) => {
     <DropdownMenu.Item
       onClick={() => {
         let now = new Date()
-        let start = startOfWeek(now)
-        let end = endOfWeek(now)
+        let start = startOfWeek(now, {
+          weekStartsOn: WeekStartsOn.Monday
+        })
+        let end = endOfWeek(now, {
+          weekStartsOn: WeekStartsOn.Monday
+        })
         onClick?.({
           type: ThisWeek,
           start,
