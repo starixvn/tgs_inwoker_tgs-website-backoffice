@@ -35,12 +35,12 @@ export const DateInputRange = ({
 }) => {
   if (fakeTimeLabel) {
     startProps = {
-      addonAfter: <Button isStatic>00:00</Button>,
+      addonAfter: <Button isStatic>00:00:00</Button>,
       ...startProps
     }
 
     endProps = {
-      addonAfter: <Button isStatic>23:59</Button>,
+      addonAfter: <Button isStatic>23:59:59</Button>,
       ...endProps
     }
   }
