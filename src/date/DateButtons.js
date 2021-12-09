@@ -54,13 +54,20 @@ export const TodayButton = ({ onClick, ...props }) => {
 }
 
 const LastWeek = "LastWeek"
+const WeekStartsOn = {
+  Monday: 1
+}
 export const LastWeekButton = ({ onClick, ...props }) => {
   return (
     <Button
       onClick={() => {
         let lastWeekDay = subWeeks(new Date(), 1)
-        let start = startOfWeek(lastWeekDay)
-        let end = endOfWeek(lastWeekDay)
+        let start = startOfWeek(lastWeekDay, {
+          weekStartsOn: WeekStartsOn.Monday
+        })
+        let end = endOfWeek(lastWeekDay, {
+          weekStartsOn: WeekStartsOn.Monday
+        })
         onClick?.({
           type: LastWeek,
           start,
@@ -80,8 +87,12 @@ export const ThisWeekButton = ({ onClick, ...props }) => {
     <Button
       onClick={() => {
         let now = new Date()
-        let start = startOfWeek(now)
-        let end = endOfWeek(now)
+        let start = startOfWeek(now, {
+          weekStartsOn: WeekStartsOn.Monday
+        })
+        let end = endOfWeek(now, {
+          weekStartsOn: WeekStartsOn.Monday
+        })
         onClick?.({
           type: ThisWeek,
           start,
