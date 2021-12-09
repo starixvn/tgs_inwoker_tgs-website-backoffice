@@ -7,13 +7,13 @@ import Select from "../select/Select"
 const OneLayer = "OneLayer"
 const OneLayerTrans = {
   zh: "單一分紅制",
-  en: "Dividend"
+  en: "Sharing"
 }
 
 const MultipleLayer = "MultipleLayer"
 const MultipleLayerTrans = {
   zh: "階梯式分紅制",
-  en: "Tier-based Dividend"
+  en: "Tier based profit rebate"
 }
 
 export const AgentProfitSharingTypeSelect = ({ placeholder, ...props }) => {
