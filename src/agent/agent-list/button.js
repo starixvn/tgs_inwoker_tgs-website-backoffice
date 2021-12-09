@@ -761,6 +761,7 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         <AgentOperationListTab {...tab} />
         <AgentTeamInfoTab {...tab} />
         <AgentBalanceChangeTab {...tab} />
+        <AgentDomainListTab {...tab} />
       </TabList>
 
       <AgentInfoPanel
@@ -777,6 +778,12 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
       <AgentBalanceChangePanel
         brandId={brandId}
         agentId={record?.id}
+        {...tab}
+      />
+      <AgentDomainListPanel
+        brandId={brandId}
+        agentId={record?.id}
+        readOnly
         {...tab}
       />
     </Tabs>
