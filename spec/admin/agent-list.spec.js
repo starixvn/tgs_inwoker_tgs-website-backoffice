@@ -15,6 +15,7 @@ let browser
 let context
 let page
 
+//TODO: add a platform use
 console.warn("TODO: add one layer agents")
 console.warn("TODO: add multiple layer agents")
 describe.skip("Admin user", () => {
