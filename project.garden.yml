@@ -18,18 +18,49 @@ services:
     dependencies:
       - backoffice-api
     env:
-      # MODE: "production"
+      MODE: "production"
       LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
       HEADER_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS-w.png"
       # LOGIN_TITLE: "PG"
       # LOGIN_SUB_TITLE: "ADMIN"
       # HEADER_TITLE: "PG ADMIN"
       # HEADER_TITLE_COLOR: "#FFF"
-      MODE: "development"
+      # MODE: "development"
       # LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
       # HEADER_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
     ingresses:
       - hostname: backoffice.localhost
+        path: /
+        port: http
+    ports:
+      - name: http
+        containerPort: 80
+    volumes:
+      - name: data
+        containerPath: /data
+
+---
+kind: Module
+type: container
+name: dev-backoffice-site
+dockerfile: Dockerfile
+exclude:
+  - garden
+  - spec
+services:
+  - name: dev-backoffice-site
+    dependencies:
+      - backoffice-api
+    env:
+      MODE: "development"
+      LOGIN_BUTTON_COLOR: "rgb(33, 33, 33)"
+      LOGIN_BUTTON_BACKGROUND: "rgb(247, 247, 250)"
+      HEADER_BACKGROUND: "#f7f7fa"
+      HEADER_BACKGROUND_COLOR: "#212121"
+      LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
+      HEADER_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
+    ingresses:
+      - hostname: dev.backoffice.localhost
         path: /
         port: http
     ports:

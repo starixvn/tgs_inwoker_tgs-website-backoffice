@@ -28,6 +28,9 @@ services:
       - hostname: backoffice.localhost
         path: /api
         port: http
+      - hostname: dev.backoffice.localhost
+        path: /api
+        port: http
     ports:
       - name: http
         containerPort: 80
