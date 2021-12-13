@@ -1,6 +1,6 @@
 import fetcher from "./fetcher"
 import faker from "faker"
-import { globalApi, operatorApi } from "./env"
+import { operatorApi } from "./env"
 import FormData from "form-data"
 import { fileURLToPath } from "url"
 import { createReadStream } from "fs-extra"
@@ -9,6 +9,8 @@ export const DefaultPassword = "TgsP@ssw0rd"
 
 export const DefaultCurrencyCode = "CNY"
 
+//Note. move -> client/operatorApi
+/*
 export const register = async (
   token,
   {
@@ -82,6 +84,7 @@ export const login = async (
 
   return result
 }
+*/
 
 export const withdrawPaymentList = async (platformToken, token) => {
   let url = `${operatorApi()}/withdraw`

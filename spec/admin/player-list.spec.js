@@ -11,15 +11,8 @@ import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
 import platform from "../platform"
 import { selectPlatformByCode } from "../page/content"
-import {
-  register,
-  login,
-  manualDeposit,
-  applyManualDepositForm,
-  wallet,
-  addManualBankCard,
-  applyManualWithdrawForm
-} from "../player"
+import globalApi from "../../client/globalApi"
+import operatorApi from "../../client/operatorApi"
 
 let browser
 let context
@@ -41,12 +34,8 @@ describe("Admin user", () => {
       waitUntil: "networkidle0"
     })
 
-    platformToken = await platform.token({ brandCode: PlatformCode })
-    player = await register(platformToken)
-    player = {
-      ...player,
-      ...(await login(platformToken, player))
-    }
+    platformToken = await globalApi.platformToken(PlatformCode)
+    player = await operatorApi.player.createAndLogin(platformToken)
 
     await gotoPlayerListPage()
   })
