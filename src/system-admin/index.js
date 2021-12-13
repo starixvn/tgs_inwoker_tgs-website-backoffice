@@ -6,23 +6,25 @@ import { CodeContentPair as CurrencyPair } from "./currency"
 import { CodeContentPair as BetLimitPair } from "./betlimit"
 import { CodeContentPair as SettingsPair } from "./setting"
 import { CodeContentPair as GameRoundPair } from "./game-round"
+import { CodeContentPair as PlatformGameProviderPair } from "./platform-game-provider"
 import { Switch } from "../content"
 import { Code, DefaultCodePath, Menu } from "./menu"
 
 export { Code } from "./menu"
 
 const pairs = () => [
-    GameProviderPair,
-    BrandPaymentPair,
-    LanguagePair,
-    CurrencyPair,
-    BetLimitPair,
-    SettingsPair,
-    GameRoundPair
+  GameProviderPair,
+  BrandPaymentPair,
+  LanguagePair,
+  CurrencyPair,
+  BetLimitPair,
+  SettingsPair,
+  GameRoundPair,
+  PlatformGameProviderPair
 ]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => (
-    <Switch path={path} pairs={pairs()} />
+  <Switch path={path} pairs={pairs()} />
 )
 
 export const codeMenuContentPair = [Code, [Menu, Content]]

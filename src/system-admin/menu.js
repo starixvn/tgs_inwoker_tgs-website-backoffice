@@ -30,6 +30,10 @@ import {
   Code as GameRoundCode,
   codeLabelPair as gameRoundPair
 } from "./game-round/menu"
+import {
+  Code as PlatformGameProviderCode,
+  codeLabelPair as platformGameProviderPair
+} from "./platform-game-provider/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faCogs } from "@fortawesome/free-solid-svg-icons"
 
@@ -131,6 +135,14 @@ const labelOf = ({ locale, code }) => {
         },
         locale
       )
+    case PlatformGameProviderCode:
+      return getTrans(
+        {
+          zh: "平台 - 游戏商",
+          en: "Platform - Game Provider"
+        },
+        locale
+      )
     default:
       return ""
   }
@@ -150,7 +162,8 @@ export const codeLabelPair = [
         currencyPair,
         betLimitPair,
         settingsPair,
-        gameRoundPair
+        gameRoundPair,
+        platformGameProviderPair
       ]
     })
 ]
