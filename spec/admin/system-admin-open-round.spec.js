@@ -17,19 +17,11 @@ import {
 import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
-import { selectByValue, selectRandomOption } from "../page/select"
-import platform from "../platform"
+import { selectByValue } from "../page/select"
 import { selectPlatformByCode } from "../page/content"
-import {
-  register,
-  login,
-  manualDeposit,
-  applyManualDepositForm,
-  wallet,
-  addManualBankCard,
-  applyManualWithdrawForm
-} from "../player"
 import { placeBet } from "../sbo-game-provider"
+import globalApi from "../../client/globalApi"
+import operatorApi from "../../client/operatorApi"
 
 let browser
 let context
@@ -51,13 +43,8 @@ describe("Admin user", function () {
       waitUntil: "networkidle0"
     })
 
-    platformToken = await platform.token({ brandCode })
-    player = await register(platformToken)
-
-    player = {
-      ...player,
-      ...(await login(platformToken, player))
-    }
+    platformToken = await globalApi.platformToken(brandCode)
+    player = await operatorApi.player.createAndLogin(platformToken)
 
     let playerCode = await getPlayerCode(player.username)
     player.code = playerCode

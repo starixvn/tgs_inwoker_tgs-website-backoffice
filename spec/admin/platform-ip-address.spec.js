@@ -10,7 +10,8 @@ import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
 import platform from "../platform"
-import { register, login } from "../player"
+import globalApi from "../../client/globalApi"
+import operatorApi from "../../client/operatorApi"
 
 let browser
 let context
@@ -33,7 +34,7 @@ describe("Admin user", () => {
       waitUntil: "networkidle0"
     })
 
-    platformToken = await platform.token({ brandCode })
+    platformToken = await globalApi.platformToken(brandCode)
 
     players = await createPlayers(platformToken)
     await gotoPlatformIpAddressPage()
@@ -123,10 +124,10 @@ describe("Admin user", () => {
       return list
     }
 
-    let player = await register(platformToken)
+    let player = await operatorApi.player.create(platformToken)
     player = {
       ...player,
-      ...(await login(platformToken, player))
+      ...(await operatorApi.player.login(platformToken, player))
     }
     return createPlayers(platformToken, size - 1, [...list, player])
   }
