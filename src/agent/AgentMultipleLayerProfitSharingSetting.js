@@ -246,7 +246,7 @@ const AgentMultipleLayerProfitSharingSettingDialog = ({
         footer={
           !editable && <CloseButtonFooter dialog={dialog} alignX="right" />
         }
-        minWidth="50vw"
+        minWidth="60vw"
       >
         <AgentMultipleLayerProfitSharingSettingFormBody
           maxLevelSize={maxLevelSize}
@@ -351,6 +351,8 @@ const DefaultMinSetting = {
   dividendPercentage: 0
 }
 
+const MaxProfitSharingPercentage = 100
+
 const SettingRow = ({
   name,
   field,
@@ -373,6 +375,7 @@ const SettingRow = ({
 
   let editable = !readOnly
   let disabled = readOnly
+
   return (
     <>
       <Table.Row>
@@ -465,9 +468,9 @@ const SettingRow = ({
             )}
             max={Math.min(
               ...[
-                MaxNumber,
-                next?.netProfit,
-                parentAgentSetting?.netProfit
+                MaxProfitSharingPercentage,
+                next?.dividendPercentage,
+                parentAgentSetting?.dividendPercentage
               ].filter(Number.isFinite)
             )}
             required

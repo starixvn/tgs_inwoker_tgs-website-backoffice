@@ -68,18 +68,18 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
       {!isLoading && (
         <>
           {!hasLiveChat && (
-            <Disclosure palette="primary" {...addDialog} {...props}>
+            <Disclosure {...addDialog} {...props}>
               <Trans zh="三方即時客服廠商" en="3rd Party Live Chat Provider" />
             </Disclosure>
           )}
           {hasLiveChat && !editable && (
-            <Disclosure palette="primary" {...updateDialog} {...props}>
+            <Disclosure {...updateDialog} {...props}>
               <Trans zh="三方即時客服廠商" en="3rd Party Live Chat Provider" />
             </Disclosure>
           )}
           {hasLiveChat && editable && (
             <Group>
-              <Disclosure palette="primary" {...updateDialog} {...props}>
+              <Disclosure {...updateDialog} {...props}>
                 <Trans
                   zh="三方即時客服廠商"
                   en="3rd Party Live Chat Provider"

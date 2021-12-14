@@ -38,7 +38,7 @@ export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
 
   return (
     <>
-      <Disclosure palette="primary" {...dialog} {...props}>
+      <Disclosure {...dialog} {...props}>
         <Trans zh="一般通訊軟體" en="Instant Messaging" />
       </Disclosure>
       {dialog.visible && (
