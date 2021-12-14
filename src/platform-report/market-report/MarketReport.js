@@ -215,7 +215,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Turnover" />,
+        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
