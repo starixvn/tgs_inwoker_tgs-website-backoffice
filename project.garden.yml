@@ -38,16 +38,6 @@ services:
     volumes:
       - name: data
         containerPath: /data
-
----
-kind: Module
-type: container
-name: dev-backoffice-site
-dockerfile: Dockerfile
-exclude:
-  - garden
-  - spec
-services:
   - name: dev-backoffice-site
     dependencies:
       - backoffice-api
