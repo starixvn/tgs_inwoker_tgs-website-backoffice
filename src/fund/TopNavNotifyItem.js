@@ -45,7 +45,13 @@ export const TopNavNotifyItem = ({
   let history = useHistory()
   let { pathname } = useLocation()
 
-  let { data, isLoading, error, mutate, deleteCache } = useFetch(brandId, {
+  let {
+    data: total,
+    isLoading,
+    error,
+    mutate,
+    deleteCache
+  } = useFetch(brandId, {
     refreshInterval: 15 * SecondInMilliseconds
   })
 
@@ -66,10 +72,22 @@ export const TopNavNotifyItem = ({
   }, [updateFetchEventName])
 
   useEffect(() => {
-    if (Number.isFinite(data)) {
-      setUnprocessed(data)
+    if (Number.isFinite(total)) {
+      if (total > unprocessed) {
+        play(audio, {
+          onPlay: () => {
+            if (props.id) {
+              let animationDelay = SecondInMilliseconds * 0.01
+              setTimeout(() => {
+                bellAnime(props.id)
+              }, animationDelay)
+            }
+          }
+        })
+      }
+      setUnprocessed(total)
     }
-  }, [JSON.stringify(data)])
+  }, [total])
 
   return (
     unprocessed > 0 && (

@@ -33,6 +33,7 @@ let page
 let platformToken
 let player
 
+console.warn("TODO: test play audio?")
 describe("Platform user", function () {
   const SecondInMilliseconds = 1000
   this.timeout(40 * SecondInMilliseconds)
@@ -81,7 +82,7 @@ describe("Platform user", function () {
 
     let AlarmSelector = `#fund-deposit-notify`
     await page.waitForSelector(AlarmSelector, {
-      timeout: 16 * SecondInMilliseconds
+      timeout: 20 * SecondInMilliseconds
     })
     let unprocessedString = await page.$eval(
       AlarmSelector,
