@@ -17,10 +17,16 @@ import { isDev } from "../../env"
 import { AgentMultipleLayerProfitSharingSettingFormBody } from "../../agent/AgentMultipleLayerProfitSharingSetting"
 import Disclosure from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
-import { useUpdatePlatformAgentDividendCondition } from "./client"
+import {
+  usePlatformAgentDividendCondition,
+  useUpdatePlatformAgentDividendCondition
+} from "./client"
 import { useBrand } from "../../merchant/platforms/client"
 import { isAgentProfitSharingMultipleLayer } from "../../agent/AgentProfitSharingType"
 import { Update } from "./menu"
+import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import AlertDialog from "../../dialog/Alert"
+import clone from "clone-deep"
 
 export { Code }
 
@@ -101,7 +107,7 @@ const PlatformProfitSharingSettingDialogDisclosure = ({
         <Trans zh="阶梯式分红设定" en="Tier-based Profit Sharing Setting" />
       </Disclosure>
       {dialog.visible && (
-        <MultipleLayerProfitSharingSettingDialog
+        <PlatformMultipleLayerProfitSharingSettingDialog
           brandId={brandId}
           dialog={dialog}
         />
@@ -110,9 +116,40 @@ const PlatformProfitSharingSettingDialogDisclosure = ({
   )
 }
 
-const MultipleLayerProfitSharingSettingDialog = ({
+const PlatformMultipleLayerProfitSharingSettingDialog = ({
   brandId,
   dialog,
+  ...props
+}) => {
+  let { isLoading, data, error, mutate, deleteCache } =
+    usePlatformAgentDividendCondition(brandId)
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.close} />
+  }
+
+  return (
+    <ProfitSharingSettingFormDialog
+      brandId={brandId}
+      record={data?.items}
+      onSubmitted={() => {
+        deleteCache()
+        mutate(null, false)
+      }}
+      dialog={dialog}
+      {...props}
+    />
+  )
+}
+
+const ProfitSharingSettingFormDialog = ({
+  brandId,
+  record = [],
+  dialog,
+  onSubmitted,
   ...props
 }) => {
   //TODO: loading existing setting?
@@ -141,9 +178,10 @@ const MultipleLayerProfitSharingSettingDialog = ({
     <FormDialog
       defaultValues={{
         brandId,
-        brandAgentDividendConditions: [] //TODO: need to load current setting?
+        brandAgentDividendConditions: clone(record)
       }}
       onSubmit={onSubmit}
+      onSubmitted={onSubmitted}
       isLoading={isLoading}
       result={result}
       error={error}

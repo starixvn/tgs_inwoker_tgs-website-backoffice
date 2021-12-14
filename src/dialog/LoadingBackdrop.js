@@ -23,7 +23,7 @@ import {
 
 const BumbagZIndex = 19900410
 
-export default ({ ...props }) => {
+const LoadingBackdrop = ({ ...props }) => {
   let zIndexString = `${BumbagZIndex + 100}`
   return (
     <Modal.Backdrop
@@ -40,3 +40,6 @@ export default ({ ...props }) => {
     </Modal.Backdrop>
   )
 }
+
+
+export default LoadingBackdrop

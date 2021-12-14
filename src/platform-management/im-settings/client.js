@@ -54,6 +54,11 @@ export const useDeletePlatformLiveChat = (brandId) => {
   return useDelete(url)
 }
 
+export const usePlatformAgentDividendCondition = (brandId) => {
+  let url = brandId ? `/api/BrandAgentDividendCondition/${brandId}` : ""
+  return useGet(url)
+}
+
 export const useUpdatePlatformAgentDividendCondition = (data) => {
   let url = data?.brandId ? `/api/BrandAgentDividendCondition` : ""
   return usePutData(url, data)
