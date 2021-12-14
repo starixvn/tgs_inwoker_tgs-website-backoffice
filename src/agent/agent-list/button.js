@@ -9,7 +9,8 @@ import {
   Heading,
   Button,
   Flex,
-  Text
+  Text,
+  Spinner
 } from "bumbag"
 import { View as ViewMenu, Update as UpdateMenu } from "./menu"
 import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
@@ -61,7 +62,7 @@ import AgentType, {
 } from "../AgentType"
 import Textarea from "../../textarea"
 import AgentUpdateType from "./AgentUpdateType"
-import { AgentDividendPercentageInputField } from "../AgentDividendPercentage"
+import { AgentOneLayerDividendPercentageInputField } from "../AgentOneLayerDividendPercentage"
 import {
   AgentLiveDealerRebatePercentageInputField,
   AgentLiveDealerRebateText
@@ -93,10 +94,20 @@ import {
 } from "./AgentBalanceChange"
 import { isAgentConfigRequired } from "../AgentConfigStatus"
 import { isDev } from "../../env"
-import { AgentProfitSharingSettingDialogDisclosure } from "../AgentProfitSharingSettingDialog"
+import { AgentMultipleLayerProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { AgentDomainListTab, AgentDomainListPanel } from "./AgentDomainList"
+import {
+  isAgentProfitSharingOneLayer,
+  isAgentProfitSharingMultipleLayer
+} from "../AgentProfitSharingType"
+import { useBrand } from "../../merchant/platforms/client"
 
-export const AddAgentButton = ({ brandId, onSubmitted, ...props }) => {
+export const AddAgentButton = ({
+  brandId,
+  agentProfitSharingType,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -110,6 +121,7 @@ export const AddAgentButton = ({ brandId, onSubmitted, ...props }) => {
       {dialog.visible && (
         <AddDialog
           brandId={brandId}
+          agentProfitSharingType={agentProfitSharingType}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -159,14 +171,14 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
       minWidth="60vw"
       placement="top"
     >
-      <FormBody />
+      <FormBody isAdd />
     </FormDialog>
   )
 }
 
 const BrandIdField = "brandId"
 const ParentUsernameFieldName = "parentUsername"
-const FormBody = ({}) => {
+const FormBody = ({ isAdd }) => {
   let { control, getValues } = useFormContext()
 
   const LevelTypeFieldName = "levelType"
@@ -239,7 +251,7 @@ const FormBody = ({}) => {
             </>
           )}
 
-          {isCash && <ProfitSharingBox />}
+          {isCash && <ProfitSharingBox isAdd={isAdd} />}
 
           {/* {isCredit && (
             <>
@@ -319,7 +331,12 @@ const FormBody = ({}) => {
   )
 }
 
-const ProfitSharingBox = ({}) => {
+const ProfitSharingBox = ({ isAdd = false }) => {
+  let label = (
+    <NormalLabel required>
+      <Trans zh="代理分红" en="Profit Sharing" />
+    </NormalLabel>
+  )
   let { control, getValues } = useFormContext()
 
   let parentUsername = useWatch({
@@ -328,19 +345,51 @@ const ProfitSharingBox = ({}) => {
   })
 
   let brandId = getValues(BrandIdField)
-  return (
-    <>
-      <NormalLabel required>
-        <Trans zh="代理分红" en="Profit Sharing" />
-      </NormalLabel>
-      {
+  let { isLoading, data: brand, error } = useBrand(brandId)
+  if (isLoading) {
+    return null
+  }
+
+  //TODO: need to handle brandError?
+  /*
+  if (brandError) {
+    return (
+      <>
+        {label}
         <Box>
-          <AgentProfitSharingSettingDialogDisclosure
+          <AlertDialog />
+        </Box>
+      </>
+    )
+  }
+  */
+
+  let oneLayer = isAgentProfitSharingOneLayer(brand?.agentDividendType)
+  if (oneLayer) {
+    return (
+      <>
+        {label}
+        <Box alignY="center">
+          <AgentOneLayerDividendPercentageInputField
             brandId={brandId}
             parentUsername={parentUsername}
           />
         </Box>
-      }
+      </>
+    )
+  }
+
+  //Note. when add agent, MultipleLayer use template setting directly
+  if (isAdd) {
+    return null
+  }
+
+  return (
+    <>
+      {label}
+      <Box>
+        <AgentMultipleLayerProfitSharingSettingDialogDisclosure />
+      </Box>
     </>
   )
 }
@@ -457,7 +506,12 @@ const ConfigFormBody = ({ record }) => {
   )
 }
 
-export const ViewButton = ({ record, brandId, ...props }) => {
+export const ViewButton = ({
+  record,
+  brandId,
+  agentProfitSharingType,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([ViewMenu])
@@ -472,6 +526,7 @@ export const ViewButton = ({ record, brandId, ...props }) => {
         <TabsDialog
           record={record}
           brandId={brandId}
+          agentProfitSharingType={agentProfitSharingType}
           readonly
           dialog={dialog}
         />
@@ -480,7 +535,13 @@ export const ViewButton = ({ record, brandId, ...props }) => {
   )
 }
 
-export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
+export const EditButton = ({
+  brandId,
+  agentProfitSharingType,
+  record,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -494,6 +555,7 @@ export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
       {dialog.visible && (
         <TabsDialog
           brandId={brandId}
+          agentProfitSharingType={agentProfitSharingType}
           record={record}
           onSubmitted={onSubmitted}
           dialog={dialog}
@@ -611,6 +673,7 @@ const ConfigDialog = ({ brandId, agentId, onSubmitted, dialog }) => {
 const TabsDialog = ({
   record,
   brandId,
+  agentProfitSharingType,
   readonly = false,
   dialog,
   ...props
@@ -667,6 +730,7 @@ const TabsDialog = ({
         <ViewTabs
           agentId={agentId}
           brandId={brandId}
+          agentProfitSharingType={agentProfitSharingType}
           record={clone(data)}
           tab={tab}
         />
@@ -675,6 +739,7 @@ const TabsDialog = ({
         <EditTabs
           agentId={agentId}
           brandId={brandId}
+          agentProfitSharingType={agentProfitSharingType}
           record={clone(data)}
           tab={tab}
           onSubmitted={onSubmitted}
@@ -686,7 +751,7 @@ const TabsDialog = ({
   )
 }
 
-const ViewTabs = ({ brandId, record, tab }) => {
+const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -696,9 +761,16 @@ const ViewTabs = ({ brandId, record, tab }) => {
         <AgentOperationListTab {...tab} />
         <AgentTeamInfoTab {...tab} />
         <AgentBalanceChangeTab {...tab} />
+        <AgentDomainListTab {...tab} />
       </TabList>
 
-      <AgentInfoPanel brandId={brandId} record={record} readonly {...tab} />
+      <AgentInfoPanel
+        brandId={brandId}
+        agentProfitSharingType={agentProfitSharingType}
+        record={record}
+        readonly
+        {...tab}
+      />
       <AgentContactInfoPanel record={record} readonly {...tab} />
       <AgentBankInfoPanel record={record} readonly {...tab} />
       <AgentOperationListPanel agentId={record?.id} {...tab} />
@@ -708,12 +780,19 @@ const ViewTabs = ({ brandId, record, tab }) => {
         agentId={record?.id}
         {...tab}
       />
+      <AgentDomainListPanel
+        brandId={brandId}
+        agentId={record?.id}
+        readOnly
+        {...tab}
+      />
     </Tabs>
   )
 }
 
 const EditTabs = ({
   brandId,
+  agentProfitSharingType,
   agentId,
   record,
   tab,
@@ -733,6 +812,7 @@ const EditTabs = ({
       <AgentInfoPanel
         record={record}
         brandId={brandId}
+        agentProfitSharingType={agentProfitSharingType}
         agentId={agentId}
         onSubmitted={onSubmitted}
         onClickClose={onClickClose}

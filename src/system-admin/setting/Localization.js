@@ -58,6 +58,25 @@ export const LocalizationDropdownMenu = () => {
                 <Trans zh="上传 OP-API" en="Upload OP-API" />
               </DropdownMenu.Item>
             )}
+            <DropdownMenu.Item
+              id="download-agent-api-localization"
+              use="a"
+              href={`/api/localization/export/AGENT-API`}
+              download={`AGENT-API-localization.xlsx`}
+            >
+              <Trans zh="汇出 AGENT-API" en="Export AGENT-API" />
+            </DropdownMenu.Item>
+            {editable && (
+              <DropdownMenu.Item
+                id="upload-AGENT-API-dialog-disclosure"
+                onClick={() => {
+                  setSystemCode("AGENT-API")
+                  dialog.show()
+                }}
+              >
+                <Trans zh="上传 AGENT-API" en="Upload AGENT-API" />
+              </DropdownMenu.Item>
+            )}
           </>
         }
       >

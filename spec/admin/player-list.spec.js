@@ -10,16 +10,9 @@ import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
 import platform from "../platform"
-import { selectPlatformByCode, selectRandomPlatform } from "../platform/index"
-import {
-  register,
-  login,
-  manualDeposit,
-  applyManualDepositForm,
-  wallet,
-  addManualBankCard,
-  applyManualWithdrawForm
-} from "../player"
+import { selectPlatformByCode } from "../page/content"
+import globalApi from "../../client/globalApi"
+import operatorApi from "../../client/operatorApi"
 
 let browser
 let context
@@ -41,12 +34,8 @@ describe("Admin user", () => {
       waitUntil: "networkidle0"
     })
 
-    platformToken = await platform.token({ brandCode: PlatformCode })
-    player = await register(platformToken)
-    player = {
-      ...player,
-      ...(await login(platformToken, player))
-    }
+    platformToken = await globalApi.platformToken(PlatformCode)
+    player = await operatorApi.player.createAndLogin(platformToken)
 
     await gotoPlayerListPage()
   })
@@ -61,15 +50,16 @@ describe("Admin user", () => {
 
   it("should able to search, view and edit player", async () => {
     await page.fill(`input[name="username"]`, player.username)
-    
-    await Promise.all(
-      [
-        page.waitForResponse((response) => {
-          return response.url().includes(`username=${player.username}`) && response.status() === 200
-        }),
-        page.click(`button[type="submit"]`)
-      ]
-    )
+
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`username=${player.username}`) &&
+          response.status() === 200
+        )
+      }),
+      page.click(`button[type="submit"]`)
+    ])
 
     let UsernameSelector = `[data-column-id="username"]`
     let username = await page.textContent(UsernameSelector)

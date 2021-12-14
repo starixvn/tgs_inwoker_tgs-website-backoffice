@@ -67,7 +67,7 @@ export const Body = () => {
 
 const ReportContent = ({ brandId }) => {
   let dateRange = today()
-  let QueryMaxRangeDays = 14
+  let QueryMaxRangeDays = 31
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
@@ -174,9 +174,10 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
-            showDateDropdownMenu={isDev() ? true : false}
+            showDateDropdownMenu
             minDate={minDate}
             maxRangeDays={maxRangeDays}
+            fakeTimeLabel
             required
           />
           <InputField

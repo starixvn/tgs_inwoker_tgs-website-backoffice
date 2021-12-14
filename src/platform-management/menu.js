@@ -103,8 +103,8 @@ const labelOf = ({ locale, code }) => {
     case IMSettingsCode:
       return getTrans(
         {
-          zh: "客服管理",
-          en: " Customer Service Management"
+          zh: "营运设置",
+          en: "Operation Settings"
         },
         locale
       )

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-kickplayer-server
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/game-kickplayer-server:202111230604-staging
+image: game/kickplayerserver #registry.gitlab.com/rayprosoft/turnkey-gaming-system/game-kickplayer-server:202111230604-staging
 services:
   - name: game-kickplayer-server
     dependencies:

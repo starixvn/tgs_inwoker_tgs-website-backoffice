@@ -193,9 +193,10 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
-            showDateDropdownMenu={isDev() ? true : false}
+            showDateDropdownMenu
             minDate={minDate}
             maxRangeDays={maxRangeDays}
+            fakeTimeLabel
             required
           />
           <InputField
@@ -319,39 +320,37 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       })
     ]
 
-    if (isDev()) {
-      columns.push(
-        ...[
-          numberDecimalColumn({
-            accessor: "fromPlayerAgentDividendAmount",
-            sumColumn: "fromPlayerAgentDividendAmount",
-            Header: <Trans zh="玩家贡献" en="Player Contribution" />,
-            disableSortBy: true
-          }),
-          numberDecimalColumn({
-            id: "fromTeamAgentDividendAmount",
-            accessor: (row) => row,
-            sumColumn: "fromTeamAgentDividendAmount",
-            toValue: (row) => row?.fromTeamAgentDividendAmount,
-            Header: <Trans zh="团队贡献" en="Team Contribution" />,
-            disableSortBy: true,
-            Cell: ({ value }) => {
-              return (
-                <AgentTeamContributionDialogDisclosure
-                  brandId={brandId}
-                  agentId={value?.id}
-                  start={start}
-                  end={end}
-                  username={value?.username}
-                  value={value?.fromTeamAgentDividendAmount}
-                  use={Link}
-                />
-              )
-            }
-          })
-        ]
-      )
-    }
+    columns.push(
+      ...[
+        numberDecimalColumn({
+          accessor: "fromPlayerAgentDividendAmount",
+          sumColumn: "fromPlayerAgentDividendAmount",
+          Header: <Trans zh="玩家贡献" en="Player Contribution" />,
+          disableSortBy: true
+        }),
+        numberDecimalColumn({
+          id: "fromTeamAgentDividendAmount",
+          accessor: (row) => row,
+          sumColumn: "fromTeamAgentDividendAmount",
+          toValue: (row) => row?.fromTeamAgentDividendAmount,
+          Header: <Trans zh="团队贡献" en="Team Contribution" />,
+          disableSortBy: true,
+          Cell: ({ value }) => {
+            return (
+              <AgentTeamContributionDialogDisclosure
+                brandId={brandId}
+                agentId={value?.id}
+                start={start}
+                end={end}
+                username={value?.username}
+                value={value?.fromTeamAgentDividendAmount}
+                use={Link}
+              />
+            )
+          }
+        })
+      ]
+    )
 
     return columns
   }, [JSON.stringify(items)])

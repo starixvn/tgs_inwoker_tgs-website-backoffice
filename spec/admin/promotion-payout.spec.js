@@ -9,18 +9,11 @@ import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
 import platform from "../platform"
-import {
-  register,
-  login,
-  manualDeposit,
-  applyManualDepositForm,
-  wallet,
-  addManualBankCard,
-  applyManualWithdrawForm,
-  promotionList
-} from "../player"
+import { manualDeposit, applyManualDepositForm } from "../player"
 import { selectByValue } from "../page/select"
 import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
+import globalApi from "../../client/globalApi"
+import operatorApi from "../../client/operatorApi"
 
 let browser
 let context
@@ -43,14 +36,13 @@ describe("Admin user", function () {
 
     await page.goto(host(), {
       waitUntil: "networkidle0"
+      /*
+      timeout: 0 // -> disable timeout
+      */
     })
 
-    platformToken = await platform.token({ brandCode })
-    player = await register(platformToken)
-    player = {
-      ...player,
-      ...(await login(platformToken, player))
-    }
+    platformToken = await globalApi.platformToken(brandCode)
+    player = await operatorApi.player.createAndLogin(platformToken)
   })
 
   afterEach(async () => {

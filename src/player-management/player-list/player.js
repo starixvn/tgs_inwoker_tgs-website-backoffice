@@ -39,6 +39,7 @@ import clone from "clone-deep"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { PlayerClearWageringRequirementDisclosure } from "./PlayerClearWageringRequirement"
 import { useIsAdminUser } from "../../user/context"
+import { isDev } from "../../env"
 
 export const Key = "player"
 
@@ -144,6 +145,15 @@ const EditForm = ({
           <Input name="realName" />
         </Box>
 
+        {isDev() && (
+          <>
+            <IdentityCardNumberLabel />
+            <Box>
+              <Input name="idNumber" />
+            </Box>
+          </>
+        )}
+
         <VIPLevelLabel />
         <Box>
           <VipLevelSelect
@@ -224,6 +234,13 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
           <Text>{realName}</Text>
         </Box>
 
+        {isDev() && (
+          <>
+            <IdentityCardNumberLabel />
+            <Box>{player.idNumber}</Box>
+          </>
+        )}
+
         <VIPLevelLabel />
         <Box>
           <VipLevelLabel value={vipLevel} />
@@ -274,6 +291,8 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
 const UserNameLabel = () => <Trans zh="用户名" en="User name" />
 
 const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
+
+const IdentityCardNumberLabel = () => <Trans zh="身分证" en="IC Number" />
 
 const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
 

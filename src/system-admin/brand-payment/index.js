@@ -215,19 +215,19 @@ const useColumns = ({ items = [], mutate }) => {
         accessor: "paymentId",
         Header: <Trans zh="支付厂商" en="Payment Name" />,
         disableSortBy: true,
-        Cell: ({ value }) => <PaymentProviderLabel value={value} />
+        Cell: ({ value }) => <PaymentProviderLabel value={value} showCode />
       }),
       textColumn({
         accessor: "paymentMethodId",
         Header: <Trans zh="支付方式" en="Payment Method" />,
         disableSortBy: true,
-        Cell: ({ value }) => <PaymentMethodLabel value={value} />
+        Cell: ({ value }) => <PaymentMethodLabel value={value} showCode />
       }),
       textColumn({
         accessor: "paymentChannelId",
         Header: <Trans zh="支付通道" en="Payment Channel" />,
         disableSortBy: true,
-        Cell: ({ value }) => <PaymentChannelLabel value={value} />
+        Cell: ({ value }) => <PaymentChannelLabel value={value} showCode />
       }),
       textColumn({
         accessor: "channelName",

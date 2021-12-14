@@ -24,14 +24,37 @@ import addDays from "date-fns/addDays"
 import subDays from "date-fns/subDays"
 import differenceInDays from "date-fns/differenceInDays"
 import { DateDropdownMenu } from "./DateDropdownMenu"
+import { mapObjIndexed } from "ramda"
 
-export const DateInputRange = ({ dateFormat = "yyyy/MM/dd", ...props }) => (
-  <DateTimeRangeInput
-    dateFormat={dateFormat}
-    showTimeInput={false}
-    {...props}
-  />
-)
+export const DateInputRange = ({
+  dateFormat = "yyyy/MM/dd",
+  fakeTimeLabel = false,
+  startProps = {},
+  endProps = {},
+  ...props
+}) => {
+  if (fakeTimeLabel) {
+    startProps = {
+      addonAfter: <Button isStatic>00:00:00</Button>,
+      ...startProps
+    }
+
+    endProps = {
+      addonAfter: <Button isStatic>23:59:59</Button>,
+      ...endProps
+    }
+  }
+
+  return (
+    <DateTimeRangeInput
+      dateFormat={dateFormat}
+      showTimeInput={false}
+      startProps={startProps}
+      endProps={endProps}
+      {...props}
+    />
+  )
+}
 
 export const DateInputRangeField = ({
   label,
@@ -39,8 +62,8 @@ export const DateInputRangeField = ({
   endProps,
   ...props
 }) => {
-  let startFieldName = startProps?.name
-  let endFieldName = endProps?.name
+  let startFieldName = startProps?.name ?? "start"
+  let endFieldName = endProps?.name ?? "end"
   let formMethods = useFormContext()
   return (
     <FieldWrapper
@@ -69,6 +92,7 @@ export const DateTimeRangeInput = ({
   endProps,
   minDate,
   maxDate,
+  validate,
   maxRangeDays,
   dateFormat,
   showTimeInput = true,
@@ -82,6 +106,29 @@ export const DateTimeRangeInput = ({
   let formMethods = useFormContext()
   let start = toDate(formMethods?.watch(startName))
   let end = toDate(formMethods?.watch(endName))
+
+  let startRules
+  let endRules
+  if (typeof validate === "function") {
+    startRules = {
+      validate: (start) => {
+        return validate?.({ start, end })
+      }
+    }
+
+    endRules = {
+      validate: (end) => {
+        return validate?.({ start, end })
+      }
+    }
+  } else if (typeof validate === "object") {
+    startRules = mapObjIndexed(
+      (fn, key) => (start) => fn({ start, end }),
+      validate
+    )
+
+    endRules = mapObjIndexed((fn, key) => (end) => fn({ start, end }), validate)
+  }
 
   const toasts = useToasts()
   const hasRangeError = (name) =>
@@ -139,11 +186,13 @@ export const DateTimeRangeInput = ({
                       }
                       return pass
                     }
-                  }
+                  },
+                  ...(startRules ?? {})
                 }
-              : undefined
+              : startRules
           }
         />
+        {startProps?.addonAfter}
         <Button isStatic tabIndex="-1">
           -
         </Button>
@@ -171,11 +220,13 @@ export const DateTimeRangeInput = ({
                       }
                       return pass
                     }
-                  }
+                  },
+                  ...(endRules ?? {})
                 }
-              : undefined
+              : endRules
           }
         />
+        {endProps?.addonAfter}
       </Group>
     </>
   )

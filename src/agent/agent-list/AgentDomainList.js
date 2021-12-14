@@ -35,14 +35,28 @@ export const AgentDomainListTab = ({ brandId, agentId, ...props }) => {
   )
 }
 
-export const AgentDomainListPanel = ({ brandId, agentId, ...props }) => {
+export const AgentDomainListPanel = ({
+  brandId,
+  agentId,
+  readOnly,
+  ...props
+}) => {
   let { selectedId } = props
   let isActive = selectedId === Key
 
-  return isActive && <Body brandId={brandId} agentId={agentId} {...props} />
+  return (
+    isActive && (
+      <Body
+        brandId={brandId}
+        agentId={agentId}
+        readOnly={readOnly}
+        {...props}
+      />
+    )
+  )
 }
 
-const Body = ({ brandId, agentId, ...props }) => {
+const Body = ({ brandId, agentId, readOnly, ...props }) => {
   let {
     isLoading,
     data: urls,
@@ -71,8 +85,8 @@ const Body = ({ brandId, agentId, ...props }) => {
       <DomainList
         brandId={brandId}
         agentId={agentId}
-        isLoading={isLoading}
         domains={domains}
+        readOnly={readOnly}
         onSubmitted={() => {
           deleteCache()
           mutate(null)
@@ -101,10 +115,14 @@ const DomainList = ({
           agentId={agentId}
           url={url}
           fromServer={fromServer}
+          readOnly={readOnly}
           onSubmitted={onSubmitted}
         />
       ))}
-      {showAddButton && (
+      {readOnly && items.length === 0 && (
+        <Trans zh="查无资料" en="No Search Result" />
+      )}
+      {!readOnly && showAddButton && (
         <Button
           onClick={() => {
             setItems([...items, { url: "", fromServer: false }])
@@ -174,6 +192,7 @@ const AddDomainInputField = ({
             <Trans zh="新增" en="New" />
           </Button>
         }
+        {...props}
       />
       {error && <AlertDialog {...error} onClickClose={reset} />}
     </>
@@ -184,6 +203,7 @@ const DeleteDomainInputField = ({
   brandId,
   agentId,
   url,
+  readOnly,
   onSubmitted,
   ...props
 }) => {
@@ -213,14 +233,16 @@ const DeleteDomainInputField = ({
         value={url}
         readOnly
         addonAfter={
-          <DeleteButton
-            borderLeftWidth="1px"
-            isLoading={isLoading}
-            disabled={isLoading}
-            onClick={() => {
-              setSubmit(url)
-            }}
-          />
+          !readOnly && (
+            <DeleteButton
+              borderLeftWidth="1px"
+              isLoading={isLoading}
+              disabled={isLoading}
+              onClick={() => {
+                setSubmit(url)
+              }}
+            />
+          )
         }
       />
       {error && <AlertDialog {...error} onClickClose={reset} />}

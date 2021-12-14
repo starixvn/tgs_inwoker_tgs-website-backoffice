@@ -5,47 +5,51 @@ import Select from "../select/Select"
 import { usePaymentList } from "./client"
 
 export const PaymentProviderSelect = ({ placeholder, range, ...props }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "支付厂商",
-        en: "Payment Provider"
+  let defaultPlaceholder = useTrans({
+    zh: "支付厂商",
+    en: "Payment Provider"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
+
+  let locale = useLocale()
+  let { isLoading, data, error } = usePaymentList()
+
+  let options = data
+    ?.filter((item) => {
+      if (range) {
+        return range.includes(item.id)
+      }
+      return true
     })
-    placeholder = placeholder ?? defaultPlaceholder
+    ?.map(({ trans, code, id }) => ({
+      label: trans?.[locale] ?? code,
+      value: id
+    }))
 
-    let locale = useLocale()
-    let { isLoading, data, error } = usePaymentList()
-
-    let options = data
-        ?.filter((item) => {
-            if (range) {
-                return range.includes(item.id)
-            }
-            return true
-        })
-        ?.map(({ trans, code, id }) => ({
-            label: trans?.[locale] ?? code,
-            value: id
-        }))
-
-    return (
-        <Select
-            placeholder={placeholder}
-            isLoading={isLoading}
-            options={options}
-            {...props}
-        />
-    )
+  return (
+    <Select
+      placeholder={placeholder}
+      isLoading={isLoading}
+      options={options}
+      {...props}
+    />
+  )
 }
 
-export const PaymentProviderLabel = ({ value }) => {
-    let locale = useLocale()
-    let { isLoading, data, error } = usePaymentList()
-    if (isLoading) {
-        return ""
-    }
+export const PaymentProviderLabel = ({ value, showCode = false }) => {
+  let locale = useLocale()
+  let { isLoading, data, error } = usePaymentList()
+  if (isLoading) {
+    return ""
+  }
 
-    let method = data?.find((item) => {
-        return item.id === value
-    })
+  let method = data?.find((item) => {
+    return item.id === value
+  })
 
-    return method?.trans?.[locale] ?? method?.code ?? ""
+  if (showCode) {
+    return method?.code ?? ""
+  }
+
+  return method?.trans?.[locale] ?? method?.code ?? ""
 }

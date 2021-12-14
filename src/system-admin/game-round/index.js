@@ -67,7 +67,7 @@ const Body = () => {
     to: startOfNextDay(to),
     culture
   })
-  let columns = useColumns({ items: data?.items })
+  let columns = useColumns({ items: data?.items, mutate })
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
@@ -164,6 +164,7 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
+            showDateDropdownMenu
             minDate={minDate}
             maxDate={maxDate}
             maxRangeDays={maxRangeDays}
@@ -182,7 +183,7 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ items = [], mutate }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   return useMemo(() => {
     let columns = [
@@ -287,8 +288,10 @@ const useColumns = ({ items = [] }) => {
             let { id: roundId } = record
             return (
               <CloseGameOpenRoundDialogDisclosure
+                id="close-game-open-round-dialog-disclosure"
                 roundId={roundId}
                 record={record}
+                onSubmitted={mutate}
               />
             )
           }

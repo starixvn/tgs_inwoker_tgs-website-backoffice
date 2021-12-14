@@ -17,18 +17,14 @@ import {
 import clone from "clone-deep"
 import { fillDatePicker } from "../fill"
 import { goto } from "../sidebar"
-import { selectRandomOption } from "../page/select"
-import platform from "../platform"
-import { selectRandomPlatform } from "./index"
 import {
-  register,
-  login,
   manualDeposit,
   applyManualDepositForm,
-  wallet,
   addManualBankCard,
   applyManualWithdrawForm
 } from "../player"
+import globalApi from "../../client/globalApi"
+import operatorApi from "../../client/operatorApi"
 
 let browser
 let context
@@ -54,12 +50,8 @@ describe("Platform user", function () {
       waitUntil: "networkidle0"
     })
 
-    platformToken = await platform.token({ brandCode })
-    player = await register(platformToken)
-    player = {
-      ...player,
-      ...(await login(platformToken, player))
-    }
+    platformToken = await globalApi.platformToken(brandCode)
+    player = await operatorApi.player.createAndLogin(platformToken)
   })
 
   afterEach(async () => {

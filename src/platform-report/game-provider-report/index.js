@@ -171,9 +171,10 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
-            showDateDropdownMenu={isDev() ? true : false}
+            showDateDropdownMenu
             minDate={minDate}
             maxRangeDays={maxRangeDays}
+            fakeTimeLabel
             required
           />
           <GameProviderSelect name="gameProviderCode" valueField="code" />

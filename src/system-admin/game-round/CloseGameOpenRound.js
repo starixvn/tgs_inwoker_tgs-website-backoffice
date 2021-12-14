@@ -14,11 +14,12 @@ import {
   Dialog,
   Card,
   FieldWrapper,
-  Alert
+  Alert,
+  Spinner
 } from "bumbag"
 import { Disclosure } from "../../dialog/Disclosure"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { Table } from "../../table"
 import textColumn from "../../table/column/textColumn"
@@ -37,6 +38,8 @@ import GameRoundStatus, {
 } from "../../game/round/GameRoundStatus"
 import { ConfirmText } from "../../button/ActionButtons"
 import DateTimeInput from "../../date/DateTimeInput"
+import Separator from "../../layout/Separator"
+import { usePlayerMainWallet } from "../../player-management/player-list/client"
 
 export const CloseGameOpenRoundDialogDisclosure = ({
   roundId,
@@ -100,6 +103,7 @@ const CloseGameOpenRoundDialog = ({
 
   return (
     <FormDialog
+      id="close-game-open-round-dialog"
       formRef={formRef}
       defaultValues={{
         ...clone(record),
@@ -117,7 +121,10 @@ const CloseGameOpenRoundDialog = ({
         submitText: <ConfirmText />,
         submitProps: {
           type: "button",
-          onClick: confirmSubmitDialog.show
+          onClick: confirmSubmitDialog.show,
+          "data-type": "confirm",
+          isLoading,
+          disabled: isLoading
         }
       }}
     >
@@ -140,6 +147,7 @@ const ConfirmSubmitDialog = ({ dialog, onSubmit }) => {
   return (
     <Backdrop {...dialog}>
       <Dialog.Modal
+        id="confirm-dialog"
         title="Are you sure?"
         {...dialog}
         showActionButtons
@@ -166,17 +174,18 @@ const FormBody = () => {
   )
   let { getValues } = useFormContext()
   let externalRoundId = getValues("externalRoundId")
+  let playerCode = getValues("playerCode")
+
+  //TODO: refresh btn?
+  let {
+    isLoading: isLoadingMainWallet,
+    data: mainWallet,
+    error,
+    mutate,
+    deleteCache
+  } = usePlayerMainWallet(playerCode)
   return (
     <FieldStack>
-      <Alert
-        title={
-          <Trans
-            zh={`*将该订单结算后，还须至"玩家调帐"页面，针对该玩家执行调帐动作`}
-            en={`*When close the settlement, still need to proceed player’s balance adjustment  for the player.`}
-          />
-        }
-        variant="bordered"
-      />
       <FieldWrapper label={<Trans zh="三方订单ID" en="External Id" />}>
         <Box fontWeight="bold">{externalRoundId}</Box>
       </FieldWrapper>
@@ -189,14 +198,14 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="betAmount"
-          label="投注金额"
+          label={<Trans zh="投注金额" en="Bet Amount" />}
           required
           min="0"
           step="0.01"
         />
         <NumberInputField
           name="validBetAmount"
-          label="有效投注金额"
+          label={<Trans zh="有效投注金额" en="Valid Bet Amount" />}
           min="0"
           step="0.01"
           required
@@ -205,29 +214,34 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
-          label="结算金额"
+          label={<Trans zh="结算金额" en="Settle Amount" />}
           min="0"
           step="0.01"
           required
         />
-        <NumberInputField name="commission" label="佣金" step="0.01" required />
+        <NumberInputField
+          name="commission"
+          label={<Trans zh="佣金" en="Commission" />}
+          step="0.01"
+          required
+        />
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="turnover"
-          label="流水"
+          label={<Trans zh="流水" en="Turnover" />}
           min="0"
           step="0.01"
           required
         />
         <NumberInputField
           name="winLoss"
-          label="输赢金额"
+          label={<Trans zh="输赢金额" en="Win Loss" />}
           hint={
             <Text fontWeight="bold" color="warning">
               <Trans
                 zh="输赢金额 > 0,代表公司赢"
-                en="Winloss > 0 means company win."
+                en="Win loss > 0 means company win."
               />
             </Text>
           }
@@ -239,9 +253,30 @@ const FormBody = () => {
       <GameRoundStatusSelectField
         name="clientRoundStatus"
         options={statusOptions}
-        label="状态"
+        label={<Trans zh="状态" en="Status" />}
         required
       />
+      <Separator />
+      <FieldStack>
+        <Heading use="h5">
+          <Trans zh="玩家餘額調整" en="Player Balance Adjustment" />
+        </Heading>
+        <FieldStack orientation="horizontal">
+          <FieldWrapper label={<Trans zh="玩家余额" en="Player Balance" />}>
+            <Box>
+              {isLoadingMainWallet && <Spinner />}
+              {!isLoadingMainWallet && (
+                <FormattedNumberDecimal value={mainWallet} placeholder="--" />
+              )}
+            </Box>
+          </FieldWrapper>
+          <NumberInputField
+            name="adjustAmount"
+            label={<Trans zh="调整金额" en="Adjust Amount" />}
+            step="0.01"
+          />
+        </FieldStack>
+      </FieldStack>
       <TextareaField name="remark" label="备注" required />
     </FieldStack>
   )

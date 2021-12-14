@@ -37,21 +37,22 @@ import {
   PercentageNumberInputField
 } from "../input/NumberInput"
 import { useAgentList, useAgent } from "./agent-list/client"
-import { useBrand } from "../merchant/platforms/client"
 import { isNil } from "lodash-es"
 import { isMonthlySettlementInterval } from "../date/SettlementIntervalType"
 import { AlertDialog } from "../dialog/Alert"
 import LoadingBackdrop from "../dialog/LoadingBackdrop"
+import { Name } from "./AgentEgameRebatePercentage"
 
-export const AgentProfitSharingSettingDialogDisclosure = ({
+export const AgentMultipleLayerProfitSharingSettingDialogDisclosure = ({
   name = "agentDividendConditions",
   brandId = "",
   parentUsername = "",
   readOnly,
   ...props
 }) => {
+  /* Note: ```MultipleLayer setting is independent, no need to check parent or child agents```
+  
   let { isLoading: isLoadingBrand, data: brand, brandError } = useBrand(brandId)
-  /*
   let {
     isLoading: isLoadingAgent,
     data: agentData,
@@ -67,7 +68,7 @@ export const AgentProfitSharingSettingDialogDisclosure = ({
       : undefined
   )
   let parentAgent = agentData?.items?.[0]
-  console.log("parentAgent", parentAgent)
+
   let validParentAgent = !!(
     parentUsername &&
     parentAgent &&
@@ -77,12 +78,13 @@ export const AgentProfitSharingSettingDialogDisclosure = ({
   let parentAgentProfitSharingSettings = validParentAgent
     ? parentAgent.agentDividendConditions
     : undefined
-  */
+  
   if (isLoadingBrand) {
     return <Disclosure disabled isLoading></Disclosure>
   }
+  */
 
-  let maxLevelSize = 1 //MaxNumber
+  let maxLevelSize = MaxNumber
   return (
     <SettingDisclosure
       name={name}
@@ -105,7 +107,11 @@ export const AgentProfitSharingSettingRecordDialogDisclosure = ({
         <Trans zh="分红设置" en="Profit Sharing Setting" />
       </Disclosure>
       {dialog.visible && (
-        <SettingDialog record={record} readOnly dialog={dialog} />
+        <AgentMultipleLayerProfitSharingSettingDialog
+          record={record}
+          readOnly
+          dialog={dialog}
+        />
       )}
     </>
   )
@@ -138,7 +144,7 @@ const AgentDialog = ({ agentId, dialog, ...props }) => {
   }
 
   return (
-    <SettingDialog
+    <AgentMultipleLayerProfitSharingSettingDialog
       record={data?.agentDividendConditions}
       readOnly
       dialog={dialog}
@@ -182,7 +188,7 @@ const SettingDisclosure = ({
               <Trans zh="分红设置" en="Profit Sharing Setting" />
             </Disclosure>
             {dialog.visible && (
-              <SettingDialog
+              <AgentMultipleLayerProfitSharingSettingDialog
                 record={value}
                 parentAgentProfitSharingSettings={
                   parentAgentProfitSharingSettings
@@ -206,7 +212,7 @@ const SettingDisclosure = ({
 }
 
 const FieldName = "list"
-const SettingDialog = ({
+const AgentMultipleLayerProfitSharingSettingDialog = ({
   record = [],
   parentAgentProfitSharingSettings,
   maxLevelSize,
@@ -240,9 +246,9 @@ const SettingDialog = ({
         footer={
           !editable && <CloseButtonFooter dialog={dialog} alignX="right" />
         }
-        minWidth="50vw"
+        minWidth="60vw"
       >
-        <FormBody
+        <AgentMultipleLayerProfitSharingSettingFormBody
           maxLevelSize={maxLevelSize}
           parentAgentProfitSharingSettings={parentAgentProfitSharingSettings}
           readOnly={readOnly}
@@ -252,8 +258,9 @@ const SettingDialog = ({
   )
 }
 
-const FormBody = ({
-  maxLevelSize,
+export const AgentMultipleLayerProfitSharingSettingFormBody = ({
+  name = FieldName,
+  maxLevelSize = MaxNumber,
   parentAgentProfitSharingSettings,
   readOnly
 }) => {
@@ -262,7 +269,7 @@ const FormBody = ({
 
   let fieldArray = useFieldArray({
     control,
-    name: FieldName,
+    name,
     keyName: "_id"
   })
 
@@ -288,6 +295,7 @@ const FormBody = ({
       <Table.Body>
         {fieldArray.fields.map((field, index) => (
           <SettingRow
+            name={name}
             key={field._id}
             field={field}
             index={index}
@@ -343,7 +351,10 @@ const DefaultMinSetting = {
   dividendPercentage: 0
 }
 
+const MaxProfitSharingPercentage = 100
+
 const SettingRow = ({
+  name,
   field,
   index,
   fieldArray,
@@ -353,24 +364,25 @@ const SettingRow = ({
   let { control } = useFormContext()
   let previous = useWatch({
     control,
-    name: `${FieldName}.${index - 1}`
+    name: `${name}.${index - 1}`
   })
   let next = useWatch({
     control,
-    name: `${FieldName}.${index + 1}`
+    name: `${name}.${index + 1}`
   })
 
   let parentAgentSetting = parentAgentProfitSharingSettings?.[index]
 
   let editable = !readOnly
   let disabled = readOnly
+
   return (
     <>
       <Table.Row>
         <Table.Cell>
           <Input
             type="hidden"
-            name={`${FieldName}.${index}.rank`}
+            name={`${name}.${index}.rank`}
             value={index + 1}
           />
           {editable && (
@@ -388,7 +400,7 @@ const SettingRow = ({
         </Table.Cell>
         <Table.Cell>
           <NumberInput
-            name={`${FieldName}.${index}.netProfit`}
+            name={`${name}.${index}.netProfit`}
             readOnly={readOnly}
             disabled={disabled}
             defaultValue={field.netProfit}
@@ -414,7 +426,7 @@ const SettingRow = ({
         </Table.Cell>
         <Table.Cell>
           <NumberInput
-            name={`${FieldName}.${index}.activeNumber`}
+            name={`${name}.${index}.activeNumber`}
             readOnly={readOnly}
             disabled={disabled}
             defaultValue={field.activeNumber}
@@ -440,7 +452,7 @@ const SettingRow = ({
         </Table.Cell>
         <Table.Cell>
           <PercentageNumberInputField
-            name={`${FieldName}.${index}.dividendPercentage`}
+            name={`${name}.${index}.dividendPercentage`}
             readOnly={readOnly}
             disabled={disabled}
             registerOptions={{
@@ -456,9 +468,9 @@ const SettingRow = ({
             )}
             max={Math.min(
               ...[
-                MaxNumber,
-                next?.netProfit,
-                parentAgentSetting?.netProfit
+                MaxProfitSharingPercentage,
+                next?.dividendPercentage,
+                parentAgentSetting?.dividendPercentage
               ].filter(Number.isFinite)
             )}
             required
