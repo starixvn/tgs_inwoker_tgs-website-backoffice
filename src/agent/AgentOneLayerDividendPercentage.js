@@ -3,7 +3,7 @@ import { css, Global } from "@emotion/react"
 import { Set } from "bumbag"
 import { useTrans, Trans, FormattedNumberDecimal } from "../i18n"
 import { PercentageNumberInputField } from "../input/NumberInput"
-import { useAgentList } from "./agent-list/client"
+import { useAgentOneLayerProfitSharingPercentage } from "./agent-list/client"
 import { isNil } from "lodash-es"
 
 export const Name = "dividendPercentage"
@@ -16,27 +16,10 @@ export const AgentOneLayerDividendPercentageInputField = ({
   max,
   ...props
 }) => {
-  let { isLoading, data, error } = useAgentList(
-    brandId && parentUsername
-      ? {
-          brandId,
-          username: parentUsername,
-          rows: 1,
-          page: 1
-        }
-      : undefined
-  )
+  let { isLoading, data, error, mutate, deleteCache } =
+    useAgentOneLayerProfitSharingPercentage(brandId, parentUsername)
 
-  let parentAgent = data?.items?.[0]
-  let validParentAgent = !!(
-    parentUsername &&
-    parentAgent &&
-    parentAgent.dividendPercentage >= 0
-  )
-  let parentAgentProfitSharing = validParentAgent
-    ? parentAgent.dividendPercentage
-    : undefined
-
+  let parentAgentProfitSharing = data?.valid && data?.dividendPercentage
   if (isNil(max)) {
     max = parentAgentProfitSharing
   }
@@ -49,7 +32,7 @@ export const AgentOneLayerDividendPercentageInputField = ({
         required={required}
         {...props}
       />
-      {validParentAgent && parentAgentProfitSharing >= 0 && (
+      {parentAgentProfitSharing >= 0 && (
         <FormattedNumberDecimal
           prefix={
             <Trans zh="上级代理分红：" en="Upper Level Profit Sharing：" />

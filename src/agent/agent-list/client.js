@@ -23,6 +23,17 @@ export const useAgent = (id) => {
   }
 }
 
+export const useAgentOneLayerProfitSharingPercentage = (
+  brandId,
+  agentUsername
+) => {
+  let url =
+    brandId && agentUsername
+      ? `${API}/dividendPercentage/${brandId}/${agentUsername}`
+      : ""
+  return useGet(url)
+}
+
 export const useAddAgent = (formData) => {
   let url = formData ? API : ""
   return usePostData(url, formData)
