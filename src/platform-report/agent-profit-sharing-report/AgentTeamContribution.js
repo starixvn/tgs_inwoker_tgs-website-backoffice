@@ -283,7 +283,7 @@ const FootRow = ({ record }) => {
         <FormattedNumberDecimal value={record?.expenditureAmount} />
       </Table.Cell>
       <Table.Cell>
-        <FormattedNumberDecimal value={record?.bonusAmount} />
+        <FormattedNumberDecimal value={record?.agentDividendAmount} />
       </Table.Cell>
     </Table.Row>
   )
