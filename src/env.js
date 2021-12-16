@@ -111,7 +111,8 @@ window.featureX = {
   enable: {
     agentMonthlyProfitSharingSetting: () =>
       enableFeatures(AgentMonthlyProfitSharingSetting)
-  }
+  },
+  enableFeatures
 }
 
 export const isFeatureEnabled = (feature = "") => {
