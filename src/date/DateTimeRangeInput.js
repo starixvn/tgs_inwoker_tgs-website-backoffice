@@ -25,6 +25,7 @@ import differenceInDays from "date-fns/differenceInDays"
 import { DateDropdownMenu } from "./DateDropdownMenu"
 import { mapObjIndexed } from "ramda"
 import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb"
+import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz"
 import { isDev, isFeatureEnabled, Features } from "../env"
 
 export const DateInputRange = ({
@@ -152,13 +153,24 @@ export const DateTimeRangeInput = ({
         {isFeatureEnabled(Features.SystemTimezone) && (
           <Button
             onClick={() => {
-              //TODO: 1. how to get local time zone?
-              //TODO: 2. how to get system time zone?
-              console.log("getTimeZones()", getTimeZones())
-              console.log(
-                "new Date().getTimezoneOffset()",
-                new Date().getTimezoneOffset()
+              let clientTimezoneOffset = new Date().getTimezoneOffset()
+              let currentTimezones = getTimeZones().filter(
+                ({ currentTimeOffsetInMinutes }) => {
+                  return currentTimeOffsetInMinutes == clientTimezoneOffset
+                }
               )
+              console.log("currentTimezones", currentTimezones)
+              let targetTimezoneOffset = -420
+              let targetTimezone = getTimeZones().filter(
+                ({ currentTimeOffsetInMinutes }) => {
+                  return currentTimeOffsetInMinutes == targetTimezoneOffset
+                }
+              )
+              let today = new Date()
+              let utcTime = zonedTimeToUtc(today, targetTimezone.name)
+              console.log("utcTime", utcTime)
+              let zonedTime = utcToZonedTime(today, targetTimezone.name)
+              console.log("zonedTime", zonedTime)
             }}
           >
             System TimeZone Test
