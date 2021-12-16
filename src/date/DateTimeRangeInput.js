@@ -161,11 +161,10 @@ export const DateTimeRangeInput = ({
               )
               console.log("currentTimezones", currentTimezones)
               let targetTimezoneOffset = -420
-              let targetTimezone = getTimeZones().filter(
-                ({ currentTimeOffsetInMinutes }) => {
+              let [targetTimezone, ...restTargetTimezones] =
+                getTimeZones().filter(({ currentTimeOffsetInMinutes }) => {
                   return currentTimeOffsetInMinutes == targetTimezoneOffset
-                }
-              )
+                })
               let today = new Date()
               let utcTime = zonedTimeToUtc(today, targetTimezone.name)
               console.log("utcTime", utcTime)
