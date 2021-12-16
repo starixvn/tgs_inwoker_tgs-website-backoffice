@@ -24,10 +24,17 @@ import isValid from "date-fns/isValid"
 import differenceInDays from "date-fns/differenceInDays"
 import { DateDropdownMenu } from "./DateDropdownMenu"
 import { mapObjIndexed } from "ramda"
-import tzdb, { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb"
+import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb"
 import { isDev, isFeatureEnabled, Features } from "../env"
 
-console.log("tzdb", tzdb)
+console.log(
+  "getTimeZones",
+  getTimeZones,
+  "rawTimeZones",
+  rawTimeZones,
+  "timeZonesNames",
+  timeZonesNames
+)
 
 export const DateInputRange = ({
   dateFormat = "yyyy/MM/dd",
