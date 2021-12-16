@@ -108,7 +108,10 @@ const enableFeatures = (...features) => {
 
 window.featureX = {
   list: listFeatures,
-  enableAll: () => enableFeatures(...Object.values(Features)),
+  enableAll: () => {
+    enableFeatures(...Object.values(Features))
+    //TODO: how to trigger react render?
+  },
   enableFeatures
 }
 

@@ -27,15 +27,6 @@ import { mapObjIndexed } from "ramda"
 import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb"
 import { isDev, isFeatureEnabled, Features } from "../env"
 
-console.log(
-  "getTimeZones",
-  getTimeZones,
-  "rawTimeZones",
-  rawTimeZones,
-  "timeZonesNames",
-  timeZonesNames
-)
-
 export const DateInputRange = ({
   dateFormat = "yyyy/MM/dd",
   fakeTimeLabel = false,
@@ -164,7 +155,6 @@ export const DateTimeRangeInput = ({
               //TODO: 1. how to get local time zone?
               //TODO: 2. how to get system time zone?
               console.log("getTimeZones()", getTimeZones())
-              console.log("rawTimeZones()", rawTimeZones())
               console.log(
                 "new Date().getTimezoneOffset()",
                 new Date().getTimezoneOffset()
