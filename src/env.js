@@ -83,10 +83,6 @@ export const isAgentMonthlyProfitSharingSettingEnabled = () => {
   return boolean(window?.env?.features?.[AgentMonthlyProfitSharingSetting])
 }
 
-export const isFeatureEnabled = (feature) => {
-  return boolean(window?.env?.features?.[feature])
-}
-
 const listFeatures = () => {
   let features = Object.entries(Features ?? {})
   if (features.length > 0) {
