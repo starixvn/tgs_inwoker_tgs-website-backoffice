@@ -24,8 +24,10 @@ import isValid from "date-fns/isValid"
 import differenceInDays from "date-fns/differenceInDays"
 import { DateDropdownMenu } from "./DateDropdownMenu"
 import { mapObjIndexed } from "ramda"
-import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb"
+import tzdb, { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb"
 import { isDev, isFeatureEnabled, Features } from "../env"
+
+console.log("tzdb", tzdb)
 
 export const DateInputRange = ({
   dateFormat = "yyyy/MM/dd",
@@ -146,9 +148,6 @@ export const DateTimeRangeInput = ({
     }
   }, [rangeError])
 
-  console.log("getTimeZones()", getTimeZones())
-  console.log("rawTimeZones()", rawTimeZones())
-  console.log("new Date().getTimezoneOffset()", new Date().getTimezoneOffset())
   return (
     <>
       <Group>

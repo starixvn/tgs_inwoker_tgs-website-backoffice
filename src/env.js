@@ -108,10 +108,7 @@ const enableFeatures = (...features) => {
 
 window.featureX = {
   list: listFeatures,
-  enable: {
-    agentMonthlyProfitSharingSetting: () =>
-      enableFeatures(AgentMonthlyProfitSharingSetting)
-  },
+  enableAll: () => enableFeatures(...Object.values(Features)),
   enableFeatures
 }
 
