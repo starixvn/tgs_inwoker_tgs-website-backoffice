@@ -10,7 +10,8 @@ import {
   useModalState,
   Dialog,
   FieldWrapper,
-  FieldStack
+  FieldStack,
+  Checkbox
 } from "bumbag"
 import { useForm, useFormContext, Controller } from "react-hook-form"
 import "react-datepicker/dist/react-datepicker.css"
@@ -20,11 +21,11 @@ import { toDate } from "./toDate"
 import min from "date-fns/min"
 import max from "date-fns/max"
 import isValid from "date-fns/isValid"
-import addDays from "date-fns/addDays"
-import subDays from "date-fns/subDays"
 import differenceInDays from "date-fns/differenceInDays"
 import { DateDropdownMenu } from "./DateDropdownMenu"
 import { mapObjIndexed } from "ramda"
+import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb"
+import { isDev, isFeatureEnabled, Features } from "../env"
 
 export const DateInputRange = ({
   dateFormat = "yyyy/MM/dd",
@@ -95,6 +96,7 @@ export const DateTimeRangeInput = ({
   validate,
   maxRangeDays,
   dateFormat,
+  showSystemTimeZoneCheckbox = false,
   showTimeInput = true,
   showDateDropdownMenu = false,
   required,
@@ -144,9 +146,28 @@ export const DateTimeRangeInput = ({
     }
   }, [rangeError])
 
+  console.log("getTimeZones()", getTimeZones())
+  console.log("rawTimeZones()", rawTimeZones())
+  console.log("new Date().getTimezoneOffset()", new Date().getTimezoneOffset())
   return (
     <>
       <Group>
+        {isFeatureEnabled(Features.SystemTimezone) && (
+          <Button
+            onClick={() => {
+              //TODO: 1. how to get local time zone?
+              //TODO: 2. how to get system time zone?
+              console.log("getTimeZones()", getTimeZones())
+              console.log("rawTimeZones()", rawTimeZones())
+              console.log(
+                "new Date().getTimezoneOffset()",
+                new Date().getTimezoneOffset()
+              )
+            }}
+          >
+            System TimeZone Test
+          </Button>
+        )}
         {showDateDropdownMenu && (
           <DateDropdownMenu
             onClick={({ type, start, end }) => {
