@@ -13,7 +13,8 @@ import {
   FieldStack,
   Group,
   Spinner,
-  FieldWrapper
+  FieldWrapper,
+  SwitchField
 } from "bumbag"
 import { ViewAllAgent, UpdateAllAgent } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -33,7 +34,11 @@ import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { JsonEditor } from "../../text/editor/JsonEditor"
 import { stringifyJSON } from "../../text/json"
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
-import { useAllAgentSetting } from "../../agent/all-agent/client"
+import {
+  useAllAgentSetting,
+  useUpdateAllAgentSwitch
+} from "../../agent/all-agent/client"
+import { Tabs, Tab, TabList, useTabState } from "../../tab"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -80,23 +85,24 @@ const AllAgentDialog = ({ brandId, readOnly, dialog, ...props }) => {
       record={data}
       readOnly={readOnly}
       dialog={dialog}
-      onSubmitted={reset}
+      onChange={reset}
       dialog={dialog}
       {...props}
     />
   )
 }
 
+//TODO: readOnly
 const AllAgentSettingDialog = ({
   brandId,
   record,
   readOnly,
-  onSubmitted,
+  onChange,
   dialog
 }) => {
   let title = useTrans({
-    zh: "全民代理",
-    en: "All Agent"
+    zh: "全民代理设定",
+    en: "All Agent Setting"
   })
 
   return (
@@ -106,11 +112,147 @@ const AllAgentSettingDialog = ({
       hideOnClickOutside={false}
       {...dialog}
     >
-      <DialogBody />
+      <DialogBody brandId={brandId} record={record} onChange={onChange} />
     </Dialog.Modal>
   )
 }
 
-const DialogBody = ({ brandId, onSubmitted }) => {
-  return "TODO: form body"
+//TODO: need to reload data when onChange? no need?
+const DialogBody = ({ brandId, record = {}, onChange }) => {
+  return (
+    <Stack>
+      <AllAgentMainSwitch brandId={brandId} defaultValue={record?.switch} />
+      <AllAgentGameTypeTabs />
+    </Stack>
+  )
+}
+
+const AllAgentMainSwitch = ({ brandId, defaultValue, onChange }) => {
+  let [mainSwitch, setMainSwitch] = useState(defaultValue)
+
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } =
+    useUpdateAllAgentSwitch(brandId, formData)
+
+  let onLabel = useTrans({
+    zh: "开启",
+    en: "On"
+  })
+
+  let offLabel = useTrans({
+    zh: "开启",
+    en: "On"
+  })
+
+  const reset = () => {
+    setSubmit(undefined)
+
+    deleteCache()
+    mutate(null, undefined)
+  }
+
+  //TODO: need to trigger load data from server?
+  useEffect(() => {
+    if (!isLoading && result) {
+      setMainSwitch(formData.switch)
+      reset()
+    }
+  }, [isLoading, result])
+
+  return (
+    <>
+      <SwitchField
+        label={<Trans zh="总开关" en="Main Switch" />}
+        switchLabel={mainSwitch ? onLabel : offLabel}
+        value={mainSwitch}
+        onChange={(event) => {
+          let checked = event.target.checked
+          // setMainSwitch(checked)
+          setSubmit({
+            switch: checked
+          })
+        }}
+      />
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+    </>
+  )
+}
+
+const GameType = {
+  Sportsbook: "Sportsbook",
+  VirtualSports: "VirtualSports",
+  LiveDealer: "LiveDealer",
+  CardGame: "CardGame",
+  Lottery: "Lottery",
+  Slot: "Slot"
+}
+
+const GameTypeTrans = {
+  Sportsbook: {
+    zh: "体育",
+    en: "Sports"
+  },
+  VirtualSports: {
+    zh: "虚拟体育",
+    en: "Virtual Sports"
+  },
+  LiveDealer: {
+    zh: "真人",
+    en: "Live Dealer"
+  },
+  CardGame: {
+    zh: "棋牌",
+    en: "Card Game"
+  },
+  Lottery: {
+    zh: "彩票",
+    en: "Lottery"
+  },
+  Slot: {
+    zh: "电子",
+    en: "EGame"
+  }
+}
+
+const AllAgentGameTypeTabs = ({}) => {
+  let tab = useTabState({
+    selectedId: GameType.LiveDealer
+  })
+
+  return (
+    <Tabs isFitted>
+      <TabList use={TabList} {...tab}>
+        <GameTypeTab gameType={GameType.LiveDealer} {...tab} />
+        <GameTypeTab gameType={GameType.Slot} {...tab} />
+        <GameTypeTab gameType={GameType.Sportsbook} {...tab} />
+        <GameTypeTab gameType={GameType.VirtualSports} {...tab} />
+        <GameTypeTab gameType={GameType.CardGame} {...tab} />
+        <GameTypeTab gameType={GameType.Lottery} {...tab} />
+      </TabList>
+
+      <GameTypePanel gameType={GameType.LiveDealer} {...tab} />
+      <GameTypePanel gameType={GameType.Slot} {...tab} />
+      <GameTypePanel gameType={GameType.Sportsbook} {...tab} />
+      <GameTypePanel gameType={GameType.VirtualSports} {...tab} />
+      <GameTypePanel gameType={GameType.CardGame} {...tab} />
+      <GameTypePanel gameType={GameType.Lottery} {...tab} />
+    </Tabs>
+  )
+}
+
+const GameTypeTab = ({ gameType, ...props }) => {
+  let trans = GameTypeTrans[gameType]
+  return (
+    <Tab tabId={gameType} {...props}>
+      <Trans {...trans} />
+    </Tab>
+  )
+}
+
+const GameTypePanel = ({ gameType, ...props }) => {
+  return (
+    <TabPanel tabId={gameType} {...props}>
+      {gameType}
+    </TabPanel>
+  )
 }
