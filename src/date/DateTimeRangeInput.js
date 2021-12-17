@@ -153,7 +153,7 @@ export const DateTimeRangeInput = ({
         {isFeatureEnabled(Features.SystemTimezone) && (
           <Button
             onClick={() => {
-              let clientTimezoneOffset = new Date().getTimezoneOffset()
+              let clientTimezoneOffset = -1 * new Date().getTimezoneOffset()
               let currentTimezones = getTimeZones({
                 includeUtc: true
               }).filter(({ currentTimeOffsetInMinutes }) => {
@@ -165,7 +165,7 @@ export const DateTimeRangeInput = ({
                 "clientTimezoneOffset",
                 clientTimezoneOffset
               )
-              let targetTimezoneOffset = -480
+              let targetTimezoneOffset = 480
               let allTargetTimezones = getTimeZones({
                 includeUtc: true
               }).filter(({ currentTimeOffsetInMinutes }) => {
