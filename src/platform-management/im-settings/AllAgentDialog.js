@@ -169,6 +169,7 @@ const AllAgentMainSwitch = ({ brandId, defaultValue, onChange }) => {
           let checked = event.target.checked
           // setMainSwitch(checked)
           setSubmit({
+            brandId,
             switch: checked
           })
         }}
@@ -214,7 +215,7 @@ const GameTypeTrans = {
   }
 }
 
-const AllAgentGameTypeTabs = ({}) => {
+const AllAgentGameTypeTabs = ({ record = {} }) => {
   let tab = useTabState({
     selectedId: GameType.LiveDealer
   })

@@ -61,10 +61,13 @@ export const useUpdateAllAgentWinLossCondition = (
 }
 
 /*
-formData: { switch: true | false }
+formData: { 
+  brandId, "",
+  switch: true | false 
+}
 */
-export const useUpdateAllAgentSwitch = (brandId, formData) => {
-  let url = brandId && formData ? `${API}/switch` : ""
+export const useUpdateAllAgentSwitch = (formData) => {
+  let url = formData?.brandId ? `${API}/switch` : ""
   return usePutData(url, formData)
 }
 
