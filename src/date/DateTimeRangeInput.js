@@ -24,8 +24,10 @@ import isValid from "date-fns/isValid"
 import differenceInDays from "date-fns/differenceInDays"
 import { DateDropdownMenu } from "./DateDropdownMenu"
 import { mapObjIndexed } from "ramda"
-import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb"
-import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz"
+import {
+  isClientTimeZoneSameAsSystemTimeZone,
+  toSystemTimeZone
+} from "./SystemTimeZone"
 import { isDev, isFeatureEnabled, Features } from "../env"
 
 export const DateInputRange = ({
@@ -153,37 +155,15 @@ export const DateTimeRangeInput = ({
         {isFeatureEnabled(Features.SystemTimezone) && (
           <Button
             onClick={() => {
-              let clientTimezoneOffset = -1 * new Date().getTimezoneOffset()
-              let currentTimezones = getTimeZones({
-                includeUtc: true
-              }).filter(({ currentTimeOffsetInMinutes }) => {
-                return currentTimeOffsetInMinutes == clientTimezoneOffset
-              })
-              console.log(
-                "currentTimezones",
-                currentTimezones,
-                "clientTimezoneOffset",
-                clientTimezoneOffset
-              )
-              let targetTimezoneOffset = 480
-              let allTargetTimezones = getTimeZones({
-                includeUtc: true
-              }).filter(({ currentTimeOffsetInMinutes }) => {
-                return currentTimeOffsetInMinutes == targetTimezoneOffset
-              })
-              console.log("allTargetTimezones", allTargetTimezones)
-              let [targetTimezone] = allTargetTimezones
-              console.log(
-                "allTargetTimezones",
-                allTargetTimezones,
-                "currentTimezones",
-                currentTimezones
-              )
+              let sameTimeZone = isClientTimeZoneSameAsSystemTimeZone()
               let today = new Date()
-              let utcTime = zonedTimeToUtc(today, targetTimezone.name)
-              console.log("utcTime", utcTime)
-              let zonedTime = utcToZonedTime(today, targetTimezone.name)
-              console.log("zonedTime", zonedTime)
+              let systemTime = toSystemTimeZone(today)
+              console.log(
+                "systemTime",
+                systemTime,
+                "sameTimeZone",
+                sameTimeZone
+              )
             }}
           >
             System TimeZone Test

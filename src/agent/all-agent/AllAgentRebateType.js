@@ -1,3 +1,7 @@
+import React, { useState, useEffect, useMemo, useRef, Children } from "react"
+import { css, Global } from "@emotion/react"
+import { CheckboxGroup } from "../../checkbox/CheckboxGroup"
+
 const ValidBet = "ValidBet"
 const ValidBetTrans = {
   zh: "有效投注",
@@ -10,4 +14,11 @@ const WinLossTrans = {
   en: "Player Win Loss"
 }
 
-const AllAgentRebateTypes = [ValidBet, WinLoss]
+const AllAgentRebate = {
+  ValidBet,
+  WinLoss
+}
+
+const AllAgentRebateTypes = Object.values(AllAgentRebate)
+
+const AllAgentRebateTypeCheckboxGroup = ({}) => {}
