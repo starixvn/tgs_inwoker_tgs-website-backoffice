@@ -154,17 +154,31 @@ export const DateTimeRangeInput = ({
           <Button
             onClick={() => {
               let clientTimezoneOffset = new Date().getTimezoneOffset()
-              let currentTimezones = getTimeZones().filter(
-                ({ currentTimeOffsetInMinutes }) => {
-                  return currentTimeOffsetInMinutes == clientTimezoneOffset
-                }
+              let currentTimezones = getTimeZones({
+                includeUtc: true
+              }).filter(({ currentTimeOffsetInMinutes }) => {
+                return currentTimeOffsetInMinutes == clientTimezoneOffset
+              })
+              console.log(
+                "currentTimezones",
+                currentTimezones,
+                "clientTimezoneOffset",
+                clientTimezoneOffset
               )
-              console.log("currentTimezones", currentTimezones)
-              let targetTimezoneOffset = -420
-              let [targetTimezone, ...restTargetTimezones] =
-                getTimeZones().filter(({ currentTimeOffsetInMinutes }) => {
-                  return currentTimeOffsetInMinutes == targetTimezoneOffset
-                })
+              let targetTimezoneOffset = -480
+              let allTargetTimezones = getTimeZones({
+                includeUtc: true
+              }).filter(({ currentTimeOffsetInMinutes }) => {
+                return currentTimeOffsetInMinutes == targetTimezoneOffset
+              })
+              console.log("allTargetTimezones", allTargetTimezones)
+              let [targetTimezone] = allTargetTimezones
+              console.log(
+                "allTargetTimezones",
+                allTargetTimezones,
+                "currentTimezones",
+                currentTimezones
+              )
               let today = new Date()
               let utcTime = zonedTimeToUtc(today, targetTimezone.name)
               console.log("utcTime", utcTime)
