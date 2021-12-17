@@ -10,7 +10,7 @@ import {
 let API = "/api/BrandAllAgent"
 
 export const useAllAgentSetting = (brandId) => {
-  let url = brandId ? urlWith(searchParams, `${API}/${brandId}`) : ""
+  let url = brandId ? `${API}/${brandId}` : ""
   return useGet(url)
 }
 

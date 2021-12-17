@@ -78,6 +78,7 @@ const AllAgentDialog = ({ brandId, readOnly, dialog, ...props }) => {
     <AllAgentSettingDialog
       brandId={brandId}
       record={data}
+      readOnly={readOnly}
       dialog={dialog}
       onSubmitted={reset}
       dialog={dialog}
@@ -86,7 +87,13 @@ const AllAgentDialog = ({ brandId, readOnly, dialog, ...props }) => {
   )
 }
 
-const AllAgentSettingDialog = ({ brandId, record, onSubmitted, dialog }) => {
+const AllAgentSettingDialog = ({
+  brandId,
+  record,
+  readOnly,
+  onSubmitted,
+  dialog
+}) => {
   let title = useTrans({
     zh: "全民代理",
     en: "All Agent"
