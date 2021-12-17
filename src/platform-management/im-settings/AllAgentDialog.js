@@ -38,7 +38,7 @@ import {
   useAllAgentSetting,
   useUpdateAllAgentSwitch
 } from "../../agent/all-agent/client"
-import { Tabs, Tab, TabList, useTabState } from "../../tab"
+import { Tabs, Tab, TabList, TabPanel, useTabState } from "../../tab"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
