@@ -3,13 +3,13 @@ import { getTimeZones } from "@vvo/tzdb"
 
 const SystemZoneOffset = 480
 
+//TODO: memorize?
 export const isClientTimeZoneSameAsSystemTimeZone = () => {
   let clientTimezoneOffset = -1 * new Date().getTimezoneOffset()
   return SystemZoneOffset === clientTimezoneOffset
 }
 
-//TODO: memorize
-export const toSystemTimeZone = (date) => {
+export const toSystemTime = (date) => {
   let systemTimeZone = getTimeZones({
     includeUtc: true
   }).find(({ currentTimeOffsetInMinutes }) => {
@@ -21,4 +21,4 @@ export const toSystemTimeZone = (date) => {
 }
 
 //TODO: toggle system time zone <-> client time zone
-export const SystemTimeZoneDropdownMenu = () => {}
+export const TimeZoneDropdownMenu = () => {}

@@ -24,10 +24,7 @@ import isValid from "date-fns/isValid"
 import differenceInDays from "date-fns/differenceInDays"
 import { DateDropdownMenu } from "./DateDropdownMenu"
 import { mapObjIndexed } from "ramda"
-import {
-  isClientTimeZoneSameAsSystemTimeZone,
-  toSystemTimeZone
-} from "./SystemTimeZone"
+import { isClientTimeZoneSameAsSystemTimeZone, toSystemTime } from "./TimeZone"
 import { isDev, isFeatureEnabled, Features } from "../env"
 
 export const DateInputRange = ({
@@ -99,7 +96,7 @@ export const DateTimeRangeInput = ({
   validate,
   maxRangeDays,
   dateFormat,
-  showSystemTimeZoneCheckbox = false,
+  showTimeZoneDropdownMenu = false,
   showTimeInput = true,
   showDateDropdownMenu = false,
   required,
@@ -152,23 +149,6 @@ export const DateTimeRangeInput = ({
   return (
     <>
       <Group>
-        {isFeatureEnabled(Features.SystemTimezone) && (
-          <Button
-            onClick={() => {
-              let sameTimeZone = isClientTimeZoneSameAsSystemTimeZone()
-              let today = new Date()
-              let systemTime = toSystemTimeZone(today)
-              console.log(
-                "systemTime",
-                systemTime,
-                "sameTimeZone",
-                sameTimeZone
-              )
-            }}
-          >
-            System TimeZone Test
-          </Button>
-        )}
         {showDateDropdownMenu && (
           <DateDropdownMenu
             onClick={({ type, start, end }) => {
