@@ -11,6 +11,10 @@ export const UpdateLiveChat = "updatelivechat"
 
 export const ViewLiveChat = "viewlivechat"
 
+export const UpdateAllAgent = "updateallagent"
+
+export const ViewAllAgent = "viewallagent"
+
 export const label = ({ codes = [], locale = Locales.zh }) => {
   let [code = ""] = codes
   code = code.toLowerCase()
@@ -41,6 +45,16 @@ export const label = ({ codes = [], locale = Locales.zh }) => {
       return getTrans({
         zh: "编辑即时客服",
         en: "Edit Live Chat"
+      })
+    case ViewAllAgent:
+      return getTrans({
+        zh: "查看全民代理",
+        en: "View All Agent"
+      })
+    case UpdateAllAgent:
+      return getTrans({
+        zh: "编辑全民代理",
+        en: "Edit All Agent"
       })
     default:
       return ""

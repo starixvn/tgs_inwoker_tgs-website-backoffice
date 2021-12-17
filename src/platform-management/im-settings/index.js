@@ -27,6 +27,7 @@ import { Update } from "./menu"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
+import { AllAgentDialogDisclosure } from "./AllAgentDialog"
 
 export { Code }
 
@@ -84,6 +85,7 @@ const BodyContent = ({ brandId, brand }) => {
             brandId={brandId}
           />
         )}
+        <AllAgentDialogDisclosure brandId={brandId} />
       </Set>
     </PageContent>
   )
