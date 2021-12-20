@@ -13,8 +13,7 @@ import {
   FieldStack,
   Group,
   Spinner,
-  FieldWrapper,
-  SwitchField
+  FieldWrapper
 } from "bumbag"
 import { ViewAllAgent, UpdateAllAgent } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -29,16 +28,25 @@ import { Input, InputField } from "../../input/Input"
 import Backdrop from "../../dialog/Backdrop"
 import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { ImageLinkButton } from "../../button/LinkButton"
-import { useFormContext, useWatch } from "react-hook-form"
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  useWatch
+} from "react-hook-form"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { JsonEditor } from "../../text/editor/JsonEditor"
 import { stringifyJSON } from "../../text/json"
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import {
   useAllAgentSetting,
-  useUpdateAllAgentSwitch
+  useUpdateAllAgentSwitch,
+  useUpdateAllAgentGameTypeSwitch
 } from "../../agent/all-agent/client"
 import { Tabs, Tab, TabList, TabPanel, useTabState } from "../../tab"
+import { SwitchField } from "../../switch/Switch"
+import { CheckboxField } from "../../checkbox"
+import { SubmitButton } from "../../button/SubmitButton"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -119,10 +127,19 @@ const AllAgentSettingDialog = ({
 
 //TODO: need to reload data when onChange? no need?
 const DialogBody = ({ brandId, record = {}, onChange }) => {
+  //TODO
+  let groupByGameType = record?.brandAllAgentGameTypes?.reduce(
+    (record, gameTypeRecord) => {
+      let { allAgentGameType } = gameTypeRecord
+      Reflect.set(record, allAgentGameType, clone(gameTypeRecord))
+      return record
+    },
+    {}
+  )
   return (
     <Stack>
       <AllAgentMainSwitch brandId={brandId} defaultValue={record?.switch} />
-      <AllAgentGameTypeTabs />
+      <AllAgentGameTypeTabs record={groupByGameType} />
     </Stack>
   )
 }
@@ -140,8 +157,8 @@ const AllAgentMainSwitch = ({ brandId, defaultValue, onChange }) => {
   })
 
   let offLabel = useTrans({
-    zh: "开启",
-    en: "On"
+    zh: "關閉",
+    en: "Off"
   })
 
   const reset = () => {
@@ -215,7 +232,7 @@ const GameTypeTrans = {
   }
 }
 
-const AllAgentGameTypeTabs = ({ record = {} }) => {
+const AllAgentGameTypeTabs = ({ brandId, record = {} }) => {
   let tab = useTabState({
     selectedId: GameType.LiveDealer
   })
@@ -231,12 +248,42 @@ const AllAgentGameTypeTabs = ({ record = {} }) => {
         <GameTypeTab gameType={GameType.Lottery} {...tab} />
       </TabList>
 
-      <GameTypePanel gameType={GameType.LiveDealer} {...tab} />
-      <GameTypePanel gameType={GameType.Slot} {...tab} />
-      <GameTypePanel gameType={GameType.Sportsbook} {...tab} />
-      <GameTypePanel gameType={GameType.VirtualSports} {...tab} />
-      <GameTypePanel gameType={GameType.CardGame} {...tab} />
-      <GameTypePanel gameType={GameType.Lottery} {...tab} />
+      <GameTypePanel
+        brandId={brandId}
+        gameType={GameType.LiveDealer}
+        record={record[GameType.LiveDealer]}
+        {...tab}
+      />
+      <GameTypePanel
+        brandId={brandId}
+        gameType={GameType.Slot}
+        record={record[GameType.Slot]}
+        {...tab}
+      />
+      <GameTypePanel
+        brandId={brandId}
+        gameType={GameType.Sportsbook}
+        record={record[GameType.Sportsbook]}
+        {...tab}
+      />
+      <GameTypePanel
+        brandId={brandId}
+        gameType={GameType.VirtualSports}
+        record={record[GameType.VirtualSports]}
+        {...tab}
+      />
+      <GameTypePanel
+        brandId={brandId}
+        gameType={GameType.CardGame}
+        record={record[GameType.CardGame]}
+        {...tab}
+      />
+      <GameTypePanel
+        brandId={brandId}
+        gameType={GameType.Lottery}
+        record={record[GameType.Lottery]}
+        {...tab}
+      />
     </Tabs>
   )
 }
@@ -250,10 +297,78 @@ const GameTypeTab = ({ gameType, ...props }) => {
   )
 }
 
-const GameTypePanel = ({ gameType, ...props }) => {
+const GameTypePanel = ({ brandId, gameType, record, ...props }) => {
   return (
     <TabPanel tabId={gameType} {...props}>
-      {gameType}
+      <Stack>
+        <GameTypeSettingCard
+          brandId={brandId}
+          gameType={gameType}
+          record={record}
+        />
+      </Stack>
     </TabPanel>
+  )
+}
+
+const GameTypeSettingCard = ({ brandId, gameType, record }) => {
+  let formMethods = useForm({
+    defaultValues: clone(record)
+  })
+  let { control, handleSubmit } = formMethods
+
+  let { formData, setSubmit } = useState()
+  let { isLoading, result, error, mutate, deleteCache } =
+    useUpdateAllAgentGameTypeSwitch(formData)
+
+  const reset = () => {
+    setSubmit(undefined)
+
+    deleteCache()
+    mutate(null, false)
+  }
+
+  useEffect(() => {
+    if (!isLoading && result) {
+      reset()
+    }
+  }, [isLoading, reset])
+
+  const SwitchFieldName = "switch"
+  let switchValue = useWatch({
+    control,
+    name: SwitchFieldName
+  })
+  return (
+    <Card>
+      <FormProvider {...formMethods}>
+        <FieldStack>
+          <FieldStack orientation="horizontal">
+            <SwitchField
+              name={SwitchFieldName}
+              label={<Trans zh="总开关" en="Main Switch" />}
+              switchLabel={switchValue ? onLabel : offLabel}
+              disabled={isLoading}
+            />
+            <CheckboxField
+              name="hasValidBet"
+              label={<Trans zh="有效投注" en="Valid Bet" />}
+              disabled={isLoading}
+            />
+            <CheckboxField
+              name="hasWinLoss"
+              label={<Trans zh="玩家输赢" en="Player Win Loss" />}
+              disabled={isLoading}
+            />
+          </FieldStack>
+          <SubmitButton
+            isLoading={isLoading}
+            disabled={isLoading}
+            onClick={(event) => handleSubmit(setSubmit)}
+          />
+        </FieldStack>
+        {error && <AlertDialog {...error} onClickClose={reset} />}
+      </FormProvider>
+    </Card>
   )
 }
