@@ -176,6 +176,10 @@ const AllAgentMainSwitch = ({ brandId, defaultValue, onChange }) => {
     }
   }, [isLoading, result])
 
+  if (isLoading) {
+    return <Spinner />
+  }
+
   return (
     <>
       <SwitchField
