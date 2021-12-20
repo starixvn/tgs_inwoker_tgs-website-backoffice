@@ -313,7 +313,7 @@ const GameTypePanel = ({ brandId, gameType, ...props }) => {
   )
 }
 
-const GameTypeettiSngCard = ({ brandId, gameType }) => {
+const GameTypeSettingCard = ({ brandId, gameType }) => {
   //TODO: error dialog
   let {
     isLoading: isLoadingAllAgent,
