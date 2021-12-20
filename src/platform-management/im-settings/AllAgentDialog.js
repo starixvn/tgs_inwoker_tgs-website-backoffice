@@ -350,39 +350,35 @@ const GameTypeSettingCard = ({ brandId, gameType, record }) => {
   return (
     <Card>
       <FormProvider {...formMethods}>
-        <FieldStack>
-          <FieldStack orientation="horizontal">
-            <SwitchField
-              name={SwitchFieldName}
-              label={<Trans zh="总开关" en="Main Switch" />}
-              switchLabel={
-                switchValue ? (
-                  <Trans zh="开启" en="On" />
-                ) : (
-                  <Trans zh="关闭" en="Off" />
-                )
-              }
-              disabled={isLoading}
-            />
-            <CheckboxField
-              name="hasValidBet"
-              label={<Trans zh="有效投注" en="Valid Bet" />}
-              disabled={isLoading}
-            />
-            <CheckboxField
-              name="hasWinLoss"
-              label={<Trans zh="玩家输赢" en="Player Win Loss" />}
-              disabled={isLoading}
-            />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FieldStack>
+            <FieldStack orientation="horizontal">
+              <SwitchField
+                name={SwitchFieldName}
+                label={<Trans zh="总开关" en="Main Switch" />}
+                switchLabel={
+                  switchValue ? (
+                    <Trans zh="开启" en="On" />
+                  ) : (
+                    <Trans zh="关闭" en="Off" />
+                  )
+                }
+                disabled={isLoading}
+              />
+              <CheckboxField
+                name="hasValidBet"
+                label={<Trans zh="有效投注" en="Valid Bet" />}
+                disabled={isLoading}
+              />
+              <CheckboxField
+                name="hasWinLoss"
+                label={<Trans zh="玩家输赢" en="Player Win Loss" />}
+                disabled={isLoading}
+              />
+            </FieldStack>
+            <SubmitButton isLoading={isLoading} disabled={isLoading} />
           </FieldStack>
-          <SubmitButton
-            isLoading={isLoading}
-            disabled={isLoading}
-            onClick={(event) => {
-              handleSubmit(onSubmit)
-            }}
-          />
-        </FieldStack>
+        </form>
         {error && <AlertDialog {...error} onClickClose={reset} />}
       </FormProvider>
     </Card>
