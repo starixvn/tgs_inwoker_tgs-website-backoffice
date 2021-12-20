@@ -77,7 +77,8 @@ const AllAgentDialog = ({ brandId, readOnly, dialog, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null)
+    mutate(null, true)
+    console.log("reset all agent setting")
   }
 
   if (isLoading) {
@@ -153,7 +154,7 @@ const DialogBody = ({ brandId, record = {}, onSubmitted }) => {
   )
 }
 
-const AllAgentMainSwitch = ({ brandId, defaultValue, onChange }) => {
+const AllAgentMainSwitch = ({ brandId, defaultValue, onSubmitted }) => {
   let [mainSwitch, setMainSwitch] = useState(defaultValue)
 
   let [formData, setSubmit] = useState()
@@ -182,6 +183,7 @@ const AllAgentMainSwitch = ({ brandId, defaultValue, onChange }) => {
     if (!isLoading && result) {
       setMainSwitch(formData.switch)
       reset()
+      onSubmitted?.()
     }
   }, [isLoading, result])
 
