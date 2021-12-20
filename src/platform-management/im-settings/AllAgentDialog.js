@@ -64,51 +64,18 @@ export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
         <Trans zh="全民代理设定" en="All Agent Setting" />
       </Disclosure>
       {dialog.visible && (
-        <AllAgentDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
+        <AllAgentSettingDialog
+          brandId={brandId}
+          readOnly={readOnly}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-//TODO: able to rm?
-const AllAgentDialog = ({ brandId, readOnly, dialog, ...props }) => {
-  let { isLoading, data, error, mutate, deleteCache } =
-    useAllAgentSetting(brandId)
-
-  const reset = () => {
-    deleteCache()
-    mutate(null, true)
-    console.log("reset all agent setting")
-  }
-
-  if (isLoading) {
-    return <LoadingBackdrop {...dialog} />
-  }
-
-  if (error) {
-    return <AlertDialog {...error} onClickClose={dialog.close} />
-  }
-
-  return (
-    <AllAgentSettingDialog
-      brandId={brandId}
-      record={data}
-      readOnly={readOnly}
-      dialog={dialog}
-      dialog={dialog}
-      {...props}
-    />
-  )
-}
-
 //TODO: readOnly
-const AllAgentSettingDialog = ({
-  brandId,
-  record,
-  readOnly,
-  onSubmitted,
-  dialog
-}) => {
+const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
   let title = useTrans({
     zh: "全民代理设定",
     en: "All Agent Setting"
@@ -311,15 +278,24 @@ const GameTypeTab = ({ gameType, ...props }) => {
 const GameTypePanel = ({ brandId, gameType, dialog, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === gameType
-  if (!isActive) {
-    return null
-  }
+  console.log(
+    "selectedId",
+    selectedId,
+    "gameType",
+    gameType,
+    "isActive",
+    isActive
+  )
 
   return (
     <TabPanel tabId={gameType} {...props}>
       <Stack>
         {isActive && (
-          <GameTypeSettingCard brandId={brandId} gameType={gameType} />
+          <GameTypeSettingCard
+            brandId={brandId}
+            gameType={gameType}
+            dialog={dialog}
+          />
         )}
       </Stack>
     </TabPanel>
