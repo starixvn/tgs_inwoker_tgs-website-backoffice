@@ -71,12 +71,13 @@ export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
 }
 
 const AllAgentDialog = ({ brandId, readOnly, dialog, ...props }) => {
+  //TODO: move this to each tab?
   let { isLoading, data, error, mutate, deleteCache } =
     useAllAgentSetting(brandId)
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(null)
   }
 
   if (isLoading) {
@@ -93,7 +94,7 @@ const AllAgentDialog = ({ brandId, readOnly, dialog, ...props }) => {
       record={data}
       readOnly={readOnly}
       dialog={dialog}
-      onChange={reset}
+      onSubmitted={reset}
       dialog={dialog}
       {...props}
     />
@@ -105,7 +106,7 @@ const AllAgentSettingDialog = ({
   brandId,
   record,
   readOnly,
-  onChange,
+  onSubmitted,
   dialog
 }) => {
   let title = useTrans({
@@ -120,13 +121,13 @@ const AllAgentSettingDialog = ({
       hideOnClickOutside={false}
       {...dialog}
     >
-      <DialogBody brandId={brandId} record={record} onChange={onChange} />
+      <DialogBody brandId={brandId} record={record} onSubmitted={onSubmitted} />
     </Dialog.Modal>
   )
 }
 
 //TODO: need to reload data when onChange? no need?
-const DialogBody = ({ brandId, record = {}, onChange }) => {
+const DialogBody = ({ brandId, record = {}, onSubmitted }) => {
   //TODO
   let groupByGameType = record?.brandAllAgentGameTypes?.reduce(
     (record, gameTypeRecord) => {
@@ -138,8 +139,16 @@ const DialogBody = ({ brandId, record = {}, onChange }) => {
   )
   return (
     <Stack>
-      <AllAgentMainSwitch brandId={brandId} defaultValue={record?.switch} />
-      <AllAgentGameTypeTabs brandId={brandId} record={groupByGameType} />
+      <AllAgentMainSwitch
+        brandId={brandId}
+        defaultValue={record?.switch}
+        onSubmitted={onSubmitted}
+      />
+      <AllAgentGameTypeTabs
+        brandId={brandId}
+        record={groupByGameType}
+        onSubmitted={onSubmitted}
+      />
     </Stack>
   )
 }
@@ -236,7 +245,7 @@ const GameTypeTrans = {
   }
 }
 
-const AllAgentGameTypeTabs = ({ brandId, record = {} }) => {
+const AllAgentGameTypeTabs = ({ brandId, record = {}, onSubmitted }) => {
   let tab = useTabState({
     selectedId: GameType.LiveDealer
   })
@@ -256,36 +265,42 @@ const AllAgentGameTypeTabs = ({ brandId, record = {} }) => {
         brandId={brandId}
         gameType={GameType.LiveDealer}
         record={record[GameType.LiveDealer]}
+        onSubmitted={onSubmitted}
         {...tab}
       />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.Slot}
         record={record[GameType.Slot]}
+        onSubmitted={onSubmitted}
         {...tab}
       />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.Sportsbook}
         record={record[GameType.Sportsbook]}
+        onSubmitted={onSubmitted}
         {...tab}
       />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.VirtualSports}
         record={record[GameType.VirtualSports]}
+        onSubmitted={onSubmitted}
         {...tab}
       />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.CardGame}
         record={record[GameType.CardGame]}
+        onSubmitted={onSubmitted}
         {...tab}
       />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.Lottery}
         record={record[GameType.Lottery]}
+        onSubmitted={onSubmitted}
         {...tab}
       />
     </Tabs>
@@ -301,7 +316,13 @@ const GameTypeTab = ({ gameType, ...props }) => {
   )
 }
 
-const GameTypePanel = ({ brandId, gameType, record, ...props }) => {
+const GameTypePanel = ({
+  brandId,
+  gameType,
+  record,
+  onSubmitted,
+  ...props
+}) => {
   return (
     <TabPanel tabId={gameType} {...props}>
       <Stack>
@@ -309,13 +330,14 @@ const GameTypePanel = ({ brandId, gameType, record, ...props }) => {
           brandId={brandId}
           gameType={gameType}
           record={record}
+          onSubmitted={onSubmitted}
         />
       </Stack>
     </TabPanel>
   )
 }
 
-const GameTypeSettingCard = ({ brandId, gameType, record }) => {
+const GameTypeSettingCard = ({ brandId, gameType, record, onSubmitted }) => {
   let formMethods = useForm({
     defaultValues: clone(record)
   })
@@ -342,6 +364,7 @@ const GameTypeSettingCard = ({ brandId, gameType, record }) => {
   useEffect(() => {
     if (!isLoading && result) {
       reset()
+      onSubmitted?.()
     }
   }, [isLoading, reset])
 
