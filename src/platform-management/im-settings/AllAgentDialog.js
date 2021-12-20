@@ -41,7 +41,11 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import {
   useAllAgentSetting,
   useUpdateAllAgentSwitch,
-  useUpdateAllAgentGameTypeSwitch
+  useUpdateAllAgentGameTypeSwitch,
+  useAllAgentValidBetCondition,
+  useUpdateAllAgentValidBetCondition,
+  useAllAgentWinLossCondition,
+  useUpdateAllAgentWinLossCondition
 } from "../../agent/all-agent/client"
 import { Tabs, Tab, TabList, TabPanel, useTabState } from "../../tab"
 import { SwitchField } from "../../switch/Switch"
@@ -94,22 +98,11 @@ const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
 }
 
 const DialogBody = ({ brandId, dialog }) => {
-  /*
-  //TODO
-  let groupByGameType = record?.brandAllAgentGameTypes?.reduce(
-    (record, gameTypeRecord) => {
-      let { allAgentGameType } = gameTypeRecord
-      Reflect.set(record, allAgentGameType, clone(gameTypeRecord))
-      return record
-    },
-    {}
-  )
-  */
   return (
-    <Stack>
+    <FieldStack>
       <AllAgentMainSwitch brandId={brandId} dialog={dialog} />
       <AllAgentGameTypeTabs brandId={brandId} dialog={dialog} />
-    </Stack>
+    </FieldStack>
   )
 }
 
@@ -278,14 +271,6 @@ const GameTypeTab = ({ gameType, ...props }) => {
 const GameTypePanel = ({ brandId, gameType, dialog, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === gameType
-  console.log(
-    "selectedId",
-    selectedId,
-    "gameType",
-    gameType,
-    "isActive",
-    isActive
-  )
 
   return (
     <TabPanel tabId={gameType} {...props}>
@@ -297,8 +282,110 @@ const GameTypePanel = ({ brandId, gameType, dialog, ...props }) => {
             dialog={dialog}
           />
         )}
+        <FieldStack orientation="horizontal">
+          <ValidBetSettingDialogDisclosure
+            brandId={brandId}
+            gameType={gameType}
+          />
+          <WinLossSettingDialogDisclosure
+            brandId={brandId}
+            gameType={gameType}
+          />
+        </FieldStack>
       </Stack>
     </TabPanel>
+  )
+}
+
+//TODO: readOnly?
+const ValidBetSettingDialogDisclosure = ({ brandId, gameType, ...props }) => {
+  let dialog = useModalState()
+
+  return (
+    <>
+      <Disclosure {...dialog} {...props}>
+        <Trans zh="有效投注返佣设置" en="Valid Bet Rebate Setting" />
+      </Disclosure>
+      {dialog.visible && (
+        <MultileLayerSettingDialog
+          brandId={brandId}
+          gameType={gameType}
+          useFetch={useAllAgentValidBetCondition}
+          useUpdate={useUpdateAllAgentValidBetCondition}
+          dialog={dialog}
+        />
+      )}
+    </>
+  )
+}
+
+//TODO: readOnly?
+const WinLossSettingDialogDisclosure = ({ brandId, gameType, ...props }) => {
+  let dialog = useModalState()
+
+  return (
+    <>
+      <Disclosure {...dialog} {...props}>
+        <Trans zh="玩家输赢返佣设置" en="Player Win Loss Rebate Setting" />
+      </Disclosure>
+      {dialog.visible && (
+        <MultileLayerSettingDialog
+          brandId={brandId}
+          gameType={gameType}
+          useFetch={useAllAgentWinLossCondition}
+          useUpdate={useUpdateAllAgentWinLossCondition}
+          dialog={dialog}
+        />
+      )}
+    </>
+  )
+}
+
+const MultileLayerSettingDialog = ({
+  name,
+  brandId,
+  gameType,
+  useFetch,
+  useUpdate,
+  dialog,
+  ...props
+}) => {
+  let { isLoading, data, error, mutate, deleteCache } = useFetch(
+    brandId,
+    gameType
+  )
+
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.close} />
+  }
+
+  return <MultileLayerSettingFormDialog />
+}
+
+const MultileLayerSettingFormDialog = ({
+  brandId,
+  gameType,
+  record = {},
+  useUpdate,
+  onSubmitted,
+  dialog,
+  title,
+  ...props
+}) => {
+  //TODO
+  return (
+    <FormDialog
+      defaultValues={{
+        brandId,
+        ...clone(record)
+      }}
+    >
+      TODO
+    </FormDialog>
   )
 }
 
@@ -327,7 +414,6 @@ const GameTypeSettingCard = ({ brandId, gameType, dialog }) => {
   let record = allAgent?.brandAllAgentGameTypes?.find(
     ({ allAgentGameType }) => allAgentGameType === gameType
   )
-  console.log("record", record, "gameType", gameType, "allAgent", allAgent)
   return (
     <GameTypeSettingFormCard
       brandId={brandId}

@@ -154,7 +154,6 @@ const ProfitSharingSettingFormDialog = ({
   onSubmitted,
   ...props
 }) => {
-  //TODO: loading existing setting?
   let title = useTrans({
     zh: "阶梯式分红设定",
     en: "Profit Sharing Setting"
