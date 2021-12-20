@@ -181,6 +181,7 @@ const AllAgentMainSwitch = ({ brandId, defaultValue, onSubmitted }) => {
   //TODO: need to trigger load data from server?
   useEffect(() => {
     if (!isLoading && result) {
+      console.log("fetch submitted")
       setMainSwitch(formData.switch)
       reset()
       onSubmitted?.()
