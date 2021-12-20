@@ -81,6 +81,6 @@ formData: {
 }
 */
 export const useUpdateAllAgentGameTypeSwitch = (formData) => {
-  let url = formData?.brandId ? `${API}/switch` : ""
+  let url = formData?.brandId ? `${API}/gameType` : ""
   return usePutData(url, formData)
 }
