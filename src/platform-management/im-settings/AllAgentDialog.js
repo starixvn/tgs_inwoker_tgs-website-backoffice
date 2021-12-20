@@ -70,8 +70,8 @@ export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   )
 }
 
+//TODO: able to rm?
 const AllAgentDialog = ({ brandId, readOnly, dialog, ...props }) => {
-  //TODO: move this to each tab?
   let { isLoading, data, error, mutate, deleteCache } =
     useAllAgentSetting(brandId)
 
@@ -95,7 +95,6 @@ const AllAgentDialog = ({ brandId, readOnly, dialog, ...props }) => {
       record={data}
       readOnly={readOnly}
       dialog={dialog}
-      onSubmitted={reset}
       dialog={dialog}
       {...props}
     />
@@ -122,12 +121,13 @@ const AllAgentSettingDialog = ({
       hideOnClickOutside={false}
       {...dialog}
     >
-      <DialogBody brandId={brandId} record={record} onSubmitted={onSubmitted} />
+      <DialogBody brandId={brandId} />
     </Dialog.Modal>
   )
 }
 
-const DialogBody = ({ brandId, record = {}, onSubmitted }) => {
+const DialogBody = ({ brandId }) => {
+  /*
   //TODO
   let groupByGameType = record?.brandAllAgentGameTypes?.reduce(
     (record, gameTypeRecord) => {
@@ -137,19 +137,17 @@ const DialogBody = ({ brandId, record = {}, onSubmitted }) => {
     },
     {}
   )
+  */
   return (
     <Stack>
       <AllAgentMainSwitch brandId={brandId} />
-      <AllAgentGameTypeTabs
-        brandId={brandId}
-        record={groupByGameType}
-        onSubmitted={onSubmitted}
-      />
+      <AllAgentGameTypeTabs brandId={brandId} />
     </Stack>
   )
 }
 
 const AllAgentMainSwitch = ({ brandId }) => {
+  //TODO: allAgentError dialog
   let {
     isLoading: isLoadingAllAgent,
     data: allAgent,
@@ -267,17 +265,9 @@ const AllAgentGameTypeTabs = ({ brandId, record = {}, onSubmitted }) => {
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.LiveDealer}
-        record={record[GameType.LiveDealer]}
-        onSubmitted={onSubmitted}
         {...tab}
       />
-      <GameTypePanel
-        brandId={brandId}
-        gameType={GameType.Slot}
-        record={record[GameType.Slot]}
-        onSubmitted={onSubmitted}
-        {...tab}
-      />
+      <GameTypePanel brandId={brandId} gameType={GameType.Slot} {...tab} />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.Sportsbook}
@@ -288,24 +278,10 @@ const AllAgentGameTypeTabs = ({ brandId, record = {}, onSubmitted }) => {
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.VirtualSports}
-        record={record[GameType.VirtualSports]}
-        onSubmitted={onSubmitted}
         {...tab}
       />
-      <GameTypePanel
-        brandId={brandId}
-        gameType={GameType.CardGame}
-        record={record[GameType.CardGame]}
-        onSubmitted={onSubmitted}
-        {...tab}
-      />
-      <GameTypePanel
-        brandId={brandId}
-        gameType={GameType.Lottery}
-        record={record[GameType.Lottery]}
-        onSubmitted={onSubmitted}
-        {...tab}
-      />
+      <GameTypePanel brandId={brandId} gameType={GameType.CardGame} {...tab} />
+      <GameTypePanel brandId={brandId} gameType={GameType.Lottery} {...tab} />
     </Tabs>
   )
 }
@@ -319,28 +295,46 @@ const GameTypeTab = ({ gameType, ...props }) => {
   )
 }
 
-const GameTypePanel = ({
-  brandId,
-  gameType,
-  record,
-  onSubmitted,
-  ...props
-}) => {
+const GameTypePanel = ({ brandId, gameType, ...props }) => {
+  let { selectedId } = props
+  let isActive = selectedId === gameType
+  if (!isActive) {
+    return null
+  }
+
   return (
     <TabPanel tabId={gameType} {...props}>
       <Stack>
-        <GameTypeSettingCard
-          brandId={brandId}
-          gameType={gameType}
-          record={record}
-          onSubmitted={onSubmitted}
-        />
+        {isActive && (
+          <GameTypeSettingCard brandId={brandId} gameType={gameType} />
+        )}
       </Stack>
     </TabPanel>
   )
 }
 
-const GameTypeSettingCard = ({ brandId, gameType, record, onSubmitted }) => {
+const GameTypeettiSngCard = ({ brandId, gameType }) => {
+  //TODO: error dialog
+  let {
+    isLoading: isLoadingAllAgent,
+    data: allAgent,
+    error: allAgentError,
+    mutate: mutateAllAgent,
+    deleteCache: deleteAllAgentCache
+  } = useAllAgentSetting(brandId)
+
+  if (isLoadingAllAgent) {
+    return <Spinner />
+  }
+
+  let record = allAgent?.brandAllAgentGameTypes?.find(
+    ({ allAgentGameType }) => allAgentGameType === gameType
+  )
+  console.log("record", record, "gameType", gameType, "allAgent", allAgent)
+  return <GameTypeSettingFormCard brandId={brandId} record={record} />
+}
+
+const GameTypeSettingFormCard = ({ brandId, record = {} }) => {
   let formMethods = useForm({
     defaultValues: clone(record)
   })
@@ -367,7 +361,6 @@ const GameTypeSettingCard = ({ brandId, gameType, record, onSubmitted }) => {
   useEffect(() => {
     if (!isLoading && result) {
       reset()
-      onSubmitted?.()
     }
   }, [isLoading, reset])
 
