@@ -139,7 +139,7 @@ const DialogBody = ({ brandId, record = {}, onChange }) => {
   return (
     <Stack>
       <AllAgentMainSwitch brandId={brandId} defaultValue={record?.switch} />
-      <AllAgentGameTypeTabs record={groupByGameType} />
+      <AllAgentGameTypeTabs brandId={brandId} record={groupByGameType} />
     </Stack>
   )
 }
@@ -149,7 +149,7 @@ const AllAgentMainSwitch = ({ brandId, defaultValue, onChange }) => {
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateAllAgentSwitch(brandId, formData)
+    useUpdateAllAgentSwitch(formData)
 
   let onLabel = useTrans({
     zh: "开启",
@@ -321,6 +321,14 @@ const GameTypeSettingCard = ({ brandId, gameType, record }) => {
   let { isLoading, result, error, mutate, deleteCache } =
     useUpdateAllAgentGameTypeSwitch(formData)
 
+  const onSubmit = (data = {}) => {
+    console.log("onSubmit", data)
+    setSubmit({
+      brandId,
+      ...data
+    })
+  }
+
   const reset = () => {
     setSubmit(undefined)
 
@@ -370,7 +378,9 @@ const GameTypeSettingCard = ({ brandId, gameType, record }) => {
           <SubmitButton
             isLoading={isLoading}
             disabled={isLoading}
-            onClick={(event) => handleSubmit(setSubmit)}
+            onClick={(event) => {
+              handleSubmit(onSubmit)
+            }}
           />
         </FieldStack>
         {error && <AlertDialog {...error} onClickClose={reset} />}
