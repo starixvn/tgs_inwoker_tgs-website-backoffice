@@ -127,7 +127,6 @@ const AllAgentSettingDialog = ({
   )
 }
 
-//TODO: need to reload data when onChange? no need?
 const DialogBody = ({ brandId, record = {}, onSubmitted }) => {
   //TODO
   let groupByGameType = record?.brandAllAgentGameTypes?.reduce(
@@ -140,11 +139,7 @@ const DialogBody = ({ brandId, record = {}, onSubmitted }) => {
   )
   return (
     <Stack>
-      <AllAgentMainSwitch
-        brandId={brandId}
-        defaultValue={record?.switch}
-        onSubmitted={onSubmitted}
-      />
+      <AllAgentMainSwitch brandId={brandId} />
       <AllAgentGameTypeTabs
         brandId={brandId}
         record={groupByGameType}
@@ -154,8 +149,14 @@ const DialogBody = ({ brandId, record = {}, onSubmitted }) => {
   )
 }
 
-const AllAgentMainSwitch = ({ brandId, defaultValue, onSubmitted }) => {
-  let [mainSwitch, setMainSwitch] = useState(defaultValue)
+const AllAgentMainSwitch = ({ brandId }) => {
+  let {
+    isLoading: isLoadingAllAgent,
+    data: allAgent,
+    error: allAgentError,
+    mutate: mutateAllAgent,
+    deleteCache: deleteAllAgentCache
+  } = useAllAgentSetting(brandId)
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
@@ -181,14 +182,14 @@ const AllAgentMainSwitch = ({ brandId, defaultValue, onSubmitted }) => {
   //TODO: need to trigger load data from server?
   useEffect(() => {
     if (!isLoading && result) {
-      console.log("fetch submitted")
-      setMainSwitch(formData.switch)
+      deleteAllAgentCache()
+      mutateAllAgent(null)
+
       reset()
-      onSubmitted?.()
     }
   }, [isLoading, result])
 
-  if (isLoading) {
+  if (isLoadingAllAgent || isLoading) {
     return <Spinner />
   }
 
@@ -196,11 +197,10 @@ const AllAgentMainSwitch = ({ brandId, defaultValue, onSubmitted }) => {
     <>
       <SwitchField
         label={<Trans zh="总开关" en="Main Switch" />}
-        switchLabel={mainSwitch ? onLabel : offLabel}
-        value={mainSwitch}
+        switchLabel={allAgent?.switch ? onLabel : offLabel}
+        defaultValue={allAgent?.switch}
         onChange={(event) => {
           let checked = event.target.checked
-          // setMainSwitch(checked)
           setSubmit({
             brandId,
             switch: checked
@@ -384,7 +384,7 @@ const GameTypeSettingCard = ({ brandId, gameType, record, onSubmitted }) => {
             <FieldStack orientation="horizontal">
               <SwitchField
                 name={SwitchFieldName}
-                label={<Trans zh="总开关" en="Main Switch" />}
+                label={<Trans zh="开关" en="Switch" />}
                 switchLabel={
                   switchValue ? (
                     <Trans zh="开启" en="On" />
