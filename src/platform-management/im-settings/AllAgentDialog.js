@@ -347,7 +347,13 @@ const GameTypeSettingCard = ({ brandId, gameType, record }) => {
             <SwitchField
               name={SwitchFieldName}
               label={<Trans zh="总开关" en="Main Switch" />}
-              switchLabel={switchValue ? onLabel : offLabel}
+              switchLabel={
+                switchValue ? (
+                  <Trans zh="开启" en="On" />
+                ) : (
+                  <Trans zh="关闭" en="Off" />
+                )
+              }
               disabled={isLoading}
             />
             <CheckboxField
