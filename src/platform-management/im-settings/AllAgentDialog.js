@@ -126,7 +126,7 @@ const AllAgentSettingDialog = ({
   )
 }
 
-const DialogBody = ({ brandId }) => {
+const DialogBody = ({ brandId, dialog }) => {
   /*
   //TODO
   let groupByGameType = record?.brandAllAgentGameTypes?.reduce(
@@ -140,13 +140,13 @@ const DialogBody = ({ brandId }) => {
   */
   return (
     <Stack>
-      <AllAgentMainSwitch brandId={brandId} />
-      <AllAgentGameTypeTabs brandId={brandId} />
+      <AllAgentMainSwitch brandId={brandId} dialog={dialog} />
+      <AllAgentGameTypeTabs brandId={brandId} dialog={dialog} />
     </Stack>
   )
 }
 
-const AllAgentMainSwitch = ({ brandId }) => {
+const AllAgentMainSwitch = ({ brandId, dialog }) => {
   //TODO: allAgentError dialog
   let {
     isLoading: isLoadingAllAgent,
@@ -189,6 +189,10 @@ const AllAgentMainSwitch = ({ brandId }) => {
 
   if (isLoadingAllAgent || isLoading) {
     return <Spinner />
+  }
+
+  if (allAgentError) {
+    return <AlertDialog {...allAgentError} onClickClose={dialog.close} />
   }
 
   return (
@@ -246,7 +250,7 @@ const GameTypeTrans = {
   }
 }
 
-const AllAgentGameTypeTabs = ({ brandId, record = {}, onSubmitted }) => {
+const AllAgentGameTypeTabs = ({ brandId, dialog }) => {
   let tab = useTabState({
     selectedId: GameType.LiveDealer
   })
@@ -265,23 +269,34 @@ const AllAgentGameTypeTabs = ({ brandId, record = {}, onSubmitted }) => {
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.LiveDealer}
+        dialog={dialog}
         {...tab}
       />
       <GameTypePanel brandId={brandId} gameType={GameType.Slot} {...tab} />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.Sportsbook}
-        record={record[GameType.Sportsbook]}
-        onSubmitted={onSubmitted}
+        dialog={dialog}
         {...tab}
       />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.VirtualSports}
+        dialog={dialog}
         {...tab}
       />
-      <GameTypePanel brandId={brandId} gameType={GameType.CardGame} {...tab} />
-      <GameTypePanel brandId={brandId} gameType={GameType.Lottery} {...tab} />
+      <GameTypePanel
+        brandId={brandId}
+        gameType={GameType.CardGame}
+        dialog={dialog}
+        {...tab}
+      />
+      <GameTypePanel
+        brandId={brandId}
+        gameType={GameType.Lottery}
+        dialog={dialog}
+        {...tab}
+      />
     </Tabs>
   )
 }
@@ -295,7 +310,7 @@ const GameTypeTab = ({ gameType, ...props }) => {
   )
 }
 
-const GameTypePanel = ({ brandId, gameType, ...props }) => {
+const GameTypePanel = ({ brandId, gameType, dialog, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === gameType
   if (!isActive) {
@@ -313,28 +328,43 @@ const GameTypePanel = ({ brandId, gameType, ...props }) => {
   )
 }
 
-const GameTypeSettingCard = ({ brandId, gameType }) => {
+const GameTypeSettingCard = ({ brandId, gameType, dialog }) => {
   //TODO: error dialog
   let {
     isLoading: isLoadingAllAgent,
     data: allAgent,
     error: allAgentError,
-    mutate: mutateAllAgent,
-    deleteCache: deleteAllAgentCache
+    mutate,
+    deleteCache
   } = useAllAgentSetting(brandId)
+
+  const reset = ({}) => {
+    deleteCache()
+    mutate(null, true)
+  }
 
   if (isLoadingAllAgent) {
     return <Spinner />
+  }
+
+  if (allAgentError) {
+    return <AlertDialog {...allAgentError} onClickClose={dialog.close} />
   }
 
   let record = allAgent?.brandAllAgentGameTypes?.find(
     ({ allAgentGameType }) => allAgentGameType === gameType
   )
   console.log("record", record, "gameType", gameType, "allAgent", allAgent)
-  return <GameTypeSettingFormCard brandId={brandId} record={record} />
+  return (
+    <GameTypeSettingFormCard
+      brandId={brandId}
+      record={record}
+      onSubmitted={reset}
+    />
+  )
 }
 
-const GameTypeSettingFormCard = ({ brandId, record = {} }) => {
+const GameTypeSettingFormCard = ({ brandId, record = {}, onSubmitted }) => {
   let formMethods = useForm({
     defaultValues: clone(record)
   })
@@ -361,6 +391,7 @@ const GameTypeSettingFormCard = ({ brandId, record = {} }) => {
   useEffect(() => {
     if (!isLoading && result) {
       reset()
+      onSubmitted?.()
     }
   }, [isLoading, reset])
 
