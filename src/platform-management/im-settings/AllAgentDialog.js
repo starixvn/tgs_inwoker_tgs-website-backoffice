@@ -363,7 +363,19 @@ const MultileLayerSettingDialog = ({
     return <AlertDialog {...error} onClickClose={dialog.close} />
   }
 
-  return <MultileLayerSettingFormDialog />
+  return (
+    <MultileLayerSettingFormDialog
+      brandId={brandId}
+      gameType={gameType}
+      record={data}
+      useUpdate={useUpdate}
+      onSubmitted={() => {
+        deleteCache()
+        mutate(null, false)
+      }}
+      dialog={dialog}
+    />
+  )
 }
 
 const MultileLayerSettingFormDialog = ({
@@ -383,6 +395,8 @@ const MultileLayerSettingFormDialog = ({
         brandId,
         ...clone(record)
       }}
+      onSubmitted={onSubmitted}
+      dialog={dialog}
     >
       TODO
     </FormDialog>
