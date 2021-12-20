@@ -147,7 +147,6 @@ const DialogBody = ({ brandId, dialog }) => {
 }
 
 const AllAgentMainSwitch = ({ brandId, dialog }) => {
-  //TODO: allAgentError dialog
   let {
     isLoading: isLoadingAllAgent,
     data: allAgent,
@@ -177,7 +176,6 @@ const AllAgentMainSwitch = ({ brandId, dialog }) => {
     mutate(null, undefined)
   }
 
-  //TODO: need to trigger load data from server?
   useEffect(() => {
     if (!isLoading && result) {
       deleteAllAgentCache()
@@ -329,7 +327,6 @@ const GameTypePanel = ({ brandId, gameType, dialog, ...props }) => {
 }
 
 const GameTypeSettingCard = ({ brandId, gameType, dialog }) => {
-  //TODO: error dialog
   let {
     isLoading: isLoadingAllAgent,
     data: allAgent,
@@ -338,7 +335,7 @@ const GameTypeSettingCard = ({ brandId, gameType, dialog }) => {
     deleteCache
   } = useAllAgentSetting(brandId)
 
-  const reset = ({}) => {
+  const reset = () => {
     deleteCache()
     mutate(null, true)
   }
