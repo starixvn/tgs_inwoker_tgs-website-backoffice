@@ -317,12 +317,11 @@ const GameTypeSettingCard = ({ brandId, gameType, record }) => {
   })
   let { control, handleSubmit } = formMethods
 
-  let { formData, setSubmit } = useState()
+  let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
     useUpdateAllAgentGameTypeSwitch(formData)
 
   const onSubmit = (data = {}) => {
-    console.log("onSubmit", data)
     setSubmit({
       brandId,
       ...data
