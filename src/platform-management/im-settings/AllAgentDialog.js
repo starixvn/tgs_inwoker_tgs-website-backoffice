@@ -390,16 +390,18 @@ const MultileLayerSettingFormDialog = ({
 }) => {
   //TODO
   return (
-    <FormDialog
-      defaultValues={{
-        brandId,
-        ...clone(record)
-      }}
-      onSubmitted={onSubmitted}
-      dialog={dialog}
-    >
-      TODO
-    </FormDialog>
+    <Backdrop {...dialog}>
+      <FormDialog
+        defaultValues={{
+          brandId,
+          ...clone(record)
+        }}
+        onSubmitted={onSubmitted}
+        dialog={dialog}
+      >
+        TODO
+      </FormDialog>
+    </Backdrop>
   )
 }
 
