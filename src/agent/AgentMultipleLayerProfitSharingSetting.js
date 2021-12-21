@@ -274,7 +274,13 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
     keyName: "_id"
   })
 
-  // let fields = watch(FieldName)
+  let watchFieldArray = watch(FieldName)
+  let controlledFields = fieldArray.fields.map((field, index) => {
+    return {
+      ...field,
+      ...watchFieldArray[index]
+    }
+  })
   return (
     <Table>
       <Table.Head>
@@ -294,7 +300,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        {fieldArray.fields.map((field, index) => (
+        {controlledFields.map((field, index) => (
           <SettingRow
             name={name}
             key={field._id}
@@ -306,14 +312,14 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
             readOnly={readOnly}
           />
         ))}
-        {readOnly && !fieldArray.fields.length && (
+        {readOnly && !controlledFields.length && (
           <Table.Row>
             <Table.Cell textAlign="center" colSpan={4}>
               <Trans zh="无资料" en="No Data" />
             </Table.Cell>
           </Table.Row>
         )}
-        {editable && fieldArray.fields.length < maxLevelSize && (
+        {editable && controlledFields.length < maxLevelSize && (
           <AddRow
             fieldArray={fieldArray}
             profitSharingPercentageFieldName={profitSharingPercentageFieldName}
