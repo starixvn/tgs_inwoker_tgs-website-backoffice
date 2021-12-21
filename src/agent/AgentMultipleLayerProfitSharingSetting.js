@@ -266,7 +266,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
   readOnly
 }) => {
   let editable = !readOnly
-  let { control, watch } = useFormContext()
+  let { control } = useFormContext()
 
   let fieldArray = useFieldArray({
     control,
@@ -381,15 +381,17 @@ const SettingRow = ({
   let editable = !readOnly
   let disabled = readOnly
 
+  const RankFieldName = `${name}.${index}.rank`
+  let rank = useWatch({
+    control,
+    name: RankFieldName
+  })
+  console.log("index", index, "watch rank", rank)
   return (
     <>
       <Table.Row>
         <Table.Cell>
-          <Input
-            type="hidden"
-            name={`${name}.${index}.rank`}
-            value={index + 1}
-          />
+          <Input type="hidden" name={RankFieldName} value={rank} />
           {editable && (
             <Button
               size="small"
