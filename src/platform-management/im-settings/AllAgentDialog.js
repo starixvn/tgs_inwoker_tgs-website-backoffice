@@ -51,6 +51,7 @@ import { Tabs, Tab, TabList, TabPanel, useTabState } from "../../tab"
 import { SwitchField } from "../../switch/Switch"
 import { CheckboxField } from "../../checkbox"
 import { SubmitButton } from "../../button/SubmitButton"
+import { AgentMultipleLayerProfitSharingSettingFormBody } from "../../agent/AgentMultipleLayerProfitSharingSetting"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -388,7 +389,23 @@ const MultileLayerSettingFormDialog = ({
   title,
   ...props
 }) => {
-  //TODO
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } = useUpdate(formData)
+
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
+    setSubmit(undefined)
+  }
+
+  const onSubmit = (data = {}) => {
+    setSubmit({
+      brandId,
+      allAgentGameType: gameType,
+      ...data
+    })
+  }
+
   return (
     <Backdrop {...dialog}>
       <FormDialog
@@ -396,10 +413,16 @@ const MultileLayerSettingFormDialog = ({
           brandId,
           ...clone(record)
         }}
+        onSubmit={onSubmit}
+        isLoading={isLoading}
         onSubmitted={onSubmitted}
+        result={result}
+        error={error}
+        onCloseErrorAlert={reset}
         dialog={dialog}
+        hideBackdrop
       >
-        TODO
+        <AgentMultipleLayerProfitSharingSettingFormBody name="conditions" />
       </FormDialog>
     </Backdrop>
   )
