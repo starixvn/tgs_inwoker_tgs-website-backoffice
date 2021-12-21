@@ -413,7 +413,7 @@ const MultileLayerSettingFormDialog = ({
       <FormDialog
         defaultValues={{
           brandId,
-          ...clone(record)
+          conditions: clone(record)
         }}
         onSubmit={onSubmit}
         isLoading={isLoading}
