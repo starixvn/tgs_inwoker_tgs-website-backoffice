@@ -13,7 +13,8 @@ import {
   FieldStack,
   Group,
   Spinner,
-  FieldWrapper
+  FieldWrapper,
+  Heading
 } from "bumbag"
 import { ViewAllAgent, UpdateAllAgent } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -101,21 +102,40 @@ const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
 const DialogBody = ({ brandId, dialog }) => {
   return (
     <FieldStack>
-      <AllAgentMainSwitch brandId={brandId} dialog={dialog} />
+      <AllAgentMainSwitchBox brandId={brandId} dialog={dialog} />
       <AllAgentGameTypeTabs brandId={brandId} dialog={dialog} />
     </FieldStack>
   )
 }
 
-const AllAgentMainSwitch = ({ brandId, dialog }) => {
-  let {
-    isLoading: isLoadingAllAgent,
-    data: allAgent,
-    error: allAgentError,
-    mutate: mutateAllAgent,
-    deleteCache: deleteAllAgentCache
-  } = useAllAgentSetting(brandId)
+const AllAgentMainSwitchBox = ({ brandId, dialog }) => {
+  let { isLoading, data, error, mutate, deleteCache } =
+    useAllAgentSetting(brandId)
 
+  // if (isLoading) {
+  //   return <Spinner />
+  // }
+
+  // if (allAgentError) {
+  //   return <AlertDialog {...allAgentError} onClickClose={dialog.close} />
+  // }
+
+  return (
+    <Set>
+      <Heading>
+        <Trans zh="总开关" en="Main Switch" />
+      </Heading>
+      <AllAgentMainSwitchField
+        brandId={brandId}
+        isLoading={isLoading}
+        defaultValue={data?.switch}
+      />
+    </Set>
+  )
+}
+
+const AllAgentMainSwitchField = ({ brandId, defaultValue, onSubmitted }) => {
+  let [checked, setChecked] = useState(defaultValue)
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
     useUpdateAllAgentSwitch(formData)
@@ -134,34 +154,29 @@ const AllAgentMainSwitch = ({ brandId, dialog }) => {
     setSubmit(undefined)
 
     deleteCache()
-    mutate(null, undefined)
+    mutate(null, false)
   }
 
   useEffect(() => {
     if (!isLoading && result) {
-      deleteAllAgentCache()
-      mutateAllAgent(null)
-
-      reset()
+      onSubmitted?.()
     }
   }, [isLoading, result])
 
-  if (isLoadingAllAgent || isLoading) {
-    return <Spinner />
-  }
-
-  if (allAgentError) {
-    return <AlertDialog {...allAgentError} onClickClose={dialog.close} />
-  }
+  // if (isLoading) {
+  //   return <Spinner />
+  // }
 
   return (
     <>
-      <SwitchField
-        label={<Trans zh="总开关" en="Main Switch" />}
-        switchLabel={allAgent?.switch ? onLabel : offLabel}
-        defaultValue={allAgent?.switch}
+      <Switch
+        label={checked ? onLabel : offLabel}
+        checked={checked}
         onChange={(event) => {
           let checked = event.target.checked
+          setChecked(checked)
+
+          reset()
           setSubmit({
             brandId,
             switch: checked
