@@ -134,8 +134,7 @@ const AllAgentMainSwitchBox = ({ brandId, dialog }) => {
   )
 }
 
-const AllAgentMainSwitchField = ({ brandId, defaultValue, onSubmitted }) => {
-  let [checked, setChecked] = useState(defaultValue)
+const AllAgentMainSwitchField = ({ brandId, checked, onSubmitted }) => {
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
     useUpdateAllAgentSwitch(formData)
@@ -160,12 +159,13 @@ const AllAgentMainSwitchField = ({ brandId, defaultValue, onSubmitted }) => {
   useEffect(() => {
     if (!isLoading && result) {
       onSubmitted?.()
+      deleteCache()
     }
   }, [isLoading, result])
 
-  // if (isLoading) {
-  //   return <Spinner />
-  // }
+  if (isLoading) {
+    return <Spinner />
+  }
 
   return (
     <>
@@ -174,9 +174,6 @@ const AllAgentMainSwitchField = ({ brandId, defaultValue, onSubmitted }) => {
         checked={checked}
         onChange={(event) => {
           let checked = event.target.checked
-          setChecked(checked)
-
-          reset()
           setSubmit({
             brandId,
             switch: checked
