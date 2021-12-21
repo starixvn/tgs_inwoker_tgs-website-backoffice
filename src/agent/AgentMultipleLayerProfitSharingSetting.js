@@ -314,14 +314,17 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
           </Table.Row>
         )}
         {editable && fieldArray.fields.length < maxLevelSize && (
-          <AddRow fieldArray={fieldArray} />
+          <AddRow
+            fieldArray={fieldArray}
+            profitSharingPercentageFieldName={profitSharingPercentageFieldName}
+          />
         )}
       </Table.Body>
     </Table>
   )
 }
 
-const AddRow = ({ fieldArray }) =>
+const AddRow = ({ fieldArray, profitSharingPercentageFieldName }) =>
   useMemo(
     () => (
       <Table.Row id={`add-agent-profit-sharing-setting`}>
