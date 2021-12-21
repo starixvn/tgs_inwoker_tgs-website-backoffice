@@ -123,16 +123,15 @@ const AllAgentMainSwitchBox = ({ brandId, readOnly, dialog }) => {
 
   return (
     <Set alignY="center">
-      <Heading use="h4">
+      <Text.Block fontWeight="bold">
         <Trans zh="总开关" en="Main Switch" />
-      </Heading>
+      </Text.Block>
       <AllAgentMainSwitchField
         brandId={brandId}
         readOnly={readOnly}
         isLoading={isLoading}
         checked={data?.switch}
         onSubmitted={(checked) => {
-          console.log("checked from formData", checked)
           deleteCache()
           mutate({
             ...data,
