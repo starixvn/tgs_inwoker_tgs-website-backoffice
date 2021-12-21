@@ -21,19 +21,13 @@ export const useAllAgentValidBetCondition = (brandId, gameType) => {
 
 /*
 formData: {
+  brandId: "",
   validBetConditionModel: [],
   allAgentGameType: "" 
 }
 */
-export const useUpdateAllAgentValidBetCondition = (
-  brandId,
-  gameType,
-  formData
-) => {
-  let url =
-    brandId && gameType && formData
-      ? `${API}/${brandId}/${gameType}/validBet`
-      : ""
+export const useUpdateAllAgentValidBetCondition = (formData) => {
+  let url = formData?.brandId ? `${API}/validBet` : ""
   return usePutData(url, formData)
 }
 
@@ -44,19 +38,13 @@ export const useAllAgentWinLossCondition = (brandId, gameType) => {
 
 /*
 formData: {
+  brandId: "",
   winLossConditionModel: [],
   allAgentGameType: "" 
 }
 */
-export const useUpdateAllAgentWinLossCondition = (
-  brandId,
-  gameType,
-  formData
-) => {
-  let url =
-    brandId && gameType && formData
-      ? `${API}/${brandId}/${gameType}/winLoss`
-      : ""
+export const useUpdateAllAgentWinLossCondition = (formData) => {
+  let url = formData?.brandId ? `${API}/winLoss` : ""
   return usePutData(url, formData)
 }
 

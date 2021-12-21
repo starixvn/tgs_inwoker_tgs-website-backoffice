@@ -331,11 +331,12 @@ const AddRow = ({ fieldArray }) =>
             size="small"
             variant="ghost"
             onClick={(event) => {
-              fieldArray.append({
-                netProfit: "",
-                activeNumber: "",
-                dividendPercentage: ""
-              })
+              let field = {
+                netProfit: null,
+                activeNumber: null
+              }
+              Reflect.set(field, profitSharingPercentageFieldName, null)
+              fieldArray.append(field)
             }}
           >
             <Icon icon={faPlus} type="font-awesome" />

@@ -390,11 +390,7 @@ const MultileLayerSettingFormDialog = ({
   ...props
 }) => {
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } = useUpdate(
-    brandId,
-    gameType,
-    formData
-  )
+  let { isLoading, result, error, mutate, deleteCache } = useUpdate(formData)
 
   const reset = () => {
     deleteCache()
@@ -403,8 +399,11 @@ const MultileLayerSettingFormDialog = ({
   }
 
   const onSubmit = (data = {}) => {
-    console.log("onSubmit", data)
-    setSubmit(data)
+    setSubmit({
+      brandId,
+      allAgentGameType: gameType,
+      ...data
+    })
   }
 
   return (
