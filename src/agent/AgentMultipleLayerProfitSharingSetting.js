@@ -266,7 +266,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
   readOnly
 }) => {
   let editable = !readOnly
-  let { control } = useFormContext()
+  let { control, watch } = useFormContext()
 
   let fieldArray = useFieldArray({
     control,
