@@ -128,7 +128,7 @@ const AllAgentMainSwitchBox = ({ brandId, dialog }) => {
       <AllAgentMainSwitchField
         brandId={brandId}
         isLoading={isLoading}
-        defaultValue={data?.switch}
+        checked={data?.switch}
       />
     </Set>
   )
