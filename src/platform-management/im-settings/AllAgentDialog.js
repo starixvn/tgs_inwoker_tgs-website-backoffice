@@ -569,7 +569,7 @@ const GameTypeSettingFormCard = ({
     name: SwitchFieldName
   })
   return (
-    <Card variant="bordered" marginTop="1.5rem" marginBottom="1.5rem">
+    <Card variant="bordered" marginTop="0.5rem" marginBottom="1.5rem">
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldStack>
@@ -598,7 +598,7 @@ const GameTypeSettingFormCard = ({
               />
             </FieldStack>
             {!readOnly && (
-              <Box alignY="right">
+              <Box alignX="right">
                 <SubmitButton
                   isLoading={isLoading}
                   disabled={isLoading}
