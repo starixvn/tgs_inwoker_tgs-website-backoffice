@@ -274,11 +274,13 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
     keyName: "_id"
   })
 
-  let watchFieldArray = watch(FieldName)
+  let watchFieldArray = watch(name)
   let controlledFields = fieldArray.fields.map((field, index) => {
+    console.log("rank", rank, "index", index)
     return {
       ...field,
-      ...watchFieldArray[index]
+      ...watchFieldArray[index],
+      rank: index + 1
     }
   })
   return (
@@ -359,8 +361,7 @@ const AddRow = ({ fieldArray, profitSharingPercentageFieldName }) =>
 
 const DefaultMinSetting = {
   netProfit: 0,
-  activeNumber: 0,
-  dividendPerenctage: 0
+  activeNumber: 0
 }
 
 const SettingRow = ({
@@ -386,18 +387,15 @@ const SettingRow = ({
 
   let editable = !readOnly
   let disabled = readOnly
-
-  const RankFieldName = `${name}.${index}.rank`
-  let rank = useWatch({
-    control,
-    name: RankFieldName
-  })
-  console.log("index", index, "watch rank", rank)
   return (
     <>
       <Table.Row>
         <Table.Cell>
-          <Input type="hidden" name={RankFieldName} value={rank} />
+          <Input
+            type="hidden"
+            name={`${name}.${index}.rank`}
+            value={field.rank}
+          />
           {editable && (
             <Button
               size="small"
