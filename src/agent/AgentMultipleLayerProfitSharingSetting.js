@@ -262,6 +262,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
   name = FieldName,
   maxLevelSize = MaxNumber,
   parentAgentProfitSharingSettings,
+  profitSharingPercentageFieldName = "dividendPercentage",
   readOnly
 }) => {
   let editable = !readOnly
@@ -300,6 +301,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
             field={field}
             index={index}
             fieldArray={fieldArray}
+            profitSharingPercentageFieldName={profitSharingPercentageFieldName}
             parentAgentProfitSharingSettings={parentAgentProfitSharingSettings}
             readOnly={readOnly}
           />
@@ -348,10 +350,8 @@ const AddRow = ({ fieldArray }) =>
 const DefaultMinSetting = {
   netProfit: 0,
   activeNumber: 0,
-  dividendPercentage: 0
+  dividendPerenctage: 0
 }
-
-const MaxProfitSharingPercentage = 100
 
 const SettingRow = ({
   name,
@@ -359,6 +359,7 @@ const SettingRow = ({
   index,
   fieldArray,
   readOnly,
+  profitSharingPercentageFieldName,
   parentAgentProfitSharingSettings
 }) => {
   let { control } = useFormContext()
@@ -451,32 +452,72 @@ const SettingRow = ({
           />
         </Table.Cell>
         <Table.Cell>
-          <PercentageNumberInputField
-            name={`${name}.${index}.dividendPercentage`}
+          <ProfitSharingPercentageNumberInputField
+            fieldArrayName={name}
+            index={index}
+            fieldName={profitSharingPercentageFieldName}
+            field={field}
             readOnly={readOnly}
             disabled={disabled}
             registerOptions={{
               valueAsNumber: true
             }}
-            defaultValue={field.dividendPercentage}
-            min={Math.max(
-              ...[
-                DefaultMinSetting.dividendPercentage,
-                previous?.dividendPercentage,
-                parentAgentSetting?.dividendPercentage
-              ].filter(Number.isFinite)
-            )}
-            max={Math.min(
-              ...[
-                MaxProfitSharingPercentage,
-                next?.dividendPercentage,
-                parentAgentSetting?.dividendPercentage
-              ].filter(Number.isFinite)
-            )}
             required
           />
         </Table.Cell>
       </Table.Row>
     </>
+  )
+}
+
+const ProfitSharingPercentageNumberInputField = ({
+  fieldArrayName,
+  index,
+  fieldName,
+  field = {},
+  ...props
+}) => {
+  let previousProfitSharingPercentage = useWatch({
+    control,
+    name: `${fieldArrayName}.${index - 1}.${fieldName}`
+  })
+  let nextProfitSharingPercentage = useWatch({
+    control,
+    name: `${fieldArrayName}.${index + 1}.${fieldName}`
+  })
+
+  let defaultValue = Reflect.get(field, fieldName)
+
+  console.log(
+    "defaultValue",
+    defaultValue,
+    "previousProfitSharingPercentage",
+    previousProfitSharingPercentage,
+    "nextProfitSharingPercentage",
+    nextProfitSharingPercentage
+  )
+
+  const MinProfitSharingPercentage = 0
+  const MaxProfitSharingPercentage = 100
+
+  return (
+    <PercentageNumberInputField
+      name={`${fieldArrayName}.${index}.${fieldName}`}
+      registerOptions={{
+        valueAsNumber: true
+      }}
+      defaultValue={defaultValue}
+      min={Math.max(
+        ...[MinProfitSharingPercentage, previousProfitSharingPercentage].filter(
+          Number.isFinite
+        )
+      )}
+      max={Math.min(
+        ...[MaxProfitSharingPercentage, nextProfitSharingPercentage].filter(
+          Number.isFinite
+        )
+      )}
+      {...props}
+    />
   )
 }

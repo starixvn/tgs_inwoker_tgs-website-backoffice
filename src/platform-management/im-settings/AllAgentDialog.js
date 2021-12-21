@@ -423,7 +423,10 @@ const MultileLayerSettingFormDialog = ({
         dialog={dialog}
         hideBackdrop
       >
-        <AgentMultipleLayerProfitSharingSettingFormBody name="conditions" />
+        <AgentMultipleLayerProfitSharingSettingFormBody
+          name="conditions"
+          profitSharingPercentageFieldName="rebatePercentage"
+        />
       </FormDialog>
     </Backdrop>
   )
