@@ -275,6 +275,8 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
   })
 
   let watchFieldArray = watch(name)
+  console.log("watchFieldArray", watchFieldArray)
+  /*
   let controlledFields = fieldArray.fields.map((field, index) => {
     let rank = index + 1
     console.log("rank", rank, "index", index)
@@ -284,6 +286,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
       rank
     }
   })
+  */
   return (
     <Table>
       <Table.Head>
@@ -303,7 +306,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        {controlledFields.map((field, index) => (
+        {fieldArray.fields.map((field, index) => (
           <SettingRow
             name={name}
             key={field._id}
@@ -315,14 +318,14 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
             readOnly={readOnly}
           />
         ))}
-        {readOnly && !controlledFields.length && (
+        {readOnly && !fieldArray.fields.length && (
           <Table.Row>
             <Table.Cell textAlign="center" colSpan={4}>
               <Trans zh="无资料" en="No Data" />
             </Table.Cell>
           </Table.Row>
         )}
-        {editable && controlledFields.length < maxLevelSize && (
+        {editable && fieldArray.fields.length < maxLevelSize && (
           <AddRow
             fieldArray={fieldArray}
             profitSharingPercentageFieldName={profitSharingPercentageFieldName}
@@ -396,7 +399,8 @@ const SettingRow = ({
             <Input
               // type="hidden"
               name={`${name}.${index}.rank`}
-              value={field.rank}
+              value={index + 1}
+              readOnly
             />
             {editable && (
               <Button
