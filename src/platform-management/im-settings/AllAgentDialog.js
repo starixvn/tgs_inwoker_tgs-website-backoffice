@@ -364,6 +364,7 @@ const MultileLayerSettingDialog = ({
     return <AlertDialog {...error} onClickClose={dialog.close} />
   }
 
+  console.log("MultileLayerSettingDialog data", data)
   return (
     <MultileLayerSettingFormDialog
       brandId={brandId}
@@ -371,6 +372,7 @@ const MultileLayerSettingDialog = ({
       record={data}
       useUpdate={useUpdate}
       onSubmitted={() => {
+        console.log("onSubmitted!!")
         deleteCache()
         mutate(null, false)
       }}
