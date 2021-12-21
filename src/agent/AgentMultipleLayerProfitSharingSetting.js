@@ -276,7 +276,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
 
   let watchFieldArray = watch(name)
   let controlledFields = fieldArray.fields.map((field, index) => {
-    let rank = index + 1
+    let rnak = index + 1
     console.log("rank", rank, "index", index)
     return {
       ...field,
@@ -392,23 +392,25 @@ const SettingRow = ({
     <>
       <Table.Row>
         <Table.Cell>
-          <Input
-            type="hidden"
-            name={`${name}.${index}.rank`}
-            value={field.rank}
-          />
-          {editable && (
-            <Button
-              size="small"
-              palette="danger"
-              variant="ghost"
-              onClick={(event) => {
-                fieldArray.remove(index)
-              }}
-            >
-              <Icon icon={faMinus} type="font-awesome" />
-            </Button>
-          )}
+          <Box>
+            <Input
+              // type="hidden"
+              name={`${name}.${index}.rank`}
+              value={field.rank}
+            />
+            {editable && (
+              <Button
+                size="small"
+                palette="danger"
+                variant="ghost"
+                onClick={(event) => {
+                  fieldArray.remove(index)
+                }}
+              >
+                <Icon icon={faMinus} type="font-awesome" />
+              </Button>
+            )}
+          </Box>
         </Table.Cell>
         <Table.Cell>
           <NumberInput
