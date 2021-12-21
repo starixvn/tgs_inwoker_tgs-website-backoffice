@@ -493,15 +493,6 @@ const ProfitSharingPercentageNumberInputField = ({
 
   let defaultValue = Reflect.get(field, fieldName)
 
-  console.log(
-    "defaultValue",
-    defaultValue,
-    "previousProfitSharingPercentage",
-    previousProfitSharingPercentage,
-    "nextProfitSharingPercentage",
-    nextProfitSharingPercentage
-  )
-
   const MinProfitSharingPercentage = 0
   const MaxProfitSharingPercentage = 100
 

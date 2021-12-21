@@ -497,28 +497,18 @@ const MultileLayerSettingFormDialog = ({
 }
 
 const GameTypeSettingCard = ({ brandId, gameType, readOnly, dialog }) => {
-  let {
-    isLoading: isLoadingAllAgent,
-    data: allAgent,
-    error: allAgentError,
-    mutate,
-    deleteCache
-  } = useAllAgentSetting(brandId)
+  let { isLoading, data, error, mutate, deleteCache } =
+    useAllAgentSetting(brandId)
 
-  const reset = () => {
-    deleteCache()
-    mutate(null, true)
-  }
-
-  if (isLoadingAllAgent) {
+  if (isLoading) {
     return <Spinner />
   }
 
-  if (allAgentError) {
-    return <AlertDialog {...allAgentError} onClickClose={dialog.close} />
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.close} />
   }
 
-  let record = allAgent?.brandAllAgentGameTypes?.find(
+  let record = data?.brandAllAgentGameTypes?.find(
     ({ allAgentGameType }) => allAgentGameType === gameType
   )
   return (
@@ -526,7 +516,13 @@ const GameTypeSettingCard = ({ brandId, gameType, readOnly, dialog }) => {
       brandId={brandId}
       record={record}
       readOnly={readOnly}
-      onSubmitted={reset}
+      onSubmitted={(formData) => {
+        deleteCache()
+        mutate({
+          ...data,
+          formData
+        })
+      }}
     />
   )
 }
@@ -562,8 +558,8 @@ const GameTypeSettingFormCard = ({
 
   useEffect(() => {
     if (!isLoading && result) {
+      onSubmitted?.(formData)
       reset()
-      onSubmitted?.()
     }
   }, [isLoading, result])
 
@@ -602,9 +598,13 @@ const GameTypeSettingFormCard = ({
               />
             </FieldStack>
             {!readOnly && (
-              <Set alignY="right">
-                <SubmitButton isLoading={isLoading} disabled={isLoading} />
-              </Set>
+              <Box alignY="right">
+                <SubmitButton
+                  isLoading={isLoading}
+                  disabled={isLoading}
+                  flex="none"
+                />
+              </Box>
             )}
           </FieldStack>
         </form>
