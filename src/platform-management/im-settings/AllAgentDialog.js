@@ -123,19 +123,32 @@ const AllAgentMainSwitchBox = ({ brandId, dialog }) => {
 
   return (
     <Set>
-      <Heading>
+      <Heading use="h4">
         <Trans zh="总开关" en="Main Switch" />
       </Heading>
       <AllAgentMainSwitchField
         brandId={brandId}
         isLoading={isLoading}
         checked={data?.switch}
+        onSubmitted={(checked) => {
+          console.log("checked from formData", checked)
+          deleteCache()
+          mutate({
+            ...data,
+            checked
+          })
+        }}
       />
     </Set>
   )
 }
 
-const AllAgentMainSwitchField = ({ brandId, checked, onSubmitted }) => {
+const AllAgentMainSwitchField = ({
+  brandId,
+  checked,
+  onSubmitted,
+  ...props
+}) => {
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
     useUpdateAllAgentSwitch(formData)
@@ -159,12 +172,12 @@ const AllAgentMainSwitchField = ({ brandId, checked, onSubmitted }) => {
 
   useEffect(() => {
     if (!isLoading && result) {
-      onSubmitted?.()
+      onSubmitted?.(formData?.switch)
       deleteCache()
     }
   }, [isLoading, result])
 
-  if (isLoading) {
+  if (isLoading || props?.isLoading) {
     return <Spinner />
   }
 
