@@ -81,7 +81,6 @@ export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   )
 }
 
-//TODO: readOnly
 const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
   let title = useTrans({
     zh: "全民代理设定",
@@ -94,40 +93,42 @@ const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
       showCloseButton
       hideOnClickOutside={false}
       {...dialog}
+      minWidth="60vw"
     >
-      <DialogBody brandId={brandId} />
+      <DialogBody brandId={brandId} readOnly={readOnly} />
     </Dialog.Modal>
   )
 }
 
-const DialogBody = ({ brandId, dialog }) => {
+const DialogBody = ({ brandId, readOnly, dialog }) => {
   return (
     <FieldStack>
-      <AllAgentMainSwitchBox brandId={brandId} dialog={dialog} />
-      <AllAgentGameTypeTabs brandId={brandId} dialog={dialog} />
+      <AllAgentMainSwitchBox
+        brandId={brandId}
+        readOnly={readOnly}
+        dialog={dialog}
+      />
+      <AllAgentGameTypeTabs
+        brandId={brandId}
+        readOnly={readOnly}
+        dialog={dialog}
+      />
     </FieldStack>
   )
 }
 
-const AllAgentMainSwitchBox = ({ brandId, dialog }) => {
+const AllAgentMainSwitchBox = ({ brandId, readOnly, dialog }) => {
   let { isLoading, data, error, mutate, deleteCache } =
     useAllAgentSetting(brandId)
 
-  // if (isLoading) {
-  //   return <Spinner />
-  // }
-
-  // if (allAgentError) {
-  //   return <AlertDialog {...allAgentError} onClickClose={dialog.close} />
-  // }
-
   return (
-    <Set>
+    <Set alignY="center">
       <Heading use="h4">
         <Trans zh="总开关" en="Main Switch" />
       </Heading>
       <AllAgentMainSwitchField
         brandId={brandId}
+        readOnly={readOnly}
         isLoading={isLoading}
         checked={data?.switch}
         onSubmitted={(checked) => {
@@ -139,6 +140,7 @@ const AllAgentMainSwitchBox = ({ brandId, dialog }) => {
           })
         }}
       />
+      {error && <AlertDialog {...error} onClickClose={dialog.hide} />}
     </Set>
   )
 }
@@ -146,6 +148,7 @@ const AllAgentMainSwitchBox = ({ brandId, dialog }) => {
 const AllAgentMainSwitchField = ({
   brandId,
   checked,
+  readOnly,
   onSubmitted,
   ...props
 }) => {
@@ -179,6 +182,16 @@ const AllAgentMainSwitchField = ({
 
   if (isLoading || props?.isLoading) {
     return <Spinner />
+  }
+
+  if (readOnly) {
+    return (
+      <Switch
+        checked={checked}
+        disabled={true}
+        label={checked ? onLabel : offLabel}
+      />
+    )
   }
 
   return (
@@ -235,7 +248,7 @@ const GameTypeTrans = {
   }
 }
 
-const AllAgentGameTypeTabs = ({ brandId, dialog }) => {
+const AllAgentGameTypeTabs = ({ brandId, readOnly, dialog }) => {
   let tab = useTabState({
     selectedId: GameType.LiveDealer
   })
@@ -254,31 +267,41 @@ const AllAgentGameTypeTabs = ({ brandId, dialog }) => {
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.LiveDealer}
+        readOnly={readOnly}
         dialog={dialog}
         {...tab}
       />
-      <GameTypePanel brandId={brandId} gameType={GameType.Slot} {...tab} />
+      <GameTypePanel
+        brandId={brandId}
+        gameType={GameType.Slot}
+        readOnly={readOnly}
+        {...tab}
+      />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.Sportsbook}
+        readOnly={readOnly}
         dialog={dialog}
         {...tab}
       />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.VirtualSports}
+        readOnly={readOnly}
         dialog={dialog}
         {...tab}
       />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.CardGame}
+        readOnly={readOnly}
         dialog={dialog}
         {...tab}
       />
       <GameTypePanel
         brandId={brandId}
         gameType={GameType.Lottery}
+        readOnly={readOnly}
         dialog={dialog}
         {...tab}
       />
@@ -295,7 +318,7 @@ const GameTypeTab = ({ gameType, ...props }) => {
   )
 }
 
-const GameTypePanel = ({ brandId, gameType, dialog, ...props }) => {
+const GameTypePanel = ({ brandId, gameType, readOnly, dialog, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === gameType
 
@@ -306,6 +329,7 @@ const GameTypePanel = ({ brandId, gameType, dialog, ...props }) => {
           <GameTypeSettingCard
             brandId={brandId}
             gameType={gameType}
+            readOnly={readOnly}
             dialog={dialog}
           />
         )}
@@ -313,10 +337,12 @@ const GameTypePanel = ({ brandId, gameType, dialog, ...props }) => {
           <ValidBetSettingDialogDisclosure
             brandId={brandId}
             gameType={gameType}
+            readOnly={readOnly}
           />
           <WinLossSettingDialogDisclosure
             brandId={brandId}
             gameType={gameType}
+            readOnly={readOnly}
           />
         </FieldStack>
       </Stack>
@@ -324,8 +350,12 @@ const GameTypePanel = ({ brandId, gameType, dialog, ...props }) => {
   )
 }
 
-//TODO: readOnly?
-const ValidBetSettingDialogDisclosure = ({ brandId, gameType, ...props }) => {
+const ValidBetSettingDialogDisclosure = ({
+  brandId,
+  gameType,
+  readOnly,
+  ...props
+}) => {
   let dialog = useModalState()
 
   return (
@@ -337,6 +367,7 @@ const ValidBetSettingDialogDisclosure = ({ brandId, gameType, ...props }) => {
         <MultileLayerSettingDialog
           brandId={brandId}
           gameType={gameType}
+          readOnly={readOnly}
           useFetch={useAllAgentValidBetCondition}
           useUpdate={useUpdateAllAgentValidBetCondition}
           dialog={dialog}
@@ -346,8 +377,12 @@ const ValidBetSettingDialogDisclosure = ({ brandId, gameType, ...props }) => {
   )
 }
 
-//TODO: readOnly?
-const WinLossSettingDialogDisclosure = ({ brandId, gameType, ...props }) => {
+const WinLossSettingDialogDisclosure = ({
+  brandId,
+  gameType,
+  readOnly,
+  ...props
+}) => {
   let dialog = useModalState()
 
   return (
@@ -359,6 +394,7 @@ const WinLossSettingDialogDisclosure = ({ brandId, gameType, ...props }) => {
         <MultileLayerSettingDialog
           brandId={brandId}
           gameType={gameType}
+          readOnly={readOnly}
           useFetch={useAllAgentWinLossCondition}
           useUpdate={useUpdateAllAgentWinLossCondition}
           dialog={dialog}
@@ -372,6 +408,7 @@ const MultileLayerSettingDialog = ({
   name,
   brandId,
   gameType,
+  readOnly,
   useFetch,
   useUpdate,
   dialog,
@@ -390,15 +427,14 @@ const MultileLayerSettingDialog = ({
     return <AlertDialog {...error} onClickClose={dialog.close} />
   }
 
-  console.log("MultileLayerSettingDialog data", data)
   return (
     <MultileLayerSettingFormDialog
       brandId={brandId}
       gameType={gameType}
       record={data}
+      readOnly={readOnly}
       useUpdate={useUpdate}
       onSubmitted={() => {
-        console.log("onSubmitted!!")
         deleteCache()
         mutate(null, false)
       }}
@@ -411,6 +447,7 @@ const MultileLayerSettingFormDialog = ({
   brandId,
   gameType,
   record = {},
+  readOnly,
   useUpdate,
   onSubmitted,
   dialog,
@@ -453,13 +490,14 @@ const MultileLayerSettingFormDialog = ({
         <AgentMultipleLayerProfitSharingSettingFormBody
           name="conditions"
           profitSharingPercentageFieldName="rebatePercentage"
+          readOnly={readOnly}
         />
       </FormDialog>
     </Backdrop>
   )
 }
 
-const GameTypeSettingCard = ({ brandId, gameType, dialog }) => {
+const GameTypeSettingCard = ({ brandId, gameType, readOnly, dialog }) => {
   let {
     isLoading: isLoadingAllAgent,
     data: allAgent,
@@ -488,12 +526,18 @@ const GameTypeSettingCard = ({ brandId, gameType, dialog }) => {
     <GameTypeSettingFormCard
       brandId={brandId}
       record={record}
+      readOnly={readOnly}
       onSubmitted={reset}
     />
   )
 }
 
-const GameTypeSettingFormCard = ({ brandId, record = {}, onSubmitted }) => {
+const GameTypeSettingFormCard = ({
+  brandId,
+  readOnly,
+  record = {},
+  onSubmitted
+}) => {
   let formMethods = useForm({
     defaultValues: clone(record)
   })
@@ -522,7 +566,7 @@ const GameTypeSettingFormCard = ({ brandId, record = {}, onSubmitted }) => {
       reset()
       onSubmitted?.()
     }
-  }, [isLoading, reset])
+  }, [isLoading, result])
 
   const SwitchFieldName = "switch"
   let switchValue = useWatch({
@@ -530,7 +574,7 @@ const GameTypeSettingFormCard = ({ brandId, record = {}, onSubmitted }) => {
     name: SwitchFieldName
   })
   return (
-    <Card>
+    <Card footer>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldStack>
@@ -545,20 +589,24 @@ const GameTypeSettingFormCard = ({ brandId, record = {}, onSubmitted }) => {
                     <Trans zh="关闭" en="Off" />
                   )
                 }
-                disabled={isLoading}
+                disabled={isLoading || readOnly}
               />
               <CheckboxField
                 name="hasValidBet"
                 label={<Trans zh="有效投注" en="Valid Bet" />}
-                disabled={isLoading}
+                disabled={isLoading || readOnly}
               />
               <CheckboxField
                 name="hasWinLoss"
                 label={<Trans zh="玩家输赢" en="Player Win Loss" />}
-                disabled={isLoading}
+                disabled={isLoading || readOnly}
               />
             </FieldStack>
-            <SubmitButton isLoading={isLoading} disabled={isLoading} />
+            {!readOnly && (
+              <Box alignY="right">
+                <SubmitButton isLoading={isLoading} disabled={isLoading} />
+              </Box>
+            )}
           </FieldStack>
         </form>
         {error && <AlertDialog {...error} onClickClose={reset} />}
