@@ -497,6 +497,7 @@ const MultileLayerSettingFormDialog = ({
         onCloseErrorAlert={reset}
         dialog={dialog}
         title={title}
+        showActionButtons={!readOnly}
         hideBackdrop
       >
         <AgentMultipleLayerProfitSharingSettingFormBody
