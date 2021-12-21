@@ -477,6 +477,7 @@ const ProfitSharingPercentageNumberInputField = ({
   field = {},
   ...props
 }) => {
+  let { control } = useFormContext()
   let previousProfitSharingPercentage = useWatch({
     control,
     name: `${fieldArrayName}.${index - 1}.${fieldName}`
