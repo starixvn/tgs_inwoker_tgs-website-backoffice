@@ -569,7 +569,7 @@ const GameTypeSettingFormCard = ({
     name: SwitchFieldName
   })
   return (
-    <Card footer>
+    <Card variant="bordered">
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldStack>
