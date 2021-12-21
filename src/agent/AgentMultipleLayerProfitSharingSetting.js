@@ -276,11 +276,12 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
 
   let watchFieldArray = watch(name)
   let controlledFields = fieldArray.fields.map((field, index) => {
+    let rank = index + 1
     console.log("rank", rank, "index", index)
     return {
       ...field,
       ...watchFieldArray[index],
-      rank: index + 1
+      rank
     }
   })
   return (
