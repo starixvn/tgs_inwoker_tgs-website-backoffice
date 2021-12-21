@@ -357,10 +357,14 @@ const ValidBetSettingDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
+  let label = useTrans({
+    zh: "有效投注返佣设置",
+    en: "Valid Bet Rebate Setting"
+  })
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="有效投注返佣设置" en="Valid Bet Rebate Setting" />
+        {label}
       </Disclosure>
       {dialog.visible && (
         <MultileLayerSettingDialog
@@ -370,6 +374,7 @@ const ValidBetSettingDialogDisclosure = ({
           useFetch={useAllAgentValidBetCondition}
           useUpdate={useUpdateAllAgentValidBetCondition}
           dialog={dialog}
+          title={label}
         />
       )}
     </>
@@ -384,10 +389,14 @@ const WinLossSettingDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
+  let label = useTrans({
+    zh: "玩家输赢返佣设置",
+    en: "Player Win Loss Rebate Setting"
+  })
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="玩家输赢返佣设置" en="Player Win Loss Rebate Setting" />
+        {label}
       </Disclosure>
       {dialog.visible && (
         <MultileLayerSettingDialog
@@ -397,6 +406,7 @@ const WinLossSettingDialogDisclosure = ({
           useFetch={useAllAgentWinLossCondition}
           useUpdate={useUpdateAllAgentWinLossCondition}
           dialog={dialog}
+          title={label}
         />
       )}
     </>
@@ -411,6 +421,7 @@ const MultileLayerSettingDialog = ({
   useFetch,
   useUpdate,
   dialog,
+  title,
   ...props
 }) => {
   let { isLoading, data, error, mutate, deleteCache } = useFetch(
@@ -438,6 +449,7 @@ const MultileLayerSettingDialog = ({
         mutate(null, false)
       }}
       dialog={dialog}
+      title={title}
     />
   )
 }
@@ -484,6 +496,7 @@ const MultileLayerSettingFormDialog = ({
         error={error}
         onCloseErrorAlert={reset}
         dialog={dialog}
+        title={title}
         hideBackdrop
       >
         <AgentMultipleLayerProfitSharingSettingFormBody
