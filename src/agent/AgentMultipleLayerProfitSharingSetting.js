@@ -418,7 +418,8 @@ const SettingRow = ({
               name={`${name}.${index}.rank`}
               value={index + 1}
               registerOptions={{
-                valueAsNumber: true
+                valueAsNumber: true,
+                shouldUnregister: true
               }}
               readOnly
             />
