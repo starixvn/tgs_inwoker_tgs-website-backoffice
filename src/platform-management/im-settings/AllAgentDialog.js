@@ -602,9 +602,9 @@ const GameTypeSettingFormCard = ({
               />
             </FieldStack>
             {!readOnly && (
-              <Box alignY="right">
+              <Set alignY="right">
                 <SubmitButton isLoading={isLoading} disabled={isLoading} />
-              </Box>
+              </Set>
             )}
           </FieldStack>
         </form>
