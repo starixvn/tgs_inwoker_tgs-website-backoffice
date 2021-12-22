@@ -163,6 +163,7 @@ const AddDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
         onCloseErrorAlert={reset}
         dialog={dialog}
         hideBackdrop={true}
+        width="40vw"
       >
         <EditFormBody brandId={brandId} />
       </FormDialog>
@@ -335,6 +336,7 @@ const EditDialog = ({ brandId, record, dialog, onSubmitted, ...props }) => {
         onCloseErrorAlert={reset}
         dialog={dialog}
         hideBackdrop={true}
+        width="40vw"
       >
         <EditFormBody brandId={brandId} />
       </FormDialog>
