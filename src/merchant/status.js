@@ -33,7 +33,7 @@ const MaintenanceTrans = {
 
 const Archieved = "Archieved"
 const ArchievedTrans = {
-  zh: "Archieved",
+  zh: "封存",
   en: Archieved
 }
 
