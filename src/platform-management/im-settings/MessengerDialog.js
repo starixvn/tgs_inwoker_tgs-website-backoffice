@@ -357,6 +357,7 @@ const EditFormBody = ({ brandId }) => {
       <Input type="hidden" name="id" />
       <FieldValues>
         <AppLabel />
+        <CommunicationTypeField />
 
         <PhoneLabel />
         <PhoneInput name="phone" />

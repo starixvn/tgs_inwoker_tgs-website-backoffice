@@ -76,7 +76,3 @@ export const CommunicationTypeField = () => {
     </Group>
   )
 }
-
-export const CommunicationTypeLabel = () => {
-  
-}
