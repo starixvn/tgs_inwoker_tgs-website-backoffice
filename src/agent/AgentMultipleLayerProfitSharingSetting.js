@@ -274,24 +274,6 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
     keyName: "_id"
   })
 
-  let watchFieldArray = watch(name)
-  console.log(
-    "watchFieldArray",
-    watchFieldArray,
-    "fieldArray.fields",
-    fieldArray.fields
-  )
-  /*
-  let controlledFields = fieldArray.fields.map((field, index) => {
-    let rank = index + 1
-    console.log("rank", rank, "index", index)
-    return {
-      ...field,
-      ...watchFieldArray[index],
-      rank
-    }
-  })
-  */
   return (
     <Table>
       <Table.Head>
