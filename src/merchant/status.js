@@ -31,6 +31,19 @@ const MaintenanceTrans = {
   en: Maintenance
 }
 
+const Archieved = "Archieved"
+const ArchievedTrans = {
+  zh: "Archieved",
+  en: Archieved
+}
+
+export const MerchantStatus = {
+  Active,
+  Inactive,
+  Maintenance,
+  Archieved
+}
+
 export const MerchantStatusLabel = ({ value = "" }) => {
   switch (value) {
     case Active:
@@ -41,6 +54,9 @@ export const MerchantStatusLabel = ({ value = "" }) => {
 
     case Maintenance:
       return <Trans {...MaintenanceTrans} />
+
+    case Archieved:
+      return <Trans {...ArchievedTrans} />
 
     default:
       return value
@@ -120,6 +136,11 @@ export const MerchantStatusMenu = ({
             {status != Maintenance && (
               <DropdownMenu.Item onClick={() => setSubmit(Maintenance)}>
                 <MerchantStatusLabel value={Maintenance} />
+              </DropdownMenu.Item>
+            )}
+            {status != Archieved && (
+              <DropdownMenu.Item onClick={() => setSubmit(Archieved)}>
+                <MerchantStatusLabel value={Archieved} />
               </DropdownMenu.Item>
             )}
           </>
