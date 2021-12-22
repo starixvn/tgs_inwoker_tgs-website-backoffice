@@ -263,6 +263,11 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
   maxLevelSize = MaxNumber,
   parentAgentProfitSharingSettings,
   profitSharingPercentageFieldName = "dividendPercentage",
+  activeNumberLabel = <Trans zh="活跃人数" en="Active Player" />,
+  netProfitLabel = <Trans zh="净盈利" en="Net Profit" />,
+  profitSharingPercentageLabel = (
+    <Trans zh="分红比例" en="Profit Sharing Percentage" />
+  ),
   readOnly
 }) => {
   let editable = !readOnly
@@ -281,15 +286,9 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
           <Table.HeadCell>
             <Box></Box>
           </Table.HeadCell>
-          <Table.HeadCell>
-            <Trans zh="净盈利" en="Net Profit" />
-          </Table.HeadCell>
-          <Table.HeadCell>
-            <Trans zh="活跃人数" en="Active Player" />
-          </Table.HeadCell>
-          <Table.HeadCell>
-            <Trans zh="分红比例" en="Profit Sharing Percentage" />
-          </Table.HeadCell>
+          <Table.HeadCell>{activeNumberLabel}</Table.HeadCell>
+          <Table.HeadCell>{netProfitLabel}</Table.HeadCell>
+          <Table.HeadCell>{profitSharingPercentageLabel}</Table.HeadCell>
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -326,10 +325,10 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
 const AddRow = ({ fieldArray, profitSharingPercentageFieldName }) =>
   useMemo(
     () => (
-      <Table.Row id={`add-agent-profit-sharing-setting`}>
+      <Table.Row id={`add-profit-sharing-setting`}>
         <Table.HeadCell>
           <Button
-            id="add-agent-profit-sharing-setting"
+            id="add-profit-sharing-setting"
             size="small"
             variant="ghost"
             onClick={(event) => {
@@ -412,32 +411,6 @@ const SettingRow = ({
         </Table.Cell>
         <Table.Cell>
           <NumberInput
-            name={`${name}.${index}.netProfit`}
-            readOnly={readOnly}
-            disabled={disabled}
-            defaultValue={field.netProfit}
-            registerOptions={{
-              valueAsNumber: true
-            }}
-            min={Math.max(
-              ...[
-                DefaultMinSetting.netProfit,
-                previous?.netProfit,
-                parentAgentSetting?.netProfit
-              ].filter(Number.isFinite)
-            )}
-            max={Math.min(
-              ...[
-                MaxNumber,
-                next?.netProfit,
-                parentAgentSetting?.netProfit
-              ].filter(Number.isFinite)
-            )}
-            required
-          />
-        </Table.Cell>
-        <Table.Cell>
-          <NumberInput
             name={`${name}.${index}.activeNumber`}
             readOnly={readOnly}
             disabled={disabled}
@@ -457,6 +430,32 @@ const SettingRow = ({
                 MaxNumber,
                 next?.activeNumber,
                 parentAgentSetting?.activeNumber
+              ].filter(Number.isFinite)
+            )}
+            required
+          />
+        </Table.Cell>
+        <Table.Cell>
+          <NumberInput
+            name={`${name}.${index}.netProfit`}
+            readOnly={readOnly}
+            disabled={disabled}
+            defaultValue={field.netProfit}
+            registerOptions={{
+              valueAsNumber: true
+            }}
+            min={Math.max(
+              ...[
+                DefaultMinSetting.netProfit,
+                previous?.netProfit,
+                parentAgentSetting?.netProfit
+              ].filter(Number.isFinite)
+            )}
+            max={Math.min(
+              ...[
+                MaxNumber,
+                next?.netProfit,
+                parentAgentSetting?.netProfit
               ].filter(Number.isFinite)
             )}
             required

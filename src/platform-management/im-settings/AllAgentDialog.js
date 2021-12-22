@@ -375,6 +375,10 @@ const ValidBetSettingDialogDisclosure = ({
           useUpdate={useUpdateAllAgentValidBetCondition}
           dialog={dialog}
           title={label}
+          netProfitLabel={<Trans zh="有效投注" en="Valid Bet" />}
+          profitSharingPercentageLabel={
+            <Trans zh="返佣比例" en="Rebate Percentage" />
+          }
         />
       )}
     </>
@@ -407,6 +411,9 @@ const WinLossSettingDialogDisclosure = ({
           useUpdate={useUpdateAllAgentWinLossCondition}
           dialog={dialog}
           title={label}
+          profitSharingPercentageLabel={
+            <Trans zh="返佣比例" en="Rebate Percentage" />
+          }
         />
       )}
     </>
@@ -450,6 +457,7 @@ const MultileLayerSettingDialog = ({
       }}
       dialog={dialog}
       title={title}
+      {...props}
     />
   )
 }
@@ -461,6 +469,8 @@ const MultileLayerSettingFormDialog = ({
   readOnly,
   useUpdate,
   onSubmitted,
+  netProfitLabel,
+  profitSharingPercentageLabel,
   dialog,
   title,
   ...props
@@ -475,7 +485,6 @@ const MultileLayerSettingFormDialog = ({
   }
 
   const onSubmit = (data = {}) => {
-    console.log("formData", data)
     setSubmit({
       brandId,
       allAgentGameType: gameType,
@@ -500,10 +509,13 @@ const MultileLayerSettingFormDialog = ({
         title={title}
         showActionButtons={!readOnly}
         hideBackdrop
+        minWidth="50vw"
       >
         <AgentMultipleLayerProfitSharingSettingFormBody
           name="conditions"
           profitSharingPercentageFieldName="rebatePercentage"
+          netProfitLabel={netProfitLabel}
+          profitSharingPercentageLabel={profitSharingPercentageLabel}
           readOnly={readOnly}
         />
       </FormDialog>
