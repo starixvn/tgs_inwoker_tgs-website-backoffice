@@ -145,14 +145,10 @@ const EditForm = ({
           <Input name="realName" />
         </Box>
 
-        {isDev() && (
-          <>
-            <IdentityCardNumberLabel />
-            <Box>
-              <Input name="idNumber" />
-            </Box>
-          </>
-        )}
+        <IdentityCardNumberLabel />
+        <Box>
+          <Input name="idNumber" />
+        </Box>
 
         <VIPLevelLabel />
         <Box>
@@ -234,12 +230,8 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
           <Text>{realName}</Text>
         </Box>
 
-        {isDev() && (
-          <>
-            <IdentityCardNumberLabel />
-            <Box>{player.idNumber}</Box>
-          </>
-        )}
+        <IdentityCardNumberLabel />
+        <Box>{player.idNumber}</Box>
 
         <VIPLevelLabel />
         <Box>

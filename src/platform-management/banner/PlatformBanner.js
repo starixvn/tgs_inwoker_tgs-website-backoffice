@@ -16,7 +16,7 @@ import {
   useUpdatePlatformBanner
 } from "./client"
 import { Trans, useTrans } from "../../i18n"
-import parseDate from "date-fns/fp/parseISO"
+import parseDate from "date-fns/parseISO"
 import { CancelText } from "../../button/ActionButtons"
 import FormDialog from "../../form/FormDialog"
 import Input, { InputField } from "../../input/Input"

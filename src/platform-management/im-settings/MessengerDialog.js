@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Set, Card, Stack, Box, Dialog, useModalState, Alert } from "bumbag"
+import {
+  Set,
+  Card,
+  Stack,
+  Box,
+  Dialog,
+  useModalState,
+  Alert,
+  DropdownMenu,
+  Group
+} from "bumbag"
 import { View, Update } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import {
@@ -21,12 +31,17 @@ import {
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
-import { MessengerTypeSelect, MessengerTypeLabel } from "./MessengerTypeSelect"
+import {
+  GeneralMessengerTypeSelect,
+  GeneralMessengerTypeLabel,
+  isGeneralMessengerType
+} from "./GeneralMessengerTypeSelect"
 import { Input } from "../../input/Input"
 import { PhoneInput } from "../../input/PhoneInput"
 import Backdrop from "../../dialog/Backdrop"
 import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { ImageLinkButton } from "../../button/LinkButton"
+import { CommunicationType, CommunicationTypeField } from "./CommunicationType"
 
 export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -136,7 +151,10 @@ const AddDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
     <Backdrop {...dialog}>
       <FormDialog
         id="add-instant-messaging-dialog"
-        defaultValues={{ brandId }}
+        defaultValues={{
+          brandId,
+          communicationType: CommunicationType.General
+        }}
         onSubmit={onSubmit}
         isLoading={isLoading}
         result={result}
@@ -145,6 +163,7 @@ const AddDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
         onCloseErrorAlert={reset}
         dialog={dialog}
         hideBackdrop={true}
+        width="40vw"
       >
         <EditFormBody brandId={brandId} />
       </FormDialog>
@@ -159,7 +178,7 @@ const MessengerCard = ({ brandId, record, onSubmitted }) => {
         <FieldValues>
           <AppLabel />
           <Box alignY="center">
-            <MessengerTypeLabel value={record?.type} />
+            <GeneralMessengerTypeLabel value={record?.type} />
           </Box>
 
           <PhoneLabel />
@@ -297,11 +316,18 @@ const EditDialog = ({ brandId, record, dialog, onSubmitted, ...props }) => {
     setSubmit(undefined)
   }
 
+  let defaultValues = {
+    ...clone(record),
+    brandId,
+    communicationType: isGeneralMessengerType(record?.type)
+      ? CommunicationType.General
+      : CommunicationType.Custom
+  }
   return (
     <Backdrop {...dialog}>
       <FormDialog
         id="edit-instant-messaging-dialog"
-        defaultValues={{ ...clone(record), brandId }}
+        defaultValues={defaultValues}
         onSubmit={onSubmit}
         isLoading={isLoading}
         result={result}
@@ -310,6 +336,7 @@ const EditDialog = ({ brandId, record, dialog, onSubmitted, ...props }) => {
         onCloseErrorAlert={reset}
         dialog={dialog}
         hideBackdrop={true}
+        width="40vw"
       >
         <EditFormBody brandId={brandId} />
       </FormDialog>
@@ -332,7 +359,7 @@ const EditFormBody = ({ brandId }) => {
       <Input type="hidden" name="id" />
       <FieldValues>
         <AppLabel />
-        <MessengerTypeSelect name="type" required />
+        <CommunicationTypeField />
 
         <PhoneLabel />
         <PhoneInput name="phone" />
