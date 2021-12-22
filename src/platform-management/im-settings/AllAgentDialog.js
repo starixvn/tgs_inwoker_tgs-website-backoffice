@@ -475,7 +475,6 @@ const MultileLayerSettingFormDialog = ({
   }
 
   const onSubmit = (data = {}) => {
-    console.log("formData", data)
     setSubmit({
       brandId,
       allAgentGameType: gameType,
