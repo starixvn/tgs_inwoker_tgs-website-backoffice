@@ -71,10 +71,10 @@ export const CommunicationTypeField = () => {
         </Button>
       </DropdownMenu>
       {communicationType == General && (
-        <GeneralMessengerTypeSelect name={TypeFieldName} />
+        <GeneralMessengerTypeSelect name={TypeFieldName} required />
       )}
       {communicationType == Custom && (
-        <Input name={TypeFieldName} placeholder={placeholder} />
+        <Input name={TypeFieldName} placeholder={placeholder} required />
       )}
     </Set>
   )
