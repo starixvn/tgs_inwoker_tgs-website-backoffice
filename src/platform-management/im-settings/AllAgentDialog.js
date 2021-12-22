@@ -513,6 +513,8 @@ const MultileLayerSettingFormDialog = ({
         <AgentMultipleLayerProfitSharingSettingFormBody
           name="conditions"
           profitSharingPercentageFieldName="rebatePercentage"
+          netProfitLabel={netProfitLabel}
+          profitSharingPercentageLabel={profitSharingPercentageLabel}
           readOnly={readOnly}
         />
       </FormDialog>
