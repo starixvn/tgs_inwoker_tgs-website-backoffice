@@ -176,8 +176,6 @@ const MessengerCard = ({ brandId, record, onSubmitted }) => {
       <Card flex="1">
         <FieldValues>
           <AppLabel />
-          <CommunicationTypeField />
-
           <Box alignY="center">
             <GeneralMessengerTypeLabel value={record?.type} />
           </Box>
