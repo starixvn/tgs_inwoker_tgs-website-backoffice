@@ -58,7 +58,8 @@ const Body = () => {
 
   let { isLoading, data, error, mutate, deleteCache } = useBrandList({
     ...toApiParams(state),
-    sortby: "code"
+    sortby: "code",
+    valid: false
   })
 
   let columns = useColumns({ items: data?.items, mutate })

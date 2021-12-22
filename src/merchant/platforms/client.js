@@ -8,12 +8,25 @@ import {
   usePostFormData,
   useDelete
 } from "../../client"
+import { MerchantStatus } from "../status"
 
 const API = "/api/brand"
 
-export const useBrandList = (searchParams) => {
+export const useBrandList = ({
+  hideArchieved = true,
+  ...searchParams
+} = {}) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
-  return useGet(url)
+  let { data, ...rest } = useGet(url)
+
+  let items = hideArchieved
+    ? data?.items?.filter?.(({ status }) => status != MerchantStatus.Archieved)
+    : items
+
+  return {
+    data: items ? { ...data, items } : data,
+    ...rest
+  }
 }
 
 export const useBrand = (id) => {

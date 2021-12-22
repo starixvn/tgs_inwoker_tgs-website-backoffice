@@ -10,7 +10,7 @@ import {
   DropdownMenu
 } from "bumbag"
 import { useForm, useFormContext, Controller } from "react-hook-form"
-import Alert from "../dialog/Alert"
+import Alert, { AlertDialog } from "../dialog/Alert"
 import { useTrans, Trans } from "../i18n"
 
 const Active = "Active"
@@ -31,6 +31,19 @@ const MaintenanceTrans = {
   en: Maintenance
 }
 
+const Archieved = "Archieved"
+const ArchievedTrans = {
+  zh: "封存",
+  en: Archieved
+}
+
+export const MerchantStatus = {
+  Active,
+  Inactive,
+  Maintenance,
+  Archieved
+}
+
 export const MerchantStatusLabel = ({ value = "" }) => {
   switch (value) {
     case Active:
@@ -41,6 +54,9 @@ export const MerchantStatusLabel = ({ value = "" }) => {
 
     case Maintenance:
       return <Trans {...MaintenanceTrans} />
+
+    case Archieved:
+      return <Trans {...ArchievedTrans} />
 
     default:
       return value
@@ -122,6 +138,11 @@ export const MerchantStatusMenu = ({
                 <MerchantStatusLabel value={Maintenance} />
               </DropdownMenu.Item>
             )}
+            {status != Archieved && (
+              <DropdownMenu.Item onClick={() => setSubmit(Archieved)}>
+                <MerchantStatusLabel value={Archieved} />
+              </DropdownMenu.Item>
+            )}
           </>
         }
       >
@@ -134,6 +155,7 @@ export const MerchantStatusMenu = ({
           <MerchantStatusLabel value={status} />
         </Button>
       </DropdownMenu>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
     </>
   )
 }
