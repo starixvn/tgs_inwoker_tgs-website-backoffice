@@ -41,7 +41,7 @@ import { PhoneInput } from "../../input/PhoneInput"
 import Backdrop from "../../dialog/Backdrop"
 import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { ImageLinkButton } from "../../button/LinkButton"
-import { CommunicationType } from "./CommunicationType"
+import { CommunicationType, CommunicationTypeField } from "./CommunicationType"
 
 export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -176,6 +176,8 @@ const MessengerCard = ({ brandId, record, onSubmitted }) => {
       <Card flex="1">
         <FieldValues>
           <AppLabel />
+          <CommunicationTypeField />
+
           <Box alignY="center">
             <GeneralMessengerTypeLabel value={record?.type} />
           </Box>
