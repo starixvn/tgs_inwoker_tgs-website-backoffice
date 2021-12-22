@@ -24,6 +24,7 @@ export const CommunicationType = {
 }
 
 const CommunicationTypeFieldName = "communicationType"
+const TypeFieldName = "type"
 export const CommunicationTypeField = () => {
   let { control, setValue } = useFormContext()
   let communicationType = useWatch({
@@ -45,6 +46,7 @@ export const CommunicationTypeField = () => {
               <DropdownMenu.Item
                 onClick={() => {
                   setValue(CommunicationTypeFieldName, General)
+                  setValue(TypeFieldName, "")
                 }}
               >
                 <Trans {...GeneralTrans} />
@@ -54,6 +56,7 @@ export const CommunicationTypeField = () => {
               <DropdownMenu.Item
                 onClick={() => {
                   setValue(CommunicationTypeFieldName, Custom)
+                  setValue(TypeFieldName, "")
                 }}
               >
                 <Trans {...CustomTrans} />
@@ -68,10 +71,10 @@ export const CommunicationTypeField = () => {
         </Button>
       </DropdownMenu>
       {communicationType == General && (
-        <GeneralMessengerTypeSelect name="type" />
+        <GeneralMessengerTypeSelect name={TypeFieldName} />
       )}
       {communicationType == Custom && (
-        <Input name="type" placeholder={placeholder} />
+        <Input name={TypeFieldName} placeholder={placeholder} />
       )}
     </Set>
   )
