@@ -46,7 +46,25 @@ const ViberTrans = {
   en: "Viber"
 }
 
-export const MessengerTypeSelect = ({ ...props }) => {
+const GeneralMessengerList = [
+  WeChat,
+  WhatsApp,
+  Telegram,
+  KakaoTalk,
+  Line,
+  Skype,
+  Viber
+]
+
+export const isGeneralMessengerType = (value = "") => {
+  return GeneralMessengerList.includes(value)
+}
+
+export const GeneralMessengerTypeSelect = ({ ...props }) => {
+  let placeholder = useTrans({
+    zh: "通讯软体",
+    en: "Messenger"
+  })
   let options = [
     {
       label: useTrans(WeChatTrans),
@@ -78,10 +96,10 @@ export const MessengerTypeSelect = ({ ...props }) => {
     }
   ]
 
-  return <Select options={options} {...props} />
+  return <Select placeholder={placeholder} options={options} {...props} />
 }
 
-export const MessengerTypeLabel = ({ value = "" }) => {
+export const GeneralMessengerTypeLabel = ({ value = "" }) => {
   switch (value) {
     case WeChat:
       return <Trans {...WeChatTrans} />
