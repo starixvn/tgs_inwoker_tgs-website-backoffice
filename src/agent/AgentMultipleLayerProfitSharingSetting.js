@@ -382,7 +382,7 @@ const SettingRow = ({
   profitSharingPercentageFieldName,
   parentAgentProfitSharingSettings
 }) => {
-  let { control } = useFormContext()
+  let { control, setValue } = useFormContext()
   let previous = useWatch({
     control,
     name: `${name}.${index - 1}`
@@ -396,6 +396,11 @@ const SettingRow = ({
 
   let editable = !readOnly
   let disabled = readOnly
+
+  let RankFieldName = `${name}.${index}.rank`
+  useEffect(() => {
+    setValue(RankFieldName, index + 1)
+  }, [index])
   return (
     <>
       <Table.Row>
@@ -414,14 +419,12 @@ const SettingRow = ({
               </Button>
             )}
             <Input
-              // type="hidden"
-              name={`${name}.${index}.rank`}
+              type="hidden"
+              name={RankFieldName}
               value={index + 1}
               registerOptions={{
-                valueAsNumber: true,
-                shouldUnregister: true
+                valueAsNumber: true
               }}
-              readOnly
             />
           </Box>
         </Table.Cell>
