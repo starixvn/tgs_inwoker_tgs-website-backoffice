@@ -693,8 +693,8 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           />
           <Text.Block color="warning" fontWeight="bold" fontSize="150">
             <Trans
-              zh="建議尺寸: T1,T3,T4: 1920 x 600px；T2 1920 x 400px"
-              en="Recommended size: T1,T3,T4: 1920 x 600px；T2 1920 x 400px"
+              zh="建議尺寸:  T1,T3,T4: 1200 x 485px；T2: 470 x 200px"
+              en="Recommended size: 1200 x 485px；T2 470 x 200px"
             />
           </Text.Block>
         </Set>
@@ -713,7 +713,10 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             required={required}
           />
           <Text.Block color="warning" fontWeight="bold" fontSize="150">
-            <Trans zh="建議尺寸: 750x310px" en="Recommended size: 750x310px" />
+            <Trans
+              zh="建議尺寸: 690 x 280px"
+              en="Recommended size: 690 x 280px"
+            />
           </Text.Block>
         </Set>
 

@@ -334,7 +334,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
       <Label name="desktopBanner" required={required}>
         <Trans zh="Desktop Banner" en="Desktop Banner" />
       </Label>
-      <Box alignY="center">
+      <Set orientation="vertical" alignY="center">
         <ImageLocalizationDialogDisclosure
           brandId={brandId}
           name="desktopBannerUrl"
@@ -342,12 +342,18 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
           disabled={disabled}
           readOnly={readOnly}
         />
-      </Box>
+        <Text.Block color="warning" fontWeight="bold" fontSize="150">
+          <Trans
+            zh="建議尺寸: T1,T3,T4: 1920 x 600px；T2: 1920 x 400px"
+            en="Recommended size: T1,T3,T4: 1920 x 600px；T2: 1920 x 400px"
+          />
+        </Text.Block>
+      </Set>
 
       <Label name="mobileBanner" required={required}>
         <Trans zh="Mobile Banner" en="Mobile Banner" />
       </Label>
-      <Box alignY="center">
+      <Set orientation="vertical" alignY="center">
         <ImageLocalizationDialogDisclosure
           brandId={brandId}
           name="mobileBannerUrl"
@@ -355,7 +361,13 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
           disabled={disabled}
           readOnly={readOnly}
         />
-      </Box>
+        <Text.Block color="warning" fontWeight="bold" fontSize="150">
+          <Trans
+            zh="建議尺寸: 750 x 310px"
+            en="Recommended size: 750 x 310px"
+          />
+        </Text.Block>
+      </Set>
 
       <Label name="bannerUrl">
         <Trans zh="Banner URL" en="Banner URL" />
