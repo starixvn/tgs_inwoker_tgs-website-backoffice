@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Group, Spinner, FieldWrapper, Button, DropdownMenu } from "bumbag"
+import { Group, Spinner, FieldWrapper, Button, DropdownMenu, Set } from "bumbag"
 import { GeneralMessengerTypeSelect } from "./GeneralMessengerTypeSelect"
 import { Input } from "../../input/Input"
 import { FormattedNumber, Trans, useTrans } from "../../i18n"
@@ -37,7 +37,7 @@ export const CommunicationTypeField = () => {
   })
 
   return (
-    <Group>
+    <Set>
       <DropdownMenu
         menu={
           <>
@@ -62,7 +62,7 @@ export const CommunicationTypeField = () => {
           </>
         }
       >
-        <Button iconAfter="chevron-down">
+        <Button iconAfter="chevron-down" width="max-content">
           {communicationType == General && <Trans {...GeneralTrans} />}
           {communicationType == Custom && <Trans {...CustomTrans} />}
         </Button>
@@ -73,6 +73,6 @@ export const CommunicationTypeField = () => {
       {communicationType == Custom && (
         <Input name="type" placeholder={placeholder} />
       )}
-    </Group>
+    </Set>
   )
 }
