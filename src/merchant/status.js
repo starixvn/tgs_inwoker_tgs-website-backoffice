@@ -10,7 +10,7 @@ import {
   DropdownMenu
 } from "bumbag"
 import { useForm, useFormContext, Controller } from "react-hook-form"
-import Alert from "../dialog/Alert"
+import Alert, { AlertDialog } from "../dialog/Alert"
 import { useTrans, Trans } from "../i18n"
 
 const Active = "Active"
@@ -155,6 +155,7 @@ export const MerchantStatusMenu = ({
           <MerchantStatusLabel value={status} />
         </Button>
       </DropdownMenu>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
     </>
   )
 }
