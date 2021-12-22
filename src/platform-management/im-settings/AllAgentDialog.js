@@ -509,6 +509,7 @@ const MultileLayerSettingFormDialog = ({
         title={title}
         showActionButtons={!readOnly}
         hideBackdrop
+        minWidth="50vw"
       >
         <AgentMultipleLayerProfitSharingSettingFormBody
           name="conditions"
