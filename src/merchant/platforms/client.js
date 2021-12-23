@@ -8,7 +8,7 @@ import {
   usePostFormData,
   useDelete
 } from "../../client"
-import { MerchantStatus } from "../status"
+import { MerchantStatus } from "../MerchantStatus"
 
 const API = "/api/brand"
 
@@ -20,7 +20,7 @@ export const useBrandList = ({
   let { data, ...rest } = useGet(url)
 
   let items = hideArchieved
-    ? data?.items?.filter?.(({ status }) => status != MerchantStatus.Archieved)
+    ? data?.items?.filter?.(({ status }) => status != MerchantStatus.Archived)
     : items
 
   return {

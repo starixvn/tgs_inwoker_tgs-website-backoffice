@@ -46,6 +46,12 @@ const ViberTrans = {
   en: "Viber"
 }
 
+const Zalo = "Zalo"
+const ZaloTrans = {
+  zh: "Zalo",
+  en: "Zalo"
+}
+
 const GeneralMessengerList = [
   WeChat,
   WhatsApp,
@@ -53,7 +59,8 @@ const GeneralMessengerList = [
   KakaoTalk,
   Line,
   Skype,
-  Viber
+  Viber,
+  Zalo
 ]
 
 export const isGeneralMessengerType = (value = "") => {
@@ -93,6 +100,10 @@ export const GeneralMessengerTypeSelect = ({ ...props }) => {
     {
       label: useTrans(ViberTrans),
       value: Viber
+    },
+    {
+      label: useTrans(ZaloTrans),
+      value: Zalo
     }
   ]
 
@@ -115,6 +126,8 @@ export const GeneralMessengerTypeLabel = ({ value = "" }) => {
       return <Trans {...SkypeTrans} />
     case Viber:
       return <Trans {...ViberTrans} />
+    case Zalo:
+      return <Trans {...ZaloTrans} />
     default:
       return value
   }

@@ -51,7 +51,8 @@ const Body = () => {
 
   let { isLoading, data, error, mutate, deleteCache } = useLicenseeList({
     ...toApiParams(state),
-    sortby: "code"
+    sortby: "code",
+    hideArchieved: false
   })
 
   let columns = useColumns({ items: data?.items, mutate })

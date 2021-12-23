@@ -7,12 +7,25 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
+import { MerchantStatus } from "../MerchantStatus"
 
 const API = "/api/reseller"
 
-export const useResellerList = (searchParams) => {
+export const useResellerList = ({
+  hideArchieved = true,
+  ...searchParams
+} = {}) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
-  return useGet(url)
+  let { data, ...rest } = useGet(url)
+
+  let items = hideArchieved
+    ? data?.items?.filter?.(({ status }) => status != MerchantStatus.Archived)
+    : items
+
+  return {
+    data: items ? { ...data, items } : data,
+    ...rest
+  }
 }
 
 export const useReseller = (id) => {
