@@ -17,7 +17,7 @@ import { SearchButton } from "../../button/SearchButton"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import equals from "fast-deep-equal"
-import { MerchantStatusMenu } from "../status"
+import { MerchantStatusMenu } from "../MerchantStatus"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 
