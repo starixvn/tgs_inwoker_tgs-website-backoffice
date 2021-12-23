@@ -20,7 +20,7 @@ export const useLicenseeList = ({
 
   let items = hideArchieved
     ? data?.items?.filter?.(({ status }) => status != MerchantStatus.Archived)
-    : items
+    : undefined
 
   return {
     data: items ? { ...data, items } : data,
