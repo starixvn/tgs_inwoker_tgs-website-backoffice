@@ -68,10 +68,11 @@ const toPalette = (value) => {
     case Active:
       return "success"
     case Inactive:
-    case Archived:
       return "danger"
     case Maintenance:
       return "warning"
+    case Archived:
+      return "gray"
     default:
       return "default"
   }
