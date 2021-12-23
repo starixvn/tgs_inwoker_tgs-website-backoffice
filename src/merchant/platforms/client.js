@@ -21,7 +21,7 @@ export const useBrandList = ({
 
   let items = hideArchieved
     ? data?.items?.filter?.(({ status }) => status != MerchantStatus.Archived)
-    : undefined
+    : data?.items
 
   return {
     data: items ? { ...data, items } : data,
