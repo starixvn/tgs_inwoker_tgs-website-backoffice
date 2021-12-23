@@ -16,6 +16,8 @@ export const useLicenseeList = ({
   ...searchParams
 } = {}) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
+  return useGet(url)
+  /*
   let { data, ...rest } = useGet(url)
 
   let items = hideArchieved
@@ -26,6 +28,7 @@ export const useLicenseeList = ({
     data: items ? { ...data, items } : data,
     ...rest
   }
+  */
 }
 
 export const useLicensee = (id) => {
