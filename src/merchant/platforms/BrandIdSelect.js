@@ -11,8 +11,7 @@ export const BrandIdSelect = ({ placeholder, licenseeId, ...props }) => {
   let { isLoading, data, error } = useBrandList({
     showAll: true,
     licenseeId,
-    sortby: "code",
-    hideArchieved: false
+    sortby: "code"
   })
   let options = data?.items.map((brand) => ({
     label: brand.code,
