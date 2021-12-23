@@ -10,8 +10,7 @@ export const ResellerIdSelect = ({ placeholder, ...props }) => {
 
   let { isLoading, data, error } = useResellerList({
     showAll: true,
-    sortby: "code",
-    hideArchieved: false
+    sortby: "code"
   })
   let options = data?.items.map((reseller) => ({
     label: reseller.code,

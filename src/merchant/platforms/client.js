@@ -17,8 +17,7 @@ export const useBrandList = ({
   ...searchParams
 } = {}) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
-  return useGet(url)
-  /*
+
   let { data, ...rest } = useGet(url)
 
   let items = hideArchieved
@@ -29,7 +28,6 @@ export const useBrandList = ({
     data: items ? { ...data, items } : data,
     ...rest
   }
-  */
 }
 
 export const useBrand = (id) => {
