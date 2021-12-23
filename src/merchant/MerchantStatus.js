@@ -31,17 +31,17 @@ const MaintenanceTrans = {
   en: Maintenance
 }
 
-const Archieved = "Archieved"
-const ArchievedTrans = {
+const Archived = "Archived"
+const ArchivedTrans = {
   zh: "封存",
-  en: Archieved
+  en: Archived
 }
 
 export const MerchantStatus = {
   Active,
   Inactive,
   Maintenance,
-  Archieved
+  Archived
 }
 
 export const MerchantStatusLabel = ({ value = "" }) => {
@@ -55,8 +55,8 @@ export const MerchantStatusLabel = ({ value = "" }) => {
     case Maintenance:
       return <Trans {...MaintenanceTrans} />
 
-    case Archieved:
-      return <Trans {...ArchievedTrans} />
+    case Archived:
+      return <Trans {...ArchivedTrans} />
 
     default:
       return value
@@ -68,6 +68,7 @@ const toPalette = (value) => {
     case Active:
       return "success"
     case Inactive:
+    case Archived:
       return "danger"
     case Maintenance:
       return "warning"
@@ -138,9 +139,9 @@ export const MerchantStatusMenu = ({
                 <MerchantStatusLabel value={Maintenance} />
               </DropdownMenu.Item>
             )}
-            {status != Archieved && (
-              <DropdownMenu.Item onClick={() => setSubmit(Archieved)}>
-                <MerchantStatusLabel value={Archieved} />
+            {status != Archived && (
+              <DropdownMenu.Item onClick={() => setSubmit(Archived)}>
+                <MerchantStatusLabel value={Archived} />
               </DropdownMenu.Item>
             )}
           </>

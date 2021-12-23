@@ -17,7 +17,7 @@ import { SearchButton } from "../../button/SearchButton"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import equals from "fast-deep-equal"
-import { MerchantStatusMenu } from "../status"
+import { MerchantStatusMenu } from "../MerchantStatus"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 
@@ -51,7 +51,8 @@ const Body = () => {
 
   let { isLoading, data, error, mutate, deleteCache } = useLicenseeList({
     ...toApiParams(state),
-    sortby: "code"
+    sortby: "code",
+    hideArchieved: false
   })
 
   let columns = useColumns({ items: data?.items, mutate })
