@@ -16,6 +16,8 @@ export const useResellerList = ({
   ...searchParams
 } = {}) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
+  return useGet(url)
+  /*
   let { data, ...rest } = useGet(url)
 
   let items = hideArchieved
@@ -26,6 +28,7 @@ export const useResellerList = ({
     data: items ? { ...data, items } : data,
     ...rest
   }
+  */
 }
 
 export const useReseller = (id) => {
