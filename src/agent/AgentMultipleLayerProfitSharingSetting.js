@@ -262,6 +262,12 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
   name = FieldName,
   maxLevelSize = MaxNumber,
   parentAgentProfitSharingSettings,
+  profitSharingPercentageFieldName = "dividendPercentage",
+  activeNumberLabel = <Trans zh="活跃人数" en="Active Player" />,
+  netProfitLabel = <Trans zh="净盈利" en="Net Profit" />,
+  profitSharingPercentageLabel = (
+    <Trans zh="分红比例" en="Profit Sharing Percentage" />
+  ),
   readOnly
 }) => {
   let editable = !readOnly
@@ -273,7 +279,6 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
     keyName: "_id"
   })
 
-  // let fields = watch(FieldName)
   return (
     <Table>
       <Table.Head>
@@ -281,15 +286,9 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
           <Table.HeadCell>
             <Box></Box>
           </Table.HeadCell>
-          <Table.HeadCell>
-            <Trans zh="净盈利" en="Net Profit" />
-          </Table.HeadCell>
-          <Table.HeadCell>
-            <Trans zh="活跃人数" en="Active Player" />
-          </Table.HeadCell>
-          <Table.HeadCell>
-            <Trans zh="分红比例" en="Profit Sharing Percentage" />
-          </Table.HeadCell>
+          <Table.HeadCell>{activeNumberLabel}</Table.HeadCell>
+          <Table.HeadCell>{netProfitLabel}</Table.HeadCell>
+          <Table.HeadCell>{profitSharingPercentageLabel}</Table.HeadCell>
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -300,6 +299,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
             field={field}
             index={index}
             fieldArray={fieldArray}
+            profitSharingPercentageFieldName={profitSharingPercentageFieldName}
             parentAgentProfitSharingSettings={parentAgentProfitSharingSettings}
             readOnly={readOnly}
           />
@@ -312,28 +312,32 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
           </Table.Row>
         )}
         {editable && fieldArray.fields.length < maxLevelSize && (
-          <AddRow fieldArray={fieldArray} />
+          <AddRow
+            fieldArray={fieldArray}
+            profitSharingPercentageFieldName={profitSharingPercentageFieldName}
+          />
         )}
       </Table.Body>
     </Table>
   )
 }
 
-const AddRow = ({ fieldArray }) =>
+const AddRow = ({ fieldArray, profitSharingPercentageFieldName }) =>
   useMemo(
     () => (
-      <Table.Row id={`add-agent-profit-sharing-setting`}>
+      <Table.Row id={`add-profit-sharing-setting`}>
         <Table.HeadCell>
           <Button
-            id="add-agent-profit-sharing-setting"
+            id="add-profit-sharing-setting"
             size="small"
             variant="ghost"
             onClick={(event) => {
-              fieldArray.append({
-                netProfit: "",
-                activeNumber: "",
-                dividendPercentage: ""
-              })
+              let field = {
+                netProfit: null,
+                activeNumber: null
+              }
+              Reflect.set(field, profitSharingPercentageFieldName, null)
+              fieldArray.append(field)
             }}
           >
             <Icon icon={faPlus} type="font-awesome" />
@@ -347,11 +351,8 @@ const AddRow = ({ fieldArray }) =>
 
 const DefaultMinSetting = {
   netProfit: 0,
-  activeNumber: 0,
-  dividendPercentage: 0
+  activeNumber: 0
 }
-
-const MaxProfitSharingPercentage = 100
 
 const SettingRow = ({
   name,
@@ -359,9 +360,10 @@ const SettingRow = ({
   index,
   fieldArray,
   readOnly,
+  profitSharingPercentageFieldName,
   parentAgentProfitSharingSettings
 }) => {
-  let { control } = useFormContext()
+  let { control, setValue } = useFormContext()
   let previous = useWatch({
     control,
     name: `${name}.${index - 1}`
@@ -376,53 +378,36 @@ const SettingRow = ({
   let editable = !readOnly
   let disabled = readOnly
 
+  let RankFieldName = `${name}.${index}.rank`
+  useEffect(() => {
+    setValue(RankFieldName, index + 1)
+  }, [index])
   return (
     <>
       <Table.Row>
         <Table.Cell>
-          <Input
-            type="hidden"
-            name={`${name}.${index}.rank`}
-            value={index + 1}
-          />
-          {editable && (
-            <Button
-              size="small"
-              palette="danger"
-              variant="ghost"
-              onClick={(event) => {
-                fieldArray.remove(index)
+          <Box>
+            {editable && (
+              <Button
+                size="small"
+                palette="danger"
+                variant="ghost"
+                onClick={(event) => {
+                  fieldArray.remove(index)
+                }}
+              >
+                <Icon icon={faMinus} type="font-awesome" />
+              </Button>
+            )}
+            <Input
+              type="hidden"
+              name={RankFieldName}
+              value={index + 1}
+              registerOptions={{
+                valueAsNumber: true
               }}
-            >
-              <Icon icon={faMinus} type="font-awesome" />
-            </Button>
-          )}
-        </Table.Cell>
-        <Table.Cell>
-          <NumberInput
-            name={`${name}.${index}.netProfit`}
-            readOnly={readOnly}
-            disabled={disabled}
-            defaultValue={field.netProfit}
-            registerOptions={{
-              valueAsNumber: true
-            }}
-            min={Math.max(
-              ...[
-                DefaultMinSetting.netProfit,
-                previous?.netProfit,
-                parentAgentSetting?.netProfit
-              ].filter(Number.isFinite)
-            )}
-            max={Math.min(
-              ...[
-                MaxNumber,
-                next?.netProfit,
-                parentAgentSetting?.netProfit
-              ].filter(Number.isFinite)
-            )}
-            required
-          />
+            />
+          </Box>
         </Table.Cell>
         <Table.Cell>
           <NumberInput
@@ -451,32 +436,90 @@ const SettingRow = ({
           />
         </Table.Cell>
         <Table.Cell>
-          <PercentageNumberInputField
-            name={`${name}.${index}.dividendPercentage`}
+          <NumberInput
+            name={`${name}.${index}.netProfit`}
             readOnly={readOnly}
             disabled={disabled}
+            defaultValue={field.netProfit}
             registerOptions={{
               valueAsNumber: true
             }}
-            defaultValue={field.dividendPercentage}
             min={Math.max(
               ...[
-                DefaultMinSetting.dividendPercentage,
-                previous?.dividendPercentage,
-                parentAgentSetting?.dividendPercentage
+                DefaultMinSetting.netProfit,
+                previous?.netProfit,
+                parentAgentSetting?.netProfit
               ].filter(Number.isFinite)
             )}
             max={Math.min(
               ...[
-                MaxProfitSharingPercentage,
-                next?.dividendPercentage,
-                parentAgentSetting?.dividendPercentage
+                MaxNumber,
+                next?.netProfit,
+                parentAgentSetting?.netProfit
               ].filter(Number.isFinite)
             )}
             required
           />
         </Table.Cell>
+        <Table.Cell>
+          <ProfitSharingPercentageNumberInputField
+            fieldArrayName={name}
+            index={index}
+            fieldName={profitSharingPercentageFieldName}
+            field={field}
+            readOnly={readOnly}
+            disabled={disabled}
+            registerOptions={{
+              valueAsNumber: true
+            }}
+            required
+          />
+        </Table.Cell>
       </Table.Row>
     </>
+  )
+}
+
+const ProfitSharingPercentageNumberInputField = ({
+  fieldArrayName,
+  index,
+  fieldName,
+  field = {},
+  ...props
+}) => {
+  let { control } = useFormContext()
+  let previousProfitSharingPercentage = useWatch({
+    control,
+    name: `${fieldArrayName}.${index - 1}.${fieldName}`
+  })
+  let nextProfitSharingPercentage = useWatch({
+    control,
+    name: `${fieldArrayName}.${index + 1}.${fieldName}`
+  })
+
+  let defaultValue = Reflect.get(field, fieldName)
+
+  const MinProfitSharingPercentage = 0
+  const MaxProfitSharingPercentage = 100
+
+  return (
+    <PercentageNumberInputField
+      name={`${fieldArrayName}.${index}.${fieldName}`}
+      registerOptions={{
+        valueAsNumber: true
+      }}
+      defaultValue={defaultValue}
+      min={Math.max(
+        ...[MinProfitSharingPercentage, previousProfitSharingPercentage].filter(
+          Number.isFinite
+        )
+      )}
+      max={Math.min(
+        ...[MaxProfitSharingPercentage, nextProfitSharingPercentage].filter(
+          Number.isFinite
+        )
+      )}
+      {...props}
+    />
   )
 }

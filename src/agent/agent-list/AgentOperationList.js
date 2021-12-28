@@ -15,7 +15,6 @@ import dateTimeColumn from "../../table/column/dateTime"
 import textColumn from "../../table/column/textColumn"
 import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
-import isSameDate from "date-fns/isEqual"
 import { Descending } from "../../table/order"
 
 const Key = "AgentOperationList"

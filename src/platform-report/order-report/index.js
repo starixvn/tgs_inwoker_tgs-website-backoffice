@@ -106,6 +106,8 @@ const ReportContent = ({ brandId }) => {
     pageSize,
     from,
     to,
+    closedFrom,
+    closedTo,
     username,
     roundId,
     status,
@@ -125,6 +127,8 @@ const ReportContent = ({ brandId }) => {
     orderby: "descending",
     from,
     to: startOfNextDay(to),
+    closedFrom,
+    closedTo: startOfNextDay(closedTo),
     culture
   })
 

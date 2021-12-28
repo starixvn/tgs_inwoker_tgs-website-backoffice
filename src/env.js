@@ -71,8 +71,12 @@ export const getHeaderButtonBackground = () =>
   window?.env?.loginButtonBackground || "transparent"
 
 const AgentMonthlyProfitSharingSetting = "AgentMonthlyProfitSharingSetting" //TODO: remove env.html -> env.features.AgentMonthlyProfitSharingSetting & isAgentMonthlyProfitSharingSettingEnabled
+const SystemTimezone = "SystemTimezone"
+const AllAgent = "AllAgent"
 export const Features = {
-  AgentMonthlyProfitSharingSetting
+  AgentMonthlyProfitSharingSetting,
+  SystemTimezone,
+  AllAgent
 }
 
 export const isAgentMonthlyProfitSharingSettingEnabled = () => {
@@ -104,10 +108,11 @@ const enableFeatures = (...features) => {
 
 window.featureX = {
   list: listFeatures,
-  enable: {
-    agentMonthlyProfitSharingSetting: () =>
-      enableFeatures(AgentMonthlyProfitSharingSetting)
-  }
+  enableAll: () => {
+    enableFeatures(...Object.values(Features))
+    //TODO: how to trigger react render?
+  },
+  enableFeatures
 }
 
 export const isFeatureEnabled = (feature = "") => {
