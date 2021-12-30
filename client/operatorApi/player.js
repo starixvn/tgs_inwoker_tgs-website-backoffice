@@ -1,9 +1,11 @@
-import fetcher from "../fetcher"
+import { fetcher } from "../fetcher.js"
 import faker from "faker"
-import { api } from "./api"
+import { api } from "./api.js"
 import FormData from "form-data"
 import { fileURLToPath } from "url"
-import { createReadStream } from "fs-extra"
+import fsExtra from "fs-extra"
+
+const { createReadStream } = fsExtra
 
 export const DefaultPassword = "TgsP@ssw0rd"
 

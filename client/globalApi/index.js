@@ -1,4 +1,4 @@
-import { platformToken } from "./platformToken"
+import { platformToken } from "./platformToken.js"
 
 export default {
   platformToken

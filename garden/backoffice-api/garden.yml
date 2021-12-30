@@ -12,7 +12,7 @@ services:
       - file-service
       - promotion-api
       - report-api
-      - log-api
+      # - log-api
       - payment-api
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
@@ -35,3 +35,4 @@ services:
       - name: http
         containerPort: 80
         servicePort: 80
+        localPort: 8081

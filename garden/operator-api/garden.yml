@@ -32,3 +32,4 @@ services:
       - name: http
         containerPort: 80
         servicePort: 80
+        localPort: 8083

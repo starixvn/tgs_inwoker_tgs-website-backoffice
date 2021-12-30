@@ -44,7 +44,9 @@ import {
   getHeaderTitleFontSize,
   getHeaderTitleFontWeight,
   getHeaderImageUrl,
-  isDev
+  isDev,
+  Features,
+  isFeatureEnabled
 } from "./env"
 import FundDepositTopNavItem from "./fund/deposit/FundDepositTopNavItem"
 import FundWithdrawTopNavItem from "./fund/withdraw/FundWithdrawTopNavItem"
@@ -170,7 +172,20 @@ const Header = () => {
     <>
       <TopNav id="app-header" background={getHeaderBackground()}>
         <TopNav.Section>
-          <TopNav.Item marginLeft="2.2rem">
+          {isDev() && (
+            <TopNav.Item marginRight="0">
+              <Button
+                paddingLeft="0.65rem"
+                paddingRight="0.65rem"
+                color={getHeaderButtonColor()}
+                onClick={page.sidebar.toggle}
+                variant="ghost"
+              >
+                <Icon icon="solid-bars" />
+              </Button>
+            </TopNav.Item>
+          )}
+          <TopNav.Item marginLeft="-0.15rem">
             {imgUrl && <Image src={imgUrl} height="30px" filter="none" />}
             {/* {title && (
               <Text.Block
@@ -229,17 +244,6 @@ const Header = () => {
             </DropdownMenu>
           </TopNav.Item>
           <LangItem />
-          <Hide above={collapseBelow}>
-            <TopNav.Item>
-              <Button
-                color={getHeaderButtonColor()}
-                onClick={page.sidebar.open}
-                variant="ghost"
-              >
-                <Icon icon="solid-bars" />
-              </Button>
-            </TopNav.Item>
-          </Hide>
         </TopNav.Section>
       </TopNav>
       {changePasswordDialog.visible && (

@@ -8,8 +8,7 @@ import React, {
 import { css } from "@emotion/react"
 import { Link, useLocation } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
-import { usePage } from "bumbag"
-import { SideNav, Box, Level, Icon, Button } from "bumbag"
+import { usePage, SideNav, Box, Level, Icon, Button } from "bumbag"
 import memoize from "fast-memoize"
 import { codeMenuContentPair as platformPair } from "./platform-management"
 import {
@@ -90,7 +89,7 @@ import {
   faAngleUp,
   faAngleDown
 } from "@fortawesome/free-solid-svg-icons"
-import { isDev } from "./env"
+import { isDev, Features, isFeatureEnabled } from "./env"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   let { sidebar, isCollapsed } = usePage()
@@ -124,20 +123,26 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   return items && items.length ? (
     <SideNav.Level
       title={
-        <Level orientation="horizontal" alignY="center" width="100%">
+        <Level
+          orientation="horizontal"
+          verticalBelow={null}
+          alignY="center"
+          width="100%"
+        >
           {title}
-          <Button
-            display="none"
-            //display={isDev() ? "inline-flex" : "none"}
-            variant="ghost"
-            size="small"
-            marginRight="0.3rem"
-            onClick={() => {
-              setShow(!show)
-            }}
-          >
-            <Icon icon={show ? faAngleUp : faAngleDown} type="font-awesome" />
-          </Button>
+          {isDev() && (
+            <Button
+              display={"inline-flex"}
+              variant="ghost"
+              size="small"
+              marginRight="0.3rem"
+              onClick={() => {
+                setShow(!show)
+              }}
+            >
+              <Icon icon={show ? faAngleUp : faAngleDown} type="font-awesome" />
+            </Button>
+          )}
         </Level>
       }
       css={css`

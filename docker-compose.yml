@@ -29,7 +29,7 @@ services:
       HEADER_BACKGROUND: "#f7f7fa"
       HEADER_BUTTON_COLOR: "#212121"
       HEADER_BUTTON_BACKGROUND: "transparent"
-      AgentMonthlyProfitSharingSetting: "true"
+      SystemTimezone: "true"
     labels:
       - traefik.http.routers.backoffice-site.rule=Host(`backoffice.localhost`)
     depends_on:

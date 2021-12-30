@@ -70,17 +70,12 @@ export const getHeaderButtonColor = () =>
 export const getHeaderButtonBackground = () =>
   window?.env?.loginButtonBackground || "transparent"
 
-const AgentMonthlyProfitSharingSetting = "AgentMonthlyProfitSharingSetting" //TODO: remove env.html -> env.features.AgentMonthlyProfitSharingSetting & isAgentMonthlyProfitSharingSettingEnabled
-const SystemTimezone = "SystemTimezone"
-const AllAgent = "AllAgent"
-export const Features = {
-  AgentMonthlyProfitSharingSetting,
-  SystemTimezone,
-  AllAgent
-}
+const SystemTimezone = "SystemTimezone" //TODO: remove env.html
+const Sidebar = "Sidebar"
 
-export const isAgentMonthlyProfitSharingSettingEnabled = () => {
-  return boolean(window?.env?.features?.[AgentMonthlyProfitSharingSetting])
+export const Features = {
+  SystemTimezone,
+  Sidebar
 }
 
 const listFeatures = () => {
