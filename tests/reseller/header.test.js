@@ -4,11 +4,11 @@ import { expect } from "chai"
 
 const test = base.extend(Fixture)
 
-test("should display user name", async ({ page, resellerUser }) => {
+test("should display user name", async ({ page, resellerUsername }) => {
   let username = await page.$eval(
     "#app-header #username",
     ({ textContent }) => textContent
   )
 
-  expect(username).to.equal(resellerUser.username)
+  expect(username).to.equal(resellerUsername)
 })

@@ -7,10 +7,7 @@ import { selectRandomPlatform } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("should able to add, edit and remove live chat provider", async ({
-  page,
-  adminUser
-}) => {
+test("add, edit and remove live chat provider", async ({ page }) => {
   await gotoPlatformCustomerServicePage(page)
 
   let hasSetting = await hasLiveChat(page)

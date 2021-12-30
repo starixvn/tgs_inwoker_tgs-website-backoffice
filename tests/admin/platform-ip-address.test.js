@@ -8,12 +8,7 @@ import operatorApi from "../../client/operatorApi/index.js"
 
 const test = base.extend(Fixture)
 
-test("should able to search ip address", async ({
-  page,
-  adminUser,
-  platformCode,
-  platformToken
-}) => {
+test("search ip address", async ({ page, platformCode, platformToken }) => {
   let players = ([] = await createPlayers(platformToken))
 
   let brandId = await gotoPlatformIpAddressPage(page, platformCode)

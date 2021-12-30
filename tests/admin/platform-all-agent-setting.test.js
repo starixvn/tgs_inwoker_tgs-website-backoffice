@@ -7,7 +7,7 @@ import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 
-test("update all agent settings", async ({ page, adminUser }) => {
+test("update all agent settings", async ({ page }) => {
   let brandId = await gotoPlatformOperationSettingPage(page)
 
   let [allAgentSettingsReponse] = await Promise.all([

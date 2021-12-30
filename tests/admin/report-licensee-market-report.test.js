@@ -7,10 +7,7 @@ import { selectFirst } from "../licensee.js"
 
 const test = base.extend(Fixture)
 
-test("should able to view and download licensee market report", async ({
-  page,
-  adminUser
-}) => {
+test("view and download licensee market report", async ({ page }) => {
   await gotoLicenseeMarketReportPage(page)
   await page.waitForSelector(`[data-column-id="depositAmount"] span`)
 

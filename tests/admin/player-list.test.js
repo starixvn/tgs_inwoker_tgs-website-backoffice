@@ -6,13 +6,7 @@ import { selectPlatformByCode } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("should able to search, view and edit player", async ({
-  page,
-  adminUser,
-  platformCode,
-  platformToken,
-  player
-}) => {
+test("search, view and edit player", async ({ page, platformCode, player }) => {
   let brandId = await gotoPlayerListPage(page, platformCode)
   await page.fill(`input[name="username"]`, player.username)
 

@@ -8,7 +8,7 @@ import faker from "faker"
 const test = base.extend(Fixture)
 const { lorem, phone, datatype } = faker
 
-test("add, edit and remove messenger", async ({ page, adminUser }) => {
+test("add, edit and remove messenger", async ({ page }) => {
   await gotoPlatformCustomerServicePage(page)
 
   await page.click("#instant-messaging-dialog-disclosure")

@@ -7,7 +7,7 @@ import { selectRandomPlatform } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("edit vip level", async ({ page, adminUser }) => {
+test("edit vip level", async ({ page }) => {
   let brandId = await gotoVipLevelPage(page)
   let [id, vipLevel] = await editVipLevel(page)
 

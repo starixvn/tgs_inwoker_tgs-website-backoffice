@@ -7,11 +7,7 @@ import { random } from "lodash-es"
 
 const test = base.extend(Fixture)
 
-test("add and deduct agent balance", async ({
-  page,
-  adminUser,
-  platformCode
-}) => {
+test("add and deduct agent balance", async ({ page, platformCode }) => {
   let brandId = await gotoAgentBalanceAdjustmentPage(page, platformCode)
   await addBalance(page)
 

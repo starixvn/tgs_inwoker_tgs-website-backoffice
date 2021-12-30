@@ -7,7 +7,7 @@ import faker from "faker"
 const test = base.extend(Fixture)
 const { image } = faker
 
-test("should able to edit platform logo", async ({ page, adminUser }) => {
+test("edit platform logo", async ({ page }) => {
   await gotoPlatformListPage(page)
 
   let record = await editLogo(page)

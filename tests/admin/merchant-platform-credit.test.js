@@ -6,7 +6,7 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
-test("should able to search by licensee name", async ({ page, adminUser }) => {
+test("search by licensee name", async ({ page }) => {
   await gotoPlatformCreditPage(page)
 
   let licenseeNames = await page.evaluate(() =>
@@ -40,7 +40,7 @@ test("should able to search by licensee name", async ({ page, adminUser }) => {
   expect(rows.length).to.equal(0)
 })
 
-test("should able to search by code", async ({ page, adminUser }) => {
+test("search by code", async ({ page }) => {
   await gotoPlatformCreditPage(page)
 
   let brandCodes = await getPlatformCodes(page)
@@ -69,7 +69,7 @@ test("should able to search by code", async ({ page, adminUser }) => {
   expect(rows.length).to.equal(0)
 })
 
-test("should able to update platform credit", async ({ page, adminUser }) => {
+test("update platform credit", async ({ page }) => {
   await gotoPlatformCreditPage(page)
 
   let DialogSelector = `#platform-credit-dialog`
@@ -117,10 +117,7 @@ test("should able to update platform credit", async ({ page, adminUser }) => {
   expect(credit).to.equal(expectedValue)
 })
 
-test("should able to pay platform credit and list payment list", async ({
-  page,
-  adminUser
-}) => {
+test("pay platform credit and list payment list", async ({ page }) => {
   await gotoPlatformCreditPage(page)
 
   let DialogSelector = `#platform-credit-payment-dialog`

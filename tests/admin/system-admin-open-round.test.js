@@ -12,13 +12,7 @@ import faker from "faker"
 const test = base.extend(Fixture)
 const { lorem, phone, datatype, image, finance, internet, commerce } = faker
 
-test("should able to close open round", async ({
-  page,
-  adminUser,
-  platformCode,
-  platformToken,
-  player
-}) => {
+test("close open round", async ({ page, platformCode, player }) => {
   //TODO: player code shall get from op api result
   let playerCode = await getPlayerCode(page, platformCode, player.username)
   player.code = playerCode

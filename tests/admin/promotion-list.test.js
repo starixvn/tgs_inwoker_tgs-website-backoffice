@@ -12,7 +12,7 @@ import faker from "faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("should able to add and edit promotion", async ({ page, adminUser }) => {
+test("add and edit promotion", async ({ page }) => {
   let brandId = await gotoPromotionPage(page)
   let promotion = await addPromotion(page)
 

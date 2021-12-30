@@ -6,8 +6,7 @@ import { random } from "lodash-es"
 const test = base.extend(Fixture)
 
 test("system game providers and able to search by code or name", async ({
-  page,
-  adminUser
+  page
 }) => {
   await gotoSystemAdminGameProviderPage(page)
 

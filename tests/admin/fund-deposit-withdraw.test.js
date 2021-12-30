@@ -18,7 +18,6 @@ const { finance } = faker
 
 test("verify player deposit and withdraw", async ({
   page,
-  adminUser,
   platformCode,
   platformToken,
   player

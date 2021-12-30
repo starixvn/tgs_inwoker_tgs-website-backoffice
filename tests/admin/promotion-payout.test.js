@@ -15,7 +15,6 @@ const { lorem } = faker
 
 test("should show promotion payout list", async ({
   page,
-  adminUser,
   platformCode,
   platformToken,
   player

@@ -22,7 +22,6 @@ test.use({ timeout: 40 * SecondInMilliseconds })
 
 test("deposit and withdraw alarm on header", async ({
   page,
-  platformUser,
   platformCode,
   platformToken,
   player

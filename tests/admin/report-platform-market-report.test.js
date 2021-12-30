@@ -7,7 +7,7 @@ import { selectRandomPlatform } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("view and download market report", async ({ page, adminUser }) => {
+test("view and download market report", async ({ page }) => {
   let brandId = await gotoPlatformMarketReportPage(page)
   await page.waitForSelector(`[data-column-id="reportDate"] [data-type="date"]`)
 

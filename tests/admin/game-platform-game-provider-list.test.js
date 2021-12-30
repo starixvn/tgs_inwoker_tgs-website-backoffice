@@ -9,8 +9,7 @@ import { mapColumnCellTextContents } from "../page/table.js"
 const test = base.extend(Fixture)
 
 test("search, change status, edit and default maintananice", async ({
-  page,
-  adminUser
+  page
 }) => {
   let brandId = await gotoPlatformGameProviderListPage(page)
 

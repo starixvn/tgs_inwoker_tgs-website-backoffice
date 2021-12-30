@@ -7,11 +7,7 @@ import { selectPlatformByCode } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("should able to add or deduct player balance", async ({
-  page,
-  adminUser,
-  platformCode
-}) => {
+test("add or deduct player balance", async ({ page, platformCode }) => {
   let brandId = await gotoPlayerBalanceAdjustmentPage(page, platformCode)
   await addBalance(page)
 

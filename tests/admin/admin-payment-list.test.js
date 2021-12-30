@@ -7,10 +7,7 @@ import { selectRandomOption } from "../page/select.js"
 const test = base.extend(Fixture)
 const { finance, commerce } = faker
 
-test("add, search, edit and read platform payment", async ({
-  page,
-  adminUser
-}) => {
+test("add, search, edit and read platform payment", async ({ page }) => {
   let brandId = await gotoAdminPlatformPaymentListPage(page)
 
   let payment = await addDepositPayment(page)

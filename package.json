@@ -13,7 +13,7 @@
     "build:docker": "cross-var docker build . -t $npm_package_config_container_registry/$npm_package_name:$npm_package_version",
     "push:docker": "cross-var docker push $npm_package_config_container_registry/$npm_package_name:$npm_package_version",
     "deploy:k8s": "kubectl set image deployment/$npm_package_name $npm_package_name=$npm_package_config_container_registry/$npm_package_name:$npm_package_version --record -n=$ENV",
-    "test": "playwright test --workers=1 --retries=0 --max-failures=3",
+    "test": "playwright test --workers=2 --max-failures=3",
     "debug:test": "playwright test --headed --debug",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx}\"",

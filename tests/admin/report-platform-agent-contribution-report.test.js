@@ -9,7 +9,6 @@ const test = base.extend(Fixture)
 
 test("view and download agent contribution report", async ({
   page,
-  adminUser,
   platformCode
 }) => {
   await gotoPlatformAgentContributionReportPage(page, platformCode)

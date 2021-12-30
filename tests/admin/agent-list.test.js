@@ -42,7 +42,7 @@ describe.skip("Admin user", () => {
     await browser.close()
   })
 
-  it("should able to add, edit, change parent and vidw agent", async () => {
+  it("add, edit, change parent and vidw agent", async () => {
     let agents = await addAgent()
     agents = await addAgent(agents)
     //FIXME: not able to add more agents?

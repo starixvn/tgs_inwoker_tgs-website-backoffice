@@ -11,8 +11,7 @@ const test = base.extend(Fixture)
 const { lorem } = faker
 
 test("add -> approver -> change status -> update -> reject banner", async ({
-  page,
-  adminUser
+  page
 }) => {
   await gotoBannerPage(page)
 

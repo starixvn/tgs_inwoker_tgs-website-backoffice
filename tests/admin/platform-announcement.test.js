@@ -11,8 +11,7 @@ const test = base.extend(Fixture)
 const { lorem } = faker
 
 test("add -> approve -> change status -> update -> reject announcement", async ({
-  page,
-  adminUser
+  page
 }) => {
   let brandId = await gotoPlatformAnnouncementPage(page)
   let announcement = await addAnnouncement(page)
