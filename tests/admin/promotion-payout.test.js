@@ -13,7 +13,7 @@ import faker from "faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("should show promotion payout list", async ({
+test("promotion payout list", async ({
   page,
   platformCode,
   platformToken,

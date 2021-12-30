@@ -4,7 +4,7 @@ import { expect } from "chai"
 
 const test = base.extend(Fixture)
 
-test("should display user name", async ({ page, adminUsername }) => {
+test("display user name", async ({ page, adminUsername }) => {
   await page.waitForSelector("#app-header #username")
   let username = await page.$eval(
     "#app-header #username",
