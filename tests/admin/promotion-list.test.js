@@ -7,6 +7,7 @@ import { fillDatePicker } from "../fill.js"
 import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { optionValues } from "../page/select.js"
+import { openDialog } from "../page/dialog.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
@@ -16,18 +17,17 @@ test("add and edit promotion", async ({ page }) => {
   let brandId = await gotoPromotionPage(page)
   let promotion = await addPromotion(page)
 
-  let updatedPromotion = await editPromotion(page, promotion)
-  await toggleStatus(page)
-  await toggleStatus(page)
+  let updatedPromotion = await editPromotion(page, brandId, promotion)
+  await toggleStatus(page, brandId)
+  await toggleStatus(page, brandId)
 
-  await toggleStatus(page) //Note. only disabled status could get deleted
+  await toggleStatus(page, brandId) //Note. only disabled status could get deleted
   await deletePromotion(page)
 })
 
 const deletePromotion = async (page) => {
   let Dialog = `#delete-promotion-dialog`
-  await page.click(`${Dialog}-disclosure`)
-  await page.waitForSelector(Dialog)
+  await openDialog(page, Dialog)
 
   let id = await page.inputValue(`${Dialog} input[name="id"]`)
   let ExpectedOrder = `/api/promotion/${id}/archived`
@@ -43,7 +43,7 @@ const deletePromotion = async (page) => {
   ])
 }
 
-const toggleStatus = async (page, index = 0) => {
+const toggleStatus = async (page, brandId, index = 0) => {
   await page.waitForSelector(
     `#promotion [data-row-index="${index}"] [data-column-id="status"] input[name="status"]`
   )
@@ -65,12 +65,17 @@ const toggleStatus = async (page, index = 0) => {
         response.status() === 200
       )
     }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`?brandId=${brandId}`) &&
+        response.status() === 200
+      )
+    }),
     page.click(
       `#promotion [data-row-index="${index}"] [data-column-id="status"] label .bb-SwitchIcon`
     )
   ])
 
-  await page.reload({ waitUntil: "networkidle" })
   await page.waitForSelector(
     `#promotion [data-row-index="${index}"] [data-column-id="status"]`
   )
@@ -83,11 +88,9 @@ const toggleStatus = async (page, index = 0) => {
 }
 
 let MinTotalAmountLimit = 10000000
-const editPromotion = async (page) => {
+const editPromotion = async (page, brandId) => {
   let EditDialogSelector = `#edit-promotion-dialog`
-  await page.click(`${EditDialogSelector}-disclosure`)
-  await page.waitForSelector(EditDialogSelector)
-  await page.waitForLoadState()
+  await openDialog(page, EditDialogSelector)
 
   let PromotionTypeGroupOptions = await getPromotionTypeGroupOptions(page)
   let promotionTypeGroup = await getPromotionTypeGroup(page)
@@ -167,16 +170,20 @@ const editPromotion = async (page) => {
         response.url().includes("/api/promotion") && response.status() === 200
       )
     }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`?brandId=${brandId}`) &&
+        response.status() === 200
+      )
+    }),
     page.click(`#edit-promotion-dialog button[type="submit"]`)
   ])
-  await page.waitForLoadState("networkidle")
-  await page.waitForLoadState("domcontentloaded")
   return promotion
 }
 
 const addPromotion = async (page) => {
   let DialogSelector = `#add-promotion-dialog`
-  await page.click(`${DialogSelector}-disclosure`)
+  await openDialog(page, DialogSelector)
 
   let from = startOfDay(new Date())
   let to = addWeeks(new Date(), 2)

@@ -20,10 +20,10 @@ test("add -> approve -> change status -> update -> reject announcement", async (
   let approve = "approve"
   await verifyAnnouncement(page, announcement, approve)
 
-  await toggleChangeEffectiveAnnouncementStatus(page)
-  await toggleChangeEffectiveAnnouncementStatus(page)
+  await toggleChangeEffectiveAnnouncementStatus(page, brandId)
+  await toggleChangeEffectiveAnnouncementStatus(page, brandId)
 
-  await changeEffectiveAnnouncementDisplayOrder(page)
+  await changeEffectiveAnnouncementDisplayOrder(page, brandId)
 
   let updatedAnnouncement = await editEffectiveAnnouncement(page, announcement)
   await rejectAnnouncement(page, updatedAnnouncement)
@@ -82,7 +82,11 @@ const toEffectiveTab = async (page) => {
   ])
 }
 
-const changeEffectiveAnnouncementDisplayOrder = async (page, index = 0) => {
+const changeEffectiveAnnouncementDisplayOrder = async (
+  page,
+  brandId,
+  index = 0
+) => {
   await toEffectiveTab(page)
 
   let displayOrder = await page.$eval(
@@ -105,10 +109,15 @@ const changeEffectiveAnnouncementDisplayOrder = async (page, index = 0) => {
         response.status() === 200
       )
     }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`?brandId=${brandId}`) &&
+        response.status() === 200
+      )
+    }),
     page.click(`#change-announcement-display-order-button`)
   ])
 
-  await page.reload({ waitUntil: "networkidle" })
   await toEffectiveTab(page)
 
   await page.fill(
@@ -123,7 +132,11 @@ const changeEffectiveAnnouncementDisplayOrder = async (page, index = 0) => {
   expect(order).to.equal(ExpectedOrder)
 }
 
-const toggleChangeEffectiveAnnouncementStatus = async (page, index = 0) => {
+const toggleChangeEffectiveAnnouncementStatus = async (
+  page,
+  brandId,
+  index = 0
+) => {
   await toEffectiveTab(page)
 
   let Status = ["Effective", "Invalid"]
@@ -144,10 +157,15 @@ const toggleChangeEffectiveAnnouncementStatus = async (page, index = 0) => {
         response.status() === 200
       )
     }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`?brandId=${brandId}`) &&
+        response.status() === 200
+      )
+    }),
     page.click(`[data-row-index="${index}"] [data-column-id="status"] button`)
   ])
 
-  await page.reload({ waitUntil: "networkidle" })
   await toEffectiveTab(page)
 
   let toggledStatus = await page.$eval(

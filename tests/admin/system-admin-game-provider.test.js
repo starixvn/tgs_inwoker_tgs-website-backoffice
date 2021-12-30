@@ -47,8 +47,7 @@ test("system game providers and able to search by code or name", async ({
 })
 
 test("system game provider games and able to search by code", async ({
-  page,
-  adminUser
+  page
 }) => {
   await gotoSystemAdminGameProviderPage(page)
 
@@ -81,8 +80,7 @@ test("system game provider games and able to search by code", async ({
 })
 
 test("shold able to download and update game provider game localization list", async ({
-  page,
-  adminUser
+  page
 }) => {
   await gotoSystemAdminGameProviderPage(page)
   await showRandomGameProviderGameList(page)
