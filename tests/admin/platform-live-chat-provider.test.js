@@ -47,12 +47,11 @@ const addLiveChat = async (page) => {
   await page.keyboard.press("Control+A")
   await page.keyboard.press("Backspace")
   await page.keyboard.type(liveChat.setting)
-  /*
-  const oneSecond = 1000
-  await page.waitForTimeout(oneSecond)
-  */
+  const halfSecond = 500
+  await page.waitForTimeout(halfSecond)
+
   let submitButtonSelector = `${AddDialogSelector} button[type="submit"]`
-  //await page.focus(submitButtonSelector)
+  await page.focus(submitButtonSelector)
 
   let expectedUrl = `/api/BrandLiveChat`
   await Promise.all([
