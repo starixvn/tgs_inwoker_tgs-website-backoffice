@@ -3,6 +3,9 @@ import { loginUser } from "../auth.js"
 import globalApi from "../../client/globalApi/index.js"
 import operatorApi from "../../client/operatorApi/index.js"
 
+const Path = "./.playwright"
+const AuthPath = `${Path}/admin-auth.json`
+
 export const Fixture = {
   adminUsername: "admin.enabled",
   adminUser: async ({ page, adminUsername }, use) => {

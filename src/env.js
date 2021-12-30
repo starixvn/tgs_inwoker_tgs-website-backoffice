@@ -22,7 +22,7 @@ const Development = "development"
 
 const Production = "production"
 
-export const isDev = () => window?.env?.mode === Development
+export const isDev = () => window?.env?.mode?.toLowerCase?.() === Development
 
 export const isProduction = () => window?.env?.mode === Production
 

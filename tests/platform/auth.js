@@ -3,6 +3,13 @@ import { loginUser } from "../auth.js"
 import globalApi from "../../client/globalApi/index.js"
 import operatorApi from "../../client/operatorApi/index.js"
 
+const Path = "./.playwright"
+const AuthPath = `${Path}/platform-auth.json`
+
+export const setupAuth = async () => {
+
+}
+
 export const Fixture = {
   platformUsername: "brand.enabled",
   platformUser: async ({ page, platformUsername }, use) => {

@@ -33,7 +33,6 @@ const platform = async ({ browser }) =>
     storageStatePath: PlatformAuthPath
   })
 
-//TODO: cache without login again?
 export const loginUser = async (page, username, password = "TgsP@ssw0rd") => {
   await page.goto(`${host()}/login`, {
     waitUntil: "networkidle0"
