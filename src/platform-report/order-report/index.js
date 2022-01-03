@@ -154,6 +154,7 @@ const ReportContent = ({ brandId }) => {
           maxRangeDays={QueryMaxRangeDays}
           isLoading={isLoading}
           search={({ start, end, ...rest }) => {
+            console.log("onSearch rest", rest)
             setState({
               pageIndex: 0,
               from: start,
