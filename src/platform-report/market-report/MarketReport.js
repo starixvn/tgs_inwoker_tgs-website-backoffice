@@ -253,12 +253,6 @@ const useColumns = ({ brandId, items = [] }) => {
           let value = record?.additionalExpenses
           let reportDateString = record?.reportDate
           let reportDate = parseISO(reportDateString)
-          console.log(
-            "reportDate",
-            reportDate,
-            "reportDateString",
-            reportDateString
-          )
           return (
             <AdditionalExpenseDialogDisclosure
               value={value}
