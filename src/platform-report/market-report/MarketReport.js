@@ -159,6 +159,10 @@ const SearchBar = ({
 }
 
 const useColumns = ({ brandId, items = [] }) => {
+  let additionalExpenseTooltip = useTrans({
+    zh: "此栏位仅供参考，不会计入净盈利中。",
+    en: "This is for reference only and will NOT be included in the Net Profit calculation."
+  })
   return useMemo(
     () => [
       dateTimeColumn({
@@ -236,7 +240,13 @@ const useColumns = ({ brandId, items = [] }) => {
         id: "additionalExpenses",
         accessor: (row) => row,
         sumColumn: "additionalExpenses",
-        Header: <Trans zh="额外支出" en="Additional Expenses" />,
+        Header: (
+          <Trans
+            zh="额外支出"
+            en="Additional Expenses"
+            title={additionalExpenseTooltip}
+          />
+        ),
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let value = record?.additionalExpenses
