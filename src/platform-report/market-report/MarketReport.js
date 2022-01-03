@@ -20,6 +20,8 @@ import AlertDialog from "../../dialog/Alert"
 import { urlWith } from "../../client/index"
 import { isDev } from "../../env"
 import { DateButtons } from "../../date/DateButtons"
+import { usePlatformMarketReportAdditionalExpenseList } from "./client"
+import { AdditionalExpenseDialogDisclosure } from "../AdditionalExpense"
 
 export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
@@ -58,7 +60,7 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
 
-  let columns = useColumns({ items: data?.items })
+  let columns = useColumns({ items: data?.items, brandId })
   let maxDate = startOfToday()
 
   return (
@@ -156,7 +158,7 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ brandId, items = [] }) => {
   return useMemo(
     () => [
       dateTimeColumn({
@@ -231,13 +233,36 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
+        id: "additionalExpenses",
+        accessor: (row) => row,
+        sumColumn: "additionalExpenses",
+        Header: <Trans zh="额外支出" en="Additional Expenses" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          let value = record?.additionalExpenses
+          let reportDate = record?.reportDate
+          return value ? (
+            <AdditionalExpenseDialogDisclosure
+              value={value}
+              useFetch={usePlatformMarketReportAdditionalExpenseList}
+              searchParams={{
+                brandId,
+                reportDate
+              }}
+            />
+          ) : (
+            ""
+          )
+        }
+      }),
+      numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
         Header: <Trans zh="净盈利" en="NetProfit" />,
         disableSortBy: true
       })
     ],
-    [JSON.stringify(items)]
+    [JSON.stringify(items), brandId]
   )
 }
 
