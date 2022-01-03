@@ -251,7 +251,7 @@ const useColumns = ({ brandId, items = [] }) => {
         Cell: ({ value: record }) => {
           let value = record?.additionalExpenses
           let reportDate = record?.reportDate
-          return value ? (
+          return (
             <AdditionalExpenseDialogDisclosure
               value={value}
               useFetch={usePlatformMarketReportAdditionalExpenseList}
@@ -260,8 +260,6 @@ const useColumns = ({ brandId, items = [] }) => {
                 reportDate
               }}
             />
-          ) : (
-            ""
           )
         }
       }),

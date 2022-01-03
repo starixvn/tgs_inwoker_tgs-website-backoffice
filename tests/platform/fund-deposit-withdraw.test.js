@@ -10,8 +10,6 @@ import {
   addManualBankCard,
   applyManualWithdrawForm
 } from "../player.js"
-import globalApi from "../../client/globalApi/index.js"
-import operatorApi from "../../client/operatorApi/index.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)

@@ -3,6 +3,7 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
+import { openDialog } from "../page/dialog.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
@@ -25,20 +26,10 @@ const toVerifyTab = async (page) => {
 
 const toPublishedTab = async (page) => {
   await page.click(`button#Published`)
-
-  await Promise.all([
-    page.waitForLoadState("networkidle"),
-    page.waitForSelector(`#station-letter tbody`)
-  ])
 }
 
 const toRejectedTab = async (page) => {
   await page.click(`button#Rejected`)
-
-  await Promise.all([
-    page.waitForLoadState("networkidle"),
-    page.waitForSelector(`#station-letter tbody`)
-  ])
 }
 
 const verifyStationLetter = async (
@@ -48,20 +39,20 @@ const verifyStationLetter = async (
   index = 0
 ) => {
   await toVerifyTab(page)
-  await page.click(`#verify-station-letter-dialog-disclosure`)
-  await page.waitForSelector(`#verify-station-letter-dialog`)
-  await page.waitForLoadState("networkidle")
+  let DialogSelector = `#verify-station-letter-dialog`
+  await openDialog(page, DialogSelector)
 
-  let verifySubject = await page.$eval(
-    `#verify-station-letter-dialog input[name="subject"]`,
-    ({ value }) => value
+  let verifySubject = await page.inputValue(
+    `${DialogSelector} input[name="subject"]`
   )
   expect(verifySubject).to.equal(stationLetter.subject)
 
   //TODO: input remark
+  let EditorFrameSelector = `${DialogSelector} .tox-edit-area iframe`
+  await page.waitForSelector(EditorFrameSelector)
+  let contentEditor = page.frameLocator(EditorFrameSelector).locator("#tinymce")
   //TODO: verify editor content?
-  let [frame] = page.mainFrame().childFrames()
-  let content = await frame.$eval(`#tinymce`, ({ textContent }) => textContent)
+  let content = await contentEditor.textContent()
 
   await Promise.all([
     page.waitForResponse((response) => {
@@ -70,10 +61,8 @@ const verifyStationLetter = async (
         response.status() === 200
       )
     }),
-    page.click(`#verify-station-letter-dialog button[data-type="${type}"]`)
+    page.click(`${DialogSelector} button[data-type="${type}"]`)
   ])
-
-  await page.waitForLoadState("networkidle")
 
   if (type == "approve") {
     await toPublishedTab(page)
@@ -94,7 +83,8 @@ const verifyStationLetter = async (
 }
 
 const addStationLetter = async (page) => {
-  await page.click(`#add-station-letter-dialog-disclosure`)
+  let DialogSelector = "#add-station-letter-dialog"
+  await openDialog(page, DialogSelector)
 
   let letter = {
     subject: lorem.word(),
@@ -106,9 +96,11 @@ const addStationLetter = async (page) => {
     letter.subject
   )
 
-  let mainFrame = page.mainFrame()
-  let [frame] = mainFrame.childFrames()
-  await frame.fill(`#tinymce`, letter.content)
+  let EditorFrameSelector = `${DialogSelector} .tox-edit-area iframe`
+  await page.waitForSelector(EditorFrameSelector)
+
+  let contentEditor = page.frameLocator(EditorFrameSelector).locator("#tinymce")
+  await contentEditor.fill(letter.content)
 
   await Promise.all([
     page.waitForResponse((response) => {

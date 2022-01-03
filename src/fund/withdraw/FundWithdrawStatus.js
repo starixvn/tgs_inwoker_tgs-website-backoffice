@@ -31,7 +31,7 @@ const RejectedTrans = {
 
 export const UnprocessedStatus = [Review, Approved]
 
-export const isFundUnderReview = (value) => value === Review
+export const isFundUnderReview = (value) => value === Review || Approved
 
 export const isFundApproved = (value) => value === Approved
 
