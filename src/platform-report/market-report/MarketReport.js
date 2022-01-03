@@ -22,6 +22,7 @@ import { isDev } from "../../env"
 import { DateButtons } from "../../date/DateButtons"
 import { usePlatformMarketReportAdditionalExpenseList } from "./client"
 import { AdditionalExpenseDialogDisclosure } from "../AdditionalExpense"
+import { parseISO } from "date-fns"
 
 export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
@@ -250,7 +251,14 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let value = record?.additionalExpenses
-          let reportDate = record?.reportDate
+          let reportDateString = record?.reportDate
+          let reportDate = parseISO(reportDateString)
+          console.log(
+            "reportDate",
+            reportDate,
+            "reportDateString",
+            reportDateString
+          )
           return (
             <AdditionalExpenseDialogDisclosure
               value={value}

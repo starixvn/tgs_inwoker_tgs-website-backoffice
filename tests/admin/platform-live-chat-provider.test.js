@@ -8,9 +8,14 @@ import { selectRandomPlatform } from "../page/content.js"
 const test = base.extend(Fixture)
 
 test("add, edit and remove live chat provider", async ({ page }) => {
-  await gotoPlatformCustomerServicePage(page)
+  let brandId = await gotoPlatformCustomerServicePage(page)
 
-  let hasSetting = await hasLiveChat(page)
+  let expectedUrl = `/api/BrandLiveChat/${brandId}`
+  let brandLiveChatResponse = await page.waitForResponse((response) => {
+    return response.url().endsWith(expectedUrl) && response.status() === 200
+  })
+  let brandLiveChatSetting = await brandLiveChatResponse.json()
+  let hasSetting = !!(brandLiveChatSetting && brandLiveChatSetting.data)
   console.log("hasLiveChatSetting", hasSetting)
   if (hasSetting) {
     await deleteLiveChat(page)
@@ -127,5 +132,5 @@ const hasLiveChat = async (page) => {
 
 const gotoPlatformCustomerServicePage = async (page) => {
   await goto({ page, value: "/platform/imsettings" })
-  await selectRandomPlatform(page)
+  return await selectRandomPlatform(page)
 }
