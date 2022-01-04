@@ -172,19 +172,18 @@ const Header = () => {
     <>
       <TopNav id="app-header" background={getHeaderBackground()}>
         <TopNav.Section>
-          {isDev() && (
-            <TopNav.Item marginRight="0">
-              <Button
-                paddingLeft="0.65rem"
-                paddingRight="0.65rem"
-                color={getHeaderButtonColor()}
-                onClick={page.sidebar.toggle}
-                variant="ghost"
-              >
-                <Icon icon="solid-bars" />
-              </Button>
-            </TopNav.Item>
-          )}
+          <TopNav.Item marginRight="0">
+            <Button
+              paddingLeft="0.65rem"
+              paddingRight="0.65rem"
+              color={getHeaderButtonColor()}
+              onClick={page.sidebar.toggle}
+              variant="ghost"
+              boxShadow="none"
+            >
+              <Icon icon="solid-bars" />
+            </Button>
+          </TopNav.Item>
           <TopNav.Item marginLeft="-0.15rem">
             {imgUrl && <Image src={imgUrl} height="30px" filter="none" />}
             {/* {title && (

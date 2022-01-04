@@ -1,7 +1,6 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import faker from "faker"
-import { goto } from "../sidebar.js"
 import { selectRandomOption } from "../page/select.js"
 
 const test = base.extend(Fixture)
@@ -79,6 +78,6 @@ const addDepositPayment = async (page) => {
 }
 
 const gotoAdminPlatformPaymentListPage = async (page) => {
-  await goto({ page, value: "/system/brandpayments" })
+  await page.goto(`/system/brandpayments`)
   return await selectRandomOption(page, `select[name="brandId"]`)
 }

@@ -3,7 +3,6 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random, zip } from "lodash-es"
 import numeral from "numeral"
-import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 
 const test = base.extend(Fixture)
@@ -182,6 +181,6 @@ const verifyUpdated = async (page, game) => {
 }
 
 const gotoPlatformGameListPage = async (page) => {
-  await goto({ page, value: "/game/brandgames" })
+  await page.goto("/game/brandgames")
   return await selectRandomPlatform(page)
 }

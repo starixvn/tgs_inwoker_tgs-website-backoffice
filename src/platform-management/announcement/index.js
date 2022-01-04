@@ -472,8 +472,7 @@ const useColumns = ({
               <StatusToggleButton
                 record={value}
                 onSubmitted={() => {
-                  //clearCache()
-                  mutate(undefined)
+                  mutate(null)
                 }}
                 disabled={!hasUpdateAuth}
               />

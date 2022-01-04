@@ -3,6 +3,7 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random } from "lodash-es"
 import numeral from "numeral"
+import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 
@@ -40,8 +41,8 @@ test("search by licensee name", async ({ page }) => {
   expect(rows.length).to.equal(0)
 })
 
-test("search by code", async ({ page }) => {
-  await gotoPlatformCreditPage(page)
+test("search by code", async ({ page, host }) => {
+  await gotoPlatformCreditPage(page, host)
 
   let brandCodes = await getPlatformCodes(page)
   let index = random(brandCodes.length - 1)
@@ -69,8 +70,8 @@ test("search by code", async ({ page }) => {
   expect(rows.length).to.equal(0)
 })
 
-test("update platform credit", async ({ page }) => {
-  await gotoPlatformCreditPage(page)
+test("update platform credit", async ({ page, host }) => {
+  await gotoPlatformCreditPage(page, host)
 
   let DialogSelector = `#platform-credit-dialog`
   let brandCodes = await getPlatformCodes(page)
@@ -117,21 +118,29 @@ test("update platform credit", async ({ page }) => {
   expect(credit).to.equal(expectedValue)
 })
 
-test("pay platform credit and list payment list", async ({ page }) => {
-  await gotoPlatformCreditPage(page)
+test("pay platform credit and list payment list", async ({
+  page,
+  host,
+  platformCode
+}) => {
+  await gotoPlatformCreditPage(page, host)
+  await page.fill(`input[name="keyword"]`, platformCode)
+
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`keyword=${platformCode}`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`button[type="submit"]`)
+  ])
 
   let DialogSelector = `#platform-credit-payment-dialog`
-
-  let brandCodes = await getPlatformCodes(page)
-  let index = random(brandCodes.length - 1)
-  let brandCode = brandCodes[index]
+  await openDialog(page, DialogSelector)
 
   let amount = 10
-  await Promise.all([
-    page.click(`#${brandCode}-platform-credit-payment-dialog-disclosure`),
-    page.waitForSelector(`${DialogSelector} input[name="amount"]`),
-    page.fill(`${DialogSelector} input[name="amount"]`, `${amount}`)
-  ])
+  await page.fill(`${DialogSelector} input[name="amount"]`, `${amount}`)
 
   let [paymentResponse] = await Promise.all([
     page.waitForResponse((response) => {
@@ -139,19 +148,17 @@ test("pay platform credit and list payment list", async ({ page }) => {
         response.url().endsWith(`/pay/${amount}`) && response.status() === 200
       )
     }),
-    page.click(`${DialogSelector} button[type="submit"]`),
-    page.waitForLoadState("networkidle")
+    page.click(`${DialogSelector} button[type="submit"]`)
   ])
 
   let paymentResult = await paymentResponse.json()
   expect(paymentResult.valid).to.be.true
 
-  await Promise.all([
-    page.click(`#${brandCode}-platform-credit-payment-list-dialog-disclosure`),
-    page.waitForSelector(
-      `#platform-credit-payment-list-dialog #platform-credit-payments tbody`
-    )
-  ])
+  let PaymentListDialogSelector = `#platform-credit-payment-list-dialog`
+  await openDialog(page, PaymentListDialogSelector)
+  page.waitForSelector(
+    `${PaymentListDialogSelector} #platform-credit-payments tbody`
+  )
 
   let paymentAmounts = await page.evaluate(() =>
     Array.from(
@@ -172,13 +179,7 @@ const getPlatformCodes = async (page) =>
   )
 
 const gotoPlatformCreditPage = async (page) => {
-  let PlatformCreditSelector = `#sidebar a[href="/merchant/platformcredit"]`
-  await Promise.all([
-    page.waitForNavigation(),
-    page.click(PlatformCreditSelector),
-    page.waitForLoadState("networkidle"),
-    page.waitForSelector("#platform-credit tbody")
-  ])
+  await page.goto("/merchant/platformcredit")
 }
 
 const searchByInputNameValue = async (page, { name = "", value = "" }) =>

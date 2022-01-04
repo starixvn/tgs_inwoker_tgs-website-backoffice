@@ -1,7 +1,6 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { goto } from "../sidebar.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
@@ -65,5 +64,5 @@ const randomLogo = () => ({
 })
 
 const gotoPlatformListPage = async (page) => {
-  await goto({ page, value: "/merchant/brands" })
+  await page.goto("/merchant/brands")
 }

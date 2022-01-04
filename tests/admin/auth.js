@@ -20,6 +20,7 @@ export const loginAdminUser = async (browser) =>
 export const Fixture = {
   adminUsername: AdminUsername,
   platformCode: "GPI",
+  host: host(),
   platformToken: async ({ platformCode }, use) => {
     let platformToken = await globalApi.platformToken(platformCode)
     use(platformToken)
@@ -28,23 +29,22 @@ export const Fixture = {
     let player = await operatorApi.player.createAndLogin(platformToken)
     use(player)
   },
-  context: async ({ browser }, use) => {
-    let context = await browser.newContext({ storageState: AuthPath })
+  context: async ({ browser, host }, use) => {
+    let context = await browser.newContext({
+      storageState: AuthPath,
+      baseURL: host
+    })
     use(context)
   },
-  backofficeApi: async ({ context }, use) => {
+  backofficeApi: async ({ context, host }, use) => {
     backofficeApi.init({
       fetcher: context.request,
-      host: host()
+      host
     })
     use(backofficeApi)
   },
   page: async ({ context }, use) => {
     let page = await context.newPage()
-    await page.goto(host(), {
-      waitUntil: "networkidle0"
-    })
-
     use(page)
   },
   adminUser: async ({ page, adminUsername }, use) => {

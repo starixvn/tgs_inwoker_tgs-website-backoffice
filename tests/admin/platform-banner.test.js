@@ -3,7 +3,6 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import faker from "faker"
@@ -39,8 +38,7 @@ test("add -> approver -> change status -> update -> reject banner", async ({
 
 const deleteBanner = async (page) => {
   let Dialog = `#delete-banner-dialog`
-  await page.click(`${Dialog}-disclosure`)
-  await page.waitForSelector(Dialog)
+  await openDialog(page, Dialog)
 
   let id = await page.inputValue(`${Dialog} input[name="id"]`)
   let ExpectedOrder = `/api/banner/archive/${id}`
@@ -252,5 +250,5 @@ const toRejectedTab = async (page) => {
 }
 
 const gotoBannerPage = async (page) => {
-  await goto({ page, value: "/platform/banner" })
+  await page.goto("/platform/banner")
 }

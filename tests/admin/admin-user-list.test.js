@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import faker from "faker"
-import { goto } from "../sidebar.js"
 import { selectRandomOption } from "../page/select.js"
 
 const test = base.extend(Fixture)
@@ -135,5 +134,5 @@ const edit = async (page, user) => {
 }
 
 const gotoAdminUserListPage = async (page) => {
-  await goto({ page, value: "/system/admins" })
+  await page.goto(`/system/admins`)
 }

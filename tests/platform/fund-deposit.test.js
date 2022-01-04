@@ -2,7 +2,7 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import { goto } from "../sidebar.js"
+
 import {
   manualDeposit,
   applyManualDepositForm,
@@ -20,8 +20,10 @@ test.use({ timeout: 40 * SecondInMilliseconds })
 test("deposit and withdraw alarm on header", async ({
   page,
   platformToken,
-  player
+  player,
+  host
 }) => {
+  await page.goto(host)
   let depositAmount = 10
   let balance = await depositAlarm(page, platformToken, player, depositAmount)
 })
@@ -38,7 +40,7 @@ const depositAlarm = async (page, platformToken, player, amount) => {
 
   let AlarmSelector = `#fund-deposit-notify`
   await page.waitForSelector(AlarmSelector, {
-    timeout: 20 * SecondInMilliseconds
+    timeout: 30 * SecondInMilliseconds
   })
   let unprocessedString = await page.$eval(
     AlarmSelector,
@@ -88,5 +90,5 @@ const approveFundDeposit = async (page, formId) => {
 }
 
 const gotoFundDepositPage = async (page) => {
-  await goto({ page, value: "/fundmanagement/deposit" })
+  await page.goto("/fundmanagement/deposit")
 }

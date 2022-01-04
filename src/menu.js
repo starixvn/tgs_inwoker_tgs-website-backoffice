@@ -83,17 +83,12 @@ import {
   codeLabelPair as logLabelPair
 } from "./log/menu"
 import { useLocale, getTrans } from "./i18n"
-import {
-  faChevronCircleDown,
-  faChevronCircleUp,
-  faAngleUp,
-  faAngleDown
-} from "@fortawesome/free-solid-svg-icons"
+import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons"
 import { isDev, Features, isFeatureEnabled } from "./env"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   let { sidebar, isCollapsed } = usePage()
-  let [show, setShow] = useState(true)
+  let [show, setShow] = useState(false)
 
   let locale = useLocale()
   let authCodes = useMenuCodes(codePaths)
@@ -130,19 +125,17 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
           width="100%"
         >
           {title}
-          {isDev() && (
-            <Button
-              display={"inline-flex"}
-              variant="ghost"
-              size="small"
-              marginRight="0.3rem"
-              onClick={() => {
-                setShow(!show)
-              }}
-            >
-              <Icon icon={show ? faAngleUp : faAngleDown} type="font-awesome" />
-            </Button>
-          )}
+          <Button
+            display={"inline-flex"}
+            variant="ghost"
+            size="small"
+            marginRight="0.3rem"
+            onClick={() => {
+              setShow(!show)
+            }}
+          >
+            <Icon icon={show ? faAngleUp : faAngleDown} type="font-awesome" />
+          </Button>
         </Level>
       }
       css={css`

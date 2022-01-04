@@ -3,7 +3,6 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { goto } from "../sidebar.js"
 import { selectByValue } from "../page/select.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { placeBet } from "../sbo-game-provider.js"
@@ -107,5 +106,5 @@ const closeGameRoundBy = async (page, externalRoundId) => {
 }
 
 const gotoGameRoundPage = async (page) => {
-  await goto({ page, value: "/systemadmin/gameround" })
+  await page.goto("/systemadmin/gameround")
 }

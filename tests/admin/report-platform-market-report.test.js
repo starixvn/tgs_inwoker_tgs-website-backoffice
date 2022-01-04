@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 
 const test = base.extend(Fixture)
@@ -85,6 +84,6 @@ test("view and download market report", async ({ page }) => {
 })
 
 const gotoPlatformMarketReportPage = async (page) => {
-  await goto({ page, value: "/report/marketreport" })
+  await page.goto("/report/marketreport")
   return await selectRandomPlatform(page)
 }

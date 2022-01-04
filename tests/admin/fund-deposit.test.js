@@ -3,7 +3,6 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
 import faker from "faker"
-import { goto } from "../sidebar.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { manualDeposit, applyManualDepositForm, wallet } from "../player.js"
 
@@ -121,6 +120,6 @@ const approveDeposit = async (
 }
 
 const gotoFundDepositPage = async (page, platformCode) => {
-  await goto({ page, value: "/fundmanagement/deposit" })
+  await page.goto(`/fundmanagement/deposit`)
   await selectPlatformByCode(page, platformCode)
 }

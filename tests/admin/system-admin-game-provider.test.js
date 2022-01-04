@@ -121,6 +121,8 @@ test("shold able to download and update game provider game localization list", a
 })
 
 const gotoSystemAdminGameProviderPage = async (page) => {
+  await page.goto("/systemadmin/gameproviders")
+  /*
   let SideMenuSelector = `#sidebar a[href="/systemadmin/gameproviders"]`
   await Promise.all([
     page.waitForNavigation(),
@@ -128,6 +130,7 @@ const gotoSystemAdminGameProviderPage = async (page) => {
     page.waitForLoadState("networkidle"),
     page.waitForSelector("#game-provider tbody")
   ])
+  */
 }
 
 const getGameProviderCodes = async (page) =>

@@ -1,7 +1,6 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { goto } from "../sidebar.js"
 import { selectPlatformByCode } from "../page/content.js"
 
 const test = base.extend(Fixture)
@@ -28,6 +27,6 @@ test("search, view and edit player", async ({ page, platformCode, player }) => {
 })
 
 const gotoPlayerListPage = async (page, platformCode) => {
-  await goto({ page, value: "/playermanagement/playerlist" })
+  await page.goto("/playermanagement/playerlist")
   return await selectPlatformByCode(page, platformCode)
 }

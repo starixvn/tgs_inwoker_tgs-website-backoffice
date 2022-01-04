@@ -1,8 +1,6 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { goto } from "../sidebar.js"
-import { selectRandomOption } from "../page/select.js"
 import { selectRandomPlatform } from "../page/content.js"
 
 const test = base.extend(Fixture)
@@ -16,7 +14,7 @@ test("add, edit and remove live chat provider", async ({ page }) => {
   })
   let brandLiveChatSetting = await brandLiveChatResponse.json()
   let hasSetting = !!(brandLiveChatSetting && brandLiveChatSetting.data)
-  console.log("hasLiveChatSetting", hasSetting)
+
   if (hasSetting) {
     await deleteLiveChat(page)
   }
@@ -126,11 +124,7 @@ const deleteLiveChat = async (page) => {
   ])
 }
 
-const hasLiveChat = async (page) => {
-  return page.isVisible(`#delete-live-chat-dialog-disclosure`)
-}
-
 const gotoPlatformCustomerServicePage = async (page) => {
-  await goto({ page, value: "/platform/imsettings" })
+  await page.goto("/platform/imsettings")
   return await selectRandomPlatform(page)
 }

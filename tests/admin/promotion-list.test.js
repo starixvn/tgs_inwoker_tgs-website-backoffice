@@ -4,7 +4,6 @@ import { expect } from "chai"
 import { random } from "lodash-es"
 import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
@@ -347,7 +346,7 @@ const setGameType = async (
 }
 
 const gotoPromotionPage = async (page) => {
-  await goto({ page, value: "/promotion/promotionlist" })
+  await page.goto("/promotion/promotionlist")
   return await selectRandomPlatform(page)
 }
 

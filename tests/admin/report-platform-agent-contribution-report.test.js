@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import { goto } from "../sidebar.js"
 import { selectPlatformByCode } from "../page/content.js"
 
 const test = base.extend(Fixture)
@@ -80,6 +79,6 @@ test("view and download agent contribution report", async ({
 })
 
 const gotoPlatformAgentContributionReportPage = async (page, platformCode) => {
-  await goto({ page, value: "/report/agentcontributionreport" })
+  await page.goto("/report/agentcontributionreport")
   await selectPlatformByCode(page, platformCode)
 }

@@ -2,12 +2,10 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { fillDatePicker } from "../fill.js"
-import { goto } from "../sidebar.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { manualDeposit, applyManualDepositForm } from "../player.js"
 import { selectByValue } from "../page/select.js"
 import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
-import operatorApi from "../../client/operatorApi/index.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
@@ -230,16 +228,16 @@ const approveDeposit = async (
 }
 
 const gotoFundDepositPage = async (page, platformCode) => {
-  await goto({ page, value: "/fundmanagement/deposit" })
+  await page.goto("/fundmanagement/deposit")
   await selectPlatformByCode(page, platformCode)
 }
 
 const gotoPromotionListPage = async (page, platformCode) => {
-  await goto({ page, value: "/promotion/promotionlist" })
+  await page.goto("/promotion/promotionlist")
   await selectPlatformByCode(page, platformCode)
 }
 
 const gotoPromotionPayoutListPage = async (page, platformCode) => {
-  await goto({ page, value: "/promotion/payoutlist" })
+  await page.goto("/promotion/payoutlist")
   await selectPlatformByCode(page, platformCode)
 }

@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random } from "lodash-es"
-import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { mapColumnCellTextContents } from "../page/table.js"
 
@@ -94,11 +93,7 @@ const changeRandomStatus = async (page, list = Object.values(Status)) => {
   expect(status).to.equal(expectedStatus)
 }
 
-const editGameProvider = async () => {}
-
-const editDefaultMaintenance = async () => {}
-
 const gotoPlatformGameProviderListPage = async (page) => {
-  await goto({ page, value: "/game/brandproviders" })
+  await page.goto("/game/brandproviders")
   return await selectRandomPlatform(page)
 }

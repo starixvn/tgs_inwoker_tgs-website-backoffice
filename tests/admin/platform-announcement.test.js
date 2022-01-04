@@ -3,7 +3,6 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 import faker from "faker"
 
@@ -25,14 +24,18 @@ test("add -> approve -> change status -> update -> reject announcement", async (
 
   await changeEffectiveAnnouncementDisplayOrder(page, brandId)
 
-  let updatedAnnouncement = await editEffectiveAnnouncement(page, announcement)
+  let updatedAnnouncement = await editEffectiveAnnouncement(
+    page,
+    brandId,
+    announcement
+  )
   await rejectAnnouncement(page, updatedAnnouncement)
   await deleteAnnouncement(page)
 
   announcement = await addAnnouncement(page)
   await toInVerifyTab(page)
   await verifyAnnouncement(page, announcement, "approve")
-  await toEffectiveTab(page)
+  await toEffectiveTab(page, brandId)
   await deleteAnnouncement(page)
 })
 
@@ -73,13 +76,22 @@ const toRejectedTab = async (page) => {
   ])
 }
 
-const toEffectiveTab = async (page) => {
-  await page.click(`button#Effective`)
-
+const toEffectiveTab = async (page, brandId) => {
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`brandId=${brandId}`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`button#Effective`)
+  ])
+  /*
   await Promise.all([
     page.waitForLoadState("networkidle"),
     page.waitForSelector(`#announcement tbody`)
   ])
+  */
 }
 
 const changeEffectiveAnnouncementDisplayOrder = async (
@@ -87,7 +99,7 @@ const changeEffectiveAnnouncementDisplayOrder = async (
   brandId,
   index = 0
 ) => {
-  await toEffectiveTab(page)
+  await toEffectiveTab(page, brandId)
 
   let displayOrder = await page.$eval(
     `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
@@ -118,7 +130,7 @@ const changeEffectiveAnnouncementDisplayOrder = async (
     page.click(`#change-announcement-display-order-button`)
   ])
 
-  await toEffectiveTab(page)
+  await toEffectiveTab(page, brandId)
 
   await page.fill(
     `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
@@ -137,7 +149,7 @@ const toggleChangeEffectiveAnnouncementStatus = async (
   brandId,
   index = 0
 ) => {
-  await toEffectiveTab(page)
+  await toEffectiveTab(page, brandId)
 
   let Status = ["Effective", "Invalid"]
   let status = await page.$eval(
@@ -166,17 +178,26 @@ const toggleChangeEffectiveAnnouncementStatus = async (
     page.click(`[data-row-index="${index}"] [data-column-id="status"] button`)
   ])
 
-  await toEffectiveTab(page)
+  //TODO: how to wait ui update without reload page?
+  await page.reload()
+  await toEffectiveTab(page, brandId)
 
+  let StatusSelector = `#announcement [data-row-index="${index}"] [data-column-id="status"] button`
+  await page.waitForSelector(StatusSelector)
   let toggledStatus = await page.$eval(
-    `[data-row-index="${index}"] [data-column-id="status"] button`,
+    StatusSelector,
     ({ dataset }) => dataset.status
   )
   expect(toggledStatus).to.equal(ExpectedStatus)
 }
 
-const editEffectiveAnnouncement = async (page, announcement, index = 0) => {
-  await toEffectiveTab(page)
+const editEffectiveAnnouncement = async (
+  page,
+  brandId,
+  announcement,
+  index = 0
+) => {
+  await toEffectiveTab(page, brandId)
 
   await page.click(
     `[data-row-index="${index}"] #edit-announcement-dialog-disclosure`
@@ -316,6 +337,6 @@ const addAnnouncement = async (page) => {
 }
 
 const gotoPlatformAnnouncementPage = async (page) => {
-  await goto({ page, value: "/platform/announcement" })
+  await page.goto("/platform/announcement")
   return await selectRandomPlatform(page)
 }

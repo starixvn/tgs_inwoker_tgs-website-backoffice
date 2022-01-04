@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random } from "lodash-es"
-import { goto } from "../sidebar.js"
 import { selectPlatformByCode } from "../page/content.js"
 
 const test = base.extend(Fixture)
@@ -90,6 +89,6 @@ const setTransactionType = async (
 }
 
 const gotoPlayerBalanceAdjustmentPage = async (page, platformCode) => {
-  await goto({ page, value: "/playermanagement/balanceadjustment" })
+  await page.goto("/playermanagement/balanceadjustment")
   return await selectPlatformByCode(page, platformCode)
 }

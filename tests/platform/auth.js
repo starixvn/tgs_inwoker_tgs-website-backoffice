@@ -20,23 +20,23 @@ export const loginPlatformUser = async (browser) =>
 export const Fixture = {
   platformCode: "TGS",
   platformUsername: PlatformUsername,
-  context: async ({ browser }, use) => {
-    let context = await browser.newContext({ storageState: AuthPath })
+  host: host(),
+  context: async ({ browser, host }, use) => {
+    let context = await browser.newContext({
+      storageState: AuthPath,
+      baseURL: host
+    })
     use(context)
   },
-  backofficeApi: async ({ context }, use) => {
+  backofficeApi: async ({ context, host }, use) => {
     backofficeApi.init({
       fetcher: context.request,
-      host: host()
+      host
     })
     use(backofficeApi)
   },
-  page: async ({ context }, use) => {
+  page: async ({ context, host }, use) => {
     let page = await context.newPage()
-    await page.goto(host(), {
-      waitUntil: "networkidle0"
-    })
-
     use(page)
   },
   platformUser: async ({ page, platformUsername }, use) => {

@@ -1,6 +1,5 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
-import { goto } from "../sidebar.js"
 import clone from "clone-deep"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
@@ -25,7 +24,7 @@ test("update all agent settings", async ({ page }) => {
 })
 
 const gotoPlatformOperationSettingPage = async (page) => {
-  await goto({ page, value: "/platform/imsettings" })
+  await page.goto("/platform/imsettings")
   let brandId = await selectRandomPlatform(page)
   return brandId
 }

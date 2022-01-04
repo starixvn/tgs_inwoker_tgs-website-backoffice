@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random } from "lodash-es"
-import { goto } from "../sidebar.js"
 import { selectPlatformByCode } from "../page/content.js"
 import operatorApi from "../../client/operatorApi/index.js"
 
@@ -76,10 +75,6 @@ const findPlayerBySamePlayer = async (page) => {
   expect(searchPlayerListResult.length).above(0)
 }
 
-const findPlayerByUsername = async () => {
-  //TODO
-}
-
 const createPlayers = async (platformToken, size = 2, list = []) => {
   if (size == 0) {
     return list
@@ -94,6 +89,6 @@ const createPlayers = async (platformToken, size = 2, list = []) => {
 }
 
 const gotoPlatformIpAddressPage = async (page, platformCode) => {
-  await goto({ page, value: "/platform/ipaddress" })
+  await page.goto("/platform/ipaddress")
   return await selectPlatformByCode(page, platformCode)
 }

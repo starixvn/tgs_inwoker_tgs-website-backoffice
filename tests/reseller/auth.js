@@ -16,16 +16,16 @@ export const loginResellerUser = async (browser) =>
 
 export const Fixture = {
   resellerUsername: ResellerUsername,
-  context: async ({ browser }, use) => {
-    let context = await browser.newContext({ storageState: AuthPath })
+  host: host(),
+  context: async ({ browser, host }, use) => {
+    let context = await browser.newContext({
+      storageState: AuthPath,
+      baseURL: host
+    })
     use(context)
   },
-  page: async ({ context }, use) => {
+  page: async ({ context, host }, use) => {
     let page = await context.newPage()
-    await page.goto(host(), {
-      waitUntil: "networkidle0"
-    })
-
     use(page)
   },
   resellerUser: async ({ page, resellerUsername }, use) => {

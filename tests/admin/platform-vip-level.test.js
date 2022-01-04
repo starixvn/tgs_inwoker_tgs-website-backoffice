@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random } from "lodash-es"
-import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 
 const test = base.extend(Fixture)
@@ -110,6 +109,6 @@ const editVipLevel = async (page) => {
 }
 
 const gotoVipLevelPage = async (page) => {
-  await goto({ page, value: "/platform/viplevel" })
+  await page.goto("/platform/viplevel")
   return await selectRandomPlatform(page)
 }

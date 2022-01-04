@@ -1,7 +1,6 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { goto } from "../sidebar.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { random } from "lodash-es"
 
@@ -84,6 +83,6 @@ const deductBalance = async (page, index = 0) => {
 }
 
 const gotoAgentBalanceAdjustmentPage = async (page, platformCode) => {
-  await goto({ page, value: "/agentmanagement/balanceadjustment" })
+  await page.goto(`agentmanagement/balanceadjustment`)
   return await selectPlatformByCode(page, platformCode)
 }

@@ -1,7 +1,6 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import faker from "faker"
@@ -112,12 +111,11 @@ const addStationLetter = async (page) => {
     page.click(`#add-station-letter-dialog button[type="submit"]`)
   ])
 
-  // await page.waitForLoadState("networkidle")
   await page.waitForSelector(`#station-letter tbody`)
   return letter
 }
 
 const gotoPlatformStationLetterPage = async (page) => {
-  await goto({ page, value: "/platform/stationletter" })
+  await page.goto("/platform/stationletter")
   await selectRandomPlatform(page)
 }

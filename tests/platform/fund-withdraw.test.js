@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import { goto } from "../sidebar.js"
 import { addManualBankCard, applyManualWithdrawForm } from "../player.js"
 import faker from "faker"
 
@@ -16,8 +15,10 @@ test("deposit and withdraw alarm on header", async ({
   page,
   platformToken,
   player,
-  backofficeApi
+  backofficeApi,
+  host
 }) => {
+  await page.goto(host)
   let depositAmount = 10
   await backofficeApi.player.addBalance(player.code, {
     amount: depositAmount
@@ -108,5 +109,5 @@ const selectManualBrandPayment = async (page) => {
 }
 
 const gotoFundWithdraw = async (page) => {
-  await goto({ page, value: "/fundmanagement/withdraw" })
+  await page.goto("/fundmanagement/withdraw")
 }

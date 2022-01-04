@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { add, random, last } from "lodash-es"
-import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
 import faker from "faker"
 

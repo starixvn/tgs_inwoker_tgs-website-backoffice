@@ -176,12 +176,12 @@ const useColumns = ({ items = [], mutate }) => {
                   onSubmitted={mutate}
                 />
                 <PlatformCreditPaymentDialogDisclosure
-                  id={`${value?.brandCode}-platform-credit-payment-dialog-disclosure`}
+                  id={`platform-credit-payment-dialog-disclosure`}
                   record={value}
                   onSubmitted={mutate}
                 />
                 <PlatformCreditPaymentListDialogDisclosure
-                  id={`${value?.brandCode}-platform-credit-payment-list-dialog-disclosure`}
+                  id={`platform-credit-payment-list-dialog-disclosure`}
                   record={value}
                 />
               </Set>

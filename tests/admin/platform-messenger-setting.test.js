@@ -1,6 +1,5 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
-import { goto } from "../sidebar.js"
 import { selectRandomOption } from "../page/select.js"
 import { selectRandomPlatform } from "../page/content.js"
 import faker from "faker"
@@ -109,6 +108,6 @@ const deleteInstantMessaging = async (page) => {
 let InstantMessagingSelectSelector = `select[name="type"]`
 
 const gotoPlatformCustomerServicePage = async (page) => {
-  await goto({ page, value: "/platform/imsettings" })
+  await page.goto("/platform/imsettings")
   await selectRandomPlatform(page)
 }
