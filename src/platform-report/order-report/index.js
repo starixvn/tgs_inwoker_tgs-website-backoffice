@@ -35,7 +35,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
-import subDays from "date-fns/subDays"
+import { subDays, isValid } from "date-fns"
 import {
   DateInputRange,
   DateInputRangeField
@@ -50,7 +50,6 @@ import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { isDev } from "../../env"
-import isValid from "date-fns/isValid"
 
 export { Code }
 
@@ -154,7 +153,6 @@ const ReportContent = ({ brandId }) => {
           maxRangeDays={QueryMaxRangeDays}
           isLoading={isLoading}
           search={({ start, end, ...rest }) => {
-            console.log("onSearch rest", rest)
             setState({
               pageIndex: 0,
               from: start,
@@ -188,6 +186,7 @@ const SearchBar = ({
   end,
   closedFrom,
   closedTo,
+  sortby,
   username,
   roundId,
   externalRoundId,
@@ -206,6 +205,7 @@ const SearchBar = ({
       end,
       closedFrom,
       closedTo,
+      sortby,
       username,
       roundId,
       externalRoundId,
@@ -213,7 +213,7 @@ const SearchBar = ({
       gameProviderId
     }
   })
-  let { control, getValues, clearErrors } = formMethods
+  let { control, getValues, setValue, clearErrors } = formMethods
 
   const onSubmit = (data) => search?.(data)
 
@@ -232,6 +232,28 @@ const SearchBar = ({
     en: "External ID"
   })
 
+  const StartField = "start"
+  let startValue = useWatch({ control, name: StartField })
+
+  const EndField = "end"
+  let endValue = useWatch({ control, name: EndField })
+  useEffect(() => {
+    if (isValid(startValue) && isValid(endValue)) {
+      setValue("sortby", "createdOn")
+    }
+  }, [startValue, endValue])
+
+  const ClosedFromField = "closedFrom"
+  let closedFromValue = useWatch({ control, name: ClosedFromField })
+
+  const ClosedToField = "closedTo"
+  let ClosedToValue = useWatch({ control, name: ClosedToField })
+  useEffect(() => {
+    if (isValid(closedFromValue) && isValid(ClosedToValue)) {
+      setValue("sortby", "closedOn")
+    }
+  }, [startValue, endValue])
+
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -244,22 +266,22 @@ const SearchBar = ({
               maxRangeDays={maxRangeDays}
               fakeTimeLabel
               startProps={{
-                name: "start"
+                name: StartField
               }}
               endProps={{
-                name: "end"
+                name: EndField
               }}
               validate={(createdOn) => {
                 let hasCreatedOn =
                   isValid(createdOn.start) && isValid(createdOn.end)
 
-                let closedFrom = getValues("closedFrom")
-                let closedTo = getValues("closedTo")
+                let closedFrom = getValues(ClosedFromField)
+                let closedTo = getValues(ClosedToField)
                 let hasClosedOn = isValid(closedFrom) && isValid(closedTo)
 
                 let pass = hasCreatedOn || hasClosedOn
                 if (pass) {
-                  clearErrors(["closedFrom", "closedTo"])
+                  clearErrors([ClosedFromField, ClosedToField])
                 }
 
                 return pass ? true : "one-of-date-range-required"
@@ -272,23 +294,23 @@ const SearchBar = ({
               maxRangeDays={maxRangeDays}
               fakeTimeLabel
               startProps={{
-                name: "closedFrom"
+                name: ClosedFromField
               }}
               endProps={{
-                name: "closedTo"
+                name: ClosedToField
               }}
               validate={{
                 validate: (closedOn) => {
                   let hasClosedOn =
                     isValid(closedOn.start) && isValid(closedOn.end)
 
-                  let start = getValues("start")
-                  let end = getValues("end")
+                  let start = getValues(StartField)
+                  let end = getValues(EndField)
                   let hasCreatedOn = isValid(start) && isValid(end)
 
                   let pass = hasCreatedOn || hasClosedOn
                   if (pass) {
-                    clearErrors(["start", "end"])
+                    clearErrors([StartField, EndField])
                   }
                   return pass ? true : "one-of-date-range-required"
                 }
@@ -411,7 +433,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "winLoss",
-        Header: <Trans zh="输赢金额" en="Win Loss" />,
+        Header: <Trans zh="玩家输赢金额" en="Player Win Loss" />,
         disableSortBy: true
       }),
       {

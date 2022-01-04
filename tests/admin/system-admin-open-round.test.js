@@ -12,13 +12,21 @@ import faker from "faker"
 const test = base.extend(Fixture)
 const { lorem, phone, datatype, image, finance, internet, commerce } = faker
 
-test("close open round", async ({ page, platformCode, player }) => {
+test("close open round", async ({
+  page,
+  platformCode,
+  player,
+  backofficeApi
+}) => {
   //TODO: player code shall get from op api result
   let playerCode = await getPlayerCode(page, platformCode, player.username)
   player.code = playerCode
 
   let walletAmount = 100
-  await addPlayerBalance(page, platformCode, player, walletAmount)
+
+  await backofficeApi.player.addBalance(playerCode, {
+    amount: walletAmount
+  })
 
   let amount = 10
   let { externalRoundId, ...result } = await placeBet({
@@ -131,45 +139,8 @@ const getPlayerCode = async (page, platformCode, username) => {
   return playerCode
 }
 
-const addPlayerBalance = async (page, platformCode, player, amount) => {
-  await gotoPlayerBalanceAdjustmentPage(page, platformCode)
-
-  await page.fill(`input[name="username"]`, player.username)
-
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`username=${player.username}`) &&
-        response.status() === 200
-      )
-    }),
-    page.click(`button[type="submit"]`)
-  ])
-
-  let Selector = `#add-balance-dialog`
-  await page.click(`${Selector}-disclosure`)
-  await page.waitForSelector(Selector)
-
-  await page.fill(`${Selector} input[name="amount"]`, `${amount}`)
-
-  let expectedUrl = `/api/player/${player.code}/adjust`
-  let [response] = await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
-    page.click(`${Selector} button[type="submit"]`)
-  ])
-
-  await page.waitForSelector(Selector, { state: "detached" })
-}
-
 const gotoPlayerListPage = async (page, platformCode) => {
   await goto({ page, value: "/playermanagement/playerlist" })
-  await selectPlatformByCode(page, platformCode)
-}
-
-const gotoPlayerBalanceAdjustmentPage = async (page, platformCode) => {
-  await goto({ page, value: "/playermanagement/balanceadjustment" })
   await selectPlatformByCode(page, platformCode)
 }
 
