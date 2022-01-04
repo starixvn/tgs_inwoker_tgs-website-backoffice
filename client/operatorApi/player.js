@@ -112,6 +112,9 @@ export const createAndLogin = async (
     ...(await login(platformToken, { username, password, platformtype }))
   }
 
+  player.playerCode = player.uid
+  player.code = player.uid
+
   return player
 }
 

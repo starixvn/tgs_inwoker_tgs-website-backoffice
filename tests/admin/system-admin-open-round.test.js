@@ -12,19 +12,9 @@ import faker from "faker"
 const test = base.extend(Fixture)
 const { lorem, phone, datatype, image, finance, internet, commerce } = faker
 
-test("close open round", async ({
-  page,
-  platformCode,
-  player,
-  backofficeApi
-}) => {
-  //TODO: player code shall get from op api result
-  let playerCode = await getPlayerCode(page, platformCode, player.username)
-  player.code = playerCode
-
+test("close open round", async ({ page, player, backofficeApi }) => {
   let walletAmount = 100
-
-  await backofficeApi.player.addBalance(playerCode, {
+  await backofficeApi.player.addBalance(player.code, {
     amount: walletAmount
   })
 
@@ -37,8 +27,6 @@ test("close open round", async ({
   await gotoGameRoundPage(page)
 
   await closeGameRoundBy(page, externalRoundId)
-
-  //TODO: search player balance change record by filter = UnsettledBetManual
 })
 
 const closeGameRoundBy = async (page, externalRoundId) => {
@@ -116,32 +104,6 @@ const closeGameRoundBy = async (page, externalRoundId) => {
     }),
     page.click(`#confirm-dialog button[type="submit"]`)
   ])
-}
-
-const getPlayerCode = async (page, platformCode, username) => {
-  await gotoPlayerListPage(page, platformCode)
-
-  await page.fill(`input[name="username"]`, username)
-
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`username=${username}`) &&
-        response.status() === 200
-      )
-    }),
-    page.click(`button[type="submit"]`)
-  ])
-
-  let playerCodeSelector = `table [data-column-id="playerCode"]`
-  await page.waitForSelector(playerCodeSelector)
-  let playerCode = await page.textContent(playerCodeSelector)
-  return playerCode
-}
-
-const gotoPlayerListPage = async (page, platformCode) => {
-  await goto({ page, value: "/playermanagement/playerlist" })
-  await selectPlatformByCode(page, platformCode)
 }
 
 const gotoGameRoundPage = async (page) => {
