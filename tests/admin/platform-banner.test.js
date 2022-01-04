@@ -5,6 +5,7 @@ import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
 import { goto } from "../sidebar.js"
 import { selectRandomPlatform } from "../page/content.js"
+import { openDialog } from "../page/dialog.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
@@ -52,23 +53,11 @@ const deleteBanner = async (page) => {
   ])
 }
 
-const reject = async (page, brandId, banner) => {
-  // await toInVerifyTab()
-  // await verifyBanner(brandId, banner, "reject")
-  // await toRejectedTab()
-  // let SubjectSelector = `[data-column-id="subject"]`
-  // await page.waitForSelector(SubjectSelector)
-  // let subject = await page.textContent(SubjectSelector)
-  // expect(subject).to.equal(banner.subject)
-}
-
-const editValidBanner = async (page, brandId, banner, index = 0) => {
+const editValidBanner = async (page, brandId, banner) => {
   await toEffectiveTab(page)
 
   const EditBannerDialogSelector = "#edit-banner-dialog"
-  await page.click(
-    `[data-row-index="${index}"] ${EditBannerDialogSelector}-disclosure`
-  )
+  await openDialog(page, EditBannerDialogSelector)
 
   const NewBanner = {
     ...banner,

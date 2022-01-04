@@ -89,6 +89,7 @@ const ReportContent = ({ brandId }) => {
     to: dateRange.end,
     closedFrom: undefined,
     closedTo: undefined,
+    sortby: "createdOn",
     username: "",
     roundId: "",
     externalRoundId: "",
@@ -122,7 +123,6 @@ const ReportContent = ({ brandId }) => {
     deleteCache
   } = useGameRoundList({
     ...toApiParams(state),
-    sortby: "createdOn",
     orderby: "descending",
     from,
     to: startOfNextDay(to),
@@ -153,6 +153,7 @@ const ReportContent = ({ brandId }) => {
           maxRangeDays={QueryMaxRangeDays}
           isLoading={isLoading}
           search={({ start, end, ...rest }) => {
+            console.log("rest", rest)
             setState({
               pageIndex: 0,
               from: start,
@@ -247,12 +248,12 @@ const SearchBar = ({
   let closedFromValue = useWatch({ control, name: ClosedFromField })
 
   const ClosedToField = "closedTo"
-  let ClosedToValue = useWatch({ control, name: ClosedToField })
+  let closedToValue = useWatch({ control, name: ClosedToField })
   useEffect(() => {
-    if (isValid(closedFromValue) && isValid(ClosedToValue)) {
+    if (isValid(closedFromValue) && isValid(closedToValue)) {
       setValue("sortby", "closedOn")
     }
-  }, [startValue, endValue])
+  }, [closedFromValue, closedToValue])
 
   return (
     <FormProvider {...formMethods}>
