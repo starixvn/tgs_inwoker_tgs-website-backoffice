@@ -3,6 +3,7 @@ import { loginUser, login } from "../auth.js"
 import { host } from "../env.js"
 import globalApi from "../../client/globalApi/index.js"
 import operatorApi from "../../client/operatorApi/index.js"
+import backofficeApi from "../client/index.js"
 
 const Path = "./.playwright"
 const AuthPath = `${Path}/platform-auth.json`
@@ -22,6 +23,13 @@ export const Fixture = {
   context: async ({ browser }, use) => {
     let context = await browser.newContext({ storageState: AuthPath })
     use(context)
+  },
+  backofficeApi: async ({ context }, use) => {
+    backofficeApi.init({
+      fetcher: context.request,
+      host: host()
+    })
+    use(backofficeApi)
   },
   page: async ({ context }, use) => {
     let page = await context.newPage()
