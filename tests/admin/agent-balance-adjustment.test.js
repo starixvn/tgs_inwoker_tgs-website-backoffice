@@ -83,6 +83,8 @@ const deductBalance = async (page, index = 0) => {
 }
 
 const gotoAgentBalanceAdjustmentPage = async (page, platformCode) => {
-  await page.goto(`agentmanagement/balanceadjustment`)
+  await page.goto(`agentmanagement/balanceadjustment`, {
+    waitUntil: "networkidle"
+  })
   return await selectPlatformByCode(page, platformCode)
 }

@@ -89,6 +89,6 @@ const createPlayers = async (platformToken, size = 2, list = []) => {
 }
 
 const gotoPlatformIpAddressPage = async (page, platformCode) => {
-  await page.goto("/platform/ipaddress")
+  await page.goto("/platform/ipaddress", { waitUntil: "networkidle" })
   return await selectPlatformByCode(page, platformCode)
 }

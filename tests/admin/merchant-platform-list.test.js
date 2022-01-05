@@ -64,5 +64,5 @@ const randomLogo = () => ({
 })
 
 const gotoPlatformListPage = async (page) => {
-  await page.goto("/merchant/brands")
+  await page.goto("/merchant/brands", { waitUntil: "networkidle" })
 }

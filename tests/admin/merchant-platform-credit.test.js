@@ -10,11 +10,18 @@ const test = base.extend(Fixture)
 test("search by licensee name", async ({ page }) => {
   await gotoPlatformCreditPage(page)
 
-  let licenseeNames = await page.evaluate(() =>
-    Array.from(
-      window.document.querySelectorAll(`[data-column-id="licenseeName"]`)
-    ).map(({ textContent }) => textContent)
-  )
+  let TableSelector = `#platform-credit`
+  let LicenseeNameSelector = `${TableSelector} [data-column-id="licenseeName"]`
+  await page.waitForSelector(LicenseeNameSelector)
+
+  let licenseeNames = await page
+    .locator(`#platform-credit [data-column-id="licenseeName"]`)
+    .allTextContents()
+  if (licenseeNames.length === 0) {
+    console.warn("no licensee names?")
+    return
+  }
+
   let index = random(licenseeNames.length - 1)
   let licenseeName = licenseeNames[index]
   await searchByInputNameValue(page, {
@@ -44,7 +51,13 @@ test("search by licensee name", async ({ page }) => {
 test("search by code", async ({ page, host }) => {
   await gotoPlatformCreditPage(page, host)
 
+  let TableSelector = `#platform-credit`
   let brandCodes = await getPlatformCodes(page)
+  if (brandCodes.length === 0) {
+    console.warn("no brand codes?")
+    return
+  }
+
   let index = random(brandCodes.length - 1)
   let brandCode = brandCodes[index]
 
@@ -53,11 +66,9 @@ test("search by code", async ({ page, host }) => {
     value: brandCode
   })
 
-  await page.waitForSelector(`[data-column-id="brandCode"]`)
-  let code = await page.$eval(
-    `[data-column-id="brandCode"]`,
-    ({ textContent }) => textContent
-  )
+  let BrandCodeSelector = `${TableSelector} [data-column-id="brandCode"]`
+  let codeLocator = page.locator(BrandCodeSelector).first()
+  let code = await codeLocator.textContent()
   expect(code).to.equal(brandCode)
 
   await page.click(`#clear-keyword-button`)
@@ -171,18 +182,23 @@ test("pay platform credit and list payment list", async ({
   expect(paymentAmounts.length).to.be.above(0)
 })
 
-const getPlatformCodes = async (page) =>
-  await page.evaluate(() =>
+const getPlatformCodes = async (page) => {
+  let locator = page.locator(`[data-column-id="brandCode"]`)
+  return locator.allTextContents()
+  /*
+    await page.evaluate(() =>
     Array.from(
       window.document.querySelectorAll(`[data-column-id="brandCode"]`)
     ).map(({ textContent }) => textContent)
   )
-
-const gotoPlatformCreditPage = async (page) => {
-  await page.goto("/merchant/platformcredit")
+  */
 }
 
-const searchByInputNameValue = async (page, { name = "", value = "" }) =>
+const gotoPlatformCreditPage = async (page) => {
+  await page.goto("/merchant/platformcredit", { waitUntil: "networkidle" })
+}
+
+const searchByInputNameValue = async (page, { name = "", value = "" }) => {
   await Promise.all([
     page.fill(`input[name="${name}"]`, value),
     page.waitForResponse((response) => {
@@ -191,6 +207,8 @@ const searchByInputNameValue = async (page, { name = "", value = "" }) =>
         response.status() === 200
       )
     }),
-    page.click(`button[type="submit"]`),
-    page.waitForLoadState("networkidle")
+    page.click(`button[type="submit"]`)
   ])
+
+  await page.waitForSelector(`#platform-credit tbody`)
+}

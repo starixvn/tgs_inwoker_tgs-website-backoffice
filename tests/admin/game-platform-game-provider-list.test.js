@@ -94,6 +94,6 @@ const changeRandomStatus = async (page, list = Object.values(Status)) => {
 }
 
 const gotoPlatformGameProviderListPage = async (page) => {
-  await page.goto("/game/brandproviders")
+  await page.goto("/game/brandproviders", { waitUntil: "networkidle" })
   return await selectRandomPlatform(page)
 }

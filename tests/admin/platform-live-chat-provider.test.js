@@ -125,6 +125,6 @@ const deleteLiveChat = async (page) => {
 }
 
 const gotoPlatformCustomerServicePage = async (page) => {
-  await page.goto("/platform/imsettings")
+  await page.goto("/platform/imsettings", { waitUntil: "networkidle" })
   return await selectRandomPlatform(page)
 }

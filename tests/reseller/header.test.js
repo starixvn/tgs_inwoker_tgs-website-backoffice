@@ -5,7 +5,7 @@ import { expect } from "chai"
 const test = base.extend(Fixture)
 
 test("display user name", async ({ page, host, resellerUsername }) => {
-  await page.goto(host)
+  await page.goto(host, { waitUntil: "networkidle" })
   let username = await page.$eval(
     "#app-header #username",
     ({ textContent }) => textContent

@@ -167,6 +167,6 @@ const selectManualBrandPayment = async (page) => {
 }
 
 const gotoFundWithdraw = async (page, platformCode) => {
-  await page.goto("/fundmanagement/withdraw")
+  await page.goto("/fundmanagement/withdraw", { waitUntil: "networkidle" })
   await selectPlatformByCode(page, platformCode)
 }

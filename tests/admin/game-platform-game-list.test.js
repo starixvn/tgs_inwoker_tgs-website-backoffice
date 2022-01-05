@@ -181,6 +181,6 @@ const verifyUpdated = async (page, game) => {
 }
 
 const gotoPlatformGameListPage = async (page) => {
-  await page.goto("/game/brandgames")
+  await page.goto("/game/brandgames", { waitUntil: "networkidle" })
   return await selectRandomPlatform(page)
 }

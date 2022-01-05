@@ -18,7 +18,7 @@ test("deposit and withdraw alarm on header", async ({
   backofficeApi,
   host
 }) => {
-  await page.goto(host)
+  await page.goto(host, { waitUntil: "networkidle" })
   let depositAmount = 10
   await backofficeApi.player.addBalance(player.code, {
     amount: depositAmount
@@ -109,5 +109,5 @@ const selectManualBrandPayment = async (page) => {
 }
 
 const gotoFundWithdraw = async (page) => {
-  await page.goto("/fundmanagement/withdraw")
+  await page.goto("/fundmanagement/withdraw", { waitUntil: "networkidle" })
 }

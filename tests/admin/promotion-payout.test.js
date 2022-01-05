@@ -228,16 +228,16 @@ const approveDeposit = async (
 }
 
 const gotoFundDepositPage = async (page, platformCode) => {
-  await page.goto("/fundmanagement/deposit")
+  await page.goto("/fundmanagement/deposit", { waitUntil: "networkidle" })
   await selectPlatformByCode(page, platformCode)
 }
 
 const gotoPromotionListPage = async (page, platformCode) => {
-  await page.goto("/promotion/promotionlist")
+  await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })
   await selectPlatformByCode(page, platformCode)
 }
 
 const gotoPromotionPayoutListPage = async (page, platformCode) => {
-  await page.goto("/promotion/payoutlist")
+  await page.goto("/promotion/payoutlist", { waitUntil: "networkidle" })
   await selectPlatformByCode(page, platformCode)
 }

@@ -134,5 +134,5 @@ const edit = async (page, user) => {
 }
 
 const gotoAdminUserListPage = async (page) => {
-  await page.goto(`/system/admins`)
+  await page.goto(`/system/admins`, { waitUntil: "networkidle" })
 }

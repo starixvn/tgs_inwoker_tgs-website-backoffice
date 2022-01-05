@@ -78,6 +78,6 @@ const addDepositPayment = async (page) => {
 }
 
 const gotoAdminPlatformPaymentListPage = async (page) => {
-  await page.goto(`/system/brandpayments`)
+  await page.goto(`/system/brandpayments`, { waitUntil: "networkidle" })
   return await selectRandomOption(page, `select[name="brandId"]`)
 }

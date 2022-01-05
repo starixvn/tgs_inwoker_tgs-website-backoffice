@@ -116,6 +116,6 @@ const addStationLetter = async (page) => {
 }
 
 const gotoPlatformStationLetterPage = async (page) => {
-  await page.goto("/platform/stationletter")
+  await page.goto("/platform/stationletter", { waitUntil: "networkidle" })
   await selectRandomPlatform(page)
 }

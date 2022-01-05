@@ -23,7 +23,7 @@ test("deposit and withdraw alarm on header", async ({
   player,
   host
 }) => {
-  await page.goto(host)
+  await page.goto(host, { waitUntil: "networkidle" })
   let depositAmount = 10
   let balance = await depositAlarm(page, platformToken, player, depositAmount)
 })
@@ -90,5 +90,5 @@ const approveFundDeposit = async (page, formId) => {
 }
 
 const gotoFundDepositPage = async (page) => {
-  await page.goto("/fundmanagement/deposit")
+  await page.goto("/fundmanagement/deposit", { waitUntil: "networkidle" })
 }

@@ -109,6 +109,6 @@ const editVipLevel = async (page) => {
 }
 
 const gotoVipLevelPage = async (page) => {
-  await page.goto("/platform/viplevel")
+  await page.goto("/platform/viplevel", { waitUntil: "networkidle" })
   return await selectRandomPlatform(page)
 }

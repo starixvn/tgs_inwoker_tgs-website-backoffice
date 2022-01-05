@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
 import { selectRandomPlatform } from "../page/content.js"
+import { openDialog } from "../page/dialog.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
@@ -19,16 +20,16 @@ test("add -> approve -> change status -> update -> reject announcement", async (
   let approve = "approve"
   await verifyAnnouncement(page, announcement, approve)
 
-  await toggleChangeEffectiveAnnouncementStatus(page, brandId)
-  await toggleChangeEffectiveAnnouncementStatus(page, brandId)
-
   await changeEffectiveAnnouncementDisplayOrder(page, brandId)
+
+  await toggleChangeEffectiveAnnouncementStatus(page, brandId, announcement)
 
   let updatedAnnouncement = await editEffectiveAnnouncement(
     page,
     brandId,
     announcement
   )
+
   await rejectAnnouncement(page, updatedAnnouncement)
   await deleteAnnouncement(page)
 
@@ -86,11 +87,12 @@ const toEffectiveTab = async (page, brandId) => {
     }),
     page.click(`button#Effective`)
   ])
+  await page.waitForSelector(`#announcement tbody`)
+
+  //TODO: is it possible to wait after ui updated?
   /*
-  await Promise.all([
-    page.waitForLoadState("networkidle"),
-    page.waitForSelector(`#announcement tbody`)
-  ])
+  let HalfSecond = 500
+  await page.waitForTimeout(HalfSecond)
   */
 }
 
@@ -102,7 +104,7 @@ const changeEffectiveAnnouncementDisplayOrder = async (
   await toEffectiveTab(page, brandId)
 
   let displayOrder = await page.$eval(
-    `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+    `[data-row-index="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
     ({ value }) => parseInt(value)
   )
 
@@ -110,7 +112,7 @@ const changeEffectiveAnnouncementDisplayOrder = async (
 
   let ExpectedOrder = displayOrder + 1
   await page.fill(
-    `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+    `[data-row-index="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
     `${ExpectedOrder}`
   )
 
@@ -133,12 +135,12 @@ const changeEffectiveAnnouncementDisplayOrder = async (
   await toEffectiveTab(page, brandId)
 
   await page.fill(
-    `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+    `[data-row-index="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
     `${ExpectedOrder}`
   )
 
   let order = await page.$eval(
-    `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+    `[data-row-index="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
     ({ value }) => parseInt(value)
   )
   expect(order).to.equal(ExpectedOrder)
@@ -147,16 +149,15 @@ const changeEffectiveAnnouncementDisplayOrder = async (
 const toggleChangeEffectiveAnnouncementStatus = async (
   page,
   brandId,
-  index = 0
+  announcement
 ) => {
   await toEffectiveTab(page, brandId)
 
   let Status = ["Effective", "Invalid"]
   let status = await page.$eval(
-    `[data-row-index="${index}"] [data-column-id="status"] button`,
+    `[data-row-id="${announcement.id}"] [data-column-id="status"] button`,
     ({ dataset }) => dataset.status
   )
-
   expect(status).to.be.oneOf(Status)
 
   Status = Status.filter((value) => value != status)
@@ -175,14 +176,14 @@ const toggleChangeEffectiveAnnouncementStatus = async (
         response.status() === 200
       )
     }),
-    page.click(`[data-row-index="${index}"] [data-column-id="status"] button`)
+    page.click(
+      `[data-row-id="${announcement.id}"] [data-column-id="status"] button`
+    )
   ])
 
-  //TODO: how to wait ui update without reload page?
-  await page.reload()
   await toEffectiveTab(page, brandId)
 
-  let StatusSelector = `#announcement [data-row-index="${index}"] [data-column-id="status"] button`
+  let StatusSelector = `#announcement [data-row-id="${announcement.id}"] [data-column-id="status"] button`
   await page.waitForSelector(StatusSelector)
   let toggledStatus = await page.$eval(
     StatusSelector,
@@ -237,30 +238,29 @@ const rejectAnnouncement = async (page, announcement) => {
 }
 
 const verifyAnnouncement = async (page, announcement, type = "approve") => {
-  await page.click(`#verify-announcement-dialog-disclosure`)
-  await page.waitForSelector(`#verify-announcement-dialog`)
-  await page.waitForLoadState("networkidle")
+  let VerifyDialogSelector = `#verify-announcement-dialog`
+  await openDialog(page, VerifyDialogSelector)
 
   let verifySubject = await page.$eval(
-    `#verify-announcement-dialog input[name="subject"]`,
+    `${VerifyDialogSelector} input[name="subject"]`,
     ({ value }) => value
   )
   expect(verifySubject).to.equal(announcement.subject)
 
   let verifyStart = await page.$eval(
-    `#verify-announcement-dialog #from-date-box input[type="text"]`,
+    `${VerifyDialogSelector} #from-date-box input[type="text"]`,
     ({ value }) => value
   )
   expect(verifyStart).to.have.string(announcement.from)
 
   let verifyEnd = await page.$eval(
-    `#verify-announcement-dialog #to-date-box input[type="text"]`,
+    `${VerifyDialogSelector} #to-date-box input[type="text"]`,
     ({ value }) => value
   )
   expect(verifyEnd).to.have.string(announcement.to)
 
   let verifyContent = await page.$eval(
-    `#verify-announcement-dialog textarea[name="content"]`,
+    `${VerifyDialogSelector} textarea[name="content"]`,
     ({ value }) => value
   )
   expect(verifyContent).to.equal(announcement.content)
@@ -272,14 +272,15 @@ const verifyAnnouncement = async (page, announcement, type = "approve") => {
         response.status() === 200
       )
     }),
-    page.click(`#verify-announcement-dialog button[data-type="${type}"]`)
+    page.click(`${VerifyDialogSelector} button[data-type="${type}"]`)
   ])
 
   await page.waitForLoadState("networkidle")
 }
 
 const addAnnouncement = async (page) => {
-  await page.click(`#add-announcement-dialog-disclosure`)
+  let AddDialogSelector = `#add-announcement-dialog`
+  await openDialog(page, AddDialogSelector)
 
   let from = startOfDay(new Date())
   let to = endOfTomorrow(new Date())
@@ -291,26 +292,27 @@ const addAnnouncement = async (page) => {
   }
 
   await page.fill(
-    `#add-announcement-dialog input[name="subject"]`,
+    `${AddDialogSelector} input[name="subject"]`,
     Announcement.subject
   )
 
   await fillDatePicker({
     page,
-    selector: `#add-announcement-dialog #from-date-box input[type="text"]`,
+    selector: `${AddDialogSelector} #from-date-box input[type="text"]`,
     value: Announcement.from
   })
   await fillDatePicker({
     page,
-    selector: `#add-announcement-dialog #to-date-box input[type="text"]`,
+    selector: `${AddDialogSelector} #to-date-box input[type="text"]`,
     value: Announcement.to
   })
 
   await page.fill(
-    `#add-announcement-dialog textarea[name="content"]`,
+    `${AddDialogSelector} textarea[name="content"]`,
     Announcement.content
   )
 
+  //TODO: is't possible to get announcement id from response?
   await Promise.all([
     page.waitForResponse((response) => {
       return (
@@ -318,7 +320,7 @@ const addAnnouncement = async (page) => {
         response.status() === 200
       )
     }),
-    page.click(`#add-announcement-dialog button[type="submit"]`)
+    page.click(`${AddDialogSelector} button[type="submit"]`)
   ])
 
   await toInVerifyTab(page)
@@ -333,10 +335,14 @@ const addAnnouncement = async (page) => {
   )
   expect(subject).to.equal(Announcement.subject)
 
+  let IdSelector = `[data-row-index="${FirstRowIndex}"]`
+  let idLocator = page.locator(IdSelector)
+  let id = await idLocator.getAttribute("data-row-id")
+  Announcement.id = id
   return Announcement
 }
 
 const gotoPlatformAnnouncementPage = async (page) => {
-  await page.goto("/platform/announcement")
+  await page.goto("/platform/announcement", { waitUntil: "networkidle" })
   return await selectRandomPlatform(page)
 }

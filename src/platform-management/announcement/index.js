@@ -261,6 +261,7 @@ const AsyncTable = ({
       setPageIndex={setPageIndex}
       setSortOrder={setSortOrder}
       isLoading={isLoading}
+      getRowId={(row) => row.id}
     />
   )
 }
@@ -345,6 +346,7 @@ const EffectiveTable = ({
             setPageIndex={setPageIndex}
             setSortOrder={setSortOrder}
             isLoading={isLoading}
+            getRowId={(row) => row.id}
           />
           {editable && (
             <Dialog.Footer position="sticky" bottom="0">

@@ -84,6 +84,6 @@ test("view and download market report", async ({ page }) => {
 })
 
 const gotoPlatformMarketReportPage = async (page) => {
-  await page.goto("/report/marketreport")
+  await page.goto("/report/marketreport", { waitUntil: "networkidle" })
   return await selectRandomPlatform(page)
 }

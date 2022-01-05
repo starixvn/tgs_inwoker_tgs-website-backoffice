@@ -24,7 +24,7 @@ test("update all agent settings", async ({ page }) => {
 })
 
 const gotoPlatformOperationSettingPage = async (page) => {
-  await page.goto("/platform/imsettings")
+  await page.goto("/platform/imsettings", { waitUntil: "networkidle" })
   let brandId = await selectRandomPlatform(page)
   return brandId
 }

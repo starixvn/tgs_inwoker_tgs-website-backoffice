@@ -108,6 +108,6 @@ const deleteInstantMessaging = async (page) => {
 let InstantMessagingSelectSelector = `select[name="type"]`
 
 const gotoPlatformCustomerServicePage = async (page) => {
-  await page.goto("/platform/imsettings")
+  await page.goto("/platform/imsettings", { waitUntil: "networkidle" })
   await selectRandomPlatform(page)
 }

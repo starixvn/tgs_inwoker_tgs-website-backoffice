@@ -67,6 +67,6 @@ test("view and download licensee market report", async ({ page }) => {
 })
 
 const gotoLicenseeMarketReportPage = async (page) => {
-  await page.goto("/licenseereport/marketreport")
+  await page.goto("/licenseereport/marketreport", { waitUntil: "networkidle" })
   await selectFirst({ page })
 }

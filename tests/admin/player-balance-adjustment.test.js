@@ -89,6 +89,8 @@ const setTransactionType = async (
 }
 
 const gotoPlayerBalanceAdjustmentPage = async (page, platformCode) => {
-  await page.goto("/playermanagement/balanceadjustment")
+  await page.goto("/playermanagement/balanceadjustment", {
+    waitUntil: "networkidle"
+  })
   return await selectPlatformByCode(page, platformCode)
 }

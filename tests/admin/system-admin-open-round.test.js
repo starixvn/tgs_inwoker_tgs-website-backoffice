@@ -106,5 +106,5 @@ const closeGameRoundBy = async (page, externalRoundId) => {
 }
 
 const gotoGameRoundPage = async (page) => {
-  await page.goto("/systemadmin/gameround")
+  await page.goto("/systemadmin/gameround", { waitUntil: "networkidle" })
 }

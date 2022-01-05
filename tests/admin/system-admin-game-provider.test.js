@@ -39,10 +39,7 @@ test("system game providers and able to search by code or name", async ({
     })
   ])
 
-  code = await page.$eval(
-    `[data-column-id="code"]`,
-    ({ textContent }) => textContent
-  )
+  code = await page.locator(`[data-column-id="code"]`).first().textContent()
   expect(code).to.equal(gameProviderCode)
 })
 
@@ -52,12 +49,11 @@ test("system game provider games and able to search by code", async ({
   await gotoSystemAdminGameProviderPage(page)
 
   let gameProviderCodes = await getGameProviderCodes(page)
-
   let gameProviderIndex = random(gameProviderCodes.length - 1)
   let gameProviderCode = gameProviderCodes[gameProviderIndex]
   await showGameListDialog(page, gameProviderCode)
 
-  let gameCodes = await getGameListCodes(page)
+  let gameCodes = await gameListCodesFromPage(page)
   expect(gameCodes).to.be.not.empty
 
   let gameIndex = random(gameCodes.length - 1)
@@ -72,10 +68,10 @@ test("system game provider games and able to search by code", async ({
     `#game-list tbody [data-row-id="0"] [data-column-id="code"]`
   )
 
-  let code = await page.$eval(
-    `#game-list [data-row-id="0"] [data-column-id="code"]`,
-    ({ textContent }) => textContent
-  )
+  let code = await page
+    .locator(`#game-list [data-row-id="0"] [data-column-id="code"]`)
+    .first()
+    .textContent()
   expect(code).to.equal(gameCode)
 })
 
@@ -83,7 +79,7 @@ test("shold able to download and update game provider game localization list", a
   page
 }) => {
   await gotoSystemAdminGameProviderPage(page)
-  await showRandomGameProviderGameList(page)
+  await openRandomGameProviderGameListDialog(page)
 
   let [download] = await Promise.all([
     page.waitForEvent("download"),
@@ -121,41 +117,22 @@ test("shold able to download and update game provider game localization list", a
 })
 
 const gotoSystemAdminGameProviderPage = async (page) => {
-  await page.goto("/systemadmin/gameproviders")
-  /*
-  let SideMenuSelector = `#sidebar a[href="/systemadmin/gameproviders"]`
-  await Promise.all([
-    page.waitForNavigation(),
-    page.click(SideMenuSelector),
-    page.waitForLoadState("networkidle"),
-    page.waitForSelector("#game-provider tbody")
-  ])
-  */
+  await page.goto("/systemadmin/gameproviders", { waitUntil: "networkidle" })
+  await page.waitForSelector("#game-provider tbody")
 }
 
-const getGameProviderCodes = async (page) =>
-  await page.evaluate(() =>
-    Array.from(window.document.querySelectorAll(`[data-column-id="code"]`)).map(
-      ({ textContent }) => textContent
-    )
-  )
-
-const getGameListCodes = async (page) => {
-  await page.waitForSelector(
-    `#game-list-dialog #game-list [data-column-id="code"]`
-  )
-  return await page.evaluate(() =>
-    Array.from(
-      window.document.querySelectorAll(
-        `#game-list-dialog #game-list [data-column-id="code"]`
-      )
-    ).map(({ textContent }) => textContent)
-  )
+const getGameProviderCodes = async (page) => {
+  return await page.locator(`[data-column-id="code"]`).allTextContents()
 }
 
-const showRandomGameProviderGameList = async (page) => {
+const gameListCodesFromPage = async (page) => {
+  return await page
+    .locator(`#game-list-dialog #game-list [data-column-id="code"]`)
+    .allTextContents()
+}
+
+const openRandomGameProviderGameListDialog = async (page) => {
   let gameProviderCodes = await getGameProviderCodes(page)
-
   let index = random(gameProviderCodes.length - 1)
 
   let gameProviderCode = gameProviderCodes[index]

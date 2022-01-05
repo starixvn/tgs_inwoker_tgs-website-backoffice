@@ -22,7 +22,7 @@ test("add -> approver -> change status -> update -> reject banner", async ({
   await verifyBanner(page, brandId, banner, "approve")
 
   await toggleStatus(page, brandId)
-  await toggleStatus(page, brandId)
+  // await toggleStatus(page, brandId)
 
   await changeOrder(page, brandId)
 
@@ -81,7 +81,7 @@ const changeOrder = async (page, brandId, index = 0) => {
   await toEffectiveTab(page)
 
   let displayOrder = await page.$eval(
-    `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+    `[data-row-index="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
     ({ value }) => parseInt(value)
   )
 
@@ -89,7 +89,7 @@ const changeOrder = async (page, brandId, index = 0) => {
 
   let ExpectedOrder = displayOrder + 1
   await page.fill(
-    `[data-row-id="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
+    `[data-row-index="${index}"] [data-column-id="displayOrder"] input[type="number"]`,
     `${ExpectedOrder}`
   )
 
@@ -232,12 +232,16 @@ const toInVerifyTab = async (page) => {
 }
 
 const toEffectiveTab = async (page) => {
-  await page.click(`button#valid`)
-
   await Promise.all([
-    page.waitForLoadState("networkidle"),
-    page.waitForSelector(`#banner tbody`)
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/banner/valid/`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`button#valid`)
   ])
+  await page.waitForSelector(`#banner tbody`)
 }
 
 const toRejectedTab = async (page) => {
@@ -250,5 +254,5 @@ const toRejectedTab = async (page) => {
 }
 
 const gotoBannerPage = async (page) => {
-  await page.goto("/platform/banner")
+  await page.goto("/platform/banner", { waitUntil: "networkidle" })
 }

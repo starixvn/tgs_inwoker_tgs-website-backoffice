@@ -120,6 +120,6 @@ const approveDeposit = async (
 }
 
 const gotoFundDepositPage = async (page, platformCode) => {
-  await page.goto(`/fundmanagement/deposit`)
+  await page.goto(`/fundmanagement/deposit`, { waitUntil: "networkidle" })
   await selectPlatformByCode(page, platformCode)
 }

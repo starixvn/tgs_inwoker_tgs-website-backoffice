@@ -346,7 +346,7 @@ const setGameType = async (
 }
 
 const gotoPromotionPage = async (page) => {
-  await page.goto("/promotion/promotionlist")
+  await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })
   return await selectRandomPlatform(page)
 }
 

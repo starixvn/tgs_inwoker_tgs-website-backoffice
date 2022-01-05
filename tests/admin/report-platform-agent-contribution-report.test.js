@@ -79,6 +79,8 @@ test("view and download agent contribution report", async ({
 })
 
 const gotoPlatformAgentContributionReportPage = async (page, platformCode) => {
-  await page.goto("/report/agentcontributionreport")
+  await page.goto("/report/agentcontributionreport", {
+    waitUntil: "networkidle"
+  })
   await selectPlatformByCode(page, platformCode)
 }

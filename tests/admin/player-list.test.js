@@ -27,6 +27,6 @@ test("search, view and edit player", async ({ page, platformCode, player }) => {
 })
 
 const gotoPlayerListPage = async (page, platformCode) => {
-  await page.goto("/playermanagement/playerlist")
+  await page.goto("/playermanagement/playerlist", { waitUntil: "networkidle" })
   return await selectPlatformByCode(page, platformCode)
 }
