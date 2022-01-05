@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import {
-    Heading,
-    Stack,
-    Button,
-    Set,
-    InputField,
-    Text,
-    Box,
-    Input,
-    Link,
-    Dialog,
-    Card,
-    List,
-    useModalState
+  Heading,
+  Stack,
+  Button,
+  Set,
+  InputField,
+  Text,
+  Box,
+  Input,
+  Link,
+  Dialog,
+  Card,
+  List,
+  useModalState
 } from "bumbag"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Alert from "../../dialog/Alert"
@@ -23,59 +23,59 @@ import { Trans, useTrans } from "../../i18n"
 import { CloseText } from "../../button/ActionButtons"
 
 export const DesignatedPlayersLink = ({ record = {}, ...props }) => {
-    let dialog = useModalState()
+  let dialog = useModalState()
 
-    let { id, designatedUsers } = record
-    if (!designatedUsers) {
-        return <Trans zh="无" en="None" />
-    }
+  let { id, designatedUsers } = record
+  if (!designatedUsers) {
+    return <Trans zh="无" en="None" />
+  }
 
-    return (
-        <>
-            <Disclosure use={Link} {...dialog}>
-                <Trans zh="有" en="Users" />
-            </Disclosure>
-            {dialog.visible && <PlayersDialog id={id} dialog={dialog} />}
-        </>
-    )
+  return (
+    <>
+      <Disclosure use={Link} {...dialog}>
+        <Trans zh="有" en="Users" />
+      </Disclosure>
+      {dialog.visible && <PlayersDialog id={id} dialog={dialog} />}
+    </>
+  )
 }
 
 const PlayersDialog = ({ id, dialog }) => {
-    let title = useTrans({
-        zh: "特定用户",
-        en: "Designated Users"
-    })
-    let { data, isLoading, error, mutate } = useBrandPaymentDesignatedUsers(
-        dialog.visible && id
-    )
-    if (isLoading) {
-        return <LoadingBackdrop />
-    }
+  let title = useTrans({
+    zh: "特定用户",
+    en: "Designated Users"
+  })
+  let { data, isLoading, error, mutate } = useBrandPaymentDesignatedUsers(
+    dialog.visible && id
+  )
+  if (isLoading) {
+    return <LoadingBackdrop />
+  }
 
-    if (error) {
-        return <Alert {...error} onClickClose={dialog.hide} />
-    }
+  if (error) {
+    return <Alert {...error} onClickClose={dialog.hide} />
+  }
 
-    let players = data?.players ?? []
-    return (
-        <Dialog.Modal
-            title={title}
-            footer={
-                <Box alignX="center" width="100%">
-                    <Button onClick={dialog.hide}>
-                        <CloseText />
-                    </Button>
-                </Box>
-            }
-            {...dialog}
-        >
-            <Card variant="bordered" padding="1em">
-                <List>
-                    {players.map((player) => (
-                        <List.Item>{player}</List.Item>
-                    ))}
-                </List>
-            </Card>
-        </Dialog.Modal>
-    )
+  let players = data?.players ?? []
+  return (
+    <Dialog.Modal
+      title={title}
+      footer={
+        <Box alignX="center" width="100%">
+          <Button onClick={dialog.hide}>
+            <CloseText />
+          </Button>
+        </Box>
+      }
+      {...dialog}
+    >
+      <Card variant="bordered" padding="1em">
+        <List>
+          {players.map((player) => (
+            <List.Item key={player}>{player}</List.Item>
+          ))}
+        </List>
+      </Card>
+    </Dialog.Modal>
+  )
 }
