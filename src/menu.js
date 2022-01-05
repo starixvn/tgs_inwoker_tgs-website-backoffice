@@ -123,6 +123,14 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
           verticalBelow={null}
           alignY="center"
           width="100%"
+          onClick={() => {
+            setShow(!show)
+          }}
+          css={css`
+            :hover {
+              cursor: pointer;
+            }
+          `}
         >
           {title}
           <Button
@@ -130,9 +138,6 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
             variant="ghost"
             size="small"
             marginRight="0.3rem"
-            onClick={() => {
-              setShow(!show)
-            }}
           >
             <Icon icon={show ? faAngleUp : faAngleDown} type="font-awesome" />
           </Button>
