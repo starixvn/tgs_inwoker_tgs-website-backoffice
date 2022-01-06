@@ -1,10 +1,5 @@
 const httpProxy = require("http-proxy")
-const apiProxy = httpProxy.createServer({ target: "http://localhost:8081" }) //dev: "http://dev-bo.rpgp.cc"
-/*
-const fileApiProxy = httpProxy.createServer({
-  target: "http://localhost:32671"
-})
-*/
+const apiProxy = httpProxy.createServer({ target: "http://localhost:3001" }) //dev: "http://dev-bo.rpgp.cc"
 
 module.exports = {
   mount: {

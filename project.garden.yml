@@ -36,7 +36,7 @@ services:
     ports:
       - name: http
         containerPort: 80
-        localPort: 8080
+        # localPort: 3080
     volumes:
       - name: data
         containerPath: /data
