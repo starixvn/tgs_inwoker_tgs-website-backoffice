@@ -22,7 +22,7 @@ export const today = () => {
 
 export const pastWeek = () => {
   let end = new Date()
-  let start = subWeeks(1, end)
+  let start = subWeeks(end, 1)
 
   return {
     start,
