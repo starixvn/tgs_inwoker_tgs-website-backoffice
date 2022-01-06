@@ -1,6 +1,4 @@
-import parseISO from "date-fns/parseISO"
-import isValid from "date-fns/isValid"
-import dateOf from "date-fns/toDate"
+import { parseISO, isValid, toDate as dateOf } from "date-fns"
 
 export const toDate = (value) => {
   let date = undefined
