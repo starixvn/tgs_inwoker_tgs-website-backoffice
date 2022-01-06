@@ -2,16 +2,18 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Group, Button } from "bumbag"
 import { Trans } from "../i18n"
-import startOfYesterday from "date-fns/startOfYesterday"
-import endOfYesterday from "date-fns/endOfYesterday"
-import startOfToday from "date-fns/startOfToday"
-import endOfToday from "date-fns/endOfToday"
-import startOfWeek from "date-fns/startOfWeek"
-import endOfWeek from "date-fns/endOfWeek"
-import subWeeks from "date-fns/subWeeks"
-import subMonths from "date-fns/subMonths"
-import startOfMonth from "date-fns/startOfMonth"
-import endOfMonth from "date-fns/endOfMonth"
+import {
+  startOfYesterday,
+  endOfYesterday,
+  startOfToday,
+  endOfToday,
+  startOfWeek,
+  endOfWeek,
+  subWeeks,
+  subMonths,
+  startOfMonth,
+  endOfMonth
+} from "date-fns"
 
 const Yesterday = "Yesterday"
 export const YesterdayButton = ({ onClick, ...props }) => {

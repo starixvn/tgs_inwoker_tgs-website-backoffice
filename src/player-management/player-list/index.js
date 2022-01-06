@@ -27,6 +27,7 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
+import { startOfNextDay } from "../../date/startOfNextDay"
 
 export { Code }
 
@@ -61,14 +62,24 @@ const BodyContent = ({ brandId = "" }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: "",
     vipId: "",
-    username: ""
+    username: "",
+    beginRegisteredOn: "",
+    endRegisteredOn: ""
   })
 
   useEffect(() => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { pageIndex, pageSize, status, vipId, username = "" } = state
+  let {
+    pageIndex,
+    pageSize,
+    status,
+    vipId,
+    username = "",
+    beginRegisteredOn,
+    endRegisteredOn
+  } = state
   let {
     data = {},
     isLoading,
@@ -78,7 +89,8 @@ const BodyContent = ({ brandId = "" }) => {
   } = usePlayerList({
     ...toApiParams(state),
     sortby: "username",
-    brandId
+    brandId,
+    endRegisteredOn: startOfNextDay(endRegisteredOn)
   })
   let columns = useColumns({ mutate, items: data?.items, brandId })
 

@@ -1,21 +1,18 @@
-import { isValid } from "date-fns"
-import subDays from "date-fns/subDays"
-import parseISO from "date-fns/parseISO"
-import startOfDay from "date-fns/startOfDay"
+import { isValid, subDays, parseISO, startOfDay } from "date-fns"
 
 export const startOfPreviousDay = (value) => {
-    let date = value
-    if (typeof value === "string") {
-        let parsed = parseISO(value)
-        if (isValid(parsed)) {
-            date = parsed
-        }
+  let date = value
+  if (typeof value === "string") {
+    let parsed = parseISO(value)
+    if (isValid(parsed)) {
+      date = parsed
     }
+  }
 
-    if (isValid(date)) {
-        let prevDay = subDays(value, 1)
-        return startOfDay(prevDay)
-    }
+  if (isValid(date)) {
+    let prevDay = subDays(value, 1)
+    return startOfDay(prevDay)
+  }
 
-    return value
+  return value
 }
