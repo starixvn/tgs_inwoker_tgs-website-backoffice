@@ -14,3 +14,10 @@ export const useMarketReportList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
   return useGet(url)
 }
+
+export const usePlatformMarketReportAdditionalExpenseList = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/additionalExpenses`)
+    : ""
+  return useGet(url)
+}

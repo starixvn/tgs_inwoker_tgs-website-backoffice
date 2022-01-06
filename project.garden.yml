@@ -4,6 +4,7 @@ environments:
   - name: default # The name of the environment.
 providers:
   - name: local-kubernetes # The name of the provider plugin to use.
+    setupIngressController: false
 
 ---
 kind: Module
@@ -35,6 +36,7 @@ services:
     ports:
       - name: http
         containerPort: 80
+        # localPort: 3080
     volumes:
       - name: data
         containerPath: /data

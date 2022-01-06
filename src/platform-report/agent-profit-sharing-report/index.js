@@ -275,7 +275,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         accessor: (row) => row,
         sumColumn: "winLossAmount",
         toValue: (row) => row?.winLossAmount,
-        Header: <Trans zh="输赢金额" en="Win Loss Amount" />,
+        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (

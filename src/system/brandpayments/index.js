@@ -79,17 +79,17 @@ const Body = () => {
 }
 
 const BodyContent = ({ brandId }) => {
+  const DefaultTransferType = TransferType.Deposit
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     paymentStatus: null,
-    keyword: ""
+    keyword: "",
+    transferType: DefaultTransferType
   })
 
-  let [transferType, setTransferType] = useState(TransferType.Deposit)
-
+  let { transferType } = state
   let { isLoading, data, error, mutate, deleteCache } = useBrandPaymentList({
     ...toApiParams(state),
-    transferType,
     sortby: "number"
   })
 
@@ -101,26 +101,21 @@ const BodyContent = ({ brandId }) => {
     setState({
       pageIndex: 0,
       brandId,
-      transferType,
+      transferType: DefaultTransferType,
       paymentStatus: "",
       keyword: ""
     })
-  }, [brandId, transferType])
+  }, [brandId])
 
   const activeTab = (newTransferType) => () => {
-    if (transferType === newTransferType) {
-      mutate()
-    }
-
-    setTransferType(newTransferType)
     setState({
       pageIndex: 0,
       paymentStatus: "",
       keyword: "",
       transferType: newTransferType
     })
+    mutate(null)
   }
-  let isDepositTab = transferType === TransferType.Deposit
 
   return (
     <PageContent
@@ -134,14 +129,12 @@ const BodyContent = ({ brandId }) => {
             }}
             isLoading={isLoading}
           />
-          {isDepositTab && (
-            <AddBrandPaymentButton
-              id="add-payment-dialog-disclosure"
-              transferType={TransferType.Deposit}
-              brandId={brandId}
-              onSubmitted={mutate}
-            />
-          )}
+          <AddBrandPaymentButton
+            id="add-payment-dialog-disclosure"
+            transferType={transferType}
+            brandId={brandId}
+            onSubmitted={mutate}
+          />
         </Level>
       }
     >
@@ -272,10 +265,15 @@ const DataTable = ({
             setPageIndex={setPageIndex}
             setSortOrder={setSortOrder}
             isLoading={isLoading}
+            getRowId={(row) => row.id}
           />
           {editable && (
             <Dialog.Footer position="sticky" bottom="0">
-              <Button isLoading={isChangingDisplayOrder} type="submit">
+              <Button
+                isLoading={isChangingDisplayOrder}
+                disabled={isLoading || isChangingDisplayOrder}
+                type="submit"
+              >
                 <Trans zh="确认排序" en="Confirm Order" />
               </Button>
             </Dialog.Footer>

@@ -449,6 +449,11 @@ const useColumns = ({
         accessor: "teamNumber",
         Header: <Trans zh="团队人数" en="Team Number" />,
         disableSortBy: true
+      }),
+      numberColumn({
+        accessor: "playerNumber",
+        Header: <Trans zh="直属玩家人数" en="Direct Players" />,
+        disableSortBy: true
       })
     ]
 

@@ -1,5 +1,5 @@
-import fetcher from "../fetcher"
-import { api } from "./api"
+import fetcher from "../fetcher.js"
+import { api } from "./api.js"
 
 export const platformToken = async (brandCode = "GPI") => {
   let result = await fetcher(`${api()}/brand/token/${brandCode}`)

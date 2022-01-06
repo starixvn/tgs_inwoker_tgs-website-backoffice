@@ -36,7 +36,8 @@ import BrandPaymentStatus, {
 import {
   useUpdateBrandPayment,
   useBrandPaymentUpload,
-  useAddDepositBrandPayment
+  useAddDepositBrandPayment,
+  useAddWithdrawBrandPayment
 } from "./client"
 import AlertDialog from "../../dialog/Alert"
 import {
@@ -75,7 +76,9 @@ import { parseJSON } from "../../text/json"
 import { head } from "lodash-es"
 import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { isDev } from "../../env"
-import { isDepositPlatformPayment } from "./BrandPaymentTransferType"
+import TransferType, {
+  isDepositPlatformPayment
+} from "./BrandPaymentTransferType"
 
 export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -223,6 +226,9 @@ export const AddBrandPaymentButton = ({
     return null
   }
 
+  let useFetch = isDepositPlatformPayment(transferType)
+    ? useAddDepositBrandPayment
+    : useAddWithdrawBrandPayment
   return (
     <>
       <AddDisclosure {...dialog} {...props} />
@@ -231,6 +237,7 @@ export const AddBrandPaymentButton = ({
           id="add-payment-dialog"
           brandId={brandId}
           transferType={transferType}
+          useFetch={useFetch}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -290,6 +297,7 @@ const ManualCode = "Manual"
 const AddDialog = ({
   brandId,
   transferType,
+  useFetch,
   onSubmitted,
   dialog,
   ...props
@@ -308,8 +316,7 @@ const AddDialog = ({
   })
 
   let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } =
-    useAddDepositBrandPayment(formData)
+  let { result, isLoading, error, mutate, deleteCache } = useFetch(formData)
 
   if (isLoadingPayment) {
     return <LoadingBackdrop {...dialog} />
@@ -339,6 +346,7 @@ const AddDialog = ({
           manualPaymentMethodList?.length == 1
             ? head(manualPaymentMethodList)?.id
             : "",
+        paymentMethodChannelId: "",
         playerListCondition: PlayerListCondition.MatchOne,
         allPlayers: true,
         depositedAmountMin: "0",
@@ -404,7 +412,7 @@ const EditBody = ({
   dialog,
   ...props
 }) => {
-  let { watch, setValue, getValues, control } = useFormContext()
+  let { setValue, getValues, control } = useFormContext()
 
   const transferType = getValues("transferType")
   let isDeposit = isDepositPlatformPayment(transferType)

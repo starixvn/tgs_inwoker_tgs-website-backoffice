@@ -309,6 +309,7 @@ const EffectiveTable = ({
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
           isLoading={isLoading}
+          getRowId={(row) => row.id}
         />
       </Stack>
     </FormProvider>

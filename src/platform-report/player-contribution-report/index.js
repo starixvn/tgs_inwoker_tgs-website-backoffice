@@ -313,7 +313,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",
-        Header: <Trans zh="输赢金额" en="Win Loss Amount" />,
+        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

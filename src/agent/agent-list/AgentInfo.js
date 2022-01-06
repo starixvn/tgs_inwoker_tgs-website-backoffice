@@ -389,6 +389,13 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
 
         <AccumulatedProfitSharingBox value={record?.accumulatedProfitSharing} />
 
+        <Box alignY="center">
+          <Trans zh="直属玩家人数" en="Direct Players" />
+        </Box>
+        <Box>
+          <FormattedNumber value={record?.playerNumber} />
+        </Box>
+
         {/* <RebateBox
           label={<AgentLiveDealerRebateText />}
           value={record?.liveDealerRebatePercentage}

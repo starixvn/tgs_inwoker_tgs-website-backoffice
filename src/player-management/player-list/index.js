@@ -26,6 +26,7 @@ import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
+import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 
 export { Code }
 
@@ -115,6 +116,10 @@ const BodyContent = ({ brandId = "" }) => {
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
+  let domainInputPlaceholder = useTrans({
+    zh: "注册域名",
+    en: "Registration Domain"
+  })
 
   let formMethods = useForm()
 
@@ -123,7 +128,7 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-        <Set>
+        <Set alignY="bottom">
           <PlayerStatusSelect name="status" />
           <VipLevelSelect name="vipId" brandId={brandId} />
           <InputField
@@ -131,6 +136,22 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
             showEmptyFieldValueAddonAfter
             placeholder={usernameInputPlaceholder}
             autocomplete="off"
+          />
+          <InputField
+            name="registerHost"
+            showEmptyFieldValueAddonAfter
+            placeholder={domainInputPlaceholder}
+          />
+          <DateInputRangeField
+            showDateDropdownMenu
+            fakeTimeLabel
+            label={<Trans zh="注册时间" en="Registration Time" />}
+            startProps={{
+              name: "beginRegisteredOn"
+            }}
+            endProps={{
+              name: "endRegisteredOn"
+            }}
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -175,6 +196,21 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
           textAlign: "center"
         }
       },
+      dateTimeColumn({
+        accessor: "registeredTime",
+        Header: <Trans zh="注册时间" en="Registration Time" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "registerHost",
+        Header: <Trans zh="注册域名" en="Registration Domain" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "agentName",
+        Header: <Trans zh="上级代理" en="Upper Level Agent" />,
+        disableSortBy: true
+      }),
       textColumn({
         accessor: "vipLevel",
         Header: <Trans zh="VIP 等级" en="VIP Level" />,
