@@ -30,13 +30,11 @@ export const useGameProviderReportList = (searchParams) => {
 
     let total = data?.totals?.find(propEq("currencyCode", currencyCode))
     if (total) {
-      /*
       let row = {
         ...clone(total),
         isTotal: true
       }
       acc.push(row)
-      */
     }
 
     return acc

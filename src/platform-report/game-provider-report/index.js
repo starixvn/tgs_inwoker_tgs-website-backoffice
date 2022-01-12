@@ -135,6 +135,16 @@ const ReportContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        getRowId={(row) => row.gameProviderId}
+        getRowProps={({ original: { isTotal } } = {}) => {
+          if (isTotal) {
+            return {
+              backgroundColor: "white600",
+              fontWeight: "bold"
+            }
+          }
+          return {}
+        }}
         isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
@@ -195,9 +205,14 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "currencyCode",
+        id: "currencyCode",
+        accessor: (row) => row,
         Header: <Trans zh="币种" en="Currency" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value: { isTotal, currencyCode = "" } }) => {
+          // return isTotal ? "" : currencyCode
+          return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
+        }
       }),
       numberColumn({
         accessor: "transactionCount",

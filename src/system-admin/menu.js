@@ -27,9 +27,13 @@ import {
   codeLabelPair as settingsPair
 } from "./setting/menu"
 import {
-  Code as GameRoundCode,
-  codeLabelPair as gameRoundPair
-} from "./game-round/menu"
+  Code as GameOpenRoundCode,
+  codeLabelPair as gameOpenRoundPair
+} from "./game-open-round/menu"
+import {
+  Code as GameResettleOpenedRoundCode,
+  codeLabelPair as gameResettleOpenedRoundPair
+} from "./game-resettle-opened-round/menu"
 import {
   Code as PlatformGameProviderCode,
   codeLabelPair as platformGameProviderPair
@@ -127,11 +131,19 @@ const labelOf = ({ locale, code }) => {
         },
         locale
       )
-    case GameRoundCode:
+    case GameOpenRoundCode:
       return getTrans(
         {
-          zh: "游戏订单",
-          en: "Game Round"
+          zh: "游戏未结算订单",
+          en: "Game Open Round"
+        },
+        locale
+      )
+    case GameResettleOpenedRoundCode:
+      return getTrans(
+        {
+          zh: "游戏已结算订单",
+          en: "Game Settled Round"
         },
         locale
       )
@@ -162,7 +174,7 @@ export const codeLabelPair = [
         currencyPair,
         betLimitPair,
         settingsPair,
-        gameRoundPair,
+        gameOpenRoundPair,
         platformGameProviderPair
       ]
     })

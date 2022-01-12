@@ -147,23 +147,6 @@ export const applyManualDepositForm = async (platformToken, token, formId) => {
   })
 }
 
-//TODO: use operatorApi client
-export const wallet = async (platformToken, token) => {
-  let url = `${operatorApi()}/wallet`
-
-  let headers = {
-    "brand-token": platformToken,
-    Token: token
-  }
-
-  let result = await fetcher(url, {
-    method: "GET",
-    headers
-  })
-
-  return result && result.data && result.data.main
-}
-
 export const addManualBankCard = async (
   platformToken,
   token,

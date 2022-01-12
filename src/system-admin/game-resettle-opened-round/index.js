@@ -8,7 +8,7 @@ import {
   useUserRoleId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { Code, Update } from "./menu"
+import { Code, Update, ViewGameAction } from "./menu"
 import { ellipsisTextColumn, textColumn } from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useForm, FormProvider } from "react-hook-form"
@@ -19,7 +19,7 @@ import AlertDialog from "../../dialog/Alert"
 import { Trans, useTrans, getAcceptLangCulture, useLangCode } from "../../i18n"
 import { useLanguageList } from "../../language/client"
 import equals from "fast-deep-equal"
-import { useOpenGameRoundList } from "./client"
+import { useGameOpenedRoundList } from "./client"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
@@ -31,8 +31,9 @@ import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import subDays from "date-fns/subDays"
-import { CloseGameOpenRoundDialogDisclosure } from "./CloseGameOpenRound"
+import { SettleGameRoundDialogDisclosure } from "../game-open-round/SettleGameRound"
 import copy from "clipboard-copy"
+import { GameRoundBalanceChangeDialogDisclosure } from "../../game/round/GameRoundBalanceChangeDialog"
 
 export { Code }
 
@@ -52,19 +53,25 @@ const Body = () => {
   let QueryMaxRangeDays = 31
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    /*
     from: dateRange.start,
     to: dateRange.end
+    */
   })
 
+  /*
   let { from, to } = state
+  */
 
   let culture = useLangCode()
-  let { isLoading, data, error, mutate, deleteCache } = useOpenGameRoundList({
+  let { isLoading, data, error, mutate, deleteCache } = useGameOpenedRoundList({
     ...toApiParams(state),
     sortby: "createdOn",
     orderby: "descending",
+    /*
     from,
     to: startOfNextDay(to),
+    */
     culture
   })
   let columns = useColumns({ items: data?.items, mutate })
@@ -75,8 +82,8 @@ const Body = () => {
     <PageContent
       actionBar={
         <SearchBar
-          start={from}
-          end={to}
+          // start={from}
+          // end={to}
           gameProviderId={state.gameProviderId}
           minDate={minDate}
           maxDate={dateRange.end}
@@ -85,15 +92,22 @@ const Body = () => {
           search={({ start, end, ...rest }) => {
             setState({
               pageIndex: 0,
+              /*
               from: start,
               to: end,
+              */
               ...rest
             })
             mutate()
           }}
         />
       }
-      title={<Trans zh="游戏未结算订单" en="Game Open Round" />}
+      title={
+        <Trans
+          zh="游戏已结算订单 - 再次調整"
+          en="Game Settled Round - Re-adjustment"
+        />
+      }
     >
       <Table
         columns={columns}
@@ -163,13 +177,13 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          <DateInputRange
+          {/* <DateInputRange
             showDateDropdownMenu
             minDate={minDate}
             maxDate={maxDate}
             maxRangeDays={maxRangeDays}
             required
-          />
+          /> */}
           <InputField
             name="externalRoundId"
             showEmptyFieldValueAddonAfter
@@ -185,6 +199,8 @@ const SearchBar = ({
 
 const useColumns = ({ items = [], mutate }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+  let viewGameActionAuth = useIsDisplayMenuByRoute([ViewGameAction])
+
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
@@ -201,9 +217,6 @@ const useColumns = ({ items = [], mutate }) => {
         accessor: "externalRoundId",
         Header: <Trans zh="三方订单ID" en="External Id" />,
         disableSortBy: true
-        /* TODO: popup cause page scroll
-        Cell: ({ value = "" }) => <CopyTextBox value={value} />
-        */
       }),
       textColumn({
         accessor: "brandCode",
@@ -287,12 +300,15 @@ const useColumns = ({ items = [], mutate }) => {
           Cell: ({ value: record }) => {
             let { id: roundId } = record
             return (
-              <CloseGameOpenRoundDialogDisclosure
-                id="close-game-open-round-dialog-disclosure"
-                roundId={roundId}
-                record={record}
-                onSubmitted={mutate}
-              />
+              <Set alignX="center">
+                <SettleGameRoundDialogDisclosure
+                  id="settle-game-round-dialog-disclosure"
+                  roundId={roundId}
+                  record={record}
+                  onSubmitted={mutate}
+                />
+                <GameRoundBalanceChangeDialogDisclosure roundId={roundId} />
+              </Set>
             )
           }
         })

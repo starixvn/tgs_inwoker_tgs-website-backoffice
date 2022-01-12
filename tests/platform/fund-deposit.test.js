@@ -2,13 +2,7 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-
-import {
-  manualDeposit,
-  applyManualDepositForm,
-  addManualBankCard,
-  applyManualWithdrawForm
-} from "../player.js"
+import { manualDeposit, applyManualDepositForm } from "../player.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)

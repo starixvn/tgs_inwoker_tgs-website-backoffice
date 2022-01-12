@@ -4,13 +4,14 @@ import { expect } from "chai"
 import numeral from "numeral"
 import faker from "faker"
 import { selectPlatformByCode } from "../page/content.js"
-import { manualDeposit, applyManualDepositForm, wallet } from "../player.js"
+import { manualDeposit, applyManualDepositForm } from "../player.js"
 
 const test = base.extend(Fixture)
 const { finance } = faker
 
-test("verify player deposit and withdraw", async ({
+test("approve player deposit", async ({
   page,
+  operatorApi,
   platformCode,
   platformToken,
   player
@@ -18,6 +19,7 @@ test("verify player deposit and withdraw", async ({
   let depositAmount = 10
   let balance = await approveDeposit(
     page,
+    operatorApi,
     platformCode,
     platformToken,
     player,
@@ -27,6 +29,7 @@ test("verify player deposit and withdraw", async ({
 
 const approveDeposit = async (
   page,
+  operatorApi,
   platformCode,
   platformToken,
   player,
@@ -41,7 +44,7 @@ const approveDeposit = async (
 
   await applyManualDepositForm(platformToken, player.token, formId)
 
-  let playerBalance = await wallet(platformToken, player.token)
+  let playerBalance = await operatorApi.wallet(platformToken, player.token)
   let expectedBalance = playerBalance + ExpectedDepositAmount
   await gotoFundDepositPage(page, platformCode)
 
@@ -115,7 +118,7 @@ const approveDeposit = async (
   // let totalAmountString = await page.textContent(TotalAmountSelector)
   // expect(depositAmountString).to.equal(totalAmountString)
 
-  let balance = await wallet(platformToken, player.token)
+  let balance = await operatorApi.wallet(platformToken, player.token)
   expect(balance).to.equal(expectedBalance)
 }
 

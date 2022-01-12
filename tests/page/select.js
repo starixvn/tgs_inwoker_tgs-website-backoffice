@@ -29,6 +29,8 @@ export const selectByLabel = async (page, selectSelector, label) => {
   await page.waitForSelector(OptionSelector, { state: "attached" })
 
   await page.selectOption(selectSelector, { label })
+  let value = await page.inputValue(selectSelector)
+  return value
 }
 
 export const optionValues = async (page, selectSelector) => {

@@ -4,13 +4,14 @@ environments:
   - name: default # The name of the environment.
 providers:
   - name: local-kubernetes # The name of the provider plugin to use.
-    setupIngressController: false
+    setupIngressController: "nginx"
 
 ---
 kind: Module
 type: container
 name: backoffice-site
 dockerfile: Dockerfile
+disabled: true
 exclude:
   - garden
   - spec

@@ -5,27 +5,35 @@ import { format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
 import { selectByValue } from "../page/select.js"
 import { selectPlatformByCode } from "../page/content.js"
-import { placeBet } from "../sbo-game-provider.js"
+import { openDialog } from "../page/dialog.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
 const { lorem, phone, datatype, image, finance, internet, commerce } = faker
 
-test("close open round", async ({ page, player, backofficeApi }) => {
+test("settle game round", async ({
+  page,
+  player,
+  backofficeApi,
+  sboGameProviderApi
+}) => {
   let walletAmount = 100
   await backofficeApi.player.addBalance(player.code, {
     amount: walletAmount
   })
 
   let amount = 10
-  let { externalRoundId, ...result } = await placeBet({
+  let { externalRoundId, ...result } = await sboGameProviderApi.placeBet({
     amount,
     playerCode: player.code
   })
 
-  await gotoGameRoundPage(page)
-
+  await gotoGameOpenRoundPage(page)
   await closeGameRoundBy(page, externalRoundId)
+
+  await gotoGameResettleOpenedRoundPage(page)
+  console.warn("TODO: resettle opened round")
+  // await closeGameRoundBy(page, externalRoundId)
 })
 
 const closeGameRoundBy = async (page, externalRoundId) => {
@@ -41,8 +49,8 @@ const closeGameRoundBy = async (page, externalRoundId) => {
     page.click(`button[type="submit"]`)
   ])
 
-  let DialogSelector = `#close-game-open-round-dialog`
-  await page.click(`${DialogSelector}-disclosure`)
+  let DialogSelector = `#settle-game-round-dialog`
+  await openDialog(page, DialogSelector)
 
   let round = {
     externalClosedOn: format(new Date(), "yyyy/MM/dd"),
@@ -105,6 +113,12 @@ const closeGameRoundBy = async (page, externalRoundId) => {
   ])
 }
 
-const gotoGameRoundPage = async (page) => {
+const gotoGameOpenRoundPage = async (page) => {
   await page.goto("/systemadmin/gameround", { waitUntil: "networkidle" })
+}
+
+const gotoGameResettleOpenedRoundPage = async (page) => {
+  await page.goto("/systemadmin/resettlegameround", {
+    waitUntil: "networkidle"
+  })
 }

@@ -4,45 +4,70 @@ import { expect } from "chai"
 import numeral from "numeral"
 import faker from "faker"
 import { selectPlatformByCode } from "../page/content.js"
-import {
-  wallet,
-  addManualBankCard,
-  applyManualWithdrawForm
-} from "../player.js"
+import { openDialog } from "../page/dialog.js"
+import { addManualBankCard, applyManualWithdrawForm } from "../player.js"
 
 const test = base.extend(Fixture)
 const { finance } = faker
 
-test("verify player deposit and withdraw", async ({
+test("approve player fund withdraw and paid", async ({
   page,
   platformCode,
   platformToken,
   player,
-  backofficeApi
+  backofficeApi,
+  operatorApi
 }) => {
-  let depositAmount = 10
+  let depositAmount = 100
   await backofficeApi.player.addBalance(player.code, {
     amount: depositAmount
   })
 
   let withdrawAmount = depositAmount
-  await approveWithdraw(
+  let formId = await approveWithdraw(
     page,
+    operatorApi,
     platformCode,
     platformToken,
     player,
     withdrawAmount
   )
+
+  let Approve = "approve"
+  await reviewPaid(page, platformCode, formId, Approve)
 })
 
-const approveWithdraw = async (
+test.skip("TODO: approve player fund withdraw and reject paid", async () => {
+  let depositAmount = 100
+  await backofficeApi.player.addBalance(player.code, {
+    amount: depositAmount
+  })
+
+  let withdrawAmount = depositAmount
+  let formId = await approveWithdraw(
+    page,
+    operatorApi,
+    platformCode,
+    platformToken,
+    player,
+    withdrawAmount
+  )
+
+  let Reject = "Reject"
+  await reviewPaid(page, platformCode, formId, Reject)
+  console.warn("add rejected status filter and check status")
+})
+
+export const approveWithdraw = async (
   page,
+  operatorApi,
   platformCode,
   platformToken,
   player,
   withdrawAmount
 ) => {
-  let playerBalance = await wallet(platformToken, player.token)
+  let playerBalance = await operatorApi.wallet(platformToken, player.token)
+
   let expectedBalance = playerBalance - withdrawAmount
 
   let expectBankCard = {
@@ -51,22 +76,15 @@ const approveWithdraw = async (
     bankName: "bankName",
     bankBranch: "bankBranch"
   }
+
+  //TODO: use operatorApi
   await addManualBankCard(platformToken, player.token, expectBankCard)
+  //TODO: use operatorApi
   let formId = await applyManualWithdrawForm(platformToken, player.token, {
     amount: withdrawAmount
   })
 
-  await gotoFundWithdraw(page, platformCode)
-
-  await page.fill(`input[name="id"]`, formId)
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`id=${formId}`) && response.status() === 200
-      )
-    }),
-    page.click(`button[type="submit"]`)
-  ])
+  let brandId = await gotoFundWithdraw(page, platformCode, formId)
 
   let [download] = await Promise.all([
     page.waitForEvent("download"),
@@ -89,69 +107,41 @@ const approveWithdraw = async (
         response.status() === 200
       )
     }),
-    page.click(`${VerifyDialogSelector} button[data-type="approve"]`)
-  ])
-
-  let brandId = await page.inputValue(`select[name="brandId"]`)
-  await Promise.all([
-    page.waitForSelector(VerifyDialogSelector, {
-      state: "detached"
-    })
-    /*
     page.waitForResponse((response) => {
       return (
         response.url().includes(`/api/withdraw/${brandId}?`) &&
         response.status() === 200
       )
-    })
-    */
+    }),
+    page.click(`${VerifyDialogSelector} button[data-type="approve"]`)
   ])
 
-  //TODO: reset form id
-  // let StatusSelector = `${TableSelector} [data-column-id="status"] [data-status]`
-  // await page.waitForSelector(StatusSelector)
-  // let status = await page.$eval(
-  //   StatusSelector,
-  //   ({ dataset }) => dataset.status
-  // )
-  // expect(status).to.equal("Approved")
+  let StatusSelector = `${TableSelector} [data-column-id="status"] [data-status]`
+  let statusLocator = page.locator(StatusSelector)
+  let status = await statusLocator.getAttribute("data-status")
+  expect(status).to.equal("Approved")
 
-  // let OperatorSelector = `${TableSelector} [data-column-id="reviewedUserName"]`
-  // let operator = await page.textContent(OperatorSelector)
-  // expect(operator).to.equal(AdminUserName)
+  let balance = await operatorApi.wallet(platformToken, player.token)
+  expect(balance).to.equal(expectedBalance)
 
-  // let balance = await wallet(platformToken, player.token)
-  // expect(balance).to.equal(expectedBalance)
+  return formId
+}
 
-  // let PaidDialogSelector = `#fund-withdraw-paid-dialog`
-  // await page.click(`${PaidDialogSelector}-disclosure`)
-  // await page.waitForSelector(PaidDialogSelector)
-  // await Promise.all([
-  //   page.waitForResponse((response) => {
-  //     return (
-  //       response.url().includes(`/api/withdraw/${formId}`) &&
-  //       response.status() === 200
-  //     )
-  //   }),
-  //   page.click(`${PaidDialogSelector} button[type="submit"]`)
-  // ])
+export const reviewPaid = async (page, platformCode, formId, type) => {
+  let brandId = await gotoFundWithdraw(page, platformCode, formId)
+  let PaidDialogSelector = `#review-paid-dialog`
+  await openDialog(page, PaidDialogSelector)
 
-  // await Promise.all([
-  //   page.waitForSelector(PaidDialogSelector, {
-  //     state: "detached"
-  //   }),
-  //   page.waitForResponse((response) => {
-  //     return (
-  //       response.url().includes(`/api/withdraw/${brandId}?`) &&
-  //       response.status() === 200
-  //     )
-  //   })
-  // ])
+  let expectedUrl = `/api/withdraw/${formId}`
+  let [approvePaidResonse] = await Promise.all([
+    page.waitForResponse((response) => {
+      return response.url().includes(expectedUrl) && response.status() === 200
+    }),
+    page.click(`${PaidDialogSelector} button[data-type="approve"]`)
+  ])
 
-  // status = ""
-  // await page.waitForSelector(StatusSelector)
-  // status = await page.$eval(StatusSelector, ({ dataset }) => dataset.status)
-  // expect(status).to.equal("Paid")
+  let approvePaidResult = await approvePaidResonse.json()
+  expect(approvePaidResult.valid).to.be.true
 }
 
 const selectManualBrandPayment = async (page) => {
@@ -166,7 +156,21 @@ const selectManualBrandPayment = async (page) => {
   })
 }
 
-const gotoFundWithdraw = async (page, platformCode) => {
+const gotoFundWithdraw = async (page, platformCode, formId) => {
   await page.goto("/fundmanagement/withdraw", { waitUntil: "networkidle" })
-  await selectPlatformByCode(page, platformCode)
+  let brandId = await selectPlatformByCode(page, platformCode)
+
+  if (formId) {
+    await page.fill(`input[name="id"]`, formId)
+    await Promise.all([
+      page.waitForResponse((response) => {
+        return (
+          response.url().includes(`id=${formId}`) && response.status() === 200
+        )
+      }),
+      page.click(`button[type="submit"]`)
+    ])
+  }
+
+  return brandId
 }

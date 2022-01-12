@@ -235,7 +235,7 @@ const CancelWithdrawalTrans = {
   en: "Cancel Withdrawal"
 }
 
-const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
+export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTrans({
     zh: "交易类型",
     en: "Transaction Type"
@@ -336,7 +336,7 @@ const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   return <Select placeholder={placeholder} options={options} {...props} />
 }
 
-const PlayerTransactionTypeLabel = ({ value = "" }) => {
+export const PlayerTransactionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Deposit:
       return <Trans {...DepositTrans} />
@@ -422,7 +422,7 @@ const WinJackpotTrans = {
   en: "Win Jackpot"
 }
 
-const GameActionLabel = ({ value = "" }) => {
+export const GameActionLabel = ({ value = "" }) => {
   switch (value) {
     case PlaceBet:
       return <Trans {...PlaceBetTrans} />

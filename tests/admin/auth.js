@@ -3,6 +3,7 @@ import { loginUser, login } from "../auth.js"
 import { host } from "../env.js"
 import globalApi from "../../client/globalApi/index.js"
 import operatorApi from "../../client/operatorApi/index.js"
+import sboGameProviderApi from "../../client/gameProviderApi/sbo/index.js"
 import backofficeApi from "../client/index.js"
 
 const Path = "./.playwright"
@@ -42,6 +43,12 @@ export const Fixture = {
       host
     })
     use(backofficeApi)
+  },
+  operatorApi: async ({}, use) => {
+    use(operatorApi)
+  },
+  sboGameProviderApi: ({}, use) => {
+    use(sboGameProviderApi)
   },
   page: async ({ context }, use) => {
     let page = await context.newPage()

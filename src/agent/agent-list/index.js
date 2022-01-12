@@ -10,21 +10,25 @@ import {
   useModalState,
   Flex,
   Level,
-  Spinner
+  Spinner,
+  Alert,
+  List
 } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useAgentList } from "./client"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { AgentStatusLabel } from "../AgentStatus"
+import AgentStatus, {
+  AgentStatusSelect,
+  AgentStatusLabel
+} from "../AgentStatus"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
   useUserBrandId
 } from "../../user/context"
 import { Code, View } from "./menu"
-import { AgentStatusSelect } from "../AgentStatus"
 import { ViewButton, EditButton, ConfigButton, AddAgentButton } from "./button"
 import {
   FormattedNumber,
@@ -106,7 +110,7 @@ const Body = () => {
 
 const BodyContent = ({ brandId = "", brand }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    status: "",
+    status: AgentStatus.Enabled,
     levelType: "",
     type: "",
     username: ""
@@ -154,6 +158,7 @@ const BodyContent = ({ brandId = "", brand }) => {
         <Flex justifyContent="space-between">
           <SearchBar
             brandId={brandId}
+            status={state.status}
             search={(data = {}) => {
               setState({
                 pageIndex: 0,
@@ -172,25 +177,47 @@ const BodyContent = ({ brandId = "", brand }) => {
         </Flex>
       }
     >
-      <Table
-        id="agent"
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-      />
+      <Stack>
+        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+          <List listStyleType="disc" listStylePosition="inside">
+            <List.Item>
+              <Trans
+                zh="當進入此頁面時，預設顯示狀態為【正常】的代理清單，且所有狀態都會依照用戶名(A-Z)排序"
+                en="When entering this table, the data with status: enable will show first, and all of status will be ordered by first letter (A-Z)"
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
+                zh="【備註】欄位會顯示在代理信息頁面中，此欄位能夠被修改，但只會儲存並顯示最新一次的修改內容"
+                en="Remark will show in agent info page, and you can edit it. Please be aware that only the latest remark will be stored in our database."
+              />
+            </List.Item>
+          </List>
+        </Alert>
+        <Table
+          id="agent"
+          columns={columns}
+          data={data?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+        />
+      </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
 }
 
-const SearchBar = ({ brandId, search, isLoading, ...props }) => {
+const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
-  let formMethods = useForm()
+  let formMethods = useForm({
+    defaultValues: {
+      status
+    }
+  })
 
   const onSubmit = (data) => search(data)
 

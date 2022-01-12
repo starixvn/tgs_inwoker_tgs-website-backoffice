@@ -118,6 +118,8 @@ export const createAndLogin = async (
   return player
 }
 
+
+
 export default {
   create,
   login,

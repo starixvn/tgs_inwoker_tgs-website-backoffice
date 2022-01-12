@@ -600,9 +600,9 @@ const useColumns = ({
             let { brandPaymentId } = value
             let underReview = isFundUnderReview(value?.status)
 
-            let reviewManualPaid =
-              isFundApproved(value?.status) &&
+            let reviewPaid = isFundApproved(value?.status) /* &&
               manualBrandPaymentIdList.includes(brandPaymentId)
+              */
             return (
               <Set alignX="center">
                 {underReview && (
@@ -617,9 +617,9 @@ const useColumns = ({
                     }}
                   />
                 )}
-                {reviewManualPaid && (
+                {reviewPaid && (
                   <FundWithdrawPaidDialogDisclosure
-                    id="fund-withdraw-paid-dialog-disclosure"
+                    id="review-paid-dialog-disclosure"
                     brandId={brandId}
                     formId={value.id}
                     onSubmitted={mutate}
