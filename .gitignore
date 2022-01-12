@@ -116,5 +116,3 @@ build/
 
 # garden.io for k8s
 .garden
-
-.husky

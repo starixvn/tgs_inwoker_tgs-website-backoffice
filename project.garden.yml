@@ -11,7 +11,7 @@ kind: Module
 type: container
 name: backoffice-site
 dockerfile: Dockerfile
-disabled: true
+disabled: false
 exclude:
   - garden
   - spec

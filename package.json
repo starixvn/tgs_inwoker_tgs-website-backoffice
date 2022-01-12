@@ -22,10 +22,6 @@
     "push:docker:dev": "docker push $npm_package_config_container_registry/$npm_package_name:$npm_package_version-$GIT_COMMIT_HASH",
     "prepare": "husky install"
   },
-  "hooks": {
-    "pre-commit": "npm-run-all test",
-    "pre-push": "npm-run-all test"
-  },
   "dependencies": {
     "chai": "4.3.4",
     "chromedriver": "^96.0.0",

@@ -22,6 +22,30 @@ const UnsettledBetManualTrans = {
   en: "Unsettled Bet(Manual)"
 }
 
+const PromotionVipLevelUpgrade = "PromotionVipLevelUpgrade"
+const PromotionVipLevelUpgradeTrans = {
+  zh: "VIP晋升福利",
+  en: "VIP Promotion Benefit"
+}
+
+const PromotionVipLevelSeason = "PromotionVipLevelSeason"
+const PromotionVipLevelSeasonTrans = {
+  zh: "VIP季度福利",
+  en: "VIP Quarterly Benefit"
+}
+
+const DividendAllAgentRebate = "DividendAllAgentRebate"
+const DividendAllAgentRebateTrans = {
+  zh: "全民代理返水",
+  en: "All Agent Rebate"
+}
+
+const AdjustResettledBetManual = "AdjustResettledBetManual"
+const AdjustResettledBetManualTrans = {
+  zh: "已结算单再调整",
+  en: "Settled Bet Readjusted"
+}
+
 const GameProviderFundIn = "GameProviderFundIn"
 const GameProviderFundInTrans = {
   zh: "游戏转入",
@@ -173,6 +197,14 @@ export const TransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...GameProviderWithdrawalTrans} />
     case UnsettledBetManual:
       return <Trans {...UnsettledBetManualTrans} />
+    case PromotionVipLevelUpgrade:
+      return <Trans {...PromotionVipLevelUpgradeTrans} />
+    case PromotionVipLevelSeason:
+      return <Trans {...PromotionVipLevelSeasonTrans} />
+    case DividendAllAgentRebate:
+      return <Trans {...DividendAllAgentRebateTrans} />
+    case AdjustResettledBetManual:
+      return <Trans {...AdjustResettledBetManualTrans} />
     case Deposit:
       return <Trans {...DepositTrans} />
     case Withdrawal:

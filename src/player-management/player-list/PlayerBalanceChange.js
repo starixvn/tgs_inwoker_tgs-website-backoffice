@@ -229,6 +229,30 @@ const UnsettledBetManualTrans = {
   en: "Unsettled Bet(Manual)"
 }
 
+const PromotionVipLevelUpgrade = "PromotionVipLevelUpgrade"
+const PromotionVipLevelUpgradeTrans = {
+  zh: "VIP晋升福利",
+  en: "VIP Promotion Benefit"
+}
+
+const PromotionVipLevelSeason = "PromotionVipLevelSeason"
+const PromotionVipLevelSeasonTrans = {
+  zh: "VIP季度福利",
+  en: "VIP Quarterly Benefit"
+}
+
+const DividendAllAgentRebate = "DividendAllAgentRebate"
+const DividendAllAgentRebateTrans = {
+  zh: "全民代理返水",
+  en: "All Agent Rebate"
+}
+
+const AdjustResettledBetManual = "AdjustResettledBetManual"
+const AdjustResettledBetManualTrans = {
+  zh: "已结算单再调整",
+  en: "Settled Bet Readjusted"
+}
+
 const CancelWithdrawal = "CancelWithdrawal"
 const CancelWithdrawalTrans = {
   zh: "取消提款",
@@ -290,6 +314,22 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
     {
       label: useTrans(UnsettledBetManualTrans),
       value: UnsettledBetManual
+    },
+    {
+      label: useTrans(PromotionVipLevelUpgradeTrans),
+      value: PromotionVipLevelUpgrade
+    },
+    {
+      label: useTrans(PromotionVipLevelSeasonTrans),
+      value: PromotionVipLevelSeason
+    },
+    {
+      label: useTrans(DividendAllAgentRebateTrans),
+      value: DividendAllAgentRebate
+    },
+    {
+      label: useTrans(AdjustResettledBetManualTrans),
+      value: AdjustResettledBetManual
     },
     {
       label: useTrans(GameProviderDepositTrans),
@@ -362,6 +402,14 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...GameProviderWithdrawalTrans} />
     case UnsettledBetManual:
       return <Trans {...UnsettledBetManualTrans} />
+    case PromotionVipLevelUpgrade:
+      return <Trans {...PromotionVipLevelUpgradeTrans} />
+    case PromotionVipLevelSeason:
+      return <Trans {...PromotionVipLevelSeasonTrans} />
+    case DividendAllAgentRebate:
+      return <Trans {...DividendAllAgentRebateTrans} />
+    case AdjustResettledBetManual:
+      return <Trans {...AdjustResettledBetManualTrans} />
     case CancelWithdrawal:
       return <Trans {...CancelWithdrawalTrans} />
     default:
