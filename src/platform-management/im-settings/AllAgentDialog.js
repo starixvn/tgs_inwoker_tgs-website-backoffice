@@ -28,18 +28,12 @@ import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
 import { Input, InputField } from "../../input/Input"
 import Backdrop from "../../dialog/Backdrop"
-import ImageUploadButton from "../../file/upload/ImageUploadButton"
-import { ImageLinkButton } from "../../button/LinkButton"
 import {
   FormProvider,
   useForm,
   useFormContext,
   useWatch
 } from "react-hook-form"
-import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
-import { JsonEditor } from "../../text/editor/JsonEditor"
-import { stringifyJSON } from "../../text/json"
-import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import {
   useAllAgentSetting,
   useUpdateAllAgentSwitch,
@@ -89,6 +83,7 @@ const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
 
   return (
     <Dialog.Modal
+      id="all-agent-setting-dialog"
       title={title}
       showCloseButton
       hideOnClickOutside={false}
@@ -186,6 +181,7 @@ const AllAgentMainSwitchField = ({
   if (readOnly) {
     return (
       <Switch
+        id="main-switch"
         checked={checked}
         disabled={true}
         label={checked ? onLabel : offLabel}
@@ -196,6 +192,7 @@ const AllAgentMainSwitchField = ({
   return (
     <>
       <Switch
+        id="main-switch"
         label={checked ? onLabel : offLabel}
         checked={checked}
         onChange={(event) => {
@@ -334,11 +331,13 @@ const GameTypePanel = ({ brandId, gameType, readOnly, dialog, ...props }) => {
         )}
         <FieldStack orientation="horizontal">
           <ValidBetSettingDialogDisclosure
+            id="valid-bet-setting-dialog-disclosure"
             brandId={brandId}
             gameType={gameType}
             readOnly={readOnly}
           />
           <WinLossSettingDialogDisclosure
+            id="win-loss-setting-dialog-disclosure"
             brandId={brandId}
             gameType={gameType}
             readOnly={readOnly}
@@ -368,6 +367,7 @@ const ValidBetSettingDialogDisclosure = ({
       </Disclosure>
       {dialog.visible && (
         <MultileLayerSettingDialog
+          id="valid-bet-setting-dialog"
           brandId={brandId}
           gameType={gameType}
           readOnly={readOnly}
@@ -404,6 +404,7 @@ const WinLossSettingDialogDisclosure = ({
       </Disclosure>
       {dialog.visible && (
         <MultileLayerSettingDialog
+          id="win-loss-setting-dialog"
           brandId={brandId}
           gameType={gameType}
           readOnly={readOnly}
@@ -510,6 +511,7 @@ const MultileLayerSettingFormDialog = ({
         showActionButtons={!readOnly}
         hideBackdrop
         minWidth="50vw"
+        {...props}
       >
         <AgentMultipleLayerProfitSharingSettingFormBody
           name="conditions"

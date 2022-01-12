@@ -85,7 +85,10 @@ const BodyContent = ({ brandId, brand }) => {
             brandId={brandId}
           />
         )}
-        <AllAgentDialogDisclosure brandId={brandId} />
+        <AllAgentDialogDisclosure
+          id="all-agent-setting-dialog-disclosure"
+          brandId={brandId}
+        />
       </Set>
     </PageContent>
   )

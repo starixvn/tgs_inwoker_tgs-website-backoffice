@@ -344,8 +344,8 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
         />
         <Text.Block color="warning" fontWeight="bold" fontSize="150">
           <Trans
-            zh="建議尺寸: T1,T3,T4: 1920 x 600px；T2: 1920 x 400px"
-            en="Recommended size: T1,T3,T4: 1920 x 600px；T2: 1920 x 400px"
+            zh="建議尺寸: 1920 x 600px"
+            en="Recommended size: 1920 x 600px"
           />
         </Text.Block>
       </Set>

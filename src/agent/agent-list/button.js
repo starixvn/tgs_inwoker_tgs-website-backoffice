@@ -757,7 +757,7 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
       <TabList use={TabList} {...tab}>
         <AgentInfoTab {...tab} />
         <AgentContactInfoTab {...tab} />
-        <AgentBankInfoTab {...tab} />
+        {/* <AgentBankInfoTab {...tab} /> */}
         <AgentOperationListTab {...tab} />
         <AgentTeamInfoTab {...tab} />
         <AgentBalanceChangeTab {...tab} />
@@ -772,7 +772,7 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         {...tab}
       />
       <AgentContactInfoPanel record={record} readonly {...tab} />
-      <AgentBankInfoPanel record={record} readonly {...tab} />
+      {/* <AgentBankInfoPanel record={record} readonly {...tab} /> */}
       <AgentOperationListPanel agentId={record?.id} {...tab} />
       <AgentTeamInfoPanel agentId={record?.id} {...tab} />
       <AgentBalanceChangePanel
@@ -805,7 +805,7 @@ const EditTabs = ({
       <TabList use={TabList} {...tab}>
         <AgentInfoTab {...tab} />
         <AgentContactInfoTab {...tab} />
-        <AgentBankInfoTab {...tab} />
+        {/* <AgentBankInfoTab {...tab} /> */}
         <AgentPasswordTab {...tab} />
         <AgentDomainListTab {...tab} />
       </TabList>
@@ -826,13 +826,13 @@ const EditTabs = ({
         onClickClose={onClickClose}
         {...tab}
       />
-      <AgentBankInfoPanel
+      {/* <AgentBankInfoPanel
         record={record}
         brandId={brandId}
         agentId={agentId}
         onSubmitted={onBankSubmitted}
         {...tab}
-      />
+      /> */}
       <AgentPasswordPanel
         record={record}
         brandId={brandId}

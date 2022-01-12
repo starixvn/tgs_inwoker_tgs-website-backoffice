@@ -275,6 +275,9 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
 
         <LoginIPLabel />
         <Box>{player?.lastLoginIp}</Box>
+
+        <RegistrationDomainLabel />
+        <Box>{player?.registerHost}</Box>
       </FieldValues>
     </TabPanel>
   )
@@ -307,3 +310,7 @@ const LastLoginTimeLabel = () => (
 )
 
 const LoginIPLabel = () => <Trans zh="最后登录IP地址" en="Last Login IP" />
+
+const RegistrationDomainLabel = () => (
+  <Trans zh="注册域名" en="Registration Domain" />
+)

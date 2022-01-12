@@ -20,6 +20,9 @@ import AlertDialog from "../../dialog/Alert"
 import { urlWith } from "../../client/index"
 import { isDev } from "../../env"
 import { DateButtons } from "../../date/DateButtons"
+import { usePlatformMarketReportAdditionalExpenseList } from "./client"
+import { AdditionalExpenseDialogDisclosure } from "../AdditionalExpense"
+import { parseISO } from "date-fns"
 
 export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
@@ -58,7 +61,7 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
 
-  let columns = useColumns({ items: data?.items })
+  let columns = useColumns({ items: data?.items, brandId })
   let maxDate = startOfToday()
 
   return (
@@ -156,7 +159,11 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ brandId, items = [] }) => {
+  let additionalExpenseTooltip = useTrans({
+    zh: "此栏位仅供参考，不会计入净盈利中。",
+    en: "This is for reference only and will NOT be included in the Net Profit calculation."
+  })
   return useMemo(
     () => [
       dateTimeColumn({
@@ -227,8 +234,36 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",
-        Header: <Trans zh="输赢金额" en="Win Loss Amount" />,
+        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
         disableSortBy: true
+      }),
+      numberDecimalColumn({
+        id: "additionalExpenses",
+        accessor: (row) => row,
+        sumColumn: "additionalExpenses",
+        Header: (
+          <Trans
+            zh="额外支出"
+            en="Additional Expenses"
+            title={additionalExpenseTooltip}
+          />
+        ),
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          let value = record?.additionalExpenses
+          let reportDateString = record?.reportDate
+          let reportDate = parseISO(reportDateString)
+          return (
+            <AdditionalExpenseDialogDisclosure
+              value={value}
+              useFetch={usePlatformMarketReportAdditionalExpenseList}
+              searchParams={{
+                brandId,
+                reportDate
+              }}
+            />
+          )
+        }
       }),
       numberDecimalColumn({
         accessor: "netProfit",
@@ -237,7 +272,7 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       })
     ],
-    [JSON.stringify(items)]
+    [JSON.stringify(items), brandId]
   )
 }
 

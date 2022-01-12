@@ -1,4 +1,4 @@
-import player from "./player"
+import player from "./player.js"
 
 export default {
   player

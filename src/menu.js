@@ -8,8 +8,7 @@ import React, {
 import { css } from "@emotion/react"
 import { Link, useLocation } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
-import { usePage } from "bumbag"
-import { SideNav, Box, Level, Icon, Button } from "bumbag"
+import { usePage, SideNav, Box, Level, Icon, Button } from "bumbag"
 import memoize from "fast-memoize"
 import { codeMenuContentPair as platformPair } from "./platform-management"
 import {
@@ -84,17 +83,12 @@ import {
   codeLabelPair as logLabelPair
 } from "./log/menu"
 import { useLocale, getTrans } from "./i18n"
-import {
-  faChevronCircleDown,
-  faChevronCircleUp,
-  faAngleUp,
-  faAngleDown
-} from "@fortawesome/free-solid-svg-icons"
-import { isDev } from "./env"
+import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons"
+import { isDev, Features, isFeatureEnabled } from "./env"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   let { sidebar, isCollapsed } = usePage()
-  let [show, setShow] = useState(true)
+  let [show, setShow] = useState(false)
 
   let locale = useLocale()
   let authCodes = useMenuCodes(codePaths)
@@ -124,17 +118,26 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   return items && items.length ? (
     <SideNav.Level
       title={
-        <Level orientation="horizontal" alignY="center" width="100%">
+        <Level
+          orientation="horizontal"
+          verticalBelow={null}
+          alignY="center"
+          width="100%"
+          onClick={() => {
+            setShow(!show)
+          }}
+          css={css`
+            :hover {
+              cursor: pointer;
+            }
+          `}
+        >
           {title}
           <Button
-            display="none"
-            //display={isDev() ? "inline-flex" : "none"}
+            display={"inline-flex"}
             variant="ghost"
             size="small"
             marginRight="0.3rem"
-            onClick={() => {
-              setShow(!show)
-            }}
           >
             <Icon icon={show ? faAngleUp : faAngleDown} type="font-awesome" />
           </Button>

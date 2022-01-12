@@ -103,7 +103,7 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
       dialog={dialog}
     >
       <Alert
-        title={<Trans zh={`确认已支付？`} en={`Confirm paid`} />}
+        title={<Trans zh={`确认已支付？`} en={`Confirm paid？`} />}
         type="warning"
         variant=""
       />
