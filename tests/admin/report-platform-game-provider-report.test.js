@@ -34,5 +34,4 @@ test("platform game provider report", async ({
     amount: betAmount,
     playerCode: player.code
   })
-  //TODO: tieBetResult
 })

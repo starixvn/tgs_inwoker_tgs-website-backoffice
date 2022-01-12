@@ -241,7 +241,11 @@ const useColumns = ({ items = [] }) => {
         },
         Cell: ({ value }) => {
           return (
-            <BettingDetail record={value}>
+            <BettingDetail
+              record={value}
+              id="betting-detail-dialog-disclosure"
+              dialogId="betting-detail-dialog"
+            >
               <Trans zh="详情" en="Detail" />
             </BettingDetail>
           )

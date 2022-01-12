@@ -81,6 +81,7 @@ export const GameRoundDialog = ({
       hideBackdrop={hideBackdrop}
       footer={<CloseButtonFooter dialog={dialog} />}
       {...dialog}
+      {...props}
     >
       <Set orientation="vertical" isFilled>
         <Columns flexWrap="nowrap" spacing="major-4" marginBottom="0">
@@ -163,7 +164,7 @@ export const GameRoundDialog = ({
                 <Trans zh="投注金额" en="Bet Amount" />
               </NormalLabel>
               <Box alignY="center">
-                <FormattedNumberDecimal value={record.betAmount} />
+                <FormattedNumberDecimal id="bet-amount" value={record.betAmount} />
               </Box>
 
               <NormalLabel>

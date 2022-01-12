@@ -7,17 +7,18 @@ import { Trans, useTrans } from "../../i18n"
 import GameRoundDialog from "../../game/round/GameRoundDialog"
 import Backdrop from "../../dialog/Backdrop"
 
-export const Button = ({ record, ...props }) => {
+export const Button = ({ record, dialogId, ...props }) => {
   let dialog = useModalState()
 
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure {...dialog} {...props}>
         <Trans zh="详情" en="Detail" />
       </Disclosure>
       {dialog.visible && (
         <Backdrop {...dialog}>
           <GameRoundDialog
+            id={dialogId}
             record={record}
             dialog={dialog}
             hideBackdrop={true}

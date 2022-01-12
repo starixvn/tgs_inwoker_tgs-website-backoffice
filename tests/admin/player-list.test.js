@@ -1,11 +1,11 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { selectPlatformByCode } from "../page/content.js"
+import { gotoPlayerListPage } from "./player-list-page.js"
 
 const test = base.extend(Fixture)
 
-test("search, view and edit player", async ({ page, platformCode, player }) => {
+test("player list", async ({ page, platformCode, player }) => {
   let brandId = await gotoPlayerListPage(page, platformCode)
   await page.fill(`input[name="username"]`, player.username)
 
@@ -22,11 +22,4 @@ test("search, view and edit player", async ({ page, platformCode, player }) => {
   let UsernameSelector = `[data-column-id="username"]`
   let username = await page.textContent(UsernameSelector)
   expect(username).to.equal(player.username)
-
-  //TODO: view & edit
 })
-
-const gotoPlayerListPage = async (page, platformCode) => {
-  await page.goto("/playermanagement/playerlist", { waitUntil: "networkidle" })
-  return await selectPlatformByCode(page, platformCode)
-}
