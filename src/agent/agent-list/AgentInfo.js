@@ -84,6 +84,7 @@ import {
   isAgentProfitSharingOneLayer
 } from "../AgentProfitSharingType"
 import { PercentageNumberInput } from "../../input/NumberInput"
+import Textarea from "../../textarea"
 
 const Key = "AgentInfo"
 
@@ -265,6 +266,11 @@ const EditPanel = ({
                 </>
               )}
 
+              <>
+                <RemarkLabel />
+                <Textarea name="remarks" />
+              </>
+
               {/* {!willChangeParent && (
                 <RebateBox
                   label={<AgentLiveDealerRebateText />}
@@ -396,6 +402,8 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
           <FormattedNumber value={record?.playerNumber} />
         </Box>
 
+        <RemarkLabel />
+        <Textarea value={record?.remarks} disabled />
         {/* <RebateBox
           label={<AgentLiveDealerRebateText />}
           value={record?.liveDealerRebatePercentage}
@@ -595,6 +603,8 @@ const AccumulatedProfitSharingBox = ({ value, ...props }) => {
     </>
   )
 }
+
+const RemarkLabel = () => <Trans zh="备注" en="Remark" />
 
 const RebateBox = ({ label, value, type, children }) => {
   let isCredit = isAgentTypeCredit(type)
