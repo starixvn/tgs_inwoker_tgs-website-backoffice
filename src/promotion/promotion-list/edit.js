@@ -48,7 +48,7 @@ import {
 } from "../PromotionType"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
 import { BrandGameProviderCheckboxGroupTable } from "../../game/brandproviders/BrandGameProviderCheckboxGroup"
-import parseISO from "date-fns/parseISO"
+import { parseISO } from "date-fns"
 import { today } from "../../date/range"
 import { useBrandGameProviderList } from "../../game/brandproviders/client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"

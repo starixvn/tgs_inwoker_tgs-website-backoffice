@@ -16,4 +16,6 @@ test.skip("edit and view player bank info", async ({
   page,
   platformCode,
   player
-}) => {})
+}) => {
+  
+})

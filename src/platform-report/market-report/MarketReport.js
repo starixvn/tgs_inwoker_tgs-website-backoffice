@@ -10,12 +10,11 @@ import equals from "fast-deep-equal"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
 import dateTimeColumn from "../../table/column/dateTime"
-import subDays from "date-fns/subDays"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
-import startOfToday from "date-fns/startOfToday"
+import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import { urlWith } from "../../client/index"
 import { isDev } from "../../env"

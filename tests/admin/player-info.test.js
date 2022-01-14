@@ -9,4 +9,6 @@ test.skip("edit and view player info, then view operation list", async ({
   page,
   platformCode,
   player
-}) => {})
+}) => {
+  
+})

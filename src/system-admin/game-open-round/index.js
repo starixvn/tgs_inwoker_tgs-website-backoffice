@@ -30,7 +30,7 @@ import {
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import subDays from "date-fns/subDays"
+import { subDays } from "date-fns"
 import { SettleGameRoundDialogDisclosure } from "./SettleGameRound"
 import copy from "clipboard-copy"
 import { GameRoundBalanceChangeDialogDisclosure } from "../../game/round/GameRoundBalanceChangeDialog"
