@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import { addManualBankCard, applyManualWithdrawForm } from "../player.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
@@ -15,31 +14,37 @@ test("deposit and withdraw alarm on header", async ({
   page,
   platformToken,
   player,
+  operatorApi,
   backofficeApi,
   host
 }) => {
-  await page.goto(host, { waitUntil: "networkidle" })
   let depositAmount = 10
-  await backofficeApi.player.addBalance(player.code, {
-    amount: depositAmount
-  })
+  await Promise.all([
+    page.goto(host, { waitUntil: "networkidle" }),
+    operatorApi.player.addManualBankCard(platformToken, player.token),
+    backofficeApi.player.addBalance(player.code, {
+      amount: depositAmount
+    })
+  ])
 
   let withdrawAmount = depositAmount
-  await withdrawAlarm(page, platformToken, player, withdrawAmount)
+  await withdrawAlarm(page, operatorApi, platformToken, player, withdrawAmount)
 })
 
-const withdrawAlarm = async (page, platformToken, player, withdrawAmount) => {
-  let expectBankCard = {
-    bankAccount: finance.account(),
-    name: finance.accountName(),
-    bankName: "bankName",
-    bankBranch: "bankBranch"
-  }
-  await addManualBankCard(platformToken, player.token, expectBankCard)
-
-  let formId = await applyManualWithdrawForm(platformToken, player.token, {
-    amount: withdrawAmount
-  })
+const withdrawAlarm = async (
+  page,
+  operatorApi,
+  platformToken,
+  player,
+  withdrawAmount
+) => {
+  let formId = await operatorApi.withdraw.applyManualWithdraw(
+    platformToken,
+    player.token,
+    {
+      amount: withdrawAmount
+    }
+  )
 
   let AlarmSelector = `#fund-withdraw-notify`
   await page.waitForSelector(AlarmSelector, {

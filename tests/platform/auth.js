@@ -35,6 +35,9 @@ export const Fixture = {
     })
     use(backofficeApi)
   },
+  operatorApi: async ({}, use) => {
+    use(operatorApi)
+  },
   page: async ({ context, host }, use) => {
     let page = await context.newPage()
     use(page)
