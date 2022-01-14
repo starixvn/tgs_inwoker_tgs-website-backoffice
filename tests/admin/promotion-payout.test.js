@@ -3,10 +3,10 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { fillDatePicker } from "../fill.js"
 import { selectPlatformByCode } from "../page/content.js"
-import { manualDeposit, applyManualDepositForm } from "../player.js"
 import { selectByValue } from "../page/select.js"
 import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
 import faker from "faker"
+import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 const { lorem } = faker
@@ -15,11 +15,19 @@ test("promotion payout list", async ({
   page,
   platformCode,
   platformToken,
-  player
+  player,
+  operatorApi
 }) => {
   let promotion = await addDepositPromotion(page, platformCode)
   let promotionid = await findPromotionId(page, promotion)
-  await approveDeposit(page, platformCode, platformToken, player, promotionid)
+  await approveDeposit(
+    page,
+    operatorApi,
+    platformCode,
+    platformToken,
+    player,
+    promotionid
+  )
   await checkAutoPayoutPromotion(page, platformCode, player)
 
   //TODO: other promotion type that use auto payout
@@ -88,7 +96,7 @@ const addDepositPromotion = async (page, platformCode) => {
   await gotoPromotionListPage(page, platformCode)
 
   let DialogSelector = `#add-promotion-dialog`
-  await page.click(`${DialogSelector}-disclosure`)
+  await openDialog(page, DialogSelector)
 
   let from = startOfDay(new Date())
   let to = addWeeks(new Date(), 2)
@@ -186,8 +194,10 @@ const addDepositPromotion = async (page, platformCode) => {
   return promotion
 }
 
+//TODO: use backofficeApi instead
 const approveDeposit = async (
   page,
+  operatorApi,
   platformCode,
   platformToken,
   player,
@@ -196,13 +206,15 @@ const approveDeposit = async (
 ) => {
   const DepositAccount = "account"
   const ExpectedDepositAmount = deposit
-  let formId = await manualDeposit(platformToken, player.token, {
-    account: DepositAccount,
-    amount: ExpectedDepositAmount,
-    promotionid
-  })
-
-  await applyManualDepositForm(platformToken, player.token, formId)
+  let formId = await operatorApi.deposit.applyManualDeposit(
+    platformToken,
+    player.token,
+    {
+      account: DepositAccount,
+      amount: ExpectedDepositAmount,
+      promotionid
+    }
+  )
 
   await gotoFundDepositPage(page, platformCode)
 

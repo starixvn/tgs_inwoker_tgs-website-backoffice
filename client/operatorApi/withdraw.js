@@ -9,6 +9,7 @@ import { bankInfoList, findBankInfoIdByType } from "./player.js"
 const { finance } = faker
 
 let cache = new Map()
+//TODO: test if cache works?
 export const paymentOptions = async (platformToken, playerToken) => {
   let url = `${api()}/withdraw`
   let headers = {
