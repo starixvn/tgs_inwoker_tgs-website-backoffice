@@ -6,7 +6,7 @@ import { selectRandomPlatform } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("platform game provider report", async ({
+test.skip("platform game provider report", async ({
   page,
   player,
   backofficeApi,
