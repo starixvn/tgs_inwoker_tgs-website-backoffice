@@ -7,14 +7,16 @@ import {
   usePostFormData
 } from "../../client"
 
-const API = "/api/RoundReport"
-
+const ReportAPI = "/api/RoundReport"
 export const useGameOpenedRoundList = (searchParams) => {
-  let url = searchParams ? urlWith(searchParams, `${API}/closedRounds`) : ""
+  let url = searchParams
+    ? urlWith(searchParams, `${ReportAPI}/closedRounds`)
+    : ""
   return useGet(url)
 }
 
+const RoundApi = "/api/round"
 export const useSettleOpendRound = (roundId, data) => {
-  let url = roundId && data ? `${API}/${roundId}/CloseGameRound` : ""
+  let url = roundId && data ? `${RoundApi}/${roundId}/adjustclosedround` : ""
   return usePutData(url, data)
 }
