@@ -19,10 +19,7 @@ import { TransactionTypeLabel } from "../../platform-report/balance-change-repor
 import textColumn from "../../table/column/textColumn"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 
-export const GameRoundBalanceChangeDialogDisclosure = ({
-  roundId,
-  ...props
-}) => {
+export const GameActionDialogDisclosure = ({ roundId, ...props }) => {
   let dialog = useModalState()
 
   return (
@@ -30,14 +27,12 @@ export const GameRoundBalanceChangeDialogDisclosure = ({
       <Disclosure {...dialog} {...props}>
         <Trans zh="游戏纪录" en="Game Record" />
       </Disclosure>
-      {dialog.visible && (
-        <GameRoundRecordDialog roundId={roundId} dialog={dialog} />
-      )}
+      {dialog.visible && <GameActionDialog roundId={roundId} dialog={dialog} />}
     </>
   )
 }
 
-export const GameRoundRecordDialog = ({ roundId, dialog, ...props }) => {
+export const GameActionDialog = ({ roundId, dialog, ...props }) => {
   let title = useTrans({
     zh: "游戏纪录",
     en: "Game Record"
@@ -61,13 +56,16 @@ export const GameRoundRecordDialog = ({ roundId, dialog, ...props }) => {
 
   return (
     <Dialog.Modal
+      id="game-action-dialog"
       title={title}
       showCloseButton
       hideOnClickOutside={false}
       footer={<CloseButtonFooter dialog={dialog} alignX="right" />}
+      minWidth="60vw"
       {...dialog}
     >
       <Table
+        id="game-action"
         columns={columns}
         data={data?.items}
         pageCount={pageCount(state.pageSize, data?.totalCount)}
@@ -85,13 +83,20 @@ const useColumns = ({ items = [] }) => {
   return useMemo(
     () => [
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Operation Time" />,
         accessor: "recordedOn",
+        Header: <Trans zh="操作时间" en="Operation Time" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "externalTransactionId",
+        Header: (
+          <Trans zh="External Transaction ID" en="External Transaction ID" />
+        ),
         disableSortBy: true
       }),
       textColumn({
         accessor: "gameActionType",
-        Header: <Trans zh="交易类型" en="Transaction Type" />,
+        Header: <Trans zh="帐变类型" en="Transaction Type" />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return <TransactionTypeLabel value={value} />

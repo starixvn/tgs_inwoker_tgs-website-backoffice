@@ -72,6 +72,7 @@ export const GameRoundDialog = ({
 
   return (
     <Dialog.Modal
+      id="game-round-dialog"
       title={title}
       showCloseButton
       hideOnClickOutside={false}
@@ -164,7 +165,10 @@ export const GameRoundDialog = ({
                 <Trans zh="投注金额" en="Bet Amount" />
               </NormalLabel>
               <Box alignY="center">
-                <FormattedNumberDecimal id="bet-amount" value={record.betAmount} />
+                <FormattedNumberDecimal
+                  id="bet-amount"
+                  value={record.betAmount}
+                />
               </Box>
 
               <NormalLabel>

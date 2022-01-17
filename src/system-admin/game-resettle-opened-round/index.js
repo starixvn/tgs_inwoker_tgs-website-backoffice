@@ -33,7 +33,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { subDays } from "date-fns"
 import { SettleGameRoundDialogDisclosure } from "../game-open-round/SettleGameRound"
 import copy from "clipboard-copy"
-import { GameRoundBalanceChangeDialogDisclosure } from "../../game/round/GameRoundBalanceChangeDialog"
+import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 
 export { Code }
 
@@ -307,7 +307,7 @@ const useColumns = ({ items = [], mutate }) => {
                   record={record}
                   onSubmitted={mutate}
                 />
-                <GameRoundBalanceChangeDialogDisclosure roundId={roundId} />
+                <GameActionDialogDisclosure roundId={roundId} />
               </Set>
             )
           }

@@ -52,7 +52,7 @@ import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { isDev } from "../../env"
-import { GameRoundBalanceChangeDialogDisclosure } from "../../game/round/GameRoundBalanceChangeDialog"
+import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 
 export { Code }
 
@@ -449,8 +449,14 @@ const useColumns = ({ items = [] }) => {
           let { id: roundId } = value
           return (
             <Set alignX="center">
-              <GameRoundButton record={value} />
-              <GameRoundBalanceChangeDialogDisclosure roundId={roundId} />
+              <GameRoundButton
+                id="game-round-dialog-disclosure"
+                record={value}
+              />
+              <GameActionDialogDisclosure
+                id="game-action-dialog-disclosure"
+                roundId={roundId}
+              />
             </Set>
           )
         },

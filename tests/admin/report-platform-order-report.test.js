@@ -2,13 +2,67 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
+import { openDialog } from "../page/dialog.js"
+import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
-test.skip("view platform order report", async ({
+test("view platform order report", async ({
   page,
   platformCode,
-  player
+  player,
+  backofficeApi,
+  sboGameProviderApi
 }) => {
-  
+  await page.goto("/report/orderreport", { waitUntil: "networkidle" })
+  let brandId = selectPlatformByCode(page, platformCode)
+
+  let walletAmount = 100
+  await backofficeApi.player.addBalance(player.code, {
+    amount: walletAmount
+  })
+
+  let betAmount = 10
+  let betResult = await sboGameProviderApi.placeLoseBet({
+    amount: betAmount,
+    playerCode: player.code
+  })
+
+  await viewGameRoundDialog({ page, player, betAmount, betResult })
+  await viewGameActionDialog({ page, player, betAmount, betResult })
 })
+
+const viewGameRoundDialog = async ({ page, player, betAmount, betResult }) => {
+  let GameRoundDialog = `#game-round-dialog`
+  await openDialog(page, GameRoundDialog)
+
+  let betAmountLocator = page.locator(`${GameRoundDialog} #bet-amount`)
+  let betAmountString = await betAmountLocator.textContent()
+  expect(numeral(betAmountString).value()).to.equals(betAmount)
+
+  await Promise.all([
+    page.click(`${GameRoundDialog} button#close-dialog`),
+    page.waitForSelector(GameRoundDialog, { state: "detached" })
+  ])
+}
+
+const viewGameActionDialog = async ({ page, player, betAmount, betResult }) => {
+  let GameActionDialogSelector = `#game-action-dialog`
+  await openDialog(page, GameActionDialogSelector)
+
+  let TableSelector = `#game-action`
+  let txLocator = page.locator(
+    `${GameActionDialogSelector} ${TableSelector} td[data-column-id="externalTransactionId"]`
+  )
+  let txCount = await txLocator.count()
+  expect(txCount).to.be.above(0)
+
+  let afterBalanceLocator = page
+    .locator(
+      `${GameActionDialogSelector} ${TableSelector} td[data-column-id="afterBalance"]`
+    )
+    .first()
+  let afterBalanceString = await afterBalanceLocator.textContent()
+  let afterBalance = numeral(afterBalanceString).value()
+  expect(afterBalance).to.equal(betResult.balance)
+}
