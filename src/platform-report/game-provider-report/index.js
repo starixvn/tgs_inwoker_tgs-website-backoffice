@@ -29,10 +29,9 @@ import { urlWith } from "../../client"
 import { isDev } from "../../env"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { BrandGameProviderSelect } from "../../game/brandproviders/BrandGameProviderSelect"
 import { GameTypeSelect } from "../../game/GameType"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
-import { DateButtons } from "../../date/DateButtons"
+import DownloadButton from "../../button/DownloadButton"
 
 export { Code }
 

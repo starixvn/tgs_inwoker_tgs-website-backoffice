@@ -29,7 +29,7 @@ import VipLevelSelect from "../../vip-levels/VipLevelSelect"
 import { PlayerRebatDialogDisclosure } from "./PlayerRebateReport"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
-import { DateButtons } from "../../date/DateButtons"
+import DownloadButton from "../../button/DownloadButton"
 
 export { Code }
 
@@ -128,15 +128,11 @@ const ReportContent = ({ brandId }) => {
           />
           {data?.items?.length > 0 && (
             <Box>
-              <Button
+              <DownloadButton
                 id="export-report"
-                disabled={isLoading}
-                use="a"
+                isLoading={isLoading}
                 href={urlWith(toSearchParams(), `${API}/exportVips`)}
-                download
-              >
-                <Trans zh="汇出" en="Export" />
-              </Button>
+              />
             </Box>
           )}
         </Level>

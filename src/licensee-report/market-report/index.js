@@ -26,10 +26,8 @@ import { subDays, startOfToday } from "date-fns"
 import { isDev } from "../../env"
 import textColumn, { wrapTextColumn } from "../../table/column/textColumn"
 import { LicenseeCurrencySelect } from "../LicenseeCurrencySelect"
-import { LicenseeMultiCurrencySelect } from "../LicenseeMultiCurrencySelect"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client/index"
-import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 

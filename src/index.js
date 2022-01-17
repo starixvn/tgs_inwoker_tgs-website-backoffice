@@ -20,8 +20,10 @@ import {
   faChevronCircleDown,
   faChevronCircleUp
 } from "@fortawesome/free-solid-svg-icons"
+import clone from "clone-deep"
 
 const theme = {
+  ...clone(window?.env?.theme),
   PageContent: {
     defaultProps: {
       breakpoint: "widescreen"

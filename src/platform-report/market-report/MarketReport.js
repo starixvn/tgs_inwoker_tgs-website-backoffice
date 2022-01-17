@@ -16,9 +16,9 @@ import numberColumn, {
 } from "../../table/column/numberColumn"
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
+import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client/index"
 import { isDev } from "../../env"
-import { DateButtons } from "../../date/DateButtons"
 import { usePlatformMarketReportAdditionalExpenseList } from "./client"
 import { AdditionalExpenseDialogDisclosure } from "../AdditionalExpense"
 import { parseISO } from "date-fns"
@@ -87,15 +87,11 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
           {data?.items?.length > 0 && (
             <Box>
               {exportUrl && (
-                <Button
+                <DownloadButton
                   id="export-report"
-                  disabled={isLoading}
-                  use="a"
+                  isLoading={isLoading}
                   href={urlWith(toSearchParams(), exportUrl)}
-                  download
-                >
-                  <Trans zh="汇出" en="Export" />
-                </Button>
+                />
               )}
             </Box>
           )}
