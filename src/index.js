@@ -33,6 +33,16 @@ const theme = {
       breakpoint: "widescreen"
     }
   },
+  Table: {
+    HeadCell: {
+      styles: {
+        base: {
+          fontSize: "1rem",
+          padding: "0.6rem 1rem"
+        }
+      }
+    }
+  },
   icons: {
     iconSets: [
       {
