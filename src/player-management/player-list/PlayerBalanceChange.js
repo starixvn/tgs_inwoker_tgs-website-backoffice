@@ -15,6 +15,10 @@ import { subHours, endOfToday } from "date-fns"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { Select } from "../../select/Select"
 import AlertDialog from "../../dialog/Alert"
+import {
+  GameActionTypeLabel,
+  useGameActionTypeOptionList
+} from "../../game/GameActionType"
 
 export const Key = "BalanceChange"
 
@@ -135,7 +139,7 @@ const useColumns = ({ items = [] }) =>
           if (transactionType) {
             return <PlayerTransactionTypeLabel value={transactionType} />
           }
-          return <GameActionLabel value={gameActionType} />
+          return <GameActionTypeLabel value={gameActionType} />
         }
       }),
       numberDecimalColumn({
@@ -265,6 +269,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   })
   placeholder = placeholder ?? defaultPlaceholder
 
+  let gameActionTypeOptions = useGameActionTypeOptionList()
   let options = [
     {
       label: useTrans(DepositTrans),
@@ -334,42 +339,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTrans(GameProviderDepositTrans),
       value: GameProviderDeposit
     },
-    {
-      label: useTrans(PlaceBetTrans),
-      value: PlaceBet
-    },
-    {
-      label: useTrans(WinBetTrans),
-      value: WinBet
-    },
-    {
-      label: useTrans(LoseBetTrans),
-      value: LoseBet
-    },
-    {
-      label: useTrans(FreeBetTrans),
-      value: FreeBet
-    },
-    {
-      label: useTrans(TieBetTrans),
-      value: TieBet
-    },
-    {
-      label: useTrans(CancelTransactionTrans),
-      value: CancelTransaction
-    },
-    {
-      label: useTrans(LockAmountTrans),
-      value: LockAmount
-    },
-    {
-      label: useTrans(UnlockAmountTrans),
-      value: UnlockAmount
-    },
-    {
-      label: useTrans(WinJackpotTrans),
-      value: WinJackpot
-    }
+    ...gameActionTypeOptions
   ]
 
   return <Select placeholder={placeholder} options={options} {...props} />
@@ -411,84 +381,6 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...AdjustResettledBetManualTrans} />
     case CancelWithdrawal:
       return <Trans {...CancelWithdrawalTrans} />
-    default:
-      return value
-  }
-}
-
-const PlaceBet = "PlaceBet"
-const PlaceBetTrans = {
-  zh: "投注",
-  en: "Place Bet"
-}
-
-const WinBet = "WinBet"
-const WinBetTrans = {
-  zh: "赢",
-  en: "Win Bet"
-}
-
-const LoseBet = "LoseBet"
-const LoseBetTrans = {
-  zh: "输",
-  en: "Lose Bet"
-}
-
-const FreeBet = "FreeBet"
-const FreeBetTrans = {
-  zh: "免费投注",
-  en: "FreeB et"
-}
-
-const TieBet = "TieBet"
-const TieBetTrans = {
-  zh: "和局",
-  en: "Tie Bet"
-}
-
-const CancelTransaction = "CancelTransaction"
-const CancelTransactionTrans = {
-  zh: "取消投注",
-  en: "Cancel Transaction"
-}
-const LockAmount = "LockAmount"
-const LockAmountTrans = {
-  zh: "锁定金额",
-  en: "Lock Amount"
-}
-
-const UnlockAmount = "UnlockAmount"
-const UnlockAmountTrans = {
-  zh: "解锁金额",
-  en: "Unlock Amount"
-}
-
-const WinJackpot = "WinJackpot"
-const WinJackpotTrans = {
-  zh: "赢 Jackpot",
-  en: "Win Jackpot"
-}
-
-export const GameActionLabel = ({ value = "" }) => {
-  switch (value) {
-    case PlaceBet:
-      return <Trans {...PlaceBetTrans} />
-    case WinBet:
-      return <Trans {...WinBetTrans} />
-    case LoseBet:
-      return <Trans {...LoseBetTrans} />
-    case FreeBet:
-      return <Trans {...FreeBetTrans} />
-    case TieBet:
-      return <Trans {...TieBetTrans} />
-    case CancelTransaction:
-      return <Trans {...CancelTransactionTrans} />
-    case LockAmount:
-      return <Trans {...LockAmountTrans} />
-    case UnlockAmount:
-      return <Trans {...UnlockAmountTrans} />
-    case WinJackpot:
-      return <Trans {...WinJackpotTrans} />
     default:
       return value
   }

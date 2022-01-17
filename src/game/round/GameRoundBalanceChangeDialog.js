@@ -43,8 +43,12 @@ export const GameRoundRecordDialog = ({ roundId, dialog, ...props }) => {
     en: "Game Record"
   })
 
-  let { state, setState, setPageIndex, setSortOrder } = useTable({})
-  let { isLoading, error, data } = useGameRoundBalanceChangeList(roundId)
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    roundId
+  })
+  let { isLoading, error, data } = useGameRoundBalanceChangeList(
+    toApiParams(state)
+  )
   let columns = useColumns({ items: data?.items })
 
   if (isLoading) {
@@ -86,11 +90,10 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "transactionType",
+        accessor: "gameActionType",
         Header: <Trans zh="交易类型" en="Transaction Type" />,
         disableSortBy: true,
         Cell: ({ value }) => {
-          //TODO: use PlayerTransactionTypeLabel or GameActionLabel? or both?
           return <TransactionTypeLabel value={value} />
         }
       }),

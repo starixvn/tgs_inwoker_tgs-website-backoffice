@@ -9,4 +9,6 @@ test.skip("view platform player balance change report", async ({
   page,
   platformCode,
   player
-}) => {})
+}) => {
+  
+})

@@ -9,4 +9,6 @@ test.skip("view platform order report", async ({
   page,
   platformCode,
   player
-}) => {})
+}) => {
+  
+})

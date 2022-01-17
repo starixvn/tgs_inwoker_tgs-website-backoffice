@@ -27,11 +27,8 @@ export const useGameRound = (id, searchParams) => {
   return useGet(url)
 }
 
-export const useGameRoundBalanceChangeList = (id) => {
-  let url = id ? `` : ""
-
-  //TODO: rm test url
-  url =
-    "/api/player/accountChanges?from=2022-01-11T05:26:32.936Z&to=2022-01-11T15:59:59.999Z&brandId=4e86719f-243f-46f6-b010-5c758b7285af&playerCode=4ufsal8i4cnt&sortby=recordedOn&orderby=descending&page=1&rows=20"
+const GameAction = `/api/GameActionReport`
+export const useGameRoundBalanceChangeList = (searchParams) => {
+  let url = searchParams?.roundId ? urlWith(searchParams, GameAction) : ""
   return useGet(url)
 }
