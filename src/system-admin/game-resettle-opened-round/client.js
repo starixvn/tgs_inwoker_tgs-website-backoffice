@@ -16,7 +16,7 @@ export const useGameOpenedRoundList = (searchParams) => {
 }
 
 const RoundApi = "/api/round"
-export const useSettleOpendRound = (roundId, data) => {
+export const useResettleOpenedRound = (roundId, data) => {
   let url = roundId && data ? `${RoundApi}/${roundId}/adjustclosedround` : ""
   return usePutData(url, data)
 }

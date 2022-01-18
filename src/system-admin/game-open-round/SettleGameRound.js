@@ -44,6 +44,7 @@ import { usePlayerMainWallet } from "../../player-management/player-list/client"
 export const SettleGameRoundDialogDisclosure = ({
   roundId,
   record,
+  useUpdate = useCloseGameOpenRound,
   onSubmitted,
   ...props
 }) => {
@@ -63,7 +64,7 @@ export const SettleGameRoundDialogDisclosure = ({
         <SettleGameRoundDialog
           roundId={roundId}
           record={record}
-          useUpdate={useCloseGameOpenRound}
+          useUpdate={useUpdate}
           dialog={dialog}
           onSubmitted={onSubmitted}
         />

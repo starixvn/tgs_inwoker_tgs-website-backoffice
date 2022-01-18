@@ -29,14 +29,23 @@ test("settle game round", async ({
   })
 
   await gotoGameOpenRoundPage(page)
-  await closeGameRoundBy(page, externalRoundId)
+  await settleGameRoundBy(page, externalRoundId, OpenRound)
 
   await gotoGameResettleOpenedRoundPage(page)
-  console.warn("TODO: resettle opened round")
-  // await closeGameRoundBy(page, externalRoundId)
+
+  await settleGameRoundBy(page, externalRoundId, ResettleOpenedRound)
 })
 
-const closeGameRoundBy = async (page, externalRoundId) => {
+const OpenRound = "OpenRound"
+const ResettleOpenedRound = "Resettle"
+
+const isSettleOpenRound = (type) => type === OpenRound
+
+const settleGameRoundBy = async (
+  page,
+  externalRoundId,
+  type = Settle.OpenRound
+) => {
   await page.fill(`input[name="externalRoundId"]`, externalRoundId)
 
   await Promise.all([
@@ -102,10 +111,14 @@ const closeGameRoundBy = async (page, externalRoundId) => {
 
   await page.click(`${DialogSelector} button[data-type="confirm"]`)
 
+  let expectedUrl = isSettleOpenRound(type)
+    ? "/closegameround"
+    : "/adjustclosedround"
+
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().toLowerCase().endsWith("/closegameround") &&
+        response.url().toLowerCase().endsWith(expectedUrl) &&
         response.status() === 200
       )
     }),

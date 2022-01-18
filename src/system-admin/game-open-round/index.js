@@ -19,7 +19,7 @@ import AlertDialog from "../../dialog/Alert"
 import { Trans, useTrans, getAcceptLangCulture, useLangCode } from "../../i18n"
 import { useLanguageList } from "../../language/client"
 import equals from "fast-deep-equal"
-import { useOpenGameRoundList } from "./client"
+import { useOpenGameRoundList, useCloseGameOpenRound } from "./client"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
@@ -295,6 +295,7 @@ const useColumns = ({ items = [], mutate }) => {
                   id="settle-game-round-dialog-disclosure"
                   roundId={roundId}
                   record={record}
+                  useUpdate={useCloseGameOpenRound}
                   onSubmitted={mutate}
                 />
                 <GameActionDialogDisclosure roundId={roundId} />
