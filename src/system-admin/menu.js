@@ -175,6 +175,7 @@ export const codeLabelPair = [
         betLimitPair,
         settingsPair,
         gameOpenRoundPair,
+        gameResettleOpenedRoundPair,
         platformGameProviderPair
       ]
     })
