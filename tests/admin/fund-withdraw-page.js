@@ -90,6 +90,8 @@ export const reviewPaid = async (
   type = "approve"
 ) => {
   let brandId = await gotoFundWithdraw(page, platformCode, formId)
+  await findApplicationById(page, formId)
+
   let PaidDialogSelector = `#review-paid-dialog`
   await openDialog(page, PaidDialogSelector)
 

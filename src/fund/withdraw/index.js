@@ -458,7 +458,7 @@ const SearchBar = ({
               name="method"
               placeholder={paymentMethodPlaceholder}
             /> */}
-            <FundWithdrawStatusSelect name="status" />
+            <FundWithdrawStatusSelect id="status-select" name="status" />
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}

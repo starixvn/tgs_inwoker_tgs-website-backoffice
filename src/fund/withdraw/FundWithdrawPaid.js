@@ -98,7 +98,7 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
         submitText: approveLabel,
         palette: "success",
         submitProps: {
-          "data-type": "approve"
+          "data-type": "Approve"
         }
       }}
       onClickSubmit={(event) => {
@@ -107,7 +107,7 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
       addonButtons={
         <Button
           type="submit"
-          data-type="reject"
+          data-type="Reject"
           onClick={() => {
             //TODO: confirm reviewResponse
             setValue("reviewResponse", "Reject")

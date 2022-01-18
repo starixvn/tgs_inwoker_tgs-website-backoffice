@@ -42,6 +42,6 @@ test("approve player fund withdraw and paid", async ({
     withdrawAmount
   )
 
-  let Approve = "approve"
+  let Approve = "Approve"
   await reviewPaid(page, platformCode, formId, Approve)
 })
