@@ -30,9 +30,9 @@ test("settle game round", async ({
 
   await gotoGameOpenRoundPage(page)
   await settleGameRoundBy(page, externalRoundId, OpenRound)
+  console.log("externalRoundId", externalRoundId)
 
   await gotoGameResettleOpenedRoundPage(page)
-
   await settleGameRoundBy(page, externalRoundId, ResettleOpenedRound)
 })
 
@@ -107,6 +107,11 @@ const settleGameRoundBy = async (
     round.clientRoundStatus
   )
 
+  await page.fill(
+    `${DialogSelector} input[name="adjustAmount"]`,
+    `${round.adjustAmount}`
+  )
+
   await page.fill(`${DialogSelector} [name="remark"]`, round.remark)
 
   await page.click(`${DialogSelector} button[data-type="confirm"]`)
@@ -115,7 +120,7 @@ const settleGameRoundBy = async (
     ? "/closegameround"
     : "/adjustclosedround"
 
-  await Promise.all([
+  let [settleResponse] = await Promise.all([
     page.waitForResponse((response) => {
       return (
         response.url().toLowerCase().endsWith(expectedUrl) &&
@@ -124,6 +129,10 @@ const settleGameRoundBy = async (
     }),
     page.click(`#confirm-dialog button[type="submit"]`)
   ])
+  let result = await settleResponse.json()
+
+  expect(result.valid).to.be.true
+  return result
 }
 
 const gotoGameOpenRoundPage = async (page) => {
