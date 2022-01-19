@@ -5,6 +5,7 @@ import globalApi from "../../client/globalApi/index.js"
 import operatorApi from "../../client/operatorApi/index.js"
 import sboGameProviderApi from "../../client/gameProviderApi/sbo/index.js"
 import backofficeApi from "../client/index.js"
+import reportApi from "../../client/reportApi/index.js"
 
 const Path = "./.playwright"
 const AuthPath = `${Path}/admin-auth.json`
@@ -49,6 +50,9 @@ export const Fixture = {
   },
   sboGameProviderApi: ({}, use) => {
     use(sboGameProviderApi)
+  },
+  reportApi: ({}, use) => {
+    use(reportApi)
   },
   page: async ({ context }, use) => {
     let page = await context.newPage()

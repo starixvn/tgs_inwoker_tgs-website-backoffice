@@ -24,7 +24,6 @@ export const placeBet = async ({
 } = {}) => {
   //TODO: use baseURL instead?
   let url = `${host}${prefix}/deduct`
-  console.log("url", url)
 
   let id = nanoid()
   if (!transferCode) {

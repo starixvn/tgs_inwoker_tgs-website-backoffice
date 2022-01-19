@@ -8,11 +8,17 @@ services:
       - postgres
       - rabbitmq
     env:
+      ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
       NatsSetting__Urls: "nats://nats:4222"
       RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
+    ingresses:
+      # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 report-api.localhost` to host file
+      - hostname: report-api.localhost
+        port: http
     ports:
       - name: http
         containerPort: 80
         servicePort: 80
+        localPort: 3010

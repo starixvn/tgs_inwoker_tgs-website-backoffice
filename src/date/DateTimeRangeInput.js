@@ -98,7 +98,8 @@ export const DateTimeRangeInput = ({
   showTimeInput = true,
   showDateDropdownMenu = false,
   required,
-  disabled
+  disabled,
+  ...props
 } = {}) => {
   let startName = startProps?.name ?? "start"
   let endName = endProps?.name ?? "end"
@@ -146,9 +147,10 @@ export const DateTimeRangeInput = ({
 
   return (
     <>
-      <Group>
+      <Group {...props}>
         {showDateDropdownMenu && (
           <DateDropdownMenu
+            id="date-range-dropdown-menu"
             onClick={({ type, start, end }) => {
               formMethods?.setValue(startName, start)
               formMethods?.setValue(endName, end)
