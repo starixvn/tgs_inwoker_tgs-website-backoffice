@@ -95,6 +95,8 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
       id="review-paid-dialog"
       formMethods={formMethods}
       actionButtonsProps={{
+        isLoading: isLoading,
+        disabled: isLoading,
         submitText: approveLabel,
         palette: "success",
         submitProps: {
@@ -108,6 +110,8 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
         <Button
           type="submit"
           data-type="Reject"
+          isLoading={isLoading}
+          disabled={isLoading}
           onClick={() => {
             //TODO: confirm reviewResponse
             setValue("reviewResponse", "Reject")
