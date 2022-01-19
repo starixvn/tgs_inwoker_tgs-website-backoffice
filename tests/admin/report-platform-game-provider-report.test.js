@@ -40,7 +40,17 @@ test("platform game provider report", async ({
   let betAmountString = await betAmountLocator.textContent()
   expect(numeral(betAmountString).value()).to.greaterThanOrEqual(betAmount)
 
-  //TODO: test table footer?
+  let totalCountLocator = page
+    .locator(`[data-row-type="total"] [data-column-id="transactionCount"]`)
+    .first()
+  let totalCountString = await totalCountLocator.textContent()
+  expect(numeral(totalCountString).value()).to.greaterThan(0)
+
+  let totalBetAmountLocator = page
+    .locator(`[data-row-type="total"] [data-column-id="betAmount"]`)
+    .first()
+  let totalBetAmountString = await totalBetAmountLocator.textContent()
+  expect(numeral(totalBetAmountString).value()).to.greaterThanOrEqual(betAmount)
 })
 
 const searchToday = async (page) => {

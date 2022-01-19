@@ -137,6 +137,7 @@ const ReportContent = ({ brandId }) => {
         getRowProps={({ original: { isTotal } } = {}) => {
           if (isTotal) {
             return {
+              "data-row-type": "total",
               backgroundColor: "white600",
               fontWeight: "bold"
             }
@@ -209,7 +210,6 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="币种" en="Currency" />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
-          // return isTotal ? "" : currencyCode
           return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
         }
       }),
