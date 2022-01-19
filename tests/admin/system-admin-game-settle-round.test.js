@@ -30,7 +30,6 @@ test("settle game round", async ({
 
   await gotoGameOpenRoundPage(page)
   await settleGameRoundBy(page, externalRoundId, OpenRound)
-  console.log("externalRoundId", externalRoundId)
 
   await gotoGameResettleOpenedRoundPage(page)
   await settleGameRoundBy(page, externalRoundId, ResettleOpenedRound)

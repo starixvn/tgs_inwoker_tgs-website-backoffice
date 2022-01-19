@@ -28,9 +28,24 @@ test("view platform order report", async ({
     playerCode: player.code
   })
 
+  await searchPlayer(page, player)
+
   await viewGameRoundDialog({ page, player, betAmount, betResult })
   await viewGameActionDialog({ page, player, betAmount, betResult })
 })
+
+const searchPlayer = async (page, player) => {
+  await page.fill(`input[name="username"]`, player.username)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/RoundReport?`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`button[type="submit"]`)
+  ])
+}
 
 const viewGameRoundDialog = async ({ page, player, betAmount, betResult }) => {
   let GameRoundDialog = `#game-round-dialog`
