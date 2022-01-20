@@ -95,7 +95,12 @@ const VerifyFundDepositDialog = ({
 
   const onSubmit = ({ remark, reviewResponse, ...rest }) => {
     if (!isLoading) {
-      console.log("before setSubmit ", reviewResponse, "formData", formData)
+      console.log(
+        "onSubmit before setSubmit ",
+        reviewResponse,
+        "formData",
+        formData
+      )
       //prevent submit multiple times
       setSubmit({
         brandId,
@@ -103,7 +108,7 @@ const VerifyFundDepositDialog = ({
         reviewResponse
       })
     } else {
-      console.log("isLoading, no setSubmit")
+      console.log("onSubmit isLoading, no setSubmit")
     }
   }
 
@@ -128,7 +133,15 @@ const VerifyFundDepositDialog = ({
         }
       }}
       onClickSubmit={(event) => {
-        setValue("reviewResponse", ReviewFund.Approve)
+        if (!isLoading) {
+          console.log(
+            "onClickSubmit setValue reviewResponse",
+            ReviewFund.Approve
+          )
+          setValue("reviewResponse", ReviewFund.Approve)
+        } else {
+          console.log("onClickSubmit isLoading, no setValue reviewResponse")
+        }
       }}
       addonButtons={
         <Button
