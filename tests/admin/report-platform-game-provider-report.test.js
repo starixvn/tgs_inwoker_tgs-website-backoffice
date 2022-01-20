@@ -2,7 +2,8 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import { selectPlatformByCode, selectRandomPlatform } from "../page/content.js"
+import { selectPlatformByCode } from "../page/content.js"
+import { subHours } from "date-fns"
 
 const test = base.extend(Fixture)
 
@@ -15,15 +16,30 @@ test.skip("platform game provider report", async ({
   reportApi
 }) => {
   let walletAmount = 100
-  let addBalanceResult = await backofficeApi.player.addBalance(player.code, {
+  await backofficeApi.player.addBalance(player.code, {
     amount: walletAmount
   })
 
   let betAmount = 10
-  let loseBetResult = await sboGameProviderApi.placeLoseBet({
+  let { externalRoundId, ...result } = await sboGameProviderApi.placeBet({
     amount: betAmount,
     playerCode: player.code
   })
+
+  let openRound = await backofficeApi.round.findOpenRound({ externalRoundId })
+  console.log("openRound", openRound)
+  const TwoHours = 2 //report only aggregate round to prev hour
+  let round = {
+    ...openRound,
+    externalClosedOn: subHours(new Date(), TwoHours).toISOString(),
+    validBetAmount: betAmount,
+    settleAmount: 0,
+    commission: 0,
+    turnover: betAmount,
+    winLoss: 0,
+    clientRoundStatus: "Loss" // Win, Loss, Draw, or Void
+  }
+  await backofficeApi.round.settleOpenRound(openRound.id, round)
 
   await reportApi.aggregateRound()
   await reportApi.aggregatePlayer()
