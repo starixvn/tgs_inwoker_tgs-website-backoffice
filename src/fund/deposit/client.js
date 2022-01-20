@@ -29,7 +29,7 @@ export const useFundDepositForm = (brandId, formId, searchParams) => {
 
 export const useVerifyFundDepositForm = (brandId, formId, formData) => {
   let url = brandId && formId && formData ? `${API}/${formId}` : ""
-
+  console.log("useVerifyFundDepositForm: ", formId, formData)
   return usePostData(url, formData)
 }
 
