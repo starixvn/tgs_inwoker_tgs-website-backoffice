@@ -94,11 +94,14 @@ const VerifyFundDepositDialog = ({
   }
 
   const onSubmit = ({ remark, reviewResponse, ...rest }) => {
-    setSubmit({
-      brandId,
-      remark,
-      reviewResponse
-    })
+    if (!isLoading) {
+      //prevent submit multiple times
+      setSubmit({
+        brandId,
+        remark,
+        reviewResponse
+      })
+    }
   }
 
   const reset = () => {
