@@ -95,12 +95,15 @@ const VerifyFundDepositDialog = ({
 
   const onSubmit = ({ remark, reviewResponse, ...rest }) => {
     if (!isLoading) {
+      console.log("before setSubmit ", reviewResponse, "formData", formData)
       //prevent submit multiple times
       setSubmit({
         brandId,
         remark,
         reviewResponse
       })
+    } else {
+      console.log("isLoading, no setSubmit")
     }
   }
 
