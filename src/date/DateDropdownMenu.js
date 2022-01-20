@@ -19,6 +19,7 @@ import { faCalendarAlt } from "@fortawesome/free-regular-svg-icons"
 const Yesterday = "Yesterday"
 const YesterdayDropdownMenuItem = ({ onClick, ...props }) => (
   <DropdownMenu.Item
+    data-type={Yesterday}
     onClick={(event) => {
       let start = startOfYesterday()
       let end = endOfYesterday()
@@ -28,6 +29,7 @@ const YesterdayDropdownMenuItem = ({ onClick, ...props }) => (
         end
       })
     }}
+    {...props}
   >
     <Trans zh="昨日" en="Yesterday" />
   </DropdownMenu.Item>
@@ -37,6 +39,7 @@ const Today = "Today"
 export const TodayDropdownMenuItem = ({ onClick, ...props }) => {
   return (
     <DropdownMenu.Item
+      data-type={Today}
       onClick={() => {
         let start = startOfToday()
         let end = endOfToday()
@@ -60,6 +63,7 @@ const WeekStartsOn = {
 export const LastWeekDropdownMenuItem = ({ onClick, ...props }) => {
   return (
     <DropdownMenu.Item
+      data-type={LastWeek}
       onClick={() => {
         let lastWeekDay = subWeeks(new Date(), 1)
         let start = startOfWeek(lastWeekDay, {
@@ -85,6 +89,7 @@ const ThisWeek = "ThisWeek"
 export const ThisWeekDropdownMenuItem = ({ onClick, ...props }) => {
   return (
     <DropdownMenu.Item
+      data-type={ThisWeek}
       onClick={() => {
         let now = new Date()
         let start = startOfWeek(now, {
@@ -110,6 +115,7 @@ const LastMonth = "LastMonth"
 export const LastMonthDropdownMenuItem = ({ onClick, ...props }) => {
   return (
     <DropdownMenu.Item
+      data-type={LastMonth}
       onClick={() => {
         let lastMonthDay = subMonths(new Date(), 1)
         let start = startOfMonth(lastMonthDay)
@@ -131,6 +137,7 @@ const ThisMonth = "ThisMonth"
 export const ThisMonthDropdownMenuItem = ({ onClick, ...props }) => {
   return (
     <DropdownMenu.Item
+      data-type={ThisMonth}
       onClick={() => {
         let now = new Date()
         let start = startOfMonth(now)

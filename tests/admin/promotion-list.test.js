@@ -16,13 +16,26 @@ test("add and edit promotion", async ({ page }) => {
   let brandId = await gotoPromotionPage(page)
   let promotion = await addPromotion(page)
 
+  await searchPromotion(page, promotion)
+
   let updatedPromotion = await editPromotion(page, brandId, promotion)
-  await toggleStatus(page, brandId)
+
   await toggleStatus(page, brandId)
 
-  await toggleStatus(page, brandId) //Note. only disabled status could get deleted
   await deletePromotion(page)
 })
+
+const searchPromotion = async (page, promotion) => {
+  await page.fill(`input[name="name"]`, promotion.name)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/promotion?`) && response.status() === 200
+      )
+    }),
+    page.click(`button[type="submit"]`)
+  ])
+}
 
 const deletePromotion = async (page) => {
   let Dialog = `#delete-promotion-dialog`
@@ -64,12 +77,6 @@ const toggleStatus = async (page, brandId, index = 0) => {
         response.status() === 200
       )
     }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`?brandId=${brandId}`) &&
-        response.status() === 200
-      )
-    }),
     page.click(
       `#promotion [data-row-index="${index}"] [data-column-id="status"] label .bb-SwitchIcon`
     )
@@ -87,7 +94,7 @@ const toggleStatus = async (page, brandId, index = 0) => {
 }
 
 let MinTotalAmountLimit = 10000000
-const editPromotion = async (page, brandId) => {
+const editPromotion = async (page, brandId, record) => {
   let EditDialogSelector = `#edit-promotion-dialog`
   await openDialog(page, EditDialogSelector)
 
@@ -98,13 +105,13 @@ const editPromotion = async (page, brandId) => {
   )
 
   let promotion = {
-    name: `${lorem.word()}-${Date.now()}`,
+    ...record,
     promotionTypeGroup:
       PromotionTypeGroupOptions[random(0, otherPromotionTypeGroups.length - 1)],
     totalAmountLimit: random(MinTotalAmountLimit, MinTotalAmountLimit + 1000),
     bonusAmountLimit: random(0, 100)
   }
-  await page.fill(`${EditDialogSelector} input[name="name"]`, promotion.name)
+
   await page.fill(
     `${EditDialogSelector} input[name="totalAmountLimit"]`,
     `${promotion.totalAmountLimit}`
@@ -167,12 +174,6 @@ const editPromotion = async (page, brandId) => {
     page.waitForResponse((response) => {
       return (
         response.url().includes("/api/promotion") && response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`?brandId=${brandId}`) &&
-        response.status() === 200
       )
     }),
     page.click(`#edit-promotion-dialog button[type="submit"]`)

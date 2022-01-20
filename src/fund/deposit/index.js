@@ -61,10 +61,6 @@ import FundDepositStatus, {
   FundDepositStatusSelect
 } from "./FundDepositStatus"
 import maxTime from "date-fns/max"
-import isEqualTime from "date-fns/isEqual"
-import isSameDay from "date-fns/isSameDay"
-import isAfter from "date-fns/isAfter"
-import parseISO from "date-fns/parseISO"
 import isValidTime from "date-fns/isValid"
 import { SortOrder } from "../../table/order"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -72,7 +68,7 @@ import { sortBy, head } from "lodash-es"
 import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
-import subDays from "date-fns/subDays"
+import { subDays, parseISO, isAfter, isSameDay } from "date-fns"
 
 export { Code }
 

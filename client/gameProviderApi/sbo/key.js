@@ -1,0 +1,1 @@
+export const CompanyKey = "34B2C4ED616F4E7B965EAE0861A3F92E"

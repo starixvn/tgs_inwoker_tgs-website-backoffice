@@ -41,8 +41,10 @@ import {
   DateInputRangeField
 } from "../../date/DateTimeRangeInput"
 import {
+  GameRoundStatus,
   GameRoundStatusLabel,
-  GameRoundStatusSelect
+  GameRoundStatusSelect,
+  useGameRoundStatusOptions
 } from "../../game/round/GameRoundStatus"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import { useGameRoundList } from "../../game/round/client"
@@ -50,6 +52,7 @@ import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { isDev } from "../../env"
+import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 
 export { Code }
 
@@ -153,7 +156,6 @@ const ReportContent = ({ brandId }) => {
           maxRangeDays={QueryMaxRangeDays}
           isLoading={isLoading}
           search={({ start, end, ...rest }) => {
-            console.log("rest", rest)
             setState({
               pageIndex: 0,
               from: start,
@@ -175,6 +177,7 @@ const ReportContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        getRowId={(row) => row.id}
         isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
@@ -443,9 +446,17 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="详情" en="Detail" />,
         disableSortBy: true,
         Cell: ({ value }) => {
+          let { id: roundId } = value
           return (
-            <Set>
-              <GameRoundButton record={value} />
+            <Set alignX="center">
+              <GameRoundButton
+                id="game-round-dialog-disclosure"
+                record={value}
+              />
+              <GameActionDialogDisclosure
+                id="game-action-dialog-disclosure"
+                roundId={roundId}
+              />
             </Set>
           )
         },

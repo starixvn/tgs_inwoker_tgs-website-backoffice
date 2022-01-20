@@ -20,7 +20,7 @@ import { useForm, useFormContext } from "react-hook-form"
 import { useVerifyFundWithdrawForm } from "./client"
 import { isDev } from "../../env"
 import Input from "../../input/Input"
-import { useConfirmText } from "../../button/ActionButtons"
+import FundWithdrawStatus from "./FundWithdrawStatus"
 
 export const FundWithdrawPaidDialogDisclosure = ({
   brandId,
@@ -43,7 +43,7 @@ export const FundWithdrawPaidDialogDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="已支付" en="Paid" />
+        <Trans zh="审核待支付" en="Review Waiting Payment" />
       </Disclosure>
       {dialog.visible && (
         <PaidDialog
@@ -59,11 +59,22 @@ export const FundWithdrawPaidDialogDisclosure = ({
 
 const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
   let title = useTrans({
-    zh: "已支付",
-    en: "Paid"
+    zh: "审核待支付",
+    en: "Review Paid"
   })
 
-  let submitText = useConfirmText()
+  let approveLabel = useTrans({
+    zh: "通过",
+    en: "Approve"
+  })
+
+  let formMethods = useForm({
+    defaultValues: {
+      brandId,
+      formId
+    }
+  })
+  let { setValue } = formMethods
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
@@ -81,14 +92,36 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
-      id="fund-withdraw-paid-dialog"
-      defaultValues={{
-        brandId,
-        formId
-      }}
+      id="review-paid-dialog"
+      formMethods={formMethods}
       actionButtonsProps={{
-        submitText
+        isLoading: isLoading,
+        disabled: isLoading,
+        submitText: approveLabel,
+        palette: "success",
+        submitProps: {
+          "data-type": "Approve"
+        }
       }}
+      onClickSubmit={(event) => {
+        setValue("reviewResponse", "Paid")
+      }}
+      addonButtons={
+        <Button
+          type="submit"
+          data-type="Reject"
+          isLoading={isLoading}
+          disabled={isLoading}
+          onClick={() => {
+            //TODO: confirm reviewResponse
+            setValue("reviewResponse", "Reject")
+          }}
+          palette="danger"
+          variant="outlined"
+        >
+          <Trans zh="拒绝" en="Reject" />
+        </Button>
+      }
       onSubmit={onSubmit}
       isLoading={isLoading}
       result={result}
@@ -109,7 +142,7 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
       />
       <Input type="hidden" name="brandId" />
       <Input type="hidden" name="formId" />
-      <Input type="hidden" name="reviewResponse" value="Paid" />
+      {/* <Input type="hidden" name="reviewResponse" value="Paid" /> */}
     </FormDialog>
   )
 }

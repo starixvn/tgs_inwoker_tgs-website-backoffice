@@ -4,13 +4,15 @@ import { expect } from "chai"
 import numeral from "numeral"
 import faker from "faker"
 import { selectPlatformByCode } from "../page/content.js"
-import { manualDeposit, applyManualDepositForm, wallet } from "../player.js"
+// import { manualDeposit, applyManualDepositForm } from "../player.js"
+import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 const { finance } = faker
 
-test("verify player deposit and withdraw", async ({
+test("approve player deposit", async ({
   page,
+  operatorApi,
   platformCode,
   platformToken,
   player
@@ -18,6 +20,7 @@ test("verify player deposit and withdraw", async ({
   let depositAmount = 10
   let balance = await approveDeposit(
     page,
+    operatorApi,
     platformCode,
     platformToken,
     player,
@@ -27,6 +30,7 @@ test("verify player deposit and withdraw", async ({
 
 const approveDeposit = async (
   page,
+  operatorApi,
   platformCode,
   platformToken,
   player,
@@ -34,16 +38,16 @@ const approveDeposit = async (
 ) => {
   const DepositAccount = "account"
   const ExpectedDepositAmount = deposit
-  let formId = await manualDeposit(platformToken, player.token, {
-    account: DepositAccount,
-    amount: ExpectedDepositAmount
-  })
+  let [brandId, playerBalance, formId] = await Promise.all([
+    gotoFundDepositPage(page, platformCode),
+    operatorApi.wallet(platformToken, player.token),
+    operatorApi.deposit.applyManualDeposit(platformToken, player.token, {
+      account: DepositAccount,
+      amount: ExpectedDepositAmount
+    })
+  ])
 
-  await applyManualDepositForm(platformToken, player.token, formId)
-
-  let playerBalance = await wallet(platformToken, player.token)
   let expectedBalance = playerBalance + ExpectedDepositAmount
-  await gotoFundDepositPage(page, platformCode)
 
   await page.fill(`input[name="id"]`, formId)
   await Promise.all([
@@ -71,7 +75,7 @@ const approveDeposit = async (
   expect(path).to.be.not.empty
 
   let VerifyDepositDialogSelector = `#verify-deposit-dialog`
-  await page.click(`${VerifyDepositDialogSelector}-disclosure`)
+  await openDialog(page, VerifyDepositDialogSelector)
 
   await Promise.all([
     page.waitForResponse((response) => {
@@ -83,7 +87,6 @@ const approveDeposit = async (
     page.click(`${VerifyDepositDialogSelector} button[data-type="approve"]`)
   ])
 
-  let brandId = await page.inputValue(`select[name="brandId"]`)
   await Promise.all([
     page.waitForSelector(VerifyDepositDialogSelector, {
       state: "detached"
@@ -115,7 +118,7 @@ const approveDeposit = async (
   // let totalAmountString = await page.textContent(TotalAmountSelector)
   // expect(depositAmountString).to.equal(totalAmountString)
 
-  let balance = await wallet(platformToken, player.token)
+  let balance = await operatorApi.wallet(platformToken, player.token)
   expect(balance).to.equal(expectedBalance)
 }
 

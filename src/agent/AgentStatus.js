@@ -71,3 +71,11 @@ export const AgentStatusLabel = ({ value }) => {
   }
   return null
 }
+
+export default {
+  Enabled,
+  Disabled,
+  InBlacklist,
+  AgentStatusSelect,
+  AgentStatusLabel
+}

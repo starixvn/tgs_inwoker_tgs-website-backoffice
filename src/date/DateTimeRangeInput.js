@@ -18,8 +18,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import { Trans, useLocale, useTrans } from "../i18n"
 import DateTimeInput from "./DateTimeInput"
 import { toDate } from "./toDate"
-import min from "date-fns/min"
-import max from "date-fns/max"
+import { min, max } from "date-fns"
 import { isValid, differenceInDays } from "date-fns"
 import { DateDropdownMenu } from "./DateDropdownMenu"
 import { mapObjIndexed } from "ramda"
@@ -99,7 +98,8 @@ export const DateTimeRangeInput = ({
   showTimeInput = true,
   showDateDropdownMenu = false,
   required,
-  disabled
+  disabled,
+  ...props
 } = {}) => {
   let startName = startProps?.name ?? "start"
   let endName = endProps?.name ?? "end"
@@ -147,9 +147,10 @@ export const DateTimeRangeInput = ({
 
   return (
     <>
-      <Group>
+      <Group {...props}>
         {showDateDropdownMenu && (
           <DateDropdownMenu
+            id="date-range-dropdown-menu"
             onClick={({ type, start, end }) => {
               formMethods?.setValue(startName, start)
               formMethods?.setValue(endName, end)

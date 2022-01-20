@@ -26,10 +26,9 @@ import { InputField } from "../../input/Input"
 import { Code } from "./menu"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
-import subDays from "date-fns/subDays"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
-import startOfToday from "date-fns/startOfToday"
+import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { useAgentContributionList, API } from "./client"
@@ -40,8 +39,8 @@ import lastOf, { isLastIndex } from "../../list/last"
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons"
 import BrandBar from "../../report/BrandBar"
 import { isDev } from "../../env"
+import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
-import { DateButtons } from "../../date/DateButtons"
 
 export { Code }
 
@@ -155,18 +154,14 @@ const ReportContent = ({ brandId }) => {
           />
           {data?.items?.length > 0 && (
             <Box>
-              <Button
+              <DownloadButton
                 id="export-report"
-                disabled={isLoading}
-                use="a"
+                isLoading={isLoading}
                 href={urlWith(
                   toSearchParams(),
                   `${API}/exportAgentContributions`
                 )}
-                download
-              >
-                <Trans zh="汇出" en="Export" />
-              </Button>
+              />
             </Box>
           )}
         </Level>

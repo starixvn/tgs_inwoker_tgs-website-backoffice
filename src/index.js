@@ -20,11 +20,27 @@ import {
   faChevronCircleDown,
   faChevronCircleUp
 } from "@fortawesome/free-solid-svg-icons"
+import clone from "clone-deep"
+import { cloneNotEmpty } from "./object/cloneNotEmpty"
+
+let themeOptions = cloneNotEmpty(window?.env?.theme)
+console.log("themeOptions", themeOptions)
 
 const theme = {
+  ...clone(window?.env?.theme),
   PageContent: {
     defaultProps: {
       breakpoint: "widescreen"
+    }
+  },
+  Table: {
+    HeadCell: {
+      styles: {
+        base: {
+          fontSize: "1rem",
+          padding: "0.6rem 1rem"
+        }
+      }
     }
   },
   icons: {

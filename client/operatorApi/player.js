@@ -4,7 +4,9 @@ import { api } from "./api.js"
 import FormData from "form-data"
 import { fileURLToPath } from "url"
 import fsExtra from "fs-extra"
+import { findManualPaymentChannelId } from "./withdraw.js"
 
+const { finance } = faker
 const { createReadStream } = fsExtra
 
 export const DefaultPassword = "TgsP@ssw0rd"
@@ -118,8 +120,80 @@ export const createAndLogin = async (
   return player
 }
 
+//TODO: able to cache result?
+let cache = new Map()
+export const bankInfoList = async (platformToken, playerToken) => {
+  let url = `${api()}/bankinfo`
+  let headers = {
+    "Content-Type": "application/json",
+    "brand-token": platformToken,
+    Token: playerToken
+  }
+
+  let result = await fetcher(url, {
+    headers,
+    cache
+  })
+  return (result && result.data) || []
+}
+
+export const findBankInfoIdByType = async (
+  platformToken,
+  playerToken,
+  type = "Bank"
+) => {
+  let list = await bankInfoList(platformToken, playerToken)
+  let bankInfo = list.find(({ banktype }) => banktype === type)
+  return bankInfo && bankInfo.id
+}
+
+export const addManualBankCard = async (
+  platformToken,
+  playerToken,
+  {
+    paymentchannelid,
+    bankAccount = finance.account(),
+    name = finance.accountName(),
+    bankName = "bankName",
+    bankBranch = "bankBranch"
+  } = {}
+) => {
+  if (!paymentchannelid) {
+    paymentchannelid = await findManualPaymentChannelId(
+      platformToken,
+      playerToken
+    )
+  }
+
+  let url = `${api()}/bankinfo`
+  let payload = {
+    banktype: "Bank",
+    paymentchannelid,
+    detail: {
+      bankName,
+      bankBranch,
+      name,
+      bankAccount
+    }
+  }
+  let headers = {
+    "Content-Type": "application/json",
+    "brand-token": platformToken,
+    Token: playerToken
+  }
+
+  let result = await fetcher(url, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers
+  })
+  return result
+}
+
 export default {
   create,
   login,
-  createAndLogin
+  createAndLogin,
+  addManualBankCard,
+  findBankInfoIdByType
 }

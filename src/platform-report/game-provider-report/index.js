@@ -17,23 +17,21 @@ import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { today, yesterday } from "../../date/range"
-import { useGameProviderReportList, API } from "./client"
-import subDays from "date-fns/subDays"
+import { useGameProviderReportList } from "./client"
+import { subDays } from "date-fns"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
-import startOfToday from "date-fns/startOfToday"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { urlWith } from "../../client"
 import { isDev } from "../../env"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { BrandGameProviderSelect } from "../../game/brandproviders/BrandGameProviderSelect"
 import { GameTypeSelect } from "../../game/GameType"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
-import { DateButtons } from "../../date/DateButtons"
+import DownloadButton from "../../button/DownloadButton"
 
 export { Code }
 
@@ -135,6 +133,17 @@ const ReportContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        getRowId={(row) => row.gameProviderId}
+        getRowProps={({ original: { isTotal } } = {}) => {
+          if (isTotal) {
+            return {
+              "data-row-type": "total",
+              backgroundColor: "white600",
+              fontWeight: "bold"
+            }
+          }
+          return {}
+        }}
         isSticky
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
@@ -171,6 +180,7 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
+            id="date-range"
             showDateDropdownMenu
             minDate={minDate}
             maxRangeDays={maxRangeDays}
@@ -195,9 +205,13 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "currencyCode",
+        id: "currencyCode",
+        accessor: (row) => row,
         Header: <Trans zh="币种" en="Currency" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value: { isTotal, currencyCode = "" } }) => {
+          return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
+        }
       }),
       numberColumn({
         accessor: "transactionCount",

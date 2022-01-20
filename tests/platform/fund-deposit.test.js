@@ -2,13 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-
-import {
-  manualDeposit,
-  applyManualDepositForm,
-  addManualBankCard,
-  applyManualWithdrawForm
-} from "../player.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
@@ -21,22 +14,38 @@ test("deposit and withdraw alarm on header", async ({
   page,
   platformToken,
   player,
-  host
+  host,
+  operatorApi
 }) => {
   await page.goto(host, { waitUntil: "networkidle" })
   let depositAmount = 10
-  let balance = await depositAlarm(page, platformToken, player, depositAmount)
+  let balance = await depositAlarm(
+    page,
+    operatorApi,
+    platformToken,
+    player,
+    depositAmount
+  )
 })
 
-const depositAlarm = async (page, platformToken, player, amount) => {
+const depositAlarm = async (
+  page,
+  operatorApi,
+  platformToken,
+  player,
+  amount
+) => {
   const DepositAccount = "account"
   const ExpectedDepositAmount = amount
 
-  let formId = await manualDeposit(platformToken, player.token, {
-    account: DepositAccount,
-    amount: ExpectedDepositAmount
-  })
-  await applyManualDepositForm(platformToken, player.token, formId)
+  let formId = await operatorApi.deposit.applyManualDeposit(
+    platformToken,
+    player.token,
+    {
+      account: DepositAccount,
+      amount: ExpectedDepositAmount
+    }
+  )
 
   let AlarmSelector = `#fund-deposit-notify`
   await page.waitForSelector(AlarmSelector, {
@@ -49,9 +58,11 @@ const depositAlarm = async (page, platformToken, player, amount) => {
   let unprocessed = numeral(unprocessedString).value()
   expect(unprocessed).to.be.above(0)
 
-  await approveFundDeposit(page, formId)
+  //TODO: test unprocessed after approve deposit
+  // await approveFundDeposit(page, formId)
 }
 
+//TODO: use backofficeApi instead
 const approveFundDeposit = async (page, formId) => {
   await gotoFundDepositPage(page)
   await page.fill(`input[name="id"]`, formId)

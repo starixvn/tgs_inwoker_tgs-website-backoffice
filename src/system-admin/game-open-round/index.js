@@ -8,7 +8,7 @@ import {
   useUserRoleId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { Code, Update } from "./menu"
+import { Code, Update, ViewGameAction } from "./menu"
 import { ellipsisTextColumn, textColumn } from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useForm, FormProvider } from "react-hook-form"
@@ -19,7 +19,7 @@ import AlertDialog from "../../dialog/Alert"
 import { Trans, useTrans, getAcceptLangCulture, useLangCode } from "../../i18n"
 import { useLanguageList } from "../../language/client"
 import equals from "fast-deep-equal"
-import { useOpenGameRoundList } from "./client"
+import { useOpenGameRoundList, useCloseGameOpenRound } from "./client"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
@@ -30,9 +30,10 @@ import {
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import subDays from "date-fns/subDays"
-import { CloseGameOpenRoundDialogDisclosure } from "./CloseGameOpenRound"
+import { subDays } from "date-fns"
+import { SettleGameRoundDialogDisclosure } from "./SettleGameRound"
 import copy from "clipboard-copy"
+import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 
 export { Code }
 
@@ -185,6 +186,8 @@ const SearchBar = ({
 
 const useColumns = ({ items = [], mutate }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+  let viewGameActionAuth = useIsDisplayMenuByRoute([ViewGameAction])
+
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
@@ -287,12 +290,16 @@ const useColumns = ({ items = [], mutate }) => {
           Cell: ({ value: record }) => {
             let { id: roundId } = record
             return (
-              <CloseGameOpenRoundDialogDisclosure
-                id="close-game-open-round-dialog-disclosure"
-                roundId={roundId}
-                record={record}
-                onSubmitted={mutate}
-              />
+              <Set alignX="center">
+                <SettleGameRoundDialogDisclosure
+                  id="settle-game-round-dialog-disclosure"
+                  roundId={roundId}
+                  record={record}
+                  useUpdate={useCloseGameOpenRound}
+                  onSubmitted={mutate}
+                />
+                <GameActionDialogDisclosure roundId={roundId} />
+              </Set>
             )
           }
         })

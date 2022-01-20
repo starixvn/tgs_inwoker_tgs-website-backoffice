@@ -5,7 +5,13 @@ export const fetcher = async (...args) => {
     let response = await got(...args).catch(({ response, ...error }) => {
       return response
     })
-    let result = JSON.parse(response.body)
+    let result
+    try {
+      //TODO: check header -> content-type: application/json; charset=utf-8 before parse?
+      result = JSON.parse(response.body)
+    } catch {
+      result = response.body
+    }
     if (response.statusCode >= 400) {
       console.warn(`http ${response.statusCode}: `, result)
       return Promise.reject(result)

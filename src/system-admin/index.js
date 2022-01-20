@@ -5,7 +5,8 @@ import { CodeContentPair as LanguagePair } from "./language"
 import { CodeContentPair as CurrencyPair } from "./currency"
 import { CodeContentPair as BetLimitPair } from "./betlimit"
 import { CodeContentPair as SettingsPair } from "./setting"
-import { CodeContentPair as GameRoundPair } from "./game-round"
+import { CodeContentPair as GameRoundPair } from "./game-open-round"
+import { CodeContentPair as GameResettleOpenedRoundPair } from "./game-resettle-opened-round"
 import { CodeContentPair as PlatformGameProviderPair } from "./platform-game-provider"
 import { Switch } from "../content"
 import { Code, DefaultCodePath, Menu } from "./menu"
@@ -20,6 +21,7 @@ const pairs = () => [
   BetLimitPair,
   SettingsPair,
   GameRoundPair,
+  GameResettleOpenedRoundPair,
   PlatformGameProviderPair
 ]
 

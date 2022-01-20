@@ -1,0 +1,46 @@
+import React from "react"
+import { getTrans } from "../../i18n"
+
+export const Code = "resettlegameround"
+
+export const View = "view"
+
+export const Update = "update"
+
+export const ViewGameAction = "viewgameaction"
+
+export const label = (codes = [], locale = Locales.zh) => {
+  let [code = ""] = codes
+  code = code.toLowerCase()
+
+  switch (code) {
+    case View:
+      return getTrans(
+        {
+          zh: "查看",
+          en: "View"
+        },
+        locale
+      )
+    case ViewGameAction:
+      return getTrans(
+        {
+          zh: "查看游戏纪录",
+          en: "View Game Action"
+        },
+        locale
+      )
+    case Update:
+      return getTrans(
+        {
+          zh: "编辑",
+          en: "Edit"
+        },
+        locale
+      )
+    default:
+      return ""
+  }
+}
+
+export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]

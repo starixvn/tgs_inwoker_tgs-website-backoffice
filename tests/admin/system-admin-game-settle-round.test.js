@@ -5,30 +5,46 @@ import { format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
 import { selectByValue } from "../page/select.js"
 import { selectPlatformByCode } from "../page/content.js"
-import { placeBet } from "../sbo-game-provider.js"
+import { openDialog } from "../page/dialog.js"
 import faker from "faker"
 
 const test = base.extend(Fixture)
 const { lorem, phone, datatype, image, finance, internet, commerce } = faker
 
-test("close open round", async ({ page, player, backofficeApi }) => {
+test("settle game round", async ({
+  page,
+  player,
+  backofficeApi,
+  sboGameProviderApi
+}) => {
   let walletAmount = 100
   await backofficeApi.player.addBalance(player.code, {
     amount: walletAmount
   })
 
   let amount = 10
-  let { externalRoundId, ...result } = await placeBet({
+  let { externalRoundId, ...result } = await sboGameProviderApi.placeBet({
     amount,
     playerCode: player.code
   })
 
-  await gotoGameRoundPage(page)
+  await gotoGameOpenRoundPage(page)
+  await settleGameRoundBy(page, externalRoundId, OpenRound)
 
-  await closeGameRoundBy(page, externalRoundId)
+  await gotoGameResettleOpenedRoundPage(page)
+  await settleGameRoundBy(page, externalRoundId, ResettleOpenedRound)
 })
 
-const closeGameRoundBy = async (page, externalRoundId) => {
+const OpenRound = "OpenRound"
+const ResettleOpenedRound = "Resettle"
+
+const isSettleOpenRound = (type) => type === OpenRound
+
+const settleGameRoundBy = async (
+  page,
+  externalRoundId,
+  type = Settle.OpenRound
+) => {
   await page.fill(`input[name="externalRoundId"]`, externalRoundId)
 
   await Promise.all([
@@ -41,8 +57,8 @@ const closeGameRoundBy = async (page, externalRoundId) => {
     page.click(`button[type="submit"]`)
   ])
 
-  let DialogSelector = `#close-game-open-round-dialog`
-  await page.click(`${DialogSelector}-disclosure`)
+  let DialogSelector = `#settle-game-round-dialog`
+  await openDialog(page, DialogSelector)
 
   let round = {
     externalClosedOn: format(new Date(), "yyyy/MM/dd"),
@@ -90,21 +106,40 @@ const closeGameRoundBy = async (page, externalRoundId) => {
     round.clientRoundStatus
   )
 
+  await page.fill(
+    `${DialogSelector} input[name="adjustAmount"]`,
+    `${round.adjustAmount}`
+  )
+
   await page.fill(`${DialogSelector} [name="remark"]`, round.remark)
 
   await page.click(`${DialogSelector} button[data-type="confirm"]`)
 
-  await Promise.all([
+  let expectedUrl = isSettleOpenRound(type)
+    ? "/closegameround"
+    : "/adjustclosedround"
+
+  let [settleResponse] = await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().toLowerCase().endsWith("/closegameround") &&
+        response.url().toLowerCase().endsWith(expectedUrl) &&
         response.status() === 200
       )
     }),
     page.click(`#confirm-dialog button[type="submit"]`)
   ])
+  let result = await settleResponse.json()
+
+  expect(result.valid).to.be.true
+  return result
 }
 
-const gotoGameRoundPage = async (page) => {
+const gotoGameOpenRoundPage = async (page) => {
   await page.goto("/systemadmin/gameround", { waitUntil: "networkidle" })
+}
+
+const gotoGameResettleOpenedRoundPage = async (page) => {
+  await page.goto("/systemadmin/resettlegameround", {
+    waitUntil: "networkidle"
+  })
 }

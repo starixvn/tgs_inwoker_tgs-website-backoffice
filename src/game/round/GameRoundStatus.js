@@ -63,7 +63,7 @@ export const GameRoundStatusLabel = ({ value }) => {
   }
 }
 
-export const useGameRoundStatusOptions = () => {
+export const useGameRoundStatusOptions = (filter) => {
   return [
     {
       value: Win,
@@ -87,20 +87,22 @@ export const useGameRoundStatusOptions = () => {
     }
   ]
 }
-export const GameRoundStatusSelect = ({ placeholder, ...props }) => {
+export const GameRoundStatusSelect = ({ placeholder, options, ...props }) => {
   let defaultPlaceholder = useTrans({
     zh: "状态",
     en: "Status"
   })
   placeholder = placeholder ?? defaultPlaceholder
 
-  let options = useGameRoundStatusOptions()
+  let defaultOptions = useGameRoundStatusOptions()
+  options = options ?? defaultOptions
+
   return <Select placeholder={placeholder} options={options} {...props} />
 }
 
 export const GameRoundStatusSelectField = ({
   placeholder,
-  option,
+  options,
   ...props
 }) => {
   let defaultPlaceholder = useTrans({
@@ -110,9 +112,9 @@ export const GameRoundStatusSelectField = ({
   placeholder = placeholder ?? defaultPlaceholder
 
   let defaultOptions = useGameRoundStatusOptions()
-  option = option ?? defaultOptions
+  options = options ?? defaultOptions
 
-  return <SelectField placeholder={placeholder} option={option} {...props} />
+  return <SelectField placeholder={placeholder} options={options} {...props} />
 }
 
 export default GameRoundStatus
