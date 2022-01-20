@@ -114,6 +114,8 @@ const VerifyFundWithdrawDialog = ({
       formMethods={formMethods}
       defaultValues={clone({ ...fundWithdrawForm })}
       actionButtonsProps={{
+        isLoading: isLoading,
+        disabled: isLoading,
         submitText: approveLabel,
         palette: "success",
         submitProps: {
@@ -127,6 +129,8 @@ const VerifyFundWithdrawDialog = ({
         <Button
           type="submit"
           data-type="reject"
+          isLoading={isLoading}
+          disabled={isLoading}
           onClick={() => {
             setValue("reviewResponse", ReviewFund.Reject)
           }}
