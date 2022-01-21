@@ -21,25 +21,10 @@ test.skip("platform game provider report", async ({
   })
 
   let betAmount = 10
-  let { externalRoundId, ...result } = await sboGameProviderApi.placeBet({
+  await sboGameProviderApi.placeLoseBet({
     amount: betAmount,
     playerCode: player.code
   })
-
-  let openRound = await backofficeApi.round.findOpenRound({ externalRoundId })
-  console.log("openRound", openRound)
-  const TwoHours = 2 //report only aggregate round to prev hour
-  let round = {
-    ...openRound,
-    externalClosedOn: subHours(new Date(), TwoHours).toISOString(),
-    validBetAmount: betAmount,
-    settleAmount: 0,
-    commission: 0,
-    turnover: betAmount,
-    winLoss: 0,
-    clientRoundStatus: "Loss" // Win, Loss, Draw, or Void
-  }
-  await backofficeApi.round.settleOpenRound(openRound.id, round)
 
   await reportApi.aggregateRound()
   await reportApi.aggregatePlayer()
