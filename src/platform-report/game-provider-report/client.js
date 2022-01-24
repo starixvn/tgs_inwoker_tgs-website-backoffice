@@ -25,10 +25,18 @@ export const useGameProviderReportList = (searchParams) => {
   items = items?.reduce?.((acc, items, index, list) => {
     let [{ currencyCode }] = items
 
+    let total = data?.totals?.find(propEq("currencyCode", currencyCode))
+    if (total) {
+      let row = {
+        ...clone(total),
+        isTotal: true
+      }
+      acc.push(row)
+    }
+
     let sortedItems = sortBy(items, ["gameProviderName"])
     acc.push(...clone(sortedItems))
 
-    let total = data?.totals?.find(propEq("currencyCode", currencyCode))
     if (total) {
       let row = {
         ...clone(total),
