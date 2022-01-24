@@ -133,13 +133,23 @@ const ReportContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        getRowId={(row) => row.gameProviderId}
-        getRowProps={({ original: { isTotal } } = {}) => {
+        // getTableHeadProps={() => {
+        //   return {
+        //     zIndex: state.pageSize
+        //   }
+        // }}
+        getRowId={(row, index) => row.gameProviderId ?? index}
+        getRowProps={({ original: { isTotal }, index } = {}) => {
           if (isTotal) {
             return {
               "data-row-type": "total",
               backgroundColor: "white600",
               fontWeight: "bold"
+              /*
+              position: "sticky",
+              bottom: "0",
+              zIndex: state.pageSize - index
+              */
             }
           }
           return {}
@@ -200,9 +210,13 @@ const useColumns = ({ items = [] }) => {
   return useMemo(
     () => [
       textColumn({
-        accessor: "gameProviderName",
+        id: "gameProviderName",
+        accessor: (row) => row,
         Header: <Trans zh="游戏商" en="Game Provider" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value: { isTotal, gameProviderName } }) => {
+          return isTotal ? <Trans zh="共计" en="Total" /> : gameProviderName
+        }
       }),
       textColumn({
         id: "currencyCode",
@@ -210,7 +224,8 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="币种" en="Currency" />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
-          return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
+          return currencyCode
+          // return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
         }
       }),
       numberColumn({
