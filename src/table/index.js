@@ -293,26 +293,24 @@ const Body = ({ table }) => {
 
         let rowProps = table.getRowProps?.(row) || {}
         return (
-          <>
-            <Row
-              table={table}
-              data-row-id={row.id}
-              data-row-index={i}
-              {...row.getRowProps(rowProps)}
-            >
-              {row.cells.map((cell) => {
-                let props = cell.getCellProps({
-                  ...cell?.column?.cell
-                })
-                let columnId = cell?.column?.id || cell?.column?.accessor
-                return (
-                  <Cell {...props} data-column-id={columnId}>
-                    {cell.render("Cell")}
-                  </Cell>
-                )
-              })}
-            </Row>
-          </>
+          <Row
+            table={table}
+            data-row-id={row.id}
+            data-row-index={i}
+            {...row.getRowProps(rowProps)}
+          >
+            {row.cells.map((cell) => {
+              let props = cell.getCellProps({
+                ...cell?.column?.cell
+              })
+              let columnId = cell?.column?.id || cell?.column?.accessor
+              return (
+                <Cell {...props} data-column-id={columnId}>
+                  {cell.render("Cell")}
+                </Cell>
+              )
+            })}
+          </Row>
         )
       })}
       {!rows.length && (
