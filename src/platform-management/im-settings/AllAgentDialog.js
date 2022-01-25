@@ -412,6 +412,7 @@ const WinLossSettingDialogDisclosure = ({
           useUpdate={useUpdateAllAgentWinLossCondition}
           dialog={dialog}
           title={label}
+          netProfitLabel={<Trans zh="输赢金额" en="Win Loss" />}
           profitSharingPercentageLabel={
             <Trans zh="返佣比例" en="Rebate Percentage" />
           }

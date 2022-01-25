@@ -7,6 +7,10 @@ export const View = "view"
 
 export const Update = "update"
 
+export const UpdateIngress = "updateingress"
+
+export const UpdateDnsZone = "updatednszone"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {
@@ -30,6 +34,10 @@ export const label = (codes = [], locale = Locales.zh) => {
         },
         locale
       )
+    case UpdateIngress:
+      return "Edit Ingress"
+    case UpdateDnsZone:
+      return "Edit DNS Zone"
     default:
       return ""
   }
