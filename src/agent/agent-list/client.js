@@ -93,3 +93,24 @@ export const useDeleteAgentDomain = (brandId, agentId, domain) => {
       : ""
   return useDelete(url)
 }
+
+const DomainSettingApi = "/api/DomainSetting"
+export const useApplyAgentIngress = (agentId) => {
+  let url = agentId ? `${DomainSettingApi}/ingress/${agentId}` : ""
+  return usePut(url)
+}
+
+export const useDeleteAgentIngress = (agentId) => {
+  let url = agentId ? `${DomainSettingApi}/ingress/${agentId}` : ""
+  return useDelete(url)
+}
+
+export const useCreateAgentDnsZone = (agentId) => {
+  let url = agentId ? `${DomainSettingApi}/dns-zone/${agentId}` : ""
+  return usePut(url)
+}
+
+export const useDeleteAgentDnsZone = (agentId) => {
+  let url = agentId ? `${DomainSettingApi}/dns-zone/${agentId}` : ""
+  return useDelete(url)
+}

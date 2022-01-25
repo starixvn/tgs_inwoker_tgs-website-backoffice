@@ -8,7 +8,12 @@ import faker from "faker"
 const test = base.extend(Fixture)
 const { lorem, internet } = faker
 
-console.warn("TODO: agent list test")
+test.skip("add and edit agent, search agent list", async ({
+  page,
+  platformCode
+}) => {
+  
+})
 /*
 let browser
 let context

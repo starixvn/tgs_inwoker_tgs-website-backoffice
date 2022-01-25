@@ -18,8 +18,7 @@ import {
   pluck
 } from "ramda"
 import clone from "clone-deep"
-import startOfDay from "date-fns/startOfDay"
-import isSameDay from "date-fns/isSameDay"
+import { isSameDay } from "date-fns"
 import { toDate } from "../../date/toDate"
 import Big from "big.js"
 

@@ -4,13 +4,14 @@ environments:
   - name: default # The name of the environment.
 providers:
   - name: local-kubernetes # The name of the provider plugin to use.
-    setupIngressController: false
+    setupIngressController: "nginx"
 
 ---
 kind: Module
 type: container
 name: backoffice-site
 dockerfile: Dockerfile
+disabled: false
 exclude:
   - garden
   - spec
@@ -22,6 +23,8 @@ services:
       MODE: "production"
       LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
       HEADER_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS-w.png"
+      THEME_PALETTE_PRIMARY: "#3575dd"
+      THEME_PALETTE_PRIMARYTINT: "#ebf3fe"
       # LOGIN_TITLE: "PG"
       # LOGIN_SUB_TITLE: "ADMIN"
       # HEADER_TITLE: "PG ADMIN"
@@ -45,6 +48,8 @@ services:
       - backoffice-api
     env:
       MODE: "development"
+      THEME_PALETTE_PRIMARY: "#3575dd"
+      THEME_PALETTE_PRIMARYTINT: "#ebf3fe"
       LOGIN_BUTTON_COLOR: "rgb(33, 33, 33)"
       LOGIN_BUTTON_BACKGROUND: "rgb(247, 247, 250)"
       HEADER_BACKGROUND: "#f7f7fa"

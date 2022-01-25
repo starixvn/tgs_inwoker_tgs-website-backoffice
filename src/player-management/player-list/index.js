@@ -28,6 +28,7 @@ import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { ReviewPlayerIdDialogDisclosure } from "./ReviewPlayerIdDialog"
 
 export { Code }
 
@@ -120,6 +121,7 @@ const BodyContent = ({ brandId = "" }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        getRowId={(row) => row.playerCode}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -256,22 +258,26 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
         },
         accessor: (row) => row,
         Cell: ({ value }) => {
+          let { playerCode } = value
           return (
-            <Box alignX="center">
-              <Set>
-                <ViewButton
-                  id="view-player-dialog-disclosure"
-                  player={value}
-                  brandId={brandId}
-                />
-                <EditButton
-                  id="edit-player-dialog-disclosure"
-                  brandId={brandId}
-                  player={value}
-                  onSubmitted={mutate}
-                />
-              </Set>
-            </Box>
+            <Set alignX="center">
+              <ViewButton
+                id="view-player-dialog-disclosure"
+                player={value}
+                brandId={brandId}
+              />
+              <EditButton
+                id="edit-player-dialog-disclosure"
+                brandId={brandId}
+                player={value}
+                onSubmitted={mutate}
+              />
+              {/* <ReviewPlayerIdDialogDisclosure
+                id="review-player-id-dialog-disclosure"
+                brandId={brandId}
+                playerCode={playerCode}
+              /> */}
+            </Set>
           )
         }
       })

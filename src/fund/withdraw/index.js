@@ -56,17 +56,12 @@ import { VerifyFundWithdrawDisclosure } from "./VerifyFundWithdraw"
 import { PaymentMethodSelect } from "../../payment/method/PaymentMethod"
 import { UserTypeLabel } from "./UserType"
 import maxTime from "date-fns/max"
-import isEqualTime from "date-fns/isEqual"
-import isSameDay from "date-fns/isSameDay"
-import isAfter from "date-fns/isAfter"
-import parseISO from "date-fns/parseISO"
 import isValidTime from "date-fns/isValid"
-import { sortBy, head } from "lodash-es"
 import clone from "clone-deep"
 import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
-import subDays from "date-fns/subDays"
+import { subDays, parseISO, isAfter, isSameDay } from "date-fns"
 import { useBrandPaymentList } from "../../system/brandpayments/client"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import { FundWithdrawPaidDialogDisclosure } from "./FundWithdrawPaid"
@@ -463,7 +458,7 @@ const SearchBar = ({
               name="method"
               placeholder={paymentMethodPlaceholder}
             /> */}
-            <FundWithdrawStatusSelect name="status" />
+            <FundWithdrawStatusSelect id="status-select" name="status" />
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}
@@ -600,9 +595,9 @@ const useColumns = ({
             let { brandPaymentId } = value
             let underReview = isFundUnderReview(value?.status)
 
-            let reviewManualPaid =
-              isFundApproved(value?.status) &&
+            let reviewPaid = isFundApproved(value?.status) /* &&
               manualBrandPaymentIdList.includes(brandPaymentId)
+              */
             return (
               <Set alignX="center">
                 {underReview && (
@@ -617,9 +612,9 @@ const useColumns = ({
                     }}
                   />
                 )}
-                {reviewManualPaid && (
+                {reviewPaid && (
                   <FundWithdrawPaidDialogDisclosure
-                    id="fund-withdraw-paid-dialog-disclosure"
+                    id="review-paid-dialog-disclosure"
                     brandId={brandId}
                     formId={value.id}
                     onSubmitted={mutate}

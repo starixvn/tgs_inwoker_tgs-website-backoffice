@@ -18,19 +18,18 @@ import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
 import { useVipReportList, API } from "./client"
-import subDays from "date-fns/subDays"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
-import startOfToday from "date-fns/startOfToday"
+import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import VipLevelSelect from "../../vip-levels/VipLevelSelect"
 import { PlayerRebatDialogDisclosure } from "./PlayerRebateReport"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
-import { DateButtons } from "../../date/DateButtons"
+import DownloadButton from "../../button/DownloadButton"
 
 export { Code }
 
@@ -129,15 +128,11 @@ const ReportContent = ({ brandId }) => {
           />
           {data?.items?.length > 0 && (
             <Box>
-              <Button
+              <DownloadButton
                 id="export-report"
-                disabled={isLoading}
-                use="a"
+                isLoading={isLoading}
                 href={urlWith(toSearchParams(), `${API}/exportVips`)}
-                download
-              >
-                <Trans zh="汇出" en="Export" />
-              </Button>
+              />
             </Box>
           )}
         </Level>
@@ -195,6 +190,7 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
+            id="date-range"
             showDateDropdownMenu
             minDate={minDate}
             maxRangeDays={maxRangeDays}

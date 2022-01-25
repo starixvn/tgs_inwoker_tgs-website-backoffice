@@ -67,7 +67,7 @@ const Body = ({ player, mainWallet, transferWallets = [] }) => {
       </Blockquote>
       <Blockquote borderColor="primary">
         <Trans zh="主錢包：" en="Main wallet：" />
-        <FormattedNumberDecimal value={mainWallet?.balance} />
+        <FormattedNumberDecimal id="main-wallet" value={mainWallet?.balance} />
       </Blockquote>
       <Table columns={columns} data={items} />
     </>

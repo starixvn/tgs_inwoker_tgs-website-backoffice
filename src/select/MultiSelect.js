@@ -2,8 +2,62 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Select, Input } from "bumbag"
 import { Trans, useTrans } from "../i18n"
-import ReactSelect from "react-select"
+import ReactSelect, { components } from "react-select"
 import { useForm, useFormContext, Controller, useWatch } from "react-hook-form"
+
+const Option = ({ data, innerProps, ...props } = {}) => {
+  return (
+    <components.Option
+      data={data}
+      innerProps={{
+        "data-option-value": data?.value,
+        ...innerProps
+      }}
+      {...props}
+    />
+  )
+}
+
+const DropdownIndicator = ({ children, innerProps, ...props } = {}) => {
+  return (
+    <components.DropdownIndicator
+      innerProps={{
+        id: "dropdown-indicator",
+        ...innerProps
+      }}
+      {...props}
+    >
+      {children}
+    </components.DropdownIndicator>
+  )
+}
+
+const MultiValueContainer = ({ data, innerProps, ...props }) => {
+  return (
+    <components.MultiValueContainer
+      data={data}
+      innerProps={{
+        "data-value": data?.value,
+        ...innerProps
+      }}
+      {...props}
+    />
+  )
+}
+
+const MenuList = ({ children, innerProps, ...props }) => {
+  return (
+    <components.MenuList
+      innerProps={{
+        id: "menu-list",
+        ...innerProps
+      }}
+      {...props}
+    >
+      {children}
+    </components.MenuList>
+  )
+}
 
 export const MultiSelect = ({
   name,
@@ -64,6 +118,12 @@ export const MultiSelect = ({
             onChange={(data) => {
               let value = data.map(({ value }) => value)
               formContext.setValue(name, value)
+            }}
+            components={{
+              Option,
+              DropdownIndicator,
+              MultiValueContainer,
+              MenuList
             }}
             isMulti={isMulti}
             styles={{

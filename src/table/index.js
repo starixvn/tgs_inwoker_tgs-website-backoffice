@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react"
 import { css, Global } from "@emotion/react"
 import { Icon, Table as _Table, Pagination, Set, Spinner, Box } from "bumbag"
 import ReactTable, { useTable as _useTable } from "react-table"
@@ -82,7 +82,6 @@ export const toApiParams = (state) => {
 }
 
 // const isSticky = (position = "") => position == "sticky"
-
 export const Table = ({
   columns,
   data = [],
@@ -106,11 +105,20 @@ export const Table = ({
   foot = false,
   children,
   isSticky = false,
-  isHoverable,
+  components = {},
+  getTableHeadProps,
   ...props
 }) => {
+  components = {
+    ..._Table,
+    ...components
+  }
+
   let table = _useTable(
     {
+      components,
+      isSticky,
+      getTableHeadProps,
       columns,
       data,
       getRowId,
@@ -182,16 +190,11 @@ export const Table = ({
             }
           `}
         >
-          <_Table
-            width="100%"
-            {...table.getTableProps()}
-            isHoverable={isHoverable}
-            {...props}
-          >
-            {head === true && <Head table={table} isSticky={isSticky} />}
+          <_Table width="100%" {...table.getTableProps()} {...props}>
+            {head === true && <Head table={table} />}
             {body === true && <Body table={table} />}
             {children}
-            {foot === true && <Foot table={table} isSticky={isSticky} />}
+            {foot === true && <Foot table={table} />}
           </_Table>
           {usePagination && pageCount > 0 && (
             <Pagination
@@ -216,15 +219,18 @@ export const Table = ({
   )
 }
 
-const Head = ({ table, isSticky }) => {
-  let { headerGroups } = table
+const Head = ({ table }) => {
+  let { headerGroups, components, isSticky } = table
+  let { Head } = components
+  let tableHeadProps = table?.getTableHeadProps?.({ table }) ?? {}
   return (
-    <_Table.Head
+    <Head
       css={css`
         position: ${isSticky ? "sticky" : "relative"};
         top: 0;
         z-index: ${isSticky ? "1" : "auto"};
       `}
+      {...tableHeadProps}
     >
       {headerGroups.map((headerGroup) => (
         <_Table.Row {...headerGroup.getHeaderGroupProps()}>
@@ -250,14 +256,16 @@ const Head = ({ table, isSticky }) => {
           })}
         </_Table.Row>
       ))}
-    </_Table.Head>
+    </Head>
   )
 }
 
-const Foot = ({ table, isSticky }) => {
-  let { footerGroups } = table
+const Foot = ({ table }) => {
+  let { footerGroups, components, isSticky } = table
+  let { Foot } = components
+  let tableFootProps = table?.getTableFootProps?.({ table }) ?? {}
   return (
-    <_Table.Foot fontWeight="semibold">
+    <Foot fontWeight="semibold" {...tableFootProps}>
       {footerGroups.map((group) => (
         <_Table.Row {...group.getFooterGroupProps()}>
           {group.headers.map((column) => (
@@ -271,20 +279,22 @@ const Foot = ({ table, isSticky }) => {
           ))}
         </_Table.Row>
       ))}
-    </_Table.Foot>
+    </Foot>
   )
 }
 
 const Body = ({ table }) => {
-  let { rows, getTableBodyProps, prepareRow, columns } = table
+  let { rows, getTableBodyProps, prepareRow, columns, components } = table
+  let { Body, Row, Cell } = components
   return (
-    <_Table.Body {...getTableBodyProps()}>
+    <Body {...getTableBodyProps()}>
       {rows.map((row, i) => {
         prepareRow(row)
 
         let rowProps = table.getRowProps?.(row) || {}
         return (
-          <_Table.Row
+          <Row
+            table={table}
             data-row-id={row.id}
             data-row-index={i}
             {...row.getRowProps(rowProps)}
@@ -295,22 +305,22 @@ const Body = ({ table }) => {
               })
               let columnId = cell?.column?.id || cell?.column?.accessor
               return (
-                <_Table.Cell {...props} data-column-id={columnId}>
+                <Cell {...props} data-column-id={columnId}>
                   {cell.render("Cell")}
-                </_Table.Cell>
+                </Cell>
               )
             })}
-          </_Table.Row>
+          </Row>
         )
       })}
       {!rows.length && (
-        <_Table.Row>
-          <_Table.Cell textAlign="center" colSpan={columns.length}>
+        <Row>
+          <Cell textAlign="center" colSpan={columns.length}>
             <Trans zh="查无资料" en="No Search Result" />
-          </_Table.Cell>
-        </_Table.Row>
+          </Cell>
+        </Row>
       )}
-    </_Table.Body>
+    </Body>
   )
 }
 

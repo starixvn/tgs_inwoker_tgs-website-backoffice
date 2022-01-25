@@ -9,6 +9,8 @@ export const DownloadButton = ({
   isLoading,
   disabled,
   whiteSpace = "nowrap",
+  variant = "outlined",
+  palette = "primary",
   children,
   ...props
 }) => (
@@ -18,6 +20,8 @@ export const DownloadButton = ({
     isLoading={isLoading}
     disabled={disabled || isLoading}
     whiteSpace={whiteSpace}
+    // variant={variant}
+    // palette={palette}
     {...props}
   >
     <Trans zh="汇出" en="Export" />

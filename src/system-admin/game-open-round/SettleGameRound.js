@@ -41,9 +41,10 @@ import DateTimeInput from "../../date/DateTimeInput"
 import Separator from "../../layout/Separator"
 import { usePlayerMainWallet } from "../../player-management/player-list/client"
 
-export const CloseGameOpenRoundDialogDisclosure = ({
+export const SettleGameRoundDialogDisclosure = ({
   roundId,
   record,
+  useUpdate = useCloseGameOpenRound,
   onSubmitted,
   ...props
 }) => {
@@ -60,9 +61,10 @@ export const CloseGameOpenRoundDialogDisclosure = ({
         <Trans zh="结算" en="Close" />
       </Disclosure>
       {dialog.visible && (
-        <CloseGameOpenRoundDialog
+        <SettleGameRoundDialog
           roundId={roundId}
           record={record}
+          useUpdate={useUpdate}
           dialog={dialog}
           onSubmitted={onSubmitted}
         />
@@ -71,22 +73,23 @@ export const CloseGameOpenRoundDialogDisclosure = ({
   )
 }
 
-const CloseGameOpenRoundDialog = ({
+const SettleGameRoundDialog = ({
   roundId,
   record = {},
+  useUpdate,
   onSubmitted,
   dialog
 }) => {
   let title = useTrans({
     zh: "结算订单",
-    en: "Close Open Round"
+    en: "Settle Round"
   })
 
   let formRef = useRef()
   let confirmSubmitDialog = useModalState()
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } = useCloseGameOpenRound(
+  let { isLoading, result, error, mutate, deleteCache } = useUpdate(
     roundId,
     formData
   )
@@ -103,7 +106,7 @@ const CloseGameOpenRoundDialog = ({
 
   return (
     <FormDialog
-      id="close-game-open-round-dialog"
+      id="settle-game-round-dialog"
       formRef={formRef}
       defaultValues={{
         ...clone(record),

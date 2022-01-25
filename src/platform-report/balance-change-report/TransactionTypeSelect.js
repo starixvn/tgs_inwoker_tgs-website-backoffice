@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { useTrans, Trans } from "../../i18n"
 import { Select } from "../../select/Select"
+import { GameActionTypeLabel } from "../../game/GameActionType"
 
 const GameProviderDeposit = "GameProviderDeposit"
 const GameProviderDepositTrans = {
@@ -20,6 +21,30 @@ const UnsettledBetManual = "UnsettledBetManual"
 const UnsettledBetManualTrans = {
   zh: "未结算单手动处理",
   en: "Unsettled Bet(Manual)"
+}
+
+const PromotionVipLevelUpgrade = "PromotionVipLevelUpgrade"
+const PromotionVipLevelUpgradeTrans = {
+  zh: "VIP晋升福利",
+  en: "VIP Promotion Benefit"
+}
+
+const PromotionVipLevelSeason = "PromotionVipLevelSeason"
+const PromotionVipLevelSeasonTrans = {
+  zh: "VIP季度福利",
+  en: "VIP Quarterly Benefit"
+}
+
+const DividendAllAgentRebate = "DividendAllAgentRebate"
+const DividendAllAgentRebateTrans = {
+  zh: "全民代理返水",
+  en: "All Agent Rebate"
+}
+
+const AdjustResettledBetManual = "AdjustResettledBetManual"
+const AdjustResettledBetManualTrans = {
+  zh: "已结算单再调整",
+  en: "Settled Bet Readjusted"
 }
 
 const GameProviderFundIn = "GameProviderFundIn"
@@ -81,59 +106,6 @@ const CancelWithdrawalTrans = {
   en: "Cancel Withdrawal"
 }
 
-const PlaceBet = "PlaceBet"
-const PlaceBetTrans = {
-  zh: "投注",
-  en: "Place Bet"
-}
-
-const WinBet = "WinBet"
-const WinBetTrans = {
-  zh: "赢",
-  en: "Win Bet"
-}
-
-const LoseBet = "LoseBet"
-const LoseBetTrans = {
-  zh: "输",
-  en: "Lose Bet"
-}
-
-const FreeBet = "FreeBet"
-const FreeBetTrans = {
-  zh: "免费投注",
-  en: "FreeB et"
-}
-
-const TieBet = "TieBet"
-const TieBetTrans = {
-  zh: "和局",
-  en: "Tie Bet"
-}
-
-const CancelTransaction = "CancelTransaction"
-const CancelTransactionTrans = {
-  zh: "取消投注",
-  en: "Cancel Transaction"
-}
-const LockAmount = "LockAmount"
-const LockAmountTrans = {
-  zh: "锁定金额",
-  en: "Lock Amount"
-}
-
-const UnlockAmount = "UnlockAmount"
-const UnlockAmountTrans = {
-  zh: "解锁金额",
-  en: "Unlock Amount"
-}
-
-const WinJackpot = "WinJackpot"
-const WinJackpotTrans = {
-  zh: "赢 Jackpot",
-  en: "Win Jackpot"
-}
-
 export const TransactionTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTrans({
     zh: "交易类型",
@@ -157,6 +129,10 @@ export const TransactionTypeSelect = ({ placeholder, ...props }) => {
     {
       label: useTrans(UnsettledBetManualTrans),
       value: UnsettledBetManual
+    },
+    {
+      label: useTrans(AdjustResettledBetManualTrans),
+      value: AdjustResettledBetManual
     }
   ]
 
@@ -173,6 +149,14 @@ export const TransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...GameProviderWithdrawalTrans} />
     case UnsettledBetManual:
       return <Trans {...UnsettledBetManualTrans} />
+    case PromotionVipLevelUpgrade:
+      return <Trans {...PromotionVipLevelUpgradeTrans} />
+    case PromotionVipLevelSeason:
+      return <Trans {...PromotionVipLevelSeasonTrans} />
+    case DividendAllAgentRebate:
+      return <Trans {...DividendAllAgentRebateTrans} />
+    case AdjustResettledBetManual:
+      return <Trans {...AdjustResettledBetManualTrans} />
     case Deposit:
       return <Trans {...DepositTrans} />
     case Withdrawal:
@@ -191,25 +175,8 @@ export const TransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...GameProviderFundOutTrans} />
     case CancelWithdrawal:
       return <Trans {...CancelWithdrawalTrans} />
-    case PlaceBet:
-      return <Trans {...PlaceBetTrans} />
-    case WinBet:
-      return <Trans {...WinBetTrans} />
-    case LoseBet:
-      return <Trans {...LoseBetTrans} />
-    case FreeBet:
-      return <Trans {...FreeBetTrans} />
-    case TieBet:
-      return <Trans {...TieBetTrans} />
-    case CancelTransaction:
-      return <Trans {...CancelTransactionTrans} />
-    case LockAmount:
-      return <Trans {...LockAmountTrans} />
-    case UnlockAmount:
-      return <Trans {...UnlockAmountTrans} />
-    case WinJackpot:
-      return <Trans {...WinJackpotTrans} />
+
     default:
-      return value
+      return <GameActionTypeLabel value={value} />
   }
 }

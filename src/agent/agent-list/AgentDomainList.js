@@ -24,6 +24,14 @@ import { Trans, FormattedDateTime, FormattedNumber, useTrans } from "../../i18n"
 import { last } from "lodash-es"
 import DeleteButton from "../../button/DeleteButton"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import {
+  AgentIngressApplyButton,
+  AgentIngressDeleteButton
+} from "./AgentIngress"
+import {
+  AgentDnsZoneCreateButton,
+  AgentDnsZoneDeleteButton
+} from "./AgentDnsZone"
 
 const Key = "AgentDomainList"
 
@@ -82,16 +90,18 @@ const Body = ({ brandId, agentId, readOnly, ...props }) => {
 
   return (
     <TabPanel tabId={Key} {...props}>
-      <DomainList
-        brandId={brandId}
-        agentId={agentId}
-        domains={domains}
-        readOnly={readOnly}
-        onSubmitted={() => {
-          deleteCache()
-          mutate(null)
-        }}
-      />
+      <FieldStack>
+        <DomainList
+          brandId={brandId}
+          agentId={agentId}
+          domains={domains}
+          readOnly={readOnly}
+          onSubmitted={() => {
+            deleteCache()
+            mutate(null)
+          }}
+        />
+      </FieldStack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </TabPanel>
   )
