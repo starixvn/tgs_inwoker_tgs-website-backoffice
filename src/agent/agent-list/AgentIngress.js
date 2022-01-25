@@ -10,7 +10,7 @@ export const AgentIngressApplyButton = ({ agentId, ...props }) => {
 
   const reset = () => {
     setSubmit(undefined)
-    mutate(null)
+    mutate(null, false)
   }
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const AgentIngressApplyButton = ({ agentId, ...props }) => {
       >
         Apply Ingress
       </Button>
-      {error && <AlertDialog onClickClose={reset} />}
+      {error && <AlertDialog {...error} onClickClose={reset} />}
     </>
   )
 }
@@ -42,7 +42,7 @@ export const AgentIngressDeleteButton = ({ agentId, ...props }) => {
 
   const reset = () => {
     setSubmit(undefined)
-    mutate(null)
+    mutate(null, false)
   }
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export const AgentIngressDeleteButton = ({ agentId, ...props }) => {
       >
         Delete Ingress
       </Button>
-      {error && <AlertDialog onClickClose={reset} />}
+      {error && <AlertDialog {...error} onClickClose={reset} />}
     </>
   )
 }
