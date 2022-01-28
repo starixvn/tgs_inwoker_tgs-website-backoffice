@@ -3,10 +3,10 @@ import { css, Global } from "@emotion/react"
 import { Icon, Table as _Table, Pagination, Set, Spinner, Box } from "bumbag"
 import {
   useTable as _useTable,
-  useSortBy,
-  usePagination,
-  useFilters,
-  useRowState
+  useSortBy as useTableSortBy,
+  usePagination as useTablePagination,
+  useFilters as useTableFilters,
+  useRowState as useTableRowState
 } from "react-table"
 import { fromIsDescending, equalsDescending } from "./order"
 import {
@@ -94,15 +94,15 @@ export const Table = ({
   getRowProps,
   initialState,
   controlledState,
-  useSortBy = useSortBy,
+  useSortBy = useTableSortBy,
   manualSortBy = true,
   setSortOrder,
   disableMultiSort = true,
-  usePagination = usePagination,
+  usePagination = useTablePagination,
   pageCount,
   setPageIndex,
   manualPagination = true,
-  useFilters = useFilters,
+  useFilters = useTableFilters,
   manualFilters = true,
   isLoading,
   head = true,
