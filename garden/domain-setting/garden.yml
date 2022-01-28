@@ -1,0 +1,18 @@
+kind: Module
+type: container
+name: domain-setting
+image: domain-setting
+services:
+  - name: domain-setting
+    dependencies:
+      - postgres
+      - brand-cert-api
+    env:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      DomainSetting__BrandCertificateBaseUrl: "http://brand-cert-api"
+      DomainSetting__KubernetesInCluster: false
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80
