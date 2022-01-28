@@ -1,0 +1,11 @@
+kind: Module
+name: jaeger
+type: kubernetes
+files:
+  - jaeger-operator.yaml
+manifests:
+  - apiVersion: jaegertracing.io/v1
+    kind: Jaeger
+    metadata:
+      name: simplest
+namespace: observability

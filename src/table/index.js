@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react"
 import { css, Global } from "@emotion/react"
 import { Icon, Table as _Table, Pagination, Set, Spinner, Box } from "bumbag"
-import ReactTable, { useTable as _useTable, useRowState } from "react-table"
+import {
+  useTable as _useTable,
+  useSortBy,
+  usePagination,
+  useFilters,
+  useRowState
+} from "react-table"
 import { fromIsDescending, equalsDescending } from "./order"
 import {
   faCaretUp,
@@ -88,15 +94,15 @@ export const Table = ({
   getRowProps,
   initialState,
   controlledState,
-  useSortBy = ReactTable.useSortBy,
+  useSortBy = useSortBy,
   manualSortBy = true,
   setSortOrder,
   disableMultiSort = true,
-  usePagination = ReactTable.usePagination,
+  usePagination = usePagination,
   pageCount,
   setPageIndex,
   manualPagination = true,
-  useFilters = ReactTable.useFilters,
+  useFilters = useFilters,
   manualFilters = true,
   isLoading,
   head = true,
