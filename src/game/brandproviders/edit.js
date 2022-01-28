@@ -27,7 +27,7 @@ import {
     hourMinuteToDate
 } from "../../date/time"
 import FormDialog from "../../form/FormDialog"
-import parseDate from "date-fns/fp/parseISO"
+import { parseISO } from "date-fns"
 import { MaintenanceStatusToggleButton } from "./ScheduleStatus"
 
 export const EditButton = ({ record, onSubmitted, ...props }) => {
@@ -82,8 +82,8 @@ const EditDialog = ({ record, dialog, ...props }) => {
         en: "Edit"
     })
 
-    let from = formatHourMinute(parseDate(record.from))
-    let to = formatHourMinute(parseDate(record.to))
+    let from = formatHourMinute(parseISO(record.from))
+    let to = formatHourMinute(parseISO(record.to))
 
     return (
         <FormDialog

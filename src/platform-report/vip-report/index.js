@@ -149,7 +149,7 @@ const ReportContent = ({ brandId }) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         foot={data?.items?.length > 0}
-        isSticky
+        stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>

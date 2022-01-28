@@ -1,5 +1,3 @@
-import { chromium } from "playwright"
-
 const Second = 1000
 
 export default {

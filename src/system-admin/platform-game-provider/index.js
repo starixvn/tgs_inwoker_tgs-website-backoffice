@@ -70,24 +70,10 @@ const Body = () => {
         columns={columns}
         data={items}
         isLoading={isLoading}
-        isSticky
+        stickyHead
+        stickyLeft
         css={css`
-          th {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-            background-color: var(--bb-palette-white600, #000000);
-          }
-
-          th:first-child {
-            position: sticky;
-            left: 0;
-            z-index: 2;
-          }
-
           td:first-child {
-            position: sticky;
-            left: 0;
             background-color: var(--bb-palette-white600, #000000);
           }
         `}

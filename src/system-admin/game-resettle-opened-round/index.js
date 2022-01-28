@@ -118,20 +118,9 @@ const Body = () => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        isSticky
+        stickyHead
+        stickyRight
         css={css`
-          tr td:last-child,
-          tr th:last-child {
-            position: sticky;
-            inset-inline-end: 0;
-          }
-
-          tr th {
-            border-bottom: 1px solid var(--bb-palette-white800, #000000);
-            background-color: var(--bb-palette-white600, #000000);
-            z-index: 1;
-          }
-
           tr td:last-child {
             background-color: #fff;
           }

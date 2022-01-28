@@ -32,6 +32,8 @@ import {
   AgentDnsZoneCreateButton,
   AgentDnsZoneDeleteButton
 } from "./AgentDnsZone"
+import { UpdateIngress, UpdateDnsZone } from "./menu"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 
 const Key = "AgentDomainList"
 
@@ -65,6 +67,8 @@ export const AgentDomainListPanel = ({
 }
 
 const Body = ({ brandId, agentId, readOnly, ...props }) => {
+  let editIngress = useIsDisplayMenuByRoute([UpdateIngress])
+  let editDnsZone = useIsDisplayMenuByRoute([UpdateDnsZone])
   let {
     isLoading,
     data: urls,
@@ -88,9 +92,18 @@ const Body = ({ brandId, agentId, readOnly, ...props }) => {
     fromServer: true
   }))
 
+  let editable = !readOnly
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldStack>
+        {editable && (
+          <Set>
+            {editIngress && <AgentIngressApplyButton agentId={agentId} />}
+            {editIngress && <AgentIngressDeleteButton agentId={agentId} />}
+            {editDnsZone && <AgentDnsZoneCreateButton agentId={agentId} />}
+            {editDnsZone && <AgentDnsZoneDeleteButton agentId={agentId} />}
+          </Set>
+        )}
         <DomainList
           brandId={brandId}
           agentId={agentId}

@@ -181,7 +181,7 @@ const ReportContent = ({ brandId }) => {
             setSortOrder={setSortOrder}
             isLoading={isLoading}
             foot={data?.items?.length > 0}
-            isSticky
+            stickyHead
           />
         )}
       </FieldStack>
@@ -207,7 +207,7 @@ const AgentBreadcrumb = ({ usernames = [], setUsernames }) => {
 
         let isCurrent = isLastIndex(index, list)
         return (
-          <Breadcrumb.Item isCurrent={isCurrent}>
+          <Breadcrumb.Item isCurrent={isCurrent} key={index}>
             <Breadcrumb.Link
               onClick={(event) => {
                 if (!isCurrent) {

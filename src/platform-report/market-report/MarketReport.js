@@ -110,7 +110,7 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         foot={data?.items?.length > 0}
-        isSticky
+        stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>

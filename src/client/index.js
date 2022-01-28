@@ -1,6 +1,7 @@
 import { toDataOrError } from "./response"
 import useSWR, { cache } from "swr"
 import { getAcceptLang, getAcceptLangCulture } from "../i18n"
+import { isValid } from "date-fns"
 
 export const urlWith = (searchParams = {}, url) => {
   let urlSearchParams = Object.entries(searchParams).reduce(
@@ -32,7 +33,17 @@ export const urlWith = (searchParams = {}, url) => {
   return urlSearchParams ? `${url}?${urlSearchParams}` : url
 }
 
-const stringOf = (value) => value?.toISOString?.() ?? value
+const stringOf = (value) => {
+  if (value?.toISOString) {
+    if (isValid(value)) {
+      return value.toISOString()
+    } else {
+      //invalid date
+      return ""
+    }
+  }
+  return value
+}
 
 const FailedToFetchDefaultMessage = "Failed to fetch"
 const FailedToFetchTrans = {

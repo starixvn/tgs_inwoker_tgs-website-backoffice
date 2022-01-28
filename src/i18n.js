@@ -2,16 +2,15 @@ import React, { createContext, useContext, useState } from "react"
 import { Text, DropdownMenu, Button } from "bumbag"
 import numeral from "numeral"
 import { registerLocale, setDefaultLocale } from "react-datepicker"
-import en from "date-fns/locale/en-US"
-import zh from "date-fns/locale/zh-CN"
+import { enUS, zhCN } from "date-fns/locale"
 import {
   formatDateTime,
   formatHourMinuteSecondDayMonthYear,
   HourMinuteSecondDayMonthYear
 } from "./date/format"
 
-registerLocale("en", en)
-registerLocale("zh", zh)
+registerLocale("en", enUS)
+registerLocale("zh", zhCN)
 
 const DefaultDateFormat = "yyyy/MM/dd"
 const DefaultTimeFormat = "HH:mm:ss"

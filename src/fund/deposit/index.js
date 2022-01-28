@@ -60,15 +60,13 @@ import FundDepositStatus, {
   FundDepositStatusLabel,
   FundDepositStatusSelect
 } from "./FundDepositStatus"
-import maxTime from "date-fns/max"
-import isValidTime from "date-fns/isValid"
 import { SortOrder } from "../../table/order"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { sortBy, head } from "lodash-es"
 import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
-import { subDays, parseISO, isAfter, isSameDay } from "date-fns"
+import { subDays, parseISO, isAfter, isSameDay, isValid, max } from "date-fns"
 
 export { Code }
 
@@ -361,10 +359,10 @@ const newApplicationsFromToday = (first = [], second = []) => {
   }
 
   let today = new Date()
-  let lastMaxApplicationTime = maxTime(
+  let lastMaxApplicationTime = max(
     second.reduce((times, { createdOn }) => {
       let value = parseISO(createdOn)
-      if (isValidTime(value)) {
+      if (isValid(value)) {
         times.push(value)
       }
 

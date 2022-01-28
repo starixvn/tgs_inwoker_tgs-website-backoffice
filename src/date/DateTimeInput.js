@@ -3,13 +3,14 @@ import { css, Global } from "@emotion/react"
 import { Group, Input, Box, Icon, Button, FieldWrapper } from "bumbag"
 import DatePicker from "react-datepicker"
 import { useLocale } from "../i18n"
-import { useForm, useFormContext, Controller } from "react-hook-form"
+import { useForm, useFormContext, Controller, useWatch } from "react-hook-form"
 import format, { DateTimeFormat, formatDateTime } from "./format"
 import { registerLocale, setDefaultLocale } from "react-datepicker"
-import zh from "date-fns/locale/zh-CN"
+import { isValid } from "date-fns"
+import { zhCN } from "date-fns/locale"
 import "./react-datepicker.css"
 
-registerLocale("zh", zh)
+registerLocale("zh", zhCN)
 
 export const DateTimeInput = ({
   id,
@@ -32,12 +33,36 @@ export const DateTimeInput = ({
     formState: { errors }
   } = formMethods
 
+  const validDateRequired = (value) => {
+    if (required) {
+      return isValid(value)
+    }
+    return true
+  }
+
+  if (!validate) {
+    validate = validDateRequired
+  } else if (typeof validate === "object") {
+    validate = {
+      validDateRequired,
+      ...validate
+    }
+  } else if (typeof validate === "function") {
+    validate = {
+      validDateRequired,
+      validate
+    }
+  }
+
   return (
     <Controller
       control={control}
       name={name}
       defaultValue={props?.defaultValue}
-      rules={{ required, validate }}
+      rules={{
+        required,
+        validate
+      }}
       shouldUnregister={true}
       render={({
         field: { onChange, onBlur, value, ref },
@@ -54,10 +79,9 @@ export const DateTimeInput = ({
 
         let error = errors[name]
         let state = error && "danger"
-
         return (
           <DatePicker
-            selected={value}
+            selected={isValid(value) && value}
             dateFormat={dateFormat}
             onChange={onChange}
             onBlur={onBlur}
