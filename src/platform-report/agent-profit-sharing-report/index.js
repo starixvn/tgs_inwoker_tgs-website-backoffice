@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, Level, Text, Link } from "bumbag"
+import {
+  Heading,
+  Stack,
+  Box,
+  Button,
+  Set,
+  Level,
+  Text,
+  Link,
+  FieldStack,
+  Alert
+} from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -9,7 +20,12 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { FormattedNumber, Trans, useTrans } from "../../i18n"
+import {
+  FormattedNumber,
+  Trans,
+  useTrans,
+  FormattedNumberDecimal
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -136,21 +152,50 @@ const ReportContent = ({ brandId }) => {
       title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
     >
       {username && (
-        <Table
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-          foot={data?.items?.length > 0}
-          stickyHead
-        />
+        <FieldStack>
+          {/* <TotalsInfo data={data} /> */}
+          <Table
+            columns={columns}
+            data={data?.items}
+            initialState={state}
+            controlledState={state}
+            pageCount={pageCount(pageSize, data?.totalCount)}
+            setPageIndex={setPageIndex}
+            setSortOrder={setSortOrder}
+            isLoading={isLoading}
+            foot={data?.items?.length > 0}
+            stickyHead
+          />
+        </FieldStack>
       )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const TotalsInfo = ({ data }) => {
+  let totalWinLoss = 0
+  let totalCost = 50
+  let totalNetProfit = 55
+  return (
+    <Set isFilled>
+      <Alert>
+        <Trans en="Total Win Loss" zh="总输赢金额" />
+        <FormattedNumberDecimal value={totalWinLoss} />
+      </Alert>
+      <Alert>
+        <Trans en="Total Cost" zh="总成本" />
+        <FormattedNumberDecimal value={totalCost} />
+      </Alert>
+      <Alert>
+        <Trans en="Total Net Profit" zh="总盈余" />
+        <FormattedNumberDecimal value={totalNetProfit} />
+      </Alert>
+      <Alert>
+        <Trans en="Profit Sharing Amount" zh="总分红金额" />
+        <FormattedNumberDecimal value={totalCost} />
+      </Alert>
+    </Set>
   )
 }
 

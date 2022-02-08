@@ -1,0 +1,7 @@
+kind: Module
+name: open-telemetry
+type: kubernetes
+# disabled: true
+files:
+  - otel-collector.yaml
+  - otel-configmap.yaml
