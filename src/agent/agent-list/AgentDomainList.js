@@ -100,10 +100,10 @@ const Body = ({ brandId, agentId, readOnly, ...props }) => {
       <FieldStack>
         {editable && (
           <Set>
-            {editIngress && <AgentIngressApplyButton agentId={agentId} />}
-            {editIngress && <AgentIngressDeleteButton agentId={agentId} />}
             {editDnsZone && <AgentDnsZoneCreateButton agentId={agentId} />}
             {editDnsZone && <AgentDnsZoneDeleteButton agentId={agentId} />}
+            {editIngress && <AgentIngressApplyButton agentId={agentId} />}
+            {editIngress && <AgentIngressDeleteButton agentId={agentId} />}
           </Set>
         )}
         <DomainList
@@ -256,7 +256,7 @@ const DeleteDomainInputField = ({
     <Set orientation="horizontal" isFilled>
       <InputField value={url} readOnly flex="1" />
       <LinkButton url={`https://whois.domaintools.com/${url}`}>
-        <Trans en="Lookup Whois" zh="查找 Whois" />
+        <Trans en="Lookup Domain" zh="检查域名" />
       </LinkButton>
       {!readOnly && (
         <DeleteButton
