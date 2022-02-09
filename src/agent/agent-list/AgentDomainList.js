@@ -9,7 +9,8 @@ import {
   Set,
   Icon,
   Button,
-  FieldStack
+  FieldStack,
+  Group
 } from "bumbag"
 import AlertDialog from "../../dialog/Alert"
 import { Tab as _Tab, TabPanel } from "../../tab"
@@ -32,8 +33,9 @@ import {
   AgentDnsZoneCreateButton,
   AgentDnsZoneDeleteButton
 } from "./AgentDnsZone"
-import { UpdateIngress, UpdateDnsZone } from "./menu"
+import { UpdateIngress, UpdateDnsZone, LookupWhois } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
+import { LinkButton } from "../../button/LinkButton"
 
 const Key = "AgentDomainList"
 
@@ -251,24 +253,22 @@ const DeleteDomainInputField = ({
   }
 
   return (
-    <>
-      <InputField
-        value={url}
-        readOnly
-        addonAfter={
-          !readOnly && (
-            <DeleteButton
-              borderLeftWidth="1px"
-              isLoading={isLoading}
-              disabled={isLoading}
-              onClick={() => {
-                setSubmit(url)
-              }}
-            />
-          )
-        }
-      />
+    <Set orientation="horizontal" isFilled>
+      <InputField value={url} readOnly flex="1" />
+      <LinkButton url={`https://whois.domaintools.com/${url}`}>
+        <Trans en="Lookup Whois" zh="查找 Whois" />
+      </LinkButton>
+      {!readOnly && (
+        <DeleteButton
+          borderLeftWidth="1px"
+          isLoading={isLoading}
+          disabled={isLoading}
+          onClick={() => {
+            setSubmit(url)
+          }}
+        />
+      )}
       {error && <AlertDialog {...error} onClickClose={reset} />}
-    </>
+    </Set>
   )
 }
