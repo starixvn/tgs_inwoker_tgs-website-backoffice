@@ -38,6 +38,7 @@ import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { GameTypeSelect } from "../../game/GameType"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
+import { CurrencySelectField } from "../../currency/CurrencySelect"
 
 export { Code }
 
@@ -53,43 +54,24 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 //TODO:
-// 1. remove game type select, remove date time range input
-// 2. month input
-// 3. aggregate btn
-// 4. currency filter
+// 1. month input
+// 2. aggregate btn
 const ReportContent = ({}) => {
-  let dateRange = yesterday()
-  let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    pageSize: QueryMaxRangeDays,
-    from: dateRange.start,
-    to: dateRange.end,
+    month: undefined,
     gameProviderCode: "",
-    gameType: ""
+    currencyCode: undefined
   })
-
-  /*
-  useEffect(() => {
-    setState({ pageIndex: 0, brandId })
-  }, [brandId])
-  */
-
-  let { from, to } = state
 
   let culture = useLangCode()
   let toSearchParams = () => ({
     ...toApiParams(state),
     sortby: "gameProviderName",
-    from,
-    to: startOfNextDay(to),
     culture
   })
 
   let { isLoading, data, error, mutate, deleteCache } =
     useGameProviderReportList(toSearchParams())
-
-  let DataRetentionDays = 180
-  let minDate = subDays(dateRange.start, DataRetentionDays)
 
   let columns = useColumns({
     items: data?.items
@@ -98,25 +80,21 @@ const ReportContent = ({}) => {
   return (
     <PageContent
       actionBar={
-        <SearchBar
-          start={from}
-          end={to}
-          gameProviderCode={state.gameProviderCode}
-          gameType={state.gameType}
-          minDate={minDate}
-          maxDate={dateRange.end}
-          maxRangeDays={QueryMaxRangeDays}
-          isLoading={isLoading}
-          search={({ start, end, ...rest }) => {
-            setState({
-              pageIndex: 0,
-              from: start,
-              to: end,
-              ...rest
-            })
-            mutate()
-          }}
-        />
+        <Set orientation="vertical">
+          <SearchBar
+            month={state.month}
+            gameProviderCode={state.gameProviderCode}
+            currencyCode={state.currencyCode}
+            isLoading={isLoading}
+            search={({ ...rest }) => {
+              setState({
+                pageIndex: 0,
+                ...rest
+              })
+              mutate()
+            }}
+          />
+        </Set>
       }
       title={<Trans zh="游戏商報表" en="Game Provider Report" />}
     >
@@ -134,7 +112,6 @@ const ReportContent = ({}) => {
         //     zIndex: state.pageSize
         //   }
         // }}
-        getRowId={(row, index) => row.gameProviderId ?? index}
         getRowProps={({ original: { isTotal }, index } = {}) => {
           if (isTotal) {
             return {
@@ -158,54 +135,30 @@ const ReportContent = ({}) => {
 }
 
 const SearchBar = ({
-  brandId,
-  start,
-  end,
+  month,
   gameProviderCode,
-  gameType,
-  minDate,
-  maxDate,
-  maxRangeDays,
+  currencyCode,
   search,
   isLoading,
   ...props
 }) => {
   let formMethods = useForm({
     defaultValues: {
-      start,
-      end,
+      month,
       gameProviderCode,
-      gameType
+      currencyCode
     }
   })
   let { control, getValues, setValue, clearErrors } = formMethods
 
   const onSubmit = (data) => search?.(data)
 
-  const StartField = "start"
-  const EndField = "end"
-
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
-          <DateInputRangeField
-            label={<Trans zh="三方结算时间" en="External Settlement Time" />}
-            id="date-range"
-            showDateDropdownMenu
-            minDate={minDate}
-            maxRangeDays={maxRangeDays}
-            fakeTimeLabel
-            startProps={{
-              name: StartField
-            }}
-            endProps={{
-              name: EndField
-            }}
-            required
-          />
           <GameProviderSelect name="gameProviderCode" valueField="code" />
-          <GameTypeSelect name="gameType" />
+          <CurrencySelectField name="currencyCode" />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
@@ -220,10 +173,7 @@ const useColumns = ({ items = [] }) => {
         id: "gameProviderName",
         accessor: (row) => row,
         Header: <Trans zh="游戏商" en="Game Provider" />,
-        disableSortBy: true,
-        Cell: ({ value: { isTotal, gameProviderName } }) => {
-          return isTotal ? <Trans zh="共计" en="Total" /> : gameProviderName
-        }
+        disableSortBy: true
       }),
       textColumn({
         id: "currencyCode",
@@ -231,6 +181,7 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="币种" en="Currency" />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
+          //TODO: dialog > search game provider & currency?
           return currencyCode
           // return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
         }
