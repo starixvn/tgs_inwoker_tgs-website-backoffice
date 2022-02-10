@@ -212,7 +212,14 @@ const FormBody = ({ isAdd }) => {
           <NormalLabel required>
             <Trans zh="代理用户名" en="Username" />
           </NormalLabel>
-          <Input name="username" required autoComplete="off" />
+          <Input
+            name="username"
+            required
+            autoComplete="off"
+            registerOptions={{
+              setValueAs: (value = "") => value?.trim?.()
+            }}
+          />
 
           <NormalLabel required>
             <Trans zh="登入密码" en="Password" />

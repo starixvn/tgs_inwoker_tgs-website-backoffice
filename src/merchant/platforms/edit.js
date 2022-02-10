@@ -649,6 +649,17 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           />
         </Box>
 
+        {/* <NormalLabel>
+          <Trans zh="审核身分证" en="Verify Player ID" />
+        </NormalLabel>
+        <Box alignY="center">
+          <Checkbox
+            name="enablePlayerIdentity"
+            label={<Trans zh="审核" en="Verify" />}
+            disabled={readonly}
+          />
+        </Box> */}
+
         <LanguageFieldsBox
           readonly={readonly}
           brandCultureCodeReadOnly={isB2C}
