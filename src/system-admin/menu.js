@@ -7,6 +7,10 @@ import {
   codeLabelPair as gameProviderPair
 } from "./game-provider/menu"
 import {
+  Code as GameProviderReconciliationCode,
+  codeLabelPair as gameProviderReconciliationPair
+} from "./game-provider-reconciliation-report/menu"
+import {
   Code as BrandPaymentsCode,
   codeLabelPair as brandPaymentsPair
 } from "./brand-payment/menu"
@@ -91,6 +95,14 @@ const labelOf = ({ locale, code }) => {
         },
         locale
       )
+    case GameProviderReconciliationCode:
+      return getTrans(
+        {
+          zh: "游戏商报表",
+          en: "Game Provider Report"
+        },
+        locale
+      )
     case BrandPaymentsCode:
       return getTrans(
         {
@@ -169,6 +181,7 @@ export const codeLabelPair = [
       label: labelOf,
       subLabelPairs: [
         gameProviderPair,
+        gameProviderReconciliationPair,
         brandPaymentsPair,
         languagePair,
         currencyPair,

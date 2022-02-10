@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react"
 import { CodeContentPair as GameProviderPair } from "./game-provider"
+import { CodeContentPair as GameProvideReconciliationReportPair } from "./game-provider-reconciliation-report"
 import { CodeContentPair as BrandPaymentPair } from "./brand-payment"
 import { CodeContentPair as LanguagePair } from "./language"
 import { CodeContentPair as CurrencyPair } from "./currency"
@@ -15,6 +16,7 @@ export { Code } from "./menu"
 
 const pairs = () => [
   GameProviderPair,
+  GameProvideReconciliationReportPair,
   BrandPaymentPair,
   LanguagePair,
   CurrencyPair,

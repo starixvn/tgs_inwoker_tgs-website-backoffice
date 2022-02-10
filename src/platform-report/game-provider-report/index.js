@@ -130,7 +130,7 @@ const ReportContent = ({ brandId }) => {
           }}
         />
       }
-      title={<Trans zh="游戏商報表" en="Game Provider Report" />}
+      title={<Trans zh="公司月报表" en="Company Monthly Report" />}
     >
       <Table
         columns={columns}
@@ -202,7 +202,7 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
           <DateInputRangeField
-            label={<Trans zh="三方结算时间" en="External Settlement Time" />}
+            label={<Trans zh="平台结算时间" en="Platform Settlement Time" />}
             id="date-range"
             showDateDropdownMenu
             minDate={minDate}
