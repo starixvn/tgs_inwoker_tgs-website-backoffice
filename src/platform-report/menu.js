@@ -31,6 +31,10 @@ import {
   codeLabelPair as balanceChangeReportPair
 } from "./balance-change-report/menu"
 import {
+  Code as GameProviderReconciliationReportCode,
+  codeLabelPair as gameProviderReconciliationReportPair
+} from "./game-provider-reconciliation-report/menu"
+import {
   Code as GameProviderReportCode,
   codeLabelPair as gameProviderReportPair
 } from "./game-provider-report/menu"
@@ -143,6 +147,15 @@ const label = ({ locale, code }) => {
         locale
       )
 
+    case GameProviderReconciliationReportCode:
+      return getTrans(
+        {
+          zh: "公司月报表",
+          en: "Company Monthly Report"
+        },
+        locale
+      )
+
     case GameProviderReportCode:
       return getTrans(
         {
@@ -181,6 +194,7 @@ export const codeLabelPair = [
         agentBonusReportPair,
         vipReportPair,
         balanceChangeReportPair,
+        gameProviderReconciliationReportPair,
         gameProviderReportPair,
         reconciliationReportPair
       ]

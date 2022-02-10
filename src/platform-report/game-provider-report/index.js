@@ -78,8 +78,6 @@ const ReportContent = ({ brandId }) => {
     brandId,
     from: dateRange.start,
     to: dateRange.end,
-    externalFrom: undefined,
-    externalTo: undefined,
     gameProviderCode: "",
     gameType: ""
   })
@@ -88,7 +86,7 @@ const ReportContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { from, to, externalFrom, externalTo } = state
+  let { from, to } = state
 
   let culture = useLangCode()
   let toSearchParams = () => ({
@@ -96,8 +94,6 @@ const ReportContent = ({ brandId }) => {
     sortby: "gameProviderName",
     from,
     to: startOfNextDay(to),
-    externalFrom,
-    externalTo: startOfNextDay(externalTo),
     culture
   })
 
@@ -117,8 +113,6 @@ const ReportContent = ({ brandId }) => {
         <SearchBar
           start={from}
           end={to}
-          externalFrom={state?.externalFrom}
-          externalTo={state?.externalTo}
           gameProviderCode={state.gameProviderCode}
           gameType={state.gameType}
           minDate={minDate}
@@ -179,8 +173,6 @@ const SearchBar = ({
   brandId,
   start,
   end,
-  externalFrom,
-  externalTo,
   gameProviderCode,
   gameType,
   minDate,
@@ -194,8 +186,6 @@ const SearchBar = ({
     defaultValues: {
       start,
       end,
-      externalFrom,
-      externalTo,
       gameProviderCode,
       gameType
     }
@@ -206,15 +196,13 @@ const SearchBar = ({
 
   const StartField = "start"
   const EndField = "end"
-  const ExternalFromField = "externalFrom"
-  const ExternalToField = "externalTo"
 
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
           <DateInputRangeField
-            label={<Trans zh="平台结算时间" en="Platform Settlement Time" />}
+            label={<Trans zh="三方结算时间" en="External Settlement Time" />}
             id="date-range"
             showDateDropdownMenu
             minDate={minDate}
@@ -226,54 +214,7 @@ const SearchBar = ({
             endProps={{
               name: EndField
             }}
-            validate={(platformDateRange) => {
-              let hasPlatformDateRange =
-                isValid(platformDateRange.start) &&
-                isValid(platformDateRange.end)
-
-              let externalFrom = getValues(ExternalFromField)
-              let externalTo = getValues(ExternalToField)
-              let hasExternalDateRange =
-                isValid(externalFrom) && isValid(externalTo)
-
-              let pass = hasPlatformDateRange || hasExternalDateRange
-              if (pass) {
-                clearErrors([ExternalFromField, ExternalToField])
-              }
-
-              return pass ? true : "one-of-date-range-required"
-            }}
             required
-          />
-          <DateInputRangeField
-            label={<Trans zh="三方结算时间" en="External Settlement Time" />}
-            showDateDropdownMenu
-            minDate={minDate}
-            maxRangeDays={maxRangeDays}
-            fakeTimeLabel
-            startProps={{
-              name: ExternalFromField
-            }}
-            endProps={{
-              name: ExternalToField
-            }}
-            validate={{
-              validate: (externalDateRange) => {
-                let hasExternalDateRange =
-                  isValid(externalDateRange.start) &&
-                  isValid(externalDateRange.end)
-
-                let start = getValues(StartField)
-                let end = getValues(EndField)
-                let hasPlatformDateRange = isValid(start) && isValid(end)
-
-                let pass = hasPlatformDateRange || hasExternalDateRange
-                if (pass) {
-                  clearErrors([StartField, EndField])
-                }
-                return pass ? true : "one-of-date-range-required"
-              }
-            }}
           />
           <GameProviderSelect name="gameProviderCode" valueField="code" />
           <GameTypeSelect name="gameType" />
