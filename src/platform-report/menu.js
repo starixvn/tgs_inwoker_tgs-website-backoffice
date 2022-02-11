@@ -34,10 +34,6 @@ import {
   Code as GameProviderReportCode,
   codeLabelPair as gameProviderReportPair
 } from "./game-provider-report/menu"
-import {
-  Code as ReconciliationReportCode,
-  codeLabelPair as reconciliationReportPair
-} from "./reconciliation-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 
@@ -152,15 +148,6 @@ const label = ({ locale, code }) => {
         locale
       )
 
-    case ReconciliationReportCode:
-      return getTrans(
-        {
-          zh: "对帐報表",
-          en: "Reconciliation Report"
-        },
-        locale
-      )
-
     default:
       return ""
   }
@@ -181,8 +168,7 @@ export const codeLabelPair = [
         agentBonusReportPair,
         vipReportPair,
         balanceChangeReportPair,
-        gameProviderReportPair,
-        reconciliationReportPair
+        gameProviderReportPair
       ]
     })
 ]
