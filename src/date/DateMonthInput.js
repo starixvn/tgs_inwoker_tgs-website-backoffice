@@ -5,18 +5,19 @@ import DatePicker from "react-datepicker"
 import { useLocale } from "../i18n"
 import { useForm, useFormContext, Controller, useWatch } from "react-hook-form"
 import format, { DateTimeFormat, formatDateTime } from "./format"
-import { registerLocale, setDefaultLocale } from "react-datepicker"
 import { isValid } from "date-fns"
 import { zhCN } from "date-fns/locale"
 import "./react-datepicker.css"
 
-//TODO: what happen when change lang?
-registerLocale("zh", zhCN)
-
 //TODO: test dateFormat
 export const DateMonthInput = ({
+  id,
   name,
   dateFormat = "yyyy/MM",
+  minDate,
+  maxDate,
+  placeholder,
+  disabled,
   required,
   validate,
   ...props
@@ -74,20 +75,24 @@ export const DateMonthInput = ({
         let error = errors[name]
         let state = error && "danger"
         return (
-          <DatePicker
-            selected={isValid(value) && value}
-            dateFormat={dateFormat}
-            onChange={onChange}
-            onBlur={onBlur}
-            minDate={minDate}
-            maxDate={maxDate}
-            locale={locale}
-            customInput={
-              <Input id={id} name={name} inputRef={ref} state={state} />
-            }
-            timeInputLabel=""
-            {...props}
-          />
+          <Box>
+            <DatePicker
+              showMonthYearPicker
+              selected={isValid(value) && value}
+              dateFormat={dateFormat}
+              onChange={onChange}
+              onBlur={onBlur}
+              minDate={minDate}
+              maxDate={maxDate}
+              placeholderText={placeholder}
+              locale={locale}
+              customInput={
+                <Input id={id} name={name} inputRef={ref} state={state} />
+              }
+              timeInputLabel=""
+              {...props}
+            />
+          </Box>
         )
       }}
     />

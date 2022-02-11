@@ -24,7 +24,10 @@ import {
   DateInputRangeField
 } from "../../date/DateTimeRangeInput"
 import { today, yesterday } from "../../date/range"
-import { useGameProviderReportList } from "./client"
+import {
+  useGameProviderReportList,
+  useUpdateGameProviderReport
+} from "./client"
 import { subDays, isValid } from "date-fns"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
@@ -36,9 +39,9 @@ import { urlWith } from "../../client"
 import { isDev } from "../../env"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { GameTypeSelect } from "../../game/GameType"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import { CurrencySelectField } from "../../currency/CurrencySelect"
+import { DateMonthInput } from "../../date/DateMonthInput"
 
 export { Code }
 
@@ -57,8 +60,19 @@ export const CodeContentPair = [Code, Content]
 // 1. month input
 // 2. aggregate btn
 const ReportContent = ({}) => {
+  let monthPlaceholder = useTrans({
+    en: "Month",
+    zh: "月份"
+  })
+  let formMethods = useForm({
+    defaultValues: {
+      month: undefined
+    }
+  })
+  let { control } = formMethods
+  let month = useWatch({ control, name: "month" })
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    month: undefined,
     gameProviderCode: "",
     currencyCode: undefined
   })
@@ -67,11 +81,12 @@ const ReportContent = ({}) => {
   let toSearchParams = () => ({
     ...toApiParams(state),
     sortby: "gameProviderName",
-    culture
+    culture,
+    month
   })
 
   let { isLoading, data, error, mutate, deleteCache } =
-    useGameProviderReportList(toSearchParams())
+    useGameProviderReportList(isValid(month) ? toSearchParams() : undefined)
 
   let columns = useColumns({
     items: data?.items
@@ -81,6 +96,12 @@ const ReportContent = ({}) => {
     <PageContent
       actionBar={
         <Set orientation="vertical">
+          <FormProvider {...formMethods}>
+            <Set>
+              <DateMonthInput name="month" placeholder={monthPlaceholder} />
+              <UpdateReportButton month={month} />
+            </Set>
+          </FormProvider>
           <SearchBar
             month={state.month}
             gameProviderCode={state.gameProviderCode}
@@ -131,6 +152,43 @@ const ReportContent = ({}) => {
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const UpdateReportButton = ({ month }) => {
+  let invalidDate = !isValid(month)
+
+  let [formData, setSubmit] = useState()
+  let { isLoading, data, error, mutate } = useUpdateGameProviderReport(formData)
+
+  const reset = () => {
+    setSubmit(undefined)
+    mutate(undefined, false)
+  }
+
+  useEffect(() => {
+    if (data) {
+      reset()
+    }
+  }, [data])
+
+  if (invalidDate) {
+    return null
+  }
+
+  if (error) {
+    return <AlertDialog {...error} onClickClose={reset} />
+  }
+
+  return (
+    <Button
+      disabled={isLoading}
+      onClick={() => {
+        setSubmit(month)
+      }}
+    >
+      <Trans zh="更新報表" en="Update Report" />
+    </Button>
   )
 }
 

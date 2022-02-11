@@ -5,12 +5,8 @@ import DatePicker from "react-datepicker"
 import { useLocale } from "../i18n"
 import { useForm, useFormContext, Controller, useWatch } from "react-hook-form"
 import format, { DateTimeFormat, formatDateTime } from "./format"
-import { registerLocale, setDefaultLocale } from "react-datepicker"
 import { isValid } from "date-fns"
-import { zhCN } from "date-fns/locale"
 import "./react-datepicker.css"
-
-registerLocale("zh", zhCN)
 
 export const DateTimeInput = ({
   id,

@@ -18,3 +18,8 @@ export const useGameProviderReportList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
   return useGet(url)
 }
+
+export const useUpdateGameProviderReport = (data) => {
+  let url = data ? `${API}/update` : ""
+  return usePostData(url, data)
+}
