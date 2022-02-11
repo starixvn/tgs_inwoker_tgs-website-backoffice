@@ -7,7 +7,7 @@ import { CodeContentPair as PlayerContributionReportPair } from "./player-contri
 import { CodeContentPair as AgentBonusReportPair } from "./agent-profit-sharing-report"
 import { CodeContentPair as VipReportPair } from "./vip-report"
 import { CodeContentPair as BalanceChangeReportPair } from "./balance-change-report"
-import { CodeContentPair as GameProvideReportPair } from "./game-provider-report"
+import { CodeContentPair as GameProviderReportPair } from "./game-provider-report"
 import { Switch } from "../content"
 import { Code, DefaultCodePath, Menu } from "./menu"
 
@@ -21,7 +21,7 @@ const pairs = () => [
   AgentBonusReportPair,
   VipReportPair,
   BalanceChangeReportPair,
-  GameProvideReportPair
+  GameProviderReportPair
 ]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => (
