@@ -153,7 +153,7 @@ const ReportContent = ({ brandId }) => {
     >
       {username && (
         <FieldStack>
-          {/* <TotalsInfo data={data} /> */}
+          <TotalsInfo data={data} />
           <Table
             columns={columns}
             data={data?.items}
@@ -174,25 +174,60 @@ const ReportContent = ({ brandId }) => {
 }
 
 const TotalsInfo = ({ data }) => {
-  let totalWinLoss = 0
-  let totalCost = 50
-  let totalNetProfit = 55
+  //TODO: data from api
+  let totalWinLoss = undefined
+  let totalCost = undefined
+  let totalNetProfit = undefined
+
+  if (
+    !Number.isFinite(totalWinLoss) ||
+    !Number.isFinite(totalCost) ||
+    !Number.isFinite(totalNetProfit)
+  ) {
+    return null
+  }
+
   return (
-    <Set isFilled>
-      <Alert>
-        <Trans en="Total Win Loss" zh="总输赢金额" />
+    <Set
+      isFilled
+      css={css`
+        font-weight: bold;
+      `}
+    >
+      <Alert
+        accent
+        variant="bordered"
+        paddingTop="0.5rem"
+        paddingBottom="0.5rem"
+      >
+        <Trans en="Total Win Loss：" zh="总输赢金额：" />
         <FormattedNumberDecimal value={totalWinLoss} />
       </Alert>
-      <Alert>
-        <Trans en="Total Cost" zh="总成本" />
+      <Alert
+        accent
+        variant="bordered"
+        paddingTop="0.5rem"
+        paddingBottom="0.5rem"
+      >
+        <Trans en="Total Cost：" zh="总成本：" />
         <FormattedNumberDecimal value={totalCost} />
       </Alert>
-      <Alert>
-        <Trans en="Total Net Profit" zh="总盈余" />
+      <Alert
+        accent
+        variant="bordered"
+        paddingTop="0.5rem"
+        paddingBottom="0.5rem"
+      >
+        <Trans en="Total Net Profit：" zh="总盈余：" />
         <FormattedNumberDecimal value={totalNetProfit} />
       </Alert>
-      <Alert>
-        <Trans en="Profit Sharing Amount" zh="总分红金额" />
+      <Alert
+        accent
+        variant="bordered"
+        paddingTop="0.5rem"
+        paddingBottom="0.5rem"
+      >
+        <Trans en="Total Profit Sharing：" zh="总分红金额：" />
         <FormattedNumberDecimal value={totalCost} />
       </Alert>
     </Set>
