@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, useModalState } from "bumbag"
+import { Heading, Stack, Box, Button, Set, Spinner } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -29,6 +29,8 @@ import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { ReviewPlayerIdDialogDisclosure } from "./ReviewPlayerIdDialog"
+import { isDev } from "../../env"
+import { useBrand } from "../../merchant/platforms/client"
 
 export { Code }
 
@@ -46,6 +48,7 @@ export const CodeContentPair = [Code, Content]
 const Body = () => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
+  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
 
   return (
     <Set orientation="vertical" isFilled>
@@ -54,12 +57,20 @@ const Body = () => {
           setBrandId(value)
         }}
       />
-      {brandId && <BodyContent brandId={brandId} />}
+      {isLoading && (
+        <Box alignY="center" alignX="center">
+          <Spinner />
+        </Box>
+      )}
+      {!isLoading && brandId && brand && (
+        <BodyContent brandId={brandId} brand={brand} />
+      )}
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
   )
 }
 
-const BodyContent = ({ brandId = "" }) => {
+const BodyContent = ({ brandId = "", brand }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: "",
     vipId: "",
@@ -93,7 +104,7 @@ const BodyContent = ({ brandId = "" }) => {
     brandId,
     endRegisteredOn: startOfNextDay(endRegisteredOn)
   })
-  let columns = useColumns({ mutate, items: data?.items, brandId })
+  let columns = useColumns({ mutate, items: data?.items, brandId, brand })
 
   return (
     <PageContent
@@ -134,6 +145,10 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
     zh: "注册域名",
     en: "Registration Domain"
   })
+  let phonePlaceholder = useTrans({
+    zh: "手机号码",
+    en: "Phone"
+  })
 
   let formMethods = useForm()
 
@@ -156,6 +171,11 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
             showEmptyFieldValueAddonAfter
             placeholder={domainInputPlaceholder}
           />
+          <InputField
+            name="phone"
+            showEmptyFieldValueAddonAfter
+            placeholder={phonePlaceholder}
+          />
           <DateInputRangeField
             showDateDropdownMenu
             fakeTimeLabel
@@ -177,7 +197,7 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
 const useSearchInputPlaceHolder = () =>
   useTrans({ zh: "用户名输入框", en: "Input user name" })
 
-const useColumns = ({ mutate, items = [], brandId } = {}) => {
+const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
   let isAdminUser = useIsAdminUser()
 
   let hasViewAuth = useIsDisplayMenuByRoute([View])
@@ -272,11 +292,13 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
                 player={value}
                 onSubmitted={mutate}
               />
-              {/* <ReviewPlayerIdDialogDisclosure
-                id="review-player-id-dialog-disclosure"
-                brandId={brandId}
-                playerCode={playerCode}
-              /> */}
+              {brand?.enablePlayerIdentity && (
+                <ReviewPlayerIdDialogDisclosure
+                  id="review-player-id-dialog-disclosure"
+                  brandId={brandId}
+                  playerCode={playerCode}
+                />
+              )}
             </Set>
           )
         }
@@ -284,5 +306,5 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
     }
 
     return columns
-  }, [JSON.stringify(items)])
+  }, [JSON.stringify(items), brand])
 }

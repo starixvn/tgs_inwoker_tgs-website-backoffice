@@ -20,11 +20,6 @@ import { InputField } from "../../input/Input"
 import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import {
-  DateInputRange,
-  DateInputRangeField
-} from "../../date/DateTimeRangeInput"
-import { today, yesterday } from "../../date/range"
-import {
   useGameProviderReportList,
   useUpdateGameProviderReport
 } from "./client"
@@ -42,6 +37,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import { CurrencySelectField } from "../../currency/CurrencySelect"
 import { DateMonthInput } from "../../date/DateMonthInput"
+import { GameProviderCurrencyReportDisclosure } from "./GameProviderCurrencyReport"
 
 export { Code }
 
@@ -56,9 +52,6 @@ export const Content = () => {
 
 export const CodeContentPair = [Code, Content]
 
-//TODO:
-// 1. month input
-// 2. aggregate btn
 const ReportContent = ({}) => {
   let monthPlaceholder = useTrans({
     en: "Month",
@@ -80,7 +73,10 @@ const ReportContent = ({}) => {
   let culture = useLangCode()
   let toSearchParams = () => ({
     ...toApiParams(state),
+    /*
+    TODO: sort
     sortby: "gameProviderName",
+    */
     culture,
     month
   })
@@ -89,7 +85,8 @@ const ReportContent = ({}) => {
     useGameProviderReportList(isValid(month) ? toSearchParams() : undefined)
 
   let columns = useColumns({
-    items: data?.items
+    items: data?.items,
+    month
   })
 
   return (
@@ -128,11 +125,6 @@ const ReportContent = ({}) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        // getTableHeadProps={() => {
-        //   return {
-        //     zIndex: state.pageSize
-        //   }
-        // }}
         getRowProps={({ original: { isTotal }, index } = {}) => {
           if (isTotal) {
             return {
@@ -224,14 +216,17 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ items = [], month }) => {
   return useMemo(
     () => [
       textColumn({
         id: "gameProviderName",
         accessor: (row) => row,
         Header: <Trans zh="游戏商" en="Game Provider" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value: { isTotal, gameProviderName } }) => {
+          return isTotal ? <Trans zh="共计" en="Total" /> : gameProviderName
+        }
       }),
       textColumn({
         id: "currencyCode",
@@ -240,7 +235,9 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
           //TODO: dialog > search game provider & currency?
-          return currencyCode
+          return (
+            <GameProviderCurrencyReportDisclosure currencyCode={currencyCode} />
+          )
           // return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
         }
       }),

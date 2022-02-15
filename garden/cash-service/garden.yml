@@ -8,6 +8,7 @@ services:
       - postgres
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis"
     ports:
       - name: http
         containerPort: 80
