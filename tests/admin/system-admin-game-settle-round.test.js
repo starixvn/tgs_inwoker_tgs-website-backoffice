@@ -11,7 +11,8 @@ import faker from "faker"
 const test = base.extend(Fixture)
 const { lorem, phone, datatype, image, finance, internet, commerce } = faker
 
-test("settle game round", async ({
+console.warn("*** Wait for backend to fix system-admin-game-settle-round ***")
+test.skip("settle game round", async ({
   page,
   player,
   backofficeApi,

@@ -14,7 +14,7 @@ import {
   useUserBrandId,
   useIsAdminUser
 } from "../../user/context"
-import { Code, View, Update } from "./menu"
+import { Code, View, Update, PhoneFilter } from "./menu"
 import { PlayerStatusSelect } from "../PlayerStatus"
 import { VipLevelSelect } from "../../vip-levels/VipLevelSelect"
 import { ViewButton, EditButton } from "./button"
@@ -140,6 +140,8 @@ const BodyContent = ({ brandId = "", brand }) => {
 }
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
+  let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
+
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
   let domainInputPlaceholder = useTrans({
     zh: "注册域名",
@@ -171,11 +173,13 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
             showEmptyFieldValueAddonAfter
             placeholder={domainInputPlaceholder}
           />
-          <InputField
-            name="phone"
-            showEmptyFieldValueAddonAfter
-            placeholder={phonePlaceholder}
-          />
+          {hasPhoneFilterAuth && (
+            <InputField
+              name="phone"
+              showEmptyFieldValueAddonAfter
+              placeholder={phonePlaceholder}
+            />
+          )}
           <DateInputRangeField
             showDateDropdownMenu
             fakeTimeLabel
