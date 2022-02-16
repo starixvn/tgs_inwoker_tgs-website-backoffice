@@ -95,3 +95,8 @@ export const usePlayerMainWallet = (playerCode) => {
 
   return useGet(url)
 }
+
+export const useVerifyPlayerID = (playerCode, data) => {
+  let url = playerCode ? `${API}/${playerCode}/identify` : ""
+  return usePutData(url, data)
+}

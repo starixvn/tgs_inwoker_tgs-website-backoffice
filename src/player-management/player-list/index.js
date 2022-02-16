@@ -301,6 +301,7 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
                   id="review-player-id-dialog-disclosure"
                   brandId={brandId}
                   playerCode={playerCode}
+                  onSubmitted={mutate}
                 />
               )}
             </Set>
