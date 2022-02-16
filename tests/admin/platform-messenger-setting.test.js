@@ -2,7 +2,7 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { selectRandomOption } from "../page/select.js"
 import { selectRandomPlatform } from "../page/content.js"
-import faker from "faker"
+import faker from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 const { lorem, phone, datatype } = faker

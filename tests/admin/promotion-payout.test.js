@@ -5,7 +5,7 @@ import { fillDatePicker } from "../fill.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { selectByValue } from "../page/select.js"
 import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
-import faker from "faker"
+import faker from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)

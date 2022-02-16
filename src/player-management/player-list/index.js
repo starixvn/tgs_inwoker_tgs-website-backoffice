@@ -281,19 +281,19 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
           textAlign: "center"
         },
         accessor: (row) => row,
-        Cell: ({ value }) => {
-          let { playerCode } = value
+        Cell: ({ value: player }) => {
+          let { playerCode } = player
           return (
             <Set alignX="center">
               <ViewButton
                 id="view-player-dialog-disclosure"
-                player={value}
+                player={player}
                 brandId={brandId}
               />
               <EditButton
                 id="edit-player-dialog-disclosure"
                 brandId={brandId}
-                player={value}
+                player={player}
                 onSubmitted={mutate}
               />
               {brand?.enablePlayerIdentity && (
