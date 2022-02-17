@@ -167,7 +167,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         foot={data?.items?.length > 0}
-        isSticky
+        stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>

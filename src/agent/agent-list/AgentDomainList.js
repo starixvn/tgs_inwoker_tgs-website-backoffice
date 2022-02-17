@@ -9,7 +9,8 @@ import {
   Set,
   Icon,
   Button,
-  FieldStack
+  FieldStack,
+  Group
 } from "bumbag"
 import AlertDialog from "../../dialog/Alert"
 import { Tab as _Tab, TabPanel } from "../../tab"
@@ -32,6 +33,9 @@ import {
   AgentDnsZoneCreateButton,
   AgentDnsZoneDeleteButton
 } from "./AgentDnsZone"
+import { UpdateIngress, UpdateDnsZone, LookupWhois } from "./menu"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { LinkButton } from "../../button/LinkButton"
 
 const Key = "AgentDomainList"
 
@@ -65,6 +69,8 @@ export const AgentDomainListPanel = ({
 }
 
 const Body = ({ brandId, agentId, readOnly, ...props }) => {
+  let editIngress = useIsDisplayMenuByRoute([UpdateIngress])
+  let editDnsZone = useIsDisplayMenuByRoute([UpdateDnsZone])
   let {
     isLoading,
     data: urls,
@@ -88,9 +94,18 @@ const Body = ({ brandId, agentId, readOnly, ...props }) => {
     fromServer: true
   }))
 
+  let editable = !readOnly
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldStack>
+        {editable && (
+          <Set>
+            {editDnsZone && <AgentDnsZoneCreateButton agentId={agentId} />}
+            {editDnsZone && <AgentDnsZoneDeleteButton agentId={agentId} />}
+            {editIngress && <AgentIngressApplyButton agentId={agentId} />}
+            {editIngress && <AgentIngressDeleteButton agentId={agentId} />}
+          </Set>
+        )}
         <DomainList
           brandId={brandId}
           agentId={agentId}
@@ -238,24 +253,22 @@ const DeleteDomainInputField = ({
   }
 
   return (
-    <>
-      <InputField
-        value={url}
-        readOnly
-        addonAfter={
-          !readOnly && (
-            <DeleteButton
-              borderLeftWidth="1px"
-              isLoading={isLoading}
-              disabled={isLoading}
-              onClick={() => {
-                setSubmit(url)
-              }}
-            />
-          )
-        }
-      />
+    <Set orientation="horizontal" isFilled>
+      <InputField value={url} readOnly flex="1" />
+      <LinkButton url={`https://whois.domaintools.com/${url}`}>
+        <Trans en="Lookup Domain" zh="检查域名" />
+      </LinkButton>
+      {!readOnly && (
+        <DeleteButton
+          borderLeftWidth="1px"
+          isLoading={isLoading}
+          disabled={isLoading}
+          onClick={() => {
+            setSubmit(url)
+          }}
+        />
+      )}
       {error && <AlertDialog {...error} onClickClose={reset} />}
-    </>
+    </Set>
   )
 }

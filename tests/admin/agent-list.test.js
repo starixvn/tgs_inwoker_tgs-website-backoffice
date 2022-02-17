@@ -3,7 +3,7 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { add, random, last } from "lodash-es"
 import { selectRandomPlatform } from "../page/content.js"
-import faker from "faker"
+import faker from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 const { lorem, internet } = faker
@@ -11,9 +11,7 @@ const { lorem, internet } = faker
 test.skip("add and edit agent, search agent list", async ({
   page,
   platformCode
-}) => {
-  
-})
+}) => {})
 /*
 let browser
 let context

@@ -4,13 +4,13 @@ import { expect } from "chai"
 import { random, zip } from "lodash-es"
 import numeral from "numeral"
 import { selectRandomPlatform } from "../page/content.js"
+import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 
 test("search, edit game and toggle tags, status", async ({ page }) => {
   let brandId = await gotoPlatformGameListPage(page)
   let criteria = await randomGame(page)
-
   await search(page, criteria)
 
   await toggleField(page, Field.isHot)
@@ -125,17 +125,14 @@ const toggleField = async (page, field) => {
   expect(checked).to.equal(expected)
 }
 
-//TODO: use page util fn
-const editDialog = async (page) => {
-  await page.click(`#edit-game-dialog-disclosure`)
-
+const openEditDialog = async (page) => {
   let DialogSelector = `#edit-game-dialog`
-  await page.waitForSelector(DialogSelector)
+  await openDialog(page, DialogSelector)
   return DialogSelector
 }
 
 const edit = async (page) => {
-  let DialogSelector = await editDialog(page)
+  let DialogSelector = await openEditDialog(page)
 
   let EffectiveBettingPercentageInputSelector = `${DialogSelector} input[name="effectiveBettingPercentage"]`
 
@@ -166,7 +163,7 @@ const edit = async (page) => {
 }
 
 const verifyUpdated = async (page, game) => {
-  let DialogSelector = await editDialog(page)
+  let DialogSelector = await openEditDialog(page)
 
   let effectiveBettingPercentageString = await page.inputValue(
     `${DialogSelector} input[name="effectiveBettingPercentage"]`

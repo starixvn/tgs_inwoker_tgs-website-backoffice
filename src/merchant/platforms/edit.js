@@ -649,6 +649,20 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           />
         </Box>
 
+        <NormalLabel>
+          <Trans zh="自动清除流水" en="Auto Clear Wagering Requirement" />
+        </NormalLabel>
+        <Box alignY="center">
+          <Checkbox name="autoClearWageringRequirement" disabled={readonly} />
+        </Box>
+
+        <NormalLabel>
+          <Trans zh="身分证审核" en="ID Verification" />
+        </NormalLabel>
+        <Box alignY="center">
+          <Checkbox name="enablePlayerIdentity" disabled={readonly} />
+        </Box>
+
         <LanguageFieldsBox
           readonly={readonly}
           brandCultureCodeReadOnly={isB2C}

@@ -1,6 +1,6 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
-import faker from "faker"
+import faker from "@faker-js/faker"
 import { selectRandomOption } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 

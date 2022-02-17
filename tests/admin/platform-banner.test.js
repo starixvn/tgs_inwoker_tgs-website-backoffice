@@ -5,7 +5,7 @@ import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "faker"
+import faker from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 const { lorem } = faker

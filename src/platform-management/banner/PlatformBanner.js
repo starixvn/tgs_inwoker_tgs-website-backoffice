@@ -16,7 +16,7 @@ import {
   useUpdatePlatformBanner
 } from "./client"
 import { Trans, useTrans } from "../../i18n"
-import parseDate from "date-fns/parseISO"
+import { parseISO } from "date-fns"
 import { CancelText } from "../../button/ActionButtons"
 import FormDialog from "../../form/FormDialog"
 import Input, { InputField } from "../../input/Input"
@@ -174,8 +174,8 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       id="edit-banner-dialog"
       defaultValues={{
         ...clone(banner),
-        beginTime: parseDate(record.beginTime),
-        endTime: parseDate(record.endTime),
+        beginTime: parseISO(record.beginTime),
+        endTime: parseISO(record.endTime),
         permanent: !record.endTime
       }}
       onSubmit={onSubmit}
@@ -234,8 +234,8 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
       id="view-banner-dialog"
       defaultValues={{
         ...clone(banner),
-        beginTime: parseDate(record.beginTime),
-        endTime: parseDate(record.endTime),
+        beginTime: parseISO(record.beginTime),
+        endTime: parseISO(record.endTime),
         permanent: !record.endTime
       }}
       isLoading={isLoading}

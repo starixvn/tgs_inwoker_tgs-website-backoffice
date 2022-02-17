@@ -23,7 +23,7 @@ import {
   useVerifyAnnouncement
 } from "./client"
 import { Trans, useTrans } from "../../i18n"
-import parseDate from "date-fns/parseISO"
+import { parseISO } from "date-fns"
 import { CancelText } from "../../button/ActionButtons"
 import FormDialog from "../../form/FormDialog"
 import Input, { InputField } from "../../input/Input"
@@ -147,8 +147,8 @@ export const ViewButton = ({ record, ...props }) => {
 }
 
 const ViewDialog = ({ record, dialog, ...props }) => {
-  let from = parseDate(record.from)
-  let to = parseDate(record.to)
+  let from = parseISO(record.from)
+  let to = parseISO(record.to)
 
   let title = useTrans({
     zh: "查看公告",
@@ -207,8 +207,8 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       id="edit-announcement-dialog"
       defaultValues={{
         ...record,
-        from: parseDate(record.from),
-        to: parseDate(record.to)
+        from: parseISO(record.from),
+        to: parseISO(record.to)
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -347,8 +347,8 @@ const DialogCss = css`
 const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
   let defaultValues = {
     ...record,
-    from: parseDate(record.from),
-    to: parseDate(record.to),
+    from: parseISO(record.from),
+    to: parseISO(record.to),
     remarks: ""
   }
   let formMethods = useForm({ defaultValues })

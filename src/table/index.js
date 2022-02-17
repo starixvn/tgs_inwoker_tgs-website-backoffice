@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react"
 import { css, Global } from "@emotion/react"
 import { Icon, Table as _Table, Pagination, Set, Spinner, Box } from "bumbag"
-import ReactTable, { useTable as _useTable } from "react-table"
+import {
+  useTable as _useTable,
+  useSortBy as useTableSortBy,
+  usePagination as useTablePagination,
+  useFilters as useTableFilters,
+  useRowState as useTableRowState
+} from "react-table"
 import { fromIsDescending, equalsDescending } from "./order"
 import {
   faCaretUp,
@@ -81,7 +87,6 @@ export const toApiParams = (state) => {
   }
 }
 
-// const isSticky = (position = "") => position == "sticky"
 export const Table = ({
   columns,
   data = [],
@@ -89,22 +94,25 @@ export const Table = ({
   getRowProps,
   initialState,
   controlledState,
-  useSortBy = ReactTable.useSortBy,
+  useSortBy = useTableSortBy,
   manualSortBy = true,
   setSortOrder,
   disableMultiSort = true,
-  usePagination = ReactTable.usePagination,
+  usePagination = useTablePagination,
   pageCount,
   setPageIndex,
   manualPagination = true,
-  useFilters = ReactTable.useFilters,
+  useFilters = useTableFilters,
   manualFilters = true,
   isLoading,
   head = true,
   body = true,
   foot = false,
   children,
-  isSticky = false,
+  stickyHead = false,
+  stickyLeft = false,
+  stickyRight = false,
+  stickyFoot = false,
   components = {},
   getTableHeadProps,
   ...props
@@ -117,7 +125,10 @@ export const Table = ({
   let table = _useTable(
     {
       components,
-      isSticky,
+      stickyHead,
+      stickyLeft,
+      stickyRight,
+      stickyFoot,
       getTableHeadProps,
       columns,
       data,
@@ -166,6 +177,7 @@ export const Table = ({
     en: "Next page"
   })
 
+  let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
   return (
     <>
       {isLoading && (
@@ -219,28 +231,54 @@ export const Table = ({
   )
 }
 
+const defaultProps = () => ({})
+
 const Head = ({ table }) => {
-  let { headerGroups, components, isSticky } = table
+  let {
+    headerGroups,
+    components,
+    getTableHeadProps = defaultProps,
+    stickyHead,
+    stickyLeft,
+    stickyRight
+  } = table
   let { Head } = components
-  let tableHeadProps = table?.getTableHeadProps?.({ table }) ?? {}
+
+  const StickyHeadZIndex = 1
   return (
     <Head
       css={css`
-        position: ${isSticky ? "sticky" : "relative"};
+        position: ${stickyHead ? "sticky" : "relative"};
         top: 0;
-        z-index: ${isSticky ? "1" : "auto"};
+        z-index: ${stickyHead ? StickyHeadZIndex : "auto"};
       `}
-      {...tableHeadProps}
+      {...getTableHeadProps()}
     >
       {headerGroups.map((headerGroup) => (
         <_Table.Row {...headerGroup.getHeaderGroupProps()}>
-          {headerGroup.headers.map((column) => {
+          {headerGroup.headers.map((column, columnIndex, list) => {
             let props = column.getHeaderProps({
               ...column?.headCell,
               ...column?.getSortByToggleProps()
             })
+
+            let isFirst = columnIndex == 0
+            let isLast = columnIndex == list.length - 1
+            let isStickyLeft = stickyHead && stickyLeft && isFirst
+            let isStickyRight = stickyHead && stickyRight && isLast
+            //TODO: support multiple sticky columns?
+            let isStickyCell = isStickyLeft || isStickyRight
             return (
-              <_Table.HeadCell {...props}>
+              <_Table.HeadCell
+                css={css`
+                  position: ${isStickyCell ? "sticky" : "static"};
+                  left: ${isStickyLeft ? 0 : "auto"};
+                  right: ${isStickyRight ? 0 : "auto"};
+                  z-index: ${isStickyCell ? StickyHeadZIndex + 1 : "auto"};
+                  background-color: var(--bb-palette-white600, #000000);
+                `}
+                {...props}
+              >
                 {column.render("Header")}
                 {column.isSorted ? (
                   column.isSortedDesc ? (
@@ -261,11 +299,18 @@ const Head = ({ table }) => {
 }
 
 const Foot = ({ table }) => {
-  let { footerGroups, components, isSticky } = table
+  let {
+    footerGroups,
+    components,
+    getTableFootProps = defaultProps,
+    stickyFoot,
+    stickyLeft,
+    stickyRight
+  } = table
   let { Foot } = components
-  let tableFootProps = table?.getTableFootProps?.({ table }) ?? {}
+
   return (
-    <Foot fontWeight="semibold" {...tableFootProps}>
+    <Foot fontWeight="semibold" {...getTableFootProps()}>
       {footerGroups.map((group) => (
         <_Table.Row {...group.getFooterGroupProps()}>
           {group.headers.map((column) => (
@@ -284,28 +329,58 @@ const Foot = ({ table }) => {
 }
 
 const Body = ({ table }) => {
-  let { rows, getTableBodyProps, prepareRow, columns, components } = table
+  let {
+    rows,
+    getTableBodyProps,
+    getRowProps = defaultProps,
+    getColumnProps = defaultProps,
+    getCellProps = defaultProps,
+    prepareRow,
+    columns,
+    components,
+    stickyLeft,
+    stickyRight
+  } = table
   let { Body, Row, Cell } = components
   return (
     <Body {...getTableBodyProps()}>
-      {rows.map((row, i) => {
+      {rows.map((row, rowIndex) => {
         prepareRow(row)
 
-        let rowProps = table.getRowProps?.(row) || {}
         return (
           <Row
             table={table}
             data-row-id={row.id}
-            data-row-index={i}
-            {...row.getRowProps(rowProps)}
+            data-row-index={rowIndex}
+            {...row.getRowProps(getRowProps(row))}
           >
-            {row.cells.map((cell) => {
-              let props = cell.getCellProps({
-                ...cell?.column?.cell
-              })
+            {row.cells.map((cell, cellIndex, list) => {
+              //TODO: rename cell?.column?.cell to cellProps?
+              let props = cell.getCellProps([
+                {
+                  ...cell?.column?.cell
+                },
+                getColumnProps(cell.column),
+                getCellProps(cell)
+              ])
               let columnId = cell?.column?.id || cell?.column?.accessor
+
+              let isFirst = cellIndex == 0
+              let isLast = cellIndex == list.length - 1
+              let isStickyLeft = stickyLeft && isFirst
+              let isStickyRight = stickyRight && isLast
+              //TODO: support multiple sticky columns?
+              let isStickyCell = isStickyLeft || isStickyRight
               return (
-                <Cell {...props} data-column-id={columnId}>
+                <Cell
+                  css={css`
+                    position: ${isStickyCell ? "sticky" : "static"};
+                    left: ${isStickyLeft ? 0 : "auto"};
+                    right: ${isStickyRight ? 0 : "auto"};
+                  `}
+                  data-column-id={columnId}
+                  {...props}
+                >
                   {cell.render("Cell")}
                 </Cell>
               )

@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-otel-collector
+  namespace: observability
+data:
+  otel-config: | 
+    receivers:
+      otlp/2:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+    processors:
+      batch:
+    exporters:
+      logging:
+        loglevel: debug
+      jaeger:
+        endpoint: "jaeger-collector:14250"
+        tls:
+          insecure: true
+    extensions:
+      health_check:
+      pprof:
+      zpages:
+    service:
+      extensions: [health_check, pprof, zpages]
+      pipelines:
+        traces/2:
+          receivers: [otlp/2]
+          processors: [batch]
+          exporters: [jaeger,logging]
