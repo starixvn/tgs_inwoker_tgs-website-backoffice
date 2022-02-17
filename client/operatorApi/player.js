@@ -190,10 +190,31 @@ export const addManualBankCard = async (
   return result
 }
 
+const dummyImagePath = fileURLToPath(new URL("./dummy.png", import.meta.url))
+export const uploadIdentity = async (platformToken, playerToken) => {
+  const form = new FormData()
+  let dummyImageStream = await createReadStream(dummyImagePath)
+  form.append("file", dummyImageStream, "dummy.png")
+
+  let headers = {
+    ...form.getHeaders(),
+    "brand-token": platformToken,
+    Token: playerToken
+  }
+
+  let url = `${api()}/player/identity/upload`
+  return await fetcher(url, {
+    method: "POST",
+    body: form,
+    headers
+  })
+}
+
 export default {
   create,
   login,
   createAndLogin,
   addManualBankCard,
-  findBankInfoIdByType
+  findBankInfoIdByType,
+  uploadIdentity
 }

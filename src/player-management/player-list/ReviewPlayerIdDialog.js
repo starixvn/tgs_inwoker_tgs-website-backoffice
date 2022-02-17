@@ -8,7 +8,8 @@ import {
   useModalState,
   FieldStack,
   Link,
-  Button
+  Button,
+  Divider
 } from "bumbag"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import Disclosure, { VerifyDisclosure } from "../../dialog/Disclosure"
@@ -20,6 +21,8 @@ import { FieldValues } from "../../layout/Grid"
 import { usePlayer, useVerifyPlayerID } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
+import Textarea, { TextareaField } from "../../textarea"
+import Separator from "../../layout/Separator"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   playerCode,
@@ -94,6 +97,7 @@ const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
   let hasAttchment = !!record?.attachmentUrl
   return (
     <FormDialog
+      id="review-player-id-dialog"
       formMethods={formMethods}
       onSubmit={onSubmit}
       actionButtonsProps={{
@@ -128,23 +132,27 @@ const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
       dialog={dialog}
       {...props}
     >
-      <FieldValues>
-        <Trans zh="真实姓名" en="Real name" />
-        <Box>{record?.realName}</Box>
+      <FieldStack>
+        <FieldValues>
+          <Trans zh="真实姓名" en="Real name" />
+          <Box>{record?.realName}</Box>
 
-        <Trans zh="身分证" en="IC Number" />
-        <Box>{record?.idNumber}</Box>
+          <Trans zh="身分证" en="IC Number" />
+          <Box>{record?.idNumber}</Box>
 
-        <Trans zh="附件" en="Attachment" />
-        <Box>
-          {hasAttchment && (
-            <Link href={record.attachmentUrl} target="_blank">
-              <Trans zh="连结" en="Link" />
-            </Link>
-          )}
-          {!hasAttchment && "-"}
-        </Box>
-      </FieldValues>
+          <Trans zh="附件" en="Attachment" />
+          <Box>
+            {hasAttchment && (
+              <Link href={record.attachmentUrl} target="_blank">
+                <Trans zh="连结" en="Link" />
+              </Link>
+            )}
+            {!hasAttchment && "-"}
+          </Box>
+        </FieldValues>
+        <Divider />
+        <TextareaField name="remark" label={<Trans zh="备注" en="Remark" />} />
+      </FieldStack>
     </FormDialog>
   )
 }
