@@ -292,6 +292,8 @@ const GameRoundDataContent = ({
 
     case ContentType.Xml:
       return <XmlContent {...record} />
+    default:
+      return null
   }
 }
 

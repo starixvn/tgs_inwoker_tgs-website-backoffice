@@ -18,7 +18,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { Trans, useTrans } from "../../i18n"
 import clone from "clone-deep"
 import { FieldValues } from "../../layout/Grid"
-import { usePlayer, useVerifyPlayerID } from "./client"
+import { usePlayer, usePlayerIdentity, useVerifyPlayerID } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import Textarea, { TextareaField } from "../../textarea"
@@ -48,7 +48,8 @@ export const ReviewPlayerIdDialogDisclosure = ({
 }
 
 const PlayerDialog = ({ playerCode, dialog, ...props }) => {
-  let { isLoading, data, error, mutate, deleteCache } = usePlayer(playerCode)
+  let { isLoading, data, error, mutate, deleteCache } =
+    usePlayerIdentity(playerCode)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -75,7 +76,7 @@ const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } = useVerifyPlayerID(
-    record.playerCode,
+    record.formId,
     formData
   )
 

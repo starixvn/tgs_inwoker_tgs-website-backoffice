@@ -296,14 +296,15 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
                 player={player}
                 onSubmitted={mutate}
               />
-              {brand?.enablePlayerIdentity && (
-                <ReviewPlayerIdDialogDisclosure
-                  id="review-player-id-dialog-disclosure"
-                  brandId={brandId}
-                  playerCode={playerCode}
-                  onSubmitted={mutate}
-                />
-              )}
+              {brand?.enablePlayerIdentity &&
+                player.identityFormId === "WaitingVerify" && (
+                  <ReviewPlayerIdDialogDisclosure
+                    id="review-player-id-dialog-disclosure"
+                    brandId={brandId}
+                    playerCode={playerCode}
+                    onSubmitted={mutate}
+                  />
+                )}
             </Set>
           )
         }
