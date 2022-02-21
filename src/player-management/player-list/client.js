@@ -96,7 +96,12 @@ export const usePlayerMainWallet = (playerCode) => {
   return useGet(url)
 }
 
-export const useVerifyPlayerID = (playerCode, data) => {
-  let url = playerCode ? `${API}/${playerCode}/identify` : ""
+export const usePlayerIdentity = (playerCode) => {
+  let url = playerCode ? `${API}/playeridentity/${playerCode}` : ""
+  return useGet(url)
+}
+
+export const useVerifyPlayerID = (formId, data) => {
+  let url = formId ? `${API}/playeridentity/${formId}` : ""
   return usePutData(url, data)
 }
