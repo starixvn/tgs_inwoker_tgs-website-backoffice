@@ -130,7 +130,7 @@ const ReportContent = ({ brandId }) => {
           }}
         />
       }
-      title={<Trans zh="公司月报表" en="Company Monthly Report" />}
+      title={<Trans zh="游戏商報表" en="Game Provider Report" />}
     >
       <Table
         columns={columns}
