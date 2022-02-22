@@ -7,7 +7,8 @@ import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
 
 const test = base.extend(Fixture)
 
-test("review player id", async ({
+console.warn("enable setting for brand")
+test.skip("review player id", async ({
   page,
   platformCode,
   platformToken,

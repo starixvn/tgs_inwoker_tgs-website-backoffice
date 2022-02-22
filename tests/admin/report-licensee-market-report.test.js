@@ -6,8 +6,7 @@ import { selectFirst } from "../licensee.js"
 
 const test = base.extend(Fixture)
 
-console.warn("*** Wait for backend to fix report-licensee-market-report ***")
-test.skip("view and download licensee market report", async ({ page }) => {
+test("view and download licensee market report", async ({ page }) => {
   await gotoLicenseeMarketReportPage(page)
   await page.waitForSelector(`[data-column-id="depositAmount"] span`)
 
