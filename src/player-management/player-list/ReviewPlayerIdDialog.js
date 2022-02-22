@@ -2,8 +2,9 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import {
   Stack,
+  Set,
   Box,
-  Text,
+  Icon,
   Dialog,
   useModalState,
   FieldStack,
@@ -23,10 +24,17 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import Textarea, { TextareaField } from "../../textarea"
 import Separator from "../../layout/Separator"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import { faCertificate } from "@fortawesome/free-solid-svg-icons"
+import {
+  PlayerIdentityStateLabel,
+  isPlayerIdentityWaitingVerify
+} from "./PlayerIdentityState"
 
 export const ReviewPlayerIdDialogDisclosure = ({
+  brandId,
   playerCode,
-  record,
+  identityFormId,
   onSubmitted,
   ...props
 }) => {
@@ -38,7 +46,8 @@ export const ReviewPlayerIdDialogDisclosure = ({
       {dialog.visible && (
         <PlayerDialog
           playerCode={playerCode}
-          record={record}
+          identityFormId={identityFormId}
+          brandId={brandId}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -47,36 +56,77 @@ export const ReviewPlayerIdDialogDisclosure = ({
   )
 }
 
-const PlayerDialog = ({ playerCode, dialog, ...props }) => {
-  let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerIdentity(playerCode)
+const PlayerDialog = ({
+  brandId,
+  playerCode,
+  identityFormId,
+  record,
+  dialog,
+  ...props
+}) => {
+  let {
+    isLoading: isLoadingPlayer,
+    data: player,
+    error: playerError,
+    mutate: mutatePlayer,
+    deleteCache: deletePlayerCache
+  } = usePlayer(playerCode)
+  let {
+    isLoading: isLoadingPlayerIdentity,
+    data: playerIdentity,
+    error: playerIdentityError,
+    mutate: mutatePlayerIdentity,
+    deleteCache: deletePlayerIdentityCache
+  } = usePlayerIdentity(playerCode)
 
-  if (isLoading) {
+  if (isLoadingPlayer || isLoadingPlayerIdentity) {
     return <LoadingBackdrop {...dialog} />
   }
 
-  if (error) {
-    return <AlertDialog {...error} onClickClose={deleteCache} />
+  if (playerError) {
+    return <AlertDialog {...playerError} onClickClose={deletePlayerCache} />
+  }
+
+  if (playerIdentityError) {
+    return (
+      <AlertDialog
+        {...playerIdentityError}
+        onClickClose={deletePlayerIdentityCache}
+      />
+    )
   }
 
   return (
     <ReviewDialog
       {...props}
       playerCode={playerCode}
-      record={data}
+      identityFormId={identityFormId}
+      record={{
+        brandId,
+        identityFormId,
+        ...clone(player),
+        ...clone(playerIdentity),
+        identityStatus: playerIdentity.status
+      }}
       dialog={dialog}
     />
   )
 }
 
-const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
+const ReviewDialog = ({
+  playerCode,
+  identityFormId,
+  record = {},
+  dialog,
+  ...props
+}) => {
   let defaultValues = clone(record)
   let formMethods = useForm({ defaultValues })
   let { setValue } = formMethods
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } = useVerifyPlayerID(
-    record.formId,
+    identityFormId,
     formData
   )
 
@@ -95,7 +145,10 @@ const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
     en: "ID Verification"
   })
 
-  let hasAttchment = !!record?.attachmentUrl
+  let editable = isPlayerIdentityWaitingVerify(record.identityStatus)
+  let readOnly = !editable
+  let hasAttchment = !!record?.authData?.PlayerIdentityFileId
+  let attachmentUrl = `/api/fs/${record?.authData?.PlayerIdentityFileId}`
   return (
     <FormDialog
       id="review-player-id-dialog"
@@ -107,7 +160,6 @@ const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
         }
       }}
       onClickSubmit={(event) => {
-        //TODO: backend api field name
         setValue("reviewResponse", "Approve")
       }}
       addonButtons={
@@ -115,7 +167,6 @@ const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
           type="submit"
           data-type="reject"
           onClick={() => {
-            //TODO: backend api field name
             setValue("reviewResponse", "Reject")
           }}
           palette="danger"
@@ -129,6 +180,8 @@ const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
+      showActionButtons={editable}
+      footer={readOnly && <CloseButtonFooter dialog={dialog} alignX="right" />}
       title={title}
       dialog={dialog}
       {...props}
@@ -139,12 +192,17 @@ const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
           <Box>{record?.realName}</Box>
 
           <Trans zh="身分证" en="IC Number" />
-          <Box>{record?.idNumber}</Box>
+          <Set alignY="center">
+            {/* 
+            <PlayerIdentityStateLabel value={record.identityStatus} /> 
+            */}
+            {record?.idNumber}
+          </Set>
 
           <Trans zh="附件" en="Attachment" />
           <Box>
             {hasAttchment && (
-              <Link href={record.attachmentUrl} target="_blank">
+              <Link href={attachmentUrl} target="_blank">
                 <Trans zh="连结" en="Link" />
               </Link>
             )}
@@ -152,7 +210,11 @@ const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
           </Box>
         </FieldValues>
         <Divider />
-        <TextareaField name="remark" label={<Trans zh="备注" en="Remark" />} />
+        <TextareaField
+          name="remark"
+          label={<Trans zh="备注" en="Remark" />}
+          readOnly={readOnly}
+        />
       </FieldStack>
     </FormDialog>
   )

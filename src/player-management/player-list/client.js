@@ -96,12 +96,13 @@ export const usePlayerMainWallet = (playerCode) => {
   return useGet(url)
 }
 
+const PlayerIdentityApi = "/api/playeridentity"
 export const usePlayerIdentity = (playerCode) => {
-  let url = playerCode ? `${API}/playeridentity/${playerCode}` : ""
+  let url = playerCode ? `${PlayerIdentityApi}/${playerCode}/identity` : ""
   return useGet(url)
 }
 
 export const useVerifyPlayerID = (formId, data) => {
-  let url = formId ? `${API}/playeridentity/${formId}` : ""
-  return usePutData(url, data)
+  let url = formId ? `${PlayerIdentityApi}/${formId}` : ""
+  return usePostData(url, data)
 }
