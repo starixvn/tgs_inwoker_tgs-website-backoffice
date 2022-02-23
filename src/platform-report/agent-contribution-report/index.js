@@ -10,7 +10,8 @@ import {
   Link,
   FieldStack,
   Icon,
-  Level
+  Level,
+  Alert
 } from "bumbag"
 import PageContent from "../../page/Content"
 import {
@@ -19,7 +20,12 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { FormattedNumber, Trans, useTrans } from "../../i18n"
+import {
+  FormattedNumber,
+  FormattedNumberDecimal,
+  Trans,
+  useTrans
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -181,7 +187,7 @@ const ReportContent = ({ brandId }) => {
             setSortOrder={setSortOrder}
             isLoading={isLoading}
             foot={data?.items?.length > 0}
-            isSticky
+            stickyHead
           />
         )}
       </FieldStack>
@@ -207,7 +213,7 @@ const AgentBreadcrumb = ({ usernames = [], setUsernames }) => {
 
         let isCurrent = isLastIndex(index, list)
         return (
-          <Breadcrumb.Item isCurrent={isCurrent}>
+          <Breadcrumb.Item isCurrent={isCurrent} key={index}>
             <Breadcrumb.Link
               onClick={(event) => {
                 if (!isCurrent) {

@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, Level, Text, Link } from "bumbag"
+import {
+  Heading,
+  Stack,
+  Box,
+  Button,
+  Set,
+  Level,
+  Text,
+  Link,
+  FieldStack,
+  Alert
+} from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -9,7 +20,12 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { FormattedNumber, Trans, useTrans } from "../../i18n"
+import {
+  FormattedNumber,
+  Trans,
+  useTrans,
+  FormattedNumberDecimal
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -136,21 +152,85 @@ const ReportContent = ({ brandId }) => {
       title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
     >
       {username && (
-        <Table
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-          foot={data?.items?.length > 0}
-          isSticky
-        />
+        <FieldStack>
+          <TotalsInfo data={data} />
+          <Table
+            columns={columns}
+            data={data?.items}
+            initialState={state}
+            controlledState={state}
+            pageCount={pageCount(pageSize, data?.totalCount)}
+            setPageIndex={setPageIndex}
+            setSortOrder={setSortOrder}
+            isLoading={isLoading}
+            foot={data?.items?.length > 0}
+            stickyHead
+          />
+        </FieldStack>
       )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const TotalsInfo = ({ data }) => {
+  //TODO: data from api
+  let totalWinLoss = undefined
+  let totalCost = undefined
+  let totalNetProfit = undefined
+
+  if (
+    !Number.isFinite(totalWinLoss) ||
+    !Number.isFinite(totalCost) ||
+    !Number.isFinite(totalNetProfit)
+  ) {
+    return null
+  }
+
+  return (
+    <Set
+      isFilled
+      css={css`
+        font-weight: bold;
+      `}
+    >
+      <Alert
+        accent
+        variant="bordered"
+        paddingTop="0.5rem"
+        paddingBottom="0.5rem"
+      >
+        <Trans en="Total Win Loss：" zh="总输赢金额：" />
+        <FormattedNumberDecimal value={totalWinLoss} />
+      </Alert>
+      <Alert
+        accent
+        variant="bordered"
+        paddingTop="0.5rem"
+        paddingBottom="0.5rem"
+      >
+        <Trans en="Total Cost：" zh="总成本：" />
+        <FormattedNumberDecimal value={totalCost} />
+      </Alert>
+      <Alert
+        accent
+        variant="bordered"
+        paddingTop="0.5rem"
+        paddingBottom="0.5rem"
+      >
+        <Trans en="Total Net Profit：" zh="总盈余：" />
+        <FormattedNumberDecimal value={totalNetProfit} />
+      </Alert>
+      <Alert
+        accent
+        variant="bordered"
+        paddingTop="0.5rem"
+        paddingBottom="0.5rem"
+      >
+        <Trans en="Total Profit Sharing：" zh="总分红金额：" />
+        <FormattedNumberDecimal value={totalCost} />
+      </Alert>
+    </Set>
   )
 }
 

@@ -11,6 +11,9 @@ export const UpdateIngress = "updateingress"
 
 export const UpdateDnsZone = "updatednszone"
 
+//TODO: required?
+export const LookupWhois = "lookupwhois"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {
@@ -38,6 +41,8 @@ export const label = (codes = [], locale = Locales.zh) => {
       return "Edit Ingress"
     case UpdateDnsZone:
       return "Edit DNS Zone"
+    case LookupWhois:
+      return "Lookup Whois"
     default:
       return ""
   }

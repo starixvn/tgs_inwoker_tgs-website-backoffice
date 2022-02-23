@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: report-api
-image: report-api
+image: tgs-report-api
 services:
   - name: report-api
     dependencies:
@@ -12,6 +12,7 @@ services:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
       NatsSetting__Urls: "nats://nats:4222"
+      Report__GameProvidersPluggableBaseUrl: "http://game-pluggable-service"
       RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
     ingresses:
       # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 report-api.localhost` to host file

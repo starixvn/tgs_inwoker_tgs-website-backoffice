@@ -44,6 +44,7 @@ import { useFormContext } from "react-hook-form"
 import Input from "../../input/Input"
 import AdjustType from "./AdjustType"
 import { NumberInput } from "../../input/NumberInput"
+import { AgentAddBalanceReportTypeSelect } from "./AgentAddBalanceReportType"
 
 export const AgentAddBalanceDisclosure = ({
   brandId,
@@ -128,6 +129,13 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
       <FieldValues margin="1rem">
         <Trans zh="代理用户名" en="Agent Username" />
         <Box alignY="center">{username}</Box>
+
+        {/* 
+        <Box alignY="center">
+          <Trans zh="计入报表类型" en="Report Type" />
+        </Box>
+        <AgentAddBalanceReportTypeSelect name="reportType" /> 
+        */}
 
         <Text.Block alignY="center">
           <Trans zh="交易类型" en="Transaction Type" />

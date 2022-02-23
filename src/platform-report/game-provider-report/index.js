@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  useWatch
+} from "react-hook-form"
 import { Heading, Stack, Box, Button, Set, Level, Text, Link } from "bumbag"
 import PageContent from "../../page/Content"
 import {
@@ -15,10 +20,13 @@ import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
 import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
-import { DateInputRange } from "../../date/DateTimeRangeInput"
+import {
+  DateInputRange,
+  DateInputRangeField
+} from "../../date/DateTimeRangeInput"
 import { today, yesterday } from "../../date/range"
 import { useGameProviderReportList } from "./client"
-import { subDays } from "date-fns"
+import { subDays, isValid } from "date-fns"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
   numberDecimalColumn
@@ -154,7 +162,7 @@ const ReportContent = ({ brandId }) => {
           }
           return {}
         }}
-        isSticky
+        stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -182,19 +190,30 @@ const SearchBar = ({
       gameType
     }
   })
+  let { control, getValues, setValue, clearErrors } = formMethods
 
   const onSubmit = (data) => search?.(data)
+
+  const StartField = "start"
+  const EndField = "end"
 
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-        <Set>
-          <DateInputRange
+        <Set alignY="bottom">
+          <DateInputRangeField
+            label={<Trans zh="平台结算时间" en="Platform Settlement Time" />}
             id="date-range"
             showDateDropdownMenu
             minDate={minDate}
             maxRangeDays={maxRangeDays}
             fakeTimeLabel
+            startProps={{
+              name: StartField
+            }}
+            endProps={{
+              name: EndField
+            }}
             required
           />
           <GameProviderSelect name="gameProviderCode" valueField="code" />

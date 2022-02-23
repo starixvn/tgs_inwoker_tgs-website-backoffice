@@ -55,13 +55,11 @@ import { ViewFundWithdrawDisclosure } from "./ViewFundWithdraw"
 import { VerifyFundWithdrawDisclosure } from "./VerifyFundWithdraw"
 import { PaymentMethodSelect } from "../../payment/method/PaymentMethod"
 import { UserTypeLabel } from "./UserType"
-import maxTime from "date-fns/max"
-import isValidTime from "date-fns/isValid"
 import clone from "clone-deep"
 import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
-import { subDays, parseISO, isAfter, isSameDay } from "date-fns"
+import { subDays, parseISO, isAfter, isSameDay, isValid, max } from "date-fns"
 import { useBrandPaymentList } from "../../system/brandpayments/client"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import { FundWithdrawPaidDialogDisclosure } from "./FundWithdrawPaid"
@@ -326,10 +324,10 @@ const newApplicationsFromToday = (first = [], second = []) => {
   }
 
   let today = new Date()
-  let lastMaxApplicationTime = maxTime(
+  let lastMaxApplicationTime = max(
     second.reduce((times, { createdOn }) => {
       let value = parseISO(createdOn)
-      if (isValidTime(value)) {
+      if (isValid(value)) {
         times.push(value)
       }
 

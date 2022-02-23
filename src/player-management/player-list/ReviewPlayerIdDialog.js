@@ -2,100 +2,220 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import {
   Stack,
+  Set,
   Box,
-  Text,
+  Icon,
   Dialog,
   useModalState,
   FieldStack,
-  Link
+  Link,
+  Button,
+  Divider
 } from "bumbag"
+import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import Disclosure, { VerifyDisclosure } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import Backdrop from "../../dialog/Backdrop"
 import { Trans, useTrans } from "../../i18n"
 import clone from "clone-deep"
 import { FieldValues } from "../../layout/Grid"
-import { usePlayer } from "./client"
+import { usePlayer, usePlayerIdentity, useVerifyPlayerID } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
+import Textarea, { TextareaField } from "../../textarea"
+import Separator from "../../layout/Separator"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import { faCertificate } from "@fortawesome/free-solid-svg-icons"
+import {
+  PlayerIdentityStateLabel,
+  isPlayerIdentityWaitingVerify
+} from "./PlayerIdentityState"
 
 export const ReviewPlayerIdDialogDisclosure = ({
+  brandId,
   playerCode,
-  record,
+  identityFormId,
+  onSubmitted,
   ...props
 }) => {
   let dialog = useModalState()
 
   return (
     <>
-      <VerifyDisclosure {...dialog} />
+      <VerifyDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <PlayerDialog playerCode={playerCode} record={record} dialog={dialog} />
+        <PlayerDialog
+          playerCode={playerCode}
+          identityFormId={identityFormId}
+          brandId={brandId}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-const PlayerDialog = ({ playerCode, dialog, ...props }) => {
-  let { isLoading, data, error, mutate, deleteCache } = usePlayer(playerCode)
+const PlayerDialog = ({
+  brandId,
+  playerCode,
+  identityFormId,
+  record,
+  dialog,
+  ...props
+}) => {
+  let {
+    isLoading: isLoadingPlayer,
+    data: player,
+    error: playerError,
+    mutate: mutatePlayer,
+    deleteCache: deletePlayerCache
+  } = usePlayer(playerCode)
+  let {
+    isLoading: isLoadingPlayerIdentity,
+    data: playerIdentity,
+    error: playerIdentityError,
+    mutate: mutatePlayerIdentity,
+    deleteCache: deletePlayerIdentityCache
+  } = usePlayerIdentity(playerCode)
 
-  if (isLoading) {
+  if (isLoadingPlayer || isLoadingPlayerIdentity) {
     return <LoadingBackdrop {...dialog} />
   }
 
-  if (error) {
-    return <AlertDialog {...error} onClickClose={deleteCache} />
+  if (playerError) {
+    return <AlertDialog {...playerError} onClickClose={deletePlayerCache} />
+  }
+
+  if (playerIdentityError) {
+    return (
+      <AlertDialog
+        {...playerIdentityError}
+        onClickClose={deletePlayerIdentityCache}
+      />
+    )
   }
 
   return (
     <ReviewDialog
       {...props}
       playerCode={playerCode}
-      record={data}
+      identityFormId={identityFormId}
+      record={{
+        brandId,
+        identityFormId,
+        ...clone(player),
+        ...clone(playerIdentity),
+        identityStatus: playerIdentity.status
+      }}
       dialog={dialog}
     />
   )
 }
 
-const ReviewDialog = ({ playerCode, record = {}, dialog, ...props }) => {
-  let [formData, setSubmit] = useState()
-  //TODO: api
+const ReviewDialog = ({
+  playerCode,
+  identityFormId,
+  record = {},
+  dialog,
+  ...props
+}) => {
+  let defaultValues = clone(record)
+  let formMethods = useForm({ defaultValues })
+  let { setValue } = formMethods
 
-  //TODO: reset form
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } = useVerifyPlayerID(
+    identityFormId,
+    formData
+  )
+
+  const onSubmit = (data) => {
+    setSubmit(data)
+  }
+
   const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 
   let title = useTrans({
-    zh: "审核身分证",
-    en: "Verify Player ID"
+    zh: "身分证审核",
+    en: "ID Verification"
   })
 
-  let hasAttchment = !!record?.attachmentUrl
+  let editable = isPlayerIdentityWaitingVerify(record.identityStatus)
+  let readOnly = !editable
+  let hasAttchment = !!record?.authData?.PlayerIdentityFileId
+  let attachmentUrl = `/api/fs/${record?.authData?.PlayerIdentityFileId}`
   return (
     <FormDialog
-      defaultValues={clone(record)}
+      id="review-player-id-dialog"
+      formMethods={formMethods}
+      onSubmit={onSubmit}
+      actionButtonsProps={{
+        submitProps: {
+          "data-type": "approve"
+        }
+      }}
+      onClickSubmit={(event) => {
+        setValue("reviewResponse", "Approve")
+      }}
+      addonButtons={
+        <Button
+          type="submit"
+          data-type="reject"
+          onClick={() => {
+            setValue("reviewResponse", "Reject")
+          }}
+          palette="danger"
+          variant="outlined"
+        >
+          <Trans zh="拒绝" en="Reject" />
+        </Button>
+      }
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
       onCloseErrorAlert={reset}
+      showActionButtons={editable}
+      footer={readOnly && <CloseButtonFooter dialog={dialog} alignX="right" />}
       title={title}
       dialog={dialog}
+      {...props}
     >
-      <FieldValues>
-        <Trans zh="真实姓名" en="Real name" />
-        <Box>{record?.realName}</Box>
+      <FieldStack>
+        <FieldValues>
+          <Trans zh="真实姓名" en="Real name" />
+          <Box>{record?.realName}</Box>
 
-        <Trans zh="身分证" en="IC Number" />
-        <Box>{record?.idNumber}</Box>
+          <Trans zh="身分证" en="IC Number" />
+          <Set alignY="center">
+            {/* 
+            <PlayerIdentityStateLabel value={record.identityStatus} /> 
+            */}
+            {record?.idNumber}
+          </Set>
 
-        <Trans zh="附件" en="Attachment" />
-        <Box>
-          {hasAttchment && (
-            <Link href={record.attachmentUrl} target="_blank">
-              <Trans zh="连结" en="Link" />
-            </Link>
-          )}
-          {!hasAttchment && "-"}
-        </Box>
-      </FieldValues>
+          <Trans zh="附件" en="Attachment" />
+          <Box>
+            {hasAttchment && (
+              <Link href={attachmentUrl} target="_blank">
+                <Trans zh="连结" en="Link" />
+              </Link>
+            )}
+            {!hasAttchment && "-"}
+          </Box>
+        </FieldValues>
+        <Divider />
+        <TextareaField
+          name="remark"
+          label={<Trans zh="备注" en="Remark" />}
+          readOnly={readOnly}
+        />
+      </FieldStack>
     </FormDialog>
   )
 }

@@ -142,7 +142,7 @@ const Body = ({}) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         getRowId={(row) => row.id}
-        isSticky
+        stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>

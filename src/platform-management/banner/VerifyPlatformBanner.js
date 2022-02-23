@@ -8,7 +8,7 @@ import Label from "../../form/Label"
 import { Disclosure, VerifyDisclosure } from "../../dialog/Disclosure"
 import { useVerifyPlatformBanner, usePlatformBanner } from "./client"
 import { Trans, useTrans } from "../../i18n"
-import parseDate from "date-fns/parseISO"
+import { parseISO } from "date-fns"
 import { CancelText } from "../../button/ActionButtons"
 import FormDialog from "../../form/FormDialog"
 import Input, { InputField } from "../../input/Input"
@@ -57,8 +57,8 @@ const VerifyDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
 
   let defaultValues = {
     ...clone(banner),
-    beginTime: parseDate(record.beginTime),
-    endTime: record.endTime && parseDate(record.endTime),
+    beginTime: parseISO(record.beginTime),
+    endTime: record.endTime && parseISO(record.endTime),
     permanent: !record.endTime,
     remarks: ""
   }
@@ -160,8 +160,8 @@ export const ViewVerifyPlatformBannerDisclosure = ({
   dialog,
   ...props
 }) => {
-  let beginTime = parseDate(record.beginTime)
-  let endTime = parseDate(record.endTime)
+  let beginTime = parseISO(record.beginTime)
+  let endTime = parseISO(record.endTime)
 
   let title = useTrans({
     zh: "查看 Banner",
