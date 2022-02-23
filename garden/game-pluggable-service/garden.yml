@@ -10,9 +10,9 @@ services:
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__NatsMQ: "nats://nats:4222"
-      Pluggable__TGSGameProvidersBaseUrl: "http://game-gameproviders"
+      Pluggable__GameProvidersBaseUrl: "http://game-providers"
       Pluggable__CashServiceBaseUrl: "http://cash-service"
-      Pluggable__TGSGameProviderKickPlayerServerBaseUrl: "http://game-kickplayer-server"
+      Pluggable__GameProviderKickPlayerServerBaseUrl: "http://game-kickplayer-server"
       Pluggable__GameProvidersQueryServerBaseUrl: "http://game-provider-query-server"
     ingresses:
       # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 game-pluggable.localhost` to host file
