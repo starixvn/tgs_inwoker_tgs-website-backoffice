@@ -14,13 +14,14 @@ test("view platform order report", async ({
   backofficeApi,
   sboGameProviderApi
 }) => {
-  await page.goto("/report/orderreport", { waitUntil: "networkidle" })
-  let brandId = selectPlatformByCode(page, platformCode)
-
   let walletAmount = 100
-  await backofficeApi.player.addBalance(player.code, {
-    amount: walletAmount
-  })
+  await Promise.all([
+    backofficeApi.player.addBalance(player.code, {
+      amount: walletAmount
+    }),
+    page.goto("/report/orderreport", { waitUntil: "networkidle" })
+  ])
+  let brandId = await selectPlatformByCode(page, platformCode)
 
   let betAmount = 10
   let betResult = await sboGameProviderApi.placeLoseBet({
@@ -48,9 +49,8 @@ const searchPlayer = async (page, player) => {
 }
 
 const viewGameRoundDialog = async ({ page, player, betAmount, betResult }) => {
-  console.warn("TODO: fix local env order detail error")
+  console.warn("*** TODO: fix local env get game round detail issue")
   return
-
   let GameRoundDialog = `#game-round-dialog`
   await openDialog(page, GameRoundDialog)
 
