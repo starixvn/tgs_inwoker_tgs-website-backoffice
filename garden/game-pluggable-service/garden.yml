@@ -13,6 +13,7 @@ services:
       Pluggable__TGSGameProvidersBaseUrl: "http://game-gameproviders"
       Pluggable__CashServiceBaseUrl: "http://cash-service"
       Pluggable__TGSGameProviderKickPlayerServerBaseUrl: "http://game-kickplayer-server"
+      Pluggable__GameProvidersQueryServerBaseUrl: "http://game-provider-query-server"
     ingresses:
       # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 game-pluggable.localhost` to host file
       - hostname: game-pluggable.localhost

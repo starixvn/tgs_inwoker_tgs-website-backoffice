@@ -106,3 +106,8 @@ export const useVerifyPlayerID = (formId, data) => {
   let url = formId ? `${PlayerIdentityApi}/${formId}` : ""
   return usePostData(url, data)
 }
+
+export const usePlayerWageringRequirementList = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/accountChanges`) : ""
+  return useGet(url)
+}

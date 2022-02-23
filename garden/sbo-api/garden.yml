@@ -12,6 +12,7 @@ services:
       GameProviderCode: "SBO"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__MongoDBMessagingConnectionString: "mongodb://root:1qaz2wsx!%40@mongodb/filedb?retryWrites=true&w=majority&authSource=admin"
       NatsSetting__Urls: "nats://nats:4222"
       Game__CashBaseUrl: "http://cash-service"
       FeatureManagement__SBO: true

@@ -40,6 +40,7 @@ import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { PlayerClearWageringRequirementDisclosure } from "./PlayerClearWageringRequirement"
 import { useIsAdminUser } from "../../user/context"
 import { isDev } from "../../env"
+import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirementDialog"
 
 export const Key = "player"
 
@@ -251,9 +252,14 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
         <Box alignY="center">
           <WageringRequirementLabel />
         </Box>
-        <Box>
+        <Set>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
-        </Box>
+          {/* 
+          <PlayerWageringRequirementDialogDisclosure
+            playerCode={player.playerCode}
+          /> 
+          */}
+        </Set>
 
         <StatusLabel />
         <Box>
