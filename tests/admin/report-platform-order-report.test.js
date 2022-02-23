@@ -49,8 +49,6 @@ const searchPlayer = async (page, player) => {
 }
 
 const viewGameRoundDialog = async ({ page, player, betAmount, betResult }) => {
-  console.warn("*** TODO: fix local env get game round detail issue")
-  return
   let GameRoundDialog = `#game-round-dialog`
   await openDialog(page, GameRoundDialog)
 
