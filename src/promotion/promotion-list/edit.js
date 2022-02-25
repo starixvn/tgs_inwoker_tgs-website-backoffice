@@ -64,6 +64,7 @@ import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import Backdrop from "../../dialog/Backdrop"
 import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { parseJSON } from "../../text/json"
+import { PromotionRuleSetting } from "./PromotionRuleSetting"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -591,6 +592,9 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             <>
               <NumberInput
                 name={TotalAmountLimitFieldName}
+                registerOptions={{
+                  valueAsNumber: true
+                }}
                 required
                 disabled={disabled}
               />
@@ -751,6 +755,13 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         <Trans zh="規則設定" en="Rule Settings" />
       </Heading>
 
+      <PromotionRuleSetting
+        promotionTypeGroup={promotionTypeGroup}
+        totalAmountLimitFieldName={TotalAmountLimitFieldName}
+        limitedTotalAmount={limitedTotalAmount}
+        readOnly={readOnly}
+      />
+      {/* 
       <FieldValues>
         <NormalLabel>
           <Trans zh="彩金百分比" en="Bonus Percentage" />
@@ -787,7 +798,8 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             </Button>
           }
         />
-      </FieldValues>
+      </FieldValues> 
+      */}
     </FieldStack>
   )
 }
