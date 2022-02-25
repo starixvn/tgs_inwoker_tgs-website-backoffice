@@ -416,10 +416,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let { control, setValue } = formMethods
 
   let TotalAmountLimitFieldName = "totalAmountLimit"
-  let totalAmountLimit = useWatch({
-    control,
-    name: TotalAmountLimitFieldName
-  })
 
   let UnlimitedFieldName = "unlimited"
   let unlimitedTotalAmount = useWatch({
@@ -761,45 +757,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         limitedTotalAmount={limitedTotalAmount}
         readOnly={readOnly}
       />
-      {/* 
-      <FieldValues>
-        <NormalLabel>
-          <Trans zh="彩金百分比" en="Bonus Percentage" />
-        </NormalLabel>
-        <PercentageNumberInputField
-          name="percentage"
-          max="999"
-          required
-          disabled={disabled}
-        />
-
-        <NormalLabel>
-          <Trans zh="彩金上限" en="Bonus Limit" />
-        </NormalLabel>
-        <NumberInput
-          name="bonusAmountLimit"
-          min="0"
-          max={limitedTotalAmount ? totalAmountLimit : undefined}
-          required
-          disabled={disabled}
-        />
-
-        <NormalLabel>
-          <Trans zh="流水倍数" en="Turnover Requirement" />
-        </NormalLabel>
-        <NumberInputField
-          name="turnoverMultiple"
-          min="0"
-          required
-          disabled={disabled}
-          addonAfter={
-            <Button isStatic tabIndex="-1">
-              <Trans zh="倍" en="Multipliers" />
-            </Button>
-          }
-        />
-      </FieldValues> 
-      */}
     </FieldStack>
   )
 }
