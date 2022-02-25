@@ -94,11 +94,12 @@ const toggleStatus = async (page, brandId, index = 0) => {
 }
 
 let MinTotalAmountLimit = 10000000
+
+const PromotionTypeGroupOptions = ["Deposit", "Turnover"]
 const editPromotion = async (page, brandId, record) => {
   let EditDialogSelector = `#edit-promotion-dialog`
   await openDialog(page, EditDialogSelector)
 
-  let PromotionTypeGroupOptions = await getPromotionTypeGroupOptions(page)
   let promotionTypeGroup = await getPromotionTypeGroup(page)
   let otherPromotionTypeGroups = PromotionTypeGroupOptions.filter(
     (item) => item != promotionTypeGroup
