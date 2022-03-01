@@ -213,7 +213,7 @@ const useColumns = ({ items = [], totals = [] }) => {
           textAlign: "center",
           whiteSpace: "nowrap"
         },
-        TotalCell: () => "",
+        TotalCell: () => null,
         Cell: ({ value }) => {
           let { id, gameId = "" } = value
           return (
@@ -237,7 +237,7 @@ const useColumns = ({ items = [], totals = [] }) => {
         accessor: (row) => {
           return row
         },
-        TotalCell: () => "",
+        TotalCell: () => null,
         Cell: ({ value }) => {
           return (
             <BettingDetail
