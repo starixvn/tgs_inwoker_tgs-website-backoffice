@@ -70,15 +70,30 @@ export const PaymentMethodSetting = ({
 const FPSSetting = ({ paymentName }) => {
   return (
     <>
-      <Label required>
-        <Trans zh="帐号名称" en="Account Name" />
+      <Label>
+        <Trans zh="电话号码" en="Phone" />
       </Label>
-      <Input name="extendedData.name" required />
+      <Input name="extendedData.phone" />
 
-      <Label required>
-        <Trans zh="银行卡号" en="Bank Account" />
+      <Label>
+        <Trans zh="电子邮件" en="Email" />
       </Label>
-      <Input name="extendedData.bankAccount" />
+      <Input name="extendedData.email" />
+
+      <Label>
+        <Trans zh="FPS ID" en="FPS ID" />
+      </Label>
+      <Input name="extendedData.fpsId" />
+
+      <Label>
+        <Trans zh="QR Code" en="QR Code" />
+      </Label>
+      <ImageUploadButton
+        brandId={brandId}
+        name="extendedData.qrCodeFileUrl"
+        prefix="payment"
+        showLocalizationAddonAfter={false}
+      />
     </>
   )
 }
