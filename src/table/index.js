@@ -17,6 +17,7 @@ import {
   faSearchMinus
 } from "@fortawesome/free-solid-svg-icons"
 import { Trans, useTrans } from "../i18n"
+import clone from "clone-deep"
 
 const DefaultState = {
   pageIndex: 0,
@@ -90,6 +91,7 @@ export const toApiParams = (state) => {
 export const Table = ({
   columns,
   data = [],
+  total,
   getRowId,
   getRowProps,
   initialState,
@@ -132,6 +134,7 @@ export const Table = ({
       getTableHeadProps,
       columns,
       data,
+      total,
       getRowId,
       getRowProps,
       initialState,
@@ -204,6 +207,7 @@ export const Table = ({
         >
           <_Table width="100%" {...table.getTableProps()} {...props}>
             {head === true && <Head table={table} />}
+            {total && <TotalBody table={table} />}
             {body === true && <Body table={table} />}
             {children}
             {foot === true && <Foot table={table} />}
@@ -325,6 +329,61 @@ const Foot = ({ table }) => {
         </_Table.Row>
       ))}
     </Foot>
+  )
+}
+
+const TotalBody = ({ table }) => {
+  let {
+    total,
+    getTableBodyProps,
+    columns,
+    components,
+    stickyLeft,
+    stickyRight
+  } = table
+  let { Body, Row, Cell } = components
+
+  return (
+    <Body
+      id="total"
+      {...getTableBodyProps()}
+      css={css`
+        font-weight: 600;
+        background-color: var(--bb-palette-white600, #000000);
+        border-bottom: 1px solid var(--bb-palette-white800, #000000);
+      `}
+    >
+      <Row table={table}>
+        {columns.map((column, columnIndex, list) => {
+          let columnId = column?.id ?? column?.accessor
+
+          //TODO: rename cell?.column?.cell to cellProps?
+          let props = clone(column?.cell ?? {})
+
+          let isFirst = columnIndex == 0
+          let isLast = columnIndex == list.length - 1
+          let isStickyLeft = stickyLeft && isFirst
+          let isStickyRight = stickyRight && isLast
+          let isStickyCell = isStickyLeft || isStickyRight
+
+          let Body = column.TotalCell ?? column.Cell
+          let value = total[columnId]
+          return (
+            <Cell
+              css={css`
+                position: ${isStickyCell ? "sticky" : "static"};
+                left: ${isStickyLeft ? 0 : "auto"};
+                right: ${isStickyRight ? 0 : "auto"};
+              `}
+              data-column-id={columnId}
+              {...props}
+            >
+              <Body value={value} />
+            </Cell>
+          )
+        })}
+      </Row>
+    </Body>
   )
 }
 

@@ -338,7 +338,7 @@ const useColumns = ({
           }
           return <Text.Block>{value?.username}</Text.Block>
         },
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
           textAlign: "center"
         },

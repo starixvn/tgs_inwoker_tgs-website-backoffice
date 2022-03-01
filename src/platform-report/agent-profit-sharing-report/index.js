@@ -297,7 +297,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         accessor: "username",
         Header: <Trans zh="代理用户名" en="Agent Username" />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
           textAlign: "center"
         },
