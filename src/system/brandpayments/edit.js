@@ -415,8 +415,6 @@ const EditBody = ({
 }) => {
   let { setValue, getValues, control } = useFormContext()
 
-  // const transferType = getValues("transferType")
-  // let isDeposit = isDepositPlatformPayment(transferType)
   const paymentName = getValues("paymentName")
   const TransferLimitToFieldName = "transferLimitTo"
   let transferLimitTo = useWatch({
@@ -448,7 +446,7 @@ const EditBody = ({
       )
     : manualPaymentMethodChannelList
 
-  let paymentChanneIdRange = paymentChannelListRange?.map?.(
+  let manualPaymentProdiverChanneIdRange = paymentChannelListRange?.map?.(
     ({ channelId }) => channelId
   )
 
@@ -465,15 +463,13 @@ const EditBody = ({
     ({ id }) => id == paymentMethodId
   )
 
-  // let isBankTransferMethod = paymentMethod?.code === "BankTransfer"
-  // let isThirdPartyMethod = paymentMethod?.code === "ThirdParty"
-
   let manualPaymentMethodIdList = manualPaymentMethodList?.map(({ id }) => id)
 
-  let isManualPaymentCode = paymentName == ManualCode
-  let isManualMethod = manualPaymentMethodIdList?.includes(paymentMethodId)
+  let isManualPaymentProvider = paymentName == ManualCode
+  let isManualPaymentProviderMethod =
+    manualPaymentMethodIdList?.includes(paymentMethodId)
   useEffect(() => {
-    if (isManualPaymentCode && isManualMethod) {
+    if (isManualPaymentProvider && isManualPaymentProviderMethod) {
       let paymentMethodChannel = manualPaymentMethodChannelList.find((item) => {
         return (
           item.paymentId === paymentId &&
@@ -483,7 +479,7 @@ const EditBody = ({
       })
       setValue(PaymentMethodChannelIdFieldName, paymentMethodChannel?.id ?? "")
     }
-  }, [isManualPaymentCode, paymentChannelId, paymentMethodId])
+  }, [isManualPaymentProvider, paymentChannelId, paymentMethodId])
   return (
     <Stack
       orientation="vertical"
@@ -522,14 +518,14 @@ const EditBody = ({
                     required
                   />
                 )}
-                {isEdit && isManualMethod && (
+                {isEdit && isManualPaymentProviderMethod && (
                   <PaymentMethodSelect
                     name={PaymentMethodFieldName}
                     range={manualPaymentMethodIdList}
                     required
                   />
                 )}
-                {isEdit && !isManualMethod && (
+                {isEdit && !isManualPaymentProviderMethod && (
                   <PaymentMethodLabel
                     range={manualPaymentMethodIdList}
                     value={record?.paymentMethodId}
@@ -549,18 +545,18 @@ const EditBody = ({
                 {isAdd && (
                   <PaymentChannelSelect
                     name={PaymentChannelIdFieldName}
-                    range={paymentChanneIdRange}
+                    range={manualPaymentProdiverChanneIdRange}
                     required
                   />
                 )}
-                {isEdit && isManualMethod && (
+                {isEdit && isManualPaymentProviderMethod && (
                   <PaymentChannelSelect
                     name={PaymentChannelIdFieldName}
-                    range={paymentChanneIdRange}
+                    range={manualPaymentProdiverChanneIdRange}
                     required
                   />
                 )}
-                {isEdit && !isManualMethod && (
+                {isEdit && !isManualPaymentProviderMethod && (
                   <PaymentChannelLabel value={record?.paymentChannelId} />
                 )}
               </Box>
