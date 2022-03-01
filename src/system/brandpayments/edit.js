@@ -79,6 +79,7 @@ import { isDev } from "../../env"
 import TransferType, {
   isDepositPlatformPayment
 } from "./BrandPaymentTransferType"
+import { PaymentMethodSetting } from "./PaymentMethodSetting"
 
 export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -414,8 +415,8 @@ const EditBody = ({
 }) => {
   let { setValue, getValues, control } = useFormContext()
 
-  const transferType = getValues("transferType")
-  let isDeposit = isDepositPlatformPayment(transferType)
+  // const transferType = getValues("transferType")
+  // let isDeposit = isDepositPlatformPayment(transferType)
   const paymentName = getValues("paymentName")
   const TransferLimitToFieldName = "transferLimitTo"
   let transferLimitTo = useWatch({
@@ -464,8 +465,8 @@ const EditBody = ({
     ({ id }) => id == paymentMethodId
   )
 
-  let isBankTransferMethod = paymentMethod?.code === "BankTransfer"
-  let isThirdPartyMethod = paymentMethod?.code === "ThirdParty"
+  // let isBankTransferMethod = paymentMethod?.code === "BankTransfer"
+  // let isThirdPartyMethod = paymentMethod?.code === "ThirdParty"
 
   let manualPaymentMethodIdList = manualPaymentMethodList?.map(({ id }) => id)
 
@@ -569,54 +570,11 @@ const EditBody = ({
               </Label>
               <Input name="channelName" size="small" required />
 
-              {isBankTransferMethod && (
-                <>
-                  {isManualPaymentCode && (
-                    <>
-                      <Label required={isDeposit}>
-                        <Trans zh="帐号名称" en="Account Name" />
-                      </Label>
-                      <Input name="extendedData.name" required={isDeposit} />
-                    </>
-                  )}
-
-                  {isManualPaymentCode && (
-                    <>
-                      <Label required={isDeposit}>
-                        <Trans zh="银行卡号" en="Bank Account" />
-                      </Label>
-                      <Input
-                        name="extendedData.bankAccount"
-                        required={isDeposit}
-                      />
-                    </>
-                  )}
-
-                  <Label>
-                    <Trans zh="銀行Logo" en="Bank Logo" />
-                  </Label>
-                  <ImageUploadButton
-                    brandId={brandId}
-                    name="extendedData.logo"
-                    prefix="payment"
-                    showLocalizationAddonAfter={false}
-                  />
-                </>
-              )}
-
-              {isThirdPartyMethod && (
-                <>
-                  <Label required>
-                    <Trans zh="QR Code" en="QR Code" />
-                  </Label>
-                  <ImageUploadButton
-                    brandId={brandId}
-                    name="extendedData.qrCodeFileUrl"
-                    prefix="payment"
-                    showLocalizationAddonAfter={false}
-                  />
-                </>
-              )}
+              <PaymentMethodSetting
+                brandId={brandId}
+                paymentName={paymentName}
+                paymentMethodCode={paymentMethod?.code}
+              />
 
               <Label>
                 <Trans zh="状态" en="Status" />
