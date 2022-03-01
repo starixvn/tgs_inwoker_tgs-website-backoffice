@@ -82,14 +82,11 @@ const toggleStatus = async (page, brandId, index = 0) => {
     )
   ])
 
-  await page.waitForSelector(
-    `#promotion [data-row-index="${index}"] [data-column-id="status"]`
+  let statusLocator = page.locator(
+    `#promotion [data-row-index="${index}"] [data-column-id="status"] label`
   )
-
-  let toggledStatus = await page.$eval(
-    `#promotion [data-row-index="${index}"] [data-column-id="status"] label`,
-    ({ dataset }) => dataset.status
-  )
+  await statusLocator.waitFor()
+  let toggledStatus = await statusLocator.getAttribute("data-status")
   expect(toggledStatus).to.equal(ExpectedStatus)
 }
 

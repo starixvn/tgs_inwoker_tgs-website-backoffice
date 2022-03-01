@@ -67,7 +67,7 @@ export const PaymentMethodSetting = ({
   }
 }
 
-const FPSSetting = ({ paymentName }) => {
+const FPSSetting = ({ brandId, paymentName }) => {
   return (
     <>
       <Label>
