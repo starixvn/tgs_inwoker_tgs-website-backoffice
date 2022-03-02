@@ -20,6 +20,12 @@ export const useGameProviderReportList = (searchParams) => {
 }
 
 export const useUpdateGameProviderReport = (data) => {
-  let url = data ? `${API}/update` : ""
+  let url = data ? `${API}/generate` : ""
+  return usePostData(url, data)
+}
+
+const PlatformApi = "/api/BrandGameProvider"
+export const useUpdatePlatformGameProviderReport = (data) => {
+  let url = data ? `${PlatformApi}/generate` : ""
   return usePostData(url, data)
 }
