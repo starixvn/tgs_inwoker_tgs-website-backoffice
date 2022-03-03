@@ -26,7 +26,7 @@ import {
 } from "../../date/DateTimeRangeInput"
 import { today, yesterday } from "../../date/range"
 import { useGameProviderReportList } from "./client"
-import { subDays, isValid } from "date-fns"
+import { subDays } from "date-fns"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
   numberDecimalColumn

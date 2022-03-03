@@ -86,6 +86,27 @@ export const DateInputRangeField = ({
   )
 }
 
+export const DateHourRangeInput = ({
+  showTimeInput = false,
+  showTimeSelect = true,
+  timeIntervals = 60,
+  ...props
+}) => {
+  let hourLabel = useTrans({
+    zh: "小時",
+    en: "Hour"
+  })
+  return (
+    <DateTimeRangeInput
+      showTimeInput={showTimeInput}
+      showTimeSelect={showTimeSelect}
+      timeIntervals={timeIntervals}
+      timeCaption={hourLabel}
+      {...props}
+    />
+  )
+}
+
 export const DateTimeRangeInput = ({
   startProps,
   endProps,
@@ -94,8 +115,12 @@ export const DateTimeRangeInput = ({
   validate,
   maxRangeDays,
   dateFormat,
+  timeFormat,
   showTimeZoneDropdownMenu = false,
   showTimeInput = true,
+  showTimeSelect = false,
+  timeIntervals,
+  timeCaption,
   showDateDropdownMenu = false,
   required,
   disabled,
@@ -168,7 +193,11 @@ export const DateTimeRangeInput = ({
           id={startProps?.id}
           name={startName}
           dateFormat={dateFormat}
+          timeFormat={timeFormat}
           showTimeInput={showTimeInput}
+          showTimeSelect={showTimeSelect}
+          timeIntervals={timeIntervals}
+          timeCaption={timeCaption}
           minDate={minDate}
           maxDate={startMaxDate([startProps?.maxDate, maxDate, end])}
           required={required}
@@ -202,7 +231,11 @@ export const DateTimeRangeInput = ({
           id={endProps?.id}
           name={endName}
           dateFormat={dateFormat}
+          timeFormat={timeFormat}
           showTimeInput={showTimeInput}
+          showTimeSelect={showTimeSelect}
+          timeIntervals={timeIntervals}
+          timeCaption={timeCaption}
           minDate={endMinDate([endProps?.minDate, minDate, start])}
           maxDate={maxDate}
           required={required}

@@ -24,7 +24,7 @@ export const useUpdateGameProviderReport = (data) => {
   return usePostData(url, data)
 }
 
-const PlatformApi = "/api/BrandGameProvider"
+const PlatformApi = "/api/BrandGameProviderReport"
 export const useUpdatePlatformGameProviderReport = (data) => {
   let url = data ? `${PlatformApi}/generate` : ""
   return usePostData(url, data)

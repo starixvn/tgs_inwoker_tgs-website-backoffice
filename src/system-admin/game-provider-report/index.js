@@ -33,8 +33,7 @@ import {
   useUpdateGameProviderReport,
   useUpdatePlatformGameProviderReport
 } from "./client"
-import { subDays, isValid } from "date-fns"
-import { startOfNextDay } from "../../date/startOfNextDay"
+import { subDays, isValid, addMinutes } from "date-fns"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
@@ -49,7 +48,7 @@ import { CurrencySelectField } from "../../currency/CurrencySelect"
 import { DateMonthInput } from "../../date/DateMonthInput"
 import { GameProviderCurrencyReportDisclosure } from "./GameProviderCurrencyReport"
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
-import DateTimeRangeInput from "../../date/DateTimeRangeInput"
+import { DateHourRangeInput } from "../../date/DateTimeRangeInput"
 
 export { Code }
 
@@ -84,19 +83,23 @@ const ReportContent = ({}) => {
     currencyCode: undefined
   })
 
+  let validDateRange = isValid(state.from) && isValid(state.to)
+
   let culture = useLangCode()
   let toSearchParams = () => ({
     ...toApiParams(state),
     /*
+    to: startOfNextHour(state.to),
+    */
+    /*
     TODO: sort
     sortby: "gameProviderName",
     */
-    culture,
-    month
+    culture
   })
 
   let { isLoading, data, error, mutate, deleteCache } =
-    useGameProviderReportList(isValid(month) ? toSearchParams() : undefined)
+    useGameProviderReportList(validDateRange ? toSearchParams() : undefined)
 
   let columns = useColumns({
     items: data?.items,
@@ -132,33 +135,37 @@ const ReportContent = ({}) => {
       }
       title={<Trans zh="游戏商報表" en="Game Provider Report" />}
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        getRowProps={({ original: { isTotal }, index } = {}) => {
-          if (isTotal) {
-            return {
-              "data-row-type": "total",
-              backgroundColor: "white600",
-              fontWeight: "bold"
-              /*
+      {validDateRange && (
+        <>
+          <Table
+            columns={columns}
+            data={data?.items}
+            initialState={state}
+            controlledState={state}
+            pageCount={pageCount(state.pageSize, data?.totalCount)}
+            setPageIndex={setPageIndex}
+            setSortOrder={setSortOrder}
+            isLoading={isLoading}
+            getRowProps={({ original: { isTotal }, index } = {}) => {
+              if (isTotal) {
+                return {
+                  "data-row-type": "total",
+                  backgroundColor: "white600",
+                  fontWeight: "bold"
+                  /*
               position: "sticky",
               bottom: "0",
               zIndex: state.pageSize - index
               */
-            }
-          }
-          return {}
-        }}
-        stickyHead
-      />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+                }
+              }
+              return {}
+            }}
+            stickyHead
+          />
+          {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+        </>
+      )}
     </PageContent>
   )
 }
@@ -325,11 +332,17 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
-          <DateTimeRangeInput
+          <DateHourRangeInput
             id="date-range"
-            showDateDropdownMenu
+            dateFormat="yyyy/MM/dd HH"
+            timeFormat="HH"
+            showTimeInput={false}
+            showTimeSelect
+            timeIntervals={60}
+            showDateDropdownMenu={false}
             startProps={{ name: "from" }}
             endProps={{ name: "to" }}
+            required
           />
           <GameProviderSelect name="gameProviderCode" valueField="code" />
           <CurrencySelectField name="currencyCode" />
