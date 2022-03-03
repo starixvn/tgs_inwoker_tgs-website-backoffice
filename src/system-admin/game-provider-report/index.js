@@ -228,7 +228,7 @@ const UpdateGameProviderReportButton = ({ month }) => {
         variant="outlined"
         palette="primary"
       >
-        <Trans zh="產生游戏商報表" en="Update Game Provider Report" />
+        <Trans zh="加總資料" en="Advanced" />
       </Button>
     </Group>
   )
@@ -298,10 +298,7 @@ export const UpdatePlatformGameProviderReport = ({ month }) => {
         variant="outlined"
         palette="primary"
       >
-        <Trans
-          zh="產生平台游戏商報表"
-          en="Update Platform Game Provider Report"
-        />
+        <Trans zh="平台加總資料" en="Platform Advanced" />
       </Button>
     </Group>
   )
