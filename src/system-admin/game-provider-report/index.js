@@ -367,12 +367,13 @@ const useColumns = ({ items = [], month }) => {
         accessor: (row) => row,
         Header: <Trans zh="币种" en="Currency" />,
         disableSortBy: true,
-        Cell: ({ value: { isTotal, currencyCode = "" } }) => {
-          //TODO: dialog > search game provider & currency?
+        Cell: ({ value: { currencyCode = "" } }) => {
+          return currencyCode
+          /*
           return (
             <GameProviderCurrencyReportDisclosure currencyCode={currencyCode} />
           )
-          // return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
+          */
         }
       }),
       numberColumn({
