@@ -77,7 +77,7 @@ const ReportContent = ({}) => {
   let month = useWatch({ control, name: "month" })
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    gameProviderCode: "",
+    gameProviderId: "",
     from: undefined,
     to: undefined,
     currencyCode: undefined
@@ -120,7 +120,7 @@ const ReportContent = ({}) => {
           <SearchBar
             from={state.from}
             to={state.to}
-            gameProviderCode={state.gameProviderCode}
+            gameProviderId={state.gameProviderId}
             currencyCode={state.currencyCode}
             isLoading={isLoading}
             search={({ ...rest }) => {
@@ -307,7 +307,7 @@ export const UpdatePlatformGameProviderReport = ({ month }) => {
 const SearchBar = ({
   from,
   to,
-  gameProviderCode,
+  gameProviderId,
   currencyCode,
   search,
   isLoading,
@@ -317,7 +317,7 @@ const SearchBar = ({
     defaultValues: {
       from,
       to,
-      gameProviderCode,
+      gameProviderId,
       currencyCode
     }
   })
@@ -341,7 +341,7 @@ const SearchBar = ({
             endProps={{ name: "to" }}
             required
           />
-          <GameProviderSelect name="gameProviderCode" valueField="code" />
+          <GameProviderSelect name="gameProviderId" valueField="id" />
           <CurrencySelectField name="currencyCode" />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
