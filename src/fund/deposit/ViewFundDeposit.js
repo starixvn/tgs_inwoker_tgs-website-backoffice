@@ -99,9 +99,6 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
   let hasAttachment = !!record?.paymentReturn?.manualReceiptFileId
   let attachmentUrl = `/api/fs/${record?.paymentReturn?.manualReceiptFileId}`
 
-  let hasAccountName = !!record?.applyInfo?.accountName
-  let hasAccount = !!record?.applyInfo?.account
-
   let disabled = readOnly
   return (
     <>
@@ -138,24 +135,6 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
             <Trans zh="通道名称" en="Channel Name" />
           </NormalLabel>
           <Box alignY="center">{record?.channelName}</Box>
-
-          {hasAccountName && (
-            <>
-              <NormalLabel>
-                <Trans zh="账户名" en="Account Name" />
-              </NormalLabel>
-              <Box alignY="center">{record?.applyInfo?.accountName}</Box>
-            </>
-          )}
-
-          {hasAccount && (
-            <>
-              <NormalLabel>
-                <Trans zh="帐号" en="Account" />
-              </NormalLabel>
-              <Box alignY="center">{record?.applyInfo?.account}</Box>
-            </>
-          )}
 
           <NormalLabel>
             <Trans zh="充值金额" en="Deposit Amount" />
@@ -227,6 +206,10 @@ const BankInfoBox = ({ record }) => {
         <Trans zh="银行信息" en="Bank Info" />
       </Heading>
       <FieldValues marginLeft="1.5rem">
+        <NormalLabel>
+          <Trans zh="银行名称" en="Deposit Bank Name" />
+        </NormalLabel>
+        <Box alignY="center">{record?.applyInfo?.sendBankName}</Box>
         <NormalLabel>
           <Trans zh="充值账户" en="Deposit Bank Account" />
         </NormalLabel>
