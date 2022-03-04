@@ -323,7 +323,7 @@ const useColumns = ({
         id: "username",
         accessor: (row) => row,
         Header: <Trans zh="用户名" en="Username" />,
-        TotalCell: () => <Trans zh="总和" en="Total" />,
+        TotalCell: () => <Trans zh="总计" en="Total" />,
         Cell: ({ value }) => {
           let { type } = value
           if (isAgent(type)) {

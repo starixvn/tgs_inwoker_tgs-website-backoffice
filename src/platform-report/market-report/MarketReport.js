@@ -164,10 +164,11 @@ const useColumns = ({ brandId, items = [] }) => {
       dateTimeColumn({
         Header: <Trans zh="日期" en="Date" />,
         accessor: "reportDate",
+        TotalCell: () => <Trans zh="总计" en="Total" />,
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
         disableSortBy: true,
-        Footer: () => <Trans zh="共计" en="Total" />,
+        Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
           textAlign: "center"
         }
