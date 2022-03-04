@@ -180,6 +180,7 @@ const ReportContent = ({ brandId }) => {
           <Table
             columns={columns}
             data={data?.items}
+            total={data?.total}
             initialState={state}
             controlledState={state}
             pageCount={pageCount(pageSize, data?.totalCount)}
@@ -322,6 +323,7 @@ const useColumns = ({
         id: "username",
         accessor: (row) => row,
         Header: <Trans zh="用户名" en="Username" />,
+        TotalCell: () => <Trans zh="总和" en="Total" />,
         Cell: ({ value }) => {
           let { type } = value
           if (isAgent(type)) {
@@ -347,6 +349,7 @@ const useColumns = ({
       textColumn({
         accessor: "type",
         Header: <Trans zh="账户类型" en="Account Type" />,
+        TotalCell: () => null,
         Cell: ({ value = "" }) => {
           switch (value) {
             case "Player":

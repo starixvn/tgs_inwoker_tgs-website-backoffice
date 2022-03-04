@@ -190,13 +190,13 @@ const useColumns = ({ items = [], totals = [] }) => {
         sumColumn: "winLoss",
         disableSortBy: true,
         TotalCell: ({ value }) => (
-          <FormattedNumber value={value} format="0,0.00" />
+          <FormattedNumber value={value} format="0,0.00" digits={2} />
         ),
         Cell: ({ value }) => {
           let win = value >= 0
           return (
             <Text color={win ? "success" : "danger"}>
-              <FormattedNumber value={value} format="+0,0.00" />
+              <FormattedNumber value={value} format="+0,0.00" digits={2} />
             </Text>
           )
         }
