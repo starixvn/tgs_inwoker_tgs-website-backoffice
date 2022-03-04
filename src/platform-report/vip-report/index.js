@@ -220,6 +220,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       textColumn({
         accessor: "username",
         Header: <Trans zh="用户名" en="Username" />,
+        TotalCell: () => <Trans zh="总计" en="Total" />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
         Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
