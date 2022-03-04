@@ -2,6 +2,7 @@ import { initFetcher } from "./fetcher.js"
 import host from "./host.js"
 import player from "./player/index.js"
 import round from "./round/index.js"
+import payment from "./payment/index.js"
 
 export default {
   init: (options = {}) => {
@@ -9,5 +10,6 @@ export default {
     host.init(options.host)
   },
   player,
-  round
+  round,
+  payment
 }

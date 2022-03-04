@@ -24,9 +24,9 @@ import {
   DateInputRange,
   DateInputRangeField
 } from "../../date/DateTimeRangeInput"
-import { today, yesterday } from "../../date/range"
+import { lastMonth } from "../../date/range"
 import { useGameProviderReportList } from "./client"
-import { subDays, isValid } from "date-fns"
+import { subDays } from "date-fns"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
   numberDecimalColumn
@@ -71,7 +71,7 @@ export const Body = () => {
 }
 
 const ReportContent = ({ brandId }) => {
-  let dateRange = yesterday()
+  let dateRange = lastMonth()
   let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     pageSize: QueryMaxRangeDays,

@@ -6,7 +6,16 @@ import {
   useFormContext,
   useWatch
 } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, Level, Text, Link } from "bumbag"
+import {
+  Heading,
+  Stack,
+  Box,
+  Button,
+  Set,
+  Card,
+  useToasts,
+  Group
+} from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -21,10 +30,10 @@ import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import {
   useGameProviderReportList,
-  useUpdateGameProviderReport
+  useUpdateGameProviderReport,
+  useUpdatePlatformGameProviderReport
 } from "./client"
-import { subDays, isValid } from "date-fns"
-import { startOfNextDay } from "../../date/startOfNextDay"
+import { subDays, isValid, addMinutes } from "date-fns"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
@@ -38,6 +47,8 @@ import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import { CurrencySelectField } from "../../currency/CurrencySelect"
 import { DateMonthInput } from "../../date/DateMonthInput"
 import { GameProviderCurrencyReportDisclosure } from "./GameProviderCurrencyReport"
+import { MerchantIdSelect } from "../../merchant/MerchantSelect"
+import { DateHourRangeInput } from "../../date/DateTimeRangeInput"
 
 export { Code }
 
@@ -66,23 +77,29 @@ const ReportContent = ({}) => {
   let month = useWatch({ control, name: "month" })
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    gameProviderCode: "",
+    gameProviderId: "",
+    from: undefined,
+    to: undefined,
     currencyCode: undefined
   })
+
+  let validDateRange = isValid(state.from) && isValid(state.to)
 
   let culture = useLangCode()
   let toSearchParams = () => ({
     ...toApiParams(state),
     /*
+    to: startOfNextHour(state.to),
+    */
+    /*
     TODO: sort
     sortby: "gameProviderName",
     */
-    culture,
-    month
+    culture
   })
 
   let { isLoading, data, error, mutate, deleteCache } =
-    useGameProviderReportList(isValid(month) ? toSearchParams() : undefined)
+    useGameProviderReportList(validDateRange ? toSearchParams() : undefined)
 
   let columns = useColumns({
     items: data?.items,
@@ -94,14 +111,16 @@ const ReportContent = ({}) => {
       actionBar={
         <Set orientation="vertical">
           <FormProvider {...formMethods}>
-            <Set>
+            <Set marginBottom="1.5rem">
               <DateMonthInput name="month" placeholder={monthPlaceholder} />
-              <UpdateReportButton month={month} />
+              <UpdateGameProviderReportButton month={month} />
+              <UpdatePlatformGameProviderReport month={month} />
             </Set>
           </FormProvider>
           <SearchBar
-            month={state.month}
-            gameProviderCode={state.gameProviderCode}
+            from={state.from}
+            to={state.to}
+            gameProviderId={state.gameProviderId}
             currencyCode={state.currencyCode}
             isLoading={isLoading}
             search={({ ...rest }) => {
@@ -116,42 +135,60 @@ const ReportContent = ({}) => {
       }
       title={<Trans zh="游戏商報表" en="Game Provider Report" />}
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        getRowProps={({ original: { isTotal }, index } = {}) => {
-          if (isTotal) {
-            return {
-              "data-row-type": "total",
-              backgroundColor: "white600",
-              fontWeight: "bold"
-              /*
+      {validDateRange && (
+        <>
+          <Table
+            columns={columns}
+            data={data?.items}
+            initialState={state}
+            controlledState={state}
+            pageCount={pageCount(state.pageSize, data?.totalCount)}
+            setPageIndex={setPageIndex}
+            setSortOrder={setSortOrder}
+            isLoading={isLoading}
+            getRowProps={({ original: { isTotal }, index } = {}) => {
+              if (isTotal) {
+                return {
+                  "data-row-type": "total",
+                  backgroundColor: "white600",
+                  fontWeight: "bold"
+                  /*
               position: "sticky",
               bottom: "0",
               zIndex: state.pageSize - index
               */
-            }
-          }
-          return {}
-        }}
-        stickyHead
-      />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+                }
+              }
+              return {}
+            }}
+            stickyHead
+          />
+          {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+        </>
+      )}
     </PageContent>
   )
 }
 
-const UpdateReportButton = ({ month }) => {
+const UpdateGameProviderReportButton = ({ month }) => {
   let invalidDate = !isValid(month)
+  let { control } = useFormContext()
+
+  const GameProviderIdField = "gameProviderId"
+  let gameProviderId = useWatch({
+    control,
+    name: GameProviderIdField
+  })
 
   let [formData, setSubmit] = useState()
-  let { isLoading, data, error, mutate } = useUpdateGameProviderReport(formData)
+  let { isLoading, result, error, mutate } =
+    useUpdateGameProviderReport(formData)
+
+  let reportGenerationTitle = useTrans({
+    zh: "游戏商報表產生中",
+    en: "Game Provider Report generation in progress"
+  })
+  let toasts = useToasts()
 
   const reset = () => {
     setSubmit(undefined)
@@ -159,10 +196,13 @@ const UpdateReportButton = ({ month }) => {
   }
 
   useEffect(() => {
-    if (data) {
+    if (result) {
+      toasts.add({
+        title: reportGenerationTitle
+      })
       reset()
     }
-  }, [data])
+  }, [result])
 
   if (invalidDate) {
     return null
@@ -173,20 +213,101 @@ const UpdateReportButton = ({ month }) => {
   }
 
   return (
-    <Button
-      disabled={isLoading}
-      onClick={() => {
-        setSubmit(month)
-      }}
-    >
-      <Trans zh="更新報表" en="Update Report" />
-    </Button>
+    <Group>
+      <GameProviderSelect name="gameProviderId" />
+      <Button
+        disabled={isLoading}
+        isLoading={isLoading}
+        onClick={() => {
+          setSubmit({
+            startDate: month,
+            gameProviderId
+          })
+        }}
+        borderLeftWidth="1px"
+        variant="outlined"
+        palette="primary"
+      >
+        <Trans zh="加總資料" en="Advanced" />
+      </Button>
+    </Group>
+  )
+}
+
+export const UpdatePlatformGameProviderReport = ({ month }) => {
+  let invalidDate = !isValid(month)
+  let { control } = useFormContext()
+
+  const PlatformIdField = "brandId"
+  let platformId = useWatch({
+    control,
+    name: PlatformIdField
+  })
+
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate } =
+    useUpdatePlatformGameProviderReport(formData)
+
+  let reportGenerationTitle = useTrans({
+    zh: "平台游戏商報表產生中",
+    en: "Platform Game Provider Report generation in progress"
+  })
+  let toasts = useToasts()
+
+  const reset = () => {
+    setSubmit(undefined)
+    mutate(undefined, false)
+  }
+
+  useEffect(() => {
+    if (result) {
+      toasts.add({
+        title: reportGenerationTitle
+      })
+      reset()
+    }
+  }, [result])
+
+  if (invalidDate) {
+    return null
+  }
+
+  if (error) {
+    return <AlertDialog {...error} onClickClose={reset} />
+  }
+
+  return (
+    <Group>
+      <MerchantIdSelect
+        css={css`
+          .bb-SelectWrapper:last-child > select {
+            border-radius: 0;
+          }
+        `}
+      />
+      <Button
+        disabled={isLoading}
+        isLoading={isLoading}
+        onClick={() => {
+          setSubmit({
+            startDate: month,
+            brandId: platformId
+          })
+        }}
+        borderLeftWidth="1px"
+        variant="outlined"
+        palette="primary"
+      >
+        <Trans zh="平台加總資料" en="Platform Advanced" />
+      </Button>
+    </Group>
   )
 }
 
 const SearchBar = ({
-  month,
-  gameProviderCode,
+  from,
+  to,
+  gameProviderId,
   currencyCode,
   search,
   isLoading,
@@ -194,8 +315,9 @@ const SearchBar = ({
 }) => {
   let formMethods = useForm({
     defaultValues: {
-      month,
-      gameProviderCode,
+      from,
+      to,
+      gameProviderId,
       currencyCode
     }
   })
@@ -207,7 +329,19 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
-          <GameProviderSelect name="gameProviderCode" valueField="code" />
+          <DateHourRangeInput
+            id="date-range"
+            dateFormat="yyyy/MM/dd HH"
+            timeFormat="HH"
+            showTimeInput={false}
+            showTimeSelect
+            timeIntervals={60}
+            showDateDropdownMenu={false}
+            startProps={{ name: "from" }}
+            endProps={{ name: "to" }}
+            required
+          />
+          <GameProviderSelect name="gameProviderId" valueField="id" />
           <CurrencySelectField name="currencyCode" />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -233,12 +367,13 @@ const useColumns = ({ items = [], month }) => {
         accessor: (row) => row,
         Header: <Trans zh="币种" en="Currency" />,
         disableSortBy: true,
-        Cell: ({ value: { isTotal, currencyCode = "" } }) => {
-          //TODO: dialog > search game provider & currency?
+        Cell: ({ value: { currencyCode = "" } }) => {
+          return currencyCode
+          /*
           return (
             <GameProviderCurrencyReportDisclosure currencyCode={currencyCode} />
           )
-          // return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
+          */
         }
       }),
       numberColumn({

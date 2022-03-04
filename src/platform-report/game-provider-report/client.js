@@ -12,7 +12,7 @@ import { groupWith, eqProps, propEq } from "ramda"
 import clone from "clone-deep"
 import { isDev } from "../../env"
 
-export const API = "/api/GameProviderReport"
+export const API = "/api/BrandGameProviderReport"
 
 export const useGameProviderReportList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""

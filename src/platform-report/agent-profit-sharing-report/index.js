@@ -157,6 +157,7 @@ const ReportContent = ({ brandId }) => {
           <Table
             columns={columns}
             data={data?.items}
+            total={data?.total}
             initialState={state}
             controlledState={state}
             pageCount={pageCount(pageSize, data?.totalCount)}
@@ -296,8 +297,9 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       textColumn({
         accessor: "username",
         Header: <Trans zh="代理用户名" en="Agent Username" />,
+        TotalCell: () => <Trans zh="总和" en="Total" />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
           textAlign: "center"
         },
@@ -351,6 +353,9 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         sumColumn: "winLossAmount",
         toValue: (row) => row?.winLossAmount,
         Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        TotalCell: ({ value }) => (
+          <FormattedNumber value={value} format="0,0.00" digits={2} />
+        ),
         disableSortBy: true,
         Cell: ({ value }) => {
           return (
@@ -378,6 +383,9 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         sumColumn: "agentDividendAmount",
         toValue: (row) => row?.agentDividendAmount,
         Header: <Trans zh="分红金额" en="Profit Sharing Amount" />,
+        TotalCell: ({ value }) => (
+          <FormattedNumber value={value} format="0,0.00" digits={2} />
+        ),
         disableSortBy: true,
         Cell: ({ value }) => {
           return (
@@ -409,6 +417,9 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
           sumColumn: "fromTeamAgentDividendAmount",
           toValue: (row) => row?.fromTeamAgentDividendAmount,
           Header: <Trans zh="团队贡献" en="Team Contribution" />,
+          TotalCell: ({ value }) => (
+            <FormattedNumber value={value} format="0,0.00" digits={2} />
+          ),
           disableSortBy: true,
           Cell: ({ value }) => {
             return (

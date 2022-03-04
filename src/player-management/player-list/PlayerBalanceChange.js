@@ -77,6 +77,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
         <Table
           columns={columns}
           data={data?.items}
+          total={data?.total}
           pageCount={pageCount(pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
@@ -126,6 +127,7 @@ const useColumns = ({ items = [] }) =>
     () => [
       dateTimeColumn({
         Header: <Trans zh="操作时间" en="Operation Time" />,
+        TotalCell: () => <Trans zh="总和" en="Total" />,
         accessor: "recordedOn",
         disableSortBy: true
       }),
@@ -134,6 +136,7 @@ const useColumns = ({ items = [] }) =>
         accessor: (row) => row,
         Header: <Trans zh="交易类型" en="Transaction Type" />,
         disableSortBy: true,
+        TotalCell: () => null,
         Cell: ({ value: record }) => {
           let { transactionType, gameActionType } = record
           if (transactionType) {
@@ -150,6 +153,7 @@ const useColumns = ({ items = [] }) =>
       numberDecimalColumn({
         accessor: "balance",
         Header: <Trans zh="余额" en="Balance" />,
+        TotalCell: () => null,
         disableSortBy: true
       })
     ],

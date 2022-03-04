@@ -1,0 +1,21 @@
+kind: Module
+type: container
+name: report-aggregate-api
+image: tgs-report-aggregate-service
+services:
+  - name: report-aggregate-api
+    dependencies:
+      - postgres
+      - redis
+      - rabbitmq
+      - nats
+    env:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80
