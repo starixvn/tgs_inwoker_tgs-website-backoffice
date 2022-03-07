@@ -63,12 +63,6 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let columns = useColumns({ items: data?.items, brandId })
   let maxDate = startOfToday()
 
-  console.log(
-    "data?.items?.length > 0 && data?.total",
-    data?.items?.length > 0 && data?.total,
-    "data?.total",
-    data?.total
-  )
   return (
     <PageContent
       actionBar={
