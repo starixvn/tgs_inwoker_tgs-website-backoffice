@@ -65,7 +65,6 @@ const ReportContent = ({ brandId }) => {
   let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
-    pageSize: QueryMaxRangeDays,
     username: undefined,
     level: undefined,
     from: dateRange.start,
@@ -142,6 +141,7 @@ const ReportContent = ({ brandId }) => {
       <Table
         columns={columns}
         data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
@@ -231,6 +231,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       textColumn({
         accessor: "level",
         Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        TotalCell: () => null,
         Cell: ({ value }) => <Text.Block>VIP {value}</Text.Block>,
         Footer: () => <Box />,
         disableSortBy: true
@@ -263,8 +264,12 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         id: "rebateAmount",
         accessor: (row) => row,
         sumColumn: "rebateAmount",
+        toValue: (row) => row?.rebateAmount,
         Header: <Trans zh="返水金额" en="Commission Rebate Amount" />,
         disableSortBy: true,
+        TotalCell: ({ value }) => (
+          <FormattedNumber value={value} format="0,0.00" digits={2} />
+        ),
         Cell: ({ value }) => {
           return (
             <PlayerRebatDialogDisclosure

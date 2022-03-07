@@ -155,7 +155,7 @@ const useAgentPlayerWinLossColumns = ({ items = [] }) => {
       textColumn({
         accessor: "username",
         Header: <Trans zh="用户名" en="Username" />,
-        Footer: () => <Trans zh="页总计" en="Page Total" />,
+        Footer: () => <Trans zh="总计" en="Total" />,
         footerCellProps: {
           textAlign: "center"
         },

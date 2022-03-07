@@ -103,6 +103,7 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
       <Table
         columns={columns}
         data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
@@ -245,6 +246,9 @@ const useColumns = ({ brandId, items = [] }) => {
           />
         ),
         disableSortBy: true,
+        TotalCell: ({ value }) => (
+          <FormattedNumber value={value} format="0,0.00" digits={2} />
+        ),
         Cell: ({ value: record }) => {
           let value = record?.additionalExpenses
           let reportDateString = record?.reportDate

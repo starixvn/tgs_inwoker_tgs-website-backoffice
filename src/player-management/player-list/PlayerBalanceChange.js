@@ -77,7 +77,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
         <Table
           columns={columns}
           data={data?.items}
-          total={data?.total}
+          // total={data?.items?.length > 0 && data?.total}
           pageCount={pageCount(pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}

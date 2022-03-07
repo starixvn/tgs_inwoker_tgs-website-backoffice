@@ -74,7 +74,6 @@ const ReportContent = ({ brandId }) => {
   let dateRange = lastMonth()
   let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    pageSize: QueryMaxRangeDays,
     brandId,
     from: dateRange.start,
     to: dateRange.end,
@@ -135,6 +134,7 @@ const ReportContent = ({ brandId }) => {
       <Table
         columns={columns}
         data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(state.pageSize, data?.totalCount)}
@@ -234,7 +234,7 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="游戏商" en="Game Provider" />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, gameProviderName } }) => {
-          return isTotal ? <Trans zh="共计" en="Total" /> : gameProviderName
+          return isTotal ? <Trans zh="总计" en="Total" /> : gameProviderName
         }
       }),
       textColumn({
