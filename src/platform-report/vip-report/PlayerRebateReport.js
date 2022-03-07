@@ -128,7 +128,7 @@ const usePlayerVipRebateColumns = ({ items = [] }) => {
         dateFormat: "yyyy/MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
-        Footer: () => <Trans zh="页总计" en="Page Total" />,
+        Footer: () => <Trans zh="总计" en="Total" />,
         footerCellProps: {
           textAlign: "center"
         },

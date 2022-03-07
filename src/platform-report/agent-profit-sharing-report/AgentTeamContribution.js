@@ -256,7 +256,7 @@ const FootRow = ({ record }) => {
     <Table.Row textAlign="center" fontWeight="bold" whiteSpace="nowrap">
       <Table.Cell colSpan="2"></Table.Cell>
       <Table.Cell>
-        <Trans zh="页总计" en="Page Total" />
+        <Trans zh="总计" en="Total" />
       </Table.Cell>
       <Table.Cell>
         <FormattedNumberDecimal value={record?.liveDealerWinLoss} />

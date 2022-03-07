@@ -160,6 +160,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
       <Table
         columns={columns}
         data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
@@ -250,6 +251,7 @@ const useColumns = ({ items = [] }) => {
         id: "type",
         accessor: (row) => row,
         Header: <Trans zh="账户类型" en="Type" />,
+        TotalCell: () => null,
         Cell: ({ value }) => (
           <Text.Block>
             <Trans zh="玩家" en="Player" />
@@ -262,6 +264,7 @@ const useColumns = ({ items = [] }) => {
         accessor: "level",
         Header: <Trans zh="VIP 等级" en="VIP Level" />,
         disableSortBy: true,
+        TotalCell: () => null,
         Cell: ({ value }) => <VipLevelLabel value={value} />,
         Footer: () => <Box />
       }),

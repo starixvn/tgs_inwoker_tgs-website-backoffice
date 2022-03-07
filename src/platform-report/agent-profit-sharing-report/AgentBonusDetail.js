@@ -165,7 +165,7 @@ const useAgentBonusColumns = ({ username = "", items = [] }) => {
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
         Header: <Trans zh="结算日期" en="Date" />,
-        Footer: () => <Trans zh="页总计" en="Page Total" />,
+        Footer: () => <Trans zh="总计" en="Total" />,
         footerCellProps: {
           textAlign: "center"
         },
