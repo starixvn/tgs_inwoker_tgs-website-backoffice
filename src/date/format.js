@@ -1,7 +1,7 @@
 import { parseISO, format, isValid } from "date-fns"
 import { useLocale, Locales } from "../i18n"
 
-const Format = {
+export const Format = {
   Date: "yyyy/MM/dd",
   Time: "HH:mm:ss"
 }
