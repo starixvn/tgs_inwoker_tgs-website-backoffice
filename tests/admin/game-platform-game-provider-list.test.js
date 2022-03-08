@@ -60,7 +60,8 @@ const changeRandomStatus = async (page, list = Object.values(Status)) => {
   }
 
   let StatusSelector = `[data-column-id="status"] button`
-  let status = await page.$eval(StatusSelector, ({ dataset }) => dataset.status)
+  let statusLocator = page.locator(StatusSelector)
+  let status = await statusLocator.getAttribute("data-status")
 
   let restStatus = list.filter((item) => item != status)
 
@@ -87,9 +88,8 @@ const changeRandomStatus = async (page, list = Object.values(Status)) => {
       response.status() === 200
     )
   })
-  await page.waitForSelector(StatusSelector)
 
-  status = await page.$eval(StatusSelector, ({ dataset }) => dataset.status)
+  status = await statusLocator.getAttribute("data-status")
   expect(status).to.equal(expectedStatus)
 }
 

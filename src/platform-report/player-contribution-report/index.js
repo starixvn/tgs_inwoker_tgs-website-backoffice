@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  useWatch
+} from "react-hook-form"
 import {
   Heading,
   Stack,
@@ -40,6 +45,7 @@ import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
+import { PlayerHasAgentSelect } from "./PlayerHasAgentSelect"
 
 export { Code }
 
@@ -221,6 +227,9 @@ const SearchBar = ({
             showEmptyFieldValueAddonAfter
             placeholder={usernamePlaceholder}
           />
+          {/* 
+          <PlayerHasAgentSelect /> 
+          */}
           <VipLevelSelect
             name="level"
             brandId={brandId}
