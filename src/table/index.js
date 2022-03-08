@@ -370,6 +370,7 @@ const TotalBody = ({ table }) => {
           let value = total[columnId]
           return (
             <Cell
+              key={columnId}
               css={css`
                 position: ${isStickyCell ? "sticky" : "static"};
                 left: ${isStickyLeft ? 0 : "auto"};

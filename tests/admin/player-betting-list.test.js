@@ -54,8 +54,6 @@ test("view player betting list and betting detail", async ({
   let betAmount = numeral(betAmountString).value()
   expect(betAmount).to.equal(ExpectedBetAmount)
 
-  /*
-  TODO: FIX local env
   let BettingDialogSelector = `#betting-detail-dialog`
   await openDialog(page, BettingDialogSelector)
 
@@ -63,5 +61,4 @@ test("view player betting list and betting detail", async ({
   let detailBetAmountString = await page.textContent(DetailBetAmountSelector)
   let detailBetAmount = numeral(detailBetAmountString).value()
   expect(detailBetAmount).to.equal(ExpectedBetAmount)
-  */
 })
