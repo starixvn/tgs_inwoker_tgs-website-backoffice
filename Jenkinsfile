@@ -43,11 +43,11 @@ pipeline {
             }
         }
 	
-        stage('Run npm install') {   
-            steps {	  
-			    sh 'npm install'
-            }
-		}
+        // stage('Run npm install') {   
+        //     steps {	  
+		// 	    sh 'npm install'
+        //     }
+		// }
 		stage('Docker Build') {   
             steps {	  			    
                 sh "docker build -t ${Registry}${Image}:${TAG} ."
