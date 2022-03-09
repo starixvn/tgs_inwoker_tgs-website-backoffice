@@ -57,6 +57,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
 
   let columns = useColumns({ items: data?.items })
 
+  let depositOrWithdraw = isDepositOrWithdrawal(accountChangeType)
   return (
     <TabPanel tabId={Key} {...props}>
       <Stack spacing="major-2">
@@ -78,7 +79,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
         <Table
           columns={columns}
           data={data?.items}
-          // total={data?.items?.length > 0 && data?.total}
+          total={depositOrWithdraw && data?.items?.length > 0 && data?.total}
           pageCount={pageCount(pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
@@ -177,6 +178,10 @@ const WithdrawalTrans = {
   zh: "提款",
   en: "Withdrawal"
 }
+
+const isDepositOrWithdrawal = (value) =>
+  value === Deposit || value === Withdrawal
+
 const Adjust = "Adjust"
 const AdjustTrans = {
   zh: "调账",
