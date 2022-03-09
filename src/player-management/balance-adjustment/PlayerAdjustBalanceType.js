@@ -10,27 +10,27 @@ import {
   Set,
   FieldStack
 } from "bumbag"
-import { useTrans } from "../i18n"
-import Select from "../select/Select"
-import { useIsDisplayMenuByRoute } from "../user/context"
-import { SystemReportType } from "./balance-adjustment/menu"
+import { useTrans } from "../../i18n"
+import Select from "../../select/Select"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { SystemTransactionType } from "./menu"
 
 export const Company = "Company"
 const CompanyTrans = {
-  zh: "公司",
-  en: "Company"
+  zh: "公司调账",
+  en: "Company Adjustment"
 }
 
 export const Agent = "Agent"
 const AgentTrans = {
-  zh: "代理",
-  en: "Agent"
+  zh: "代理调账",
+  en: "Agent Adjustment"
 }
 
 export const System = "System"
 const SystemTrans = {
-  zh: "系統",
-  en: "System"
+  zh: "系統调账",
+  en: "System Adjustment"
 }
 
 export const usePlayerAdjustBalanceTypeOptionList = () => {
@@ -72,7 +72,7 @@ export const PlayerAdjustBalanceTypeSelect = ({ placeholder, ...props }) => {
   })
   placeholder = placeholder ?? defaultPlaceholder
 
-  let hasSystemType = useIsDisplayMenuByRoute([SystemReportType])
+  let hasSystemType = useIsDisplayMenuByRoute([SystemTransactionType])
 
   let options = [
     {

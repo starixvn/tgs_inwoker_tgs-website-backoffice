@@ -19,6 +19,7 @@ import {
   GameActionTypeLabel,
   useGameActionTypeOptionList
 } from "../../game/GameActionType"
+import { usePlayerAdjustBalanceTypeOptionList } from "../balance-adjustment/PlayerAdjustBalanceType"
 
 export const Key = "BalanceChange"
 
@@ -273,6 +274,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   })
   placeholder = placeholder ?? defaultPlaceholder
 
+  let adjustPlayerBalanceTypeOptions = usePlayerAdjustBalanceTypeOptionList()
   let gameActionTypeOptions = useGameActionTypeOptionList()
   let options = [
     {
