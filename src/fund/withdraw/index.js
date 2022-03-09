@@ -44,6 +44,7 @@ import FundWithdrawStatus, {
   FundWithdrawStatusLabel,
   FundWithdrawStatusSelect,
   isFundApproved,
+  isFundPaid,
   isFundUnderReview
 } from "./FundWithdrawStatus"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
@@ -544,6 +545,22 @@ const useColumns = ({
         Header: <Trans zh="提款金额" en="Amount" />,
         disableSortBy: true
       }),
+      /*
+      numberDecimalColumn({
+        id: "actualAmount",
+        accessor: (row) => row,
+        Header: <Trans zh="实际提款金额" en="Actual Amount" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          let { status, amount, actualAmount } = record
+          if (!isFundPaid(status)) {
+            return null
+          }
+
+          return <FormattedNumberDecimal value={actualAmount ?? amount} />
+        }
+      }),
+      */
       dateTimeColumn({
         accessor: "createdOn",
         Header: <Trans zh="申请时间" en="Application Time" />,

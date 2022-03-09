@@ -40,7 +40,9 @@ import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { PlayerClearWageringRequirementDisclosure } from "./PlayerClearWageringRequirement"
 import { useIsAdminUser } from "../../user/context"
 import { isDev } from "../../env"
+import { DateInput } from "../../date/DateInput"
 import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirementDialog"
+import Textarea from "../../textarea"
 
 export const Key = "player"
 
@@ -146,6 +148,13 @@ const EditForm = ({
           <Input name="realName" />
         </Box>
 
+        {/* 
+        <BirthdayLabel />
+        <Box>
+          <DateInput name="birthday" />
+        </Box> 
+        */}
+
         <IdentityCardNumberLabel />
         <Box>
           <Input name="idNumber" />
@@ -195,6 +204,13 @@ const EditForm = ({
         <Box>
           <PlayerStatusSelect name="status" required placeholder={false} />
         </Box>
+
+        {/* 
+        <RemarkLabel />
+        <Box>
+          <Textarea name="remark" />
+        </Box> 
+        */}
       </FieldValues>
       <Box alignX="right">
         <SubmitCancel onClickCancel={onClickClose} isLoading={isLoading} />
@@ -231,6 +247,13 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
           <Text>{realName}</Text>
         </Box>
 
+        {/* 
+        <BirthdayLabel />
+        <Box>
+          <FormattedDateTime value={player?.birthday} />
+        </Box> 
+        */}
+
         <IdentityCardNumberLabel />
         <Box>{player.idNumber}</Box>
 
@@ -266,6 +289,13 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
           <PlayerStatusLabel value={status} />
         </Box>
 
+        {/* 
+        <RemarkLabel />
+        <Box>
+          <Text>{player?.remark}</Text>
+        </Box> 
+        */}
+
         <RegisterIPLabel />
         <Box>{player?.registerIp}</Box>
 
@@ -293,6 +323,8 @@ const UserNameLabel = () => <Trans zh="用户名" en="User name" />
 
 const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
 
+const BirthdayLabel = () => <Trans zh="生日" en="Birthday" />
+
 const IdentityCardNumberLabel = () => <Trans zh="身分证" en="IC Number" />
 
 const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
@@ -306,6 +338,8 @@ const WageringRequirementLabel = () => (
 )
 
 const StatusLabel = () => <Trans zh="状态" en="Status" />
+
+const RemarkLabel = () => <Trans zh="备注" en="Remark" />
 
 const RegisterIPLabel = () => <Trans zh="注册IP地址" en="Register IP" />
 

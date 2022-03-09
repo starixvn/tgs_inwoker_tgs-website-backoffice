@@ -58,7 +58,8 @@ import { VerifyFundDepositDisclosure } from "./VerifyFundDeposit"
 import { ViewFundDepositDisclosure } from "./ViewFundDeposit"
 import FundDepositStatus, {
   FundDepositStatusLabel,
-  FundDepositStatusSelect
+  FundDepositStatusSelect,
+  isFundDepositApproved
 } from "./FundDepositStatus"
 import { SortOrder } from "../../table/order"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -590,6 +591,22 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <Trans zh="充值金额" en="Amount" />,
         disableSortBy: true
       }),
+      /*
+      numberDecimalColumn({
+        id: "actualAmount",
+        accessor: (row) => row,
+        Header: <Trans zh="实际充值金额" en="Actual Amount" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          let { status, amount, actualAmount } = record
+          if (!isFundDepositApproved(status)) {
+            return null
+          }
+
+          return <FormattedNumberDecimal value={actualAmount ?? amount} />
+        }
+      }),
+      */
       dateTimeColumn({
         accessor: "createdOn",
         Header: <Trans zh="申请时间" en="Application Time" />,

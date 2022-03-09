@@ -7,6 +7,8 @@ export const View = "view"
 
 export const PhoneFilter = "phonefilter"
 
+export const RealnameFilter = "realnamefilter"
+
 export const Update = "update"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
@@ -21,6 +23,14 @@ export const label = (codes = [], locale = Locales.zh) => {
         {
           zh: "查看",
           en: "View"
+        },
+        locale
+      )
+    case RealnameFilter:
+      return getTrans(
+        {
+          zh: "真实姓名过滤",
+          en: "Real Name Filter"
         },
         locale
       )

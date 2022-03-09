@@ -14,7 +14,7 @@ import {
   useUserBrandId,
   useIsAdminUser
 } from "../../user/context"
-import { Code, View, Update, PhoneFilter } from "./menu"
+import { Code, View, Update, PhoneFilter, RealnameFilter } from "./menu"
 import { PlayerStatusSelect } from "../PlayerStatus"
 import { VipLevelSelect } from "../../vip-levels/VipLevelSelect"
 import { ViewButton, EditButton } from "./button"
@@ -141,6 +141,7 @@ const BodyContent = ({ brandId = "", brand }) => {
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
   let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
+  let hasRealnameFilterAuth = useIsDisplayMenuByRoute([RealnameFilter])
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
   let domainInputPlaceholder = useTrans({
@@ -150,6 +151,10 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
   let phonePlaceholder = useTrans({
     zh: "手机号码",
     en: "Phone"
+  })
+  let realNamePlaceholder = useTrans({
+    zh: "真实姓名",
+    en: "Real name"
   })
 
   let formMethods = useForm()
@@ -178,6 +183,13 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
               name="phone"
               showEmptyFieldValueAddonAfter
               placeholder={phonePlaceholder}
+            />
+          )}
+          {hasRealnameFilterAuth && (
+            <InputField
+              name="realName"
+              showEmptyFieldValueAddonAfter
+              placeholder={realNamePlaceholder}
             />
           )}
           <DateInputRangeField

@@ -35,6 +35,8 @@ export const isFundUnderReview = (value) => value === Review
 
 export const isFundApproved = (value) => value === Approved
 
+export const isFundPaid = (value) => value === Paid
+
 export const FundWithdrawStatusLabel = ({ value, ...props }) => {
   switch (value) {
     case Review:
