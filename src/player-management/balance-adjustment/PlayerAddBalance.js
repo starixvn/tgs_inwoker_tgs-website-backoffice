@@ -46,6 +46,7 @@ import { useFormContext, useWatch } from "react-hook-form"
 import Input from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
 import AdjustType from "./AdjustType"
+import { PlayerAdjustBalanceTypeSelect } from "./PlayerAdjustBalanceType"
 
 export const PlayerAddBalanceDisclosure = ({
   brandId,
@@ -159,10 +160,18 @@ const FormBody = ({}) => {
         <Box alignY="center">
           <Trans zh="交易类型" en="Transaction Type" />
         </Box>
-        <PlayerAddBalanceTypeSelect
-          name="transactionType"
-          required={hasTransactionAmount}
-        />
+        <Set>
+          <PlayerAddBalanceTypeSelect
+            name="transactionType"
+            required={hasTransactionAmount}
+          />
+          {/* 
+          <PlayerAdjustBalanceTypeSelect
+            name="transactionType"
+            required={hasTransactionAmount}
+          /> 
+          */}
+        </Set>
 
         <Box alignY="center">
           <Trans zh="交易金额" en="Amount" />
