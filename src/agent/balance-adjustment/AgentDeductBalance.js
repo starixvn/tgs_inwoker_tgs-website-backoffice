@@ -48,6 +48,7 @@ import Input from "../../input/Input"
 import { DeductBalanceTargetSelect } from "./AgentDeductBalanceTarget"
 import AdjustType from "./AdjustType"
 import { NumberInput } from "../../input/NumberInput"
+import { AgentAdjustBalanceTypeSelect } from "./AgentAdjustBalanceType"
 
 export const AgentDeductBalanceDisclosure = ({
   brandId,
@@ -152,7 +153,12 @@ const FormBody = ({ brandId, username, agentId }) => {
         <Text.Block alignY="center">
           <Trans zh="交易类型" en="Transaction Type" />
         </Text.Block>
-        <AgentDeductBalanceTypeSelect name={typeFieldName} required />
+        <Set>
+          {/* 
+          <AgentAdjustBalanceTypeSelect name={typeFieldName} required /> 
+          */}
+          <AgentDeductBalanceTypeSelect name={typeFieldName} required />
+        </Set>
 
         {type == AgentDeductBalanceType.Transfer && (
           <>
