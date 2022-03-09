@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Spinner, Stack, Text, Box, Button, Set, Tabs as _Tabs } from "bumbag"
-import { Trans, FormattedNumber, useTrans } from "../../i18n"
+import {
+  Trans,
+  FormattedNumber,
+  useTrans,
+  FormattedNumberDecimal
+} from "../../i18n"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { GameTypeSelect } from "../../game/GameType"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
@@ -90,7 +95,7 @@ export const Panel = ({ playerCode, brandId, player, ...props }) => {
         <Table
           columns={columns}
           data={data?.items}
-          // total={data?.items?.length > 0 && data?.total}
+          total={data?.items?.length > 0 && data?.total}
           pageCount={pageCount(pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
@@ -189,9 +194,7 @@ const useColumns = ({ items = [], totals = [] }) => {
         Header: <Trans zh="输赢金额" en="Win Loss" />,
         sumColumn: "winLoss",
         disableSortBy: true,
-        TotalCell: ({ value }) => (
-          <FormattedNumber value={value} format="0,0.00" digits={2} />
-        ),
+        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
         Cell: ({ value }) => {
           let win = value >= 0
           return (
