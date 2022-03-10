@@ -47,6 +47,7 @@ import Input from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
 import AdjustType from "./AdjustType"
 import { usePlayer } from "../player-list/client"
+import { PlayerAdjustBalanceTypeSelect } from "./PlayerAdjustBalanceType"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -155,11 +156,16 @@ const FormBody = ({ brandId, username, playerCode }) => {
         <Box alignY="center">
           <Trans zh="交易类型" en="Transaction Type" />
         </Box>
-        <PlayerDeductBalanceTypeSelect
-          name={typeFieldName}
-          playerCode={playerCode}
-          required
-        />
+        <Set>
+          {/* 
+          <PlayerAdjustBalanceTypeSelect name={typeFieldName} required /> 
+          */}
+          <PlayerDeductBalanceTypeSelect
+            name={typeFieldName}
+            playerCode={playerCode}
+            required
+          />
+        </Set>
 
         {transactionType == PlayerDeductBalanceType.Transfer &&
           player?.agentUsername && (

@@ -1,4 +1,10 @@
-import React, { useState, useEffect } from "react"
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef
+} from "react"
 import { css, Global } from "@emotion/react"
 import {
   Heading,
@@ -12,20 +18,49 @@ import {
   Set,
   Divider
 } from "bumbag"
+import { useMeasure } from "react-use"
 
-export const PageContent = ({ title, actionBar, children, ...props }) => {
+const Store = createContext()
+
+export const usePageContentHeight = () => {
+  let context = useContext(Store)
+  return context?.body?.height
+}
+
+export const PageContent = ({
+  title,
+  actionBar,
+  height = "100%",
+  children,
+  ...props
+}) => {
+  let [bodyRef, body] = useMeasure()
+
   return (
-    <_PageContent maxWidth="unset" {...props}>
-      <Stack orientation="vertical" spacing="major-2">
-        {title && (
-          <Box marginBottom="major-3">
-            <Heading use="h3">{title}</Heading>
+    <Store.Provider value={{ body }}>
+      <_PageContent
+        maxWidth="unset"
+        height={height}
+        wrapperProps={{
+          height
+        }}
+        {...props}
+      >
+        <Set orientation="vertical" spacing="major-2" height="100%" isFilled>
+          <Box>
+            {title && (
+              <Box marginBottom="major-3">
+                <Heading use="h3">{title}</Heading>
+              </Box>
+            )}
+            {actionBar && <Stack orientation="horizontal">{actionBar}</Stack>}
           </Box>
-        )}
-        {actionBar && <Stack orientation="horizontal">{actionBar}</Stack>}
-        {children}
-      </Stack>
-    </_PageContent>
+          <Box ref={bodyRef} flex="1">
+            {children}
+          </Box>
+        </Set>
+      </_PageContent>
+    </Store.Provider>
   )
 }
 

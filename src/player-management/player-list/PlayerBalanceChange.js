@@ -19,6 +19,7 @@ import {
   GameActionTypeLabel,
   useGameActionTypeOptionList
 } from "../../game/GameActionType"
+import { usePlayerAdjustBalanceTypeOptionList } from "../balance-adjustment/PlayerAdjustBalanceType"
 
 export const Key = "BalanceChange"
 
@@ -56,6 +57,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
 
   let columns = useColumns({ items: data?.items })
 
+  let depositOrWithdraw = isDepositOrWithdrawal(accountChangeType)
   return (
     <TabPanel tabId={Key} {...props}>
       <Stack spacing="major-2">
@@ -77,6 +79,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
         <Table
           columns={columns}
           data={data?.items}
+          total={depositOrWithdraw && data?.items?.length > 0 && data?.total}
           pageCount={pageCount(pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
@@ -126,6 +129,7 @@ const useColumns = ({ items = [] }) =>
     () => [
       dateTimeColumn({
         Header: <Trans zh="操作时间" en="Operation Time" />,
+        TotalCell: () => <Trans zh="总和" en="Total" />,
         accessor: "recordedOn",
         disableSortBy: true
       }),
@@ -134,6 +138,7 @@ const useColumns = ({ items = [] }) =>
         accessor: (row) => row,
         Header: <Trans zh="交易类型" en="Transaction Type" />,
         disableSortBy: true,
+        TotalCell: () => null,
         Cell: ({ value: record }) => {
           let { transactionType, gameActionType } = record
           if (transactionType) {
@@ -150,6 +155,7 @@ const useColumns = ({ items = [] }) =>
       numberDecimalColumn({
         accessor: "balance",
         Header: <Trans zh="余额" en="Balance" />,
+        TotalCell: () => null,
         disableSortBy: true
       })
     ],
@@ -172,6 +178,10 @@ const WithdrawalTrans = {
   zh: "提款",
   en: "Withdrawal"
 }
+
+const isDepositOrWithdrawal = (value) =>
+  value === Deposit || value === Withdrawal
+
 const Adjust = "Adjust"
 const AdjustTrans = {
   zh: "调账",
@@ -269,6 +279,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   })
   placeholder = placeholder ?? defaultPlaceholder
 
+  let adjustPlayerBalanceTypeOptions = usePlayerAdjustBalanceTypeOptionList()
   let gameActionTypeOptions = useGameActionTypeOptionList()
   let options = [
     {

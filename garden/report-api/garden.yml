@@ -6,7 +6,10 @@ services:
   - name: report-api
     dependencies:
       - postgres
+      - redis
+      - nats
       - rabbitmq
+      - report-aggregate-api
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"

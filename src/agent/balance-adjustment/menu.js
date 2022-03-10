@@ -7,7 +7,7 @@ export const View = "view"
 
 export const Update = "update"
 
-export const SystemReportType = "systemreporttype"
+export const SystemTransactionType = "systemtransactiontype"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
@@ -32,7 +32,7 @@ export const label = (codes = [], locale = Locales.zh) => {
         },
         locale
       )
-    case SystemReportType:
+    case SystemTransactionType:
       return getTrans(
         {
           zh: "系统报表类型",

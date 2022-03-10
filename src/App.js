@@ -107,7 +107,6 @@ const Layout = ({ children }) => {
         `}
       >
         <Box
-          id="page-content"
           height={`calc(100vh - ${HeaderHeight})`}
           maxHeight={`calc(100vh - ${HeaderHeight})`}
           position="relative"

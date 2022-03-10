@@ -82,23 +82,21 @@ const toggleStatus = async (page, brandId, index = 0) => {
     )
   ])
 
-  await page.waitForSelector(
-    `#promotion [data-row-index="${index}"] [data-column-id="status"]`
+  let statusLocator = page.locator(
+    `#promotion [data-row-index="${index}"] [data-column-id="status"] label`
   )
-
-  let toggledStatus = await page.$eval(
-    `#promotion [data-row-index="${index}"] [data-column-id="status"] label`,
-    ({ dataset }) => dataset.status
-  )
+  await statusLocator.waitFor()
+  let toggledStatus = await statusLocator.getAttribute("data-status")
   expect(toggledStatus).to.equal(ExpectedStatus)
 }
 
 let MinTotalAmountLimit = 10000000
+
+const PromotionTypeGroupOptions = ["Deposit", "Turnover"]
 const editPromotion = async (page, brandId, record) => {
   let EditDialogSelector = `#edit-promotion-dialog`
   await openDialog(page, EditDialogSelector)
 
-  let PromotionTypeGroupOptions = await getPromotionTypeGroupOptions(page)
   let promotionTypeGroup = await getPromotionTypeGroup(page)
   let otherPromotionTypeGroups = PromotionTypeGroupOptions.filter(
     (item) => item != promotionTypeGroup

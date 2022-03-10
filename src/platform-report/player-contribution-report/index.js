@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  useWatch
+} from "react-hook-form"
 import {
   Heading,
   Stack,
@@ -40,6 +45,7 @@ import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
+import { PlayerHasAgentSelect } from "./PlayerHasAgentSelect"
 
 export { Code }
 
@@ -160,6 +166,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
       <Table
         columns={columns}
         data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
@@ -220,6 +227,9 @@ const SearchBar = ({
             showEmptyFieldValueAddonAfter
             placeholder={usernamePlaceholder}
           />
+          {/* 
+          <PlayerHasAgentSelect /> 
+          */}
           <VipLevelSelect
             name="level"
             brandId={brandId}
@@ -238,8 +248,9 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         accessor: "username",
         Header: <Trans zh="用户名" en="Username" />,
+        TotalCell: () => <Trans zh="总计" en="Total" />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
           textAlign: "center"
         },
@@ -249,6 +260,7 @@ const useColumns = ({ items = [] }) => {
         id: "type",
         accessor: (row) => row,
         Header: <Trans zh="账户类型" en="Type" />,
+        TotalCell: () => null,
         Cell: ({ value }) => (
           <Text.Block>
             <Trans zh="玩家" en="Player" />
@@ -261,6 +273,7 @@ const useColumns = ({ items = [] }) => {
         accessor: "level",
         Header: <Trans zh="VIP 等级" en="VIP Level" />,
         disableSortBy: true,
+        TotalCell: () => null,
         Cell: ({ value }) => <VipLevelLabel value={value} />,
         Footer: () => <Box />
       }),

@@ -103,6 +103,7 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
       <Table
         columns={columns}
         data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
@@ -164,10 +165,11 @@ const useColumns = ({ brandId, items = [] }) => {
       dateTimeColumn({
         Header: <Trans zh="日期" en="Date" />,
         accessor: "reportDate",
+        TotalCell: () => <Trans zh="总计" en="Total" />,
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
         disableSortBy: true,
-        Footer: () => <Trans zh="共计" en="Total" />,
+        Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
           textAlign: "center"
         }
@@ -244,6 +246,9 @@ const useColumns = ({ brandId, items = [] }) => {
           />
         ),
         disableSortBy: true,
+        TotalCell: ({ value }) => (
+          <FormattedNumber value={value} format="0,0.00" digits={2} />
+        ),
         Cell: ({ value: record }) => {
           let value = record?.additionalExpenses
           let reportDateString = record?.reportDate

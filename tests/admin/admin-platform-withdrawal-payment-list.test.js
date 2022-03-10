@@ -1,16 +1,23 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import faker from "@faker-js/faker"
-import { selectRandomOption } from "../page/select.js"
+import { selectRandomOption, selectByValue } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 const { finance, commerce } = faker
 
 test("add, search, edit and view platform deposit payment", async ({
-  page
+  page,
+  backofficeApi
 }) => {
-  let brandId = await gotoAdminPlatformPaymentListPage(page)
+  const BankTransferCode = "BankTransfer"
+
+  let [bankTransferPaymentMethod, brandId] = await Promise.all([
+    backofficeApi.payment.findPaymentMethod(BankTransferCode),
+    gotoAdminPlatformPaymentListPage(page)
+  ])
+
   await Promise.all([
     page.waitForResponse((response) => {
       return (
@@ -21,12 +28,15 @@ test("add, search, edit and view platform deposit payment", async ({
     page.click("button#Withdrawal")
   ])
 
-  let payment = await addWithdrawalPayment(page)
+  let payment = await addWithdrawalPayment(page, bankTransferPaymentMethod)
 })
 
-const addWithdrawalPayment = async (page) => {
+const addWithdrawalPayment = async (page, bankTransferPaymentMethod) => {
   let DialogSelector = `#add-payment-dialog`
   await openDialog(page, DialogSelector)
+
+  let MethodSelector = `${DialogSelector} select[name="paymentMethodId"]`
+  await selectByValue(page, MethodSelector, bankTransferPaymentMethod.id)
 
   let ChannelSelectSelector = `${DialogSelector} select[name="paymentChannelId"]`
   await selectRandomOption(page, ChannelSelectSelector)
