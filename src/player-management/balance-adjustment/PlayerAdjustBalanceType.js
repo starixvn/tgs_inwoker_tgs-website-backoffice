@@ -15,23 +15,31 @@ import Select from "../../select/Select"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { SystemTransactionType } from "./menu"
 
-export const Company = "Company"
+export const Company = "CompanyAdjust"
 const CompanyTrans = {
   zh: "公司调账",
-  en: "Company Adjustment"
+  en: "Company Adjust"
 }
 
-export const Agent = "Agent"
+export const Agent = "AgentAdjust"
 const AgentTrans = {
   zh: "代理调账",
-  en: "Agent Adjustment"
+  en: "Agent Adjust"
 }
 
-export const System = "System"
+export const System = "SystemAdjust"
 const SystemTrans = {
   zh: "系統调账",
-  en: "System Adjustment"
+  en: "System Adjust"
 }
+
+export const Transfer = "TransferAdjust"
+const TransferTrans = {
+  zh: "转帐调账",
+  en: "Transfer Adjust"
+}
+
+export const isTransfer = (type) => type === Transfer
 
 export const usePlayerAdjustBalanceTypeOptionList = () => {
   let options = [
@@ -46,6 +54,10 @@ export const usePlayerAdjustBalanceTypeOptionList = () => {
     {
       label: useTrans(SystemTrans),
       value: System
+    },
+    {
+      label: useTrans(TransferTrans),
+      value: Transfer
     }
   ]
 
@@ -60,12 +72,18 @@ export const PlayerAdjustBalanceTypeLabel = ({ value }) => {
       return <Trans {...AgentTrans} />
     case System:
       return <Trans {...SystemTrans} />
+    case Transfer:
+      return <Trans {...TransferTrans} />
     default:
       return null
   }
 }
 
-export const PlayerAdjustBalanceTypeSelect = ({ placeholder, ...props }) => {
+export const PlayerAdjustBalanceTypeSelect = ({
+  placeholder,
+  transferable = true,
+  ...props
+}) => {
   let defaultPlaceholder = useTrans({
     zh: "类型",
     en: "Type"
@@ -89,6 +107,13 @@ export const PlayerAdjustBalanceTypeSelect = ({ placeholder, ...props }) => {
     options.push({
       label: useTrans(SystemTrans),
       value: System
+    })
+  }
+
+  if (transferable) {
+    options.push({
+      label: useTrans(TransferTrans),
+      value: Transfer
     })
   }
 

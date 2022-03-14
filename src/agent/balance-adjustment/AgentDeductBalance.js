@@ -48,7 +48,10 @@ import Input from "../../input/Input"
 import { DeductBalanceTargetSelect } from "./AgentDeductBalanceTarget"
 import AdjustType from "./AdjustType"
 import { NumberInput } from "../../input/NumberInput"
-import { AgentAdjustBalanceTypeSelect } from "./AgentAdjustBalanceType"
+import {
+  AgentAdjustBalanceTypeSelect,
+  isTransfer
+} from "./AgentAdjustBalanceType"
 
 export const AgentDeductBalanceDisclosure = ({
   brandId,
@@ -138,7 +141,7 @@ const FormBody = ({ brandId, username, agentId }) => {
 
   let typeFieldName = "transactionType"
   let type = watch(typeFieldName)
-
+  let isTransferTransactionType = isTransfer(type)
   return (
     <>
       <Input type="hidden" name="brandId" value={brandId} />
@@ -155,7 +158,7 @@ const FormBody = ({ brandId, username, agentId }) => {
         </Text.Block>
         <Set>
           {/* 
-          <AgentAdjustBalanceTypeSelect name={typeFieldName} required /> 
+          <AgentAdjustBalanceTypeSelect name={typeFieldName} transferable required /> 
           */}
           <AgentDeductBalanceTypeSelect name={typeFieldName} required />
         </Set>

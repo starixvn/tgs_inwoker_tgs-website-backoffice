@@ -47,7 +47,10 @@ import Input from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
 import AdjustType from "./AdjustType"
 import { usePlayer } from "../player-list/client"
-import { PlayerAdjustBalanceTypeSelect } from "./PlayerAdjustBalanceType"
+import {
+  PlayerAdjustBalanceTypeSelect,
+  isTransfer
+} from "./PlayerAdjustBalanceType"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -142,6 +145,7 @@ const FormBody = ({ brandId, username, playerCode }) => {
 
   let typeFieldName = "transactionType"
   let transactionType = watch(typeFieldName)
+  let isTransferTransactionType = isTransfer(transactionType)
   return (
     <>
       <Input type="hidden" name="brandId" value={brandId} />
@@ -158,7 +162,7 @@ const FormBody = ({ brandId, username, playerCode }) => {
         </Box>
         <Set>
           {/* 
-          <PlayerAdjustBalanceTypeSelect name={typeFieldName} required /> 
+          <PlayerAdjustBalanceTypeSelect name={typeFieldName} transferable required /> 
           */}
           <PlayerDeductBalanceTypeSelect
             name={typeFieldName}

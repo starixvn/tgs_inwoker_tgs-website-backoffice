@@ -109,7 +109,7 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
         brandId,
         username,
         playerCode,
-        transactionType: PlayerAddBalanceType.Other
+        transactionType: null
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
