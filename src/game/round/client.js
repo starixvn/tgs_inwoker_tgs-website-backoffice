@@ -15,6 +15,11 @@ export const useGameRoundList = (searchParams) => {
   return useGet(url)
 }
 
+export const useGameBetRecordList = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/betRecords`) : ""
+  return useGet(url)
+}
+
 export const useGameRound = (id, searchParams) => {
   let url =
     id &&
