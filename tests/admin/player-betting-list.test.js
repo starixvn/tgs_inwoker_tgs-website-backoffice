@@ -42,7 +42,7 @@ test("view player betting list and betting detail", async ({
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes(`/api/RoundReport?`) &&
+        response.url().includes(`/api/RoundReport/betRecords?`) &&
         response.status() === 200
       )
     }),

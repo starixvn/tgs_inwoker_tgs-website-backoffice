@@ -19,7 +19,7 @@ import { Tab as _Tab, TabPanel } from "../../tab"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { sumColumn } from "../../table/sumColumn"
 import { subDays } from "date-fns"
-import { useGameRoundList } from "../../game/round/client"
+import { useGameBetRecordList } from "../../game/round/client"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 
@@ -38,6 +38,7 @@ export const Panel = ({ playerCode, brandId, player, ...props }) => {
   let isActive = selectedId === Key
   let dateRange = today()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    playerCode,
     gameType: "",
     gameProviderId: "",
     from: dateRange.start,
@@ -52,14 +53,13 @@ export const Panel = ({ playerCode, brandId, player, ...props }) => {
     error,
     mutate,
     deleteCache
-  } = useGameRoundList(
+  } = useGameBetRecordList(
     isActive
       ? {
           ...toApiParams(state),
           sortby: "createdOn",
           orderby: "descending",
-          brandId,
-          username: player.username
+          brandId
         }
       : undefined
   )
