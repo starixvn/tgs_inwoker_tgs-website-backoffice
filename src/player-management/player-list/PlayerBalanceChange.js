@@ -3,7 +3,10 @@ import { css, Global } from "@emotion/react"
 import { Spinner, Stack, Flex, Box, Card, Set } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
-import { usePlayerBalanceChanges } from "./client"
+import {
+  usePlayerBalanceChanges,
+  usePlayerBalanceChangeTotalAmount
+} from "./client"
 import { Trans, useTrans } from "../../i18n"
 import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
@@ -45,6 +48,8 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
   })
 
   let { pageSize, accountChangeType, from, to } = state
+  let depositOrWithdraw = isDepositOrWithdrawal(accountChangeType)
+
   let { isLoading, data, error, mutate, deleteCache } = usePlayerBalanceChanges(
     isActive
       ? toApiParams({
@@ -54,10 +59,17 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
         })
       : undefined
   )
+  let {
+    isLoading: isLoadingTotalAmount,
+    data: total,
+    error: totalError,
+    mutate: mutateTotal,
+    deleteCache: deleteTotalCache
+  } = usePlayerBalanceChangeTotalAmount(
+    isActive && depositOrWithdraw ? toApiParams(state) : undefined
+  )
 
   let columns = useColumns({ items: data?.items })
-
-  let depositOrWithdraw = isDepositOrWithdrawal(accountChangeType)
   return (
     <TabPanel tabId={Key} {...props}>
       <Stack spacing="major-2">
@@ -79,16 +91,19 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
         <Table
           columns={columns}
           data={data?.items}
-          total={depositOrWithdraw && data?.items?.length > 0 && data?.total}
+          total={depositOrWithdraw && data?.items?.length > 0 && total}
           pageCount={pageCount(pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
           initialState={state}
           controlledState={state}
-          isLoading={isLoading}
+          isLoading={isLoading || isLoadingTotalAmount}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {totalError && (
+        <AlertDialog {...totalError} onClickClose={deleteTotalCache} />
+      )}
     </TabPanel>
   )
 }
