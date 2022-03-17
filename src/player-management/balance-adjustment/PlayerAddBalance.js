@@ -24,7 +24,7 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { usePlayerAdjustBalance } from "./client"
+import { usePlayerAdjustIncreaseBalance } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -39,13 +39,9 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
-import PlayerAddBalanceType, {
-  PlayerAddBalanceTypeSelect
-} from "./PlayerAddBalanceType"
 import { useFormContext, useWatch } from "react-hook-form"
 import Input from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
-import AdjustType from "./AdjustType"
 import { PlayerAdjustBalanceTypeSelect } from "./PlayerAdjustBalanceType"
 
 export const PlayerAddBalanceDisclosure = ({
@@ -83,7 +79,7 @@ export const PlayerAddBalanceDisclosure = ({
 const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
   let [formData, setSubmit] = useState()
   let { result, isLoading, error, mutate, deleteCache } =
-    usePlayerAdjustBalance(playerCode, formData)
+    usePlayerAdjustIncreaseBalance(playerCode, formData)
 
   let title = useTrans({
     zh: "余额加分",
@@ -91,10 +87,7 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
   })
 
   const onSubmit = (data) => {
-    setSubmit({
-      ...data,
-      adjustType: AdjustType.Add
-    })
+    setSubmit(data)
   }
 
   const reset = () => {
@@ -109,7 +102,7 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
         brandId,
         username,
         playerCode,
-        transactionType: PlayerAddBalanceType.Other
+        transactionType: null
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -161,16 +154,10 @@ const FormBody = ({}) => {
           <Trans zh="交易类型" en="Transaction Type" />
         </Box>
         <Set>
-          <PlayerAddBalanceTypeSelect
-            name="transactionType"
-            required={hasTransactionAmount}
-          />
-          {/* 
           <PlayerAdjustBalanceTypeSelect
             name="transactionType"
             required={hasTransactionAmount}
-          /> 
-          */}
+          />
         </Set>
 
         <Box alignY="center">

@@ -31,6 +31,7 @@ const OtherTrans = {
   en: "Other"
 }
 
+//TODO: remove
 export const PlayerAddBalanceTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTrans({
     zh: "交易类型",

@@ -384,9 +384,15 @@ const useColumns = ({
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "adjustmentAmount",
-        sumColumn: "adjustmentAmount",
-        Header: <Trans zh="调账" en="Adjustment Amount" />,
+        accessor: "companyAdjustAmount",
+        sumColumn: "companyAdjustAmount",
+        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "agentAdjustAmount",
+        sumColumn: "agentAdjustAmount",
+        Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

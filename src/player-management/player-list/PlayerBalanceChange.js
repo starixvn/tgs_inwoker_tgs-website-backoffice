@@ -3,7 +3,10 @@ import { css, Global } from "@emotion/react"
 import { Spinner, Stack, Flex, Box, Card, Set } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
-import { usePlayerBalanceChanges } from "./client"
+import {
+  usePlayerBalanceChanges,
+  usePlayerBalanceChangeTotalAmount
+} from "./client"
 import { Trans, useTrans } from "../../i18n"
 import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
@@ -19,7 +22,10 @@ import {
   GameActionTypeLabel,
   useGameActionTypeOptionList
 } from "../../game/GameActionType"
-import { usePlayerAdjustBalanceTypeOptionList } from "../balance-adjustment/PlayerAdjustBalanceType"
+import PlayerAdjustBalanceType, {
+  usePlayerAdjustBalanceTypeOptionList,
+  PlayerAdjustBalanceTypeLabel
+} from "../balance-adjustment/PlayerAdjustBalanceType"
 
 export const Key = "BalanceChange"
 
@@ -45,6 +51,8 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
   })
 
   let { pageSize, accountChangeType, from, to } = state
+  let depositOrWithdraw = isDepositOrWithdrawal(accountChangeType)
+
   let { isLoading, data, error, mutate, deleteCache } = usePlayerBalanceChanges(
     isActive
       ? toApiParams({
@@ -54,10 +62,17 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
         })
       : undefined
   )
+  let {
+    isLoading: isLoadingTotalAmount,
+    data: total,
+    error: totalError,
+    mutate: mutateTotal,
+    deleteCache: deleteTotalCache
+  } = usePlayerBalanceChangeTotalAmount(
+    isActive && depositOrWithdraw ? toApiParams(state) : undefined
+  )
 
   let columns = useColumns({ items: data?.items })
-
-  let depositOrWithdraw = isDepositOrWithdrawal(accountChangeType)
   return (
     <TabPanel tabId={Key} {...props}>
       <Stack spacing="major-2">
@@ -73,22 +88,26 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
               to: end
             })
             mutate()
+            mutateTotal()
           }}
           isLoading={isLoading}
         />
         <Table
           columns={columns}
           data={data?.items}
-          total={depositOrWithdraw && data?.items?.length > 0 && data?.total}
+          total={depositOrWithdraw && data?.items?.length > 0 && total}
           pageCount={pageCount(pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
           initialState={state}
           controlledState={state}
-          isLoading={isLoading}
+          isLoading={isLoading || isLoadingTotalAmount}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {totalError && (
+        <AlertDialog {...totalError} onClickClose={deleteTotalCache} />
+      )}
     </TabPanel>
   )
 }
@@ -182,6 +201,7 @@ const WithdrawalTrans = {
 const isDepositOrWithdrawal = (value) =>
   value === Deposit || value === Withdrawal
 
+//TODO: Remove
 const Adjust = "Adjust"
 const AdjustTrans = {
   zh: "调账",
@@ -294,10 +314,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTrans(CancelWithdrawalTrans),
       value: CancelWithdrawal
     },
-    {
-      label: useTrans(AdjustTrans),
-      value: Adjust
-    },
+    ...adjustPlayerBalanceTypeOptions,
     {
       label: useTrans(BonusTrans),
       value: Bonus
@@ -362,8 +379,11 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...DepositTrans} />
     case Withdrawal:
       return <Trans {...WithdrawalTrans} />
-    case Adjust:
-      return <Trans {...AdjustTrans} />
+    case PlayerAdjustBalanceType.Company:
+    case PlayerAdjustBalanceType.Agent:
+    case PlayerAdjustBalanceType.System:
+    case PlayerAdjustBalanceType.Transfer:
+      return <PlayerAdjustBalanceTypeLabel value={value} />
     case Bonus:
       return <Trans {...BonusTrans} />
     case Rebate:

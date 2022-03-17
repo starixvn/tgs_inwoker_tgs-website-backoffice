@@ -73,7 +73,7 @@ export const EditPanel = ({
   )
 
   const reset = () => {
-    mutate(undefined, false)
+    mutate(null, false)
     setSubmit(undefined)
   }
 
@@ -205,12 +205,10 @@ const EditForm = ({
           <PlayerStatusSelect name="status" required placeholder={false} />
         </Box>
 
-        {/* 
         <RemarkLabel />
         <Box>
           <Textarea name="remark" />
-        </Box> 
-        */}
+        </Box>
       </FieldValues>
       <Box alignX="right">
         <SubmitCancel onClickCancel={onClickClose} isLoading={isLoading} />
@@ -289,12 +287,10 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
           <PlayerStatusLabel value={status} />
         </Box>
 
-        {/* 
         <RemarkLabel />
         <Box>
           <Text>{player?.remark}</Text>
-        </Box> 
-        */}
+        </Box>
 
         <RegisterIPLabel />
         <Box>{player?.registerIp}</Box>
