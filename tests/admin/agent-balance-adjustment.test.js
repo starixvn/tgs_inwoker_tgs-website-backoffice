@@ -72,7 +72,7 @@ const deductBalance = async (page, index = 0) => {
 
   let id = await page.inputValue(`${Selector} input[name="id"]`)
   expect(id).to.not.be.empty
-  let expectedUrl = `/api/Agent/${id}/adjust`
+  let expectedUrl = `/api/Agent/${id}/adjust/reduce`
 
   let [response] = await Promise.all([
     page.waitForResponse((response) => {
