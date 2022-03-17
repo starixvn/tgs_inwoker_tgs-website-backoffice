@@ -22,10 +22,10 @@ test("view and download licensee market report", async ({ page }) => {
   let withdrawalAmount = numeral(withdrawalAmountString).value()
   expect(withdrawalAmount).to.be.a("number")
 
-  let adjustmentAmountString = await page.textContent(`
-  [data-column-id="adjustmentAmount"] span`)
-  let adjustmentAmount = numeral(adjustmentAmountString).value()
-  expect(adjustmentAmount).to.be.a("number")
+  let companyAdjustAmountString = await page.textContent(`
+  [data-column-id="companyAdjustAmount"] span`)
+  let companyAdjustAmount = numeral(companyAdjustAmountString).value()
+  expect(companyAdjustAmount).to.be.a("number")
 
   let bonusAmountString = await page.textContent(
     `[data-column-id="bonusAmount"] span`
