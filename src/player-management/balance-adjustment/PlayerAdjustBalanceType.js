@@ -10,7 +10,7 @@ import {
   Set,
   FieldStack
 } from "bumbag"
-import { useTrans } from "../../i18n"
+import { useTrans, Trans } from "../../i18n"
 import Select from "../../select/Select"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { SystemTransactionType } from "./menu"
