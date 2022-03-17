@@ -8,13 +8,13 @@ import { boolean } from "boolean"
 const HasAgent = "true"
 const HasAgentTrans = {
   zh: "有直属上级代理",
-  en: "Has upper level agnet"
+  en: "Has upper level agent"
 }
 
 const NoAgent = "false"
 const NoAgentTrans = {
   zh: "无直属上级代理",
-  en: "None upper level agnet"
+  en: "None upper level agent"
 }
 
 export const DefaultFieldName = "hasUpperAgent"
