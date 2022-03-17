@@ -24,7 +24,7 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { useAgentAdjustBalance } from "./client"
+import { useAgentAdjustIncreaseBalance } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -80,10 +80,8 @@ export const AgentAddBalanceDisclosure = ({
 
 const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
   let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } = useAgentAdjustBalance(
-    agentId,
-    formData
-  )
+  let { result, isLoading, error, mutate, deleteCache } =
+    useAgentAdjustIncreaseBalance(agentId, formData)
 
   let title = useTrans({
     zh: "余额加分",

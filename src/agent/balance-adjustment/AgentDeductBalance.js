@@ -25,7 +25,7 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { useAgentAdjustBalance } from "./client"
+import { useAgentAdjustReduceBalance } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -87,10 +87,8 @@ export const AgentDeductBalanceDisclosure = ({
 
 const DeductDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
   let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } = useAgentAdjustBalance(
-    agentId,
-    formData
-  )
+  let { result, isLoading, error, mutate, deleteCache } =
+    useAgentAdjustReduceBalance(agentId, formData)
 
   let title = useTrans({
     zh: "余额扣分",

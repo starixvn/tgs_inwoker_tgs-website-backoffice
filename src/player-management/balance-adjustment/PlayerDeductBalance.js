@@ -24,7 +24,7 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { usePlayerAdjustBalance } from "./client"
+import { usePlayerAdjustReduceBalance } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -39,9 +39,6 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
-import PlayerDeductBalanceType, {
-  PlayerDeductBalanceTypeSelect
-} from "./PlayerDeductBalanceType"
 import { useFormContext } from "react-hook-form"
 import Input from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
@@ -93,7 +90,7 @@ const DeductDialog = ({
 }) => {
   let [formData, setSubmit] = useState()
   let { result, isLoading, error, mutate, deleteCache } =
-    usePlayerAdjustBalance(playerCode, formData)
+    usePlayerAdjustReduceBalance(playerCode, formData)
 
   let title = useTrans({
     zh: "余额扣分",
@@ -101,10 +98,7 @@ const DeductDialog = ({
   })
 
   const onSubmit = (data) => {
-    setSubmit({
-      ...data,
-      adjustType: AdjustType.Subtract
-    })
+    setSubmit(data)
   }
 
   const reset = () => {
@@ -161,25 +155,21 @@ const FormBody = ({ brandId, username, playerCode }) => {
           <Trans zh="交易类型" en="Transaction Type" />
         </Box>
         <Set>
-          {/* 
-          <PlayerAdjustBalanceTypeSelect name={typeFieldName} transferable required /> 
-          */}
-          <PlayerDeductBalanceTypeSelect
+          <PlayerAdjustBalanceTypeSelect
             name={typeFieldName}
-            playerCode={playerCode}
+            transferable={!!player?.agentUsername}
             required
           />
         </Set>
 
-        {transactionType == PlayerDeductBalanceType.Transfer &&
-          player?.agentUsername && (
-            <>
-              <Box alignY="center">
-                <Trans zh="转账代理用户名" en="Transfer Agent Username" />
-              </Box>
-              <Input value={player?.agentUsername} readOnly />
-            </>
-          )}
+        {isTransferTransactionType && player?.agentUsername && (
+          <>
+            <Box alignY="center">
+              <Trans zh="转账代理用户名" en="Transfer Agent Username" />
+            </Box>
+            <Input value={player?.agentUsername} readOnly />
+          </>
+        )}
 
         <Box alignY="center">
           <Trans zh="交易金额" en="Amount" />

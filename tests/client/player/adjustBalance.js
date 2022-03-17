@@ -14,15 +14,32 @@ export const adjustBalance = async (playerCode, formData) => {
   return await response.json()
 }
 
-export const addBalance = async (playerCode, { ...formData } = {}) =>
-  await adjustBalance(playerCode, {
-    playerCode,
-    adjustType: "Add",
-    ...formData
-  })
+export const addBalance = async (playerCode, { ...formData } = {}) => {
+  if (!formData.transactionType) {
+    formData.transactionType = "CompanyAdjust"
+  }
 
-export const deductBalance = async (playerCode, formData = {}) =>
-  await adjustBalance(playerCode, {
-    adjustType: "Subtract",
-    ...formData
-  })
+  let response = await fetcher.post(
+    `${host}/${API}/${playerCode}/adjust/increase`,
+    {
+      data: formData,
+      failOnStatusCode: true
+    }
+  )
+  return await response.json()
+}
+
+export const deductBalance = async (playerCode, formData = {}) => {
+  if (!formData.transactionType) {
+    formData.transactionType = "CompanyAdjust"
+  }
+
+  let response = await fetcher.post(
+    `${host}/${API}/${playerCode}/adjust/reduce`,
+    {
+      data: formData,
+      failOnStatusCode: true
+    }
+  )
+  return await response.json()
+}

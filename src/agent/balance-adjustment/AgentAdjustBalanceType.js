@@ -35,8 +35,8 @@ const SystemTrans = {
 
 export const Transfer = "TransferAdjust"
 const TransferTrans = {
-  zh: "转帐调账",
-  en: "Transfer Adjust"
+  zh: "轉帳",
+  en: "Transfer"
 }
 
 export const isTransfer = (type) => type === Transfer

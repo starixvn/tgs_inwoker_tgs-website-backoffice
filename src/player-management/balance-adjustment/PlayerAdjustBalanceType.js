@@ -35,8 +35,15 @@ const SystemTrans = {
 
 export const Transfer = "TransferAdjust"
 const TransferTrans = {
-  zh: "转帐调账",
-  en: "Transfer Adjust"
+  zh: "转帐",
+  en: "Transfer"
+}
+
+export default {
+  Company,
+  Agent,
+  System,
+  Transfer
 }
 
 export const isTransfer = (type) => type === Transfer
@@ -81,7 +88,7 @@ export const PlayerAdjustBalanceTypeLabel = ({ value }) => {
 
 export const PlayerAdjustBalanceTypeSelect = ({
   placeholder,
-  transferable = true,
+  transferable = false,
   ...props
 }) => {
   let defaultPlaceholder = useTrans({

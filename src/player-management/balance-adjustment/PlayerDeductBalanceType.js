@@ -6,73 +6,74 @@ import { usePlayer } from "../player-list/client"
 
 export const Bonus = "Bonus"
 const BonusTrans = {
-    zh: "红利",
-    en: "Bonus"
+  zh: "红利",
+  en: "Bonus"
 }
 
 export const Deposit = "Recharge"
 const DepositTrans = {
-    zh: "充值",
-    en: "Deposit"
+  zh: "充值",
+  en: "Deposit"
 }
 
 export const Transfer = "Transfer"
 const TransferTrans = {
-    zh: "转账",
-    en: "Transfer"
+  zh: "转账",
+  en: "Transfer"
 }
 
 export const Other = "Other"
 const OtherTrans = {
-    zh: "其他",
-    en: "Other"
+  zh: "其他",
+  en: "Other"
 }
 
+//TODO: remove
 export const PlayerDeductBalanceTypeSelect = ({
-    placeholder,
-    playerCode,
-    ...props
+  placeholder,
+  playerCode,
+  ...props
 }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "交易类型",
-        en: "Transaction Type"
-    })
-    placeholder = placeholder ?? defaultPlaceholder
+  let defaultPlaceholder = useTrans({
+    zh: "交易类型",
+    en: "Transaction Type"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
 
-    let options = [
-        {
-            label: useTrans(BonusTrans),
-            value: Bonus
-        },
-        {
-            label: useTrans(DepositTrans),
-            value: Deposit
-        }
-    ]
-
-    let transferOption = {
-        label: useTrans(TransferTrans),
-        value: Transfer
+  let options = [
+    {
+      label: useTrans(BonusTrans),
+      value: Bonus
+    },
+    {
+      label: useTrans(DepositTrans),
+      value: Deposit
     }
-    let otherOption = {
-        label: useTrans(OtherTrans),
-        value: Other
-    }
+  ]
 
-    let { isLoading, data: player, error } = usePlayer(playerCode)
+  let transferOption = {
+    label: useTrans(TransferTrans),
+    value: Transfer
+  }
+  let otherOption = {
+    label: useTrans(OtherTrans),
+    value: Other
+  }
 
-    if (player?.agentUsername) {
-        options.push(transferOption)
-    }
+  let { isLoading, data: player, error } = usePlayer(playerCode)
 
-    options.push(otherOption)
+  if (player?.agentUsername) {
+    options.push(transferOption)
+  }
 
-    return <Select placeholder={placeholder} options={options} {...props} />
+  options.push(otherOption)
+
+  return <Select placeholder={placeholder} options={options} {...props} />
 }
 
 export default {
-    Bonus,
-    Deposit,
-    Transfer,
-    Other
+  Bonus,
+  Deposit,
+  Transfer,
+  Other
 }

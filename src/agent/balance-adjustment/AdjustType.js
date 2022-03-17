@@ -13,6 +13,7 @@ const SubtractTrans = {
   en: "Deduct"
 }
 
+//TODO: Remove
 export default {
   Add,
   Subtract

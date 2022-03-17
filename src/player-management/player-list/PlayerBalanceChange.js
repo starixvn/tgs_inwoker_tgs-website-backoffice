@@ -22,7 +22,10 @@ import {
   GameActionTypeLabel,
   useGameActionTypeOptionList
 } from "../../game/GameActionType"
-import { usePlayerAdjustBalanceTypeOptionList } from "../balance-adjustment/PlayerAdjustBalanceType"
+import PlayerAdjustBalanceType, {
+  usePlayerAdjustBalanceTypeOptionList,
+  PlayerAdjustBalanceTypeLabel
+} from "../balance-adjustment/PlayerAdjustBalanceType"
 
 export const Key = "BalanceChange"
 
@@ -85,6 +88,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
               to: end
             })
             mutate()
+            mutateTotal()
           }}
           isLoading={isLoading}
         />
@@ -197,6 +201,7 @@ const WithdrawalTrans = {
 const isDepositOrWithdrawal = (value) =>
   value === Deposit || value === Withdrawal
 
+//TODO: Remove
 const Adjust = "Adjust"
 const AdjustTrans = {
   zh: "调账",
@@ -309,10 +314,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTrans(CancelWithdrawalTrans),
       value: CancelWithdrawal
     },
-    {
-      label: useTrans(AdjustTrans),
-      value: Adjust
-    },
+    ...adjustPlayerBalanceTypeOptions,
     {
       label: useTrans(BonusTrans),
       value: Bonus
@@ -377,8 +379,11 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...DepositTrans} />
     case Withdrawal:
       return <Trans {...WithdrawalTrans} />
-    case Adjust:
-      return <Trans {...AdjustTrans} />
+    case PlayerAdjustBalanceType.Company:
+    case PlayerAdjustBalanceType.Agent:
+    case PlayerAdjustBalanceType.System:
+    case PlayerAdjustBalanceType.Transfer:
+      return <PlayerAdjustBalanceTypeLabel value={value} />
     case Bonus:
       return <Trans {...BonusTrans} />
     case Rebate:

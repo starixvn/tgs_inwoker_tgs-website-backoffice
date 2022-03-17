@@ -4,6 +4,10 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { useTrans, Trans } from "../../i18n"
 import { Select } from "../../select/Select"
 import { GameActionTypeLabel } from "../../game/GameActionType"
+import PlayerAdjustBalanceType, {
+  usePlayerAdjustBalanceTypeOptionList,
+  PlayerAdjustBalanceTypeLabel
+} from "../../player-management/balance-adjustment/PlayerAdjustBalanceType"
 
 const GameProviderDeposit = "GameProviderDeposit"
 const GameProviderDepositTrans = {
@@ -76,11 +80,6 @@ const WithdrawalTrans = {
   zh: "提款",
   en: "Withdrawal"
 }
-const Adjust = "Adjust"
-const AdjustTrans = {
-  zh: "调账",
-  en: "Balance Adjustment"
-}
 
 const Rebate = "Rebate"
 const RebateTrans = {
@@ -113,11 +112,9 @@ export const TransactionTypeSelect = ({ placeholder, ...props }) => {
   })
   placeholder = placeholder ?? defaultPlaceholder
 
+  let playerAdjustOptions = usePlayerAdjustBalanceTypeOptionList()
   let options = [
-    {
-      label: useTrans(AdjustTrans),
-      value: Adjust
-    },
+    ...playerAdjustOptions,
     {
       label: useTrans(RebateTrans),
       value: Rebate
@@ -161,8 +158,11 @@ export const TransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...DepositTrans} />
     case Withdrawal:
       return <Trans {...WithdrawalTrans} />
-    case Adjust:
-      return <Trans {...AdjustTrans} />
+    case PlayerAdjustBalanceType.Company:
+    case PlayerAdjustBalanceType.Agent:
+    case PlayerAdjustBalanceType.System:
+    case PlayerAdjustBalanceType.Transfer:
+      return <PlayerAdjustBalanceTypeLabel value={value} />
     case Rebate:
       return <Trans {...RebateTrans} />
     case Dividend:
