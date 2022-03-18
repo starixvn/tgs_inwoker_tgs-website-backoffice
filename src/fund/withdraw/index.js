@@ -545,7 +545,6 @@ const useColumns = ({
         Header: <Trans zh="提款金额" en="Amount" />,
         disableSortBy: true
       }),
-      /*
       numberDecimalColumn({
         id: "actualAmount",
         accessor: (row) => row,
@@ -560,7 +559,6 @@ const useColumns = ({
           return <FormattedNumberDecimal value={actualAmount ?? amount} />
         }
       }),
-      */
       dateTimeColumn({
         accessor: "createdOn",
         Header: <Trans zh="申请时间" en="Application Time" />,
