@@ -591,7 +591,6 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <Trans zh="充值金额" en="Amount" />,
         disableSortBy: true
       }),
-      /*
       numberDecimalColumn({
         id: "actualAmount",
         accessor: (row) => row,
@@ -606,7 +605,6 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
           return <FormattedNumberDecimal value={actualAmount ?? amount} />
         }
       }),
-      */
       dateTimeColumn({
         accessor: "createdOn",
         Header: <Trans zh="申请时间" en="Application Time" />,
