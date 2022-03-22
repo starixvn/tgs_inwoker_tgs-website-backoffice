@@ -467,6 +467,7 @@ const EditBody = ({
 
   let isManualPaymentProvider = paymentName == ManualCode
   let isManualPaymentProviderMethod =
+    isManualPaymentProvider &&
     manualPaymentMethodIdList?.includes(paymentMethodId)
   useEffect(() => {
     if (isManualPaymentProvider && isManualPaymentProviderMethod) {

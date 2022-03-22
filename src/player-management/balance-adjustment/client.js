@@ -1,19 +1,24 @@
 import {
-    urlWith,
-    useGet,
-    usePostData,
-    usePutData,
-    useDelete
+  urlWith,
+  useGet,
+  usePostData,
+  usePutData,
+  useDelete
 } from "../../client"
 
 let API = "/api/player"
 
 export const usePlayerAdjustmentList = (searchParams) => {
-    let url = searchParams ? urlWith(searchParams, API) : ""
-    return useGet(url)
+  let url = searchParams ? urlWith(searchParams, API) : ""
+  return useGet(url)
 }
 
-export const usePlayerAdjustBalance = (id, formData) => {
-    let url = id && formData ? `${API}/${id}/adjust` : ""
-    return usePostData(url, formData)
+export const usePlayerAdjustIncreaseBalance = (playerCode, formData) => {
+  let url = playerCode && formData ? `${API}/${playerCode}/adjust/increase` : ""
+  return usePostData(url, formData)
+}
+
+export const usePlayerAdjustReduceBalance = (playerCode, formData) => {
+  let url = playerCode && formData ? `${API}/${playerCode}/adjust/reduce` : ""
+  return usePostData(url, formData)
 }

@@ -25,7 +25,7 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { useAgentAdjustBalance } from "./client"
+import { useAgentAdjustReduceBalance } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -48,7 +48,10 @@ import Input from "../../input/Input"
 import { DeductBalanceTargetSelect } from "./AgentDeductBalanceTarget"
 import AdjustType from "./AdjustType"
 import { NumberInput } from "../../input/NumberInput"
-import { AgentAdjustBalanceTypeSelect } from "./AgentAdjustBalanceType"
+import {
+  AgentAdjustBalanceTypeSelect,
+  isTransfer
+} from "./AgentAdjustBalanceType"
 
 export const AgentDeductBalanceDisclosure = ({
   brandId,
@@ -84,10 +87,8 @@ export const AgentDeductBalanceDisclosure = ({
 
 const DeductDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
   let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } = useAgentAdjustBalance(
-    agentId,
-    formData
-  )
+  let { result, isLoading, error, mutate, deleteCache } =
+    useAgentAdjustReduceBalance(agentId, formData)
 
   let title = useTrans({
     zh: "余额扣分",
@@ -138,7 +139,7 @@ const FormBody = ({ brandId, username, agentId }) => {
 
   let typeFieldName = "transactionType"
   let type = watch(typeFieldName)
-
+  let isTransferTransactionType = isTransfer(type)
   return (
     <>
       <Input type="hidden" name="brandId" value={brandId} />
@@ -155,7 +156,7 @@ const FormBody = ({ brandId, username, agentId }) => {
         </Text.Block>
         <Set>
           {/* 
-          <AgentAdjustBalanceTypeSelect name={typeFieldName} required /> 
+          <AgentAdjustBalanceTypeSelect name={typeFieldName} transferable required /> 
           */}
           <AgentDeductBalanceTypeSelect name={typeFieldName} required />
         </Set>

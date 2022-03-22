@@ -88,6 +88,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
     brandId,
     pageSize: QueryMaxRangeDays,
     username: undefined,
+    hasUpperAgent: undefined,
     level: undefined,
     from: dateRange.start,
     to: dateRange.end
@@ -130,6 +131,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
           <SearchBar
             brandId={brandId}
             username={state?.username}
+            hasUpperAgent={state?.hasUpperAgent}
             level={state?.level}
             start={from}
             end={to}
@@ -184,6 +186,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
 const SearchBar = ({
   brandId,
   username,
+  hasUpperAgent,
   level,
   start,
   end,
@@ -197,6 +200,7 @@ const SearchBar = ({
   let formMethods = useForm({
     defaultValues: {
       username,
+      hasUpperAgent,
       level,
       start,
       end
@@ -227,9 +231,7 @@ const SearchBar = ({
             showEmptyFieldValueAddonAfter
             placeholder={usernamePlaceholder}
           />
-          {/* 
-          <PlayerHasAgentSelect /> 
-          */}
+          <PlayerHasAgentSelect />
           <VipLevelSelect
             name="level"
             brandId={brandId}
@@ -296,9 +298,15 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "adjustmentAmount",
-        sumColumn: "adjustmentAmount",
-        Header: <Trans zh="调账" en="Adjustment Amount" />,
+        accessor: "companyAdjustAmount",
+        sumColumn: "companyAdjustAmount",
+        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "agentAdjustAmount",
+        sumColumn: "agentAdjustAmount",
+        Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

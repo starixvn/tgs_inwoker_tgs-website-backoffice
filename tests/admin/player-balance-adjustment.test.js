@@ -33,7 +33,7 @@ const addBalance = async (page, index = 0) => {
 
   let playerCode = await page.inputValue(`${Selector} input[name="playerCode"]`)
   expect(playerCode).to.not.be.empty
-  let expectedUrl = `/api/player/${playerCode}/adjust`
+  let expectedUrl = `/api/player/${playerCode}/adjust/increase`
 
   let [response] = await Promise.all([
     page.waitForResponse((response) => {
@@ -60,7 +60,7 @@ const deductBalance = async (page) => {
 
   let playerCode = await page.inputValue(`${Selector} input[name="playerCode"]`)
   expect(playerCode).to.not.be.empty
-  let expectedUrl = `/api/player/${playerCode}/adjust`
+  let expectedUrl = `/api/player/${playerCode}/adjust/reduce`
 
   let [response] = await Promise.all([
     page.waitForResponse((response) => {

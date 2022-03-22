@@ -45,11 +45,11 @@ test("view and download agent contribution report", async ({
   let bonusAmount = numeral(bonusAmountString).value()
   expect(bonusAmount).to.be.a("number")
 
-  let adjustmentAmountString = await page.textContent(
-    `[data-column-id="adjustmentAmount"] span`
+  let companyAdjustAmountString = await page.textContent(
+    `[data-column-id="companyAdjustAmount"] span`
   )
-  let adjustmentAmount = numeral(adjustmentAmountString).value()
-  expect(adjustmentAmount).to.be.a("number")
+  let companyAdjustAmount = numeral(companyAdjustAmountString).value()
+  expect(companyAdjustAmount).to.be.a("number")
 
   let validBetAmountString = await page.textContent(
     `[data-column-id="validBetAmount"]`
