@@ -3,7 +3,8 @@ import React, {
   useState,
   useEffect,
   useLayoutEffect,
-  useRef
+  useRef,
+  useContext
 } from "react"
 import { css, Global } from "@emotion/react"
 import {
@@ -22,11 +23,6 @@ import { useMeasure } from "react-use"
 
 const Store = createContext()
 
-export const usePageContentHeight = () => {
-  let context = useContext(Store)
-  return context?.body?.height
-}
-
 export const PageContent = ({
   title,
   actionBar,
@@ -34,10 +30,8 @@ export const PageContent = ({
   children,
   ...props
 }) => {
-  let [bodyRef, body] = useMeasure()
-
   return (
-    <Store.Provider value={{ body }}>
+    <Store.Provider>
       <_PageContent
         maxWidth="unset"
         height={height}
@@ -55,9 +49,7 @@ export const PageContent = ({
             )}
             {actionBar && <Stack orientation="horizontal">{actionBar}</Stack>}
           </Box>
-          <Box ref={bodyRef} flex="1">
-            {children}
-          </Box>
+          <Box flex="1">{children}</Box>
         </Set>
       </_PageContent>
     </Store.Provider>

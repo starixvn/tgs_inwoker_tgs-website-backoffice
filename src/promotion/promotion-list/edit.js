@@ -239,6 +239,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       title={title}
       dialog={dialog}
       maxWidth="80vw"
+      stopPropagation
       css={DialogCss}
     >
       <FormBody brandId={brandId} />

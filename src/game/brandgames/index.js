@@ -152,9 +152,11 @@ const DataTable = ({
       })
     })
 
-    setSubmit({
-      orders
-    })
+    if (orders.length > 0) {
+      setSubmit({
+        orders
+      })
+    }
   }
 
   const reset = () => {

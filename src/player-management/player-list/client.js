@@ -118,3 +118,8 @@ export const usePlayerWageringRequirementList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/accountChanges`) : ""
   return useGet(url)
 }
+
+export const usePlayerCompletedWageringList = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/accountChanges`) : ""
+  return useGet(url)
+}

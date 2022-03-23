@@ -61,6 +61,7 @@ import {
   AgentProfitSharingTypeSelect,
   isAgentProfitSharingMultipleLayer
 } from "../../agent/AgentProfitSharingType"
+import { PlatformTokenActionButtons } from "./PlatformTokenActionButtons"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -244,7 +245,6 @@ const ViewDialog = ({ brandId, licenseeId, dialog, ...props }) => {
       title={title}
       dialog={dialog}
       showActionButtons={false}
-      onClickClose={reset}
       footer={<CloseButtonFooter dialog={dialog} onClickClose={reset} />}
       placement="top"
       minWidth="60vw"
@@ -612,6 +612,17 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
                   }
                 `}
               />
+            </Box>
+          </>
+        )}
+
+        {!isAdd && (
+          <>
+            <NormalLabel>
+              <Trans zh="Brand Token" en="Brand Token" />
+            </NormalLabel>
+            <Box alignY="center">
+              <PlatformTokenActionButtons platformId={getValues("id")} />
             </Box>
           </>
         )}
