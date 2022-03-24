@@ -30,6 +30,7 @@ import {
 import AlertDialog from "../../dialog/Alert"
 import SequenceColumn from "../../table/column/sequence"
 import textColumn from "../../table/column/textColumn"
+import { Descending } from "../../table/order"
 
 export const PlayerWageringRequirementDialogDisclosure = ({
   playerCode,
@@ -59,9 +60,12 @@ const WageringRequirementDialog = ({ playerCode, dialog, ...props }) => {
     playerCode
   })
 
-  //TODO: sort by time
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerWageringRequirementList(toApiParams(state))
+    usePlayerWageringRequirementList(playerCode, {
+      ...toApiParams(state),
+      sortby: "createdOn",
+      orderby: Descending
+    })
 
   let columns = useWageringRequirementColumns({
     playerCode,
@@ -75,6 +79,7 @@ const WageringRequirementDialog = ({ playerCode, dialog, ...props }) => {
   return (
     <Backdrop {...dialog}>
       <Dialog.Modal
+        id="wagering-requirement-dialog"
         title={title}
         hideBackdrop
         hideOnClickOutside={false}
@@ -116,7 +121,13 @@ const AdjustmentTrans = {
   en: "Adjustment"
 }
 
-const TypeLabel = ({ value }) => {
+const VIP = "VIP"
+const VIPTrans = {
+  zh: "VIP",
+  en: "VIP"
+}
+
+const TypeLabel = ({ value = "" }) => {
   switch (value) {
     case Promotion:
       return <Trans {...PromotionTrans} />
@@ -124,12 +135,14 @@ const TypeLabel = ({ value }) => {
       return <Trans {...DepositTrans} />
     case Adjustment:
       return <Trans {...AdjustmentTrans} />
+    case VIP:
+      return <Trans {...VIPTrans} />
     default:
-      return ""
+      return value
   }
 }
 
-const CompletedWageringDisclosure = ({ playerCode, value }) => {
+const CompletedWageringDisclosure = ({ playerBucketId, value, ...props }) => {
   let dialog = new useModalState()
 
   return (
@@ -138,25 +151,29 @@ const CompletedWageringDisclosure = ({ playerCode, value }) => {
         <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
-        <CompletedWageringDialog playerCode={playerCode} dialog={dialog} />
+        <CompletedWageringDialog
+          playerBucketId={playerBucketId}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-const CompletedWageringDialog = ({ playerCode, ...dialog }) => {
+const CompletedWageringDialog = ({ playerBucketId, dialog, ...props }) => {
   let title = useTrans({
     zh: "已达流水",
     en: "Completed Wagering"
   })
 
-  let { state, setState, setPageIndex, setSortOrder } = useTable({
-    playerCode
-  })
+  let { state, setState, setPageIndex, setSortOrder } = useTable({})
 
-  //TODO: sort by time
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerCompletedWageringList(toApiParams(state))
+    usePlayerCompletedWageringList(playerBucketId, {
+      ...toApiParams(state),
+      sortby: "createdOn",
+      orderby: Descending
+    })
 
   let columns = useCompletedWageringColumns({
     items: data?.items
@@ -197,14 +214,14 @@ const useCompletedWageringColumns = ({ items = [] }) =>
     () => [
       sequenceColumn(),
       dateTimeColumn({
-        accessor: "recordedOn",
+        accessor: "createdOn",
         Header: <Trans zh="时间" en="Time" />,
         disableSortBy: true,
         dateFormat: "MM/dd",
         timeFormat: "HH:mm"
       }),
       numberDecimalColumn({
-        accessor: "wagering",
+        accessor: "turnover",
         Header: <Trans zh="流水" en="Wagering" />,
         disableSortBy: true,
         format: "+0,0.00"
@@ -218,12 +235,14 @@ const useWageringRequirementColumns = ({ playerCode, items = [] }) =>
     () => [
       sequenceColumn(),
       dateTimeColumn({
-        accessor: "recordedOn",
+        accessor: "createdOn",
         Header: <Trans zh="时间" en="Time" />,
-        disableSortBy: true
+        disableSortBy: true,
+        dateFormat: "MM/dd",
+        timeFormat: "HH:mm"
       }),
       textColumn({
-        accessor: "type",
+        accessor: "bucketType",
         Header: <Trans zh="类型" en="Type" />,
         disableSortBy: true,
         Cell: TypeLabel
@@ -234,13 +253,19 @@ const useWageringRequirementColumns = ({ playerCode, items = [] }) =>
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "completedWagering",
+        id: "completedWagering",
+        accessor: (row) => row,
         Header: <Trans zh="已达流水" en="Completed Wagering" />,
         disableSortBy: true,
-        Cell: CompletedWageringDisclosure
+        Cell: ({ value: record }) => (
+          <CompletedWageringDisclosure
+            playerBucketId={record.id}
+            value={record.completedWagering}
+          />
+        )
       }),
       numberDecimalColumn({
-        accessor: "uncompletedWagering",
+        accessor: "uncompleteWagering",
         Header: <Trans zh="剩余流水" en="Uncompleted Wagering" />,
         disableSortBy: true
       })

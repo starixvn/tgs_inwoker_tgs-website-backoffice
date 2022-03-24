@@ -275,11 +275,10 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
         </Box>
         <Set>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
-          {/* 
           <PlayerWageringRequirementDialogDisclosure
+            id="wagering-requirement-dialog-disclosure"
             playerCode={player.playerCode}
-          /> 
-          */}
+          />
         </Set>
 
         <StatusLabel />

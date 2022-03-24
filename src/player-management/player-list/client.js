@@ -114,12 +114,18 @@ export const useVerifyPlayerID = (formId, data) => {
   return usePostData(url, data)
 }
 
-export const usePlayerWageringRequirementList = (searchParams) => {
-  let url = searchParams ? urlWith(searchParams, `${API}/accountChanges`) : ""
+export const usePlayerWageringRequirementList = (playerCode, searchParams) => {
+  let url =
+    playerCode && searchParams
+      ? urlWith(searchParams, `${API}/${playerCode}/playerBuckets`)
+      : ""
   return useGet(url)
 }
 
-export const usePlayerCompletedWageringList = (searchParams) => {
-  let url = searchParams ? urlWith(searchParams, `${API}/accountChanges`) : ""
+export const usePlayerCompletedWageringList = (playerCode, searchParams) => {
+  let url =
+    playerCode && searchParams
+      ? urlWith(searchParams, `${API}/${playerCode}/playerBucketHistories`)
+      : ""
   return useGet(url)
 }

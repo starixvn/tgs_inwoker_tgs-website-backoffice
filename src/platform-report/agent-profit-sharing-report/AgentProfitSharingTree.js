@@ -362,7 +362,7 @@ const WindowTree = ({ data = [], total, columns = [] }) => {
   let cellProps = Table.Cell.useProps({})
 
   let headRowProps = Table.Head.useProps()
-  // const MemoizedRow = ({ row }) => useMemo(() => (), [])
+
   const RenderRow = useCallback(
     ({ index, style }) => {
       const row = rows[index]
