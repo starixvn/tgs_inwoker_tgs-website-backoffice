@@ -468,6 +468,17 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     name: GameTypeFieldName
   })
 
+  useEffect(() => {
+    if (!gameTypeGroup) {
+      setValue(GameTypeFieldName, null)
+    }
+  }, [gameTypeGroup])
+
+  let gameTypePlaceholder = useTrans({
+    zh: "全部",
+    en: "All"
+  })
+
   let disabled = readOnly
   let editable = !readOnly
   let required = editable
@@ -529,6 +540,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
               onChange={(event) => {
                 setValue(PromotionTypeFieldName, "")
               }}
+              placeholder={gameTypePlaceholder}
             />
           )}
           {disabled && (
@@ -554,7 +566,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             <PromotionTypeSelect
               name={PromotionTypeFieldName}
               group={promotionTypeGroup}
-              required
             />
           )}
           {disabled && (
@@ -614,6 +625,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
                 <GameTypeGroupSelect
                   name={GameTypeGroupFieldName}
                   disabled={disabled}
+                  placeholder={gameTypePlaceholder}
                 />
               )}
               {disabled && (
@@ -630,7 +642,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           </>
         )}
 
-        {isPromotionTypeTurnoverRelated && (
+        {isPromotionTypeTurnoverRelated && gameTypeGroup && (
           <>
             <NormalLabel>
               <Trans zh="活动游戏子类型" en="Game SubType" />
@@ -639,12 +651,12 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
               name={GameTypeFieldName}
               group={gameTypeGroup}
               disabled={disabled}
-              required
+              placeholder={gameTypePlaceholder}
             />
           </>
         )}
 
-        {isPromotionTypeTurnoverRelated && (
+        {isPromotionTypeTurnoverRelated && gameType && (
           <>
             <NormalLabel>
               <Trans zh="活动厂商" en="GP Participation" />
