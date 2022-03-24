@@ -635,7 +635,11 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
                     value={gameTypeGroup}
                     display="none"
                   />
-                  <GameTypeGroupSelect value={gameTypeGroup} disabled />
+                  <GameTypeGroupSelect
+                    placeholder={gameTypePlaceholder}
+                    value={gameTypeGroup}
+                    disabled
+                  />
                 </>
               )}
             </Box>
