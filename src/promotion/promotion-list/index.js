@@ -94,7 +94,6 @@ const BodyContent = ({ brandId }) => {
       : undefined
   )
 
-  let columns = useColumns({ mutate, brandId, items: data?.items })
   return (
     <PageContent
       title={<Trans zh="活动管理" en="Promotion" />}
@@ -123,6 +122,7 @@ const BodyContent = ({ brandId }) => {
       }
     >
       <DataTable
+        brandId={brandId}
         state={state}
         data={data}
         setPageIndex={setPageIndex}
@@ -136,6 +136,7 @@ const BodyContent = ({ brandId }) => {
 }
 
 const DataTable = ({
+  brandId,
   state,
   data,
   setPageIndex,
@@ -196,6 +197,7 @@ const DataTable = ({
   const items = data?.items ?? []
 
   let columns = useColumns({
+    brandId,
     items,
     mutate,
     formMethods,
