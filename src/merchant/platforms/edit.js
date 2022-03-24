@@ -270,7 +270,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure data-platform-id={record?.id} {...dialog} {...props}>
         <Trans zh="修改" en="Edit" />
       </Disclosure>
       {dialog.visible && (
@@ -373,6 +373,7 @@ const EditDialog = ({ brandId, licenseeId, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="edit-platform-dialog"
       defaultValues={record}
       onSubmit={onSubmit}
       result={result}

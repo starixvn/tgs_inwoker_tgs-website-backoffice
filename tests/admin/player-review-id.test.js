@@ -4,17 +4,25 @@ import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
+import {
+  gotoPlatformListPage,
+  searchPlatform,
+  updatePlatform
+} from "./platform-list-page.js"
 
 const test = base.extend(Fixture)
 
-console.warn("enable setting for brand")
-test.skip("review player id", async ({
+test("review player id", async ({
   page,
   platformCode,
   platformToken,
   player,
   operatorApi
 }) => {
+  await gotoPlatformListPage(page)
+  await searchPlatform(page, platformCode)
+  await updatePlatform(page, { enablePlayerIdentity: true })
+
   await Promise.all([
     operatorApi.player.uploadIdentity(platformToken, player.token),
     gotoPlayerListPage(page, platformCode)
@@ -49,4 +57,8 @@ test.skip("review player id", async ({
   ])
   let result = await reviewResponse.json()
   expect(result.valid).to.equal(true)
+
+  await gotoPlatformListPage(page)
+  await searchPlatform(page, platformCode)
+  await updatePlatform(page, { enablePlayerIdentity: false })
 })
