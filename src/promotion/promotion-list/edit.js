@@ -566,6 +566,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             <PromotionTypeSelect
               name={PromotionTypeFieldName}
               group={promotionTypeGroup}
+              required
             />
           )}
           {disabled && (

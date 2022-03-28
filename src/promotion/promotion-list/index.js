@@ -89,9 +89,7 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { isLoading, data, error, mutate, deleteCache } = usePromotionList(
-    brandId
-      ? { ...toApiParams(state), sortby: "to", orderby: SortOrder.Descending }
-      : undefined
+    brandId ? { ...toApiParams(state), sortby: "number" } : undefined
   )
 
   return (
