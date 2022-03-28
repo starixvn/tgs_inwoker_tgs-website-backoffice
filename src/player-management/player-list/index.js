@@ -267,18 +267,17 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
         disableSortBy: true,
         Cell: ({ value }) => <VipLevelLabel value={value} placeholder="-" />
       }),
-      {
-        disableSortBy: true,
-        Header: <Trans zh="状态" en="Status" />,
+      textColumn({
         accessor: "status",
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        },
+        Header: <Trans zh="状态" en="Status" />,
+        disableSortBy: true,
         Cell: ({ value }) => <PlayerStatusLabel value={value} />
-      }
+      }),
+      textColumn({
+        accessor: "parentUsername",
+        Header: <Trans zh="全民代理上級" en="All Agent Upper Level" />,
+        disableSortBy: true
+      })
     ]
 
     if (hasAnyMenu) {
