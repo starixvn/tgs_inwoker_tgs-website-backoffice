@@ -711,8 +711,8 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           />
           <Text.Block color="warning" fontWeight="bold" fontSize="150">
             <Trans
-              zh="建議尺寸:  T1,T3,T4: 1200 x 485px；T2: 470 x 200px"
-              en="Recommended size: 1200 x 485px；T2 470 x 200px"
+              zh="建議尺寸:  1200 x 486px"
+              en="Recommended size: 1200 x 486px"
             />
           </Text.Block>
         </Set>
