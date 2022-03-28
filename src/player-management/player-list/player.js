@@ -123,6 +123,10 @@ const EditForm = ({
     zh: "代理用户名",
     en: "Agent Username"
   })
+  let allAgentUpperLevelPlaceholder = useTrans({
+    zh: "全民代理上級",
+    en: "All Agent Upper Level"
+  })
 
   const WageringRequirementFieldName = "wageringRequirement"
   let wageringRequirement = useWatch({
@@ -177,7 +181,10 @@ const EditForm = ({
 
         <AllAgentUpperLevelLabel />
         <Box>
-          <Text>{player?.parentUsername}</Text>
+          <Input
+            name="parentUsername"
+            placeholder={allAgentUpperLevelPlaceholder}
+          />
         </Box>
 
         <RegistrationLabel />
