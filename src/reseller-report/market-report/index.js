@@ -119,7 +119,7 @@ const ReportContent = ({ resellerId }) => {
               <DownloadButton
                 id="export-report"
                 isLoading={isLoading}
-                href={urlWith(toSearchParams(), `${API}/exportResellerMarkets`)}
+                href={urlWith(toSearchParams(), `${API}/export`)}
               />
             </Box>
           )} 

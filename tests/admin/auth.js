@@ -23,6 +23,7 @@ export const loginAdminUser = async (browser) =>
 export const Fixture = {
   adminUsername: AdminUsername,
   platformCode: "GPI",
+  resellerCode: "TGS",
   host: host(),
   platformToken: async ({ platformCode }, use) => {
     let platformToken = await globalApi.platformToken(platformCode)

@@ -7,7 +7,8 @@ import React, {
   forwardRef,
   useCallback,
   createContext,
-  useContext
+  useContext,
+  Profiler
 } from "react"
 import { css, Global } from "@emotion/react"
 import { Icon, Set, Spinner, Box, Button, Table, Text, Link } from "bumbag"
@@ -37,6 +38,7 @@ import {
   faCaretRight,
   faCaretDown
 } from "@fortawesome/free-solid-svg-icons"
+import equals from "fast-deep-equal"
 
 const StickyListContext = createContext()
 
@@ -68,13 +70,28 @@ export const AgentProfitSharingTree = ({ brandId, start, end }) => {
   )
 }
 
-const AgentProfitSharingTreeBody = ({ data, total, brandId, start, end }) => {
+const AgentProfitSharingTreeBody = ({
+  isLoading,
+  data,
+  total,
+  brandId,
+  start,
+  end
+}) => {
+  let [roots, setRoots] = useState(data)
   let [value, setValue] = useState(data)
+
+  useEffect(() => {
+    if (!equals(roots, data)) {
+      setRoots(data)
+      setValue(data)
+    }
+  }, [data])
 
   let [fetchChildrenParent, setFetchChildrenParent] = useState()
   let [fetchParams, setFetchParams] = useState()
   let {
-    isLoading,
+    isLoading: isLoadingChildren,
     data: childrenData,
     mutate
   } = useAgentProfitSharingChildrenList(fetchParams)
@@ -84,11 +101,7 @@ const AgentProfitSharingTreeBody = ({ data, total, brandId, start, end }) => {
       let path = fetchChildrenParent.path
 
       setValue((tree) => {
-        let result = set(
-          clone(tree),
-          [...path, "children"],
-          childrenData?.items
-        )
+        let result = set(tree, [...path, "children"], childrenData?.items)
         return result
       })
 
@@ -112,9 +125,11 @@ const AgentProfitSharingTreeBody = ({ data, total, brandId, start, end }) => {
 
           return (
             <Button
-              disabled={isLoading}
+              disabled={isLoadingChildren}
               isLoading={
-                expended && fetchChildrenParent?.id === node.id && isLoading
+                expended &&
+                fetchChildrenParent?.id === node.id &&
+                isLoadingChildren
               }
               marginLeft={`${depth}rem`}
               size="small"
@@ -155,7 +170,6 @@ const AgentProfitSharingTreeBody = ({ data, total, brandId, start, end }) => {
         accessor: "username",
         Header: <Trans zh="代理用户名" en="Agent Username" />,
         TotalCell: () => null,
-        textOverflow: "ellipsis",
         Cell: ({ value }) => <span title={value}>{value}</span>
       }),
       numberDecimalColumn({
@@ -294,44 +308,10 @@ const AgentProfitSharingTreeBody = ({ data, total, brandId, start, end }) => {
     [JSON.stringify(value), JSON.stringify(total)]
   )
 
-  return <WindowTree data={flatten(value)} total={total} columns={columns} />
+  return <VirtualTable data={flatten(value)} total={total} columns={columns} />
 }
 
-const MemoizedRow = ({ row, index, cellProps, style, ...props }) => {
-  return useMemo(() => {
-    return (
-      <div
-        {...row.getRowProps({
-          style
-        })}
-        css={css`
-          border-bottom: 1px solid var(--bb-palette-white800, #000000);
-        `}
-      >
-        {row.cells.map((cell, index) => {
-          return (
-            <Box
-              css={css`
-                text-overflow: ellipsis;
-                overflow: hidden;
-                border-right: 1px solid
-                  ${cell.column.isResizing
-                    ? "var(--bb-palette-primary, #000000)"
-                    : "var(--bb-palette-white800, #000000)"};
-              `}
-              {...cellProps}
-              {...cell.getCellProps([{ ...cell?.column?.cell }])}
-            >
-              {cell.render("Cell")}
-            </Box>
-          )
-        })}
-      </div>
-    )
-  }, [row.id, row.expended, JSON.stringify(style), JSON.stringify(props)])
-}
-
-const WindowTree = ({ data = [], total, columns = [] }) => {
+const VirtualTable = ({ data = [], total, columns = [] }) => {
   const defaultColumn = useMemo(() => {
     return {
       minWidth: 50,
@@ -360,7 +340,6 @@ const WindowTree = ({ data = [], total, columns = [] }) => {
   } = table
 
   let cellProps = Table.Cell.useProps({})
-
   let headRowProps = Table.Head.useProps()
 
   const RenderRow = useCallback(
@@ -369,15 +348,36 @@ const WindowTree = ({ data = [], total, columns = [] }) => {
       prepareRow(row)
 
       return (
-        <MemoizedRow
-          row={row}
-          index={index}
-          cellProps={cellProps}
-          style={style}
-        />
+        <div
+          {...row.getRowProps({
+            style
+          })}
+          css={css`
+            border-bottom: 1px solid var(--bb-palette-white800, #000000);
+          `}
+        >
+          {row.cells.map((cell, cellIndex) => {
+            return (
+              <Box
+                css={css`
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  border-right: 1px solid
+                    ${cell.column.isResizing
+                      ? "var(--bb-palette-primary, #000000)"
+                      : "var(--bb-palette-white800, #000000)"};
+                `}
+                {...cellProps}
+                {...cell.getCellProps([{ ...cell?.column?.cell }])}
+              >
+                {cell.render("Cell")}
+              </Box>
+            )
+          })}
+        </div>
       )
     },
-    [prepareRow, rows, cellProps]
+    [prepareRow, rows]
   )
 
   let tableProps = Table.useProps({ hasDividers: true })
