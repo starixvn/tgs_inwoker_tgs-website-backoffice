@@ -1,5 +1,7 @@
 import { selectPlatformByCode } from "../page/content.js"
+import { selectByLabel } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
+import faker from "@faker-js/faker"
 
 export const ViewPlayerDialogSelector = `#view-player-dialog`
 
@@ -47,6 +49,46 @@ export const updatePlatform = async (
     }),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
+}
+
+export const AgentDividendType = {
+  OneLayer: "OneLayer",
+  MultipleLayer: "MultipleLayer"
+}
+
+export const SettlementIntervalType = {
+  Daily: "Daily",
+  Weekly: "Weekly",
+  Monthly: "Monthly"
+}
+
+export const addPlatform = (
+  page,
+  {
+    resellerCode = "TGS",
+    licenseeCode = "TGS",
+    code = faker.random.alphaNumeric(5),
+    name = faker.random.alpha(5),
+    operationalEmail = faker.internet.email(),
+    agentDividendType = AgentDividendType.OneLayer,
+    settlementIntervalType = SettlementIntervalType.Daily,
+    ...restForm
+  }
+) => {
+  let addPlatformSelector = `#add-platform-dialog`
+  // await openDialog(page, addPlatformSelector)
+  /*
+  await selectByLabel(
+    page,
+    `${addPlatformSelector} [name="resellerId"]`,
+    resellerCode
+  )
+  await selectByLabel(
+    page,
+    `${addPlatformSelector} [name="licenseeId"]`,
+    licenseeCode
+  )
+  */
 }
 
 export const gotoPlatformListPage = async (page) => {

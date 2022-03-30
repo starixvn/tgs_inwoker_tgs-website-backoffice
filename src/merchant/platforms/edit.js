@@ -73,7 +73,7 @@ export const AddButton = ({ onSubmitted, ...props }) => {
 
   return (
     <>
-      <AddDisclosure {...dialog} />
+      <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
       )}
@@ -141,6 +141,7 @@ const AddDialog = ({ onSubmitted, dialog }) => {
   })
   return (
     <FormDialog
+      id="add-platform-dialog"
       formMethods={formMethods}
       onSubmit={onSubmit}
       result={result}
