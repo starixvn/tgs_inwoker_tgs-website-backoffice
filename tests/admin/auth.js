@@ -6,6 +6,7 @@ import operatorApi from "../../client/operatorApi/index.js"
 import sboGameProviderApi from "../../client/gameProviderApi/sbo/index.js"
 import backofficeApi from "../client/index.js"
 import reportApi from "../../client/reportApi/index.js"
+import reportAggregateApi from "../../client/reportAggregateApi/index.js"
 
 const Path = "./.playwright"
 const AuthPath = `${Path}/admin-auth.json`
@@ -22,6 +23,7 @@ export const loginAdminUser = async (browser) =>
 export const Fixture = {
   adminUsername: AdminUsername,
   platformCode: "GPI",
+  resellerCode: "TGS",
   host: host(),
   platformToken: async ({ platformCode }, use) => {
     let platformToken = await globalApi.platformToken(platformCode)
@@ -53,6 +55,9 @@ export const Fixture = {
   },
   reportApi: ({}, use) => {
     use(reportApi)
+  },
+  reportAggregateApi: ({}, use) => {
+    use(reportAggregateApi)
   },
   page: async ({ context }, use) => {
     let page = await context.newPage()

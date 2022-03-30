@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
-import { Box, Button, Set, Text, Flex } from "bumbag"
+import { Box, Button, Set, Text, Flex, Stack, Dialog } from "bumbag"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -24,7 +24,11 @@ import {
   ViewPromotionDisclosure
 } from "./edit"
 import equals from "fast-deep-equal"
-import { usePromotionList, useDeletePromotion } from "./client"
+import {
+  usePromotionList,
+  useDeletePromotion,
+  useChangePromotionOrders
+} from "./client"
 import BrandBar from "../../report/BrandBar"
 import { formatDateTime, formatDayMonthYear } from "../../date/format"
 import { PromotionTypeLabel, usePromotionGroupLabelOf } from "../PromotionType"
@@ -40,6 +44,7 @@ import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { SortOrder } from "../../table/order"
 import { isDev } from "../../env"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
+import { NumberInput } from "../../input/NumberInput"
 
 export { Code }
 
@@ -84,12 +89,9 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { isLoading, data, error, mutate, deleteCache } = usePromotionList(
-    brandId
-      ? { ...toApiParams(state), sortby: "to", orderby: SortOrder.Descending }
-      : undefined
+    brandId ? { ...toApiParams(state), sortby: "number" } : undefined
   )
 
-  let columns = useColumns({ mutate, brandId, items: data?.items })
   return (
     <PageContent
       title={<Trans zh="活动管理" en="Promotion" />}
@@ -117,20 +119,117 @@ const BodyContent = ({ brandId }) => {
         </Flex>
       }
     >
-      <Table
-        id="promotion"
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state?.pageSize, data?.totalCount)}
+      <DataTable
+        brandId={brandId}
+        state={state}
+        data={data}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
+        mutate={mutate}
         isLoading={isLoading}
-        getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const DataTable = ({
+  brandId,
+  state,
+  data,
+  setPageIndex,
+  setSortOrder,
+  isLoading,
+  mutate
+}) => {
+  let editable = useIsDisplayMenuByRoute([Update])
+
+  let formMethods = useForm()
+  let [displayOrders, setDisplayOrders] = useState({})
+
+  const setDisplayOrder = (id, displayOrder) => {
+    setDisplayOrders((state) => {
+      Reflect.set(state, id, displayOrder)
+      return state
+    })
+  }
+
+  let [formData, setSubmit] = useState()
+
+  let {
+    result,
+    isLoading: isChangingDisplayOrder,
+    error,
+    mutate: mutateChangePromotionOrders,
+    deleteCache
+  } = useChangePromotionOrders(formData)
+
+  const onSubmit = (formData) => {
+    let orders = []
+    Object.entries(displayOrders).forEach(([id, value]) => {
+      orders.push({
+        id,
+        displayOrder: value
+      })
+    })
+
+    if (orders.length > 0) {
+      setSubmit({
+        orders
+      })
+    }
+  }
+
+  const reset = () => {
+    setDisplayOrders({})
+    setSubmit(undefined)
+  }
+
+  useEffect(() => {
+    if (result && !error) {
+      reset()
+      mutate()
+    }
+  }, [result, error])
+
+  const items = data?.items ?? []
+
+  let columns = useColumns({
+    brandId,
+    items,
+    mutate,
+    formMethods,
+    displayOrders,
+    setDisplayOrder
+  })
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Stack spacing="major-1">
+          <Table
+            id="promotion"
+            columns={columns}
+            data={data?.items}
+            initialState={state}
+            controlledState={state}
+            pageCount={pageCount(state?.pageSize, data?.totalCount)}
+            setPageIndex={setPageIndex}
+            setSortOrder={setSortOrder}
+            isLoading={isLoading}
+            getRowId={(row) => row.id}
+          />
+          {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+          {editable && (
+            <Dialog.Footer position="sticky" bottom="0">
+              <Button isLoading={isChangingDisplayOrder} type="submit">
+                <Trans zh="确认排序" en="Confirm Order" />
+              </Button>
+            </Dialog.Footer>
+          )}
+        </Stack>
+      </form>
+    </FormProvider>
   )
 }
 
@@ -168,13 +267,53 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ brandId, items = [], mutate }) => {
+const useColumns = ({
+  brandId,
+  items = [],
+  mutate,
+  displayOrders = {},
+  setDisplayOrder
+}) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   let hasViewAuth = useIsDisplayMenuByRoute([View])
   let hasAnyMenu = hasUpdateAuth || hasViewAuth
 
   return useMemo(() => {
     let columns = [
+      textColumn({
+        id: "displayOrder",
+        accessor: (row) => row,
+        Header: <Trans zh="序" en="Order" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          if (!hasUpdateAuth) {
+            return value.displayOrder ?? null
+          }
+
+          let { id } = value
+          let displayOrder = displayOrders[id] ?? value.number
+          return (
+            <NumberInput
+              name={id}
+              size="small"
+              width="5em"
+              defaultValue={displayOrder}
+              required
+              min="1"
+              minLength="1"
+              registerOptions={{
+                valueAsNumber: true
+              }}
+              onChange={(event) => {
+                let displayOrder = parseInt(event.target.value)
+                if (Number.isFinite(displayOrder)) {
+                  setDisplayOrder(id, displayOrder)
+                }
+              }}
+            />
+          )
+        }
+      }),
       textColumn({
         accessor: "name",
         Header: <Trans zh="活动名称" en="Promotion Name" />,

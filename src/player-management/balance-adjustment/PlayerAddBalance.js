@@ -42,7 +42,11 @@ import FormDialog from "../../form/FormDialog"
 import { useFormContext, useWatch } from "react-hook-form"
 import Input from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
-import { PlayerAdjustBalanceTypeSelect } from "./PlayerAdjustBalanceType"
+import {
+  PlayerAdjustBalanceTypeSelect,
+  isCompanyOrAgent
+} from "./PlayerAdjustBalanceType"
+import Checkbox from "../../checkbox"
 
 export const PlayerAddBalanceDisclosure = ({
   brandId,
@@ -135,6 +139,12 @@ const FormBody = ({}) => {
     "playerCode"
   ])
 
+  let TransactionTypeField = "transactionType"
+  let transactionType = useWatch({
+    control,
+    name: TransactionTypeField
+  })
+
   let TransactionAmountField = "amount"
   let transactionAmount = useWatch({
     control,
@@ -155,10 +165,21 @@ const FormBody = ({}) => {
         </Box>
         <Set>
           <PlayerAdjustBalanceTypeSelect
-            name="transactionType"
+            name={TransactionTypeField}
             required={hasTransactionAmount}
           />
         </Set>
+        
+        {/* TODO: checkbox field name 
+        {isCompanyOrAgent(transactionType) && (
+          <>
+            <Box alignY="center">
+              <Trans zh="需算入净盈利" en="Include in Net Profit" />
+            </Box>
+            <Checkbox name="includeNetProfit"/>
+          </>
+        )} 
+        */}
 
         <Box alignY="center">
           <Trans zh="交易金额" en="Amount" />

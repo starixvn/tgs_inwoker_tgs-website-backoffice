@@ -239,6 +239,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       title={title}
       dialog={dialog}
       maxWidth="80vw"
+      stopPropagation
       css={DialogCss}
     >
       <FormBody brandId={brandId} />
@@ -467,6 +468,17 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     name: GameTypeFieldName
   })
 
+  useEffect(() => {
+    if (!gameTypeGroup) {
+      setValue(GameTypeFieldName, null)
+    }
+  }, [gameTypeGroup])
+
+  let gameTypePlaceholder = useTrans({
+    zh: "全部",
+    en: "All"
+  })
+
   let disabled = readOnly
   let editable = !readOnly
   let required = editable
@@ -528,6 +540,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
               onChange={(event) => {
                 setValue(PromotionTypeFieldName, "")
               }}
+              placeholder={gameTypePlaceholder}
             />
           )}
           {disabled && (
@@ -613,6 +626,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
                 <GameTypeGroupSelect
                   name={GameTypeGroupFieldName}
                   disabled={disabled}
+                  placeholder={gameTypePlaceholder}
                 />
               )}
               {disabled && (
@@ -622,14 +636,18 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
                     value={gameTypeGroup}
                     display="none"
                   />
-                  <GameTypeGroupSelect value={gameTypeGroup} disabled />
+                  <GameTypeGroupSelect
+                    placeholder={gameTypePlaceholder}
+                    value={gameTypeGroup}
+                    disabled
+                  />
                 </>
               )}
             </Box>
           </>
         )}
 
-        {isPromotionTypeTurnoverRelated && (
+        {isPromotionTypeTurnoverRelated && gameTypeGroup && (
           <>
             <NormalLabel>
               <Trans zh="活动游戏子类型" en="Game SubType" />
@@ -638,12 +656,12 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
               name={GameTypeFieldName}
               group={gameTypeGroup}
               disabled={disabled}
-              required
+              placeholder={gameTypePlaceholder}
             />
           </>
         )}
 
-        {isPromotionTypeTurnoverRelated && (
+        {isPromotionTypeTurnoverRelated && gameType && (
           <>
             <NormalLabel>
               <Trans zh="活动厂商" en="GP Participation" />
@@ -693,8 +711,8 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           />
           <Text.Block color="warning" fontWeight="bold" fontSize="150">
             <Trans
-              zh="建議尺寸:  T1,T3,T4: 1200 x 485px；T2: 470 x 200px"
-              en="Recommended size: 1200 x 485px；T2 470 x 200px"
+              zh="建議尺寸:  1200 x 486px"
+              en="Recommended size: 1200 x 486px"
             />
           </Text.Block>
         </Set>
