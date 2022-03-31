@@ -5,7 +5,4 @@ import { selectPlatformByCode } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test.skip("edit and view agent info -> view operation list", async ({
-  page,
-  platformCode
-}) => {})
+test.skip("search, edit & view agent", async ({ page, platformCode }) => {})

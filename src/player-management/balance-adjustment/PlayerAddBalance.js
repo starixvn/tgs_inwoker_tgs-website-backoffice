@@ -169,17 +169,15 @@ const FormBody = ({}) => {
             required={hasTransactionAmount}
           />
         </Set>
-        
-        {/* TODO: checkbox field name 
+
         {isCompanyOrAgent(transactionType) && (
           <>
             <Box alignY="center">
               <Trans zh="需算入净盈利" en="Include in Net Profit" />
             </Box>
-            <Checkbox name="includeNetProfit"/>
+            <Checkbox name="includeInNetProfit" />
           </>
-        )} 
-        */}
+        )}
 
         <Box alignY="center">
           <Trans zh="交易金额" en="Amount" />

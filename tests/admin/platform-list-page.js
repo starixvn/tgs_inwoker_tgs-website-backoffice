@@ -1,5 +1,5 @@
 import { selectPlatformByCode } from "../page/content.js"
-import { selectByLabel } from "../page/select.js"
+import { selectByLabel, selectRandomOption } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import faker from "@faker-js/faker"
 
@@ -9,12 +9,14 @@ export const searchPlatform = async (page, keyword) => {
   let inputSelector = `input[name="keyword"]`
   await page.fill(inputSelector, keyword)
 
-  await Promise.all([
+  let [listResponse] = await Promise.all([
     page.waitForResponse((response) => {
       return response.url().includes(`/api/brand?`) && response.status() === 200
     }),
     page.click(`button[type="submit"]`)
   ])
+  let listResult = await listResponse.json()
+  return listResult.items[0].id
 }
 
 const EditPlatformDialogSelector = `#edit-platform-dialog`
@@ -62,22 +64,23 @@ export const SettlementIntervalType = {
   Monthly: "Monthly"
 }
 
-export const addPlatform = (
+export const addPlatform = async (
   page,
   {
     resellerCode = "TGS",
     licenseeCode = "TGS",
-    code = faker.random.alphaNumeric(5),
+    code = `${faker.random.alpha(1)}${faker.random.alphaNumeric(5)}`,
     name = faker.random.alpha(5),
     operationalEmail = faker.internet.email(),
     agentDividendType = AgentDividendType.OneLayer,
     settlementIntervalType = SettlementIntervalType.Daily,
+    currencyCode = "CNY",
     ...restForm
-  }
+  } = {}
 ) => {
   let addPlatformSelector = `#add-platform-dialog`
-  // await openDialog(page, addPlatformSelector)
-  /*
+  await openDialog(page, addPlatformSelector)
+
   await selectByLabel(
     page,
     `${addPlatformSelector} [name="resellerId"]`,
@@ -88,7 +91,45 @@ export const addPlatform = (
     `${addPlatformSelector} [name="licenseeId"]`,
     licenseeCode
   )
-  */
+
+  await page.fill(`[name="code"]`, code, { force: true })
+  await page.fill(`[name="name"]`, name, { force: true })
+  await page.fill(`[name="operationalEmail"]`, operationalEmail, {
+    force: true
+  })
+
+  await page.selectOption(`[name="agentDividendType"]`, agentDividendType)
+  await page.selectOption(
+    `[name="settlementIntervalType"]`,
+    settlementIntervalType
+  )
+
+  await page.check(`#select-all-languages input`, { force: true })
+  await page.check(`#${currencyCode}-checkbox input`, { force: true })
+  await page.check(`#${currencyCode}-bet-limit-checkbox input`, { force: true })
+  await page.check(`#gameProviders-checkbox-group input[type="checkbox"]`, {
+    force: true
+  })
+
+  let gameProviderConfigDialogSelector = `#game-provider-config-dialog`
+  await selectRandomOption(
+    page,
+    `${gameProviderConfigDialogSelector} [name="id"]`
+  )
+
+  await page.click(`${gameProviderConfigDialogSelector} button[type="submit"]`)
+
+  await page.click(`${addPlatformSelector} button[type="submit"]`)
+  await page.waitForSelector(addPlatformSelector, { state: "detached" })
+
+  let id = await searchPlatform(page, code)
+  return {
+    id,
+    code,
+    name,
+    agentDividendType,
+    settlementIntervalType
+  }
 }
 
 export const gotoPlatformListPage = async (page) => {
