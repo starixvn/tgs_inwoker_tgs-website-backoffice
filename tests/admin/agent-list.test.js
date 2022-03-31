@@ -1,17 +1,66 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { add, random, last } from "lodash-es"
-import { selectRandomPlatform } from "../page/content.js"
+import { last } from "lodash-es"
+import { selectPlatformByCode } from "../page/content.js"
 import faker from "@faker-js/faker"
+import { gotoPlatformListPage, addPlatform } from "./platform-list-page.js"
+import {
+  AgentDividendType,
+  addAgent,
+  gotoAgentListPage,
+  searchAgent
+} from "./agent-list-page.js"
+import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 const { lorem, internet } = faker
 
-test.skip("add and edit agent, search agent list", async ({
-  page,
-  platformCode
-}) => {})
+/*
+test("add one layer agents", async ({ page }) => {
+  await gotoPlatformListPage(page)
+  let platform = await addPlatform(page, {
+    agentDividendType: AgentDividendType.OneLayer
+  })
+
+  await gotoAgentListPage(page)
+  await selectPlatformByCode(page, platform.code)
+
+  let agents = await addAgent(page, AgentDividendType.OneLayer)
+  agents = await addAgent(page, AgentDividendType.OneLayer, agents)
+
+  let [parent, agent] = agents
+  await searchAgent(page, agent.username)
+
+  let viewAgentDialogSelector = `#view-agent-dialog`
+  await openDialog(page, viewAgentDialogSelector)
+
+  let parentUsernameLocator = page.locator(
+    `${viewAgentDialogSelector} [data-type="parent-username"]`
+  )
+  let parentUsername = await parentUsernameLocator.textContent()
+  expect(parentUsername).to.equals(parent.username)
+})
+*/
+
+test("add multiple layer agents", async ({ page }) => {
+  await gotoPlatformListPage(page)
+  let platform = await addPlatform(page, {
+    agentDividendType: AgentDividendType.MultipleLayer
+  })
+
+  await gotoAgentListPage(page)
+  await selectPlatformByCode(page, platform.code)
+
+  let agents = await addAgent(page, AgentDividendType.MultipleLayer)
+
+  console.warn("TODO: config profit sharing setting")
+  console.warn("TODO: config profit sharing setting template setting")
+
+  agents = await addAgent(page, AgentDividendType.MultipleLayer, agents)
+  console.warn("TODO: expect profit sharing setting same as template")
+})
+
 /*
 let browser
 let context

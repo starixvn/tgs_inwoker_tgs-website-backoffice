@@ -491,7 +491,12 @@ const ParentAgentUsername = ({ value = "", children, display, ...props }) => {
       {children ? (
         children
       ) : (
-        <Text data-value={value} display={display} {...props}>
+        <Text
+          data-type="parent-username"
+          data-value={value}
+          display={display}
+          {...props}
+        >
           {value}
         </Text>
       )}

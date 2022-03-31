@@ -166,16 +166,14 @@ const FormBody = ({ brandId, username, playerCode }) => {
           />
         </Set>
 
-        {/* TODO: checkbox field name
         {isCompanyOrAgent(transactionType) && (
           <>
             <Box alignY="center">
               <Trans zh="需算入净盈利" en="Include in Net Profit" />
             </Box>
-            <Checkbox name="includeNetProfit" />
+            <Checkbox name="includeInNetProfit" />
           </>
-        )} 
-        */}
+        )}
 
         {isTransferTransactionType && player?.agentUsername && (
           <>

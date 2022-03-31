@@ -536,6 +536,7 @@ export const ViewButton = ({
           agentProfitSharingType={agentProfitSharingType}
           readonly
           dialog={dialog}
+          dialogId="view-agent-dialog"
         />
       )}
     </>
@@ -566,6 +567,7 @@ export const EditButton = ({
           record={record}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId="edit-agent-dialog"
         />
       )}
     </>
@@ -683,6 +685,7 @@ const TabsDialog = ({
   agentProfitSharingType,
   readonly = false,
   dialog,
+  dialogId,
   ...props
 }) => {
   let agentId = record?.id
@@ -720,6 +723,7 @@ const TabsDialog = ({
   let editable = !readonly
   return (
     <Dialog.Modal
+      id={dialogId}
       title={title}
       hideOnClickOutside={false}
       showCloseButton={true}
