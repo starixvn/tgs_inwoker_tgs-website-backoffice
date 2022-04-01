@@ -384,7 +384,7 @@ const SettingRow = ({
   }, [index])
   return (
     <>
-      <Table.Row>
+      <Table.Row data-index={index}>
         <Table.Cell>
           <Box>
             {editable && (
@@ -409,7 +409,7 @@ const SettingRow = ({
             />
           </Box>
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell id="activeNumber">
           <NumberInput
             name={`${name}.${index}.activeNumber`}
             readOnly={readOnly}
@@ -435,7 +435,7 @@ const SettingRow = ({
             required
           />
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell id="netProfit">
           <NumberInput
             name={`${name}.${index}.netProfit`}
             readOnly={readOnly}
@@ -461,7 +461,7 @@ const SettingRow = ({
             required
           />
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell id={profitSharingPercentageFieldName}>
           <ProfitSharingPercentageNumberInputField
             fieldArrayName={name}
             index={index}
