@@ -644,6 +644,7 @@ const ConfigDialog = ({ brandId, agentId, onSubmitted, dialog }) => {
 
   return (
     <FormDialog
+      id="config-agent-dialog"
       defaultValues={{
         ...clone(agent),
         dividendPercentage: "",
