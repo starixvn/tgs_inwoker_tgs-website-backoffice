@@ -18,6 +18,7 @@ export const BrandBar = ({
   name = "brandBar",
   onLicenseeChange,
   onBrandChange,
+  onResellerChange,
   ...props
 }) => {
   let { url } = useRouteMatch()
@@ -54,6 +55,10 @@ export const BrandBar = ({
   useEffect(() => {
     onLicenseeChange?.(state?.licenseeId)
   }, [state?.licenseeId])
+
+  useEffect(() => {
+    onResellerChange?.(state?.resellerId)
+  }, [state?.resellerId])
 
   let formMethods = useForm()
 

@@ -79,7 +79,7 @@ const Body = () => {
             }}
             isLoading={isLoading}
           />
-          <AddButton onSubmitted={mutate} />
+          <AddButton id="add-platform-dialog-disclosure" onSubmitted={mutate} />
         </>
       }
     >
@@ -92,6 +92,7 @@ const Body = () => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        getRowId={(row, index) => row.id ?? index}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>

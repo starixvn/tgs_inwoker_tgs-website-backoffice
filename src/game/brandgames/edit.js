@@ -83,6 +83,7 @@ const EditDialog = ({ record = {}, dialog, ...props }) => {
       id="edit-game-dialog"
       defaultValues={{ ...brandGame }}
       onSubmit={onSubmit}
+      stopPropagation
       result={result}
       isLoading={isLoading}
       error={error}

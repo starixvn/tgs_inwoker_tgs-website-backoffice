@@ -75,6 +75,7 @@ const BodyContent = ({ brandId = "", brand }) => {
     status: "",
     vipId: "",
     username: "",
+    parentUsername: "",
     beginRegisteredOn: "",
     endRegisteredOn: ""
   })
@@ -156,8 +157,12 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
     zh: "真实姓名",
     en: "Real name"
   })
+  let allAgentUpperLevelPlaceholder = useTrans({
+    zh: "全民代理上級",
+    en: "All Agent Upper Level"
+  })
 
-  let formMethods = useForm()
+  let formMethods = useForm({})
 
   const onSubmit = (data) => search(data)
 
@@ -172,6 +177,11 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
             showEmptyFieldValueAddonAfter
             placeholder={usernameInputPlaceholder}
             autocomplete="off"
+          />
+          <InputField
+            name="parentUsername"
+            showEmptyFieldValueAddonAfter
+            placeholder={allAgentUpperLevelPlaceholder}
           />
           <InputField
             name="registerHost"
@@ -267,18 +277,17 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
         disableSortBy: true,
         Cell: ({ value }) => <VipLevelLabel value={value} placeholder="-" />
       }),
-      {
-        disableSortBy: true,
-        Header: <Trans zh="状态" en="Status" />,
+      textColumn({
         accessor: "status",
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        },
+        Header: <Trans zh="状态" en="Status" />,
+        disableSortBy: true,
         Cell: ({ value }) => <PlayerStatusLabel value={value} />
-      }
+      }),
+      textColumn({
+        accessor: "parentUsername",
+        Header: <Trans zh="全民代理上級" en="All Agent Upper Level" />,
+        disableSortBy: true
+      })
     ]
 
     if (hasAnyMenu) {

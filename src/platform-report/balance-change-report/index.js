@@ -216,6 +216,13 @@ const useColumns = ({ brandId, items = [] }) => {
         Header: <Trans zh="交易金额" en="amount" />,
         disableSortBy: true
       }),
+      /*
+      numberDecimalColumn({
+        accessor: "wageringRequirement",
+        Header: <Trans zh="流水" en="Wagering" />,
+        disableSortBy: true
+      }),
+      */
       numberDecimalColumn({
         accessor: "beforeBalance",
         Header: <Trans zh="余额 (前)" en="Before" />,

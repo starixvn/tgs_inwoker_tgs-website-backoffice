@@ -51,7 +51,7 @@ pipeline {
 		stage('Docker Build') {   
             steps {	  			    
                 sh "docker build -t ${Registry}${Image}:${TAG} ."
-                sh "docker build -t ${Registry}${Image}:$env.kube_ns ."
+                sh "docker tag ${Registry}${Image}:${TAG} ${Registry}${Image}:$env.kube_ns"
             }
         }			
         stage('Docker Push') {   

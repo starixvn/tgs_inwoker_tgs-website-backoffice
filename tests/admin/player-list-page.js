@@ -1,4 +1,5 @@
 import { selectPlatformByCode } from "../page/content.js"
+import { openDialog } from "../page/dialog.js"
 
 export const ViewPlayerDialogSelector = `#view-player-dialog`
 
@@ -14,6 +15,11 @@ export const searchPlayer = async (page, player) => {
     }),
     page.click(`button[type="submit"]`)
   ])
+}
+
+export const openPlayerInfoDialog = async (page) => {
+  await openDialog(page, ViewPlayerDialogSelector)
+  return ViewPlayerDialogSelector
 }
 
 export const gotoPlayerListPage = async (page, platformCode) => {
