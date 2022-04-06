@@ -53,7 +53,10 @@ import SettlementIntervalType, {
 } from "../../date/SettlementIntervalType"
 import BusinessType from "../BusinessType"
 import Select from "../../select/Select"
-import { PercentageNumberInputField } from "../../input/NumberInput"
+import {
+  PercentageNumberInputField,
+  NumberInputField
+} from "../../input/NumberInput"
 import { isDev } from "../../env"
 import Checkbox from "../../checkbox"
 import {
@@ -665,9 +668,20 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
         <NormalLabel>
           <Trans zh="自动清除流水" en="Auto Clear Wagering Requirement" />
         </NormalLabel>
-        <Box alignY="center">
+        <Set alignY="center">
           <Checkbox name="autoClearWageringRequirement" disabled={readonly} />
-        </Box>
+          {/* 
+          <NumberInputField
+            name=""
+            addonBefore={
+              <Button isStatic>
+                <Trans zh="玩家钱包余额 ＜＝" en="Player Wallet Balance ＜＝" />
+              </Button>
+            }
+            disabled={readonly}
+          /> 
+          */}
+        </Set>
 
         <NormalLabel>
           <Trans zh="身分证审核" en="ID Verification" />
