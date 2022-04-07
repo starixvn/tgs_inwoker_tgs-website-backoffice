@@ -33,7 +33,8 @@ import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import Separator from "../../layout/Separator"
 import { FundDepositStatusLabel } from "./FundDepositStatus"
 import Textarea, { TextareaField } from "../../textarea"
-import Input from "../../input/Input"
+import Input, { InputField } from "../../input/Input"
+import { NumberInputField } from "../../input/NumberInput"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -180,6 +181,12 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         <Separator />
         <BankInfoBox record={record} />
         <Separator />
+        <NumberInputField
+          name="actualAmount"
+          label={<Trans zh="实际充值金额" en="Actual Amount" />}
+          value={record?.actualAmount ?? record?.amount}
+          disabled={disabled}
+        />
         <TextareaField
           name="remark"
           label={<Trans zh="备注" en="Remark" />}

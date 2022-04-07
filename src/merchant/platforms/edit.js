@@ -670,17 +670,15 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
         </NormalLabel>
         <Set alignY="center">
           <Checkbox name="autoClearWageringRequirement" disabled={readonly} />
-          {/* 
           <NumberInputField
-            name=""
+            name="autoClearWageringRequirementBalance"
             addonBefore={
               <Button isStatic>
                 <Trans zh="玩家钱包余额 ＜＝" en="Player Wallet Balance ＜＝" />
               </Button>
             }
             disabled={readonly}
-          /> 
-          */}
+          />
         </Set>
 
         <NormalLabel>
