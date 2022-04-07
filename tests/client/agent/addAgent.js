@@ -7,10 +7,11 @@ const { lorem, internet } = faker
 const API = "api/agent"
 export const addAgent = async ({
   brandId,
+  type = "Cash",
   username = internet.userName(),
   password = `${internet.password(8)}a1`,
   levelType = "Chief",
-  dividendPercentage = random(0, 100, true),
+  dividendPercentage = random(0, 100, true).toFixed(2),
   remarks = lorem.sentence(),
   ...restFormData
 } = {}) => {
@@ -20,6 +21,7 @@ export const addAgent = async ({
 
   let formData = {
     brandId,
+    type,
     username,
     password,
     confirmPassword: password,
