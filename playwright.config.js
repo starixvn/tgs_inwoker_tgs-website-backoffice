@@ -4,6 +4,9 @@ export default {
   globalSetup: "./tests/init.js",
   timeout: 60 * Second,
   use: {
-    acceptDownloads: true
+    acceptDownloads: true,
+    launchOptions: {
+      slowMo: 10
+    }
   }
 }

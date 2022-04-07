@@ -1,5 +1,7 @@
 import faker from "@faker-js/faker"
 import { add, random, last } from "lodash-es"
+import { selectPlatformByCode } from "../page/content.js"
+import { openDialog } from "../page/dialog.js"
 const { lorem, internet } = faker
 
 export const AgentDividendType = {
@@ -94,6 +96,19 @@ export const addAgent = async (page, agentDividendType, agents = []) => {
   return result
 }
 
-export const gotoAgentListPage = async (page) => {
+export const openViewAgentDialog = async (page) => {
+  let dialogSelector = `#view-agent-dialog`
+  await openDialog(page, dialogSelector)
+  return dialogSelector
+}
+
+export const openEditAgentDialog = async (page) => {
+  let dialogSelector = `#edit-agent-dialog`
+  await openDialog(page, dialogSelector)
+  return dialogSelector
+}
+
+export const gotoAgentListPage = async (page, platformCode) => {
   await page.goto("/agentmanagement/agentlist", { waitUntil: "networkidle" })
+  await selectPlatformByCode(page, platformCode)
 }
