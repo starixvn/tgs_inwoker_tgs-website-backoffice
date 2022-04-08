@@ -180,11 +180,11 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         </FieldValues>
         <Separator />
         <BankInfoBox record={record} />
-        <Separator />
         <NumberInputField
           name="actualAmount"
           label={<Trans zh="实际充值金额" en="Actual Amount" />}
           value={readOnly ? record?.actualAmount ?? record?.amount : undefined}
+          step="0.01"
           disabled={disabled}
         />
         <TextareaField
