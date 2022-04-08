@@ -49,6 +49,7 @@ import { DateMonthInput } from "../../date/DateMonthInput"
 import { GameProviderCurrencyReportDisclosure } from "./GameProviderCurrencyReport"
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { DateHourRangeInput } from "../../date/DateTimeRangeInput"
+import { TimeZoneSelect } from "../../date/TimeZone"
 
 export { Code }
 
@@ -329,6 +330,9 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
+          {/* 
+          <TimeZoneSelect name="timezone" /> 
+          */}
           <DateHourRangeInput
             id="date-range"
             dateFormat="yyyy/MM/dd HH"

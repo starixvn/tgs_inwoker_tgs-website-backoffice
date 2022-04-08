@@ -184,7 +184,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         <NumberInputField
           name="actualAmount"
           label={<Trans zh="实际充值金额" en="Actual Amount" />}
-          value={record?.actualAmount ?? record?.amount}
+          value={readOnly ? record?.actualAmount ?? record?.amount : undefined}
           disabled={disabled}
         />
         <TextareaField
