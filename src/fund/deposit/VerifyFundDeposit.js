@@ -93,13 +93,12 @@ const VerifyFundDepositDialog = ({
     return <AlertDialog {...fundDepositFormError} {...dialog} />
   }
 
-  const onSubmit = ({ remark, reviewResponse, ...rest }) => {
+  const onSubmit = (form) => {
     if (!isLoading) {
       //prevent submit multiple times
       setSubmit({
         brandId,
-        remark,
-        reviewResponse
+        ...form
       })
     }
   }

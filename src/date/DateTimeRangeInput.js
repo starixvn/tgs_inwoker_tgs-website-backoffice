@@ -22,7 +22,7 @@ import { min, max } from "date-fns"
 import { isValid, differenceInDays } from "date-fns"
 import { DateDropdownMenu } from "./DateDropdownMenu"
 import { mapObjIndexed } from "ramda"
-import { isClientTimeZoneSameAsSystemTimeZone, toSystemTime } from "./TimeZone"
+import { isClientTimeZoneSameAsSystemTimeZone, toZonedTime } from "./TimeZone"
 import { isDev, isFeatureEnabled, Features } from "../env"
 
 export const DateInputRange = ({

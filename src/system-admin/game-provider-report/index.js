@@ -49,7 +49,11 @@ import { DateMonthInput } from "../../date/DateMonthInput"
 import { GameProviderCurrencyReportDisclosure } from "./GameProviderCurrencyReport"
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { DateHourRangeInput } from "../../date/DateTimeRangeInput"
-import { TimeZoneSelect } from "../../date/TimeZone"
+import {
+  localTimeOffset,
+  TimezoneSelectField,
+  toZonedTime
+} from "../../date/TimeZone"
 
 export { Code }
 
@@ -81,7 +85,8 @@ const ReportContent = ({}) => {
     gameProviderId: "",
     from: undefined,
     to: undefined,
-    currencyCode: undefined
+    currencyCode: undefined,
+    timezoneOffset: localTimeOffset()
   })
 
   let validDateRange = isValid(state.from) && isValid(state.to)
@@ -89,6 +94,10 @@ const ReportContent = ({}) => {
   let culture = useLangCode()
   let toSearchParams = () => ({
     ...toApiParams(state),
+    /*
+    from: toZonedTime(state.from, state.timezoneOffset),
+    to: toZonedTime(state.to, state.timezoneOffset),
+    */
     /*
     to: startOfNextHour(state.to),
     */
@@ -331,7 +340,7 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
           {/* 
-          <TimeZoneSelect name="timezone" /> 
+          <TimezoneSelectField /> 
           */}
           <DateHourRangeInput
             id="date-range"
