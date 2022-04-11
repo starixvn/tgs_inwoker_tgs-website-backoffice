@@ -8,7 +8,8 @@ import {
   Text,
   FieldStack,
   Button,
-  Set
+  Set,
+  Group
 } from "bumbag"
 import { useIsDisplayMenuByRoute, useUserLicenseeId } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
@@ -631,6 +632,30 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
             </Box>
           </>
         )}
+
+        {/* 
+        <NormalLabel>
+          <Trans zh="代理承擔手續費" en="代理承担手续费" />
+        </NormalLabel>
+        <Set>
+          <PercentageNumberInputField
+            name="depositFee"
+            addonBefore={
+              <Button isStatic>
+                <Trans zh="存款" en="Deposit" />
+              </Button>
+            }
+          />
+          <PercentageNumberInputField
+            name="withdrawFee"
+            addonBefore={
+              <Button isStatic>
+                <Trans zh="提款" en="Withdraw" />
+              </Button>
+            }
+          />
+        </Set> 
+        */}
 
         <NormalLabel>
           <Trans zh="代理分红周期" en="Agent Profit Sharing Interval" />

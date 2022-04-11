@@ -357,6 +357,20 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
+      /*
+      numberDecimalColumn({
+        accessor: "depositFee",
+        sumColumn: "depositFee",
+        Header: <Trans zh="存款手续费" en="Deposit Fee" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "withdrawFee",
+        sumColumn: "withdrawFee",
+        Header: <Trans zh="提款手续费" en="Withdraw Fee" />,
+        disableSortBy: true
+      }),
+      */
       numberDecimalColumn({
         id: "winLossAmount",
         accessor: (row) => row,
@@ -392,7 +406,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         accessor: (row) => row,
         sumColumn: "agentDividendAmount",
         toValue: (row) => row?.agentDividendAmount,
-        Header: <Trans zh="分红金额" en="Profit Sharing Amount" />,
+        Header: <ProfitSharingAmountHeader />,
         TotalCell: ({ value }) => (
           <FormattedNumber value={value} format="0,0.00" digits={2} />
         ),
@@ -418,7 +432,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         numberDecimalColumn({
           accessor: "fromPlayerAgentDividendAmount",
           sumColumn: "fromPlayerAgentDividendAmount",
-          Header: <Trans zh="玩家贡献" en="Player Contribution" />,
+          Header: <PlayerContributionHeader />,
           disableSortBy: true
         }),
         numberDecimalColumn({
@@ -426,7 +440,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
           accessor: (row) => row,
           sumColumn: "fromTeamAgentDividendAmount",
           toValue: (row) => row?.fromTeamAgentDividendAmount,
-          Header: <Trans zh="团队贡献" en="Team Contribution" />,
+          Header: <TeamContributionHeader />,
           TotalCell: ({ value }) => (
             <FormattedNumber value={value} format="0,0.00" digits={2} />
           ),
@@ -450,4 +464,28 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
 
     return columns
   }, [JSON.stringify(items)])
+}
+
+const ProfitSharingAmountHeader = () => {
+  let title = useTrans({
+    zh: "分紅金額 = 分紅金額細項 + 負累計",
+    en: "Profit Sharing Amount =  Detail of Profit+ Accumulated Profit"
+  })
+  return <Trans zh="分红金额" en="Profit Sharing Amount" title={title} />
+}
+
+const PlayerContributionHeader = () => {
+  let title = useTrans({
+    zh: "分紅金額 = 分紅金額細項 + 負累計",
+    en: "Profit Sharing Amount =  Detail of Profit+ Accumulated Profit"
+  })
+  return <Trans zh="玩家贡献" en="Player Contribution" title={title} />
+}
+
+const TeamContributionHeader = () => {
+  let title = useTrans({
+    zh: "分紅金額 = 分紅金額細項 + 負累計",
+    en: "Profit Sharing Amount =  Detail of Profit+ Accumulated Profit"
+  })
+  return <Trans zh="团队贡献" en="Team Contribution" title={title} />
 }

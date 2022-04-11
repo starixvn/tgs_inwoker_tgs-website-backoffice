@@ -17,9 +17,15 @@ export const searchPlayer = async (page, player) => {
   ])
 }
 
-export const openPlayerInfoDialog = async (page) => {
+export const openViewPlayerDialog = async (page) => {
   await openDialog(page, ViewPlayerDialogSelector)
   return ViewPlayerDialogSelector
+}
+
+export const openEditPlayerDialog = async (page) => {
+  let dialogSelector = `#edit-player-dialog`
+  await openDialog(page, dialogSelector)
+  return dialogSelector
 }
 
 export const gotoPlayerListPage = async (page, platformCode) => {
