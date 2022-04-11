@@ -94,10 +94,8 @@ const ReportContent = ({}) => {
   let culture = useLangCode()
   let toSearchParams = () => ({
     ...toApiParams(state),
-    /*
     from: toZonedTime(state.from, state.timezoneOffset),
     to: toZonedTime(state.to, state.timezoneOffset),
-    */
     /*
     to: startOfNextHour(state.to),
     */
@@ -339,9 +337,7 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
-          {/* 
-          <TimezoneSelectField /> 
-          */}
+          <TimezoneSelectField />
           <DateHourRangeInput
             id="date-range"
             dateFormat="yyyy/MM/dd HH"
