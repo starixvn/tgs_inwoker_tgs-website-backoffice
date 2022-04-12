@@ -254,7 +254,7 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
 
         <RealNameLabel />
         <Box>
-          <Text>{realName}</Text>
+          <Text data-field="realName">{realName}</Text>
         </Box>
 
         {/* 
