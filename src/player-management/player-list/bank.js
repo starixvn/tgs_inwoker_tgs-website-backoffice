@@ -99,8 +99,9 @@ const Bank = ({
 
   let isBank = PaymentMethodBankType.isBank(bankType)
   let isCrypto = PaymentMethodBankType.isCrypto(bankType)
+
   return (
-    <Card>
+    <Card data-field="bank-id" data-value={record.id}>
       {edit && (
         <Set alignX="right">
           <Disclosure
@@ -430,7 +431,12 @@ const DeleteDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
       {...dialog}
     >
       {error && <AlertDialog {...error} onClickClose={reset} />}
-      <Box alignX="center" margin="major-1">
+      <Box
+        data-field="bank-id"
+        data-value={bank.id}
+        alignX="center"
+        margin="major-1"
+      >
         <Trans zh="是否删除此银行卡？" en="Do you want to delete this card?" />
       </Box>
     </Modal>

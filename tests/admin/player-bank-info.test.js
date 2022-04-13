@@ -8,6 +8,7 @@ import numeral from "numeral"
 import {
   gotoPlayerListPage,
   openEditPlayerDialog,
+  openViewPlayerDialog,
   searchPlayer
 } from "./player-list-page.js"
 import faker from "@faker-js/faker"
@@ -114,16 +115,102 @@ const editBank = async (page, bank, player) => {
   let editBankDialogSelector = `#edit-bank-dialog`
   await openDialog(page, editBankDialogSelector)
 
+  let bankNameSelector = `${editBankDialogSelector} input[name="detail.bankName"]`
+  let bankNameLocator = page.locator(bankNameSelector)
+  let bankName = await bankNameLocator.inputValue()
+  expect(bankName).to.equals(bank.detail.bankName)
+
+  let bankBranchSelector = `${editBankDialogSelector} input[name="detail.bankBranch"]`
+  let bankBranchLocator = page.locator(bankBranchSelector)
+  let bankBranch = await bankBranchLocator.inputValue()
+  expect(bankBranch).to.equals(bank.detail.bankBranch)
+
+  let nameSelector = `${editBankDialogSelector} input[name="detail.name"]`
+  let nameLocator = page.locator(nameSelector)
+  let name = await nameLocator.inputValue()
+  expect(name).to.equals(bank.detail.name)
+
+  let bankAccountSelector = `${editBankDialogSelector} input[name="detail.bankAccount"]`
+  let bankAccountLocator = page.locator(bankAccountSelector)
+  let bankAccount = await bankAccountLocator.inputValue()
+  expect(bankAccount).to.equals(bank.detail.bankAccount)
+
+  let detail = {
+    bankName: faker.name.firstName(),
+    bankBranch: faker.name.firstName(),
+    name: faker.finance.accountName(),
+    bankAccount: faker.finance.account()
+  }
+
+  await page.fill(bankNameSelector, detail.bankName)
+  await page.fill(bankBranchSelector, detail.bankBranch)
+  await page.fill(nameSelector, detail.name)
+  await page.fill(bankAccountSelector, detail.bankAccount)
+
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/player/${player.code}/bank`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`${editBankDialogSelector} button[type="submit"]`)
+  ])
+
+  await page.click(`${dialogSelector} .bb-DialogClose`)
+
+  return {
+    ...bank,
+    detail
+  }
+}
+
+const viewBank = async (page, bank) => {
+  let dialogSelector = await openViewPlayerDialog(page)
+  await page.click(`${dialogSelector} #banks`)
+
   let bankNameLocator = page.locator(
-    `${editBankDialogSelector} input[name="detail.bankName"]`
+    `${dialogSelector} [data-field="bankName"]`
   )
-  console.warn("TODO: edit player bank")
+  let bankName = await bankNameLocator.textContent()
+  expect(bankName).to.equals(bank.detail.bankName)
+
+  let bankBranchLocator = page.locator(
+    `${dialogSelector} [data-field="bankBranch"]`
+  )
+  let bankBranch = await bankBranchLocator.textContent()
+  expect(bankBranch).to.equals(bank.detail.bankBranch)
+
+  let accountNameLocator = page.locator(`${dialogSelector} [data-field="name"]`)
+  let accountName = await accountNameLocator.textContent()
+  expect(accountName).to.equals(bank.detail.name)
+
+  let bankAccountLocator = page.locator(
+    `${dialogSelector} [data-field="bankAccount"]`
+  )
+  let bankAccount = await bankAccountLocator.textContent()
+  expect(bankAccount).to.equals(bank.detail.bankAccount)
+
+  await page.click(`${dialogSelector} .bb-DialogClose`)
 }
 
-const viewBank = async (page) => {
-  console.warn("TODO: view player bank")
-}
+const deleteBank = async (page, player) => {
+  let dialogSelector = await openEditPlayerDialog(page)
+  await page.click(`${dialogSelector} #banks`)
 
-const deleteBank = async (page) => {
-  console.warn("TODO: delete player bank")
+  let deleteBankSelector = `#delete-bank-dialog`
+  await openDialog(page, deleteBankSelector)
+
+  let idLocator = page.locator(`${deleteBankSelector} [data-field="bank-id"]`)
+  let id = await idLocator.getAttribute(`data-value`)
+
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/player/${player.code}/bank/${id}`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`${deleteBankSelector} button[type="submit"]`)
+  ])
 }
