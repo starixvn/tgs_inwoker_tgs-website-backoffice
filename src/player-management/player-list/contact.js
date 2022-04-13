@@ -53,7 +53,6 @@ export const Panel = ({ player = {}, ...props }) => {
         <WeChatLabel />
         <Text>{weChat}</Text>
 
-        {/* 
         <TelegramLabel />
         <Text>{player?.telegram}</Text>
 
@@ -61,14 +60,13 @@ export const Panel = ({ player = {}, ...props }) => {
         <Text>{player?.viber}</Text>
 
         <MessengerLabel />
-        <Text>{player?.messenger}</Text>
+        <Text>{player?.facebookMessenger}</Text>
 
         <LineLabel />
         <Text>{player?.line}</Text>
 
         <WhatsappLabel />
-        <Text>{player?.whatsapp}</Text> 
-        */}
+        <Text>{player?.whatsapp}</Text>
       </FieldValues>
     </TabPanel>
   )
@@ -133,7 +131,6 @@ const Body = ({ onClickClose }) => {
           <Input name="weChat" />
         </Box>
 
-        {/* 
         <TelegramLabel />
         <Box>
           <Input name="telegram" />
@@ -146,7 +143,7 @@ const Body = ({ onClickClose }) => {
 
         <MessengerLabel />
         <Box>
-          <Input name="messenger" />
+          <Input name="facebookMessenger" />
         </Box>
 
         <LineLabel />
@@ -157,8 +154,7 @@ const Body = ({ onClickClose }) => {
         <WhatsappLabel />
         <Box>
           <Input name="whatsapp" />
-        </Box> 
-        */}
+        </Box>
       </FieldValues>
       <Box alignX="right">
         <SubmitCancel onClickCancel={onClickClose} />
