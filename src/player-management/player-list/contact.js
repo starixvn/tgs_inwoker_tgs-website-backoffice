@@ -66,7 +66,7 @@ export const Panel = ({ player = {}, ...props }) => {
         <Text>{player?.line}</Text>
 
         <WhatsappLabel />
-        <Text>{player?.whatsapp}</Text>
+        <Text>{player?.whatsApp}</Text>
       </FieldValues>
     </TabPanel>
   )
@@ -153,7 +153,7 @@ const Body = ({ onClickClose }) => {
 
         <WhatsappLabel />
         <Box>
-          <Input name="whatsapp" />
+          <Input name="whatsApp" />
         </Box>
       </FieldValues>
       <Box alignX="right">
