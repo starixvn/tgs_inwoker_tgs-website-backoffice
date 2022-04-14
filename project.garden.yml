@@ -5,6 +5,11 @@ environments:
 providers:
   - name: local-kubernetes # The name of the provider plugin to use.
     setupIngressController: "nginx"
+modules:
+  include:
+    - garden
+  exclude:
+    - tgs
 
 ---
 kind: Module
@@ -15,6 +20,7 @@ disabled: false
 exclude:
   - garden
   - spec
+local: true
 services:
   - name: backoffice-site
     dependencies:
@@ -66,3 +72,8 @@ services:
     volumes:
       - name: data
         containerPath: /data
+# tests:
+#   - name: end-to-end
+#     dependencies:
+#       - init-seeding
+#     command: [npm, run, test]
