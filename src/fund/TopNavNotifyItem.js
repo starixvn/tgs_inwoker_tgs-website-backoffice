@@ -73,7 +73,7 @@ export const TopNavNotifyItem = ({
 
   useEffect(() => {
     if (Number.isFinite(total)) {
-      if (total > unprocessed) {
+      if (total > 0) {
         play(audio, {
           onPlay: () => {
             if (props.id) {
@@ -86,6 +86,7 @@ export const TopNavNotifyItem = ({
         })
       }
       setUnprocessed(total)
+      mutate(null, false) //reset total > null > play alarm next effect
     }
   }, [total])
 
