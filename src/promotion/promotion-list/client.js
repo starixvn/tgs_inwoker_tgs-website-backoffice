@@ -41,3 +41,8 @@ export const useChangePromotionStatus = (id, status) => {
 export const useDeletePromotion = (id) => {
   return useChangePromotionStatus(id, "Archived")
 }
+
+export const useChangePromotionOrders = (data) => {
+  let url = `${API}/changeorders`
+  return usePutData(url, data)
+}

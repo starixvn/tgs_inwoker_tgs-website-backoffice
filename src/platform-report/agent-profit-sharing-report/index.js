@@ -46,6 +46,7 @@ import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
+import { AgentProfitSharingTree } from "./AgentProfitSharingTree"
 
 export { Code }
 
@@ -65,7 +66,7 @@ export const Body = () => {
   let [brandId, setBrandId] = useState(userBrandId)
 
   return (
-    <Set orientation="vertical" isFilled>
+    <Set id="report-body" orientation="vertical" isFilled height="100%">
       <BrandBar
         onBrandChange={(value) => {
           setBrandId(value)
@@ -151,6 +152,9 @@ const ReportContent = ({ brandId }) => {
       }
       title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
     >
+      {/* 
+      <AgentProfitSharingTree brandId={brandId} start={from} end={to} /> 
+      */}
       {username && (
         <FieldStack>
           <TotalsInfo data={data} />

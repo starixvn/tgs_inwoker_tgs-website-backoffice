@@ -123,6 +123,10 @@ const EditForm = ({
     zh: "代理用户名",
     en: "Agent Username"
   })
+  let allAgentUpperLevelPlaceholder = useTrans({
+    zh: "全民代理上級",
+    en: "All Agent Upper Level"
+  })
 
   const WageringRequirementFieldName = "wageringRequirement"
   let wageringRequirement = useWatch({
@@ -173,6 +177,14 @@ const EditForm = ({
         <AgentUsernameLabel />
         <Box>
           <Input name="agentUsername" placeholder={agentUsernamePlaceholder} />
+        </Box>
+
+        <AllAgentUpperLevelLabel />
+        <Box>
+          <Input
+            name="parentUsername"
+            placeholder={allAgentUpperLevelPlaceholder}
+          />
         </Box>
 
         <RegistrationLabel />
@@ -265,6 +277,11 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
           <Text>{player?.agentUsername}</Text>
         </Box>
 
+        <AllAgentUpperLevelLabel />
+        <Box>
+          <Text>{player?.parentUsername}</Text>
+        </Box>
+
         <BalanceLabel />
         <Box>
           <FormattedNumberDecimal value={balance} />
@@ -275,11 +292,10 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
         </Box>
         <Set>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
-          {/* 
           <PlayerWageringRequirementDialogDisclosure
+            id="wagering-requirement-dialog-disclosure"
             playerCode={player.playerCode}
-          /> 
-          */}
+          />
         </Set>
 
         <StatusLabel />
@@ -326,6 +342,10 @@ const IdentityCardNumberLabel = () => <Trans zh="身分证" en="IC Number" />
 const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
 
 const AgentUsernameLabel = () => <Trans zh="上级代理" en="Upper Level Agent" />
+
+const AllAgentUpperLevelLabel = () => (
+  <Trans zh="全民代理上級" en="All Agent Upper Level" />
+)
 
 const BalanceLabel = () => <Trans zh="余额" en="Balance" />
 

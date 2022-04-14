@@ -39,15 +39,16 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
-import { useFormContext } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 import Input from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
-import AdjustType from "./AdjustType"
 import { usePlayer } from "../player-list/client"
 import {
   PlayerAdjustBalanceTypeSelect,
-  isTransfer
+  isTransfer,
+  isCompanyOrAgent
 } from "./PlayerAdjustBalanceType"
+import Checkbox from "../../checkbox"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -134,11 +135,14 @@ const DeductDialog = ({
 }
 
 const FormBody = ({ brandId, username, playerCode }) => {
-  let { watch } = useFormContext()
+  let { watch, control } = useFormContext()
   let { data: player } = usePlayer(playerCode)
 
-  let typeFieldName = "transactionType"
-  let transactionType = watch(typeFieldName)
+  let TransactionTypeField = "transactionType"
+  let transactionType = useWatch({
+    control,
+    name: TransactionTypeField
+  })
   let isTransferTransactionType = isTransfer(transactionType)
   return (
     <>
@@ -156,11 +160,20 @@ const FormBody = ({ brandId, username, playerCode }) => {
         </Box>
         <Set>
           <PlayerAdjustBalanceTypeSelect
-            name={typeFieldName}
+            name={TransactionTypeField}
             transferable={!!player?.agentUsername}
             required
           />
         </Set>
+
+        {isCompanyOrAgent(transactionType) && (
+          <>
+            <Box alignY="center">
+              <Trans zh="需算入净盈利" en="Include in Net Profit" />
+            </Box>
+            <Checkbox name="includeInNetProfit" />
+          </>
+        )}
 
         {isTransferTransactionType && player?.agentUsername && (
           <>

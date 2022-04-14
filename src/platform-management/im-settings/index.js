@@ -180,6 +180,7 @@ const ProfitSharingSettingFormDialog = ({
 
   return (
     <FormDialog
+      id="profit-sharing-setting-dialog"
       defaultValues={{
         brandId,
         brandAgentDividendConditions: clone(record)

@@ -63,7 +63,6 @@ const ReportContent = ({ licenseeId }) => {
   let dateRange = yesterday()
   let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    pageSize: QueryMaxRangeDays,
     licenseeId,
     currencyCode: undefined,
     from: dateRange.start,

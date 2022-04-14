@@ -46,6 +46,7 @@ export default {
   Transfer
 }
 
+export const isCompanyOrAgent = (type) => type === Company || type === Agent
 export const isTransfer = (type) => type === Transfer
 
 export const usePlayerAdjustBalanceTypeOptionList = () => {

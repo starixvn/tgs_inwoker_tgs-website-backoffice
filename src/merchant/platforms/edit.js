@@ -53,7 +53,10 @@ import SettlementIntervalType, {
 } from "../../date/SettlementIntervalType"
 import BusinessType from "../BusinessType"
 import Select from "../../select/Select"
-import { PercentageNumberInputField } from "../../input/NumberInput"
+import {
+  PercentageNumberInputField,
+  NumberInputField
+} from "../../input/NumberInput"
 import { isDev } from "../../env"
 import Checkbox from "../../checkbox"
 import {
@@ -61,6 +64,7 @@ import {
   AgentProfitSharingTypeSelect,
   isAgentProfitSharingMultipleLayer
 } from "../../agent/AgentProfitSharingType"
+import { PlatformTokenActionButtons } from "./PlatformTokenActionButtons"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -72,7 +76,7 @@ export const AddButton = ({ onSubmitted, ...props }) => {
 
   return (
     <>
-      <AddDisclosure {...dialog} />
+      <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
       )}
@@ -140,6 +144,7 @@ const AddDialog = ({ onSubmitted, dialog }) => {
   })
   return (
     <FormDialog
+      id="add-platform-dialog"
       formMethods={formMethods}
       onSubmit={onSubmit}
       result={result}
@@ -244,7 +249,6 @@ const ViewDialog = ({ brandId, licenseeId, dialog, ...props }) => {
       title={title}
       dialog={dialog}
       showActionButtons={false}
-      onClickClose={reset}
       footer={<CloseButtonFooter dialog={dialog} onClickClose={reset} />}
       placement="top"
       minWidth="60vw"
@@ -270,7 +274,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure data-platform-id={record?.id} {...dialog} {...props}>
         <Trans zh="修改" en="Edit" />
       </Disclosure>
       {dialog.visible && (
@@ -373,6 +377,7 @@ const EditDialog = ({ brandId, licenseeId, onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id="edit-platform-dialog"
       defaultValues={record}
       onSubmit={onSubmit}
       result={result}
@@ -616,6 +621,17 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           </>
         )}
 
+        {!isAdd && (
+          <>
+            <NormalLabel>
+              <Trans zh="Brand Token" en="Brand Token" />
+            </NormalLabel>
+            <Box alignY="center">
+              <PlatformTokenActionButtons platformId={getValues("id")} />
+            </Box>
+          </>
+        )}
+
         <NormalLabel>
           <Trans zh="代理分红周期" en="Agent Profit Sharing Interval" />
         </NormalLabel>
@@ -652,9 +668,20 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
         <NormalLabel>
           <Trans zh="自动清除流水" en="Auto Clear Wagering Requirement" />
         </NormalLabel>
-        <Box alignY="center">
+        <Set alignY="center">
           <Checkbox name="autoClearWageringRequirement" disabled={readonly} />
-        </Box>
+          {/* 
+          <NumberInputField
+            name=""
+            addonBefore={
+              <Button isStatic>
+                <Trans zh="玩家钱包余额 ＜＝" en="Player Wallet Balance ＜＝" />
+              </Button>
+            }
+            disabled={readonly}
+          /> 
+          */}
+        </Set>
 
         <NormalLabel>
           <Trans zh="身分证审核" en="ID Verification" />

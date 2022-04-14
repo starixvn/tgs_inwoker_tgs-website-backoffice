@@ -78,7 +78,7 @@ export const useDeleteBrandLogo = (id) => {
   return useDelete(url)
 }
 
-/*
-export const useBrandAgentProfitSharingType = (brandId) => {
+export const useBrandToken = (id) => {
+  let url = id ? `${API}/token/${id}` : ""
+  return useGet(url)
 }
-*/

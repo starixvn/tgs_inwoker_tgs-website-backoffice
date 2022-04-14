@@ -305,6 +305,7 @@ const useColumns = ({
 
           return (
             <ViewAgentProfitSharingSettingDialogDisclosure
+              id="agent-profit-sharing-setting-dialog-disclosure"
               agentId={value?.id}
               disabled={!viewable}
             />

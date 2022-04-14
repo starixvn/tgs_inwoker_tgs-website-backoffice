@@ -14,8 +14,7 @@ const test = base.extend(Fixture)
 
 const SecondInMilliseconds = 1000
 
-console.warn("*** TODO: set timeout not work?")
-test.skip("view player wallet list", async ({
+test("view player wallet list", async ({
   page,
   platformCode,
   player,
