@@ -1,5 +1,6 @@
-import { findPlatform } from "./findPlatform.js"
+import { findPlatform, getPlatform } from "./findPlatform.js"
 
 export default {
-  findPlatform
+  findPlatform,
+  getPlatform
 }

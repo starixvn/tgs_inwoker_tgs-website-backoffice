@@ -9,3 +9,14 @@ export const findPlatform = async (value = "") => {
 
   return result.items[0]
 }
+
+export const getPlatform = async (value = "") => {
+  let platform = await findPlatform(value)
+
+  let url = `${host}/${API}/${platform.id}`
+
+  let response = await fetcher.get(url)
+  let result = await response.json()
+
+  return result.brand
+}
