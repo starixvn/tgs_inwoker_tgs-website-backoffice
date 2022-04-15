@@ -476,16 +476,16 @@ const ProfitSharingAmountHeader = () => {
 
 const PlayerContributionHeader = () => {
   let title = useTrans({
-    zh: "分紅金額 = 分紅金額細項 + 負累計",
-    en: "Profit Sharing Amount =  Detail of Profit+ Accumulated Profit"
+    zh: "玩家貢獻 = 該代理之直屬玩家貢獻值",
+    en: "Player Contribution = A total contribution amount from the agent’s direct players displayed."
   })
   return <Trans zh="玩家贡献" en="Player Contribution" title={title} />
 }
 
 const TeamContributionHeader = () => {
   let title = useTrans({
-    zh: "分紅金額 = 分紅金額細項 + 負累計",
-    en: "Profit Sharing Amount =  Detail of Profit+ Accumulated Profit"
+    zh: "團隊貢獻 = 該代理底下，全部代理的團隊貢獻值",
+    en: "Team Contribution = A total contribution amount of the team displayed which belongs to the agent."
   })
   return <Trans zh="团队贡献" en="Team Contribution" title={title} />
 }
