@@ -467,11 +467,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
 }
 
 const ProfitSharingAmountHeader = () => {
-  let title = useTrans({
-    zh: "分紅金額 = 分紅金額細項 + 負累計",
-    en: "Profit Sharing Amount =  Detail of Profit+ Accumulated Profit"
-  })
-  return <Trans zh="分红金额" en="Profit Sharing Amount" title={title} />
+  return <Trans zh="分红金额" en="Profit Sharing Amount" />
 }
 
 const PlayerContributionHeader = () => {
