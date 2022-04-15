@@ -5,14 +5,41 @@ import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import numeral from "numeral"
 import {
-  gotoPlayerListPage,
-  searchPlayer,
-  ViewPlayerDialogSelector
-} from "./player-list-page.js"
+  gotoAgentListPage,
+  searchAgent,
+  openViewAgentDialog
+} from "./agent-list-page.js"
 
 const test = base.extend(Fixture)
 
-test.skip("view agent balance change list", async ({
+test("view agent balance change list", async ({
   page,
-  platformCode
-}) => {})
+  platformCode,
+  agent,
+  backofficeApi
+}) => {
+  let ExpectedAmount = 100
+  await Promise.all([
+    backofficeApi.agent.addBalance(agent.id, { amount: ExpectedAmount }),
+    gotoAgentListPage(page, platformCode)
+  ])
+  await searchAgent(page, agent.username)
+  let dialogSelector = await openViewAgentDialog(page)
+
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/agent/accountChanges?`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`${dialogSelector} #BalanceChange`)
+  ])
+
+  let amountLocator = page.locator(
+    `${dialogSelector} [data-column-id="amount"]`
+  )
+  let amountString = await amountLocator.textContent()
+  let amount = new numeral(amountString).value()
+  expect(amount).to.equals(ExpectedAmount)
+})

@@ -413,6 +413,20 @@ const useColumns = ({
         Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
+      /*
+      numberDecimalColumn({
+        accessor: "depositFee",
+        sumColumn: "depositFee",
+        Header: <Trans zh="存款手续费" en="Deposit Fee" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "withdrawFee",
+        sumColumn: "withdrawFee",
+        Header: <Trans zh="提款手续费" en="Withdraw Fee" />,
+        disableSortBy: true
+      }),
+      */
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",

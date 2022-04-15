@@ -41,17 +41,32 @@ export const Panel = ({ player = {}, ...props }) => {
       <FieldValues spacing="major-2">
         <MobileLabel />
         <Text>
-          {player.areaCode} {phone}
+          {player.areaCode} <Text data-field="phone">{phone}</Text>
         </Text>
 
         <EmailLabel />
-        <Text>{email}</Text>
+        <Text data-field="email">{email}</Text>
 
         <QQLabel />
         <Text>{qq}</Text>
 
         <WeChatLabel />
         <Text>{weChat}</Text>
+
+        <TelegramLabel />
+        <Text>{player?.telegram}</Text>
+
+        <ViberLabel />
+        <Text>{player?.viber}</Text>
+
+        <MessengerLabel />
+        <Text>{player?.facebookMessenger}</Text>
+
+        <LineLabel />
+        <Text>{player?.line}</Text>
+
+        <WhatsappLabel />
+        <Text>{player?.whatsApp}</Text>
       </FieldValues>
     </TabPanel>
   )
@@ -115,6 +130,31 @@ const Body = ({ onClickClose }) => {
         <Box>
           <Input name="weChat" />
         </Box>
+
+        <TelegramLabel />
+        <Box>
+          <Input name="telegram" />
+        </Box>
+
+        <ViberLabel />
+        <Box>
+          <Input name="viber" />
+        </Box>
+
+        <MessengerLabel />
+        <Box>
+          <Input name="facebookMessenger" />
+        </Box>
+
+        <LineLabel />
+        <Box>
+          <Input name="line" />
+        </Box>
+
+        <WhatsappLabel />
+        <Box>
+          <Input name="whatsApp" />
+        </Box>
       </FieldValues>
       <Box alignX="right">
         <SubmitCancel onClickCancel={onClickClose} />
@@ -130,3 +170,13 @@ const EmailLabel = () => <Trans zh="邮箱" en="Email" />
 const QQLabel = () => <Trans zh="QQ" en="QQ" />
 
 const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
+
+const TelegramLabel = () => <Trans zh="Telegram" en="Telegram" />
+
+const ViberLabel = () => <Trans zh="Viber" en="Viber" />
+
+const MessengerLabel = () => <Trans zh="Messenger" en="Messenger" />
+
+const LineLabel = () => <Trans zh="Line" en="Line" />
+
+const WhatsappLabel = () => <Trans zh="Whatsapp" en="Whatsapp" />

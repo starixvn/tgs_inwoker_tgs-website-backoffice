@@ -7,7 +7,7 @@ import numeral from "numeral"
 import {
   gotoPlayerListPage,
   searchPlayer,
-  openPlayerInfoDialog
+  openViewPlayerDialog
 } from "./player-list-page.js"
 import { approveDeposit } from "./fund-deposit-page.js"
 
@@ -43,7 +43,7 @@ test("view player promotion list", async ({
   await gotoPlayerListPage(page, platformCode)
   await searchPlayer(page, player)
 
-  let dialogSelector = await openPlayerInfoDialog(page)
+  let dialogSelector = await openViewPlayerDialog(page)
   await page.click(`${dialogSelector} button#promotion`)
 
   let promotionNameLocator = page.locator(

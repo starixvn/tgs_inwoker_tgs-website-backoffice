@@ -249,7 +249,7 @@ const useAgentBonusColumns = ({ username = "", items = [] }) => {
 
       numberDecimalColumn({
         accessor: "agentDividendAmount",
-        Header: <Trans zh="分红金额" en="Profit Sharing Amount" />,
+        Header: <Trans zh="分红金额细项" en="Profit Sharing Amount Detail" />,
         sumColumn: "agentDividendAmount",
         disableSortBy: true
       })

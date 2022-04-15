@@ -461,7 +461,7 @@ const RealNameBox = ({ value = "", children }) => {
       <Box alignY="center">
         <Trans zh="真实姓名" en="Real name" />
       </Box>
-      {children ? children : <Text>{value}</Text>}
+      {children ? children : <Text data-field="realName">{value}</Text>}
     </>
   )
 }

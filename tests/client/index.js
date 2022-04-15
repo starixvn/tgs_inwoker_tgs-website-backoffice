@@ -4,6 +4,8 @@ import player from "./player/index.js"
 import round from "./round/index.js"
 import payment from "./payment/index.js"
 import promotion from "./promotion/index.js"
+import platform from "./platform/index.js"
+import agent from "./agent/index.js"
 
 export default {
   init: (options = {}) => {
@@ -13,5 +15,7 @@ export default {
   player,
   round,
   payment,
-  promotion
+  promotion,
+  platform,
+  agent
 }

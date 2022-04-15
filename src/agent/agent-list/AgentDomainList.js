@@ -33,7 +33,7 @@ import {
   AgentDnsZoneCreateButton,
   AgentDnsZoneDeleteButton
 } from "./AgentDnsZone"
-import { UpdateIngress, UpdateDnsZone, LookupWhois } from "./menu"
+import { UpdateIngress, UpdateDnsZone, UpdateDomain } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { LinkButton } from "../../button/LinkButton"
 
@@ -129,6 +129,7 @@ const DomainList = ({
   readOnly,
   onSubmitted
 }) => {
+  let editDomain = useIsDisplayMenuByRoute([UpdateDomain])
   let [items, setItems] = useState(domains)
 
   let showAddButton = items.length === 0 || last(items)?.fromServer
@@ -147,8 +148,9 @@ const DomainList = ({
       {readOnly && items.length === 0 && (
         <Trans zh="查无资料" en="No Search Result" />
       )}
-      {!readOnly && showAddButton && (
+      {editDomain && !readOnly && showAddButton && (
         <Button
+          id="add-domain-input"
           onClick={() => {
             setItems([...items, { url: "", fromServer: false }])
           }}
@@ -185,6 +187,7 @@ const AddDomainInputField = ({
 
   useEffect(() => {
     if (result && !error) {
+      reset()
       onSubmitted?.()
     }
   }, [result])
@@ -193,7 +196,7 @@ const AddDomainInputField = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate()
+    mutate(null, false)
   }
 
   return (
@@ -208,6 +211,7 @@ const AddDomainInputField = ({
         disabled={isLoading}
         addonAfter={
           <Button
+            id="add-domain"
             isLoading={isLoading}
             disabled={isLoading}
             onClick={(event) => {
@@ -232,6 +236,7 @@ const DeleteDomainInputField = ({
   onSubmitted,
   ...props
 }) => {
+  let editDomain = useIsDisplayMenuByRoute([UpdateDomain])
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } = useDeleteAgentDomain(
     brandId,
@@ -241,6 +246,7 @@ const DeleteDomainInputField = ({
 
   useEffect(() => {
     if (result && !error) {
+      reset()
       onSubmitted?.()
     }
   }, [result])
@@ -249,7 +255,7 @@ const DeleteDomainInputField = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate()
+    mutate(null, false)
   }
 
   return (
@@ -258,8 +264,9 @@ const DeleteDomainInputField = ({
       <LinkButton url={`https://whois.domaintools.com/${url}`}>
         <Trans en="Lookup Domain" zh="检查域名" />
       </LinkButton>
-      {!readOnly && (
+      {editDomain && !readOnly && (
         <DeleteButton
+          id="delete-domain"
           borderLeftWidth="1px"
           isLoading={isLoading}
           disabled={isLoading}

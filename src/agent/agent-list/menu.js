@@ -11,6 +11,8 @@ export const UpdateIngress = "updateingress"
 
 export const UpdateDnsZone = "updatednszone"
 
+export const UpdateDomain = "updatedomain"
+
 //TODO: required?
 export const LookupWhois = "lookupwhois"
 
@@ -34,6 +36,14 @@ export const label = (codes = [], locale = Locales.zh) => {
         {
           zh: "编辑",
           en: "Edit"
+        },
+        locale
+      )
+    case UpdateDomain:
+      return getTrans(
+        {
+          zh: "编辑代理连结",
+          en: "Edit Agent Link"
         },
         locale
       )
