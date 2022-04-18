@@ -99,32 +99,27 @@ test("update platform credit", async ({ page, host }) => {
   )
   let platformCredit = numeral(inputValueInString).value()
   let expectedValue = platformCredit + 10
-
+  await page.fill(`${DialogSelector} input[name="credit"]`, `${expectedValue}`)
   let id = await page.inputValue(`${DialogSelector} input[name="id"]`)
   let expectedUrl = `/api/PlatformCredit/${id}/${expectedValue}`
 
   await Promise.all([
-    page.fill(`${DialogSelector} input[name="credit"]`, `${expectedValue}`),
     page.waitForResponse((response) => {
       return response.url().endsWith(expectedUrl) && response.status() === 200
     }),
-    page.click(`${DialogSelector} button[type="submit"]`)
-  ])
-
-  await Promise.all([
-    page.waitForSelector(DialogSelector, { state: "detached" }),
     page.waitForResponse((response) => {
       return (
         response.url().includes(`/api/PlatformCredit?`) &&
         response.status() === 200
       )
-    })
+    }),
+    page.click(`${DialogSelector} button[type="submit"]`)
   ])
 
-  let creditString = await page.$eval(
-    `[data-row-index="${index}"] [data-column-id="credit"]`,
-    ({ textContent }) => textContent
+  let creditLocator = page.locator(
+    `[data-row-index="${index}"] [data-column-id="credit"]`
   )
+  let creditString = await creditLocator.textContent()
   let credit = numeral(creditString).value()
   expect(credit).to.equal(expectedValue)
 })

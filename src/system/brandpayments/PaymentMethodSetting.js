@@ -39,6 +39,7 @@ import TransferType, {
 const BankTransfer = "BankTransfer"
 const ThirdParty = "ThirdParty"
 const FPS = "FPS"
+const USDT = "USDT"
 
 export const PaymentMethodSetting = ({
   brandId,
@@ -62,9 +63,31 @@ export const PaymentMethodSetting = ({
       return <ThirdPartySetting brandId={brandId} paymentName={paymentName} />
     case FPS:
       return <FPSSetting brandId={brandId} />
+    case USDT:
+      return <CryptoSetting brandId={brandId} />
     default:
       return null
   }
+}
+
+const CryptoSetting = ({ brandId }) => {
+  return (
+    <>
+      <Label>
+        <Trans zh="钱包地址" en="Wallet Address" />
+      </Label>
+      <Input name="extendedData.address" />
+      <Label>
+        <Trans zh="QR Code" en="QR Code" />
+      </Label>
+      <ImageUploadButton
+        brandId={brandId}
+        name="extendedData.qrCodeFileUrl"
+        prefix="payment"
+        showLocalizationAddonAfter={false}
+      />
+    </>
+  )
 }
 
 const FPSSetting = ({ brandId, paymentName }) => {
