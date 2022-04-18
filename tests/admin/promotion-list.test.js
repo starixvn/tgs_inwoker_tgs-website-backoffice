@@ -77,6 +77,11 @@ const toggleStatus = async (page, brandId, index = 0) => {
         response.status() === 200
       )
     }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/promotion?`) && response.status() === 200
+      )
+    }),
     page.click(
       `#promotion [data-row-index="${index}"] [data-column-id="status"] label .bb-SwitchIcon`
     )
