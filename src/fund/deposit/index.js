@@ -282,35 +282,57 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      <Summary total={data?.sum} />
-      <Table
-        id="deposit"
-        columns={columns}
-        data={items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading || autoLoading}
-        getRowId={(row) => row.id}
-      />
+      <FieldStack>
+        <Summary total={data?.sum} />
+        <Table
+          id="deposit"
+          columns={columns}
+          data={items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading || autoLoading}
+          getRowId={(row) => row.id}
+        />
+      </FieldStack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
 }
 
-const Summary = ({ total }) => {
+const Summary = ({ total, totalPromotion }) => {
   if (!Number.isFinite(total)) {
     return null
   }
 
   return (
     <Blockquote borderColor="primary">
-      <Heading use="h5">
-        <Trans zh="充值金额总计：" en="Total Deposit Amount：" />
-        <FormattedNumberDecimal id="total-amount" value={total} />
-      </Heading>
+      <Set>
+        <Box>
+          <Heading use="h5">
+            <Trans zh="充值金额总计：" en="Total Deposit Amount：" />
+            <FormattedNumberDecimal
+              id="total-amount"
+              value={total}
+              placeholder="-"
+            />
+          </Heading>
+        </Box>
+        {Number.isFinite(totalPromotion) && (
+          <Box>
+            <Heading use="h5">
+              <Trans zh="优惠金额总计：" en="Total Promotion Amount：" />
+              <FormattedNumberDecimal
+                id="total-promotion-amount"
+                value={totalPromotion}
+                placeholder="-"
+              />
+            </Heading>
+          </Box>
+        )}
+      </Set>
     </Blockquote>
   )
 }
