@@ -62,6 +62,7 @@ export const TopNavNotifyItem = ({
     mutate()
   }
 
+  /*
   useEffect(() => {
     if (updateFetchEventName) {
       document.addEventListener(updateFetchEventName, reset)
@@ -70,6 +71,7 @@ export const TopNavNotifyItem = ({
       }
     }
   }, [updateFetchEventName])
+  */
 
   useEffect(() => {
     if (Number.isFinite(total)) {
