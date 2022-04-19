@@ -67,8 +67,11 @@ export const Fixture = {
     let adminUserInfo = await loginUser(page, adminUsername)
     use(adminUserInfo)
   },
-  agent: async ({ platformCode, backofficeApi }, use) => {
-    let platform = await backofficeApi.platform.findPlatform(platformCode)
+  platform: async ({ platformCode, backofficeApi }, use) => {
+    let platform = await backofficeApi.platform.getPlatform(platformCode)
+    use(platform)
+  },
+  agent: async ({ platform }, use) => {
     let { id: brandId } = platform
 
     let agent = await backofficeApi.agent.addAgent({ brandId })
