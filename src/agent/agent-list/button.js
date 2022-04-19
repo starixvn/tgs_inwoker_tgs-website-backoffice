@@ -177,7 +177,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
-const AlphabetOnly = new RegExp("^[A-Za-z]+$")
+const AlphabetNumberOnly = new RegExp("^[A-Za-z0-9]+$")
 
 const BrandIdField = "brandId"
 const ParentUsernameFieldName = "parentUsername"
@@ -206,8 +206,8 @@ const FormBody = ({ isAdd }) => {
   let isCredit = isAgentTypeCredit(agentType)
 
   let alphabetOnlyMessage = useTrans({
-    zh: "仅限字母",
-    en: "Alphabet Only"
+    zh: "仅限字母和数字",
+    en: "Alphabet and Number Only"
   })
 
   return (
@@ -226,7 +226,7 @@ const FormBody = ({ isAdd }) => {
             autoComplete="off"
             /*
             validate={(value) => {
-              let result = AlphabetOnly.test(value) || alphabetOnlyMessage
+              let result = AlphabetNumberOnly.test(value) || alphabetOnlyMessage
               return result
             }}
             */

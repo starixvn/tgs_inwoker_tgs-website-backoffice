@@ -16,13 +16,14 @@ const test = base.extend(Fixture)
 test("edit and view agent domain list", async ({
   page,
   platformCode,
+  platform,
   agent
 }) => {
   await gotoAgentListPage(page, platformCode)
   await searchAgent(page, agent.username)
 
   let domain = await addDomain(page, agent)
-  await viewDomain(page, domain)
+  await viewDomain(page, platform, agent, domain)
   await deleteDomain(page, domain)
 })
 
@@ -48,9 +49,20 @@ const addDomain = async (page) => {
   return ExpectedDomain
 }
 
-const viewDomain = async (page, expectedDomain) => {
+const viewDomain = async (page, platform, agent, expectedDomain) => {
   let dialogSelector = await openViewAgentDialog(page)
-  await page.click(`${dialogSelector} #AgentDomainList`)
+
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response
+          .url()
+          .includes(`/api/agent/domain/${platform.id}/${agent.id}`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`${dialogSelector} #AgentDomainList`)
+  ])
 
   let domainLocator = await page.locator(
     `${dialogSelector} [aria-labelledby="AgentDomainList"] input`
