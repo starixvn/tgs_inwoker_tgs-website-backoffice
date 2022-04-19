@@ -107,7 +107,7 @@ const BodyContent = ({ brandId }) => {
   let todayRange = today()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     username: "",
-    channelName: "",
+    channel: "",
     method: "",
     status: location?.state?.status ?? FundDepositStatus.UnprocessedStatus,
     thirdOrderNo: "",
@@ -139,7 +139,7 @@ const BodyContent = ({ brandId }) => {
     pageIndex,
     pageSize,
     username,
-    channelName,
+    channel,
     method,
     status,
     beginCreateOn,
@@ -166,7 +166,7 @@ const BodyContent = ({ brandId }) => {
       setState({
         pageIndex: 0,
         username: "",
-        channelName: "",
+        channel: "",
         method: "",
         status: location?.state?.status ?? "",
         thirdOrderNo: "",
@@ -245,7 +245,7 @@ const BodyContent = ({ brandId }) => {
           <SearchBar
             brandId={brandId}
             username={username}
-            channelName={channelName}
+            channel={channel}
             method={method}
             status={status}
             thirdOrderNo={state.thirdOrderNo}
@@ -410,7 +410,7 @@ const newApplicationsFromToday = (first = [], second = []) => {
 const SearchBar = ({
   brandId,
   username,
-  channelName,
+  channel,
   method,
   status,
   thirdOrderNo,
@@ -429,7 +429,7 @@ const SearchBar = ({
   let formMethods = useForm({
     defaultValues: {
       username,
-      channelName,
+      channel,
       method,
       status,
       thirdOrderNo,
@@ -445,7 +445,7 @@ const SearchBar = ({
   useEffect(() => {
     formMethods.reset({
       username,
-      channelName,
+      channel,
       method,
       status,
       thirdOrderNo,
@@ -458,7 +458,7 @@ const SearchBar = ({
     })
   }, [
     username,
-    channelName,
+    channel,
     method,
     status,
     thirdOrderNo,
@@ -508,7 +508,7 @@ const SearchBar = ({
               placeholder={usernameInputPlaceholder}
             />
             <InputField
-              name="channelName"
+              name="channel"
               showEmptyFieldValueAddonAfter
               placeholder={channelNameInputPlaceholder}
             />
