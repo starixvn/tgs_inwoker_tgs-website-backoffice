@@ -1,0 +1,9 @@
+kind: Module
+type: exec
+name: seeding
+exclude:
+  - tgs
+local: true
+tasks:
+  - name: init-seeding
+    command: [dotnet, run, --project, ../../tgs/src/Core/TgsSeeding]

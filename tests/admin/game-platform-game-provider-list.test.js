@@ -79,15 +79,14 @@ const changeRandomStatus = async (page, list = Object.values(Status)) => {
         response.status() === 200
       )
     }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/brandgameprovider?`) &&
+        response.status() === 200
+      )
+    }),
     page.click(MenuItemSelector)
   ])
-
-  await page.waitForResponse((response) => {
-    return (
-      response.url().includes(`/api/brandgameprovider?`) &&
-      response.status() === 200
-    )
-  })
 
   status = await statusLocator.getAttribute("data-status")
   expect(status).to.equal(expectedStatus)

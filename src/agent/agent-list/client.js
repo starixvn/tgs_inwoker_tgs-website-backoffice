@@ -83,6 +83,7 @@ export const useAddAgentDomain = (brandId, agentId, domain) => {
     brandId && agentId && domain
       ? `${API}/domain/${brandId}/${agentId}?domain=${domain}`
       : ""
+  console.log("useAddAgentDomain", url)
   return usePut(url)
 }
 

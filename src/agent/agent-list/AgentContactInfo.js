@@ -128,7 +128,7 @@ const MobileBox = ({ value = "", children }) => {
         <Trans zh="手机号码" en="Mobile" />
       </Box>
 
-      {children ? children : <Text>{value}</Text>}
+      {children ? children : <Text data-field="phone">{value}</Text>}
     </>
   )
 }
@@ -140,7 +140,7 @@ const EmailBox = ({ value = "", children }) => {
         <Trans zh="邮箱" en="Email" />
       </Box>
 
-      {children ? children : <Text>{value}</Text>}
+      {children ? children : <Text data-field="email">{value}</Text>}
     </>
   )
 }

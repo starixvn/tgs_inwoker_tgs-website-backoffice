@@ -101,6 +101,7 @@ import {
   isAgentProfitSharingMultipleLayer
 } from "../AgentProfitSharingType"
 import { useBrand } from "../../merchant/platforms/client"
+import SuperExpressive from "super-expressive"
 
 export const AddAgentButton = ({
   brandId,
@@ -176,6 +177,8 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
+const AlphabetNumberOnly = new RegExp("^[A-Za-z0-9]+$")
+
 const BrandIdField = "brandId"
 const ParentUsernameFieldName = "parentUsername"
 const FormBody = ({ isAdd }) => {
@@ -202,6 +205,11 @@ const FormBody = ({ isAdd }) => {
   let isCash = isAgentTypeCash(agentType)
   let isCredit = isAgentTypeCredit(agentType)
 
+  let alphabetOnlyMessage = useTrans({
+    zh: "仅限字母和数字",
+    en: "Alphabet and Number Only"
+  })
+
   return (
     <Set orientation="vertical" isFilled marginLeft="1rem">
       <Heading use="h5">
@@ -212,10 +220,16 @@ const FormBody = ({ isAdd }) => {
           <NormalLabel required>
             <Trans zh="代理用户名" en="Username" />
           </NormalLabel>
-          <Input
+          <InputField
             name="username"
             required
             autoComplete="off"
+            /*
+            validate={(value) => {
+              let result = AlphabetNumberOnly.test(value) || alphabetOnlyMessage
+              return result
+            }}
+            */
             registerOptions={{
               setValueAs: (value = "") => value?.trim?.()
             }}
