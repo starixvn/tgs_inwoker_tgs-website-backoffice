@@ -11,7 +11,7 @@ export { Code } from "./menu"
 const pairs = () => [AdminLogPair, ApiLogPair, LogPair]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => {
-    return <Switch path={path} pairs={pairs()} />
+  return <Switch path={path} pairs={pairs()} />
 }
 
 export const codeMenuContentPair = [Code, [Menu, Content]]

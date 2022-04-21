@@ -175,7 +175,6 @@ const ReviewDialog = ({
           <Trans zh="拒绝" en="Reject" />
         </Button>
       }
-      onSubmit={onSubmit}
       isLoading={isLoading}
       result={result}
       error={error}
