@@ -224,12 +224,10 @@ const FormBody = ({ isAdd }) => {
             name="username"
             required
             autoComplete="off"
-            /*
             validate={(value) => {
               let result = AlphabetNumberOnly.test(value) || alphabetOnlyMessage
               return result
             }}
-            */
             registerOptions={{
               setValueAs: (value = "") => value?.trim?.()
             }}
