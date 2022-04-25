@@ -125,7 +125,7 @@ const changeEffectiveAnnouncementDisplayOrder = async (
     }),
     page.waitForResponse((response) => {
       return (
-        response.url().includes(`?brandId=${brandId}`) &&
+        response.url().includes(`/api/announcement?`) &&
         response.status() === 200
       )
     }),

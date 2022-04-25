@@ -50,6 +50,7 @@ import { SortOrder } from "../../table/order"
 import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
+import AnnouncementType, { AnnouncementTypeSelect } from "./AnnouncementType"
 
 export { Code }
 
@@ -88,9 +89,11 @@ const BodyContent = ({ brandId }) => {
     status: hasVerifyAuth ? InVerify : hasViewAuth ? Effective : null
   })
 
+  let [type, setType] = useState(AnnouncementType.Marquee)
+
   useEffect(() => {
     setState({ pageIndex: 0, brandId })
-  }, [brandId])
+  }, [brandId, type])
 
   let { status } = state
   let isEffectiveTab = status === Effective
@@ -103,11 +106,17 @@ const BodyContent = ({ brandId }) => {
   } = useAnnouncementList(
     isEffectiveTab
       ? {
+          /*
+          type,
+          */
           ...toApiParams(state),
           sortby: "displayOrder",
           status: [Effective, Invalid]
         }
       : toApiParams({
+          /*
+          type,
+          */
           ...state,
           sortby: "updatedOn",
           orderby: SortOrder.Descending,
@@ -135,13 +144,26 @@ const BodyContent = ({ brandId }) => {
     <PageContent
       title={<Trans zh="公告管理" en="Announcements" />}
       actionBar={
-        <Box alignX="right">
-          <AddButton
-            id="add-announcement-dialog-disclosure"
-            brandId={brandId}
-            onSubmitted={mutate}
-          />
-        </Box>
+        <Flex justifyContent="space-between">
+          <Box>
+            {/* 
+            <AnnouncementTypeSelect
+              value={type}
+              onChange={(event) => {
+                let value = event.target.value
+                setType(value)
+              }}
+            /> 
+            */}
+          </Box>
+          <Box alignX="right">
+            <AddButton
+              id="add-announcement-dialog-disclosure"
+              brandId={brandId}
+              onSubmitted={mutate}
+            />
+          </Box>
+        </Flex>
       }
     >
       <Tabs>
