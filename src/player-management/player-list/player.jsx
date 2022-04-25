@@ -18,6 +18,7 @@ import {
 import { FieldValues } from "../../layout/Grid"
 import {
   Trans,
+  FormattedDate,
   FormattedDateTime,
   FormattedNumber,
   useTrans,
@@ -43,6 +44,8 @@ import { isDev } from "../../env"
 import { DateInput } from "../../date/DateInput"
 import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirementDialog"
 import Textarea from "../../textarea"
+import { isValid } from "date-fns"
+import { defaultFormatDate } from "../../date/format"
 
 export const Key = "player"
 
@@ -84,8 +87,14 @@ export const EditPanel = ({
     }
   }, [result])
 
-  const onSubmit = (data = {}) => {
-    setSubmit(data)
+  const onSubmit = ({ birthday, ...data } = {}) => {
+    if (isValid(birthday)) {
+      birthday = defaultFormatDate(birthday)
+    }
+    setSubmit({
+      birthday,
+      ...data
+    })
   }
 
   return (
@@ -260,7 +269,7 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
         {/* 
         <BirthdayLabel />
         <Box>
-          <FormattedDateTime value={player?.birthday} />
+          <FormattedDate value={player?.birthday} />
         </Box> 
         */}
 
