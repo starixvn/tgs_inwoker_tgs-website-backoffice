@@ -106,17 +106,13 @@ const BodyContent = ({ brandId }) => {
   } = useAnnouncementList(
     isEffectiveTab
       ? {
-          /*
           type,
-          */
           ...toApiParams(state),
           sortby: "displayOrder",
           status: [Effective, Invalid]
         }
       : toApiParams({
-          /*
           type,
-          */
           ...state,
           sortby: "updatedOn",
           orderby: SortOrder.Descending,
@@ -146,15 +142,13 @@ const BodyContent = ({ brandId }) => {
       actionBar={
         <Flex justifyContent="space-between">
           <Box>
-            {/* 
             <AnnouncementTypeSelect
               value={type}
               onChange={(event) => {
                 let value = event.target.value
                 setType(value)
               }}
-            /> 
-            */}
+            />
           </Box>
           <Box alignX="right">
             <AddButton

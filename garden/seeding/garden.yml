@@ -4,4 +4,6 @@ name: seeding
 repositoryUrl: git@gitlab.com:rayprosoft/turnkey-gaming-system.git#develop
 tasks:
   - name: init-seeding
+    dependencies:
+      - postgres
     command: [dotnet, run, --project, ./src/Core/TgsSeeding]
