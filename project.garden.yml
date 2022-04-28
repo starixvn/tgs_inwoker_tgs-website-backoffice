@@ -1,9 +1,13 @@
 kind: Project
 name: backoffice-site
 environments:
-  - name: default # The name of the environment.
+  - name: develop # The name of the environment.
+  - name: release
+  - name: main
+defaultEnvironment: develop
 providers:
   - name: local-kubernetes # The name of the provider plugin to use.
+    environments: ["develop"]
     setupIngressController: "nginx"
 
 ---
