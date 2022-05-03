@@ -399,7 +399,6 @@ const useColumns = ({
         id: "status",
         accessor: (row) => row,
         Header: <Trans zh="状态" en="Status" />,
-        accessor: (row) => row,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return <PayoutStatusLabel value={record?.sentOn} />
@@ -418,13 +417,14 @@ const useColumns = ({
             let paid = !!record?.sentOn
             return (
               <Set orientation="horizontal" alignX="center">
-                {!paid && 
-                <PromotionManualPayoutDisclosure
-                  id="payout-promotion-dialog-disclosure"
-                  brandId={brandId}
-                  record={record}
-                  onSubmitted={mutate}
-                />}
+                {!paid && (
+                  <PromotionManualPayoutDisclosure
+                    id="payout-promotion-dialog-disclosure"
+                    brandId={brandId}
+                    record={record}
+                    onSubmitted={mutate}
+                  />
+                )}
                 <ViewPromotionManualPayoutDisclosure
                   id="view-promotion-payout-dialog-disclosure"
                   brandId={brandId}

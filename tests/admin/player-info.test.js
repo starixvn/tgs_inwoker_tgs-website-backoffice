@@ -17,7 +17,7 @@ test("edit and view player info", async ({ page, platformCode, player }) => {
   await searchPlayer(page, player)
 
   let info = await editPlayerInfo(page, player)
-  await viewPlayerInfo(page, info)
+  await viewPlayerInfo(page, info, player)
 })
 
 const editPlayerInfo = async (page, player) => {
@@ -44,8 +44,16 @@ const editPlayerInfo = async (page, player) => {
   return info
 }
 
-const viewPlayerInfo = async (page, info) => {
-  let dialogSelector = await openViewPlayerDialog(page)
+const viewPlayerInfo = async (page, info, player) => {
+  let [, dialogSelector] = await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/player/${player.code}`) &&
+        response.status() === 200
+      )
+    }),
+    openViewPlayerDialog(page)
+  ])
 
   let realNameSelector = page.locator(
     `${dialogSelector} [data-field="realName"]`

@@ -40,6 +40,7 @@ const BankTransfer = "BankTransfer"
 const ThirdParty = "ThirdParty"
 const FPS = "FPS"
 const USDT = "USDT"
+const Usdt = "Usdt"
 
 export const PaymentMethodSetting = ({
   brandId,
@@ -64,6 +65,7 @@ export const PaymentMethodSetting = ({
     case FPS:
       return <FPSSetting brandId={brandId} />
     case USDT:
+    case Usdt:
       return <CryptoSetting brandId={brandId} />
     default:
       return null
@@ -82,7 +84,7 @@ const CryptoSetting = ({ brandId }) => {
       </Label>
       <ImageUploadButton
         brandId={brandId}
-        name="extendedData.qrCodeFileUrl"
+        name="extendedData.qrCode"
         prefix="payment"
         showLocalizationAddonAfter={false}
       />

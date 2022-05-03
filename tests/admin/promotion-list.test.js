@@ -91,6 +91,9 @@ const toggleStatus = async (page, brandId, index = 0) => {
     `#promotion [data-row-index="${index}"] [data-column-id="status"] label`
   )
   await statusLocator.waitFor()
+
+  let WaitForUpdate = 100
+  await page.waitForTimeout(WaitForUpdate)
   let toggledStatus = await statusLocator.getAttribute("data-status")
   expect(toggledStatus).to.equal(ExpectedStatus)
 }

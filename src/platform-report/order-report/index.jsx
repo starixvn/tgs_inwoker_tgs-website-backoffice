@@ -326,7 +326,6 @@ const SearchBar = ({
               name="username"
               showEmptyFieldValueAddonAfter
               placeholder={playerNamePlaceholder}
-              showEmptyFieldValueAddonAfter
             />
             <InputField
               name="roundId"
