@@ -191,12 +191,7 @@ const ReviewDialog = ({
           <Box>{record?.realName}</Box>
 
           <Trans zh="身分证" en="IC Number" />
-          <Set alignY="center">
-            {/* 
-            <PlayerIdentityStateLabel value={record.identityStatus} /> 
-            */}
-            {record?.idNumber}
-          </Set>
+          <Set alignY="center">{record?.idNumber}</Set>
 
           <Trans zh="附件" en="Attachment" />
           <Box>
@@ -206,6 +201,11 @@ const ReviewDialog = ({
               </Link>
             )}
             {!hasAttchment && "-"}
+          </Box>
+
+          <Trans zh="状态" en="Status" />
+          <Box>
+            <PlayerIdentityStateLabel value={record.identityStatus} />
           </Box>
         </FieldValues>
         <Divider />

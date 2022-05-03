@@ -7,12 +7,9 @@ build:
     [
       docker,
       build,
-      -t,
-      backoffice-api,
-      -f,
-      ./src/Apis/BackendOffice/Dockerfile,
-      --secret,
-      'id=nuget,src="C:\Users\${local.username}\AppData\Roaming\NuGet\NuGet.Config"',
+      -t backoffice-api,
+      -f ./src/Apis/BackendOffice/Dockerfile,
+      '--secret id=nuget,src="C:\Users\${local.username}\AppData\Roaming\NuGet\NuGet.Config"',
       .
     ]
 
@@ -20,9 +17,6 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-build:
-  dependencies:
-    - backoffice-api-image
 image: backoffice-api
 services:
   - name: backoffice-api

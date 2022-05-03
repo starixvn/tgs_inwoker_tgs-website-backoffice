@@ -44,7 +44,7 @@ import { isDev } from "../../env"
 import { DateInput } from "../../date/DateInput"
 import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirementDialog"
 import Textarea from "../../textarea"
-import { isValid } from "date-fns"
+import { isValid, parse } from "date-fns"
 import { defaultFormatDate } from "../../date/format"
 
 export const Key = "player"
@@ -60,13 +60,16 @@ export const Tab = ({ ...props }) => {
 export const EditPanel = ({
   brandId,
   playerCode = "",
-  player = {},
+  player: { birthdate = "", ...player },
   onSubmitted,
   onClickClose,
   ...props
 }) => {
   let formMethods = useForm({
-    defaultValues: clone(player)
+    defaultValues: clone({
+      birthdate: parse(birthdate, "yyyy/MM/dd", new Date()),
+      ...player
+    })
   })
 
   let [submitData, setSubmit] = useState()
@@ -87,12 +90,12 @@ export const EditPanel = ({
     }
   }, [result])
 
-  const onSubmit = ({ birthday, ...data } = {}) => {
-    if (isValid(birthday)) {
-      birthday = defaultFormatDate(birthday)
+  const onSubmit = ({ birthdate, ...data } = {}) => {
+    if (isValid(birthdate)) {
+      birthdate = defaultFormatDate(birthdate)
     }
     setSubmit({
-      birthday,
+      birthdate,
       ...data
     })
   }
@@ -161,12 +164,10 @@ const EditForm = ({
           <Input name="realName" />
         </Box>
 
-        {/* 
         <BirthdayLabel />
         <Box>
-          <DateInput name="birthday" />
-        </Box> 
-        */}
+          <DateInput name="birthdate" />
+        </Box>
 
         <IdentityCardNumberLabel />
         <Box>
@@ -266,12 +267,12 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
           <Text data-field="realName">{realName}</Text>
         </Box>
 
-        {/* 
         <BirthdayLabel />
         <Box>
-          <FormattedDate value={player?.birthday} />
-        </Box> 
-        */}
+          <FormattedDate
+            value={parse(player?.birthdate, "yyyy/MM/dd", new Date())}
+          />
+        </Box>
 
         <IdentityCardNumberLabel />
         <Box>{player.idNumber}</Box>
