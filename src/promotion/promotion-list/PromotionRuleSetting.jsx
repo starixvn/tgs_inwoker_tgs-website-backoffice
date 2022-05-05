@@ -37,10 +37,12 @@ import {
   PercentageNumberInputField
 } from "../../input/NumberInput"
 import { PromotionRuleSignSetting } from "./PromotionRuleSignSetting"
+import { PromotionWheelRuleSetting } from "./PromotionWheelRuleSetting"
 
 export const PromotionRuleSetting = ({
   readOnly,
   promotionTypeGroup,
+  promotionType,
   totalAmountLimitFieldName,
   limitedTotalAmount
 }) => {
@@ -62,11 +64,14 @@ export const PromotionRuleSetting = ({
     case PromotionTypeGroup.NewUser:
       return (
         <NewUserSetting
+          promotionType={promotionType}
           limitedTotalAmount={limitedTotalAmount}
           totalAmountLimit={totalAmountLimit}
           readOnly={readOnly}
         />
       )
+    case PromotionTypeGroup.LuckyDraw:
+      return <LuckyDrawSetting />
     default:
       return (
         <DefaultSetting
@@ -75,6 +80,13 @@ export const PromotionRuleSetting = ({
           readOnly={readOnly}
         />
       )
+  }
+}
+
+const LuckyDrawSetting = ({ promotionType }) => {
+  switch (promotionType) {
+    default:
+      return <PromotionWheelRuleSetting />
   }
 }
 

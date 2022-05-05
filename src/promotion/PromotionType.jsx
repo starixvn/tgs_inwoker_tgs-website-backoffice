@@ -14,12 +14,15 @@ const Signin = "Signin"
 
 const NewUser = "NewUser"
 
+const LuckyDraw = "LuckyDraw" //Raffle
+
 export const PromotionTypeGroup = {
   Deposit,
   Turnover,
   ReliefMoney,
   Signin,
-  NewUser
+  NewUser,
+  LuckyDraw
 }
 
 export const usePromotionGroupLabelOf = (promotionType) => {

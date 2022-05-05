@@ -32,6 +32,7 @@ import { ReviewPlayerIdDialogDisclosure } from "./ReviewPlayerIdDialog"
 import { isDev } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
+import { PlayerIdentitySelect } from "./PlayerIdentityState"
 
 export { Code }
 
@@ -143,6 +144,8 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
       actionBar={
         <SearchBar
           brandId={brandId}
+          brand={brand}
+          allAgentSetting={allAgentSetting}
           search={(data = {}) => {
             setState({
               pageIndex: 0,
@@ -170,9 +173,18 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
   )
 }
 
-const SearchBar = ({ brandId, search, isLoading, ...props }) => {
+const SearchBar = ({
+  brandId,
+  brand,
+  allAgentSetting,
+  search,
+  isLoading,
+  ...props
+}) => {
   let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
   let hasRealnameFilterAuth = useIsDisplayMenuByRoute([RealnameFilter])
+  let showIdentityStatus = brand.enablePlayerIdentity
+  let showAllAgent = allAgentSetting.switch
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
   let domainInputPlaceholder = useTrans({
@@ -232,6 +244,9 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
               placeholder={realNamePlaceholder}
             />
           )}
+          {/* 
+          {showIdentityStatus && <PlayerIdentitySelect name="identityStatus" />} 
+          */}
           <DateInputRangeField
             showDateDropdownMenu
             fakeTimeLabel
