@@ -30,11 +30,12 @@ import { AddDisclosure, EditDisclosure } from "../../dialog/Disclosure"
 import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel as Label } from "../../form/Label"
-import Input from "../../input/Input"
+import Input, { InputField } from "../../input/Input"
 import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import TransferType, {
   isDepositPlatformPayment
 } from "./BrandPaymentTransferType"
+import { NumberInputField } from "../../input/NumberInput"
 
 const BankTransfer = "BankTransfer"
 const ThirdParty = "ThirdParty"
@@ -87,6 +88,21 @@ const CryptoSetting = ({ brandId }) => {
         name="extendedData.qrCode"
         prefix="payment"
         showLocalizationAddonAfter={false}
+      />
+      <Label>
+        <Trans zh="匯率" en="Exchange rate" />
+      </Label>
+      <NumberInputField
+        name="extendedData.rate"
+        /*
+        addonBefore={
+          <Button isStatic>
+            <Trans zh="Rate" en="Rate" />
+          </Button>
+        }
+        */
+        min={0}
+        step={0.01}
       />
     </>
   )
