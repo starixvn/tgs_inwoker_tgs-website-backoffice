@@ -39,6 +39,12 @@ const PromotionVipLevelSeasonTrans = {
   en: "VIP Quarterly Benefit"
 }
 
+const PromotionVipLevelBirthday = "PromotionVipLevelBirthday"
+const PromotionVipLevelBirthdayTrans = {
+  zh: "VIP生日福利",
+  en: "VIP Birthday Benefit"
+}
+
 const DividendAllAgentRebate = "DividendAllAgentRebate"
 const DividendAllAgentRebateTrans = {
   zh: "全民代理返水",
@@ -150,6 +156,8 @@ export const TransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...PromotionVipLevelUpgradeTrans} />
     case PromotionVipLevelSeason:
       return <Trans {...PromotionVipLevelSeasonTrans} />
+    case PromotionVipLevelBirthday:
+      return <Trans {...PromotionVipLevelBirthdayTrans} />
     case DividendAllAgentRebate:
       return <Trans {...DividendAllAgentRebateTrans} />
     case AdjustResettledBetManual:
