@@ -30,7 +30,6 @@ import { FixedSizeList, VariableSizeList } from "react-window"
 import { useMeasure } from "react-use"
 import AutoSizer from "react-virtualized-auto-sizer"
 
-import useVirtual from "react-cool-virtual"
 import { useTable, useBlockLayout, useResizeColumns } from "react-table"
 import {
   faAngleDown,

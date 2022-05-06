@@ -1,9 +1,9 @@
 kind: Module
 type: exec
 name: seeding
-exclude:
-  - tgs
-local: true
+repositoryUrl: git@gitlab.com:rayprosoft/turnkey-gaming-system.git#develop
 tasks:
   - name: init-seeding
-    command: [dotnet, run, --project, ../../tgs/src/Core/TgsSeeding]
+    dependencies:
+      - postgres
+    command: [dotnet, run, --project, ./src/Core/TgsSeeding]

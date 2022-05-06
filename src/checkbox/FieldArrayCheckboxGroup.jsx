@@ -7,7 +7,7 @@ import {
   Controller,
   useFieldArray
 } from "react-hook-form"
-import Checkbox from "../checkbox/Checkbox"
+import Checkbox from "./Checkbox"
 import { isAllChecked } from "./isAllChecked"
 import { useTrans } from "../i18n"
 

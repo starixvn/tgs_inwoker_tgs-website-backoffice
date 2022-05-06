@@ -35,7 +35,7 @@ import {
   PlayerBalanceChangePanel,
   PlayerBalanceChangeTab
 } from "./PlayerBalanceChange"
-import { PlayerPromotionPanel, PlayerPromotionTab } from "./PlayerPromotion"
+import { PlayerPromotionPanel, PlayerPromotionTab } from "./PlayerPromotion.jsx"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { PlayerWalletListPanel, PlayerWalletListTab } from "./PlayerWalletList"
 import textColumn from "../../table/column/textColumn"

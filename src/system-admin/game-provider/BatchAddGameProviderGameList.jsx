@@ -45,7 +45,7 @@ import { InputField, Input } from "../../input/Input"
 import { CheckboxField } from "../../checkbox/Checkbox"
 import GameStatus, { GameStatusSelectField } from "../../game/games/GameStatus"
 import { GameTypeSelectField } from "../../game/GameType"
-import { GamePlatformLabel } from "../../game/games/GamePlatform"
+import { GamePlatformLabel } from "../../game/games/GamePlatform.jsx"
 import { useDropzone } from "react-dropzone"
 import { GameProviderGameFormBody } from "./GameProviderGame"
 import { ConfirmText } from "../../button/ActionButtons"
@@ -272,7 +272,6 @@ const EditGameDialog = ({ gameProviderId, record, onChange, dialog }) => {
       <FormDialog
         defaultValues={{ gameProviderId, ...clone(record) }}
         submitText={<ConfirmText />}
-        title={title}
         onSubmit={onSubmit}
         stopPropagation
         hideBackdrop

@@ -31,6 +31,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { ReviewPlayerIdDialogDisclosure } from "./ReviewPlayerIdDialog"
 import { isDev } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
+import { useAllAgentSetting } from "../../agent/all-agent/client"
 
 export { Code }
 
@@ -48,8 +49,21 @@ export const CodeContentPair = [Code, Content]
 const Body = () => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
-  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
+  let {
+    isLoading: isLoadingBrand,
+    data: brand,
+    error: brandError,
+    mutate,
+    deleteCache
+  } = useBrand(brandId)
+  let {
+    isLoading: isLoadingAllAgent,
+    data: allAgentSetting,
+    error: allAgentSettingError,
+    deleteCache: deleteAllAgentSettingCache
+  } = useAllAgentSetting(brandId)
 
+  let isLoading = isLoadingBrand || isLoadingAllAgent
   return (
     <Set orientation="vertical" isFilled>
       <BrandBar
@@ -63,14 +77,24 @@ const Body = () => {
         </Box>
       )}
       {!isLoading && brandId && brand && (
-        <BodyContent brandId={brandId} brand={brand} />
+        <BodyContent
+          brandId={brandId}
+          brand={brand}
+          allAgentSetting={allAgentSetting}
+        />
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {brandError && <AlertDialog {...brandError} onClickClose={deleteCache} />}
+      {allAgentSettingError && (
+        <AlertDialog
+          {...brandError}
+          onClickClose={deleteAllAgentSettingCache}
+        />
+      )}
     </Set>
   )
 }
 
-const BodyContent = ({ brandId = "", brand }) => {
+const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: "",
     vipId: "",
@@ -105,7 +129,13 @@ const BodyContent = ({ brandId = "", brand }) => {
     brandId,
     endRegisteredOn: startOfNextDay(endRegisteredOn)
   })
-  let columns = useColumns({ mutate, items: data?.items, brandId, brand })
+  let columns = useColumns({
+    mutate,
+    items: data?.items,
+    brandId,
+    brand,
+    allAgentSetting
+  })
 
   return (
     <PageContent
@@ -223,7 +253,13 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
 const useSearchInputPlaceHolder = () =>
   useTrans({ zh: "用户名输入框", en: "Input user name" })
 
-const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
+const useColumns = ({
+  mutate,
+  items = [],
+  brandId,
+  brand,
+  allAgentSetting
+} = {}) => {
   let isAdminUser = useIsAdminUser()
 
   let hasViewAuth = useIsDisplayMenuByRoute([View])
@@ -333,5 +369,5 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
     }
 
     return columns
-  }, [JSON.stringify(items), brand])
+  }, [JSON.stringify(items), brand, allAgentSetting])
 }

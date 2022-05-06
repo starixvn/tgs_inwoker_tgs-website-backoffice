@@ -158,7 +158,7 @@ const Body = ({
 }) => {
   let { control, setValue } = useFormContext()
   let locale = useLocale()
-  let language = locale === Locales.zh ? "zh_CN" : ""
+  let language = locale === Locales.zh ? "zh_CN" : locale
 
   let [editor, setEditor] = useState()
 

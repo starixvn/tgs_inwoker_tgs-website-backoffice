@@ -115,7 +115,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
       showActionButtons={false}
       footer={<ConfirmCancelFooter dialog={dialog} />}
       maxWidth="100vw"
-      minWidth="70vw"
+      minWidth="85vw"
       placement="top"
     >
       <EditBody isAdd={true} />
@@ -183,7 +183,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       showActionButtons={false}
       footer={<ConfirmCancelFooter dialog={dialog} />}
       maxWidth="100vw"
-      minWidth="70vw"
+      minWidth="85vw"
       placement="top"
     >
       <EditBody />
@@ -212,7 +212,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               <NormalLabel>
                 <Trans
                   zh="累积投注金额 （当月）："
-                  en="Accumulated bet amount (current month)："
+                  en="Required bet amount to up level："
                 />
               </NormalLabel>
               {editable && (
@@ -229,7 +229,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               <NormalLabel>
                 <Trans
                   zh="累积充值金额 （当月）："
-                  en="Accumulated deposit amount (current month)："
+                  en="Required deposit amount to up level："
                 />
               </NormalLabel>
               {editable && (
@@ -259,7 +259,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               <NormalLabel>
                 <Trans
                   zh="累积投注金额 （每季）："
-                  en="Accumulated bet amount (per quarter)："
+                  en="Required Quarterly bet amount to maintain level："
                 />
               </NormalLabel>
               {editable && (
@@ -278,7 +278,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               <NormalLabel>
                 <Trans
                   zh="累积充值金额 （每季）："
-                  en="Accumulated deposit amount (per quarter)："
+                  en="Required Quarterly deposit amount to maintain level："
                 />
               </NormalLabel>
               {editable && (
@@ -334,7 +334,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
           >
             <FieldValues>
               <NormalLabel>
-                <Trans zh="生日福利：" en="Birthday benefit：" />
+                <Trans zh="生日福利：" en="Birthday Bonus：" />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -348,7 +348,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans zh="晋升福利：" en="Promotion benefit：" />
+                <Trans zh="晋升福利：" en="Promotion Bonus：" />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -362,7 +362,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans zh="季度福利：" en="Quarterly benefit：" />
+                <Trans zh="季度福利：" en="Quarterly Bonus：" />
               </NormalLabel>
               {editable && (
                 <Box>
