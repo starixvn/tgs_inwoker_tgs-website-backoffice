@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  Controller
+} from "react-hook-form"
 import {
   Dialog,
   useModalState,
@@ -77,7 +82,7 @@ export const LocalizationDialogDisclosure = ({
   }
 
   let dialog = useModalState()
-  let { watch, setValue } = useFormContext()
+  let { watch, setValue, control } = useFormContext()
   let fieldNames = codes.map((code) =>
     toLocalizationFieldName(code, name, localizationFieldName)
   )
@@ -90,44 +95,50 @@ export const LocalizationDialogDisclosure = ({
   })
 
   return (
-    <>
-      <Disclosure
-        use={Button}
-        isLoading={isLoading || isLoadingLang}
-        disabled={isLoading || isLoadingLang || error}
-        width={width}
-        flex="0"
-        {...dialog}
-      >
-        <Icon icon={faLanguage} type="font-awesome" />
-      </Disclosure>
-      {dialog.visible && (
-        <LocalizationDialog
-          readOnly={readOnly}
-          disabled={disabled}
-          localizationField={localizationField}
-          localizationFieldProps={localizationFieldProps}
-          codes={codes}
-          record={record}
-          onChange={(data = {}) => {
-            let editable = !(readOnly || disabled)
-            if (editable) {
-              Object.entries(data).map(([code, value]) => {
-                let fieldName = toLocalizationFieldName(
-                  code,
-                  name,
-                  localizationFieldName
-                )
-                setValue(fieldName, value)
-              })
-            }
-          }}
-          dialog={dialog}
-          mode={mode}
-          {...dialogProps}
-        />
+    <Controller
+      name={`${localizationFieldName}.${name}`}
+      control={control}
+      render={() => (
+        <>
+          <Disclosure
+            use={Button}
+            isLoading={isLoading || isLoadingLang}
+            disabled={isLoading || isLoadingLang || error}
+            width={width}
+            flex="0"
+            {...dialog}
+          >
+            <Icon icon={faLanguage} type="font-awesome" />
+          </Disclosure>
+          {dialog.visible && (
+            <LocalizationDialog
+              readOnly={readOnly}
+              disabled={disabled}
+              localizationField={localizationField}
+              localizationFieldProps={localizationFieldProps}
+              codes={codes}
+              record={record}
+              onChange={(data = {}) => {
+                let editable = !(readOnly || disabled)
+                if (editable) {
+                  Object.entries(data).map(([code, value]) => {
+                    let fieldName = toLocalizationFieldName(
+                      code,
+                      name,
+                      localizationFieldName
+                    )
+                    setValue(fieldName, value)
+                  })
+                }
+              }}
+              dialog={dialog}
+              mode={mode}
+              {...dialogProps}
+            />
+          )}
+        </>
       )}
-    </>
+    />
   )
 }
 

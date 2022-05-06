@@ -703,7 +703,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动 Banner (PC)" en="Promotion Banner (PC)" />
         </NormalLabel>
         <Set orientation="vertical" alignY="center">
-          <ImageUploadButton
+          <ImageLocalizationDialogDisclosure
             id="desktopBanner"
             brandId={brandId}
             name="desktopBanner"
@@ -724,7 +724,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动 Banner (Mobile)" en="Promotion Banner (Mobile)" />
         </NormalLabel>
         <Set orientation="vertical" alignY="center">
-          <ImageUploadButton
+          <ImageLocalizationDialogDisclosure
             id="mobileBanner"
             brandId={brandId}
             name="mobileBanner"

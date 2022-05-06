@@ -226,6 +226,7 @@ const addPromotion = async (page) => {
     `${promotion.totalAmountLimit}`
   )
 
+  /*
   const [desktopFileChooser] = await Promise.all([
     page.waitForEvent("filechooser"),
     page.click(`${DialogSelector} #desktopBanner`)
@@ -255,6 +256,7 @@ const addPromotion = async (page) => {
       )
     })
   ])
+  */
 
   await page.fill(
     `${DialogSelector} input[name="percentage"]`,
