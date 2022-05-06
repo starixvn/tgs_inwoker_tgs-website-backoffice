@@ -40,7 +40,12 @@ import { Features, isDev, isFeatureEnabled } from "../../env"
 import { PlayerWalletListPanel, PlayerWalletListTab } from "./PlayerWalletList"
 import textColumn from "../../table/column/textColumn"
 
-export const ViewButton = ({ player, brandId, ...props }) => {
+export const ViewButton = ({
+  player,
+  brandId,
+  showParentUsername,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([ViewMenu])
@@ -59,13 +64,20 @@ export const ViewButton = ({ player, brandId, ...props }) => {
           playerCode={player.playerCode}
           brandId={brandId}
           dialog={dialog}
+          showParentUsername={showParentUsername}
         />
       )}
     </>
   )
 }
 
-export const EditButton = ({ brandId, player, onSubmitted, ...props }) => {
+export const EditButton = ({
+  brandId,
+  player,
+  showParentUsername,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -84,6 +96,7 @@ export const EditButton = ({ brandId, player, onSubmitted, ...props }) => {
           edit={true}
           brandId={brandId}
           playerCode={player.playerCode}
+          showParentUsername={showParentUsername}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -98,6 +111,7 @@ const TabsDialog = ({
   edit = false,
   dialog,
   onSubmitted,
+  showParentUsername,
   ...props
 }) => {
   const readonly = !edit
@@ -144,6 +158,7 @@ const TabsDialog = ({
               playerCode={playerCode}
               brandId={brandId}
               player={data}
+              showParentUsername={showParentUsername}
               tab={tab}
             />
           )}
@@ -152,6 +167,7 @@ const TabsDialog = ({
               playerCode={playerCode}
               brandId={brandId}
               player={data}
+              showParentUsername={showParentUsername}
               tab={tab}
               onSubmitted={() => {
                 onSubmitted?.()
@@ -168,7 +184,7 @@ const TabsDialog = ({
   )
 }
 
-const ViewTabs = ({ playerCode, brandId, player, tab }) => {
+const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -181,7 +197,11 @@ const ViewTabs = ({ playerCode, brandId, player, tab }) => {
         <PlayerPromotionTab {...tab} />
         <PlayerWalletListTab {...tab} />
       </TabList>
-      <PlayerPanel player={player} {...tab} />
+      <PlayerPanel
+        player={player}
+        showParentUsername={showParentUsername}
+        {...tab}
+      />
       <ContractPanel player={player} {...tab} />
       <BankPanel banks={player.banks} {...tab} />
       <BettingPanel
@@ -215,6 +235,7 @@ const EditTabs = ({
   brandId,
   playerCode,
   player,
+  showParentUsername,
   tab,
   onSubmitted,
   onBankSubmitted,
@@ -230,6 +251,7 @@ const EditTabs = ({
       </TabList>
       <PlayerEditTab
         player={player}
+        showParentUsername={showParentUsername}
         brandId={brandId}
         playerCode={playerCode}
         onSubmitted={onSubmitted}

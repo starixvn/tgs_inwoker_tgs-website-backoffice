@@ -220,11 +220,13 @@ const SearchBar = ({
             placeholder={usernameInputPlaceholder}
             autocomplete="off"
           />
-          <InputField
-            name="parentUsername"
-            showEmptyFieldValueAddonAfter
-            placeholder={allAgentUpperLevelPlaceholder}
-          />
+          {showAllAgent && (
+            <InputField
+              name="parentUsername"
+              showEmptyFieldValueAddonAfter
+              placeholder={allAgentUpperLevelPlaceholder}
+            />
+          )}
           <InputField
             name="registerHost"
             showEmptyFieldValueAddonAfter
@@ -281,6 +283,8 @@ const useColumns = ({
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   let hasAnyMenu = hasViewAuth || hasUpdateAuth
 
+  let showAllAgent = allAgentSetting.switch
+
   return useMemo(() => {
     let columns = [sequenceColumn()]
 
@@ -333,13 +337,18 @@ const useColumns = ({
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
         Cell: ({ value }) => <PlayerStatusLabel value={value} />
-      }),
-      textColumn({
-        accessor: "parentUsername",
-        Header: <Trans zh="全民代理上級" en="All Agent Upper Level" />,
-        disableSortBy: true
       })
     ]
+
+    if (showAllAgent) {
+      columns.push(
+        textColumn({
+          accessor: "parentUsername",
+          Header: <Trans zh="全民代理上級" en="All Agent Upper Level" />,
+          disableSortBy: true
+        })
+      )
+    }
 
     if (hasAnyMenu) {
       columns.push({
@@ -361,11 +370,13 @@ const useColumns = ({
                 id="view-player-dialog-disclosure"
                 player={player}
                 brandId={brandId}
+                showParentUsername={showAllAgent}
               />
               <EditButton
                 id="edit-player-dialog-disclosure"
                 brandId={brandId}
                 player={player}
+                showParentUsername={showAllAgent}
                 onSubmitted={mutate}
               />
               {brand?.enablePlayerIdentity && player.identityFormId && (
