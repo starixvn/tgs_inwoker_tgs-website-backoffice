@@ -46,7 +46,7 @@ import { GameTypeSelectField } from "../../game/GameType"
 import {
   GamePlatformLabel,
   GamePlatformTypeSelectField
-} from "../../game/games/GamePlatform"
+} from "../../game/games/GamePlatform.jsx"
 import { useDropzone } from "react-dropzone"
 import { View, Update } from "./menu"
 import {

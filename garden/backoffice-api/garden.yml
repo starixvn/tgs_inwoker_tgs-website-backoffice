@@ -1,4 +1,20 @@
 kind: Module
+type: exec
+name: backoffice-api-image
+repositoryUrl: git@gitlab.com:rayprosoft/turnkey-gaming-system.git#develop
+build:
+  command:
+    [
+      docker,
+      build,
+      -t backoffice-api,
+      -f ./src/Apis/BackendOffice/Dockerfile,
+      '--secret id=nuget,src="C:\Users\${local.username}\AppData\Roaming\NuGet\NuGet.Config"',
+      .
+    ]
+
+---
+kind: Module
 type: container
 name: backoffice-api
 image: backoffice-api

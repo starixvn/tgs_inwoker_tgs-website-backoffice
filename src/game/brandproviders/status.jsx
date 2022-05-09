@@ -90,7 +90,6 @@ export const StatusMenu = ({ record = {}, onSubmitted, ...props }) => {
         data-status={status}
         palette={toPalette(status)}
         isLoading={isLoading}
-        disabled={isLoading}
         isStatic
         disabled
       >

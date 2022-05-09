@@ -32,7 +32,9 @@ export const updatePlatform = async (
   let platformIdLocator = page.locator(
     `${EditPlatformDialogSelector}-disclosure`
   )
-  let platformId = await platformIdLocator.getAttribute("data-platform-id")
+  let platformId = await platformIdLocator
+    .first()
+    .getAttribute("data-platform-id")
   let dialogSelector = await openEditPlatformDialog(page)
 
   if (enablePlayerIdentity !== null || enablePlayerIdentity !== undefined) {

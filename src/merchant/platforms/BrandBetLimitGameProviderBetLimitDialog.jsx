@@ -40,7 +40,7 @@ import { filterBySameProp, filterChecked } from "../../list/filter"
 import { pluckCode } from "../../list/pluck"
 import { sortByNumberProp } from "../../list/sort"
 import { CloseText, ConfirmText } from "../../button/ActionButtons"
-import { GamePlatformLabel } from "../../game/games/GamePlatform"
+import { GamePlatformLabel } from "../../game/games/GamePlatform.jsx"
 import { useGameProviderGameList } from "../../game/games/client"
 
 export const EditBrandBetLimitGameProviderBetLimit = ({

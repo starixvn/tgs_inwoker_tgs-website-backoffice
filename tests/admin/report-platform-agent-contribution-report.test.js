@@ -6,16 +6,16 @@ import { selectPlatformByCode } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("view and download agent contribution report", async ({
+test.skip("view and download agent contribution report", async ({
   page,
-  platformCode
+  platformCode,
+  agent
 }) => {
   await gotoPlatformAgentContributionReportPage(page, platformCode)
 
-  let agentUsername = "GameProvider IntegrationChief"
   let inputSelector = `input[name="agentUsername"]`
   await page.waitForSelector(inputSelector)
-  await page.fill(inputSelector, agentUsername)
+  await page.fill(inputSelector, agent.username)
 
   await Promise.all([
     page.click(`button[type="submit"]`),

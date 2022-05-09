@@ -1,9 +1,13 @@
 kind: Project
 name: backoffice-site
 environments:
-  - name: default # The name of the environment.
+  - name: develop # The name of the environment.
+  - name: release
+  - name: main
+defaultEnvironment: develop
 providers:
   - name: local-kubernetes # The name of the provider plugin to use.
+    environments: ["develop"]
     setupIngressController: "nginx"
 
 ---
@@ -39,7 +43,6 @@ services:
     ports:
       - name: http
         containerPort: 80
-        # localPort: 3080
     volumes:
       - name: data
         containerPath: /data
@@ -66,8 +69,19 @@ services:
     volumes:
       - name: data
         containerPath: /data
+# ---
+# kind: Module
+# type: exec
+# name: backoffice-site-test
+# include: [.]
+# exclude: [src, garden]
 # tests:
 #   - name: end-to-end
 #     dependencies:
+#       - backoffice-site
 #       - init-seeding
-#     command: [npm, run, test]
+#     command:
+#       - npm run test
+#     env:
+#       HOST: http://backoffice.localhost
+#       SBO_HOST: http://sbo-api.localhost

@@ -37,7 +37,7 @@ export const addAgent = async (page, agentDividendType, agents = []) => {
   )
   let password = `${internet.password(8)}a1`
   let agent = {
-    username: internet.userName(),
+    username: `${faker.name.firstName()}${new Date().getTime()}`,
     password,
     confirmPassword: password,
     levelType,

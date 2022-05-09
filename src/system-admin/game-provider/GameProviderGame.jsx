@@ -45,7 +45,7 @@ import { GameTypeSelectField } from "../../game/GameType"
 import {
   GamePlatformLabel,
   GamePlatformTypeSelectField
-} from "../../game/games/GamePlatform"
+} from "../../game/games/GamePlatform.jsx"
 import { useDropzone } from "react-dropzone"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
@@ -83,7 +83,6 @@ const ViewDialog = ({ gameProviderId, record, dialog }) => {
     <Backdrop {...dialog}>
       <FormDialog
         defaultValues={{ gameProviderId, ...clone(record) }}
-        title={title}
         hideBackdrop
         title={title}
         dialog={dialog}
@@ -180,7 +179,6 @@ const AddGameDialog = ({ gameProviderId, onSubmitted, dialog }) => {
     <Backdrop {...dialog}>
       <FormDialog
         defaultValues={{ gameProviderId, status: GameStatus.Active }}
-        title={title}
         onSubmit={onSubmit}
         onSubmitted={onSubmitted}
         result={result}
@@ -227,7 +225,6 @@ const EditGameDialog = ({ gameProviderId, record, onSubmitted, dialog }) => {
     <Backdrop {...dialog}>
       <FormDialog
         defaultValues={{ gameProviderId, ...clone(record) }}
-        title={title}
         onSubmit={onSubmit}
         onSubmitted={onSubmitted}
         result={result}

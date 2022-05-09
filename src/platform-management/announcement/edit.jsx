@@ -31,6 +31,7 @@ import DateTimeInput from "../../date/DateTimeInput"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import Textarea, { TextareaField } from "../../textarea"
 import { Features, isDev, isFeatureEnabled } from "../../env"
+import { AnnouncementTypeSelect } from "./AnnouncementType"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -256,6 +257,11 @@ const EditBody = ({ readOnly = false } = {}) => {
         ></Alert>
       )}
       <FieldValues marginLeft="1rem" paddingBottom="1rem">
+        <Label name="type">
+          <Trans zh="类型" en="Type" />
+        </Label>
+        <AnnouncementTypeSelect name="type" disabled={readOnly} />
+
         <Label name="subject" required={required}>
           <Trans zh="主题" en="Subject" />
         </Label>

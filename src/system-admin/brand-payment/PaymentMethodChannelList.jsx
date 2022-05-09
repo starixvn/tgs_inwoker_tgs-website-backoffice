@@ -256,9 +256,6 @@ const DeleteDialog = ({ record, onSubmitted, dialog }) => {
         type="danger"
         title="Confirm Delete?"
         submitText={<DeleteText />}
-        isLoading={isLoading}
-        result={result}
-        error={error}
         dialog={dialog}
         hideBackdrop
         width="30vw"

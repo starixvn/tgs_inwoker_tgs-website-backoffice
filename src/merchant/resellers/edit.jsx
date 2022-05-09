@@ -266,7 +266,6 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
       footer={
         <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
       }
-      dialog={dialog}
       placement="top"
       minWidth="60vw"
       maxWidth="unset"
