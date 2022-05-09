@@ -199,6 +199,10 @@ const SearchBar = ({
     zh: "真实姓名",
     en: "Real name"
   })
+  let agentNamePlaceholder = useTrans({
+    zh: "上级代理",
+    en: "Upper Level Agent"
+  })
   let allAgentUpperLevelPlaceholder = useTrans({
     zh: "全民代理上級",
     en: "All Agent Upper Level"
@@ -219,6 +223,11 @@ const SearchBar = ({
             showEmptyFieldValueAddonAfter
             placeholder={usernameInputPlaceholder}
             autocomplete="off"
+          />
+          <InputField
+            name="agentName"
+            showEmptyFieldValueAddonAfter
+            placeholder={agentNamePlaceholder}
           />
           {showAllAgent && (
             <InputField
