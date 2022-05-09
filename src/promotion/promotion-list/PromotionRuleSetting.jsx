@@ -36,7 +36,7 @@ import {
   NumberInputField,
   PercentageNumberInputField
 } from "../../input/NumberInput"
-import { PromotionRuleSignSetting } from "./PromotionRuleSignSetting"
+import { PromotionSigninRuleSetting } from "./PromotionSigninRuleSetting"
 import { PromotionWheelRuleSetting } from "./PromotionWheelRuleSetting"
 
 export const PromotionRuleSetting = ({
@@ -55,7 +55,7 @@ export const PromotionRuleSetting = ({
   switch (promotionTypeGroup) {
     case PromotionTypeGroup.Signin:
       return (
-        <PromotionRuleSignSetting
+        <PromotionSigninRuleSetting
           limitedTotalAmount={limitedTotalAmount}
           totalAmountLimit={totalAmountLimit}
           readOnly={readOnly}

@@ -64,6 +64,14 @@ export const PromotionWheelRuleSetting = ({ ...props }) => {
   )
 }
 
+const ChancePercentageFieldName = "chancePercentage"
+
+const validateTotalChancePercentage = (fieldName, settings = []) => {
+  let totalChancePercentage = sumBy(settings, fieldName)
+  let pass = totalChancePercentage === 100
+  return pass
+}
+
 const ListFieldName = "list"
 const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
   let dialog = useModalState()
@@ -80,13 +88,25 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
       name={name}
       control={control}
       defaultValue={defaultValue}
-      rules={{ required: true }}
+      rules={{
+        required: true,
+        validate: (settings) => {
+          let passTotalChancePercentage = validateTotalChancePercentage(
+            ChancePercentageFieldName,
+            settings
+          )
+          if (!passTotalChancePercentage) {
+            return "TotalChancePercentage"
+          }
+          return true
+        }
+      }}
       render={({
         field: { onChange, onBlur, value, name, ref },
-        fieldState: { invalid, isTouched, isDirty }
+        fieldState: { isTouched, isDirty, error }
       }) => {
-        let palette = invalid ? "danger" : "default"
-        let variant = invalid ? "outlined" : "default"
+        let palette = error ? "danger" : "default"
+        let variant = error ? "outlined" : "default"
         return (
           <>
             <Disclosure
@@ -155,8 +175,6 @@ const SettingDialog = ({ record = [], readOnly, dialog, onChange }) => {
   )
 }
 
-const ChancePercentageFieldName = "chancePercentage"
-
 const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
   let { control, register, formState } = useFormContext()
 
@@ -220,8 +238,10 @@ const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
         control={control}
         rules={{
           validate: () => {
-            let totalChancePercentage = sumBy(values, "chancePercentage")
-            let pass = totalChancePercentage === 100
+            let pass = validateTotalChancePercentage(
+              ChancePercentageFieldName,
+              settings
+            )
             if (formState.isSubmitting && !pass) {
               setErrors([totalChancePercentageMessage])
             }

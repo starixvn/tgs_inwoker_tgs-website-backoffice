@@ -44,7 +44,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { ConfirmText } from "../../button/ActionButtons"
 import Input from "../../input/Input"
 
-export const PromotionRuleSignSetting = ({ ...props }) => {
+export const PromotionSigninRuleSetting = ({ ...props }) => {
   return (
     <FieldValues>
       <NormalLabel>
