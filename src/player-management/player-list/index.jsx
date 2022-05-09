@@ -28,11 +28,11 @@ import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { ReviewPlayerIdDialogDisclosure } from "./ReviewPlayerIdDialog"
+import { ReviewPlayerIdDialogDisclosure } from "../player-identity/ReviewPlayerIdDialog"
 import { isDev } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
-import { PlayerIdentitySelect } from "./PlayerIdentityState"
+import { PlayerIdentitySelect } from "../player-identity/PlayerIdentityState"
 
 export { Code }
 

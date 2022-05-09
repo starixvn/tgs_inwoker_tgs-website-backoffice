@@ -14,6 +14,10 @@ import {
   Code as BalanceAdjustmentCode,
   codeLabelPair as balanceAdjustmentPair
 } from "./balance-adjustment/menu"
+import {
+  Code as PlayerIdentityCode,
+  codeLabelPair as playerIdentityPair
+} from "./player-identity/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 
@@ -67,6 +71,14 @@ const label = ({ locale, code }) => {
         },
         locale
       )
+    case PlayerIdentityCode:
+      return getTrans(
+        {
+          zh: "玩家身分审核列表",
+          en: "Player Identity List"
+        },
+        locale
+      )
     case OnlinePlayerListCode:
       return getTrans(
         {
@@ -97,6 +109,7 @@ export const codeLabelPair = [
       label,
       subLabelPairs: [
         playerListPair,
+        playerIdentityPair,
         balanceAdjustmentPair,
         onlinePlayerListPair
       ]
