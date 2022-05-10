@@ -220,7 +220,7 @@ const addPromotion = async (page) => {
     `${DialogSelector} #vipLevels input[type="checkbox"] + .bb-CheckboxIcon`
   )
 
-  await selectPromotionType(page)
+  await selectDepositPromotionType(page)
   await page.fill(
     `${DialogSelector} input[name="totalAmountLimit"]`,
     `${promotion.totalAmountLimit}`
@@ -359,12 +359,20 @@ const gotoPromotionPage = async (page) => {
   return await selectRandomPlatform(page)
 }
 
+const PromotionTypeGroup = {
+  Deposit: "Deposit"
+}
+
 const PromotionType = {
   DailyFirstDeposit: "DailyFirstDeposit"
 }
-const selectPromotionType = async (
+const selectDepositPromotionType = async (
   page,
   option = PromotionType.DailyFirstDeposit
 ) => {
+  await page.selectOption(
+    `select[name="promotionTypeGroup"]`,
+    PromotionTypeGroup.Deposit
+  )
   return page.selectOption(`select[name="promotionType"]`, option)
 }

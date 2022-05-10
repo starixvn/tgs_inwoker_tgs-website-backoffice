@@ -62,6 +62,25 @@ export const usePromotionGroupValueOf = (promotionType) => {
   return group?.name ?? ""
 }
 
+export const findPromotionGroup = (promotionGroups = [], promotionType) => {
+  return promotionGroups.reduce((result, group) => {
+    if (result) {
+      return result
+    }
+
+    let type = group?.types?.find((type) => type.name === promotionType)
+    return type ? group : undefined
+  }, undefined)
+}
+
+export const findPromotionGroupValue = (
+  promotionGroups = [],
+  promotionType
+) => {
+  let group = findPromotionGroup(promotionGroups, promotionType)
+  return group?.name ?? ""
+}
+
 export const PromotionTypeGroupSelect = ({ placeholder, ...props }) => {
   let locale = useLocale()
   let defaultPlaceholder = useTrans({

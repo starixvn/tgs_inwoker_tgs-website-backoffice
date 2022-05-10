@@ -129,6 +129,12 @@ const addDepositPromotion = async (page, platformCode) => {
 
   await selectByValue(
     page,
+    `${DialogSelector} select[name="promotionTypeGroup"]`,
+    "Deposit"
+  )
+
+  await selectByValue(
+    page,
     `${DialogSelector} select[name="promotionType"]`,
     "FirstDeposit"
   )

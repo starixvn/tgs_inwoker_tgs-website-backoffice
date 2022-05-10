@@ -544,6 +544,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
                 setValue(PromotionTypeFieldName, "")
               }}
               placeholder={gameTypePlaceholder}
+              required
             />
           )}
           {disabled && (

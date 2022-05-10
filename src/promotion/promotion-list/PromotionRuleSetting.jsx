@@ -37,7 +37,11 @@ import {
   PercentageNumberInputField
 } from "../../input/NumberInput"
 import { PromotionSigninRuleSetting } from "./PromotionSigninRuleSetting"
-import { PromotionWheelRuleSetting } from "./PromotionWheelRuleSetting"
+import {
+  PromotionLuckyDrawRuleSetting,
+  PromotionWheelRuleSetting
+} from "./PromotionWheelRuleSetting"
+import { PromotionNewUserRuleSetting } from "./PromotionNewUserRuleSetting"
 
 export const PromotionRuleSetting = ({
   readOnly,
@@ -63,7 +67,7 @@ export const PromotionRuleSetting = ({
       )
     case PromotionTypeGroup.NewUser:
       return (
-        <NewUserSetting
+        <PromotionNewUserRuleSetting
           promotionType={promotionType}
           limitedTotalAmount={limitedTotalAmount}
           totalAmountLimit={totalAmountLimit}
@@ -71,10 +75,18 @@ export const PromotionRuleSetting = ({
         />
       )
     case PromotionTypeGroup.LuckyDraw:
-      return <LuckyDrawSetting />
+      return (
+        <PromotionLuckyDrawRuleSetting
+          promotionType={promotionType}
+          limitedTotalAmount={limitedTotalAmount}
+          totalAmountLimit={totalAmountLimit}
+          readOnly={readOnly}
+        />
+      )
     default:
       return (
         <DefaultSetting
+          promotionType={promotionType}
           limitedTotalAmount={limitedTotalAmount}
           totalAmountLimit={totalAmountLimit}
           readOnly={readOnly}
@@ -88,39 +100,6 @@ const LuckyDrawSetting = ({ promotionType }) => {
     default:
       return <PromotionWheelRuleSetting />
   }
-}
-
-const NewUserSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
-  let disabled = readOnly
-  return (
-    <FieldValues>
-      <NormalLabel>
-        <Trans zh="彩金金额" en="Bonus Amount" />
-      </NormalLabel>
-      <NumberInput
-        name="bonusAmount"
-        min="0"
-        max={limitedTotalAmount ? totalAmountLimit : undefined}
-        required
-        disabled={disabled}
-      />
-
-      <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
-      </NormalLabel>
-      <NumberInputField
-        name="turnoverMultiple"
-        min="0"
-        required
-        disabled={disabled}
-        addonAfter={
-          <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
-          </Button>
-        }
-      />
-    </FieldValues>
-  )
 }
 
 const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {

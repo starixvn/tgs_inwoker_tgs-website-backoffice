@@ -48,39 +48,6 @@ test("search by licensee name", async ({ page }) => {
   expect(rows.length).to.equal(0)
 })
 
-test("search by code", async ({ page, host }) => {
-  await gotoPlatformCreditPage(page, host)
-
-  let TableSelector = `#platform-credit`
-  let brandCodes = await getPlatformCodes(page)
-  if (brandCodes.length === 0) {
-    console.warn("no brand codes?")
-    return
-  }
-
-  let index = random(brandCodes.length - 1)
-  let brandCode = brandCodes[index]
-
-  await searchByInputNameValue(page, {
-    name: "keyword",
-    value: brandCode
-  })
-
-  let BrandCodeSelector = `${TableSelector} [data-column-id="brandCode"]`
-  let codeLocator = page.locator(BrandCodeSelector).first()
-  let code = await codeLocator.textContent()
-  expect(code).to.equal(brandCode)
-
-  await page.click(`#clear-keyword-button`)
-  await searchByInputNameValue(page, {
-    name: "keyword",
-    value: "something something not exist"
-  })
-
-  let rows = await page.$$(`[data-column-id="code"]`)
-  expect(rows.length).to.equal(0)
-})
-
 test("update platform credit", async ({ page, host }) => {
   await gotoPlatformCreditPage(page, host)
 

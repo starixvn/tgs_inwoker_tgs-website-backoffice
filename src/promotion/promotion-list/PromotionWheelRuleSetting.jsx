@@ -14,7 +14,7 @@ import {
   Heading,
   FieldStack,
   Table,
-  Alert
+  Stack
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, {
@@ -52,6 +52,14 @@ import { ConfirmText } from "../../button/ActionButtons"
 import { sumBy } from "lodash-es"
 import AlertDialog, { AlertDialogModal } from "../../dialog/Alert"
 import { Switch } from "../../switch/Switch"
+import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
+
+export const PromotionLuckyDrawRuleSetting = ({ promotionType, ...props }) => {
+  switch (promotionType) {
+    default:
+      return <PromotionWheelRuleSetting {...props} />
+  }
+}
 
 export const PromotionWheelRuleSetting = ({ ...props }) => {
   return (
@@ -72,6 +80,22 @@ const validateTotalChancePercentage = (fieldName, settings = []) => {
   return pass
 }
 
+let isNilOrEmpty = either(isNil, isEmpty)
+let hasValue = complement(isNilOrEmpty)
+
+const validateAll = (predicate, settings = []) => {
+  let pass = all(predicate, settings)
+
+  return pass
+}
+
+const validateAllRequired = (fieldName, settings = []) => {
+  let toField = prop(fieldName)
+  let hasFieldValue = compose(hasValue, toField)
+  let pass = validateAll(hasFieldValue, settings)
+  return pass
+}
+
 const ListFieldName = "list"
 const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
   let dialog = useModalState()
@@ -83,6 +107,7 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
     defaultValue: Array.from({ length: 6 }, (x, i) => ({ rank: i + 1 }))
   })
 
+  let disabled = readOnly
   return (
     <Controller
       name={name}
@@ -91,6 +116,10 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
       rules={{
         required: true,
         validate: (settings) => {
+          if (disabled) {
+            return true
+          }
+
           let passTotalChancePercentage = validateTotalChancePercentage(
             ChancePercentageFieldName,
             settings
@@ -98,6 +127,7 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
           if (!passTotalChancePercentage) {
             return "TotalChancePercentage"
           }
+
           return true
         }
       }}
@@ -240,7 +270,7 @@ const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
           validate: () => {
             let pass = validateTotalChancePercentage(
               ChancePercentageFieldName,
-              settings
+              values
             )
             if (formState.isSubmitting && !pass) {
               setErrors([totalChancePercentageMessage])
@@ -273,11 +303,17 @@ const SettingRow = ({
   readOnly,
   chancePercentageFieldName = ChancePercentageFieldName
 }) => {
-  let { setValue, getValues, formState } = useFormContext()
+  let { setValue, getValues, formState, control } = useFormContext()
   let RankFieldName = `${name}.${index}.rank`
   useEffect(() => {
     setValue(RankFieldName, index + 1)
   }, [index])
+
+  let BonusFieldName = `${name}.${index}.bouns`
+  let bouns = useWatch({
+    control,
+    name: BonusFieldName
+  })
 
   let editable = !readOnly
   let disabled = readOnly
@@ -306,16 +342,11 @@ const SettingRow = ({
           }}
           maxLength={10}
           size="small"
-          // required
+          required
         />
       </Table.Cell>
       <Table.Cell>
-        <NumberInput
-          name={`${name}.${index}.bouns`}
-          min={0}
-          max={10000}
-          size="small"
-        />
+        <NumberInput name={BonusFieldName} min={0} max={10000} size="small" />
       </Table.Cell>
       <Table.Cell>
         <NumberInput
@@ -341,8 +372,8 @@ const SettingRow = ({
           registerOptions={{
             valueAsNumber: true
           }}
-          min={0}
-          // required
+          min={bouns > 1 ? 1 : 0}
+          required
           size="small"
         />
       </Table.Cell>
@@ -356,7 +387,7 @@ const SettingRow = ({
             valueAsNumber: true
           }}
           min={0}
-          // required
+          required
           size="small"
         />
       </Table.Cell>
