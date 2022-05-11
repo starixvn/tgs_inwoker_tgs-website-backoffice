@@ -174,7 +174,12 @@ const EditForm = ({
 
         <IdentityCardNumberLabel />
         <Box>
-          <Input name="idNumber" />
+          <Input
+            name="idNumber"
+            defaultValue={player?.idNumber}
+            disabled
+            readOnly
+          />
         </Box>
 
         <VIPLevelLabel />
