@@ -28,11 +28,9 @@ import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { ReviewPlayerIdDialogDisclosure } from "../player-identity/ReviewPlayerIdDialog"
 import { isDev } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
-import { PlayerIdentitySelect } from "../player-identity/PlayerIdentityState"
 
 export { Code }
 
@@ -183,7 +181,6 @@ const SearchBar = ({
 }) => {
   let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
   let hasRealnameFilterAuth = useIsDisplayMenuByRoute([RealnameFilter])
-  let showIdentityStatus = brand.enablePlayerIdentity
   let showAllAgent = allAgentSetting.switch
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
@@ -255,9 +252,6 @@ const SearchBar = ({
               placeholder={realNamePlaceholder}
             />
           )}
-          {/* 
-          {showIdentityStatus && <PlayerIdentitySelect name="identityStatus" />} 
-          */}
           <DateInputRangeField
             showDateDropdownMenu
             fakeTimeLabel
@@ -388,15 +382,6 @@ const useColumns = ({
                 showParentUsername={showAllAgent}
                 onSubmitted={mutate}
               />
-              {brand?.enablePlayerIdentity && player.identityFormId && (
-                <ReviewPlayerIdDialogDisclosure
-                  id="review-player-id-dialog-disclosure"
-                  brandId={brandId}
-                  playerCode={playerCode}
-                  identityFormId={player.identityFormId}
-                  onSubmitted={mutate}
-                />
-              )}
             </Set>
           )
         }

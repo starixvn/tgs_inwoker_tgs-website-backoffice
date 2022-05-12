@@ -6,20 +6,19 @@ import {
   useDelete
 } from "../../client"
 
-let API = "/api/player"
+let API = "/api/playeridentity"
 
-export const usePlayerList = (searchParams) => {
+export const usePlayerIdentityList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
   return useGet(url)
 }
 
-const PlayerIdentityApi = "/api/playeridentity"
 export const usePlayerIdentity = (playerCode) => {
-  let url = playerCode ? `${PlayerIdentityApi}/${playerCode}/identity` : ""
+  let url = playerCode ? `${API}/${playerCode}/identity` : ""
   return useGet(url)
 }
 
 export const useVerifyPlayerID = (formId, data) => {
-  let url = formId ? `${PlayerIdentityApi}/${formId}` : ""
+  let url = formId ? `${API}/${formId}` : ""
   return usePostData(url, data)
 }

@@ -19,11 +19,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { Trans, useTrans } from "../../i18n"
 import clone from "clone-deep"
 import { FieldValues } from "../../layout/Grid"
-import {
-  usePlayer,
-  usePlayerIdentity,
-  useVerifyPlayerID
-} from "../player-list/client"
+import { usePlayerIdentity, useVerifyPlayerID } from "../player-identity/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import Textarea, { TextareaField } from "../../textarea"
@@ -35,11 +31,12 @@ import {
   isPlayerIdentityWaitingVerify
 } from "./PlayerIdentityState"
 import { InputField } from "../../input/Input"
+import ImageUploadButton from "../../file/upload/ImageUploadButton"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
   playerCode,
-  identityFormId,
+  formId,
   onSubmitted,
   ...props
 }) => {
@@ -50,9 +47,9 @@ export const ReviewPlayerIdDialogDisclosure = ({
       <VerifyDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <PlayerDialog
-          playerCode={playerCode}
-          identityFormId={identityFormId}
           brandId={brandId}
+          playerCode={playerCode}
+          formId={formId}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -64,74 +61,49 @@ export const ReviewPlayerIdDialogDisclosure = ({
 const PlayerDialog = ({
   brandId,
   playerCode,
-  identityFormId,
+  formId,
   record,
   dialog,
   ...props
 }) => {
-  let {
-    isLoading: isLoadingPlayer,
-    data: player,
-    error: playerError,
-    mutate: mutatePlayer,
-    deleteCache: deletePlayerCache
-  } = usePlayer(playerCode)
-  let {
-    isLoading: isLoadingPlayerIdentity,
-    data: playerIdentity,
-    error: playerIdentityError,
-    mutate: mutatePlayerIdentity,
-    deleteCache: deletePlayerIdentityCache
-  } = usePlayerIdentity(playerCode)
+  let { isLoading, data, error, mutate, deleteCache } =
+    usePlayerIdentity(playerCode)
 
-  if (isLoadingPlayer || isLoadingPlayerIdentity) {
+  if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
 
-  if (playerError) {
-    return <AlertDialog {...playerError} onClickClose={deletePlayerCache} />
-  }
-
-  if (playerIdentityError) {
-    return (
-      <AlertDialog
-        {...playerIdentityError}
-        onClickClose={deletePlayerIdentityCache}
-      />
-    )
+  if (error) {
+    return <AlertDialog {...error} onClickClose={deleteCache} />
   }
 
   return (
     <ReviewDialog
       {...props}
+      brandId={brandId}
       playerCode={playerCode}
-      identityFormId={identityFormId}
-      record={{
-        brandId,
-        identityFormId,
-        ...clone(player),
-        ...clone(playerIdentity),
-        identityStatus: playerIdentity.status
-      }}
+      formId={formId}
+      record={clone(data)}
       dialog={dialog}
     />
   )
 }
 
 const ReviewDialog = ({
+  brandId,
   playerCode,
-  identityFormId,
+  formId,
   record = {},
   dialog,
   ...props
 }) => {
-  let defaultValues = clone(record)
+  let defaultValues = { ...clone(record), brandId }
   let formMethods = useForm({ defaultValues })
   let { setValue } = formMethods
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } = useVerifyPlayerID(
-    identityFormId,
+    formId,
     formData
   )
 
@@ -150,8 +122,9 @@ const ReviewDialog = ({
     en: "ID Verification"
   })
 
-  let editable = isPlayerIdentityWaitingVerify(record.identityStatus)
+  let editable = isPlayerIdentityWaitingVerify(record.status)
   let readOnly = !editable
+
   let hasAttchment = !!record?.authData?.PlayerIdentityFileId
   let attachmentUrl = `/api/fs/${record?.authData?.PlayerIdentityFileId}`
   return (
@@ -216,6 +189,14 @@ const ReviewDialog = ({
 
           <Trans zh="附件" en="Attachment" />
           <Box>
+            {/* 
+            <ImageUploadButton
+              brandId={brandId}
+              name="extendedData.qrCode"
+              prefix="payment"
+              showLocalizationAddonAfter={false}
+            />
+             */}
             {hasAttchment && (
               <Link href={attachmentUrl} target="_blank">
                 <Trans zh="连结" en="Link" />
@@ -226,8 +207,10 @@ const ReviewDialog = ({
 
           <Trans zh="状态" en="Status" />
           <Box>
-            <PlayerIdentityStateLabel value={record.identityStatus} />
+            <PlayerIdentityStateLabel value={record.status} />
           </Box>
+
+          
         </FieldValues>
         <Divider />
         <TextareaField

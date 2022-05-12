@@ -5,9 +5,8 @@ import { Heading, Stack, Box, Button, Set, Alert, List } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { usePlayerList } from "./client"
+import { usePlayerIdentityList } from "./client"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { PlayerStatusLabel } from "../PlayerStatus"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -28,10 +27,11 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { ReviewPlayerIdDialogDisclosure } from "./ReviewPlayerIdDialog"
 import { isDev } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
-import {
+import PlayerIdentityState, {
   PlayerIdentitySelect,
   PlayerIdentityStateLabel
 } from "./PlayerIdentityState"
+import { Descending } from "../../table/order"
 
 export { Code }
 
@@ -57,14 +57,14 @@ const Body = () => {
           setBrandId(value)
         }}
       />
-      <BodyContent brandId={brandId} />
+      {brandId && <BodyContent brandId={brandId} />}
     </Set>
   )
 }
 
 const BodyContent = ({ brandId = "" }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    status: "",
+    status: PlayerIdentityState.WaitingVerify,
     username: ""
   })
 
@@ -78,10 +78,15 @@ const BodyContent = ({ brandId = "" }) => {
     mutate,
     error,
     deleteCache
-  } = usePlayerList({
+  } = usePlayerIdentityList({
     ...toApiParams(state),
-    sortby: "username",
-    brandId
+    /*
+    sortby: "createdOn",
+    orderby: Descending,
+    */
+    brandId,
+    endCreatedOn: startOfNextDay(state.endCreatedOn),
+    endReviewedOn: startOfNextDay(state.endReviewedOn)
   })
 
   let columns = useColumns({
@@ -92,10 +97,11 @@ const BodyContent = ({ brandId = "" }) => {
 
   return (
     <PageContent
-      title={<Trans zh="玩家身分审核列表" en="Player Identity List" />}
+      title={<Trans zh="玩家身分审核列表" en="Player ID Verification" />}
       actionBar={
         <SearchBar
           brandId={brandId}
+          status={state.status}
           search={(data = {}) => {
             setState({
               pageIndex: 0,
@@ -112,8 +118,8 @@ const BodyContent = ({ brandId = "" }) => {
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
               <Trans
-                zh="未上傳身分證之玩家，不顯示在此列表中"
-                en="Players who have not uploaded their ID cards are not shown in this list"
+                zh="請注意，此頁面僅會顯示已上傳身分證資料之玩家。"
+                en="Please be aware that this page will show the players who have uploaded ID verification materials ONLY."
               />
             </List.Item>
           </List>
@@ -135,13 +141,13 @@ const BodyContent = ({ brandId = "" }) => {
   )
 }
 
-const SearchBar = ({ brandId, search, isLoading, ...props }) => {
+const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
   let usernameInputPlaceholder = useTrans({
     zh: "用户名输入框",
     en: "Input user name"
   })
 
-  let formMethods = useForm({})
+  let formMethods = useForm({ defaultValues: { status } })
 
   const onSubmit = (data) => search?.(data)
 
@@ -150,7 +156,7 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
-          <PlayerIdentitySelect name="identityStatus" />
+          <PlayerIdentitySelect name="status" />
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
@@ -160,20 +166,20 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
           <DateInputRangeField
             label={<Trans zh="申请时间" en="Application Time" />}
             startProps={{
-              name: "beginCreateOn"
+              name: "beginCreatedOn"
             }}
             endProps={{
-              name: "endCreateOn"
+              name: "endCreatedOn"
             }}
             maxRangeDays={maxRangeDays}
           />
           <DateInputRangeField
             label={<Trans zh="审核时间" en="Verify Time" />}
             startProps={{
-              name: "beginUpdateOn"
+              name: "beginReviewedOn"
             }}
             endProps={{
-              name: "endUpdateOn"
+              name: "endReviewedOn"
             }}
             maxRangeDays={maxRangeDays}
           />
@@ -213,6 +219,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
         Header: <Trans zh="附件" en="Attachment" />,
         disableSortBy: true,
         Cell: ({ value }) => {
+          console.log("value", value)
           //TODO
           return null
         }
@@ -237,15 +244,15 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
           accessor: (row) => row,
           Header: <Trans zh="操作" en="Actions" />,
           disableSortBy: true,
-          Cell: ({ value: player }) => {
-            let { playerCode } = player
+          Cell: ({ value: record }) => {
+            let { playerCode, formId } = record
             return (
               <Set alignX="center">
                 <ReviewPlayerIdDialogDisclosure
                   id="review-player-id-dialog-disclosure"
                   brandId={brandId}
                   playerCode={playerCode}
-                  identityFormId={player.identityFormId}
+                  formId={formId}
                   onSubmitted={mutate}
                 />
               </Set>
