@@ -19,7 +19,11 @@ import Backdrop from "../../dialog/Backdrop"
 import { Trans, useTrans } from "../../i18n"
 import clone from "clone-deep"
 import { FieldValues } from "../../layout/Grid"
-import { usePlayer, usePlayerIdentity, useVerifyPlayerID } from "../player-list/client"
+import {
+  usePlayer,
+  usePlayerIdentity,
+  useVerifyPlayerID
+} from "../player-list/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import Textarea, { TextareaField } from "../../textarea"
@@ -30,6 +34,7 @@ import {
   PlayerIdentityStateLabel,
   isPlayerIdentityWaitingVerify
 } from "./PlayerIdentityState"
+import { InputField } from "../../input/Input"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
@@ -188,10 +193,26 @@ const ReviewDialog = ({
       <FieldStack>
         <FieldValues>
           <Trans zh="真实姓名" en="Real name" />
-          <Box>{record?.realName}</Box>
+          <Box>
+            <InputField
+              name="realName"
+              defaultValue={record?.realName}
+              readOnly={readOnly}
+              disabled={readOnly}
+              showEmptyFieldValueAddonAfter={editable}
+            />
+          </Box>
 
           <Trans zh="身分证" en="IC Number" />
-          <Set alignY="center">{record?.idNumber}</Set>
+          <Set alignY="center">
+            <InputField
+              name="idNumber"
+              readOnly={readOnly}
+              defaultValue={record?.idNumber}
+              disabled={readOnly}
+              showEmptyFieldValueAddonAfter={editable}
+            />
+          </Set>
 
           <Trans zh="附件" en="Attachment" />
           <Box>

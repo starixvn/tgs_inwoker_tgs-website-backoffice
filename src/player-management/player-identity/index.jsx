@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, Spinner } from "bumbag"
+import { Heading, Stack, Box, Button, Set, Alert, List } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -107,6 +107,18 @@ const BodyContent = ({ brandId = "" }) => {
         />
       }
     >
+      <Stack>
+        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+          <List listStyleType="disc" listStylePosition="inside">
+            <List.Item>
+              <Trans
+                zh="未上傳身分證之玩家，不顯示在此列表中"
+                en="Players who have not uploaded their ID cards are not shown in this list"
+              />
+            </List.Item>
+          </List>
+        </Alert>
+      </Stack>
       <Table
         columns={columns}
         data={data?.items}
@@ -133,6 +145,7 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
 
   const onSubmit = (data) => search?.(data)
 
+  const maxRangeDays = 31
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -143,6 +156,26 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
             showEmptyFieldValueAddonAfter
             placeholder={usernameInputPlaceholder}
             autocomplete="off"
+          />
+          <DateInputRangeField
+            label={<Trans zh="申请时间" en="Application Time" />}
+            startProps={{
+              name: "beginCreateOn"
+            }}
+            endProps={{
+              name: "endCreateOn"
+            }}
+            maxRangeDays={maxRangeDays}
+          />
+          <DateInputRangeField
+            label={<Trans zh="审核时间" en="Verify Time" />}
+            startProps={{
+              name: "beginUpdateOn"
+            }}
+            endProps={{
+              name: "endUpdateOn"
+            }}
+            maxRangeDays={maxRangeDays}
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -189,6 +222,11 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
         Cell: ({ value }) => <PlayerIdentityStateLabel value={value} />
+      }),
+      textColumn({
+        accessor: "remark",
+        Header: <Trans zh="备注" en="Remark" />,
+        disableSortBy: true
       })
     ]
 

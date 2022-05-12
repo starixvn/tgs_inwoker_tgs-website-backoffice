@@ -23,8 +23,8 @@ test("review player id", async ({
   await searchPlatform(page, platformCode)
   await updatePlatform(page, { enablePlayerIdentity: true })
 
-  await Promise.all([
-    operatorApi.player.uploadIdentity(platformToken, player.token),
+  let [playerIdentity] = await Promise.all([
+    operatorApi.player.updateIdentity(platformToken, player.token),
     gotoPlayerListPage(page, platformCode)
   ])
 
@@ -43,6 +43,16 @@ test("review player id", async ({
     openDialog(page, ReviewDialogSelector)
   ])
   let identidyResult = await identidyResponse.json()
+
+  let realNameLocator = page.locator(
+    `${ReviewDialogSelector} input[name="realName"]`
+  )
+  let realName = await realNameLocator.inputValue()
+  expect(realName).to.equals(playerIdentity.realname)
+
+  let idLocator = page.locator(`${ReviewDialogSelector} input[name="idNumber"]`)
+  let id = await idLocator.inputValue()
+  expect(id).to.equals(playerIdentity.id)
 
   let [reviewResponse] = await Promise.all([
     page.waitForResponse((response) => {

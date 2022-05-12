@@ -94,13 +94,11 @@ const CryptoSetting = ({ brandId }) => {
       </Label>
       <NumberInputField
         name="extendedData.rate"
-        /*
         addonBefore={
           <Button isStatic>
-            <Trans zh="Rate" en="Rate" />
+            <Trans zh="平台幣值" en="Currency" />
           </Button>
         }
-        */
         min={0}
         step={0.01}
       />
