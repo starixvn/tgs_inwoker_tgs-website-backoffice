@@ -13,10 +13,13 @@ import {
   Divider
 } from "bumbag"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import Disclosure, { VerifyDisclosure } from "../../dialog/Disclosure"
+import Disclosure, {
+  VerifyDisclosure,
+  ViewDisclosure
+} from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import Backdrop from "../../dialog/Backdrop"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedDateTime, Trans, useTrans } from "../../i18n"
 import clone from "clone-deep"
 import { FieldValues } from "../../layout/Grid"
 import { usePlayerIdentity, useVerifyPlayerID } from "../player-identity/client"
@@ -31,20 +34,25 @@ import {
   isPlayerIdentityWaitingVerify
 } from "./PlayerIdentityState"
 import { InputField } from "../../input/Input"
-import ImageUploadButton from "../../file/upload/ImageUploadButton"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
   playerCode,
   formId,
+  status,
   onSubmitted,
   ...props
 }) => {
   let dialog = useModalState()
 
+  let waitingVerify = isPlayerIdentityWaitingVerify(status)
   return (
     <>
-      <VerifyDisclosure {...dialog} {...props} />
+      {waitingVerify ? (
+        <VerifyDisclosure {...dialog} {...props} />
+      ) : (
+        <ViewDisclosure {...dialog} {...props} />
+      )}
       {dialog.visible && (
         <PlayerDialog
           brandId={brandId}
@@ -64,6 +72,7 @@ const PlayerDialog = ({
   formId,
   record,
   dialog,
+  onSubmitted,
   ...props
 }) => {
   let { isLoading, data, error, mutate, deleteCache } =
@@ -77,6 +86,11 @@ const PlayerDialog = ({
     return <AlertDialog {...error} onClickClose={deleteCache} />
   }
 
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
+  }
+
   return (
     <ReviewDialog
       {...props}
@@ -84,6 +98,10 @@ const PlayerDialog = ({
       playerCode={playerCode}
       formId={formId}
       record={clone(data)}
+      onSubmitted={() => {
+        onSubmitted?.()
+        reset()
+      }}
       dialog={dialog}
     />
   )
@@ -98,6 +116,7 @@ const ReviewDialog = ({
   ...props
 }) => {
   let defaultValues = { ...clone(record), brandId }
+
   let formMethods = useForm({ defaultValues })
   let { setValue } = formMethods
 
@@ -189,14 +208,6 @@ const ReviewDialog = ({
 
           <Trans zh="附件" en="Attachment" />
           <Box>
-            {/* 
-            <ImageUploadButton
-              brandId={brandId}
-              name="extendedData.qrCode"
-              prefix="payment"
-              showLocalizationAddonAfter={false}
-            />
-             */}
             {hasAttchment && (
               <Link href={attachmentUrl} target="_blank">
                 <Trans zh="连结" en="Link" />
@@ -210,11 +221,24 @@ const ReviewDialog = ({
             <PlayerIdentityStateLabel value={record.status} />
           </Box>
 
-          
+          <Trans zh="申请时间" en="Application Time" />
+          <Box>
+            <FormattedDateTime value={record.createdOn} />
+          </Box>
+
+          {record.reviewedOn && (
+            <>
+              <Trans zh="审核时间" en="Review Time" />
+              <Box>
+                <FormattedDateTime value={record.reviewedOn} />
+              </Box>
+            </>
+          )}
         </FieldValues>
         <Divider />
         <TextareaField
           name="remark"
+          defaultValue={defaultValues.remark}
           label={<Trans zh="备注" en="Remark" />}
           readOnly={readOnly}
         />

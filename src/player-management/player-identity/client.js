@@ -3,8 +3,10 @@ import {
   useGet,
   usePostData,
   usePutData,
-  useDelete
+  useDelete,
+  usePostFormData
 } from "../../client"
+import { useUploadImage } from "../../file/upload/client"
 
 let API = "/api/playeridentity"
 
@@ -21,4 +23,16 @@ export const usePlayerIdentity = (playerCode) => {
 export const useVerifyPlayerID = (formId, data) => {
   let url = formId ? `${API}/${formId}` : ""
   return usePostData(url, data)
+}
+
+export const useUploadPlayerIdentityAttachment = (
+  brandId,
+  playerCode,
+  body
+) => {
+  let url =
+    brandId && playerCode && body
+      ? `${API}/${brandId}/${playerCode}/upload`
+      : ""
+  return usePostFormData(url, body)
 }

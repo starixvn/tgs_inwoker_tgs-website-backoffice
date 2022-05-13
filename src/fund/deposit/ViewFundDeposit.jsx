@@ -199,6 +199,51 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
   )
 }
 
+const ExchangeRateBox = ({ record }) => {
+  let rate = record?.applyInfo?.rate
+  let hasRate = Number.isFinite(rate)
+  if (!hasRate) {
+    return null
+  }
+
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="匯率" en="Exchange rate" />
+      </NormalLabel>
+      <Box alignY="center">
+        <FormattedNumberDecimal value={rate} />
+      </Box>
+    </>
+  )
+}
+
+const CryptoApplyInfoBox = ({ record }) => {
+  //dev test id: GPIT220505140001
+  let address = record?.applyInfo?.address
+  if (!address) {
+    return null
+  }
+
+  let sendAmount = record?.applyInfo?.sendAmount
+  let bankType = record?.applyInfo?.bankType?.toUpperCase?.() ?? ""
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="钱包地址" en="Wallet Address" />
+      </NormalLabel>
+      <Box alignY="center">{address}</Box>
+      <NormalLabel>
+        <Trans zh="金额" en="Amount" />
+      </NormalLabel>
+      <Set alignY="center">
+        <FormattedNumberDecimal value={sendAmount} />
+        {bankType}
+      </Set>
+    </>
+  )
+}
+
 const BankInfoBox = ({ record }) => {
   let hasBankInfo = !!record?.applyInfo?.sendBankAccount
   if (!hasBankInfo) {

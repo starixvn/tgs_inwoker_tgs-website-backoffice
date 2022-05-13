@@ -57,6 +57,7 @@ import { parseJSON } from "../../text/json"
 import Input from "../../input/Input"
 import BrandPaymentStatus from "../../system/brandpayments/BrandPaymentStatus"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import Big from "big.js"
 
 export const ViewFundWithdrawDisclosure = ({
   brandId,
@@ -239,6 +240,15 @@ const PayerInfo = ({ brandId, record, disabled }) => {
   )
 
   let detail = parseJSON(brandPayment?.extendedData)
+
+  //dev test id: GPIW220505140001
+  let rate = detail?.rate
+  let hasRate = Number.isFinite(rate)
+  let amount =
+    hasRate && Number.isFinite(record?.amount)
+      ? new Big(record?.amount).times(new Big(rate)).toNumber()
+      : null
+  console.log("rate", rate, " * record?.amount", record?.amount, " > ", amount)
   return (
     <>
       <Heading use="h6">
@@ -259,6 +269,29 @@ const PayerInfo = ({ brandId, record, disabled }) => {
             disabled={disabled}
           />
         </Box>
+        {/* 
+        {hasRate && (
+          <>
+            <NormalLabel>
+              <Trans zh="匯率" en="Exchange rate" />
+            </NormalLabel>
+            <Box alignY="center">
+              <FormattedNumberDecimal value={rate} />
+            </Box>
+          </>
+        )}
+
+        {hasAmount && (
+          <>
+            <NormalLabel>
+              <Trans zh="金额" en="Amount" />
+            </NormalLabel>
+            <Box alignY="center">
+              <FormattedNumberDecimal value={amount} />
+            </Box>
+          </>
+        )} 
+        */}
 
         {isApproved && brandPayment && (
           <>

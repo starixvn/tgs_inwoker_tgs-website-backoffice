@@ -32,6 +32,7 @@ import PlayerIdentityState, {
   PlayerIdentityStateLabel
 } from "./PlayerIdentityState"
 import { Descending } from "../../table/order"
+import { PlayerIdentityAttachment } from "./PlayerIdentityAttachment"
 
 export { Code }
 
@@ -218,10 +219,22 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
         accessor: (row) => row,
         Header: <Trans zh="附件" en="Attachment" />,
         disableSortBy: true,
-        Cell: ({ value }) => {
-          console.log("value", value)
-          //TODO
-          return null
+        Cell: ({ value: record }) => {
+          let { playerCode, formId, status, attachmentId } = record
+
+          return (
+            <PlayerIdentityAttachment
+              alignX="center"
+              alignY="center"
+              brandId={brandId}
+              playerCode={playerCode}
+              attachmentId={attachmentId}
+              status={status}
+              onUploaded={() => {
+                mutate(null)
+              }}
+            />
+          )
         }
       }),
       textColumn({
@@ -245,7 +258,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
           Header: <Trans zh="操作" en="Actions" />,
           disableSortBy: true,
           Cell: ({ value: record }) => {
-            let { playerCode, formId } = record
+            let { playerCode, formId, status } = record
             return (
               <Set alignX="center">
                 <ReviewPlayerIdDialogDisclosure
@@ -253,6 +266,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
                   brandId={brandId}
                   playerCode={playerCode}
                   formId={formId}
+                  status={status}
                   onSubmitted={mutate}
                 />
               </Set>
