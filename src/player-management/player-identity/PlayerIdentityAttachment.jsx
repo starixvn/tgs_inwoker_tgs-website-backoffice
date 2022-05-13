@@ -12,6 +12,8 @@ import {
 import { useDropzone } from "react-dropzone"
 import { useUploadPlayerIdentityAttachment } from "./client"
 import AlertDialog from "../../dialog/Alert"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { Update } from "./menu"
 
 export const PlayerIdentityAttachment = ({
   brandId,
@@ -23,19 +25,17 @@ export const PlayerIdentityAttachment = ({
 }) => {
   let waitingVerify = isPlayerIdentityWaitingVerify(status)
 
+  let editable = useIsDisplayMenuByRoute([Update])
+
   let attachmentUrl = attachmentId ? `/api/fs/${attachmentId}` : ""
   return (
     <Set {...props}>
-      {attachmentUrl ? (
+      {attachmentUrl && (
         <Link href={attachmentUrl} target="_blank">
           <Trans zh="连结" en="Link" />
         </Link>
-      ) : waitingVerify ? (
-        ""
-      ) : (
-        "-"
       )}
-      {waitingVerify && (
+      {waitingVerify && editable && (
         <UploadButton
           brandId={brandId}
           playerCode={playerCode}

@@ -34,6 +34,8 @@ import {
   isPlayerIdentityWaitingVerify
 } from "./PlayerIdentityState"
 import { InputField } from "../../input/Input"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { Update } from "./menu"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
@@ -46,9 +48,11 @@ export const ReviewPlayerIdDialogDisclosure = ({
   let dialog = useModalState()
 
   let waitingVerify = isPlayerIdentityWaitingVerify(status)
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+
   return (
     <>
-      {waitingVerify ? (
+      {waitingVerify && hasUpdateAuth ? (
         <VerifyDisclosure {...dialog} {...props} />
       ) : (
         <ViewDisclosure {...dialog} {...props} />
@@ -141,7 +145,8 @@ const ReviewDialog = ({
     en: "ID Verification"
   })
 
-  let editable = isPlayerIdentityWaitingVerify(record.status)
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+  let editable = hasUpdateAuth && isPlayerIdentityWaitingVerify(record.status)
   let readOnly = !editable
 
   let hasAttchment = !!record?.authData?.PlayerIdentityFileId

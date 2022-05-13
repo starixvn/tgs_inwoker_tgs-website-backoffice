@@ -48,7 +48,7 @@ import { TextareaField } from "../../textarea"
 import { BrandPaymentSelect } from "../../system/brandpayments/BrandPayment"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import clone from "clone-deep"
-import { useFormContext } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 import {
   useBrandPayment,
   useBrandPaymentList
@@ -219,8 +219,13 @@ export const FormBody = ({ brandId, record, readonly }) => {
 }
 
 const PayerInfo = ({ brandId, record, disabled }) => {
-  let { watch } = useFormContext()
+  let { watch, control } = useFormContext()
 
+  let BrandPaymentIdField = "brandPaymentId"
+  let brandPaymentId = useWatch({
+    control,
+    name: BrandPaymentIdField
+  })
   let underReview = isFundUnderReview(record?.status)
   let isApproved = isFundApproved(record?.status)
 
@@ -228,16 +233,11 @@ const PayerInfo = ({ brandId, record, disabled }) => {
     isLoading,
     data: brandPayment,
     error
-  } = useBrandPayment(
-    record?.brandPaymentId,
-    isApproved
-      ? {
-          brandId,
-          transferType: BrandPaymentTransferType.Withdrawal,
-          showAll: true
-        }
-      : undefined
-  )
+  } = useBrandPayment(brandPaymentId, {
+    brandId,
+    transferType: BrandPaymentTransferType.Withdrawal,
+    showAll: true
+  })
 
   let detail = parseJSON(brandPayment?.extendedData)
 
@@ -260,7 +260,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
         </NormalLabel>
         <Box alignY="center">
           <BrandPaymentSelect
-            name="brandPaymentId"
+            name={BrandPaymentIdField}
             brandId={brandId}
             transferType={BrandPaymentTransferType.Withdrawal}
             paymentStatus={BrandPaymentStatus.Enabled}
