@@ -247,6 +247,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
       ? new Big(record?.amount).times(new Big(rate)).toNumber()
       : null
 
+  console.log("brandPayment", brandPayment, "record", record)
   return (
     <>
       <Heading use="h6">
