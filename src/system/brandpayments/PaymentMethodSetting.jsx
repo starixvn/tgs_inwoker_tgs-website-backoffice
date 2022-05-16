@@ -101,6 +101,9 @@ const CryptoSetting = ({ brandId }) => {
         }
         min={0}
         step={0.01}
+        registerOptions={{
+          valueAsNumber: true
+        }}
         required
       />
     </>
