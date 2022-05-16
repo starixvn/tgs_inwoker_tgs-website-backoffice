@@ -269,6 +269,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
         <Box alignY="center">
           <BrandPaymentSelect
             name={BrandPaymentIdField}
+            defaultValue={brandPaymentId}
             brandId={brandId}
             transferType={BrandPaymentTransferType.Withdrawal}
             paymentStatus={BrandPaymentStatus.Enabled}
