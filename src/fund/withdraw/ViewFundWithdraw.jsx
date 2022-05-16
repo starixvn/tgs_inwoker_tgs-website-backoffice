@@ -247,6 +247,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
       ? new Big(record?.amount).times(new Big(rate)).toNumber()
       : null
 
+  let bankType = record?.bankInfo?.bankType?.toUpperCase?.() ?? ""
   console.log("brandPayment", brandPayment, "record", record)
   return (
     <>
@@ -282,7 +283,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
         {underReviewOrApproved && Number.isFinite(amount) && (
           <>
             <NormalLabel>
-              <Trans zh="金额" en="Amount" />
+              <Trans zh={`换算(${bankType})`} en={`Conversion(${bankType})`} />
             </NormalLabel>
             <Box alignY="center">
               <FormattedNumberDecimal value={amount} />
