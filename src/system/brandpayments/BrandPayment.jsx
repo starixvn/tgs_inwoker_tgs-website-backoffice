@@ -13,6 +13,7 @@ import {
 } from "bumbag"
 import { useBrandPaymentList } from "./client"
 import { Select, SelectField } from "../../select/Select"
+import equals from "fast-deep-equal"
 
 export const BrandPaymentSelect = ({
   brandId,

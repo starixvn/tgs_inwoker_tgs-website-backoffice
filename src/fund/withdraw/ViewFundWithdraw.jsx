@@ -222,10 +222,8 @@ const PayerInfo = ({ brandId, record, disabled }) => {
   let { watch, control } = useFormContext()
 
   let BrandPaymentIdField = "brandPaymentId"
-  let brandPaymentId = useWatch({
-    control,
-    name: BrandPaymentIdField
-  })
+  let brandPaymentId = watch(BrandPaymentIdField)
+
   let underReview = isFundUnderReview(record?.status)
   let isApproved = isFundApproved(record?.status)
   let underReviewOrApproved = underReview || isApproved
@@ -241,14 +239,6 @@ const PayerInfo = ({ brandId, record, disabled }) => {
   })
 
   let detail = parseJSON(brandPayment?.extendedData)
-  console.log(
-    "brandPaymentId",
-    brandPaymentId,
-    "detail",
-    detail,
-    "brandPayment",
-    brandPayment
-  )
   //dev test id: GPIW220505140001
   let rate = detail?.rate
   let hasRate = Number.isFinite(rate)
@@ -269,7 +259,6 @@ const PayerInfo = ({ brandId, record, disabled }) => {
         <Box alignY="center">
           <BrandPaymentSelect
             name={BrandPaymentIdField}
-            defaultValue={brandPaymentId}
             brandId={brandId}
             transferType={BrandPaymentTransferType.Withdrawal}
             paymentStatus={BrandPaymentStatus.Enabled}
