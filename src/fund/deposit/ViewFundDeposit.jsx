@@ -202,7 +202,6 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
 }
 
 const CryptoApplyInfoBox = ({ record }) => {
-  //dev test id: GPIT220505140001
   let address = record?.applyInfo?.address
   if (!address) {
     return null

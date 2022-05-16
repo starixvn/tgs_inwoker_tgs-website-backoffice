@@ -239,7 +239,6 @@ const PayerInfo = ({ brandId, record, disabled }) => {
   })
 
   let detail = parseJSON(brandPayment?.extendedData)
-  //dev test id: GPIW220505140001
   let rate = detail?.rate
   let hasRate = Number.isFinite(rate)
   let amount =
@@ -248,7 +247,6 @@ const PayerInfo = ({ brandId, record, disabled }) => {
       : null
 
   let bankType = record?.bankInfo?.bankType?.toUpperCase?.() ?? ""
-  console.log("brandPayment", brandPayment, "record", record)
   return (
     <>
       <Heading use="h6">

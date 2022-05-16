@@ -92,7 +92,7 @@ const toggleStatus = async (page, brandId, index = 0) => {
   )
   await statusLocator.waitFor()
 
-  let WaitForUpdate = 100
+  let WaitForUpdate = 500
   await page.waitForTimeout(WaitForUpdate)
   let toggledStatus = await statusLocator.getAttribute("data-status")
   expect(toggledStatus).to.equal(ExpectedStatus)
