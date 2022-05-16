@@ -318,7 +318,6 @@ const PayerInfo = ({ brandId, record, disabled }) => {
           </>
         )}
       </FieldValues>
-      {isLoading && <Spinner />}
     </>
   )
 }
