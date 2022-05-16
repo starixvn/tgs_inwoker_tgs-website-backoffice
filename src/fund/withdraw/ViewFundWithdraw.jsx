@@ -241,7 +241,14 @@ const PayerInfo = ({ brandId, record, disabled }) => {
   })
 
   let detail = parseJSON(brandPayment?.extendedData)
-
+  console.log(
+    "brandPaymentId",
+    brandPaymentId,
+    "detail",
+    detail,
+    "brandPayment",
+    brandPayment
+  )
   //dev test id: GPIW220505140001
   let rate = detail?.rate
   let hasRate = Number.isFinite(rate)
