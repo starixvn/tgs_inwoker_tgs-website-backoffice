@@ -89,7 +89,7 @@ const CryptoSetting = ({ brandId }) => {
         prefix="payment"
         showLocalizationAddonAfter={false}
       />
-      <Label>
+      <Label required>
         <Trans zh="匯率" en="Exchange rate" />
       </Label>
       <NumberInputField
@@ -101,6 +101,7 @@ const CryptoSetting = ({ brandId }) => {
         }
         min={0}
         step={0.01}
+        required
       />
     </>
   )
