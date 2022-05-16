@@ -177,6 +177,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
               </Box>
             </>
           )}
+          <CryptoApplyInfoBox record={record} />
         </FieldValues>
         <Separator />
         <BankInfoBox record={record} />
@@ -199,25 +200,6 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
   )
 }
 
-const ExchangeRateBox = ({ record }) => {
-  let rate = record?.applyInfo?.rate
-  let hasRate = Number.isFinite(rate)
-  if (!hasRate) {
-    return null
-  }
-
-  return (
-    <>
-      <NormalLabel>
-        <Trans zh="匯率" en="Exchange rate" />
-      </NormalLabel>
-      <Box alignY="center">
-        <FormattedNumberDecimal value={rate} />
-      </Box>
-    </>
-  )
-}
-
 const CryptoApplyInfoBox = ({ record }) => {
   //dev test id: GPIT220505140001
   let address = record?.applyInfo?.address
@@ -230,16 +212,21 @@ const CryptoApplyInfoBox = ({ record }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="钱包地址" en="Wallet Address" />
+        <Trans zh="匯率" en="Exchange rate" />
       </NormalLabel>
-      <Box alignY="center">{address}</Box>
+      <Box alignY="center">
+        <FormattedNumberDecimal value={record?.applyInfo?.rate} />
+      </Box>
       <NormalLabel>
-        <Trans zh="金额" en="Amount" />
+        <Trans zh={`换算(${bankType})`} en={`Conversion(${bankType})`} />
       </NormalLabel>
       <Set alignY="center">
         <FormattedNumberDecimal value={sendAmount} />
-        {bankType}
       </Set>
+      <NormalLabel>
+        <Trans zh="钱包地址" en="Wallet Address" />
+      </NormalLabel>
+      <Box alignY="center">{address}</Box>
     </>
   )
 }

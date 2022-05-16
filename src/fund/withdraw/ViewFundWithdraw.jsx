@@ -228,6 +228,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
   })
   let underReview = isFundUnderReview(record?.status)
   let isApproved = isFundApproved(record?.status)
+  let underReviewOrApproved = underReview || isApproved
 
   let {
     isLoading,
@@ -248,18 +249,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
     hasRate && Number.isFinite(record?.amount)
       ? new Big(record?.amount).times(new Big(rate)).toNumber()
       : null
-  console.log(
-    "rate",
-    rate,
-    " * record?.amount",
-    record?.amount,
-    " > ",
-    amount,
-    "brandPaymentId",
-    brandPaymentId,
-    "brandPayment",
-    brandPayment
-  )
+
   return (
     <>
       <Heading use="h6">
@@ -280,8 +270,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
             disabled={disabled}
           />
         </Box>
-        {/* 
-        {hasRate && (
+        {underReviewOrApproved && hasRate && (
           <>
             <NormalLabel>
               <Trans zh="匯率" en="Exchange rate" />
@@ -292,7 +281,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
           </>
         )}
 
-        {hasAmount && (
+        {underReviewOrApproved && Number.isFinite(amount) && (
           <>
             <NormalLabel>
               <Trans zh="金额" en="Amount" />
@@ -301,8 +290,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
               <FormattedNumberDecimal value={amount} />
             </Box>
           </>
-        )} 
-        */}
+        )}
 
         {isApproved && brandPayment && (
           <>
