@@ -246,7 +246,14 @@ const PayerInfo = ({ brandId, record, disabled }) => {
     hasRate && Number.isFinite(record?.amount)
       ? new Big(record?.amount).times(new Big(rate)).toNumber()
       : null
-
+  console.log(
+    "brandPaymentId",
+    brandPaymentId,
+    "rate",
+    rate,
+    "brandPayment?.extendedData",
+    brandPayment?.extendedData
+  )
   return (
     <>
       <Heading use="h6">
