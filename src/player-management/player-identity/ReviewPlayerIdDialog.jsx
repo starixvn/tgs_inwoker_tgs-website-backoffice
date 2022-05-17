@@ -197,6 +197,7 @@ const ReviewDialog = ({
               readOnly={readOnly}
               disabled={readOnly}
               showEmptyFieldValueAddonAfter={editable}
+              required
             />
           </Box>
 
@@ -208,6 +209,7 @@ const ReviewDialog = ({
               defaultValue={record?.idNumber}
               disabled={readOnly}
               showEmptyFieldValueAddonAfter={editable}
+              required
             />
           </Set>
 
