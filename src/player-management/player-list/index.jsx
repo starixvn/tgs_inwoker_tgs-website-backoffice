@@ -31,6 +31,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { isDev } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
+import { SortOrder } from "../../table/order"
 
 export { Code }
 
@@ -124,7 +125,8 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
     deleteCache
   } = usePlayerList({
     ...toApiParams(state),
-    sortby: "username",
+    sortby: "registeredTime",
+    orderby: SortOrder.Descending,
     brandId,
     endRegisteredOn: startOfNextDay(endRegisteredOn)
   })

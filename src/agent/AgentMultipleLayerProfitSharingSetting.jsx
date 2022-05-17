@@ -172,10 +172,10 @@ const SettingDisclosure = ({
       rules={{ required: true }}
       render={({
         field: { onChange, onBlur, value, name, ref },
-        fieldState: { invalid, isTouched, isDirty }
+        fieldState: { isTouched, isDirty, error }
       }) => {
-        let palette = invalid ? "danger" : "default"
-        let variant = invalid ? "outlined" : "default"
+        let palette = error ? "danger" : "default"
+        let variant = error ? "outlined" : "default"
         return (
           <>
             <Disclosure
@@ -197,6 +197,7 @@ const SettingDisclosure = ({
                 onChange={(data) => {
                   let editable = !readOnly
                   if (editable) {
+                    console.log("setValue", data)
                     setValue(name, data, { shouldValidate: true })
                   }
                 }}

@@ -144,6 +144,8 @@ export const StatusMenu = ({ record = {}, onSubmitted, ...props }) => {
   )
 }
 
+//TODO: rm?
+/*
 export const StatusMenuField = ({ name, size, ...props }) => {
   let { setValue, control } = useFormContext()
   return (
@@ -153,7 +155,7 @@ export const StatusMenuField = ({ name, size, ...props }) => {
       shouldUnregister={true}
       render={({
         field: { onChange, onBlur, value, name, ref },
-        fieldState: { invalid, isTouched, isDirty }
+        fieldState: { isTouched, isDirty }
       }) => (
         <DropdownMenu
           menu={
@@ -186,7 +188,7 @@ export const StatusMenuField = ({ name, size, ...props }) => {
           }
         >
           <Button
-            data-status={status}
+            data-status={value}
             palette={toPalette(value)}
             size={size}
             {...props}
@@ -198,3 +200,4 @@ export const StatusMenuField = ({ name, size, ...props }) => {
     />
   )
 }
+*/

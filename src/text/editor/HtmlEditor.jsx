@@ -172,7 +172,7 @@ const Body = ({
       shouldUnregister={shouldUnregister}
       render={({
         field: { value, name, ...fieldProps },
-        fieldState: { invalid, isTouched, isDirty, ...fieldState },
+        fieldState: { error, isTouched, isDirty, ...fieldState },
         formState
       }) => {
         const setupEditor = () => {
@@ -221,10 +221,10 @@ const Body = ({
         }, [textareaRef])
 
         useEffect(() => {
-          if (formState.isSubmitting && invalid) {
+          if (formState.isSubmitting && error) {
             editor?.focus()
           }
-        }, [formState.isSubmitting, invalid])
+        }, [formState.isSubmitting, error])
 
         return (
           <textarea

@@ -102,7 +102,7 @@ export const MultiSelect = ({
       }}
       render={({
         field: { value = [], name, ref },
-        fieldState: { invalid, isTouched, isDirty, error },
+        fieldState: { isTouched, isDirty, error },
         formState
       }) => {
         let controlledValue =

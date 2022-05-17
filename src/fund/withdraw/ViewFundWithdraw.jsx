@@ -281,7 +281,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
         {underReviewOrApproved && Number.isFinite(amount) && (
           <>
             <NormalLabel>
-              <Trans zh={`换算(${bankType})`} en={`Conversion(${bankType})`} />
+              <Trans zh={bankType} en={bankType} />
             </NormalLabel>
             <Box alignY="center">
               <FormattedNumberDecimal value={amount} />
