@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, Alert, List } from "bumbag"
+import { Heading, Stack, Box, Button, Set, Alert, List, Spinner } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -50,6 +50,7 @@ export const CodeContentPair = [Code, Content]
 const Body = () => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
+  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
 
   return (
     <Set orientation="vertical" isFilled>
@@ -58,12 +59,19 @@ const Body = () => {
           setBrandId(value)
         }}
       />
-      {brandId && <BodyContent brandId={brandId} />}
+      {isLoading && (
+        <Box alignY="center" alignX="center">
+          <Spinner />
+        </Box>
+      )}
+      {!isLoading && brandId && brand && (
+        <BodyContent brandId={brandId} brand={brand} />
+      )}
     </Set>
   )
 }
 
-const BodyContent = ({ brandId = "" }) => {
+const BodyContent = ({ brandId = "", brand }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: PlayerIdentityState.WaitingVerify,
     username: ""
@@ -93,7 +101,8 @@ const BodyContent = ({ brandId = "" }) => {
   let columns = useColumns({
     mutate,
     items: data?.items,
-    brandId
+    brandId,
+    brand
   })
 
   return (
@@ -191,11 +200,12 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
   )
 }
 
-const useColumns = ({ mutate, items = [], brandId } = {}) => {
+const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
   let hasViewAuth = useIsDisplayMenuByRoute([View])
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   let hasAnyMenu = hasViewAuth || hasUpdateAuth
 
+  let enablePlayerIdentity = brand?.enablePlayerIdentity
   return useMemo(() => {
     let columns = [
       sequenceColumn(),
@@ -230,6 +240,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
               playerCode={playerCode}
               attachmentId={attachmentId}
               status={status}
+              enablePlayerIdentity={enablePlayerIdentity}
               onUploaded={() => {
                 mutate(null)
               }}
@@ -261,14 +272,16 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
             let { playerCode, formId, status } = record
             return (
               <Set alignX="center">
-                <ReviewPlayerIdDialogDisclosure
-                  id="review-player-id-dialog-disclosure"
-                  brandId={brandId}
-                  playerCode={playerCode}
-                  formId={formId}
-                  status={status}
-                  onSubmitted={mutate}
-                />
+                {enablePlayerIdentity && (
+                  <ReviewPlayerIdDialogDisclosure
+                    id="review-player-id-dialog-disclosure"
+                    brandId={brandId}
+                    playerCode={playerCode}
+                    formId={formId}
+                    status={status}
+                    onSubmitted={mutate}
+                  />
+                )}
               </Set>
             )
           }

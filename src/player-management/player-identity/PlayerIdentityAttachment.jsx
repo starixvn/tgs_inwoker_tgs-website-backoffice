@@ -21,6 +21,7 @@ export const PlayerIdentityAttachment = ({
   playerCode,
   status,
   onUploaded,
+  enablePlayerIdentity,
   ...props
 }) => {
   let waitingVerify = isPlayerIdentityWaitingVerify(status)
@@ -35,7 +36,7 @@ export const PlayerIdentityAttachment = ({
           <Trans zh="连结" en="Link" />
         </Link>
       )}
-      {waitingVerify && editable && (
+      {enablePlayerIdentity && waitingVerify && editable && (
         <UploadButton
           brandId={brandId}
           playerCode={playerCode}
@@ -82,7 +83,6 @@ const UploadButton = ({
     useUploadPlayerIdentityAttachment(brandId, playerCode, formData)
 
   useEffect(() => {
-    console.log("result", result)
     if (result) {
       onUploaded?.()
     }
