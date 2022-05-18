@@ -62,7 +62,7 @@ export const DateTimeInput = ({
       shouldUnregister={true}
       render={({
         field: { onChange, onBlur, value, ref },
-        fieldState: { invalid, isTouched, isDirty }
+        fieldState: { isTouched, isDirty, error }
       }) => {
         if (disabled) {
           return (
@@ -73,7 +73,6 @@ export const DateTimeInput = ({
           )
         }
 
-        let error = errors[name]
         let state = error && "danger"
         return (
           <DatePicker

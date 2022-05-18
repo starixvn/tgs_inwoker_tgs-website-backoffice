@@ -61,6 +61,7 @@ export const EditPanel = ({
   brandId,
   playerCode = "",
   player: { birthdate = "", ...player },
+  showParentUsername,
   onSubmitted,
   onClickClose,
   ...props
@@ -109,6 +110,7 @@ export const EditPanel = ({
             brandId={brandId}
             playerCode={playerCode}
             player={player}
+            showParentUsername={showParentUsername}
             isLoading={isLoading}
             onClickClose={() => {
               reset()
@@ -125,6 +127,7 @@ const EditForm = ({
   brandId,
   playerCode = "",
   player = {},
+  showParentUsername,
   isLoading,
   onClickClose,
   ...props
@@ -171,7 +174,12 @@ const EditForm = ({
 
         <IdentityCardNumberLabel />
         <Box>
-          <Input name="idNumber" />
+          <Input
+            name="idNumber"
+            defaultValue={player?.idNumber}
+            disabled
+            readOnly
+          />
         </Box>
 
         <VIPLevelLabel />
@@ -189,13 +197,17 @@ const EditForm = ({
           <Input name="agentUsername" placeholder={agentUsernamePlaceholder} />
         </Box>
 
-        <AllAgentUpperLevelLabel />
-        <Box>
-          <Input
-            name="parentUsername"
-            placeholder={allAgentUpperLevelPlaceholder}
-          />
-        </Box>
+        {showParentUsername && (
+          <>
+            <AllAgentUpperLevelLabel />
+            <Box>
+              <Input
+                name="parentUsername"
+                placeholder={allAgentUpperLevelPlaceholder}
+              />
+            </Box>
+          </>
+        )}
 
         <RegistrationLabel />
         <Box>
@@ -239,7 +251,12 @@ const EditForm = ({
   )
 }
 
-export const Panel = ({ player = {}, onSubmitted, ...props }) => {
+export const Panel = ({
+  player = {},
+  showParentUsername,
+  onSubmitted,
+  ...props
+}) => {
   let isAdmin = useIsAdminUser()
   let {
     username = "",
@@ -287,10 +304,14 @@ export const Panel = ({ player = {}, onSubmitted, ...props }) => {
           <Text>{player?.agentUsername}</Text>
         </Box>
 
-        <AllAgentUpperLevelLabel />
-        <Box>
-          <Text>{player?.parentUsername}</Text>
-        </Box>
+        {showParentUsername && (
+          <>
+            <AllAgentUpperLevelLabel />
+            <Box>
+              <Text>{player?.parentUsername}</Text>
+            </Box>
+          </>
+        )}
 
         <BalanceLabel />
         <Box>

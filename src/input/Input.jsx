@@ -5,6 +5,7 @@ import { Input as _Input, InputField as _InputField, Button } from "bumbag"
 import { useTrans } from "../i18n"
 import { LocalizationDialogDisclosure } from "../dialog/LocalizationDialog"
 import { faLanguage } from "@fortawesome/free-solid-svg-icons"
+import { get } from "lodash-es"
 
 export const Input = ({
   name,
@@ -71,7 +72,7 @@ export const InputField = ({
     inputRef = ref
   }
 
-  let error = formContext?.formState?.errors[name]
+  let error = get(formContext?.formState?.errors ?? {}, name)
 
   let state = error && "danger"
   validationText = validationText ?? error?.message

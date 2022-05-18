@@ -44,7 +44,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { ConfirmText } from "../../button/ActionButtons"
 import Input from "../../input/Input"
 
-export const PromotionRuleSignSetting = ({ ...props }) => {
+export const PromotionSigninRuleSetting = ({ ...props }) => {
   return (
     <FieldValues>
       <NormalLabel>
@@ -71,6 +71,7 @@ const SettingDisclosure = ({
     name
   })
 
+  let disabled = readOnly
   return (
     <Controller
       name={name}
@@ -79,10 +80,10 @@ const SettingDisclosure = ({
       rules={{ required: true }}
       render={({
         field: { onChange, onBlur, value, name, ref },
-        fieldState: { invalid, isTouched, isDirty }
+        fieldState: { isTouched, isDirty, error }
       }) => {
-        let palette = invalid ? "danger" : "default"
-        let variant = invalid ? "outlined" : "default"
+        let palette = error ? "danger" : "default"
+        let variant = error ? "outlined" : "default"
         return (
           <>
             <Disclosure
@@ -253,18 +254,6 @@ const SettingRow = ({
     setValue(RankFieldName, index + 1)
   }, [index])
 
-  console.log(
-    "max",
-    [
-      MaxNumber,
-      limitedTotalAmount ? totalAmountLimit : undefined,
-      next?.reward
-    ],
-    "totalAmountLimit",
-    totalAmountLimit,
-    "limitedTotalAmount",
-    limitedTotalAmount
-  )
   return (
     <Table.Row>
       <Table.Cell>

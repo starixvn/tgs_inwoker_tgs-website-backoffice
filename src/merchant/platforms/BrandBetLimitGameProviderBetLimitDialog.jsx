@@ -497,7 +497,7 @@ const GroupCard = ({
           shouldUnregister={true}
           render={({
             field: { onChange, onBlur, value, name, ref },
-            fieldState: { invalid, isTouched, isDirty }
+            fieldState: { isTouched, isDirty, error }
           }) => (
             <>
               <Disclosure {...dialog}>
@@ -640,7 +640,7 @@ const BetLimitRow = ({
           shouldUnregister={true}
           render={({
             field: { onChange, onBlur, value, name, ref },
-            fieldState: { invalid, isTouched, isDirty }
+            fieldState: { isTouched, isDirty, error }
           }) => {
             return (
               <>
@@ -825,7 +825,7 @@ const GameProviderRow = ({ gameProvider, readonly = false }) => {
           shouldUnregister={true}
           render={({
             field: { onChange, onBlur, value, name, ref },
-            fieldState: { invalid, isTouched, isDirty }
+            fieldState: { isTouched, isDirty, error }
           }) => {
             return (
               <>

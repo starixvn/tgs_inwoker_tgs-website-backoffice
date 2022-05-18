@@ -19,6 +19,7 @@ services:
       Operator__PaymentServiceBaseUrl: "http://payment-api"
       Operator__BrandCertificateBaseUrl: "http://brand-cert-api"
       Operator__CashBaseUrl: "http://cash-service"
+      Operator__PlayerServiceBaseUrl: "http://player-api"
       Promotion__Url: "http://promotion-api"
       ForwardedHeaders__ForwardedForHeaderName: "X-Forwarded-For"
     ingresses:

@@ -1,0 +1,16 @@
+kind: Module
+type: container
+name: migration
+image: tgs/migration
+services:
+  - name: migration
+    dependencies:
+      - postgres
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+# tasks:
+#   - name: init-db
+#     dependencies:
+#       - postgres
+#     env:
+#       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"

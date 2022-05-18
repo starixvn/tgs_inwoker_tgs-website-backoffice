@@ -92,7 +92,7 @@ const toggleStatus = async (page, brandId, index = 0) => {
   )
   await statusLocator.waitFor()
 
-  let WaitForUpdate = 100
+  let WaitForUpdate = 500
   await page.waitForTimeout(WaitForUpdate)
   let toggledStatus = await statusLocator.getAttribute("data-status")
   expect(toggledStatus).to.equal(ExpectedStatus)
@@ -220,12 +220,13 @@ const addPromotion = async (page) => {
     `${DialogSelector} #vipLevels input[type="checkbox"] + .bb-CheckboxIcon`
   )
 
-  await selectPromotionType(page)
+  await selectDepositPromotionType(page)
   await page.fill(
     `${DialogSelector} input[name="totalAmountLimit"]`,
     `${promotion.totalAmountLimit}`
   )
 
+  /*
   const [desktopFileChooser] = await Promise.all([
     page.waitForEvent("filechooser"),
     page.click(`${DialogSelector} #desktopBanner`)
@@ -255,6 +256,7 @@ const addPromotion = async (page) => {
       )
     })
   ])
+  */
 
   await page.fill(
     `${DialogSelector} input[name="percentage"]`,
@@ -357,12 +359,20 @@ const gotoPromotionPage = async (page) => {
   return await selectRandomPlatform(page)
 }
 
+const PromotionTypeGroup = {
+  Deposit: "Deposit"
+}
+
 const PromotionType = {
   DailyFirstDeposit: "DailyFirstDeposit"
 }
-const selectPromotionType = async (
+const selectDepositPromotionType = async (
   page,
   option = PromotionType.DailyFirstDeposit
 ) => {
+  await page.selectOption(
+    `select[name="promotionTypeGroup"]`,
+    PromotionTypeGroup.Deposit
+  )
   return page.selectOption(`select[name="promotionType"]`, option)
 }

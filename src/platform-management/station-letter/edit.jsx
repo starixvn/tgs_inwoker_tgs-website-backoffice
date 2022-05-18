@@ -179,7 +179,7 @@ const EditBody = ({ readOnly = false } = {}) => {
             shouldUnregister={true}
             render={({
               field: { onChange, onBlur, value, name, ref },
-              fieldState: { invalid, isTouched, isDirty }
+              fieldState: { isTouched, isDirty, error }
             }) => (
               <>
                 <input

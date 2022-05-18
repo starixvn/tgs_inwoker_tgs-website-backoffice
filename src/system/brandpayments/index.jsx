@@ -439,11 +439,13 @@ const useColumns = ({
                   record={value}
                   onSubmitted={mutate}
                 />
+                {/* 
                 <FeeEditButton
                   brandId={brandId}
                   record={value}
                   onSubmitted={mutate}
-                />
+                /> 
+                */}
                 <LogsButton brandId={brandId} record={value} />
               </Set>
             )

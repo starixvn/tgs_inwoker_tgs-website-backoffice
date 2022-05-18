@@ -21,7 +21,6 @@ import {
 const test = base.extend(Fixture)
 const { lorem, internet } = faker
 
-/*
 test("add one layer agents", async ({ page }) => {
   await gotoPlatformListPage(page)
   let platform = await addPlatform(page, {
@@ -45,7 +44,6 @@ test("add one layer agents", async ({ page }) => {
   let parentUsername = await parentUsernameLocator.textContent()
   expect(parentUsername).to.equals(parent.username)
 })
-*/
 
 test("add multiple layer agents", async ({ page }) => {
   await gotoPlatformListPage(page)

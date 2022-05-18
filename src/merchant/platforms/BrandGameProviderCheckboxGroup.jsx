@@ -154,10 +154,10 @@ const Row = ({ name, disabled, field, index }) => {
             }}
             render={({
               field: { onChange, onBlur, value, name: configName, ref },
-              fieldState: { invalid, isTouched, isDirty }
+              fieldState: { isTouched, isDirty, error }
             }) => {
-              let palette = invalid ? "danger" : "default"
-              let variant = invalid ? "outlined" : "default"
+              let palette = error ? "danger" : "default"
+              let variant = error ? "outlined" : "default"
               return (
                 <>
                   <ConfigIconDisclosure
@@ -233,7 +233,7 @@ const Row = ({ name, disabled, field, index }) => {
             shouldUnregister={true}
             render={({
               field: { onChange, onBlur, value, name: fieldName, ref },
-              fieldState: { invalid, isTouched, isDirty }
+              fieldState: { isTouched, isDirty, error }
             }) => {
               return (
                 <>
@@ -267,7 +267,7 @@ const Row = ({ name, disabled, field, index }) => {
             shouldUnregister={true}
             render={({
               field: { onChange, onBlur, value, name: fieldName, ref },
-              fieldState: { invalid, isTouched, isDirty }
+              fieldState: { isTouched, isDirty, error }
             }) => {
               return (
                 <>

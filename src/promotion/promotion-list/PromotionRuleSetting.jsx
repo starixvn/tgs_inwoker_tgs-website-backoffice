@@ -36,11 +36,17 @@ import {
   NumberInputField,
   PercentageNumberInputField
 } from "../../input/NumberInput"
-import { PromotionRuleSignSetting } from "./PromotionRuleSignSetting"
+import { PromotionSigninRuleSetting } from "./PromotionSigninRuleSetting"
+import {
+  PromotionLuckyDrawRuleSetting,
+  PromotionWheelRuleSetting
+} from "./PromotionWheelRuleSetting"
+import { PromotionNewUserRuleSetting } from "./PromotionNewUserRuleSetting"
 
 export const PromotionRuleSetting = ({
   readOnly,
   promotionTypeGroup,
+  promotionType,
   totalAmountLimitFieldName,
   limitedTotalAmount
 }) => {
@@ -53,7 +59,7 @@ export const PromotionRuleSetting = ({
   switch (promotionTypeGroup) {
     case PromotionTypeGroup.Signin:
       return (
-        <PromotionRuleSignSetting
+        <PromotionSigninRuleSetting
           limitedTotalAmount={limitedTotalAmount}
           totalAmountLimit={totalAmountLimit}
           readOnly={readOnly}
@@ -61,7 +67,17 @@ export const PromotionRuleSetting = ({
       )
     case PromotionTypeGroup.NewUser:
       return (
-        <NewUserSetting
+        <PromotionNewUserRuleSetting
+          promotionType={promotionType}
+          limitedTotalAmount={limitedTotalAmount}
+          totalAmountLimit={totalAmountLimit}
+          readOnly={readOnly}
+        />
+      )
+    case PromotionTypeGroup.LuckyDraw:
+      return (
+        <PromotionLuckyDrawRuleSetting
+          promotionType={promotionType}
           limitedTotalAmount={limitedTotalAmount}
           totalAmountLimit={totalAmountLimit}
           readOnly={readOnly}
@@ -70,6 +86,7 @@ export const PromotionRuleSetting = ({
     default:
       return (
         <DefaultSetting
+          promotionType={promotionType}
           limitedTotalAmount={limitedTotalAmount}
           totalAmountLimit={totalAmountLimit}
           readOnly={readOnly}
@@ -78,37 +95,11 @@ export const PromotionRuleSetting = ({
   }
 }
 
-const NewUserSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
-  let disabled = readOnly
-  return (
-    <FieldValues>
-      <NormalLabel>
-        <Trans zh="彩金金额" en="Bonus Amount" />
-      </NormalLabel>
-      <NumberInput
-        name="bonusAmount"
-        min="0"
-        max={limitedTotalAmount ? totalAmountLimit : undefined}
-        required
-        disabled={disabled}
-      />
-
-      <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
-      </NormalLabel>
-      <NumberInputField
-        name="turnoverMultiple"
-        min="0"
-        required
-        disabled={disabled}
-        addonAfter={
-          <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
-          </Button>
-        }
-      />
-    </FieldValues>
-  )
+const LuckyDrawSetting = ({ promotionType }) => {
+  switch (promotionType) {
+    default:
+      return <PromotionWheelRuleSetting />
+  }
 }
 
 const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {

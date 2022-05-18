@@ -59,7 +59,10 @@ import {
 } from "../../input/NumberInput"
 import { Switch } from "../../switch/Switch"
 import { useBrand } from "../../merchant/platforms/client"
-import { ImageUploadButton } from "../../file/upload/ImageUploadButton"
+import {
+  ImageUploadButton,
+  ImageLocalizationDialogDisclosure
+} from "../../file/upload/ImageUploadButton"
 import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import Backdrop from "../../dialog/Backdrop"
 import { toFileUploadPath } from "../../file/upload/FileUploadPath"
@@ -541,6 +544,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
                 setValue(PromotionTypeFieldName, "")
               }}
               placeholder={gameTypePlaceholder}
+              required
             />
           )}
           {disabled && (
@@ -700,7 +704,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动 Banner (PC)" en="Promotion Banner (PC)" />
         </NormalLabel>
         <Set orientation="vertical" alignY="center">
-          <ImageUploadButton
+          <ImageLocalizationDialogDisclosure
             id="desktopBanner"
             brandId={brandId}
             name="desktopBanner"
@@ -721,7 +725,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动 Banner (Mobile)" en="Promotion Banner (Mobile)" />
         </NormalLabel>
         <Set orientation="vertical" alignY="center">
-          <ImageUploadButton
+          <ImageLocalizationDialogDisclosure
             id="mobileBanner"
             brandId={brandId}
             name="mobileBanner"
@@ -771,6 +775,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
       <PromotionRuleSetting
         promotionTypeGroup={promotionTypeGroup}
+        promotionType={promotionType}
         totalAmountLimitFieldName={TotalAmountLimitFieldName}
         limitedTotalAmount={limitedTotalAmount}
         readOnly={readOnly}

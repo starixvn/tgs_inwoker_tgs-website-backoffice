@@ -25,8 +25,8 @@ export const NumberInputField = ({
 
 export const PercentageNumberInput = () => {}
 
-const DefaultPercentageAddon = () => (
-  <Button isStatic tabIndex="-1">
+const DefaultPercentageAddon = ({ size }) => (
+  <Button isStatic tabIndex="-1" size={size}>
     %
   </Button>
 )
@@ -36,15 +36,17 @@ export const PercentageNumberInputField = ({
   min = "0",
   max = "100",
   step = "0.01",
+  size,
   ...props
 }) => {
-  addonAfter = addonAfter ?? <DefaultPercentageAddon />
+  addonAfter = addonAfter ?? <DefaultPercentageAddon size={size} />
   return (
     <NumberInputField
       step={step}
       min={min}
       max={max}
       addonAfter={addonAfter}
+      size={size}
       {...props}
     />
   )

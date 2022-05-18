@@ -129,6 +129,12 @@ const addDepositPromotion = async (page, platformCode) => {
 
   await selectByValue(
     page,
+    `${DialogSelector} select[name="promotionTypeGroup"]`,
+    "Deposit"
+  )
+
+  await selectByValue(
+    page,
     `${DialogSelector} select[name="promotionType"]`,
     "FirstDeposit"
   )
@@ -144,6 +150,7 @@ const addDepositPromotion = async (page, platformCode) => {
     `${promotion.totalAmountLimit}`
   )
 
+  /*
   const [desktopFileChooser] = await Promise.all([
     page.waitForEvent("filechooser"),
     page.click(`${DialogSelector} #desktopBanner`)
@@ -167,6 +174,7 @@ const addDepositPromotion = async (page, platformCode) => {
       response.status() === 200
     )
   })
+  */
 
   await page.fill(
     `${DialogSelector} input[name="percentage"]`,

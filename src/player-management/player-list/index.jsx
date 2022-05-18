@@ -28,10 +28,10 @@ import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { ReviewPlayerIdDialogDisclosure } from "./ReviewPlayerIdDialog"
 import { isDev } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
+import { SortOrder } from "../../table/order"
 
 export { Code }
 
@@ -125,7 +125,8 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
     deleteCache
   } = usePlayerList({
     ...toApiParams(state),
-    sortby: "username",
+    sortby: "registeredTime",
+    orderby: SortOrder.Descending,
     brandId,
     endRegisteredOn: startOfNextDay(endRegisteredOn)
   })
@@ -143,6 +144,8 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
       actionBar={
         <SearchBar
           brandId={brandId}
+          brand={brand}
+          allAgentSetting={allAgentSetting}
           search={(data = {}) => {
             setState({
               pageIndex: 0,
@@ -170,9 +173,17 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
   )
 }
 
-const SearchBar = ({ brandId, search, isLoading, ...props }) => {
+const SearchBar = ({
+  brandId,
+  brand,
+  allAgentSetting,
+  search,
+  isLoading,
+  ...props
+}) => {
   let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
   let hasRealnameFilterAuth = useIsDisplayMenuByRoute([RealnameFilter])
+  let showAllAgent = allAgentSetting.switch
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
   let domainInputPlaceholder = useTrans({
@@ -186,6 +197,10 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
   let realNamePlaceholder = useTrans({
     zh: "真实姓名",
     en: "Real name"
+  })
+  let agentNamePlaceholder = useTrans({
+    zh: "上级代理",
+    en: "Upper Level Agent"
   })
   let allAgentUpperLevelPlaceholder = useTrans({
     zh: "全民代理上級",
@@ -209,10 +224,17 @@ const SearchBar = ({ brandId, search, isLoading, ...props }) => {
             autocomplete="off"
           />
           <InputField
-            name="parentUsername"
+            name="agentName"
             showEmptyFieldValueAddonAfter
-            placeholder={allAgentUpperLevelPlaceholder}
+            placeholder={agentNamePlaceholder}
           />
+          {showAllAgent && (
+            <InputField
+              name="parentUsername"
+              showEmptyFieldValueAddonAfter
+              placeholder={allAgentUpperLevelPlaceholder}
+            />
+          )}
           <InputField
             name="registerHost"
             showEmptyFieldValueAddonAfter
@@ -266,6 +288,8 @@ const useColumns = ({
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   let hasAnyMenu = hasViewAuth || hasUpdateAuth
 
+  let showAllAgent = allAgentSetting.switch
+
   return useMemo(() => {
     let columns = [sequenceColumn()]
 
@@ -318,13 +342,18 @@ const useColumns = ({
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
         Cell: ({ value }) => <PlayerStatusLabel value={value} />
-      }),
-      textColumn({
-        accessor: "parentUsername",
-        Header: <Trans zh="全民代理上級" en="All Agent Upper Level" />,
-        disableSortBy: true
       })
     ]
+
+    if (showAllAgent) {
+      columns.push(
+        textColumn({
+          accessor: "parentUsername",
+          Header: <Trans zh="全民代理上級" en="All Agent Upper Level" />,
+          disableSortBy: true
+        })
+      )
+    }
 
     if (hasAnyMenu) {
       columns.push({
@@ -346,22 +375,15 @@ const useColumns = ({
                 id="view-player-dialog-disclosure"
                 player={player}
                 brandId={brandId}
+                showParentUsername={showAllAgent}
               />
               <EditButton
                 id="edit-player-dialog-disclosure"
                 brandId={brandId}
                 player={player}
+                showParentUsername={showAllAgent}
                 onSubmitted={mutate}
               />
-              {brand?.enablePlayerIdentity && player.identityFormId && (
-                <ReviewPlayerIdDialogDisclosure
-                  id="review-player-id-dialog-disclosure"
-                  brandId={brandId}
-                  playerCode={playerCode}
-                  identityFormId={player.identityFormId}
-                  onSubmitted={mutate}
-                />
-              )}
             </Set>
           )
         }

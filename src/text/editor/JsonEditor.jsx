@@ -76,7 +76,7 @@ const Body = ({
         shouldUnregister={true}
         render={({
           field: { onBlur, value, name, ref },
-          fieldState: { invalid, isTouched, isDirty, error }
+          fieldState: { isTouched, isDirty, error }
         }) => {
           return (
             <Set orientation="vertical">

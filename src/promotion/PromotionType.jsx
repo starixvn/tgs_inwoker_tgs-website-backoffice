@@ -14,12 +14,15 @@ const Signin = "Signin"
 
 const NewUser = "NewUser"
 
+const LuckyDraw = "LuckyDraw" //Raffle
+
 export const PromotionTypeGroup = {
   Deposit,
   Turnover,
   ReliefMoney,
   Signin,
-  NewUser
+  NewUser,
+  LuckyDraw
 }
 
 export const usePromotionGroupLabelOf = (promotionType) => {
@@ -56,6 +59,25 @@ export const usePromotionGroupValueOf = (promotionType) => {
     return type ? group : undefined
   }, undefined)
 
+  return group?.name ?? ""
+}
+
+export const findPromotionGroup = (promotionGroups = [], promotionType) => {
+  return promotionGroups.reduce((result, group) => {
+    if (result) {
+      return result
+    }
+
+    let type = group?.types?.find((type) => type.name === promotionType)
+    return type ? group : undefined
+  }, undefined)
+}
+
+export const findPromotionGroupValue = (
+  promotionGroups = [],
+  promotionType
+) => {
+  let group = findPromotionGroup(promotionGroups, promotionType)
   return group?.name ?? ""
 }
 

@@ -4,39 +4,39 @@ import { useForm, useFormContext, Controller } from "react-hook-form"
 import { CheckboxGroup as _CheckboxGroup } from "bumbag"
 
 export const CheckboxGroup = ({
-    name,
-    defaultValue = [],
-    required,
-    ...props
+  name,
+  defaultValue = [],
+  required,
+  ...props
 }) => {
-    let { control } = useFormContext()
+  let { control } = useFormContext()
 
-    return (
-        <Controller
-            control={control}
-            name={name}
-            defaultValue={defaultValue}
-            rules={{ required }}
-            shouldUnregister={true}
-            render={({
-                field: { onChange, onBlur, value, name, ref },
-                fieldState: { invalid, isTouched, isDirty }
-            }) => {
-                let state = invalid && "warning"
-                return (
-                    <_CheckboxGroup
-                        state={state}
-                        onBlur={onBlur}
-                        onChange={(value) => {
-                            onChange(value)
-                        }}
-                        value={value}
-                        {...props}
-                    />
-                )
+  return (
+    <Controller
+      control={control}
+      name={name}
+      defaultValue={defaultValue}
+      rules={{ required }}
+      shouldUnregister={true}
+      render={({
+        field: { onChange, onBlur, value, name, ref },
+        fieldState: { isTouched, isDirty, error }
+      }) => {
+        let state = error && "warning"
+        return (
+          <_CheckboxGroup
+            state={state}
+            onBlur={onBlur}
+            onChange={(value) => {
+              onChange(value)
             }}
-        />
-    )
+            value={value}
+            {...props}
+          />
+        )
+      }}
+    />
+  )
 }
 
 export default CheckboxGroup

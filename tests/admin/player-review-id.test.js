@@ -3,7 +3,6 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
-import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
 import {
   gotoPlatformListPage,
   searchPlatform,
@@ -23,9 +22,9 @@ test("review player id", async ({
   await searchPlatform(page, platformCode)
   await updatePlatform(page, { enablePlayerIdentity: true })
 
-  await Promise.all([
-    operatorApi.player.uploadIdentity(platformToken, player.token),
-    gotoPlayerListPage(page, platformCode)
+  let [playerIdentity] = await Promise.all([
+    operatorApi.player.updateIdentity(platformToken, player.token),
+    gotoPlayerIdentityListPage(page, platformCode)
   ])
 
   await searchPlayer(page, player)
@@ -43,6 +42,16 @@ test("review player id", async ({
     openDialog(page, ReviewDialogSelector)
   ])
   let identidyResult = await identidyResponse.json()
+
+  let realNameLocator = page.locator(
+    `${ReviewDialogSelector} input[name="realName"]`
+  )
+  let realName = await realNameLocator.inputValue()
+  expect(realName).to.equals(playerIdentity.realname)
+
+  let idLocator = page.locator(`${ReviewDialogSelector} input[name="idNumber"]`)
+  let id = await idLocator.inputValue()
+  expect(id).to.equals(playerIdentity.id)
 
   let [reviewResponse] = await Promise.all([
     page.waitForResponse((response) => {
@@ -62,3 +71,25 @@ test("review player id", async ({
   await searchPlatform(page, platformCode)
   await updatePlatform(page, { enablePlayerIdentity: false })
 })
+
+const searchPlayer = async (page, player) => {
+  let usernameSelector = `input[name="username"]`
+  await page.fill(usernameSelector, player.username)
+
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/playeridentity?`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`button[type="submit"]`)
+  ])
+}
+
+export const gotoPlayerIdentityListPage = async (page, platformCode) => {
+  await page.goto("/playermanagement/playeridentity", {
+    waitUntil: "networkidle"
+  })
+  return await selectPlatformByCode(page, platformCode)
+}
