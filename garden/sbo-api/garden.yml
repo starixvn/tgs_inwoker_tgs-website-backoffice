@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: sbo-api
-image: tgs-api
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/tgs-api:2022.05.15.0026-prod # tgs-api
 services:
   - name: sbo-api
     dependencies:

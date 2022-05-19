@@ -23,7 +23,7 @@ test("edit and view player contact info", async ({
   await searchPlayer(page, player)
 
   let contact = await editPlayerContact(page, player)
-  await viewPlayerContact(page, contact)
+  await viewPlayerContact(page, contact, player)
 })
 
 const editPlayerContact = async (page, player) => {
@@ -53,8 +53,16 @@ const editPlayerContact = async (page, player) => {
   return contact
 }
 
-const viewPlayerContact = async (page, contact) => {
-  let dialogSelector = await openViewPlayerDialog(page)
+const viewPlayerContact = async (page, contact, player) => {
+  let [, dialogSelector] = await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/player/${player.code}`) &&
+        response.status() === 200
+      )
+    }),
+    openViewPlayerDialog(page)
+  ])
   await page.click(`${dialogSelector} button#contact`)
 
   let phoneLocator = page.locator(`${dialogSelector} [data-field="phone"]`)

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-pluggable-service
-image: game/gamepluggableservice #registry.gitlab.com/rayprosoft/turnkey-gaming-system/game-pluggable-service:202111230839-dev
+image: harbor.rpgp.cc/tgs/game-pluggable-service:202205180229-dev # game/gamepluggableservice
 services:
   - name: game-pluggable-service
     dependencies:

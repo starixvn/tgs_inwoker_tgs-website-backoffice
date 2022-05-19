@@ -104,13 +104,17 @@ const addDepositPromotion = async (page, platformCode) => {
     name: `${lorem.word()}-${Date.now()}`,
     from: format(from, "yyyy/MM/dd"),
     to: format(to, "yyyy/MM/dd"),
+    subSubject: lorem.word(),
     totalAmountLimit: 1000,
     percentage: 50,
     bonusAmountLimit: 100,
     turnoverMultiple: 2
   }
 
-  await page.fill(`${DialogSelector} input[name="name"]`, promotion.name)
+  await page.fill(
+    `${DialogSelector} input[name="subSubject"]`,
+    promotion.subSubject
+  )
 
   await fillDatePicker({
     page,
@@ -122,6 +126,8 @@ const addDepositPromotion = async (page, platformCode) => {
     selector: `${DialogSelector} #promotion-period-box .react-datepicker-wrapper:not(:first-child) input`,
     value: promotion.to
   })
+
+  await page.fill(`${DialogSelector} input[name="name"]`, promotion.name)
 
   await page.click(
     `${DialogSelector} #vipLevels input[type="checkbox"] + .bb-CheckboxIcon`

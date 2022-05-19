@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: domain-setting
-image: domain-setting
+image: harbor.rpgp.cc/tgs/domain-setting:202205160622-dev # domain-setting
 services:
   - name: domain-setting
     dependencies:
