@@ -13,8 +13,7 @@ import { approveDeposit } from "./fund-deposit-page.js"
 
 const test = base.extend(Fixture)
 
-console.warn("TODO: wait for promotion api fix")
-test.skip("view player promotion list", async ({
+test("view player promotion list", async ({
   page,
   platformCode,
   platformToken,
