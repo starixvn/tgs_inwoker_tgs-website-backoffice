@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: report-aggregate-api
-image: tgs-report-aggregate-service
+image: harbor.rpgp.cc/tgs/report-aggregate-service:202205100215-prod # tgs-report-aggregate-service
 services:
   - name: report-aggregate-api
     dependencies:

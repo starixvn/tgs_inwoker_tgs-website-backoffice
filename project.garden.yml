@@ -79,7 +79,7 @@ tests:
   - name: end-to-end
     dependencies:
       - backoffice-site
-      - init-seeding
+      # - init-seeding
     command:
       - npm run test
     artifacts:

@@ -70,6 +70,12 @@ import {
   nameMessages as FundName,
   codeLabelPair as fundLabelPair
 } from "./fund/menu"
+import { codeMenuContentPair as marketingPair } from "./marketing-management"
+import {
+  Code as MarketingCode,
+  nameMessages as MarketingName,
+  codeLabelPair as marketingLabelPair
+} from "./marketing-management/menu"
 import { codeMenuContentPair as systemPair } from "./system"
 import {
   Code as SystemCode,
@@ -225,6 +231,7 @@ export const allMenuContentPairs = () => [
   resellerReportPair,
   merchantPair,
   fundPair,
+  marketingPair,
   systemPair,
   systemAdminPair,
   logPair
@@ -254,6 +261,7 @@ export const useLabel = ({ codes = [] }) => {
     resellerReportLabelPair,
     merchantLabelPair,
     fundLabelPair,
+    marketingLabelPair,
     platformLabelPair,
     promotionLabelPair,
     logLabelPair,
@@ -303,6 +311,8 @@ const moduleLabel = ({ code = "", locale }) => {
       return getTrans(MerchantName, locale)
     case FundCode:
       return getTrans(FundName, locale)
+    case MarketingCode:
+      return getTrans(MarketingName, locale)
     case SystemCode:
       return getTrans(SystemNameMessages, locale)
     case SystemAdminCode:

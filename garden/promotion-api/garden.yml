@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-api
-image: promotion-api
+image: harbor.rpgp.cc/tgs/promotion-api:2022.05.20.0516-dev # promotion-api
 services:
   - name: promotion-api
     dependencies:
@@ -11,11 +11,12 @@ services:
       - rabbitmq
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
-      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
       Promotion__PaymentServiceBaseUrl: "http://payment-api"
       Promotion__FileServiceBaseUrl: "http://file-service"
       Promotion__CashBaseUrl: "http://cash-service"
-      NatsSetting__Urls: "nats://nats:4222"
+
       RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
     ports:
       - name: http

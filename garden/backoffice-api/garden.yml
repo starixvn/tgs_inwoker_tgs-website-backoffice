@@ -2,6 +2,7 @@ kind: Module
 type: exec
 name: backoffice-api-image
 repositoryUrl: git@gitlab.com:rayprosoft/turnkey-gaming-system.git#develop
+disabled: true
 build:
   command:
     [
@@ -17,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: backoffice-api
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/backoffice-api:2022.0520.0520-dev # backoffice-api
 services:
   - name: backoffice-api
     dependencies:

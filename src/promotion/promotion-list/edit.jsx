@@ -660,7 +660,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
               name={GameTypeFieldName}
               group={gameTypeGroup}
               disabled={disabled}
-              placeholder={gameTypePlaceholder}
+              required
             />
           </>
         )}
@@ -697,6 +697,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             showLocalizationAddonAfter
             disabled={disabled}
             readOnly={readOnly}
+            required={required}
           />
         </Box>
 
