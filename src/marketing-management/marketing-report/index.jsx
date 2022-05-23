@@ -37,11 +37,13 @@ import { yesterday } from "../../date/range"
 import {
   usePlayerMarketingReport,
   useRegisteredPlayerList,
-  useGameCountPlayerList
+  useGamePlayerList
 } from "./client"
 import numberColumn from "../../table/column/numberColumn"
 import { useFirstDepositPlayerList } from "../player-deposit/client"
-import { PlayerListDialogDisclosure } from "../player-deposit/PlayerListDialog"
+import { RegisteredPlayerListDialogDisclosure } from "./RegisteredPlayerListDialog"
+import { PlayerListDialogDisclosure as FirstDepositPlayerListDialogDisclosure } from "../player-deposit/PlayerListDialog"
+import { GamePlayerListDialogDisclosure } from "./GamePlayerListDialog"
 
 export { Code }
 
@@ -215,7 +217,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
-            <PlayerListDialogDisclosure
+            <RegisteredPlayerListDialogDisclosure
               value={record.registeredCount}
               brandId={brandId}
               agentUsername={agentUsername}
@@ -233,7 +235,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
-            <PlayerListDialogDisclosure
+            <FirstDepositPlayerListDialogDisclosure
               value={record.registeredCount}
               brandId={brandId}
               agentUsername={agentUsername}
@@ -251,13 +253,13 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
-            <PlayerListDialogDisclosure
+            <GamePlayerListDialogDisclosure
               value={record.registeredCount}
               brandId={brandId}
               agentUsername={agentUsername}
               date={record.reportDate}
               title={playerListDialogTitle}
-              useFetch={useGameCountPlayerList}
+              useFetch={useGamePlayerList}
             />
           )
         }

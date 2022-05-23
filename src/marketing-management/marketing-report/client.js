@@ -30,7 +30,7 @@ export const useRegisteredPlayerList = (searchParams) => {
   return useGet(url)
 }
 
-export const useGameCountPlayerList = (searchParams) => {
+export const useGamePlayerList = (searchParams) => {
   //TODO: rm
   return usePlayerList(searchParams)
 

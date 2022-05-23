@@ -174,8 +174,8 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "agentUsername",
-        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        accessor: "registerIp",
+        Header: <Trans zh="注册IP" en="Register IP" />,
         disableSortBy: true
       })
     ]
