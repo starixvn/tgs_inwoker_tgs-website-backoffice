@@ -44,6 +44,7 @@ import {
   PromotionTypeGroup,
   PromotionTypeGroupSelect,
   PromotionTypeSelect,
+  useIsInstantlySettlementIntervalType,
   usePromotionGroupValueOf
 } from "../PromotionType"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
@@ -444,16 +445,13 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     control,
     name: PromotionTypeFieldName
   })
-  let promotionTypeGroupValue = usePromotionGroupValueOf(promotionType)
 
-  let isDepositPromotion =
-    promotionTypeGroup === PromotionTypeGroup.Deposit ||
-    promotionTypeGroupValue === PromotionTypeGroup.Deposit
+  let autoPayout = useIsInstantlySettlementIntervalType(promotionType)
   useEffect(() => {
-    if (isDepositPromotion) {
+    if (autoPayout) {
       setValue(AutoSentPlayerBonusFieldName, true)
     }
-  }, [isDepositPromotion])
+  }, [autoPayout])
 
   let isPromotionTypeTurnoverRelated =
     promotionTypeGroup === PromotionTypeGroup.Turnover ||
@@ -589,10 +587,10 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动派发" en="Distribution Method" />
         </NormalLabel>
         <Box>
-          {isDepositPromotion && (
+          {autoPayout && (
             <AutoOrManualPayoutSwitch readOnly disabled checked={true} />
           )}
-          {!isDepositPromotion && (
+          {!autoPayout && (
             <AutoOrManualPayoutSwitch readOnly={readOnly} disabled={disabled} />
           )}
         </Box>

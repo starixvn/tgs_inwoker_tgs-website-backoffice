@@ -62,6 +62,29 @@ export const usePromotionGroupValueOf = (promotionType) => {
   return group?.name ?? ""
 }
 
+export const useSettlementIntervalType = (promotionType) => {
+  let { isLoading, data: groups, error } = usePromotionTypeList()
+  if (isLoading) {
+    return ""
+  }
+
+  let result = groups?.reduce((result, group) => {
+    if (result) {
+      return result
+    }
+
+    let type = group?.types?.find((type) => type.name === promotionType)
+    return type
+  }, undefined)
+
+  return result?.settlementIntervalType ?? ""
+}
+
+export const useIsInstantlySettlementIntervalType = (promotionType) => {
+  let type = useSettlementIntervalType(promotionType)
+  return type === "Instantly"
+}
+
 export const findPromotionGroup = (promotionGroups = [], promotionType) => {
   return promotionGroups.reduce((result, group) => {
     if (result) {
