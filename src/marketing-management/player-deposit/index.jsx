@@ -34,8 +34,13 @@ import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
 import { yesterday } from "../../date/range"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
-import { usePlayerDepositCountList } from "./client"
+import {
+  usePlayerDepositCountList,
+  useFirstDepositPlayerList,
+  useNoSecondDepositPlayerList
+} from "./client"
 import numberColumn from "../../table/column/numberColumn"
+import { PlayerListDialogDisclosure } from "./PlayerListDialog"
 
 export { Code }
 
@@ -141,7 +146,7 @@ const SearchBar = ({
   isLoading,
   ...props
 }) => {
-  let QueryMaxRangeDays = 31
+  let QueryMaxRangeDays = 30
 
   let agentUsernamePlaceholder = useTrans({
     zh: "代理用户名",
@@ -188,6 +193,11 @@ const SearchBar = ({
 }
 
 const useColumns = ({ brandId, items = [], agentUsername }) => {
+  let playerListDialogTitle = useTrans({
+    zh: "玩家清單",
+    en: "Player List"
+  })
+
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
@@ -198,12 +208,24 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         disableSortBy: true
       }),
       numberColumn({
-        accessor: "firstFundInCount",
+        id: "firstFundInCount",
+        accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          return (
+            <PlayerListDialogDisclosure
+              value={record.registeredCount}
+              brandId={brandId}
+              agentUsername={agentUsername}
+              date={record.reportDate}
+              title={playerListDialogTitle}
+              useFetch={useFirstDepositPlayerList}
+            />
+          )
+        }
       }),
       numberColumn({
-        // accessor: "registeredCount",
         id: "noSecondDepositCount",
         accessor: (row) => row,
         Header: (
@@ -214,7 +236,16 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         ),
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          return record.registeredCount
+          return (
+            <PlayerListDialogDisclosure
+              value={record.registeredCount}
+              brandId={brandId}
+              agentUsername={agentUsername}
+              date={record.reportDate}
+              title={playerListDialogTitle}
+              useFetch={useNoSecondDepositPlayerList}
+            />
+          )
         }
       })
     ]

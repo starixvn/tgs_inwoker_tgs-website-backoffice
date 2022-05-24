@@ -109,9 +109,13 @@ const edit = async (page, user) => {
 
   let id = await page.inputValue(`input[name="id"]`)
   let expectedUrl = `/api/users/${id}`
+
   await Promise.all([
     page.waitForResponse((response) => {
       return response.url().endsWith(expectedUrl) && response.status() === 200
+    }),
+    page.waitForResponse((response) => {
+      return response.url().includes(`/api/users?`) && response.status() === 200
     }),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])

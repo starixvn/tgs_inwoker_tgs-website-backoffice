@@ -172,7 +172,7 @@ const useColumns = ({ items = [], mutate }) => {
             return (
               <Set orientation="horizontal" alignX="center">
                 <EditPlatformCreditDialogDisclosure
-                  id={`${value?.brandCode}-platform-credit-dialog-disclosure`}
+                  id={`platform-credit-dialog-disclosure`}
                   record={value}
                   onSubmitted={mutate}
                 />

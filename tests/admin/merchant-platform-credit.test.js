@@ -48,25 +48,31 @@ test("search by licensee name", async ({ page }) => {
   expect(rows.length).to.equal(0)
 })
 
-test("update platform credit", async ({ page, host }) => {
+test("update platform credit", async ({ page, host, platformCode }) => {
   await gotoPlatformCreditPage(page, host)
 
-  let DialogSelector = `#platform-credit-dialog`
-  let brandCodes = await getPlatformCodes(page)
-  let index = random(brandCodes.length - 1)
-  let brandCode = brandCodes[index]
-
+  await page.fill(`input[name="keyword"]`, platformCode)
   await Promise.all([
-    page.click(`#${brandCode}-platform-credit-dialog-disclosure`),
-    page.waitForSelector(`${DialogSelector} input[name="credit"]`)
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`keyword=${platformCode}`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`button[type="submit"]`)
   ])
-  let inputValueInString = await page.$eval(
-    `${DialogSelector} input[name="credit"]`,
-    (input) => input.value
+
+  let DialogSelector = `#platform-credit-dialog`
+  await openDialog(page, DialogSelector)
+
+  let creditInputLocator = page.locator(
+    `${DialogSelector} input[name="credit"]`
   )
+  let inputValueInString = await creditInputLocator.inputValue()
   let platformCredit = numeral(inputValueInString).value()
   let expectedValue = platformCredit + 10
   await page.fill(`${DialogSelector} input[name="credit"]`, `${expectedValue}`)
+
   let id = await page.inputValue(`${DialogSelector} input[name="id"]`)
   let expectedUrl = `/api/PlatformCredit/${id}/${expectedValue}`
 
@@ -83,9 +89,7 @@ test("update platform credit", async ({ page, host }) => {
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 
-  let creditLocator = page.locator(
-    `[data-row-index="${index}"] [data-column-id="credit"]`
-  )
+  let creditLocator = page.locator(`[data-column-id="credit"]`).first()
   let creditString = await creditLocator.textContent()
   let credit = numeral(creditString).value()
   expect(credit).to.equal(expectedValue)
@@ -143,18 +147,6 @@ test("pay platform credit and list payment list", async ({
 
   expect(paymentAmounts.length).to.be.above(0)
 })
-
-const getPlatformCodes = async (page) => {
-  let locator = page.locator(`[data-column-id="brandCode"]`)
-  return locator.allTextContents()
-  /*
-    await page.evaluate(() =>
-    Array.from(
-      window.document.querySelectorAll(`[data-column-id="brandCode"]`)
-    ).map(({ textContent }) => textContent)
-  )
-  */
-}
 
 const gotoPlatformCreditPage = async (page) => {
   await page.goto("/merchant/platformcredit", { waitUntil: "networkidle" })
