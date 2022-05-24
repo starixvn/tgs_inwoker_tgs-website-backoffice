@@ -14,7 +14,7 @@ const Signin = "Signin"
 
 const NewUser = "NewUser"
 
-const LuckyDraw = "LuckyDraw" //Raffle
+const LuckyDraw = "Lottery"
 
 export const PromotionTypeGroup = {
   Deposit,

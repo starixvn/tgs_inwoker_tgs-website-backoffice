@@ -25,10 +25,7 @@ test("system game providers and able to search by code or name", async ({
     value: gameProviderCode
   })
 
-  let code = await page.$eval(
-    `[data-column-id="code"]`,
-    ({ textContent }) => textContent
-  )
+  let code = await page.locator(`[data-column-id="code"]`).first().textContent()
   expect(code).to.equal(gameProviderCode)
 
   await page.click("#clear-code-button")
