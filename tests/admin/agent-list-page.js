@@ -100,7 +100,7 @@ export const openViewAgentDialog = async (page) => {
   let dialogSelector = `#view-agent-dialog`
   await Promise.all([
     page.waitForResponse((response) => {
-      return response.url().includes("/api/agent") && response.status() === 200
+      return response.url().includes("/api/agent/") && response.status() === 200
     }),
     openDialog(page, dialogSelector)
   ])
