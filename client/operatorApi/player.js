@@ -210,11 +210,37 @@ export const uploadIdentity = async (platformToken, playerToken) => {
   })
 }
 
+export const updateIdentity = async (platformToken, playerToken) => {
+  let formData = {
+    realname: faker.name.firstName(),
+    id: "53644419800101437X"
+  }
+
+  let headers = {
+    "Content-Type": "application/json",
+    "brand-token": platformToken,
+    Token: playerToken
+  }
+
+  let url = `${api()}/player/identity`
+  let results = await Promise.all([
+    fetcher(url, {
+      method: "PATCH",
+      body: JSON.stringify(formData),
+      headers
+    }),
+    uploadIdentity(platformToken, playerToken)
+  ])
+
+  return formData
+}
+
 export default {
   create,
   login,
   createAndLogin,
   addManualBankCard,
   findBankInfoIdByType,
-  uploadIdentity
+  uploadIdentity,
+  updateIdentity
 }

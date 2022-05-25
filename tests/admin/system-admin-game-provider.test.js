@@ -31,16 +31,14 @@ test("system game providers and able to search by code or name", async ({
   )
   expect(code).to.equal(gameProviderCode)
 
-  await Promise.all([
-    await page.click("#clear-code-button"),
-    await searchGameProviderByInputNameValue(page, {
-      name: "name",
-      value: gameProviderName
-    })
-  ])
+  await page.click("#clear-code-button")
+  await searchGameProviderByInputNameValue(page, {
+    name: "name",
+    value: gameProviderName
+  })
 
   code = await page.locator(`[data-column-id="code"]`).first().textContent()
-  expect(code).to.equal(gameProviderCode)
+  expect(code).to.includes(gameProviderCode)
 })
 
 test("system game provider games and able to search by code", async ({
@@ -161,10 +159,15 @@ const searchGameByInputNameValue = async (page, { name = "", value = "" }) => {
 const searchGameProviderByInputNameValue = async (
   page,
   { name = "", value = "" }
-) =>
+) => {
+  await page.fill(`input[name="${name}"]`, value)
   await Promise.all([
-    await page.fill(`input[name="${name}"]`, value),
-    await page.click(`button[type="submit"]`),
-    page.waitForLoadState("networkidle"),
-    page.waitForSelector("#game-provider tbody")
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes("/api/GameProvider?") &&
+        response.status() === 200
+      )
+    }),
+    page.click(`button[type="submit"]`)
   ])
+}

@@ -77,13 +77,13 @@ export const FileUploadButton = ({
           formState
         }) => {
           useEffect(() => {
-            if (fieldState.invalid && isLoading) {
+            if (fieldState.error && isLoading) {
               formMethods.clearErrors(name)
             }
-          }, [fieldState.invalid, isLoading])
+          }, [fieldState.error, isLoading])
 
-          let palette = fieldState.invalid ? "danger" : "default"
-          let variant = fieldState.invalid ? "outlined" : "default"
+          let palette = fieldState.error ? "danger" : "default"
+          let variant = fieldState.error ? "outlined" : "default"
           return (
             <>
               <Button

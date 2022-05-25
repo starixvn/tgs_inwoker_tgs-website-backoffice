@@ -176,6 +176,12 @@ const useColumns = ({ items = [] }) =>
         Header: <Trans zh="余额" en="Balance" />,
         TotalCell: () => null,
         disableSortBy: true
+      }),
+      textColumn({
+        accessor: "remark",
+        Header: <Trans zh="备注" en="Remark" />,
+        TotalCell: () => null,
+        disableSortBy: true
       })
     ],
     [JSON.stringify(items)]

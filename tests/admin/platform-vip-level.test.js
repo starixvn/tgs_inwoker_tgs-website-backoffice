@@ -100,11 +100,14 @@ const editVipLevel = async (page) => {
         response.status() === 200
       )
     }),
-    page.click(`#edit-vip-level-dialog button[type="submit"]`),
-    page.waitForLoadState("networkidle")
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/vipLevel?`) && response.status() === 200
+      )
+    }),
+    page.click(`#edit-vip-level-dialog button[type="submit"]`)
   ])
 
-  await page.waitForLoadState("domcontentloaded")
   return [id, vipLevel]
 }
 

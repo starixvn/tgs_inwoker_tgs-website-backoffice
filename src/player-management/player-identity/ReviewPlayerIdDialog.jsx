@@ -13,13 +13,16 @@ import {
   Divider
 } from "bumbag"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import Disclosure, { VerifyDisclosure } from "../../dialog/Disclosure"
+import Disclosure, {
+  VerifyDisclosure,
+  ViewDisclosure
+} from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import Backdrop from "../../dialog/Backdrop"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedDateTime, Trans, useTrans } from "../../i18n"
 import clone from "clone-deep"
 import { FieldValues } from "../../layout/Grid"
-import { usePlayer, usePlayerIdentity, useVerifyPlayerID } from "./client"
+import { usePlayerIdentity, useVerifyPlayerID } from "../player-identity/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import Textarea, { TextareaField } from "../../textarea"
@@ -30,24 +33,35 @@ import {
   PlayerIdentityStateLabel,
   isPlayerIdentityWaitingVerify
 } from "./PlayerIdentityState"
+import { InputField } from "../../input/Input"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { Update } from "./menu"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
   playerCode,
-  identityFormId,
+  formId,
+  status,
   onSubmitted,
   ...props
 }) => {
   let dialog = useModalState()
 
+  let waitingVerify = isPlayerIdentityWaitingVerify(status)
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+
   return (
     <>
-      <VerifyDisclosure {...dialog} {...props} />
+      {waitingVerify && hasUpdateAuth ? (
+        <VerifyDisclosure {...dialog} {...props} />
+      ) : (
+        <ViewDisclosure {...dialog} {...props} />
+      )}
       {dialog.visible && (
         <PlayerDialog
-          playerCode={playerCode}
-          identityFormId={identityFormId}
           brandId={brandId}
+          playerCode={playerCode}
+          formId={formId}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -59,54 +73,38 @@ export const ReviewPlayerIdDialogDisclosure = ({
 const PlayerDialog = ({
   brandId,
   playerCode,
-  identityFormId,
+  formId,
   record,
   dialog,
+  onSubmitted,
   ...props
 }) => {
-  let {
-    isLoading: isLoadingPlayer,
-    data: player,
-    error: playerError,
-    mutate: mutatePlayer,
-    deleteCache: deletePlayerCache
-  } = usePlayer(playerCode)
-  let {
-    isLoading: isLoadingPlayerIdentity,
-    data: playerIdentity,
-    error: playerIdentityError,
-    mutate: mutatePlayerIdentity,
-    deleteCache: deletePlayerIdentityCache
-  } = usePlayerIdentity(playerCode)
+  let { isLoading, data, error, mutate, deleteCache } =
+    usePlayerIdentity(playerCode)
 
-  if (isLoadingPlayer || isLoadingPlayerIdentity) {
+  if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
 
-  if (playerError) {
-    return <AlertDialog {...playerError} onClickClose={deletePlayerCache} />
+  if (error) {
+    return <AlertDialog {...error} onClickClose={deleteCache} />
   }
 
-  if (playerIdentityError) {
-    return (
-      <AlertDialog
-        {...playerIdentityError}
-        onClickClose={deletePlayerIdentityCache}
-      />
-    )
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
   }
 
   return (
     <ReviewDialog
       {...props}
+      brandId={brandId}
       playerCode={playerCode}
-      identityFormId={identityFormId}
-      record={{
-        brandId,
-        identityFormId,
-        ...clone(player),
-        ...clone(playerIdentity),
-        identityStatus: playerIdentity.status
+      formId={formId}
+      record={clone(data)}
+      onSubmitted={() => {
+        onSubmitted?.()
+        reset()
       }}
       dialog={dialog}
     />
@@ -114,19 +112,21 @@ const PlayerDialog = ({
 }
 
 const ReviewDialog = ({
+  brandId,
   playerCode,
-  identityFormId,
+  formId,
   record = {},
   dialog,
   ...props
 }) => {
-  let defaultValues = clone(record)
+  let defaultValues = { ...clone(record), brandId }
+
   let formMethods = useForm({ defaultValues })
   let { setValue } = formMethods
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } = useVerifyPlayerID(
-    identityFormId,
+    formId,
     formData
   )
 
@@ -145,8 +145,10 @@ const ReviewDialog = ({
     en: "ID Verification"
   })
 
-  let editable = isPlayerIdentityWaitingVerify(record.identityStatus)
+  let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
+  let editable = hasUpdateAuth && isPlayerIdentityWaitingVerify(record.status)
   let readOnly = !editable
+
   let hasAttchment = !!record?.authData?.PlayerIdentityFileId
   let attachmentUrl = `/api/fs/${record?.authData?.PlayerIdentityFileId}`
   return (
@@ -188,10 +190,28 @@ const ReviewDialog = ({
       <FieldStack>
         <FieldValues>
           <Trans zh="真实姓名" en="Real name" />
-          <Box>{record?.realName}</Box>
+          <Box>
+            <InputField
+              name="realName"
+              defaultValue={record?.realName}
+              readOnly={readOnly}
+              disabled={readOnly}
+              showEmptyFieldValueAddonAfter={editable}
+              required
+            />
+          </Box>
 
           <Trans zh="身分证" en="IC Number" />
-          <Set alignY="center">{record?.idNumber}</Set>
+          <Set alignY="center">
+            <InputField
+              name="idNumber"
+              readOnly={readOnly}
+              defaultValue={record?.idNumber}
+              disabled={readOnly}
+              showEmptyFieldValueAddonAfter={editable}
+              required
+            />
+          </Set>
 
           <Trans zh="附件" en="Attachment" />
           <Box>
@@ -205,12 +225,27 @@ const ReviewDialog = ({
 
           <Trans zh="状态" en="Status" />
           <Box>
-            <PlayerIdentityStateLabel value={record.identityStatus} />
+            <PlayerIdentityStateLabel value={record.status} />
           </Box>
+
+          <Trans zh="申请时间" en="Application Time" />
+          <Box>
+            <FormattedDateTime value={record.createdOn} />
+          </Box>
+
+          {record.reviewedOn && (
+            <>
+              <Trans zh="审核时间" en="Review Time" />
+              <Box>
+                <FormattedDateTime value={record.reviewedOn} />
+              </Box>
+            </>
+          )}
         </FieldValues>
         <Divider />
         <TextareaField
           name="remark"
+          defaultValue={defaultValues.remark}
           label={<Trans zh="备注" en="Remark" />}
           readOnly={readOnly}
         />

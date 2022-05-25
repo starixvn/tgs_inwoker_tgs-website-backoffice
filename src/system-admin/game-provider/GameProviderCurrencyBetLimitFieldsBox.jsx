@@ -440,8 +440,8 @@ const CurrencyCodeDisclosure = ({
               </Button>
               <ConfigIconDisclosure
                 size="small"
-                palette={fieldState?.invalid ? "warning" : "default"}
-                variant={fieldState?.invalid ? "outlined" : "default"}
+                palette={fieldState?.error ? "warning" : "default"}
+                variant={fieldState?.error ? "outlined" : "default"}
                 {...dialog}
               />
             </Group>

@@ -747,7 +747,7 @@ const UploadListColumn = ({ name = "", title, fileName = "" }) => {
       shouldUnregister={true}
       render={({
         field: { onChange, onBlur, value, name, ref },
-        fieldState: { invalid, isTouched, isDirty }
+        fieldState: { isTouched, isDirty, error }
       }) => (
         <Columns.Column display="flex" flexDirection="column">
           {error && <AlertDialog {...error} onClickClose={resetFormData} />}

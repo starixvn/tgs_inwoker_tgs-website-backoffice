@@ -2,11 +2,12 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Text, Set, Icon } from "bumbag"
 import { faCertificate } from "@fortawesome/free-solid-svg-icons"
-import { Trans } from "../../i18n"
+import { Trans, useTrans } from "../../i18n"
+import Select from "../../select/Select"
 
 const WaitingVerify = "WaitingVerify"
 const WaitingVerifyTrans = {
-  zh: "等待审核",
+  zh: "审核中",
   en: "Waiting Verify"
 }
 
@@ -24,6 +25,29 @@ const RejectTrans = {
 
 export const isPlayerIdentityWaitingVerify = (value) => {
   return value === WaitingVerify
+}
+
+export const PlayerIdentitySelect = ({ ...props }) => {
+  let placeholder = useTrans({
+    zh: "实名认证状态",
+    en: "Review Identity Status"
+  })
+  let options = [
+    {
+      label: useTrans(WaitingVerifyTrans),
+      value: WaitingVerify
+    },
+    {
+      label: useTrans(ApproveTrans),
+      value: Approve
+    },
+    {
+      label: useTrans(RejectTrans),
+      value: Reject
+    }
+  ]
+
+  return <Select placeholder={placeholder} options={options} {...props} />
 }
 
 export const PlayerIdentityStateLabel = ({ value = "" }) => {

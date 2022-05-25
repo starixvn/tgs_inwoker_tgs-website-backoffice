@@ -74,7 +74,7 @@ export const BrandLanguageCheckboxGroupTable = ({
                             name: fieldName,
                             ref
                           },
-                          fieldState: { invalid, isTouched, isDirty }
+                          fieldState: { isTouched, isDirty, error }
                         }) => {
                           let dialog = useModalState()
                           return (

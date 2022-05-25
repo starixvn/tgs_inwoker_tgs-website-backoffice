@@ -8,7 +8,8 @@ import {
   Dialog,
   Modal,
   Heading,
-  Link
+  Link,
+  Set
 } from "bumbag"
 import {
   FormattedDateTime,
@@ -177,6 +178,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
               </Box>
             </>
           )}
+          <CryptoApplyInfoBox record={record} />
         </FieldValues>
         <Separator />
         <BankInfoBox record={record} />
@@ -195,6 +197,36 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         />
       </FieldStack>
       <Input type="hidden" value={brandId} />
+    </>
+  )
+}
+
+const CryptoApplyInfoBox = ({ record }) => {
+  let address = record?.applyInfo?.address
+  if (!address) {
+    return null
+  }
+
+  let sendAmount = record?.applyInfo?.sendAmount
+  let bankType = record?.applyInfo?.bankType?.toUpperCase?.() ?? ""
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="匯率" en="Exchange rate" />
+      </NormalLabel>
+      <Box alignY="center">
+        <FormattedNumberDecimal value={record?.applyInfo?.rate} />
+      </Box>
+      <NormalLabel>
+        <Trans zh={bankType} en={bankType} />
+      </NormalLabel>
+      <Set alignY="center">
+        <FormattedNumberDecimal value={sendAmount} />
+      </Set>
+      <NormalLabel>
+        <Trans zh="钱包地址" en="Wallet Address" />
+      </NormalLabel>
+      <Box alignY="center">{address}</Box>
     </>
   )
 }

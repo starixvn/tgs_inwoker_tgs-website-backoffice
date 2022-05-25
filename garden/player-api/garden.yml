@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: player-api
-image: player-api
+image: harbor.rpgp.cc/tgs/player-api:202205170218-dev # player-api
 services:
   - name: player-api
     dependencies:

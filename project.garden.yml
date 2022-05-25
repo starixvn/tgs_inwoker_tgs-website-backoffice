@@ -69,19 +69,22 @@ services:
     volumes:
       - name: data
         containerPath: /data
-# ---
-# kind: Module
-# type: exec
-# name: backoffice-site-test
-# include: [.]
-# exclude: [src, garden]
-# tests:
-#   - name: end-to-end
-#     dependencies:
-#       - backoffice-site
-#       - init-seeding
-#     command:
-#       - npm run test
-#     env:
-#       HOST: http://backoffice.localhost
-#       SBO_HOST: http://sbo-api.localhost
+---
+kind: Module
+type: exec
+name: backoffice-site-test
+include: [.]
+exclude: [src, garden]
+tests:
+  - name: end-to-end
+    dependencies:
+      - backoffice-site
+      # - init-seeding
+    command:
+      - npm run test
+    artifacts:
+      - source: ./report/*
+        target: backoffice-site-test-result
+    env:
+      HOST: http://backoffice.localhost
+      SBO_HOST: http://sbo-api.localhost

@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: log-api
 image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/log-api:dev-202110280944
+disabled: true
 services:
   - name: log-api
     dependencies:

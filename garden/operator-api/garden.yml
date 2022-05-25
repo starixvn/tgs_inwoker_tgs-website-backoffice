@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: operator-api
-image: operator-api
+image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/operator-api:2022.0518.0525-dev # operator-api
 services:
   - name: operator-api
     dependencies:
@@ -19,6 +19,7 @@ services:
       Operator__PaymentServiceBaseUrl: "http://payment-api"
       Operator__BrandCertificateBaseUrl: "http://brand-cert-api"
       Operator__CashBaseUrl: "http://cash-service"
+      Operator__PlayerServiceBaseUrl: "http://player-api"
       Promotion__Url: "http://promotion-api"
       ForwardedHeaders__ForwardedForHeaderName: "X-Forwarded-For"
     ingresses:

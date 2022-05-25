@@ -45,15 +45,7 @@ const editPlayerInfo = async (page, player) => {
 }
 
 const viewPlayerInfo = async (page, info, player) => {
-  let [, dialogSelector] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/${player.code}`) &&
-        response.status() === 200
-      )
-    }),
-    openViewPlayerDialog(page)
-  ])
+  let dialogSelector = await openViewPlayerDialog(page)
 
   let realNameSelector = page.locator(
     `${dialogSelector} [data-field="realName"]`
