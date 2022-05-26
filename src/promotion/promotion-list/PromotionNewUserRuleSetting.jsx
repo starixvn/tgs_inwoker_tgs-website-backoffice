@@ -75,6 +75,9 @@ export const RegisterRuleSetting = ({
         max={limitedTotalAmount ? totalAmountLimit : undefined}
         required
         disabled={disabled}
+        registerOptions={{
+          valueAsNumber: true
+        }}
       />
 
       <NormalLabel>
@@ -90,6 +93,9 @@ export const RegisterRuleSetting = ({
             <Trans zh="倍" en="Multipliers" />
           </Button>
         }
+        registerOptions={{
+          valueAsNumber: true
+        }}
       />
     </FieldValues>
   )
