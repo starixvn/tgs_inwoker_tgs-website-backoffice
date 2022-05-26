@@ -193,15 +193,23 @@ const newDateRange = () => ({
 })
 
 const Deposit = "Deposit"
+const Deposited = "Deposited"
 const DepositTrans = {
   zh: "存款",
   en: "Deposit"
 }
 
 const Withdrawal = "Withdrawal"
+const WithdrawLock = "WithdrawLock"
 const WithdrawalTrans = {
   zh: "提款",
   en: "Withdrawal"
+}
+
+const WithdrawCommit = "WithdrawCommit"
+const WithdrawCommitTrans = {
+  zh: "提款完成",
+  en: "Complete Withdrawal"
 }
 
 const isDepositOrWithdrawal = (value) =>
@@ -299,6 +307,7 @@ const AdjustResettledBetManualTrans = {
 }
 
 const CancelWithdrawal = "CancelWithdrawal"
+const WithdrawRollback = "WithdrawRollback"
 const CancelWithdrawalTrans = {
   zh: "取消提款",
   en: "Cancel Withdrawal"
@@ -392,9 +401,13 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
 export const PlayerTransactionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Deposit:
+    case Deposited:
       return <Trans {...DepositTrans} />
     case Withdrawal:
+    case WithdrawLock:
       return <Trans {...WithdrawalTrans} />
+    case WithdrawCommit:
+      return <Trans {...WithdrawCommitTrans} />
     case PlayerAdjustBalanceType.Company:
     case PlayerAdjustBalanceType.Agent:
     case PlayerAdjustBalanceType.System:
@@ -429,6 +442,7 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
     case AdjustResettledBetManual:
       return <Trans {...AdjustResettledBetManualTrans} />
     case CancelWithdrawal:
+    case WithdrawRollback:
       return <Trans {...CancelWithdrawalTrans} />
     default:
       return value
