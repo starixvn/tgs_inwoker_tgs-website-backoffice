@@ -199,8 +199,14 @@ const SettingDialog = ({ record = [], readOnly, dialog, onChange }) => {
         footer={
           !editable && <CloseButtonFooter dialog={dialog} alignX="right" />
         }
-        minWidth="70vw"
-        maxWidth="100vw"
+        width="max-content"
+        maxWidth="90vw"
+        css={css`
+          & .bb-DialogContent {
+            height: max-content;
+            max-height: 90vh;
+          }
+        `}
       >
         <FormBody readOnly={readOnly} />
       </FormDialog>

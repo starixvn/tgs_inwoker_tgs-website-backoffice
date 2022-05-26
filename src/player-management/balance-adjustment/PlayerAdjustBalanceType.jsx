@@ -15,6 +15,12 @@ import Select from "../../select/Select"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { SystemTransactionType } from "./menu"
 
+export const Bonus = "BonusAdjust"
+const BonusTrans = {
+  zh: "优惠调帐",
+  en: "Bonus Adjust"
+}
+
 export const Company = "CompanyAdjust"
 const CompanyTrans = {
   zh: "公司调账",
@@ -40,17 +46,24 @@ const TransferTrans = {
 }
 
 export default {
+  Bonus,
   Company,
   Agent,
   System,
   Transfer
 }
 
-export const isCompanyOrAgent = (type) => type === Company || type === Agent
+export const showIncludeInNetProfitSetting = (type) =>
+  type === Bonus || type === Company || type === Agent
+
 export const isTransfer = (type) => type === Transfer
 
 export const usePlayerAdjustBalanceTypeOptionList = () => {
   let options = [
+    {
+      label: useTrans(BonusTrans),
+      value: Bonus
+    },
     {
       label: useTrans(CompanyTrans),
       value: Company
@@ -101,6 +114,10 @@ export const PlayerAdjustBalanceTypeSelect = ({
   let hasSystemType = useIsDisplayMenuByRoute([SystemTransactionType])
 
   let options = [
+    {
+      label: useTrans(BonusTrans),
+      value: Bonus
+    },
     {
       label: useTrans(CompanyTrans),
       value: Company

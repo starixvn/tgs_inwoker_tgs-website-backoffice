@@ -42,6 +42,7 @@ const ThirdParty = "ThirdParty"
 const FPS = "FPS"
 const USDT = "USDT"
 const Usdt = "Usdt"
+const EWallet = "Ewallet"
 
 export const PaymentMethodSetting = ({
   brandId,
@@ -68,9 +69,37 @@ export const PaymentMethodSetting = ({
     case USDT:
     case Usdt:
       return <CryptoSetting brandId={brandId} />
+    case EWallet:
+      return <EWalletSetting brandId={brandId} />
     default:
       return null
   }
+}
+
+const EWalletSetting = ({}) => {
+  return (
+    <>
+      <Label>
+        <Trans zh="电话号码" en="Phone" />
+      </Label>
+      <Input name="extendedData.phone" />
+
+      <Label>
+        <Trans zh="E-money Name" en="E-money Name" />
+      </Label>
+      <Input name="extendedData.name" />
+
+      <Label>
+        <Trans zh="QR Code" en="QR Code" />
+      </Label>
+      <ImageUploadButton
+        brandId={brandId}
+        name="extendedData.qrCodeFileUrl"
+        prefix="payment"
+        showLocalizationAddonAfter={false}
+      />
+    </>
+  )
 }
 
 const CryptoSetting = ({ brandId }) => {

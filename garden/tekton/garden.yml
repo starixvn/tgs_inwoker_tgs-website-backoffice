@@ -1,0 +1,17 @@
+kind: Module
+type: exec
+name: tekton
+tasks:
+  - name: init-tekton-pipeline
+    command:
+      - kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/previous/v0.35.1/release.yaml
+  - name: init-tekton-trigger
+    command:
+      - kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/previous/v0.20.0/release.yaml
+    dependencies:
+      - init-tekton-pipeline
+  - name: init-tekton
+    command:
+      - kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/previous/v0.20.0/interceptors.yaml
+    dependencies:
+      - init-tekton-trigger
