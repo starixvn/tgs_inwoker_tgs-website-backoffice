@@ -60,7 +60,7 @@ const Body = () => {
   let [brandId, setBrandId] = useState(userBrandId)
 
   return (
-    <Set orientation="vertical" isFilled>
+    <Set orientation="vertical" isFilled height="100%">
       <BrandBar
         id="page-merchant-bar"
         onBrandChange={(value) => {
@@ -131,6 +131,7 @@ const BodyContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>

@@ -43,6 +43,7 @@ const FPS = "FPS"
 const USDT = "USDT"
 const Usdt = "Usdt"
 const EWallet = "Ewallet"
+const Pulsa = "Pulsa"
 
 export const PaymentMethodSetting = ({
   brandId,
@@ -71,12 +72,25 @@ export const PaymentMethodSetting = ({
       return <CryptoSetting brandId={brandId} />
     case EWallet:
       return <EWalletSetting brandId={brandId} />
+    case Pulsa:
+      return <PulsaSetting brandId={brandId} />
     default:
       return null
   }
 }
 
-const EWalletSetting = ({}) => {
+const PulsaSetting = ({ brandId }) => {
+  return (
+    <>
+      <Label required>
+        <Trans zh="电话号码" en="Phone" />
+      </Label>
+      <Input name="extendedData.phone" required />
+    </>
+  )
+}
+
+const EWalletSetting = ({ brandId }) => {
   return (
     <>
       <Label>
