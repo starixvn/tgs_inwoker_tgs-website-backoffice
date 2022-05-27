@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-api
-image: harbor.rpgp.cc/tgs/promotion-api:2022.05.25.0140-dev # promotion-api
+image: harbor.rpgp.cc/tgs/promotion-api:2022.05.26.0829-dev # promotion-api
 services:
   - name: promotion-api
     dependencies:

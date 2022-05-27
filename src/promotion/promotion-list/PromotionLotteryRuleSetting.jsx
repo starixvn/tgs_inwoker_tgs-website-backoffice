@@ -348,6 +348,9 @@ const SettingRow = ({
           min={0}
           max={10000}
           size="small"
+          registerOptions={{
+            valueAsNumber: true
+          }}
         />
       </Table.Cell>
       <Table.Cell>
