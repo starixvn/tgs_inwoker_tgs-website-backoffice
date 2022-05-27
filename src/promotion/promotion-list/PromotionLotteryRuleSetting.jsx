@@ -105,9 +105,7 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
   let defaultValue = useWatch({
     control,
     name,
-    defaultValue: Array.from({ length: 6 }, (x, i) => ({
-      id: null
-    }))
+    defaultValue: Array.from({ length: 6 }, (x, i) => ({}))
   })
 
   let disabled = readOnly
@@ -327,7 +325,13 @@ const SettingRow = ({
       <Table.Cell>
         <Box>
           {index + 1}
-          <Input type="hidden" name={`${name}.${index}.id`} value={field.id} />
+          {field.id && (
+            <Input
+              type="hidden"
+              name={`${name}.${index}.id`}
+              value={field.id}
+            />
+          )}
         </Box>
       </Table.Cell>
       <Table.Cell>

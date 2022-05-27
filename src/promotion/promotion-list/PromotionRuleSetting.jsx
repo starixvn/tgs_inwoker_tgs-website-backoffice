@@ -112,7 +112,11 @@ const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
       <NumberInput
         name="bonusAmountLimit"
         min="0"
-        max={limitedTotalAmount ? totalAmountLimit : undefined}
+        max={
+          limitedTotalAmount && Number.isFinite(totalAmountLimit)
+            ? totalAmountLimit
+            : undefined
+        }
         required
         disabled={disabled}
       />
