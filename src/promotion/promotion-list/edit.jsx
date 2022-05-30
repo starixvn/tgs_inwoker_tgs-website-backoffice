@@ -482,6 +482,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
   let disabled = readOnly
   let editable = !readOnly
+  let promotionTypeEditable = editable && isAdd
   let required = editable
   return (
     <FieldStack marginLeft="1rem" paddingBottom="1.5rem">
@@ -535,7 +536,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动类型" en="Promotion Type" />
         </NormalLabel>
         <Box alignY="center">
-          {editable && (
+          {promotionTypeEditable && (
             <PromotionTypeGroupSelect
               name={PromotionTypeGroupFieldName}
               onChange={(event) => {
@@ -545,7 +546,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
               required
             />
           )}
-          {disabled && (
+          {!promotionTypeEditable && (
             <>
               <PromotionTypeGroupSelect
                 name={PromotionTypeGroupFieldName}
@@ -564,14 +565,14 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动子类型" en="Promotion SubType" />
         </NormalLabel>
         <Box alignY="center">
-          {editable && (
+          {promotionTypeEditable && (
             <PromotionTypeSelect
               name={PromotionTypeFieldName}
               group={promotionTypeGroup}
               required
             />
           )}
-          {disabled && (
+          {!promotionTypeEditable && (
             <>
               <PromotionTypeSelect
                 name={PromotionTypeFieldName}

@@ -1,17 +1,24 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { selectRandomPlatform } from "../page/content.js"
+import { selectRandomPlatform, selectPlatformByCode } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("add, edit and remove live chat provider", async ({ page }) => {
-  let brandId = await gotoPlatformCustomerServicePage(page)
-
-  let expectedUrl = `/api/BrandLiveChat/${brandId}`
-  let brandLiveChatResponse = await page.waitForResponse((response) => {
-    return response.url().endsWith(expectedUrl) && response.status() === 200
-  })
+test("add, edit and remove live chat provider", async ({
+  page,
+  platform,
+  platformCode
+}) => {
+  let [brandLiveChatResponse] = await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().endsWith(`/api/BrandLiveChat/${platform.id}`) &&
+        response.status() === 200
+      )
+    }),
+    gotoPlatformCustomerServicePage(page, platformCode)
+  ])
   let brandLiveChatSetting = await brandLiveChatResponse.json()
   let hasSetting = !!(brandLiveChatSetting && brandLiveChatSetting.data)
 
@@ -124,7 +131,7 @@ const deleteLiveChat = async (page) => {
   ])
 }
 
-const gotoPlatformCustomerServicePage = async (page) => {
+const gotoPlatformCustomerServicePage = async (page, code) => {
   await page.goto("/platform/imsettings", { waitUntil: "networkidle" })
-  return await selectRandomPlatform(page)
+  return await selectPlatformByCode(page, code)
 }

@@ -64,10 +64,12 @@ const viewDomain = async (page, platform, agent, expectedDomain) => {
     page.click(`${dialogSelector} #AgentDomainList`)
   ])
 
-  let domainLocator = await page.locator(
-    `${dialogSelector} [aria-labelledby="AgentDomainList"] input`
-  )
-  let domain = await domainLocator.inputValue()
+  let WaitForViewUpdate = 500
+  await page.waitForTimeout(WaitForViewUpdate)
+
+  let domain = await page
+    .locator(`${dialogSelector} [aria-labelledby="AgentDomainList"] input`)
+    .inputValue()
   expect(domain).to.equals(expectedDomain)
 
   await page.click(`${dialogSelector} .bb-DialogClose`)

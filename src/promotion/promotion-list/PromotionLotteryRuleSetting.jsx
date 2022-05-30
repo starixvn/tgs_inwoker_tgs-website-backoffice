@@ -54,6 +54,7 @@ import AlertDialog, { AlertDialogModal } from "../../dialog/Alert"
 import { Switch } from "../../switch/Switch"
 import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import { get, set } from "lodash-es"
 
 export const PromotionLotteryRuleSetting = ({ promotionType, ...props }) => {
   switch (promotionType) {
@@ -97,15 +98,24 @@ const validateAllRequired = (fieldName, settings = []) => {
   return pass
 }
 
-const ListFieldName = "rule"
-const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
+const SettingFieldName = "rule"
+const ListFieldName = "items"
+const SettingDisclosure = ({
+  name = SettingFieldName,
+  readOnly,
+  limitedTotalAmount,
+  totalAmountLimit,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let { control, setValue } = useFormContext()
   let defaultValue = useWatch({
     control,
     name,
-    defaultValue: Array.from({ length: 6 }, (x, i) => ({}))
+    defaultValue: {
+      items: Array.from({ length: 6 }, (x, i) => ({}))
+    }
   })
 
   let disabled = readOnly
@@ -123,7 +133,7 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
 
           let passTotalChancePercentage = validateTotalWinningProbability(
             WinningProbabilityFieldName,
-            settings
+            get(settings, ListFieldName)
           )
           if (!passTotalChancePercentage) {
             return "TotalChancePercentage"
@@ -152,11 +162,14 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
             {dialog.visible && (
               <SettingDialog
                 record={value}
+                limitedTotalAmount={limitedTotalAmount}
+                totalAmountLimit={totalAmountLimit}
                 onChange={(data) => {
                   let editable = !readOnly
                   if (editable) {
+                    let items = get(data, ListFieldName)
                     console.log(`setValue ${name} > `, data)
-                    setValue(name, data, { shouldValidate: true })
+                    setValue(name, { items }, { shouldValidate: true })
                   }
                 }}
                 readOnly={readOnly}
@@ -170,22 +183,27 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
   )
 }
 
-const SettingDialog = ({ record = [], readOnly, dialog, onChange }) => {
+const SettingDialog = ({
+  record = {},
+  limitedTotalAmount,
+  totalAmountLimit,
+  readOnly,
+  dialog,
+  onChange
+}) => {
   let title = useTrans({
     zh: "轮盘设置",
     en: "Roulette Setting"
   })
 
   let editable = !readOnly
-  let defaultValues = {}
-  Reflect.set(defaultValues, ListFieldName, clone(record))
 
   return (
     <Backdrop {...dialog}>
       <FormDialog
-        defaultValues={defaultValues}
+        defaultValues={clone(record)}
         onSubmit={(data) => {
-          onChange?.(Reflect.get(data, ListFieldName))
+          onChange?.(data)
           dialog.hide()
         }}
         stopPropagation={true}
@@ -206,13 +224,23 @@ const SettingDialog = ({ record = [], readOnly, dialog, onChange }) => {
           }
         `}
       >
-        <FormBody readOnly={readOnly} />
+        <FormBody
+          limitedTotalAmount={limitedTotalAmount}
+          totalAmountLimit={totalAmountLimit}
+          readOnly={readOnly}
+        />
       </FormDialog>
     </Backdrop>
   )
 }
 
-const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
+const FormBody = ({
+  name = ListFieldName,
+  limitedTotalAmount,
+  totalAmountLimit,
+  readOnly,
+  ...props
+}) => {
   let { control, register, formState } = useFormContext()
 
   let fieldArray = useFieldArray({
@@ -263,6 +291,8 @@ const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
               name={name}
               key={field._id}
               field={field}
+              limitedTotalAmount={limitedTotalAmount}
+              totalAmountLimit={totalAmountLimit}
               index={index}
               fieldArray={fieldArray}
               readOnly={readOnly}
@@ -316,6 +346,12 @@ const SettingRow = ({
   let bouns = useWatch({
     control,
     name: BonusFieldName
+  })
+
+  let IsDefaultFieldName = `${name}.${index}.isDefault`
+  let isDefault = useWatch({
+    control,
+    name: IsDefaultFieldName
   })
 
   let editable = !readOnly
@@ -402,7 +438,8 @@ const SettingRow = ({
       </Table.Cell>
       <Table.Cell>
         <Switch
-          name={`${name}.${index}.isDefault`}
+          name={IsDefaultFieldName}
+          defaultChecked={isDefault}
           readOnly={readOnly}
           disabled={disabled}
           registerOptions={{
