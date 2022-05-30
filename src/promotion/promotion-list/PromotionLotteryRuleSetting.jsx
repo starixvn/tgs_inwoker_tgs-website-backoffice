@@ -14,7 +14,9 @@ import {
   Heading,
   FieldStack,
   Table,
-  Stack
+  Stack,
+  Popover,
+  Alert
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, {
@@ -55,6 +57,7 @@ import { Switch } from "../../switch/Switch"
 import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { get, set } from "lodash-es"
+import Big from "big.js"
 
 export const PromotionLotteryRuleSetting = ({ promotionType, ...props }) => {
   switch (promotionType) {
@@ -76,9 +79,16 @@ export const PromotionRouletteRuleSetting = ({ ...props }) => {
 
 const WinningProbabilityFieldName = "winningProbability"
 
-const validateTotalWinningProbability = (fieldName, settings = []) => {
-  let totalChancePercentage = sumBy(settings, fieldName)
-  let pass = totalChancePercentage === 100
+const validateTotalWinningPercentage = (fieldName, settings = []) => {
+  let totalChancePercentage = settings.reduce((totalPercentage, setting) => {
+    let percentage = get(setting, fieldName)
+    if (Number.isFinite(percentage)) {
+      totalPercentage = totalPercentage.plus(new Big(percentage))
+    }
+    return totalPercentage
+  }, new Big(0))
+
+  let pass = totalChancePercentage.toNumber() <= 100
   return pass
 }
 
@@ -100,6 +110,7 @@ const validateAllRequired = (fieldName, settings = []) => {
 
 const SettingFieldName = "rule"
 const ListFieldName = "items"
+const TitleFieldName = "title"
 const SettingDisclosure = ({
   name = SettingFieldName,
   readOnly,
@@ -114,7 +125,9 @@ const SettingDisclosure = ({
     control,
     name,
     defaultValue: {
-      items: Array.from({ length: 6 }, (x, i) => ({}))
+      items: Array.from({ length: 6 }, (x, index) => {
+        return index == 0 ? { isDefault: true } : {}
+      })
     }
   })
 
@@ -126,20 +139,15 @@ const SettingDisclosure = ({
       defaultValue={defaultValue}
       rules={{
         required: true,
-        validate: (settings) => {
+        validate: (data) => {
           if (disabled) {
             return true
           }
 
-          let passTotalChancePercentage = validateTotalWinningProbability(
-            WinningProbabilityFieldName,
-            get(settings, ListFieldName)
-          )
-          if (!passTotalChancePercentage) {
-            return "TotalChancePercentage"
-          }
-
-          return true
+          let items = get(data, ListFieldName)
+          let pass = validateAllRequired(TitleFieldName, items)
+          console.log("pass", pass, "items", items)
+          return pass
         }
       }}
       render={({
@@ -198,12 +206,40 @@ const SettingDialog = ({
 
   let editable = !readOnly
 
+  let items =
+    record?.items?.map((item) => {
+      let winningProbability = get(item, WinningProbabilityFieldName)
+      if (Number.isFinite(winningProbability)) {
+        winningProbability = new Big(winningProbability)
+          .times(new Big(100))
+          .toNumber()
+      }
+
+      return {
+        ...clone(item),
+        winningProbability
+      }
+    }) ?? []
+
   return (
     <Backdrop {...dialog}>
       <FormDialog
-        defaultValues={clone(record)}
+        defaultValues={{ items }}
         onSubmit={(data) => {
-          onChange?.(data)
+          let items = data.items.map((item) => {
+            let winningProbability = get(item, WinningProbabilityFieldName)
+            if (Number.isFinite(winningProbability)) {
+              winningProbability = new Big(winningProbability)
+                .div(new Big(100))
+                .toNumber()
+            }
+
+            return {
+              ...item,
+              winningProbability
+            }
+          })
+          onChange?.({ items })
           dialog.hide()
         }}
         stopPropagation={true}
@@ -255,8 +291,8 @@ const FormBody = ({
   })
 
   let totalChancePercentageMessage = useTrans({
-    zh: "中奖机率加总须为100",
-    en: "Winning probability must add up to 100"
+    zh: "中奖机率加总须小于100",
+    en: "Total winning probability must be less than 100"
   })
   let [errors, setErrors] = useState([])
   return (
@@ -305,11 +341,12 @@ const FormBody = ({
         control={control}
         rules={{
           validate: () => {
-            let pass = validateTotalWinningProbability(
+            let pass = validateTotalWinningPercentage(
               WinningProbabilityFieldName,
               values
             )
-            if (formState.isSubmitting && !pass) {
+
+            if (!pass) {
               setErrors([totalChancePercentageMessage])
             }
             return pass ? true : totalChancePercentageMessage
@@ -372,7 +409,7 @@ const SettingRow = ({
       </Table.Cell>
       <Table.Cell>
         <Input
-          name={`${name}.${index}.title`}
+          name={`${name}.${index}.${TitleFieldName}`}
           readOnly={readOnly}
           disabled={disabled}
           maxLength={10}
@@ -397,14 +434,14 @@ const SettingRow = ({
         <NumberInput
           name={`${name}.${index}.${chancePercentageFieldName}`}
           readOnly={readOnly}
-          disabled={disabled}
+          disabled={disabled || isDefault}
           defaultValue={field.chancePercentage}
           registerOptions={{
             valueAsNumber: true
           }}
           min={0}
           max={100}
-          required
+          required={!isDefault}
           size="small"
         />
       </Table.Cell>
@@ -426,32 +463,35 @@ const SettingRow = ({
         <NumberInput
           name={`${name}.${index}.dailyWinningLimit`}
           readOnly={readOnly}
-          disabled={disabled}
+          disabled={disabled || isDefault}
           defaultValue={field.dailyWinningLimit}
           registerOptions={{
             valueAsNumber: true
           }}
           min={0}
-          required
+          required={!isDefault}
           size="small"
         />
       </Table.Cell>
       <Table.Cell>
-        <Switch
-          name={IsDefaultFieldName}
-          defaultChecked={isDefault}
-          readOnly={readOnly}
-          disabled={disabled}
-          registerOptions={{
-            validate: () => {
-              let defaultNames = fieldArray.fields.map(
-                (_, fieldIndex) => `${name}.${fieldIndex}.isDefault`
-              )
-              let values = getValues(defaultNames)
-              let checkedValues = values.filter((bool) => bool)
-              return checkedValues.length === 1 ? true : "OneDefault"
-            }
-          }}
+        {index === 0 && (
+          <Switch
+            name={IsDefaultFieldName}
+            checked={true}
+            readOnly={readOnly}
+            disabled={disabled}
+            /*
+            registerOptions={{
+              validate: () => {
+                let defaultNames = fieldArray.fields.map(
+                  (_, fieldIndex) => `${name}.${fieldIndex}.isDefault`
+                )
+                let values = getValues(defaultNames)
+                let checkedValues = values.filter((bool) => bool)
+                return checkedValues.length === 1 ? true : "OneDefault"
+              }
+            }}
+            
           onChange={(event) => {
             let checked = event.target.checked
             if (checked) {
@@ -462,7 +502,9 @@ const SettingRow = ({
               })
             }
           }}
-        />
+          */
+          />
+        )}
       </Table.Cell>
     </Table.Row>
   )
