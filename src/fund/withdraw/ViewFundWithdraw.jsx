@@ -209,7 +209,7 @@ export const FormBody = ({ brandId, record, readonly }) => {
 
         <TextareaField
           name="remark"
-          label={<Trans zh="备注" en="Remark" />}
+          label={<Trans zh="客服备註" en="CS Note" />}
           disabled={disabled}
         />
       </FieldStack>

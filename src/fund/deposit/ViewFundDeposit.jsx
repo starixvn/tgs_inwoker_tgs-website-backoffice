@@ -192,7 +192,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         />
         <TextareaField
           name="remark"
-          label={<Trans zh="备注" en="Remark" />}
+          label={<Trans zh="客服备註" en="CS Note" />}
           value={record?.remark}
           disabled={disabled}
         />
@@ -211,7 +211,7 @@ const SendNoteApplyInfoBox = ({ record }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="备注" en="Remark" />
+        <Trans zh="玩家备註" en="Player Note" />
       </NormalLabel>
       <Box alignY="center">{sendNote}</Box>
     </>
