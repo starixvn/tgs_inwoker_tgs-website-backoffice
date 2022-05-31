@@ -146,7 +146,6 @@ const SettingDisclosure = ({
 
           let items = get(data, ListFieldName)
           let pass = validateAllRequired(TitleFieldName, items)
-          console.log("pass", pass, "items", items)
           return pass
         }
       }}
@@ -208,6 +207,14 @@ const SettingDialog = ({
 
   let items =
     record?.items?.map((item) => {
+      if (item.isDefault && editable) {
+        //backend will update default's winningProbability value
+        return {
+          ...clone(item),
+          winningProbability: undefined
+        }
+      }
+
       let winningProbability = get(item, WinningProbabilityFieldName)
       if (Number.isFinite(winningProbability)) {
         winningProbability = new Big(winningProbability)
@@ -435,7 +442,7 @@ const SettingRow = ({
           name={`${name}.${index}.${chancePercentageFieldName}`}
           readOnly={readOnly}
           disabled={disabled || isDefault}
-          defaultValue={field.chancePercentage}
+          defaultValue={field.winningProbability}
           registerOptions={{
             valueAsNumber: true
           }}
