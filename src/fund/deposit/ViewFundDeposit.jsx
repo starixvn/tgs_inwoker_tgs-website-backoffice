@@ -179,7 +179,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
             </>
           )}
           <CryptoApplyInfoBox record={record} />
-          <RemarkApplyInfoBox record={record} />
+          <SendNoteApplyInfoBox record={record} />
         </FieldValues>
         <Separator />
         <BankInfoBox record={record} />
@@ -202,18 +202,18 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
   )
 }
 
-const RemarkApplyInfoBox = ({ record }) => {
-  let remark = record?.applyInfo?.remark
-  if (!remark) {
+const SendNoteApplyInfoBox = ({ record }) => {
+  let sendNote = record?.applyInfo?.sendNote
+  if (!sendNote) {
     return null
   }
 
   return (
     <>
       <NormalLabel>
-        <Trans zh="Remark" en="Remark" />
+        <Trans zh="备注" en="Remark" />
       </NormalLabel>
-      <Box alignY="center">{remark}</Box>
+      <Box alignY="center">{sendNote}</Box>
     </>
   )
 }
