@@ -484,13 +484,10 @@ const SettingRow = ({
       <Table.Cell>
         {index === 0 && (
           <Box>
+            <Switch name={IsDefaultFieldName} checked display="none" />
             <Switch
-              name={IsDefaultFieldName}
-              checked={true}
+              checked
               disabled={disabled}
-              registerOptions={{
-                setValueAs: () => true
-              }}
               /*
             registerOptions={{
               validate: () => {
