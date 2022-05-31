@@ -397,7 +397,6 @@ const SettingRow = ({
     control,
     name: IsDefaultFieldName
   })
-  console.log("useWatch isDefault", isDefault)
 
   let editable = !readOnly
   let disabled = readOnly
