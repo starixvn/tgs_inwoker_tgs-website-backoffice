@@ -197,7 +197,9 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   let {
     isLoading: isLoadingFormData,
     data,
-    error: loadingFormDataError
+    error: loadingFormDataError,
+    mutate: mutatePromotionFormData,
+    deleteCache: deletePromotionFormDataCache
   } = usePromotionFormData(brandId, record)
   let { result, isLoading, error, mutate, deleteCache } = useUpdatePromotion(
     record?.id,
@@ -225,6 +227,9 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   }
 
   const reset = () => {
+    deletePromotionFormDataCache()
+    mutatePromotionFormData()
+
     deleteCache()
     mutate(undefined, false)
     setSubmit(undefined)
@@ -239,7 +244,10 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="80vw"
@@ -267,14 +275,17 @@ const usePromotionFormData = (
   let {
     isLoading: isLoadingPromotionRule,
     error: promotionRuleError,
-    data: rule
+    data: rule,
+    mutate: mutatePromotionRule,
+    deleteCache: deletePromotionRuleCache
   } = usePromotionRule(id)
 
   let {
     data = {},
     isLoading: isLoadingBrandGameProviderList,
     error: brandGameProviderError,
-    ...rest
+    mutate: mutateBrandGameProviderList,
+    deleteCache: deleteBrandGameProviderListCache
   } = useBrandGameProviderList(
     brandId
       ? {
@@ -317,7 +328,14 @@ const usePromotionFormData = (
   return {
     isLoading: isLoadingBrandGameProviderList || isLoadingPromotionRule,
     error: brandGameProviderError || promotionRuleError,
-    ...rest,
+    mutate: (_, shouldRevalidate) => {
+      mutatePromotionRule(_, shouldRevalidate)
+      mutateBrandGameProviderList(_, shouldRevalidate)
+    },
+    deleteCache: () => {
+      deletePromotionRuleCache()
+      deleteBrandGameProviderListCache()
+    },
     data
   }
 }
@@ -346,7 +364,10 @@ export const ViewPromotionDisclosure = ({
 }
 
 const ViewDialog = ({ brandId, record, dialog, ...props }) => {
-  let { isLoading, data, error } = usePromotionFormData(brandId, record)
+  let { isLoading, data, error, mutate, deleteCache } = usePromotionFormData(
+    brandId,
+    record
+  )
 
   let title = useTrans({
     zh: "查看活动",
@@ -361,13 +382,20 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
+  }
+
   return (
     <FormDialog
       id="view-promotion-dialog"
       defaultValues={clone(data)}
       title={title}
       showActionButtons={false}
-      footer={<CloseButtonFooter dialog={dialog} alignX="right" />}
+      footer={
+        <CloseButtonFooter dialog={dialog} alignX="right" onClick={reset} />
+      }
       dialog={dialog}
       maxWidth="80vw"
       css={DialogCss}
