@@ -397,6 +397,7 @@ const SettingRow = ({
     control,
     name: IsDefaultFieldName
   })
+  console.log("useWatch isDefault", isDefault)
 
   let editable = !readOnly
   let disabled = readOnly
@@ -482,12 +483,17 @@ const SettingRow = ({
       </Table.Cell>
       <Table.Cell>
         {index === 0 && (
-          <Switch
-            name={IsDefaultFieldName}
-            checked={true}
-            readOnly={readOnly}
-            disabled={disabled}
-            /*
+          <Box>
+            <Switch
+              name={IsDefaultFieldName}
+              checked={true}
+              readOnly={true}
+              disabled={disabled}
+              onChange={(event) => {
+                event.preventDefault()
+                event.stopPropagation()
+              }}
+              /*
             registerOptions={{
               validate: () => {
                 let defaultNames = fieldArray.fields.map(
@@ -510,7 +516,8 @@ const SettingRow = ({
             }
           }}
           */
-          />
+            />
+          </Box>
         )}
       </Table.Cell>
     </Table.Row>
