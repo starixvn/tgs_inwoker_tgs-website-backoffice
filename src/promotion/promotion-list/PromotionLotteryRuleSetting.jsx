@@ -487,11 +487,9 @@ const SettingRow = ({
             <Switch
               name={IsDefaultFieldName}
               checked={true}
-              readOnly={true}
               disabled={disabled}
-              onChange={(event) => {
-                event.preventDefault()
-                event.stopPropagation()
+              registerOptions={{
+                setValueAs: () => true
               }}
               /*
             registerOptions={{
