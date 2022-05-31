@@ -179,6 +179,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
             </>
           )}
           <CryptoApplyInfoBox record={record} />
+          <RemarkApplyInfoBox record={record} />
         </FieldValues>
         <Separator />
         <BankInfoBox record={record} />
@@ -197,6 +198,22 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         />
       </FieldStack>
       <Input type="hidden" value={brandId} />
+    </>
+  )
+}
+
+const RemarkApplyInfoBox = ({ record }) => {
+  let remark = record?.applyInfo?.remark
+  if (!remark) {
+    return null
+  }
+
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="Remark" en="Remark" />
+      </NormalLabel>
+      <Box alignY="center">{remark}</Box>
     </>
   )
 }

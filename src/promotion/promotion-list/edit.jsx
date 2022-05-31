@@ -26,7 +26,7 @@ import { Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { InputField, Input } from "../../input/Input"
 import clone from "clone-deep"
-import { useAddPromotion, useUpdatePromotion } from "./client"
+import { useAddPromotion, useUpdatePromotion, usePromotionRule } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
@@ -254,6 +254,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
 const usePromotionFormData = (
   brandId,
   {
+    id,
     from,
     to,
     gameType,
@@ -263,6 +264,12 @@ const usePromotionFormData = (
     ...record
   } = {}
 ) => {
+  let {
+    isLoading: isLoadingPromotionRule,
+    error: promotionRuleError,
+    data: rule
+  } = usePromotionRule(id)
+
   let {
     data = {},
     isLoading: isLoadingBrandGameProviderList,
@@ -294,6 +301,7 @@ const usePromotionFormData = (
   vipLevels = vipLevels.map((vipLevel) => `${vipLevel}`)
 
   data = {
+    id,
     ...record,
     vipLevels,
     gameProviders,
@@ -302,12 +310,13 @@ const usePromotionFormData = (
     gameType,
     localization: parseJSON(localization),
     from: parseISO(from),
-    to: parseISO(to)
+    to: parseISO(to),
+    rule
   }
 
   return {
-    isLoading: isLoadingBrandGameProviderList,
-    error: brandGameProviderError,
+    isLoading: isLoadingBrandGameProviderList || isLoadingPromotionRule,
+    error: brandGameProviderError || promotionRuleError,
     ...rest,
     data
   }

@@ -37,6 +37,9 @@ const editAgent = async (page) => {
 const viewAgent = async (page, expected) => {
   let dialogSelector = await openViewAgentDialog(page)
   if (expected.realName) {
+    let UpdateViewTimeout = 500
+    await page.waitForTimeout(UpdateViewTimeout)
+
     let realNameLocator = page.locator(
       `${dialogSelector} [data-field="realName"]`
     )
