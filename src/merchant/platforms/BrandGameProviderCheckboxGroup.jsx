@@ -26,11 +26,13 @@ import {
   faDesktop,
   faMobile,
   faLanguage,
-  faCog
+  faCog,
+  faEdit
 } from "@fortawesome/free-solid-svg-icons"
 import { CloseText, ConfirmText } from "../../button/ActionButtons"
 import { GameProviderConfigSelect } from "../../game/providers/configs/GameProviderConfigSelect"
 import { GameProviderLanguageSelect } from "../../game/providers/GameProviderLanguageSelect"
+import { JsonEditor } from "../../text/editor/JsonEditor"
 
 export const BrandGameProviderCheckboxGroupTable = ({
   name = "gameProviders",
@@ -86,6 +88,7 @@ const Row = ({ name, disabled, field, index }) => {
   let defaultLangDialog = useModalState()
   let desktopQueryStringDialog = useModalState()
   let mobileQueryStringDialog = useModalState()
+  let settingDialog = useModalState()
 
   let checkedFieldName = toCheckedFieldName(name, field, index)
   let {
@@ -289,6 +292,33 @@ const Row = ({ name, disabled, field, index }) => {
               )
             }}
           />
+          {/* <Controller
+            control={control}
+            name={settingFieldName(name, index)}
+            defaultValue={field.setting}
+            render={({
+              field: { onChange, onBlur, value, name: fieldName, ref },
+              fieldState: { isTouched, isDirty, error }
+            }) => {
+              return (
+                <>
+                  <Disclosure {...settingDialog}>
+                    <Icon icon={faEdit} type="font-awesome" />
+                  </Disclosure>
+                  {settingDialog.visible && (
+                    <SettingDialog
+                      value={value}
+                      disabled={disabled}
+                      dialog={settingDialog}
+                      onChange={(setting) => {
+                        setValue(fieldName, setting)
+                      }}
+                    />
+                  )}
+                </>
+              )
+            }}
+          /> */}
         </Set>
       </Table.Cell>
     </Table.Row>
@@ -317,6 +347,35 @@ const useQueryStringTitle = (type = QueryStringType.Desktop) => {
     case QueryStringType.Mobile:
       return mobileTitle
   }
+}
+
+const SettingDialog = ({ value, disabled, dialog, onChange }) => {
+  let title = useTrans({
+    zh: "设定",
+    en: "Setting"
+  })
+
+  return (
+    <Backdrop {...dialog}>
+      <FormDialog
+        defaultValues={{
+          value
+        }}
+        stopPropagation={true}
+        onSubmit={(data) => {
+          onChange(data.value)
+          dialog.hide()
+        }}
+        submitText={disabled ? <CloseText /> : <ConfirmText />}
+        dialog={dialog}
+        title={title}
+        hideBackdrop={true}
+        minWidth="500px"
+      >
+        <JsonEditor name="value" disabled={disabled} height="30vh" />
+      </FormDialog>
+    </Backdrop>
+  )
 }
 
 const QueryStringDialog = ({ type, value, disabled, dialog, onChange }) => {
@@ -437,3 +496,5 @@ const configFieldName = (name, field, index) =>
 
 const langFieldName = (name, field, index) =>
   `${name}.${index}.defaultLanguageCode`
+
+const settingFieldName = (name, index) => `${name}.${index}.setting`
