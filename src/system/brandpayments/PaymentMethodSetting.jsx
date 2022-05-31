@@ -96,7 +96,7 @@ const EWalletSetting = ({ brandId }) => {
       <Label required>
         <Trans zh="电话号码" en="Phone" />
       </Label>
-      <Input name="extendedData.phone" />
+      <Input name="extendedData.phone" required />
 
       <Label required>
         <Trans zh="E-money Name" en="E-money Name" />
