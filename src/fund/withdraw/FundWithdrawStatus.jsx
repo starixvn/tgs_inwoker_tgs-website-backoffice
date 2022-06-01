@@ -29,6 +29,12 @@ const RejectedTrans = {
   en: "Rejected"
 }
 
+const Invalid = "Invalid"
+const InvalidTrans = {
+  zh: "无效",
+  en: "Invalid"
+}
+
 export const UnprocessedStatus = [Review, Approved]
 
 export const isFundUnderReview = (value) => value === Review
@@ -47,6 +53,8 @@ export const FundWithdrawStatusLabel = ({ value, ...props }) => {
       return <Trans {...PaidTrans} {...props} />
     case Rejected:
       return <Trans {...RejectedTrans} {...props} />
+    case Invalid:
+      return <Trans {...InvalidTrans} {...props} />
     default:
       return value ?? ""
   }
@@ -71,18 +79,20 @@ export const FundWithdrawStatusSelect = ({
     {
       label: useTrans(ApprovedTrans),
       value: Approved
+    },
+    {
+      label: useTrans(PaidTrans),
+      value: Paid
+    },
+    {
+      label: useTrans(RejectedTrans),
+      value: Rejected
+    },
+    {
+      label: useTrans(InvalidTrans),
+      value: Invalid
     }
   ]
-
-  options.push({
-    label: useTrans(PaidTrans),
-    value: Paid
-  })
-
-  options.push({
-    label: useTrans(RejectedTrans),
-    value: Rejected
-  })
 
   return (
     <MultiSelect
@@ -99,5 +109,6 @@ export default {
   Approved,
   Paid,
   Rejected,
+  Invalid,
   UnprocessedStatus
 }

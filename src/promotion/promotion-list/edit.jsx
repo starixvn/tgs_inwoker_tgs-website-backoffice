@@ -26,7 +26,7 @@ import { Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { InputField, Input } from "../../input/Input"
 import clone from "clone-deep"
-import { useAddPromotion, useUpdatePromotion } from "./client"
+import { useAddPromotion, useUpdatePromotion, usePromotionRule } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
@@ -44,6 +44,7 @@ import {
   PromotionTypeGroup,
   PromotionTypeGroupSelect,
   PromotionTypeSelect,
+  useIsInstantlySettlementIntervalType,
   usePromotionGroupValueOf
 } from "../PromotionType"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
@@ -196,7 +197,9 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   let {
     isLoading: isLoadingFormData,
     data,
-    error: loadingFormDataError
+    error: loadingFormDataError,
+    mutate: mutatePromotionFormData,
+    deleteCache: deletePromotionFormDataCache
   } = usePromotionFormData(brandId, record)
   let { result, isLoading, error, mutate, deleteCache } = useUpdatePromotion(
     record?.id,
@@ -224,6 +227,9 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   }
 
   const reset = () => {
+    deletePromotionFormDataCache()
+    mutatePromotionFormData()
+
     deleteCache()
     mutate(undefined, false)
     setSubmit(undefined)
@@ -238,7 +244,10 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="80vw"
@@ -253,6 +262,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
 const usePromotionFormData = (
   brandId,
   {
+    id,
     from,
     to,
     gameType,
@@ -263,10 +273,19 @@ const usePromotionFormData = (
   } = {}
 ) => {
   let {
+    isLoading: isLoadingPromotionRule,
+    error: promotionRuleError,
+    data: rule,
+    mutate: mutatePromotionRule,
+    deleteCache: deletePromotionRuleCache
+  } = usePromotionRule(id)
+
+  let {
     data = {},
     isLoading: isLoadingBrandGameProviderList,
     error: brandGameProviderError,
-    ...rest
+    mutate: mutateBrandGameProviderList,
+    deleteCache: deleteBrandGameProviderListCache
   } = useBrandGameProviderList(
     brandId
       ? {
@@ -293,6 +312,7 @@ const usePromotionFormData = (
   vipLevels = vipLevels.map((vipLevel) => `${vipLevel}`)
 
   data = {
+    id,
     ...record,
     vipLevels,
     gameProviders,
@@ -301,13 +321,21 @@ const usePromotionFormData = (
     gameType,
     localization: parseJSON(localization),
     from: parseISO(from),
-    to: parseISO(to)
+    to: parseISO(to),
+    rule
   }
 
   return {
-    isLoading: isLoadingBrandGameProviderList,
-    error: brandGameProviderError,
-    ...rest,
+    isLoading: isLoadingBrandGameProviderList || isLoadingPromotionRule,
+    error: brandGameProviderError || promotionRuleError,
+    mutate: (_, shouldRevalidate) => {
+      mutatePromotionRule(_, shouldRevalidate)
+      mutateBrandGameProviderList(_, shouldRevalidate)
+    },
+    deleteCache: () => {
+      deletePromotionRuleCache()
+      deleteBrandGameProviderListCache()
+    },
     data
   }
 }
@@ -336,7 +364,10 @@ export const ViewPromotionDisclosure = ({
 }
 
 const ViewDialog = ({ brandId, record, dialog, ...props }) => {
-  let { isLoading, data, error } = usePromotionFormData(brandId, record)
+  let { isLoading, data, error, mutate, deleteCache } = usePromotionFormData(
+    brandId,
+    record
+  )
 
   let title = useTrans({
     zh: "查看活动",
@@ -351,13 +382,20 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
+  }
+
   return (
     <FormDialog
       id="view-promotion-dialog"
       defaultValues={clone(data)}
       title={title}
       showActionButtons={false}
-      footer={<CloseButtonFooter dialog={dialog} alignX="right" />}
+      footer={
+        <CloseButtonFooter dialog={dialog} alignX="right" onClick={reset} />
+      }
       dialog={dialog}
       maxWidth="80vw"
       css={DialogCss}
@@ -444,16 +482,13 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     control,
     name: PromotionTypeFieldName
   })
-  let promotionTypeGroupValue = usePromotionGroupValueOf(promotionType)
 
-  let isDepositPromotion =
-    promotionTypeGroup === PromotionTypeGroup.Deposit ||
-    promotionTypeGroupValue === PromotionTypeGroup.Deposit
+  let autoPayout = useIsInstantlySettlementIntervalType(promotionType)
   useEffect(() => {
-    if (isDepositPromotion) {
+    if (autoPayout) {
       setValue(AutoSentPlayerBonusFieldName, true)
     }
-  }, [isDepositPromotion])
+  }, [autoPayout])
 
   let isPromotionTypeTurnoverRelated =
     promotionTypeGroup === PromotionTypeGroup.Turnover ||
@@ -484,6 +519,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
   let disabled = readOnly
   let editable = !readOnly
+  let promotionTypeEditable = editable && isAdd
   let required = editable
   return (
     <FieldStack marginLeft="1rem" paddingBottom="1.5rem">
@@ -537,7 +573,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动类型" en="Promotion Type" />
         </NormalLabel>
         <Box alignY="center">
-          {editable && (
+          {promotionTypeEditable && (
             <PromotionTypeGroupSelect
               name={PromotionTypeGroupFieldName}
               onChange={(event) => {
@@ -547,7 +583,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
               required
             />
           )}
-          {disabled && (
+          {!promotionTypeEditable && (
             <>
               <PromotionTypeGroupSelect
                 name={PromotionTypeGroupFieldName}
@@ -566,14 +602,14 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动子类型" en="Promotion SubType" />
         </NormalLabel>
         <Box alignY="center">
-          {editable && (
+          {promotionTypeEditable && (
             <PromotionTypeSelect
               name={PromotionTypeFieldName}
               group={promotionTypeGroup}
               required
             />
           )}
-          {disabled && (
+          {!promotionTypeEditable && (
             <>
               <PromotionTypeSelect
                 name={PromotionTypeFieldName}
@@ -589,10 +625,10 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <Trans zh="活动派发" en="Distribution Method" />
         </NormalLabel>
         <Box>
-          {isDepositPromotion && (
+          {autoPayout && (
             <AutoOrManualPayoutSwitch readOnly disabled checked={true} />
           )}
-          {!isDepositPromotion && (
+          {!autoPayout && (
             <AutoOrManualPayoutSwitch readOnly={readOnly} disabled={disabled} />
           )}
         </Box>

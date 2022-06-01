@@ -23,6 +23,11 @@ export const usePromotion = (id) => {
   return useGet(url)
 }
 
+export const usePromotionRule = (id) => {
+  let url = id ? `${API}/rule/${id}` : ""
+  return useGet(url)
+}
+
 export const useAddPromotion = (data) => {
   return usePostData(API, data)
 }

@@ -129,6 +129,7 @@ export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
 
   return items && items.length ? (
     <SideNav.Level
+      data-code={codePaths?.[0]}
       title={
         <Level
           orientation="horizontal"
@@ -198,6 +199,7 @@ const MenuItem = ({ code, path, label, sidebar, isActive, ...props }) => {
 
   return (
     <SideNav.Item
+      data-code={code}
       navId={path}
       isActive={isActive}
       onClick={() => setTimeout(sidebar.drawer.hide, 100)}

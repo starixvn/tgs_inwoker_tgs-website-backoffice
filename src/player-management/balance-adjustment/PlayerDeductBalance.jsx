@@ -46,7 +46,7 @@ import { usePlayer } from "../player-list/client"
 import {
   PlayerAdjustBalanceTypeSelect,
   isTransfer,
-  isCompanyOrAgent
+  showIncludeInNetProfitSetting
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
 
@@ -166,7 +166,7 @@ const FormBody = ({ brandId, username, playerCode }) => {
           />
         </Set>
 
-        {isCompanyOrAgent(transactionType) && (
+        {showIncludeInNetProfitSetting(transactionType) && (
           <>
             <Box alignY="center">
               <Trans zh="需算入净盈利" en="Include in Net Profit" />

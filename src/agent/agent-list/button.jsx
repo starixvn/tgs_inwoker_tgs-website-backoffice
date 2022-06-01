@@ -783,7 +783,9 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         <AgentContactInfoTab {...tab} />
         {/* <AgentBankInfoTab {...tab} /> */}
         <AgentOperationListTab {...tab} />
-        <AgentTeamInfoTab {...tab} />
+        {/* 
+        <AgentTeamInfoTab {...tab} /> 
+        */}
         <AgentBalanceChangeTab {...tab} />
         <AgentDomainListTab {...tab} />
       </TabList>
@@ -798,7 +800,9 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
       <AgentContactInfoPanel record={record} readonly {...tab} />
       {/* <AgentBankInfoPanel record={record} readonly {...tab} /> */}
       <AgentOperationListPanel agentId={record?.id} {...tab} />
-      <AgentTeamInfoPanel agentId={record?.id} {...tab} />
+      {/* 
+      <AgentTeamInfoPanel agentId={record?.id} {...tab} /> 
+      */}
       <AgentBalanceChangePanel
         brandId={brandId}
         agentId={record?.id}

@@ -209,7 +209,7 @@ export const FormBody = ({ brandId, record, readonly }) => {
 
         <TextareaField
           name="remark"
-          label={<Trans zh="备注" en="Remark" />}
+          label={<Trans zh="客服备註" en="CS Note" />}
           disabled={disabled}
         />
       </FieldStack>
@@ -341,6 +341,8 @@ const PayeeInfo = ({ record }) => {
 
   let hasUsername = !!record?.bankInfo?.detail?.username
   let hasPhone = !!record?.bankInfo?.detail?.phone
+
+  let hasNote = !!record?.note
   return (
     <>
       <Heading use="h6">
@@ -429,6 +431,15 @@ const PayeeInfo = ({ record }) => {
               <Trans zh="附言" en="Memo" />
             </NormalLabel>
             <Box alignY="center">{record?.bankInfo?.detail?.memo}</Box>
+          </>
+        )}
+
+        {hasNote && (
+          <>
+            <NormalLabel>
+              <Trans zh="玩家备註" en="Player Note" />
+            </NormalLabel>
+            <Box alignY="center">{record?.note}</Box>
           </>
         )}
       </FieldValues>

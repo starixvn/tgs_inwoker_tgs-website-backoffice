@@ -44,7 +44,7 @@ import Input from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
 import {
   PlayerAdjustBalanceTypeSelect,
-  isCompanyOrAgent
+  showIncludeInNetProfitSetting
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
 
@@ -170,7 +170,7 @@ const FormBody = ({}) => {
           />
         </Set>
 
-        {isCompanyOrAgent(transactionType) && (
+        {showIncludeInNetProfitSetting(transactionType) && (
           <>
             <Box alignY="center">
               <Trans zh="需算入净盈利" en="Include in Net Profit" />
