@@ -341,6 +341,8 @@ const PayeeInfo = ({ record }) => {
 
   let hasUsername = !!record?.bankInfo?.detail?.username
   let hasPhone = !!record?.bankInfo?.detail?.phone
+
+  let hasNote = !!record?.note
   return (
     <>
       <Heading use="h6">
@@ -429,6 +431,15 @@ const PayeeInfo = ({ record }) => {
               <Trans zh="附言" en="Memo" />
             </NormalLabel>
             <Box alignY="center">{record?.bankInfo?.detail?.memo}</Box>
+          </>
+        )}
+
+        {hasNote && (
+          <>
+            <NormalLabel>
+              <Trans zh="玩家备註" en="Player Note" />
+            </NormalLabel>
+            <Box alignY="center">{record?.note}</Box>
           </>
         )}
       </FieldValues>
