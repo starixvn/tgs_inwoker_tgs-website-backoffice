@@ -292,7 +292,8 @@ const Row = ({ name, disabled, field, index }) => {
               )
             }}
           />
-          {/* <Controller
+          {/* 
+          <Controller
             control={control}
             name={settingFieldName(name, index)}
             defaultValue={field.setting}
@@ -318,7 +319,8 @@ const Row = ({ name, disabled, field, index }) => {
                 </>
               )
             }}
-          /> */}
+          /> 
+          */}
         </Set>
       </Table.Cell>
     </Table.Row>
@@ -370,9 +372,9 @@ const SettingDialog = ({ value, disabled, dialog, onChange }) => {
         dialog={dialog}
         title={title}
         hideBackdrop={true}
-        minWidth="500px"
+        minWidth="60vw"
       >
-        <JsonEditor name="value" disabled={disabled} height="30vh" />
+        <JsonEditor name="value" disabled={disabled} height="50vh" />
       </FormDialog>
     </Backdrop>
   )
