@@ -47,6 +47,7 @@ import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
 import { AgentProfitSharingTree } from "./AgentProfitSharingTree"
+import { AgentLevelSelect } from "../../agent/AgentLevel"
 
 export { Code }
 
@@ -86,7 +87,8 @@ const ReportContent = ({ brandId }) => {
     username: "",
     type: "",
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    levelType: undefined
   })
 
   useEffect(() => {
@@ -123,6 +125,7 @@ const ReportContent = ({ brandId }) => {
             brandId={brandId}
             username={state?.username}
             type={state?.type}
+            levelType={state?.levelType}
             start={from}
             end={to}
             minDate={minDate}
@@ -243,6 +246,7 @@ const SearchBar = ({
   brandId,
   username,
   type,
+  levelType,
   start,
   end,
   minDate,
@@ -256,6 +260,7 @@ const SearchBar = ({
     defaultValues: {
       username,
       type,
+      levelType,
       start,
       end
     }
@@ -288,6 +293,11 @@ const SearchBar = ({
             autoFocus
           />
           <AgentTypeSelect name="type" />
+
+          {/* 
+          <AgentLevelSelect name="levelType" /> 
+          */}
+
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
