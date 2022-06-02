@@ -43,6 +43,8 @@ import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
 import Backdrop from "../../dialog/Backdrop"
 import { ConfirmText } from "../../button/ActionButtons"
 import Input from "../../input/Input"
+import { get, set } from "lodash-es"
+import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
 
 export const PromotionSigninRuleSetting = ({ ...props }) => {
   return (
@@ -55,9 +57,27 @@ export const PromotionSigninRuleSetting = ({ ...props }) => {
   )
 }
 
-const ListFieldName = "list"
+let isNilOrEmpty = either(isNil, isEmpty)
+let hasValue = complement(isNilOrEmpty)
+
+const validateAll = (predicate, settings = []) => {
+  let pass = all(predicate, settings)
+
+  return pass
+}
+
+const validateAllRequired = (fieldName, settings = []) => {
+  let toField = prop(fieldName)
+  let hasFieldValue = compose(hasValue, toField)
+  let pass = validateAll(hasFieldValue, settings)
+  return pass
+}
+
+const SettingFieldName = "rule"
+const ListFieldName = "items"
+const BonusFieldName = "bonus"
 const SettingDisclosure = ({
-  name = ListFieldName,
+  name = SettingFieldName,
   limitedTotalAmount,
   totalAmountLimit,
   readOnly,
@@ -68,7 +88,10 @@ const SettingDisclosure = ({
   let { control, setValue } = useFormContext()
   let defaultValue = useWatch({
     control,
-    name
+    name,
+    defaultValue: {
+      items: [{ bonus: undefined }]
+    }
   })
 
   let disabled = readOnly
@@ -77,7 +100,15 @@ const SettingDisclosure = ({
       name={name}
       control={control}
       defaultValue={defaultValue}
-      rules={{ required: true }}
+      rules={{
+        required: true,
+        validate: (data) => {
+          let items = get(data, ListFieldName)
+          let pass = validateAllRequired(BonusFieldName, items)
+          console.log("pass", pass, "")
+          return pass
+        }
+      }}
       render={({
         field: { onChange, onBlur, value, name, ref },
         fieldState: { isTouched, isDirty, error }
@@ -119,7 +150,7 @@ const SettingDisclosure = ({
 }
 
 const SettingDialog = ({
-  record = [],
+  record = {},
   limitedTotalAmount,
   totalAmountLimit,
   readOnly,
@@ -132,8 +163,7 @@ const SettingDialog = ({
   })
 
   let editable = !readOnly
-  let defaultValues = {}
-  Reflect.set(defaultValues, ListFieldName, clone(record))
+  let defaultValues = clone(record)
 
   return (
     <Backdrop {...dialog}>
@@ -141,7 +171,7 @@ const SettingDialog = ({
         id="signin-setting-dialog"
         defaultValues={defaultValues}
         onSubmit={(data) => {
-          onChange?.(Reflect.get(data, ListFieldName))
+          onChange?.(data)
           dialog.hide()
         }}
         stopPropagation={true}
@@ -153,7 +183,7 @@ const SettingDialog = ({
         footer={
           !editable && <CloseButtonFooter dialog={dialog} alignX="right" />
         }
-        minWidth="40vw"
+        minWidth="50vw"
         maxWidth="100vw"
       >
         <FormBody
@@ -192,7 +222,7 @@ const FormBody = ({
             <Trans zh="天数" en="Days" />
           </Table.HeadCell>
           <Table.HeadCell>
-            <Trans zh="礼金" en="Reward" />
+            <Trans zh="礼金" en="Bonus" />
           </Table.HeadCell>
           <Table.HeadCell>
             <Trans zh="流水倍数" en="Turnover Requirement" />
@@ -296,19 +326,19 @@ const SettingRow = ({
       </Table.Cell>
       <Table.Cell>
         <NumberInput
-          name={`${name}.${index}.reward`}
+          name={`${name}.${index}.${BonusFieldName}`}
           readOnly={readOnly}
           disabled={disabled}
-          defaultValue={field.reward}
+          defaultValue={field.bonus}
           registerOptions={{
             valueAsNumber: true
           }}
-          min={Math.max(...[Min, previous?.reward].filter(Number.isFinite))}
+          min={Math.max(...[Min, previous?.bonus].filter(Number.isFinite))}
           max={Math.min(
             ...[
               MaxNumber,
               limitedTotalAmount ? totalAmountLimit : undefined,
-              next?.reward
+              next?.bonus
             ].filter(Number.isFinite)
           )}
           required
