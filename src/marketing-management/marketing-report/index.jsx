@@ -93,16 +93,14 @@ const BodyContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { agentUsername, from, to } = state
+  let { agentUsername } = state
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerMarketingReport(toApiParams(state))
+    usePlayerMarketingReport(agentUsername ? toApiParams(state) : undefined)
 
   let columns = useColumns({
     items: data?.items,
     brandId,
-    agentUsername,
-    from,
-    to
+    agentUsername
   })
   return (
     <PageContent
@@ -125,17 +123,19 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        stickyHead
-      />
+      {agentUsername && (
+        <Table
+          columns={columns}
+          data={data?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(state.pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          stickyHead
+        />
+      )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
