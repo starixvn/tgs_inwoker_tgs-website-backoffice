@@ -40,6 +40,7 @@ import {
 import numberColumn from "../../table/column/numberColumn"
 import { PlayerListDialogDisclosure } from "./PlayerListDialog"
 import { toDate } from "../../date/toDate"
+import { startOfNextDay } from "../../date/startOfNextDay"
 
 export { Code }
 
@@ -89,9 +90,13 @@ const BodyContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { agentUsername } = state
+  let { agentUsername, from, to } = state
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerDepositReportList(agentUsername ? toApiParams(state) : undefined)
+    usePlayerDepositReportList(
+      agentUsername
+        ? { ...toApiParams(state), from, to: startOfNextDay(to) }
+        : undefined
+    )
 
   let columns = useColumns({
     items: data?.items,

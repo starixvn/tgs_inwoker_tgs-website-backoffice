@@ -35,6 +35,7 @@ import numberColumn, {
 } from "../../table/column/numberColumn"
 import { usePlayerTotalAmountList } from "./client"
 import textColumn from "../../table/column/textColumn"
+import { startOfNextDay } from "../../date/startOfNextDay"
 // import { PlayerTotalWinLossDialogDisclosure } from "./PlayerTotalWinLossDialog"
 
 export { Code }
@@ -76,9 +77,13 @@ const BodyContent = ({ brandId }) => {
     to: dateRange.end
   })
 
-  let { agentUsername } = state
+  let { agentUsername, from, to } = state
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerTotalAmountList(agentUsername ? toApiParams(state) : undefined)
+    usePlayerTotalAmountList(
+      agentUsername
+        ? { ...toApiParams(state), from, to: startOfNextDay(to) }
+        : undefined
+    )
 
   const reset = () => {
     mutate(null)

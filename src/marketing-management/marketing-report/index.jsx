@@ -44,6 +44,7 @@ import { RegisteredPlayerListDialogDisclosure } from "./RegisteredPlayerListDial
 import { PlayerListDialogDisclosure as FirstDepositPlayerListDialogDisclosure } from "../player-deposit/PlayerListDialog"
 import { GamePlayerListDialogDisclosure } from "./GamePlayerListDialog"
 import { toDate } from "../../date/toDate"
+import { startOfNextDay } from "../../date/startOfNextDay"
 
 export { Code }
 
@@ -93,9 +94,11 @@ const BodyContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { agentUsername } = state
+  let { agentUsername, from, to } = state
   let { isLoading, data, error, mutate, deleteCache } = useMarketingReport(
-    agentUsername ? toApiParams(state) : undefined
+    agentUsername
+      ? { ...toApiParams(state), from, to: startOfNextDay(to) }
+      : undefined
   )
 
   let columns = useColumns({

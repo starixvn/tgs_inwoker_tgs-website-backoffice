@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Spinner, Stack, Flex, Box, Card, Set } from "bumbag"
+import { Spinner, Stack, Flex, Box, Card, Set, Checkbox } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -177,6 +177,20 @@ const useColumns = ({ items = [] }) =>
         TotalCell: () => null,
         disableSortBy: true
       }),
+      /*
+      textColumn({
+        accessor: "includeInNetProfit",
+        Header: <Trans zh="淨盈利" en="Net Profit" />,
+        TotalCell: () => null,
+        Cell: ({ value }) => {
+          return (
+            <Box alignX="center">
+              <Checkbox checked={value} />
+            </Box>
+          )
+        }
+      }),
+      */
       textColumn({
         accessor: "remark",
         Header: <Trans zh="备注" en="Remark" />,
