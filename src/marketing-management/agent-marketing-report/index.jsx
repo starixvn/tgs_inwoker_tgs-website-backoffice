@@ -36,6 +36,7 @@ import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
 import { useAgentMarketingReport } from "./client"
+import { startOfNextDay } from "../../date/startOfNextDay"
 
 export { Code }
 
@@ -75,9 +76,11 @@ const BodyContent = ({ brandId }) => {
     to: dateRange.end
   })
 
-  let { agentUsername } = state
+  let { agentUsername, from, to } = state
   let { isLoading, data, error, mutate, deleteCache } = useAgentMarketingReport(
-    agentUsername ? toApiParams(state) : undefined
+    agentUsername
+      ? { ...toApiParams(state), from, to: startOfNextDay(to) }
+      : undefined
   )
 
   const reset = () => {
