@@ -149,32 +149,32 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       dateTimeColumn({
-        accessor: "registeredTime",
+        accessor: "firstDepositOn",
         Header: <Trans zh="首存时间" en="First Deposit Time" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "amount",
+        accessor: "firstDepositAmount",
         Header: <Trans zh="首存金额" en="First Deposit Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "totalDeposit",
+        accessor: "totalDepositAmount",
         Header: <Trans zh="总存款" en="Total Deposit Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "totalWithdraw",
+        accessor: "totalWithdrawAmount",
         Header: <Trans zh="总提款" en="Total Withdraw Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "depositWithdrawDiff",
+        accessor: "depositSubtractWithdraw",
         Header: <Trans zh="存提差" en="Deposit Withdraw Diff." />,
         disableSortBy: true
       }),
       textColumn({
-        accessor: "registerIp",
+        accessor: "ipAddress",
         Header: <Trans zh="注册IP" en="Register IP" />,
         disableSortBy: true
       })

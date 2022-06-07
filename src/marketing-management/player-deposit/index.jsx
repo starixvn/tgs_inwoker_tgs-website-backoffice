@@ -20,9 +20,7 @@ import {
   useUserRoleType
 } from "../../user/context"
 import { Code } from "./menu"
-import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { Trans, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
@@ -90,16 +88,14 @@ const BodyContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { agentUsername, from, to } = state
+  let { agentUsername } = state
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerDepositCountList(toApiParams(state))
+    usePlayerDepositCountList(agentUsername ? toApiParams(state) : undefined)
 
   let columns = useColumns({
     items: data?.items,
     brandId,
-    agentUsername,
-    from,
-    to
+    agentUsername
   })
   return (
     <PageContent
@@ -108,6 +104,7 @@ const BodyContent = ({ brandId }) => {
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
             brandId={brandId}
+            agentUsername={agentUsername}
             from={state?.from}
             to={state?.to}
             search={(data) => {
@@ -122,17 +119,19 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        stickyHead
-      />
+      {agentUsername && (
+        <Table
+          columns={columns}
+          data={data?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(state.pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          stickyHead
+        />
+      )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -209,14 +208,14 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         disableSortBy: true
       }),
       numberColumn({
-        id: "firstFundInCount",
+        id: "firstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
             <PlayerListDialogDisclosure
-              value={record.registeredCount}
+              value={record.firstDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
               date={record.reportDate}
@@ -239,7 +238,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         Cell: ({ value: record }) => {
           return (
             <PlayerListDialogDisclosure
-              value={record.registeredCount}
+              value={record.noSecondDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
               date={record.reportDate}
