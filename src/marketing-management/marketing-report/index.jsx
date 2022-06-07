@@ -35,15 +35,15 @@ import SearchButton from "../../button/SearchButton"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
 import {
-  usePlayerMarketingReport,
-  useRegisteredPlayerList,
-  useGamePlayerList
+  useMarketingReport,
+  useMarketingRegisteredPlayerList,
+  useMarketingFirstDepositPlayerList
 } from "./client"
 import numberColumn from "../../table/column/numberColumn"
-import { useFirstDepositPlayerList } from "../player-deposit/client"
 import { RegisteredPlayerListDialogDisclosure } from "./RegisteredPlayerListDialog"
 import { PlayerListDialogDisclosure as FirstDepositPlayerListDialogDisclosure } from "../player-deposit/PlayerListDialog"
 import { GamePlayerListDialogDisclosure } from "./GamePlayerListDialog"
+import { toDate } from "../../date/toDate"
 
 export { Code }
 
@@ -94,8 +94,9 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { agentUsername } = state
-  let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerMarketingReport(agentUsername ? toApiParams(state) : undefined)
+  let { isLoading, data, error, mutate, deleteCache } = useMarketingReport(
+    agentUsername ? toApiParams(state) : undefined
+  )
 
   let columns = useColumns({
     items: data?.items,
@@ -212,55 +213,53 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         disableSortBy: true
       }),
       numberColumn({
-        id: "registeredCount",
+        id: "registerCount",
         accessor: (row) => row,
-        Header: <Trans zh="注册人数" en="Registered Count" />,
+        Header: <Trans zh="注册人数" en="Register Count" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
             <RegisteredPlayerListDialogDisclosure
-              value={record.registeredCount}
+              value={record.registerCount}
               brandId={brandId}
               agentUsername={agentUsername}
-              date={record.reportDate}
+              date={toDate(record.reportDate)}
               title={playerListDialogTitle}
-              useFetch={useRegisteredPlayerList}
             />
           )
         }
       }),
       numberColumn({
-        id: "firstFundInCount",
+        id: "firstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
             <FirstDepositPlayerListDialogDisclosure
-              value={record.registeredCount}
+              value={record.firstDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
-              date={record.reportDate}
+              date={toDate(record.reportDate)}
               title={playerListDialogTitle}
-              useFetch={useFirstDepositPlayerList}
+              useFetch={useMarketingFirstDepositPlayerList}
             />
           )
         }
       }),
       numberColumn({
-        id: "gameCount",
+        id: "gamingCount",
         accessor: (row) => row,
-        Header: <Trans zh="游戏人数" en="Game Count" />,
+        Header: <Trans zh="游戏人数" en="Gaming Count" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
             <GamePlayerListDialogDisclosure
-              value={record.registeredCount}
+              value={record.gamingCount}
               brandId={brandId}
               agentUsername={agentUsername}
-              date={record.reportDate}
+              date={toDate(record.reportDate)}
               title={playerListDialogTitle}
-              useFetch={useGamePlayerList}
             />
           )
         }

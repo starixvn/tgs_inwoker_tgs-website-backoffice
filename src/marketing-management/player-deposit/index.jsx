@@ -33,12 +33,13 @@ import SearchButton from "../../button/SearchButton"
 import { yesterday } from "../../date/range"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import {
-  usePlayerDepositCountList,
+  usePlayerDepositReportList,
   useFirstDepositPlayerList,
   useNoSecondDepositPlayerList
 } from "./client"
 import numberColumn from "../../table/column/numberColumn"
 import { PlayerListDialogDisclosure } from "./PlayerListDialog"
+import { toDate } from "../../date/toDate"
 
 export { Code }
 
@@ -90,7 +91,7 @@ const BodyContent = ({ brandId }) => {
 
   let { agentUsername } = state
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerDepositCountList(agentUsername ? toApiParams(state) : undefined)
+    usePlayerDepositReportList(agentUsername ? toApiParams(state) : undefined)
 
   let columns = useColumns({
     items: data?.items,
@@ -218,7 +219,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
               value={record.firstDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
-              date={record.reportDate}
+              date={toDate(record.reportDate)}
               title={playerListDialogTitle}
               useFetch={useFirstDepositPlayerList}
             />
@@ -241,7 +242,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
               value={record.noSecondDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
-              date={record.reportDate}
+              date={toDate(record.reportDate)}
               title={playerListDialogTitle}
               useFetch={useNoSecondDepositPlayerList}
             />
