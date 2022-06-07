@@ -82,7 +82,7 @@ const label = ({ locale, code }) => {
     case MarketingReportCode:
       return getTrans(
         {
-          zh: "推广报表",
+          zh: "市場報表",
           en: "Marketing Report"
         },
         locale
