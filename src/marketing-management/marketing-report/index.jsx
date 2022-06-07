@@ -225,7 +225,6 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
               agentUsername={agentUsername}
               date={toDate(record.reportDate)}
               title={playerListDialogTitle}
-              useFetch={useMarketingRegisteredPlayerList}
             />
           )
         }

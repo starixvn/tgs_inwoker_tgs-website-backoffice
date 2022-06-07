@@ -151,8 +151,8 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "winLoss",
-        Header: <Trans zh="玩家输赢金额" en="Player Win Loss" />,
+        accessor: "winLossAmount",
+        Header: <Trans zh="玩家输赢金额" en="Player Win Loss Amount" />,
         disableSortBy: true
       })
     ]
