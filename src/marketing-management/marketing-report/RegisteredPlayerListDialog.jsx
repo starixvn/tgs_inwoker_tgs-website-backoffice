@@ -39,7 +39,7 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { useRegisteredPlayerList } from "./client"
+import { useMarketingRegisteredPlayerList } from "./client"
 
 export const RegisteredPlayerListDialogDisclosure = ({
   brandId,
@@ -84,9 +84,8 @@ const PlayerListDialog = ({
     agentUsername,
     date
   })
-  let { isLoading, data, error, mutate, deleteCache } = useRegisteredPlayerList(
-    toApiParams(state)
-  )
+  let { isLoading, data, error, mutate, deleteCache } =
+    useMarketingRegisteredPlayerList(toApiParams(state))
 
   let columns = useColumns({ items: data?.items })
 

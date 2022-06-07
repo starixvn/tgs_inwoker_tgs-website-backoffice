@@ -8,32 +8,26 @@ import {
   usePostFormData
 } from "../../client"
 
-//TODO: rm
-import { useMarketReportList } from "../../platform-report/market-report/client"
-import { usePlayerList } from "../../player-management/player-list/client"
+const API = "/api/MarketingReport"
 
-const API = "/api/MarketReport"
-
-export const usePlayerMarketingReport = (searchParams) => {
-  //TODO: rm
-  return useMarketReportList(searchParams)
-
+export const useMarketingReport = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
   return useGet(url)
 }
 
-export const useRegisteredPlayerList = (searchParams) => {
-  //TODO: rm
-  return usePlayerList(searchParams)
-
-  let url = searchParams ? urlWith(searchParams, API) : ""
+export const useMarketingRegisteredPlayerList = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/registerDetail`) : ""
   return useGet(url)
 }
 
-export const useGamePlayerList = (searchParams) => {
-  //TODO: rm
-  return usePlayerList(searchParams)
+export const useMarketingFirstDepositPlayerList = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/firstDepositDetail`)
+    : ""
+  return useGet(url)
+}
 
-  let url = searchParams ? urlWith(searchParams, API) : ""
+export const useMarketingGamePlayerList = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/gamingDetail`) : ""
   return useGet(url)
 }
