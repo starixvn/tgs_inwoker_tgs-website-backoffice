@@ -96,7 +96,10 @@ const ViewFundWithdrawDialog = ({ brandId, formId, dialog, ...props }) => {
     en: "View Withdraw"
   })
 
-  let { isLoading, data, error } = useFundWithdrawForm(brandId, formId)
+  let { isLoading, data, error, mutate, deleteCache } = useFundWithdrawForm(
+    brandId,
+    formId
+  )
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -104,6 +107,11 @@ const ViewFundWithdrawDialog = ({ brandId, formId, dialog, ...props }) => {
 
   if (error) {
     return <AlertDialog {...error} {...dialog} />
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
   }
 
   return (
@@ -114,6 +122,7 @@ const ViewFundWithdrawDialog = ({ brandId, formId, dialog, ...props }) => {
       showCloseButton
       showActionButtons={false}
       hideOnClickOutside={false}
+      onClickClose={reset}
       {...dialog}
       maxWidth="80vw"
     >

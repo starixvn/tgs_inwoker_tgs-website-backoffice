@@ -78,7 +78,9 @@ const VerifyFundWithdrawDialog = ({
   let {
     isLoading: isLoadingFundWithdrawForm,
     data: fundWithdrawForm,
-    error: fundWithdrawFormError
+    error: fundWithdrawFormError,
+    mutate: mutateFundWithdrawForm,
+    deleteCache: deleteFundWithdrawFormCache
   } = useFundWithdrawForm(brandId, formId)
 
   let [formData, setSubmit] = useState()
@@ -103,8 +105,11 @@ const VerifyFundWithdrawDialog = ({
   }
 
   const reset = () => {
+    deleteFundWithdrawFormCache()
+    mutateFundWithdrawForm(null, false)
+
     deleteCache()
-    mutate(undefined, false)
+    mutate(null, false)
     setSubmit(undefined)
   }
 
@@ -145,7 +150,9 @@ const VerifyFundWithdrawDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
+      onClickClose={reset}
       onSubmitted={() => {
+        reset()
         onSubmitted?.()
         fireVerifiedEvent()
       }}
