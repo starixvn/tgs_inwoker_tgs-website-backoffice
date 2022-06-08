@@ -28,7 +28,7 @@ import {
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
-import {
+import numberColumn, {
   numberDecimalColumn,
   numberDecimalPercentageColumn
 } from "../../table/column/numberColumn"
@@ -39,7 +39,7 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { useRegisteredPlayerList } from "./client"
+import { useMarketingRegisteredPlayerList } from "./client"
 
 export const RegisteredPlayerListDialogDisclosure = ({
   brandId,
@@ -84,9 +84,8 @@ const PlayerListDialog = ({
     agentUsername,
     date
   })
-  let { isLoading, data, error, mutate, deleteCache } = useRegisteredPlayerList(
-    toApiParams(state)
-  )
+  let { isLoading, data, error, mutate, deleteCache } =
+    useMarketingRegisteredPlayerList(toApiParams(state))
 
   let columns = useColumns({ items: data?.items })
 
@@ -142,13 +141,18 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       dateTimeColumn({
-        accessor: "registeredTime",
+        accessor: "registeredOn",
         Header: <Trans zh="注册时间" en="Registered Time" />,
         disableSortBy: true
       }),
       dateTimeColumn({
+        accessor: "lastLoginOn",
         Header: <Trans zh="最近登入时间" en="Last Login Time" />,
-        accessor: "lastLoginTime",
+        disableSortBy: true
+      }),
+      numberColumn({
+        accessor: "loginCount",
+        Header: <Trans zh="登入次数" en="Login Count" />,
         disableSortBy: true
       })
     ]

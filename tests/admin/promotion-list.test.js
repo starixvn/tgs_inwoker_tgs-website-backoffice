@@ -14,7 +14,7 @@ const { lorem } = faker
 
 test("add and edit promotion", async ({ page }) => {
   let brandId = await gotoPromotionPage(page)
-  let promotion = await addPromotion(page)
+  let promotion = await addDepositPromotion(page)
 
   await searchPromotion(page, promotion)
 
@@ -100,20 +100,12 @@ const toggleStatus = async (page, brandId, index = 0) => {
 
 let MinTotalAmountLimit = 10000000
 
-const PromotionTypeGroupOptions = ["Deposit", "Turnover"]
 const editPromotion = async (page, brandId, record) => {
   let EditDialogSelector = `#edit-promotion-dialog`
   await openDialog(page, EditDialogSelector)
 
-  let promotionTypeGroup = await getPromotionTypeGroup(page)
-  let otherPromotionTypeGroups = PromotionTypeGroupOptions.filter(
-    (item) => item != promotionTypeGroup
-  )
-
   let promotion = {
     ...record,
-    promotionTypeGroup:
-      PromotionTypeGroupOptions[random(0, otherPromotionTypeGroups.length - 1)],
     totalAmountLimit: random(MinTotalAmountLimit, MinTotalAmountLimit + 1000),
     bonusAmountLimit: random(0, 100)
   }
@@ -122,19 +114,6 @@ const editPromotion = async (page, brandId, record) => {
     `${EditDialogSelector} input[name="totalAmountLimit"]`,
     `${promotion.totalAmountLimit}`
   )
-
-  await setPromotionTypeGroup(page, promotion.promotionTypeGroup)
-
-  let PromotionTypeOptions = await getPromotionTypeOptions(page)
-  let promotionType = await getPromotionType(page)
-  let otherPromotionTypes = PromotionTypeOptions.filter(
-    (item) => item != promotionType
-  )
-  promotion.promotionType =
-    otherPromotionTypes.length > 0
-      ? otherPromotionTypes[random(0, otherPromotionTypes.length - 1)]
-      : PromotionTypeOptions[0]
-  await setPromotionType(page, promotion.promotionType)
 
   let hasGameTypeOption = await isGameTypeSelectVisible(page)
   if (hasGameTypeOption) {
@@ -187,7 +166,7 @@ const editPromotion = async (page, brandId, record) => {
   return promotion
 }
 
-const addPromotion = async (page) => {
+const addDepositPromotion = async (page) => {
   let DialogSelector = `#add-promotion-dialog`
   await openDialog(page, DialogSelector)
 
@@ -288,52 +267,6 @@ const addPromotion = async (page) => {
 
   await page.waitForSelector(DialogSelector, { state: "detached" })
   return promotion
-}
-
-const PromotionTypeGroupSelectSelector = `select[name="promotionTypeGroup"]`
-const getPromotionTypeGroupOptions = async (
-  page,
-  selectSelector = PromotionTypeGroupSelectSelector
-) => {
-  return optionValues(page, selectSelector)
-}
-
-const getPromotionTypeGroup = async (
-  page,
-  selectSelector = PromotionTypeGroupSelectSelector
-) => {
-  return optionValues(page, selectSelector)
-}
-
-const setPromotionTypeGroup = async (
-  page,
-  option = "",
-  selectSelector = PromotionTypeGroupSelectSelector
-) => {
-  return page.selectOption(selectSelector, option)
-}
-
-const PromotionTypeSelectSelector = `select[name="promotionType"]`
-const getPromotionTypeOptions = async (
-  page,
-  selectSelector = PromotionTypeSelectSelector
-) => {
-  return optionValues(page, selectSelector)
-}
-
-const getPromotionType = async (
-  page,
-  selectSelector = PromotionTypeSelectSelector
-) => {
-  return optionValues(page, selectSelector)
-}
-
-const setPromotionType = async (
-  page,
-  option,
-  selectSelector = PromotionTypeSelectSelector
-) => {
-  return page.selectOption(selectSelector, option)
 }
 
 const GameTypeSelectSelector = `select[name="gameType"]`

@@ -75,6 +75,9 @@ const getTransactionTypeOptions = async (
   page,
   selectSelector = TransactionTypeSelector
 ) => {
+  //TODO: rm when BonusAdjust ready
+  return ["CompanyAdjust", "AgentAdjust"]
+
   let Selector = `${selectSelector} option:not(:first-child)`
   await page.waitForSelector(Selector, { state: "attached" })
   return page.$$eval(Selector, (options) => options.map(({ value }) => value))

@@ -47,6 +47,7 @@ import BrandBar from "../../report/BrandBar"
 import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
+import { AgentLevelSelect } from "../../agent/AgentLevel"
 
 export { Code }
 
@@ -90,7 +91,8 @@ const ReportContent = ({ brandId }) => {
     agentType: undefined,
     includeAgents: true,
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    levelType: undefined
   })
 
   useEffect(() => {
@@ -139,6 +141,7 @@ const ReportContent = ({ brandId }) => {
             brandId={brandId}
             agentUsername={agentUsername}
             agentType={state?.agentType}
+            levelType={state?.levelType}
             includeAgents={state?.includeAgents}
             start={from}
             end={to}
@@ -235,6 +238,7 @@ const SearchBar = ({
   brandId,
   agentUsername,
   agentType,
+  levelType,
   includeAgents,
   start,
   end,
@@ -249,6 +253,7 @@ const SearchBar = ({
     defaultValues: {
       agentUsername,
       agentType,
+      levelType,
       includeAgents,
       start,
       end
@@ -287,6 +292,11 @@ const SearchBar = ({
             autoFocus
           />
           <AgentTypeSelect name="agentType" />
+
+          {/* 
+          <AgentLevelSelect name="levelType" /> 
+          */}
+
           <Checkbox name="includeAgents" label={includeAgentCheckboxLabel} />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -387,6 +397,12 @@ const useColumns = ({
         accessor: "companyAdjustAmount",
         sumColumn: "companyAdjustAmount",
         Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "bonusAdjustAmount",
+        sumColumn: "bonusAdjustAmount",
+        Header: <Trans zh="优惠调帐" en="Bonus Adjustment Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

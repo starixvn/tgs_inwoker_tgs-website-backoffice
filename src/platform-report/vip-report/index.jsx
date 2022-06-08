@@ -260,6 +260,12 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
         disableSortBy: true
       }),
+      numberDecimalColumn({
+        accessor: "bonusAdjustAmount",
+        sumColumn: "bonusAdjustAmount",
+        Header: <Trans zh="优惠调帐" en="Bonus Adjustment Amount" />,
+        disableSortBy: true
+      }),
       textColumn({
         id: "rebateAmount",
         accessor: (row) => row,

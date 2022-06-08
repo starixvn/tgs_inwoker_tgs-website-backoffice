@@ -30,6 +30,12 @@ const RejectedTrans = {
   en: "Rejected"
 }
 
+const Invalid = "Invalid"
+const InvalidTrans = {
+  zh: "无效",
+  en: "Invalid"
+}
+
 export const UnprocessedStatus = [Review, WaitingPayment]
 
 export const isFundDepositUnderReview = (value) => value === Review
@@ -46,6 +52,8 @@ export const FundDepositStatusLabel = ({ value, ...props }) => {
       return <Trans {...ApprovedTrans} {...props} />
     case Rejected:
       return <Trans {...RejectedTrans} {...props} />
+    case Invalid:
+      return <Trans {...InvalidTrans} {...props} />
     default:
       return value ?? ""
   }
@@ -79,6 +87,10 @@ export const FundDepositStatusSelect = ({
     {
       label: useTrans(RejectedTrans),
       value: Rejected
+    },
+    {
+      label: useTrans(InvalidTrans),
+      value: Invalid
     }
   ]
 

@@ -78,7 +78,9 @@ const VerifyFundDepositDialog = ({
   let {
     isLoading: isLoadingFundDepositForm,
     data: fundDepositForm,
-    error: fundDepositFormError
+    error: fundDepositFormError,
+    mutate: mutateFundDepositForm,
+    deleteCache: deleteFundDepositFormCache
   } = useFundDepositForm(brandId, formId)
 
   let [formData, setSubmit] = useState()
@@ -104,6 +106,9 @@ const VerifyFundDepositDialog = ({
   }
 
   const reset = () => {
+    deleteFundDepositFormCache()
+    mutateFundDepositForm(null, false)
+
     deleteCache()
     mutate(undefined, false)
     setSubmit(undefined)
@@ -149,6 +154,7 @@ const VerifyFundDepositDialog = ({
       error={error}
       onCloseErrorAlert={reset}
       onSubmitted={() => {
+        reset()
         onSubmitted?.()
         fireVerifiedEvent()
       }}

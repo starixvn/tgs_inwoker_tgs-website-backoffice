@@ -179,6 +179,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
             </>
           )}
           <CryptoApplyInfoBox record={record} />
+          <SendNoteApplyInfoBox record={record} />
         </FieldValues>
         <Separator />
         <BankInfoBox record={record} />
@@ -191,12 +192,28 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         />
         <TextareaField
           name="remark"
-          label={<Trans zh="备注" en="Remark" />}
+          label={<Trans zh="客服备註" en="CS Note" />}
           value={record?.remark}
           disabled={disabled}
         />
       </FieldStack>
       <Input type="hidden" value={brandId} />
+    </>
+  )
+}
+
+const SendNoteApplyInfoBox = ({ record }) => {
+  let sendNote = record?.applyInfo?.sendNote
+  if (!sendNote) {
+    return null
+  }
+
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="玩家备註" en="Player Note" />
+      </NormalLabel>
+      <Box alignY="center">{sendNote}</Box>
     </>
   )
 }

@@ -47,8 +47,12 @@ import { sumBy } from "lodash-es"
 import AlertDialog, { AlertDialogModal } from "../../dialog/Alert"
 import { Switch } from "../../switch/Switch"
 
+const Register = "Register"
+
 export const PromotionNewUserRuleSetting = ({ promotionType, ...props }) => {
   switch (promotionType) {
+    case Register:
+      return <RegisterRuleSetting {...props} />
     default:
       return <RegisterRuleSetting {...props} />
   }
@@ -66,18 +70,21 @@ export const RegisterRuleSetting = ({
         <Trans zh="彩金金额" en="Bonus Amount" />
       </NormalLabel>
       <NumberInput
-        name="bonusAmount"
+        name="rule.bonusAmount"
         min="0"
         max={limitedTotalAmount ? totalAmountLimit : undefined}
         required
         disabled={disabled}
+        registerOptions={{
+          valueAsNumber: true
+        }}
       />
 
       <NormalLabel>
         <Trans zh="流水倍数" en="Turnover Requirement" />
       </NormalLabel>
       <NumberInputField
-        name="turnoverMultiple"
+        name="rule.turnoverMultiple"
         min="0"
         required
         disabled={disabled}
@@ -86,6 +93,9 @@ export const RegisterRuleSetting = ({
             <Trans zh="倍" en="Multipliers" />
           </Button>
         }
+        registerOptions={{
+          valueAsNumber: true
+        }}
       />
     </FieldValues>
   )

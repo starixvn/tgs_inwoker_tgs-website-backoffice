@@ -8,32 +8,23 @@ import {
   usePostFormData
 } from "../../client"
 
-//TODO: rm
-import { useMarketReportList } from "../../platform-report/market-report/client"
-import { usePlayerList } from "../../player-management/player-list/client"
+const API = "/api/PlayerDepositReport"
 
-const API = "/api/MarketReport"
-
-export const usePlayerDepositCountList = (searchParams) => {
-  //TODO: rm
-  return useMarketReportList(searchParams)
-
+export const usePlayerDepositReportList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
   return useGet(url)
 }
 
 export const useFirstDepositPlayerList = (searchParams) => {
-  //TODO: rm
-  return usePlayerList(searchParams)
-
-  let url = searchParams ? urlWith(searchParams, API) : ""
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/playerFirstDepositDetails`)
+    : ""
   return useGet(url)
 }
 
 export const useNoSecondDepositPlayerList = (searchParams) => {
-  //TODO: rm
-  return usePlayerList(searchParams)
-
-  let url = searchParams ? urlWith(searchParams, API) : ""
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/playerNoSecondDepositDetails`)
+    : ""
   return useGet(url)
 }

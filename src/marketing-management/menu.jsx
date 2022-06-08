@@ -7,9 +7,17 @@ import {
   codeLabelPair as playerDepositReportPair
 } from "./player-deposit/menu"
 import {
+  Code as PlayerWinLossCode,
+  codeLabelPair as playerWinLossReportPair
+} from "./player-win-loss/menu"
+import {
   Code as MarketingReportCode,
   codeLabelPair as marketingReportPair
 } from "./marketing-report/menu"
+import {
+  Code as AgentMarketingReportCode,
+  codeLabelPair as agentMarketingReportPair
+} from "./agent-marketing-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 
@@ -62,11 +70,29 @@ const label = ({ locale, code }) => {
         locale
       )
 
+    case PlayerWinLossCode:
+      return getTrans(
+        {
+          zh: "玩家总输赢报表",
+          en: "Player Total Win Loss Report"
+        },
+        locale
+      )
+
     case MarketingReportCode:
       return getTrans(
         {
-          zh: "推广报表",
+          zh: "市場報表",
           en: "Marketing Report"
+        },
+        locale
+      )
+
+    case AgentMarketingReportCode:
+      return getTrans(
+        {
+          zh: "代理市場報表",
+          en: "Agent Marketing Report"
         },
         locale
       )
@@ -83,6 +109,11 @@ export const codeLabelPair = [
       locale,
       codes,
       label,
-      subLabelPairs: [playerDepositReportPair, marketingReportPair]
+      subLabelPairs: [
+        playerDepositReportPair,
+        playerWinLossReportPair,
+        marketingReportPair,
+        agentMarketingReportPair
+      ]
     })
 ]

@@ -20,9 +20,7 @@ import {
   useUserRoleType
 } from "../../user/context"
 import { Code } from "./menu"
-import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { Trans, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
@@ -35,12 +33,14 @@ import SearchButton from "../../button/SearchButton"
 import { yesterday } from "../../date/range"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import {
-  usePlayerDepositCountList,
+  usePlayerDepositReportList,
   useFirstDepositPlayerList,
   useNoSecondDepositPlayerList
 } from "./client"
 import numberColumn from "../../table/column/numberColumn"
 import { PlayerListDialogDisclosure } from "./PlayerListDialog"
+import { toDate } from "../../date/toDate"
+import { startOfNextDay } from "../../date/startOfNextDay"
 
 export { Code }
 
@@ -60,7 +60,7 @@ const Body = () => {
   let [brandId, setBrandId] = useState(userBrandId)
 
   return (
-    <Set orientation="vertical" isFilled>
+    <Set orientation="vertical" isFilled height="100%">
       <BrandBar
         id="page-merchant-bar"
         onBrandChange={(value) => {
@@ -92,14 +92,16 @@ const BodyContent = ({ brandId }) => {
 
   let { agentUsername, from, to } = state
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerDepositCountList(toApiParams(state))
+    usePlayerDepositReportList(
+      agentUsername
+        ? { ...toApiParams(state), from, to: startOfNextDay(to) }
+        : undefined
+    )
 
   let columns = useColumns({
     items: data?.items,
     brandId,
-    agentUsername,
-    from,
-    to
+    agentUsername
   })
   return (
     <PageContent
@@ -108,6 +110,7 @@ const BodyContent = ({ brandId }) => {
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
             brandId={brandId}
+            agentUsername={agentUsername}
             from={state?.from}
             to={state?.to}
             search={(data) => {
@@ -122,16 +125,19 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-      />
+      {agentUsername && (
+        <Table
+          columns={columns}
+          data={data?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(state.pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          stickyHead
+        />
+      )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -146,7 +152,7 @@ const SearchBar = ({
   isLoading,
   ...props
 }) => {
-  let QueryMaxRangeDays = 30
+  let QueryMaxRangeDays = 31
 
   let agentUsernamePlaceholder = useTrans({
     zh: "代理用户名",
@@ -208,17 +214,17 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         disableSortBy: true
       }),
       numberColumn({
-        id: "firstFundInCount",
+        id: "firstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
             <PlayerListDialogDisclosure
-              value={record.registeredCount}
+              value={record.firstDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
-              date={record.reportDate}
+              date={toDate(record.reportDate)}
               title={playerListDialogTitle}
               useFetch={useFirstDepositPlayerList}
             />
@@ -238,10 +244,10 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         Cell: ({ value: record }) => {
           return (
             <PlayerListDialogDisclosure
-              value={record.registeredCount}
+              value={record.noSecondDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
-              date={record.reportDate}
+              date={toDate(record.reportDate)}
               title={playerListDialogTitle}
               useFetch={useNoSecondDepositPlayerList}
             />

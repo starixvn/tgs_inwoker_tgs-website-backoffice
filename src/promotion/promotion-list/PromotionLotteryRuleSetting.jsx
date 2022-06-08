@@ -14,7 +14,9 @@ import {
   Heading,
   FieldStack,
   Table,
-  Stack
+  Stack,
+  Popover,
+  Alert
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, {
@@ -53,30 +55,40 @@ import { sumBy } from "lodash-es"
 import AlertDialog, { AlertDialogModal } from "../../dialog/Alert"
 import { Switch } from "../../switch/Switch"
 import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import { get, set } from "lodash-es"
+import Big from "big.js"
 
-export const PromotionLuckyDrawRuleSetting = ({ promotionType, ...props }) => {
+export const PromotionLotteryRuleSetting = ({ promotionType, ...props }) => {
   switch (promotionType) {
     default:
-      return <PromotionWheelRuleSetting {...props} />
+      return <PromotionRouletteRuleSetting {...props} />
   }
 }
 
-export const PromotionWheelRuleSetting = ({ ...props }) => {
+export const PromotionRouletteRuleSetting = ({ ...props }) => {
   return (
     <FieldValues>
       <NormalLabel>
-        <Trans zh="轮盘设置" en="Wheel Setting" />
+        <Trans zh="轮盘设置" en="Roulette Setting" />
       </NormalLabel>
       <SettingDisclosure width="fit-content" {...props} />
     </FieldValues>
   )
 }
 
-const ChancePercentageFieldName = "chancePercentage"
+const WinningProbabilityFieldName = "winningProbability"
 
-const validateTotalChancePercentage = (fieldName, settings = []) => {
-  let totalChancePercentage = sumBy(settings, fieldName)
-  let pass = totalChancePercentage === 100
+const validateTotalWinningPercentage = (fieldName, settings = []) => {
+  let totalChancePercentage = settings.reduce((totalPercentage, setting) => {
+    let percentage = get(setting, fieldName)
+    if (Number.isFinite(percentage)) {
+      totalPercentage = totalPercentage.plus(new Big(percentage))
+    }
+    return totalPercentage
+  }, new Big(0))
+
+  let pass = totalChancePercentage.toNumber() <= 100
   return pass
 }
 
@@ -96,15 +108,27 @@ const validateAllRequired = (fieldName, settings = []) => {
   return pass
 }
 
-const ListFieldName = "list"
-const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
+const SettingFieldName = "rule"
+const ListFieldName = "items"
+const TitleFieldName = "title"
+const SettingDisclosure = ({
+  name = SettingFieldName,
+  readOnly,
+  limitedTotalAmount,
+  totalAmountLimit,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let { control, setValue } = useFormContext()
   let defaultValue = useWatch({
     control,
     name,
-    defaultValue: Array.from({ length: 6 }, (x, i) => ({ rank: i + 1 }))
+    defaultValue: {
+      items: Array.from({ length: 6 }, (x, index) => {
+        return index == 0 ? { isDefault: true } : {}
+      })
+    }
   })
 
   let disabled = readOnly
@@ -115,20 +139,14 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
       defaultValue={defaultValue}
       rules={{
         required: true,
-        validate: (settings) => {
+        validate: (data) => {
           if (disabled) {
             return true
           }
 
-          let passTotalChancePercentage = validateTotalChancePercentage(
-            ChancePercentageFieldName,
-            settings
-          )
-          if (!passTotalChancePercentage) {
-            return "TotalChancePercentage"
-          }
-
-          return true
+          let items = get(data, ListFieldName)
+          let pass = validateAllRequired(TitleFieldName, items)
+          return pass
         }
       }}
       render={({
@@ -140,7 +158,7 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
         return (
           <>
             <Disclosure
-              id="signin-setting-dialog-disclosure"
+              id="setting-dialog-disclosure"
               {...dialog}
               palette={palette}
               variant={variant}
@@ -151,11 +169,14 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
             {dialog.visible && (
               <SettingDialog
                 record={value}
+                limitedTotalAmount={limitedTotalAmount}
+                totalAmountLimit={totalAmountLimit}
                 onChange={(data) => {
                   let editable = !readOnly
                   if (editable) {
+                    let items = get(data, ListFieldName)
                     console.log(`setValue ${name} > `, data)
-                    setValue(name, data, { shouldValidate: true })
+                    setValue(name, { items }, { shouldValidate: true })
                   }
                 }}
                 readOnly={readOnly}
@@ -169,22 +190,63 @@ const SettingDisclosure = ({ name = ListFieldName, readOnly, ...props }) => {
   )
 }
 
-const SettingDialog = ({ record = [], readOnly, dialog, onChange }) => {
+const SettingDialog = ({
+  record = {},
+  limitedTotalAmount,
+  totalAmountLimit,
+  readOnly,
+  dialog,
+  onChange
+}) => {
   let title = useTrans({
     zh: "轮盘设置",
-    en: "Wheel Setting"
+    en: "Roulette Setting"
   })
 
   let editable = !readOnly
-  let defaultValues = {}
-  Reflect.set(defaultValues, ListFieldName, clone(record))
+
+  let items =
+    record?.items?.map((item) => {
+      if (item.isDefault && editable) {
+        //backend will update default's winningProbability value
+        return {
+          ...clone(item),
+          winningProbability: undefined
+        }
+      }
+
+      let winningProbability = get(item, WinningProbabilityFieldName)
+      if (Number.isFinite(winningProbability)) {
+        winningProbability = new Big(winningProbability)
+          .times(new Big(100))
+          .toNumber()
+      }
+
+      return {
+        ...clone(item),
+        winningProbability
+      }
+    }) ?? []
 
   return (
     <Backdrop {...dialog}>
       <FormDialog
-        defaultValues={defaultValues}
+        defaultValues={{ items }}
         onSubmit={(data) => {
-          onChange?.(Reflect.get(data, ListFieldName))
+          let items = data.items.map((item) => {
+            let winningProbability = get(item, WinningProbabilityFieldName)
+            if (Number.isFinite(winningProbability)) {
+              winningProbability = new Big(winningProbability)
+                .div(new Big(100))
+                .toNumber()
+            }
+
+            return {
+              ...item,
+              winningProbability
+            }
+          })
+          onChange?.({ items })
           dialog.hide()
         }}
         stopPropagation={true}
@@ -196,16 +258,32 @@ const SettingDialog = ({ record = [], readOnly, dialog, onChange }) => {
         footer={
           !editable && <CloseButtonFooter dialog={dialog} alignX="right" />
         }
-        minWidth="70vw"
-        maxWidth="100vw"
+        width="max-content"
+        maxWidth="90vw"
+        css={css`
+          & .bb-DialogContent {
+            height: max-content;
+            max-height: 90vh;
+          }
+        `}
       >
-        <FormBody />
+        <FormBody
+          limitedTotalAmount={limitedTotalAmount}
+          totalAmountLimit={totalAmountLimit}
+          readOnly={readOnly}
+        />
       </FormDialog>
     </Backdrop>
   )
 }
 
-const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
+const FormBody = ({
+  name = ListFieldName,
+  limitedTotalAmount,
+  totalAmountLimit,
+  readOnly,
+  ...props
+}) => {
   let { control, register, formState } = useFormContext()
 
   let fieldArray = useFieldArray({
@@ -220,8 +298,8 @@ const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
   })
 
   let totalChancePercentageMessage = useTrans({
-    zh: "中奖机率加总须为100",
-    en: "Winning chance must add up to 100"
+    zh: "中奖机率加总须小于100",
+    en: "Total winning probability must be less than 100"
   })
   let [errors, setErrors] = useState([])
   return (
@@ -237,13 +315,13 @@ const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
               <Trans zh="彩金" en="Bonus" />
             </Table.HeadCell>
             <Table.HeadCell>
-              <Trans zh="中奖机率 %" en="Winning Chance %" />
+              <Trans zh="中奖机率 %" en="Winning Probability %" />
             </Table.HeadCell>
             <Table.HeadCell>
               <Trans zh="流水倍数" en="Turnover Requirement" />
             </Table.HeadCell>
             <Table.HeadCell>
-              <Trans zh="中奖次数/天" en="Winnings / Day" />
+              <Trans zh="中奖次数/天" en="Winning Limit / Day" />
             </Table.HeadCell>
             <Table.HeadCell>
               <Trans zh="预设" en="Default" />
@@ -256,6 +334,8 @@ const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
               name={name}
               key={field._id}
               field={field}
+              limitedTotalAmount={limitedTotalAmount}
+              totalAmountLimit={totalAmountLimit}
               index={index}
               fieldArray={fieldArray}
               readOnly={readOnly}
@@ -264,15 +344,16 @@ const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
         </Table.Body>
       </Table>
       <Controller
-        name="totalChancePercentage"
+        name="totalWinningProbability"
         control={control}
         rules={{
           validate: () => {
-            let pass = validateTotalChancePercentage(
-              ChancePercentageFieldName,
+            let pass = validateTotalWinningPercentage(
+              WinningProbabilityFieldName,
               values
             )
-            if (formState.isSubmitting && !pass) {
+
+            if (!pass) {
               setErrors([totalChancePercentageMessage])
             }
             return pass ? true : totalChancePercentageMessage
@@ -301,18 +382,20 @@ const SettingRow = ({
   index,
   fieldArray,
   readOnly,
-  chancePercentageFieldName = ChancePercentageFieldName
+  chancePercentageFieldName = WinningProbabilityFieldName
 }) => {
   let { setValue, getValues, formState, control } = useFormContext()
-  let RankFieldName = `${name}.${index}.rank`
-  useEffect(() => {
-    setValue(RankFieldName, index + 1)
-  }, [index])
 
-  let BonusFieldName = `${name}.${index}.bouns`
+  let BonusFieldName = `${name}.${index}.bonus`
   let bouns = useWatch({
     control,
     name: BonusFieldName
+  })
+
+  let IsDefaultFieldName = `${name}.${index}.isDefault`
+  let isDefault = useWatch({
+    control,
+    name: IsDefaultFieldName
   })
 
   let editable = !readOnly
@@ -322,53 +405,59 @@ const SettingRow = ({
       <Table.Cell>
         <Box>
           {index + 1}
-          <Input
-            type="hidden"
-            name={RankFieldName}
-            value={index + 1}
-            registerOptions={{
-              valueAsNumber: true
-            }}
-          />
+          {field.id && (
+            <Input
+              type="hidden"
+              name={`${name}.${index}.id`}
+              value={field.id}
+            />
+          )}
         </Box>
       </Table.Cell>
       <Table.Cell>
         <Input
-          name={`${name}.${index}.name`}
+          name={`${name}.${index}.${TitleFieldName}`}
           readOnly={readOnly}
           disabled={disabled}
-          inputProps={{
-            size: 10
-          }}
           maxLength={10}
           size="small"
           required
         />
       </Table.Cell>
       <Table.Cell>
-        <NumberInput name={BonusFieldName} min={0} max={10000} size="small" />
+        <NumberInput
+          name={BonusFieldName}
+          readOnly={readOnly}
+          disabled={disabled}
+          min={0}
+          max={10000}
+          size="small"
+          registerOptions={{
+            valueAsNumber: true
+          }}
+        />
       </Table.Cell>
       <Table.Cell>
         <NumberInput
           name={`${name}.${index}.${chancePercentageFieldName}`}
           readOnly={readOnly}
-          disabled={disabled}
-          defaultValue={field.chancePercentage}
+          disabled={disabled || isDefault}
+          defaultValue={field.winningProbability}
           registerOptions={{
             valueAsNumber: true
           }}
           min={0}
           max={100}
-          required
+          required={!isDefault}
           size="small"
         />
       </Table.Cell>
       <Table.Cell>
         <NumberInput
-          name={`${name}.${index}.turnover`}
+          name={`${name}.${index}.turnoverRate`}
           readOnly={readOnly}
           disabled={disabled}
-          defaultValue={field.turnover}
+          defaultValue={field.turnoverRate}
           registerOptions={{
             valueAsNumber: true
           }}
@@ -379,42 +468,51 @@ const SettingRow = ({
       </Table.Cell>
       <Table.Cell>
         <NumberInput
-          name={`${name}.${index}.winningsPerDay`}
+          name={`${name}.${index}.dailyWinningLimit`}
           readOnly={readOnly}
-          disabled={disabled}
-          defaultValue={field.winningsPerDay}
+          disabled={disabled || isDefault}
+          defaultValue={field.dailyWinningLimit}
           registerOptions={{
             valueAsNumber: true
           }}
           min={0}
-          required
+          required={!isDefault}
           size="small"
         />
       </Table.Cell>
       <Table.Cell>
-        <Switch
-          name={`${name}.${index}.default`}
-          registerOptions={{
-            validate: () => {
-              let defaultNames = fieldArray.fields.map(
-                (_, fieldIndex) => `${name}.${fieldIndex}.default`
-              )
-              let values = getValues(defaultNames)
-              let checkedValues = values.filter((bool) => bool)
-              return checkedValues.length === 1 ? true : "OneDefault"
-            }
-          }}
+        {index === 0 && (
+          <Box>
+            <Switch name={IsDefaultFieldName} checked display="none" />
+            <Switch
+              checked
+              disabled={disabled}
+              /*
+            registerOptions={{
+              validate: () => {
+                let defaultNames = fieldArray.fields.map(
+                  (_, fieldIndex) => `${name}.${fieldIndex}.isDefault`
+                )
+                let values = getValues(defaultNames)
+                let checkedValues = values.filter((bool) => bool)
+                return checkedValues.length === 1 ? true : "OneDefault"
+              }
+            }}
+            
           onChange={(event) => {
             let checked = event.target.checked
             if (checked) {
               fieldArray.fields.map((_, fieldIndex) => {
                 if (fieldIndex != index) {
-                  setValue(`${name}.${fieldIndex}.default`, false)
+                  setValue(`${name}.${fieldIndex}.isDefault`, false)
                 }
               })
             }
           }}
-        />
+          */
+            />
+          </Box>
+        )}
       </Table.Cell>
     </Table.Row>
   )
