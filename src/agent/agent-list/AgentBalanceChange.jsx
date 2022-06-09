@@ -33,14 +33,14 @@ export const AgentBalanceChangePanel = ({ brandId, agentId, ...props }) => {
 
   let dateRange = newDateRange()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    accountChangeType: "",
+    transactionType: "",
     from: dateRange.start,
     to: dateRange.end,
     brandId,
     agentId
   })
 
-  let { pageSize, accountChangeType, from, to } = state
+  let { pageSize, transactionType, from, to } = state
   let { isLoading, data, error, mutate, deleteCache } = useAgentBalanceChanges(
     isActive
       ? toApiParams({
@@ -57,7 +57,7 @@ export const AgentBalanceChangePanel = ({ brandId, agentId, ...props }) => {
     <TabPanel tabId={Key} {...props}>
       <Stack spacing="major-2">
         <SearchBar
-          accountChangeType={accountChangeType}
+          transactionType={transactionType}
           start={from}
           end={to}
           search={({ start, end, ...data } = {}) => {
@@ -88,7 +88,7 @@ export const AgentBalanceChangePanel = ({ brandId, agentId, ...props }) => {
 }
 
 const SearchBar = ({
-  accountChangeType,
+  transactionType,
   start,
   end,
   search,
@@ -97,7 +97,7 @@ const SearchBar = ({
 }) => {
   let formMethods = useForm({
     defaultValues: {
-      accountChangeType,
+      transactionType,
       start,
       end
     }
@@ -109,7 +109,7 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          <AgentTransactionTypeSelect name="accountChangeType" />
+          <AgentTransactionTypeSelect name="transactionType" />
           <DateTimeRangeInput />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
