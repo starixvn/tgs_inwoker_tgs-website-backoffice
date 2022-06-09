@@ -169,7 +169,7 @@ const CancelWithdrawalTrans = {
   en: "Cancel Withdrawal"
 }
 
-const Adjust = "Adjust"
+const Adjust = "CompanyAdjust"
 const AdjustTrans = {
   zh: "调账",
   en: "Balance Adjustment"
