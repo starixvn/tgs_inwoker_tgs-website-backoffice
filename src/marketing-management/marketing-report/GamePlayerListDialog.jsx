@@ -40,6 +40,9 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { useMarketingGamePlayerList } from "./client"
+import { useForm, FormProvider } from "react-hook-form"
+import SearchButton from "../../button/SearchButton"
+import { InputField } from "../../input/Input"
 
 export const GamePlayerListDialogDisclosure = ({
   brandId,
@@ -79,9 +82,10 @@ const PlayerListDialog = ({
     zh: "玩家清單",
     en: "Player List"
   })
-  let { state, setPageIndex, setSortOrder } = useTable({
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     agentUsername,
+    playerUsername: "",
     date
   })
   let { isLoading, data, error, mutate, deleteCache } =
@@ -116,6 +120,17 @@ const PlayerListDialog = ({
           overflow: auto;
         `}
       >
+        <SearchBar
+          playerUsername={state?.playerUsername}
+          search={(data) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
         <Table
           columns={columns}
           data={data?.items}
@@ -129,6 +144,36 @@ const PlayerListDialog = ({
         />
       </FieldStack>
     </Dialog.Modal>
+  )
+}
+
+const SearchBar = ({ playerUsername, search, isLoading, ...props }) => {
+  let playerUsernamePlaceholder = useTrans({
+    zh: "玩家用户名",
+    en: "Player Username"
+  })
+
+  let formMethods = useForm({
+    defaultValues: {
+      playerUsername
+    }
+  })
+
+  const onSubmit = (data) => search(data)
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Set>
+          <InputField
+            name="playerUsername"
+            showEmptyFieldValueAddonAfter
+            placeholder={playerUsernamePlaceholder}
+          />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
   )
 }
 
