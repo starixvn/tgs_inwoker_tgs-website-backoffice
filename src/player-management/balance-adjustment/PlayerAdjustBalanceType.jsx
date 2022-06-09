@@ -87,6 +87,8 @@ export const usePlayerAdjustBalanceTypeOptionList = () => {
 
 export const PlayerAdjustBalanceTypeLabel = ({ value }) => {
   switch (value) {
+    case Bonus:
+      return <Trans {...BonusTrans} />
     case Company:
       return <Trans {...CompanyTrans} />
     case Agent:
