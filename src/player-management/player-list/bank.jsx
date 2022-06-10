@@ -14,7 +14,8 @@ import {
   Dialog,
   Table,
   useClassName,
-  FieldStack
+  FieldStack,
+  Switch
 } from "bumbag"
 import { FieldValues, TwoColumns } from "../../layout/Grid"
 import { Trans, FormattedDateTime, FormattedNumber } from "../../i18n"
@@ -22,7 +23,8 @@ import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
 import {
   useEditPlayerBank,
   useDeletePlayerBank,
-  useAddPlayerBank
+  useAddPlayerBank,
+  useSetDefaultPlayerBank
 } from "./client"
 import AlertDialog from "../../dialog/Alert"
 import Backdrop from "../../dialog/Backdrop"
@@ -93,9 +95,10 @@ const Bank = ({
   edit = false,
   onSubmitted
 }) => {
-  let { bankType = "" } = record
+  let { bankType = "", isDefault } = record
   let deleteDialog = useModalState()
   let editDialog = useModalState()
+  let setDefaultDialog = useModalState()
 
   //TODO: rm
   let isBank = PaymentMethodBankType.isBank(bankType)
@@ -133,6 +136,29 @@ const Bank = ({
               dialog={editDialog}
             />
           )}
+
+          <Disclosure
+            id="set-default-dialog-disclosure"
+            disabled={isDefault}
+            {...setDefaultDialog}
+          >
+            <Switch
+              checked={isDefault}
+              disabled
+              label={<Trans zh="預設" en="Default" />}
+            />
+          </Disclosure>
+          {/* 
+          {setDefaultDialog.visible && (
+            <SetDefaultDialog
+              brandId={brandId}
+              playerCode={playerCode}
+              bank={record}
+              onSubmitted={onSubmitted}
+              dialog={setDefaultDialog}
+            />
+          )} 
+          */}
         </Set>
       )}
       <FieldValues>
@@ -584,7 +610,7 @@ const DeleteDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(false, undefined)
+    mutate(null, false)
     setDeleteId(undefined)
   }
 
@@ -609,6 +635,52 @@ const DeleteDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
         margin="major-1"
       >
         <Trans zh="是否删除此银行卡？" en="Do you want to delete this card?" />
+      </Box>
+    </Modal>
+  )
+}
+
+const SetDefaultDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
+  let [id, setId] = useState()
+  let { result, isLoading, error, deleteCache, mutate } =
+    useSetDefaultPlayerBank(playerCode, id)
+  useEffect(() => {
+    if (result && !error) {
+      onSubmitted?.()
+      dialog.hide()
+    }
+  }, [result, error])
+
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
+    setId(undefined)
+  }
+
+  return (
+    <Modal
+      id="set-default-bank-dialog"
+      showActionButtons
+      actionButtonsProps={{
+        isLoading,
+        onClickSubmit: () => setId(bank.id),
+        onClickCancel: dialog.hide,
+        cancelText: <CancelText />,
+        submitText: <SubmitText />
+      }}
+      {...dialog}
+    >
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+      <Box
+        data-field="bank-id"
+        data-value={bank.id}
+        alignX="center"
+        margin="major-1"
+      >
+        <Trans
+          zh="請確認是否將此卡，設定為預設提款銀行卡?？"
+          en="Set this card as default?"
+        />
       </Box>
     </Modal>
   )

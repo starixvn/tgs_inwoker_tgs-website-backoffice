@@ -47,6 +47,11 @@ export const useDeletePlayerBank = (playerCode, id) => {
   return useDelete(url)
 }
 
+export const useSetDefaultPlayerBank = (playerCode, id) => {
+  let url = playerCode && id ? `${API}/${playerCode}/bank/${id}` : ""
+  return useDelete(url)
+}
+
 export const useEditPlayerPassword = (playerCode, data) => {
   let url = playerCode ? `${API}/${playerCode}/password` : ""
   return usePutData(url, data)
