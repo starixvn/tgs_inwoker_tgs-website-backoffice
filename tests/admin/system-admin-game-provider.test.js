@@ -34,6 +34,9 @@ test("system game providers and able to search by code or name", async ({
     value: gameProviderName
   })
 
+  let WaitViewUpdate = 500
+  await page.waitForTimeout(WaitViewUpdate)
+
   code = await page.locator(`[data-column-id="code"]`).first().textContent()
   expect(code).to.includes(gameProviderCode)
 })
