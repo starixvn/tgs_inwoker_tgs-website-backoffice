@@ -137,6 +137,7 @@ const Bank = ({
             />
           )}
 
+          {/* 
           <Disclosure
             id="set-default-dialog-disclosure"
             disabled={isDefault}
@@ -148,7 +149,7 @@ const Bank = ({
               label={<Trans zh="預設" en="Default" />}
             />
           </Disclosure>
-          {/* 
+          
           {setDefaultDialog.visible && (
             <SetDefaultDialog
               brandId={brandId}
