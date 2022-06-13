@@ -148,7 +148,7 @@ const SearchBar = ({
   isLoading,
   ...props
 }) => {
-  const QueryMaxRangeDays = 314
+  const QueryMaxRangeDays = 31
   let agentUsernamePlaceholder = useTrans({
     zh: "代理用户名",
     en: "Agent Username"
