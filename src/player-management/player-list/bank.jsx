@@ -88,6 +88,21 @@ export const Panel = ({
   )
 }
 
+const IsDefaultSwitch = ({
+  label = <Trans zh="預設" en="Default" />,
+  ...props
+}) => {
+  return (
+    <Switch
+      label={label}
+      css={css`
+        pointer-events: none;
+      `}
+      {...props}
+    />
+  )
+}
+
 const Bank = ({
   brandId,
   playerCode,
@@ -100,68 +115,65 @@ const Bank = ({
   let editDialog = useModalState()
   let setDefaultDialog = useModalState()
 
-  //TODO: rm
+  //TODO: rm?
   let isBank = PaymentMethodBankType.isBank(bankType)
   let isCrypto = PaymentMethodBankType.isCrypto(bankType)
 
   return (
     <Card data-field="bank-id" data-value={record.id}>
-      {edit && (
-        <Set alignX="right">
-          <Disclosure
-            id="delete-bank-dialog-disclosure"
-            palette="danger"
-            variant="outlined"
-            {...deleteDialog}
-          >
-            <Icon icon={faMinus} fontSize="300" type="font-awesome" />
-          </Disclosure>
-          {deleteDialog.visible && (
-            <DeleteDialog
-              playerCode={playerCode}
-              bank={record}
-              onSubmitted={onSubmitted}
-              dialog={deleteDialog}
-            />
-          )}
-          <Disclosure id="edit-bank-dialog-disclosure" {...editDialog}>
-            <Icon icon={faCog} fontSize="300" type="font-awesome" />
-          </Disclosure>
-          {editDialog.visible && (
-            <EditDialog
-              brandId={brandId}
-              playerCode={playerCode}
-              record={record}
-              onSubmitted={onSubmitted}
-              dialog={editDialog}
-            />
-          )}
+      <Set alignX="right">
+        {edit && (
+          <>
+            <Disclosure
+              id="delete-bank-dialog-disclosure"
+              palette="danger"
+              variant="outlined"
+              {...deleteDialog}
+            >
+              <Icon icon={faMinus} fontSize="300" type="font-awesome" />
+            </Disclosure>
+            {deleteDialog.visible && (
+              <DeleteDialog
+                playerCode={playerCode}
+                bank={record}
+                onSubmitted={onSubmitted}
+                dialog={deleteDialog}
+              />
+            )}
+            <Disclosure id="edit-bank-dialog-disclosure" {...editDialog}>
+              <Icon icon={faCog} fontSize="300" type="font-awesome" />
+            </Disclosure>
+            {editDialog.visible && (
+              <EditDialog
+                brandId={brandId}
+                playerCode={playerCode}
+                record={record}
+                onSubmitted={onSubmitted}
+                dialog={editDialog}
+              />
+            )}
 
-          {/* 
-          <Disclosure
-            id="set-default-dialog-disclosure"
-            disabled={isDefault}
-            {...setDefaultDialog}
-          >
-            <Switch
-              checked={isDefault}
-              disabled
-              label={<Trans zh="預設" en="Default" />}
-            />
-          </Disclosure>
-          
-          {setDefaultDialog.visible && (
-            <SetDefaultDialog
-              brandId={brandId}
-              playerCode={playerCode}
-              bank={record}
-              onSubmitted={onSubmitted}
-              dialog={setDefaultDialog}
-            />
-          )} 
-          */}
-        </Set>
-      )}
+            <Disclosure
+              id="set-default-dialog-disclosure"
+              disabled={isDefault}
+              {...setDefaultDialog}
+            >
+              <IsDefaultSwitch checked={isDefault} />
+            </Disclosure>
+
+            {setDefaultDialog.visible && (
+              <SetDefaultDialog
+                brandId={brandId}
+                playerCode={playerCode}
+                bank={record}
+                onSubmitted={onSubmitted}
+                dialog={setDefaultDialog}
+              />
+            )}
+          </>
+        )}
+        {!edit && <IsDefaultSwitch checked={isDefault} />}
+      </Set>
       <FieldValues>
         <Box alignY="center">
           <PaymentChannelTrans />
@@ -645,18 +657,20 @@ const SetDefaultDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
   let [id, setId] = useState()
   let { result, isLoading, error, deleteCache, mutate } =
     useSetDefaultPlayerBank(playerCode, id)
-  useEffect(() => {
-    if (result && !error) {
-      onSubmitted?.()
-      dialog.hide()
-    }
-  }, [result, error])
 
   const reset = () => {
     deleteCache()
     mutate(null, false)
     setId(undefined)
   }
+
+  useEffect(() => {
+    if (result && !error) {
+      reset()
+      onSubmitted?.()
+      dialog.hide()
+    }
+  }, [result, error])
 
   return (
     <Modal

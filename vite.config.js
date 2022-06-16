@@ -9,7 +9,17 @@ export default defineConfig({
     "process.env.BUMBAG_ENV": JSON.stringify("")
   },
   publicDir: "public",
-  plugins: [react()],
+  plugins: [
+    react({
+      /*
+      TODO: test emotion js
+      jsxImportSource: "@emotion/react",
+      babel: {
+        presets: ["@babel/preset-react", "@emotion/babel-preset-css-prop"]
+      }
+      */
+    })
+  ],
   server: {
     proxy: {
       "/api": {

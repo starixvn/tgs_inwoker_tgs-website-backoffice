@@ -71,6 +71,7 @@ export const PlayerListDialogDisclosure = ({
 }
 
 const PlayerListDialog = ({
+  id = "player-list-dialog",
   brandId,
   agentUsername,
   date,
@@ -103,6 +104,7 @@ const PlayerListDialog = ({
 
   return (
     <Dialog.Modal
+      id={id}
       title={title}
       hideOnClickOutside={false}
       {...dialog}

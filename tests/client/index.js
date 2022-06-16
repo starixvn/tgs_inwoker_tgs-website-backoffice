@@ -6,6 +6,7 @@ import payment from "./payment/index.js"
 import promotion from "./promotion/index.js"
 import platform from "./platform/index.js"
 import agent from "./agent/index.js"
+import fund from "./fund/index.js"
 
 export default {
   init: (options = {}) => {
@@ -17,5 +18,6 @@ export default {
   payment,
   promotion,
   platform,
-  agent
+  agent,
+  fund
 }
