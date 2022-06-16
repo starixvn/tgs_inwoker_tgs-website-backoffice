@@ -144,7 +144,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="Banner 管理" en="Banner Management" />}
+      title={<Trans zh="Banner 管理 " en="Banner Management" />}
       actionBar={
         <Box alignX="right">
           <AddPlatformBannerDisclosure

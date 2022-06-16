@@ -183,6 +183,7 @@ const SearchBar = ({
             required
           />
           <DateInputRange
+            id="date-range"
             showDateDropdownMenu
             maxRangeDays={QueryMaxRangeDays}
             startProps={{
