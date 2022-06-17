@@ -83,7 +83,6 @@ const ReportContent = ({ brandId }) => {
   let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
-    pageSize: QueryMaxRangeDays,
     username: "",
     type: "",
     from: dateRange.start,

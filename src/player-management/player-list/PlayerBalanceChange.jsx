@@ -177,7 +177,6 @@ const useColumns = ({ items = [] }) =>
         TotalCell: () => null,
         disableSortBy: true
       }),
-      /*
       textColumn({
         accessor: "includeInNetProfit",
         Header: <Trans zh="淨盈利" en="Net Profit" />,
@@ -190,7 +189,6 @@ const useColumns = ({ items = [] }) =>
           )
         }
       }),
-      */
       textColumn({
         accessor: "remark",
         Header: <Trans zh="备注" en="Remark" />,

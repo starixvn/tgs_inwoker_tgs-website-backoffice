@@ -2,6 +2,7 @@ import {
   urlWith,
   useGet,
   usePostData,
+  usePut,
   usePutData,
   useDelete
 } from "../../client"
@@ -45,6 +46,11 @@ export const useEditPlayerBank = ({ playerCode, id } = {}, data) => {
 export const useDeletePlayerBank = (playerCode, id) => {
   let url = playerCode && id ? `${API}/${playerCode}/bank/${id}` : ""
   return useDelete(url)
+}
+
+export const useSetDefaultPlayerBank = (playerCode, id) => {
+  let url = playerCode && id ? `${API}/${playerCode}/bank/${id}/default` : ""
+  return usePut(url)
 }
 
 export const useEditPlayerPassword = (playerCode, data) => {

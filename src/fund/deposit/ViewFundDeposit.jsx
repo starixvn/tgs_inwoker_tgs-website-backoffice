@@ -178,6 +178,8 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
               </Box>
             </>
           )}
+          <PhoneApplyInfoBox record={record} />
+          <EMoneyNameApplyInfoBox record={record} />
           <CryptoApplyInfoBox record={record} />
           <SendNoteApplyInfoBox record={record} />
         </FieldValues>
@@ -198,6 +200,38 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         />
       </FieldStack>
       <Input type="hidden" value={brandId} />
+    </>
+  )
+}
+
+const PhoneApplyInfoBox = ({ record }) => {
+  let phone = record?.applyInfo?.phone
+  if (!phone) {
+    return null
+  }
+
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="电话号码" en="Phone" />
+      </NormalLabel>
+      <Box alignY="center">{phone}</Box>
+    </>
+  )
+}
+
+const EMoneyNameApplyInfoBox = ({ record }) => {
+  let eMoneyName = record?.applyInfo?.eMoneyName
+  if (!eMoneyName) {
+    return null
+  }
+
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="E-money name" en="E-money name" />
+      </NormalLabel>
+      <Box alignY="center">{eMoneyName}</Box>
     </>
   )
 }

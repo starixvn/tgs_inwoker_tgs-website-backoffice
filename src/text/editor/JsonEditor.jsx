@@ -24,6 +24,9 @@ import { useForm, useFormContext, Controller } from "react-hook-form"
 import { stringifyJSON } from "../json"
 import clone from "clone-deep"
 import { ConfigPaths } from "./MonacoEditor"
+import Backdrop from "../../dialog/Backdrop"
+import FormDialog from "../../form/FormDialog"
+import { CloseText, ConfirmText } from "../../button/ActionButtons"
 
 loader.config({
   paths: ConfigPaths
@@ -116,6 +119,46 @@ const Editor = ({ ...props }) => {
       `}
       {...props}
     />
+  )
+}
+
+const DefaultJsonEditorProps = {
+  height: "60vh"
+}
+export const JsonEditorFormDialog = ({
+  value,
+  disabled,
+  dialog,
+  onChange,
+  jsonEditorProps: { height, ...jsonEditorProps } = DefaultJsonEditorProps,
+  ...props
+}) => {
+  return (
+    <Backdrop {...dialog}>
+      <FormDialog
+        defaultValues={{ value }}
+        stopPropagation={true}
+        onSubmit={(data) => {
+          onChange?.(data.value)
+          dialog.hide()
+        }}
+        submitText={disabled ? <CloseText /> : <ConfirmText />}
+        dialog={dialog}
+        hideBackdrop={true}
+        css={css`
+          min-width: 60vw;
+          max-width: 90vw;
+        `}
+        {...props}
+      >
+        <JsonEditor
+          name="value"
+          disabled={disabled}
+          height={height}
+          {...jsonEditorProps}
+        />
+      </FormDialog>
+    </Backdrop>
   )
 }
 

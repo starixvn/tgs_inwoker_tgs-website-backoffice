@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+          <link rel="icon" href="/favicon.ico" />
+        -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Back Office</title>
+    <link rel="stylesheet" href="/tinymce/skins/ui/oxide/skin.min.css" />
+    <link rel="stylesheet" href="/tinymce/skins/ui/oxide/content.min.css" />
+    {{include "env.html"}}
+  </head>
+  <body>
+    <script>
+      window.addEventListener("error", (e) => {
+        console.warn(e)
+        if (
+          e.message ===
+            "ResizeObserver loop completed with undelivered notifications." ||
+          e.message === "ResizeObserver loop limit exceeded"
+        ) {
+          e.stopImmediatePropagation()
+        }
+      })
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
+    <script src="/tinymce/tinymce.min.js"></script>
+    <script src="/tinymce/themes/silver/theme.min.js"></script>
+    <script src="/tinymce/langs/zh_CN.js"></script>
+  </body>
+</html>
