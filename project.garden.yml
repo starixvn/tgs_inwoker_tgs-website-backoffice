@@ -8,7 +8,7 @@ defaultEnvironment: develop
 providers:
   - name: local-kubernetes # The name of the provider plugin to use.
     environments: ["develop"]
-    setupIngressController: "nginx"
+    setupIngressController: false # "nginx"
 
 ---
 kind: Module
