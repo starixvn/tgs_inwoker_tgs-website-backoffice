@@ -103,6 +103,16 @@ export const usePlayerTransferWalletList = (playerCode) => {
   return useGet(url)
 }
 
+export const usePlayerTransferAllToMainWallet = (playerCode) => {
+  //TODO: rm test
+  return usePlayerTransferWalletList(playerCode)
+}
+
+export const usePlayerTransferToMainWallet = (playerCode, gameProviderCode) => {
+  //TODO: rm test
+  return usePlayerTransferWalletList(gameProviderCode)
+}
+
 export const usePlayerMainWallet = (playerCode) => {
   let url = playerCode ? `${API}/${playerCode}/mainwallet` : ""
 

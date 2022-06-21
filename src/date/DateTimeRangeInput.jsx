@@ -176,6 +176,7 @@ export const DateTimeRangeInput = ({
         {showDateDropdownMenu && (
           <DateDropdownMenu
             id="date-range-dropdown-menu"
+            maxRangeDays={maxRangeDays}
             onClick={({ type, start, end }) => {
               formMethods?.setValue(startName, start)
               formMethods?.setValue(endName, end)

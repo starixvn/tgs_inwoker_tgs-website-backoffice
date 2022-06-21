@@ -32,6 +32,7 @@ import { isDev } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
 import { SortOrder } from "../../table/order"
+import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog"
 
 export { Code }
 
@@ -384,6 +385,9 @@ const useColumns = ({
                 showParentUsername={showAllAgent}
                 onSubmitted={mutate}
               />
+              {/* 
+              <PlayerWalletBalanceDialogDisclosure playerCode={playerCode} /> 
+              */}
             </Set>
           )
         }

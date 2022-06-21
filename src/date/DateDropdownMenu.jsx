@@ -15,6 +15,9 @@ import {
   endOfMonth
 } from "date-fns"
 import { faCalendarAlt } from "@fortawesome/free-regular-svg-icons"
+import { isNil, isEmpty, either } from "ramda"
+
+let isNilOrEmpty = either(isNil, isEmpty)
 
 const Yesterday = "Yesterday"
 const YesterdayDropdownMenuItem = ({ onClick, ...props }) => (
@@ -155,17 +158,29 @@ export const ThisMonthDropdownMenuItem = ({ onClick, ...props }) => {
   )
 }
 
-export const DateDropdownMenu = ({ onClick, ...props }) => {
+const WeekDays = 7
+const MonthDays = 31
+export const DateDropdownMenu = ({ maxRangeDays, onClick, ...props }) => {
+  let showWeek = isNilOrEmpty(maxRangeDays) || maxRangeDays >= WeekDays
+  let showMonth = isNilOrEmpty(maxRangeDays) || maxRangeDays >= MonthDays
   return (
     <DropdownMenu
       menu={
         <>
           <YesterdayDropdownMenuItem onClick={onClick} />
           <TodayDropdownMenuItem onClick={onClick} />
-          <LastWeekDropdownMenuItem onClick={onClick} />
-          <ThisWeekDropdownMenuItem onClick={onClick} />
-          <LastMonthDropdownMenuItem onClick={onClick} />
-          <ThisMonthDropdownMenuItem onClick={onClick} />
+          {showWeek && (
+            <>
+              <LastWeekDropdownMenuItem onClick={onClick} />
+              <ThisWeekDropdownMenuItem onClick={onClick} />
+            </>
+          )}
+          {showMonth && (
+            <>
+              <LastMonthDropdownMenuItem onClick={onClick} />
+              <ThisMonthDropdownMenuItem onClick={onClick} />
+            </>
+          )}
         </>
       }
       {...props}

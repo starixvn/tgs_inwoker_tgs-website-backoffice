@@ -17,6 +17,7 @@ import { sortBy } from "lodash-es"
 
 export const Key = "wallet-list"
 
+//TODO: rm
 export const PlayerWalletListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
