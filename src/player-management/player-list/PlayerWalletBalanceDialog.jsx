@@ -208,7 +208,7 @@ const TransferAllToMainWalletButton = ({
   )
 }
 
-const TransferToMainWalletButton = ({ playerCode, gameProviderCode }) => {
+const TransferToMainWalletButton = ({ playerCode, gameProviderCode, onSubmitted }) => {
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
     usePlayerTransferToMainWallet(formData)
