@@ -160,12 +160,10 @@ const Body = ({
             value={mainWallet?.balance}
           />
         </Blockquote>
-        {/* 
         <TransferAllToMainWalletButton
           playerCode={playerCode}
           onSubmitted={onSubmitted}
-        /> 
-        */}
+        />
       </Set>
       <Table columns={columns} data={items} />
     </FieldStack>
@@ -195,23 +193,25 @@ const TransferAllToMainWalletButton = ({
   }, [result])
 
   return (
-    <Button
-      onClick={() => {
-        setSubmit(playerCode)
-      }}
-      isLoading={isLoading}
-      disabled={isLoading}
-    >
-      <Trans zh="一键转入" en="Transfer from all sub wallet to main wallet" />
+    <>
+      <Button
+        onClick={() => {
+          setSubmit(playerCode)
+        }}
+        isLoading={isLoading}
+        disabled={isLoading}
+      >
+        <Trans zh="一键转入" en="Transfer from all sub wallet to main wallet" />
+      </Button>
       {error && <AlertDialog {...error} onClickClose={reset} />}
-    </Button>
+    </>
   )
 }
 
 const TransferToMainWalletButton = ({ playerCode, gameProviderCode }) => {
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
-    usePlayerTransferToMainWallet(playerCode, formData)
+    usePlayerTransferToMainWallet(formData)
 
   const reset = () => {
     deleteCache()
@@ -227,16 +227,21 @@ const TransferToMainWalletButton = ({ playerCode, gameProviderCode }) => {
   }, [result])
 
   return (
-    <Button
-      onClick={() => {
-        setSubmit(gameProviderCode)
-      }}
-      isLoading={isLoading}
-      disabled={isLoading}
-    >
-      <Trans zh="转至主钱包" en="Transfer to main wallet" />
+    <>
+      <Button
+        onClick={() => {
+          setSubmit({
+            playerCode,
+            gameProviderCode
+          })
+        }}
+        isLoading={isLoading}
+        disabled={isLoading}
+      >
+        <Trans zh="转至主钱包" en="Transfer to main wallet" />
+      </Button>
       {error && <AlertDialog {...error} onClickClose={reset} />}
-    </Button>
+    </>
   )
 }
 
@@ -262,17 +267,13 @@ const useColumns = ({ items = [], playerCode, onSubmitted }) => {
         Header: <Trans zh="操作" en="Actions" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          //TODO: reload balance btn
-          //TODO: transfer to main account button
           return (
             <Set alignX="center">
-              {/* 
-              TODO: game provider code?
               <TransferToMainWalletButton
                 playerCode={playerCode}
+                gameProviderCode={record?.gameProviderCode}
                 onSubmitted={onSubmitted}
-              /> 
-              */}
+              />
             </Set>
           )
         }

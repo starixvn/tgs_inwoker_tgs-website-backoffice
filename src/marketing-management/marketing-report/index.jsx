@@ -24,7 +24,7 @@ import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedNumber, Trans, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import BrandBar from "../../report/BrandBar"
 import { SortOrder } from "../../table/order"
@@ -45,6 +45,7 @@ import { PlayerListDialogDisclosure as FirstDepositPlayerListDialogDisclosure } 
 import { GamePlayerListDialogDisclosure } from "./GamePlayerListDialog"
 import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import textColumn from "../../table/column/textColumn"
 
 export { Code }
 
@@ -131,6 +132,7 @@ const BodyContent = ({ brandId }) => {
         <Table
           columns={columns}
           data={data?.items}
+          total={data?.items?.length > 0 && data?.total}
           initialState={state}
           controlledState={state}
           pageCount={pageCount(state.pageSize, data?.totalCount)}
@@ -214,14 +216,27 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         dateFormat: "MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
+        TotalCell: () => <Trans zh="总计" en="Total" />,
+        disableSortBy: true,
+      }),
+      /*
+      textColumn({
+        accessor: "username",
+        Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       }),
+      */
       numberColumn({
         id: "registerCount",
         accessor: (row) => row,
         Header: <Trans zh="注册人数" en="Register Count" />,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value}/>
+        },
         disableSortBy: true,
         Cell: ({ value: record }) => {
+          //TODO: rm disableSortBy
+          //TODO: agentUsername from record 
           return (
             <RegisteredPlayerListDialogDisclosure
               value={record.registerCount}
@@ -237,8 +252,13 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         id: "firstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value}/>
+        },
         disableSortBy: true,
         Cell: ({ value: record }) => {
+          //TODO: rm disableSortBy
+          //TODO: agentUsername from record 
           return (
             <FirstDepositPlayerListDialogDisclosure
               value={record.firstDepositCount}
@@ -255,8 +275,13 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         id: "gamingCount",
         accessor: (row) => row,
         Header: <Trans zh="游戏人数" en="Gaming Count" />,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value}/>
+        },
         disableSortBy: true,
         Cell: ({ value: record }) => {
+          //TODO: rm disableSortBy
+          //TODO: agentUsername from record 
           return (
             <GamePlayerListDialogDisclosure
               value={record.gamingCount}

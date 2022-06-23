@@ -91,7 +91,6 @@ const PlayerListDialog = ({
   )
 
   let columns = useColumns({ items: data?.items })
-
   /*
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -126,6 +125,9 @@ const PlayerListDialog = ({
           overflow: auto;
         `}
       >
+        <Set>
+          {agentUsername && <Box alignY="center"><Trans zh={`代理用户名: ${agentUsername}`} en={`Agent Username: ${agentUsername}`}/></Box>}
+        </Set>
         <Table
           columns={columns}
           data={data?.items}
@@ -136,6 +138,12 @@ const PlayerListDialog = ({
           setSortOrder={setSortOrder}
           isLoading={isLoading}
           stickyHead
+          /*
+          containerProps={{
+            maxHeight: "65vh",
+            overflow: "auto"
+          }}
+          */
         />
       </FieldStack>
     </Dialog.Modal>

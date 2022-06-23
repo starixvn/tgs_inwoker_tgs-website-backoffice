@@ -104,13 +104,13 @@ export const usePlayerTransferWalletList = (playerCode) => {
 }
 
 export const usePlayerTransferAllToMainWallet = (playerCode) => {
-  //TODO: rm test
-  return usePlayerTransferWalletList(playerCode)
+  let url = playerCode ? `${API}/${playerCode}/fundin/all` : ""
+  return usePostData(url, !!playerCode)
 }
 
-export const usePlayerTransferToMainWallet = (playerCode, gameProviderCode) => {
-  //TODO: rm test
-  return usePlayerTransferWalletList(gameProviderCode)
+export const usePlayerTransferToMainWallet = (formData) => {
+  let url = formData?.playerCode ? `${API}/${formData?.playerCode}/fundin/` : ""
+  return usePostData(url, formData)
 }
 
 export const usePlayerMainWallet = (playerCode) => {
