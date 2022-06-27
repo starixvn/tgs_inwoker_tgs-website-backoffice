@@ -22,7 +22,7 @@ import {
 import { Code } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedNumber, Trans, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import BrandBar from "../../report/BrandBar"
 import { SortOrder } from "../../table/order"
@@ -41,6 +41,7 @@ import numberColumn from "../../table/column/numberColumn"
 import { PlayerListDialogDisclosure } from "./PlayerListDialog"
 import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import textColumn from "../../table/column/textColumn"
 
 export { Code }
 
@@ -92,11 +93,11 @@ const BodyContent = ({ brandId }) => {
 
   let { agentUsername, from, to } = state
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerDepositReportList(
-      agentUsername
-        ? { ...toApiParams(state), from, to: startOfNextDay(to) }
-        : undefined
-    )
+    usePlayerDepositReportList({
+      ...toApiParams(state),
+      from,
+      to: startOfNextDay(to)
+    })
 
   let columns = useColumns({
     items: data?.items,
@@ -125,19 +126,18 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      {agentUsername && (
-        <Table
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(state.pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-          stickyHead
-        />
-      )}
+      <Table
+        columns={columns}
+        data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+        stickyHead
+      />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -178,7 +178,6 @@ const SearchBar = ({
             autoFocus
             showEmptyFieldValueAddonAfter
             placeholder={agentUsernamePlaceholder}
-            required
           />
           <DateInputRange
             id="date-range"
@@ -200,11 +199,6 @@ const SearchBar = ({
 }
 
 const useColumns = ({ brandId, items = [], agentUsername }) => {
-  let playerListDialogTitle = useTrans({
-    zh: "玩家清單",
-    en: "Player List"
-  })
-
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
@@ -214,19 +208,29 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         Header: <Trans zh="日期" en="Date" />,
         disableSortBy: true
       }),
+      /*
+      textColumn({
+        accessor: "username",
+        Header: <Trans zh="用户名" en="Username" />,
+        disableSortBy: true
+      }),
+      */
       numberColumn({
         id: "firstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
-        disableSortBy: true,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value} />
+        },
         Cell: ({ value: record }) => {
+          //TODO: rm disableSortBy
+          //TODO: agentUsername from record
           return (
             <PlayerListDialogDisclosure
               value={record.firstDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
               date={toDate(record.reportDate)}
-              title={playerListDialogTitle}
               useFetch={useFirstDepositPlayerList}
             />
           )
@@ -241,15 +245,18 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
             en="No Second Deposit Player Count"
           />
         ),
-        disableSortBy: true,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value} />
+        },
         Cell: ({ value: record }) => {
+          //TODO: rm disableSortBy
+          //TODO: agentUsername from record
           return (
             <PlayerListDialogDisclosure
               value={record.noSecondDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
               date={toDate(record.reportDate)}
-              title={playerListDialogTitle}
               useFetch={useNoSecondDepositPlayerList}
             />
           )

@@ -96,11 +96,11 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { agentUsername, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = useMarketingReport(
-    agentUsername
-      ? { ...toApiParams(state), from, to: startOfNextDay(to) }
-      : undefined
-  )
+  let { isLoading, data, error, mutate, deleteCache } = useMarketingReport({
+    ...toApiParams(state),
+    from,
+    to: startOfNextDay(to)
+  })
 
   let columns = useColumns({
     items: data?.items,
@@ -114,6 +114,7 @@ const BodyContent = ({ brandId }) => {
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
             brandId={brandId}
+            agentUsername={agentUsername}
             from={state?.from}
             to={state?.to}
             search={(data) => {
@@ -128,20 +129,18 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      {agentUsername && (
-        <Table
-          columns={columns}
-          data={data?.items}
-          total={data?.items?.length > 0 && data?.total}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(state.pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-          stickyHead
-        />
-      )}
+      <Table
+        columns={columns}
+        data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+        stickyHead
+      />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -182,7 +181,6 @@ const SearchBar = ({
             autoFocus
             showEmptyFieldValueAddonAfter
             placeholder={agentUsernamePlaceholder}
-            required
           />
           <DateInputRange
             id="date-range"
@@ -217,7 +215,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
         TotalCell: () => <Trans zh="总计" en="Total" />,
-        disableSortBy: true,
+        disableSortBy: true
       }),
       /*
       textColumn({
@@ -231,19 +229,16 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         accessor: (row) => row,
         Header: <Trans zh="注册人数" en="Register Count" />,
         TotalCell: ({ value }) => {
-          return <FormattedNumber value={value}/>
+          return <FormattedNumber value={value} />
         },
-        disableSortBy: true,
         Cell: ({ value: record }) => {
-          //TODO: rm disableSortBy
-          //TODO: agentUsername from record 
+          //TODO: agentUsername from record
           return (
             <RegisteredPlayerListDialogDisclosure
               value={record.registerCount}
               brandId={brandId}
               agentUsername={agentUsername}
               date={toDate(record.reportDate)}
-              title={playerListDialogTitle}
             />
           )
         }
@@ -253,19 +248,16 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
         TotalCell: ({ value }) => {
-          return <FormattedNumber value={value}/>
+          return <FormattedNumber value={value} />
         },
-        disableSortBy: true,
         Cell: ({ value: record }) => {
-          //TODO: rm disableSortBy
-          //TODO: agentUsername from record 
+          //TODO: agentUsername from record
           return (
             <FirstDepositPlayerListDialogDisclosure
               value={record.firstDepositCount}
               brandId={brandId}
               agentUsername={agentUsername}
               date={toDate(record.reportDate)}
-              title={playerListDialogTitle}
               useFetch={useMarketingFirstDepositPlayerList}
             />
           )
@@ -276,12 +268,10 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         accessor: (row) => row,
         Header: <Trans zh="游戏人数" en="Gaming Count" />,
         TotalCell: ({ value }) => {
-          return <FormattedNumber value={value}/>
+          return <FormattedNumber value={value} />
         },
-        disableSortBy: true,
         Cell: ({ value: record }) => {
-          //TODO: rm disableSortBy
-          //TODO: agentUsername from record 
+          //TODO: agentUsername from record
           return (
             <GamePlayerListDialogDisclosure
               value={record.gamingCount}

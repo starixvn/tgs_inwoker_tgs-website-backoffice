@@ -46,7 +46,6 @@ export const PlayerListDialogDisclosure = ({
   agentUsername,
   date,
   useFetch,
-  title,
   ...props
 }) => {
   let dialog = useModalState()
@@ -62,7 +61,6 @@ export const PlayerListDialogDisclosure = ({
           agentUsername={agentUsername}
           date={date}
           useFetch={useFetch}
-          title={title}
           dialog={dialog}
         />
       )}
@@ -73,13 +71,16 @@ export const PlayerListDialogDisclosure = ({
 const PlayerListDialog = ({
   id = "player-list-dialog",
   brandId,
-  agentUsername,
+  agentUsername = "",
   date,
-  title,
   useFetch,
   dialog,
   ...props
 }) => {
+  let title = useTrans({
+    zh: `${agentUsername} 玩家清單`,
+    en: `${agentUsername} Player List`
+  })
   let { state, setPageIndex, setSortOrder } = useTable({
     brandId,
     agentUsername,
@@ -125,9 +126,6 @@ const PlayerListDialog = ({
           overflow: auto;
         `}
       >
-        <Set>
-          {agentUsername && <Box alignY="center"><Trans zh={`代理用户名: ${agentUsername}`} en={`Agent Username: ${agentUsername}`}/></Box>}
-        </Set>
         <Table
           columns={columns}
           data={data?.items}
