@@ -15,7 +15,7 @@ import {
   useIsAdminUser
 } from "../../user/context"
 import { Code, View, Update, PhoneFilter, RealnameFilter } from "./menu"
-import { PlayerStatusSelect } from "../PlayerStatus"
+import { PlayerStatus, PlayerStatusSelect } from "../PlayerStatus"
 import { VipLevelSelect } from "../../vip-levels/VipLevelSelect"
 import { ViewButton, EditButton } from "./button"
 import { Trans, useTrans } from "../../i18n"
@@ -97,7 +97,7 @@ const Body = () => {
 
 const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    status: "",
+    status: PlayerStatus.Enabled,
     vipId: "",
     username: "",
     parentUsername: "",
@@ -146,6 +146,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
         <SearchBar
           brandId={brandId}
           brand={brand}
+          status={status}
           allAgentSetting={allAgentSetting}
           search={(data = {}) => {
             setState({
@@ -177,6 +178,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
 const SearchBar = ({
   brandId,
   brand,
+  status,
   allAgentSetting,
   search,
   isLoading,
@@ -208,7 +210,11 @@ const SearchBar = ({
     en: "All Agent Upper Level"
   })
 
-  let formMethods = useForm({})
+  let formMethods = useForm({
+    defaultValues: {
+      status
+    }
+  })
 
   const onSubmit = (data) => search(data)
 
@@ -385,7 +391,7 @@ const useColumns = ({
                 showParentUsername={showAllAgent}
                 onSubmitted={mutate}
               />
-              <PlayerWalletBalanceDialogDisclosure playerCode={playerCode} /> 
+              <PlayerWalletBalanceDialogDisclosure playerCode={playerCode} />
             </Set>
           )
         }
