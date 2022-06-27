@@ -73,7 +73,7 @@ const VerifyFundWithdrawDialog = ({
   })
 
   let formMethods = useForm()
-  let { setValue } = formMethods
+  let { setValue, getValues } = formMethods
 
   let {
     isLoading: isLoadingFundWithdrawForm,
@@ -132,12 +132,17 @@ const VerifyFundWithdrawDialog = ({
       }}
       addonButtons={
         <Button
-          type="submit"
+          type="button"
           data-type="reject"
           isLoading={isLoading}
           disabled={isLoading}
           onClick={() => {
-            setValue("reviewResponse", ReviewFund.Reject)
+            let formData = {
+              brandId,
+              remark: getValues("remark"),
+              reviewResponse: ReviewFund.Reject
+            }
+            setSubmit(formData)
           }}
           palette="danger"
           variant="outlined"
