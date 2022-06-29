@@ -35,7 +35,10 @@ import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import { useBrandLanguageCodes } from "../../dialog/LocalizationDialog"
 import Backdrop from "../../dialog/Backdrop"
 
-export const BrandMaintenanceDialogDisclosure = ({ brandId, ...props }) => {
+export const BrandMaintenanceMessageDialogDisclosure = ({
+  brandId,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let editable = useIsDisplayMenuByRoute([Update])
@@ -59,10 +62,10 @@ export const BrandMaintenanceDialogDisclosure = ({ brandId, ...props }) => {
 }
 
 //TODO
-export const ViewBrandMaintenanceDialogDisclosure = ({}) => {}
+export const ViewBrandMaintenanceMessageDialogDisclosure = ({}) => {}
 
 //TODO
-export const EditBrandMaintenanceDialogDisclosure = ({}) => {}
+export const EditBrandMaintenanceMessageDialogDisclosure = ({}) => {}
 
 const InitBrandMaintenanceDialog = ({ brandId, dialog, ...props }) => {
   //TODO: fetch record by brandId

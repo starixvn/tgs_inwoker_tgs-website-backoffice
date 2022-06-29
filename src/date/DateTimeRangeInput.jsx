@@ -124,6 +124,8 @@ export const DateTimeRangeInput = ({
   showDateDropdownMenu = false,
   required,
   disabled,
+  addonBefore,
+  addonAfter,
   ...props
 } = {}) => {
   let startName = startProps?.name ?? "start"

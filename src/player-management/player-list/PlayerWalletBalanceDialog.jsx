@@ -160,10 +160,12 @@ const Body = ({
             value={mainWallet?.balance}
           />
         </Blockquote>
-        <TransferAllToMainWalletButton
-          playerCode={playerCode}
-          onSubmitted={onSubmitted}
-        />
+        {editable && (
+          <TransferAllToMainWalletButton
+            playerCode={playerCode}
+            onSubmitted={onSubmitted}
+          />
+        )}
       </Set>
       <Table columns={columns} data={items} />
     </FieldStack>
@@ -208,7 +210,11 @@ const TransferAllToMainWalletButton = ({
   )
 }
 
-const TransferToMainWalletButton = ({ playerCode, gameProviderCode, onSubmitted }) => {
+const TransferToMainWalletButton = ({
+  playerCode,
+  gameProviderCode,
+  onSubmitted
+}) => {
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
     usePlayerTransferToMainWallet(formData)
@@ -246,6 +252,7 @@ const TransferToMainWalletButton = ({ playerCode, gameProviderCode, onSubmitted 
 }
 
 const useColumns = ({ items = [], playerCode, onSubmitted }) => {
+  let updateAuth = useIsDisplayMenuByRoute([Update])
   return useMemo(() => {
     let columns = [
       textColumn({
@@ -260,25 +267,31 @@ const useColumns = ({ items = [], playerCode, onSubmitted }) => {
         Cell: ({ value }) => {
           return <FormattedNumberDecimal value={value} placeholder="--" />
         }
-      }),
-      textColumn({
-        id: "actions",
-        accessor: (row) => row,
-        Header: <Trans zh="操作" en="Actions" />,
-        disableSortBy: true,
-        Cell: ({ value: record }) => {
-          return (
-            <Set alignX="center">
-              <TransferToMainWalletButton
-                playerCode={playerCode}
-                gameProviderCode={record?.gameProviderCode}
-                onSubmitted={onSubmitted}
-              />
-            </Set>
-          )
-        }
       })
     ]
+
+    if (updateAuth) {
+      columns.push(
+        textColumn({
+          id: "actions",
+          accessor: (row) => row,
+          Header: <Trans zh="操作" en="Actions" />,
+          disableSortBy: true,
+          Cell: ({ value: record }) => {
+            return (
+              <Set alignX="center">
+                <TransferToMainWalletButton
+                  playerCode={playerCode}
+                  gameProviderCode={record?.gameProviderCode}
+                  onSubmitted={onSubmitted}
+                />
+              </Set>
+            )
+          }
+        })
+      )
+    }
+
     return columns
   }, [JSON.stringify(items)])
 }

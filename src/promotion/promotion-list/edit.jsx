@@ -494,6 +494,8 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     promotionTypeGroup === PromotionTypeGroup.Turnover ||
     promotionTypeGroup === PromotionTypeGroup.ReliefMoney
 
+  let isPromotionTypeDummy = promotionTypeGroup === PromotionTypeGroup.Dummy
+
   let GameTypeGroupFieldName = "gameTypeGroup"
   let gameTypeGroup = useWatch({
     control,
@@ -621,40 +623,51 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           )}
         </Box>
 
-        <NormalLabel>
-          <Trans zh="活动派发" en="Distribution Method" />
-        </NormalLabel>
-        <Box>
-          {autoPayout && (
-            <AutoOrManualPayoutSwitch readOnly disabled checked={true} />
-          )}
-          {!autoPayout && (
-            <AutoOrManualPayoutSwitch readOnly={readOnly} disabled={disabled} />
-          )}
-        </Box>
+        {!isPromotionTypeDummy && (
+          <>
+            <NormalLabel>
+              <Trans zh="活动派发" en="Distribution Method" />
+            </NormalLabel>
+            <Box>
+              {autoPayout && (
+                <AutoOrManualPayoutSwitch readOnly disabled checked={true} />
+              )}
+              {!autoPayout && (
+                <AutoOrManualPayoutSwitch
+                  readOnly={readOnly}
+                  disabled={disabled}
+                />
+              )}
+            </Box>
+          </>
+        )}
 
-        <NormalLabel>
-          <Trans zh="活动总费用" en="Promotion Funds" />
-        </NormalLabel>
-        <Set orientation="horizontal" alignY="center">
-          {limitedTotalAmount && (
-            <>
-              <NumberInput
-                name={TotalAmountLimitFieldName}
-                registerOptions={{
-                  valueAsNumber: true
-                }}
-                required
+        {!isPromotionTypeDummy && (
+          <>
+            <NormalLabel>
+              <Trans zh="活动总费用" en="Promotion Funds" />
+            </NormalLabel>
+            <Set orientation="horizontal" alignY="center">
+              {limitedTotalAmount && (
+                <>
+                  <NumberInput
+                    name={TotalAmountLimitFieldName}
+                    registerOptions={{
+                      valueAsNumber: true
+                    }}
+                    required
+                    disabled={disabled}
+                  />
+                </>
+              )}
+              <Checkbox
+                name={UnlimitedFieldName}
+                label={unlimiteTotalAmountLabel}
                 disabled={disabled}
               />
-            </>
-          )}
-          <Checkbox
-            name={UnlimitedFieldName}
-            label={unlimiteTotalAmountLabel}
-            disabled={disabled}
-          />
-        </Set>
+            </Set>
+          </>
+        )}
 
         {isPromotionTypeTurnoverRelated && (
           <>
@@ -806,17 +819,21 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
       <Separator />
 
-      <Heading use="h5">
-        <Trans zh="規則設定" en="Rule Settings" />
-      </Heading>
+      {!isPromotionTypeDummy && (
+        <>
+          <Heading use="h5">
+            <Trans zh="規則設定" en="Rule Settings" />
+          </Heading>
 
-      <PromotionRuleSetting
-        promotionTypeGroup={promotionTypeGroup}
-        promotionType={promotionType}
-        totalAmountLimitFieldName={TotalAmountLimitFieldName}
-        limitedTotalAmount={limitedTotalAmount}
-        readOnly={readOnly}
-      />
+          <PromotionRuleSetting
+            promotionTypeGroup={promotionTypeGroup}
+            promotionType={promotionType}
+            totalAmountLimitFieldName={TotalAmountLimitFieldName}
+            limitedTotalAmount={limitedTotalAmount}
+            readOnly={readOnly}
+          />
+        </>
+      )}
     </FieldStack>
   )
 }

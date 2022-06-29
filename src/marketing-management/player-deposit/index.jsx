@@ -30,7 +30,7 @@ import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
-import { yesterday } from "../../date/range"
+import { today, yesterday } from "../../date/range"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import {
   usePlayerDepositReportList,
@@ -42,6 +42,7 @@ import { PlayerListDialogDisclosure } from "./PlayerListDialog"
 import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
+import { subDays } from "date-fns"
 
 export { Code }
 
@@ -154,6 +155,10 @@ const SearchBar = ({
 }) => {
   let QueryMaxRangeDays = 31
 
+  let DataRetentionDays = 90
+  let todayRange = today()
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+
   let agentUsernamePlaceholder = useTrans({
     zh: "代理用户名",
     en: "Agent Username"
@@ -183,6 +188,7 @@ const SearchBar = ({
             id="date-range"
             showDateDropdownMenu
             maxRangeDays={QueryMaxRangeDays}
+            minDate={minDate}
             startProps={{
               name: "from"
             }}
@@ -202,6 +208,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
+        id: "ReportDate",
         accessor: "reportDate",
         dateFormat: "MM/dd",
         timeFormat: false,
@@ -210,20 +217,20 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
       }),
       /*
       textColumn({
+        id: "Username",
         accessor: "username",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       }),
       */
       numberColumn({
-        id: "firstDepositCount",
+        id: "FirstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
         Cell: ({ value: record }) => {
-          //TODO: rm disableSortBy
           //TODO: agentUsername from record
           return (
             <PlayerListDialogDisclosure
@@ -237,7 +244,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         }
       }),
       numberColumn({
-        id: "noSecondDepositCount",
+        id: "NoSecondDepositCount",
         accessor: (row) => row,
         Header: (
           <Trans
@@ -249,7 +256,6 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
           return <FormattedNumber value={value} />
         },
         Cell: ({ value: record }) => {
-          //TODO: rm disableSortBy
           //TODO: agentUsername from record
           return (
             <PlayerListDialogDisclosure

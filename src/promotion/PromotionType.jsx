@@ -16,13 +16,16 @@ const NewUser = "NewUser"
 
 const LuckyDraw = "Lottery"
 
+const Dummy = "Dummy"
+
 export const PromotionTypeGroup = {
   Deposit,
   Turnover,
   ReliefMoney,
   Signin,
   NewUser,
-  LuckyDraw
+  LuckyDraw,
+  Dummy
 }
 
 export const usePromotionGroupLabelOf = (promotionType) => {
@@ -180,3 +183,10 @@ export const PromotionTypeSelect = ({ placeholder, group, ...props }) => {
     />
   )
 }
+
+//TODO: design spec
+/*
+export const usePromotionTypeFields = (type) => {
+  //1. promotion type group > promotion type > fields spec
+}
+*/
