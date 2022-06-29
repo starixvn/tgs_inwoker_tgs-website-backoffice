@@ -216,6 +216,7 @@ const SearchBar = ({
 }
 
 const useColumns = ({ brandId, items = [], agentUsername }) => {
+  //TODO: remove disableSortBy: true
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
@@ -238,6 +239,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         id: "FirstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
+        disableSortBy: true,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
@@ -263,6 +265,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
             en="No Second Deposit Player Count"
           />
         ),
+        disableSortBy: true,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
