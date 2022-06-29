@@ -83,7 +83,8 @@ const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     agentUsername: "",
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    sortby: "ReportDate"
   })
 
   const reset = () => {
@@ -105,8 +106,7 @@ const BodyContent = ({ brandId }) => {
 
   let columns = useColumns({
     items: data?.items,
-    brandId,
-    agentUsername
+    brandId
   })
   return (
     <PageContent
@@ -207,7 +207,7 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ brandId, items = [], agentUsername }) => {
+const useColumns = ({ brandId, items = [] }) => {
   let playerListDialogTitle = useTrans({
     zh: "玩家清單",
     en: "Player List"
@@ -224,14 +224,12 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         TotalCell: () => <Trans zh="总计" en="Total" />,
         disableSortBy: true
       }),
-      /*
       textColumn({
-        id: "Username",
-        accessor: "username",
+        id: "AgentUsername",
+        accessor: "agentUsername",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       }),
-      */
       numberColumn({
         id: "RegisterCount",
         accessor: (row) => row,
@@ -240,12 +238,11 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
           return <FormattedNumber value={value} />
         },
         Cell: ({ value: record }) => {
-          //TODO: agentUsername from record
           return (
             <RegisteredPlayerListDialogDisclosure
               value={record.registerCount}
               brandId={brandId}
-              agentUsername={agentUsername}
+              agentUsername={record?.agentUsername}
               date={toDate(record.reportDate)}
             />
           )
@@ -259,12 +256,11 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
           return <FormattedNumber value={value} />
         },
         Cell: ({ value: record }) => {
-          //TODO: agentUsername from record
           return (
             <FirstDepositPlayerListDialogDisclosure
               value={record.firstDepositCount}
               brandId={brandId}
-              agentUsername={agentUsername}
+              agentUsername={record?.agentUsername}
               date={toDate(record.reportDate)}
               useFetch={useMarketingFirstDepositPlayerList}
             />
@@ -279,12 +275,11 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
           return <FormattedNumber value={value} />
         },
         Cell: ({ value: record }) => {
-          //TODO: agentUsername from record
           return (
             <GamePlayerListDialogDisclosure
               value={record.gamingCount}
               brandId={brandId}
-              agentUsername={agentUsername}
+              agentUsername={record?.agentUsername}
               date={toDate(record.reportDate)}
               title={playerListDialogTitle}
             />

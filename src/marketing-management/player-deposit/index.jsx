@@ -80,6 +80,9 @@ const BodyContent = ({ brandId }) => {
     agentUsername: "",
     from: dateRange.start,
     to: dateRange.end
+    /* TODO: set default sort
+    sortBy: "ReportDate"
+    */
   })
 
   const reset = () => {
@@ -93,12 +96,17 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { agentUsername, from, to } = state
+  //TODO: remove agentUsername required check
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerDepositReportList({
-      ...toApiParams(state),
-      from,
-      to: startOfNextDay(to)
-    })
+    usePlayerDepositReportList(
+      agentUsername
+        ? {
+            ...toApiParams(state),
+            from,
+            to: startOfNextDay(to)
+          }
+        : undefined
+    )
 
   let columns = useColumns({
     items: data?.items,
@@ -127,18 +135,20 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        total={data?.items?.length > 0 && data?.total}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        stickyHead
-      />
+      {agentUsername && (
+        <Table
+          columns={columns}
+          data={data?.items}
+          total={data?.items?.length > 0 && data?.total}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(state.pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          stickyHead
+        />
+      )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -174,6 +184,7 @@ const SearchBar = ({
 
   const onSubmit = (data) => search(data)
 
+  //TODO: remove required
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -183,12 +194,12 @@ const SearchBar = ({
             autoFocus
             showEmptyFieldValueAddonAfter
             placeholder={agentUsernamePlaceholder}
+            required
           />
           <DateInputRange
             id="date-range"
             showDateDropdownMenu
             maxRangeDays={QueryMaxRangeDays}
-            minDate={minDate}
             startProps={{
               name: "from"
             }}
@@ -217,8 +228,8 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
       }),
       /*
       textColumn({
-        id: "Username",
-        accessor: "username",
+        id: "AgentUsername",
+        accessor: "agentUsername",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       }),
