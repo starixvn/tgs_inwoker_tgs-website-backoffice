@@ -231,7 +231,7 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       numberColumn({
-        id: "RegisterCount",
+        id: "registerCount",
         accessor: (row) => row,
         Header: <Trans zh="注册人数" en="Register Count" />,
         TotalCell: ({ value }) => {
@@ -249,7 +249,7 @@ const useColumns = ({ brandId, items = [] }) => {
         }
       }),
       numberColumn({
-        id: "FirstDepositCount",
+        id: "firstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
         TotalCell: ({ value }) => {
@@ -268,7 +268,7 @@ const useColumns = ({ brandId, items = [] }) => {
         }
       }),
       numberColumn({
-        id: "GamingCount",
+        id: "gamingCount",
         accessor: (row) => row,
         Header: <Trans zh="游戏人数" en="Gaming Count" />,
         TotalCell: ({ value }) => {

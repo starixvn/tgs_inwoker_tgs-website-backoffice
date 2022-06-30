@@ -7,6 +7,7 @@ services:
     dependencies:
       - postgres
       - redis
+      - mongodb
       - nats
     env:
       GameProviderCode: "SBO"
