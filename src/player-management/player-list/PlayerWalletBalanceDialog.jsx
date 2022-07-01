@@ -117,6 +117,7 @@ const PlayerWalletDialog = ({ playerCode, dialog, ...props }) => {
 
   return (
     <Dialog.Modal
+      id="player-wallet-balance-dialog"
       title={title}
       {...dialog}
       hideOnClickOutside={false}

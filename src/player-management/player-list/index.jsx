@@ -391,7 +391,10 @@ const useColumns = ({
                 showParentUsername={showAllAgent}
                 onSubmitted={mutate}
               />
-              <PlayerWalletBalanceDialogDisclosure playerCode={playerCode} />
+              <PlayerWalletBalanceDialogDisclosure
+                id="player-wallet-balance-dialog-disclosure"
+                playerCode={playerCode}
+              />
             </Set>
           )
         }
