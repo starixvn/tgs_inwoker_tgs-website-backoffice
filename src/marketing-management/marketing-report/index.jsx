@@ -84,7 +84,7 @@ const BodyContent = ({ brandId }) => {
     agentUsername: "",
     from: dateRange.start,
     to: dateRange.end,
-    sortby: "ReportDate"
+    sortBy: [{ id: "reportDate", desc: false }]
   })
 
   const reset = () => {
@@ -216,13 +216,12 @@ const useColumns = ({ brandId, items = [] }) => {
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
-        id: "ReportDate",
+        id: "reportDate",
         accessor: "reportDate",
         dateFormat: "MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
-        TotalCell: () => <Trans zh="总计" en="Total" />,
-        disableSortBy: true
+        TotalCell: () => <Trans zh="总计" en="Total" />
       }),
       textColumn({
         id: "AgentUsername",
