@@ -181,6 +181,24 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       numberColumn({
+        accessor: "depositCount",
+        sumColumn: "depositCount",
+        Header: <Trans zh="存款人数" en="Deposit Count" />,
+        disableSortBy: true
+      }),
+      numberColumn({
+        accessor: "activePlayer",
+        sumColumn: "activePlayer",
+        Header: <Trans zh="活跃玩家" en="Active Player" />,
+        disableSortBy: true
+      }),
+      numberColumn({
+        accessor: "loginPlayer",
+        sumColumn: "loginPlayer",
+        Header: <Trans zh="登入玩家" en="Login Player" />,
+        disableSortBy: true
+      }),
+      numberColumn({
         accessor: "firstFundInCount",
         sumColumn: "firstFundInCount",
         Header: <Trans zh="首充人数" en="First Fund In Count" />,
