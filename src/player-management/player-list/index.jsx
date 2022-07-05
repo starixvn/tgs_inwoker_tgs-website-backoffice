@@ -258,6 +258,8 @@ const SearchBar = ({
             name="realName"
             showEmptyFieldValueAddonAfter
             placeholder={realNamePlaceholder}
+            minLength={2}
+            maxLength={256}
           />
           <DateInputRangeField
             showDateDropdownMenu
