@@ -309,7 +309,7 @@ const FormBody = ({
           <Table.Row>
             <Table.HeadCell></Table.HeadCell>
             <Table.HeadCell>
-              <Trans zh="名称" en="Name" />
+              <Trans zh="奖项名称" en="Winning Content" />
             </Table.HeadCell>
             <Table.HeadCell>
               <Trans zh="彩金" en="Bonus" />

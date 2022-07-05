@@ -69,6 +69,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { parseJSON } from "../../text/json"
 import { PromotionRuleSetting } from "./PromotionRuleSetting"
+import { PromotionDistributionMethodFieldBox } from "./PromotionDistributionMethodFieldBox"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -405,53 +406,6 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
   )
 }
 
-const AutoSentPlayerBonusFieldName = "autoSentPlayerBonus"
-const AutoOrManualPayoutSwitch = ({
-  name = AutoSentPlayerBonusFieldName,
-  readOnly = false,
-  disabled,
-  ...props
-}) => {
-  let { control, setValue } = useFormContext()
-
-  let checked = useWatch({
-    control,
-    name: AutoSentPlayerBonusFieldName,
-    defaultValue: props.checked ?? props?.defaultValue
-  })
-
-  let autoPayoutLabel = useTrans({
-    zh: "自動",
-    en: "Automatic"
-  })
-  let manualPayoutLabel = useTrans({
-    zh: "手动",
-    en: "Manual"
-  })
-  let label = checked ? autoPayoutLabel : manualPayoutLabel
-
-  if (readOnly || disabled) {
-    return (
-      <>
-        <Switch label={label} checked={checked} disabled={disabled} />
-        <Switch name={name} label={label} checked={checked} display="none" />
-      </>
-    )
-  }
-
-  return (
-    <Switch
-      name={name}
-      label={label}
-      checked={checked}
-      onChange={(event) => {
-        let checked = event.target.checked
-        setValue(name, checked)
-      }}
-    />
-  )
-}
-
 const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let { start: startOfToday } = today()
   let formMethods = useFormContext()
@@ -482,13 +436,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     control,
     name: PromotionTypeFieldName
   })
-
-  let autoPayout = useIsInstantlySettlementIntervalType(promotionType)
-  useEffect(() => {
-    if (autoPayout) {
-      setValue(AutoSentPlayerBonusFieldName, true)
-    }
-  }, [autoPayout])
 
   let isPromotionTypeTurnoverRelated =
     promotionTypeGroup === PromotionTypeGroup.Turnover ||
@@ -623,24 +570,12 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           )}
         </Box>
 
-        {!isPromotionTypeDummy && (
-          <>
-            <NormalLabel>
-              <Trans zh="活动派发" en="Distribution Method" />
-            </NormalLabel>
-            <Box>
-              {autoPayout && (
-                <AutoOrManualPayoutSwitch readOnly disabled checked={true} />
-              )}
-              {!autoPayout && (
-                <AutoOrManualPayoutSwitch
-                  readOnly={readOnly}
-                  disabled={disabled}
-                />
-              )}
-            </Box>
-          </>
-        )}
+        <PromotionDistributionMethodFieldBox
+          promotionTypeGroup={promotionTypeGroup}
+          promotionType={promotionType}
+          readOnly={readOnly}
+          disabled={disabled}
+        />
 
         {!isPromotionTypeDummy && (
           <>

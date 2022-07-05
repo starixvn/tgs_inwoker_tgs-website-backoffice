@@ -14,7 +14,7 @@ import {
   useUserBrandId,
   useIsAdminUser
 } from "../../user/context"
-import { Code, View, Update, PhoneFilter, RealnameFilter } from "./menu"
+import { Code, View, Update, PhoneFilter } from "./menu"
 import { PlayerStatus, PlayerStatusSelect } from "../PlayerStatus"
 import { VipLevelSelect } from "../../vip-levels/VipLevelSelect"
 import { ViewButton, EditButton } from "./button"
@@ -185,7 +185,7 @@ const SearchBar = ({
   ...props
 }) => {
   let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
-  let hasRealnameFilterAuth = useIsDisplayMenuByRoute([RealnameFilter])
+  // let hasRealnameFilterAuth = useIsDisplayMenuByRoute([RealnameFilter])
   let showAllAgent = allAgentSetting.switch
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
@@ -254,13 +254,11 @@ const SearchBar = ({
               placeholder={phonePlaceholder}
             />
           )}
-          {hasRealnameFilterAuth && (
-            <InputField
-              name="realName"
-              showEmptyFieldValueAddonAfter
-              placeholder={realNamePlaceholder}
-            />
-          )}
+          <InputField
+            name="realName"
+            showEmptyFieldValueAddonAfter
+            placeholder={realNamePlaceholder}
+          />
           <DateInputRangeField
             showDateDropdownMenu
             fakeTimeLabel
@@ -323,6 +321,11 @@ const useColumns = ({
           textAlign: "center"
         }
       },
+      textColumn({
+        accessor: "realName",
+        Header: <Trans zh="真实姓名" en="Real Name" />,
+        disableSortBy: true
+      }),
       dateTimeColumn({
         accessor: "registeredTime",
         Header: <Trans zh="注册时间" en="Registration Time" />,
