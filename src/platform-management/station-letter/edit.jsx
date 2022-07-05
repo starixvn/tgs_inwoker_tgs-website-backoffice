@@ -67,10 +67,13 @@ export const AddButton = ({ brandId, onSubmitted, ...props }) => {
 
 const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   let [data, setSubmit] = useState()
-  let { result, isLoading, error } = useAddStationLetter(data)
+  let { result, isLoading, error, mutate, deleteCache } =
+    useAddStationLetter(data)
 
-  const clearResult = () => {
+  const reset = () => {
     setSubmit(null)
+    deleteCache()
+    mutate(null, false)
   }
 
   let title = useTrans({
@@ -100,7 +103,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
+      onCloseErrorAlert={reset}
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
@@ -138,29 +141,32 @@ const EditBody = ({ readOnly = false } = {}) => {
   let PlayerUsernamesFieldName = "playerUsernames"
   let playerUsernames = useWatch({
     control,
-    name: PlayerUsernamesFieldName
+    name: PlayerUsernamesFieldName,
+    defaultValue: []
   })
 
   let required = !readOnly
   let uploadInputRef = useRef()
 
   let [formData, setFormData] = useState()
-  let { result, isLoading, error, deleteCache } =
+  let { result, isLoading, error, mutate, deleteCache } =
     useStationLetterUpload(formData)
 
   const resetFormData = () => {
     if (uploadInputRef?.current) {
       uploadInputRef.current.value = ""
     }
-    deleteCache()
+
     setFormData(undefined)
+    deleteCache()
+    mutate(null, false)
   }
 
   useEffect(() => {
     if (Array.isArray(result?.players) && !error) {
       setValue(
         "playerUsernames",
-        result?.players.map((item) => item.username)
+        result?.players.map((item) => item.username) ?? []
       )
     }
   }, [formData, result])
@@ -177,6 +183,10 @@ const EditBody = ({ readOnly = false } = {}) => {
             control={control}
             name={PlayerUsernamesFieldName}
             shouldUnregister={true}
+            rules={{
+              required: true
+            }}
+            defaultValue={playerUsernames}
             render={({
               field: { onChange, onBlur, value, name, ref },
               fieldState: { isTouched, isDirty, error }
@@ -200,8 +210,9 @@ const EditBody = ({ readOnly = false } = {}) => {
                   `}
                 />
                 <Button
+                  ref={ref}
                   type="button"
-                  palette="primary"
+                  palette={error ? "danger" : "primary"}
                   size="small"
                   onClick={(event) => {
                     uploadInputRef?.current.click()
@@ -220,11 +231,11 @@ const EditBody = ({ readOnly = false } = {}) => {
                 >
                   <Trans zh="下载文件格式" en="Download Format File" />
                 </Button>
-                {error && <Alert {...error} onClickClose={resetFormData} />}
               </>
             )}
           />
         )}
+        {error && <Alert {...error} onClickClose={resetUploadFormData} />}
         {readOnly &&
           target === DesignatedPlayers &&
           playerUsernames.length > 0 && (
