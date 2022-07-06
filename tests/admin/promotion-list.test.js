@@ -151,7 +151,7 @@ const editPromotion = async (page, brandId, record) => {
   }
 
   await page.fill(
-    `${EditDialogSelector} input[name="bonusAmountLimit"]`,
+    `${EditDialogSelector} input[name="rule.bonusAmountLimit"]`,
     `${promotion.bonusAmountLimit}`
   )
 
@@ -244,15 +244,15 @@ const addDepositPromotion = async (page) => {
   */
 
   await page.fill(
-    `${DialogSelector} input[name="percentage"]`,
+    `${DialogSelector} input[name="rule.percentage"]`,
     `${promotion.percentage}`
   )
   await page.fill(
-    `${DialogSelector} input[name="bonusAmountLimit"]`,
+    `${DialogSelector} input[name="rule.bonusAmountLimit"]`,
     `${promotion.bonusAmountLimit}`
   )
   await page.fill(
-    `${DialogSelector} input[name="turnoverMultiple"]`,
+    `${DialogSelector} input[name="rule.turnoverMultiple"]`,
     `${promotion.turnoverMultiple}`
   )
 

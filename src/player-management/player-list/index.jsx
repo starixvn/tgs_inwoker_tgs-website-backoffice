@@ -228,7 +228,8 @@ const SearchBar = ({
             name="username"
             showEmptyFieldValueAddonAfter
             placeholder={usernameInputPlaceholder}
-            autocomplete="off"
+            minLength={2}
+            maxLength={256}
           />
           <InputField
             name="agentName"
@@ -312,17 +313,11 @@ const useColumns = ({
 
     columns = [
       ...columns,
-      {
+      textColumn({
         Header: <Trans zh="用户名" en="Username" />,
         accessor: "username",
-        disableSortBy: true,
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        }
-      },
+        disableSortBy: true
+      }),
       textColumn({
         accessor: "realName",
         Header: <Trans zh="真实姓名" en="Real Name" />,

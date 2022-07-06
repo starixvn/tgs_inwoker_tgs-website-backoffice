@@ -22,8 +22,15 @@ const InBlacklistTrans = {
   en: "In Blacklist"
 }
 
+const RegisterUndone = "RegisterUndone"
+const RegisterUndoneTrans = {
+  zh: "注册中",
+  en: "Under Registration"
+}
+
 export const PlayerStatus = {
   Enabled,
+  RegisterUndone,
   Disabled,
   InBlacklist
 }
@@ -41,6 +48,10 @@ export const PlayerStatusSelect = ({ placeholder, ...props }) => {
       value: Enabled
     },
     {
+      label: useTrans(RegisterUndoneTrans),
+      value: RegisterUndone
+    },
+    {
       label: useTrans(DisabledTrans),
       value: Disabled
     },
@@ -53,9 +64,8 @@ export const PlayerStatusSelect = ({ placeholder, ...props }) => {
   return <Select placeholder={placeholder} options={options} {...props} />
 }
 
-export const PlayerStatusLabel = ({ value }) => {
-  let code = value
-  switch (code) {
+export const PlayerStatusLabel = ({ value = "" }) => {
+  switch (value) {
     case Enabled:
       return (
         <Text>
@@ -75,5 +85,5 @@ export const PlayerStatusLabel = ({ value }) => {
         </Text>
       )
   }
-  return null
+  return value
 }
