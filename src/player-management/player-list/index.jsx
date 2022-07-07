@@ -14,8 +14,8 @@ import {
   useUserBrandId,
   useIsAdminUser
 } from "../../user/context"
-import { Code, View, Update, PhoneFilter, RealnameFilter } from "./menu"
-import { PlayerStatusSelect } from "../PlayerStatus"
+import { Code, View, Update, PhoneFilter } from "./menu"
+import { PlayerStatus, PlayerStatusSelect } from "../PlayerStatus"
 import { VipLevelSelect } from "../../vip-levels/VipLevelSelect"
 import { ViewButton, EditButton } from "./button"
 import { Trans, useTrans } from "../../i18n"
@@ -32,6 +32,7 @@ import { isDev } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
 import { SortOrder } from "../../table/order"
+import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog"
 
 export { Code }
 
@@ -96,7 +97,7 @@ const Body = () => {
 
 const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    status: "",
+    status: PlayerStatus.Enabled,
     vipId: "",
     username: "",
     parentUsername: "",
@@ -145,6 +146,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
         <SearchBar
           brandId={brandId}
           brand={brand}
+          status={status}
           allAgentSetting={allAgentSetting}
           search={(data = {}) => {
             setState({
@@ -176,13 +178,14 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
 const SearchBar = ({
   brandId,
   brand,
+  status,
   allAgentSetting,
   search,
   isLoading,
   ...props
 }) => {
   let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
-  let hasRealnameFilterAuth = useIsDisplayMenuByRoute([RealnameFilter])
+  // let hasRealnameFilterAuth = useIsDisplayMenuByRoute([RealnameFilter])
   let showAllAgent = allAgentSetting.switch
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
@@ -207,7 +210,11 @@ const SearchBar = ({
     en: "All Agent Upper Level"
   })
 
-  let formMethods = useForm({})
+  let formMethods = useForm({
+    defaultValues: {
+      status
+    }
+  })
 
   const onSubmit = (data) => search(data)
 
@@ -221,7 +228,8 @@ const SearchBar = ({
             name="username"
             showEmptyFieldValueAddonAfter
             placeholder={usernameInputPlaceholder}
-            autocomplete="off"
+            minLength={2}
+            maxLength={256}
           />
           <InputField
             name="agentName"
@@ -247,13 +255,13 @@ const SearchBar = ({
               placeholder={phonePlaceholder}
             />
           )}
-          {hasRealnameFilterAuth && (
-            <InputField
-              name="realName"
-              showEmptyFieldValueAddonAfter
-              placeholder={realNamePlaceholder}
-            />
-          )}
+          <InputField
+            name="realName"
+            showEmptyFieldValueAddonAfter
+            placeholder={realNamePlaceholder}
+            minLength={2}
+            maxLength={256}
+          />
           <DateInputRangeField
             showDateDropdownMenu
             fakeTimeLabel
@@ -305,17 +313,16 @@ const useColumns = ({
 
     columns = [
       ...columns,
-      {
+      textColumn({
         Header: <Trans zh="用户名" en="Username" />,
         accessor: "username",
-        disableSortBy: true,
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        }
-      },
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "realName",
+        Header: <Trans zh="真实姓名" en="Real Name" />,
+        disableSortBy: true
+      }),
       dateTimeColumn({
         accessor: "registeredTime",
         Header: <Trans zh="注册时间" en="Registration Time" />,
@@ -383,6 +390,10 @@ const useColumns = ({
                 player={player}
                 showParentUsername={showAllAgent}
                 onSubmitted={mutate}
+              />
+              <PlayerWalletBalanceDialogDisclosure
+                id="player-wallet-balance-dialog-disclosure"
+                playerCode={playerCode}
               />
             </Set>
           )

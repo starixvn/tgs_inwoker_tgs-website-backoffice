@@ -79,7 +79,12 @@ const Body = () => {
             }}
             isLoading={isLoading}
           />
-          <AddButton id="add-platform-dialog-disclosure" onSubmitted={mutate} />
+          <Set orientation="horizontal" alignX="right">
+            <AddButton
+              id="add-platform-dialog-disclosure"
+              onSubmitted={mutate}
+            />
+          </Set>
         </>
       }
     >

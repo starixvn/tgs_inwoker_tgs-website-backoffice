@@ -24,7 +24,8 @@ export const useVerifyStationLetter = ({ id, type, data } = {}) => {
 }
 
 export const useAddStationLetter = (data) => {
-  return usePostData(API, data)
+  let url = data ? API : ""
+  return usePostData(url, data)
 }
 
 export const useStationLetterUpload = (body) => {

@@ -117,6 +117,7 @@ export const Table = ({
   stickyFoot = false,
   components = {},
   getTableHeadProps,
+  containerProps = {},
   ...props
 }) => {
   components = {
@@ -190,6 +191,7 @@ export const Table = ({
       )}
       {!isLoading && (
         <Set
+          {...containerProps}
           orientation="vertical"
           position="relative"
           css={css`

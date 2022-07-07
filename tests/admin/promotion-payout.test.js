@@ -183,15 +183,15 @@ const addDepositPromotion = async (page, platformCode) => {
   */
 
   await page.fill(
-    `${DialogSelector} input[name="percentage"]`,
+    `${DialogSelector} input[name="rule.percentage"]`,
     `${promotion.percentage}`
   )
   await page.fill(
-    `${DialogSelector} input[name="bonusAmountLimit"]`,
+    `${DialogSelector} input[name="rule.bonusAmountLimit"]`,
     `${promotion.bonusAmountLimit}`
   )
   await page.fill(
-    `${DialogSelector} input[name="turnoverMultiple"]`,
+    `${DialogSelector} input[name="rule.turnoverMultiple"]`,
     `${promotion.turnoverMultiple}`
   )
 

@@ -50,7 +50,7 @@ const ResetDialog = ({ playerCode, username, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(undefined, false)
+    mutate(null, false)
     setSubmit(undefined)
   }
 

@@ -24,7 +24,7 @@ import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedNumber, Trans, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import BrandBar from "../../report/BrandBar"
 import { SortOrder } from "../../table/order"
@@ -33,7 +33,7 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
-import { yesterday } from "../../date/range"
+import { today, yesterday } from "../../date/range"
 import {
   useMarketingReport,
   useMarketingRegisteredPlayerList,
@@ -45,6 +45,8 @@ import { PlayerListDialogDisclosure as FirstDepositPlayerListDialogDisclosure } 
 import { GamePlayerListDialogDisclosure } from "./GamePlayerListDialog"
 import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import textColumn from "../../table/column/textColumn"
+import { subDays } from "date-fns"
 
 export { Code }
 
@@ -81,7 +83,8 @@ const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     agentUsername: "",
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    sortBy: [{ id: "reportDate", desc: false }]
   })
 
   const reset = () => {
@@ -95,16 +98,15 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { agentUsername, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = useMarketingReport(
-    agentUsername
-      ? { ...toApiParams(state), from, to: startOfNextDay(to) }
-      : undefined
-  )
+  let { isLoading, data, error, mutate, deleteCache } = useMarketingReport({
+    ...toApiParams(state),
+    from,
+    to: startOfNextDay(to)
+  })
 
   let columns = useColumns({
     items: data?.items,
-    brandId,
-    agentUsername
+    brandId
   })
   return (
     <PageContent
@@ -113,6 +115,7 @@ const BodyContent = ({ brandId }) => {
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
             brandId={brandId}
+            agentUsername={agentUsername}
             from={state?.from}
             to={state?.to}
             search={(data) => {
@@ -127,19 +130,18 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      {agentUsername && (
-        <Table
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(state.pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-          stickyHead
-        />
-      )}
+      <Table
+        columns={columns}
+        data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+        stickyHead
+      />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -155,6 +157,10 @@ const SearchBar = ({
   ...props
 }) => {
   let QueryMaxRangeDays = 31
+
+  let DataRetentionDays = 90
+  let todayRange = today()
+  let minDate = subDays(todayRange.start, DataRetentionDays)
 
   let agentUsernamePlaceholder = useTrans({
     zh: "代理用户名",
@@ -180,12 +186,12 @@ const SearchBar = ({
             autoFocus
             showEmptyFieldValueAddonAfter
             placeholder={agentUsernamePlaceholder}
-            required
           />
           <DateInputRange
             id="date-range"
             showDateDropdownMenu
             maxRangeDays={QueryMaxRangeDays}
+            minDate={minDate}
             startProps={{
               name: "from"
             }}
@@ -201,7 +207,7 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ brandId, items = [], agentUsername }) => {
+const useColumns = ({ brandId, items = [] }) => {
   let playerListDialogTitle = useTrans({
     zh: "玩家清單",
     en: "Player List"
@@ -210,25 +216,33 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
+        id: "reportDate",
         accessor: "reportDate",
         dateFormat: "MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
+        TotalCell: () => <Trans zh="总计" en="Total" />
+      }),
+      textColumn({
+        id: "AgentUsername",
+        accessor: "agentUsername",
+        Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       }),
       numberColumn({
         id: "registerCount",
         accessor: (row) => row,
         Header: <Trans zh="注册人数" en="Register Count" />,
-        disableSortBy: true,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value} />
+        },
         Cell: ({ value: record }) => {
           return (
             <RegisteredPlayerListDialogDisclosure
               value={record.registerCount}
               brandId={brandId}
-              agentUsername={agentUsername}
+              agentUsername={record?.agentUsername}
               date={toDate(record.reportDate)}
-              title={playerListDialogTitle}
             />
           )
         }
@@ -237,15 +251,16 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         id: "firstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
-        disableSortBy: true,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value} />
+        },
         Cell: ({ value: record }) => {
           return (
             <FirstDepositPlayerListDialogDisclosure
               value={record.firstDepositCount}
               brandId={brandId}
-              agentUsername={agentUsername}
+              agentUsername={record?.agentUsername}
               date={toDate(record.reportDate)}
-              title={playerListDialogTitle}
               useFetch={useMarketingFirstDepositPlayerList}
             />
           )
@@ -255,13 +270,15 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         id: "gamingCount",
         accessor: (row) => row,
         Header: <Trans zh="游戏人数" en="Gaming Count" />,
-        disableSortBy: true,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value} />
+        },
         Cell: ({ value: record }) => {
           return (
             <GamePlayerListDialogDisclosure
               value={record.gamingCount}
               brandId={brandId}
-              agentUsername={agentUsername}
+              agentUsername={record?.agentUsername}
               date={toDate(record.reportDate)}
               title={playerListDialogTitle}
             />

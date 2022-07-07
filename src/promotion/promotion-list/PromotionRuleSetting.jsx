@@ -100,7 +100,10 @@ const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
         <Trans zh="彩金百分比" en="Bonus Percentage" />
       </NormalLabel>
       <PercentageNumberInputField
-        name="percentage"
+        name="rule.percentage"
+        registerOptions={{
+          valueAsNumber: true
+        }}
         max="999"
         required
         disabled={disabled}
@@ -110,7 +113,10 @@ const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
         <Trans zh="彩金上限" en="Bonus Limit" />
       </NormalLabel>
       <NumberInput
-        name="bonusAmountLimit"
+        name="rule.bonusAmountLimit"
+        registerOptions={{
+          valueAsNumber: true
+        }}
         min="0"
         max={
           limitedTotalAmount && Number.isFinite(totalAmountLimit)
@@ -125,7 +131,10 @@ const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
         <Trans zh="流水倍数" en="Turnover Requirement" />
       </NormalLabel>
       <NumberInputField
-        name="turnoverMultiple"
+        name="rule.turnoverMultiple"
+        registerOptions={{
+          valueAsNumber: true
+        }}
         min="0"
         required
         disabled={disabled}

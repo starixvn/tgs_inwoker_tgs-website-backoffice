@@ -6,68 +6,84 @@ import Select from "../select/Select"
 
 const Enabled = "Enabled"
 const EnabledTrans = {
-    zh: "活跃",
-    en: "Enabled"
+  zh: "活跃",
+  en: "Enabled"
 }
 
 const Disabled = "Disabled"
 const DisabledTrans = {
-    zh: "封锁",
-    en: "Disabled"
+  zh: "封锁",
+  en: "Disabled"
 }
 
 const InBlacklist = "InBlacklist"
 const InBlacklistTrans = {
-    zh: "黑名单",
-    en: "In Blacklist"
+  zh: "黑名单",
+  en: "In Blacklist"
+}
+
+const RegisterUndone = "RegisterUndone"
+const RegisterUndoneTrans = {
+  zh: "注册中",
+  en: "Under Registration"
+}
+
+export const PlayerStatus = {
+  Enabled,
+  RegisterUndone,
+  Disabled,
+  InBlacklist
 }
 
 export const PlayerStatusSelect = ({ placeholder, ...props }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "状态",
-        en: "Status"
-    })
-    placeholder = placeholder ?? defaultPlaceholder
+  let defaultPlaceholder = useTrans({
+    zh: "状态",
+    en: "Status"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
 
-    let options = [
-        {
-            label: useTrans(EnabledTrans),
-            value: Enabled
-        },
-        {
-            label: useTrans(DisabledTrans),
-            value: Disabled
-        },
-        {
-            label: useTrans(InBlacklistTrans),
-            value: InBlacklist
-        }
-    ]
+  let options = [
+    {
+      label: useTrans(EnabledTrans),
+      value: Enabled
+    },
+    {
+      label: useTrans(RegisterUndoneTrans),
+      value: RegisterUndone
+    },
+    {
+      label: useTrans(DisabledTrans),
+      value: Disabled
+    },
+    {
+      label: useTrans(InBlacklistTrans),
+      value: InBlacklist
+    }
+  ]
 
-    return <Select placeholder={placeholder} options={options} {...props} />
+  return <Select placeholder={placeholder} options={options} {...props} />
 }
 
-export const PlayerStatusLabel = ({ value }) => {
-    let code = value
-    switch (code) {
-        case Enabled:
-            return (
-                <Text>
-                    <Trans {...EnabledTrans} />
-                </Text>
-            )
-        case Disabled:
-            return (
-                <Text>
-                    <Trans {...DisabledTrans} />
-                </Text>
-            )
-        case InBlacklist:
-            return (
-                <Text>
-                    <Trans {...InBlacklistTrans} />
-                </Text>
-            )
-    }
-    return null
+export const PlayerStatusLabel = ({ value = "" }) => {
+  switch (value) {
+    case Enabled:
+      return (
+        <Text>
+          <Trans {...EnabledTrans} />
+        </Text>
+      )
+    case Disabled:
+      return (
+        <Text>
+          <Trans {...DisabledTrans} />
+        </Text>
+      )
+    case InBlacklist:
+      return (
+        <Text>
+          <Trans {...InBlacklistTrans} />
+        </Text>
+      )
+  }
+  return value
 }

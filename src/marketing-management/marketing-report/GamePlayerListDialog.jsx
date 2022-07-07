@@ -49,7 +49,6 @@ export const GamePlayerListDialogDisclosure = ({
   value,
   agentUsername,
   date,
-  title,
   ...props
 }) => {
   let dialog = useModalState()

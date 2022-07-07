@@ -23,7 +23,6 @@ export default defineConfig({
           // proxy will be an instance of 'http-proxy'
         }
       }
-    },
-    hmr: true
+    }
   }
 })

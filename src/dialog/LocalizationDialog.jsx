@@ -48,6 +48,47 @@ const toLocalizationFieldName = (
   localizationFieldName = LocalizationFieldName
 ) => `${localizationFieldName}.${code}.${name}`
 
+export const useBrandLanguageCodes = (brandId) => {
+  let {
+    isLoading,
+    data: brand,
+    error: brandError,
+    mutate: mutateBrandCache,
+    deleteCache: deleteBrandCache
+  } = useBrand(brandId)
+  let {
+    isLoading: isLoadingLang,
+    data: langData,
+    error: langError,
+    mutate: mutateLangCache,
+    deleteCache: deleteLangCache
+  } = useLanguageList({ showAll: true, sortby: "cultureCode" })
+
+  let codes =
+    sortBy(brand?.languages, ["brandCultureCode"])?.map(
+      ({ brandCultureCode }) => brandCultureCode
+    ) ?? []
+
+  //TODO: required?
+  if (codes.length == 0) {
+    codes = langData?.items?.map(({ cultureCode }) => cultureCode) ?? []
+  }
+
+  return {
+    isLoading: isLoading || isLoadingLang,
+    data: codes,
+    error: brandError || langError,
+    mutate: (_, shouldRevalidate) => {
+      mutateBrandCache(_, shouldRevalidate)
+      mutateLangCache(_, shouldRevalidate)
+    },
+    deleteCache: () => {
+      deleteBrandCache()
+      deleteLangCache()
+    }
+  }
+}
+
 export const LocalizationDialogDisclosure = ({
   brandId = "",
   localizationField = LocalizationInputField,

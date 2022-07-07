@@ -37,7 +37,6 @@ import {
 } from "./PlayerBalanceChange"
 import { PlayerPromotionPanel, PlayerPromotionTab } from "./PlayerPromotion.jsx"
 import { Features, isDev, isFeatureEnabled } from "../../env"
-import { PlayerWalletListPanel, PlayerWalletListTab } from "./PlayerWalletList"
 import textColumn from "../../table/column/textColumn"
 
 export const ViewButton = ({
@@ -195,7 +194,6 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
         <PlayerOperationTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
-        <PlayerWalletListTab {...tab} />
       </TabList>
       <PlayerPanel
         player={player}
@@ -218,12 +216,6 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
       />
       <PlayerPromotionPanel
         playerCode={playerCode}
-        brandId={brandId}
-        {...tab}
-      />
-      <PlayerWalletListPanel
-        playerCode={playerCode}
-        player={player}
         brandId={brandId}
         {...tab}
       />

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: report-api
-image: harbor.rpgp.cc/tgs/report-api:202206080231-staging # tgs-report-api
+image: harbor.rpgp.cc/tgs/report-api:202206170623-dev # tgs-report-api
 services:
   - name: report-api
     dependencies:
