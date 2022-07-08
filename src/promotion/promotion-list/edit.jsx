@@ -68,7 +68,7 @@ import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import Backdrop from "../../dialog/Backdrop"
 import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { parseJSON } from "../../text/json"
-import { PromotionRuleSetting } from "./PromotionRuleSetting"
+import { PromotionRuleSettingFieldBox } from "./PromotionRuleSettingFieldBox"
 import { PromotionDistributionMethodFieldBox } from "./PromotionDistributionMethodFieldBox"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
@@ -754,21 +754,13 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
       <Separator />
 
-      {!isPromotionTypeDummy && (
-        <>
-          <Heading use="h5">
-            <Trans zh="規則設定" en="Rule Settings" />
-          </Heading>
-
-          <PromotionRuleSetting
-            promotionTypeGroup={promotionTypeGroup}
-            promotionType={promotionType}
-            totalAmountLimitFieldName={TotalAmountLimitFieldName}
-            limitedTotalAmount={limitedTotalAmount}
-            readOnly={readOnly}
-          />
-        </>
-      )}
+      <PromotionRuleSettingFieldBox
+        promotionTypeGroup={promotionTypeGroup}
+        promotionType={promotionType}
+        totalAmountLimitFieldName={TotalAmountLimitFieldName}
+        limitedTotalAmount={limitedTotalAmount}
+        readOnly={readOnly}
+      />
     </FieldStack>
   )
 }

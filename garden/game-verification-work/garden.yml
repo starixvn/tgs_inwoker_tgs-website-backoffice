@@ -1,0 +1,17 @@
+kind: Module
+type: container
+name: game-verification-worker
+image: harbor.rpgp.cc/tgs/game-gameverification-worker:202207050544-staging
+services:
+  - name: game-verification-worker
+    dependencies:
+      - redis
+      - nats
+    env:
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      GameVerificationWork__GameProvidersQueryServerBaseUrl: "http://game-provider-query-server"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

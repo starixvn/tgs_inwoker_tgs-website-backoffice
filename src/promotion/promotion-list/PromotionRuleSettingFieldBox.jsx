@@ -22,7 +22,7 @@ import Disclosure, {
 } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { Trans, useTrans } from "../../i18n"
-import { useForm, useFormContext, useWatch } from "react-hook-form"
+import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
 import {
   PromotionTypeGroup,
   PromotionTypeGroupSelect,
@@ -39,6 +39,45 @@ import {
 import { PromotionSigninRuleSetting } from "./PromotionSigninRuleSetting"
 import { PromotionLotteryRuleSetting } from "./PromotionLotteryRuleSetting"
 import { PromotionNewUserRuleSetting } from "./PromotionNewUserRuleSetting"
+
+export const PromotionRuleSettingFieldBox = ({
+  promotionType,
+  promotionTypeGroup,
+  ...props
+}) => {
+  if (!promotionType || fieldNotUsed({ promotionType, promotionTypeGroup })) {
+    return null
+  }
+
+  return (
+    <>
+      <Heading use="h5">
+        <Trans zh="規則設定" en="Rule Settings" />
+      </Heading>
+
+      <PromotionRuleSetting
+        promotionTypeGroup={promotionTypeGroup}
+        promotionType={promotionType}
+        {...props}
+      />
+    </>
+  )
+}
+
+const notUsedConfigs = {
+  promotionType: [PromotionTypeGroup.Dummy],
+  promotionTypeGroup: [PromotionTypeGroup.Dummy]
+}
+const fieldNotUsed = ({ promotionType = "", promotionTypeGroup = "" }) => {
+  if (
+    notUsedConfigs.promotionTypeGroup.includes(promotionTypeGroup) ||
+    notUsedConfigs.promotionType.includes(promotionType)
+  ) {
+    return true
+  }
+
+  return false
+}
 
 export const PromotionRuleSetting = ({
   readOnly,
@@ -81,17 +120,18 @@ export const PromotionRuleSetting = ({
         />
       )
     default:
-      return (
+      return promotionType ? (
         <DefaultSetting
           promotionType={promotionType}
           limitedTotalAmount={limitedTotalAmount}
           totalAmountLimit={totalAmountLimit}
           readOnly={readOnly}
         />
-      )
+      ) : null
   }
 }
 
+const FieldName = "rule"
 const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
   let disabled = readOnly
   return (
@@ -102,7 +142,8 @@ const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
       <PercentageNumberInputField
         name="rule.percentage"
         registerOptions={{
-          valueAsNumber: true
+          valueAsNumber: true,
+          shouldUnregister: true
         }}
         max="999"
         required
@@ -115,7 +156,8 @@ const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
       <NumberInput
         name="rule.bonusAmountLimit"
         registerOptions={{
-          valueAsNumber: true
+          valueAsNumber: true,
+          shouldUnregister: true
         }}
         min="0"
         max={
@@ -133,7 +175,8 @@ const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
       <NumberInputField
         name="rule.turnoverMultiple"
         registerOptions={{
-          valueAsNumber: true
+          valueAsNumber: true,
+          shouldUnregister: true
         }}
         min="0"
         required
