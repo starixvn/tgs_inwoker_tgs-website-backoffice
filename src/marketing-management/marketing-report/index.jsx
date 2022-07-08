@@ -162,6 +162,9 @@ const SearchBar = ({
   let todayRange = today()
   let minDate = subDays(todayRange.start, DataRetentionDays)
 
+  let yesterdayRange = yesterday()
+  let maxDate = yesterdayRange.end
+
   let agentUsernamePlaceholder = useTrans({
     zh: "代理用户名",
     en: "Agent Username"
@@ -192,6 +195,7 @@ const SearchBar = ({
             showDateDropdownMenu
             maxRangeDays={QueryMaxRangeDays}
             minDate={minDate}
+            maxDate={maxDate}
             startProps={{
               name: "from"
             }}
