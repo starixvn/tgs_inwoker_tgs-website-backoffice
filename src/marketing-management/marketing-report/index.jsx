@@ -202,6 +202,14 @@ const SearchBar = ({
             endProps={{
               name: "to"
             }}
+            dateDropdownMenuProps={{
+              thisWeekProps: {
+                end: maxDate
+              },
+              thisMonthProps: {
+                end: maxDate
+              }
+            }}
             required
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />

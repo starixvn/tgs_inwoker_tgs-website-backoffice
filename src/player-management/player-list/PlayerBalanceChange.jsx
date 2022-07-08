@@ -424,6 +424,7 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
     case PlayerAdjustBalanceType.Agent:
     case PlayerAdjustBalanceType.System:
     case PlayerAdjustBalanceType.Transfer:
+    case PlayerAdjustBalanceType.Bonus:
       return <PlayerAdjustBalanceTypeLabel value={value} />
     case Bonus:
       return <Trans {...BonusTrans} />
