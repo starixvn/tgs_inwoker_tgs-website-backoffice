@@ -12,50 +12,95 @@ import {
   subWeeks,
   subMonths,
   startOfMonth,
-  endOfMonth
+  endOfMonth,
+  isValid,
+  isAfter,
+  isBefore,
+  differenceInDays
 } from "date-fns"
 import { faCalendarAlt } from "@fortawesome/free-regular-svg-icons"
 import { isNil, isEmpty, either } from "ramda"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
-const Yesterday = "Yesterday"
-const YesterdayDropdownMenuItem = ({ onClick, ...props }) => (
-  <DropdownMenu.Item
-    data-type={Yesterday}
-    onClick={(event) => {
-      let start = startOfYesterday()
-      let end = endOfYesterday()
-      onClick?.({
-        type: Yesterday,
-        start,
-        end
-      })
-    }}
-    {...props}
-  >
-    <Trans zh="昨日" en="Yesterday" />
-  </DropdownMenu.Item>
-)
+const DateRangeDropdownMenuItem = ({
+  type = "",
+  start,
+  end,
+  minDate,
+  maxDate,
+  maxRangeDays,
+  onClick,
+  children,
+  ...props
+}) => {
+  if (!start || !isValid(start) || !end || !isValid(end)) {
+    return null
+  }
 
-const Today = "Today"
-export const TodayDropdownMenuItem = ({ onClick, ...props }) => {
+  if (
+    minDate &&
+    isValid(minDate) &&
+    (isBefore(start, minDate) || isBefore(end, minDate))
+  ) {
+    return null
+  }
+
+  if (
+    maxDate &&
+    isValid(maxDate) &&
+    (isBefore(maxDate, start) || isBefore(maxDate, end))
+  ) {
+    return null
+  }
+
+  let days = differenceInDays(end, start)
+  if (Number.isFinite(maxRangeDays) && days > maxRangeDays) {
+    return null
+  }
+
   return (
     <DropdownMenu.Item
-      data-type={Today}
-      onClick={() => {
-        let start = startOfToday()
-        let end = endOfToday()
+      data-type={type}
+      onClick={(event) => {
         onClick?.({
-          type: Today,
+          type,
           start,
           end
         })
       }}
       {...props}
     >
-      <Trans zh="今日" en="Today" />
+      {children}
     </DropdownMenu.Item>
+  )
+}
+
+const Yesterday = "Yesterday"
+const YesterdayDropdownMenuItem = ({
+  type = Yesterday,
+  start = startOfYesterday(),
+  end = endOfYesterday(),
+  ...props
+}) => {
+  return (
+    <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
+      <Trans zh="昨日" en="Yesterday" />
+    </DateRangeDropdownMenuItem>
+  )
+}
+
+const Today = "Today"
+export const TodayDropdownMenuItem = ({
+  type = Today,
+  start = startOfToday(),
+  end = endOfToday(),
+  ...props
+}) => {
+  return (
+    <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
+      <Trans zh="今日" en="Today" />
+    </DateRangeDropdownMenuItem>
   )
 }
 
@@ -63,124 +108,162 @@ const LastWeek = "LastWeek"
 const WeekStartsOn = {
   Monday: 1
 }
-export const LastWeekDropdownMenuItem = ({ onClick, ...props }) => {
+
+const startOfLastWeek = (weekStartsOn = WeekStartsOn.Monday) => {
+  let lastWeekDay = subWeeks(new Date(), 1)
+  return startOfWeek(lastWeekDay, {
+    weekStartsOn
+  })
+}
+
+const endOfLastWeek = (weekStartsOn = WeekStartsOn.Monday) => {
+  let lastWeekDay = subWeeks(new Date(), 1)
+  return endOfWeek(lastWeekDay, {
+    weekStartsOn
+  })
+}
+
+export const LastWeekDropdownMenuItem = ({
+  type = LastWeek,
+  start = startOfLastWeek(),
+  end = endOfLastWeek(),
+  ...props
+}) => {
   return (
-    <DropdownMenu.Item
-      data-type={LastWeek}
-      onClick={() => {
-        let lastWeekDay = subWeeks(new Date(), 1)
-        let start = startOfWeek(lastWeekDay, {
-          weekStartsOn: WeekStartsOn.Monday
-        })
-        let end = endOfWeek(lastWeekDay, {
-          weekStartsOn: WeekStartsOn.Monday
-        })
-        onClick?.({
-          type: LastWeek,
-          start,
-          end
-        })
-      }}
-      {...props}
-    >
+    <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
       <Trans zh="上周" en="Last Week" />
-    </DropdownMenu.Item>
+    </DateRangeDropdownMenuItem>
   )
 }
 
 const ThisWeek = "ThisWeek"
-export const ThisWeekDropdownMenuItem = ({ onClick, ...props }) => {
+const startOfThisWeek = (weekStartsOn = WeekStartsOn.Monday) => {
+  let now = new Date()
+  return startOfWeek(now, {
+    weekStartsOn
+  })
+}
+
+const endOfThisWeek = (weekStartsOn = WeekStartsOn.Monday) => {
+  let now = new Date()
+  return endOfWeek(now, {
+    weekStartsOn
+  })
+}
+
+export const ThisWeekDropdownMenuItem = ({
+  type = ThisWeek,
+  start = startOfThisWeek(),
+  end = endOfThisWeek(),
+  ...props
+}) => {
   return (
-    <DropdownMenu.Item
-      data-type={ThisWeek}
-      onClick={() => {
-        let now = new Date()
-        let start = startOfWeek(now, {
-          weekStartsOn: WeekStartsOn.Monday
-        })
-        let end = endOfWeek(now, {
-          weekStartsOn: WeekStartsOn.Monday
-        })
-        onClick?.({
-          type: ThisWeek,
-          start,
-          end
-        })
-      }}
-      {...props}
-    >
+    <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
       <Trans zh="本周" en="This Week" />
-    </DropdownMenu.Item>
+    </DateRangeDropdownMenuItem>
   )
 }
 
 const LastMonth = "LastMonth"
-export const LastMonthDropdownMenuItem = ({ onClick, ...props }) => {
+
+const startOfLastMonth = () => {
+  let lastMonthDay = subMonths(new Date(), 1)
+  return startOfMonth(lastMonthDay)
+}
+
+const endOfLastMonth = () => {
+  let lastMonthDay = subMonths(new Date(), 1)
+  return endOfMonth(lastMonthDay)
+}
+
+export const LastMonthDropdownMenuItem = ({
+  type = LastMonth,
+  start = startOfLastMonth(),
+  end = endOfLastMonth(),
+  ...props
+}) => {
   return (
-    <DropdownMenu.Item
-      data-type={LastMonth}
-      onClick={() => {
-        let lastMonthDay = subMonths(new Date(), 1)
-        let start = startOfMonth(lastMonthDay)
-        let end = endOfMonth(lastMonthDay)
-        onClick?.({
-          type: LastMonth,
-          start,
-          end
-        })
-      }}
-      {...props}
-    >
+    <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
       <Trans zh="上月" en="Last Month" />
-    </DropdownMenu.Item>
+    </DateRangeDropdownMenuItem>
   )
 }
 
 const ThisMonth = "ThisMonth"
-export const ThisMonthDropdownMenuItem = ({ onClick, ...props }) => {
+const startOfThisMonth = () => {
+  let now = new Date()
+  return startOfMonth(now)
+}
+
+const endOfThisMonth = () => {
+  let now = new Date()
+  return endOfMonth(now)
+}
+
+export const ThisMonthDropdownMenuItem = ({
+  type = ThisMonth,
+  start = startOfThisMonth(),
+  end = endOfThisMonth(),
+  ...props
+}) => {
   return (
-    <DropdownMenu.Item
-      data-type={ThisMonth}
-      onClick={() => {
-        let now = new Date()
-        let start = startOfMonth(now)
-        let end = endOfMonth(now)
-        onClick?.({
-          type: ThisMonth,
-          start,
-          end
-        })
-      }}
-      {...props}
-    >
+    <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
       <Trans zh="本月" en="This Month" />
-    </DropdownMenu.Item>
+    </DateRangeDropdownMenuItem>
   )
 }
 
 const WeekDays = 7
 const MonthDays = 31
-export const DateDropdownMenu = ({ maxRangeDays, onClick, ...props }) => {
-  let showWeek = isNilOrEmpty(maxRangeDays) || maxRangeDays >= WeekDays
-  let showMonth = isNilOrEmpty(maxRangeDays) || maxRangeDays >= MonthDays
+export const DateDropdownMenu = ({
+  maxRangeDays,
+  minDate,
+  maxDate,
+  onClick,
+  thisWeekProps = {},
+  thisMonthProps = [],
+  ...props
+}) => {
   return (
     <DropdownMenu
       menu={
         <>
-          <YesterdayDropdownMenuItem onClick={onClick} />
-          <TodayDropdownMenuItem onClick={onClick} />
-          {showWeek && (
-            <>
-              <LastWeekDropdownMenuItem onClick={onClick} />
-              <ThisWeekDropdownMenuItem onClick={onClick} />
-            </>
-          )}
-          {showMonth && (
-            <>
-              <LastMonthDropdownMenuItem onClick={onClick} />
-              <ThisMonthDropdownMenuItem onClick={onClick} />
-            </>
-          )}
+          <YesterdayDropdownMenuItem
+            minDate={minDate}
+            maxDate={maxDate}
+            onClick={onClick}
+          />
+          <TodayDropdownMenuItem
+            minDate={minDate}
+            maxDate={maxDate}
+            onClick={onClick}
+          />
+          <LastWeekDropdownMenuItem
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={maxRangeDays}
+            onClick={onClick}
+          />
+          <ThisWeekDropdownMenuItem
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={maxRangeDays}
+            onClick={onClick}
+            {...thisWeekProps}
+          />
+          <LastMonthDropdownMenuItem
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={maxRangeDays}
+            onClick={onClick}
+          />
+          <ThisMonthDropdownMenuItem
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={maxRangeDays}
+            onClick={onClick}
+            {...thisMonthProps}
+          />
         </>
       }
       {...props}
