@@ -43,6 +43,7 @@ import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays } from "date-fns"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -96,10 +97,13 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { agentUsername, from, to } = state
+
+  //TODO: rm devEnv and required at 1.32
+  let devEnv = isDev()
   //TODO: remove agentUsername required check
   let { isLoading, data, error, mutate, deleteCache } =
     usePlayerDepositReportList(
-      agentUsername
+      devEnv || agentUsername
         ? {
             ...toApiParams(state),
             from,
@@ -135,7 +139,7 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      {agentUsername && (
+      {(devEnv || agentUsername) && (
         <Table
           columns={columns}
           data={data?.items}
@@ -184,7 +188,8 @@ const SearchBar = ({
 
   const onSubmit = (data) => search(data)
 
-  //TODO: remove required
+  //TODO: rm notDev and required at 1.32
+  let notDev = !isDev()
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -194,7 +199,7 @@ const SearchBar = ({
             autoFocus
             showEmptyFieldValueAddonAfter
             placeholder={agentUsernamePlaceholder}
-            required
+            required={notDev}
           />
           <DateInputRange
             id="date-range"
