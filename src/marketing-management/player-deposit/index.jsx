@@ -43,6 +43,7 @@ import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays } from "date-fns"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -184,7 +185,8 @@ const SearchBar = ({
 
   const onSubmit = (data) => search(data)
 
-  //TODO: remove required
+  //TODO: rm notDev and required at 1.32
+  let notDev = !isDev()
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -194,7 +196,7 @@ const SearchBar = ({
             autoFocus
             showEmptyFieldValueAddonAfter
             placeholder={agentUsernamePlaceholder}
-            required
+            required={notDev}
           />
           <DateInputRange
             id="date-range"
