@@ -97,10 +97,13 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { agentUsername, from, to } = state
+
+  //TODO: rm devEnv and required at 1.32
+  let devEnv = isDev()
   //TODO: remove agentUsername required check
   let { isLoading, data, error, mutate, deleteCache } =
     usePlayerDepositReportList(
-      agentUsername
+      devEnv || agentUsername
         ? {
             ...toApiParams(state),
             from,
@@ -136,7 +139,7 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      {agentUsername && (
+      {(devEnv || agentUsername) && (
         <Table
           columns={columns}
           data={data?.items}
