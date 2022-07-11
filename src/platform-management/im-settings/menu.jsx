@@ -37,25 +37,37 @@ export const label = ({ codes = [], locale = Locales.zh }) => {
         locale
       )
     case ViewLiveChat:
-      return getTrans({
-        zh: "查看即时客服",
-        en: "View Live Chat"
-      })
+      return getTrans(
+        {
+          zh: "查看即时客服",
+          en: "View Live Chat"
+        },
+        locale
+      )
     case UpdateLiveChat:
-      return getTrans({
-        zh: "编辑即时客服",
-        en: "Edit Live Chat"
-      })
+      return getTrans(
+        {
+          zh: "编辑即时客服",
+          en: "Edit Live Chat"
+        },
+        locale
+      )
     case ViewAllAgent:
-      return getTrans({
-        zh: "查看全民代理",
-        en: "View All Agent"
-      })
+      return getTrans(
+        {
+          zh: "查看全民代理",
+          en: "View All Agent"
+        },
+        locale
+      )
     case UpdateAllAgent:
-      return getTrans({
-        zh: "编辑全民代理",
-        en: "Edit All Agent"
-      })
+      return getTrans(
+        {
+          zh: "编辑全民代理",
+          en: "Edit All Agent"
+        },
+        locale
+      )
     default:
       return ""
   }
