@@ -483,6 +483,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             required={required}
             showLocalizationAddonAfter
             disabled={disabled}
+            maxLength="64"
           />
         </Box>
 
