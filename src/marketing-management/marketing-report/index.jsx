@@ -163,7 +163,7 @@ const SearchBar = ({
   let minDate = subDays(todayRange.start, DataRetentionDays)
 
   let yesterdayRange = yesterday()
-  let maxDate = yesterdayRange.end
+  let maxDate = todayRange.end
 
   let agentUsernamePlaceholder = useTrans({
     zh: "代理用户名",

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-providers
-image: harbor.rpgp.cc/tgs/game-gameproviders:202206300652-dev # game/gameproviders
+image: harbor.rpgp.cc/tgs/game-gameproviders:202207070800-prod # game/gameproviders
 services:
   - name: game-providers
     dependencies:

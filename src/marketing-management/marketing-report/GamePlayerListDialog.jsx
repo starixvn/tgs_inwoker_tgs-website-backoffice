@@ -53,6 +53,11 @@ export const GamePlayerListDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
+  let isEmpty = Number.isFinite(value) && value === 0
+  if (isEmpty) {
+    return <FormattedNumber value={value} />
+  }
+
   return (
     <>
       <Disclosure use={Link} {...dialog} {...props}>

@@ -38,11 +38,19 @@ const DateRangeDropdownMenuItem = ({
     return null
   }
 
-  if (minDate && isValid(minDate) && isBefore(start, minDate)) {
+  if (
+    minDate &&
+    isValid(minDate) &&
+    (isBefore(start, minDate) || isBefore(end, minDate))
+  ) {
     return null
   }
 
-  if (maxDate && isValid(maxDate) && isBefore(maxDate, end)) {
+  if (
+    maxDate &&
+    isValid(maxDate) &&
+    (isBefore(maxDate, start) || isBefore(maxDate, end))
+  ) {
     return null
   }
 
