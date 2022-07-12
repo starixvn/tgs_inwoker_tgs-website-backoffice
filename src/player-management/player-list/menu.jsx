@@ -7,6 +7,7 @@ export const View = "view"
 
 export const PhoneFilter = "phonefilter"
 
+//TODO: rm, check not used
 export const RealnameFilter = "realnamefilter"
 
 export const Update = "update"

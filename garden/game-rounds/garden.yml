@@ -1,0 +1,18 @@
+kind: Module
+type: container
+name: game-rounds
+image: harbor.rpgp.cc/tgs/game-gamerounds:202205250702-dev
+services:
+  - name: game-rounds
+    dependencies:
+      - postgres
+      - mongodb
+      - redis
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Mongo: "mongodb://root:1qaz2wsx!%40@mongodb/filedb?retryWrites=true&w=majority&authSource=admin"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

@@ -46,10 +46,14 @@ export const PlayerListDialogDisclosure = ({
   agentUsername,
   date,
   useFetch,
-  title,
   ...props
 }) => {
   let dialog = useModalState()
+
+  let isEmpty = Number.isFinite(value) && value === 0
+  if (isEmpty) {
+    return <FormattedNumber value={value} />
+  }
 
   return (
     <>
@@ -62,7 +66,6 @@ export const PlayerListDialogDisclosure = ({
           agentUsername={agentUsername}
           date={date}
           useFetch={useFetch}
-          title={title}
           dialog={dialog}
         />
       )}
@@ -73,13 +76,16 @@ export const PlayerListDialogDisclosure = ({
 const PlayerListDialog = ({
   id = "player-list-dialog",
   brandId,
-  agentUsername,
+  agentUsername = "",
   date,
-  title,
   useFetch,
   dialog,
   ...props
 }) => {
+  let title = useTrans({
+    zh: `${agentUsername} 玩家清單`,
+    en: `${agentUsername} Player List`
+  })
   let { state, setPageIndex, setSortOrder } = useTable({
     brandId,
     agentUsername,
@@ -91,7 +97,6 @@ const PlayerListDialog = ({
   )
 
   let columns = useColumns({ items: data?.items })
-
   /*
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -136,6 +141,12 @@ const PlayerListDialog = ({
           setSortOrder={setSortOrder}
           isLoading={isLoading}
           stickyHead
+          /*
+          containerProps={{
+            maxHeight: "65vh",
+            overflow: "auto"
+          }}
+          */
         />
       </FieldStack>
     </Dialog.Modal>

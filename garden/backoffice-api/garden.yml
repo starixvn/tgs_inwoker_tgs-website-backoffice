@@ -44,6 +44,7 @@ services:
       BackOffice__GameProvidersPluggableBaseUrl: "http://game-pluggable-service"
       BackOffice__ReportAggregateUrl: "http://report-aggregate-api"
       BackOffice__PlayerServiceBaseUrl: "http://player-api"
+      BackOffice__MarketingReportBaseUrl: "http://marketing-api"
     ingresses:
       - hostname: backoffice.localhost
         path: /api

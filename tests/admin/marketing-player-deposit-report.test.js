@@ -40,7 +40,7 @@ test("marketing > player deposit report", async ({
 })
 
 const noSecondDeposit = async (page) => {
-  let dialogSelector = `[data-column-id="noSecondDepositCount"] .bb-ModalDisclosure`
+  let dialogSelector = `[data-column-id="NoSecondDepositCount"] .bb-ModalDisclosure`
 
   let firstDepositCountString = await page
     .locator(dialogSelector)
@@ -65,7 +65,7 @@ const noSecondDeposit = async (page) => {
 }
 
 const firstDepositDialog = async (page) => {
-  let dialogSelector = `[data-column-id="firstDepositCount"] .bb-ModalDisclosure`
+  let dialogSelector = `[data-column-id="FirstDepositCount"] .bb-ModalDisclosure`
 
   let firstDepositCountString = await page
     .locator(dialogSelector)

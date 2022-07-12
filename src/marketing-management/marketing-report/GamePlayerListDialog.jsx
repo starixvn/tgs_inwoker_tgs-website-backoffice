@@ -49,10 +49,14 @@ export const GamePlayerListDialogDisclosure = ({
   value,
   agentUsername,
   date,
-  title,
   ...props
 }) => {
   let dialog = useModalState()
+
+  let isEmpty = Number.isFinite(value) && value === 0
+  if (isEmpty) {
+    return <FormattedNumber value={value} />
+  }
 
   return (
     <>

@@ -68,7 +68,8 @@ import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import Backdrop from "../../dialog/Backdrop"
 import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { parseJSON } from "../../text/json"
-import { PromotionRuleSetting } from "./PromotionRuleSetting"
+import { PromotionRuleSettingFieldBox } from "./PromotionRuleSettingFieldBox"
+import { PromotionDistributionMethodFieldBox } from "./PromotionDistributionMethodFieldBox"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -405,53 +406,6 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
   )
 }
 
-const AutoSentPlayerBonusFieldName = "autoSentPlayerBonus"
-const AutoOrManualPayoutSwitch = ({
-  name = AutoSentPlayerBonusFieldName,
-  readOnly = false,
-  disabled,
-  ...props
-}) => {
-  let { control, setValue } = useFormContext()
-
-  let checked = useWatch({
-    control,
-    name: AutoSentPlayerBonusFieldName,
-    defaultValue: props.checked ?? props?.defaultValue
-  })
-
-  let autoPayoutLabel = useTrans({
-    zh: "自動",
-    en: "Automatic"
-  })
-  let manualPayoutLabel = useTrans({
-    zh: "手动",
-    en: "Manual"
-  })
-  let label = checked ? autoPayoutLabel : manualPayoutLabel
-
-  if (readOnly || disabled) {
-    return (
-      <>
-        <Switch label={label} checked={checked} disabled={disabled} />
-        <Switch name={name} label={label} checked={checked} display="none" />
-      </>
-    )
-  }
-
-  return (
-    <Switch
-      name={name}
-      label={label}
-      checked={checked}
-      onChange={(event) => {
-        let checked = event.target.checked
-        setValue(name, checked)
-      }}
-    />
-  )
-}
-
 const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let { start: startOfToday } = today()
   let formMethods = useFormContext()
@@ -483,16 +437,11 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     name: PromotionTypeFieldName
   })
 
-  let autoPayout = useIsInstantlySettlementIntervalType(promotionType)
-  useEffect(() => {
-    if (autoPayout) {
-      setValue(AutoSentPlayerBonusFieldName, true)
-    }
-  }, [autoPayout])
-
   let isPromotionTypeTurnoverRelated =
     promotionTypeGroup === PromotionTypeGroup.Turnover ||
     promotionTypeGroup === PromotionTypeGroup.ReliefMoney
+
+  let isPromotionTypeDummy = promotionTypeGroup === PromotionTypeGroup.Dummy
 
   let GameTypeGroupFieldName = "gameTypeGroup"
   let gameTypeGroup = useWatch({
@@ -534,6 +483,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             required={required}
             showLocalizationAddonAfter
             disabled={disabled}
+            maxLength="64"
           />
         </Box>
 
@@ -621,40 +571,39 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           )}
         </Box>
 
-        <NormalLabel>
-          <Trans zh="活动派发" en="Distribution Method" />
-        </NormalLabel>
-        <Box>
-          {autoPayout && (
-            <AutoOrManualPayoutSwitch readOnly disabled checked={true} />
-          )}
-          {!autoPayout && (
-            <AutoOrManualPayoutSwitch readOnly={readOnly} disabled={disabled} />
-          )}
-        </Box>
+        <PromotionDistributionMethodFieldBox
+          promotionTypeGroup={promotionTypeGroup}
+          promotionType={promotionType}
+          readOnly={readOnly}
+          disabled={disabled}
+        />
 
-        <NormalLabel>
-          <Trans zh="活动总费用" en="Promotion Funds" />
-        </NormalLabel>
-        <Set orientation="horizontal" alignY="center">
-          {limitedTotalAmount && (
-            <>
-              <NumberInput
-                name={TotalAmountLimitFieldName}
-                registerOptions={{
-                  valueAsNumber: true
-                }}
-                required
+        {!isPromotionTypeDummy && (
+          <>
+            <NormalLabel>
+              <Trans zh="活动总费用" en="Promotion Funds" />
+            </NormalLabel>
+            <Set orientation="horizontal" alignY="center">
+              {limitedTotalAmount && (
+                <>
+                  <NumberInput
+                    name={TotalAmountLimitFieldName}
+                    registerOptions={{
+                      valueAsNumber: true
+                    }}
+                    required
+                    disabled={disabled}
+                  />
+                </>
+              )}
+              <Checkbox
+                name={UnlimitedFieldName}
+                label={unlimiteTotalAmountLabel}
                 disabled={disabled}
               />
-            </>
-          )}
-          <Checkbox
-            name={UnlimitedFieldName}
-            label={unlimiteTotalAmountLabel}
-            disabled={disabled}
-          />
-        </Set>
+            </Set>
+          </>
+        )}
 
         {isPromotionTypeTurnoverRelated && (
           <>
@@ -806,11 +755,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
       <Separator />
 
-      <Heading use="h5">
-        <Trans zh="規則設定" en="Rule Settings" />
-      </Heading>
-
-      <PromotionRuleSetting
+      <PromotionRuleSettingFieldBox
         promotionTypeGroup={promotionTypeGroup}
         promotionType={promotionType}
         totalAmountLimitFieldName={TotalAmountLimitFieldName}

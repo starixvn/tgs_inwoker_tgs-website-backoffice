@@ -7,7 +7,6 @@ import numeral from "numeral"
 import {
   gotoPlayerListPage,
   searchPlayer,
-  ViewPlayerDialogSelector
 } from "./player-list-page.js"
 
 const test = base.extend(Fixture)
@@ -29,9 +28,8 @@ test("view player wallet list", async ({
   ])
 
   await searchPlayer(page, player)
-  await openDialog(page, ViewPlayerDialogSelector)
 
-  let WalletTabSelector = `${ViewPlayerDialogSelector} button#wallet-list`
+  const PlayerWalletBalanceDialogSelector = "#player-wallet-balance-dialog"
   await Promise.all([
     page.waitForResponse(
       (response) => {
@@ -44,10 +42,10 @@ test("view player wallet list", async ({
       },
       { timeout: 120 * SecondInMilliseconds }
     ),
-    page.click(WalletTabSelector)
+    openDialog(page, PlayerWalletBalanceDialogSelector)
   ])
 
-  let MainWalletSelector = `${ViewPlayerDialogSelector} #main-wallet`
+  let MainWalletSelector = `${PlayerWalletBalanceDialogSelector} #main-wallet`
   let mainWalletString = await page.textContent(MainWalletSelector)
   let mainWallet = numeral(mainWalletString).value()
   expect(mainWallet).to.equal(ExpectedWalletAmount)

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: cash-service
-image: harbor.rpgp.cc/tgs/cashservice-api:202205110549-dev # cash/service
+image: harbor.rpgp.cc/tgs/cashservice-api:202206170326-staging # cash/service
 services:
   - name: cash-service
     dependencies:

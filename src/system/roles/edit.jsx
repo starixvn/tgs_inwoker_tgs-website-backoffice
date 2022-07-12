@@ -203,8 +203,8 @@ const AddDialog = ({ dialog, onSubmitted }) => {
       title={title}
       dialog={dialog}
       placement="top"
-      maxWidth="none"
-      width="40vw"
+      maxWidth="95vw"
+      width="80vw"
       css={css`
         & .bb-DialogContent {
           position: relative;
@@ -620,8 +620,8 @@ const EditDialog = ({
       title={title}
       dialog={dialog}
       placement="top"
-      maxWidth="none"
-      width="40vw"
+      maxWidth="95vw"
+      width="80vw"
       css={css`
         & .bb-DialogContent {
           position: relative;
@@ -744,7 +744,6 @@ const MenuCheckbox = ({ path = [], menu = {}, setChecked }) => {
         let isChecked = event.target.checked
         setChecked(menuPath, isChecked)
       }}
-      whiteSpace="nowrap"
       display="inline-flex"
       marginRight="major-1"
     ></Checkbox>

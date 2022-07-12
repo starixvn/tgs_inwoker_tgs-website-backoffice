@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-provider-query-server
-image: harbor.rpgp.cc/tgs/game-gameprovider-queryserver:202205120130-dev # game/gameprovider-queryserver
+image: harbor.rpgp.cc/tgs/game-gameprovider-queryserver:202206230051-dev # game/gameprovider-queryserver
 services:
   - name: game-provider-query-server
     dependencies:

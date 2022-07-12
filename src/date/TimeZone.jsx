@@ -36,8 +36,8 @@ export const TimezoneSelectField = ({
   defaultValue = localTimeOffset(),
   ...props
 } = {}) => {
-  let from = -12
-  let to = 13
+  let from = -11
+  let to = 15
   let ranges = range(from, to)
   let options = ranges.map((value) => {
     let formatted = numeral(value).format("+00")

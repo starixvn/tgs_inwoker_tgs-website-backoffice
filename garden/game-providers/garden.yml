@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-providers
-image: harbor.rpgp.cc/tgs/game-gameproviders:202205180500-staging # game/gameproviders
+image: harbor.rpgp.cc/tgs/game-gameproviders:202207070800-prod # game/gameproviders
 services:
   - name: game-providers
     dependencies:
@@ -13,6 +13,7 @@ services:
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
       ConnectionStrings__NatsMQ: "nats://nats:4222"
       GameProviders__GameProvidersQueryServerBaseUrl: "http://game-provider-query-server"
+      GameProviders__GameRoundsServiceBaseUrl: "http://game-rounds"
     ingresses:
       # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 game-providers.localhost` to host file
       - hostname: game-providers.localhost

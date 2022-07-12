@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-pluggable-service
-image: harbor.rpgp.cc/tgs/game-pluggable-service:202205180229-dev # game/gamepluggableservice
+image: harbor.rpgp.cc/tgs/game-pluggable-service:202207050546-dev # game/gamepluggableservice
 services:
   - name: game-pluggable-service
     dependencies:
@@ -14,6 +14,8 @@ services:
       Pluggable__CashServiceBaseUrl: "http://cash-service"
       Pluggable__GameProviderKickPlayerServerBaseUrl: "http://game-kickplayer-server"
       Pluggable__GameProvidersQueryServerBaseUrl: "http://game-provider-query-server"
+      Pluggable__GameVerificationBaseUrl: "http://game-verification"
+      Pluggable__GameFundTransferBaseUrl: ""
     ingresses:
       # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 game-pluggable.localhost` to host file
       - hostname: game-pluggable.localhost

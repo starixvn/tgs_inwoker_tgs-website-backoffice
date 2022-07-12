@@ -31,8 +31,10 @@ export const numberColumn = ({
   let basic = {
     Cell,
     headCell: {
-      textAlign: "center",
+      textAlign: "center"
+      /*
       whiteSpace: "nowrap"
+      */
     },
     cell: {
       textAlign: "center",

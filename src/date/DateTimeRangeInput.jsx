@@ -122,8 +122,11 @@ export const DateTimeRangeInput = ({
   timeIntervals,
   timeCaption,
   showDateDropdownMenu = false,
+  dateDropdownMenuProps = {},
   required,
   disabled,
+  addonBefore,
+  addonAfter,
   ...props
 } = {}) => {
   let startName = startProps?.name ?? "start"
@@ -176,6 +179,9 @@ export const DateTimeRangeInput = ({
         {showDateDropdownMenu && (
           <DateDropdownMenu
             id="date-range-dropdown-menu"
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={maxRangeDays}
             onClick={({ type, start, end }) => {
               formMethods?.setValue(startName, start)
               formMethods?.setValue(endName, end)
@@ -187,6 +193,7 @@ export const DateTimeRangeInput = ({
                 border-top-left-radius: 6px;
               }
             `}
+            {...dateDropdownMenuProps}
           />
         )}
         <DateTimeInput
