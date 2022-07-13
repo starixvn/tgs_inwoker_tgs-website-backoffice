@@ -2,97 +2,147 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Locales, Trans, useLocale, useTrans } from "../i18n"
 
-export const PlaceBet = "PlaceBet"
-const PlaceBetTrans = {
+const GameBet = "GameBet"
+const GameBetTrans = {
   zh: "投注",
   en: "Place Bet"
 }
 
-export const WinBet = "WinBet"
-const WinBetTrans = {
+const GameSettleWin = "GameSettleWin"
+const GameSettleWinTrans = {
   zh: "赢",
   en: "Win Bet"
 }
 
-export const LoseBet = "LoseBet"
-const LoseBetTrans = {
+const GameSettleLose = "GameSettleLose"
+const GameSettleLoseTrans = {
   zh: "输",
   en: "Lose Bet"
 }
 
-export const FreeBet = "FreeBet"
-const FreeBetTrans = {
+const GameSettleFree = "GameSettleFree"
+const GameSettleFreeTrans = {
   zh: "免费投注",
   en: "FreeB et"
 }
 
-export const TieBet = "TieBet"
-const TieBetTrans = {
+const GameSettleTie = "GameSettleTie"
+const GameSettleTieTrans = {
   zh: "和局",
   en: "Tie Bet"
 }
 
-export const CancelTransaction = "CancelTransaction"
-const CancelTransactionTrans = {
+const GameCancel = "GameCancel"
+const GameCancelTrans = {
   zh: "取消投注",
   en: "Cancel Transaction"
 }
 
-export const LockAmount = "LockAmount"
-const LockAmountTrans = {
+const GameLock = "GameLock"
+const GameLockTrans = {
   zh: "锁定金额",
   en: "Lock Amount"
 }
 
-export const UnlockAmount = "UnlockAmount"
-const UnlockAmountTrans = {
+const GameUnlock = "GameUnlock"
+const GameUnlockTrans = {
   zh: "解锁金额",
   en: "Unlock Amount"
 }
 
-export const WinJackpot = "WinJackpot"
-const WinJackpotTrans = {
+const GameWinJackpot = "GameWinJackpot"
+const GameWinJackpotTrans = {
   zh: "赢 Jackpot",
   en: "Win Jackpot"
+}
+
+const GameCredit = "GameCredit"
+const GameCreditTrans = {
+  zh: "Game Credit",
+  en: "Game Credit"
+}
+
+const GameDebit = "GameDebit"
+const GameDebitTrans = {
+  zh: "Game Debit",
+  en: "Game Debit"
+}
+
+const GameRefund = "GameRefund"
+const GameRefundTrans = {
+  zh: "Game Refund",
+  en: "Game Refund"
+}
+
+const GameRevision = "GameRevision"
+const GameRevisionTrans = {
+  zh: "Game Revision",
+  en: "Game Revision"
+}
+
+const GameProviderFundRefund = "GameProviderFundRefund"
+const GameProviderFundRefundTrans = {
+  zh: "Game Provider Fund Refund",
+  en: "Game Provider Fund Refund"
 }
 
 export const useGameActionTypeOptionList = () => {
   let options = [
     {
-      label: useTrans(PlaceBetTrans),
-      value: PlaceBet
+      label: useTrans(GameBetTrans),
+      value: GameBet
     },
     {
-      label: useTrans(WinBetTrans),
-      value: WinBet
+      label: useTrans(GameSettleWinTrans),
+      value: GameSettleWin
     },
     {
-      label: useTrans(LoseBetTrans),
-      value: LoseBet
+      label: useTrans(GameSettleLoseTrans),
+      value: GameSettleLose
     },
     {
-      label: useTrans(FreeBetTrans),
-      value: FreeBet
+      label: useTrans(GameSettleFreeTrans),
+      value: GameSettleFree
     },
     {
-      label: useTrans(TieBetTrans),
-      value: TieBet
+      label: useTrans(GameSettleTieTrans),
+      value: GameSettleTie
     },
     {
-      label: useTrans(CancelTransactionTrans),
-      value: CancelTransaction
+      label: useTrans(GameCancelTrans),
+      value: GameCancel
     },
     {
-      label: useTrans(LockAmountTrans),
-      value: LockAmount
+      label: useTrans(GameLockTrans),
+      value: GameLock
     },
     {
-      label: useTrans(UnlockAmountTrans),
-      value: UnlockAmount
+      label: useTrans(GameUnlockTrans),
+      value: GameUnlock
     },
     {
-      label: useTrans(WinJackpotTrans),
-      value: WinJackpot
+      label: useTrans(GameWinJackpotTrans),
+      value: GameWinJackpot
+    },
+    {
+      label: useTrans(GameCreditTrans),
+      value: GameCredit
+    },
+    {
+      label: useTrans(GameDebitTrans),
+      value: GameDebit
+    },
+    {
+      label: useTrans(GameRefundTrans),
+      value: GameRefund
+    },
+    {
+      label: useTrans(GameRevisionTrans),
+      value: GameRevision
+    },
+    {
+      label: useTrans(GameProviderFundRefundTrans),
+      value: GameProviderFundRefund
     }
   ]
   return options
@@ -100,24 +150,34 @@ export const useGameActionTypeOptionList = () => {
 
 export const GameActionTypeLabel = ({ value = "" }) => {
   switch (value) {
-    case PlaceBet:
-      return <Trans {...PlaceBetTrans} />
-    case WinBet:
-      return <Trans {...WinBetTrans} />
-    case LoseBet:
-      return <Trans {...LoseBetTrans} />
-    case FreeBet:
-      return <Trans {...FreeBetTrans} />
-    case TieBet:
-      return <Trans {...TieBetTrans} />
-    case CancelTransaction:
-      return <Trans {...CancelTransactionTrans} />
-    case LockAmount:
-      return <Trans {...LockAmountTrans} />
-    case UnlockAmount:
-      return <Trans {...UnlockAmountTrans} />
-    case WinJackpot:
-      return <Trans {...WinJackpotTrans} />
+    case GameBet:
+      return <Trans {...GameBetTrans} />
+    case GameSettleWin:
+      return <Trans {...GameSettleWinTrans} />
+    case GameSettleLose:
+      return <Trans {...GameSettleLoseTrans} />
+    case GameSettleFree:
+      return <Trans {...GameSettleFreeTrans} />
+    case GameSettleTie:
+      return <Trans {...GameSettleTieTrans} />
+    case GameCancel:
+      return <Trans {...GameCancelTrans} />
+    case GameLock:
+      return <Trans {...GameLockTrans} />
+    case GameUnlock:
+      return <Trans {...GameUnlockTrans} />
+    case GameWinJackpot:
+      return <Trans {...GameWinJackpotTrans} />
+    case GameCredit:
+      return <Trans {...GameCreditTrans} />
+    case GameDebit:
+      return <Trans {...GameDebitTrans} />
+    case GameRefund:
+      return <Trans {...GameRefundTrans} />
+    case GameRevision:
+      return <Trans {...GameRevisionTrans} />
+    case GameProviderFundRefund:
+      return <Trans {...GameProviderFundRefundTrans} />
     default:
       return value
   }

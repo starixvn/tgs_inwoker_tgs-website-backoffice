@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-pluggable-service
-image: harbor.rpgp.cc/tgs/game-pluggable-service:202207050546-dev # game/gamepluggableservice
+image: pgtgs/game-pluggable-service:202207130223-dev # game/gamepluggableservice
 services:
   - name: game-pluggable-service
     dependencies:
