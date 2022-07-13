@@ -84,6 +84,12 @@ export const PlayerStatusLabel = ({ value = "" }) => {
           <Trans {...InBlacklistTrans} />
         </Text>
       )
+    case RegisterUndone:
+      return (
+        <Text>
+          <Trans {...RegisterUndoneTrans} />
+        </Text>
+      )
   }
   return value
 }
