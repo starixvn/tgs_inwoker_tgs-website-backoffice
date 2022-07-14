@@ -225,7 +225,7 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "agentUsername",
+        accessor: "agentUserName",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       }),
