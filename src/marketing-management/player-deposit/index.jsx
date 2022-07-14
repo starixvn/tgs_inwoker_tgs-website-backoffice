@@ -78,8 +78,10 @@ const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     agentUsername: "",
     from: dateRange.start,
-    to: dateRange.end,
+    to: dateRange.end
+    /*
     sortBy: [{ id: "reportDate", desc: false }]
+    */
   })
 
   const reset = () => {
