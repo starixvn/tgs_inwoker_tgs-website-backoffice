@@ -242,7 +242,7 @@ const useColumns = ({ brandId, items = [] }) => {
             <PlayerListDialogDisclosure
               value={record.firstDepositCount}
               brandId={brandId}
-              agentUsername={record?.agentUsername}
+              agentUsername={record?.agentUserName}
               date={toDate(record.reportDate)}
               useFetch={useFirstDepositPlayerList}
             />
@@ -267,7 +267,7 @@ const useColumns = ({ brandId, items = [] }) => {
             <PlayerListDialogDisclosure
               value={record.noSecondDepositCount}
               brandId={brandId}
-              agentUsername={record?.agentUsername}
+              agentUsername={record?.agentUserName}
               date={toDate(record.reportDate)}
               useFetch={useNoSecondDepositPlayerList}
             />
