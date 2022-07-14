@@ -39,7 +39,6 @@ import {
 } from "./client"
 import numberColumn from "../../table/column/numberColumn"
 import { PlayerListDialogDisclosure } from "./PlayerListDialog"
-import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays, parse } from "date-fns"
@@ -207,6 +206,11 @@ const SearchBar = ({
   )
 }
 
+const toDate = (value) => {
+  let date = parse(value, "yyyy/MM/dd", new Date())
+  return date
+}
+
 const useColumns = ({ brandId, items = [], agentUsername }) => {
   //TODO: remove disableSortBy: true
   return useMemo(() => {
@@ -214,10 +218,7 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
       dateTimeColumn({
         id: "ReportDate",
         accessor: "reportDate",
-        toValue: (value) => {
-          let date = parse(value, "yyyy/MM/dd", new Date())
-          return date
-        },
+        toValue: toDate,
         dateFormat: "MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
