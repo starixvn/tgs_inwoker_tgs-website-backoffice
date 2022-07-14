@@ -211,7 +211,7 @@ const toDate = (value) => {
   return date
 }
 
-const useColumns = ({ brandId, items = [], agentUsername }) => {
+const useColumns = ({ brandId, items = [] }) => {
   //TODO: remove disableSortBy: true
   return useMemo(() => {
     let columns = [
@@ -225,7 +225,6 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
         disableSortBy: true
       }),
       textColumn({
-        id: "AgentUsername",
         accessor: "agentUsername",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
