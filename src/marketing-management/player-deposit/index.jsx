@@ -42,8 +42,7 @@ import { PlayerListDialogDisclosure } from "./PlayerListDialog"
 import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
-import { subDays } from "date-fns"
-import { isDev } from "../../env"
+import { subDays, parse } from "date-fns"
 
 export { Code }
 
@@ -98,19 +97,12 @@ const BodyContent = ({ brandId }) => {
 
   let { agentUsername, from, to } = state
 
-  //TODO: rm devEnv and required at 1.32
-  let devEnv = isDev()
-  //TODO: remove agentUsername required check
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerDepositReportList(
-      devEnv || agentUsername
-        ? {
-            ...toApiParams(state),
-            from,
-            to: startOfNextDay(to)
-          }
-        : undefined
-    )
+    usePlayerDepositReportList({
+      ...toApiParams(state),
+      from,
+      to: startOfNextDay(to)
+    })
 
   let columns = useColumns({
     items: data?.items,
@@ -139,20 +131,18 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      {(devEnv || agentUsername) && (
-        <Table
-          columns={columns}
-          data={data?.items}
-          total={data?.items?.length > 0 && data?.total}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(state.pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-          stickyHead
-        />
-      )}
+      <Table
+        columns={columns}
+        data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+        stickyHead
+      />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -188,8 +178,6 @@ const SearchBar = ({
 
   const onSubmit = (data) => search(data)
 
-  //TODO: rm notDev and required at 1.32
-  let notDev = !isDev()
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -199,7 +187,6 @@ const SearchBar = ({
             autoFocus
             showEmptyFieldValueAddonAfter
             placeholder={agentUsernamePlaceholder}
-            required={notDev}
           />
           <DateInputRange
             id="date-range"
@@ -227,19 +214,21 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
       dateTimeColumn({
         id: "ReportDate",
         accessor: "reportDate",
+        toValue: (value) => {
+          let date = parse(value, "yyyy/MM/dd", new Date())
+          return date
+        },
         dateFormat: "MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
         disableSortBy: true
       }),
-      /*
       textColumn({
         id: "AgentUsername",
         accessor: "agentUsername",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       }),
-      */
       numberColumn({
         id: "FirstDepositCount",
         accessor: (row) => row,
@@ -249,12 +238,11 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
           return <FormattedNumber value={value} />
         },
         Cell: ({ value: record }) => {
-          //TODO: agentUsername from record
           return (
             <PlayerListDialogDisclosure
               value={record.firstDepositCount}
               brandId={brandId}
-              agentUsername={agentUsername}
+              agentUsername={record?.agentUsername}
               date={toDate(record.reportDate)}
               useFetch={useFirstDepositPlayerList}
             />
@@ -275,12 +263,11 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
           return <FormattedNumber value={value} />
         },
         Cell: ({ value: record }) => {
-          //TODO: agentUsername from record
           return (
             <PlayerListDialogDisclosure
               value={record.noSecondDepositCount}
               brandId={brandId}
-              agentUsername={agentUsername}
+              agentUsername={record?.agentUsername}
               date={toDate(record.reportDate)}
               useFetch={useNoSecondDepositPlayerList}
             />
