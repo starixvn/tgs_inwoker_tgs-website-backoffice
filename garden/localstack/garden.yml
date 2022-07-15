@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: localstack
-image: localstack/localstack-full
+image: localstack/localstack-full:0.14.3
 services:
   - name: localstack
     env:
