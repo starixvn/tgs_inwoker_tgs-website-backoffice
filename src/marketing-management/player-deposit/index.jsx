@@ -243,7 +243,7 @@ const useColumns = ({ brandId, items = [] }) => {
               value={record.firstDepositCount}
               brandId={brandId}
               agentUsername={record?.agentUserName}
-              date={toDate(record.reportDate)}
+              date={record.reportDate}
               useFetch={useFirstDepositPlayerList}
             />
           )
@@ -268,7 +268,7 @@ const useColumns = ({ brandId, items = [] }) => {
               value={record.noSecondDepositCount}
               brandId={brandId}
               agentUsername={record?.agentUserName}
-              date={toDate(record.reportDate)}
+              date={record.reportDate}
               useFetch={useNoSecondDepositPlayerList}
             />
           )
