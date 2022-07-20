@@ -78,10 +78,8 @@ const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     agentUsername: "",
     from: dateRange.start,
-    to: dateRange.end
-    /*
+    to: dateRange.end,
     sortBy: [{ id: "reportDate", desc: false }]
-    */
   })
 
   const reset = () => {
@@ -197,7 +195,7 @@ const SearchBar = ({
             endProps={{
               name: "to"
             }}
-            required
+            // required
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -212,17 +210,15 @@ const toDate = (value) => {
 }
 
 const useColumns = ({ brandId, items = [] }) => {
-  //TODO: remove disableSortBy: true
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
-        id: "ReportDate",
+        id: "reportDate",
         accessor: "reportDate",
         toValue: toDate,
         dateFormat: "MM/dd",
         timeFormat: false,
-        Header: <Trans zh="日期" en="Date" />,
-        disableSortBy: true
+        Header: <Trans zh="日期" en="Date" />
       }),
       textColumn({
         accessor: "agentUserName",
@@ -230,10 +226,9 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       numberColumn({
-        id: "FirstDepositCount",
+        id: "firstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
-        disableSortBy: true,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
@@ -250,7 +245,7 @@ const useColumns = ({ brandId, items = [] }) => {
         }
       }),
       numberColumn({
-        id: "NoSecondDepositCount",
+        id: "noSecondDepositCount",
         accessor: (row) => row,
         Header: (
           <Trans
