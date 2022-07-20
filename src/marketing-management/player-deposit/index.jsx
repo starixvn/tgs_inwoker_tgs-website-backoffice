@@ -35,7 +35,8 @@ import { DateInputRange } from "../../date/DateTimeRangeInput"
 import {
   usePlayerDepositReportList,
   useFirstDepositPlayerList,
-  useNoSecondDepositPlayerList
+  useNoSecondDepositPlayerList,
+  useDailyDepositPlayerList
 } from "./client"
 import numberColumn from "../../table/column/numberColumn"
 import { PlayerListDialogDisclosure } from "./PlayerListDialog"
@@ -253,7 +254,6 @@ const useColumns = ({ brandId, items = [] }) => {
             en="No Second Deposit Player Count"
           />
         ),
-        disableSortBy: true,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
@@ -265,6 +265,25 @@ const useColumns = ({ brandId, items = [] }) => {
               agentUsername={record?.agentUserName}
               date={record.reportDate}
               useFetch={useNoSecondDepositPlayerList}
+            />
+          )
+        }
+      }),
+      numberColumn({
+        id: "depositCount",
+        accessor: (row) => row,
+        Header: <Trans zh="当日玩家存款人数" en="Deposit Player Count" />,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value} />
+        },
+        Cell: ({ value: record }) => {
+          return (
+            <PlayerListDialogDisclosure
+              value={record.depositCount}
+              brandId={brandId}
+              agentUsername={record?.agentUserName}
+              date={record.reportDate}
+              useFetch={useDailyDepositPlayerList}
             />
           )
         }
