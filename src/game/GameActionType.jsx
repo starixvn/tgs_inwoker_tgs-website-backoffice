@@ -58,31 +58,31 @@ const GameWinJackpotTrans = {
 
 const GameCredit = "GameCredit"
 const GameCreditTrans = {
-  zh: "Game Credit",
+  zh: "結算",
   en: "Game Credit"
 }
 
 const GameDebit = "GameDebit"
 const GameDebitTrans = {
-  zh: "Game Debit",
+  zh: "投注",
   en: "Game Debit"
 }
 
 const GameRefund = "GameRefund"
 const GameRefundTrans = {
-  zh: "Game Refund",
+  zh: "退款",
   en: "Game Refund"
 }
 
 const GameRevision = "GameRevision"
 const GameRevisionTrans = {
-  zh: "Game Revision",
+  zh: "调整",
   en: "Game Revision"
 }
 
 const GameProviderFundRefund = "GameProviderFundRefund"
 const GameProviderFundRefundTrans = {
-  zh: "Game Provider Fund Refund",
+  zh: "资金退款",
   en: "Game Provider Fund Refund"
 }
 
@@ -125,12 +125,12 @@ export const useGameActionTypeOptionList = () => {
       value: GameWinJackpot
     },
     {
-      label: useTrans(GameCreditTrans),
-      value: GameCredit
-    },
-    {
       label: useTrans(GameDebitTrans),
       value: GameDebit
+    },
+    {
+      label: useTrans(GameCreditTrans),
+      value: GameCredit
     },
     {
       label: useTrans(GameRefundTrans),
