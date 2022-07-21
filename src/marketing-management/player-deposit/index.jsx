@@ -25,7 +25,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { FormattedNumber, Trans, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import BrandBar from "../../report/BrandBar"
-import { SortOrder } from "../../table/order"
+import { SortOrder, fromOrderStringToNumber } from "../../table/order"
 import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
@@ -97,7 +97,7 @@ const BodyContent = ({ brandId }) => {
 
   let { isLoading, data, error, mutate, deleteCache } =
     usePlayerDepositReportList({
-      ...toApiParams(state),
+      ...toApiParams({ ...state, toOrderBy: fromOrderStringToNumber }),
       from,
       to: startOfNextDay(to)
     })

@@ -59,3 +59,8 @@ export const fromIsDescending = (isDescending) => {
 
     return isDescending ? Descending : Ascending
 }
+
+export const fromOrderStringToNumber = (value ) => {
+    let result = value === Descending ? DescendingNumber : AscendingNumber
+    return result
+}

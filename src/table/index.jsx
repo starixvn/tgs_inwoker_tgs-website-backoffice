@@ -78,7 +78,11 @@ export const toApiParams = (state) => {
   if (sort) {
     sortby = sort?.id
     orderby = fromIsDescending(sort?.desc)
+    if (state?.toOrderBy) {
+      orderby = state.toOrderBy(orderby)
+    }
   }
+
   return {
     ...restState,
     page,
