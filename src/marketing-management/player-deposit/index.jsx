@@ -97,7 +97,7 @@ const BodyContent = ({ brandId }) => {
 
   let { isLoading, data, error, mutate, deleteCache } =
     usePlayerDepositReportList({
-      ...toApiParams({ ...state, toOrderBy: fromOrderStringToNumber }),
+      ...toApiParams(state, { toOrderBy: fromOrderStringToNumber }),
       from,
       to: startOfNextDay(to)
     })
