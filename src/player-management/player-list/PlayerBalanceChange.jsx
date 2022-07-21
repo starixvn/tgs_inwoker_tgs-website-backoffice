@@ -171,6 +171,11 @@ const useColumns = ({ items = [] }) =>
         Header: <Trans zh="交易金额" en="Amount" />,
         disableSortBy: true
       }),
+      textColumn({
+        accessor: "externalTransactionId",
+        Header: <Trans zh="交易单号" en="Transaction ID" />,
+        disableSortBy: true
+      }),
       numberDecimalColumn({
         accessor: "balance",
         Header: <Trans zh="余额" en="Balance" />,

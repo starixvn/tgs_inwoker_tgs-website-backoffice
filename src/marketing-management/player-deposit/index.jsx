@@ -75,6 +75,23 @@ const Body = () => {
   )
 }
 
+const mapSortBy = (value = "") => {
+  switch (value) {
+    case "reportDate":
+      return "ReportDate"
+    case "agentUserName":
+      return "AgentId"
+    case "firstDepositCount":
+      return "FirstDepositPlayers"
+    case "noSecondDepositCount":
+      return "NoSecondDepositPlayers"
+    case "depositCount":
+      return "DepositPlayers"
+    default:
+      return value
+  }
+}
+
 const BodyContent = ({ brandId }) => {
   let dateRange = yesterday()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
@@ -99,7 +116,7 @@ const BodyContent = ({ brandId }) => {
   let { isLoading, data, error, mutate, deleteCache } =
     usePlayerDepositReportList({
       ...toApiParams(state, {
-        toSortBy: upperFirst,
+        toSortBy: mapSortBy,
         toOrderBy: fromOrderStringToNumber
       }),
       from,
