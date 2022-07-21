@@ -12,10 +12,12 @@ export const dateTimeColumn = ({
   dateFormat = DefaultDateFormat,
   timeFormat = DefaultTimeFormat,
   placeholder = "",
+  toValue,
   ...props
 }) =>
   textColumn({
     Cell: ({ value = "" } = {}) => {
+      value = toValue ? toValue(value) : value
       let formattedDate = dateFormat ? formatDateTime(dateFormat, value) : ""
       let formattedTime = timeFormat ? formatDateTime(timeFormat, value) : ""
       return (

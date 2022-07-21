@@ -25,7 +25,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { FormattedNumber, Trans, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import BrandBar from "../../report/BrandBar"
-import { SortOrder } from "../../table/order"
+import { SortOrder, fromOrderStringToNumber } from "../../table/order"
 import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
@@ -35,15 +35,15 @@ import { DateInputRange } from "../../date/DateTimeRangeInput"
 import {
   usePlayerDepositReportList,
   useFirstDepositPlayerList,
-  useNoSecondDepositPlayerList
+  useNoSecondDepositPlayerList,
+  useDailyDepositPlayerList
 } from "./client"
 import numberColumn from "../../table/column/numberColumn"
 import { PlayerListDialogDisclosure } from "./PlayerListDialog"
-import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
-import { subDays } from "date-fns"
-import { isDev } from "../../env"
+import { subDays, parse } from "date-fns"
+import { upperFirst } from "lodash-es"
 
 export { Code }
 
@@ -80,10 +80,8 @@ const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     agentUsername: "",
     from: dateRange.start,
-    to: dateRange.end
-    /* TODO: set default sort
-    sortBy: "ReportDate"
-    */
+    to: dateRange.end,
+    sortBy: [{ id: "reportDate", desc: false }]
   })
 
   const reset = () => {
@@ -98,19 +96,15 @@ const BodyContent = ({ brandId }) => {
 
   let { agentUsername, from, to } = state
 
-  //TODO: rm devEnv and required at 1.32
-  let devEnv = isDev()
-  //TODO: remove agentUsername required check
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerDepositReportList(
-      devEnv || agentUsername
-        ? {
-            ...toApiParams(state),
-            from,
-            to: startOfNextDay(to)
-          }
-        : undefined
-    )
+    usePlayerDepositReportList({
+      ...toApiParams(state, {
+        toSortBy: upperFirst,
+        toOrderBy: fromOrderStringToNumber
+      }),
+      from,
+      to: startOfNextDay(to)
+    })
 
   let columns = useColumns({
     items: data?.items,
@@ -139,20 +133,18 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      {(devEnv || agentUsername) && (
-        <Table
-          columns={columns}
-          data={data?.items}
-          total={data?.items?.length > 0 && data?.total}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(state.pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-          stickyHead
-        />
-      )}
+      <Table
+        columns={columns}
+        data={data?.items}
+        total={data?.items?.length > 0 && data?.total}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+        stickyHead
+      />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -188,8 +180,6 @@ const SearchBar = ({
 
   const onSubmit = (data) => search(data)
 
-  //TODO: rm notDev and required at 1.32
-  let notDev = !isDev()
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -199,7 +189,6 @@ const SearchBar = ({
             autoFocus
             showEmptyFieldValueAddonAfter
             placeholder={agentUsernamePlaceholder}
-            required={notDev}
           />
           <DateInputRange
             id="date-range"
@@ -211,7 +200,7 @@ const SearchBar = ({
             endProps={{
               name: "to"
             }}
-            required
+            // required
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
@@ -220,49 +209,48 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ brandId, items = [], agentUsername }) => {
-  //TODO: remove disableSortBy: true
+const toDate = (value) => {
+  let date = parse(value, "yyyy/MM/dd", new Date())
+  return date
+}
+
+const useColumns = ({ brandId, items = [] }) => {
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
-        id: "ReportDate",
+        id: "reportDate",
         accessor: "reportDate",
+        toValue: toDate,
         dateFormat: "MM/dd",
         timeFormat: false,
-        Header: <Trans zh="日期" en="Date" />,
-        disableSortBy: true
+        Header: <Trans zh="日期" en="Date" />
       }),
-      /*
       textColumn({
-        id: "AgentUsername",
-        accessor: "agentUsername",
+        accessor: "agentUserName",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       }),
-      */
       numberColumn({
-        id: "FirstDepositCount",
+        id: "firstDepositCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
-        disableSortBy: true,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
         Cell: ({ value: record }) => {
-          //TODO: agentUsername from record
           return (
             <PlayerListDialogDisclosure
               value={record.firstDepositCount}
               brandId={brandId}
-              agentUsername={agentUsername}
-              date={toDate(record.reportDate)}
+              agentUsername={record?.agentUserName}
+              date={record.reportDate}
               useFetch={useFirstDepositPlayerList}
             />
           )
         }
       }),
       numberColumn({
-        id: "NoSecondDepositCount",
+        id: "noSecondDepositCount",
         accessor: (row) => row,
         Header: (
           <Trans
@@ -270,19 +258,36 @@ const useColumns = ({ brandId, items = [], agentUsername }) => {
             en="No Second Deposit Player Count"
           />
         ),
-        disableSortBy: true,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
         Cell: ({ value: record }) => {
-          //TODO: agentUsername from record
           return (
             <PlayerListDialogDisclosure
               value={record.noSecondDepositCount}
               brandId={brandId}
-              agentUsername={agentUsername}
-              date={toDate(record.reportDate)}
+              agentUsername={record?.agentUserName}
+              date={record.reportDate}
               useFetch={useNoSecondDepositPlayerList}
+            />
+          )
+        }
+      }),
+      numberColumn({
+        id: "depositCount",
+        accessor: (row) => row,
+        Header: <Trans zh="当日玩家存款人数" en="Deposit Player Count" />,
+        TotalCell: ({ value }) => {
+          return <FormattedNumber value={value} />
+        },
+        Cell: ({ value: record }) => {
+          return (
+            <PlayerListDialogDisclosure
+              value={record.depositCount}
+              brandId={brandId}
+              agentUsername={record?.agentUserName}
+              date={record.reportDate}
+              useFetch={useDailyDepositPlayerList}
             />
           )
         }

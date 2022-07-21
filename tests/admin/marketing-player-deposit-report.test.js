@@ -35,8 +35,11 @@ test("marketing > player deposit report", async ({
 
   await searchAgent(page, agent)
 
+  //Note. not able to search today's report
+  /*
   await noSecondDeposit(page)
   await firstDepositDialog(page)
+  */
 })
 
 const noSecondDeposit = async (page) => {

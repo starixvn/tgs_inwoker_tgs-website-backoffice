@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-providers
-image: harbor.rpgp.cc/tgs/game-gameproviders:202207070800-prod # game/gameproviders
+image: pgtgs/game-gameproviders:202207070701-dev # game/gameproviders
 services:
   - name: game-providers
     dependencies:
@@ -10,8 +10,8 @@ services:
       - nats
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
-      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
-      ConnectionStrings__NatsMQ: "nats://nats:4222"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
       GameProviders__GameProvidersQueryServerBaseUrl: "http://game-provider-query-server"
       GameProviders__GameRoundsServiceBaseUrl: "http://game-rounds"
     ingresses:

@@ -64,7 +64,7 @@ export const useTable = (initialState = {}) => {
  pageIndex -> page
  pageSize -> rows
 */
-export const toApiParams = (state) => {
+export const toApiParams = (state, configs = {}) => {
   if (!state) {
     return undefined
   }
@@ -77,8 +77,16 @@ export const toApiParams = (state) => {
   let orderby = ""
   if (sort) {
     sortby = sort?.id
+    if (configs.toSortBy) {
+      sortby = configs.toSortBy(sortby)
+    }
+
     orderby = fromIsDescending(sort?.desc)
+    if (configs.toOrderBy) {
+      orderby = configs.toOrderBy(orderby)
+    }
   }
+
   return {
     ...restState,
     page,
