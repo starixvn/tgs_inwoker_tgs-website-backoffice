@@ -193,6 +193,7 @@ const SearchBar = ({
           <DateInputRange
             id="date-range"
             showDateDropdownMenu
+            minDate={minDate}
             maxRangeDays={QueryMaxRangeDays}
             startProps={{
               name: "from"
@@ -200,7 +201,7 @@ const SearchBar = ({
             endProps={{
               name: "to"
             }}
-            // required
+            required
           />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>

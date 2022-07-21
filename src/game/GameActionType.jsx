@@ -58,31 +58,31 @@ const GameWinJackpotTrans = {
 
 const GameCredit = "GameCredit"
 const GameCreditTrans = {
-  zh: "結算",
+  zh: "Game Credit",
   en: "Game Credit"
 }
 
 const GameDebit = "GameDebit"
 const GameDebitTrans = {
-  zh: "投注",
+  zh: "Game Debit",
   en: "Game Debit"
 }
 
 const GameRefund = "GameRefund"
 const GameRefundTrans = {
-  zh: "退款",
+  zh: "Game Refund",
   en: "Game Refund"
 }
 
 const GameRevision = "GameRevision"
 const GameRevisionTrans = {
-  zh: "调整",
+  zh: "Game Revision",
   en: "Game Revision"
 }
 
 const GameProviderFundRefund = "GameProviderFundRefund"
 const GameProviderFundRefundTrans = {
-  zh: "资金退款",
+  zh: "Game Provider Fund Refund",
   en: "Game Provider Fund Refund"
 }
 
