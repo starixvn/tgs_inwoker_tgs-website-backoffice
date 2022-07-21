@@ -77,6 +77,10 @@ export const toApiParams = (state, configs = {}) => {
   let orderby = ""
   if (sort) {
     sortby = sort?.id
+    if (configs.toSortBy) {
+      sortby = configs.toSortBy(sortby)
+    }
+
     orderby = fromIsDescending(sort?.desc)
     if (configs.toOrderBy) {
       orderby = configs.toOrderBy(orderby)

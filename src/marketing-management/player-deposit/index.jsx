@@ -43,6 +43,7 @@ import { PlayerListDialogDisclosure } from "./PlayerListDialog"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays, parse } from "date-fns"
+import { upperFirst } from "lodash-es"
 
 export { Code }
 
@@ -97,7 +98,10 @@ const BodyContent = ({ brandId }) => {
 
   let { isLoading, data, error, mutate, deleteCache } =
     usePlayerDepositReportList({
-      ...toApiParams(state, { toOrderBy: fromOrderStringToNumber }),
+      ...toApiParams(state, {
+        toSortBy: upperFirst,
+        toOrderBy: fromOrderStringToNumber
+      }),
       from,
       to: startOfNextDay(to)
     })
