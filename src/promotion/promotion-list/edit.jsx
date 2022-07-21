@@ -275,15 +275,6 @@ const usePromotionFormData = (
   } = {}
 ) => {
   let cloned = clone(record)
-  if (Number.isFinite(cloned.percentage)) {
-    set(cloned, "rule.percentage", cloned.percentage)
-  }
-  if (Number.isFinite(cloned.bonusAmountLimit)) {
-    set(cloned, "rule.bonusAmountLimit", cloned.bonusAmountLimit)
-  }
-  if (Number.isFinite(cloned.turnoverMultiple)) {
-    set(cloned, "rule.turnoverMultiple", cloned.turnoverMultiple)
-  }
 
   let {
     isLoading: isLoadingPromotionRule,
@@ -335,7 +326,17 @@ const usePromotionFormData = (
     localization: parseJSON(localization),
     from: parseISO(from),
     to: parseISO(to),
-    rule
+    rule:
+      isEmpty(rule) &&
+      (Number.isFinite(cloned?.percentage) ||
+        Number.isFinite(cloned?.bonusAmountLimit) ||
+        Number.isFinite(cloned?.turnoverMultiple))
+        ? {
+            percentage: cloned?.percentage,
+            bonusAmountLimit: cloned?.bonusAmountLimit,
+            turnoverMultiple: cloned?.turnoverMultiple
+          }
+        : clone(rule)
   }
 
   return {
