@@ -25,7 +25,7 @@ export const toDataOrError = (response) => {
           errors = Object.values(errors)
           return Promise.reject({
             title: title ?? message ?? errorTitle(response),
-            errors: errors?.length > 0 ? errors : [JSON.stringify(rest)]
+            errors: errors?.length > 0 ? errors : toErrors(response)
           })
         })
     }
@@ -88,9 +88,9 @@ const RequestTimeoutTrans = {
 }
 
 const InternalServerError = 500
-const InternalServerErrorDefaultMessage = "Server Error"
+const InternalServerErrorDefaultMessage = "System is busy, please contact system administrator for more info."
 const InternalServerErrorTrans = {
-  zh: "服务器错误",
+  zh: "目前系統繁忙中，請聯繫系統管理員。",
   en: InternalServerErrorDefaultMessage
 }
 
@@ -141,5 +141,34 @@ const errorTitle = (response) => {
       return (
         InternalServerErrorTrans?.[locale] ?? InternalServerErrorDefaultMessage
       )
+  }
+}
+
+const toErrors = (response) => {
+  let locale = getAcceptLang()
+  switch (response.status) {
+    case BadRequest:
+      return []
+    case Unauthorized:
+      return []
+    case Forbidden:
+      return []
+    case NotFound:
+      return []
+    case MethodNotAllowed:
+      return []
+    case RequestTimeout:
+      return []
+    case NotImplemented:
+      return []
+    case BadGateway:
+      return []
+    case ServiceUnavailable:
+      return []
+    case GatewayTimeout:
+      return []
+    case InternalServerError:
+    default:
+      return []
   }
 }
