@@ -58,11 +58,21 @@ import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { get, set } from "lodash-es"
 import Big from "big.js"
+import {
+  DepositLottery,
+  PromotionDepositLotteryRuleSetting
+} from "./PromotionDepositLotteryRuleSetting"
+
+const Roulette = "Roulette"
 
 export const PromotionLotteryRuleSetting = ({ promotionType, ...props }) => {
   switch (promotionType) {
-    default:
+    case Roulette:
       return <PromotionRouletteRuleSetting {...props} />
+    case DepositLottery:
+      return <PromotionDepositLotteryRuleSetting {...props} />
+    default:
+      return null
   }
 }
 
