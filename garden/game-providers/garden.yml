@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-providers
-image: pgtgs/game-gameproviders:202207070701-dev # game/gameproviders
+image: pgtgs/game-gameproviders:202207210527-dev # game/gameproviders
 services:
   - name: game-providers
     dependencies:
@@ -13,6 +13,9 @@ services:
       ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
       ConnectionStrings__Nats: "nats://nats:4222"
       GameProviders__GameProvidersQueryServerBaseUrl: "http://game-provider-query-server"
+      GameProviders__GameInterfaceAwcServiceBaseUrl: "http://game-interface-awc"
+      GameProviders__GameInterfaceJiliServiceBaseUrl: "http://game-interface-jili"
+      GameProviders__GameInterfaceWMCasinoServiceBaseUrl: "http://game-interface-wmcasino"
       GameProviders__GameRoundsServiceBaseUrl: "http://game-rounds"
     ingresses:
       # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 game-providers.localhost` to host file

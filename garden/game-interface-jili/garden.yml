@@ -1,0 +1,14 @@
+kind: Module
+type: container
+name: game-interface-jili
+image: pgtgs/game-gameinterface-jili-service:202207180525-dev # game/gameproviders
+services:
+  - name: game-interface-jili
+    dependencies:
+      - nats
+    env:
+      ConnectionStrings__Nats: "nats://nats:4222"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80
