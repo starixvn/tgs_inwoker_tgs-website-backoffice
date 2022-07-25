@@ -19,6 +19,10 @@ import {
   Code as PlatformCreditCode,
   codeLabelPair as platformCreditPair
 } from "./platform-credit/menu"
+import {
+  Code as MaintenanceCode,
+  codeLabelPair as maintenancePair
+} from "./maintenance/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faBriefcase } from "@fortawesome/free-solid-svg-icons"
 
@@ -97,6 +101,14 @@ const label = ({ locale, code }) => {
         },
         locale
       )
+    case MaintenanceCode:
+      return getTrans(
+        {
+          zh: "維護管理",
+          en: "Maintenance"
+        },
+        locale
+      )
     default:
       return ""
   }
@@ -114,7 +126,8 @@ export const codeLabelPair = [
         licenseePair,
         brandPair /* TODO: rm */,
         platformPair,
-        platformCreditPair
+        platformCreditPair,
+        maintenancePair
       ]
     })
 ]
