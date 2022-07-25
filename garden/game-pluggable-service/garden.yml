@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-pluggable-service
-image: pgtgs/game-pluggable-service:202207130223-dev # game/gamepluggableservice
+image: pgtgs/game-pluggable-service:202207210658-dev # game/gamepluggableservice
 services:
   - name: game-pluggable-service
     dependencies:
@@ -15,7 +15,7 @@ services:
       Pluggable__GameProviderKickPlayerServerBaseUrl: "http://game-kickplayer-server"
       Pluggable__GameProvidersQueryServerBaseUrl: "http://game-provider-query-server"
       Pluggable__GameVerificationBaseUrl: "http://game-verification"
-      Pluggable__GameFundTransferBaseUrl: ""
+      Pluggable__GameFundTransferBaseUrl: "http://game-fund-transfer"
     ingresses:
       # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 game-pluggable.localhost` to host file
       - hostname: game-pluggable.localhost

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-fund-transfer
-image: harbor.rpgp.cc/tgs/game-gamefundtransfer:202207050547-staging
+image: pgtgs/game-gamefundtransfer:202207110801-dev
 services:
   - name: game-fund-transfer
     dependencies:
