@@ -285,7 +285,7 @@ const SearchBar = ({
 
                 let pass = hasCreatedOn || hasClosedOn
                 if (pass) {
-                  clearErrors([ClosedFromField, ClosedToField])
+                  // clearErrors([ClosedFromField, ClosedToField])
                 }
 
                 return pass ? true : "one-of-date-range-required"
@@ -314,7 +314,7 @@ const SearchBar = ({
 
                   let pass = hasCreatedOn || hasClosedOn
                   if (pass) {
-                    clearErrors([StartField, EndField])
+                    // clearErrors([StartField, EndField])
                   }
                   return pass ? true : "one-of-date-range-required"
                 }
