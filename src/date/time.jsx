@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { useLocale, Locales } from "../i18n"
-import { Select, SelectField, DropdownMenu, Button, Icon } from "bumbag"
+import { SelectField, DropdownMenu, Button, Icon } from "bumbag"
 import {
   startOfDay,
   endOfDay,
@@ -9,13 +9,20 @@ import {
   format,
   addMinutes,
   setHours,
-  setMinutes
+  setMinutes,
+  parse,
+  isDate,
+  isValid
 } from "date-fns"
 import { faClock } from "@fortawesome/free-regular-svg-icons"
+import { SelectField as _SelectField, Select } from "../select/Select"
 import { useForm, useFormContext } from "react-hook-form"
+import { isValidDate } from "./isValidDate"
 
 export const TimeIcon = () => <Icon icon={faClock} type="font-awesome" />
 
+//TODO: rename file to TimeSelect.jsx
+//TODO: replaced by TimeSelectField2
 export const TimeSelectField = ({
   name,
   selectRef,
@@ -65,6 +72,51 @@ export const TimeSelectField = ({
   )
 }
 
+export const TimeSelectField2 = ({
+  min,
+  max,
+  registerOptions = {},
+  addonBefore = (
+    <Button isStatic>
+      <TimeIcon />
+    </Button>
+  ),
+  ...props
+}) => {
+  let options = rangeOptions({ min, max })
+
+  return (
+    <_SelectField
+      options={options}
+      validate={{
+        min: (value) => {
+          if (isValidDate(value) && isValidDate(min)) {
+            let pass = isBefore(min, value)
+            return pass
+          }
+          return true //pass
+        },
+        max: (value) => {
+          if (isValidDate(value) && isValidDate(max)) {
+            let pass = isBefore(value, max)
+            return pass
+          }
+          return true //pass
+        }
+      }}
+      registerOptions={{
+        setValueAs: (value = "") => {
+          value = parse(value, "HH:mm", new Date())
+          return value
+        },
+        ...registerOptions
+      }}
+      addonBefore={addonBefore}
+      {...props}
+    />
+  )
+}
+
 export const hourMinuteToDate = (value = "", defaultValue) => {
   if (value) {
     let [hours, minutes] = value.split(":")
@@ -77,18 +129,30 @@ export const hourMinuteToDate = (value = "", defaultValue) => {
 
 export const formatHourMinute = (date) => format(date, "HH:mm")
 
-const rangeOptions = (
+const rangeOptions = ({
   start = startOfDay(new Date()),
   end = endOfDay(new Date()),
-  minutes = 30
-) => {
+  minutes = 30,
+  min,
+  max
+} = {}) => {
   let options = []
   while (isBefore(start, end)) {
     let time = formatHourMinute(start)
-    options.push({
+    let option = {
       label: time,
       value: time
-    })
+    }
+
+    if (isValidDate(min) && isBefore(start, min)) {
+      option.disabled = true
+    }
+
+    if (isValidDate(max) && isBefore(max, start)) {
+      option.disabled = true
+    }
+
+    options.push(option)
 
     start = addMinutes(start, minutes)
   }

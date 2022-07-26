@@ -33,7 +33,7 @@ import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import { useBrandLanguageCodes } from "../../dialog/LocalizationDialog"
 import Backdrop from "../../dialog/Backdrop"
 import BrandIdSelect from "../platforms/BrandIdSelect"
-import { TimeInput } from "../../date/TimeInput"
+import { TimeSelectField2 } from "../../date/time"
 import { useUpdateMaintenance } from "./client"
 
 export const MaintenanceTimeRangeDialogDisclosure = ({
@@ -103,15 +103,31 @@ const TimeRangeDialog = ({ dialog, onSubmitted, ...props }) => {
 }
 
 const FormBody = ({}) => {
+  let { control } = useFormContext()
+  let BeginTimeField = "beginTime"
+  let beginTime = useWatch({
+    control,
+    name: BeginTimeField
+  })
+
+  let EndTimeField = "endTime"
+  let endTime = useWatch({
+    control,
+    name: EndTimeField
+  })
   return (
     <FieldStack orientation="vertical">
       <BrandIdSelect name="brandId" />
-      <FieldWrapper>
-        <TimeInput name="beginTime" />
-      </FieldWrapper>
-      <FieldWrapper>
-        <TimeInput name="endTime" />
-      </FieldWrapper>
+      <TimeSelectField2
+        name={BeginTimeField}
+        defaultValue={beginTime}
+        max={endTime}
+      />
+      <TimeSelectField2
+        name={EndTimeField}
+        defaultValue={endTime}
+        min={beginTime}
+      />
     </FieldStack>
   )
 }
