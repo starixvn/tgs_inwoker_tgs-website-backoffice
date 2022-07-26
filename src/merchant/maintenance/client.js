@@ -10,7 +10,7 @@ import {
 } from "../../client"
 import { MerchantStatus } from "../MerchantStatus"
 
-const API = "/api/brand"//BrandMaintenance
+const API = "/api/BrandMaintenance"
 
 export const useMaintenanceList = ({
   hideArchieved = true,
@@ -28,4 +28,9 @@ export const useMaintenanceList = ({
     data: items ? { ...data, items } : data,
     ...rest
   }
+}
+
+export const useUpdateMaintenance = (data) => {
+  let url = data ? `${API}/batchupdatetime` : ""
+  return usePutData(url, data)
 }

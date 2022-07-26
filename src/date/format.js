@@ -40,4 +40,7 @@ export const HourMinuteSecondDayMonthYear = `${Format.Time} ${DayMonthYearFormat
 export const formatHourMinuteSecondDayMonthYear = (value) =>
   formatDateTime(HourMinuteSecondDayMonthYear, value)
 
+export const HourMinute = "HH:mm"
+export const formatHourMinute = (value) => formatDateTime(HourMinute, value)
+
 export default defaultFormatDateTime
