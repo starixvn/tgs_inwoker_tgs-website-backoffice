@@ -7,7 +7,7 @@ import {
   useHasSubMenuByRoute
 } from "../../user/context"
 import { Code, Update } from "./menu"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedDateTime, Trans, useTrans } from "../../i18n"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useMaintenanceList } from "./client"
 import sequenceColumn from "../../table/column/sequence"
@@ -18,6 +18,9 @@ import { InputField } from "../../input/Input"
 import equals from "fast-deep-equal"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
+import { MaintenanceTimeRangeDialogDisclosure } from "./MaintenanceTimeRangeDialog"
+import { toDate } from "../../date/toDate"
+import { formatHourMinute } from "../../date/format"
 
 export { Code }
 
@@ -39,15 +42,14 @@ const Body = () => {
   let { pageIndex, pageSize, keyword } = state
 
   let { isLoading, data, error, mutate, deleteCache } = useMaintenanceList({
-    ...toApiParams(state),
-    sortby: "code"
+    ...toApiParams(state)
   })
 
   let columns = useColumns({ items: data?.items, mutate })
 
   return (
     <PageContent
-      title={<Trans zh="維護管理" en="Maintenance " />}
+      title={<Trans zh="維護管理" en="Maintenance Management" />}
       actionBar={
         <>
           <SearchForm
@@ -60,7 +62,9 @@ const Body = () => {
             }}
             isLoading={isLoading}
           />
-          <Set orientation="horizontal" alignX="right"></Set>
+          <Set orientation="horizontal" alignX="right">
+            <MaintenanceTimeRangeDialogDisclosure onSubmitted={mutate} />
+          </Set>
         </>
       }
     >
@@ -124,19 +128,29 @@ const useColumns = ({ items = [], mutate }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "code",
+        accessor: "brandCode",
         Header: <Trans zh="平台代码" en="Code" />,
         disableSortBy: true
       }),
       textColumn({
-        accessor: "name",
+        accessor: "brandName",
         Header: <Trans zh="平台名称" en="Name" />,
         disableSortBy: true
       }),
-      dateTimeColumn({
+      textColumn({
+        id: "maintenanceTimeRange",
+        accessor: (row) => row,
         Header: <Trans zh="維護时间" en="Maintenance Time" />,
-        accessor: "maintenanceOn",
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          let start = formatHourMinute(record?.beginTime)
+          let end = formatHourMinute(record?.endTime)
+          return (
+            <Set alignX="center">
+              {start} - {end}
+            </Set>
+          )
+        }
       })
     ]
 

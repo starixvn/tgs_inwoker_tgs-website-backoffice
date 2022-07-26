@@ -236,13 +236,13 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         Footer: () => <Box />,
         disableSortBy: true
       }),
-      numberColumn({
+      numberDecimalColumn({
         accessor: "depositAmount",
         sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
         disableSortBy: true
       }),
-      numberColumn({
+      numberDecimalColumn({
         accessor: "withdrawalAmount",
         sumColumn: "withdrawalAmount",
         Header: <Trans zh="提款金额" en="Withdrawal Amount" />,
