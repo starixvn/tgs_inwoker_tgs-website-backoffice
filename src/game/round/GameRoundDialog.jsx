@@ -152,7 +152,7 @@ export const GameRoundDialog = ({
           <Columns.Column>
             <FieldValues>
               <NormalLabel>
-                <Trans zh="游戏厂商" en="Game Providedr" />
+                <Trans zh="游戏厂商" en="Game Provider" />
               </NormalLabel>
               <Box alignY="center">{record.gameProviderName}</Box>
 
@@ -208,7 +208,7 @@ export const GameRoundDialog = ({
           <Columns.Column>
             <FieldValues>
               <NormalLabel>
-                <Trans zh="子游戏厂商" en="Sub Game Providedr" />
+                <Trans zh="子游戏厂商" en="Sub Game Provider" />
               </NormalLabel>
               <Box alignY="center">{record.subGameProviderName}</Box>
 

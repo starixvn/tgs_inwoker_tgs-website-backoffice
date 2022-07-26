@@ -110,7 +110,7 @@ const BodyContent = ({ brandId }) => {
   })
   return (
     <PageContent
-      title={<Trans zh="市場報表" en="Marketing Report" />}
+      title={<Trans zh="代理市場報表" en="Agent Marketing Report" />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
