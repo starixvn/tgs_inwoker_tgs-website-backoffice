@@ -34,3 +34,13 @@ export const useUpdateMaintenance = (data) => {
   let url = data ? `${API}/batchupdatetime` : ""
   return usePutData(url, data)
 }
+
+export const useMaintenanceMessage = (id) => {
+  let url = data ? `${API}/${id}` : ""
+  return useGet(url)
+}
+
+export const useUpdateMaintenanceMessage = (id, data) => {
+  let url = data ? `${API}/${id}` : ""
+  return usePutData(url, data)
+}
