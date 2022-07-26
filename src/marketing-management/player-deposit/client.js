@@ -28,3 +28,10 @@ export const useNoSecondDepositPlayerList = (searchParams) => {
     : ""
   return useGet(url)
 }
+
+export const useDailyDepositPlayerList =  (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/playerDailyDepositDetails`)
+    : ""
+  return useGet(url)
+}

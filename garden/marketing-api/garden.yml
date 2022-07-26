@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: marketing-api
-image: harbor.rpgp.cc/tgs/marketing-report-api:202206300749-dev
+image: pgtgs/marketing-report-api:202207200535-dev
 services:
   - name: marketing-api
     dependencies:

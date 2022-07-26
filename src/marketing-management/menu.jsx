@@ -82,8 +82,8 @@ const label = ({ locale, code }) => {
     case MarketingReportCode:
       return getTrans(
         {
-          zh: "市場報表",
-          en: "Marketing Report"
+          zh: "代理市場報表",
+          en: "Agent Marketing Report"
         },
         locale
       )
@@ -91,8 +91,8 @@ const label = ({ locale, code }) => {
     case AgentMarketingReportCode:
       return getTrans(
         {
-          zh: "代理市場報表",
-          en: "Agent Marketing Report"
+          zh: "代理总報表",
+          en: "Agent General Report"
         },
         locale
       )

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-rounds
-image: harbor.rpgp.cc/tgs/game-gamerounds:202205250702-dev
+image: pgtgs/game-gamerounds:202207220516-dev
 services:
   - name: game-rounds
     dependencies:

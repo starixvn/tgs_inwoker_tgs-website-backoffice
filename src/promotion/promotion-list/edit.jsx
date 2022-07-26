@@ -70,6 +70,7 @@ import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { parseJSON } from "../../text/json"
 import { PromotionRuleSettingFieldBox } from "./PromotionRuleSettingFieldBox"
 import { PromotionDistributionMethodFieldBox } from "./PromotionDistributionMethodFieldBox"
+import { isNil, isEmpty, set } from "lodash-es"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -273,6 +274,8 @@ const usePromotionFormData = (
     ...record
   } = {}
 ) => {
+  let cloned = clone(record)
+
   let {
     isLoading: isLoadingPromotionRule,
     error: promotionRuleError,
@@ -314,7 +317,7 @@ const usePromotionFormData = (
 
   data = {
     id,
-    ...record,
+    ...cloned,
     vipLevels,
     gameProviders,
     promotionTypeGroup,
@@ -323,7 +326,17 @@ const usePromotionFormData = (
     localization: parseJSON(localization),
     from: parseISO(from),
     to: parseISO(to),
-    rule
+    rule:
+      isEmpty(rule) &&
+      (Number.isFinite(cloned?.percentage) ||
+        Number.isFinite(cloned?.bonusAmountLimit) ||
+        Number.isFinite(cloned?.turnoverMultiple))
+        ? {
+            percentage: cloned?.percentage,
+            bonusAmountLimit: cloned?.bonusAmountLimit,
+            turnoverMultiple: cloned?.turnoverMultiple
+          }
+        : clone(rule)
   }
 
   return {

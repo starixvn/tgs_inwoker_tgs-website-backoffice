@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: cash-worker
-image: harbor.rpgp.cc/tgs/cashservice-worker:202206170326-staging # cash/worker
+image: pgtgs/cashservice-worker:202207110222-dev # cash/worker
 services:
   - name: cash-worker
     dependencies:
