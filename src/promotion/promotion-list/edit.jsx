@@ -480,6 +480,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     name: GameTypeFieldName
   })
 
+  //TODO: able to remove the following useEffect?
   useEffect(() => {
     if (!gameTypeGroup) {
       setValue(GameTypeFieldName, null)
@@ -641,6 +642,9 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
                   name={GameTypeGroupFieldName}
                   disabled={disabled}
                   placeholder={gameTypePlaceholder}
+                  onChange={(event) => {
+                    setValue(GameTypeFieldName, "")
+                  }}
                 />
               )}
               {disabled && (

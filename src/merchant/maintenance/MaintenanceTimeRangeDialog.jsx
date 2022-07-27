@@ -35,6 +35,7 @@ import Backdrop from "../../dialog/Backdrop"
 import BrandIdSelect from "../platforms/BrandIdSelect"
 import { TimeSelectField2 } from "../../date/time"
 import { useUpdateMaintenance } from "./client"
+import { useBrandList } from "../platforms/client"
 
 export const MaintenanceTimeRangeDialogDisclosure = ({
   onSubmitted,
@@ -50,7 +51,7 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="Maintenance" en="Maintenance" />
+        <Trans zh="维护时间" en="Maintenance Time" />
       </Disclosure>
       {dialog.visible && (
         <TimeRangeDialog onSubmitted={onSubmitted} dialog={dialog} />
@@ -60,6 +61,15 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
 }
 
 const TimeRangeDialog = ({ dialog, onSubmitted, ...props }) => {
+  let {
+    isLoading: isLoadingBrandList,
+    error: brandListError,
+    data: brand
+  } = useBrandList({
+    showAll: true,
+    sortby: "code"
+  })
+
   let title = useTrans({
     zh: "维护时间",
     en: "Maintenance Time"
@@ -74,17 +84,25 @@ const TimeRangeDialog = ({ dialog, onSubmitted, ...props }) => {
     mutate(null, false)
   }
 
+  if (isLoadingBrandList) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (brandListError) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
+
+  let brandIds = brand?.items.map((brand) => brand.id)
   return (
     <FormDialog
       defaultValues={{
-        brandIds: [],
+        brandIds,
         beginTime: null,
         endTime: null
       }}
-      onSubmit={({ brandId, ...data }) => {
+      onSubmit={({ ...data }) => {
         let form = {
-          ...data,
-          brandIds: [brandId]
+          ...data
         }
         setSubmit(form)
       }}
@@ -110,24 +128,39 @@ const FormBody = ({}) => {
     name: BeginTimeField
   })
 
+  let startLabel = useTrans({
+    zh: "开始",
+    en: "Start"
+  })
+
   let EndTimeField = "endTime"
   let endTime = useWatch({
     control,
     name: EndTimeField
   })
+  let endLabel = useTrans({
+    zh: "结束",
+    en: "End"
+  })
   return (
     <FieldStack orientation="vertical">
-      <BrandIdSelect name="brandId" />
-      <TimeSelectField2
-        name={BeginTimeField}
-        defaultValue={beginTime}
-        max={endTime}
-      />
-      <TimeSelectField2
-        name={EndTimeField}
-        defaultValue={endTime}
-        min={beginTime}
-      />
+      {/* <BrandIdSelect name="brandId" /> */}
+      <FieldStack orientation="horizontal">
+        <TimeSelectField2
+          name={BeginTimeField}
+          defaultValue={beginTime}
+          max={endTime}
+          label={startLabel}
+          required
+        />
+        <TimeSelectField2
+          name={EndTimeField}
+          defaultValue={endTime}
+          min={beginTime}
+          label={endLabel}
+          required
+        />
+      </FieldStack>
     </FieldStack>
   )
 }
