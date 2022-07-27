@@ -37,6 +37,8 @@ import Checkbox from "../../checkbox"
 import {
   GameTypeGroupSelect,
   GameTypeSelect,
+  toGameTypeString,
+  toGameTypeValue,
   useGameTypeGroupValueOf
 } from "../../game/GameType"
 import Separator from "../../layout/Separator"
@@ -153,14 +155,21 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   )
 }
 
-const normalizeFormData = ({ gameProviders = [], ...data }) => {
-  let gameProviderIds = toCheckedGameProviderIds(
-    "gameProviderId",
-    gameProviders
-  )
+const normalizeFormData = ({
+  gameType,
+  gameProviders = [],
+  rule = {},
+  ...data
+}) => {
+  let gameProviderIds = gameType
+    ? toCheckedGameProviderIds("gameProviderId", gameProviders)
+    : null
+
+  rule.gameType = toGameTypeValue(gameType)
+  rule.gameProviderIds = gameProviderIds
 
   return {
-    gameProviderIds,
+    rule,
     ...data
   }
 }
@@ -300,6 +309,9 @@ const usePromotionFormData = (
         }
       : undefined
   )
+
+  gameType = toGameTypeString(rule?.gameType) ?? gameType
+  gameProviderIds = rule?.gameProviderIds ?? gameProviderIds
 
   let gameProviders =
     data?.items?.map((gameProvider) => {
