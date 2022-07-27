@@ -6,499 +6,593 @@ import { useGameTypeGroupList } from "./client"
 import { mapOmit } from "../list/map"
 
 const Sportsbook = "Sportsbook"
+const SportsbookValue = 1
 const SportsbookTrans = {
-    zh: "体育",
-    en: "Sportsbook"
+  zh: "体育",
+  en: "Sportsbook"
 }
 
 const VirtualSports = "VirtualSports"
+const VirtualSportsValue = 2
 const VirtualSportsTrans = {
-    zh: "虚拟体育",
-    en: "Virtual Sports"
+  zh: "虚拟体育",
+  en: "Virtual Sports"
 }
 
 const VirtualSportsLobby = "VirtualSportsLobby"
+const VirtualSportsLobbyValue = 3
 const VirtualSportsLobbyTrans = {
-    zh: "虚拟体育大厅",
-    en: "Virtual Sports Lobby"
+  zh: "虚拟体育大厅",
+  en: "Virtual Sports Lobby"
 }
 
 const ESports = "ESports"
+const ESportsValue = 4
 const ESportsTrans = {
-    zh: "电竞",
-    en: "E-sports"
+  zh: "电竞",
+  en: "E-sports"
 }
 
 const LiveDealer = "LiveDealer"
+const LiveDealerValue = 5
 const LiveDealerTrans = {
-    zh: "真人",
-    en: "Live Dealer"
+  zh: "真人",
+  en: "Live Dealer"
 }
 
 const LiveDealerLobby = "LiveDealerLobby"
+const LiveDealerLobbyValue = 6
 const LiveDealerLobbyTrans = {
-    zh: "真人大厅",
-    en: "Live Dealer Lobby"
+  zh: "真人大厅",
+  en: "Live Dealer Lobby"
 }
 
 const CardGame = "CardGame"
+const CardGameValue = 7
 const CardGameTrans = {
-    zh: "棋牌",
-    en: "Card Game"
+  zh: "棋牌",
+  en: "Card Game"
 }
 
 const CardGameLobby = "CardGameLobby"
+const CardGameLobbyValue = 8
 const CardGameLobbyTrans = {
-    zh: "棋牌大厅",
-    en: "Card Game Lobby"
+  zh: "棋牌大厅",
+  en: "Card Game Lobby"
 }
 
 const Fishing = "Fishing"
+const FishingValue = 9
 const FishingTrans = {
-    zh: "捕鱼",
-    en: "Fishing"
+  zh: "捕鱼",
+  en: "Fishing"
 }
 
 const FishingLobby = "FishingLobby"
+const FishingLobbyValue = 10
 const FishingLobbyTrans = {
-    zh: "捕鱼大厅",
-    en: "Fishing Lobby"
+  zh: "捕鱼大厅",
+  en: "Fishing Lobby"
 }
 
 const Arcade = "Arcade"
+const ArcadeValue = 11
 const ArcadeTrans = {
-    zh: "街机",
-    en: "Arcade Game"
+  zh: "街机",
+  en: "Arcade Game"
 }
 
 const ArcadeLobby = "ArcadeLobby"
+const ArcadeLobbyValue = 12
 const ArcadeLobbyTrans = {
-    zh: "街机大厅",
-    en: "Arcade Game Lobby"
+  zh: "街机大厅",
+  en: "Arcade Game Lobby"
 }
 
 const Slot = "Slot"
+const SlotValue = 15
 const SlotTrans = {
-    zh: "老虎机",
-    en: "Slot Game"
+  zh: "老虎机",
+  en: "Slot Game"
 }
 
 const Lottery = "Lottery"
+const LotteryValue = 13
 const LotteryTrans = {
-    zh: "彩票",
-    en: "Lottery"
+  zh: "彩票",
+  en: "Lottery"
 }
 
 const LotteryLobby = "LotteryLobby"
+const LotteryLobbyValue = 14
 const LotteryLobbyTrans = {
-    zh: "彩票大厅",
-    en: "Lottery Lobby"
+  zh: "彩票大厅",
+  en: "Lottery Lobby"
 }
 
 const TableGame = "TableGame"
+const TableGameValue = 16
 const TableGameTrans = {
-    zh: "桌面游戏",
-    en: "Table Game"
+  zh: "桌面游戏",
+  en: "Table Game"
+}
+
+export const toGameTypeString = (value) => {
+  switch (value) {
+    case SportsbookValue:
+      return Sportsbook
+    case VirtualSportsValue:
+      return VirtualSports
+    case VirtualSportsLobbyValue:
+      return VirtualSportsLobby
+    case ESportsValue:
+      return ESports
+    case LiveDealerValue:
+      return LiveDealer
+    case LiveDealerLobbyValue:
+      return LiveDealerLobby
+    case CardGameValue:
+      return CardGame
+    case CardGameLobbyValue:
+      return CardGameLobby
+    case FishingValue:
+      return Fishing
+    case FishingLobbyValue:
+      return FishingLobby
+    case ArcadeValue:
+      return Arcade
+    case ArcadeLobbyValue:
+      return ArcadeLobby
+    case LotteryValue:
+      return Lottery
+    case LotteryLobbyValue:
+      return LotteryLobby
+    case SlotValue:
+      return Slot
+    case TableGameValue:
+      return TableGame
+    default:
+      return ""
+  }
+}
+
+export const toGameTypeValue = (value) => {
+  switch (value) {
+    case Sportsbook:
+      return SportsbookValue
+    case VirtualSports:
+      return VirtualSportsValue
+    case VirtualSportsLobby:
+      return VirtualSportsLobbyValue
+    case ESports:
+      return ESportsValue
+    case LiveDealer:
+      return LiveDealerValue
+    case LiveDealerLobby:
+      return LiveDealerLobbyValue
+    case CardGame:
+      return CardGameValue
+    case CardGameLobby:
+      return CardGameLobbyValue
+    case Fishing:
+      return FishingValue
+    case FishingLobby:
+      return FishingLobbyValue
+    case Arcade:
+      return ArcadeValue
+    case ArcadeLobby:
+      return ArcadeLobbyValue
+    case Lottery:
+      return LotteryValue
+    case LotteryLobby:
+      return LotteryLobbyValue
+    case Slot:
+      return SlotValue
+    case TableGame:
+      return TableGameValue
+    default:
+      return null
+  }
 }
 
 export const GameType = {
-    Sportsbook,
-    VirtualSports,
-    VirtualSportsLobby,
-    ESports,
-    LiveDealer,
-    LiveDealerLobby,
-    CardGame,
-    CardGameLobby,
-    Fishing,
-    FishingLobby,
-    Arcade,
-    ArcadeLobby,
-    Lottery,
-    LotteryLobby,
-    Slot,
-    TableGame
+  Sportsbook,
+  VirtualSports,
+  VirtualSportsLobby,
+  ESports,
+  LiveDealer,
+  LiveDealerLobby,
+  CardGame,
+  CardGameLobby,
+  Fishing,
+  FishingLobby,
+  Arcade,
+  ArcadeLobby,
+  Lottery,
+  LotteryLobby,
+  Slot,
+  TableGame
 }
 
 export const SportGameTypes = [
-    Sportsbook,
-    VirtualSports,
-    VirtualSportsLobby,
-    ESports
+  Sportsbook,
+  VirtualSports,
+  VirtualSportsLobby,
+  ESports
 ]
 
 export const isSportGameType = (value = "") => SportGameTypes.includes(value)
 
 const LobbyGameTypes = [
-    VirtualSportsLobby,
-    LiveDealerLobby,
-    CardGameLobby,
-    FishingLobby,
-    ArcadeLobby,
-    LotteryLobby
+  VirtualSportsLobby,
+  LiveDealerLobby,
+  CardGameLobby,
+  FishingLobby,
+  ArcadeLobby,
+  LotteryLobby
 ]
 export const isLobbyGameType = (value = "") => LobbyGameTypes.includes(value)
 
 export const notLobbyGameType = (value = "") => !isLobbyGameType(value)
 
 const LiveDealerGroupTrans = {
-    zh: "真人",
-    en: "Live Dealer"
+  zh: "真人",
+  en: "Live Dealer"
 }
 
 const SportsGroupTrans = {
-    zh: "体育",
-    en: "Sports"
+  zh: "体育",
+  en: "Sports"
 }
 
 const EGameGroupTrans = {
-    zh: "电子",
-    en: "EGame"
+  zh: "电子",
+  en: "EGame"
 }
 
 const CardGameGroupTrans = {
-    zh: "棋牌",
-    en: "Card Game"
+  zh: "棋牌",
+  en: "Card Game"
 }
 
 const VirtualSportsGroupTrans = {
-    zh: "虚拟体育",
-    en: "Virtual Sports"
+  zh: "虚拟体育",
+  en: "Virtual Sports"
 }
 
 const LotteryGroupTrans = {
-    zh: "彩票",
-    en: "Lottery"
+  zh: "彩票",
+  en: "Lottery"
 }
 
 const AllTrans = [
-    {
-        name: "LiveDealer",
-        trans: LiveDealerGroupTrans,
-        items: [
-            {
-                name: LiveDealer,
-                trans: LiveDealerTrans
-            },
-            {
-                name: LiveDealerLobby,
-                trans: LiveDealerLobbyTrans
-            }
-        ]
-    },
-    {
-        name: "Sports",
-        trans: SportsGroupTrans,
-        items: [
-            {
-                name: Sportsbook,
-                trans: SportsbookTrans
-            },
-            {
-                name: ESports,
-                trans: ESportsTrans
-            }
-        ]
-    },
-    {
-        name: "EGame",
-        trans: EGameGroupTrans,
-        items: [
-            {
-                name: Slot,
-                trans: SlotTrans
-            },
-            {
-                name: Fishing,
-                trans: FishingTrans
-            },
-            {
-                name: FishingLobby,
-                trans: FishingLobbyTrans
-            },
-            {
-                name: Arcade,
-                trans: ArcadeTrans
-            },
-            {
-                name: ArcadeLobby,
-                trans: ArcadeLobbyTrans
-            },
-            {
-                name: TableGame,
-                trans: TableGameTrans
-            }
-        ]
-    },
-    {
-        name: "CardGame",
-        trans: CardGameGroupTrans,
-        items: [
-            {
-                name: CardGame,
-                trans: CardGameTrans
-            },
-            {
-                name: CardGameLobby,
-                trans: CardGameLobbyTrans
-            }
-        ]
-    },
-    {
-        name: "VirtualSports",
-        trans: VirtualSportsGroupTrans,
-        items: [
-            {
-                name: VirtualSports,
-                trans: VirtualSportsTrans
-            },
-            {
-                name: VirtualSportsLobby,
-                trans: VirtualSportsLobbyTrans
-            }
-        ]
-    },
-    {
-        name: "Lottery",
-        trans: LotteryGroupTrans,
-        items: [
-            {
-                name: Lottery,
-                trans: LotteryTrans
-            },
-            {
-                name: LotteryLobby,
-                trans: LotteryLobbyTrans
-            }
-        ]
-    }
+  {
+    name: "LiveDealer",
+    trans: LiveDealerGroupTrans,
+    items: [
+      {
+        name: LiveDealer,
+        trans: LiveDealerTrans
+      },
+      {
+        name: LiveDealerLobby,
+        trans: LiveDealerLobbyTrans
+      }
+    ]
+  },
+  {
+    name: "Sports",
+    trans: SportsGroupTrans,
+    items: [
+      {
+        name: Sportsbook,
+        trans: SportsbookTrans
+      },
+      {
+        name: ESports,
+        trans: ESportsTrans
+      }
+    ]
+  },
+  {
+    name: "EGame",
+    trans: EGameGroupTrans,
+    items: [
+      {
+        name: Slot,
+        trans: SlotTrans
+      },
+      {
+        name: Fishing,
+        trans: FishingTrans
+      },
+      {
+        name: FishingLobby,
+        trans: FishingLobbyTrans
+      },
+      {
+        name: Arcade,
+        trans: ArcadeTrans
+      },
+      {
+        name: ArcadeLobby,
+        trans: ArcadeLobbyTrans
+      },
+      {
+        name: TableGame,
+        trans: TableGameTrans
+      }
+    ]
+  },
+  {
+    name: "CardGame",
+    trans: CardGameGroupTrans,
+    items: [
+      {
+        name: CardGame,
+        trans: CardGameTrans
+      },
+      {
+        name: CardGameLobby,
+        trans: CardGameLobbyTrans
+      }
+    ]
+  },
+  {
+    name: "VirtualSports",
+    trans: VirtualSportsGroupTrans,
+    items: [
+      {
+        name: VirtualSports,
+        trans: VirtualSportsTrans
+      },
+      {
+        name: VirtualSportsLobby,
+        trans: VirtualSportsLobbyTrans
+      }
+    ]
+  },
+  {
+    name: "Lottery",
+    trans: LotteryGroupTrans,
+    items: [
+      {
+        name: Lottery,
+        trans: LotteryTrans
+      },
+      {
+        name: LotteryLobby,
+        trans: LotteryLobbyTrans
+      }
+    ]
+  }
 ]
 
 const findTrans = (name, list = AllTrans) => {
-    return list.reduce((result, group) => {
-        if (result) {
-            return result
-        }
+  return list.reduce((result, group) => {
+    if (result) {
+      return result
+    }
 
-        if (group.name === name) {
-            return group.trans
-        }
+    if (group.name === name) {
+      return group.trans
+    }
 
-        if (group.items) {
-            return findTrans(name, group.items)
-        }
-    }, undefined)
+    if (group.items) {
+      return findTrans(name, group.items)
+    }
+  }, undefined)
 }
 
 const findGroup = (name, list = AllTrans) =>
-    mapOmit(["items"], list).find((item) => item.name === name)
+  mapOmit(["items"], list).find((item) => item.name === name)
 
 const findGroupTrans = (name) => findGroup(name)?.trans
 
 export const useGameTypeGroupLabelOf = (gameType = "") => {
-    let locale = useLocale()
-    let { isLoading, data: groups, error } = useGameTypeGroupList()
-    if (isLoading) {
-        return ""
+  let locale = useLocale()
+  let { isLoading, data: groups, error } = useGameTypeGroupList()
+  if (isLoading) {
+    return ""
+  }
+
+  let group = groups?.reduce((result, group) => {
+    if (result) {
+      return result
     }
 
-    let group = groups?.reduce((result, group) => {
-        if (result) {
-            return result
-        }
+    if (group?.items?.includes(gameType)) {
+      return group
+    }
+  }, undefined)
 
-        if (group?.items?.includes(gameType)) {
-            return group
-        }
-    }, undefined)
-
-    let trans = findGroupTrans(group?.name)
-    return trans?.[locale] ?? group?.name ?? ""
+  let trans = findGroupTrans(group?.name)
+  return trans?.[locale] ?? group?.name ?? ""
 }
 
 export const useGameTypeGroupValueOf = (gameType = "") => {
-    let { isLoading, data: groups, error } = useGameTypeGroupList()
-    if (isLoading) {
-        return ""
+  let { isLoading, data: groups, error } = useGameTypeGroupList()
+  if (isLoading) {
+    return ""
+  }
+
+  let group = groups?.reduce((result, group) => {
+    if (result) {
+      return result
     }
 
-    let group = groups?.reduce((result, group) => {
-        if (result) {
-            return result
-        }
+    if (group?.items?.includes(gameType)) {
+      return group
+    }
+  }, undefined)
 
-        if (group?.items?.includes(gameType)) {
-            return group
-        }
-    }, undefined)
-
-    return group?.name ?? ""
+  return group?.name ?? ""
 }
 
 export const GameTypeGroupSelect = ({ placeholder, ...props }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "游戏类型",
-        en: "Game Type"
-    })
-    placeholder = placeholder ?? defaultPlaceholder
+  let defaultPlaceholder = useTrans({
+    zh: "游戏类型",
+    en: "Game Type"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
 
-    let locale = useLocale()
-    let { isLoading, data: groups } = useGameTypeGroupList()
+  let locale = useLocale()
+  let { isLoading, data: groups } = useGameTypeGroupList()
 
-    let options = groups.map(({ name, ...group }) => {
-        let trans = findGroupTrans(name)
-        return {
-            label: trans?.[locale] ?? name,
-            value: name
-        }
-    })
+  let options = groups.map(({ name, ...group }) => {
+    let trans = findGroupTrans(name)
+    return {
+      label: trans?.[locale] ?? name,
+      value: name
+    }
+  })
 
-    return (
-        <Select
-            placeholder={placeholder}
-            isLoading={isLoading}
-            options={options}
-            {...props}
-        />
-    )
+  return (
+    <Select
+      placeholder={placeholder}
+      isLoading={isLoading}
+      options={options}
+      {...props}
+    />
+  )
 }
 
 export const GameTypeLabel = ({ value }) => {
-    let locale = useLocale()
+  let locale = useLocale()
 
-    return findTrans(value)?.[locale] ?? value ?? ""
+  return findTrans(value)?.[locale] ?? value ?? ""
 }
 
 export const GameTypeSelect = ({ placeholder, group, ...props }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "游戏类型",
-        en: "Game Type"
+  let defaultPlaceholder = useTrans({
+    zh: "游戏类型",
+    en: "Game Type"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
+
+  let locale = useLocale()
+  let { isLoading, data: groups, error } = useGameTypeGroupList()
+
+  let options = groups
+    ?.filter(({ name }) => {
+      if (group) {
+        return group === name
+      }
+      return true
     })
-    placeholder = placeholder ?? defaultPlaceholder
+    .reduce((list, { items, ...group }) => {
+      let groupItems = findGroup(group.name)?.items ?? []
 
-    let locale = useLocale()
-    let { isLoading, data: groups, error } = useGameTypeGroupList()
-
-    let options = groups
-        ?.filter(({ name }) => {
-            if (group) {
-                return group === name
-            }
-            return true
+      let options = items
+        .filter((name) => {
+          return !name.toLowerCase().endsWith("lobby")
         })
-        .reduce((list, { items, ...group }) => {
-            let groupItems = findGroup(group.name)?.items ?? []
+        .map((name) => {
+          let trans = findTrans(name, groupItems)
+          return {
+            label: trans?.[locale],
+            value: name
+          }
+        })
 
-            let options = items
-                .filter((name) => {
-                    return !name.toLowerCase().endsWith("lobby")
-                })
-                .map((name) => {
-                    let trans = findTrans(name, groupItems)
-                    return {
-                        label: trans?.[locale],
-                        value: name
-                    }
-                })
+      return [...list, ...options]
+    }, [])
 
-            return [...list, ...options]
-        }, [])
-
-    return (
-        <Select
-            placeholder={placeholder}
-            isLoading={isLoading}
-            options={options}
-            {...props}
-        />
-    )
+  return (
+    <Select
+      placeholder={placeholder}
+      isLoading={isLoading}
+      options={options}
+      {...props}
+    />
+  )
 }
 
 export const GameTypeSelectField = ({
-    placeholder,
-    group,
-    /*dropLobbyGame = false,*/ ...props
+  placeholder,
+  group,
+  /*dropLobbyGame = false,*/ ...props
 }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "游戏类型",
-        en: "Game Type"
+  let defaultPlaceholder = useTrans({
+    zh: "游戏类型",
+    en: "Game Type"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
+
+  let locale = useLocale()
+  let { isLoading, data: groups, error } = useGameTypeGroupList()
+
+  let options = groups
+    ?.filter(({ name }) => {
+      if (group) {
+        return group === name
+      }
+      return true
     })
-    placeholder = placeholder ?? defaultPlaceholder
+    .reduce((list, { items, ...group }) => {
+      let groupItems = findGroup(group.name)?.items ?? []
 
-    let locale = useLocale()
-    let { isLoading, data: groups, error } = useGameTypeGroupList()
+      let options = items.map((name) => {
+        let trans = findTrans(name, groupItems)
+        return {
+          label: trans?.[locale],
+          value: name
+        }
+      })
 
-    let options = groups
-        ?.filter(({ name }) => {
-            if (group) {
-                return group === name
-            }
-            return true
-        })
-        .reduce((list, { items, ...group }) => {
-            let groupItems = findGroup(group.name)?.items ?? []
+      return [...list, ...options]
+    }, [])
 
-            let options = items.map((name) => {
-                let trans = findTrans(name, groupItems)
-                return {
-                    label: trans?.[locale],
-                    value: name
-                }
-            })
-
-            return [...list, ...options]
-        }, [])
-
-    return (
-        <SelectField
-            placeholder={placeholder}
-            isLoading={isLoading}
-            options={options}
-            {...props}
-        />
-    )
+  return (
+    <SelectField
+      placeholder={placeholder}
+      isLoading={isLoading}
+      options={options}
+      {...props}
+    />
+  )
 }
 
 // Game Type List include Lobby Type
 export const AllGameTypeSelect = ({ placeholder, group, ...props }) => {
-    let defaultPlaceholder = useTrans({
-        zh: "游戏类型",
-        en: "Game Type"
+  let defaultPlaceholder = useTrans({
+    zh: "游戏类型",
+    en: "Game Type"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
+
+  let locale = useLocale()
+  let { isLoading, data: groups, error } = useGameTypeGroupList()
+
+  let options = groups
+    ?.filter(({ name }) => {
+      if (group) {
+        return group === name
+      }
+      return true
     })
-    placeholder = placeholder ?? defaultPlaceholder
+    .reduce((list, { items, ...group }) => {
+      let groupItems = findGroup(group.name)?.items ?? []
 
-    let locale = useLocale()
-    let { isLoading, data: groups, error } = useGameTypeGroupList()
+      let options = items.map((name) => {
+        let trans = findTrans(name, groupItems)
+        return {
+          label: trans?.[locale],
+          value: name
+        }
+      })
 
-    let options = groups
-        ?.filter(({ name }) => {
-            if (group) {
-                return group === name
-            }
-            return true
-        })
-        .reduce((list, { items, ...group }) => {
-            let groupItems = findGroup(group.name)?.items ?? []
+      return [...list, ...options]
+    }, [])
 
-            let options = items.map((name) => {
-                let trans = findTrans(name, groupItems)
-                return {
-                    label: trans?.[locale],
-                    value: name
-                }
-            })
-
-            return [...list, ...options]
-        }, [])
-
-    return (
-        <Select
-            placeholder={placeholder}
-            isLoading={isLoading}
-            options={options}
-            {...props}
-        />
-    )
+  return (
+    <Select
+      placeholder={placeholder}
+      isLoading={isLoading}
+      options={options}
+      {...props}
+    />
+  )
 }
 
 export default GameType
