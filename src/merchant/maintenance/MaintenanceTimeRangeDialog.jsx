@@ -92,6 +92,7 @@ const TimeRangeDialog = ({ dialog, onSubmitted, ...props }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
+  //TODO: need to reset after onSubmitted?
   let brandIds = brand?.items.map((brand) => brand.id)
   return (
     <FormDialog

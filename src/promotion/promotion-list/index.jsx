@@ -346,6 +346,7 @@ const useColumns = ({
           return `${from} - ${to}`
         }
       }),
+      /*
       textColumn({
         id: "gameTypeGroup",
         accessor: (row) => row,
@@ -384,6 +385,7 @@ const useColumns = ({
           )
         }
       }),
+      */
       textColumn({
         accessor: "vipLevels",
         Header: <Trans zh="活动用户群" en="User Group" />,
