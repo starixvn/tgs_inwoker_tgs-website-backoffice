@@ -39,7 +39,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { useMaintenanceMessage, useUpdateMaintenanceMessage } from "./client"
 import { TextareaField } from "../../textarea"
 
-export const ViewMaintenanceMessageDisclosure = ({ brandId, ...props }) => {
+export const ViewMaintenanceMessageDisclosure = ({ id, ...props }) => {
   let dialog = useModalState()
 
   let readable = useIsDisplayMenuByRoute([View])
@@ -51,17 +51,17 @@ export const ViewMaintenanceMessageDisclosure = ({ brandId, ...props }) => {
     <>
       <ViewDisclosure {...dialog} />
       {dialog.visible && (
-        <MaintenanceMessageFormDialog
-          brandId={brandId}
-          readOnly
-          dialog={dialog}
-        />
+        <MaintenanceMessageFormDialog id={id} readOnly dialog={dialog} />
       )}
     </>
   )
 }
 
-export const EditMaintenanceMessageDisclosure = ({ brandId, ...props }) => {
+export const EditMaintenanceMessageDisclosure = ({
+  id,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let editable = useIsDisplayMenuByRoute([Update])
@@ -73,25 +73,93 @@ export const EditMaintenanceMessageDisclosure = ({ brandId, ...props }) => {
     <>
       <EditDisclosure {...dialog} />
       {dialog.visible && (
-        <MaintenanceMessageFormDialog brandId={brandId} dialog={dialog} />
+        <MaintenanceMessageFormDialog
+          id={id}
+          dialog={dialog}
+          onSubmitted={onSubmitted}
+        />
       )}
     </>
   )
 }
 
-const MaintenanceMessageFormDialog = ({ brandId, dialog, ...props }) => {
+const MaintenanceMessageFormDialog = ({
+  id,
+  dialog,
+  onSubmitted,
+  ...props
+}) => {
+  let {
+    isLoading: isLoadingMessage,
+    error: messageError,
+    data: record,
+    mutate: mutateMessage,
+    deleteCache: deleteMessageCache
+  } = useMaintenanceMessage(id)
+
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } =
+    useUpdateMaintenanceMessage(id, formData)
+
   let title = useTrans({
     zh: "公告内容",
     en: "Content"
   })
 
-  //1. load 預設維護內容
+  const reset = () => {
+    deleteMessageCache()
+    mutateMessage(null, false)
 
-  return <FieldStack>
-    <TextareaField />
-  </FieldStack>
+    deleteCache()
+    mutate(null, false)
+    setSubmit(null)
+  }
+
+  if (isLoadingMessage) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (messageError) {
+    return (
+      <AlertDialog
+        {...error}
+        onClickClose={() => {
+          reset()
+          dialog.hide()
+        }}
+      />
+    )
+  }
+
+  return (
+    <FormDialog
+      defaultValues={clone(record)}
+      onSubmit={(data) => {
+        setSubmit(data)
+      }}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
+      title={title}
+      dialog={dialog}
+      {...props}
+    >
+      <FormBody />
+    </FormDialog>
+  )
 }
 
 const FormBody = ({ readOnly = false }) => {
   let editable = !readOnly
+
+  return (
+    <FieldStack>
+      <TextareaField name="content" />
+    </FieldStack>
+  )
 }

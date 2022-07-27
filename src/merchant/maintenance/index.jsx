@@ -21,6 +21,10 @@ import textColumn from "../../table/column/textColumn"
 import { MaintenanceTimeRangeDialogDisclosure } from "./MaintenanceTimeRangeDialog"
 import { toDate } from "../../date/toDate"
 import { formatHourMinute } from "../../date/format"
+import {
+  EditMaintenanceMessageDisclosure,
+  ViewMaintenanceMessageDisclosure
+} from "./MaintenanceMessageDialog"
 
 export { Code }
 
@@ -161,8 +165,13 @@ const useColumns = ({ items = [], mutate }) => {
           disableSortBy: true,
           Header: <Trans zh="操作" en="Actions" />,
           accessor: (row) => row,
-          Cell: ({ value }) => {
-            return <Set orientation="horizontal" alignX="center"></Set>
+          Cell: ({ value: record }) => {
+            return (
+              <Set orientation="horizontal" alignX="center">
+                <ViewMaintenanceMessageDisclosure id={record?.id} />
+                <EditMaintenanceMessageDisclosure id={record?.id} />
+              </Set>
+            )
           }
         })
       )
