@@ -36,7 +36,7 @@ export const useUpdateMaintenance = (data) => {
 }
 
 export const useMaintenanceMessage = (id) => {
-  let url = data ? `${API}/${id}` : ""
+  let url = id ? `${API}/${id}` : ""
   return useGet(url)
 }
 
