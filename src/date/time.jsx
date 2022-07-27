@@ -73,6 +73,8 @@ export const TimeSelectField = ({
 }
 
 export const TimeSelectField2 = ({
+  interval,
+  required,
   min,
   max,
   registerOptions = {},
@@ -83,12 +85,19 @@ export const TimeSelectField2 = ({
   ),
   ...props
 }) => {
-  let options = rangeOptions({ min, max })
+  let options = rangeOptions({ interval, min, max })
 
   return (
     <_SelectField
       options={options}
       validate={{
+        required: (value) => {
+          if (required) {
+            let pass = isValidDate(value)
+            return pass
+          }
+          return true //pass
+        },
         min: (value) => {
           if (isValidDate(value) && isValidDate(min)) {
             let pass = isBefore(min, value)
@@ -132,7 +141,7 @@ export const formatHourMinute = (date) => format(date, "HH:mm")
 const rangeOptions = ({
   start = startOfDay(new Date()),
   end = endOfDay(new Date()),
-  minutes = 30,
+  interval = 30,
   min,
   max
 } = {}) => {
@@ -154,7 +163,7 @@ const rangeOptions = ({
 
     options.push(option)
 
-    start = addMinutes(start, minutes)
+    start = addMinutes(start, interval)
   }
 
   return options
