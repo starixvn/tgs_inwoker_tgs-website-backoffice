@@ -48,19 +48,24 @@ export const PromotionReliefMoneyRuleSettingSetting = ({
   totalAmountLimit,
   readOnly
 }) => {
-    let { control, setValue } = useFormContext()
-    
-    let GameTypeGroupFieldName = "gameTypeGroup"
-    let gameTypeGroup = useWatch({
-      control,
-      name: GameTypeGroupFieldName
-    })
-  
-    let GameTypeFieldName = "gameType"
-    let gameType = useWatch({
-      control,
-      name: GameTypeFieldName
-    })
+  let { control, setValue } = useFormContext()
+
+  let gameTypePlaceholder = useTrans({
+    zh: "全部",
+    en: "All"
+  })
+
+  let GameTypeGroupFieldName = "gameTypeGroup"
+  let gameTypeGroup = useWatch({
+    control,
+    name: GameTypeGroupFieldName
+  })
+
+  let GameTypeFieldName = "gameType"
+  let gameType = useWatch({
+    control,
+    name: GameTypeFieldName
+  })
 
   let disabled = readOnly
   let editable = !readOnly
@@ -92,7 +97,7 @@ export const PromotionReliefMoneyRuleSettingSetting = ({
           </>
         )}
       </Box>
-      {isPromotionTypeTurnoverRelated && gameTypeGroup && (
+      {gameTypeGroup && (
         <>
           <NormalLabel>
             <Trans zh="活动游戏子类型" en="Game SubType" />
@@ -105,7 +110,7 @@ export const PromotionReliefMoneyRuleSettingSetting = ({
           />
         </>
       )}
-      {isPromotionTypeTurnoverRelated && gameType && (
+      {gameType && (
         <>
           <NormalLabel>
             <Trans zh="活动厂商" en="GP Participation" />
