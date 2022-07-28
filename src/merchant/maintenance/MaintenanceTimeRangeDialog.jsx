@@ -34,12 +34,15 @@ import { useBrandLanguageCodes } from "../../dialog/LocalizationDialog"
 import Backdrop from "../../dialog/Backdrop"
 import BrandIdSelect from "../platforms/BrandIdSelect"
 import { TimeSelectField2 } from "../../date/time"
+import { formatHourMinute } from "../../date/format"
 import { useUpdateMaintenance } from "./client"
 import { useBrandList } from "../platforms/client"
 
 export const MaintenanceTimeRangeDialogDisclosure = ({
   brandId,
   brandName,
+  beginTime,
+  endTime,
   onSubmitted,
   ...props
 }) => {
@@ -59,6 +62,8 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
         <TimeRangeDialog
           brandId={brandId}
           brandName={brandName}
+          beginTime={beginTime}
+          endTime={endTime}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -70,6 +75,8 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
 const TimeRangeDialog = ({
   brandId,
   brandName,
+  beginTime,
+  endTime,
   dialog,
   onSubmitted,
   ...props
@@ -95,6 +102,7 @@ const TimeRangeDialog = ({
   const reset = () => {
     deleteCache()
     mutate(null, false)
+    setSubmit(undefined)
   }
 
   if (isLoadingBrandList) {
@@ -110,13 +118,17 @@ const TimeRangeDialog = ({
   return (
     <FormDialog
       defaultValues={{
+        brandId,
         brandIds,
-        beginTime: null,
-        endTime: null
+        beginTime: formatHourMinute(beginTime),
+        endTime: formatHourMinute(endTime)
       }}
-      onSubmit={({ ...data }) => {
+      onSubmit={({ brandId, brandIds, ...data }) => {
+        //TODO: brandIds all === [] empty list?
+        brandIds = brandId ? [brandId] : brandIds
         let form = {
-          ...data
+          ...data,
+          brandIds
         }
         setSubmit(form)
       }}
@@ -141,6 +153,7 @@ const FormBody = ({ brandName }) => {
     control,
     name: BeginTimeField
   })
+  console.log("beginTime", beginTime)
 
   let startLabel = useTrans({
     zh: "开始",
@@ -156,11 +169,12 @@ const FormBody = ({ brandName }) => {
     zh: "结束",
     en: "End"
   })
+
   return (
     <FieldStack orientation="vertical" margin="0.5rem">
       {brandName && (
-        <Box borderColor="primary">
-          <Trans zh="平台名称" en="Name" /> {brandName}
+        <Box borderColor="primary" fontWeight="bold">
+          <Trans zh="平台：" en="Platform：" /> {brandName}
         </Box>
       )}
       <FieldStack orientation="horizontal">

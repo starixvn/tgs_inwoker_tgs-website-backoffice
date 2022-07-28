@@ -44,3 +44,8 @@ export const useUpdateMaintenanceMessage = (id, data) => {
   let url = data ? `${API}/${id}` : ""
   return usePutData(url, data)
 }
+
+export const useStartMaintenance = (start) => {
+  let url = start ? `${API}/StartMaintenance` : ""
+  return usePutData(url, start)
+}

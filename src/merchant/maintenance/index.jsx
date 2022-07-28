@@ -27,6 +27,7 @@ import {
 } from "./MaintenanceMessageDialog"
 import { useChangeBrandStatus } from "../platforms/client"
 import { MerchantStatusMenu, MerchantStatus } from "../MerchantStatus"
+import { StartMaintenanceDialogDisclosure } from "./StartMaintenanceDialog"
 
 export { Code }
 
@@ -70,6 +71,7 @@ const Body = () => {
           />
           <Set orientation="horizontal" alignX="right">
             <MaintenanceTimeRangeDialogDisclosure onSubmitted={mutate} />
+            <StartMaintenanceDialogDisclosure onSubmitted={mutate} />
           </Set>
         </>
       }
@@ -121,6 +123,9 @@ const SearchForm = ({ search, isLoading, ...props }) => {
   )
 }
 
+const enabledStatusList = [MerchantStatus.Active, MerchantStatus.Maintenance]
+const isStatusChangeAvailable = (value) => enabledStatusList.includes(value)
+
 const useColumns = ({ items = [], mutate }) => {
   let hasAnyMenu = useHasSubMenuByRoute()
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
@@ -160,10 +165,7 @@ const useColumns = ({ items = [], mutate }) => {
                 onSubmitted={mutate}
                 readOnly={!hasUpdateAuth}
                 disabled={!hasUpdateAuth}
-                enableMenuItem={(status) =>
-                  status === MerchantStatus.Active ||
-                  status === MerchantStatus.Maintenance
-                }
+                enableMenuItem={isStatusChangeAvailable}
               />
             </Box>
           )
@@ -194,6 +196,7 @@ const useColumns = ({ items = [], mutate }) => {
           Header: <Trans zh="操作" en="Actions" />,
           accessor: (row) => row,
           Cell: ({ value: record }) => {
+            //TODO: fix brand id
             return (
               <Set orientation="horizontal" alignX="center">
                 <ViewMaintenanceMessageDisclosure id={record?.id} />
@@ -201,6 +204,8 @@ const useColumns = ({ items = [], mutate }) => {
                 <MaintenanceTimeRangeDialogDisclosure
                   brandId={record?.id}
                   brandName={record?.brandName}
+                  beginTime={toDate(record?.beginTime)}
+                  endTime={toDate(record?.endTime)}
                 />
               </Set>
             )
