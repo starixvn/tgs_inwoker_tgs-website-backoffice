@@ -14,7 +14,8 @@ import {
   Alert,
   Group,
   Spinner,
-  FieldWrapper
+  FieldWrapper,
+  Blockquote
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import {
@@ -86,6 +87,7 @@ export const EditMaintenanceMessageDisclosure = ({
 const MaintenanceMessageFormDialog = ({
   id,
   dialog,
+  readOnly,
   onSubmitted,
   ...props
 }) => {
@@ -131,6 +133,7 @@ const MaintenanceMessageFormDialog = ({
     )
   }
 
+  let editable = !readOnly
   return (
     <FormDialog
       defaultValues={clone(record)}
@@ -147,19 +150,26 @@ const MaintenanceMessageFormDialog = ({
       }}
       title={title}
       dialog={dialog}
+      showActionButtons={editable}
+      footer={readOnly && <CloseButtonFooter dialog={dialog} alignX="right" />}
       {...props}
     >
-      <FormBody />
+      <FormBody readOnly={readOnly} />
     </FormDialog>
   )
 }
 
 const FormBody = ({ readOnly = false }) => {
-  let editable = !readOnly
+  let { getValues } = useFormContext()
+  let ContentField = "content"
 
+  let editable = !readOnly
   return (
     <FieldStack>
-      <TextareaField name="content" />
+      {readOnly && (
+        <Blockquote whiteSpace="pre-wrap">{getValues(ContentField)}</Blockquote>
+      )}
+      {editable && <TextareaField name={ContentField} readOnly={readOnly} />}
     </FieldStack>
   )
 }

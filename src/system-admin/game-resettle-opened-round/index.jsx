@@ -57,6 +57,7 @@ const Body = () => {
     from: dateRange.start,
     to: dateRange.end
     */
+    externalRoundId: undefined
   })
 
   /*
@@ -84,6 +85,7 @@ const Body = () => {
         <SearchBar
           // start={from}
           // end={to}
+          externalRoundId={state.externalRoundId}
           gameProviderId={state.gameProviderId}
           minDate={minDate}
           maxDate={dateRange.end}
@@ -109,29 +111,32 @@ const Body = () => {
         />
       }
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        stickyHead
-        stickyRight
-        css={css`
-          tr td:last-child {
-            background-color: #fff;
-          }
-        `}
-      />
+      {state.externalRoundId && (
+        <Table
+          columns={columns}
+          data={data?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(state.pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          stickyHead
+          stickyRight
+          css={css`
+            tr td:last-child {
+              background-color: #fff;
+            }
+          `}
+        />
+      )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
 }
 
 const SearchBar = ({
+  externalRoundId,
   start,
   end,
   minDate,
@@ -144,6 +149,7 @@ const SearchBar = ({
 }) => {
   let formMethods = useForm({
     defaultValues: {
+      externalRoundId,
       start,
       end,
       gameProviderId
@@ -177,6 +183,8 @@ const SearchBar = ({
             name="externalRoundId"
             showEmptyFieldValueAddonAfter
             placeholder={externalRoundIdPlaceholder}
+            autoFocus
+            required
           />
           <GameProviderSelect name="gameProviderId" />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
