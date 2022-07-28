@@ -38,6 +38,8 @@ import { useUpdateMaintenance } from "./client"
 import { useBrandList } from "../platforms/client"
 
 export const MaintenanceTimeRangeDialogDisclosure = ({
+  brandId, 
+  brandName,
   onSubmitted,
   ...props
 }) => {
