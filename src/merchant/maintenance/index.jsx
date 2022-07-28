@@ -25,6 +25,8 @@ import {
   EditMaintenanceMessageDisclosure,
   ViewMaintenanceMessageDisclosure
 } from "./MaintenanceMessageDialog"
+import { useChangeBrandStatus } from "../platforms/client"
+import { MerchantStatusMenu, MerchantStatus } from "../MerchantStatus"
 
 export { Code }
 
@@ -96,8 +98,8 @@ const SearchForm = ({ search, isLoading, ...props }) => {
   })
 
   let searchPlaceHolder = useTrans({
-    zh: "关键字输入框",
-    en: "Search"
+    zh: "平台代码",
+    en: "Platform Code"
   })
 
   const onSubmit = (data) => search(data)
@@ -107,7 +109,7 @@ const SearchForm = ({ search, isLoading, ...props }) => {
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <InputField
-            name="keyword"
+            name="brandCode"
             showEmptyFieldValueAddonAfter
             placeholder={searchPlaceHolder}
           />
@@ -142,6 +144,32 @@ const useColumns = ({ items = [], mutate }) => {
         disableSortBy: true
       }),
       textColumn({
+        id: "status",
+        accessor: (record) => record,
+        Header: <Trans zh="状态" en="Status" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          return (
+            <Box alignX="center">
+              <MerchantStatusMenu
+                record={{
+                  id: record?.id,
+                  status: record?.status
+                }}
+                useChangeStatus={useChangeBrandStatus}
+                onSubmitted={mutate}
+                readOnly={!hasUpdateAuth}
+                disabled={!hasUpdateAuth}
+                enableMenuItem={(status) =>
+                  status === MerchantStatus.Active ||
+                  status === MerchantStatus.Maintenance
+                }
+              />
+            </Box>
+          )
+        }
+      }),
+      textColumn({
         id: "maintenanceTimeRange",
         accessor: (row) => row,
         Header: <Trans zh="維護时间" en="Maintenance Time" />,
@@ -170,6 +198,10 @@ const useColumns = ({ items = [], mutate }) => {
               <Set orientation="horizontal" alignX="center">
                 <ViewMaintenanceMessageDisclosure id={record?.id} />
                 <EditMaintenanceMessageDisclosure id={record?.id} />
+                <MaintenanceTimeRangeDialogDisclosure
+                  brandId={record?.id}
+                  brandName={record?.brandName}
+                />
               </Set>
             )
           }

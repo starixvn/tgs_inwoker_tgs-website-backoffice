@@ -14,7 +14,7 @@ import {
   Alert,
   Group,
   Spinner,
-  FieldWrapper
+  Heading
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Disclosure } from "../../dialog/Disclosure"
@@ -38,7 +38,7 @@ import { useUpdateMaintenance } from "./client"
 import { useBrandList } from "../platforms/client"
 
 export const MaintenanceTimeRangeDialogDisclosure = ({
-  brandId, 
+  brandId,
   brandName,
   onSubmitted,
   ...props
@@ -56,13 +56,24 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
         <Trans zh="维护时间" en="Maintenance Time" />
       </Disclosure>
       {dialog.visible && (
-        <TimeRangeDialog onSubmitted={onSubmitted} dialog={dialog} />
+        <TimeRangeDialog
+          brandId={brandId}
+          brandName={brandName}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-const TimeRangeDialog = ({ dialog, onSubmitted, ...props }) => {
+const TimeRangeDialog = ({
+  brandId,
+  brandName,
+  dialog,
+  onSubmitted,
+  ...props
+}) => {
   let {
     isLoading: isLoadingBrandList,
     error: brandListError,
@@ -118,12 +129,12 @@ const TimeRangeDialog = ({ dialog, onSubmitted, ...props }) => {
       dialog={dialog}
       {...props}
     >
-      <FormBody />
+      <FormBody brandName={brandName} />
     </FormDialog>
   )
 }
 
-const FormBody = ({}) => {
+const FormBody = ({ brandName }) => {
   let { control } = useFormContext()
   let BeginTimeField = "beginTime"
   let beginTime = useWatch({
@@ -146,8 +157,12 @@ const FormBody = ({}) => {
     en: "End"
   })
   return (
-    <FieldStack orientation="vertical">
-      {/* <BrandIdSelect name="brandId" /> */}
+    <FieldStack orientation="vertical" margin="0.5rem">
+      {brandName && (
+        <Box borderColor="primary">
+          <Trans zh="平台名称" en="Name" /> {brandName}
+        </Box>
+      )}
       <FieldStack orientation="horizontal">
         <TimeSelectField2
           name={BeginTimeField}
