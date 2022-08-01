@@ -73,6 +73,9 @@ import { parseJSON } from "../../text/json"
 import { PromotionRuleSettingFieldBox } from "./PromotionRuleSettingFieldBox"
 import { PromotionDistributionMethodFieldBox } from "./PromotionDistributionMethodFieldBox"
 import { isNil, isEmpty, set } from "lodash-es"
+import { PromotionTotalFundsFieldBox } from "./PromotionTotalFundsFieldBox"
+import { PromotionGameTypeFieldBox } from "./PromotionGameTypeFieldBox"
+import { PromotionGameProviderFieldBox } from "./PromotionGameProviderFieldBox"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -436,20 +439,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let formMethods = useFormContext()
   let { control, setValue } = formMethods
 
-  let TotalAmountLimitFieldName = "totalAmountLimit"
-
-  let UnlimitedFieldName = "unlimited"
-  let unlimitedTotalAmount = useWatch({
-    control,
-    name: UnlimitedFieldName
-  })
-  let limitedTotalAmount = !unlimitedTotalAmount
-
-  let unlimiteTotalAmountLabel = useTrans({
-    zh: "无限",
-    en: "Unlimited"
-  })
-
   let PromotionTypeGroupFieldName = "promotionTypeGroup"
   let promotionTypeGroup = useWatch({
     control,
@@ -461,31 +450,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     control,
     name: PromotionTypeFieldName
   })
-
-  let isPromotionTypeTurnoverRelated =
-    promotionTypeGroup === PromotionTypeGroup.Turnover ||
-    promotionTypeGroup === PromotionTypeGroup.ReliefMoney
-
-  let isPromotionTypeDummy = promotionTypeGroup === PromotionTypeGroup.Dummy
-
-  let GameTypeGroupFieldName = "gameTypeGroup"
-  let gameTypeGroup = useWatch({
-    control,
-    name: GameTypeGroupFieldName
-  })
-
-  let GameTypeFieldName = "gameType"
-  let gameType = useWatch({
-    control,
-    name: GameTypeFieldName
-  })
-
-  //TODO: able to remove the following useEffect?
-  useEffect(() => {
-    if (!gameTypeGroup) {
-      setValue(GameTypeFieldName, null)
-    }
-  }, [gameTypeGroup])
 
   let gameTypePlaceholder = useTrans({
     zh: "全部",
@@ -604,95 +568,21 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           disabled={disabled}
         />
 
-        {!isPromotionTypeDummy && (
-          <>
-            <NormalLabel>
-              <Trans zh="活动总费用" en="Promotion Funds" />
-            </NormalLabel>
-            <Set orientation="horizontal" alignY="center">
-              {limitedTotalAmount && (
-                <>
-                  <NumberInput
-                    name={TotalAmountLimitFieldName}
-                    registerOptions={{
-                      valueAsNumber: true
-                    }}
-                    required
-                    disabled={disabled}
-                  />
-                </>
-              )}
-              <Checkbox
-                name={UnlimitedFieldName}
-                label={unlimiteTotalAmountLabel}
-                disabled={disabled}
-              />
-            </Set>
-          </>
-        )}
+        <PromotionTotalFundsFieldBox
+          promotionTypeGroup={promotionTypeGroup}
+          promotionType={promotionType}
+          readOnly={readOnly}
+          disabled={disabled}
+        />
 
-        {isPromotionTypeTurnoverRelated && (
-          <>
-            <NormalLabel>
-              <Trans zh="活动游戏类型" en="Game Type" />
-            </NormalLabel>
-            <Box>
-              {editable && (
-                <GameTypeGroupSelect
-                  name={GameTypeGroupFieldName}
-                  disabled={disabled}
-                  placeholder={gameTypePlaceholder}
-                  onChange={(event) => {
-                    setValue(GameTypeFieldName, "")
-                  }}
-                />
-              )}
-              {disabled && (
-                <>
-                  <GameTypeGroupSelect
-                    name={GameTypeGroupFieldName}
-                    value={gameTypeGroup}
-                    display="none"
-                  />
-                  <GameTypeGroupSelect
-                    placeholder={gameTypePlaceholder}
-                    value={gameTypeGroup}
-                    disabled
-                  />
-                </>
-              )}
-            </Box>
-          </>
-        )}
+        <PromotionGameTypeFieldBox
+          promotionTypeGroup={promotionTypeGroup}
+          promotionType={promotionType}
+          readOnly={readOnly}
+          disabled={disabled}
+        />
 
-        {isPromotionTypeTurnoverRelated && gameTypeGroup && (
-          <>
-            <NormalLabel>
-              <Trans zh="活动游戏子类型" en="Game SubType" />
-            </NormalLabel>
-            <GameTypeSelect
-              name={GameTypeFieldName}
-              group={gameTypeGroup}
-              disabled={disabled}
-              required
-            />
-          </>
-        )}
-
-        {isPromotionTypeTurnoverRelated && gameType && (
-          <>
-            <NormalLabel>
-              <Trans zh="活动厂商" en="GP Participation" />
-            </NormalLabel>
-            <Box>
-              <BrandGameProviderCheckboxGroupTable
-                brandId={brandId}
-                disabled={disabled}
-                gameType={gameType}
-              />
-            </Box>
-          </>
-        )}
+        <PromotionGameProviderFieldBox brandId={brandId} readOnly={readOnly} />
       </FieldValues>
 
       <Separator />
@@ -787,8 +677,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
       <PromotionRuleSettingFieldBox
         promotionTypeGroup={promotionTypeGroup}
         promotionType={promotionType}
-        totalAmountLimitFieldName={TotalAmountLimitFieldName}
-        limitedTotalAmount={limitedTotalAmount}
         readOnly={readOnly}
       />
     </FieldStack>

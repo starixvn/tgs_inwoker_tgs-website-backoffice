@@ -39,6 +39,7 @@ import {
 import { PromotionSigninRuleSetting } from "./PromotionSigninRuleSetting"
 import { PromotionLotteryRuleSetting } from "./PromotionLotteryRuleSetting"
 import { PromotionNewUserRuleSetting } from "./PromotionNewUserRuleSetting"
+import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
 
 export const PromotionRuleSettingFieldBox = ({
   promotionType,
@@ -82,22 +83,15 @@ const fieldNotUsed = ({ promotionType = "", promotionTypeGroup = "" }) => {
 export const PromotionRuleSetting = ({
   readOnly,
   promotionTypeGroup,
-  promotionType,
-  totalAmountLimitFieldName,
-  limitedTotalAmount
+  promotionType
 }) => {
   let { control } = useFormContext()
-  let totalAmountLimit = useWatch({
-    control,
-    name: totalAmountLimitFieldName
-  })
 
   switch (promotionTypeGroup) {
     case PromotionTypeGroup.Signin:
       return (
         <PromotionSigninRuleSetting
-          limitedTotalAmount={limitedTotalAmount}
-          totalAmountLimit={totalAmountLimit}
+          promotionType={promotionType}
           readOnly={readOnly}
         />
       )
@@ -105,8 +99,6 @@ export const PromotionRuleSetting = ({
       return (
         <PromotionNewUserRuleSetting
           promotionType={promotionType}
-          limitedTotalAmount={limitedTotalAmount}
-          totalAmountLimit={totalAmountLimit}
           readOnly={readOnly}
         />
       )
@@ -114,25 +106,18 @@ export const PromotionRuleSetting = ({
       return (
         <PromotionLotteryRuleSetting
           promotionType={promotionType}
-          limitedTotalAmount={limitedTotalAmount}
-          totalAmountLimit={totalAmountLimit}
           readOnly={readOnly}
         />
       )
     default:
       return promotionType ? (
-        <DefaultSetting
-          promotionType={promotionType}
-          limitedTotalAmount={limitedTotalAmount}
-          totalAmountLimit={totalAmountLimit}
-          readOnly={readOnly}
-        />
+        <DefaultSetting promotionType={promotionType} readOnly={readOnly} />
       ) : null
   }
 }
 
-const FieldName = "rule"
-const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
+const DefaultSetting = ({ readOnly }) => {
+  let totalFunds = useTotalFunds()
   let disabled = readOnly
   return (
     <FieldValues>
@@ -160,11 +145,7 @@ const DefaultSetting = ({ limitedTotalAmount, totalAmountLimit, readOnly }) => {
           shouldUnregister: true
         }}
         min="0"
-        max={
-          limitedTotalAmount && Number.isFinite(totalAmountLimit)
-            ? totalAmountLimit
-            : undefined
-        }
+        max={totalFunds}
         required
         disabled={disabled}
       />
