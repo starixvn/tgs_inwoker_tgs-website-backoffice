@@ -165,7 +165,7 @@ const normalizeFormData = ({
     ? toCheckedGameProviderIds("gameProviderId", gameProviders)
     : null
 
-  rule.gameType = toGameTypeValue(gameType)
+  rule.gameType = gameType
   rule.gameProviderIds = gameProviderIds
 
   return {
@@ -310,7 +310,7 @@ const usePromotionFormData = (
       : undefined
   )
 
-  gameType = toGameTypeString(rule?.gameType) ?? gameType
+  gameType = rule?.gameType ?? gameType
   gameProviderIds = rule?.gameProviderIds ?? gameProviderIds
 
   let gameProviders =
