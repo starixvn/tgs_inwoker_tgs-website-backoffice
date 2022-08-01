@@ -1,0 +1,97 @@
+import React, { useState, useEffect, useMemo } from "react"
+import { css } from "@emotion/react"
+import {
+  Box,
+  Text,
+  Button,
+  Set,
+  Icon,
+  useModalState,
+  Dialog,
+  Card,
+  Flex,
+  Heading,
+  FieldStack
+} from "bumbag"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import FormDialog from "../../form/FormDialog"
+import { Trans, useTrans } from "../../i18n"
+import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
+import { FieldValues } from "../../layout/Grid"
+import { NormalLabel } from "../../form/Label"
+import {
+  NumberInput,
+  NumberInputField,
+  PercentageNumberInputField
+} from "../../input/NumberInput"
+import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
+
+const FirstDeposit = "FirstDeposit"
+const DailyFirstDeposit = "DailyFirstDeposit"
+const DailySecondDeposit = "DailySecondDeposit"
+
+const AccountDeposit = "AccountDeposit"
+
+export const PromotionDepositRuleSetting = ({ readOnly, promotionType }) => {
+  let { control } = useFormContext()
+
+  switch (promotionType) {
+    default:
+      return promotionType ? (
+        <DefaultSetting promotionType={promotionType} readOnly={readOnly} />
+      ) : null
+  }
+}
+
+const DefaultSetting = ({ readOnly }) => {
+  let totalFunds = useTotalFunds()
+  let disabled = readOnly
+  return (
+    <FieldValues>
+      <NormalLabel>
+        <Trans zh="彩金百分比" en="Bonus Percentage" />
+      </NormalLabel>
+      <PercentageNumberInputField
+        name="rule.percentage"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        max="999"
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <Trans zh="彩金上限" en="Bonus Limit" />
+      </NormalLabel>
+      <NumberInput
+        name="rule.bonusAmountLimit"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        max={totalFunds}
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <Trans zh="流水倍数" en="Turnover Requirement" />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.turnoverMultiple"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        required
+        disabled={disabled}
+        addonAfter={
+          <Button isStatic tabIndex="-1">
+            <Trans zh="倍" en="Multipliers" />
+          </Button>
+        }
+      />
+    </FieldValues>
+  )
+}

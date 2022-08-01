@@ -40,6 +40,7 @@ import { PromotionSigninRuleSetting } from "./PromotionSigninRuleSetting"
 import { PromotionLotteryRuleSetting } from "./PromotionLotteryRuleSetting"
 import { PromotionNewUserRuleSetting } from "./PromotionNewUserRuleSetting"
 import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
+import { PromotionDepositRuleSetting } from "./PromotionDepositRuleSetting"
 
 export const PromotionRuleSettingFieldBox = ({
   promotionType,
@@ -105,6 +106,13 @@ export const PromotionRuleSetting = ({
     case PromotionTypeGroup.LuckyDraw:
       return (
         <PromotionLotteryRuleSetting
+          promotionType={promotionType}
+          readOnly={readOnly}
+        />
+      )
+    case PromotionTypeGroup.Deposit:
+      return (
+        <PromotionDepositRuleSetting
           promotionType={promotionType}
           readOnly={readOnly}
         />
