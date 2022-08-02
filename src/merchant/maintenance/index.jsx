@@ -9,7 +9,11 @@ import {
 import { Code, Update } from "./menu"
 import { FormattedDateTime, Trans, useTrans } from "../../i18n"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { useMaintenanceList } from "./client"
+import {
+  useUpdateAllMaintenance,
+  useUpdateMaintenance,
+  useMaintenanceList
+} from "./client"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { SearchButton } from "../../button/SearchButton"
@@ -70,7 +74,10 @@ const Body = () => {
             isLoading={isLoading}
           />
           <Set orientation="horizontal" alignX="right">
-            <MaintenanceTimeRangeDialogDisclosure onSubmitted={mutate} />
+            <MaintenanceTimeRangeDialogDisclosure
+              useFetch={useUpdateAllMaintenance}
+              onSubmitted={mutate}
+            />
             <StartMaintenanceDialogDisclosure onSubmitted={mutate} />
           </Set>
         </>
@@ -202,6 +209,7 @@ const useColumns = ({ items = [], mutate }) => {
                 <ViewMaintenanceMessageDisclosure id={record?.id} />
                 <EditMaintenanceMessageDisclosure id={record?.id} />
                 <MaintenanceTimeRangeDialogDisclosure
+                  useFetch={useUpdateAllMaintenance}
                   brandId={record?.id}
                   brandName={record?.brandName}
                   beginTime={toDate(record?.beginTime)}

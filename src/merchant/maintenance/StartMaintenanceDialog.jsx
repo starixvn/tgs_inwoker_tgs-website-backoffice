@@ -47,7 +47,6 @@ const StartMaintenanceDialog = ({ dialog, onSubmitted, ...props }) => {
     useStartMaintenance(formData)
 
   const onSubmit = () => {
-    //TODO: use short id instead?
     let startMaintenance = true
     setSubmit(startMaintenance)
   }

@@ -29,12 +29,9 @@ import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { useFormContext, useWatch } from "react-hook-form"
 import head from "../../list/head"
-import { HtmlEditor } from "../../text/editor/HtmlEditor"
-import { useBrandLanguageCodes } from "../../dialog/LocalizationDialog"
 import Backdrop from "../../dialog/Backdrop"
-import BrandIdSelect from "../platforms/BrandIdSelect"
 import { TimeSelectField2 } from "../../date/time"
-import { formatHourMinute } from "../../date/format"
+import { formatHourMinute, formatTimeOnly } from "../../date/format"
 import { useUpdateMaintenance } from "./client"
 import { useBrandList } from "../platforms/client"
 
@@ -43,6 +40,7 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
   brandName,
   beginTime,
   endTime,
+  useFetch,
   onSubmitted,
   ...props
 }) => {
@@ -64,6 +62,7 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
           brandName={brandName}
           beginTime={beginTime}
           endTime={endTime}
+          useFetch={useFetch}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -78,26 +77,17 @@ const TimeRangeDialog = ({
   beginTime,
   endTime,
   dialog,
+  useFetch,
   onSubmitted,
   ...props
 }) => {
-  let {
-    isLoading: isLoadingBrandList,
-    error: brandListError,
-    data: brand
-  } = useBrandList({
-    showAll: true,
-    sortby: "code"
-  })
-
   let title = useTrans({
     zh: "维护时间",
     en: "Maintenance Time"
   })
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateMaintenance(formData)
+  let { isLoading, result, error, mutate, deleteCache } = useFetch(formData)
 
   const reset = () => {
     deleteCache()
@@ -105,32 +95,24 @@ const TimeRangeDialog = ({
     setSubmit(undefined)
   }
 
-  if (isLoadingBrandList) {
-    return <LoadingBackdrop {...dialog} />
-  }
-
-  if (brandListError) {
-    return <AlertDialog {...error} onClickClose={dialog.hide} />
-  }
-
-  //TODO: need to reset after onSubmitted?
-  let brandIds = brand?.items.map((brand) => brand.id)
   return (
     <FormDialog
       defaultValues={{
         brandId,
-        brandIds,
         beginTime: formatHourMinute(beginTime),
         endTime: formatHourMinute(endTime)
       }}
-      onSubmit={({ brandId, brandIds, ...data }) => {
-        //TODO: brandIds all === [] empty list?
-        brandIds = brandId ? [brandId] : brandIds
-        let form = {
-          ...data,
-          brandIds
+      onSubmit={({ beginTime, endTime, ...rest }) => {
+        let data = {
+          ...rest,
+          beginTime,
+          endTime
+          /*
+          beginTime: formatTimeOnly(beginTime),
+          endTime: formatTimeOnly(endTime)
+          */
         }
-        setSubmit(form)
+        setSubmit(data)
       }}
       isLoading={isLoading}
       result={result}
@@ -153,7 +135,6 @@ const FormBody = ({ brandName }) => {
     control,
     name: BeginTimeField
   })
-  console.log("beginTime", beginTime)
 
   let startLabel = useTrans({
     zh: "开始",

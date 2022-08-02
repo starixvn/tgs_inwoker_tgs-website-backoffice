@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:2022.0801.0349-dev
+image: pgtgs/backoffice-api:2022.0802.0238-dev
 services:
   - name: backoffice-api
     dependencies:
@@ -45,6 +45,7 @@ services:
       BackOffice__ReportAggregateUrl: "http://report-aggregate-api"
       BackOffice__PlayerServiceBaseUrl: "http://player-api"
       BackOffice__MarketingReportBaseUrl: "http://marketing-api"
+      BackOffice__BrandCertificateBaseUrl: "http://brand-cert-api"
     ingresses:
       - hostname: backoffice.localhost
         path: /api
