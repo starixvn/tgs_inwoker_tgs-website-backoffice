@@ -30,7 +30,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { useFormContext, useWatch } from "react-hook-form"
 import head from "../../list/head"
 import Backdrop from "../../dialog/Backdrop"
-import { TimeSelectField2 } from "../../date/time"
+import { TimeSelectField } from "../../date/TimeSelect"
 import { formatHourMinute } from "../../date/format"
 import { useUpdateMaintenance } from "./client"
 import { useBrandList } from "../platforms/client"
@@ -155,14 +155,14 @@ const FormBody = ({ brandName }) => {
         </Box>
       )}
       <FieldStack orientation="horizontal">
-        <TimeSelectField2
+        <TimeSelectField
           name={BeginTimeField}
           defaultValue={beginTime}
           max={endTime}
           label={startLabel}
           required
         />
-        <TimeSelectField2
+        <TimeSelectField
           name={EndTimeField}
           defaultValue={endTime}
           min={beginTime}
