@@ -32,6 +32,7 @@ import {
 import { useChangeBrandStatus } from "../platforms/client"
 import { MerchantStatusMenu, MerchantStatus } from "../MerchantStatus"
 import { StartMaintenanceDialogDisclosure } from "./StartMaintenanceDialog"
+import { parseTimeOnly } from "../../date/parse"
 
 export { Code }
 
@@ -189,11 +190,11 @@ const useColumns = ({ items = [], mutate }) => {
         Header: <Trans zh="維護时间" en="Maintenance Time" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          let start = formatHourMinute(record?.beginTime)
-          let end = formatHourMinute(record?.endTime)
+          // let start = formatHourMinute(record?.beginTime)
+          // let end = formatHourMinute(record?.endTime)
           return (
             <Set alignX="center">
-              {start} - {end}
+              {record?.beginTime} - {record?.endTime}
             </Set>
           )
         }
@@ -220,8 +221,8 @@ const useColumns = ({ items = [], mutate }) => {
                   useFetch={useUpdateMaintenance}
                   brandId={record?.brandId}
                   brandName={record?.brandName}
-                  beginTime={toDate(record?.beginTime)}
-                  endTime={toDate(record?.endTime)}
+                  beginTime={parseTimeOnly(record?.beginTime)}
+                  endTime={parseTimeOnly(record?.endTime)}
                   onSubmitted={mutate}
                 />
               </Set>
