@@ -222,6 +222,7 @@ const useColumns = ({ items = [], mutate }) => {
                   brandName={record?.brandName}
                   beginTime={toDate(record?.beginTime)}
                   endTime={toDate(record?.endTime)}
+                  onSubmitted={mutate}
                 />
               </Set>
             )
