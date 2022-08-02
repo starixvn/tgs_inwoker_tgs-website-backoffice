@@ -190,6 +190,8 @@ const useColumns = ({ items = [], mutate }) => {
         Header: <Trans zh="維護时间" en="Maintenance Time" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
+          let start = parseTimeOnly(record?.beginTime)
+          console.log("parseTimeOnly > ", start, "beginTime", record?.beginTime)
           // let start = formatHourMinute(record?.beginTime)
           // let end = formatHourMinute(record?.endTime)
           return (
