@@ -97,7 +97,7 @@ const Body = () => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        getRowId={(row, index) => row.id ?? index}
+        stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -170,7 +170,7 @@ const useColumns = ({ items = [], mutate }) => {
             <Box alignX="center">
               <MerchantStatusMenu
                 record={{
-                  id: record?.id,
+                  id: record?.brandId,
                   status: record?.brandStatus
                 }}
                 useChangeStatus={useChangeBrandStatus}
@@ -210,8 +210,12 @@ const useColumns = ({ items = [], mutate }) => {
           Cell: ({ value: record }) => {
             return (
               <Set orientation="horizontal" alignX="center">
-                <ViewMaintenanceMessageDisclosure id={record?.brandMaintenanceId} />
-                <EditMaintenanceMessageDisclosure id={record?.brandMaintenanceId} />
+                <ViewMaintenanceMessageDisclosure
+                  id={record?.brandMaintenanceId}
+                />
+                <EditMaintenanceMessageDisclosure
+                  id={record?.brandMaintenanceId}
+                />
                 <MaintenanceTimeRangeDialogDisclosure
                   useFetch={useUpdateMaintenance}
                   brandId={record?.brandId}
