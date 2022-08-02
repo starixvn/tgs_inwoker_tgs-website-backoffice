@@ -185,7 +185,6 @@ const SearchBar = ({
   ...props
 }) => {
   let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
-  // let hasRealnameFilterAuth = useIsDisplayMenuByRoute([RealnameFilter])
   let showAllAgent = allAgentSetting.switch
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()

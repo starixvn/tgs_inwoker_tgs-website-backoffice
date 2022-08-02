@@ -112,6 +112,7 @@ const TimeRangeDialog = ({
           endTime: formatTimeOnly(endTime)
           */
         }
+        console.log("data", data)
         setSubmit(data)
       }}
       isLoading={isLoading}

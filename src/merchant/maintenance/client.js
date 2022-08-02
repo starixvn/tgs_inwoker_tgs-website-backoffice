@@ -23,8 +23,8 @@ export const useUpdateAllMaintenance = (data) => {
   return usePutData(url, data)
 }
 
-export const useUpdateMaintenance = (data) => {
-  let url = data ? `${API}/batchupdatetime` : ""
+export const useUpdateMaintenance = ({ brandId, ...data } = {}) => {
+  let url = brandId ? `${API}/time/${brandId}` : ""
   return usePutData(url, data)
 }
 
@@ -34,7 +34,7 @@ export const useMaintenanceMessage = (id) => {
 }
 
 export const useUpdateMaintenanceMessage = (id, data) => {
-  let url = data ? `${API}/${id}` : ""
+  let url = data ? `${API}/content/${id}` : ""
   return usePutData(url, data)
 }
 
