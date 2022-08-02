@@ -31,7 +31,7 @@ import { useFormContext, useWatch } from "react-hook-form"
 import head from "../../list/head"
 import Backdrop from "../../dialog/Backdrop"
 import { TimeSelectField2 } from "../../date/time"
-import { formatHourMinute, formatTimeOnly } from "../../date/format"
+import { formatHourMinute } from "../../date/format"
 import { useUpdateMaintenance } from "./client"
 import { useBrandList } from "../platforms/client"
 
@@ -105,8 +105,8 @@ const TimeRangeDialog = ({
       onSubmit={({ beginTime, endTime, ...rest }) => {
         let data = {
           ...rest,
-          beginTime: formatTimeOnly(beginTime),
-          endTime: formatTimeOnly(endTime)
+          beginTime: formatHourMinute(beginTime),
+          endTime: formatHourMinute(endTime)
         }
         setSubmit(data)
       }}
