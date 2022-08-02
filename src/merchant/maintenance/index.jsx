@@ -32,7 +32,7 @@ import {
 import { useChangeBrandStatus } from "../platforms/client"
 import { MerchantStatusMenu, MerchantStatus } from "../MerchantStatus"
 import { StartMaintenanceDialogDisclosure } from "./StartMaintenanceDialog"
-import { parseTimeOnly } from "../../date/parse"
+import { parseHourMinute, parseTimeOnly } from "../../date/parse"
 import { isValidDate } from "../../date/isValidDate"
 
 export { Code }
@@ -220,8 +220,8 @@ const useColumns = ({ items = [], mutate }) => {
                   useFetch={useUpdateMaintenance}
                   brandId={record?.brandId}
                   brandName={record?.brandName}
-                  beginTime={record?.beginTime}
-                  endTime={record?.endTime}
+                  beginTime={parseHourMinute(record?.beginTime)}
+                  endTime={parseHourMinute(record?.endTime)}
                   onSubmitted={mutate}
                 />
               </Set>

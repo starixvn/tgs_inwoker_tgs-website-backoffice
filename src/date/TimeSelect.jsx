@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { useLocale, Locales } from "../i18n"
-import { SelectField, DropdownMenu, Button, Icon } from "bumbag"
+import { Button, Icon } from "bumbag"
 import { startOfDay, endOfDay, isBefore, addMinutes } from "date-fns"
 import { faClock } from "@fortawesome/free-regular-svg-icons"
-import { SelectField as _SelectField, Select } from "../select/Select"
+import { SelectField, Select } from "../select/Select"
 import { isValidDate } from "./isValidDate"
 import { parseHourMinute } from "./parse"
 import { formatHourMinute } from "./format"
@@ -26,7 +26,7 @@ export const TimeSelectField = ({
   let options = rangeOptions({ interval, min, max })
 
   return (
-    <_SelectField
+    <SelectField
       options={options}
       validate={{
         required: (value) => {
@@ -53,7 +53,7 @@ export const TimeSelectField = ({
       }}
       registerOptions={{
         setValueAs: (value = "") => {
-          value = parseHourMinute(value, "HH:mm", new Date())
+          value = parseHourMinute(value)
           return value
         },
         ...registerOptions

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react"
-import { useForm, useFormContext } from "react-hook-form"
+import { useForm, useFormContext, useWatch } from "react-hook-form"
 import {
   css,
   Stack,
@@ -99,9 +99,19 @@ const EditDialog = ({ record, dialog, ...props }) => {
 
 const EditBody = ({ record = {} }) => {
   let { gameProviderName } = record
-  let { watch } = useFormContext()
-  let from = watch("from")
-  let to = watch("to")
+  let { control } = useFormContext()
+
+  const FromFieldName = "from"
+  let from = useWatch({
+    control,
+    name: FromFieldName
+  })
+
+  const ToFieldName = "to"
+  let to = useWatch({
+    control,
+    name: ToFieldName
+  })
 
   return (
     <Stack orientation="vertical" width="500px">
@@ -137,12 +147,12 @@ const EditBody = ({ record = {} }) => {
           <Trans zh="开始时间" en="Start Time" />
         </Label>
         <Flex alignY="top" justifyContent="space-between">
-          <TimeSelectField name="from" required max={to} />
+          <TimeSelectField name={FromFieldName} required max={to} />
           <Set orientation="horizontal">
             <Label marginRight="major-2">
               <Trans zh="结束时间" en="End Time" />
             </Label>
-            <TimeSelectField name="to" required min={from} />
+            <TimeSelectField name={ToFieldName} required min={from} />
           </Set>
         </Flex>
       </FieldValues>

@@ -74,8 +74,8 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
 const TimeRangeDialog = ({
   brandId,
   brandName,
-  beginTime,
-  endTime,
+  beginTime = "",
+  endTime = "",
   dialog,
   useFetch,
   onSubmitted,
@@ -157,14 +157,12 @@ const FormBody = ({ brandName }) => {
       <FieldStack orientation="horizontal">
         <TimeSelectField
           name={BeginTimeField}
-          defaultValue={beginTime}
           max={endTime}
           label={startLabel}
           required
         />
         <TimeSelectField
           name={EndTimeField}
-          defaultValue={endTime}
           min={beginTime}
           label={endLabel}
           required
