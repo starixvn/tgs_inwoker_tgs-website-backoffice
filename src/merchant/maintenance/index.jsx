@@ -52,11 +52,17 @@ const Body = () => {
   })
   let { pageIndex, pageSize, keyword } = state
 
-  let { isLoading, data, error, mutate, deleteCache } = useMaintenanceList({
+  let {
+    isLoading,
+    data: items,
+    error,
+    mutate,
+    deleteCache
+  } = useMaintenanceList({
     ...toApiParams(state)
   })
 
-  let columns = useColumns({ items: data?.items, mutate })
+  let columns = useColumns({ items, mutate })
 
   return (
     <PageContent
@@ -85,10 +91,9 @@ const Body = () => {
     >
       <Table
         columns={columns}
-        data={data?.items}
+        data={items}
         initialState={state}
         controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
@@ -156,7 +161,7 @@ const useColumns = ({ items = [], mutate }) => {
         disableSortBy: true
       }),
       textColumn({
-        id: "status",
+        id: "brandStatus",
         accessor: (record) => record,
         Header: <Trans zh="状态" en="Status" />,
         disableSortBy: true,
@@ -166,7 +171,7 @@ const useColumns = ({ items = [], mutate }) => {
               <MerchantStatusMenu
                 record={{
                   id: record?.id,
-                  status: record?.status
+                  status: record?.brandStatus
                 }}
                 useChangeStatus={useChangeBrandStatus}
                 onSubmitted={mutate}
@@ -203,14 +208,13 @@ const useColumns = ({ items = [], mutate }) => {
           Header: <Trans zh="操作" en="Actions" />,
           accessor: (row) => row,
           Cell: ({ value: record }) => {
-            //TODO: fix brand id
             return (
               <Set orientation="horizontal" alignX="center">
                 <ViewMaintenanceMessageDisclosure id={record?.id} />
                 <EditMaintenanceMessageDisclosure id={record?.id} />
                 <MaintenanceTimeRangeDialogDisclosure
-                  useFetch={useUpdateAllMaintenance}
-                  brandId={record?.id}
+                  useFetch={useUpdateMaintenance}
+                  brandId={record?.brandId}
                   brandName={record?.brandName}
                   beginTime={toDate(record?.beginTime)}
                   endTime={toDate(record?.endTime)}
