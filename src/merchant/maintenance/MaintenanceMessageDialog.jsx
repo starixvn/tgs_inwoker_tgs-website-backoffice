@@ -159,17 +159,42 @@ const MaintenanceMessageFormDialog = ({
   )
 }
 
+const MinHeight = "35vh"
+const MinWidth = "35vw"
+
 const FormBody = ({ readOnly = false }) => {
   let { getValues } = useFormContext()
   let ContentField = "content"
 
   let editable = !readOnly
   return (
-    <FieldStack>
+    <FieldStack height="100%">
       {readOnly && (
-        <Blockquote whiteSpace="pre-wrap">{getValues(ContentField)}</Blockquote>
+        <Blockquote
+          minWidth={MinWidth}
+          minHeight={MinHeight}
+          whiteSpace="pre-wrap"
+        >
+          {getValues(ContentField)}
+        </Blockquote>
       )}
-      {editable && <TextareaField name={ContentField} readOnly={readOnly} />}
+      {editable && (
+        <TextareaField
+          name={ContentField}
+          readOnly={readOnly}
+          minWidth={MinWidth}
+          minHeight={MinHeight}
+          css={css`
+            min-height: ${MinHeight};
+
+            & .bb-FieldWrapper,
+            & .bb-TextareaWrapper,
+            & .bb-Textarea {
+              min-height: ${MinHeight};
+            }
+          `}
+        />
+      )}
     </FieldStack>
   )
 }

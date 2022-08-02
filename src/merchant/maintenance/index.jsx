@@ -210,8 +210,8 @@ const useColumns = ({ items = [], mutate }) => {
           Cell: ({ value: record }) => {
             return (
               <Set orientation="horizontal" alignX="center">
-                <ViewMaintenanceMessageDisclosure id={record?.id} />
-                <EditMaintenanceMessageDisclosure id={record?.id} />
+                <ViewMaintenanceMessageDisclosure id={record?.brandMaintenanceId} />
+                <EditMaintenanceMessageDisclosure id={record?.brandMaintenanceId} />
                 <MaintenanceTimeRangeDialogDisclosure
                   useFetch={useUpdateMaintenance}
                   brandId={record?.brandId}
