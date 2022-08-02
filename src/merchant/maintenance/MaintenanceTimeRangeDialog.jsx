@@ -99,8 +99,8 @@ const TimeRangeDialog = ({
     <FormDialog
       defaultValues={{
         brandId,
-        beginTime: formatHourMinute(beginTime),
-        endTime: formatHourMinute(endTime)
+        beginTime,
+        endTime
       }}
       onSubmit={({ beginTime, endTime, ...rest }) => {
         let data = {

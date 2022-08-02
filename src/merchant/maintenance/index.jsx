@@ -191,11 +191,9 @@ const useColumns = ({ items = [], mutate }) => {
         Header: <Trans zh="維護时间" en="Maintenance Time" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          let start = formatHourMinute(parseTimeOnly(record?.beginTime))
-          let end = formatHourMinute(parseTimeOnly(record?.endTime))
           return (
             <Set alignX="center">
-              {start ?? record?.beginTime} - {end ?? record?.endTime}
+              {record?.beginTime} - {record?.endTime}
             </Set>
           )
         }
@@ -222,8 +220,8 @@ const useColumns = ({ items = [], mutate }) => {
                   useFetch={useUpdateMaintenance}
                   brandId={record?.brandId}
                   brandName={record?.brandName}
-                  beginTime={parseTimeOnly(record?.beginTime)}
-                  endTime={parseTimeOnly(record?.endTime)}
+                  beginTime={record?.beginTime}
+                  endTime={record?.endTime}
                   onSubmitted={mutate}
                 />
               </Set>
