@@ -105,14 +105,9 @@ const TimeRangeDialog = ({
       onSubmit={({ beginTime, endTime, ...rest }) => {
         let data = {
           ...rest,
-          beginTime,
-          endTime
-          /*
           beginTime: formatTimeOnly(beginTime),
           endTime: formatTimeOnly(endTime)
-          */
         }
-        console.log("data", data)
         setSubmit(data)
       }}
       isLoading={isLoading}
