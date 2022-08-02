@@ -23,8 +23,8 @@ export const useUpdateAllMaintenance = (data) => {
   return usePutData(url, data)
 }
 
-export const useUpdateMaintenance = ({ brandId, ...data } = {}) => {
-  let url = brandId ? `${API}/time/${brandId}` : ""
+export const useUpdateMaintenance = (data) => {
+  let url = data?.brandId ? `${API}/time/${data?.brandId}` : ""
   return usePutData(url, data)
 }
 
