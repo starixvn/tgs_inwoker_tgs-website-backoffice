@@ -220,8 +220,8 @@ const useColumns = ({ items = [], mutate }) => {
                   useFetch={useUpdateMaintenance}
                   brandId={record?.brandId}
                   brandName={record?.brandName}
-                  beginTime={parseHourMinute(record?.beginTime)}
-                  endTime={parseHourMinute(record?.endTime)}
+                  beginTime={record?.beginTime}
+                  endTime={record?.endTime}
                   onSubmitted={mutate}
                 />
               </Set>

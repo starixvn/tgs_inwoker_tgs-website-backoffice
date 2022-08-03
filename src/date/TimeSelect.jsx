@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { useLocale, Locales } from "../i18n"
 import { Button, Icon } from "bumbag"
-import { startOfDay, endOfDay, isBefore, addMinutes } from "date-fns"
+import {
+  startOfDay,
+  endOfDay,
+  isBefore,
+  addMinutes,
+  getHours,
+  getMinutes,
+  setHours,
+  setMinutes
+} from "date-fns"
 import { faClock } from "@fortawesome/free-regular-svg-icons"
 import { SelectField, Select } from "../select/Select"
 import { isValidDate } from "./isValidDate"
 import { parseHourMinute } from "./parse"
 import { formatHourMinute } from "./format"
+import { useFormContext, useWatch } from "react-hook-form"
 
 export const TimeIcon = () => <Icon icon={faClock} type="font-awesome" />
 
@@ -23,6 +33,8 @@ export const TimeSelectField = ({
   ),
   ...props
 }) => {
+  min = normalizeDate(min)
+  max = normalizeDate(max)
   let options = rangeOptions({ interval, min, max })
 
   return (
@@ -62,6 +74,19 @@ export const TimeSelectField = ({
       {...props}
     />
   )
+}
+
+const normalizeDate = (value) => {
+  value = typeof value === "string" ? parseHourMinute(value) : value
+  if (isValidDate(value)) {
+    let hours = getHours(value)
+    let minutes = getMinutes(value)
+
+    let date = setHours(new Date(), hours)
+    date = setMinutes(date, minutes)
+    return date
+  }
+  return value
 }
 
 const rangeOptions = ({
