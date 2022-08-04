@@ -42,6 +42,7 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
   endTime,
   useFetch,
   onSubmitted,
+  dialogId,
   ...props
 }) => {
   let dialog = useModalState()
@@ -53,7 +54,7 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={`${dialogId}-disclosure`} {...dialog} {...props}>
         <Trans zh="维护时间" en="Maintenance Time" />
       </Disclosure>
       {dialog.visible && (
@@ -65,6 +66,7 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
           useFetch={useFetch}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -79,6 +81,7 @@ const TimeRangeDialog = ({
   dialog,
   useFetch,
   onSubmitted,
+  dialogId,
   ...props
 }) => {
   let title = useTrans({
@@ -117,6 +120,7 @@ const TimeRangeDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
+      id={dialogId}
       {...props}
     >
       <FormBody brandName={brandName} />

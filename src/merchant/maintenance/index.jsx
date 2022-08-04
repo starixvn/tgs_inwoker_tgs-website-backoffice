@@ -83,6 +83,7 @@ const Body = () => {
           />
           <Set orientation="horizontal" alignX="right">
             <MaintenanceTimeRangeDialogDisclosure
+              dialogId="system-maintenance-time-dialog"
               useFetch={useUpdateAllMaintenance}
               onSubmitted={mutate}
             />
@@ -92,6 +93,7 @@ const Body = () => {
       }
     >
       <Table
+        id="maintenance"
         columns={columns}
         data={items}
         initialState={state}
@@ -100,6 +102,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         stickyHead
+        getRowId={(row) => row.brandCode}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -212,12 +215,14 @@ const useColumns = ({ items = [], mutate }) => {
               <Set orientation="horizontal" alignX="center">
                 {record?.brandMaintenanceId && (
                   <ViewMaintenanceMessageDisclosure
-                    id={record?.brandMaintenanceId}
+                    brandMaintenanceId={record?.brandMaintenanceId}
+                    dialogId="view-maintenance-message-dialog"
                   />
                 )}
                 {record?.brandMaintenanceId && (
                   <EditMaintenanceMessageDisclosure
-                    id={record?.brandMaintenanceId}
+                    brandMaintenanceId={record?.brandMaintenanceId}
+                    dialogId="edit-maintenance-message-dialog"
                   />
                 )}
                 <MaintenanceTimeRangeDialogDisclosure
@@ -227,6 +232,7 @@ const useColumns = ({ items = [], mutate }) => {
                   beginTime={record?.beginTime}
                   endTime={record?.endTime}
                   onSubmitted={mutate}
+                  dialogId="platform-maintenance-time-dialog"
                 />
               </Set>
             )
