@@ -233,9 +233,16 @@ const BasicFormBody = ({
 
   let editable = !readOnly
   return (
-    <>
+    <Box
+      css={css`
+        & .bb-Table {
+          max-height: 80vh;
+          overflow: auto;
+        }
+      `}
+    >
       <Table>
-        <Table.Head position="sticky" top="0">
+        <Table.Head position="sticky" top="0" zIndex="1">
           <Table.Row>
             <Table.HeadCell></Table.HeadCell>
             <Table.HeadCell>
@@ -244,6 +251,7 @@ const BasicFormBody = ({
             <Table.HeadCell>
               <Trans zh="次数" en="Number of Times" />
             </Table.HeadCell>
+            <Table.HeadCell minWidth="4.25rem"></Table.HeadCell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
@@ -262,7 +270,7 @@ const BasicFormBody = ({
           {editable && <AddSettingRow fieldArray={fieldArray} />}
         </Table.Body>
       </Table>
-    </>
+    </Box>
   )
 }
 
@@ -307,7 +315,7 @@ const BasicSettingRow = ({ name, field, index, fieldArray, readOnly }) => {
   return (
     <Table.Row data-index={index}>
       <Table.Cell>
-        <Box>
+        <Box alignX="center">
           {index + 1}
           {field.id && (
             <Input
@@ -353,6 +361,19 @@ const BasicSettingRow = ({ name, field, index, fieldArray, readOnly }) => {
           }}
           required
         />
+      </Table.Cell>
+      <Table.Cell>
+        {index > 0 && (
+          <Button
+            size="small"
+            variant="ghost"
+            onClick={() => {
+              fieldArray.remove(index)
+            }}
+          >
+            <Icon icon={faMinus} type="font-awesome" />
+          </Button>
+        )}
       </Table.Cell>
     </Table.Row>
   )

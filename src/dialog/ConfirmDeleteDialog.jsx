@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, forwardRef } from "react"
 import { Button, Modal, css, Icon, useModalState, Alert } from "bumbag"
 import { Trans, useTrans } from "../i18n"
-import { faCog, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { DeleteDisclosure } from "./Disclosure"
 import FormDialog from "../form/FormDialog"
 import { isDev } from "../env"

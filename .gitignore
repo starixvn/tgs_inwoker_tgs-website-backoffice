@@ -116,3 +116,6 @@ build/
 
 # garden.io for k8s
 .garden
+
+# local env setting for k8s, "REMOVE" when testing done
+k8s
