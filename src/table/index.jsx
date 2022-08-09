@@ -365,7 +365,7 @@ const TotalBody = ({ table }) => {
     >
       <Row table={table}>
         {columns.map((column, columnIndex, list) => {
-          let columnId = column?.id ?? column?.accessor
+          let columnId = column?.totalId ?? column?.id ?? column?.accessor
 
           //TODO: rename cell?.column?.cell to cellProps?
           let props = clone(column?.cell ?? {})
