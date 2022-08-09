@@ -33,6 +33,7 @@ import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
 import { SortOrder } from "../../table/order"
 import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog"
+import { PlayerDepositFormDialogDisclosure } from "./PlayerDepositFormDialog"
 
 export { Code }
 
@@ -394,6 +395,12 @@ const useColumns = ({
                 id="player-wallet-balance-dialog-disclosure"
                 playerCode={playerCode}
               />
+              {/* 
+              <PlayerDepositFormDialogDisclosure
+                brandId={brandId}
+                playerCode={playerCode}
+              /> 
+              */}
             </Set>
           )
         }

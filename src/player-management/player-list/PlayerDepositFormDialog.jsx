@@ -17,7 +17,6 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { View, Update } from "./menu"
 import dateTimeColumn from "../../table/column/dateTime"
 import { usePlayer } from "./client"
-import { usePlayerPaymentList } from "./client"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
@@ -27,6 +26,8 @@ import AlertDialog from "../../dialog/Alert"
 import { sortBy } from "lodash-es"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Disclosure from "../../dialog/Disclosure"
+import FormDialog from "../../form/FormDialog"
+import { PlayerDepositPaymentSelect } from "./PlayerDepositPaymentSelect"
 
 export const PlayerDepositFormDialogDisclosure = ({
   brandId,
@@ -46,10 +47,37 @@ export const PlayerDepositFormDialogDisclosure = ({
         <Trans zh="存款单" en="Deposit Form" />
       </Disclosure>
       {dialog.visible && (
-        <PlayerWalletDialog playerCode={playerCode} dialog={dialog} />
+        <DepositFormDialog
+          brandId={brandId}
+          playerCode={playerCode}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-const DepositFormDialog = ({ brandId, playerCode, dialog, ...props }) => {}
+const DepositFormDialog = ({ brandId, playerCode, dialog, ...props }) => {
+  let [formData, setSubmit] = useState()
+  const reset = () => {
+    console.log("TODO: reset")
+  }
+
+  const onSubmit = (data) => {
+    console.log("onSubmit", data)
+  }
+
+  return (
+    <FormDialog defaultValues={{}} onSubmit={onSubmit} dialog={dialog}>
+      <FormBody brandId={brandId} playerCode={playerCode} />
+    </FormDialog>
+  )
+}
+
+const FormBody = ({ brandId, playerCode }) => {
+  return (
+    <FieldStack>
+      <PlayerDepositPaymentSelect brandId={brandId} playerCode={playerCode} />
+    </FieldStack>
+  )
+}

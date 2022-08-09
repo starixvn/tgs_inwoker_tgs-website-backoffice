@@ -145,7 +145,3 @@ export const usePlayerCompletedWageringList = (playerCode, searchParams) => {
       : ""
   return useGet(url)
 }
-
-export const usePlayerPaymentList = () => {
-  
-}
