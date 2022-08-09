@@ -25,7 +25,7 @@ export const PromotionDistributionMethodFieldBox = ({
     }
   }, [autoPayout])
 
-  if (fieldNotUsed({ promotionTypeGroup, promotionTypeGroup })) {
+  if (fieldNotUsed({ promotionTypeGroup, promotionType })) {
     return null
   }
 

@@ -44,6 +44,7 @@ import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import Input from "../../input/Input"
 import {
+  MaxNumber,
   NumberInput,
   NumberInputField,
   PercentageNumberInputField
@@ -59,14 +60,15 @@ import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { get, set } from "lodash-es"
 import Big from "big.js"
 import { useMount, useMeasure } from "react-use"
+import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
 
-export const DepositLottery = "DepositLottery"
+export const DepositLottery = "DepositAccumulateRoulette"
 
 export const PromotionDepositLotteryRuleSetting = ({ ...props }) => {
   return (
     <FieldValues>
       <NormalLabel>
-        <Trans zh="基本设置" en="Basic Setting" />
+        <Trans zh="充值累計设置" en="Multi-Deposit Setting" />
       </NormalLabel>
       <BasicSettingListDisclosure width="fit-content" {...props} />
 
@@ -79,8 +81,8 @@ export const PromotionDepositLotteryRuleSetting = ({ ...props }) => {
 }
 
 const RuleFieldName = "rule"
-const SettingListFieldName = "settings"
-const DepositFieldName = "deposit"
+const SettingListFieldName = "depositItems"
+const DepositFieldName = "accumulateAmount"
 
 const BasicSettingListDisclosure = ({
   name = `${RuleFieldName}.${SettingListFieldName}`,
@@ -96,7 +98,7 @@ const BasicSettingListDisclosure = ({
   useMount(() => {
     setValue(
       name,
-      Array.from({ length: 5 }, (x, index) => {
+      Array.from({ length: 1 }, (x, index) => {
         return {}
       })
     )
@@ -173,8 +175,8 @@ const BasicSettingDialog = ({
   onChange
 }) => {
   let title = useTrans({
-    zh: "基本设置",
-    en: "Basic Setting"
+    zh: "充值累計设置",
+    en: "Multi-Deposit Setting"
   })
 
   let editable = !readOnly
@@ -229,10 +231,18 @@ const BasicFormBody = ({
     keyName: "_id"
   })
 
+  let editable = !readOnly
   return (
-    <>
+    <Box
+      css={css`
+        & .bb-Table {
+          max-height: 80vh;
+          overflow: auto;
+        }
+      `}
+    >
       <Table>
-        <Table.Head position="sticky" top="0">
+        <Table.Head position="sticky" top="0" zIndex="1">
           <Table.Row>
             <Table.HeadCell></Table.HeadCell>
             <Table.HeadCell>
@@ -241,6 +251,7 @@ const BasicFormBody = ({
             <Table.HeadCell>
               <Trans zh="次数" en="Number of Times" />
             </Table.HeadCell>
+            <Table.HeadCell minWidth="4.25rem"></Table.HeadCell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
@@ -256,21 +267,55 @@ const BasicFormBody = ({
               readOnly={readOnly}
             />
           ))}
+          {editable && <AddSettingRow fieldArray={fieldArray} />}
         </Table.Body>
       </Table>
-    </>
+    </Box>
   )
 }
 
+const AddSettingRow = ({ fieldArray }) =>
+  useMemo(
+    () => (
+      <Table.Row>
+        <Table.HeadCell>
+          <Button
+            id="add-setting"
+            size="small"
+            variant="ghost"
+            onClick={(event) => {
+              fieldArray.append({})
+            }}
+          >
+            <Icon icon={faPlus} type="font-awesome" />
+          </Button>
+        </Table.HeadCell>
+        <Table.HeadCell colSpan="2"></Table.HeadCell>
+      </Table.Row>
+    ),
+    [fieldArray]
+  )
+
+const MinNumber = 0
+
 const BasicSettingRow = ({ name, field, index, fieldArray, readOnly }) => {
   let { setValue, getValues, formState, control } = useFormContext()
+
+  let previous = useWatch({
+    control,
+    name: `${name}.${index - 1}`
+  })
+  let next = useWatch({
+    control,
+    name: `${name}.${index + 1}`
+  })
 
   let editable = !readOnly
   let disabled = readOnly
   return (
     <Table.Row data-index={index}>
       <Table.Cell>
-        <Box>
+        <Box alignX="center">
           {index + 1}
           {field.id && (
             <Input
@@ -286,7 +331,12 @@ const BasicSettingRow = ({ name, field, index, fieldArray, readOnly }) => {
           name={`${name}.${index}.${DepositFieldName}`}
           readOnly={readOnly}
           disabled={disabled}
-          min={0}
+          min={Math.max(
+            ...[MinNumber, previous?.accumulateAmount].filter(Number.isFinite)
+          )}
+          max={Math.min(
+            ...[MaxNumber, next?.accumulateAmount].filter(Number.isFinite)
+          )}
           size="small"
           required
           registerOptions={{
@@ -296,16 +346,34 @@ const BasicSettingRow = ({ name, field, index, fieldArray, readOnly }) => {
       </Table.Cell>
       <Table.Cell>
         <NumberInput
-          name={`${name}.${index}.times`}
+          name={`${name}.${index}.rouletteCount`}
           readOnly={readOnly}
           disabled={disabled}
-          min={0}
+          min={Math.max(
+            ...[MinNumber, previous?.rouletteCount].filter(Number.isFinite)
+          )}
+          max={Math.min(
+            ...[MaxNumber, next?.rouletteCount].filter(Number.isFinite)
+          )}
           size="small"
           registerOptions={{
             valueAsNumber: true
           }}
           required
         />
+      </Table.Cell>
+      <Table.Cell>
+        {index > 0 && (
+          <Button
+            size="small"
+            variant="ghost"
+            onClick={() => {
+              fieldArray.remove(index)
+            }}
+          >
+            <Icon icon={faMinus} type="font-awesome" />
+          </Button>
+        )}
       </Table.Cell>
     </Table.Row>
   )
@@ -342,7 +410,7 @@ const validateAllRequired = (fieldName, settings = []) => {
   return pass
 }
 
-const RouletteListFieldName = "items"
+const RouletteListFieldName = "rouletteItems"
 const TitleFieldName = "title"
 const RouletteSettingDisclosure = ({
   name = `${RuleFieldName}.${RouletteListFieldName}`,

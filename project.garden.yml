@@ -46,29 +46,29 @@ services:
     volumes:
       - name: data
         containerPath: /data
-  - name: dev-backoffice-site
-    dependencies:
-      - backoffice-api
-    env:
-      MODE: "development"
-      THEME_PALETTE_PRIMARY: "#3575dd"
-      THEME_PALETTE_PRIMARYTINT: "#ebf3fe"
-      LOGIN_BUTTON_COLOR: "rgb(33, 33, 33)"
-      LOGIN_BUTTON_BACKGROUND: "rgb(247, 247, 250)"
-      HEADER_BACKGROUND: "#f7f7fa"
-      HEADER_BACKGROUND_COLOR: "#212121"
-      LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
-      HEADER_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
-    ingresses:
-      - hostname: dev.backoffice.localhost
-        path: /
-        port: http
-    ports:
-      - name: http
-        containerPort: 80
-    volumes:
-      - name: data
-        containerPath: /data
+  # - name: dev-backoffice-site
+  #   dependencies:
+  #     - backoffice-api
+  #   env:
+  #     MODE: "development"
+  #     THEME_PALETTE_PRIMARY: "#3575dd"
+  #     THEME_PALETTE_PRIMARYTINT: "#ebf3fe"
+  #     LOGIN_BUTTON_COLOR: "rgb(33, 33, 33)"
+  #     LOGIN_BUTTON_BACKGROUND: "rgb(247, 247, 250)"
+  #     HEADER_BACKGROUND: "#f7f7fa"
+  #     HEADER_BACKGROUND_COLOR: "#212121"
+  #     LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
+  #     HEADER_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
+  #   ingresses:
+  #     - hostname: dev.backoffice.localhost
+  #       path: /
+  #       port: http
+  #   ports:
+  #     - name: http
+  #       containerPort: 80
+  #   volumes:
+  #     - name: data
+  #       containerPath: /data
 ---
 kind: Module
 type: exec

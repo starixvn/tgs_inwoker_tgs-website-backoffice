@@ -121,13 +121,7 @@ const validateAllRequired = (fieldName, settings = []) => {
 const SettingFieldName = "rule"
 const ListFieldName = "items"
 const TitleFieldName = "title"
-const SettingDisclosure = ({
-  name = SettingFieldName,
-  readOnly,
-  limitedTotalAmount,
-  totalAmountLimit,
-  ...props
-}) => {
+const SettingDisclosure = ({ name = SettingFieldName, readOnly, ...props }) => {
   let dialog = useModalState()
 
   let { control, setValue } = useFormContext()
@@ -179,8 +173,6 @@ const SettingDisclosure = ({
             {dialog.visible && (
               <SettingDialog
                 record={value}
-                limitedTotalAmount={limitedTotalAmount}
-                totalAmountLimit={totalAmountLimit}
                 onChange={(data) => {
                   let editable = !readOnly
                   if (editable) {
@@ -200,14 +192,7 @@ const SettingDisclosure = ({
   )
 }
 
-const SettingDialog = ({
-  record = {},
-  limitedTotalAmount,
-  totalAmountLimit,
-  readOnly,
-  dialog,
-  onChange
-}) => {
+const SettingDialog = ({ record = {}, readOnly, dialog, onChange }) => {
   let title = useTrans({
     zh: "轮盘设置",
     en: "Roulette Setting"
@@ -277,23 +262,13 @@ const SettingDialog = ({
           }
         `}
       >
-        <FormBody
-          limitedTotalAmount={limitedTotalAmount}
-          totalAmountLimit={totalAmountLimit}
-          readOnly={readOnly}
-        />
+        <FormBody readOnly={readOnly} />
       </FormDialog>
     </Backdrop>
   )
 }
 
-const FormBody = ({
-  name = ListFieldName,
-  limitedTotalAmount,
-  totalAmountLimit,
-  readOnly,
-  ...props
-}) => {
+const FormBody = ({ name = ListFieldName, readOnly, ...props }) => {
   let { control, register, formState } = useFormContext()
 
   let fieldArray = useFieldArray({
@@ -344,8 +319,6 @@ const FormBody = ({
               name={name}
               key={field._id}
               field={field}
-              limitedTotalAmount={limitedTotalAmount}
-              totalAmountLimit={totalAmountLimit}
               index={index}
               fieldArray={fieldArray}
               readOnly={readOnly}

@@ -45,6 +45,7 @@ import { ConfirmText } from "../../button/ActionButtons"
 import Input from "../../input/Input"
 import { get, set } from "lodash-es"
 import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
+import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
 
 export const PromotionSigninRuleSetting = ({ ...props }) => {
   return (
@@ -76,13 +77,7 @@ const validateAllRequired = (fieldName, settings = []) => {
 const SettingFieldName = "rule"
 const ListFieldName = "items"
 const BonusFieldName = "bonus"
-const SettingDisclosure = ({
-  name = SettingFieldName,
-  limitedTotalAmount,
-  totalAmountLimit,
-  readOnly,
-  ...props
-}) => {
+const SettingDisclosure = ({ name = SettingFieldName, readOnly, ...props }) => {
   let dialog = useModalState()
 
   let { control, setValue } = useFormContext()
@@ -105,7 +100,6 @@ const SettingDisclosure = ({
         validate: (data) => {
           let items = get(data, ListFieldName)
           let pass = validateAllRequired(BonusFieldName, items)
-          console.log("pass", pass, "")
           return pass
         }
       }}
@@ -129,8 +123,6 @@ const SettingDisclosure = ({
             {dialog.visible && (
               <SettingDialog
                 record={value}
-                limitedTotalAmount={limitedTotalAmount}
-                totalAmountLimit={totalAmountLimit}
                 onChange={(data) => {
                   let editable = !readOnly
                   if (editable) {
@@ -149,14 +141,7 @@ const SettingDisclosure = ({
   )
 }
 
-const SettingDialog = ({
-  record = {},
-  limitedTotalAmount,
-  totalAmountLimit,
-  readOnly,
-  dialog,
-  onChange
-}) => {
+const SettingDialog = ({ record = {}, readOnly, dialog, onChange }) => {
   let title = useTrans({
     zh: "签到活动",
     en: "Sign-in Event Setting"
@@ -186,22 +171,13 @@ const SettingDialog = ({
         minWidth="50vw"
         maxWidth="100vw"
       >
-        <FormBody
-          limitedTotalAmount={limitedTotalAmount}
-          totalAmountLimit={totalAmountLimit}
-          readOnly={readOnly}
-        />
+        <FormBody readOnly={readOnly} />
       </FormDialog>
     </Backdrop>
   )
 }
 
-const FormBody = ({
-  name = ListFieldName,
-  limitedTotalAmount,
-  totalAmountLimit,
-  readOnly
-}) => {
+const FormBody = ({ name = ListFieldName, readOnly }) => {
   let editable = !readOnly
   let { control } = useFormContext()
 
@@ -237,8 +213,6 @@ const FormBody = ({
             field={field}
             index={index}
             fieldArray={fieldArray}
-            limitedTotalAmount={limitedTotalAmount}
-            totalAmountLimit={totalAmountLimit}
             readOnly={readOnly}
           />
         ))}
@@ -256,15 +230,7 @@ const FormBody = ({
 }
 
 const Min = 0
-const SettingRow = ({
-  name,
-  field,
-  index,
-  fieldArray,
-  limitedTotalAmount,
-  totalAmountLimit,
-  readOnly
-}) => {
+const SettingRow = ({ name, field, index, fieldArray, readOnly }) => {
   let { control, setValue } = useFormContext()
   let previous = useWatch({
     control,
@@ -274,6 +240,7 @@ const SettingRow = ({
     control,
     name: `${name}.${index + 1}`
   })
+  let totalFunds = useTotalFunds()
 
   let editable = !readOnly
   let disabled = readOnly
@@ -335,11 +302,7 @@ const SettingRow = ({
           }}
           min={Math.max(...[Min, previous?.bonus].filter(Number.isFinite))}
           max={Math.min(
-            ...[
-              MaxNumber,
-              limitedTotalAmount ? totalAmountLimit : undefined,
-              next?.bonus
-            ].filter(Number.isFinite)
+            ...[MaxNumber, totalFunds, next?.bonus].filter(Number.isFinite)
           )}
           required
         />

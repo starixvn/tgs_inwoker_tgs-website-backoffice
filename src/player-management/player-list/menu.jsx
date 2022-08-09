@@ -5,10 +5,9 @@ export const Code = "playerlist"
 
 export const View = "view"
 
-export const PhoneFilter = "phonefilter"
+export const Contact = "contact"
 
-//TODO: rm, check not used
-export const RealnameFilter = "realnamefilter"
+export const PhoneFilter = "phonefilter"
 
 export const Update = "update"
 
@@ -27,11 +26,11 @@ export const label = (codes = [], locale = Locales.zh) => {
         },
         locale
       )
-    case RealnameFilter:
+    case Contact:
       return getTrans(
         {
-          zh: "真实姓名过滤",
-          en: "Real Name Filter"
+          zh: "联系信息",
+          en: "Contact Info"
         },
         locale
       )

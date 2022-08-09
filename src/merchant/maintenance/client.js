@@ -12,26 +12,19 @@ import { MerchantStatus } from "../MerchantStatus"
 
 const API = "/api/BrandMaintenance"
 
-export const useMaintenanceList = ({
-  hideArchieved = true,
-  ...searchParams
-} = {}) => {
+export const useMaintenanceList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
 
-  let { data, ...rest } = useGet(url)
+  return useGet(url)
+}
 
-  let items = hideArchieved
-    ? data?.items?.filter?.(({ status }) => status != MerchantStatus.Archived)
-    : data?.items
-
-  return {
-    data: items ? { ...data, items } : data,
-    ...rest
-  }
+export const useUpdateAllMaintenance = (data) => {
+  let url = data ? `${API}/updatealltime` : ""
+  return usePutData(url, data)
 }
 
 export const useUpdateMaintenance = (data) => {
-  let url = data ? `${API}/batchupdatetime` : ""
+  let url = data?.brandId ? `${API}/time/${data?.brandId}` : ""
   return usePutData(url, data)
 }
 
@@ -41,6 +34,11 @@ export const useMaintenanceMessage = (id) => {
 }
 
 export const useUpdateMaintenanceMessage = (id, data) => {
-  let url = data ? `${API}/${id}` : ""
+  let url = data ? `${API}/content/${id}` : ""
   return usePutData(url, data)
+}
+
+export const useStartMaintenance = (start) => {
+  let url = start ? `${API}/allmaintain` : ""
+  return usePut(url)
 }

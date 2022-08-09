@@ -14,7 +14,7 @@ import {
   Alert,
   Group,
   Spinner,
-  FieldWrapper
+  Heading
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Disclosure } from "../../dialog/Disclosure"
@@ -29,18 +29,20 @@ import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { useFormContext, useWatch } from "react-hook-form"
 import head from "../../list/head"
-import { HtmlEditor } from "../../text/editor/HtmlEditor"
-import { useBrandLanguageCodes } from "../../dialog/LocalizationDialog"
 import Backdrop from "../../dialog/Backdrop"
-import BrandIdSelect from "../platforms/BrandIdSelect"
-import { TimeSelectField2 } from "../../date/time"
+import { TimeSelectField } from "../../date/TimeSelect"
+import { formatHourMinute } from "../../date/format"
 import { useUpdateMaintenance } from "./client"
 import { useBrandList } from "../platforms/client"
 
 export const MaintenanceTimeRangeDialogDisclosure = ({
-  brandId, 
+  brandId,
   brandName,
+  beginTime,
+  endTime,
+  useFetch,
   onSubmitted,
+  dialogId,
   ...props
 }) => {
   let dialog = useModalState()
@@ -52,62 +54,64 @@ export const MaintenanceTimeRangeDialogDisclosure = ({
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={`${dialogId}-disclosure`} {...dialog} {...props}>
         <Trans zh="维护时间" en="Maintenance Time" />
       </Disclosure>
       {dialog.visible && (
-        <TimeRangeDialog onSubmitted={onSubmitted} dialog={dialog} />
+        <TimeRangeDialog
+          brandId={brandId}
+          brandName={brandName}
+          beginTime={beginTime}
+          endTime={endTime}
+          useFetch={useFetch}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
       )}
     </>
   )
 }
 
-const TimeRangeDialog = ({ dialog, onSubmitted, ...props }) => {
-  let {
-    isLoading: isLoadingBrandList,
-    error: brandListError,
-    data: brand
-  } = useBrandList({
-    showAll: true,
-    sortby: "code"
-  })
-
+const TimeRangeDialog = ({
+  brandId,
+  brandName,
+  beginTime = "",
+  endTime = "",
+  dialog,
+  useFetch,
+  onSubmitted,
+  dialogId,
+  ...props
+}) => {
   let title = useTrans({
     zh: "维护时间",
     en: "Maintenance Time"
   })
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateMaintenance(formData)
+  let { isLoading, result, error, mutate, deleteCache } = useFetch(formData)
 
   const reset = () => {
     deleteCache()
     mutate(null, false)
+    setSubmit(undefined)
   }
 
-  if (isLoadingBrandList) {
-    return <LoadingBackdrop {...dialog} />
-  }
-
-  if (brandListError) {
-    return <AlertDialog {...error} onClickClose={dialog.hide} />
-  }
-
-  //TODO: need to reset after onSubmitted?
-  let brandIds = brand?.items.map((brand) => brand.id)
   return (
     <FormDialog
       defaultValues={{
-        brandIds,
-        beginTime: null,
-        endTime: null
+        brandId,
+        beginTime,
+        endTime
       }}
-      onSubmit={({ ...data }) => {
-        let form = {
-          ...data
+      onSubmit={({ beginTime, endTime, ...rest }) => {
+        let data = {
+          ...rest,
+          beginTime: formatHourMinute(beginTime),
+          endTime: formatHourMinute(endTime)
         }
-        setSubmit(form)
+        setSubmit(data)
       }}
       isLoading={isLoading}
       result={result}
@@ -116,14 +120,15 @@ const TimeRangeDialog = ({ dialog, onSubmitted, ...props }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
+      id={dialogId}
       {...props}
     >
-      <FormBody />
+      <FormBody brandName={brandName} />
     </FormDialog>
   )
 }
 
-const FormBody = ({}) => {
+const FormBody = ({ brandName }) => {
   let { control } = useFormContext()
   let BeginTimeField = "beginTime"
   let beginTime = useWatch({
@@ -145,20 +150,23 @@ const FormBody = ({}) => {
     zh: "结束",
     en: "End"
   })
+
   return (
-    <FieldStack orientation="vertical">
-      {/* <BrandIdSelect name="brandId" /> */}
+    <FieldStack orientation="vertical" margin="0.5rem">
+      {brandName && (
+        <Box borderColor="primary" fontWeight="bold">
+          <Trans zh="平台：" en="Platform：" /> {brandName}
+        </Box>
+      )}
       <FieldStack orientation="horizontal">
-        <TimeSelectField2
+        <TimeSelectField
           name={BeginTimeField}
-          defaultValue={beginTime}
           max={endTime}
           label={startLabel}
           required
         />
-        <TimeSelectField2
+        <TimeSelectField
           name={EndTimeField}
-          defaultValue={endTime}
           min={beginTime}
           label={endLabel}
           required

@@ -9,7 +9,11 @@ import {
 import { Code, Update } from "./menu"
 import { FormattedDateTime, Trans, useTrans } from "../../i18n"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { useMaintenanceList } from "./client"
+import {
+  useUpdateAllMaintenance,
+  useUpdateMaintenance,
+  useMaintenanceList
+} from "./client"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { SearchButton } from "../../button/SearchButton"
@@ -25,6 +29,11 @@ import {
   EditMaintenanceMessageDisclosure,
   ViewMaintenanceMessageDisclosure
 } from "./MaintenanceMessageDialog"
+import { useChangeBrandStatus } from "../platforms/client"
+import { MerchantStatusMenu, MerchantStatus } from "../MerchantStatus"
+import { StartMaintenanceDialogDisclosure } from "./StartMaintenanceDialog"
+import { parseHourMinute, parseTimeOnly } from "../../date/parse"
+import { isValidDate } from "../../date/isValidDate"
 
 export { Code }
 
@@ -45,11 +54,17 @@ const Body = () => {
   })
   let { pageIndex, pageSize, keyword } = state
 
-  let { isLoading, data, error, mutate, deleteCache } = useMaintenanceList({
+  let {
+    isLoading,
+    data: items,
+    error,
+    mutate,
+    deleteCache
+  } = useMaintenanceList({
     ...toApiParams(state)
   })
 
-  let columns = useColumns({ items: data?.items, mutate })
+  let columns = useColumns({ items, mutate })
 
   return (
     <PageContent
@@ -67,21 +82,27 @@ const Body = () => {
             isLoading={isLoading}
           />
           <Set orientation="horizontal" alignX="right">
-            <MaintenanceTimeRangeDialogDisclosure onSubmitted={mutate} />
+            <MaintenanceTimeRangeDialogDisclosure
+              dialogId="system-maintenance-time-dialog"
+              useFetch={useUpdateAllMaintenance}
+              onSubmitted={mutate}
+            />
+            <StartMaintenanceDialogDisclosure onSubmitted={mutate} />
           </Set>
         </>
       }
     >
       <Table
+        id="maintenance"
         columns={columns}
-        data={data?.items}
+        data={items}
         initialState={state}
         controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        getRowId={(row, index) => row.id ?? index}
+        stickyHead
+        getRowId={(row) => row.brandCode}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -96,8 +117,8 @@ const SearchForm = ({ search, isLoading, ...props }) => {
   })
 
   let searchPlaceHolder = useTrans({
-    zh: "关键字输入框",
-    en: "Search"
+    zh: "平台代码",
+    en: "Platform Code"
   })
 
   const onSubmit = (data) => search(data)
@@ -107,7 +128,7 @@ const SearchForm = ({ search, isLoading, ...props }) => {
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <InputField
-            name="keyword"
+            name="brandCode"
             showEmptyFieldValueAddonAfter
             placeholder={searchPlaceHolder}
           />
@@ -118,6 +139,9 @@ const SearchForm = ({ search, isLoading, ...props }) => {
     </FormProvider>
   )
 }
+
+const enabledStatusList = [MerchantStatus.Active, MerchantStatus.Maintenance]
+const isStatusChangeAvailable = (value) => enabledStatusList.includes(value)
 
 const useColumns = ({ items = [], mutate }) => {
   let hasAnyMenu = useHasSubMenuByRoute()
@@ -142,16 +166,37 @@ const useColumns = ({ items = [], mutate }) => {
         disableSortBy: true
       }),
       textColumn({
+        id: "brandStatus",
+        accessor: (record) => record,
+        Header: <Trans zh="状态" en="Status" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          return (
+            <Box alignX="center">
+              <MerchantStatusMenu
+                record={{
+                  id: record?.brandId,
+                  status: record?.brandStatus
+                }}
+                useChangeStatus={useChangeBrandStatus}
+                onSubmitted={mutate}
+                readOnly={!hasUpdateAuth}
+                disabled={!hasUpdateAuth}
+                enableMenuItem={isStatusChangeAvailable}
+              />
+            </Box>
+          )
+        }
+      }),
+      textColumn({
         id: "maintenanceTimeRange",
         accessor: (row) => row,
         Header: <Trans zh="維護时间" en="Maintenance Time" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          let start = formatHourMinute(record?.beginTime)
-          let end = formatHourMinute(record?.endTime)
           return (
             <Set alignX="center">
-              {start} - {end}
+              {record?.beginTime} - {record?.endTime}
             </Set>
           )
         }
@@ -168,8 +213,27 @@ const useColumns = ({ items = [], mutate }) => {
           Cell: ({ value: record }) => {
             return (
               <Set orientation="horizontal" alignX="center">
-                <ViewMaintenanceMessageDisclosure id={record?.id} />
-                <EditMaintenanceMessageDisclosure id={record?.id} />
+                {record?.brandMaintenanceId && (
+                  <ViewMaintenanceMessageDisclosure
+                    brandMaintenanceId={record?.brandMaintenanceId}
+                    dialogId="view-maintenance-message-dialog"
+                  />
+                )}
+                {record?.brandMaintenanceId && (
+                  <EditMaintenanceMessageDisclosure
+                    brandMaintenanceId={record?.brandMaintenanceId}
+                    dialogId="edit-maintenance-message-dialog"
+                  />
+                )}
+                <MaintenanceTimeRangeDialogDisclosure
+                  useFetch={useUpdateMaintenance}
+                  brandId={record?.brandId}
+                  brandName={record?.brandName}
+                  beginTime={record?.beginTime}
+                  endTime={record?.endTime}
+                  onSubmitted={mutate}
+                  dialogId="platform-maintenance-time-dialog"
+                />
               </Set>
             )
           }

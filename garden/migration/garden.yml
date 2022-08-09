@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: migration
-image: harbor.rpgp.cc/tgs/migration:202207250632-dev # tgs/migration
+image: harbor.rpgp.cc/tgs/migration:202208020533-dev
 services:
   - name: migration
     dependencies:

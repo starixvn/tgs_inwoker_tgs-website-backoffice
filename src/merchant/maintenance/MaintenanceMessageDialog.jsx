@@ -40,7 +40,11 @@ import Backdrop from "../../dialog/Backdrop"
 import { useMaintenanceMessage, useUpdateMaintenanceMessage } from "./client"
 import { TextareaField } from "../../textarea"
 
-export const ViewMaintenanceMessageDisclosure = ({ id, ...props }) => {
+export const ViewMaintenanceMessageDisclosure = ({
+  brandMaintenanceId,
+  dialogId,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let readable = useIsDisplayMenuByRoute([View])
@@ -50,17 +54,23 @@ export const ViewMaintenanceMessageDisclosure = ({ id, ...props }) => {
 
   return (
     <>
-      <ViewDisclosure {...dialog} />
+      <ViewDisclosure id={`${dialogId}-disclosure`} {...dialog} />
       {dialog.visible && (
-        <MaintenanceMessageFormDialog id={id} readOnly dialog={dialog} />
+        <MaintenanceMessageFormDialog
+          brandMaintenanceId={brandMaintenanceId}
+          dialogId={dialogId}
+          readOnly
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
 export const EditMaintenanceMessageDisclosure = ({
-  id,
+  brandMaintenanceId,
   onSubmitted,
+  dialogId,
   ...props
 }) => {
   let dialog = useModalState()
@@ -72,10 +82,11 @@ export const EditMaintenanceMessageDisclosure = ({
 
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure id={`${dialogId}-disclosure`} {...dialog} />
       {dialog.visible && (
         <MaintenanceMessageFormDialog
-          id={id}
+          brandMaintenanceId={brandMaintenanceId}
+          dialogId={dialogId}
           dialog={dialog}
           onSubmitted={onSubmitted}
         />
@@ -85,10 +96,11 @@ export const EditMaintenanceMessageDisclosure = ({
 }
 
 const MaintenanceMessageFormDialog = ({
-  id,
+  brandMaintenanceId,
   dialog,
   readOnly,
   onSubmitted,
+  dialogId,
   ...props
 }) => {
   let {
@@ -97,11 +109,11 @@ const MaintenanceMessageFormDialog = ({
     data: record,
     mutate: mutateMessage,
     deleteCache: deleteMessageCache
-  } = useMaintenanceMessage(id)
+  } = useMaintenanceMessage(brandMaintenanceId)
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateMaintenanceMessage(id, formData)
+    useUpdateMaintenanceMessage(brandMaintenanceId, formData)
 
   let title = useTrans({
     zh: "公告内容",
@@ -150,6 +162,7 @@ const MaintenanceMessageFormDialog = ({
       }}
       title={title}
       dialog={dialog}
+      id={dialogId}
       showActionButtons={editable}
       footer={readOnly && <CloseButtonFooter dialog={dialog} alignX="right" />}
       {...props}
@@ -159,17 +172,43 @@ const MaintenanceMessageFormDialog = ({
   )
 }
 
+const MinHeight = "35vh"
+const MinWidth = "35vw"
+
 const FormBody = ({ readOnly = false }) => {
   let { getValues } = useFormContext()
   let ContentField = "content"
 
   let editable = !readOnly
   return (
-    <FieldStack>
+    <FieldStack height="100%">
       {readOnly && (
-        <Blockquote whiteSpace="pre-wrap">{getValues(ContentField)}</Blockquote>
+        <Blockquote
+          id={ContentField}
+          minWidth={MinWidth}
+          minHeight={MinHeight}
+          whiteSpace="pre-wrap"
+        >
+          {getValues(ContentField)}
+        </Blockquote>
       )}
-      {editable && <TextareaField name={ContentField} readOnly={readOnly} />}
+      {editable && (
+        <TextareaField
+          name={ContentField}
+          readOnly={readOnly}
+          minWidth={MinWidth}
+          minHeight={MinHeight}
+          css={css`
+            min-height: ${MinHeight};
+
+            & .bb-FieldWrapper,
+            & .bb-TextareaWrapper,
+            & .bb-Textarea {
+              min-height: ${MinHeight};
+            }
+          `}
+        />
+      )}
     </FieldStack>
   )
 }

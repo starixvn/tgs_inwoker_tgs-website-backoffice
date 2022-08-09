@@ -1,78 +1,26 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { useLocale, Locales } from "../i18n"
-import { SelectField, DropdownMenu, Button, Icon } from "bumbag"
+import { Button, Icon } from "bumbag"
 import {
   startOfDay,
   endOfDay,
   isBefore,
-  isAfter,
-  format,
   addMinutes,
+  getHours,
+  getMinutes,
   setHours,
-  setMinutes,
-  parse,
-  isDate,
-  isValid
+  setMinutes
 } from "date-fns"
 import { faClock } from "@fortawesome/free-regular-svg-icons"
-import { SelectField as _SelectField, Select } from "../select/Select"
-import { useForm, useFormContext } from "react-hook-form"
+import { SelectField, Select } from "../select/Select"
 import { isValidDate } from "./isValidDate"
+import { parseHourMinute } from "./parse"
+import { formatHourMinute } from "./format"
+import { useFormContext, useWatch } from "react-hook-form"
 
 export const TimeIcon = () => <Icon icon={faClock} type="font-awesome" />
 
-//TODO: rename file to TimeSelect.jsx
-//TODO: replaced by TimeSelectField2
 export const TimeSelectField = ({
-  name,
-  selectRef,
-  required,
-  min,
-  max,
-  addonBefore = (
-    <Button isStatic>
-      <TimeIcon />
-    </Button>
-  ),
-  ...props
-}) => {
-  let minDate = hourMinuteToDate(min, startOfDay(new Date()))
-  let maxDate = hourMinuteToDate(max, endOfDay(new Date()))
-  let options = rangeOptions() //rangeOptions(minDate, maxDate)
-
-  let { register, formState } = useFormContext()
-
-  const validate = (value) => {
-    if (value && minDate && !isAfter(hourMinuteToDate(value), minDate)) {
-      return "min"
-    }
-
-    if (value && maxDate && !isBefore(hourMinuteToDate(value), maxDate)) {
-      return "max"
-    }
-  }
-
-  let formProps = {}
-  if (!selectRef) {
-    let { ref, ...rest } = register(name, { required, validate })
-    formProps = rest
-    selectRef = ref
-  }
-
-  let error = formState?.errors?.[name]
-  let state = error && "danger"
-  return (
-    <SelectField
-      options={options}
-      addonBefore={addonBefore}
-      state={state}
-      selectRef={selectRef}
-      {...formProps}
-    />
-  )
-}
-
-export const TimeSelectField2 = ({
   interval,
   required,
   min,
@@ -85,10 +33,12 @@ export const TimeSelectField2 = ({
   ),
   ...props
 }) => {
+  min = normalizeDate(min)
+  max = normalizeDate(max)
   let options = rangeOptions({ interval, min, max })
 
   return (
-    <_SelectField
+    <SelectField
       options={options}
       validate={{
         required: (value) => {
@@ -115,7 +65,7 @@ export const TimeSelectField2 = ({
       }}
       registerOptions={{
         setValueAs: (value = "") => {
-          value = parse(value, "HH:mm", new Date())
+          value = parseHourMinute(value)
           return value
         },
         ...registerOptions
@@ -126,17 +76,18 @@ export const TimeSelectField2 = ({
   )
 }
 
-export const hourMinuteToDate = (value = "", defaultValue) => {
-  if (value) {
-    let [hours, minutes] = value.split(":")
-    value = setHours(new Date(), parseInt(hours))
-    value = setMinutes(value, parseInt(minutes))
-    return value
-  }
-  return defaultValue
-}
+const normalizeDate = (value) => {
+  value = typeof value === "string" ? parseHourMinute(value) : value
+  if (isValidDate(value)) {
+    let hours = getHours(value)
+    let minutes = getMinutes(value)
 
-export const formatHourMinute = (date) => format(date, "HH:mm")
+    let date = setHours(new Date(), hours)
+    date = setMinutes(date, minutes)
+    return date
+  }
+  return value
+}
 
 const rangeOptions = ({
   start = startOfDay(new Date()),
