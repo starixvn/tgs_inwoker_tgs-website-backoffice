@@ -125,11 +125,13 @@ const WithdrawFormDialog = ({ brandId, playerCode, dialog, ...props }) => {
     setSubmit(data)
   }
 
+  let defaultBankInfo = bankInfoList?.find(({ isDefault }) => isDefault)
   return (
     <FormDialog
       defaultValues={{
         brandId,
-        playerCode
+        playerCode,
+        bankInfoId: defaultBankInfo?.id
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
