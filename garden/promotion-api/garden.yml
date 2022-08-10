@@ -16,7 +16,8 @@ services:
       Promotion__PaymentServiceBaseUrl: "http://payment-api"
       Promotion__FileServiceBaseUrl: "http://file-service"
       Promotion__CashBaseUrl: "http://cash-service"
-
+      Promotion__BrandServiceBaseUrl: "http://brand-api"
+      Promotion__PlayerServiceBaseUrl: "http://player-api"
       RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
     ports:
       - name: http
