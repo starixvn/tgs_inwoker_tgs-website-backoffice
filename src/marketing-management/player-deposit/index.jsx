@@ -238,12 +238,16 @@ const toDate = (value) => {
 const useColumns = ({ brandId, items = [] }) => {
   return useMemo(() => {
     let columns = [
-      dateTimeColumn({
+      textColumn({
+        /*
         id: "reportDate",
+        */
         accessor: "reportDate",
+        /*
         toValue: toDate,
         dateFormat: "MM/dd",
         timeFormat: false,
+        */
         Header: <Trans zh="日期" en="Date" />
       }),
       textColumn({
