@@ -231,7 +231,7 @@ const SearchBar = ({
 }
 
 const toDate = (value) => {
-  let date = parse(value, "yyyy/MM/dd", new Date())
+  let date = parse(value, "yyyy-MM-dd", new Date())
   return date
 }
 
