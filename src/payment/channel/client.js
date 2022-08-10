@@ -1,9 +1,9 @@
 import {
-    urlWith,
-    useGet,
-    usePostData,
-    usePutData,
-    useDelete
+  urlWith,
+  useGet,
+  usePostData,
+  usePutData,
+  useDelete
 } from "../../client"
 
 let API = "/api/PaymentChannel"
@@ -11,23 +11,31 @@ let API = "/api/PaymentChannel"
 const CodeTranPairs = [["CustomBank", { zh: "自订银行", en: "Custom Bank" }]]
 
 export const usePaymentChannelList = () => {
-    let { data, ...rest } = useGet(API)
+  let { data, ...rest } = useGet(API)
 
-    let items = []
-    if (data?.data?.length > 0) {
-        items = data?.data?.map?.((item) => {
-            let [code, trans] =
-                CodeTranPairs.find(([code, trans]) => code === item.code) ?? []
+  let items = []
+  if (data?.data?.length > 0) {
+    items = data?.data?.map?.((item) => {
+      let [code, trans] =
+        CodeTranPairs.find(([code, trans]) => code === item.code) ?? []
 
-            return {
-                ...item,
-                trans: trans
-            }
-        })
-    }
+      return {
+        ...item,
+        trans: trans
+      }
+    })
+  }
 
-    return {
-        data: items,
-        ...rest
-    }
+  return {
+    data: items,
+    ...rest
+  }
+}
+
+export const paymentChannelabel = (locale, paymentMethodCode) => {
+  let [code, trans] =
+    CodeTranPairs.find(([code]) => code === paymentMethodCode) ?? []
+
+  let label = trans?.[locale] ?? code
+  return label
 }

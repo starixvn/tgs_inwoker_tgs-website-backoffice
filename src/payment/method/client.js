@@ -67,3 +67,11 @@ export const usePaymentMethodList = () => {
     ...rest
   }
 }
+
+export const paymentMethodCodeLabel = (locale, paymentMethodCode) => {
+  let [code, trans] =
+    CodeTranPairs.find(([code]) => code === paymentMethodCode) ?? []
+
+  let label = trans?.[locale] ?? code
+  return label
+}

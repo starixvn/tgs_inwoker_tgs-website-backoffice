@@ -73,9 +73,12 @@ export const getHeaderButtonBackground = () =>
 const SystemTimezone = "SystemTimezone" //TODO: remove env.html
 const Sidebar = "Sidebar"
 
+const PlayerApplyForm = "PlayerApplyForm"
+
 export const Features = {
   SystemTimezone,
-  Sidebar
+  Sidebar,
+  PlayerApplyForm
 }
 
 const listFeatures = () => {
@@ -108,6 +111,11 @@ window.featureX = {
     //TODO: how to trigger react render?
   },
   enableFeatures
+}
+
+export const isPlayerApplyFormEnabled = () => {
+  let feature = PlayerApplyForm
+  return isFeatureEnabled(feature)
 }
 
 export const isFeatureEnabled = (feature = "") => {

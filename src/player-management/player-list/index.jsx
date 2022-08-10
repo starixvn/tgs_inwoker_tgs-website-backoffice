@@ -28,12 +28,13 @@ import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { isDev } from "../../env"
+import { isDev, isPlayerApplyFormEnabled } from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
 import { SortOrder } from "../../table/order"
 import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog"
 import { PlayerDepositFormDialogDisclosure } from "./PlayerDepositFormDialog"
+import { PlayerWithdrawFormDialogDisclosure } from "./PlayerWithdrawFormDialog"
 
 export { Code }
 
@@ -395,12 +396,14 @@ const useColumns = ({
                 id="player-wallet-balance-dialog-disclosure"
                 playerCode={playerCode}
               />
-              {/* 
               <PlayerDepositFormDialogDisclosure
                 brandId={brandId}
                 playerCode={playerCode}
-              /> 
-              */}
+              />
+              <PlayerWithdrawFormDialogDisclosure
+                brandId={brandId}
+                playerCode={playerCode}
+              />
             </Set>
           )
         }
