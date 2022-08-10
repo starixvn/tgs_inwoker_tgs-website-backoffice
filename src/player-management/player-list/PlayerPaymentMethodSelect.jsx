@@ -33,7 +33,7 @@ const toPaymentMethodOptions = (locale, platformPaymentList = []) => {
   )
 
   let options = methods.map((methodCode) => {
-    let label = paymentMethodCodeLabel(locale, methodCode)
+    let label = paymentMethodCodeLabel(locale, methodCode) ?? methodCode
     return {
       label,
       value: methodCode
