@@ -231,23 +231,19 @@ const SearchBar = ({
 }
 
 const toDate = (value) => {
-  let date = parse(value, "yyyy/MM/dd", new Date())
+  let date = parse(value, "yyyy-MM-dd", new Date())
   return date
 }
 
 const useColumns = ({ brandId, items = [] }) => {
   return useMemo(() => {
     let columns = [
-      textColumn({
-        /*
+      dateTimeColumn({
         id: "reportDate",
-        */
         accessor: "reportDate",
-        /*
         toValue: toDate,
         dateFormat: "MM/dd",
         timeFormat: false,
-        */
         Header: <Trans zh="日期" en="Date" />
       }),
       textColumn({
