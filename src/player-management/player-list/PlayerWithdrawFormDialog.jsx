@@ -14,7 +14,7 @@ import {
 } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import { View, Update } from "./menu"
+import { View, Update, WithdrawalForm } from "./menu"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useApplyPlayerWithdraw, usePlayer } from "./client"
 import { FormattedNumberDecimal, Trans, useLocale, useTrans } from "../../i18n"
@@ -36,9 +36,9 @@ export const PlayerWithdrawFormDialogDisclosure = ({
 }) => {
   let dialog = new useModalState()
 
-  //TODO: auth for deposit or fund?
   let editable = useIsDisplayMenuByRoute([Update])
-  if (!editable) {
+  let withdrawalFormAuth = useIsDisplayMenuByRoute([WithdrawalForm])
+  if (!editable || !withdrawalFormAuth) {
     return null
   }
 

@@ -11,6 +11,10 @@ export const PhoneFilter = "phonefilter"
 
 export const Update = "update"
 
+export const DepositForm = "depositform"
+
+export const WithdrawalForm = "withdrawalform"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {
@@ -47,6 +51,22 @@ export const label = (codes = [], locale = Locales.zh) => {
         {
           zh: "编辑",
           en: "Edit"
+        },
+        locale
+      )
+    case DepositForm:
+      return getTrans(
+        {
+          zh: "存款单",
+          en: "Deposit Form"
+        },
+        locale
+      )
+    case WithdrawalForm:
+      return getTrans(
+        {
+          zh: "提款单",
+          en: "Withdrawal Form"
         },
         locale
       )
