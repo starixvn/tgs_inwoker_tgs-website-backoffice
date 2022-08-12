@@ -28,7 +28,15 @@ test("all platform maintenance time > search by platform code > platform mainten
 
 const viewMessage = async (page, expectedMessage) => {
   let dialogSelector = `#view-maintenance-message-dialog`
-  await openDialog(page, dialogSelector)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes("api/BrandMaintenance/") &&
+        response.status() === 200
+      )
+    }),
+    openDialog(page, dialogSelector)
+  ])
 
   let message = await page.textContent(`${dialogSelector} #content`)
   expect(message).includes(expectedMessage)
