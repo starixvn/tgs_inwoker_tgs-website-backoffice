@@ -163,6 +163,7 @@ const MaintenanceMessageFormDialog = ({
       showActionButtons={editable}
       footer={readOnly && <CloseButtonFooter dialog={dialog} alignX="right" />}
       {...props}
+      maxWidth="90vw"
     >
       <FormBody readOnly={readOnly} message={record?.content} />
     </FormDialog>

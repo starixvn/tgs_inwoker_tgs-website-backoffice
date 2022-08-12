@@ -144,6 +144,7 @@ const ReportContent = ({ brandId }) => {
 
   let culture = useLangCode()
 
+  //TODO: use startOfNextMinute instead
   const toSearchParams = () => ({
     ...toApiParams(state),
     orderby: "descending",
