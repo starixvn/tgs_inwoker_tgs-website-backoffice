@@ -12,7 +12,8 @@ import {
   Set,
   Card,
   Link,
-  Table
+  Table,
+  useModalState
 } from "bumbag"
 import {
   useTrans,
@@ -34,10 +35,24 @@ import Textarea from "../../textarea"
 import formatXml from "xml-formatter"
 import { stringifyJSON } from "../../text/json"
 import { ConfigPaths } from "../../text/editor/MonacoEditor"
+import Disclosure from "../../dialog/Disclosure"
 
 loader.config({
   paths: ConfigPaths
 })
+
+export const GameRoundDialogDisclosure = ({ label, record, ...props }) => {
+  let dialog = useModalState()
+
+  return (
+    <>
+      <Disclosure {...dialog} {...props}>
+        {label}
+      </Disclosure>
+      {dialog.visible && <GameRoundDialog record={record} dialog={dialog} />}
+    </>
+  )
+}
 
 export const GameRoundDialog = ({
   record = {},

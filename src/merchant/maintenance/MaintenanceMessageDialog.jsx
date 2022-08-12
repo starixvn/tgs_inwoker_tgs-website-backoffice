@@ -121,9 +121,6 @@ const MaintenanceMessageFormDialog = ({
   })
 
   const reset = () => {
-    deleteMessageCache()
-    mutateMessage(null, false)
-
     deleteCache()
     mutate(null, false)
     setSubmit(null)
@@ -167,7 +164,7 @@ const MaintenanceMessageFormDialog = ({
       footer={readOnly && <CloseButtonFooter dialog={dialog} alignX="right" />}
       {...props}
     >
-      <FormBody readOnly={readOnly} />
+      <FormBody readOnly={readOnly} message={record?.content} />
     </FormDialog>
   )
 }
@@ -175,7 +172,7 @@ const MaintenanceMessageFormDialog = ({
 const MinHeight = "35vh"
 const MinWidth = "35vw"
 
-const FormBody = ({ readOnly = false }) => {
+const FormBody = ({ readOnly = false, message = "" }) => {
   let { getValues } = useFormContext()
   let ContentField = "content"
 
@@ -189,7 +186,7 @@ const FormBody = ({ readOnly = false }) => {
           minHeight={MinHeight}
           whiteSpace="pre-wrap"
         >
-          {getValues(ContentField)}
+          {message}
         </Blockquote>
       )}
       {editable && (

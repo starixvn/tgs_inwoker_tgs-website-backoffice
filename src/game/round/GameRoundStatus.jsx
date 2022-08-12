@@ -41,7 +41,7 @@ export const GameRoundStatus = {
   Open
 }
 
-export const GameRoundStatusLabel = ({ value }) => {
+export const GameRoundStatusLabel = ({ value = "" }) => {
   switch (value) {
     case Win:
       return <Trans {...WinTrans} />
