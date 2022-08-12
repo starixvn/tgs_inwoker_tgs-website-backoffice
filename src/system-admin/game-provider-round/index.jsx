@@ -57,7 +57,6 @@ import { CurrencySelectField } from "../../currency/CurrencySelect"
 import { GameTypeSelect } from "../../game/GameType"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
 import { GameProviderSubGameProviderSelect } from "../../game/providers/GameProviderSubGameProviderSelect"
-import { addHours } from "date-fns/esm"
 import DownloadButton from "../../button/DownloadButton"
 import { isValidDate } from "../../date/isValidDate"
 import { splitEvery, any } from "ramda"
@@ -212,8 +211,6 @@ const ReportContent = ({ brandId }) => {
     </PageContent>
   )
 }
-
-const DateFormat = "yyyy/MM/dd HH:mm"
 
 const SearchBar = ({
   externalFrom,
@@ -549,7 +546,7 @@ const DateTimeRangeInputField = ({
       }
     >
       <DateTimeRangeInput
-        dateFormat={DateFormat}
+        dateFormat="yyyy/MM/dd HH:mm"
         startProps={startProps}
         endProps={endProps}
         validate={(range) => {
