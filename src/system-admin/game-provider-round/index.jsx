@@ -144,6 +144,7 @@ const ReportContent = ({ brandId }) => {
 
   let culture = useLangCode()
 
+  //TODO: use startOfNextMinute instead
   const toSearchParams = () => ({
     ...toApiParams(state),
     orderby: "descending",
@@ -260,17 +261,17 @@ const SearchBar = ({
   })
   let externalUsernamePlaceholder = useTrans({
     zh: "三方用戶名",
-    en: "3rd Party Player Name"
-  })
-
-  let roundIdPlaceholder = useTrans({
-    zh: "订单ID",
-    en: "Round ID"
+    en: "Player Code"
   })
 
   let externalRoundIdPlaceholder = useTrans({
     zh: "三方订单ID",
-    en: "3rd Party ID"
+    en: "External ID"
+  })
+
+  let roundIdPlaceholder = useTrans({
+    zh: "订单ID",
+    en: "ID"
   })
 
   const ExternalFromField = "externalFrom"
@@ -310,7 +311,7 @@ const SearchBar = ({
             placeholder={roundIdPlaceholder}
           />
           <DateTimeRangeInputField
-            label={<Trans zh="三方投注时间" en="3rd Party Created On" />}
+            label={<Trans zh="三方投注时间" en="External Created On" />}
             minDate={minDate}
             maxRangeDays={maxRangeDays}
             startProps={{
@@ -329,7 +330,7 @@ const SearchBar = ({
             ]}
           />
           <DateTimeRangeInputField
-            label={<Trans zh="三方结算时间" en="3rd Party Closed On" />}
+            label={<Trans zh="三方结算时间" en="External Closed On" />}
             minDate={minDate}
             maxRangeDays={maxRangeDays}
             fakeTimeLabel
@@ -349,7 +350,7 @@ const SearchBar = ({
             ]}
           />
           <DateTimeRangeInputField
-            label={<Trans zh="平台投注时间" en="Platform Created On" />}
+            label={<Trans zh="平台投注时间" en="Created On" />}
             minDate={minDate}
             maxRangeDays={maxRangeDays}
             startProps={{
@@ -368,7 +369,7 @@ const SearchBar = ({
             ]}
           />
           <DateTimeRangeInputField
-            label={<Trans zh="平台结算时间" en="Platform Closed On" />}
+            label={<Trans zh="平台结算时间" en="Closed On" />}
             minDate={minDate}
             maxRangeDays={maxRangeDays}
             startProps={{
@@ -411,7 +412,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "externalPlayerName",
-        Header: <Trans zh="三方用戶名" en="3rd Party Player Name" />,
+        Header: <Trans zh="三方用戶名" en="Player C" />,
         disableSortBy: true
       }),
       textColumn({
