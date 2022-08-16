@@ -45,7 +45,7 @@ export const RegisteredPlayerListDialogDisclosure = ({
   brandId,
   value,
   agentUsername,
-  date,
+  reportDate,
   title,
   ...props
 }) => {
@@ -65,7 +65,7 @@ export const RegisteredPlayerListDialogDisclosure = ({
         <PlayerListDialog
           brandId={brandId}
           agentUsername={agentUsername}
-          date={date}
+          reportDate={reportDate}
           dialog={dialog}
         />
       )}
@@ -76,7 +76,7 @@ export const RegisteredPlayerListDialogDisclosure = ({
 const PlayerListDialog = ({
   brandId,
   agentUsername,
-  date,
+  reportDate,
   dialog,
   ...props
 }) => {
@@ -87,7 +87,7 @@ const PlayerListDialog = ({
   let { state, setPageIndex, setSortOrder } = useTable({
     brandId,
     agentUsername,
-    date
+    reportDate
   })
   let { isLoading, data, error, mutate, deleteCache } =
     useMarketingRegisteredPlayerList(toApiParams(state))
