@@ -5,12 +5,15 @@ export const Code = "playerlist"
 
 export const View = "view"
 
+export const Contact = "contact"
+
 export const PhoneFilter = "phonefilter"
 
-//TODO: rm, check not used
-export const RealnameFilter = "realnamefilter"
-
 export const Update = "update"
+
+export const DepositForm = "depositform"
+
+export const WithdrawalForm = "withdrawalform"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
@@ -27,11 +30,11 @@ export const label = (codes = [], locale = Locales.zh) => {
         },
         locale
       )
-    case RealnameFilter:
+    case Contact:
       return getTrans(
         {
-          zh: "真实姓名过滤",
-          en: "Real Name Filter"
+          zh: "联系信息",
+          en: "Contact Info"
         },
         locale
       )
@@ -48,6 +51,22 @@ export const label = (codes = [], locale = Locales.zh) => {
         {
           zh: "编辑",
           en: "Edit"
+        },
+        locale
+      )
+    case DepositForm:
+      return getTrans(
+        {
+          zh: "存款单",
+          en: "Deposit Form"
+        },
+        locale
+      )
+    case WithdrawalForm:
+      return getTrans(
+        {
+          zh: "提款单",
+          en: "Withdrawal Form"
         },
         locale
       )

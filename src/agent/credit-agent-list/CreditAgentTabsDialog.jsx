@@ -36,7 +36,6 @@ import {
   AgentOperationListPanel,
   AgentOperationListTab
 } from "./AgentOperationList"
-import { AgentTeamInfoPanel, AgentTeamInfoTab } from "./AgentTeamInfo"
 import { AgentPasswordPanel, AgentPasswordTab } from "./AgentPassword"
 import FormDialog from "../../form/FormDialog"
 import {

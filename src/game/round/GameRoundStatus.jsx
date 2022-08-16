@@ -41,7 +41,7 @@ export const GameRoundStatus = {
   Open
 }
 
-export const GameRoundStatusLabel = ({ value }) => {
+export const GameRoundStatusLabel = ({ value = "" }) => {
   switch (value) {
     case Win:
       return <Trans {...WinTrans} />
@@ -63,7 +63,8 @@ export const GameRoundStatusLabel = ({ value }) => {
   }
 }
 
-export const useGameRoundStatusOptions = (filter) => {
+//TODO: remove export
+export const useGameRoundStatusOptions = () => {
   return [
     {
       value: Win,
@@ -87,7 +88,16 @@ export const useGameRoundStatusOptions = (filter) => {
     }
   ]
 }
-export const GameRoundStatusSelect = ({ placeholder, options, ...props }) => {
+
+const defaultFilter = () => true
+
+//TODO: filter options
+export const GameRoundStatusSelect = ({
+  placeholder,
+  filter = defaultFilter,
+  options,
+  ...props
+}) => {
   let defaultPlaceholder = useTrans({
     zh: "状态",
     en: "Status"

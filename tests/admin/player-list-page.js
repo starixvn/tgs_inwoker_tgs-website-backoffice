@@ -18,7 +18,12 @@ export const searchPlayer = async (page, player) => {
 }
 
 export const openViewPlayerDialog = async (page) => {
-  await openDialog(page, ViewPlayerDialogSelector)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return response.url().includes(`/api/player`) && response.status() === 200
+    }),
+    openDialog(page, ViewPlayerDialogSelector)
+  ])
   return ViewPlayerDialogSelector
 }
 

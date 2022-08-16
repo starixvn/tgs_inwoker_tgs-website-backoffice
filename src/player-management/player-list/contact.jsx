@@ -23,6 +23,8 @@ import Input from "../../input/Input"
 import EmailInput from "../../input/EmailInput"
 import { AreaPhoneInputGruop } from "../../input/PhoneInput"
 import clone from "clone-deep"
+import { Contact } from "./menu"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 
 export const Key = "contact"
 

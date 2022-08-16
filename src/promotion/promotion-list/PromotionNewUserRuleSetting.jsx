@@ -46,6 +46,7 @@ import { ConfirmText } from "../../button/ActionButtons"
 import { sumBy } from "lodash-es"
 import AlertDialog, { AlertDialogModal } from "../../dialog/Alert"
 import { Switch } from "../../switch/Switch"
+import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
 
 const Register = "Register"
 
@@ -58,11 +59,8 @@ export const PromotionNewUserRuleSetting = ({ promotionType, ...props }) => {
   }
 }
 
-export const RegisterRuleSetting = ({
-  limitedTotalAmount,
-  totalAmountLimit,
-  readOnly
-}) => {
+export const RegisterRuleSetting = ({ readOnly }) => {
+  let totalFunds = useTotalFunds()
   let disabled = readOnly
   return (
     <FieldValues>
@@ -72,7 +70,7 @@ export const RegisterRuleSetting = ({
       <NumberInput
         name="rule.bonusAmount"
         min="0"
-        max={limitedTotalAmount ? totalAmountLimit : undefined}
+        max={totalFunds}
         required
         disabled={disabled}
         registerOptions={{

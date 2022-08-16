@@ -32,8 +32,6 @@ import {
 import BrandBar from "../../report/BrandBar"
 import { formatDateTime, formatDayMonthYear } from "../../date/format"
 import { PromotionTypeLabel, usePromotionGroupLabelOf } from "../PromotionType"
-import { GameTypeLabel, useGameTypeGroupLabelOf } from "../../game/GameType"
-import { GameProviderListDialogDisclosure } from "../../game/providers/GameProviderList"
 import { VipLevelListDialogDisclosure } from "../../vip-levels/VipLevelList"
 import { formatNumber } from "../../number/format"
 import PromotionStatus, {
@@ -346,46 +344,6 @@ const useColumns = ({
           return `${from} - ${to}`
         }
       }),
-      /*
-      textColumn({
-        id: "gameTypeGroup",
-        accessor: (row) => row,
-        Header: <Trans zh="游戏类型" en="Game Type" />,
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          let group = useGameTypeGroupLabelOf(value?.gameType) ?? ""
-          return group
-        }
-      }),
-      textColumn({
-        accessor: "gameType",
-        Header: <Trans zh="游戏子类型" en="Game SubType" />,
-        disableSortBy: true,
-        Cell: ({ value }) => <GameTypeLabel value={value} />
-      }),
-      textColumn({
-        accessor: "gameProviderIds",
-        Header: <Trans zh="活动厂商" en="GP Participation" />,
-        disableSortBy: true,
-        Cell: ({ value: gameProviderIds }) => {
-          let dialogTitle = useTrans({
-            zh: "活动厂商",
-            en: "GP Participation"
-          })
-
-          if (!gameProviderIds || gameProviderIds?.length == 0) {
-            return "-"
-          }
-
-          return (
-            <GameProviderListDialogDisclosure
-              gameProviderIds={gameProviderIds}
-              dialogTitle={dialogTitle}
-            />
-          )
-        }
-      }),
-      */
       textColumn({
         accessor: "vipLevels",
         Header: <Trans zh="活动用户群" en="User Group" />,

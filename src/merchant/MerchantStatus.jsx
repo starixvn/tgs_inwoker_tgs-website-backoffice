@@ -78,7 +78,7 @@ const toPalette = (value) => {
   }
 }
 
-const defaultEnableMenuItem = (value) => true
+const defaultEnableMenuItem = (_) => true
 
 export const MerchantStatusMenu = ({
   record = {},
@@ -86,6 +86,7 @@ export const MerchantStatusMenu = ({
   onSubmitted,
   readOnly,
   disabled,
+  enableMenuItem = defaultEnableMenuItem,
   ...props
 }) => {
   let { id, status } = record
@@ -127,22 +128,22 @@ export const MerchantStatusMenu = ({
       <DropdownMenu
         menu={
           <>
-            {status != Active && (
+            {status != Active && enableMenuItem(Active) && (
               <DropdownMenu.Item onClick={() => setSubmit(Active)}>
                 <MerchantStatusLabel value={Active} />
               </DropdownMenu.Item>
             )}
-            {status != Inactive && (
+            {status != Inactive && enableMenuItem(Inactive) && (
               <DropdownMenu.Item onClick={() => setSubmit(Inactive)}>
                 <MerchantStatusLabel value={Inactive} />
               </DropdownMenu.Item>
             )}
-            {status != Maintenance && (
+            {status != Maintenance && enableMenuItem(Maintenance) && (
               <DropdownMenu.Item onClick={() => setSubmit(Maintenance)}>
                 <MerchantStatusLabel value={Maintenance} />
               </DropdownMenu.Item>
             )}
-            {status != Archived && (
+            {status != Archived && enableMenuItem(Archived) && (
               <DropdownMenu.Item onClick={() => setSubmit(Archived)}>
                 <MerchantStatusLabel value={Archived} />
               </DropdownMenu.Item>
@@ -153,7 +154,7 @@ export const MerchantStatusMenu = ({
         <Button
           palette={toPalette(status)}
           isLoading={isLoading}
-          disabled={isLoading}
+          disabled={isLoading || !enableMenuItem(status)}
           whiteSpace="nowrap"
         >
           <MerchantStatusLabel value={status} />

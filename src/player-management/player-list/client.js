@@ -145,3 +145,23 @@ export const usePlayerCompletedWageringList = (playerCode, searchParams) => {
       : ""
   return useGet(url)
 }
+
+const PlayerManualDepositApi = "/api/ManualDeposit"
+export const useApplyPlayerManualDeposit = (bankType, data) => {
+  let url = bankType && data ? `${PlayerManualDepositApi}/${bankType}` : ""
+  return usePutData(url, data)
+}
+
+const PlayerPromotionApi = "/api/Promotion"
+export const usePlayerPromotionList = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${PlayerPromotionApi}/player`)
+    : ""
+  return useGet(url)
+}
+
+const PlayerWithdrawApi = "/api/Withdraw"
+export const useApplyPlayerWithdraw = (data) => {
+  let url = data ? `${PlayerWithdrawApi}/player` : ""
+  return usePostData(url, data)
+}

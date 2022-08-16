@@ -186,7 +186,7 @@ const Bank = ({
   )
 }
 
-const BankType = {
+export const BankType = {
   Bank: "Bank",
   Crypto: "Crypto",
   Usdt: "Usdt",

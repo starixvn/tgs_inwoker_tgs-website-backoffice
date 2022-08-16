@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-api
-image: harbor.rpgp.cc/tgs/promotion-api:2022.06.21.0143-dev # promotion-api
+image: pgtgs/promotion-api:2022.08.01.0325-dev # promotion-api
 services:
   - name: promotion-api
     dependencies:
@@ -16,7 +16,8 @@ services:
       Promotion__PaymentServiceBaseUrl: "http://payment-api"
       Promotion__FileServiceBaseUrl: "http://file-service"
       Promotion__CashBaseUrl: "http://cash-service"
-
+      Promotion__BrandServiceBaseUrl: "http://brand-api"
+      Promotion__PlayerServiceBaseUrl: "http://player-api"
       RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
     ports:
       - name: http

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Box, Dialog } from "bumbag"
-import { View as ViewMenu, Update as UpdateMenu } from "./menu"
+import { View as ViewMenu, Update as UpdateMenu, Contact } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import {
   Tab as PlayerTab,
@@ -184,11 +184,12 @@ const TabsDialog = ({
 }
 
 const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
+  let contactAuth = useIsDisplayMenuByRoute([Contact])
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
         <PlayerTab {...tab} />
-        <ContractTab {...tab} />
+        {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <BettingTab {...tab} />
         <PlayerOperationTab {...tab} />
@@ -200,7 +201,7 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
         showParentUsername={showParentUsername}
         {...tab}
       />
-      <ContractPanel player={player} {...tab} />
+      {contactAuth && <ContractPanel player={player} {...tab} />}
       <BankPanel banks={player.banks} {...tab} />
       <BettingPanel
         playerCode={playerCode}
@@ -233,11 +234,12 @@ const EditTabs = ({
   onBankSubmitted,
   onClickClose
 }) => {
+  let contactAuth = useIsDisplayMenuByRoute([Contact])
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
         <PlayerTab {...tab} />
-        <ContractTab {...tab} />
+        {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <PasswordTab {...tab} />
       </TabList>
@@ -250,13 +252,15 @@ const EditTabs = ({
         onClickClose={onClickClose}
         {...tab}
       />
-      <ContractEditPanel
-        player={player}
-        playerCode={playerCode}
-        onSubmitted={onSubmitted}
-        onClickClose={onClickClose}
-        {...tab}
-      />
+      {contactAuth && (
+        <ContractEditPanel
+          player={player}
+          playerCode={playerCode}
+          onSubmitted={onSubmitted}
+          onClickClose={onClickClose}
+          {...tab}
+        />
+      )}
       <BankPanel
         brandId={brandId}
         playerCode={playerCode}

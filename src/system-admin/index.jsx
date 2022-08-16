@@ -9,6 +9,7 @@ import { CodeContentPair as SettingsPair } from "./setting"
 import { CodeContentPair as GameRoundPair } from "./game-open-round"
 import { CodeContentPair as GameResettleOpenedRoundPair } from "./game-resettle-opened-round"
 import { CodeContentPair as PlatformGameProviderPair } from "./platform-game-provider"
+import { CodeContentPair as GameProviderRoundPair } from "./game-provider-round"
 import { Switch } from "../content"
 import { Code, DefaultCodePath, Menu } from "./menu"
 
@@ -24,7 +25,8 @@ const pairs = () => [
   SettingsPair,
   GameRoundPair,
   GameResettleOpenedRoundPair,
-  PlatformGameProviderPair
+  PlatformGameProviderPair,
+  GameProviderRoundPair
 ]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => (

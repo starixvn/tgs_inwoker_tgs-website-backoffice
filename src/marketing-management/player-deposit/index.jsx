@@ -153,7 +153,7 @@ const BodyContent = ({ brandId }) => {
       <Table
         columns={columns}
         data={data?.items}
-        total={data?.items?.length > 0 && data?.total}
+        total={data?.items?.length > 0 && data?.summary}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(state.pageSize, data?.totalCount)}
@@ -231,7 +231,7 @@ const SearchBar = ({
 }
 
 const toDate = (value) => {
-  let date = parse(value, "yyyy/MM/dd", new Date())
+  let date = parse(value, "yyyy-MM-dd", new Date())
   return date
 }
 
@@ -253,6 +253,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         id: "firstDepositCount",
+        totalId: "firstDepositTotalCount",
         accessor: (row) => row,
         Header: <Trans zh="首存人数" en="First Deposit Count" />,
         TotalCell: ({ value }) => {
@@ -272,6 +273,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         id: "noSecondDepositCount",
+        totalId: "noSecondDepositTotalCount",
         accessor: (row) => row,
         Header: (
           <Trans
@@ -296,6 +298,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         id: "depositCount",
+        totalId: "depositTotalCount",
         accessor: (row) => row,
         Header: <Trans zh="当日玩家存款人数" en="Deposit Player Count" />,
         TotalCell: ({ value }) => {

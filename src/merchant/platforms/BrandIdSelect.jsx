@@ -4,6 +4,7 @@ import Select from "../../select/Select"
 import { useBrandList } from "./client"
 import { useTrans } from "../../i18n"
 
+//TODO: rename to BrandSelect and add valueField prop?
 export const BrandIdSelect = ({ placeholder, licenseeId, ...props }) => {
   let defaultPlaceholder = useBrandPlaceholder()
   placeholder = placeholder ?? defaultPlaceholder
