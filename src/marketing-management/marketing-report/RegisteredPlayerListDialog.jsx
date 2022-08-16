@@ -46,7 +46,7 @@ export const RegisteredPlayerListDialogDisclosure = ({
   brandId,
   value,
   agentUsername,
-  data,
+  date,
   reportDate,
   title,
   ...props
@@ -67,7 +67,7 @@ export const RegisteredPlayerListDialogDisclosure = ({
         <PlayerListDialog
           brandId={brandId}
           agentUsername={agentUsername}
-          data={data}
+          date={date}
           reportDate={reportDate}
           dialog={dialog}
         />
@@ -80,7 +80,7 @@ export const RegisteredPlayerListDialogDisclosure = ({
 const PlayerListDialog = ({
   brandId,
   agentUsername,
-  data,
+  date,
   reportDate,
   dialog,
   ...props
@@ -92,13 +92,13 @@ const PlayerListDialog = ({
   let { state, setPageIndex, setSortOrder } = useTable({
     brandId,
     agentUsername,
-    data,
+    date,
     reportDate
   })
   let { isLoading, data, error, mutate, deleteCache } =
     useMarketingRegisteredPlayerList(toApiParams(state))
 
-  let columns = useColumns({ items: data?.items })
+  let columns = useColumns({ items: date?.items })
 
   if (error) {
     return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
@@ -132,7 +132,7 @@ const PlayerListDialog = ({
           data={data?.items}
           initialState={state}
           controlledState={state}
-          pageCount={pageCount(state.pageSize, data?.totalCount)}
+          pageCount={pageCount(state.pageSize, date?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
           isLoading={isLoading}
