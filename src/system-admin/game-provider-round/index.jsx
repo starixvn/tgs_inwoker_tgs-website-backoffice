@@ -25,7 +25,13 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { Trans, useTrans, getAcceptLangCulture, useLangCode } from "../../i18n"
+import {
+  Trans,
+  useTrans,
+  getAcceptLangCulture,
+  useLangCode,
+  FormattedNumberDecimal
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
@@ -104,6 +110,39 @@ const last10MinRange = () => {
   }
 }
 
+const useSystemGameRoundData = (searchParams) => {
+  let {
+    isLoading: isLoadingRoundList,
+    data: roundListData,
+    error: roundListError,
+    mutate: mutateRoundList,
+    deleteCache: deleteRoundListCache
+  } = useSystemGameRoundList(searchParams)
+
+  let {
+    isLoading: isLoadingTotal,
+    data: total,
+    error: totalError,
+    mutate: mutateTotal,
+    deleteCache: deleteTotalCache
+  } = useSystemGameRoundListTotal(searchParams)
+
+  return {
+    isLoading: isLoadingRoundList ?? isLoadingTotal,
+    data:
+      roundListData && total ? { ...roundListData, totals: total } : undefined,
+    error: roundListError ?? totalError,
+    mutate: (_, shouldRevalidate) => {
+      mutateRoundList(_, shouldRevalidate)
+      mutateTotal(_, shouldRevalidate)
+    },
+    deleteCache: () => {
+      deleteRoundListCache()
+      deleteTotalCache()
+    }
+  }
+}
+
 const ReportContent = ({}) => {
   let dateRange = last10MinRange()
   let QueryMaxRangeDays = 31
@@ -145,9 +184,7 @@ const ReportContent = ({}) => {
     error,
     mutate,
     deleteCache
-  } = useSystemGameRoundList(toSearchParams())
-
-  //TODO: fetch total data
+  } = useSystemGameRoundData(toSearchParams())
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
@@ -206,6 +243,7 @@ const ReportContent = ({}) => {
       <Table
         columns={columns}
         data={data?.items}
+        total={data?.total}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
@@ -305,7 +343,7 @@ const SearchBar = ({
             placeholder={playerNamePlaceholder}
           />
           <InputField
-            name="externalUsername"
+            name="playerCode"
             showEmptyFieldValueAddonAfter
             placeholder={externalUsernamePlaceholder}
           />
@@ -403,7 +441,7 @@ const SearchBar = ({
             subGameProviderProps={{ name: "subGameProviderCode" }}
           />
           <GameTypeSelect name="gameType" />
-          <CurrencySelectField name="currency" />
+          <CurrencySelectField name="currencyCode" />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>

@@ -255,6 +255,7 @@ const useColumns = ({ brandId, items = [] }) => {
               brandId={brandId}
               agentUsername={record?.agentUsername}
               date={toDate(record.reportDate)}
+              reportDate={record.reportDate}
             />
           )
         }

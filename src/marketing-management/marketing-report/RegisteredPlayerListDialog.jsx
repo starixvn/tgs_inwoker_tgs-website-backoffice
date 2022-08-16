@@ -41,11 +41,13 @@ import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { useMarketingRegisteredPlayerList } from "./client"
 
+//TODO: remove data param
 export const RegisteredPlayerListDialogDisclosure = ({
   brandId,
   value,
   agentUsername,
   date,
+  reportDate,
   title,
   ...props
 }) => {
@@ -66,6 +68,7 @@ export const RegisteredPlayerListDialogDisclosure = ({
           brandId={brandId}
           agentUsername={agentUsername}
           date={date}
+          reportDate={reportDate}
           dialog={dialog}
         />
       )}
@@ -73,10 +76,12 @@ export const RegisteredPlayerListDialogDisclosure = ({
   )
 }
 
+//TODO: remove data param
 const PlayerListDialog = ({
   brandId,
   agentUsername,
   date,
+  reportDate,
   dialog,
   ...props
 }) => {
@@ -87,7 +92,8 @@ const PlayerListDialog = ({
   let { state, setPageIndex, setSortOrder } = useTable({
     brandId,
     agentUsername,
-    date
+    date,
+    reportDate
   })
   let { isLoading, data, error, mutate, deleteCache } =
     useMarketingRegisteredPlayerList(toApiParams(state))
