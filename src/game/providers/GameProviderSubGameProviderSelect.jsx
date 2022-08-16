@@ -15,11 +15,17 @@ export const GameProviderSubGameProviderSelect = ({
 }) => {
   let gameProviderName = gameProviderProps.name ?? ""
 
-  let { control } = useFormContext()
+  let { control, setValue } = useFormContext()
   let gameProviderId = useWatch({
     control,
     name: gameProviderName
   })
+
+  let subGameProviderName = subGameProviderProps.name ?? ""
+
+  useEffect(() => {
+    setValue(subGameProviderName, "")
+  }, [gameProviderId])
 
   return (
     <Group>
