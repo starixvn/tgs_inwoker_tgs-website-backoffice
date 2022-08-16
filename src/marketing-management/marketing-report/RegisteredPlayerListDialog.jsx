@@ -98,7 +98,7 @@ const PlayerListDialog = ({
   let { isLoading, data, error, mutate, deleteCache } =
     useMarketingRegisteredPlayerList(toApiParams(state))
 
-  let columns = useColumns({ items: date?.items })
+  let columns = useColumns({ items: data?.items })
 
   if (error) {
     return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
@@ -132,7 +132,7 @@ const PlayerListDialog = ({
           data={data?.items}
           initialState={state}
           controlledState={state}
-          pageCount={pageCount(state.pageSize, date?.totalCount)}
+          pageCount={pageCount(state.pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
           isLoading={isLoading}
