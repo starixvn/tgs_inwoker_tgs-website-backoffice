@@ -32,15 +32,80 @@ const DailySecondDeposit = "DailySecondDeposit"
 
 const AccountDeposit = "AccountDeposit"
 
-export const PromotionDepositRuleSetting = ({ readOnly, promotionType }) => {
+export const PromotionDepositRuleSetting = ({ promotionType, readOnly }) => {
   let { control } = useFormContext()
 
   switch (promotionType) {
+    case AccountDeposit:
+      return <AccountDepositSetting readOnly={readOnly} />
     default:
-      return promotionType ? (
-        <DefaultSetting promotionType={promotionType} readOnly={readOnly} />
-      ) : null
+      return promotionType ? <DefaultSetting readOnly={readOnly} /> : null
   }
+}
+
+const AccountDepositSetting = ({ readOnly }) => {
+  let totalFunds = useTotalFunds()
+  let disabled = readOnly
+  return (
+    <FieldValues>
+      <NormalLabel>
+        <Trans zh="充值最低金额" en="Minimum Deposit Amount" />
+      </NormalLabel>
+      <NumberInput
+        name="rule.minDeposit"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <Trans zh="彩金百分比" en="Bonus Percentage" />
+      </NormalLabel>
+      <PercentageNumberInputField
+        name="rule.percentage"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        max="999"
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <Trans zh="彩金上限" en="Bonus Limit" />
+      </NormalLabel>
+      <NumberInput
+        name="rule.bonusAmountLimit"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        max={totalFunds}
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <Trans zh="流水倍数" en="Turnover Requirement" />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.turnoverMultiple"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        required
+        disabled={disabled}
+        addonAfter={
+          <Button isStatic tabIndex="-1">
+            <Trans zh="倍" en="Multipliers" />
+          </Button>
+        }
+      />
+    </FieldValues>
+  )
 }
 
 const DefaultSetting = ({ readOnly }) => {

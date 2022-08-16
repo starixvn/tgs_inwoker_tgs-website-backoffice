@@ -32,7 +32,6 @@ import clone from "clone-deep"
 import Backdrop from "../../dialog/Backdrop"
 import { useCloseGameOpenRound } from "./client"
 import GameRoundStatus, {
-  GameRoundStatusSelect,
   GameRoundStatusSelectField,
   useGameRoundStatusOptions
 } from "../../game/round/GameRoundStatus"
