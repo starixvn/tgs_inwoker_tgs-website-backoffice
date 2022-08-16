@@ -55,7 +55,12 @@ import {
   GameRoundStatusLabel,
   GameRoundStatusSelect
 } from "../../game/round/GameRoundStatus"
-import { useGameRoundList } from "../../game/round/client"
+import {
+  useGameRoundList,
+  useSystemGameRoundList,
+  useSystemGameRoundListTotal,
+  systemGameRoundListDownloadUrl
+} from "../../game/round/client"
 import AlertDialog from "../../dialog/Alert"
 import { isDev } from "../../env"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
@@ -86,20 +91,7 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 export const Body = () => {
-  //TODO: remove brand id
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <ReportContent brandId={brandId} />}
-    </Set>
-  )
+  return <ReportContent />
 }
 
 const last10MinRange = () => {
@@ -112,43 +104,34 @@ const last10MinRange = () => {
   }
 }
 
-const ReportContent = ({ brandId }) => {
+const ReportContent = ({}) => {
   let dateRange = last10MinRange()
   let QueryMaxRangeDays = 31
 
-  //TODO: set externalFrom, externalTo default value
-  //TODO: use sortBy: [{ id: "xxx", desc: false }]
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    brandId,
-    externalFrom: undefined,
-    externalTo: undefined,
+    brandId: undefined,
+    externalFrom: dateRange.start,
+    externalTo: dateRange.end,
     externalClosedFrom: undefined,
     externalClosedTo: undefined,
-    from: dateRange.start,
-    to: dateRange.end,
+    from: undefined,
+    to: undefined,
     closedFrom: undefined,
     closedTo: undefined,
-    sortby: "",
     username: "",
     roundId: "",
     externalRoundId: "",
     status: "",
-    gameProviderId: ""
+    gameProviderId: "",
+    sortBy: [{ id: "externalCreatedOn", desc: true }]
   })
-
-  //TODO: remove this
-  useEffect(() => {
-    setState({ pageIndex: 0, brandId })
-  }, [brandId])
 
   let { pageSize, username, roundId, status, gameProviderId } = state
 
   let culture = useLangCode()
 
-  //TODO: remove orderby
   const toSearchParams = () => ({
     ...toApiParams(state),
-    orderby: "descending",
     externalTo: startOfNextMinute(state.externalTo),
     externalClosedTo: startOfNextMinute(state.externalClosedTo),
     to: startOfNextMinute(state.to),
@@ -162,7 +145,9 @@ const ReportContent = ({ brandId }) => {
     error,
     mutate,
     deleteCache
-  } = useGameRoundList(toSearchParams())
+  } = useSystemGameRoundList(toSearchParams())
+
+  //TODO: fetch total data
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
@@ -202,7 +187,7 @@ const ReportContent = ({ brandId }) => {
           <Set>
             <DownloadReportButton
               disabled={data?.items?.length === 0}
-              searchParams={toSearchParams()}
+              url={systemGameRoundListDownloadUrl(toSearchParams())}
               dateTimeRanges={[
                 [state.externalFrom, state.externalTo],
                 [state.externalClosedFrom, state.externalClosedTo],
@@ -210,7 +195,9 @@ const ReportContent = ({ brandId }) => {
                 [state.closedFrom, state.to]
               ]}
             />
-            <AddGameProviderRoundDialogDisclosure onSubmitted={mutate} />
+            {/* 
+            <AddGameProviderRoundDialogDisclosure onSubmitted={mutate} /> 
+            */}
           </Set>
         </Level>
       }
@@ -444,13 +431,11 @@ const useColumns = ({ items = [] }) => {
       }),
       dateTimeColumn({
         accessor: "externalCreatedOn",
-        Header: <Trans zh="三方投注时间" en="External Created On" />,
-        disableSortBy: true
+        Header: <Trans zh="三方投注时间" en="External Created On" />
       }),
       dateTimeColumn({
         accessor: "externalClosedOn",
-        Header: <Trans zh="三方结算时间" en="External Closed On" />,
-        disableSortBy: true
+        Header: <Trans zh="三方结算时间" en="External Closed On" />
       }),
       textColumn({
         accessor: "id",
@@ -459,13 +444,11 @@ const useColumns = ({ items = [] }) => {
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="平台投注时间" en="Created On" />,
-        disableSortBy: true
+        Header: <Trans zh="平台投注时间" en="Created On" />
       }),
       dateTimeColumn({
         accessor: "closedOn",
-        Header: <Trans zh="平台结算时间" en="Closed On" />,
-        disableSortBy: true
+        Header: <Trans zh="平台结算时间" en="Closed On" />
       }),
       textColumn({
         accessor: "gameProviderName",
@@ -593,11 +576,7 @@ const DateTimeRangeInputField = ({
   )
 }
 
-const DownloadReportButton = ({
-  searchParams,
-  dateTimeRanges = [],
-  ...props
-}) => {
+const DownloadReportButton = ({ url, dateTimeRanges = [], ...props }) => {
   let errorDialog = useModalState()
   let auth = useIsDisplayMenuByRoute([Export])
   if (!auth) {
@@ -627,7 +606,7 @@ const DownloadReportButton = ({
   return (
     <>
       {!error && (
-        <DownloadButton href={urlWith(searchParams, `{API}/export`)} {...props}>
+        <DownloadButton href={url} {...props}>
           {exportLabel}
         </DownloadButton>
       )}

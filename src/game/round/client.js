@@ -37,3 +37,20 @@ export const useGameRoundBalanceChangeList = (searchParams) => {
   let url = searchParams?.roundId ? urlWith(searchParams, GameAction) : ""
   return useGet(url)
 }
+
+export const useSystemGameRoundList = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/system`) : ""
+  return useGet(url)
+}
+
+export const useSystemGameRoundListTotal = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/system/total`) : ""
+  return useGet(url)
+}
+
+export const systemGameRoundListDownloadUrl = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/exportSystemRounds`)
+    : ""
+  return url
+}
