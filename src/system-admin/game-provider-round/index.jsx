@@ -14,7 +14,9 @@ import {
   Set,
   useModalState,
   FieldStack,
-  FieldWrapper
+  FieldWrapper,
+  Level,
+  Dialog
 } from "bumbag"
 import PageContent from "../../page/Content"
 import {
@@ -27,30 +29,34 @@ import { Trans, useTrans, getAcceptLangCulture, useLangCode } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
-import { Code } from "./menu"
+import { Code, Export } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { startOfNextMinute } from "../../date/startOfNextMinute"
 import { textColumn } from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
-import { subDays, addMinutes, subMinutes } from "date-fns"
+import {
+  subDays,
+  addMinutes,
+  subMinutes,
+  differenceInMinutes,
+  startOfMinute,
+  endOfDay
+} from "date-fns"
 import DateTimeRangeInput, {
   DateInputRange,
   DateInputRangeField
 } from "../../date/DateTimeRangeInput"
 import {
-  GameRoundStatus,
   GameRoundStatusLabel,
-  GameRoundStatusSelect,
-  useGameRoundStatusOptions
+  GameRoundStatusSelect
 } from "../../game/round/GameRoundStatus"
-import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import { useGameRoundList } from "../../game/round/client"
 import AlertDialog from "../../dialog/Alert"
-import { CopyTextBox } from "../../text/CopyTextBox"
 import { isDev } from "../../env"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 import { CurrencySelectField } from "../../currency/CurrencySelect"
@@ -61,6 +67,10 @@ import DownloadButton from "../../button/DownloadButton"
 import { isValidDate } from "../../date/isValidDate"
 import { splitEvery, any } from "ramda"
 import { GameRoundDialogDisclosure } from "../../game/round/GameRoundDialog"
+import Disclosure from "../../dialog/Disclosure"
+import { urlWith } from "../../client"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import { AddGameProviderRoundDialogDisclosure } from "./AddGameProviderRoundDialog"
 
 export { Code }
 
@@ -97,16 +107,17 @@ const last10MinRange = () => {
   let end = addMinutes(now, 1)
   let start = subMinutes(end, 10)
   return {
-    start,
-    end
+    start: startOfMinute(start),
+    end: startOfMinute(end)
   }
 }
 
 const ReportContent = ({ brandId }) => {
-  let dateRange = today() //last10MinRange()
+  let dateRange = last10MinRange()
   let QueryMaxRangeDays = 31
 
   //TODO: set externalFrom, externalTo default value
+  //TODO: use sortBy: [{ id: "xxx", desc: false }]
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     externalFrom: undefined,
@@ -125,32 +136,23 @@ const ReportContent = ({ brandId }) => {
     gameProviderId: ""
   })
 
+  //TODO: remove this
   useEffect(() => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let {
-    pageSize,
-    from,
-    to,
-    closedFrom,
-    closedTo,
-    username,
-    roundId,
-    status,
-    gameProviderId
-  } = state
+  let { pageSize, username, roundId, status, gameProviderId } = state
 
   let culture = useLangCode()
 
-  //TODO: use startOfNextMinute instead
+  //TODO: remove orderby
   const toSearchParams = () => ({
     ...toApiParams(state),
     orderby: "descending",
-    from,
-    to: startOfNextDay(to),
-    closedFrom,
-    closedTo: startOfNextDay(closedTo),
+    externalTo: startOfNextMinute(state.externalTo),
+    externalClosedTo: startOfNextMinute(state.externalClosedTo),
+    to: startOfNextMinute(state.to),
+    closedTo: startOfNextMinute(state.closedTo),
     culture
   })
 
@@ -164,34 +166,53 @@ const ReportContent = ({ brandId }) => {
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
-  //TODO: need maxDate?
+  let maxDate = endOfDay(new Date())
 
   let columns = useColumns({ items: data?.items })
   return (
     <PageContent
       actionBar={
-        <SearchBar
-          from={state?.from}
-          to={to}
-          closedFrom={state?.closedFrom}
-          closedTo={state?.closedTo}
-          username={username}
-          roundId={roundId}
-          externalRoundId={state?.externalRoundId}
-          status={status}
-          gameProviderId={gameProviderId}
-          minDate={minDate}
-          //   maxDate={dateRange.end}
-          maxRangeDays={QueryMaxRangeDays}
-          isLoading={isLoading}
-          search={({ ...rest }) => {
-            setState({
-              pageIndex: 0,
-              ...rest
-            })
-            mutate()
-          }}
-        />
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            externalFrom={state.externalFrom}
+            externalTo={state.externalTo}
+            externalClosedFrom={state.externalClosedFrom}
+            externalClosedTo={state.externalClosedTo}
+            from={state.from}
+            to={state.to}
+            closedFrom={state.closedFrom}
+            closedTo={state?.closedTo}
+            username={username}
+            roundId={roundId}
+            externalRoundId={state?.externalRoundId}
+            status={status}
+            gameProviderId={gameProviderId}
+            minDate={minDate}
+            maxDate={maxDate}
+            maxRangeDays={QueryMaxRangeDays}
+            isLoading={isLoading}
+            search={({ ...rest }) => {
+              setState({
+                pageIndex: 0,
+                ...rest
+              })
+              mutate()
+            }}
+          />
+          <Set>
+            <DownloadReportButton
+              disabled={data?.items?.length === 0}
+              searchParams={toSearchParams()}
+              dateTimeRanges={[
+                [state.externalFrom, state.externalTo],
+                [state.externalClosedFrom, state.externalClosedTo],
+                [state.from, state.to],
+                [state.closedFrom, state.to]
+              ]}
+            />
+            <AddGameProviderRoundDialogDisclosure onSubmitted={mutate} />
+          </Set>
+        </Level>
       }
       title={<Trans zh="订单管理" en="Order Management" />}
     >
@@ -236,6 +257,10 @@ const SearchBar = ({
 }) => {
   let formMethods = useForm({
     defaultValues: {
+      externalFrom,
+      externalTo,
+      externalClosedFrom,
+      externalClosedTo,
       from,
       to,
       closedFrom,
@@ -409,7 +434,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "externalPlayerName",
-        Header: <Trans zh="三方用戶名" en="Player C" />,
+        Header: <Trans zh="三方用戶名" en="Player Code" />,
         disableSortBy: true
       }),
       textColumn({
@@ -475,7 +500,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <Trans zh="有效投注金额" en="Valid Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -485,7 +510,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <Trans zh="派彩" en="Settle Amount" />,
+        Header: <Trans zh="结算金额" en="Settle Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -568,8 +593,59 @@ const DateTimeRangeInputField = ({
   )
 }
 
-//TODO: date time range validation? show disabled popup?
-const ExportButton = ({ searchParams }) => {
-  //TODO: auth
-  return <DownloadButton />
+const DownloadReportButton = ({
+  searchParams,
+  dateTimeRanges = [],
+  ...props
+}) => {
+  let errorDialog = useModalState()
+  let auth = useIsDisplayMenuByRoute([Export])
+  if (!auth) {
+    return null
+  }
+
+  let error = null
+  let dateTimeRange = dateTimeRanges.find(([start, end]) => {
+    return isValidDate(start) && isValidDate(end)
+  })
+  if (!dateTimeRange) {
+    error = (
+      <Trans zh={"请选择搜寻时间区间"} en="Please select a search time range" />
+    )
+  }
+  if (dateTimeRange && isMoreThan10Mins(...dateTimeRange)) {
+    error = (
+      <Trans
+        zh="
+    搜寻时间区间不能超过10分钟"
+        en="Search time range should not exceed ten minutes"
+      />
+    )
+  }
+
+  let exportLabel = <Trans zh="汇出" en="Export" />
+  return (
+    <>
+      {!error && (
+        <DownloadButton href={urlWith(searchParams, `{API}/export`)} {...props}>
+          {exportLabel}
+        </DownloadButton>
+      )}
+      {error && <Disclosure {...errorDialog}>{exportLabel}</Disclosure>}
+      {errorDialog.visible && (
+        <Dialog.Modal
+          type="warning"
+          footer={<CloseButtonFooter alignX="right" dialog={errorDialog} />}
+          {...errorDialog}
+        >
+          {error}
+        </Dialog.Modal>
+      )}
+    </>
+  )
+}
+
+const isMoreThan10Mins = (start, end) => {
+  let TenMinutes = 10
+  return differenceInMinutes(end, start) > TenMinutes
 }
