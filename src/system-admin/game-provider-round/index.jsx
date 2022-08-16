@@ -343,7 +343,7 @@ const SearchBar = ({
             placeholder={playerNamePlaceholder}
           />
           <InputField
-            name="externalUsername"
+            name="playerCode"
             showEmptyFieldValueAddonAfter
             placeholder={externalUsernamePlaceholder}
           />
