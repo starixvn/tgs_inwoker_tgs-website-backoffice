@@ -420,7 +420,7 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "externalPlayerName",
+        accessor: "playerCode",
         Header: <Trans zh="三方用戶名" en="Player Code" />,
         disableSortBy: true
       }),
