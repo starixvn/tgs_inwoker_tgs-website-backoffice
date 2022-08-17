@@ -46,6 +46,8 @@ import { TextareaField } from "../../textarea"
 export const PlayerDepositFormDialogDisclosure = ({
   brandId,
   playerCode,
+  id,
+  dialogId,
   ...props
 }) => {
   let dialog = new useModalState()
@@ -56,13 +58,15 @@ export const PlayerDepositFormDialogDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         <Trans zh="存款单" en="Deposit Form" />
       </Disclosure>
       {dialog.visible && (
         <DepositFormDialog
+          dialogId={dialogId}
           brandId={brandId}
           playerCode={playerCode}
           dialog={dialog}
@@ -72,7 +76,13 @@ export const PlayerDepositFormDialogDisclosure = ({
   )
 }
 
-const DepositFormDialog = ({ brandId, playerCode, dialog, ...props }) => {
+const DepositFormDialog = ({
+  brandId,
+  playerCode,
+  dialog,
+  dialogId,
+  ...props
+}) => {
   let title = useTrans({
     zh: "存款单",
     en: "Deposit Form"
@@ -109,6 +119,7 @@ const DepositFormDialog = ({ brandId, playerCode, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id={dialogId}
       defaultValues={{
         brandId,
         playerCode

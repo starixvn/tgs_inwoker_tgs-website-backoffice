@@ -32,6 +32,8 @@ import { NumberInputField } from "../../input/NumberInput"
 export const PlayerWithdrawFormDialogDisclosure = ({
   brandId,
   playerCode,
+  id,
+  dialogId,
   ...props
 }) => {
   let dialog = new useModalState()
@@ -42,9 +44,10 @@ export const PlayerWithdrawFormDialogDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         <Trans zh="提款单" en="Withdrawal Form" />
       </Disclosure>
       {dialog.visible && (
@@ -52,6 +55,7 @@ export const PlayerWithdrawFormDialogDisclosure = ({
           brandId={brandId}
           playerCode={playerCode}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -92,7 +96,13 @@ const usePlayerBankInfoList = (playerCode) => {
   }
 }
 
-const WithdrawFormDialog = ({ brandId, playerCode, dialog, ...props }) => {
+const WithdrawFormDialog = ({
+  brandId,
+  playerCode,
+  dialog,
+  dialogId,
+  ...props
+}) => {
   let title = useTrans({
     zh: "提款单",
     en: "Withdrawal Form"
@@ -128,6 +138,7 @@ const WithdrawFormDialog = ({ brandId, playerCode, dialog, ...props }) => {
   let defaultBankInfo = bankInfoList?.find(({ isDefault }) => isDefault)
   return (
     <FormDialog
+      id={dialogId}
       defaultValues={{
         brandId,
         playerCode,

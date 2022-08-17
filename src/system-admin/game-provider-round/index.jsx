@@ -129,8 +129,7 @@ const useSystemGameRoundData = (searchParams) => {
 
   return {
     isLoading: isLoadingRoundList ?? isLoadingTotal,
-    data:
-      roundListData && total ? { ...roundListData, totals: total } : undefined,
+    data: roundListData && total ? { ...roundListData, total } : undefined,
     error: roundListError ?? totalError,
     mutate: (_, shouldRevalidate) => {
       mutateRoundList(_, shouldRevalidate)
@@ -178,13 +177,9 @@ const ReportContent = ({}) => {
     culture
   })
 
-  let {
-    isLoading,
-    data = {},
-    error,
-    mutate,
-    deleteCache
-  } = useSystemGameRoundData(toSearchParams())
+  let { isLoading, data, error, mutate, deleteCache } = useSystemGameRoundData(
+    toSearchParams()
+  )
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
@@ -243,7 +238,7 @@ const ReportContent = ({}) => {
       <Table
         columns={columns}
         data={data?.items}
-        total={data?.total}
+        total={data?.items?.length > 0 && data?.total}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
@@ -252,6 +247,12 @@ const ReportContent = ({}) => {
         isLoading={isLoading}
         getRowId={(row) => row.id}
         stickyHead
+        stickyRight
+        css={css`
+          tr td:last-child {
+            background-color: #fff;
+          }
+        `}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -357,83 +358,87 @@ const SearchBar = ({
             showEmptyFieldValueAddonAfter
             placeholder={roundIdPlaceholder}
           />
-          <DateTimeRangeInputField
-            label={<Trans zh="三方投注时间" en="External Created On" />}
-            minDate={minDate}
-            maxRangeDays={maxRangeDays}
-            startProps={{
-              name: ExternalFromField
-            }}
-            endProps={{
-              name: ExternalToField
-            }}
-            otherDateTimeRangeFields={[
-              ExternalClosedFromField,
-              ExternalClosedToField,
-              FromField,
-              ToField,
-              ClosedFromField,
-              ClosedToField
-            ]}
-          />
-          <DateTimeRangeInputField
-            label={<Trans zh="三方结算时间" en="External Closed On" />}
-            minDate={minDate}
-            maxRangeDays={maxRangeDays}
-            fakeTimeLabel
-            startProps={{
-              name: ExternalClosedFromField
-            }}
-            endProps={{
-              name: ExternalClosedToField
-            }}
-            otherDateTimeRangeFields={[
-              ExternalFromField,
-              ExternalToField,
-              FromField,
-              ToField,
-              ClosedFromField,
-              ClosedToField
-            ]}
-          />
-          <DateTimeRangeInputField
-            label={<Trans zh="平台投注时间" en="Created On" />}
-            minDate={minDate}
-            maxRangeDays={maxRangeDays}
-            startProps={{
-              name: FromField
-            }}
-            endProps={{
-              name: ToField
-            }}
-            otherDateTimeRangeFields={[
-              ExternalFromField,
-              ExternalToField,
-              ExternalClosedFromField,
-              ExternalClosedToField,
-              ClosedFromField,
-              ClosedToField
-            ]}
-          />
-          <DateTimeRangeInputField
-            label={<Trans zh="平台结算时间" en="Closed On" />}
-            minDate={minDate}
-            maxRangeDays={maxRangeDays}
-            startProps={{
-              name: ClosedFromField
-            }}
-            endProps={{
-              name: ClosedToField
-            }}
-            otherDateTimeRangeFields={[
-              ExternalFromField,
-              ExternalToField,
-              ExternalClosedFromField,
-              ExternalClosedToField,
-              FromField,
-              ToField
-            ]}
-          />
+          <FieldStack orientation="horizontal">
+            <DateTimeRangeInputField
+              label={<Trans zh="三方投注时间" en="External Created On" />}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
+              startProps={{
+                name: ExternalFromField
+              }}
+              endProps={{
+                name: ExternalToField
+              }}
+              otherDateTimeRangeFields={[
+                ExternalClosedFromField,
+                ExternalClosedToField,
+                FromField,
+                ToField,
+                ClosedFromField,
+                ClosedToField
+              ]}
+            />
+            <DateTimeRangeInputField
+              label={<Trans zh="三方结算时间" en="External Closed On" />}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
+              fakeTimeLabel
+              startProps={{
+                name: ExternalClosedFromField
+              }}
+              endProps={{
+                name: ExternalClosedToField
+              }}
+              otherDateTimeRangeFields={[
+                ExternalFromField,
+                ExternalToField,
+                FromField,
+                ToField,
+                ClosedFromField,
+                ClosedToField
+              ]}
+            />
+          </FieldStack>
+          <FieldStack orientation="horizontal">
+            <DateTimeRangeInputField
+              label={<Trans zh="平台投注时间" en="Created On" />}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
+              startProps={{
+                name: FromField
+              }}
+              endProps={{
+                name: ToField
+              }}
+              otherDateTimeRangeFields={[
+                ExternalFromField,
+                ExternalToField,
+                ExternalClosedFromField,
+                ExternalClosedToField,
+                ClosedFromField,
+                ClosedToField
+              ]}
+            />
+            <DateTimeRangeInputField
+              label={<Trans zh="平台结算时间" en="Closed On" />}
+              minDate={minDate}
+              maxRangeDays={maxRangeDays}
+              startProps={{
+                name: ClosedFromField
+              }}
+              endProps={{
+                name: ClosedToField
+              }}
+              otherDateTimeRangeFields={[
+                ExternalFromField,
+                ExternalToField,
+                ExternalClosedFromField,
+                ExternalClosedToField,
+                FromField,
+                ToField
+              ]}
+            />
+          </FieldStack>
           <GameRoundStatusSelect name="status" />
           <BrandIdSelect name="brandId" />
           <GameProviderSubGameProviderSelect
@@ -543,18 +548,19 @@ const useColumns = ({ items = [] }) => {
         id: "detail",
         accessor: (record) => record,
         Header: <Trans zh="详情" en="Detail" />,
+        TotalCell: () => null,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          let { id: roundId } = record
           return (
             <Set alignX="center">
               <GameRoundDialogDisclosure
+                dialogId="game-round-dialog"
                 label={<Trans zh="查看" en="View" />}
                 record={record}
               />
               <GameActionDialogDisclosure
-                id="game-action-dialog-disclosure"
-                roundId={roundId}
+                dialogId="game-action-dialog"
+                roundId={record?.id}
               />
             </Set>
           )

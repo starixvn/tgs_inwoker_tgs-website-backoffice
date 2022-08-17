@@ -45,6 +45,7 @@ export const PlayerListDialogDisclosure = ({
   value,
   agentUsername,
   date,
+  reportDate,
   useFetch,
   ...props
 }) => {
@@ -65,6 +66,7 @@ export const PlayerListDialogDisclosure = ({
           brandId={brandId}
           agentUsername={agentUsername}
           date={date}
+          reportDate={reportDate}
           useFetch={useFetch}
           dialog={dialog}
         />
@@ -78,6 +80,7 @@ const PlayerListDialog = ({
   brandId,
   agentUsername = "",
   date,
+  reportDate,
   useFetch,
   dialog,
   ...props
@@ -89,7 +92,8 @@ const PlayerListDialog = ({
   let { state, setPageIndex, setSortOrder } = useTable({
     brandId,
     agentUsername,
-    date
+    date,
+    reportDate
   })
 
   let { isLoading, data, error, mutate, deleteCache } = useFetch(

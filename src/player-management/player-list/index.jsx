@@ -399,10 +399,12 @@ const useColumns = ({
               <PlayerDepositFormDialogDisclosure
                 brandId={brandId}
                 playerCode={playerCode}
+                dialogId="apply-deposit-form-dialog"
               />
               <PlayerWithdrawFormDialogDisclosure
                 brandId={brandId}
                 playerCode={playerCode}
+                dialogId="apply-withdraw-form-dialog"
               />
             </Set>
           )
