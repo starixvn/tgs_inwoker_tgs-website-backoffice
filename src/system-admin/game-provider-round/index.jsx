@@ -181,7 +181,7 @@ const ReportContent = ({}) => {
     toSearchParams()
   )
 
-  let DataRetentionDays = 180
+  let DataRetentionDays = 90
   let minDate = subDays(dateRange.start, DataRetentionDays)
   let maxDate = endOfDay(new Date())
 
