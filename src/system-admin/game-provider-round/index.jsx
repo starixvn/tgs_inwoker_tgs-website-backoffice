@@ -249,7 +249,7 @@ const ReportContent = ({}) => {
         stickyHead
         stickyRight
         css={css`
-          tr td:last-child {
+          tr td:last-child:not([data-type="total"]) {
             background-color: #fff;
           }
         `}

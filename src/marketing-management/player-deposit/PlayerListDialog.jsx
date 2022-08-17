@@ -40,6 +40,7 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 
+//TODO: remove date
 export const PlayerListDialogDisclosure = ({
   brandId,
   value,

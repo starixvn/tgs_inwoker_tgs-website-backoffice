@@ -387,6 +387,7 @@ const TotalBody = ({ table }) => {
                 right: ${isStickyRight ? 0 : "auto"};
               `}
               data-column-id={columnId}
+              data-type="total"
               {...props}
             >
               <Body value={value} />
