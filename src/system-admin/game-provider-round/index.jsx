@@ -362,6 +362,7 @@ const SearchBar = ({
             <DateTimeRangeInputField
               label={<Trans zh="三方投注时间" en="External Created On" />}
               minDate={minDate}
+              maxDate={maxDate}
               maxRangeDays={maxRangeDays}
               startProps={{
                 name: ExternalFromField
@@ -381,6 +382,7 @@ const SearchBar = ({
             <DateTimeRangeInputField
               label={<Trans zh="三方结算时间" en="External Closed On" />}
               minDate={minDate}
+              maxDate={maxDate}
               maxRangeDays={maxRangeDays}
               fakeTimeLabel
               startProps={{
@@ -403,6 +405,7 @@ const SearchBar = ({
             <DateTimeRangeInputField
               label={<Trans zh="平台投注时间" en="Created On" />}
               minDate={minDate}
+              maxDate={maxDate}
               maxRangeDays={maxRangeDays}
               startProps={{
                 name: FromField
@@ -422,6 +425,7 @@ const SearchBar = ({
             <DateTimeRangeInputField
               label={<Trans zh="平台结算时间" en="Closed On" />}
               minDate={minDate}
+              maxDate={maxDate}
               maxRangeDays={maxRangeDays}
               startProps={{
                 name: ClosedFromField
