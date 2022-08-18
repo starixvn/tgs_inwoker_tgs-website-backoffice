@@ -95,6 +95,7 @@ const BasicSettingListDisclosure = ({
 
   let { control, setValue } = useFormContext()
 
+  /* TODO: how to clean up
   useMount(() => {
     setValue(
       name,
@@ -103,10 +104,14 @@ const BasicSettingListDisclosure = ({
       })
     )
   })
+  */
 
   let defaultValue = useWatch({
     control,
-    name
+    name,
+    defaultValue: Array.from({ length: 1 }, (x, index) => {
+      return {}
+    })
   })
 
   let disabled = readOnly
@@ -423,6 +428,7 @@ const RouletteSettingDisclosure = ({
 
   let { control, setValue } = useFormContext()
 
+  /*TODO: how to clean up
   useMount(() => {
     //init & reset value on mount
     setValue(
@@ -432,10 +438,14 @@ const RouletteSettingDisclosure = ({
       })
     )
   })
+  */
 
   let defaultValue = useWatch({
     control,
-    name
+    name,
+    defaultValue: Array.from({ length: 12 }, (x, index) => {
+      return {}
+    })
   })
 
   let disabled = readOnly
