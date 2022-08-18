@@ -49,6 +49,7 @@ export const GamePlayerListDialogDisclosure = ({
   value,
   agentUsername,
   date,
+  reportDate,
   ...props
 }) => {
   let dialog = useModalState()
@@ -68,6 +69,7 @@ export const GamePlayerListDialogDisclosure = ({
           brandId={brandId}
           agentUsername={agentUsername}
           date={date}
+          reportDate={reportDate}
           dialog={dialog}
         />
       )}
@@ -79,6 +81,7 @@ const PlayerListDialog = ({
   brandId,
   agentUsername,
   date,
+  reportDate,
   dialog,
   ...props
 }) => {
@@ -90,7 +93,8 @@ const PlayerListDialog = ({
     brandId,
     agentUsername,
     playerUsername: "",
-    date
+    date,
+    reportDate
   })
   let { isLoading, data, error, mutate, deleteCache } =
     useMarketingGamePlayerList(toApiParams(state))
