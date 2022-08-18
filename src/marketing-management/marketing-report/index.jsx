@@ -254,6 +254,7 @@ const useColumns = ({ brandId, items = [] }) => {
               value={record.registerCount}
               brandId={brandId}
               agentUsername={record?.agentUsername}
+              date={toDate(record.reportDate)}
               reportDate={record.reportDate}
             />
           )
@@ -272,6 +273,7 @@ const useColumns = ({ brandId, items = [] }) => {
               value={record.firstDepositCount}
               brandId={brandId}
               agentUsername={record?.agentUsername}
+              date={toDate(record.reportDate)}
               reportDate={record.reportDate}
               useFetch={useMarketingFirstDepositPlayerList}
             />
@@ -291,6 +293,7 @@ const useColumns = ({ brandId, items = [] }) => {
               value={record.gamingCount}
               brandId={brandId}
               agentUsername={record?.agentUsername}
+              date={toDate(record.reportDate)}
               reportDate={record.reportDate}
               title={playerListDialogTitle}
             />

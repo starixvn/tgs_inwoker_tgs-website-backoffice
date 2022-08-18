@@ -32,16 +32,15 @@ import clone from "clone-deep"
 import Backdrop from "../../dialog/Backdrop"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
-import { InputField } from "../../input/Input"
+import { Input, InputField } from "../../input/Input"
 import { GameProviderSubGameProviderSelect } from "../../game/providers/GameProviderSubGameProviderSelect"
 import { CurrencySelectField } from "../../currency/CurrencySelect"
 import DateTimeInput from "../../date/DateTimeInput"
 import { ConfirmText } from "../../button/ActionButtons"
 import GameStatus, { GameStatusSelectField } from "../../game/games/GameStatus"
 import { GameRoundStatusSelectField } from "../../game/round/GameRoundStatus"
-import { GameSelect } from "../../game/games/GameSelect"
+import { GameSelectField } from "../../game/games/GameSelect"
 
-//TODO: game provider id?
 export const AddGameProviderRoundDialogDisclosure = ({
   onSubmitted,
   ...props
@@ -152,6 +151,12 @@ const FormBody = ({}) => {
     control,
     name: GameProviderIdField
   })
+
+  let SubGameProviderCodeField = "subGameProviderCode"
+  let subGameProviderCode = useWatch({
+    control,
+    name: SubGameProviderCodeField
+  })
   return (
     <FieldStack paddingLeft="1.5rem" paddingRight="1.5rem" paddingBottom="1rem">
       <FieldWrapper label={<Trans zh="平台" en="Platform" />}>
@@ -171,23 +176,26 @@ const FormBody = ({}) => {
             required: true
           }}
           subGameProviderProps={{
+            name: SubGameProviderCodeField,
             required: true
           }}
         />
       </FieldWrapper>
-      <FieldStack orientation="horizontal" alignX="bottom">
-        <FieldWrapper
-          label={<Trans zh="游戏 input or select?" en="Game" />}
-          flex="1"
-        >
-          <GameSelect name="game" gameProviderId={gameProviderId} />
-        </FieldWrapper>
-        <CurrencySelectField
-          name="currencyCode"
-          label={<Trans zh="币种" en="Currency" />}
-          flex="1"
-        />
-      </FieldStack>
+      <GameSelectField
+        name="gameId"
+        gameProviderId={gameProviderId}
+        label={<Trans zh="游戏" en="Game" />}
+        filter={(game) => {
+          if (subGameProviderCode) {
+            return game.subGpCode == subGameProviderCode
+          }
+          return true
+        }}
+      />
+      <CurrencySelectField
+        name="currencyCode"
+        label={<Trans zh="币种" en="Currency" />}
+      />
       <InputField label={<Trans zh="三方訂單ID" en="External ID" />} />
       <FieldStack orientation="horizontal">
         <FieldWrapper

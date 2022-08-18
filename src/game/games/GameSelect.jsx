@@ -1,14 +1,18 @@
-import React, { useState, useEffect, useMemo, useRef } from "react"
+import React, { useState, useEffect, useMemo, useRef, forwardRef } from "react"
 import { css, Global } from "@emotion/react"
-import Select from "../../select/Select"
+import { Box, Button, Input } from "bumbag"
+import { Select, SelectField } from "../../select/Select"
 import { Locales, Trans, useTrans } from "../../i18n"
 import { useGameProviderGameList } from "./client"
+import { useFormContext } from "react-hook-form"
 
 //TODO: use react-select + virtual list?
-export const GameSelect = ({
+export const GameSelectField = ({
+  name,
   gameProviderId,
   placeholder,
   valueField = "id",
+  filter: predicate = (game) => true,
   ...props
 }) => {
   let defaultPlaceholder = useTrans({
@@ -27,16 +31,17 @@ export const GameSelect = ({
       : undefined
   )
 
-  let options = data?.items.map((item) => ({
+  let options = data?.items?.filter(predicate).map((item) => ({
     label: item.name,
     value: item[valueField]
   }))
 
   return (
-    <Select
+    <SelectField
       placeholder={placeholder}
       isLoading={isLoading}
       options={options}
+      name={name}
       {...props}
     />
   )

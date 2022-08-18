@@ -265,6 +265,7 @@ const useColumns = ({ brandId, items = [] }) => {
               value={record.firstDepositCount}
               brandId={brandId}
               agentUsername={record?.agentUserName}
+              date={record.reportDate}
               reportDate={record.reportDate}
               useFetch={useFirstDepositPlayerList}
             />
@@ -290,6 +291,7 @@ const useColumns = ({ brandId, items = [] }) => {
               value={record.noSecondDepositCount}
               brandId={brandId}
               agentUsername={record?.agentUserName}
+              date={record.reportDate}
               reportDate={record.reportDate}
               useFetch={useNoSecondDepositPlayerList}
             />
@@ -310,6 +312,7 @@ const useColumns = ({ brandId, items = [] }) => {
               value={record.depositCount}
               brandId={brandId}
               agentUsername={record?.agentUserName}
+              date={record.reportDate}
               reportDate={record.reportDate}
               useFetch={useDailyDepositPlayerList}
             />
