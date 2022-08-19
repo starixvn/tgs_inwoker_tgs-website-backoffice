@@ -133,7 +133,7 @@ const BodyContent = ({ brandId }) => {
       <Table
         columns={columns}
         data={data?.items}
-        total={data?.items?.length > 0 && data?.total}
+        total={data?.items?.length > 0 && (data?.summary ?? data?.total)}
         initialState={state}
         controlledState={state}
         pageCount={pageCount(state.pageSize, data?.totalCount)}

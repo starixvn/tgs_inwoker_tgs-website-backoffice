@@ -61,21 +61,32 @@ import { get, set } from "lodash-es"
 import Big from "big.js"
 import { useMount, useMeasure } from "react-use"
 import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { useIsActivePromotion } from "./edit"
 
 export const DepositLottery = "DepositAccumulateRoulette"
 
-export const PromotionDepositLotteryRuleSetting = ({ ...props }) => {
+export const PromotionDepositLotteryRuleSetting = ({ readOnly, ...props }) => {
+  let isActive = useIsActivePromotion()
+  readOnly = readOnly || isActive
   return (
     <FieldValues>
       <NormalLabel>
         <Trans zh="充值累計设置" en="Multi-Deposit Setting" />
       </NormalLabel>
-      <BasicSettingListDisclosure width="fit-content" {...props} />
+      <BasicSettingListDisclosure
+        readOnly={readOnly}
+        width="fit-content"
+        {...props}
+      />
 
       <NormalLabel>
         <Trans zh="轮盘设置" en="Roulette Setting" />
       </NormalLabel>
-      <RouletteSettingDisclosure width="fit-content" {...props} />
+      <RouletteSettingDisclosure
+        readOnly={readOnly}
+        width="fit-content"
+        {...props}
+      />
     </FieldValues>
   )
 }
@@ -94,17 +105,6 @@ const BasicSettingListDisclosure = ({
   let dialog = useModalState()
 
   let { control, setValue } = useFormContext()
-
-  /* TODO: how to clean up
-  useMount(() => {
-    setValue(
-      name,
-      Array.from({ length: 1 }, (x, index) => {
-        return {}
-      })
-    )
-  })
-  */
 
   let defaultValue = useWatch({
     control,
@@ -427,18 +427,6 @@ const RouletteSettingDisclosure = ({
   let dialog = useModalState()
 
   let { control, setValue } = useFormContext()
-
-  /*TODO: how to clean up
-  useMount(() => {
-    //init & reset value on mount
-    setValue(
-      name,
-      Array.from({ length: 12 }, (x, index) => {
-        return {}
-      })
-    )
-  })
-  */
 
   let defaultValue = useWatch({
     control,

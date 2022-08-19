@@ -51,7 +51,7 @@ import {
 } from "../PromotionType"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
 import { BrandGameProviderCheckboxGroupTable } from "../../game/brandproviders/BrandGameProviderCheckboxGroup"
-import { parseISO } from "date-fns"
+import { parseISO, isAfter, isBefore } from "date-fns"
 import { today } from "../../date/range"
 import { useBrandGameProviderList } from "../../game/brandproviders/client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
@@ -76,6 +76,8 @@ import { isNil, isEmpty, set } from "lodash-es"
 import { PromotionTotalFundsFieldBox } from "./PromotionTotalFundsFieldBox"
 import { PromotionGameTypeFieldBox } from "./PromotionGameTypeFieldBox"
 import { PromotionGameProviderFieldBox } from "./PromotionGameProviderFieldBox"
+import { isPromotionStatusEnabled } from "./PromotionStatus"
+import { isValidDate } from "../../date/isValidDate"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -432,6 +434,41 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
       <FormBody brandId={brandId} readOnly={true} />
     </FormDialog>
   )
+}
+
+const StatusFieldName = "status"
+const FromFieldName = "from"
+const ToFieldName = "to"
+export const useIsActivePromotion = () => {
+  let { control } = useFormContext()
+  let status = useWatch({
+    control,
+    name: StatusFieldName
+  })
+
+  let start = useWatch({
+    control,
+    name: FromFieldName
+  })
+
+  let end = useWatch({
+    control,
+    name: ToFieldName
+  })
+
+  if (!isPromotionStatusEnabled(status)) {
+    return false
+  }
+
+  if (!isValidDate(start) || !isValidDate(end)) {
+    return false
+  }
+
+  let now = new Date()
+  let isAfterStart = isAfter(now, start)
+  let isBeforeEnd = isAfter(end, now)
+
+  return isAfterStart && isBeforeEnd
 }
 
 const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
