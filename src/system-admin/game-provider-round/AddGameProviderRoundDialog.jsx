@@ -42,6 +42,8 @@ import { GameSelectField } from "../../game/games/GameSelect"
 import { useAddSystemGameRound } from "../../game/round/client"
 import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import { useBrand } from "../../merchant/platforms/client"
+import { isValidDate } from "../../date/isValidDate"
+import { min, max, endOfToday } from "date-fns"
 
 export const AddGameProviderRoundDialogDisclosure = ({
   onSubmitted,
@@ -163,13 +165,15 @@ const FormBody = ({}) => {
     control,
     name: ExternalClosedOnField
   })
-  //TODO: min & max validate
-  //TODO: max closed on?
+  let now = new Date()
+
+  //TODO: minDate & maxDate validate on DateTimeInputField
   return (
     <FieldStack paddingLeft="1.5rem" paddingRight="1.5rem" paddingBottom="1rem">
       <InputField
         name="playerCode"
         label={<Trans zh="玩家代碼" en="Player Code" />}
+        required
       />
       <FieldWrapper label={<Trans zh="游戏厂商" en="Game Provider" />}>
         <GameProviderSubGameProviderSelect
@@ -185,6 +189,7 @@ const FormBody = ({}) => {
       </FieldWrapper>
       <GameSelectField
         name="gameId"
+        required
         gameProviderId={gameProviderId}
         label={<Trans zh="游戏" en="Game" />}
         filter={(game) => {
@@ -197,51 +202,68 @@ const FormBody = ({}) => {
       <InputField
         name="externalRoundId"
         label={<Trans zh="三方訂單ID" en="External ID" />}
+        required
       />
       <FieldStack orientation="horizontal">
         <FieldWrapper
           label={<Trans zh="三方投注时间" en="External Created On" />}
         >
-          <DateTimeInput name={ExternalCreatedOnField} max={externalClosedOn} />
+          <DateTimeInput
+            name={ExternalCreatedOnField}
+            maxDate={externalClosedOn ?? now}
+            required
+          />
         </FieldWrapper>
         <FieldWrapper
           label={<Trans zh="三方结算时间" en="External Closed On" />}
         >
-          <DateTimeInput name={ExternalClosedOnField} min={externalCreatedOn} />
+          <DateTimeInput
+            name={ExternalClosedOnField}
+            minDate={externalCreatedOn}
+            maxDate={now}
+            required
+          />
         </FieldWrapper>
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="betAmount"
           label={<Trans zh="投注金额" en="Bet Amount" />}
+          required
         />
         <NumberInputField
           name="validBetAmount"
           label={<Trans zh="有效投注金额" en="Valid Bet Amount" />}
+          required
         />
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
           label={<Trans zh="结算金额" en="Settle Amount" />}
+          required
         />
         <NumberInputField
           name="commission"
           label={<Trans zh="佣金" en="Commission" />}
+          required
         />
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="turnover"
           label={<Trans zh="流水" en="CommiTurnoverssion" />}
+          required
         />
         <GameRoundStatusSelectField
           name="clientRoundStatus"
           label={<Trans zh="状态" en="Status" />}
+          required
         />
       </FieldStack>
       <NumberInputField
         name="companyWinLoss"
+        required
         label={<Trans zh="输赢金额" en="Win Loss" />}
         hint={
           <Text fontWeight="bold" color="warning">
@@ -252,7 +274,16 @@ const FormBody = ({}) => {
           </Text>
         }
       />
-      <TextareaField name="remark" label={<Trans zh="备注" en="Remark" />} />
+      <TextareaField
+        name="remark"
+        label={<Trans zh="备注" en="Remark" />}
+        transition="unset"
+        css={css`
+          textarea {
+            transition: unset;
+          }
+        `}
+      />
     </FieldStack>
   )
 }
