@@ -4,7 +4,11 @@ import { Select, SelectField } from "../select/Select"
 import { useCurrencyList } from "./client"
 import { useTrans } from "../i18n"
 
-export const CurrencySelectField = ({ placeholder, ...props }) => {
+export const CurrencySelectField = ({
+  placeholder,
+  filter: predicate = () => true,
+  ...props
+}) => {
   let defaultPlaceholder = useTrans({
     zh: "选择币种",
     en: "Select Currency"
@@ -15,7 +19,7 @@ export const CurrencySelectField = ({ placeholder, ...props }) => {
     showAll: true,
     sortby: "code"
   })
-  let options = data?.items?.map(({ code, ...item }) => ({
+  let options = data?.items?.filter(predicate)?.map(({ code, ...item }) => ({
     label: code,
     value: code
   }))

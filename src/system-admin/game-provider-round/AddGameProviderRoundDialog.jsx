@@ -36,10 +36,12 @@ import { Input, InputField } from "../../input/Input"
 import { GameProviderSubGameProviderSelect } from "../../game/providers/GameProviderSubGameProviderSelect"
 import { CurrencySelectField } from "../../currency/CurrencySelect"
 import DateTimeInput from "../../date/DateTimeInput"
-import { ConfirmText } from "../../button/ActionButtons"
-import GameStatus, { GameStatusSelectField } from "../../game/games/GameStatus"
+import { CancelText, ConfirmText, SubmitText } from "../../button/ActionButtons"
 import { GameRoundStatusSelectField } from "../../game/round/GameRoundStatus"
 import { GameSelectField } from "../../game/games/GameSelect"
+import { useAddSystemGameRound } from "../../game/round/client"
+import DateTimeRangeInput from "../../date/DateTimeRangeInput"
+import { useBrand } from "../../merchant/platforms/client"
 
 export const AddGameProviderRoundDialogDisclosure = ({
   onSubmitted,
@@ -62,16 +64,6 @@ export const AddGameProviderRoundDialogDisclosure = ({
   )
 }
 
-const useFakeFetch = () => {
-  return {
-    isLoading: false,
-    result: undefined,
-    error: undefined,
-    mutate: () => {},
-    deleteCache: () => {}
-  }
-}
-
 const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
   let title = useTrans({
     zh: "新增订单",
@@ -83,8 +75,8 @@ const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
   let confirmSubmitDialog = useModalState()
 
   let [formData, setSubmit] = useState()
-  //TODO: useFetch
-  let { isLoading, result, error, mutate, deleteCache } = useFakeFetch(formData)
+  let { isLoading, result, error, mutate, deleteCache } =
+    useAddSystemGameRound(formData)
 
   const onSubmit = (data) => {
     console.log("onSubmit > data", data)
@@ -125,6 +117,8 @@ const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
         <Backdrop {...confirmSubmitDialog}>
           <Dialog.Modal
             actionButtonsProps={{
+              submitText: <SubmitText />,
+              cancelText: <CancelText />,
               onClickSubmit: () => {
                 confirmSubmitDialog.hide()
                 formRef.current.dispatchEvent(
@@ -157,18 +151,26 @@ const FormBody = ({}) => {
     control,
     name: SubGameProviderCodeField
   })
+
+  let ExternalCreatedOnField = "externalCreatedOn"
+  let externalCreatedOn = useWatch({
+    control,
+    name: ExternalCreatedOnField
+  })
+
+  let ExternalClosedOnField = "externalClosedOn"
+  let externalClosedOn = useWatch({
+    control,
+    name: ExternalClosedOnField
+  })
+  //TODO: min & max validate
+  //TODO: max closed on?
   return (
     <FieldStack paddingLeft="1.5rem" paddingRight="1.5rem" paddingBottom="1rem">
-      <FieldWrapper label={<Trans zh="平台" en="Platform" />}>
-        <MerchantIdSelect />
-      </FieldWrapper>
-      <FieldStack orientation="horizontal">
-        <InputField name="player" label={<Trans zh="玩家" en="Player" />} />
-        <InputField
-          name="playerCode"
-          label={<Trans zh="玩家代碼" en="Player Code" />}
-        />
-      </FieldStack>
+      <InputField
+        name="playerCode"
+        label={<Trans zh="玩家代碼" en="Player Code" />}
+      />
       <FieldWrapper label={<Trans zh="游戏厂商" en="Game Provider" />}>
         <GameProviderSubGameProviderSelect
           gameProviderProps={{
@@ -192,30 +194,20 @@ const FormBody = ({}) => {
           return true
         }}
       />
-      <CurrencySelectField
-        name="currencyCode"
-        label={<Trans zh="币种" en="Currency" />}
+      <InputField
+        name="externalRoundId"
+        label={<Trans zh="三方訂單ID" en="External ID" />}
       />
-      <InputField label={<Trans zh="三方訂單ID" en="External ID" />} />
       <FieldStack orientation="horizontal">
         <FieldWrapper
           label={<Trans zh="三方投注时间" en="External Created On" />}
         >
-          <DateTimeInput name="externalCreatedOn" />
+          <DateTimeInput name={ExternalCreatedOnField} max={externalClosedOn} />
         </FieldWrapper>
         <FieldWrapper
           label={<Trans zh="三方结算时间" en="External Closed On" />}
         >
-          <DateTimeInput name="externalClosedOn" />
-        </FieldWrapper>
-      </FieldStack>
-      <Box>TODO: 平台訂單ID?</Box>
-      <FieldStack orientation="horizontal">
-        <FieldWrapper label={<Trans zh="平台投注时间" en="Created On" />}>
-          <DateTimeInput name="createdOn" />
-        </FieldWrapper>
-        <FieldWrapper label={<Trans zh="平台结算时间" en="Closed On" />}>
-          <DateTimeInput name="closedOn" />
+          <DateTimeInput name={ExternalClosedOnField} min={externalCreatedOn} />
         </FieldWrapper>
       </FieldStack>
       <FieldStack orientation="horizontal">
@@ -244,23 +236,23 @@ const FormBody = ({}) => {
           label={<Trans zh="流水" en="CommiTurnoverssion" />}
         />
         <GameRoundStatusSelectField
-          name="status"
+          name="clientRoundStatus"
           label={<Trans zh="状态" en="Status" />}
         />
       </FieldStack>
       <NumberInputField
-        name="winLoss"
+        name="companyWinLoss"
         label={<Trans zh="输赢金额" en="Win Loss" />}
         hint={
-          <Trans
-            zh="输赢金额 > 0,代表公司赢"
-            en="Win loss > 0 means company win."
-            css={css`
-              font-weight: bold;
-            `}
-          />
+          <Text fontWeight="bold" color="warning">
+            <Trans
+              zh="输赢金额 > 0,代表公司赢"
+              en="Win loss > 0 means company win."
+            />
+          </Text>
         }
       />
+      <TextareaField name="remark" label={<Trans zh="备注" en="Remark" />} />
     </FieldStack>
   )
 }

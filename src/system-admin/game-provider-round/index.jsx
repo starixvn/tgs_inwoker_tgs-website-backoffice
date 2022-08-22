@@ -227,9 +227,7 @@ const ReportContent = ({}) => {
                 [state.closedFrom, state.to]
               ]}
             />
-            {/* 
-            <AddGameProviderRoundDialogDisclosure onSubmitted={mutate} /> 
-            */}
+            <AddGameProviderRoundDialogDisclosure onSubmitted={mutate} />
           </Set>
         </Level>
       }
