@@ -113,6 +113,7 @@ export const GameRoundStatusSelect = ({
 export const GameRoundStatusSelectField = ({
   placeholder,
   options,
+  filter = defaultFilter,
   ...props
 }) => {
   let defaultPlaceholder = useTrans({
@@ -122,7 +123,7 @@ export const GameRoundStatusSelectField = ({
   placeholder = placeholder ?? defaultPlaceholder
 
   let defaultOptions = useGameRoundStatusOptions()
-  options = options ?? defaultOptions
+  options = (options ?? defaultOptions)?.filter?.(filter)
 
   return <SelectField placeholder={placeholder} options={options} {...props} />
 }

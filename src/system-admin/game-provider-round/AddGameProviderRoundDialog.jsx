@@ -37,7 +37,10 @@ import { GameProviderSubGameProviderSelect } from "../../game/providers/GameProv
 import { CurrencySelectField } from "../../currency/CurrencySelect"
 import DateTimeInput from "../../date/DateTimeInput"
 import { CancelText, ConfirmText, SubmitText } from "../../button/ActionButtons"
-import { GameRoundStatusSelectField } from "../../game/round/GameRoundStatus"
+import {
+  GameRoundStatus,
+  GameRoundStatusSelectField
+} from "../../game/round/GameRoundStatus"
 import { GameSelectField } from "../../game/games/GameSelect"
 import { useAddSystemGameRound } from "../../game/round/client"
 import DateTimeRangeInput from "../../date/DateTimeRangeInput"
@@ -257,6 +260,9 @@ const FormBody = ({}) => {
         />
         <GameRoundStatusSelectField
           name="clientRoundStatus"
+          filter={({ value }) => {
+            return value != GameRoundStatus.Open
+          }}
           label={<Trans zh="状态" en="Status" />}
           required
         />
