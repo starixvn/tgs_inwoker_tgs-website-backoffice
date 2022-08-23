@@ -15,30 +15,25 @@ const test = base.extend(Fixture)
 
 test("view player promotion list", async ({
   page,
+  platform,
   platformCode,
-  platformToken,
   player,
-  backofficeApi,
-  operatorApi
+  backofficeApi
 }) => {
-  //TODO: get brandId by api, not page
-  let brandId = await gotoPlayerListPage(page, platformCode)
   let promotion = await backofficeApi.promotion.addFirstDeposit({
-    brandId
+    brandId: platform.id
   })
 
-  const DepositAccount = "account"
   const DepositAmount = 100
-  let formId = await operatorApi.deposit.applyManualDeposit(
-    platformToken,
-    player.token,
-    {
-      account: DepositAccount,
-      amount: DepositAmount,
-      promotionid: promotion.id
-    }
-  )
-  await approveDeposit(page, platformCode, formId)
+  let formId = await backofficeApi.player.applyBankManualDepositForm({
+    brandId: platform.id,
+    playerCode: player.code,
+    amount: DepositAmount,
+    promotionId: promotion.id
+  })
+  await backofficeApi.fund.deposit.approve(formId, {
+    brandId: platform.id
+  })
 
   await gotoPlayerListPage(page, platformCode)
   await searchPlayer(page, player)

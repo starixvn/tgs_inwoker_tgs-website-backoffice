@@ -50,13 +50,6 @@ const approveDeposit = async (
       playerCode: player.code,
       amount: ExpectedDepositAmount
     })
-    /*
-    TODO: replace all operatorApi.deposit.applyManualDeposit with backofficeApi.player.applyBankManualDepositForm
-    operatorApi.deposit.applyManualDeposit(platformToken, player.token, {
-      account: DepositAccount,
-      amount: ExpectedDepositAmount
-    })
-    */
   ])
 
   let expectedBalance = playerBalance + ExpectedDepositAmount

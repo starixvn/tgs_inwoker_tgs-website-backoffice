@@ -11,22 +11,27 @@ test("marketing > player deposit report", async ({
   page,
   platform,
   platformCode,
-  platformToken,
   agent,
   player,
-  backofficeApi,
-  operatorApi
+  backofficeApi
 }) => {
   const DepositAmount = 100
 
   let [depositFormId] = await Promise.all([
+    backofficeApi.player.applyBankManualDepositForm({
+      brandId: platform.id,
+      playerCode: player.code,
+      amount: DepositAmount
+    }),
+    /*
     operatorApi.deposit.applyManualDeposit(platformToken, player.token, {
       amount: DepositAmount
     }),
+    */
     backofficeApi.player.updateInfo(player.code, {
       agentUsername: agent.username
     }),
-    gotoMarketingPlayerDepositListPage(page, platformCode)
+    gotoMarketingPlayerDepositListPage(page, platform.code)
   ])
 
   await backofficeApi.fund.deposit.approve(depositFormId, {
@@ -34,9 +39,14 @@ test("marketing > player deposit report", async ({
   })
 
   await searchAgent(page, agent)
+
+  //TOOD: fix
+  /*
+  await registerDialog(page)
+  await firstDepositDialog(page)
+  */
 })
 
-//Note. not able to search today's report
 const registerDialog = async (page) => {
   let dialogSelector = `[data-column-id="registerCount"] .bb-ModalDisclosure`
 
@@ -64,7 +74,6 @@ const registerDialog = async (page) => {
   await page.click("#close-dialog")
 }
 
-//Note. not able to search today's report
 const firstDepositDialog = async (page) => {
   let dialogSelector = `[data-column-id="firstDepositCount"] .bb-ModalDisclosure`
 

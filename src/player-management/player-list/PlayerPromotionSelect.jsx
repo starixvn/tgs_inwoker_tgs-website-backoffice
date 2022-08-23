@@ -5,7 +5,12 @@ import { useTrans, Trans, useLocale } from "../../i18n"
 import Select, { SelectField } from "../../select/Select"
 import { usePlayerPromotionList } from "./client"
 
-export const PlayerPromotionSelect = ({ brandId, playerCode, ...props }) => {
+export const PlayerPromotionSelect = ({
+  name = "promotionId",
+  brandId,
+  playerCode,
+  ...props
+}) => {
   let label = useTrans({
     zh: "活动",
     en: "Promotion"
@@ -33,6 +38,7 @@ export const PlayerPromotionSelect = ({ brandId, playerCode, ...props }) => {
 
   return (
     <SelectField
+      name={name}
       placeholder=""
       isLoading={isLoading}
       options={options}

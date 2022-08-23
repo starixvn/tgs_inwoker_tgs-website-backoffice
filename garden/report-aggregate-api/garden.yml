@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: report-aggregate-api
-image: pgtgs/report-aggregate-service:202207060628-dev # tgs-report-aggregate-service
+image: pgtgs/report-aggregate-service:202208150058-dev
 services:
   - name: report-aggregate-api
     dependencies:

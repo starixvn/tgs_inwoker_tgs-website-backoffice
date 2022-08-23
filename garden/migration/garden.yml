@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: migration
-image: pgtgs/migration:202208170215-staging
+image: tgs/migration # pgtgs/migration:202208170215-staging
 services:
   - name: migration
     dependencies:

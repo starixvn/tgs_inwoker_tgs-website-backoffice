@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-rounds
-image: pgtgs/game-gamerounds:202207220516-dev
+image: pgtgs/game-gamerounds:202208230159-dev
 services:
   - name: game-rounds
     dependencies:

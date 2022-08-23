@@ -231,11 +231,13 @@ const FormBody = ({}) => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="betAmount"
+          min={0}
           label={<Trans zh="投注金额" en="Bet Amount" />}
           required
         />
         <NumberInputField
           name="validBetAmount"
+          min={0}
           label={<Trans zh="有效投注金额" en="Valid Bet Amount" />}
           required
         />
@@ -249,6 +251,7 @@ const FormBody = ({}) => {
         <NumberInputField
           name="commission"
           label={<Trans zh="佣金" en="Commission" />}
+          min={0}
           required
         />
       </FieldStack>
@@ -256,6 +259,7 @@ const FormBody = ({}) => {
         <NumberInputField
           name="turnover"
           label={<Trans zh="流水" en="CommiTurnoverssion" />}
+          min={0}
           required
         />
         <GameRoundStatusSelectField

@@ -12,40 +12,30 @@ test.use({ timeout: 40 * SecondInMilliseconds })
 
 test("deposit and withdraw alarm on header", async ({
   page,
-  platformToken,
+  platform,
   player,
   host,
-  operatorApi
+  backofficeApi
 }) => {
   await page.goto(host, { waitUntil: "networkidle" })
   let depositAmount = 10
   let balance = await depositAlarm(
     page,
-    operatorApi,
-    platformToken,
+    backofficeApi,
+    platform,
     player,
     depositAmount
   )
 })
 
-const depositAlarm = async (
-  page,
-  operatorApi,
-  platformToken,
-  player,
-  amount
-) => {
-  const DepositAccount = "account"
+const depositAlarm = async (page, backofficeApi, platform, player, amount) => {
   const ExpectedDepositAmount = amount
 
-  let formId = await operatorApi.deposit.applyManualDeposit(
-    platformToken,
-    player.token,
-    {
-      account: DepositAccount,
-      amount: ExpectedDepositAmount
-    }
-  )
+  let formId = await backofficeApi.player.applyBankManualDepositForm({
+    brandId: platform.id,
+    playerCode: player.code,
+    amount: ExpectedDepositAmount
+  })
 
   let AlarmSelector = `#fund-deposit-notify`
   await page.waitForSelector(AlarmSelector, {
