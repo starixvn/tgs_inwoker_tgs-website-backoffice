@@ -6,16 +6,23 @@ services:
   - name: game-pluggable-service
     dependencies:
       - postgres
-      - nats
+      - game-providers
+      - cash-service
+      - game-kickplayer-server
+      - game-provider-query-server
+      - game-verification
+      - game-currency
+      - game-rounds
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
-      ConnectionStrings__NatsMQ: "nats://nats:4222"
-      Pluggable__GameProvidersBaseUrl: "http://game-providers"
-      Pluggable__CashServiceBaseUrl: "http://cash-service"
-      Pluggable__GameProviderKickPlayerServerBaseUrl: "http://game-kickplayer-server"
-      Pluggable__GameProvidersQueryServerBaseUrl: "http://game-provider-query-server"
-      Pluggable__GameVerificationBaseUrl: "http://game-verification"
-      Pluggable__GameFundTransferBaseUrl: "http://game-fund-transfer"
+      Pluggable__GameProvidersClientBaseUrl: "http://game-providers"
+      Pluggable__CashServiceClientBaseUrl: "http://cash-service"
+      Pluggable__KickPlayerServiceClientBaseUrl: "http://game-kickplayer-server"
+      Pluggable__GameProvidersQueryServerClientBaseUrl: "http://game-provider-query-server"
+      Pluggable__GameVerificationClientBaseUrl: "http://game-verification"
+      Pluggable__GameFundTransferClientBaseUrl: "http://game-fund-transfer"
+      Pluggable__GameCurrencyClientBaseUrl: "http://game-currency"
+      Pluggable__GameRoundsClientBaseUrl: "http://game-rounds"
     ingresses:
       # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 game-pluggable.localhost` to host file
       - hostname: game-pluggable.localhost

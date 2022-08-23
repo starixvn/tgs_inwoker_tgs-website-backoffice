@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: cash-service
-image: pgtgs/cashservice-api:202207110222-dev # cash/service
+image: pgtgs/cashservice-api:202208220759-dev # cash/service
 services:
   - name: cash-service
     dependencies:
