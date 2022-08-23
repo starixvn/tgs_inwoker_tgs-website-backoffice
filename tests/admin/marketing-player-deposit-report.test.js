@@ -10,23 +10,22 @@ const test = base.extend(Fixture)
 test("marketing > player deposit report", async ({
   page,
   platform,
-  platformCode,
-  platformToken,
   agent,
   player,
-  backofficeApi,
-  operatorApi
+  backofficeApi
 }) => {
   const DepositAmount = 100
 
   let [depositFormId] = await Promise.all([
-    operatorApi.deposit.applyManualDeposit(platformToken, player.token, {
+    backofficeApi.player.applyBankManualDepositForm({
+      brandId: platform.id,
+      playerCode: player.code,
       amount: DepositAmount
     }),
     backofficeApi.player.updateInfo(player.code, {
       agentUsername: agent.username
     }),
-    gotoMarketingPlayerDepositListPage(page, platformCode)
+    gotoMarketingPlayerDepositListPage(page, platform.code)
   ])
 
   await backofficeApi.fund.deposit.approve(depositFormId, {
@@ -35,7 +34,7 @@ test("marketing > player deposit report", async ({
 
   await searchAgent(page, agent)
 
-  //Note. not able to search today's report
+  //TODO: fix
   /*
   await noSecondDeposit(page)
   await firstDepositDialog(page)

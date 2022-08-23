@@ -42,6 +42,10 @@ export const Fixture = {
     let page = await context.newPage()
     use(page)
   },
+  platform: async ({ platformCode, backofficeApi }, use) => {
+    let platform = await backofficeApi.platform.getPlatform(platformCode)
+    use(platform)
+  },
   platformUser: async ({ page, platformUsername }, use) => {
     let userInfo = await loginUser(page, platformUsername)
     use(userInfo)
