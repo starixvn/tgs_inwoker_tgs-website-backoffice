@@ -83,6 +83,8 @@ export const findApplicationById = async (page, formId) => {
   ])
 }
 
+export const searchByFormId = findApplicationById
+
 export const reviewPaid = async (
   page,
   platformCode,

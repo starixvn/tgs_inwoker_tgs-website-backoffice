@@ -1,0 +1,22 @@
+kind: Module
+type: container
+name: deposit-accumulate-roulette
+image: pgtgs/promotion-deposit-accumulate-roulette:202208180608-dev
+services:
+  - name: deposit-accumulate-roulette
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - promotion-api
+      - player-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      DepositAccumulateRoulette__PromotionBaseUrl: "http://promotion-api"
+      DepositAccumulateRoulette__PlayerBaseUrl: "http://player-api"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

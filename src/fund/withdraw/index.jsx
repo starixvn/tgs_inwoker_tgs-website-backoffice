@@ -44,6 +44,7 @@ import FundWithdrawStatus, {
   FundWithdrawStatusLabel,
   FundWithdrawStatusSelect,
   isFundApproved,
+  isFundInvalid,
   isFundPaid,
   isFundUnderReview
 } from "./FundWithdrawStatus"
@@ -64,6 +65,7 @@ import { subDays, parseISO, isAfter, isSameDay, isValid, max } from "date-fns"
 import { useBrandPaymentList } from "../../system/brandpayments/client"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import { FundWithdrawPaidDialogDisclosure } from "./FundWithdrawPaid"
+import { RejectFundWithdrawDisclosure } from "./RejectFundWithdraw"
 
 export { Code }
 
@@ -611,6 +613,8 @@ const useColumns = ({
             let reviewPaid = isFundApproved(value?.status) /* &&
               manualBrandPaymentIdList.includes(brandPaymentId)
               */
+
+            let invalid = isFundInvalid(value?.status)
             return (
               <Set alignX="center">
                 {underReview && (
@@ -646,6 +650,18 @@ const useColumns = ({
                     setDelayUpdate(delayUpdate)
                   }}
                 />
+                {invalid && (
+                  <RejectFundWithdrawDisclosure
+                    id="reject-withdraw-dialog-disclosure"
+                    brandId={brandId}
+                    formId={value.id}
+                    onSubmitted={mutate}
+                    onVisibleChange={(visible) => {
+                      let delayUpdate = visible
+                      setDelayUpdate(delayUpdate)
+                    }}
+                  />
+                )}
               </Set>
             )
           }

@@ -43,7 +43,7 @@ import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
 import { PromotionDepositRuleSetting } from "./PromotionDepositRuleSetting"
 
 const DailyTurnoverRebate = "TurnoverRebate"
-const WeeklyTurnoverRebate = "WeeklyTurnoverRebate"
+const WeeklyTurnoverRebate = "TurnoverRebateWeekly"
 
 export const PromotionTurnoverRuleSetting = ({ promotionType, readOnly }) => {
   switch (promotionType) {

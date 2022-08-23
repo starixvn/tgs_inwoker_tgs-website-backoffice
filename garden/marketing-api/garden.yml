@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: marketing-api
-image: pgtgs/marketing-report-api:202208160703-dev
+image: pgtgs/marketing-report-api:202208180805-dev
 services:
   - name: marketing-api
     dependencies:

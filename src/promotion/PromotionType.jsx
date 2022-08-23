@@ -28,6 +28,32 @@ export const PromotionTypeGroup = {
   Dummy
 }
 
+export const useFindPromotionType = (promotionType) => {
+  let { isLaoding, data: groups, error } = usePromotionTypeList()
+
+  return groups?.reduce((result, group) => {
+    if (result) {
+      return result
+    }
+
+    return group?.types?.find((type) => type.name === promotionType)
+  }, undefined)
+}
+
+export const useFindPromotionTypeGroup = (promotionType) => {
+  let { isLaoding, data: groups, error } = usePromotionTypeList()
+
+  return groups?.reduce((result, group) => {
+    if (result) {
+      return result
+    }
+
+    let type = group?.types?.find((type) => type.name === promotionType)
+    return type ? group : undefined
+  }, undefined)
+}
+
+//TODO: use useFindPromotionTypeGroup
 export const usePromotionGroupLabelOf = (promotionType) => {
   let locale = useLocale()
   let { isLoading, data: groups, error } = usePromotionTypeList()
@@ -47,6 +73,7 @@ export const usePromotionGroupLabelOf = (promotionType) => {
   return group?.trans?.[locale] ?? group?.name ?? ""
 }
 
+//TODO: use useFindPromotionTypeGroup
 export const usePromotionGroupValueOf = (promotionType) => {
   let { isLoading, data: groups, error } = usePromotionTypeList()
   if (isLoading) {
@@ -65,6 +92,7 @@ export const usePromotionGroupValueOf = (promotionType) => {
   return group?.name ?? ""
 }
 
+//TODO: useFindPromotionType
 export const useSettlementIntervalType = (promotionType) => {
   let { isLoading, data: groups, error } = usePromotionTypeList()
   if (isLoading) {
@@ -88,6 +116,7 @@ export const useIsInstantlySettlementIntervalType = (promotionType) => {
   return type === "Instantly"
 }
 
+//TODO: remove
 export const findPromotionGroup = (promotionGroups = [], promotionType) => {
   return promotionGroups.reduce((result, group) => {
     if (result) {
@@ -99,6 +128,7 @@ export const findPromotionGroup = (promotionGroups = [], promotionType) => {
   }, undefined)
 }
 
+//TODO: remove
 export const findPromotionGroupValue = (
   promotionGroups = [],
   promotionType
@@ -129,6 +159,7 @@ export const PromotionTypeGroupSelect = ({ placeholder, ...props }) => {
   return <Select placeholder={placeholder} options={options} {...props} />
 }
 
+//TODO: useFindPromotionType
 export const PromotionTypeLabel = ({ value }) => {
   let locale = useLocale()
   let { isLoading, data: groups, error } = usePromotionTypeList()
@@ -183,10 +214,3 @@ export const PromotionTypeSelect = ({ placeholder, group, ...props }) => {
     />
   )
 }
-
-//TODO: design spec
-/*
-export const usePromotionTypeFields = (type) => {
-  //1. promotion type group > promotion type > fields spec
-}
-*/
