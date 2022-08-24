@@ -46,7 +46,6 @@ import {
   GamePlatformLabel,
   GamePlatformTypeSelectField
 } from "../../game/games/GamePlatform.jsx"
-import { useDropzone } from "react-dropzone"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { SubGameProviderSelectField } from "../../game/providers/SubGameProviderSelect"
