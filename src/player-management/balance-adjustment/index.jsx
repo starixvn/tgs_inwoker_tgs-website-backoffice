@@ -36,6 +36,7 @@ import { PlayerAddBalanceDisclosure } from "./PlayerAddBalance"
 import { PlayerDeductBalanceDisclosure } from "./PlayerDeductBalance"
 import { usePlayerList } from "../player-list/client"
 import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirement"
+import { PlayerBatchAddBalanceDisclosure } from "./PlayerBatchAddBalance"
 
 export { Code }
 
@@ -109,7 +110,11 @@ const BodyContent = ({ brandId = "" }) => {
             }}
             isLoading={isLoading}
           />
-          <Box></Box>
+          <Box>
+            {/* 
+            <PlayerBatchAddBalanceDisclosure /> 
+            */}
+          </Box>
         </Flex>
       }
     >

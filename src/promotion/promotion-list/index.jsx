@@ -43,6 +43,7 @@ import { SortOrder } from "../../table/order"
 import { isDev } from "../../env"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { NumberInput } from "../../input/NumberInput"
+import { isWithinRange } from "../../date/range"
 
 export { Code }
 
@@ -407,6 +408,13 @@ const useColumns = ({
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {
+            //TODO: disabled EditPromotionDisclosure: disabled={withinPromotionRange}
+            let now = new Date()
+            let withinPromotionRange = isWithinRange(now, {
+              start: record?.from,
+              end: record?.to
+            })
+
             return (
               <Set alignX="center">
                 <ViewPromotionDisclosure

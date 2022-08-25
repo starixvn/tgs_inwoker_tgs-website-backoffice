@@ -5,10 +5,11 @@ import {
   useModalState,
   Stack,
   Heading,
-  Text,
+  Button,
   Box,
   Set,
-  FieldStack
+  FieldStack,
+  FieldWrapper
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
@@ -39,26 +40,28 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
-import { useFormContext, useWatch } from "react-hook-form"
+import { useFormContext, useWatch, Controller } from "react-hook-form"
 import Input from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
 import {
   PlayerAdjustBalanceTypeSelect,
   showIncludeInNetProfitSetting
 } from "./PlayerAdjustBalanceType"
-import Checkbox from "../../checkbox"
-
+import { Switch } from "../../switch/Switch"
+import { useDropzone } from "react-dropzone"
+//TODO: use api instead of read file?
+import { read as readSpreadsheet, utils } from "xlsx"
+import { useBrandPaymentUpload } from "../../system/brandpayments/client"
 //TODO
 // 1. download btn
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
-  username,
-  playerCode,
   onSubmitted,
   ...props
 }) => {
   let dialog = useModalState()
 
+  //TODO: batch add auth
   let isDisplay = useIsDisplayMenuByRoute([Update])
   if (!isDisplay) {
     return null
@@ -67,13 +70,11 @@ export const PlayerBatchAddBalanceDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="加钱" en="Add Balance" />
+        <Trans zh="批量加钱" en="Batch Add Balance" />
       </Disclosure>
       {dialog.visible && (
         <BatchAddDialog
           brandId={brandId}
-          username={username}
-          playerCode={playerCode}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -82,20 +83,23 @@ export const PlayerBatchAddBalanceDisclosure = ({
   )
 }
 
-const BatchAddDialog = ({
-  brandId,
-  username,
-  playerCode,
-  onSubmitted,
-  dialog
-}) => {
+const useFakeFetch = () => {
+  return {
+    isLoading: false,
+    result: undefined,
+    error: undefined,
+    mutate: () => {},
+    deleteCache: () => {}
+  }
+}
+
+const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
   let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } =
-    usePlayerAdjustIncreaseBalance(playerCode, formData)
+  let { result, isLoading, error, mutate, deleteCache } = useFakeFetch(formData)
 
   let title = useTrans({
-    zh: "余额加分",
-    en: "Add Balance"
+    zh: "批量余额加分",
+    en: "Batch Add Balance"
   })
 
   const onSubmit = (data) => {
@@ -109,11 +113,9 @@ const BatchAddDialog = ({
   }
   return (
     <FormDialog
-      id="add-balance-dialog"
+      id="batch-add-balance-dialog"
       defaultValues={{
         brandId,
-        username,
-        playerCode,
         transactionType: null
       }}
       onSubmit={onSubmit}
@@ -124,14 +126,7 @@ const BatchAddDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
+      minWidth="60vw"
     >
       <FormBody />
     </FormDialog>
@@ -141,11 +136,7 @@ const BatchAddDialog = ({
 const FormBody = ({}) => {
   let { control, getValues } = useFormContext()
 
-  let [username, brandId, playerCode] = getValues([
-    "username",
-    "brandId",
-    "playerCode"
-  ])
+  let brandId = getValues("brandId")
 
   let TransactionTypeField = "transactionType"
   let transactionType = useWatch({
@@ -160,33 +151,28 @@ const FormBody = ({}) => {
   })
 
   let hasTransactionAmount = !!transactionAmount
+
+  //TODO: upload btn?
   return (
     <>
-      <FieldValues margin="1rem">
-        <Box>
-          <Trans zh="用户名" en="Username" />
-        </Box>
-        <Box alignY="center">{username}</Box>
-
-        <Box alignY="center">
-          <Trans zh="交易类型" en="Transaction Type" />
-        </Box>
-        <Set>
-          <PlayerAdjustBalanceTypeSelect
-            name={TransactionTypeField}
-            required={hasTransactionAmount}
-          />
-        </Set>
-
-        {showIncludeInNetProfitSetting(transactionType) && (
-          <>
-            <Box alignY="center">
-              <Trans zh="需算入净盈利" en="Include in Net Profit" />
-            </Box>
-            <Checkbox name="includeInNetProfit" />
-          </>
-        )}
-
+      <FieldStack margin="1rem">
+        <FieldWrapper label={<Trans zh="交易类型" en="Transaction Type" />}>
+          <Set>
+            <PlayerAdjustBalanceTypeSelect
+              name={TransactionTypeField}
+              required={hasTransactionAmount}
+            />
+            {showIncludeInNetProfitSetting(transactionType) && (
+              <Switch
+                name="includeInNetProfit"
+                label={<Trans zh="需算入净盈利" en="Include in Net Profit" />}
+              />
+            )}
+          </Set>
+        </FieldWrapper>
+        <BatchAdjustTable />
+        {/* 
+        TODO: rm
         <Box alignY="center">
           <Trans zh="交易金额" en="Amount" />
         </Box>
@@ -200,11 +186,141 @@ const FormBody = ({}) => {
         <Box alignY="center">
           <Trans zh="备注" en="Remark" />
         </Box>
-        <Input name="remark" />
-      </FieldValues>
+        <Input name="remark" /> 
+        */}
+      </FieldStack>
       <Input type="hidden" name="brandId" value={brandId} />
-      <Input type="hidden" name="username" value={username} />
-      <Input type="hidden" name="playerCode" value={playerCode} />
     </>
   )
+}
+
+const BatchAdjustTable = ({ name = "items" }) => {
+  let { control, setValue } = useFormContext()
+  //TODO
+  //2. set array list
+  //3. show table
+
+  //TODO: useWatch or useFieldArray?
+  let items = useWatch({
+    control,
+    name
+  })
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field, fieldState, formState }) => {
+        return (
+          <FieldStack>
+            <BatchAdjustTableMenuBar />
+          </FieldStack>
+        )
+      }}
+    />
+  )
+}
+
+const DefaultMaxFiles = 1
+const OneMBInBytes = 1048576
+const DefaultMaxSize = OneMBInBytes * 10 //10MB
+
+const BatchAdjustTableMenuBar = ({ name = "items" }) => {
+  let { setValue, control } = useFormContext()
+  let [formData, setFormData] = useState()
+
+  //TODO: api integration
+  let { result, isLoading, error, clearCache, deleteCache } =
+    useBrandPaymentUpload(formData)
+
+  let { getRootProps, getInputProps } = useDropzone({
+    accept: ".xlsx",
+    maxFiles: DefaultMaxFiles,
+    maxSize: DefaultMaxSize,
+    onDrop: (files = []) => {
+      let [file] = files
+      if (file) {
+        let formData = new FormData()
+        formData.append("file", file, file.name)
+        setFormData(formData)
+
+        //TODO: rm?
+        file.arrayBuffer().then((data) => {
+          let wb = readSpreadsheet(data)
+          let result = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
+          //console.log("result", result)
+        })
+      }
+    }
+  })
+
+  useEffect(() => {
+    if (Array.isArray(result?.players) && !error) {
+      //TODO: remove result?.players?.map
+      setValue(
+        name,
+        result?.players?.map((username) => {
+          return { username }
+        })
+      )
+    }
+  }, [result])
+
+  let items = useWatch({
+    control,
+    name
+  })
+
+  let columns = useColumns({ items })
+  return (
+    <>
+      <Set orientation="horizontal">
+        <Button
+          {...getRootProps({
+            refKey: "elementRef"
+          })}
+        >
+          TODO: Select File
+          <input {...getInputProps()} />
+        </Button>
+        <Button
+          use="a"
+          href="/download/payments/list.xlsx"
+          download="batch.xlsx"
+          palette="primary"
+          size="small"
+        >
+          <Trans zh="格式" en="Format" />
+        </Button>
+      </Set>
+      {items && <Table columns={columns} data={items} />}
+    </>
+  )
+}
+
+const useColumns = ({ items }) => {
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        accessor: "username",
+        Header: <Trans zh="用户名" en="Username" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "amount",
+        Header: <Trans zh="交易金额" en="Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "bucketAmount",
+        Header: <Trans zh="流水金额" en="Turnover Requirement Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "remark",
+        Header: <Trans zh="备注" en="Remark" />,
+        disableSortBy: true
+      })
+    ]
+    return columns
+  }, [JSON.stringify(items)])
 }

@@ -3,13 +3,13 @@ import { css, Global } from "@emotion/react"
 import {
   Dialog,
   useModalState,
-  Stack,
+  List,
   Heading,
   Text,
   Box,
   Set,
   FieldStack,
-  Table
+  Alert
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure from "../../dialog/Disclosure"
@@ -24,7 +24,7 @@ import {
   CloseButtonFooter,
   ConfirmButtonFooter
 } from "../../form/ConfirmButtonFooter"
-//import { Table, toApiParams, useTable, pageCount } from "../../table"
+import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentTeamContributionList } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -34,7 +34,11 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { formatDateTime, formatDayMonthYear } from "../../date/format"
+import {
+  DayMonthYearFormat,
+  formatDateTime,
+  formatDayMonthYear
+} from "../../date/format"
 import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
@@ -94,6 +98,9 @@ const ReportDialog = ({
     en: "Team Contribution Detail"
   })
 
+  let items = data?.items
+  let columns = useColumns({ items })
+
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
@@ -111,8 +118,14 @@ const ReportDialog = ({
       placement="top"
       showActionButtons={false}
       footer={<CloseButtonFooter dialog={dialog} />}
+      width="max-content"
       maxWidth="95vw"
-      maxHeight="90vh"
+      maxHeight="95vh"
+      css={css`
+        & .bb-DialogContent {
+          max-height: 80vh;
+        }
+      `}
       {...props}
     >
       <FieldStack paddingBottom="1rem">
@@ -120,37 +133,168 @@ const ReportDialog = ({
           <Trans zh="代理用户名" en="Agent Username" />
           <Text.Block alignY="center">{username}</Text.Block>
 
-          <Trans zh="分红金额" en="Profit Sharing Amount" />
+          <Trans zh="上交分紅" en="Profit Sharing Amount" />
           <Text.Block alignY="center">
             <FormattedNumberDecimal value={value} />
           </Text.Block>
         </FieldValues>
         <Separator />
-        {data?.items?.length && (
-          <Table>
-            {data?.items?.map((record) => (
-              <Row record={record} />
-            ))}
-          </Table>
-        )}
-        {!data?.items?.length && <Trans zh="查无资料" en="No Search Result" />}
+        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+          <List listStyleType="disc" listStylePosition="inside">
+            <List.Item>
+              <Trans
+                zh="公司输赢总计 = 全部的遊戲輸贏加總"
+                en="Company Total Win/Loss = Total Win/Loss of All Games"
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
+                zh="代理成本 = 紅利金額 + 優惠調帳 + 代理調帳"
+                en="Agent Cost = Bouns + Bouns Adjust + Agent Adjust"
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
+                zh="淨盈利 = 公司输赢总计 - 代理成本"
+                en="Net Profit = Company Total Win/Loss - Agent Cost"
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
+                zh="上交分红比例 = 本身分紅比例 - 下級分紅比例"
+                en="Profit Sharing Percentaget = Agent Profit Sharing Percentage - Next Level Agent Profit Sharing Percentage"
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
+                zh="上交分紅 = 淨盈利 x 上交分紅比例"
+                en="Profit Sharing Amount = Net Profit x Profit Sharing Percentaget"
+              />
+            </List.Item>
+          </List>
+        </Alert>
+        <Table
+          columns={columns}
+          isLoading={isLoading}
+          data={items}
+          foot={data?.items?.length > 0}
+        />
       </FieldStack>
     </Dialog.Modal>
   )
 }
 
-//TODO: memorize row?
-const Row = ({ record }) => {
-  let { isHead, isFoot } = record
-  if (isHead) {
-    return <HeadRow record={record} />
-  }
-  if (isFoot) {
-    return <FootRow record={record} />
-  }
-  return <RecordRow record={record} />
+const useColumns = ({ items = [] }) => {
+  //TODO: dateTimeRangeColumn: toStart, toEnd fn
+  return useMemo(() => {
+    let columns = [
+      dateTimeColumn({
+        accessor: "settlementDate",
+        dateFormat: DayMonthYearFormat,
+        timeFormat: false,
+        Header: <Trans zh="结算日期" en="Settlement Date" />,
+        Footer: () => <Trans zh="总计" en="Total" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        id: "settlementInterval",
+        accessor: (row) => row,
+        Header: <Trans zh="结算区间" en="Settlement Period" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          let format = "dd/MM/yyyy"
+          let start = formatDateTime(format, value?.settlementDateFrom)
+          let end = formatDateTime(format, value?.settlementDateTo)
+          return <Text.Block>{`${start} - ${end}`}</Text.Block>
+        }
+      }),
+      textColumn({
+        accessor: "username",
+        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "liveDealerWinLoss",
+        Header: <Trans zh="真人" en="Live Dealer" />,
+        sumColumn: "liveDealerWinLoss",
+        disableSortBy: true
+      }),
+
+      numberDecimalColumn({
+        accessor: "sportsWinLoss",
+        Header: <Trans zh="体育" en="Sports" />,
+        sumColumn: "sportsWinLoss",
+        disableSortBy: true
+      }),
+
+      numberDecimalColumn({
+        accessor: "slotWinLoss",
+        Header: <Trans zh="电子" en="EGame" />,
+        sumColumn: "slotWinLoss",
+        disableSortBy: true
+      }),
+
+      numberDecimalColumn({
+        accessor: "cardGameWinLoss",
+        Header: <Trans zh="棋牌" en="Card Game" />,
+        sumColumn: "cardGameWinLoss",
+        disableSortBy: true
+      }),
+
+      numberDecimalColumn({
+        accessor: "virtualSportsWinLoss",
+        Header: <Trans zh="虚拟体育" en="Virtual Sports" />,
+        sumColumn: "virtualSportsWinLoss",
+        disableSortBy: true
+      }),
+
+      numberDecimalColumn({
+        accessor: "lotteryWinLoss",
+        Header: <Trans zh="彩票" en="Lottery" />,
+        sumColumn: "lotteryWinLoss",
+        disableSortBy: true
+      }),
+
+      numberDecimalColumn({
+        accessor: "companyWinLossTotalAmount",
+        Header: <Trans zh="公司输赢总计" en="Company Total Win/Loss" />,
+        sumColumn: "companyWinLossTotalAmount",
+        disableSortBy: true
+      }),
+
+      numberDecimalColumn({
+        accessor: "expenditureAmount",
+        Header: <Trans zh="代理成本" en="Agent Cost" />,
+        sumColumn: "expenditureAmount",
+        disableSortBy: true
+      }),
+
+      numberDecimalColumn({
+        accessor: "netProfit",
+        Header: <Trans zh="净盈利" en="Net Profit" />,
+        sumColumn: "netProfit",
+        disableSortBy: true
+      }),
+
+      numberDecimalPercentageColumn({
+        accessor: "agentDividendPercentage",
+        Header: <Trans zh="上交分紅比例" en="Profit Sharing Percentaget" />,
+        disableSortBy: true
+      }),
+
+      numberDecimalColumn({
+        accessor: "agentDividendAmount",
+        Header: <Trans zh="上交分紅" en="Profit Sharing Amount" />,
+        sumColumn: "agentDividendAmount",
+        disableSortBy: true
+      })
+    ]
+    return columns
+  }, [JSON.stringify(items)])
 }
 
+//TODO: rm
+/*
 const HeadRow = ({ record }) => {
   let payoutAmountTooltip = useTrans({
     zh: "紅利金額(活動 + VIP返水) + 調帳",
@@ -288,3 +432,4 @@ const FootRow = ({ record }) => {
     </Table.Row>
   )
 }
+*/
