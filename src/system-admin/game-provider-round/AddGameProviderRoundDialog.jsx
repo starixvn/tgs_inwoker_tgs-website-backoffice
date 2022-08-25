@@ -32,16 +32,22 @@ import clone from "clone-deep"
 import Backdrop from "../../dialog/Backdrop"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
-import { InputField } from "../../input/Input"
+import { Input, InputField } from "../../input/Input"
 import { GameProviderSubGameProviderSelect } from "../../game/providers/GameProviderSubGameProviderSelect"
 import { CurrencySelectField } from "../../currency/CurrencySelect"
 import DateTimeInput from "../../date/DateTimeInput"
-import { ConfirmText } from "../../button/ActionButtons"
-import GameStatus, { GameStatusSelectField } from "../../game/games/GameStatus"
-import { GameRoundStatusSelectField } from "../../game/round/GameRoundStatus"
-import { GameSelect } from "../../game/games/GameSelect"
+import { CancelText, ConfirmText, SubmitText } from "../../button/ActionButtons"
+import {
+  GameRoundStatus,
+  GameRoundStatusSelectField
+} from "../../game/round/GameRoundStatus"
+import { GameSelectField } from "../../game/games/GameSelect"
+import { useAddSystemGameRound } from "../../game/round/client"
+import DateTimeRangeInput from "../../date/DateTimeRangeInput"
+import { useBrand } from "../../merchant/platforms/client"
+import { isValidDate } from "../../date/isValidDate"
+import { min, max, endOfToday } from "date-fns"
 
-//TODO: game provider id?
 export const AddGameProviderRoundDialogDisclosure = ({
   onSubmitted,
   ...props
@@ -63,16 +69,6 @@ export const AddGameProviderRoundDialogDisclosure = ({
   )
 }
 
-const useFakeFetch = () => {
-  return {
-    isLoading: false,
-    result: undefined,
-    error: undefined,
-    mutate: () => {},
-    deleteCache: () => {}
-  }
-}
-
 const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
   let title = useTrans({
     zh: "新增订单",
@@ -84,8 +80,8 @@ const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
   let confirmSubmitDialog = useModalState()
 
   let [formData, setSubmit] = useState()
-  //TODO: useFetch
-  let { isLoading, result, error, mutate, deleteCache } = useFakeFetch(formData)
+  let { isLoading, result, error, mutate, deleteCache } =
+    useAddSystemGameRound(formData)
 
   const onSubmit = (data) => {
     console.log("onSubmit > data", data)
@@ -126,6 +122,8 @@ const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
         <Backdrop {...confirmSubmitDialog}>
           <Dialog.Modal
             actionButtonsProps={{
+              submitText: <SubmitText />,
+              cancelText: <CancelText />,
               onClickSubmit: () => {
                 confirmSubmitDialog.hide()
                 formRef.current.dispatchEvent(
@@ -152,18 +150,34 @@ const FormBody = ({}) => {
     control,
     name: GameProviderIdField
   })
+
+  let SubGameProviderCodeField = "subGameProviderCode"
+  let subGameProviderCode = useWatch({
+    control,
+    name: SubGameProviderCodeField
+  })
+
+  let ExternalCreatedOnField = "externalCreatedOn"
+  let externalCreatedOn = useWatch({
+    control,
+    name: ExternalCreatedOnField
+  })
+
+  let ExternalClosedOnField = "externalClosedOn"
+  let externalClosedOn = useWatch({
+    control,
+    name: ExternalClosedOnField
+  })
+  let now = new Date()
+
+  //TODO: minDate & maxDate validate on DateTimeInputField
   return (
     <FieldStack paddingLeft="1.5rem" paddingRight="1.5rem" paddingBottom="1rem">
-      <FieldWrapper label={<Trans zh="平台" en="Platform" />}>
-        <MerchantIdSelect />
-      </FieldWrapper>
-      <FieldStack orientation="horizontal">
-        <InputField name="player" label={<Trans zh="玩家" en="Player" />} />
-        <InputField
-          name="playerCode"
-          label={<Trans zh="玩家代碼" en="Player Code" />}
-        />
-      </FieldStack>
+      <InputField
+        name="playerCode"
+        label={<Trans zh="玩家代碼" en="Player Code" />}
+        required
+      />
       <FieldWrapper label={<Trans zh="游戏厂商" en="Game Provider" />}>
         <GameProviderSubGameProviderSelect
           gameProviderProps={{
@@ -171,87 +185,114 @@ const FormBody = ({}) => {
             required: true
           }}
           subGameProviderProps={{
+            name: SubGameProviderCodeField,
             required: true
           }}
         />
       </FieldWrapper>
-      <FieldStack orientation="horizontal" alignX="bottom">
-        <FieldWrapper
-          label={<Trans zh="游戏 input or select?" en="Game" />}
-          flex="1"
-        >
-          <GameSelect name="game" gameProviderId={gameProviderId} />
-        </FieldWrapper>
-        <CurrencySelectField
-          name="currencyCode"
-          label={<Trans zh="币种" en="Currency" />}
-          flex="1"
-        />
-      </FieldStack>
-      <InputField label={<Trans zh="三方訂單ID" en="External ID" />} />
+      <GameSelectField
+        name="gameId"
+        required
+        gameProviderId={gameProviderId}
+        label={<Trans zh="游戏" en="Game" />}
+        filter={(game) => {
+          if (subGameProviderCode) {
+            return game.subGpCode == subGameProviderCode
+          }
+          return true
+        }}
+      />
+      <InputField
+        name="externalRoundId"
+        label={<Trans zh="三方訂單ID" en="External ID" />}
+        required
+      />
       <FieldStack orientation="horizontal">
         <FieldWrapper
           label={<Trans zh="三方投注时间" en="External Created On" />}
         >
-          <DateTimeInput name="externalCreatedOn" />
+          <DateTimeInput
+            name={ExternalCreatedOnField}
+            maxDate={externalClosedOn ?? now}
+            required
+          />
         </FieldWrapper>
         <FieldWrapper
           label={<Trans zh="三方结算时间" en="External Closed On" />}
         >
-          <DateTimeInput name="externalClosedOn" />
-        </FieldWrapper>
-      </FieldStack>
-      <Box>TODO: 平台訂單ID?</Box>
-      <FieldStack orientation="horizontal">
-        <FieldWrapper label={<Trans zh="平台投注时间" en="Created On" />}>
-          <DateTimeInput name="createdOn" />
-        </FieldWrapper>
-        <FieldWrapper label={<Trans zh="平台结算时间" en="Closed On" />}>
-          <DateTimeInput name="closedOn" />
+          <DateTimeInput
+            name={ExternalClosedOnField}
+            minDate={externalCreatedOn}
+            maxDate={now}
+            required
+          />
         </FieldWrapper>
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="betAmount"
+          min={0}
           label={<Trans zh="投注金额" en="Bet Amount" />}
+          required
         />
         <NumberInputField
           name="validBetAmount"
+          min={0}
           label={<Trans zh="有效投注金额" en="Valid Bet Amount" />}
+          required
         />
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
           label={<Trans zh="结算金额" en="Settle Amount" />}
+          required
         />
         <NumberInputField
           name="commission"
           label={<Trans zh="佣金" en="Commission" />}
+          min={0}
+          required
         />
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="turnover"
           label={<Trans zh="流水" en="CommiTurnoverssion" />}
+          min={0}
+          required
         />
         <GameRoundStatusSelectField
-          name="status"
+          name="clientRoundStatus"
+          filter={({ value }) => {
+            return value != GameRoundStatus.Open
+          }}
           label={<Trans zh="状态" en="Status" />}
+          required
         />
       </FieldStack>
       <NumberInputField
-        name="winLoss"
+        name="companyWinLoss"
+        required
         label={<Trans zh="输赢金额" en="Win Loss" />}
         hint={
-          <Trans
-            zh="输赢金额 > 0,代表公司赢"
-            en="Win loss > 0 means company win."
-            css={css`
-              font-weight: bold;
-            `}
-          />
+          <Text fontWeight="bold" color="warning">
+            <Trans
+              zh="输赢金额 > 0,代表公司赢"
+              en="Win loss > 0 means company win."
+            />
+          </Text>
         }
+      />
+      <TextareaField
+        name="remark"
+        label={<Trans zh="备注" en="Remark" />}
+        transition="unset"
+        css={css`
+          textarea {
+            transition: unset;
+          }
+        `}
       />
     </FieldStack>
   )

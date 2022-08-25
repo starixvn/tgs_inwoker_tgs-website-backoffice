@@ -41,15 +41,24 @@ loader.config({
   paths: ConfigPaths
 })
 
-export const GameRoundDialogDisclosure = ({ label, record, ...props }) => {
+export const GameRoundDialogDisclosure = ({
+  id,
+  dialogId,
+  label,
+  record,
+  ...props
+}) => {
   let dialog = useModalState()
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         {label}
       </Disclosure>
-      {dialog.visible && <GameRoundDialog record={record} dialog={dialog} />}
+      {dialog.visible && (
+        <GameRoundDialog record={record} dialog={dialog} dialogId={dialogId} />
+      )}
     </>
   )
 }
@@ -57,6 +66,7 @@ export const GameRoundDialogDisclosure = ({ label, record, ...props }) => {
 export const GameRoundDialog = ({
   record = {},
   dialog,
+  dialogId = "game-round-dialog",
   hideBackdrop,
   ...props
 }) => {
@@ -87,7 +97,7 @@ export const GameRoundDialog = ({
 
   return (
     <Dialog.Modal
-      id="game-round-dialog"
+      id={dialogId}
       title={title}
       showCloseButton
       hideOnClickOutside={false}

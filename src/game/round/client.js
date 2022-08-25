@@ -54,3 +54,8 @@ export const systemGameRoundListDownloadUrl = (searchParams) => {
     : ""
   return url
 }
+
+export const useAddSystemGameRound = (data) => {
+  let url = data ? `${API}/system/addround` : ""
+  return usePutData(url, data)
+}

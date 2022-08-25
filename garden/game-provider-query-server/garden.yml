@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-provider-query-server
-image: pgtgs/game-gameprovider-queryserver:202207210807-dev # game/gameprovider-queryserver
+image: pgtgs/game-gameprovider-queryserver:202208160858-dev
 services:
   - name: game-provider-query-server
     dependencies:

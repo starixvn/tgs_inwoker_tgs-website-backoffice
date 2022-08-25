@@ -20,6 +20,8 @@ const DisabledTrans = {
   en: "Disabled"
 }
 
+export const isPromotionStatusEnabled = (value) => value === Enabled
+
 export const PromotionStatusSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTrans({
     zh: "状态",

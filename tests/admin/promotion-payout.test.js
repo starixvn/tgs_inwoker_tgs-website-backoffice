@@ -14,20 +14,13 @@ const { lorem } = faker
 test("promotion payout list", async ({
   page,
   platformCode,
-  platformToken,
+  platform,
   player,
-  operatorApi
+  backofficeApi
 }) => {
   let promotion = await addDepositPromotion(page, platformCode)
   let promotionid = await findPromotionId(page, promotion)
-  await approveDeposit(
-    page,
-    operatorApi,
-    platformCode,
-    platformToken,
-    player,
-    promotionid
-  )
+  await approveDeposit(page, backofficeApi, platform, player, promotionid)
   await checkAutoPayoutPromotion(page, platformCode, player)
 
   //TODO: other promotion type that use auto payout
@@ -211,26 +204,22 @@ const addDepositPromotion = async (page, platformCode) => {
 //TODO: use backofficeApi instead
 const approveDeposit = async (
   page,
-  operatorApi,
-  platformCode,
-  platformToken,
+  backofficeApi,
+  platform,
   player,
-  promotionid,
+  promotionId,
   deposit = 10
 ) => {
-  const DepositAccount = "account"
   const ExpectedDepositAmount = deposit
-  let formId = await operatorApi.deposit.applyManualDeposit(
-    platformToken,
-    player.token,
-    {
-      account: DepositAccount,
+  let [formId] = await Promise.all([
+    backofficeApi.player.applyBankManualDepositForm({
+      brandId: platform.id,
+      playerCode: player.code,
       amount: ExpectedDepositAmount,
-      promotionid
-    }
-  )
-
-  await gotoFundDepositPage(page, platformCode)
+      promotionId
+    }),
+    gotoFundDepositPage(page, platform.code)
+  ])
 
   await page.fill(`input[name="id"]`, formId)
   await Promise.all([
@@ -243,8 +232,7 @@ const approveDeposit = async (
   ])
 
   let VerifyDialogSelector = `#verify-deposit-dialog`
-  await page.click(`${VerifyDialogSelector}-disclosure`)
-  await page.waitForSelector(VerifyDialogSelector)
+  await openDialog(page, VerifyDialogSelector)
   await Promise.all([
     page.waitForResponse((response) => {
       return response.url().endsWith(`/api/deposit/${formId}`)

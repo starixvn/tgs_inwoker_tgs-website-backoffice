@@ -4,7 +4,6 @@ import { expect } from "chai"
 import numeral from "numeral"
 import faker from "@faker-js/faker"
 import { selectPlatformByCode } from "../page/content.js"
-// import { manualDeposit, applyManualDepositForm } from "../player.js"
 import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
@@ -13,6 +12,8 @@ const { finance } = faker
 test("approve player deposit", async ({
   page,
   operatorApi,
+  backofficeApi,
+  platform,
   platformCode,
   platformToken,
   player
@@ -21,6 +22,8 @@ test("approve player deposit", async ({
   let balance = await approveDeposit(
     page,
     operatorApi,
+    backofficeApi,
+    platform,
     platformCode,
     platformToken,
     player,
@@ -31,18 +34,20 @@ test("approve player deposit", async ({
 const approveDeposit = async (
   page,
   operatorApi,
+  backofficeApi,
+  platform,
   platformCode,
   platformToken,
   player,
   deposit
 ) => {
-  const DepositAccount = "account"
   const ExpectedDepositAmount = deposit
   let [brandId, playerBalance, formId] = await Promise.all([
     gotoFundDepositPage(page, platformCode),
     operatorApi.wallet(platformToken, player.token),
-    operatorApi.deposit.applyManualDeposit(platformToken, player.token, {
-      account: DepositAccount,
+    backofficeApi.player.applyBankManualDepositForm({
+      brandId: platform.id,
+      playerCode: player.code,
       amount: ExpectedDepositAmount
     })
   ])

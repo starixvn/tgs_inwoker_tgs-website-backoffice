@@ -19,20 +19,37 @@ import { TransactionTypeLabel } from "../../platform-report/balance-change-repor
 import textColumn from "../../table/column/textColumn"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 
-export const GameActionDialogDisclosure = ({ roundId, ...props }) => {
+export const GameActionDialogDisclosure = ({
+  roundId,
+  id,
+  dialogId,
+  ...props
+}) => {
   let dialog = useModalState()
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         <Trans zh="游戏纪录" en="Game Record" />
       </Disclosure>
-      {dialog.visible && <GameActionDialog roundId={roundId} dialog={dialog} />}
+      {dialog.visible && (
+        <GameActionDialog
+          roundId={roundId}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
+      )}
     </>
   )
 }
 
-export const GameActionDialog = ({ roundId, dialog, ...props }) => {
+export const GameActionDialog = ({
+  roundId,
+  dialog,
+  dialogId = "game-action-dialog",
+  ...props
+}) => {
   let title = useTrans({
     zh: "游戏纪录",
     en: "Game Record"
@@ -56,7 +73,7 @@ export const GameActionDialog = ({ roundId, dialog, ...props }) => {
 
   return (
     <Dialog.Modal
-      id="game-action-dialog"
+      id={dialogId}
       title={title}
       showCloseButton
       hideOnClickOutside={false}
