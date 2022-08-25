@@ -415,30 +415,6 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         sumColumn: "netProfit",
         Header: <Trans zh="净盈利" en="Net Profit" />,
         disableSortBy: true
-      }),
-      numberDecimalColumn({
-        id: "agentDividendAmount",
-        accessor: (row) => row,
-        sumColumn: "agentDividendAmount",
-        toValue: (row) => row?.agentDividendAmount,
-        Header: <ProfitSharingAmountHeader />,
-        TotalCell: ({ value }) => (
-          <FormattedNumber value={value} format="0,0.00" digits={2} />
-        ),
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          return (
-            <AgentBonusDetailDialogDisclosure
-              brandId={brandId}
-              agentId={value?.id}
-              start={start}
-              end={end}
-              username={value?.username}
-              value={value?.agentDividendAmount}
-              use={Link}
-            />
-          )
-        }
       })
     ]
 
@@ -469,6 +445,30 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
                 end={end}
                 username={value?.username}
                 value={value?.fromTeamAgentDividendAmount}
+                use={Link}
+              />
+            )
+          }
+        }),
+        numberDecimalColumn({
+          id: "agentDividendAmount",
+          accessor: (row) => row,
+          sumColumn: "agentDividendAmount",
+          toValue: (row) => row?.agentDividendAmount,
+          Header: <ProfitSharingAmountHeader />,
+          TotalCell: ({ value }) => (
+            <FormattedNumber value={value} format="0,0.00" digits={2} />
+          ),
+          disableSortBy: true,
+          Cell: ({ value }) => {
+            return (
+              <AgentBonusDetailDialogDisclosure
+                brandId={brandId}
+                agentId={value?.id}
+                start={start}
+                end={end}
+                username={value?.username}
+                value={value?.agentDividendAmount}
                 use={Link}
               />
             )
