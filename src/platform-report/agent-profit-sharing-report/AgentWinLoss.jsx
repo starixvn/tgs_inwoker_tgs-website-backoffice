@@ -85,6 +85,7 @@ const ReportDialog = ({
     showAll: true
   })
 
+  //TODO: remove startOfPreviousDay(start) > start, align with api change
   let { isLoading, data, error, mutate, deleteCache } = useAgentWinLossList(
     agentId,
     {

@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useRef } from "react"
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useLayoutEffect
+} from "react"
 import { css, Global } from "@emotion/react"
 import {
   Dialog,
@@ -9,7 +15,10 @@ import {
   Box,
   Set,
   FieldStack,
-  Alert
+  Alert,
+  Popover,
+  Icon,
+  Level
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure from "../../dialog/Disclosure"
@@ -125,6 +134,9 @@ const ReportDialog = ({
         & .bb-DialogContent {
           max-height: 80vh;
         }
+        & .bb-DialogClose {
+          z-index: 2;
+        }
       `}
       {...props}
     >
@@ -138,8 +150,7 @@ const ReportDialog = ({
             <FormattedNumberDecimal value={value} />
           </Text.Block>
         </FieldValues>
-        <Separator />
-        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+        <Alert variant="bordered" type="info" marginBottom="2.5rem">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
               <Trans
@@ -178,6 +189,11 @@ const ReportDialog = ({
           isLoading={isLoading}
           data={items}
           foot={data?.items?.length > 0}
+          stickyHead
+          containerProps={{
+            maxHeight: "72vh",
+            overflow: "auto"
+          }}
         />
       </FieldStack>
     </Dialog.Modal>
@@ -194,6 +210,9 @@ const useColumns = ({ items = [] }) => {
         timeFormat: false,
         Header: <Trans zh="结算日期" en="Settlement Date" />,
         Footer: () => <Trans zh="总计" en="Total" />,
+        footerCellProps: {
+          textAlign: "center"
+        },
         disableSortBy: true
       }),
       textColumn({
@@ -257,7 +276,24 @@ const useColumns = ({ items = [] }) => {
 
       numberDecimalColumn({
         accessor: "companyWinLossTotalAmount",
-        Header: <Trans zh="公司输赢总计" en="Company Total Win/Loss" />,
+        Header: (
+          <Box>
+            <Trans zh="公司输赢总计" en="Company Total Win/Loss" />
+            {/* 
+            <Popover.State>
+              <Popover.Disclosure>
+                <Icon icon="info-circle" color="info" />
+              </Popover.Disclosure>
+              <Popover hasArrow>
+                <Trans
+                  zh="公司输赢总计 = 全部的遊戲輸贏加總"
+                  en="Company Total Win/Loss = Total Win/Loss of All Games"
+                />
+              </Popover>
+            </Popover.State> 
+            */}
+          </Box>
+        ),
         sumColumn: "companyWinLossTotalAmount",
         disableSortBy: true
       }),
