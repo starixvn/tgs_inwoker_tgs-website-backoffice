@@ -12,7 +12,8 @@ import {
   Dialog,
   Card,
   List,
-  Level
+  Level,
+  Tabs
 } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
@@ -23,7 +24,6 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { Code } from "./menu"
-import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Trans, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
@@ -37,7 +37,6 @@ import { useChangeBrandPaymentOrders, useBrandPaymentList } from "./client"
 import { View as ViewMenu, Update as UpdateMenu } from "./menu"
 import { Detail as ConditionDetail } from "./condition"
 import { AddBrandPaymentButton, EditButton } from "./edit"
-import { EditButton as FeeEditButton } from "./handlingfee"
 import { ViewButton as LogsButton } from "./logs"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Alert, { AlertDialog } from "../../dialog/Alert"
@@ -80,40 +79,32 @@ const Body = () => {
 
 const BodyContent = ({ brandId }) => {
   const DefaultTransferType = TransferType.Deposit
+  const [transferType, setTransferType] = React.useState(DefaultTransferType)
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     paymentStatus: null,
-    keyword: "",
-    transferType: DefaultTransferType
+    keyword: ""
   })
 
-  let { transferType } = state
   let { isLoading, data, error, mutate, deleteCache } = useBrandPaymentList({
     ...toApiParams(state),
+    transferType,
     sortby: "number"
-  })
-
-  let tab = useTabState({
-    selectedId: transferType
   })
 
   useEffect(() => {
     setState({
       pageIndex: 0,
-      brandId,
-      transferType: DefaultTransferType,
-      paymentStatus: "",
-      keyword: ""
+      brandId
     })
   }, [brandId])
 
   const activeTab = (newTransferType) => () => {
+    setTransferType(newTransferType)
     setState({
-      pageIndex: 0,
-      paymentStatus: "",
-      keyword: "",
-      transferType: newTransferType
+      pageIndex: 0
     })
+    deleteCache()
     mutate(null)
   }
 
@@ -138,51 +129,45 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      <Tabs>
-        <TabList>
-          <Tab
+      <Tabs selectedId={transferType}>
+        <Tabs.List>
+          <Tabs.Tab
             tabId={TransferType.Deposit}
             onClick={activeTab(TransferType.Deposit)}
-            {...tab}
           >
             <Trans zh="存款" en="Deposit" />
-          </Tab>
-          <Tab
+          </Tabs.Tab>
+          <Tabs.Tab
             tabId={TransferType.Withdrawal}
             onClick={activeTab(TransferType.Withdrawal)}
-            {...tab}
           >
             <Trans zh="提款" en="Withdrawal" />
-          </Tab>
-        </TabList>
-        <TabPanel tabId={TransferType.Deposit} {...tab}>
-          {transferType === TransferType.Deposit && (
-            <DataTable
-              state={state}
-              data={data}
-              setPageIndex={setPageIndex}
-              setSortOrder={setSortOrder}
-              transferType={transferType}
-              mutate={mutate}
-              isLoading={isLoading}
-              brandId={brandId}
-            />
-          )}
-        </TabPanel>
-        <TabPanel tabId={TransferType.Withdrawal} {...tab}>
-          {transferType === TransferType.Withdrawal && (
-            <DataTable
-              state={state}
-              data={data}
-              setPageIndex={setPageIndex}
-              setSortOrder={setSortOrder}
-              transferType={transferType}
-              mutate={mutate}
-              isLoading={isLoading}
-              brandId={brandId}
-            />
-          )}
-        </TabPanel>
+          </Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel tabId={TransferType.Deposit} paddingTop="1rem">
+          <DataTable
+            state={state}
+            data={data}
+            setPageIndex={setPageIndex}
+            setSortOrder={setSortOrder}
+            transferType={transferType}
+            mutate={mutate}
+            isLoading={isLoading}
+            brandId={brandId}
+          />
+        </Tabs.Panel>
+        <Tabs.Panel tabId={TransferType.Withdrawal} paddingTop="1rem">
+          <DataTable
+            state={state}
+            data={data}
+            setPageIndex={setPageIndex}
+            setSortOrder={setSortOrder}
+            transferType={transferType}
+            mutate={mutate}
+            isLoading={isLoading}
+            brandId={brandId}
+          />
+        </Tabs.Panel>
       </Tabs>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
