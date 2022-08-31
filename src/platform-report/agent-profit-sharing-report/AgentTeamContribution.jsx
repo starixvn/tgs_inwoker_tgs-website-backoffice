@@ -18,7 +18,8 @@ import {
   Alert,
   Popover,
   Icon,
-  Level
+  Level,
+  Button
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure from "../../dialog/Disclosure"
@@ -141,49 +142,58 @@ const ReportDialog = ({
       {...props}
     >
       <FieldStack paddingBottom="1rem">
-        <FieldValues marginLeft="1rem">
-          <Trans zh="代理用户名" en="Agent Username" />
-          <Text.Block alignY="center">{username}</Text.Block>
+        <Popover.State>
+          <Popover.Disclosure use={Button} palette="primary" variant="outlined">
+            <Icon icon="info-circle" color="info" />
+          </Popover.Disclosure>
+          <Popover hasArrow>
+            <FieldStack>
+              <FieldValues marginLeft="1rem">
+                <Trans zh="代理用户名" en="Agent Username" />
+                <Text.Block alignY="center">{username}</Text.Block>
 
-          <Trans zh="上交分紅" en="Profit Sharing Amount" />
-          <Text.Block alignY="center">
-            <FormattedNumberDecimal value={value} />
-          </Text.Block>
-        </FieldValues>
-        <Alert variant="bordered" type="info" marginBottom="2.5rem">
-          <List listStyleType="disc" listStylePosition="inside">
-            <List.Item>
-              <Trans
-                zh="公司输赢总计 = 全部的遊戲輸贏加總"
-                en="Company Total Win/Loss = Total Win/Loss of All Games"
-              />
-            </List.Item>
-            <List.Item>
-              <Trans
-                zh="代理成本 = 紅利金額 + 優惠調帳 + 代理調帳"
-                en="Agent Cost = Bouns + Bouns Adjust + Agent Adjust"
-              />
-            </List.Item>
-            <List.Item>
-              <Trans
-                zh="淨盈利 = 公司输赢总计 - 代理成本"
-                en="Net Profit = Company Total Win/Loss - Agent Cost"
-              />
-            </List.Item>
-            <List.Item>
-              <Trans
-                zh="上交分红比例 = 本身分紅比例 - 下級分紅比例"
-                en="Profit Sharing Percentaget = Agent Profit Sharing Percentage - Next Level Agent Profit Sharing Percentage"
-              />
-            </List.Item>
-            <List.Item>
-              <Trans
-                zh="上交分紅 = 淨盈利 x 上交分紅比例"
-                en="Profit Sharing Amount = Net Profit x Profit Sharing Percentaget"
-              />
-            </List.Item>
-          </List>
-        </Alert>
+                <Trans zh="上交分紅" en="Profit Sharing Amount" />
+                <Text.Block alignY="center">
+                  <FormattedNumberDecimal value={value} />
+                </Text.Block>
+              </FieldValues>
+              <Alert variant="bordered" type="info" marginBottom="2.5rem">
+                <List listStyleType="disc" listStylePosition="inside">
+                  <List.Item>
+                    <Trans
+                      zh="公司输赢总计 = 全部的遊戲輸贏加總"
+                      en="Company Total Win/Loss = Total Win/Loss of All Games"
+                    />
+                  </List.Item>
+                  <List.Item>
+                    <Trans
+                      zh="代理成本 = 紅利金額 + 優惠調帳 + 代理調帳"
+                      en="Agent Cost = Bouns + Bouns Adjust + Agent Adjust"
+                    />
+                  </List.Item>
+                  <List.Item>
+                    <Trans
+                      zh="淨盈利 = 公司输赢总计 - 代理成本"
+                      en="Net Profit = Company Total Win/Loss - Agent Cost"
+                    />
+                  </List.Item>
+                  <List.Item>
+                    <Trans
+                      zh="上交分红比例 = 本身分紅比例 - 下級分紅比例"
+                      en="Profit Sharing Percentaget = Agent Profit Sharing Percentage - Next Level Agent Profit Sharing Percentage"
+                    />
+                  </List.Item>
+                  <List.Item>
+                    <Trans
+                      zh="上交分紅 = 淨盈利 x 上交分紅比例"
+                      en="Profit Sharing Amount = Net Profit x Profit Sharing Percentaget"
+                    />
+                  </List.Item>
+                </List>
+              </Alert>
+            </FieldStack>
+          </Popover>
+        </Popover.State>
         <Table
           columns={columns}
           isLoading={isLoading}
@@ -279,19 +289,6 @@ const useColumns = ({ items = [] }) => {
         Header: (
           <Box>
             <Trans zh="公司输赢总计" en="Company Total Win/Loss" />
-            {/* 
-            <Popover.State>
-              <Popover.Disclosure>
-                <Icon icon="info-circle" color="info" />
-              </Popover.Disclosure>
-              <Popover hasArrow>
-                <Trans
-                  zh="公司输赢总计 = 全部的遊戲輸贏加總"
-                  en="Company Total Win/Loss = Total Win/Loss of All Games"
-                />
-              </Popover>
-            </Popover.State> 
-            */}
           </Box>
         ),
         sumColumn: "companyWinLossTotalAmount",
