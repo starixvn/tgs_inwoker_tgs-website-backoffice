@@ -152,15 +152,13 @@ const EditDialog = ({
     mutatePlatformPayment(null, false)
     deletePlatformPaymentCache()
   }
-  // extendedData = parseJSON(extendedData)
-  console.log("record?.extendedData", record?.extendedData)
+
   return (
     <FormDialog
       defaultValues={clone(record)}
       /*
       defaultValues={clone({
         ...record,
-        extendedData,
         reason: ""
       })}
       */
@@ -289,8 +287,10 @@ const usePlatformPayment = (platformPaymentId) => {
     deleteCache: deletePaymentMethodChannelListCache
   } = usePaymentMethodChannelList()
 
-  let paymentName = paymentListData?.find(({ id }) => id === record?.paymentId)
-  console.log("paymentName", paymentName)
+  let paymentCode = paymentListData?.find(
+    ({ id }) => id === record?.paymentId
+  )?.code
+
   let manualPayment = paymentListData?.find(({ code }) => code === "Manual")
 
   let manualPaymentMethodChannelList =
@@ -311,7 +311,7 @@ const usePlatformPayment = (platformPaymentId) => {
       isLoadingPlatformPayment ||
       isLoadingPaymentList ||
       isLoadingBrandPaymentMethodChannelList,
-    record: { ...clone(record), paymentName },
+    record: { ...clone(record), paymentCode },
     manualPayment,
     manualPaymentMethodList,
     manualPaymentMethodChannelList,
@@ -370,7 +370,7 @@ const AddDialog = ({
   return (
     <FormDialog
       defaultValues={{
-        paymentName: ManualCode,
+        paymentCode: ManualCode,
         transferType,
         paymentStatus: BrandPaymentStatus.Enabled,
         paymentMethodId:
@@ -445,7 +445,7 @@ const EditBody = ({
 }) => {
   let { setValue, getValues, control } = useFormContext()
 
-  const paymentName = getValues("paymentName")
+  const paymentCode = getValues("paymentCode")
   const TransferLimitToFieldName = "transferLimitTo"
   let transferLimitTo = useWatch({
     name: TransferLimitToFieldName,
@@ -495,7 +495,7 @@ const EditBody = ({
 
   let manualPaymentMethodIdList = manualPaymentMethodList?.map(({ id }) => id)
 
-  let isManualPaymentProvider = paymentName == ManualCode
+  let isManualPaymentProvider = paymentCode == ManualCode
   let isManualPaymentProviderMethod =
     isManualPaymentProvider &&
     manualPaymentMethodIdList?.includes(paymentMethodId)
@@ -599,7 +599,7 @@ const EditBody = ({
 
               <PaymentMethodSetting
                 brandId={brandId}
-                paymentName={paymentName}
+                paymentCode={paymentCode}
                 paymentMethodCode={paymentMethod?.code}
               />
 
