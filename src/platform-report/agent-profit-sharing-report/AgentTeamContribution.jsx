@@ -122,7 +122,7 @@ const ReportDialog = ({
   return (
     <Dialog.Modal
       title={
-        <Set orientation="horizontal">
+        <Set orientation="horizontal" alignY="center">
           <Text fontSize="1.25em" fontWeight="bold">
             {title}
           </Text>
@@ -130,7 +130,15 @@ const ReportDialog = ({
             <Popover.Disclosure>
               <Icon icon="info-circle" color="info" />
             </Popover.Disclosure>
-            <Popover hasArrow usePortal width="max-content">
+            <Popover
+              hasArrow
+              usePortal
+              css={css`
+                & .bb-Popover {
+                  min-width: max-content;
+                }
+              `}
+            >
               <FieldStack>
                 <FieldValues marginLeft="1rem">
                   <Trans zh="代理用户名" en="Agent Username" />
