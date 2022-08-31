@@ -124,6 +124,7 @@ const EditDialog = ({
 
   let {
     isLoading: isLoadingPayment,
+    record,
     manualPayment,
     manualPaymentMethodList,
     manualPaymentMethodChannelList,
