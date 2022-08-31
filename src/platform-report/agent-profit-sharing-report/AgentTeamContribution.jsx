@@ -126,7 +126,7 @@ const ReportDialog = ({
           <Text fontSize="1.25em" fontWeight="bold">
             {title}
           </Text>
-          <Popover.State placement="bottom-end">
+          <Popover.State placement="bottom-start">
             <Popover.Disclosure>
               <Icon icon="info-circle" color="info" />
             </Popover.Disclosure>
