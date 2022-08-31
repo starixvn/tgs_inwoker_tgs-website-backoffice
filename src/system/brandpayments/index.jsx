@@ -423,7 +423,7 @@ const useColumns = ({
               <Set alignX="center">
                 <EditButton
                   brandId={brandId}
-                  record={value}
+                  platformPaymentId={value?.id}
                   onSubmitted={mutate}
                 />
                 {/* 

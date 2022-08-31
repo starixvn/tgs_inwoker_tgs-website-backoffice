@@ -47,6 +47,7 @@ import { CheckboxField } from "../../checkbox/Checkbox"
 import {
   useAddDepositBrandPayment,
   useAddWithdrawBrandPayment,
+  useBrandPayment,
   useUpdateBrandPayment
 } from "../../system/brandpayments/client"
 import BrandPaymentStatus, {
@@ -65,7 +66,10 @@ import { parseJSON, stringifyJSON } from "../../text/json"
 import { Update } from "./menu"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 
-export const EditBrandPaymentDisclosure = ({ record, onSubmitted }) => {
+export const EditBrandPaymentDisclosure = ({
+  platformPaymentId,
+  onSubmitted
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([Update])
@@ -77,7 +81,11 @@ export const EditBrandPaymentDisclosure = ({ record, onSubmitted }) => {
     <>
       <EditDisclosure {...dialog} />
       {dialog.visible && (
-        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+        <EditDialog
+          platformPaymentId={platformPaymentId}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
       )}
     </>
   )
@@ -139,19 +147,23 @@ export const AddBrandPaymentDisclosure = ({ brandId, onSubmitted }) => {
   )
 }
 
-const EditDialog = ({
-  record: { id, extendedData = {}, ...record },
-  onSubmitted,
-  dialog
-}) => {
+const EditDialog = ({ platformPaymentId, onSubmitted, dialog }) => {
   let title = useTrans({
     zh: "Edit",
     en: "Edit"
   })
 
+  let {
+    isLoading: isLoadingPlatformPayment,
+    data: record,
+    error: platformPaymentError,
+    mutate: mutatePlatformPayment,
+    deleteCache: deletePlatformCache
+  } = useBrandPayment(platformPaymentId)
+
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, deleteCache, mutate } = useUpdateBrandPayment(
-    id,
+    platformPaymentId,
     formData
   )
 
@@ -163,20 +175,32 @@ const EditDialog = ({
     })
   }
 
+  const resetPlatformPayment = () => {
+    deletePlatformCache()
+    mutate(null, false)
+  }
+
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
     setSubmit(undefined)
   }
 
+  console.log("record?.extendedData", record?.extendedData)
   return (
     <FormDialog
+      defaultValues={clone(record)}
+      /*
       defaultValues={{
         ...clone(record),
         extendedData: stringifyJSON(extendedData)
       }}
+      */
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        resetPlatformPayment()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}

@@ -37,7 +37,8 @@ import {
   useUpdateBrandPayment,
   useBrandPaymentUpload,
   useAddDepositBrandPayment,
-  useAddWithdrawBrandPayment
+  useAddWithdrawBrandPayment,
+  useBrandPayment
 } from "./client"
 import AlertDialog from "../../dialog/Alert"
 import {
@@ -81,7 +82,12 @@ import TransferType, {
 } from "./BrandPaymentTransferType"
 import { PaymentMethodSetting } from "./PaymentMethodSetting"
 
-export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
+export const EditButton = ({
+  brandId,
+  platformPaymentId,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -95,7 +101,7 @@ export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
       {dialog.visible && (
         <EditDialog
           brandId={brandId}
-          record={record}
+          platformPaymentId={platformPaymentId}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -106,7 +112,7 @@ export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
 
 const EditDialog = ({
   brandId,
-  record: { extendedData, ...record } = {},
+  platformPaymentId,
   onSubmitted,
   dialog,
   ...props
@@ -121,13 +127,15 @@ const EditDialog = ({
     manualPayment,
     manualPaymentMethodList,
     manualPaymentMethodChannelList,
-    error: loadingPaymentError
-  } = useManualPayment()
+    error: loadingPaymentError,
+    mutate: mutatePlatformPayment,
+    deleteCache: deletePlatformPaymentCache
+  } = usePlatformPayment(platformPaymentId)
 
   let [submitData, setSubmit] = useState()
 
   let { result, isLoading, error, mutate, deleteCache } = useUpdateBrandPayment(
-    record.id,
+    platformPaymentId,
     submitData
   )
 
@@ -139,14 +147,22 @@ const EditDialog = ({
     return <AlertDialog {...loadingPaymentError} onClickClose={dialog.hide} />
   }
 
-  extendedData = parseJSON(extendedData)
+  const resetPlatformPayment = () => {
+    mutatePlatformPayment(null, false)
+    deletePlatformPaymentCache()
+  }
+  // extendedData = parseJSON(extendedData)
+  console.log("record?.extendedData", record?.extendedData)
   return (
     <FormDialog
+      defaultValues={clone(record)}
+      /*
       defaultValues={clone({
         ...record,
         extendedData,
         reason: ""
       })}
+      */
       onSubmit={(data) => {
         setSubmit({
           brandId,
@@ -168,7 +184,7 @@ const EditDialog = ({
         setSubmit(undefined)
       }}
       onSubmitted={() => {
-        // deleteGetPaymentCache()
+        resetPlatformPayment()
         onSubmitted?.()
       }}
       footer={
@@ -247,7 +263,15 @@ export const AddBrandPaymentButton = ({
   )
 }
 
-const useManualPayment = () => {
+const usePlatformPayment = (platformPaymentId) => {
+  let {
+    isLoading: isLoadingPlatformPayment,
+    data: record,
+    error: platformPaymentError,
+    mutate,
+    deleteCache
+  } = useBrandPayment(platformPaymentId)
+
   let {
     isLoading: isLoadingPaymentList,
     data: paymentListData,
@@ -280,17 +304,20 @@ const useManualPayment = () => {
   )
 
   return {
-    isLoading: isLoadingPaymentList || isLoadingBrandPaymentMethodChannelList,
+    isLoading:
+      isLoadingPlatformPayment ||
+      isLoadingPaymentList ||
+      isLoadingBrandPaymentMethodChannelList,
+    record,
     manualPayment,
     manualPaymentMethodList,
     manualPaymentMethodChannelList,
-    error: paymentListError || paymentMethodChannelListError,
+    error:
+      platformPaymentError || paymentListError || paymentMethodChannelListError,
     mutatePaymentList,
     mutatePaymentMethodChannelList,
-    deleteCache: () => {
-      deletePaymentListCache()
-      deletePaymentMethodChannelListCache()
-    }
+    mutate,
+    deleteCache
   }
 }
 
@@ -309,7 +336,7 @@ const AddDialog = ({
     manualPaymentMethodList,
     manualPaymentMethodChannelList,
     error: loadingPaymentError
-  } = useManualPayment()
+  } = usePlatformPayment()
 
   let title = useTrans({
     zh: "新增",
