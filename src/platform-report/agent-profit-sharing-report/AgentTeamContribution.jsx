@@ -133,10 +133,9 @@ const ReportDialog = ({
             <Popover
               hasArrow
               usePortal
+              maxWidth="max-content"
               css={css`
-                & .bb-Popover {
-                  min-width: max-content;
-                }
+                min-width: max-content;
               `}
             >
               <FieldStack>
