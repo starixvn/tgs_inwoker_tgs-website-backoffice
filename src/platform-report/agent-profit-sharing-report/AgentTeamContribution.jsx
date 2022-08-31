@@ -133,7 +133,7 @@ const ReportDialog = ({
             <Popover
               hasArrow
               usePortal
-              maxWidth="max-content"
+              maxWidth="90vw"
               css={css`
                 min-width: max-content;
               `}
