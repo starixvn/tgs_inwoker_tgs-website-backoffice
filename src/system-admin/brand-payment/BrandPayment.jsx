@@ -204,7 +204,10 @@ const EditDialog = ({ platformPaymentId, onSubmitted, dialog }) => {
 
   return (
     <FormDialog
-      defaultValues={clone(record)}
+      defaultValues={{
+        ...clone(record),
+        extendedData: stringifyJSON(record?.extendedData)
+      }}
       onSubmit={onSubmit}
       onSubmitted={() => {
         resetPlatformPayment()
