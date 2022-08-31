@@ -146,7 +146,7 @@ const ReportDialog = ({
           <Popover.Disclosure use={Button} palette="primary" variant="outlined">
             <Icon icon="info-circle" color="info" />
           </Popover.Disclosure>
-          <Popover hasArrow>
+          <Popover hasArrow usePortal>
             <FieldStack>
               <FieldValues marginLeft="1rem">
                 <Trans zh="代理用户名" en="Agent Username" />
