@@ -126,7 +126,7 @@ const ReportDialog = ({
           <Text fontSize="1.25em" fontWeight="bold">
             {title}
           </Text>
-          <Popover.State placement="bottom-start">
+          <Popover.State placement="bottom">
             <Popover.Disclosure>
               <Icon icon="info-circle" color="info" />
             </Popover.Disclosure>
@@ -135,7 +135,7 @@ const ReportDialog = ({
               usePortal
               maxWidth="90vw"
               css={css`
-                min-width: max-content;
+                width: max-content;
               `}
             >
               <FieldStack>
