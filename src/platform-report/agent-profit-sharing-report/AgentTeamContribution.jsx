@@ -130,7 +130,7 @@ const ReportDialog = ({
             <Popover.Disclosure>
               <Icon icon="info-circle" color="info" />
             </Popover.Disclosure>
-            <Popover hasArrow usePortal>
+            <Popover hasArrow usePortal width="max-content">
               <FieldStack>
                 <FieldValues marginLeft="1rem">
                   <Trans zh="代理用户名" en="Agent Username" />
