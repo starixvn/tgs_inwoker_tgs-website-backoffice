@@ -175,9 +175,25 @@ const EditDialog = ({ platformPaymentId, onSubmitted, dialog }) => {
     })
   }
 
+  if (isLoadingPlatformPayment) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
   const resetPlatformPayment = () => {
     deletePlatformCache()
-    mutate(null, false)
+    mutatePlatformPayment(null, false)
+  }
+
+  if (platformPaymentError) {
+    return (
+      <AlertDialog
+        {...platformPaymentError}
+        onClickClose={() => {
+          resetPlatformPayment()
+          dialog.hide()
+        }}
+      />
+    )
   }
 
   const reset = () => {
@@ -186,16 +202,9 @@ const EditDialog = ({ platformPaymentId, onSubmitted, dialog }) => {
     setSubmit(undefined)
   }
 
-  console.log("record?.extendedData", record?.extendedData)
   return (
     <FormDialog
       defaultValues={clone(record)}
-      /*
-      defaultValues={{
-        ...clone(record),
-        extendedData: stringifyJSON(extendedData)
-      }}
-      */
       onSubmit={onSubmit}
       onSubmitted={() => {
         resetPlatformPayment()

@@ -289,6 +289,8 @@ const usePlatformPayment = (platformPaymentId) => {
     deleteCache: deletePaymentMethodChannelListCache
   } = usePaymentMethodChannelList()
 
+  let paymentName = paymentListData?.find(({ id }) => id === record?.paymentId)
+  console.log("paymentName", paymentName)
   let manualPayment = paymentListData?.find(({ code }) => code === "Manual")
 
   let manualPaymentMethodChannelList =
@@ -309,7 +311,7 @@ const usePlatformPayment = (platformPaymentId) => {
       isLoadingPlatformPayment ||
       isLoadingPaymentList ||
       isLoadingBrandPaymentMethodChannelList,
-    record,
+    record: { ...clone(record), paymentName },
     manualPayment,
     manualPaymentMethodList,
     manualPaymentMethodChannelList,
