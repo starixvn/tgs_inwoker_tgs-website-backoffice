@@ -76,6 +76,11 @@ export const PlayerDepositFormDialogDisclosure = ({
   )
 }
 
+//TODO: move ManualCode to?
+const ManualCode = "Manual"
+const supportedPaymentList = (list = []) =>
+  list.filter(({ paymentcode }) => paymentcode === ManualCode)
+
 const DepositFormDialog = ({
   brandId,
   playerCode,
@@ -134,7 +139,7 @@ const DepositFormDialog = ({
       minWidth="40vw"
     >
       <FormBody
-        paymentList={paymentList}
+        paymentList={supportedPaymentList(paymentList)}
         brandId={brandId}
         playerCode={playerCode}
       />

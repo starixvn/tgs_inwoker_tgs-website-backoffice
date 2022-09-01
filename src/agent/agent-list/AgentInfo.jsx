@@ -83,7 +83,6 @@ import {
   isAgentProfitSharingMultipleLayer,
   isAgentProfitSharingOneLayer
 } from "../AgentProfitSharingType"
-import { PercentageNumberInput } from "../../input/NumberInput"
 import Textarea from "../../textarea"
 
 const Key = "AgentInfo"

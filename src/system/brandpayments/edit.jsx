@@ -81,10 +81,7 @@ import TransferType, {
   isDepositPlatformPayment
 } from "./BrandPaymentTransferType"
 import { PaymentMethodSetting } from "./PaymentMethodSetting"
-import {
-  PercentageNumberInput,
-  PercentageNumberInputField
-} from "../../input/NumberInput"
+import { PercentageNumberInputField } from "../../input/NumberInput"
 
 export const EditButton = ({
   brandId,
