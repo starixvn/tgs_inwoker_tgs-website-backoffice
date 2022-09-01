@@ -235,12 +235,12 @@ const Info = ({ bankType }) => {
 
 const BankInfo = ({}) => {
   let bankNameLabel = useTrans({
-    zh: "银行",
-    en: "Bank"
+    zh: "银行名称",
+    en: "Deposit Bank Name"
   })
   let bankAccountLabel = useTrans({
-    zh: "银行卡号",
-    en: "Bank Account"
+    zh: "充值账户",
+    en: "Deposit Bank Account"
   })
   return (
     <>
