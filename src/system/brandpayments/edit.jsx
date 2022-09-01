@@ -81,6 +81,10 @@ import TransferType, {
   isDepositPlatformPayment
 } from "./BrandPaymentTransferType"
 import { PaymentMethodSetting } from "./PaymentMethodSetting"
+import {
+  PercentageNumberInput,
+  PercentageNumberInputField
+} from "../../input/NumberInput"
 
 export const EditButton = ({
   brandId,
@@ -178,6 +182,8 @@ const EditDialog = ({
       isLoading={isLoading}
       error={error}
       onCloseErrorAlert={() => {
+        resetPlatformPayment()
+
         deleteCache()
         mutate(undefined, false)
         setSubmit(undefined)
@@ -619,6 +625,15 @@ const EditBody = ({
                 min={[0, transferLimitFrom]}
                 max={[transferLimitTo]}
                 width="100%"
+              />
+
+              <Label>
+                <Trans zh="手续费" en="Trasfer Fee" />
+              </Label>
+              <PercentageNumberInputField
+                name="handlingFeeRateTenPercentile"
+                defaultValue={0}
+                min={0}
               />
             </FieldValues>
 
