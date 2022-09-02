@@ -15,7 +15,7 @@ import {
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import FormDialog from "../../form/FormDialog"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
@@ -30,22 +30,39 @@ const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
 const DailySecondDeposit = "DailySecondDeposit"
 
-const AccountDeposit = "AccountDeposit"
+const DepositReward = "DepositReward"
 
 export const PromotionDepositRuleSetting = ({ promotionType, readOnly }) => {
-  let { control } = useFormContext()
-
   switch (promotionType) {
-    case AccountDeposit:
-      return <AccountDepositSetting readOnly={readOnly} />
+    case DepositReward:
+      return <DepositRewardSetting readOnly={readOnly} />
     default:
       return promotionType ? <DefaultSetting readOnly={readOnly} /> : null
   }
 }
 
-const AccountDepositSetting = ({ readOnly }) => {
+const DepositRewardSetting = ({ readOnly }) => {
+  let { control } = useFormContext()
   let totalFunds = useTotalFunds()
   let disabled = readOnly
+
+  let BonusAmountLimitField = "rule.bonusAmountLimit"
+  let bonusAmountLimit = useWatch({
+    control,
+    name: BonusAmountLimitField
+  })
+
+  let PercentageField = "rule.percentage"
+  let percentage = useWatch({
+    control,
+    name: PercentageField
+  })
+
+  let bonusAmountLimitHintLabel = useTrans({
+    zh: "彩金上限/彩金百分比",
+    en: "Bonus Limit/彩金百分比"
+  })
+  let bonusAmountLimitHint = bonusAmountLimit / (percentage / 100)
   return (
     <FieldValues>
       <NormalLabel>
@@ -53,6 +70,7 @@ const AccountDepositSetting = ({ readOnly }) => {
       </NormalLabel>
       <NumberInput
         name="rule.minDeposit"
+        min={1}
         registerOptions={{
           valueAsNumber: true
         }}
@@ -64,7 +82,7 @@ const AccountDepositSetting = ({ readOnly }) => {
         <Trans zh="彩金百分比" en="Bonus Percentage" />
       </NormalLabel>
       <PercentageNumberInputField
-        name="rule.percentage"
+        name={PercentageField}
         registerOptions={{
           valueAsNumber: true
         }}
@@ -73,11 +91,12 @@ const AccountDepositSetting = ({ readOnly }) => {
         disabled={disabled}
       />
 
-      <NormalLabel>
+      <BonusLimitFieldBox percentage={percentage} disabled={disabled} />
+      {/* <NormalLabel>
         <Trans zh="彩金上限" en="Bonus Limit" />
       </NormalLabel>
-      <NumberInput
-        name="rule.bonusAmountLimit"
+      <NumberInputField
+        name={BonusAmountLimitField}
         registerOptions={{
           valueAsNumber: true
         }}
@@ -85,7 +104,15 @@ const AccountDepositSetting = ({ readOnly }) => {
         max={totalFunds}
         required
         disabled={disabled}
-      />
+        hint={
+          Number.isFinite(bonusAmountLimitHint) && (
+            <Text fontSize="150">
+              {bonusAmountLimitHintLabel}:
+              <FormattedNumberDecimal value={bonusAmountLimitHint} />
+            </Text>
+          )
+        }
+      /> */}
 
       <NormalLabel>
         <Trans zh="流水倍数" en="Turnover Requirement" />
@@ -108,7 +135,50 @@ const AccountDepositSetting = ({ readOnly }) => {
   )
 }
 
+const BonusLimitFieldBox = ({ percentage, disabled }) => {
+  let { control } = useFormContext()
+  let totalFunds = useTotalFunds()
+
+  let BonusAmountLimitField = "rule.bonusAmountLimit"
+  let bonusAmountLimit = useWatch({
+    control,
+    name: BonusAmountLimitField
+  })
+
+  let bonusAmountLimitHintLabel = useTrans({
+    zh: "彩金上限/彩金百分比",
+    en: "Bonus Limit/彩金百分比"
+  })
+  let bonusAmountLimitHint = bonusAmountLimit / (percentage / 100)
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="彩金上限" en="Bonus Limit" />
+      </NormalLabel>
+      <NumberInputField
+        name={BonusAmountLimitField}
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        max={totalFunds}
+        required
+        disabled={disabled}
+        hint={
+          Number.isFinite(bonusAmountLimitHint) && (
+            <Text fontSize="150">
+              {bonusAmountLimitHintLabel}:
+              <FormattedNumberDecimal value={bonusAmountLimitHint} />
+            </Text>
+          )
+        }
+      />
+    </>
+  )
+}
+
 const DefaultSetting = ({ readOnly }) => {
+  let { control } = useFormContext()
   let totalFunds = useTotalFunds()
   let disabled = readOnly
   return (

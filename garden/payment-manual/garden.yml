@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-manual
-image: harbor.rpgp.cc/tgs/payment-manual:202206090124-prod # payment/manual
+image: pgtgs/payment-manual:202208240242-dev
 services:
   - name: payment-manual
     dependencies:

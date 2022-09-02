@@ -395,7 +395,7 @@ const validateTotalWinningPercentage = (fieldName, settings = []) => {
     return totalPercentage
   }, new Big(0))
 
-  let pass = totalChancePercentage.toNumber() <= 100
+  let pass = totalChancePercentage.toNumber() === 100
   return pass
 }
 
@@ -596,8 +596,8 @@ const RouletteFormBody = ({
   })
 
   let totalChancePercentageMessage = useTrans({
-    zh: "中奖机率加总须小于100",
-    en: "Total winning probability must be less than 100"
+    zh: "中奖机率加总须等于100",
+    en: "Total winning probability must be equal to 100"
   })
   let [errors, setErrors] = useState([])
 

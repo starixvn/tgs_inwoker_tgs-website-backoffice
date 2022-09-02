@@ -263,7 +263,11 @@ const useColumns = ({ items = [], mutate }) => {
           disableSortBy: true,
           Cell: ({ value }) => {
             return (
-              <EditBrandPaymentDisclosure record={value} onSubmitted={mutate} />
+              <EditBrandPaymentDisclosure
+                record={value}
+                platformPaymentId={value?.id}
+                onSubmitted={mutate}
+              />
             )
           }
         })

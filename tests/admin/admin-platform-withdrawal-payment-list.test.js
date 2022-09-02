@@ -25,7 +25,7 @@ test("add, search, edit and view platform deposit payment", async ({
         response.status() === 200
       )
     }),
-    page.click("button#Withdrawal")
+    page.click("#Withdrawal")
   ])
 
   let payment = await addWithdrawalPayment(page, bankTransferPaymentMethod)

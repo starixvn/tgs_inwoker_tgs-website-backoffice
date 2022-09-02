@@ -37,7 +37,8 @@ import {
   useUpdateBrandPayment,
   useBrandPaymentUpload,
   useAddDepositBrandPayment,
-  useAddWithdrawBrandPayment
+  useAddWithdrawBrandPayment,
+  useBrandPayment
 } from "./client"
 import AlertDialog from "../../dialog/Alert"
 import {
@@ -80,8 +81,14 @@ import TransferType, {
   isDepositPlatformPayment
 } from "./BrandPaymentTransferType"
 import { PaymentMethodSetting } from "./PaymentMethodSetting"
+import { PercentageNumberInputField } from "../../input/NumberInput"
 
-export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
+export const EditButton = ({
+  brandId,
+  platformPaymentId,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -95,7 +102,7 @@ export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
       {dialog.visible && (
         <EditDialog
           brandId={brandId}
-          record={record}
+          platformPaymentId={platformPaymentId}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -106,7 +113,7 @@ export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
 
 const EditDialog = ({
   brandId,
-  record: { extendedData, ...record } = {},
+  platformPaymentId,
   onSubmitted,
   dialog,
   ...props
@@ -118,16 +125,19 @@ const EditDialog = ({
 
   let {
     isLoading: isLoadingPayment,
+    record,
     manualPayment,
     manualPaymentMethodList,
     manualPaymentMethodChannelList,
-    error: loadingPaymentError
-  } = useManualPayment()
+    error: loadingPaymentError,
+    mutate: mutatePlatformPayment,
+    deleteCache: deletePlatformPaymentCache
+  } = usePlatformPayment(platformPaymentId)
 
   let [submitData, setSubmit] = useState()
 
   let { result, isLoading, error, mutate, deleteCache } = useUpdateBrandPayment(
-    record.id,
+    platformPaymentId,
     submitData
   )
 
@@ -139,14 +149,20 @@ const EditDialog = ({
     return <AlertDialog {...loadingPaymentError} onClickClose={dialog.hide} />
   }
 
-  extendedData = parseJSON(extendedData)
+  const resetPlatformPayment = () => {
+    mutatePlatformPayment(null, false)
+    deletePlatformPaymentCache()
+  }
+
   return (
     <FormDialog
+      defaultValues={clone(record)}
+      /*
       defaultValues={clone({
         ...record,
-        extendedData,
         reason: ""
       })}
+      */
       onSubmit={(data) => {
         setSubmit({
           brandId,
@@ -163,12 +179,14 @@ const EditDialog = ({
       isLoading={isLoading}
       error={error}
       onCloseErrorAlert={() => {
+        resetPlatformPayment()
+
         deleteCache()
         mutate(undefined, false)
         setSubmit(undefined)
       }}
       onSubmitted={() => {
-        // deleteGetPaymentCache()
+        resetPlatformPayment()
         onSubmitted?.()
       }}
       footer={
@@ -247,7 +265,15 @@ export const AddBrandPaymentButton = ({
   )
 }
 
-const useManualPayment = () => {
+const usePlatformPayment = (platformPaymentId) => {
+  let {
+    isLoading: isLoadingPlatformPayment,
+    data: record,
+    error: platformPaymentError,
+    mutate,
+    deleteCache
+  } = useBrandPayment(platformPaymentId)
+
   let {
     isLoading: isLoadingPaymentList,
     data: paymentListData,
@@ -263,6 +289,10 @@ const useManualPayment = () => {
     mutate: mutatePaymentMethodChannelList,
     deleteCache: deletePaymentMethodChannelListCache
   } = usePaymentMethodChannelList()
+
+  let paymentCode = paymentListData?.find(
+    ({ id }) => id === record?.paymentId
+  )?.code
 
   let manualPayment = paymentListData?.find(({ code }) => code === "Manual")
 
@@ -280,17 +310,20 @@ const useManualPayment = () => {
   )
 
   return {
-    isLoading: isLoadingPaymentList || isLoadingBrandPaymentMethodChannelList,
+    isLoading:
+      isLoadingPlatformPayment ||
+      isLoadingPaymentList ||
+      isLoadingBrandPaymentMethodChannelList,
+    record: { ...clone(record), paymentCode },
     manualPayment,
     manualPaymentMethodList,
     manualPaymentMethodChannelList,
-    error: paymentListError || paymentMethodChannelListError,
+    error:
+      platformPaymentError || paymentListError || paymentMethodChannelListError,
     mutatePaymentList,
     mutatePaymentMethodChannelList,
-    deleteCache: () => {
-      deletePaymentListCache()
-      deletePaymentMethodChannelListCache()
-    }
+    mutate,
+    deleteCache
   }
 }
 
@@ -309,7 +342,7 @@ const AddDialog = ({
     manualPaymentMethodList,
     manualPaymentMethodChannelList,
     error: loadingPaymentError
-  } = useManualPayment()
+  } = usePlatformPayment()
 
   let title = useTrans({
     zh: "新增",
@@ -340,7 +373,7 @@ const AddDialog = ({
   return (
     <FormDialog
       defaultValues={{
-        paymentName: ManualCode,
+        paymentCode: ManualCode,
         transferType,
         paymentStatus: BrandPaymentStatus.Enabled,
         paymentMethodId:
@@ -415,7 +448,7 @@ const EditBody = ({
 }) => {
   let { setValue, getValues, control } = useFormContext()
 
-  const paymentName = getValues("paymentName")
+  const paymentCode = getValues("paymentCode")
   const TransferLimitToFieldName = "transferLimitTo"
   let transferLimitTo = useWatch({
     name: TransferLimitToFieldName,
@@ -465,7 +498,7 @@ const EditBody = ({
 
   let manualPaymentMethodIdList = manualPaymentMethodList?.map(({ id }) => id)
 
-  let isManualPaymentProvider = paymentName == ManualCode
+  let isManualPaymentProvider = paymentCode == ManualCode
   let isManualPaymentProviderMethod =
     isManualPaymentProvider &&
     manualPaymentMethodIdList?.includes(paymentMethodId)
@@ -569,7 +602,7 @@ const EditBody = ({
 
               <PaymentMethodSetting
                 brandId={brandId}
-                paymentName={paymentName}
+                paymentCode={paymentCode}
                 paymentMethodCode={paymentMethod?.code}
               />
 
@@ -589,6 +622,15 @@ const EditBody = ({
                 min={[0, transferLimitFrom]}
                 max={[transferLimitTo]}
                 width="100%"
+              />
+
+              <Label>
+                <Trans zh="手续费" en="Trasfer Fee" />
+              </Label>
+              <PercentageNumberInputField
+                name="handlingFeeRateTenPercentile"
+                defaultValue={0}
+                min={0}
               />
             </FieldValues>
 

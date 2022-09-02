@@ -47,7 +47,7 @@ const Pulsa = "Pulsa"
 
 export const PaymentMethodSetting = ({
   brandId,
-  paymentName,
+  paymentCode,
   paymentMethodCode
 }) => {
   let { getValues } = useFormContext()
@@ -59,12 +59,12 @@ export const PaymentMethodSetting = ({
       return (
         <BankTransferSetting
           brandId={brandId}
-          paymentName={paymentName}
+          paymentCode={paymentCode}
           isDeposit={isDeposit}
         />
       )
     case ThirdParty:
-      return <ThirdPartySetting brandId={brandId} paymentName={paymentName} />
+      return <ThirdPartySetting brandId={brandId} />
     case FPS:
       return <FPSSetting brandId={brandId} />
     case USDT:
@@ -153,7 +153,7 @@ const CryptoSetting = ({ brandId }) => {
   )
 }
 
-const FPSSetting = ({ brandId, paymentName }) => {
+const FPSSetting = ({ brandId }) => {
   return (
     <>
       <Label>
@@ -185,8 +185,8 @@ const FPSSetting = ({ brandId, paymentName }) => {
 }
 
 const ManualCode = "Manual"
-const BankTransferSetting = ({ brandId, paymentName, isDeposit }) => {
-  let isManualPaymentCode = paymentName === ManualCode
+const BankTransferSetting = ({ brandId, paymentCode, isDeposit }) => {
+  let isManualPaymentCode = paymentCode === ManualCode
   return (
     <>
       {isManualPaymentCode && (
@@ -220,7 +220,7 @@ const BankTransferSetting = ({ brandId, paymentName, isDeposit }) => {
   )
 }
 
-const ThirdPartySetting = ({ brandId, paymentName }) => {
+const ThirdPartySetting = ({ brandId }) => {
   return (
     <>
       <Label required>

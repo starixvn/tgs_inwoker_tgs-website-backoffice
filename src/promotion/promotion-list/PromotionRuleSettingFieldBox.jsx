@@ -118,7 +118,6 @@ export const PromotionRuleSetting = ({
           readOnly={readOnly}
         />
       )
-    /*
     case PromotionTypeGroup.Turnover:
       return (
         <PromotionTurnoverRuleSetting
@@ -126,7 +125,6 @@ export const PromotionRuleSetting = ({
           readOnly={readOnly}
         />
       )
-    */
     default:
       return promotionType ? (
         <DefaultSetting promotionType={promotionType} readOnly={readOnly} />
