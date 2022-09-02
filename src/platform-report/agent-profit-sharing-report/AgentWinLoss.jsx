@@ -90,7 +90,7 @@ const ReportDialog = ({
     {
       ...toApiParams(state),
       sortby: "username",
-      from: startOfPreviousDay(start),
+      from: start,
       to: startOfNextDay(end)
     }
   )
@@ -119,8 +119,17 @@ const ReportDialog = ({
       placement="top"
       showActionButtons={false}
       footer={<CloseButtonFooter dialog={dialog} />}
+      width="max-content"
       maxWidth="90vw"
       maxHeight="90vh"
+      css={css`
+        & .bb-DialogContent {
+          max-height: 80vh;
+        }
+        & .bb-DialogClose {
+          z-index: 2;
+        }
+      `}
     >
       <FieldStack>
         <FieldValues marginLeft="1rem">

@@ -7,10 +7,10 @@ import { Trans, useTrans } from "../../i18n"
 import { NormalLabel } from "../../form/Label"
 import Checkbox from "../../checkbox"
 import { NumberInput } from "../../input/NumberInput"
-import {
-  PromotionTypeGroup,
-  useIsInstantlySettlementIntervalType
-} from "../PromotionType"
+import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
+import { isNil, complement } from "ramda"
+
+const isNotNil = complement(isNil)
 
 const TotalAmountLimitFieldName = "totalAmountLimit"
 
@@ -23,7 +23,6 @@ export const useIsTotalFundsUnlimited = () => {
     control,
     name: UnlimitedFieldName
   })
-
   return isUnlimited
 }
 
@@ -51,6 +50,7 @@ export const PromotionTotalFundsFieldBox = ({
   readOnly,
   disabled
 }) => {
+  let { setValue } = useFormContext()
   let unlimiteTotalAmountLabel = useTrans({
     zh: "无限",
     en: "Unlimited"
@@ -58,6 +58,16 @@ export const PromotionTotalFundsFieldBox = ({
 
   let isTotalFundsLimited = useIsTotalFundsLimited()
 
+  let promotion = useFindPromotionType(promotionType)
+  let unlimitedProps = promotion?.unlimited ?? {}
+
+  useEffect(() => {
+    if (isNotNil(unlimitedProps?.checked)) {
+      setValue(UnlimitedFieldName, unlimitedProps?.checked)
+    }
+  }, [unlimitedProps])
+
+  //TODO: use unlimitedProps?.hide instead?
   if (fieldNotUsed({ promotionTypeGroup, promotionType })) {
     return null
   }
@@ -84,6 +94,7 @@ export const PromotionTotalFundsFieldBox = ({
           name={UnlimitedFieldName}
           label={unlimiteTotalAmountLabel}
           disabled={disabled}
+          {...unlimitedProps}
         />
       </Set>
     </>

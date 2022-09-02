@@ -117,8 +117,14 @@ const ReportDialog = ({
       placement="top"
       showActionButtons={false}
       footer={<CloseButtonFooter dialog={dialog} />}
+      width="max-content"
       maxWidth="90vw"
       maxHeight="90vh"
+      css={css`
+        & .bb-DialogContent {
+          max-height: 80vh;
+        }
+      `}
     >
       <FieldStack>
         <FieldValues marginLeft="1rem">

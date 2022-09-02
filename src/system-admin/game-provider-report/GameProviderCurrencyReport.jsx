@@ -43,7 +43,6 @@ import SearchButton from "../../button/SearchButton"
 import dateTimeColumn from "../../table/column/dateTime"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
-import { useDropzone } from "react-dropzone"
 import { useGameProviderReportList } from "./client"
 import { isValid } from "date-fns"
 import numberColumn, {
