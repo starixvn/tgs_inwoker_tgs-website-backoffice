@@ -49,10 +49,7 @@ import { BrandPaymentSelect } from "../../system/brandpayments/BrandPayment"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import clone from "clone-deep"
 import { useFormContext, useWatch } from "react-hook-form"
-import {
-  useBrandPayment,
-  useBrandPaymentList
-} from "../../system/brandpayments/client"
+import { useBrandPayment } from "../../system/brandpayments/client"
 import { parseJSON } from "../../text/json"
 import Input from "../../input/Input"
 import BrandPaymentStatus from "../../system/brandpayments/BrandPaymentStatus"
@@ -237,16 +234,8 @@ const PayerInfo = ({ brandId, record, disabled }) => {
   let isApproved = isFundApproved(record?.status)
   let underReviewOrApproved = underReview || isApproved
 
-  let {
-    isLoading,
-    data: brandPayment,
-    error
-  } = useBrandPayment(brandPaymentId, {
-    brandId,
-    transferType: BrandPaymentTransferType.Withdrawal,
-    showAll: true
-  })
-
+  let { isLoading, data: brandPayment, error } = useBrandPayment(brandPaymentId)
+  console.log("brandPayment?.extendedData", brandPayment?.extendedData)
   let detail = parseJSON(brandPayment?.extendedData)
   let rate = detail?.rate
   let hasRate = Number.isFinite(rate)

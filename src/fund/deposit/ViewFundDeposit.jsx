@@ -221,7 +221,7 @@ const PhoneApplyInfoBox = ({ record }) => {
 }
 
 const EMoneyNameApplyInfoBox = ({ record }) => {
-  let eMoneyName = record?.applyInfo?.eMoneyName
+  let eMoneyName = record?.applyInfo?.sendEMoneyName
   if (!eMoneyName) {
     return null
   }

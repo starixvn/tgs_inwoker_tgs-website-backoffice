@@ -1,11 +1,12 @@
 kind: Module
 type: container
 name: payment-api
-image: pgtgs/payment-api:202208090711-staging # payment/service #registry.gitlab.com/rayprosoft/turnkey-gaming-system/payment-api:202111050510-staging
+image: pgtgs/payment-api:202209010117.22
 services:
   - name: payment-api
     dependencies:
       - postgres
+      - redis
       - nats
     env:
       ASPNETCORE_ENVIRONMENT: "Development"

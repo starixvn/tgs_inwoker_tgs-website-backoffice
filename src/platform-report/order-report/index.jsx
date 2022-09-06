@@ -87,6 +87,7 @@ export const Body = () => {
 const ReportContent = ({ brandId }) => {
   let dateRange = today()
   let QueryMaxRangeDays = 31
+  //TODO: rm status
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     externalFrom: undefined,
@@ -194,6 +195,7 @@ const ReportContent = ({ brandId }) => {
   )
 }
 
+//TODO: rm status
 const SearchBar = ({
   externalFrom,
   externalTo,
@@ -436,14 +438,16 @@ const SearchBar = ({
               showEmptyFieldValueAddonAfter
               placeholder={externalRoundIdPlaceholder}
             />
+
+            {/* 
+            TODO: rm status
             <GameRoundStatusSelect
               name="status"
-              /* TODO: apply filter
             filter={({value}) => {
               return value != GameRoundStatus.Open
             }}
-            */
-            />
+            /> 
+            */}
             <GameProviderSelect name="gameProviderId" />
             <SearchButton isLoading={isLoading} disabled={isLoading} />
           </Set>
@@ -518,6 +522,8 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="游戏名称" en="Game Name" />,
         disableSortBy: true
       }),
+      /*
+      TODO: rm status
       {
         accessor: "status",
         Header: <Trans zh="状态" en="Status" />,
@@ -532,6 +538,7 @@ const useColumns = ({ items = [] }) => {
           whiteSpace: "nowrap"
         }
       },
+      */
       textColumn({
         accessor: "currencyCode",
         Header: <Trans zh="币种" en="Currency" />,

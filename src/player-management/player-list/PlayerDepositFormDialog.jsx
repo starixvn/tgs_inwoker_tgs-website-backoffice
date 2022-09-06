@@ -32,8 +32,6 @@ import { sortBy } from "lodash-es"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Disclosure from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
-import { PlayerDepositPaymentSelect } from "./PlayerDepositPaymentSelect"
-import { PaymentMethodSelect } from "../../payment/method/PaymentMethod"
 import { usePlayerDepositPaymentList } from "../../system/brandpayments/client"
 import { PlayerPaymentMethodSelect } from "./PlayerPaymentMethodSelect"
 import { PlayerPaymentChannelSelect } from "./PlayerPaymentChannelSelect"
@@ -75,6 +73,11 @@ export const PlayerDepositFormDialogDisclosure = ({
     </>
   )
 }
+
+//TODO: move ManualCode to?
+const ManualCode = "Manual"
+const supportedPaymentList = (list = []) =>
+  list.filter(({ paymentcode }) => paymentcode === ManualCode)
 
 const DepositFormDialog = ({
   brandId,
@@ -134,7 +137,7 @@ const DepositFormDialog = ({
       minWidth="40vw"
     >
       <FormBody
-        paymentList={paymentList}
+        paymentList={supportedPaymentList(paymentList)}
         brandId={brandId}
         playerCode={playerCode}
       />
@@ -232,12 +235,12 @@ const Info = ({ bankType }) => {
 
 const BankInfo = ({}) => {
   let bankNameLabel = useTrans({
-    zh: "银行",
-    en: "Bank"
+    zh: "银行名称",
+    en: "Deposit Bank Name"
   })
   let bankAccountLabel = useTrans({
-    zh: "银行卡号",
-    en: "Bank Account"
+    zh: "充值账户",
+    en: "Deposit Bank Account"
   })
   return (
     <>

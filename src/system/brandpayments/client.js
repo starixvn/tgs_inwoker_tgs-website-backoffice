@@ -15,19 +15,9 @@ export const useBrandPaymentList = (searchParams) => {
   return useGet(url)
 }
 
-export const useBrandPayment = (id, searchParams) => {
-  let { data, ...rest } = useBrandPaymentList(searchParams)
-
-  data = data?.items?.find((item) => item.id === id)
-
-  return {
-    data,
-    ...rest
-  }
-  /*
-    let url = id ? `${API}/${id}` : ""
-    return useGet(url)
-    */
+export const useBrandPayment = (id) => {
+  let url = id ? `${API}/info/${id}` : ""
+  return useGet(url)
 }
 
 export const useAddDepositBrandPayment = (data) => {

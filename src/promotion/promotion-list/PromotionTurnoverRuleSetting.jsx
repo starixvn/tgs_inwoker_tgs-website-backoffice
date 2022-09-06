@@ -36,11 +36,7 @@ import {
   NumberInputField,
   PercentageNumberInputField
 } from "../../input/NumberInput"
-import { PromotionSigninRuleSetting } from "./PromotionSigninRuleSetting"
-import { PromotionLotteryRuleSetting } from "./PromotionLotteryRuleSetting"
-import { PromotionNewUserRuleSetting } from "./PromotionNewUserRuleSetting"
 import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
-import { PromotionDepositRuleSetting } from "./PromotionDepositRuleSetting"
 
 const DailyTurnoverRebate = "TurnoverRebate"
 const WeeklyTurnoverRebate = "TurnoverRebateWeekly"
