@@ -624,14 +624,18 @@ const EditBody = ({
                 width="100%"
               />
 
-              <Label>
-                <Trans zh="手续费" en="Trasfer Fee" />
-              </Label>
-              <PercentageNumberInputField
-                name="handlingFeeRateTenPercentile"
-                defaultValue={0}
-                min={0}
-              />
+              {isDev() && (
+                <>
+                  <Label>
+                    <Trans zh="手续费" en="Transfer Fee" />
+                  </Label>
+                  <PercentageNumberInputField
+                    name="handlingFeeRatePercentile"
+                    defaultValue={0}
+                    min={0}
+                  />
+                </>
+              )}
             </FieldValues>
 
             <Columns flex="1 auto">
