@@ -145,6 +145,8 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
             <FormattedNumberDecimal value={record?.amount} />
           </Box>
 
+          <HandlingFeeBox record={record} />
+
           <NormalLabel>
             <Trans zh="申请时间" en="Application Time" />
           </NormalLabel>
@@ -200,6 +202,22 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         />
       </FieldStack>
       <Input type="hidden" value={brandId} />
+    </>
+  )
+}
+
+const HandlingFeeBox = ({ record }) => {
+  let handlingFee = record?.handlingFee
+  if (!Number.isFinite(handlingFee)) {
+    return null
+  }
+
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="手续费" en="Transfer Fee" />
+      </NormalLabel>
+      <FormattedNumberDecimal value={handlingFee} />
     </>
   )
 }
