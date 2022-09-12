@@ -239,7 +239,7 @@ const BodyContent = ({ brandId }) => {
   let columns = useColumns({ mutate, items, brandId, setDelayUpdate })
   return (
     <PageContent
-      title={<Trans zh="充值列表" en="Deposit List" />}
+      title={<Trans zh="存款列表" en="Deposit List" />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
@@ -312,7 +312,7 @@ const Summary = ({ total, totalPromotion }) => {
       <Set>
         <Box>
           <Heading use="h5">
-            <Trans zh="充值金额总计：" en="Total Deposit Amount：" />
+            <Trans zh="存款金额总计：" en="Total Deposit Amount：" />
             <FormattedNumberDecimal
               id="total-amount"
               value={total}
@@ -481,7 +481,7 @@ const SearchBar = ({
   })
 
   let paymentMethodPlaceholder = useTrans({
-    zh: "充值类型",
+    zh: "存款类型",
     en: "Deposit Method"
   })
 
@@ -592,7 +592,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       textColumn({
         id: "paymentMethod",
         accessor: (row) => row,
-        Header: <Trans zh="充值类型" en="Payment Method" />,
+        Header: <Trans zh="存款类型" en="Payment Method" />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (
@@ -610,13 +610,13 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="充值金额" en="Amount" />,
+        Header: <Trans zh="存款金额" en="Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "actualAmount",
         accessor: (row) => row,
-        Header: <Trans zh="实际充值金额" en="Actual Amount" />,
+        Header: <Trans zh="实际存款金额" en="Actual Amount" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let { status, amount, actualAmount } = record

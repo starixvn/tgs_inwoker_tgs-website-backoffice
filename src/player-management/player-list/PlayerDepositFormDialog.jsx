@@ -239,7 +239,7 @@ const BankInfo = ({}) => {
     en: "Deposit Bank Name"
   })
   let bankAccountLabel = useTrans({
-    zh: "充值账户",
+    zh: "存款账户",
     en: "Deposit Bank Account"
   })
   return (
@@ -252,7 +252,7 @@ const BankInfo = ({}) => {
 
 const AmountInputField = ({ ...props }) => {
   let label = useTrans({
-    zh: "充值金额",
+    zh: "存款金额",
     en: "Amount"
   })
   return <NumberInputField name="amount" label={label} {...props} />

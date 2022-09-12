@@ -201,7 +201,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberColumn({
         accessor: "firstFundInCount",
         sumColumn: "firstFundInCount",
-        Header: <Trans zh="首充人数" en="First Fund In Count" />,
+        Header: <Trans zh="首存人数" en="First Fund In Count" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

@@ -50,7 +50,7 @@ export const FundDepositTopNavItem = ({
 const Body = ({ brandId, ...props }) => {
   let playAlertSound = useIsDisplayMenuByCodes([ParentCode, Code, Update])
   let label = useTrans({
-    zh: "充值",
+    zh: "存款",
     en: "Deposit"
   })
 

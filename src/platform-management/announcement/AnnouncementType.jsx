@@ -17,7 +17,7 @@ const MainTrans = {
 
 export const Deposit = "Deposit"
 const DepositTrans = {
-  zh: "充值弹跳",
+  zh: "存款弹跳",
   en: "Deposit Popup"
 }
 

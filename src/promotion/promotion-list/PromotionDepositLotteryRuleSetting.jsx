@@ -71,7 +71,7 @@ export const PromotionDepositLotteryRuleSetting = ({ readOnly, ...props }) => {
   return (
     <FieldValues>
       <NormalLabel>
-        <Trans zh="充值累計设置" en="Multi-Deposit Setting" />
+        <Trans zh="存款累計设置" en="Multi-Deposit Setting" />
       </NormalLabel>
       <BasicSettingListDisclosure
         readOnly={readOnly}
@@ -180,7 +180,7 @@ const BasicSettingDialog = ({
   onChange
 }) => {
   let title = useTrans({
-    zh: "充值累計设置",
+    zh: "存款累計设置",
     en: "Multi-Deposit Setting"
   })
 

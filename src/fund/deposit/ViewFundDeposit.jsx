@@ -70,7 +70,7 @@ export const ViewFundDepositDisclosure = ({
 
 const ViewFundDepositDialog = ({ brandId, formId, dialog, ...props }) => {
   let title = useTrans({
-    zh: "查看充值",
+    zh: "查看存款",
     en: "View Deposit"
   })
 
@@ -127,7 +127,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
           <Box alignY="center">{record?.thirdPartyOrderNo}</Box>
 
           <NormalLabel>
-            <Trans zh="充值类型 " en="Payment Method" />
+            <Trans zh="存款类型 " en="Payment Method" />
           </NormalLabel>
           <Box alignY="center">
             <PaymentMethodLabel value={record?.paymentMethodId} />
@@ -139,7 +139,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
           <Box alignY="center">{record?.channelName}</Box>
 
           <NormalLabel>
-            <Trans zh="充值金额" en="Deposit Amount" />
+            <Trans zh="存款金额" en="Deposit Amount" />
           </NormalLabel>
           <Box alignY="center">
             <FormattedNumberDecimal value={record?.amount} />
@@ -189,7 +189,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
         <BankInfoBox record={record} />
         <NumberInputField
           name="actualAmount"
-          label={<Trans zh="实际充值金额" en="Actual Amount" />}
+          label={<Trans zh="实际存款金额" en="Actual Amount" />}
           value={readOnly ? record?.actualAmount ?? record?.amount : undefined}
           step="0.01"
           disabled={disabled}
@@ -319,7 +319,7 @@ const BankInfoBox = ({ record }) => {
         </NormalLabel>
         <Box alignY="center">{record?.applyInfo?.sendBankName}</Box>
         <NormalLabel>
-          <Trans zh="充值账户" en="Deposit Bank Account" />
+          <Trans zh="存款账户" en="Deposit Bank Account" />
         </NormalLabel>
         <Box alignY="center">{record?.applyInfo?.sendBankAccount}</Box>
 

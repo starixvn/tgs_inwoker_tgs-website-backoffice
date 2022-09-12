@@ -63,7 +63,7 @@ const VerifyFundDepositDialog = ({
   ...props
 }) => {
   let title = useTrans({
-    zh: "充值审核",
+    zh: "存款审核",
     en: "Review Deposit"
   })
 

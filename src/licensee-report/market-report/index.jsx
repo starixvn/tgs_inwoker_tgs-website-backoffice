@@ -227,7 +227,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberColumn({
         accessor: "firstFundInCount",
-        Header: <Trans zh="首充人数" en="First Fund In Count" />,
+        Header: <Trans zh="首存人数" en="First Fund In Count" />,
         disableSortBy: true
       }),
       */

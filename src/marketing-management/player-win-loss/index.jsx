@@ -225,7 +225,7 @@ const useColumns = ({ brandId, items = [], from, to }) => {
       }),
       numberDecimalColumn({
         accessor: "depositAmount",
-        Header: <Trans zh="总充值金额" en="Total Deposit Amount" />,
+        Header: <Trans zh="总存款金额" en="Total Deposit Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
