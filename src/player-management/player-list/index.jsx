@@ -35,6 +35,7 @@ import { SortOrder } from "../../table/order"
 import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog"
 import { PlayerDepositFormDialogDisclosure } from "./PlayerDepositFormDialog"
 import { PlayerWithdrawFormDialogDisclosure } from "./PlayerWithdrawFormDialog"
+import { BankInfoFieldGroup } from "./BankInfoTag"
 
 export { Code }
 
@@ -263,6 +264,7 @@ const SearchBar = ({
             minLength={2}
             maxLength={256}
           />
+          <BankInfoFieldGroup />
           <DateInputRangeField
             showDateDropdownMenu
             fakeTimeLabel
