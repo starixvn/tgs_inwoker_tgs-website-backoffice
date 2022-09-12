@@ -451,7 +451,6 @@ const EditBody = ({
   ...props
 }) => {
   let isDeposit = isDepositPlatformPayment(record.transferType)
-  console.log("TODO: test isDeposit", isDeposit)
 
   let { setValue, getValues, control } = useFormContext()
 
@@ -631,17 +630,21 @@ const EditBody = ({
                 width="100%"
               />
 
-              <Label>
-                <Trans zh="手续费" en="Transfer Fee" />
-              </Label>
-              <Set orientation="horizontal">
-                <PercentageNumberInputField
-                  name="handlingFeeRatePercentile"
-                  defaultValue={0}
-                  min={0}
-                />
-                <PlayerShallBearTransferFeeSwitch />
-              </Set>
+              {isDeposit && (
+                <>
+                  <Label>
+                    <Trans zh="手续费" en="Transfer Fee" />
+                  </Label>
+                  <Set orientation="horizontal">
+                    <PercentageNumberInputField
+                      name="handlingFeeRatePercentile"
+                      defaultValue={0}
+                      min={0}
+                    />
+                    <PlayerShallBearTransferFeeSwitch />
+                  </Set>
+                </>
+              )}
             </FieldValues>
 
             <Columns flex="1 auto">
