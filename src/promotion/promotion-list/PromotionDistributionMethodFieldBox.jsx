@@ -5,11 +5,7 @@ import { Switch } from "../../switch/Switch"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { Trans, useTrans } from "../../i18n"
 import { NormalLabel } from "../../form/Label"
-import {
-  PromotionTypeGroup,
-  useFindPromotionType,
-  useIsInstantlySettlementIntervalType
-} from "../PromotionType"
+import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
 import { isNil, complement } from "ramda"
 
 const isNotNil = complement(isNil)
@@ -32,17 +28,7 @@ export const PromotionDistributionMethodFieldBox = ({
     }
   }, [autoPayoutProps])
 
-  /*
-  TODO: rm
-  let autoPayout = useIsInstantlySettlementIntervalType(promotionType)
-  useEffect(() => {
-    if (autoPayout) {
-      setValue(AutoPayoutFieldName, true)
-    }
-  }, [autoPayout])
-  */
-
-  //TODO: use autoPayoutProps instead?
+  //TODO: use autoPayoutProps?.visible instead?
   if (fieldNotUsed({ promotionTypeGroup, promotionType })) {
     return null
   }

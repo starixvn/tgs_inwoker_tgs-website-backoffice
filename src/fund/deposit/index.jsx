@@ -627,6 +627,11 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
           return <FormattedNumberDecimal value={actualAmount ?? amount} />
         }
       }),
+      numberDecimalColumn({
+        accessor: "handlingFee",
+        Header: <Trans zh="手续费" en="Transfer Fee" />,
+        disableSortBy: true
+      }),
       dateTimeColumn({
         accessor: "createdOn",
         Header: <Trans zh="申请时间" en="Application Time" />,
