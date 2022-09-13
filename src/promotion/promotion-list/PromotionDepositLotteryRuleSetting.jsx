@@ -724,7 +724,6 @@ const RouletteSettingRow = ({
           readOnly={readOnly}
           disabled={disabled}
           min={0}
-          max={10000}
           size="small"
           registerOptions={{
             valueAsNumber: true
