@@ -147,6 +147,8 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
 
           <HandlingFeeBox record={record} />
 
+          <AmountReceivedBox record={record} />
+
           <NormalLabel>
             <Trans zh="申请时间" en="Application Time" />
           </NormalLabel>
@@ -206,8 +208,7 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
   )
 }
 
-//TODO: after actualAmount? use FieldWrapper?
-const AmountReceived = ({ record }) => {
+const AmountReceivedBox = ({ record }) => {
   let handlingFee = record?.handlingFee
   if (!Number.isFinite(handlingFee)) {
     return null
