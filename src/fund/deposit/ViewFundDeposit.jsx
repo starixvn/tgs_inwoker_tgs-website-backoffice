@@ -206,6 +206,28 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
   )
 }
 
+//TODO: after actualAmount? use FieldWrapper?
+const AmountReceived = ({ record }) => {
+  let handlingFee = record?.handlingFee
+  if (!Number.isFinite(handlingFee)) {
+    return null
+  }
+
+  let actualAmount = record?.actualAmount ?? record?.amount
+  if (!Number.isFinite(actualAmount)) {
+    return null
+  }
+
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="实收金额" en="Amount Received" />
+      </NormalLabel>
+      <FormattedNumberDecimal value={actualAmount - handlingFee} />
+    </>
+  )
+}
+
 const HandlingFeeBox = ({ record }) => {
   let handlingFee = record?.handlingFee
   if (!Number.isFinite(handlingFee)) {

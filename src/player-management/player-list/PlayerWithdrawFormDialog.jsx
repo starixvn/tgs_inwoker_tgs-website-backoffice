@@ -38,9 +38,8 @@ export const PlayerWithdrawFormDialogDisclosure = ({
 }) => {
   let dialog = new useModalState()
 
-  let editable = useIsDisplayMenuByRoute([Update])
   let withdrawalFormAuth = useIsDisplayMenuByRoute([WithdrawalForm])
-  if (!editable || !withdrawalFormAuth) {
+  if (!withdrawalFormAuth) {
     return null
   }
 

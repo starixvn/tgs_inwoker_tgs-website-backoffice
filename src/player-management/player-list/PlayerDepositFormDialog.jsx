@@ -50,9 +50,8 @@ export const PlayerDepositFormDialogDisclosure = ({
 }) => {
   let dialog = new useModalState()
 
-  let editable = useIsDisplayMenuByRoute([Update])
   let depositFormAuth = useIsDisplayMenuByRoute([DepositForm])
-  if (!editable || !depositFormAuth) {
+  if (!depositFormAuth) {
     return null
   }
 
