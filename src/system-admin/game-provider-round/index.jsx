@@ -170,10 +170,12 @@ const ReportContent = ({}) => {
 
   const toSearchParams = () => ({
     ...toApiParams(state),
+    /*
     externalTo: startOfNextMinute(state.externalTo),
     externalClosedTo: startOfNextMinute(state.externalClosedTo),
     to: startOfNextMinute(state.to),
     closedTo: startOfNextMinute(state.closedTo),
+    */
     culture
   })
 

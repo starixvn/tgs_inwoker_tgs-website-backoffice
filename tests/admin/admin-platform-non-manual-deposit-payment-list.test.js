@@ -11,11 +11,7 @@ import { openDialog } from "../page/dialog.js"
 const test = base.extend(Fixture)
 const { finance, commerce } = faker
 
-console.warn("TODO: wait api update fix")
-test.skip("non-manual platform deposit payment ", async ({
-  page,
-  platform
-}) => {
+test("non-manual platform deposit payment ", async ({ page, platform }) => {
   await gotoAdminPlatformPaymentListPage(page, platform.code)
 
   let name = "LeePay_Crypto_ETHEREUM"
