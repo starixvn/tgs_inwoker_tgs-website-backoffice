@@ -171,6 +171,7 @@ const ReportContent = ({}) => {
   const toSearchParams = () => ({
     ...toApiParams(state),
     /*
+    TODO: remove
     externalTo: startOfNextMinute(state.externalTo),
     externalClosedTo: startOfNextMinute(state.externalClosedTo),
     to: startOfNextMinute(state.to),

@@ -104,13 +104,17 @@ const VerifyFundWithdrawDialog = ({
     })
   }
 
+  const resetVerifyFundWithdrawForm = () => {
+    deleteCache()
+    mutate(null, false)
+    setSubmit(undefined)
+  }
+
   const reset = () => {
     deleteFundWithdrawFormCache()
     mutateFundWithdrawForm(null, false)
 
-    deleteCache()
-    mutate(null, false)
-    setSubmit(undefined)
+    resetVerifyFundWithdrawForm()
   }
 
   return (
@@ -154,7 +158,7 @@ const VerifyFundWithdrawDialog = ({
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={reset}
+      onCloseErrorAlert={resetVerifyFundWithdrawForm}
       onClickClose={reset}
       onSubmitted={() => {
         reset()

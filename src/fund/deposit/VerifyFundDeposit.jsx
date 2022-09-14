@@ -105,13 +105,17 @@ const VerifyFundDepositDialog = ({
     }
   }
 
+  const resetVerifyFundDepositForm = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+
   const reset = () => {
     deleteFundDepositFormCache()
     mutateFundDepositForm(null, false)
 
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
+    resetVerifyFundDepositForm()
   }
 
   return (
@@ -152,7 +156,7 @@ const VerifyFundDepositDialog = ({
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={reset}
+      onCloseErrorAlert={resetVerifyFundDepositForm}
       onSubmitted={() => {
         reset()
         onSubmitted?.()
