@@ -32,10 +32,14 @@ import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import Separator from "../../layout/Separator"
-import { FundDepositStatusLabel } from "./FundDepositStatus"
+import {
+  FundDepositStatusLabel,
+  isFundDepositApproved
+} from "./FundDepositStatus"
 import Textarea, { TextareaField } from "../../textarea"
 import Input, { InputField } from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
+import { useFundDepositFormData } from "./useFundDepositFormData"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -74,7 +78,10 @@ const ViewFundDepositDialog = ({ brandId, formId, dialog, ...props }) => {
     en: "View Deposit"
   })
 
-  let { isLoading, data, error } = useFundDepositForm(brandId, formId)
+  let { depositForm, brandPayment, isLoading, error } = useFundDepositFormData(
+    brandId,
+    formId
+  )
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -92,12 +99,21 @@ const ViewFundDepositDialog = ({ brandId, formId, dialog, ...props }) => {
       hideOnClickOutside={false}
       {...dialog}
     >
-      <FormBody record={data} readOnly={true} />
+      <FormBody
+        record={depositForm}
+        brandPayment={brandPayment}
+        readOnly={true}
+      />
     </Dialog.Modal>
   )
 }
 
-export const FormBody = ({ brandId, record, readOnly = false }) => {
+export const FormBody = ({
+  brandId,
+  record,
+  brandPayment,
+  readOnly = false
+}) => {
   let hasAttachment = !!record?.paymentReturn?.manualReceiptFileId
   let attachmentUrl = `/api/fs/${record?.paymentReturn?.manualReceiptFileId}`
 
@@ -144,6 +160,11 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
           <Box alignY="center">
             <FormattedNumberDecimal value={record?.amount} />
           </Box>
+
+          <TransferFeePercentageBox
+            record={record}
+            brandPayment={brandPayment}
+          />
 
           <HandlingFeeBox record={record} />
 
@@ -209,6 +230,11 @@ export const FormBody = ({ brandId, record, readOnly = false }) => {
 }
 
 const AmountReceivedBox = ({ record }) => {
+  let status = record?.status
+  if (!isFundDepositApproved(status)) {
+    return null
+  }
+
   let handlingFee = record?.handlingFee
   if (!Number.isFinite(handlingFee)) {
     return null
@@ -224,12 +250,37 @@ const AmountReceivedBox = ({ record }) => {
       <NormalLabel>
         <Trans zh="实收金额" en="Amount Received" />
       </NormalLabel>
-      <FormattedNumberDecimal value={actualAmount - handlingFee} />
+      <Box alignY="center">
+        <FormattedNumberDecimal value={actualAmount - handlingFee} />
+      </Box>
+    </>
+  )
+}
+
+const TransferFeePercentageBox = ({ record, brandPayment }) => {
+  let value = brandPayment?.handlingFeeRatePercentile
+  if (!Number.isFinite(value)) {
+    return null
+  }
+
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="手续费%" en="Transfer Fee %" />
+      </NormalLabel>
+      <Box alignY="center">
+        <FormattedNumberDecimal value={value} postfix="%" />
+      </Box>
     </>
   )
 }
 
 const HandlingFeeBox = ({ record }) => {
+  let status = record?.status
+  if (!isFundDepositApproved(status)) {
+    return null
+  }
+
   let handlingFee = record?.handlingFee
   if (!Number.isFinite(handlingFee)) {
     return null
@@ -240,7 +291,9 @@ const HandlingFeeBox = ({ record }) => {
       <NormalLabel>
         <Trans zh="手续费" en="Transfer Fee" />
       </NormalLabel>
-      <FormattedNumberDecimal value={handlingFee} />
+      <Box alignY="center">
+        <FormattedNumberDecimal value={handlingFee} />
+      </Box>
     </>
   )
 }

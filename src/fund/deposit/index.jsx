@@ -628,9 +628,22 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         }
       }),
       numberDecimalColumn({
-        accessor: "handlingFee",
+        id: "handlingFee",
+        accessor: (row) => row,
         Header: <Trans zh="手续费" en="Transfer Fee" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          let approved = isFundDepositApproved(record?.status)
+          if (approved) {
+            return (
+              <FormattedNumberDecimal
+                value={record?.handlingFee}
+                placeholder="-"
+              />
+            )
+          }
+          return "-"
+        }
       }),
       dateTimeColumn({
         accessor: "createdOn",

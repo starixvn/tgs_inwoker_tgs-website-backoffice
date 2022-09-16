@@ -14,6 +14,7 @@ import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import { FormBody } from "./ViewFundDeposit"
 import ReviewFund from "../ReviewFund"
+import { useFundDepositFormData } from "./useFundDepositFormData"
 
 export const FundDepositVerified = "FundDepositVerified"
 
@@ -76,23 +77,24 @@ const VerifyFundDepositDialog = ({
   let { setValue } = formMethods
 
   let {
-    isLoading: isLoadingFundDepositForm,
-    data: fundDepositForm,
-    error: fundDepositFormError,
-    mutate: mutateFundDepositForm,
-    deleteCache: deleteFundDepositFormCache
-  } = useFundDepositForm(brandId, formId)
+    isLoading: isLoadingDepositFormData,
+    depositForm: depositFormData,
+    brandPayment,
+    error: depositFormDataError,
+    mutateDepositForm,
+    deleteDepositFormCache
+  } = useFundDepositFormData(brandId, formId)
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
     useVerifyFundDepositForm(brandId, formId, formData)
 
-  if (isLoadingFundDepositForm) {
+  if (isLoadingDepositFormData) {
     return <LoadingBackdrop {...dialog} />
   }
 
-  if (fundDepositFormError) {
-    return <AlertDialog {...fundDepositFormError} {...dialog} />
+  if (depositFormDataError) {
+    return <AlertDialog {...depositFormDataError} {...dialog} />
   }
 
   const onSubmit = (form) => {
@@ -112,8 +114,8 @@ const VerifyFundDepositDialog = ({
   }
 
   const reset = () => {
-    deleteFundDepositFormCache()
-    mutateFundDepositForm(null, false)
+    deleteDepositFormCache()
+    mutateDepositForm(null, false)
 
     resetVerifyFundDepositForm()
   }
@@ -122,7 +124,7 @@ const VerifyFundDepositDialog = ({
     <FormDialog
       id="verify-deposit-dialog"
       formMethods={formMethods}
-      defaultValues={clone(fundDepositForm)}
+      defaultValues={clone(depositFormData)}
       actionButtonsProps={{
         isLoading: isLoading,
         disabled: isLoading,
@@ -165,7 +167,11 @@ const VerifyFundDepositDialog = ({
       title={title}
       dialog={dialog}
     >
-      <FormBody brandId={brandId} record={fundDepositForm} />
+      <FormBody
+        brandId={brandId}
+        record={depositFormData}
+        brandPayment={brandPayment}
+      />
     </FormDialog>
   )
 }
