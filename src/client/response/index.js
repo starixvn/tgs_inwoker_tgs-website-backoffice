@@ -8,6 +8,8 @@ const UnauthorizedTrans = {
 }
 
 export const toDataOrError = (response) => {
+  let xCorrelationId = response.headers.get("x-correlation-id")
+  console.log("xCorrelationId", xCorrelationId)
   if (!response?.ok) {
     if (response.status === Unauthorized) {
       location.href = "/login"
@@ -88,7 +90,8 @@ const RequestTimeoutTrans = {
 }
 
 const InternalServerError = 500
-const InternalServerErrorDefaultMessage = "System is busy, please contact system administrator for more info."
+const InternalServerErrorDefaultMessage =
+  "System is busy, please contact system administrator for more info."
 const InternalServerErrorTrans = {
   zh: "目前系統繁忙中，請聯繫系統管理員。",
   en: InternalServerErrorDefaultMessage

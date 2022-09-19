@@ -15,7 +15,8 @@ export const firstBankDepositPayment = async (brandId, playerCode) => {
   let paymentList = await depositPaymentList(brandId, playerCode)
 
   let bankPaymentList = paymentList.filter(
-    ({ banktype, extended }) => banktype === "Bank" && extended.bankAccount
+    ({ bankType, extendedData }) =>
+      bankType === "Bank" && extendedData.bankAccount
   )
   let FirstIndex = 0
 

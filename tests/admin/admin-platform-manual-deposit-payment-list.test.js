@@ -23,7 +23,6 @@ test("add, search, edit and view platform deposit payment", async ({
   )
 
   await searchPlatformPaymentBy(page, payment.channelName)
-  console.log("after search")
   await editPlatformPayment(page)
 })
 

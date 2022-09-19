@@ -28,6 +28,7 @@ import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { Features, isDev, isFeatureEnabled } from "../../env"
+import Checkbox from "../../checkbox"
 
 export { Code }
 
@@ -101,6 +102,10 @@ const SearchBar = ({ search, isLoading, ...props }) => {
     defaultValues: { name: "" }
   })
 
+  let isRootLabel = useTrans({
+    zh: "根权限",
+    en: "Root"
+  })
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
@@ -110,6 +115,7 @@ const SearchBar = ({ search, isLoading, ...props }) => {
             showEmptyFieldValueAddonAfter
             placeholder={useSearchInputPlaceHolder()}
           />
+          <Checkbox name="isRoot" label={isRootLabel} />
           <SearchButton isLoading={isLoading} />
         </Set>
       </form>

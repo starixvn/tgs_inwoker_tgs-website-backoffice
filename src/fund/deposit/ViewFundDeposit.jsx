@@ -266,7 +266,7 @@ const TransferFeePercentageBox = ({ record, brandPayment }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="手续费%" en="Transfer Fee %" />
+        <Trans zh="手续费比例" en="Fee Ratio" />
       </NormalLabel>
       <Box alignY="center">
         <FormattedNumberDecimal value={value} postfix="%" />

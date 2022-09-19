@@ -76,7 +76,7 @@ export const PlayerDepositFormDialogDisclosure = ({
 //TODO: move ManualCode to?
 const ManualCode = "Manual"
 const supportedPaymentList = (list = []) =>
-  list.filter(({ paymentcode }) => paymentcode === ManualCode)
+  list.filter(({ paymentCode }) => paymentCode === ManualCode)
 
 const DepositFormDialog = ({
   brandId,
@@ -146,7 +146,6 @@ const DepositFormDialog = ({
 
 const FormBody = ({ paymentList = [], brandId, playerCode }) => {
   let { control, setValue } = useFormContext()
-
   let PaymentMethodField = "method"
 
   let paymentMethod = useWatch({
@@ -180,15 +179,15 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
   useEffect(() => {
     let payment = paymentList.find((payment) => {
       return (
-        payment.methodcode === paymentMethod &&
-        payment.channelcode === paymentChannel
+        payment.methodCode === paymentMethod &&
+        payment.channelCode === paymentChannel
       )
     })
 
     let paymentId = payment?.id ?? ""
     setValue(BrandPaymentIdField, paymentId)
 
-    let bankType = payment?.banktype ?? ""
+    let bankType = payment?.bankType ?? ""
     setValue(BankTypeField, bankType)
   }, [paymentMethod, paymentChannel])
   return (
