@@ -9,7 +9,6 @@ const UnauthorizedTrans = {
 
 export const toDataOrError = (response) => {
   let xCorrelationId = response.headers.get("x-correlation-id")
-  console.log("xCorrelationId", xCorrelationId)
   if (!response?.ok) {
     if (response.status === Unauthorized) {
       location.href = "/login"
@@ -19,7 +18,8 @@ export const toDataOrError = (response) => {
         .json()
         .catch((error) => {
           return Promise.reject({
-            title: errorTitle(response)
+            title: errorTitle(response),
+            xCorrelationId
           })
         })
         .then((data) => {
@@ -27,7 +27,8 @@ export const toDataOrError = (response) => {
           errors = Object.values(errors)
           return Promise.reject({
             title: title ?? message ?? errorTitle(response),
-            errors: errors?.length > 0 ? errors : toErrors(response)
+            errors: errors?.length > 0 ? errors : toErrors(response),
+            xCorrelationId
           })
         })
     }
@@ -42,7 +43,8 @@ export const toDataOrError = (response) => {
     .then((data) => {
       if (!data?.valid && data?.message) {
         return Promise.reject({
-          title: data.message
+          title: data.message,
+          xCorrelationId
         })
       }
 
@@ -50,7 +52,7 @@ export const toDataOrError = (response) => {
     })
     .catch((error) => {
       console.warn(error)
-      return Promise.reject(error)
+      return Promise.reject({ ...error, xCorrelationId })
     })
 }
 

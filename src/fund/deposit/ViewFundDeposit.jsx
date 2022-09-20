@@ -166,9 +166,9 @@ export const FormBody = ({
             brandPayment={brandPayment}
           />
 
-          <HandlingFeeBox record={record} />
+          <HandlingFeeBox record={record} brandPayment={brandPayment} />
 
-          <AmountReceivedBox record={record} />
+          <AmountReceivedBox record={record} brandPayment={brandPayment} />
 
           <NormalLabel>
             <Trans zh="申请时间" en="Application Time" />
@@ -229,7 +229,12 @@ export const FormBody = ({
   )
 }
 
-const AmountReceivedBox = ({ record }) => {
+const AmountReceivedBox = ({ record, brandPayment }) => {
+  let handlingFeeRate = brandPayment?.handlingFeeRatePercentile
+  if (!Number.isFinite(handlingFeeRate) || handlingFeeRate == 0) {
+    return null
+  }
+
   let status = record?.status
   if (!isFundDepositApproved(status)) {
     return null
@@ -258,8 +263,8 @@ const AmountReceivedBox = ({ record }) => {
 }
 
 const TransferFeePercentageBox = ({ record, brandPayment }) => {
-  let value = brandPayment?.handlingFeeRatePercentile
-  if (!Number.isFinite(value)) {
+  let handlingFeeRate = brandPayment?.handlingFeeRatePercentile
+  if (!Number.isFinite(handlingFeeRate) || handlingFeeRate == 0) {
     return null
   }
 
@@ -269,13 +274,18 @@ const TransferFeePercentageBox = ({ record, brandPayment }) => {
         <Trans zh="手续费比例" en="Fee Ratio" />
       </NormalLabel>
       <Box alignY="center">
-        <FormattedNumberDecimal value={value} postfix="%" />
+        <FormattedNumberDecimal value={handlingFeeRate} postfix="%" />
       </Box>
     </>
   )
 }
 
-const HandlingFeeBox = ({ record }) => {
+const HandlingFeeBox = ({ record, brandPayment }) => {
+  let handlingFeeRate = brandPayment?.handlingFeeRatePercentile
+  if (!Number.isFinite(handlingFeeRate) || handlingFeeRate == 0) {
+    return null
+  }
+
   let status = record?.status
   if (!isFundDepositApproved(status)) {
     return null
