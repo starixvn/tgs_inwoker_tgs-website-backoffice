@@ -450,9 +450,9 @@ const EditBody = ({
   dialog,
   ...props
 }) => {
-  let isDeposit = isDepositPlatformPayment(record.transferType)
-
   let { setValue, getValues, control } = useFormContext()
+  let transferType = getValues("transferType")
+  let isDeposit = isDepositPlatformPayment(transferType)
 
   const paymentCode = getValues("paymentCode")
   const TransferLimitToFieldName = "transferLimitTo"
