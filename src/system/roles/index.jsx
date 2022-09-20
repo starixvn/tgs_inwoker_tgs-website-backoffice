@@ -173,7 +173,7 @@ const useColumns = ({ mutate, items = [] }) => {
   let hasDeleteAuth = useIsDisplayMenuByRoute([Delete])
   let hasAnyMenu = hasUpdateAuth || hasCopyAuth || hasDeleteAuth
   let adminUser = useIsAdminUser()
-  let resellerUser = !!!useUserResellerId()
+  let resellerUser = !!useUserResellerId()
   let licenseeUser = !!useUserLicenseeId()
 
   return useMemo(() => {
