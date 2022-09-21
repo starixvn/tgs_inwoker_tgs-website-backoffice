@@ -312,7 +312,7 @@ export const useDelete = (url, settings) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(key),
     clearCache: () => cache.clear()
   }
 }
@@ -335,6 +335,29 @@ export const useDeleteData = (url, data, options = DefaultUpdateOptions) => {
     mutate,
     deleteCache: () => deleteCacheBy(keys),
     deleteErrorCache: () => deleteErrorCacheBy(keys),
+    clearCache: () => cache.clear()
+  }
+}
+
+export const useHead = (url, settings) => {
+  let fetchData = !!url
+  let key = fetchData ? [url, "HEAD"] : null
+  const {
+    data: result,
+    error,
+    isValidating,
+    mutate
+  } = useSWR(key, (url) => fetchApi("HEAD", url, settings))
+
+  return {
+    result,
+    isLoading: !error && !result && fetchData,
+    isValidating,
+    error,
+    isError: error,
+    mutate,
+    deleteCache: () => deleteCacheBy(key),
+    deleteErrorCache: () => deleteErrorCacheBy(key),
     clearCache: () => cache.clear()
   }
 }

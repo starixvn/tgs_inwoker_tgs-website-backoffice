@@ -4,7 +4,8 @@ import {
   usePostData,
   usePostFormData,
   usePutData,
-  useDelete
+  useDelete,
+  useHead
 } from "../../client"
 
 let API = "/api/player"
@@ -33,4 +34,15 @@ export const useImportPlayerBatchAddBalance = (brandId, formData) => {
 export const usePlayerBatchAddBalanceList = (batchId) => {
   let url = batchId ? `${BatchApi}/${batchId}` : ""
   return useGet(url)
+}
+
+export const useStartPlayerBatchAddBalance = (brandId, batchId, formData) => {
+  let url =
+    brandId && batchId && formData ? `${BatchApi}/${brandId}/${batchId}` : ""
+  return usePutData(url, formData)
+}
+
+export const useIsPlayerBatchAddBalanceEnd = (batchId) => {
+  let url = batchId ? `${BatchApi}/${batchId}` : ""
+  return useHead(url)
 }

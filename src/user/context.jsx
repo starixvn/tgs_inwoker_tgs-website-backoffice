@@ -132,6 +132,28 @@ export const useUserBrandId = () => {
   return state?.userInfo?.brandId
 }
 
+export const useIsResellerUser = () => {
+  let resellerId = useUserResellerId()
+  let licenseeId = useUserLicenseeId()
+  let brandId = useUserBrandId()
+
+  return resellerId && !licenseeId && !brandId
+}
+
+export const useIsLicenseeUser = () => {
+  let resellerId = useUserResellerId()
+  let licenseeId = useUserLicenseeId()
+  let brandId = useUserBrandId()
+
+  return resellerId && licenseeId && !brandId
+}
+
+export const useIsBrandUser = () => {
+  let brandId = useUserBrandId()
+
+  return !!brandId
+}
+
 export const useMenuByRoute = (extCodes = []) => {
   let { path = "" } = useRouteMatch()
   let [_, ...codes] = path.split("/")
