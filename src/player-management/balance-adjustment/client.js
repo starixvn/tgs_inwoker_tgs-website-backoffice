@@ -2,6 +2,7 @@ import {
   urlWith,
   useGet,
   usePostData,
+  usePostFormData,
   usePutData,
   useDelete
 } from "../../client"
@@ -26,7 +27,7 @@ export const usePlayerAdjustReduceBalance = (playerCode, formData) => {
 let BatchApi = "/api/batch-adj-balance"
 export const useImportPlayerBatchAddBalance = (brandId, formData) => {
   let url = brandId && formData ? `${BatchApi}/${brandId}` : ""
-  return usePostData(url, formData)
+  return usePostFormData(url, formData)
 }
 
 export const usePlayerBatchAddBalanceList = (batchId) => {

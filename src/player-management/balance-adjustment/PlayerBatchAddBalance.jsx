@@ -305,50 +305,52 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
 
   let isLoading = isLoadingImportBatchResult || isLoadingItems
   return (
-    <FieldWrapper
-      label={
-        <Text.Block>
-          <Trans zh="汇入" en="Import" />
-          <Link
-            href="/api/batch-adj-balance"
-            download="batch.xlsx"
-            marginLeft="1rem"
-          >
-            <Trans zh="下载文件格式" en="Download Format File" />
-          </Link>
-        </Text.Block>
-      }
-    >
-      <Button
-        {...getRootProps({
-          refKey: "elementRef"
-        })}
-        palette={palette}
-        variant={variant}
-        isLoading={isLoading}
-        disabled={isLoading}
+    <>
+      <FieldWrapper
+        label={
+          <Text.Block>
+            <Trans zh="汇入" en="Import" />
+            <Link
+              href="/api/batch-adj-balance"
+              download="batch.xlsx"
+              marginLeft="1rem"
+            >
+              <Trans zh="下载文件格式" en="Download Format File" />
+            </Link>
+          </Text.Block>
+        }
       >
-        <Trans zh="上传文件" en="Upload file" />
-        <input {...getInputProps()} />
-        {importBatchResultError && (
-          <AlertDialog
-            {...importBatchResultError}
-            placement="center"
-            onClickClose={resetImportBatch}
-          />
-        )}
-        {itemsError && (
-          <AlertDialog
-            {...itemsError}
-            placement="center"
-            onClickClose={() => {
-              resetImportBatch()
-              resetItems()
-            }}
-          />
-        )}
-      </Button>
-    </FieldWrapper>
+        <Button
+          {...getRootProps({
+            refKey: "elementRef"
+          })}
+          palette={palette}
+          variant={variant}
+          isLoading={isLoading}
+          disabled={isLoading}
+        >
+          <Trans zh="上传文件" en="Upload file" />
+          <input {...getInputProps()} />
+        </Button>
+      </FieldWrapper>
+      {importBatchResultError && (
+        <AlertDialog
+          {...importBatchResultError}
+          placement="center"
+          onClickClose={resetImportBatch}
+        />
+      )}
+      {itemsError && (
+        <AlertDialog
+          {...itemsError}
+          placement="center"
+          onClickClose={() => {
+            resetImportBatch()
+            resetItems()
+          }}
+        />
+      )}
+    </>
   )
 }
 
