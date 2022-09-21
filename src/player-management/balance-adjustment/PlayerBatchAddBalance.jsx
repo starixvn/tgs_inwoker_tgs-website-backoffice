@@ -30,7 +30,9 @@ import {
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import {
   useImportPlayerBatchAddBalance,
-  usePlayerBatchAddBalanceList
+  usePlayerBatchAddBalanceList,
+  useStartPlayerBatchAddBalance,
+  useIsPlayerBatchAddBalanceEnd
 } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -93,32 +95,44 @@ export const PlayerBatchAddBalanceDisclosure = ({
   )
 }
 
-//TODO: use api with pollling?
-const useFakeFetch = () => {
-  return {
-    isLoading: false,
-    result: undefined,
-    error: undefined,
-    mutate: () => {},
-    deleteCache: () => {}
-  }
-}
+//TODO: move to?
+const SecondInMilliseconds = 1000
 
 const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
-  //1. use
+  let [batchId, setBatchId] = useState()
   let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } = useFakeFetch(formData)
+  //TODO: no need to mutate?
+  let {
+    result: isStarted,
+    isLoading: isLoadingStarted,
+    error: startedError,
+    mutate: mutateStarted,
+    deleteCache: deleteStartedCache
+  } = useStartPlayerBatchAddBalance(brandId, batchId, formData)
+  console.log("isStarted", isStarted, "startedError", startedError)
 
+  //TODO: need to mutate or delete cache?
+  let {
+    result: isEnded,
+    isLoading: isEndedLoading,
+    error: endedError
+  } = useIsPlayerBatchAddBalanceEnd(isStarted && batchId, {
+    refreshInterval: 3 * SecondInMilliseconds
+  })
+  console.log("isEnded", isEnded, "endedError", endedError)
+
+  let isLoading = isLoadingStarted || isEndedLoading || (isStarted && !isEnded)
   let title = useTrans({
     zh: "批量余额加分",
     en: "Batch Add Balance"
   })
 
-  const onSubmit = (data) => {
-    console.log("onSubmit", data)
-    setSubmit(data)
+  const onSubmit = ({ items, batchId, transactionType, ...data } = {}) => {
+    setBatchId(batchId)
+    setSubmit(transactionType)
   }
 
+  //TODO
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
@@ -133,9 +147,10 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
-      result={result}
-      error={error}
-      onCloseErrorAlert={reset}
+      // result={isEnded}
+      error={startedError || endedError}
+      //TODO
+      // onCloseErrorAlert={reset}
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
@@ -160,7 +175,7 @@ const FormBody = ({}) => {
 
   let brandId = getValues("brandId")
 
-  let TransactionTypeField = "adjustTransferType"
+  let TransactionTypeField = "transactionType"
   let transactionType = useWatch({
     control,
     name: TransactionTypeField
@@ -193,7 +208,7 @@ const FormBody = ({}) => {
   )
 }
 
-//TODO: required validation?
+//TODO: empty validation?
 const ImportBatchAddDataField = ({ name = "items" }) => {
   let { control, setValue } = useFormContext()
   //TODO
@@ -223,8 +238,11 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
   let brandId = getValues("brandId")
   let [formData, setFormData] = useState()
 
-  //TODO: useWatch?
-  let [batchId, setBatchId] = useState()
+  let BatchIdField = "batchId"
+  let batchId = useWatch({
+    control,
+    name: BatchIdField
+  })
 
   let {
     result: importBatchResult,
@@ -254,7 +272,7 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
     mutateItems(null, false)
   }
 
-  //TODO: test limit > 50?
+  //TODO: msg where?
   let maxErrorMsg = useTrans({
     zh: `必须小于或等于 ${MaxBatchAdd} 项`,
     en: `Must be less than or equal to ${MaxBatchAdd} items`
@@ -294,16 +312,15 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
 
   useEffect(() => {
     if (importBatchResult && !importBatchResultError) {
-      setBatchId(importBatchResult)
       setValue("batchId", importBatchResult)
     }
   }, [importBatchResult])
 
   useEffect(() => {
-    if (items?.length > 0) {
+    if (items) {
       setValue(name, items)
     }
-  }, [JSON.stringify(items ?? [])])
+  }, [JSON.stringify(items)])
 
   let isLoading = isLoadingImportBatchResult || isLoadingItems
   return (
@@ -322,18 +339,21 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
           </Text.Block>
         }
       >
-        <Button
-          {...getRootProps({
-            refKey: "elementRef"
-          })}
-          palette={palette}
-          variant={variant}
-          isLoading={isLoading}
-          disabled={isLoading}
-        >
-          <Trans zh="上传文件" en="Upload file" />
-          <input {...getInputProps()} />
-        </Button>
+        <Box>
+          <Button
+            {...getRootProps({
+              refKey: "elementRef"
+            })}
+            palette={palette}
+            variant={variant}
+            isLoading={isLoading}
+            disabled={isLoading}
+          >
+            <Trans zh="上传文件" en="Upload file" />
+            <input {...getInputProps()} />
+          </Button>
+          <Input type="hidden" name={BatchIdField} value={batchId} />
+        </Box>
       </FieldWrapper>
       {importBatchResultError && (
         <AlertDialog
@@ -407,7 +427,7 @@ const useColumns = ({ items }) => {
         sumColumn: "turnover",
         disableSortBy: true
       }),
-      numberDecimalColumn({
+      textColumn({
         accessor: "remark",
         Header: <Trans zh="备注" en="Remark" />,
         disableSortBy: true

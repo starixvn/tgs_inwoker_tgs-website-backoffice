@@ -34,6 +34,7 @@ export const toDataOrError = (response) => {
     }
   }
 
+  //TODO: remove?
   if (response.headers.get("Content-Length") == "0") {
     return response?.ok
   }
@@ -41,7 +42,7 @@ export const toDataOrError = (response) => {
   return response
     .json()
     .then((data) => {
-      if (!data?.valid && data?.message) {
+      if (data?.valid === false && data?.message) {
         return Promise.reject({
           title: data.message,
           xCorrelationId
@@ -51,8 +52,9 @@ export const toDataOrError = (response) => {
       return data
     })
     .catch((error) => {
-      console.warn(error)
-      return Promise.reject({ ...error, xCorrelationId })
+      console.warn(`catch response.json error ${error}`)
+      return Promise.resolve(response?.ok)
+      //return Promise.reject({ ...error, xCorrelationId })
     })
 }
 

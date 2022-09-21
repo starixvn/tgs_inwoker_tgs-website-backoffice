@@ -16,7 +16,9 @@ import {
   useIsAdminUser,
   useUserResellerId,
   useUserLicenseeId,
-  useUserBrandId
+  useUserBrandId,
+  useIsResellerUser,
+  useIsLicenseeUser
 } from "../../user/context"
 import { Code, Update, Copy, Delete } from "./menu"
 import { useRoleList } from "./client"
@@ -173,8 +175,9 @@ const useColumns = ({ mutate, items = [] }) => {
   let hasDeleteAuth = useIsDisplayMenuByRoute([Delete])
   let hasAnyMenu = hasUpdateAuth || hasCopyAuth || hasDeleteAuth
   let adminUser = useIsAdminUser()
-  let resellerUser = !!useUserResellerId()
-  let licenseeUser = !!useUserLicenseeId()
+
+  let resellerUser = useIsResellerUser()
+  let licenseeUser = useIsLicenseeUser()
 
   return useMemo(() => {
     let columns = [
