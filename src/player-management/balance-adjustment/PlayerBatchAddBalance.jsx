@@ -28,7 +28,10 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { useImportPlayerBatchAddBalance } from "./client"
+import {
+  useImportPlayerBatchAddBalance,
+  usePlayerBatchAddBalanceList
+} from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -190,7 +193,7 @@ const FormBody = ({}) => {
   )
 }
 
-//TODO: required validation
+//TODO: required validation?
 const ImportBatchAddDataField = ({ name = "items" }) => {
   let { control, setValue } = useFormContext()
   //TODO
@@ -219,20 +222,41 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
 
   let brandId = getValues("brandId")
   let [formData, setFormData] = useState()
+  let [batchId, setBatchId] = useState()
+
   let {
-    result: batchId,
-    isLoading: isLoadingBatchId,
-    error: batchIdError,
-    mutate: mutateBatchId,
-    deleteCache: deleteBatchIdCache
+    result: importBatchResult,
+    isLoading: isLoadingImportBatchResult,
+    error: importBatchResultError,
+    mutate: mutateImportBatchResult,
+    deleteCache: deleteImportBatchResultCache
   } = useImportPlayerBatchAddBalance(brandId, formData)
 
-  //TODO: test limit > 50
+  const resetImportBatch = () => {
+    setFormData(null)
+    deleteImportBatchResultCache()
+    mutateImportBatchResult(null, false)
+  }
+
+  let {
+    data: items,
+    isLoading: isLoadingItems,
+    error: itemsError,
+    mutate: mutateItems,
+    deleteCache: deleteItemsCache
+  } = usePlayerBatchAddBalanceList(batchId)
+
+  const resetItems = () => {
+    setBatchId(null)
+    deleteItemsCache()
+    mutateItems(null, false)
+  }
+
+  //TODO: test limit > 50?
   let maxErrorMsg = useTrans({
     zh: `必须小于或等于 ${MaxBatchAdd} 项`,
     en: `Must be less than or equal to ${MaxBatchAdd} items`
   })
-  let [errors, setErrors] = useState([])
 
   let { getRootProps, getInputProps } = useDropzone({
     accept: ".xlsx",
@@ -267,14 +291,19 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
   })
 
   useEffect(() => {
-    if (batchId && !batchIdError) {
-      //TODO: batch id
+    if (importBatchResult && !importBatchResultError) {
+      setBatchId(importBatchResult)
     }
-    console.log("batchId", batchId)
-  }, [batchId])
+    console.log("importResult", importBatchResult)
+  }, [importBatchResult])
 
-  //TODO: download excel with lang
-  //TODO: test how to gen excel by code?
+  useEffect(() => {
+    if (items?.length > 0) {
+      setValue(name, items)
+    }
+  }, [JSON.stringify(items ?? [])])
+
+  let isLoading = isLoadingImportBatchResult || isLoadingItems
   return (
     <FieldWrapper
       label={
@@ -296,15 +325,25 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
         })}
         palette={palette}
         variant={variant}
+        isLoading={isLoading}
+        disabled={isLoading}
       >
         <Trans zh="上传文件" en="Upload file" />
         <input {...getInputProps()} />
-        {errors?.length > 0 && (
+        {importBatchResultError && (
           <AlertDialog
-            errors={errors}
+            {...importBatchResultError}
+            placement="center"
+            onClickClose={resetImportBatch}
+          />
+        )}
+        {itemsError && (
+          <AlertDialog
+            {...itemsError}
             placement="center"
             onClickClose={() => {
-              setErrors([])
+              resetImportBatch()
+              resetItems()
             }}
           />
         )}
@@ -347,21 +386,21 @@ const useColumns = ({ items }) => {
         Footer: () => <Trans zh="总计" en="Total" />
       }),
       textColumn({
-        accessor: "username",
+        accessor: "userName",
         Header: <Trans zh="用户名" en="Username" />,
         TotalCell: () => <Trans zh="总计" en="Total" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "amount",
+        accessor: "adjustAmount",
         Header: <Trans zh="交易金额" en="Amount" />,
-        sumColumn: "amount",
+        sumColumn: "adjustAmount",
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "bucketAmount",
+        accessor: "turnover",
         Header: <Trans zh="流水金额" en="Turnover Requirement Amount" />,
-        sumColumn: "bucketAmount",
+        sumColumn: "turnover",
         disableSortBy: true
       }),
       numberDecimalColumn({

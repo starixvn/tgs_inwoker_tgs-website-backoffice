@@ -28,3 +28,8 @@ export const useImportPlayerBatchAddBalance = (brandId, formData) => {
   let url = brandId && formData ? `${BatchApi}/${brandId}` : ""
   return usePostData(url, formData)
 }
+
+export const usePlayerBatchAddBalanceList = (batchId) => {
+  let url = batchId ? `${BatchApi}/${batchId}` : ""
+  return useGet(url)
+}

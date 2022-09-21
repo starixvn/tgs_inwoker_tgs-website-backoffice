@@ -55,7 +55,6 @@ export const AlertDialog = ({
             </Flex>
           }
           hideOnClickOutside={false}
-          unstable_finalFocusRef={finalFocusRef}
         >
           <FieldStack>
             {errors &&
