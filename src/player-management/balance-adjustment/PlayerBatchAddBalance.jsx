@@ -28,7 +28,7 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { usePlayerAdjustIncreaseBalance } from "./client"
+import { useImportPlayerBatchAddBalance } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -54,7 +54,6 @@ import { Switch } from "../../switch/Switch"
 import { useDropzone } from "react-dropzone"
 //TODO: use api instead of read file?
 import { read as readSpreadsheet, utils } from "xlsx"
-import { useBrandPaymentUpload } from "../../system/brandpayments/client"
 import SequenceColumn from "../../table/column/sequence"
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons"
 import {
@@ -216,15 +215,19 @@ const OneMBInBytes = 1048576
 const DefaultMaxSize = OneMBInBytes * 10 //10MB
 const MaxBatchAdd = 50
 const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
-  let { setValue, control, clearErrors } = useFormContext()
-  // let [formData, setFormData] = useState()
-  let [error, setError] = useState()
+  let { setValue, control, getValues, clearErrors } = useFormContext()
 
-  //TODO: api integration
-  /*
-  let { result, isLoading, error, clearCache, deleteCache } =
-    useBrandPaymentUpload(formData)
-  */
+  let brandId = getValues("brandId")
+  let [formData, setFormData] = useState()
+  let {
+    result: batchId,
+    isLoading: isLoadingBatchId,
+    error: batchIdError,
+    mutate: mutateBatchId,
+    deleteCache: deleteBatchIdCache
+  } = useImportPlayerBatchAddBalance(brandId, formData)
+
+  //TODO: test limit > 50
   let maxErrorMsg = useTrans({
     zh: `必须小于或等于 ${MaxBatchAdd} 项`,
     en: `Must be less than or equal to ${MaxBatchAdd} items`
@@ -238,12 +241,10 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
     onDrop: (files = []) => {
       let [file] = files
       if (file) {
-        /*
         let formData = new FormData()
         formData.append("file", file, file.name)
         setFormData(formData)
-        */
-
+        /*
         file.arrayBuffer().then((data) => {
           let wb = readSpreadsheet(data)
           let [header, ...items] = utils.sheet_to_json(
@@ -260,23 +261,17 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
             setValue(name, items)
           }
         })
+        */
       }
     }
   })
 
-  /*
   useEffect(() => {
-    if (Array.isArray(result?.players) && !error) {
-      //TODO: remove result?.players?.map
-      setValue(
-        name,
-        result?.players?.map((username) => {
-          return { username }
-        })
-      )
+    if (batchId && !batchIdError) {
+      //TODO: batch id
     }
-  }, [result])
-  */
+    console.log("batchId", batchId)
+  }, [batchId])
 
   //TODO: download excel with lang
   //TODO: test how to gen excel by code?
@@ -286,7 +281,7 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
         <Text.Block>
           <Trans zh="汇入" en="Import" />
           <Link
-            href="/download/payments/list.xlsx"
+            href="/api/batch-adj-balance"
             download="batch.xlsx"
             marginLeft="1rem"
           >

@@ -261,6 +261,11 @@ const useColumns = ({
         disableSortBy: true
       }),
       textColumn({
+        accessor: "realName",
+        Header: <Trans zh="真实姓名" en="Real name" />,
+        disableSortBy: true
+      }),
+      textColumn({
         accessor: "type",
         Header: <Trans zh="代理类型" en="Agent Type" />,
         disableSortBy: true,
