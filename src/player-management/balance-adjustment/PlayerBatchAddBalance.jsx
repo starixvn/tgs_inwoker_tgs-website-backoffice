@@ -55,7 +55,6 @@ import {
 } from "./PlayerAdjustBalanceType"
 import { Switch } from "../../switch/Switch"
 import { useDropzone } from "react-dropzone"
-//TODO: use api instead of read file?
 import { read as readSpreadsheet, utils } from "xlsx"
 import SequenceColumn from "../../table/column/sequence"
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons"
@@ -94,6 +93,7 @@ export const PlayerBatchAddBalanceDisclosure = ({
   )
 }
 
+//TODO: use api with pollling?
 const useFakeFetch = () => {
   return {
     isLoading: false,
@@ -160,7 +160,7 @@ const FormBody = ({}) => {
 
   let brandId = getValues("brandId")
 
-  let TransactionTypeField = "transactionType"
+  let TransactionTypeField = "adjustTransferType"
   let transactionType = useWatch({
     control,
     name: TransactionTypeField
@@ -222,6 +222,8 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
 
   let brandId = getValues("brandId")
   let [formData, setFormData] = useState()
+
+  //TODO: useWatch?
   let [batchId, setBatchId] = useState()
 
   let {
@@ -293,8 +295,8 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
   useEffect(() => {
     if (importBatchResult && !importBatchResultError) {
       setBatchId(importBatchResult)
+      setValue("batchId", importBatchResult)
     }
-    console.log("importResult", importBatchResult)
   }, [importBatchResult])
 
   useEffect(() => {
