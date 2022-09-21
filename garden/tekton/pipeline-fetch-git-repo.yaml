@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: fetch-git-repo
+spec:
+  type: git
+  params:
+    - name: revision
+      value: test-kaniko
+    - name: url
+      value: git@gitlab.com:rayprosoft/tgs-website-backoffice.git
