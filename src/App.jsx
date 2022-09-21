@@ -51,6 +51,11 @@ import {
 import FundDepositTopNavItem from "./fund/deposit/FundDepositTopNavItem"
 import FundWithdrawTopNavItem from "./fund/withdraw/FundWithdrawTopNavItem"
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
+import { init as initConnection } from "./connection"
+
+if (isDev()) {
+  initConnection()
+}
 
 function App() {
   let isUserAuthed = useUserIsAuthed()

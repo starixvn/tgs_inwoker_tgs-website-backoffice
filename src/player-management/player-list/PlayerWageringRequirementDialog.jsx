@@ -111,7 +111,7 @@ const PromotionTrans = {
 
 const Deposit = "Deposit"
 const DepositTrans = {
-  zh: "充值",
+  zh: "存款",
   en: "Deposit"
 }
 

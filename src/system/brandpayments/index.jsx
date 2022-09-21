@@ -425,6 +425,7 @@ const useColumns = ({
                   brandId={brandId}
                   platformPaymentId={value?.id}
                   onSubmitted={mutate}
+                  dialogId="edit-platform-payment-dialog"
                 />
                 {/* 
                 <FeeEditButton

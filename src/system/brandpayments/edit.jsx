@@ -87,6 +87,8 @@ export const EditButton = ({
   brandId,
   platformPaymentId,
   onSubmitted,
+  id,
+  dialogId,
   ...props
 }) => {
   let dialog = useModalState()
@@ -96,15 +98,17 @@ export const EditButton = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure id={id} {...dialog} />
       {dialog.visible && (
         <EditDialog
           brandId={brandId}
           platformPaymentId={platformPaymentId}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -116,6 +120,7 @@ const EditDialog = ({
   platformPaymentId,
   onSubmitted,
   dialog,
+  dialogId,
   ...props
 }) => {
   let title = useTrans({
@@ -156,6 +161,7 @@ const EditDialog = ({
 
   return (
     <FormDialog
+      id={dialogId}
       defaultValues={clone(record)}
       /*
       defaultValues={clone({
@@ -179,8 +185,6 @@ const EditDialog = ({
       isLoading={isLoading}
       error={error}
       onCloseErrorAlert={() => {
-        resetPlatformPayment()
-
         deleteCache()
         mutate(undefined, false)
         setSubmit(undefined)
@@ -447,6 +451,8 @@ const EditBody = ({
   ...props
 }) => {
   let { setValue, getValues, control } = useFormContext()
+  let transferType = getValues("transferType")
+  let isDeposit = isDepositPlatformPayment(transferType)
 
   const paymentCode = getValues("paymentCode")
   const TransferLimitToFieldName = "transferLimitTo"
@@ -624,16 +630,19 @@ const EditBody = ({
                 width="100%"
               />
 
-              {isDev() && (
+              {isDeposit && (
                 <>
                   <Label>
                     <Trans zh="手续费" en="Transfer Fee" />
                   </Label>
-                  <PercentageNumberInputField
-                    name="handlingFeeRatePercentile"
-                    defaultValue={0}
-                    min={0}
-                  />
+                  <Set orientation="horizontal">
+                    <PercentageNumberInputField
+                      name="handlingFeeRatePercentile"
+                      defaultValue={0}
+                      min={0}
+                    />
+                    <PlayerShallBearTransferFeeSwitch />
+                  </Set>
                 </>
               )}
             </FieldValues>
@@ -716,6 +725,18 @@ const EditBody = ({
       <Input type="hidden" name="brandId" value={brandId} />
     </Stack>
   )
+}
+
+//TODO: test update value
+const PlayerShallBearTransferFeeSwitch = ({
+  name = "reducePlayerAmount",
+  ...props
+}) => {
+  let label = useTrans({
+    zh: "玩家承担手续费",
+    en: "Player shall bear the transfer fee"
+  })
+  return <Switch name={name} label={label} {...props} />
 }
 
 const AccumulatedDepositGroup = () => {

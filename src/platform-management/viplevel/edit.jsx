@@ -228,7 +228,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
 
               <NormalLabel>
                 <Trans
-                  zh="累积充值金额 （当月）："
+                  zh="累积存款金额 （当月）："
                   en="Required deposit amount to up level："
                 />
               </NormalLabel>
@@ -277,7 +277,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
 
               <NormalLabel>
                 <Trans
-                  zh="累积充值金额 （每季）："
+                  zh="累积存款金额 （每季）："
                   en="Required Quarterly deposit amount to maintain level："
                 />
               </NormalLabel>

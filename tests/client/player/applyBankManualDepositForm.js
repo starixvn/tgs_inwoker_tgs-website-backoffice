@@ -17,6 +17,9 @@ export const applyBankManualDepositForm = async ({
 } = {}) => {
   let brandPayment = await firstBankDepositPayment(brandId, playerCode)
   brandPaymentId = brandPaymentId ?? brandPayment?.id
+  if (!brandPaymentId) {
+    throw "brandPaymentId is required, brandPayment not found"
+  }
 
   let response = await fetcher.put(`${host}/${API}/Bank`, {
     data: {

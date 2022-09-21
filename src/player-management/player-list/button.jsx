@@ -133,7 +133,7 @@ const TabsDialog = ({
 
   return (
     <>
-      {isLoading && <LoadingBackdrop />}
+      {isLoading && <LoadingBackdrop {...dialog} />}
       {isError && <AlertDialog {...error} onClickClose={onClickClose} />}
       {data && (
         <Dialog.Modal

@@ -61,7 +61,7 @@ const viewPlayerContact = async (page, contact, player) => {
         response.status() === 200
       )
     }),
-    openViewPlayerDialog(page)
+    openViewPlayerDialog(page, player)
   ])
   await page.click(`${dialogSelector} button#contact`)
 

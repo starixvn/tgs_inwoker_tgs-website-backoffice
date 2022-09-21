@@ -14,11 +14,8 @@ export const useFundDepositFormList = (brandId, searchParams, options) => {
   return useGet(url, options)
 }
 
-export const useFundDepositForm = (brandId, formId, searchParams) => {
-  let url =
-    brandId && formId
-      ? urlWith(searchParams, `${API}/${brandId}/${formId}`)
-      : ""
+export const useFundDepositForm = (brandId, formId) => {
+  let url = brandId && formId ? `${API}/${brandId}/${formId}` : ""
   let { data, ...rest } = useGet(url)
 
   return {

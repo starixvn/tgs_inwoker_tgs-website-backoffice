@@ -26,8 +26,8 @@ export const PlayerPaymentMethodSelect = ({ paymentList = [], ...props }) => {
 
 const toPaymentMethodOptions = (locale, platformPaymentList = []) => {
   let methods = Object.values(
-    platformPaymentList.reduce((acc, { methodcode }) => {
-      acc[methodcode] = methodcode
+    platformPaymentList.reduce((acc, { methodCode }) => {
+      acc[methodCode] = methodCode
       return acc
     }, {})
   )

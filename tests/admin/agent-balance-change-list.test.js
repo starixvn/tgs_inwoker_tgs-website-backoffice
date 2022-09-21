@@ -39,7 +39,8 @@ test("view agent balance change list", async ({
   let amountLocator = page.locator(
     `${dialogSelector} [data-column-id="amount"]`
   )
-  let amountString = await amountLocator.textContent()
+  console.log("agent balance change > ", agent.username)
+  let amountString = await amountLocator.first().textContent()
   let amount = new numeral(amountString).value()
   expect(amount).to.equals(ExpectedAmount)
 })

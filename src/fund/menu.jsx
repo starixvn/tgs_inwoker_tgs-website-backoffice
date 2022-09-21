@@ -58,7 +58,7 @@ const label = ({ locale, code }) => {
     case DepositListCode:
       return getTrans(
         {
-          zh: "充值列表",
+          zh: "存款列表",
           en: "Deposit List"
         },
         locale

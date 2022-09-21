@@ -1,0 +1,31 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: Trigger
+metadata:
+  name: gitlab-listener-trigger
+spec:
+  interceptors:
+    - name: "verify-gitlab-payload-be"
+      ref:
+        name: "gitlab"
+        kind: ClusterInterceptor
+      params:
+        - name: secretRef
+          value:
+            secretName: "gitlab-secret"
+            secretKey: "secretToken"
+        - name: eventTypes
+          value:
+            - "Push Hook"
+            - "Tag Push Hook"
+    - name: "CEL filter: only when PRs are opened"
+      ref:
+        name: "cel"
+      params:
+        - name: "overlays"
+          value:
+            - key: branch_name
+              expression: "body.ref.split('/')[2]"
+  bindings:
+    - ref: binding
+  template:
+    ref: template

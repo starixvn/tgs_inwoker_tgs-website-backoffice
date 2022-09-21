@@ -170,7 +170,7 @@ export const useGet = (url, options = DefaultUpdateOptions) => {
     isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(keys),
+    deleteErrorCache: () => deleteErrorCacheBy(key),
     clearCache: () => cache.clear()
   }
 }

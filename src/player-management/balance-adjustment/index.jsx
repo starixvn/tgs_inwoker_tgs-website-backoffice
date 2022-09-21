@@ -111,9 +111,7 @@ const BodyContent = ({ brandId = "" }) => {
             isLoading={isLoading}
           />
           <Box>
-            {/* 
-            <PlayerBatchAddBalanceDisclosure /> 
-            */}
+            <PlayerBatchAddBalanceDisclosure brandId={brandId} />
           </Box>
         </Flex>
       }

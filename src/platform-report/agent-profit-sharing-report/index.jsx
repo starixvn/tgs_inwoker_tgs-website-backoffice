@@ -34,7 +34,10 @@ import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { numberDecimalColumn } from "../../table/column/numberColumn"
+import {
+  numberDecimalColumn,
+  numberDecimalPercentageColumn
+} from "../../table/column/numberColumn"
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
@@ -46,8 +49,6 @@ import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
-import { AgentProfitSharingTree } from "./AgentProfitSharingTree"
-import { AgentLevelSelect } from "../../agent/AgentLevel"
 
 export { Code }
 
@@ -154,9 +155,6 @@ const ReportContent = ({ brandId }) => {
       }
       title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
     >
-      {/* 
-      <AgentProfitSharingTree brandId={brandId} start={from} end={to} /> 
-      */}
       {username && (
         <FieldStack>
           <TotalsInfo data={data} />
@@ -318,6 +316,31 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         },
         disableSortBy: true
       }),
+      /*
+      TODO: add
+      numberDecimalPercentageColumn({
+        accessor: "agentDividendPercentage",
+        Header: <Trans zh="分红比例" en="Profit Sharing Percentaget" />,
+        disableSortBy: true
+      }),
+      */
+      numberDecimalColumn({
+        accessor: "bonusAmount",
+        sumColumn: "bonusAmount",
+        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        disableSortBy: true
+      }),
+      /*
+      TODO: add
+      numberDecimalColumn({
+        accessor: "agentCoveredBonusAmount",
+        sumColumn: "agentCoveredBonusAmount",
+        Header: <Trans zh="代理承担红利" en="Agent-Covered Bonus" />,
+        disableSortBy: true
+      }),
+      */
+      /*
+      TODO: rm
       numberDecimalColumn({
         accessor: "depositAmount",
         sumColumn: "depositAmount",
@@ -331,17 +354,12 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "bonusAmount",
-        sumColumn: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
         accessor: "companyAdjustAmount",
         sumColumn: "companyAdjustAmount",
         Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
         disableSortBy: true
       }),
+      */
       numberDecimalColumn({
         accessor: "bonusAdjustAmount",
         sumColumn: "bonusAdjustAmount",
@@ -349,11 +367,12 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "agentAdjustAmount",
-        sumColumn: "agentAdjustAmount",
-        Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
+        accessor: "agentCoveredBonusAdjustAmount",
+        sumColumn: "agentCoveredBonusAdjustAmount",
+        Header: <Trans zh="代理承担优惠调帐" en="Agent-Covered Bonus Adjust" />,
         disableSortBy: true
       }),
+
       numberDecimalColumn({
         accessor: "betAmount",
         sumColumn: "betAmount",
@@ -366,12 +385,15 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
         disableSortBy: true
       }),
+      /*
+      TODO: rm
       numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
         Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
+      */
       /*
       numberDecimalColumn({
         accessor: "depositFee",
@@ -451,6 +473,12 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
           }
         }),
         numberDecimalColumn({
+          accessor: "agentAdjustAmount",
+          sumColumn: "agentAdjustAmount",
+          Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
+          disableSortBy: true
+        }),
+        numberDecimalColumn({
           id: "agentDividendAmount",
           accessor: (row) => row,
           sumColumn: "agentDividendAmount",
@@ -490,7 +518,7 @@ const PlayerContributionHeader = () => {
     zh: "玩家貢獻 = 該代理之直屬玩家貢獻值",
     en: "Player Contribution = A total contribution amount from the agent’s direct players displayed."
   })
-  return <Trans zh="玩家贡献" en="Player Contribution" title={title} />
+  return <Trans zh="直属玩家贡献" en="Player Contribution" title={title} />
 }
 
 const TeamContributionHeader = () => {

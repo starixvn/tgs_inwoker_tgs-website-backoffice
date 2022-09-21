@@ -15,7 +15,8 @@ import {
   useUserIsRootAdmin,
   useIsAdminUser,
   useUserResellerId,
-  useUserLicenseeId
+  useUserLicenseeId,
+  useUserBrandId
 } from "../../user/context"
 import { Code, Update, Copy, Delete } from "./menu"
 import { useRoleList } from "./client"
@@ -28,6 +29,9 @@ import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { Features, isDev, isFeatureEnabled } from "../../env"
+import Checkbox from "../../checkbox"
+import { MerchantIdSelect } from "../../merchant/MerchantSelect"
+import { nextRoleType, useRoleTypeOptions } from "./type"
 
 export { Code }
 
@@ -42,9 +46,16 @@ export const Content = ({}) => {
 
 export const CodeContentPair = [Code, Content]
 
-const Body = () => {
+const Body = ({}) => {
+  let userResellerId = useUserResellerId()
+  let userLicenseeId = useUserLicenseeId()
+  let userBrandId = useUserBrandId()
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    name: ""
+    name: "",
+    resellerId: userResellerId,
+    licenseeId: userLicenseeId,
+    brandId: userBrandId
   })
   let { pageIndex, pageSize, name } = state
   let { isLoading, data, error, mutate, deleteCache } = useRoleList({
@@ -68,6 +79,9 @@ const Body = () => {
       actionBar={
         <>
           <SearchBar
+            resellerId={state.resellerId}
+            licenseeId={state.licenseeId}
+            brandId={state.brandId}
             search={(data = {}) => {
               setState({
                 pageIndex: 0,
@@ -96,20 +110,50 @@ const Body = () => {
   )
 }
 
-const SearchBar = ({ search, isLoading, ...props }) => {
+const SearchBar = ({
+  resellerId,
+  licenseeId,
+  brandId,
+  search,
+  isLoading,
+  ...props
+}) => {
+  let userRoleType = useUserRoleType()
+  let roleTypeOptions = useRoleTypeOptions()
+
   let formMethods = useForm({
     defaultValues: { name: "" }
   })
 
+  let isRootLabel = useTrans({
+    zh: "根权限",
+    en: "Root"
+  })
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
         <Set>
+          {roleTypeOptions.length > 1 && (
+            <MerchantIdSelect
+              start={nextRoleType(userRoleType)}
+              resellerProps={{
+                defaultValue: resellerId
+              }}
+              licenseeProps={{
+                defaultValue: licenseeId
+              }}
+              brandProps={{
+                defaultValue: brandId
+              }}
+              required={false}
+            />
+          )}
           <InputField
             name="name"
             showEmptyFieldValueAddonAfter
             placeholder={useSearchInputPlaceHolder()}
           />
+          <Checkbox name="isRoot" label={isRootLabel} />
           <SearchButton isLoading={isLoading} />
         </Set>
       </form>
@@ -129,7 +173,7 @@ const useColumns = ({ mutate, items = [] }) => {
   let hasDeleteAuth = useIsDisplayMenuByRoute([Delete])
   let hasAnyMenu = hasUpdateAuth || hasCopyAuth || hasDeleteAuth
   let adminUser = useIsAdminUser()
-  let resellerUser = !!!useUserResellerId()
+  let resellerUser = !!useUserResellerId()
   let licenseeUser = !!useUserLicenseeId()
 
   return useMemo(() => {

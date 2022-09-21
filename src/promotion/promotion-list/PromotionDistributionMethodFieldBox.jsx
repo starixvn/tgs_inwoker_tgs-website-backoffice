@@ -5,10 +5,12 @@ import { Switch } from "../../switch/Switch"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { Trans, useTrans } from "../../i18n"
 import { NormalLabel } from "../../form/Label"
-import {
-  PromotionTypeGroup,
-  useIsInstantlySettlementIntervalType
-} from "../PromotionType"
+import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
+import { isNil, complement } from "ramda"
+
+const isNotNil = complement(isNil)
+
+const AutoPayoutFieldName = "autoSentPlayerBonus"
 
 export const PromotionDistributionMethodFieldBox = ({
   promotionType = "",
@@ -18,13 +20,15 @@ export const PromotionDistributionMethodFieldBox = ({
 }) => {
   let { setValue } = useFormContext()
 
-  let autoPayout = useIsInstantlySettlementIntervalType(promotionType)
+  let promotion = useFindPromotionType(promotionType)
+  let autoPayoutProps = promotion?.autoSentPlayerBonus ?? {}
   useEffect(() => {
-    if (autoPayout) {
-      setValue(AutoSentPlayerBonusFieldName, true)
+    if (isNotNil(autoPayoutProps?.checked)) {
+      setValue(AutoPayoutFieldName, autoPayoutProps?.checked)
     }
-  }, [autoPayout])
+  }, [autoPayoutProps])
 
+  //TODO: use autoPayoutProps?.visible instead?
   if (fieldNotUsed({ promotionTypeGroup, promotionType })) {
     return null
   }
@@ -35,12 +39,11 @@ export const PromotionDistributionMethodFieldBox = ({
         <Trans zh="活动派发" en="Distribution Method" />
       </NormalLabel>
       <Box>
-        {autoPayout && (
-          <AutoOrManualPayoutSwitch readOnly disabled checked={true} />
-        )}
-        {!autoPayout && (
-          <AutoOrManualPayoutSwitch readOnly={readOnly} disabled={disabled} />
-        )}
+        <AutoOrManualPayoutSwitch
+          {...autoPayoutProps}
+          readOnly={readOnly || autoPayoutProps.readOnly}
+          disabled={disabled || autoPayoutProps.disabled}
+        />
       </Box>
     </>
   )
@@ -61,9 +64,8 @@ const fieldNotUsed = ({ promotionType = "", promotionTypeGroup = "" }) => {
   return false
 }
 
-const AutoSentPlayerBonusFieldName = "autoSentPlayerBonus"
 const AutoOrManualPayoutSwitch = ({
-  name = AutoSentPlayerBonusFieldName,
+  name = AutoPayoutFieldName,
   readOnly = false,
   disabled,
   ...props
@@ -72,7 +74,7 @@ const AutoOrManualPayoutSwitch = ({
 
   let checked = useWatch({
     control,
-    name: AutoSentPlayerBonusFieldName,
+    name: AutoPayoutFieldName,
     defaultValue: props.checked ?? props?.defaultValue
   })
 

@@ -21,7 +21,47 @@ test("add, search, edit and view platform deposit payment", async ({
     page,
     bankTransferPaymentMethod
   )
+
+  await searchPlatformPaymentBy(page, payment.channelName)
+  await editPlatformPayment(page)
 })
+
+const editPlatformPayment = async (page) => {
+  let DialogSelector = `#edit-platform-payment-dialog`
+  await openDialog(page, DialogSelector)
+
+  await selectRandomOption(
+    page,
+    `${DialogSelector} select[name="paymentChannelId"]`
+  )
+
+  let platformPaymentId = await page.getAttribute(
+    `table tbody tr`,
+    "data-row-id"
+  )
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().endsWith(`/api/brandpayment/${platformPaymentId}`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`${DialogSelector} button[type="submit"]`)
+  ])
+}
+
+const searchPlatformPaymentBy = async (page, name) => {
+  await page.fill(`input[name="keyword"]`, name)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/brandpayment?`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`button[type="submit"]`)
+  ])
+}
 
 const addDepositBankTransferPayment = async (
   page,

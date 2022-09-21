@@ -111,6 +111,7 @@ export const useSettlementIntervalType = (promotionType) => {
   return result?.settlementIntervalType ?? ""
 }
 
+//TODO: remove
 export const useIsInstantlySettlementIntervalType = (promotionType) => {
   let type = useSettlementIntervalType(promotionType)
   return type === "Instantly"
