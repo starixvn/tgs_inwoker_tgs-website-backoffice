@@ -180,8 +180,8 @@ const ReportContent = ({ brandId }) => {
               </List.Item>
               <List.Item>
                 <Trans
-                  zh="净盈利 = 公司输赢金额 - 代理承担红利 - 代理承担优惠。"
-                  en="Net Profit = CO. W/L - Agent-Covered Bonus Adjust - Agent-Covered Bonus Adjust."
+                  zh="净盈利 = 公司输赢金额 - 代理红利 - 代理优惠。"
+                  en="Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount."
                 />
               </List.Item>
               <List.Item>
