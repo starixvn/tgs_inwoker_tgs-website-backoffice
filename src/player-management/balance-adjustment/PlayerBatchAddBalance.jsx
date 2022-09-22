@@ -57,7 +57,8 @@ import {
 } from "./PlayerAdjustBalanceType"
 import { Switch } from "../../switch/Switch"
 import { useDropzone } from "react-dropzone"
-import { read as readSpreadsheet, utils } from "xlsx"
+//TODO: ImportSheetButton?
+// import { read as readSpreadsheet, utils } from "xlsx"
 import SequenceColumn from "../../table/column/sequence"
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons"
 import {
@@ -65,8 +66,7 @@ import {
   faSave,
   faArrowAltCircleDown
 } from "@fortawesome/free-regular-svg-icons"
-//TODO
-// 1. download btn
+
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
   onSubmitted,
@@ -101,7 +101,7 @@ const SecondInMilliseconds = 1000
 const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
   let [batchId, setBatchId] = useState()
   let [formData, setSubmit] = useState()
-  //TODO: no need to mutate?
+  //TODO: able to retry with alert dialog
   let {
     result: isStarted,
     isLoading: isLoadingStarted,
@@ -109,9 +109,9 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
     mutate: mutateStarted,
     deleteCache: deleteStartedCache
   } = useStartPlayerBatchAddBalance(brandId, batchId, formData)
-  console.log("isStarted", isStarted, "startedError", startedError)
 
-  //TODO: need to mutate or delete cache?
+  //TODO: alert dialog with retry option?
+  //TODO: how to get failed list
   let {
     result: isEnded,
     isLoading: isEndedLoading,
@@ -119,7 +119,6 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
   } = useIsPlayerBatchAddBalanceEnd(isStarted && batchId, {
     refreshInterval: 3 * SecondInMilliseconds
   })
-  console.log("isEnded", isEnded, "endedError", endedError)
 
   let isLoading = isLoadingStarted || isEndedLoading || (isStarted && !isEnded)
   let title = useTrans({
@@ -132,12 +131,13 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
     setSubmit(transactionType)
   }
 
-  //TODO
+  //TODO how show failed list?
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
     setSubmit(undefined)
   }
+
   return (
     <FormDialog
       id="batch-add-balance-dialog"
@@ -147,10 +147,10 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
-      // result={isEnded}
+      result={isEnded}
       error={startedError || endedError}
-      //TODO
-      // onCloseErrorAlert={reset}
+      //TODO: show failed list?
+      onCloseErrorAlert={dialog.hide}
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
