@@ -214,7 +214,7 @@ const ReportDialog = ({
           foot={data?.items?.length > 0}
           stickyHead
           containerProps={{
-            maxHeight: "72vh",
+            maxHeight: "69vh",
             overflow: "auto"
           }}
         />
