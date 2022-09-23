@@ -158,8 +158,8 @@ const ReportDialog = ({
                     </List.Item>
                     <List.Item>
                       <Trans
-                        zh="代理成本 = 代理承担红利 + 代理承担优惠调帐"
-                        en="Agent Cost = Agent-Covered Bonus + Agent-Covered Bonus Adjust"
+                        zh="代理成本 = 紅利金額 + 優惠調帳"
+                        en="Agent Cost = Bouns + Bouns Adjust"
                       />
                     </List.Item>
                     <List.Item>
