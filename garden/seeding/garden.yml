@@ -1,9 +1,0 @@
-kind: Module
-type: exec
-name: seeding
-repositoryUrl: git@gitlab.com:rayprosoft/tgs-database.git#main
-tasks:
-  - name: init-seeding
-    dependencies:
-      - postgres
-    command: [dotnet, run, --project, ./TgsSeeding]
