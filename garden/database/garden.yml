@@ -1,0 +1,30 @@
+kind: Module
+type: exec
+name: database
+repositoryUrl: git@gitlab.com:rayprosoft/tgs-database.git#main
+tasks:
+  - name: init-dotnet-ef
+    command:
+      - dotnet tool restore
+  - name: init-migration
+    dependencies:
+      - init-dotnet-ef
+      - postgres
+    command:
+      - dotnet ef database update -s ./MigrationArchive
+  - name: init-seeding
+    dependencies:
+      - postgres
+    command: [dotnet, run, --project, ./TgsSeeding]
+---
+kind: Module
+type: container
+name: migration
+image: pgtgs/migration:202209220921.56
+services:
+  - name: migration
+    dependencies:
+      - postgres
+      - init-migration
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"

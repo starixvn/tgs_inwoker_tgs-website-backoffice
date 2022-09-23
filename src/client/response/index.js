@@ -41,6 +41,10 @@ export const toDataOrError = (response) => {
 
   return response
     .json()
+    .catch((error) => {
+      console.warn(`catch response.json error ${error}`)
+      return Promise.resolve(response?.ok)
+    })
     .then((data) => {
       if (data?.valid === false && data?.message) {
         return Promise.reject({
@@ -50,11 +54,6 @@ export const toDataOrError = (response) => {
       }
 
       return data
-    })
-    .catch((error) => {
-      console.warn(`catch response.json error ${error}`)
-      return Promise.resolve(response?.ok)
-      //return Promise.reject({ ...error, xCorrelationId })
     })
 }
 
