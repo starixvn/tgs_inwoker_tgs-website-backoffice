@@ -18,9 +18,10 @@ test("view agent balance change list", async ({
   agent,
   backofficeApi
 }) => {
-  let ExpectedAmount = 100
+  let AddBalanceAmount = 100
+  let ExpectedBalanceAmount = agent.balance + AddBalanceAmount
   await Promise.all([
-    backofficeApi.agent.addBalance(agent.id, { amount: ExpectedAmount }),
+    backofficeApi.agent.addBalance(agent.id, { amount: AddBalanceAmount }),
     gotoAgentListPage(page, platformCode)
   ])
   await searchAgent(page, agent.username)
@@ -42,5 +43,5 @@ test("view agent balance change list", async ({
   console.log("agent balance change > ", agent.username)
   let amountString = await amountLocator.first().textContent()
   let amount = new numeral(amountString).value()
-  expect(amount).to.equals(ExpectedAmount)
+  expect(amount).to.equals(ExpectedBalanceAmount)
 })

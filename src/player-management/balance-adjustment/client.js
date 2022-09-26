@@ -42,7 +42,33 @@ export const useStartPlayerBatchAddBalance = (brandId, batchId, formData) => {
   return usePutData(url, formData)
 }
 
-export const useIsPlayerBatchAddBalanceEnd = (batchId) => {
+export const useIsPlayerBatchAddBalanceEnd = (batchId, options = {}) => {
   let url = batchId ? `${BatchApi}/${batchId}` : ""
-  return useHead(url)
+  return useHead(url, {
+    toData: (data, response) => {
+      let status = response.status
+      if (status === 200) {
+        //done
+        return true
+      }
+
+      if (status === 202) {
+        //processing
+        return false
+      }
+
+      if (status === 204) {
+        return null //no content
+      }
+
+      return data
+    },
+    ...options
+  })
+}
+
+export const usePlayerBatchAddBalanceResult = (batchId) => {
+  let url = batchId ? `${BatchApi}/result/${batchId}` : ""
+
+  return useGet(url)
 }

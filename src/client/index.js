@@ -347,7 +347,7 @@ export const useHead = (url, settings) => {
     error,
     isValidating,
     mutate
-  } = useSWR(key, (url) => fetchApi("HEAD", url, settings))
+  } = useSWR(key, (url) => fetchApi("HEAD", url, settings), settings)
 
   return {
     result,

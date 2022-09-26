@@ -12,7 +12,8 @@ import {
   FieldWrapper,
   Text,
   Link,
-  Icon
+  Icon,
+  Spinner
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
@@ -32,7 +33,8 @@ import {
   useImportPlayerBatchAddBalance,
   usePlayerBatchAddBalanceList,
   useStartPlayerBatchAddBalance,
-  useIsPlayerBatchAddBalanceEnd
+  useIsPlayerBatchAddBalanceEnd,
+  usePlayerBatchAddBalanceResult
 } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -66,6 +68,7 @@ import {
   faSave,
   faArrowAltCircleDown
 } from "@fortawesome/free-regular-svg-icons"
+import Backdrop from "../../dialog/Backdrop"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
@@ -100,6 +103,12 @@ const SecondInMilliseconds = 1000
 
 const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
   let [batchId, setBatchId] = useState()
+  //TODO: isBatchDone true > result dialog, stop useIsPlayerBatchAddBalanceEnd
+  let [isBatchDone, setBatchDone] = useState()
+
+  //TODO: rename to batchItems
+  let [items, setItems] = useState()
+
   let [formData, setSubmit] = useState()
   //TODO: able to retry with alert dialog
   let {
@@ -116,11 +125,15 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
     result: isEnded,
     isLoading: isEndedLoading,
     error: endedError
-  } = useIsPlayerBatchAddBalanceEnd(isStarted && batchId, {
-    refreshInterval: 3 * SecondInMilliseconds
+  } = useIsPlayerBatchAddBalanceEnd(isStarted && !isBatchDone && batchId, {
+    refreshInterval: 10 * SecondInMilliseconds
   })
 
-  let isLoading = isLoadingStarted || isEndedLoading || (isStarted && !isEnded)
+  let isLoading =
+    isLoadingStarted ||
+    isEndedLoading ||
+    (isStarted && !isBatchDone && isEnded === undefined)
+
   let title = useTrans({
     zh: "批量余额加分",
     en: "Batch Add Balance"
@@ -128,6 +141,7 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
 
   const onSubmit = ({ items, batchId, transactionType, ...data } = {}) => {
     setBatchId(batchId)
+    setItems(items)
     setSubmit(transactionType)
   }
 
@@ -138,6 +152,25 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
     setSubmit(undefined)
   }
 
+  useEffect(() => {
+    if (isEnded !== undefined && isEnded !== false) {
+      setBatchDone(true)
+    }
+  }, [isEnded])
+
+  if (isLoading || isBatchDone) {
+    //TODO: NoContent?
+    return (
+      <BatchResultDialog
+        batchId={batchId}
+        batchItems={items}
+        isProcessing={isLoading}
+        dialog={dialog}
+      />
+    )
+  }
+
+  //TODO: onSubmitted > reload
   return (
     <FormDialog
       id="batch-add-balance-dialog"
@@ -147,9 +180,7 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
-      result={isEnded}
       error={startedError || endedError}
-      //TODO: show failed list?
       onCloseErrorAlert={dialog.hide}
       onSubmitted={onSubmitted}
       title={title}
@@ -167,6 +198,68 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
     >
       <FormBody />
     </FormDialog>
+  )
+}
+
+//TODO
+const BatchResultDialog = ({ batchId, batchItems, isProcessing, dialog }) => {
+  let {
+    isLoading,
+    data: result,
+    error
+  } = usePlayerBatchAddBalanceResult(isProcessing === false && batchId)
+
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
+
+  //TODO: merge result + items
+  //TODO: show failed items only?
+  let items = result?.map((item, index) => {
+    return { ...batchItems[index], ...item }
+  })
+
+  let columns = useColumns({ items, showResult: true })
+  //TODO: onSubmitted? onCloseDialog?
+  //TODO: showCloseButton after get result
+  return (
+    <Backdrop {...dialog}>
+      <Dialog.Modal
+        hideBackdrop={true}
+        hideOnClickOutside={false}
+        // showCloseButton={result}
+        footer={result && <CloseButtonFooter dialog={dialog} alignX="right" />}
+        minWidth={items && "60vw"}
+        maxWidth="95vw"
+        {...dialog}
+        css={css`
+          & .bb-DialogContent {
+            max-height: 65vh;
+          }
+          & .bb-DialogClose {
+            z-index: 2;
+          }
+        `}
+      >
+        {(isLoading || isProcessing) && (
+          <Set orientation="horizontal" alignX="center">
+            <Trans zh="处理中" en="Processing" />
+            <Spinner />
+          </Set>
+        )}
+        {items && (
+          <Table
+            columns={columns}
+            data={items}
+            stickyHead
+            containerProps={{
+              maxHeight: "50vh",
+              overflow: "auto"
+            }}
+          />
+        )}
+      </Dialog.Modal>
+    </Backdrop>
   )
 }
 
@@ -267,7 +360,6 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
   } = usePlayerBatchAddBalanceList(batchId)
 
   const resetItems = () => {
-    setBatchId(null)
     deleteItemsCache()
     mutateItems(null, false)
   }
@@ -403,7 +495,7 @@ const BatchAddTable = ({ name = "items" }) => {
   )
 }
 
-const useColumns = ({ items }) => {
+const useColumns = ({ items, showResult }) => {
   return useMemo(() => {
     let columns = [
       SequenceColumn({
@@ -433,6 +525,27 @@ const useColumns = ({ items }) => {
         disableSortBy: true
       })
     ]
+
+    if (showResult) {
+      columns.push(
+        textColumn({
+          accessor: "isSuccess",
+          Header: <Trans zh="结果" en="Result" />,
+          disableSortBy: true,
+          Cell: ({ value: isSuccess }) => {
+            return (
+              <Text.Block color={isSuccess ? "success" : "warning"}>
+                {isSuccess ? (
+                  <Trans zh="成功" en="Success" />
+                ) : (
+                  <Trans zh="失败" en="Failed" />
+                )}
+              </Text.Block>
+            )
+          }
+        })
+      )
+    }
     return columns
   }, [JSON.stringify(items)])
 }
