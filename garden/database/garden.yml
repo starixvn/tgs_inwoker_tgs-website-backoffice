@@ -20,11 +20,11 @@ tasks:
 kind: Module
 type: container
 name: migration
-image: pgtgs/migration:202209220921.56
+image: pgtgs/migration:202209141650.10 # pgtgs/migration:202209220921.56
 services:
   - name: migration
     dependencies:
       - postgres
-      - init-migration
+      # - init-migration
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"

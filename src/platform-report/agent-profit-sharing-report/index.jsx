@@ -364,7 +364,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalPercentageColumn({
-        accessor: "profitSharingPercentage",
+        accessor: "agentDividendPercentage",
         Header: <Trans zh="分红比例" en="Profit Sharing Percentaget" />,
         disableSortBy: true
       }),

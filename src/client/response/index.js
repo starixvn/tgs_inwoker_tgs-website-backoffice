@@ -7,7 +7,7 @@ const UnauthorizedTrans = {
   en: UnauthorizedDefaultMessage
 }
 
-export const toDataOrError = (response) => {
+export const toDataOrError = (response, settings) => {
   let xCorrelationId = response.headers.get("x-correlation-id")
   if (!response?.ok) {
     if (response.status === Unauthorized) {
@@ -51,6 +51,10 @@ export const toDataOrError = (response) => {
           title: data.message,
           xCorrelationId
         })
+      }
+
+      if (settings?.toData) {
+        return settings?.toData(data, response)
       }
 
       return data

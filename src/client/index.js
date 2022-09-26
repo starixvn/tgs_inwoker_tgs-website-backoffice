@@ -86,7 +86,7 @@ export const patch = (url, options) => fetchApi("PATCH", url, options)
 
 export const fetchDelete = (url, options) => fetchApi("DELETE", url, options)
 
-const fetchApi = (
+const fetchApi = async (
   method = "",
   url,
   { headers = {}, body, data, ...options } = {}
@@ -112,7 +112,7 @@ const fetchApi = (
       console.warn(error)
       return reject(error)
     })
-    .then(toDataOrError)
+    .then((response) => toDataOrError(response, options))
 }
 
 const dropEmptyValues = (record) => {
