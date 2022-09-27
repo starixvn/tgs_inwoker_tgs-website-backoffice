@@ -165,8 +165,8 @@ const editBank = async (page, bank, player) => {
   }
 }
 
-const viewBank = async (page, bank) => {
-  let dialogSelector = await openViewPlayerDialog(page)
+const viewBank = async (page, bank, player) => {
+  let dialogSelector = await openViewPlayerDialog(page, player)
   await page.click(`${dialogSelector} #banks`)
 
   let bankNameLocator = page.locator(

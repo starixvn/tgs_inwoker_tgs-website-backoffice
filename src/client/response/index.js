@@ -7,7 +7,8 @@ const UnauthorizedTrans = {
   en: UnauthorizedDefaultMessage
 }
 
-export const toDataOrError = (response) => {
+export const toDataOrError = (response, settings) => {
+  let xCorrelationId = response.headers.get("x-correlation-id")
   if (!response?.ok) {
     if (response.status === Unauthorized) {
       location.href = "/login"
@@ -17,7 +18,8 @@ export const toDataOrError = (response) => {
         .json()
         .catch((error) => {
           return Promise.reject({
-            title: errorTitle(response)
+            title: errorTitle(response),
+            xCorrelationId
           })
         })
         .then((data) => {
@@ -25,30 +27,37 @@ export const toDataOrError = (response) => {
           errors = Object.values(errors)
           return Promise.reject({
             title: title ?? message ?? errorTitle(response),
-            errors: errors?.length > 0 ? errors : toErrors(response)
+            errors: errors?.length > 0 ? errors : toErrors(response),
+            xCorrelationId
           })
         })
     }
   }
 
+  //TODO: remove?
   if (response.headers.get("Content-Length") == "0") {
     return response?.ok
   }
 
   return response
     .json()
+    .catch((error) => {
+      console.warn(`catch response.json error ${error}`)
+      return Promise.resolve(response?.ok)
+    })
     .then((data) => {
-      if (!data?.valid && data?.message) {
+      if (data?.valid === false && data?.message) {
         return Promise.reject({
-          title: data.message
+          title: data.message,
+          xCorrelationId
         })
       }
 
+      if (settings?.toData) {
+        return settings?.toData(data, response)
+      }
+
       return data
-    })
-    .catch((error) => {
-      console.warn(error)
-      return Promise.reject(error)
     })
 }
 
@@ -88,7 +97,8 @@ const RequestTimeoutTrans = {
 }
 
 const InternalServerError = 500
-const InternalServerErrorDefaultMessage = "System is busy, please contact system administrator for more info."
+const InternalServerErrorDefaultMessage =
+  "System is busy, please contact system administrator for more info."
 const InternalServerErrorTrans = {
   zh: "目前系統繁忙中，請聯繫系統管理員。",
   en: InternalServerErrorDefaultMessage

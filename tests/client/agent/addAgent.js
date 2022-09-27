@@ -2,13 +2,13 @@ import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
 import faker from "@faker-js/faker"
 import { add, random, last } from "lodash-es"
-const { lorem, internet } = faker
+const { lorem, internet, name } = faker
 
 const API = "api/agent"
 export const addAgent = async ({
   brandId,
   type = "Cash",
-  username = internet.userName(),
+  username = `${name.firstName()}-${Date.now()}`,
   password = `${internet.password(8)}a1`,
   levelType = "Chief",
   dividendPercentage = random(0, 100, true).toFixed(2),
@@ -32,10 +32,16 @@ export const addAgent = async ({
   }
 
   let response = await fetcher.post(`${host}/${API}`, {
-    data: formData,
+    data: formData
+    /*
     failOnStatusCode: true
+    */
   })
   let result = await response.json()
+  if (!result.valid || !response.ok()) {
+    console.error("addAgent result", result)
+    throw result
+  }
 
   let agent = await findAgent(brandId, username)
 

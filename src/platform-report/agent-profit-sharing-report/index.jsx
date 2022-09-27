@@ -11,7 +11,8 @@ import {
   Text,
   Link,
   FieldStack,
-  Alert
+  Alert,
+  List
 } from "bumbag"
 import PageContent from "../../page/Content"
 import {
@@ -34,7 +35,10 @@ import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { numberDecimalColumn } from "../../table/column/numberColumn"
+import {
+  numberDecimalColumn,
+  numberDecimalPercentageColumn
+} from "../../table/column/numberColumn"
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
@@ -46,8 +50,6 @@ import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
-import { AgentProfitSharingTree } from "./AgentProfitSharingTree"
-import { AgentLevelSelect } from "../../agent/AgentLevel"
 
 export { Code }
 
@@ -154,11 +156,54 @@ const ReportContent = ({ brandId }) => {
       }
       title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
     >
-      {/* 
-      <AgentProfitSharingTree brandId={brandId} start={from} end={to} /> 
-      */}
       {username && (
         <FieldStack>
+          <Alert variant="bordered" type="info" accent marginBottom="1rem">
+            <List listStyleType="disc" listStylePosition="inside">
+              <List.Item>
+                <Trans
+                  zh="红利金额 = VIP福利 + VIP反水 + 活动的优惠金额。"
+                  en="Bonus Amount = VIP Rebate + Promotion Bonus Amount."
+                />
+              </List.Item>
+              <List.Item>
+                <Trans
+                  zh="代理承担红利 = 红利金额 * 分红比例。"
+                  en="Agent-Covered Bonus = Bonus Amount * Profit Sharing Percentage."
+                />
+              </List.Item>
+              <List.Item>
+                <Trans
+                  zh="代理承担优惠调帐 = 优惠调帐 * 分红比例。"
+                  en="Agent-Covered Bonus Adjust = Bonus Adjustment Amount * Profit Sharing Percentage."
+                />
+              </List.Item>
+              <List.Item>
+                <Trans
+                  zh="净盈利 = 公司输赢金额 - 代理红利 - 代理优惠。"
+                  en="Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount."
+                />
+              </List.Item>
+              <List.Item>
+                <Trans
+                  zh="直属玩家贡献 = 净盈利  * 分红比例。"
+                  en="Direct-Player Contribution = Net Profit * Profit Sharing Percentage."
+                />
+              </List.Item>
+              <List.Item>
+                <Trans
+                  zh="团队贡献 = 下级代理净盈利 * (代理分红% - 下级代理分红%)。"
+                  en="Team Contribution = Net Profit from Sub Agent * (Agent Profit Sharing Percentage - Sub Agent Profit Sharing Percentage)."
+                />
+              </List.Item>
+              <List.Item>
+                <Trans
+                  zh="分红金额 = 直属玩家贡献 + 团队贡献 - 代理调帐。"
+                  en="Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount."
+                />
+              </List.Item>
+            </List>
+          </Alert>
           <TotalsInfo data={data} />
           <Table
             columns={columns}
@@ -318,16 +363,9 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         },
         disableSortBy: true
       }),
-      numberDecimalColumn({
-        accessor: "depositAmount",
-        sumColumn: "depositAmount",
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "withdrawalAmount",
-        sumColumn: "withdrawalAmount",
-        Header: <Trans zh="提款金额" en="Withdrawal Amount" />,
+      numberDecimalPercentageColumn({
+        accessor: "agentDividendPercentage",
+        Header: <Trans zh="分红比例" en="Profit Sharing Percentaget" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -337,9 +375,9 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "companyAdjustAmount",
-        sumColumn: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        accessor: "agentCoveredBonus",
+        sumColumn: "agentCoveredBonus",
+        Header: <Trans zh="代理承担红利" en="Agent-Covered Bonus" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -349,11 +387,12 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "agentAdjustAmount",
-        sumColumn: "agentAdjustAmount",
-        Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
+        accessor: "agentCoveredBonusAdjust",
+        sumColumn: "agentCoveredBonusAdjust",
+        Header: <Trans zh="代理承担优惠调帐" en="Agent-Covered Bonus Adjust" />,
         disableSortBy: true
       }),
+
       numberDecimalColumn({
         accessor: "betAmount",
         sumColumn: "betAmount",
@@ -364,12 +403,6 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "turnover",
-        sumColumn: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       /*
@@ -451,6 +484,12 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
           }
         }),
         numberDecimalColumn({
+          accessor: "agentAdjustAmount",
+          sumColumn: "agentAdjustAmount",
+          Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
+          disableSortBy: true
+        }),
+        numberDecimalColumn({
           id: "agentDividendAmount",
           accessor: (row) => row,
           sumColumn: "agentDividendAmount",
@@ -490,7 +529,7 @@ const PlayerContributionHeader = () => {
     zh: "玩家貢獻 = 該代理之直屬玩家貢獻值",
     en: "Player Contribution = A total contribution amount from the agent’s direct players displayed."
   })
-  return <Trans zh="玩家贡献" en="Player Contribution" title={title} />
+  return <Trans zh="直属玩家贡献" en="Player Contribution" title={title} />
 }
 
 const TeamContributionHeader = () => {

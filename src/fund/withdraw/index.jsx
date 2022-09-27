@@ -66,6 +66,7 @@ import { useBrandPaymentList } from "../../system/brandpayments/client"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import { FundWithdrawPaidDialogDisclosure } from "./FundWithdrawPaid"
 import { RejectFundWithdrawDisclosure } from "./RejectFundWithdraw"
+import { BrandPaymentMultiSelect } from "../../system/brandpayments/BrandPaymentMultiSelect"
 
 export { Code }
 
@@ -288,19 +289,21 @@ const BodyContent = ({ brandId }) => {
         </Level>
       }
     >
-      <Summary total={data?.sum} />
-      <Table
-        id="withdraw"
-        columns={columns}
-        data={items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading || autoLoading}
-        getRowId={(row) => row.id}
-      />
+      <FieldStack>
+        <Summary total={data?.sum} />
+        <Table
+          id="withdraw"
+          columns={columns}
+          data={items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading || autoLoading}
+          getRowId={(row) => row.id}
+        />
+      </FieldStack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -455,6 +458,10 @@ const SearchBar = ({
               showEmptyFieldValueAddonAfter
               placeholder={channelNameInputPlaceholder}
             />
+            {/* 
+            TODO: 1.36
+            <BrandPaymentMultiSelect name="bpid" brandId={brandId} /> 
+            */}
             {/* <PaymentMethodSelect
               name="method"
               placeholder={paymentMethodPlaceholder}

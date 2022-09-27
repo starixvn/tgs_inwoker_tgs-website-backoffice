@@ -50,9 +50,8 @@ export const PlayerDepositFormDialogDisclosure = ({
 }) => {
   let dialog = new useModalState()
 
-  let editable = useIsDisplayMenuByRoute([Update])
   let depositFormAuth = useIsDisplayMenuByRoute([DepositForm])
-  if (!editable || !depositFormAuth) {
+  if (!depositFormAuth) {
     return null
   }
 
@@ -77,7 +76,7 @@ export const PlayerDepositFormDialogDisclosure = ({
 //TODO: move ManualCode to?
 const ManualCode = "Manual"
 const supportedPaymentList = (list = []) =>
-  list.filter(({ paymentcode }) => paymentcode === ManualCode)
+  list.filter(({ paymentCode }) => paymentCode === ManualCode)
 
 const DepositFormDialog = ({
   brandId,
@@ -147,7 +146,6 @@ const DepositFormDialog = ({
 
 const FormBody = ({ paymentList = [], brandId, playerCode }) => {
   let { control, setValue } = useFormContext()
-
   let PaymentMethodField = "method"
 
   let paymentMethod = useWatch({
@@ -181,15 +179,15 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
   useEffect(() => {
     let payment = paymentList.find((payment) => {
       return (
-        payment.methodcode === paymentMethod &&
-        payment.channelcode === paymentChannel
+        payment.methodCode === paymentMethod &&
+        payment.channelCode === paymentChannel
       )
     })
 
     let paymentId = payment?.id ?? ""
     setValue(BrandPaymentIdField, paymentId)
 
-    let bankType = payment?.banktype ?? ""
+    let bankType = payment?.bankType ?? ""
     setValue(BankTypeField, bankType)
   }, [paymentMethod, paymentChannel])
   return (
@@ -239,7 +237,7 @@ const BankInfo = ({}) => {
     en: "Deposit Bank Name"
   })
   let bankAccountLabel = useTrans({
-    zh: "充值账户",
+    zh: "存款账户",
     en: "Deposit Bank Account"
   })
   return (
@@ -252,7 +250,7 @@ const BankInfo = ({}) => {
 
 const AmountInputField = ({ ...props }) => {
   let label = useTrans({
-    zh: "充值金额",
+    zh: "存款金额",
     en: "Amount"
   })
   return <NumberInputField name="amount" label={label} {...props} />

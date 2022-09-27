@@ -111,9 +111,7 @@ const BodyContent = ({ brandId = "" }) => {
             isLoading={isLoading}
           />
           <Box>
-            {/* 
-            <PlayerBatchAddBalanceDisclosure /> 
-            */}
+            <PlayerBatchAddBalanceDisclosure brandId={brandId} />
           </Box>
         </Flex>
       }
@@ -167,12 +165,14 @@ const useColumns = ({ brandId, items = [], mutate }) => {
         accessor: "username",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
-      }),
+      })
+      /*
       numberDecimalColumn({
         accessor: "balance",
         Header: <Trans zh="余额" en="Balance" />,
         disableSortBy: true
       })
+      */
     ]
 
     if (hasUpdateMenu) {

@@ -66,10 +66,10 @@ const DepositRewardSetting = ({ readOnly }) => {
   return (
     <FieldValues>
       <NormalLabel>
-        <Trans zh="充值最低金额" en="Minimum Deposit Amount" />
+        <Trans zh="存款最低金额" en="Minimum Deposit Amount" />
       </NormalLabel>
       <NumberInput
-        name="rule.minDeposit"
+        name="rule.depositMinimumLimit"
         min={1}
         registerOptions={{
           valueAsNumber: true

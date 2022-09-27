@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-api
-image: pgtgs/payment-api:202209010117.22
+image: pgtgs/payment-api:202209160604.96
 services:
   - name: payment-api
     dependencies:
@@ -17,3 +17,4 @@ services:
       - name: http
         containerPort: 80
         servicePort: 80
+        localPort: 3080 # http://localhost:3080/swagger/index.html

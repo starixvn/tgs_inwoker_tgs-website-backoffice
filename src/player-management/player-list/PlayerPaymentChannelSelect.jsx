@@ -31,14 +31,14 @@ const filterPaymentChannelOptions = (
 ) => {
   let options = Object.values(
     platformPaymentList.reduce(
-      (acc, { methodcode, channelcode, channelname }) => {
+      (acc, { methodCode, channelCode, channelName }) => {
         if (
-          (paymentMethodCode && methodcode === paymentMethodCode) ||
+          (paymentMethodCode && methodCode === paymentMethodCode) ||
           !paymentMethodCode
         ) {
-          acc[channelcode] = {
-            label: channelname,
-            value: channelcode
+          acc[channelCode] = {
+            label: channelName,
+            value: channelCode
           }
         }
         return acc

@@ -45,7 +45,7 @@ const editPlayerInfo = async (page, player) => {
 }
 
 const viewPlayerInfo = async (page, info, player) => {
-  let dialogSelector = await openViewPlayerDialog(page)
+  let dialogSelector = await openViewPlayerDialog(page, player)
 
   let realNameSelector = page.locator(
     `${dialogSelector} [data-field="realName"]`

@@ -38,7 +38,7 @@ test("view player promotion list", async ({
   await gotoPlayerListPage(page, platformCode)
   await searchPlayer(page, player)
 
-  let dialogSelector = await openViewPlayerDialog(page)
+  let dialogSelector = await openViewPlayerDialog(page, player)
   await page.click(`${dialogSelector} button#promotion`)
 
   let promotionNameLocator = page.locator(

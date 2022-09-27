@@ -14,9 +14,11 @@ import {
   Dialog,
   Modal,
   Overlay,
-  Portal
+  Code,
+  Group
 } from "bumbag"
 import { Trans } from "../i18n"
+import copy from "clipboard-copy"
 
 const BumbagZIndex = 19900410
 
@@ -24,6 +26,7 @@ export const AlertDialog = ({
   title,
   placement = "top",
   errors = [],
+  xCorrelationId,
   visible = true,
   zIndex = BumbagZIndex,
   finalFocusRef,
@@ -52,14 +55,28 @@ export const AlertDialog = ({
             </Flex>
           }
           hideOnClickOutside={false}
-          unstable_finalFocusRef={finalFocusRef}
         >
-          <Box>
+          <FieldStack>
             {errors &&
               errors.map((error, index) => (
                 <Text.Block key={index}>{error}</Text.Block>
               ))}
-          </Box>
+            {xCorrelationId && (
+              <Group>
+                <Code>{xCorrelationId}</Code>
+                <Button
+                  onClick={() => {
+                    copy(xCorrelationId)
+                  }}
+                  css={css`
+                    border-left-width: 1px;
+                  `}
+                >
+                  <Trans zh={`复制`} en={`Copy`} />
+                </Button>
+              </Group>
+            )}
+          </FieldStack>
         </Dialog.Modal>
       </Modal.Backdrop>
     </Modal.State>

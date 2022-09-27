@@ -158,8 +158,8 @@ const ReportDialog = ({
                     </List.Item>
                     <List.Item>
                       <Trans
-                        zh="代理成本 = 紅利金額 + 優惠調帳 + 代理調帳"
-                        en="Agent Cost = Bouns + Bouns Adjust + Agent Adjust"
+                        zh="代理成本 = 紅利金額 + 優惠調帳"
+                        en="Agent Cost = Bouns + Bouns Adjust"
                       />
                     </List.Item>
                     <List.Item>
@@ -214,7 +214,7 @@ const ReportDialog = ({
           foot={data?.items?.length > 0}
           stickyHead
           containerProps={{
-            maxHeight: "72vh",
+            maxHeight: "69vh",
             overflow: "auto"
           }}
         />
