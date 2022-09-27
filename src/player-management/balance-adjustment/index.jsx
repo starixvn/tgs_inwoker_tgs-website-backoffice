@@ -165,12 +165,14 @@ const useColumns = ({ brandId, items = [], mutate }) => {
         accessor: "username",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
-      }),
+      })
+      /*
       numberDecimalColumn({
         accessor: "balance",
         Header: <Trans zh="余额" en="Balance" />,
         disableSortBy: true
       })
+      */
     ]
 
     if (hasUpdateMenu) {
