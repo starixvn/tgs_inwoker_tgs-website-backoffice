@@ -31,7 +31,7 @@ export const PlayerWageringRequirementDialogDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="流水金额" en="Turnover Requirement Amount" />
+        <Trans zh="余额" en="Balance" />
       </Disclosure>
       {dialog.visible && (
         <WageringRequirementDialog
@@ -53,8 +53,8 @@ const WageringRequirementDialog = ({
   ...props
 }) => {
   let title = useTrans({
-    zh: "流水金额",
-    en: "Turnover Requirement Amount"
+    zh: "余额",
+    en: "Balance"
   })
 
   let { isLoading, data: player, error } = usePlayer(playerCode)
@@ -76,12 +76,18 @@ const WageringRequirementDialog = ({
       hideOnClickOutside={false}
       title={title}
       footer={<CloseButtonFooter dialog={dialog} alignX="right" />}
+      maxWidth="80vw"
     >
       <FieldValues marginLeft="1rem">
         <Trans zh="用户名" en="Username" />
         <Box>{username}</Box>
 
-        <Trans zh="流水金额" en="Turnover Requirement Amount" />
+        <Trans zh="玩家余额" en="Balance" />
+        <Box>
+          <FormattedNumberDecimal value={player?.balance} />
+        </Box>
+
+        <Trans zh="流水金额" en="Turnover Requirement" />
         <Box>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
         </Box>
