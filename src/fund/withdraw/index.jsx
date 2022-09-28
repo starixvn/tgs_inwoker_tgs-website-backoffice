@@ -56,7 +56,7 @@ import { Update } from "./menu"
 import { ViewFundWithdrawDisclosure } from "./ViewFundWithdraw"
 import { VerifyFundWithdrawDisclosure } from "./VerifyFundWithdraw"
 import { PaymentMethodSelect } from "../../payment/method/PaymentMethod"
-import { UserTypeLabel } from "./UserType"
+import { UserTypeLabel, UserTypeSelect } from "./UserType"
 import clone from "clone-deep"
 import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
@@ -462,6 +462,7 @@ const SearchBar = ({
             TODO: 1.36
             <BrandPaymentMultiSelect name="bpid" brandId={brandId} /> 
             */}
+            {isDev() && <UserTypeSelect name="userType" />}
             {/* <PaymentMethodSelect
               name="method"
               placeholder={paymentMethodPlaceholder}
