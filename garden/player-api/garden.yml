@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: player-api
-image: pgtgs/player-api:202209160818.61
+image: pgtgs/player-api:202209290206.73
 services:
   - name: player-api
     dependencies:
@@ -13,3 +13,4 @@ services:
       - name: http
         containerPort: 80
         servicePort: 80
+        localPort: 3070 # http://localhost:3070/swagger/index.html

@@ -2,13 +2,13 @@ import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
 
 const API = "api/player"
-export const adjustBalance = async (playerCode, formData) => {
+export const adjustBalance = async (playerCode, formData = {}) => {
   if (!formData.transactionType) {
     formData.transactionType = "Other"
   }
 
   let response = await fetcher.post(`${host}/${API}/${playerCode}/adjust`, {
-    data: formData,
+    data: { playerCode, ...formData },
     failOnStatusCode: true
   })
   return await response.json()
@@ -22,11 +22,17 @@ export const addBalance = async (playerCode, { ...formData } = {}) => {
   let response = await fetcher.post(
     `${host}/${API}/${playerCode}/adjust/increase`,
     {
-      data: formData,
+      data: { playerCode, ...formData },
       failOnStatusCode: true
     }
   )
-  return await response.json()
+  let result = await response.json()
+  if (!result.valid) {
+    console.error(`addBalance ${playerCode} >`, result)
+    throw `addBalance ${playerCode} > ${result?.message}`
+  }
+
+  return result
 }
 
 export const deductBalance = async (playerCode, formData = {}) => {
@@ -37,9 +43,16 @@ export const deductBalance = async (playerCode, formData = {}) => {
   let response = await fetcher.post(
     `${host}/${API}/${playerCode}/adjust/reduce`,
     {
-      data: formData,
+      data: { playerCode, ...formData },
       failOnStatusCode: true
     }
   )
-  return await response.json()
+
+  let result = await response.json()
+  if (!result.valid) {
+    console.error(`deductBalance ${playerCode} >`, result)
+    throw `deductBalance ${playerCode} > ${result?.message}`
+  }
+
+  return result
 }
