@@ -53,6 +53,7 @@ import FundWithdrawTopNavItem from "./fund/withdraw/FundWithdrawTopNavItem"
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
 import { init as initConnection } from "./connection"
 
+//TODO: rm @ v1.36
 if (isDev()) {
   initConnection()
 }

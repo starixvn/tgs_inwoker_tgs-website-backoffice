@@ -69,6 +69,7 @@ import {
   faArrowAltCircleDown
 } from "@fortawesome/free-regular-svg-icons"
 import Backdrop from "../../dialog/Backdrop"
+import connection from "../../connection"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
@@ -101,76 +102,100 @@ export const PlayerBatchAddBalanceDisclosure = ({
 //TODO: move to?
 const SecondInMilliseconds = 1000
 
+const confirmBatchDone = (result) => {
+  if (result === true) {
+    return true //done
+  }
+
+  if (result === null) {
+    return true //no content
+  }
+
+  return false
+}
+
 const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
   let [batchId, setBatchId] = useState()
-  //TODO: isBatchDone true > result dialog, stop useIsPlayerBatchAddBalanceEnd
-  let [isBatchDone, setBatchDone] = useState()
-
-  //TODO: rename to batchItems
-  let [items, setItems] = useState()
-
+  let [batchItems, setBatchItems] = useState()
   let [formData, setSubmit] = useState()
-  //TODO: able to retry with alert dialog
   let {
-    result: isStarted,
-    isLoading: isLoadingStarted,
-    error: startedError,
-    mutate: mutateStarted,
-    deleteCache: deleteStartedCache
+    result: isBatchStarted,
+    isLoading: isLoadingBatchStarted,
+    error: startBatchError,
+    mutate: mutateStartBatch,
+    deleteCache: deleteStartBatchCache
   } = useStartPlayerBatchAddBalance(brandId, batchId, formData)
 
-  //TODO: alert dialog with retry option?
-  //TODO: how to get failed list
+  const resetStartBatch = () => {
+    setBatchId(null)
+    setSubmit(null)
+
+    mutateStartBatch(null, false)
+    deleteStartBatchCache()
+  }
+
+  let [isBatchDone, setBatchDone] = useState()
+
+  useEffect(() => {
+    let onNotify = ({ Type, BatchId, ...rest } = {}) => {
+      console.log("onNotify Type", Type, "BatchId", BatchId, "rest", rest)
+      if (Type === "BatchAdjustBalance") {
+        setBatchDone(true)
+      }
+    }
+
+    if (isBatchStarted) {
+      connection?.on("notify", onNotify)
+    }
+
+    return () => {
+      connection?.off("notify", onNotify)
+    }
+  }, [isBatchStarted])
+
+  //TODO: show alert after fail 3 times?
   let {
-    result: isEnded,
-    isLoading: isEndedLoading,
-    error: endedError
-  } = useIsPlayerBatchAddBalanceEnd(isStarted && !isBatchDone && batchId, {
+    result: isBatchEnded,
+    isLoading: isLoadingBatchEnded,
+    error: batchEndedError
+  } = useIsPlayerBatchAddBalanceEnd(isBatchStarted && !isBatchDone && batchId, {
     refreshInterval: 10 * SecondInMilliseconds
   })
 
   let isLoading =
-    isLoadingStarted ||
-    isEndedLoading ||
-    (isStarted && !isBatchDone && isEnded === undefined)
+    isLoadingBatchStarted ||
+    isLoadingBatchEnded ||
+    (isBatchStarted && !isBatchDone)
 
   let title = useTrans({
     zh: "批量余额加分",
     en: "Batch Add Balance"
   })
 
-  const onSubmit = ({ items, batchId, transactionType, ...data } = {}) => {
+  const onSubmit = ({ items, batchId, ...data } = {}) => {
+    setBatchItems(items)
     setBatchId(batchId)
-    setItems(items)
-    setSubmit(transactionType)
-  }
-
-  //TODO how show failed list?
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(data)
   }
 
   useEffect(() => {
-    if (isEnded !== undefined && isEnded !== false) {
+    if (confirmBatchDone(isBatchEnded)) {
       setBatchDone(true)
     }
-  }, [isEnded])
+  }, [isBatchEnded])
 
   if (isLoading || isBatchDone) {
     //TODO: NoContent?
     return (
       <BatchResultDialog
         batchId={batchId}
-        batchItems={items}
+        batchItems={batchItems}
         isProcessing={isLoading}
         dialog={dialog}
       />
     )
   }
 
-  //TODO: onSubmitted > reload
   return (
     <FormDialog
       id="batch-add-balance-dialog"
@@ -180,8 +205,10 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
-      error={startedError || endedError}
-      onCloseErrorAlert={dialog.hide}
+      error={startBatchError}
+      onCloseErrorAlert={() => {
+        resetStartBatch()
+      }}
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
@@ -201,7 +228,6 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
-//TODO
 const BatchResultDialog = ({ batchId, batchItems, isProcessing, dialog }) => {
   let {
     isLoading,
