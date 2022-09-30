@@ -144,10 +144,7 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
       }
     }
 
-    if (isBatchStarted) {
-      connection?.on("notify", onNotify)
-    }
-
+    connection?.on("notify", onNotify)
     return () => {
       connection?.off("notify", onNotify)
     }
