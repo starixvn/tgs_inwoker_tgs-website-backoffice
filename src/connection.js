@@ -14,7 +14,7 @@ if (navigator && navigator.locks && navigator.locks.request) {
 }
 */
 
-let connection
+export let connection
 
 const ReconnectTimeDelay = 5000
 

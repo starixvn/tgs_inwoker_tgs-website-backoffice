@@ -69,7 +69,7 @@ import {
   faArrowAltCircleDown
 } from "@fortawesome/free-regular-svg-icons"
 import Backdrop from "../../dialog/Backdrop"
-import connection from "../../connection"
+import { connection } from "../../connection"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
