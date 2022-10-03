@@ -96,11 +96,14 @@ export const addAgent = async (page, agentDividendType, agents = []) => {
   return result
 }
 
-export const openViewAgentDialog = async (page) => {
+export const openViewAgentDialog = async (page, agent) => {
   let dialogSelector = `#view-agent-dialog`
   await Promise.all([
     page.waitForResponse((response) => {
-      return response.url().includes("/api/agent/") && response.status() === 200
+      return (
+        response.url().includes(`/api/agent/${agent.id}`) &&
+        response.status() === 200
+      )
     }),
     openDialog(page, dialogSelector)
   ])

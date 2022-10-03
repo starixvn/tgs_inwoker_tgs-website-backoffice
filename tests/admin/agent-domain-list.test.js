@@ -50,7 +50,7 @@ const addDomain = async (page) => {
 }
 
 const viewDomain = async (page, platform, agent, expectedDomain) => {
-  let dialogSelector = await openViewAgentDialog(page)
+  let dialogSelector = await openViewAgentDialog(page, agent)
 
   await Promise.all([
     page.waitForResponse((response) => {

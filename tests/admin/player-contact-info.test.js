@@ -54,15 +54,7 @@ const editPlayerContact = async (page, player) => {
 }
 
 const viewPlayerContact = async (page, contact, player) => {
-  let [, dialogSelector] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/${player.code}`) &&
-        response.status() === 200
-      )
-    }),
-    openViewPlayerDialog(page, player)
-  ])
+  let dialogSelector = await openViewPlayerDialog(page, player)
   await page.click(`${dialogSelector} button#contact`)
 
   let phoneLocator = page.locator(`${dialogSelector} [data-field="phone"]`)

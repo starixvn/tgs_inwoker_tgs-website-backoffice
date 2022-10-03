@@ -182,7 +182,6 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
   }, [isBatchEnded])
 
   if (isLoading || isBatchDone) {
-    //TODO: NoContent?
     return (
       <BatchResultDialog
         batchId={batchId}
@@ -236,21 +235,16 @@ const BatchResultDialog = ({ batchId, batchItems, isProcessing, dialog }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO: merge result + items
-  //TODO: show failed items only?
   let items = result?.map((item, index) => {
     return { ...batchItems[index], ...item }
   })
 
   let columns = useColumns({ items, showResult: true })
-  //TODO: onSubmitted? onCloseDialog?
-  //TODO: showCloseButton after get result
   return (
     <Backdrop {...dialog}>
       <Dialog.Modal
         hideBackdrop={true}
         hideOnClickOutside={false}
-        // showCloseButton={result}
         footer={result && <CloseButtonFooter dialog={dialog} alignX="right" />}
         minWidth={items && "60vw"}
         maxWidth="95vw"

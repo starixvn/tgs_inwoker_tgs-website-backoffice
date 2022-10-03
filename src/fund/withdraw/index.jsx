@@ -113,7 +113,8 @@ const BodyContent = ({ brandId }) => {
     beginCreateOn: todayRange.start,
     endCreateOn: todayRange.end,
     beginUpdateOn: undefined,
-    endUpdateOn: undefined
+    endUpdateOn: undefined,
+    brandPaymentIds: undefined
   })
 
   useEffect(() => {
@@ -186,7 +187,8 @@ const BodyContent = ({ brandId }) => {
         beginCreateOn: todayRange.start,
         endCreateOn: todayRange.end,
         beginUpdateOn: undefined,
-        endUpdateOn: undefined
+        endUpdateOn: undefined,
+        brandPaymentIds: undefined
       })
 
       mutateFormList(undefined)
@@ -262,6 +264,7 @@ const BodyContent = ({ brandId }) => {
             endCreateOn={endCreateOn}
             beginUpdateOn={beginUpdateOn}
             endUpdateOn={endUpdateOn}
+            brandPaymentIds={state.brandPaymentIds}
             minDate={minDate}
             maxRangeDays={QueryMaxRangeDays}
             search={(data = {}) => {
@@ -367,6 +370,7 @@ const SearchBar = ({
   endCreateOn,
   beginUpdateOn,
   endUpdateOn,
+  brandPaymentIds,
   minDate,
   maxRangeDays,
   search,
@@ -384,7 +388,8 @@ const SearchBar = ({
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
-      endUpdateOn
+      endUpdateOn,
+      brandPaymentIds
     }
   })
 
@@ -399,7 +404,8 @@ const SearchBar = ({
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
-      endUpdateOn
+      endUpdateOn,
+      brandPaymentIds
     })
   }, [
     username,
@@ -411,7 +417,8 @@ const SearchBar = ({
     beginCreateOn,
     endCreateOn,
     beginUpdateOn,
-    endUpdateOn
+    endUpdateOn,
+    brandPaymentIds
   ])
 
   let usernameInputPlaceholder = useTrans({
@@ -447,7 +454,7 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
         <FieldStack orientation="vertical">
-          <Set orientation="horizontal">
+          <Set orientation="horizontal" alignY="bottom">
             <InputField
               name="username"
               showEmptyFieldValueAddonAfter
@@ -458,10 +465,8 @@ const SearchBar = ({
               showEmptyFieldValueAddonAfter
               placeholder={channelNameInputPlaceholder}
             />
-            {/* 
-            TODO: 1.36
-            <BrandPaymentMultiSelect name="bpid" brandId={brandId} /> 
-            */}
+            {isDev() && <></>}
+            <BrandPaymentMultiSelect name="brandPaymentIds" brandId={brandId} />
             {isDev() && <UserTypeSelect name="userType" />}
             {/* <PaymentMethodSelect
               name="method"
