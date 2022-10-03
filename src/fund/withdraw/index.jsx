@@ -465,8 +465,12 @@ const SearchBar = ({
               showEmptyFieldValueAddonAfter
               placeholder={channelNameInputPlaceholder}
             />
-            {isDev() && <></>}
-            <BrandPaymentMultiSelect name="brandPaymentIds" brandId={brandId} />
+            {isDev() && (
+              <BrandPaymentMultiSelect
+                name="brandPaymentIds"
+                brandId={brandId}
+              />
+            )}
             {isDev() && <UserTypeSelect name="userType" />}
             {/* <PaymentMethodSelect
               name="method"
