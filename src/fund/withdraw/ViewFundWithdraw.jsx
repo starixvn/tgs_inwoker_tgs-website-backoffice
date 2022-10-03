@@ -235,7 +235,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
   let underReviewOrApproved = underReview || isApproved
 
   let { isLoading, data: brandPayment, error } = useBrandPayment(brandPaymentId)
-  console.log("brandPayment?.extendedData", brandPayment?.extendedData)
+
   let detail = parseJSON(brandPayment?.extendedData)
   let rate = detail?.rate
   let hasRate = Number.isFinite(rate)

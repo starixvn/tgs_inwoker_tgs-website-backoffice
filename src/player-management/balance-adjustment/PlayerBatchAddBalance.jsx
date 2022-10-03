@@ -70,6 +70,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons"
 import Backdrop from "../../dialog/Backdrop"
 import { connection } from "../../connection"
+import { useMount, useUnmount } from "react-use"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
@@ -146,9 +147,18 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
 
     connection?.on("notify", onNotify)
     return () => {
+      console.log("!!! connection off notify")
       connection?.off("notify", onNotify)
     }
   }, [isBatchStarted])
+
+  useMount(() => {
+    console.log("useMount")
+  })
+
+  useUnmount(() => {
+    console.log("useUnmount")
+  })
 
   //TODO: show alert after fail 3 times?
   let {
