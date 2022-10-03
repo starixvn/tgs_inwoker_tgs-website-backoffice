@@ -22,12 +22,12 @@ test("edit and view agent domain list", async ({
   await gotoAgentListPage(page, platformCode)
   await searchAgent(page, agent.username)
 
-  let domain = await addDomain(page, agent)
+  let domain = await addDomain(page, platform, agent)
   await viewDomain(page, platform, agent, domain)
   await deleteDomain(page, domain)
 })
 
-const addDomain = async (page) => {
+const addDomain = async (page, platform, agent) => {
   let editDialogSelector = await openEditAgentDialog(page)
   await page.click(`${editDialogSelector} #AgentDomainList`)
 
@@ -40,9 +40,21 @@ const addDomain = async (page) => {
     `${editDialogSelector} [aria-labelledby="AgentDomainList"] input`,
     ExpectedDomain
   )
-  await page.click(
-    `${editDialogSelector} [aria-labelledby="AgentDomainList"] #add-domain`
-  )
+
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response
+          .url()
+          .includes(
+            `/api/agent/domain/${platform.id}/${agent.id}?domain=${ExpectedDomain}`
+          ) && response.status() === 200
+      )
+    }),
+    page.click(
+      `${editDialogSelector} [aria-labelledby="AgentDomainList"] #add-domain`
+    )
+  ])
 
   await page.click(`${editDialogSelector} .bb-DialogClose`)
 
