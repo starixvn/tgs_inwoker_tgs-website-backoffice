@@ -137,27 +137,28 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
 
   let [isBatchDone, setBatchDone] = useState()
 
-  useEffect(() => {
-    let onNotify = ({ Type, BatchId, ...rest } = {}) => {
-      console.log("onNotify Type", Type, "BatchId", BatchId, "rest", rest)
-      if (Type === "BatchAdjustBalance") {
-        setBatchDone(true)
-      }
+  const onNotify = ({ Type, BatchId, ...rest } = {}) => {
+    console.log("onNotify Type", Type, "BatchId", BatchId, "rest", rest)
+    if (Type === "BatchAdjustBalance") {
+      setBatchDone(true)
     }
+  }
 
-    connection?.on("notify", onNotify)
+  useEffect(() => {
+    console.log("fake connection on notify")
     return () => {
-      console.log("!!! connection off notify")
-      connection?.off("notify", onNotify)
+      console.log("fake connection off notify")
     }
   }, [isBatchStarted])
 
   useMount(() => {
-    console.log("useMount")
+    console.log("*** useMount on notify")
+    connection?.on("notify", onNotify)
   })
 
   useUnmount(() => {
-    console.log("useUnmount")
+    console.log("*** useUnmount off notify")
+    connection?.off("notify", onNotify)
   })
 
   //TODO: show alert after fail 3 times?
