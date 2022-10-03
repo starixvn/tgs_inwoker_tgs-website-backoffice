@@ -144,20 +144,13 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
     }
   }
 
-  useEffect(() => {
-    console.log("fake connection on notify")
-    return () => {
-      console.log("fake connection off notify")
-    }
-  }, [isBatchStarted])
-
   useMount(() => {
-    console.log("*** useMount on notify")
+    console.log("connection on 'notify'")
     connection?.on("notify", onNotify)
   })
 
   useUnmount(() => {
-    console.log("*** useUnmount off notify")
+    console.log("connection off 'notify'")
     connection?.off("notify", onNotify)
   })
 
