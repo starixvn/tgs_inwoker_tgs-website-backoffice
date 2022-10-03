@@ -141,6 +141,11 @@ const BodyContent = ({ brandId }) => {
     ec: startOfNextDay(state.endCreateOn),
     bu: state.beginUpdateOn,
     eu: startOfNextDay(state.endUpdateOn),
+    /*
+      Note. backend api use 'bpid' instead of 'brandPaymentIds'
+     */
+    brandPaymentIds: undefined,
+    bpid: state.brandPaymentIds,
     sortby: "CreatedOn",
     orderby: SortOrder.Descending,
     culture
