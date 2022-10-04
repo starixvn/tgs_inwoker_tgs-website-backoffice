@@ -139,7 +139,7 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
 
   const onNotify = ({ Type, BatchId, ...rest } = {}) => {
     console.log("onNotify Type", Type, "BatchId", BatchId, "rest", rest)
-    if (Type === "BatchAdjustBalance") {
+    if (Type === "BatchAdjustBalance" && BatchId === batchId) {
       setBatchDone(true)
     }
   }
@@ -159,12 +159,9 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
     result: isBatchEnded,
     isLoading: isLoadingBatchEnded,
     error: batchEndedError
-  } = useIsPlayerBatchAddBalanceEnd(
-    false && isBatchStarted && !isBatchDone && batchId,
-    {
-      refreshInterval: 10 * SecondInMilliseconds
-    }
-  )
+  } = useIsPlayerBatchAddBalanceEnd(isBatchStarted && !isBatchDone && batchId, {
+    refreshInterval: 10 * SecondInMilliseconds
+  })
 
   let isLoading =
     isLoadingBatchStarted ||
