@@ -436,12 +436,10 @@ const SearchBar = ({
     en: "Channel Name"
   })
 
-  /*
-  let paymentMethodPlaceholder = useTrans({
-    zh: "提款类型",
-    en: "Withdraw Method"
+  let platformPaymentPlaceholder = useTrans({
+    zh: "提款通道",
+    en: "Withdrawal Channel"
   })
-  */
 
   let externalIdPlaceholder = useTrans({
     zh: "三方订单编号",
@@ -474,13 +472,10 @@ const SearchBar = ({
               <BrandPaymentMultiSelect
                 name="brandPaymentIds"
                 brandId={brandId}
+                placeholder={platformPaymentPlaceholder}
               />
             )}
             {isDev() && <UserTypeSelect name="userType" />}
-            {/* <PaymentMethodSelect
-              name="method"
-              placeholder={paymentMethodPlaceholder}
-            /> */}
             <FundWithdrawStatusSelect id="status-select" name="status" />
             <InputField
               name="thirdOrderNo"
