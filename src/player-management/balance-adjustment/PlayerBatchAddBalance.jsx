@@ -159,9 +159,12 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
     result: isBatchEnded,
     isLoading: isLoadingBatchEnded,
     error: batchEndedError
-  } = useIsPlayerBatchAddBalanceEnd(isBatchStarted && !isBatchDone && batchId, {
-    refreshInterval: 10 * SecondInMilliseconds
-  })
+  } = useIsPlayerBatchAddBalanceEnd(
+    false && isBatchStarted && !isBatchDone && batchId,
+    {
+      refreshInterval: 10 * SecondInMilliseconds
+    }
+  )
 
   let isLoading =
     isLoadingBatchStarted ||
