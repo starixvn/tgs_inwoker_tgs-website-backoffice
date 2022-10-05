@@ -431,11 +431,6 @@ const SearchBar = ({
     en: "Username"
   })
 
-  let channelNameInputPlaceholder = useTrans({
-    zh: "通道名称",
-    en: "Channel Name"
-  })
-
   let platformPaymentPlaceholder = useTrans({
     zh: "提款通道",
     en: "Withdrawal Channel"
@@ -463,20 +458,13 @@ const SearchBar = ({
               showEmptyFieldValueAddonAfter
               placeholder={usernameInputPlaceholder}
             />
-            <InputField
-              name="channelName"
-              showEmptyFieldValueAddonAfter
-              placeholder={channelNameInputPlaceholder}
-            />
-            {isDev() && (
-              <BrandPaymentMultiSelect
-                name="brandPaymentIds"
-                brandId={brandId}
-                placeholder={platformPaymentPlaceholder}
-              />
-            )}
-            {isDev() && <UserTypeSelect name="userType" />}
+            <UserTypeSelect name="userType" />
             <FundWithdrawStatusSelect id="status-select" name="status" />
+            <BrandPaymentMultiSelect
+              name="brandPaymentIds"
+              brandId={brandId}
+              placeholder={platformPaymentPlaceholder}
+            />
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}
