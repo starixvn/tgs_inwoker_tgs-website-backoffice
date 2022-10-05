@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, useModalState, Level } from "bumbag"
+import { Stack, Box, Button, Set, Level, Alert, List } from "bumbag"
 import PageContent from "../../page/Content"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { FormattedNumber, Trans, useLangCode, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
-import { yesterday } from "../../date/range"
+import { today, yesterday } from "../../date/range"
 import dateTimeColumn from "../../table/column/dateTime"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
@@ -25,9 +25,8 @@ import { parseISO } from "date-fns"
 
 export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
-  let QueryMaxRangeDays = 31
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    pageSize: QueryMaxRangeDays,
     brandId,
     from: dateRange.start,
     to: dateRange.end
@@ -37,10 +36,8 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { pageIndex, pageSize, from, to } = state
-
+  let { pageSize, from, to } = state
   let culture = useLangCode()
-
   let toSearchParams = () => ({
     ...toApiParams(state),
     sortby: "reportDate",
@@ -57,29 +54,19 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
     deleteCache
   } = useFetch(toSearchParams())
 
-  let DataRetentionDays = 180
-  let minDate = subDays(dateRange.start, DataRetentionDays)
-
   let columns = useColumns({ items: data?.items, brandId })
-  let maxDate = startOfToday()
-
   return (
     <PageContent
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
-            start={from}
-            end={to}
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={QueryMaxRangeDays}
+            from={state.from}
+            to={state.to}
             isLoading={isLoading}
-            search={({ start, end, ...rest }) => {
+            search={(data) => {
               setState({
                 pageIndex: 0,
-                from: start,
-                to: end,
-                ...rest
+                ...data
               })
               mutate()
             }}
@@ -100,42 +87,63 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
       title={<Trans zh="市场报表" en="Market Report" />}
       paddingTop="1em"
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        total={data?.items?.length > 0 && data?.total}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        foot={data?.items?.length > 0}
-        stickyHead
-      />
+      <Stack>
+        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+          <List listStyleType="disc" listStylePosition="inside">
+            <List.Item>
+              <Trans
+                zh="平台承担红利 = 红利金额 * (100% - 总代分红比例)。"
+                en="Platform-Covered Bonus = Bonus Amount * (100% - Chief Agent Profit Sharing Percentage)."
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
+                zh="平台承担优惠调帐 = 红利金额 * (100% - 总代分红比例)。"
+                en="Platform-Covered Bonus Adjust = Bonus Adjust * (100% - Chief Agent Profit Sharing Percentage)."
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
+                zh="净盈利 = 公司输赢金额 - 平台承担红利 - 平台承担优惠调帐 - 公司调帐。"
+                en="Net Profit = CO. W/L - Platform-Covered Bonus - Platform-Covered Bonus Adjust - C.O Adjustment Amount."
+              />
+            </List.Item>
+          </List>
+        </Alert>
+        <Table
+          columns={columns}
+          data={data?.items}
+          total={data?.items?.length > 0 && data?.total}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          foot={data?.items?.length > 0}
+          stickyHead
+        />
+      </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
 }
 
-const SearchBar = ({
-  start,
-  end,
-  minDate,
-  maxDate,
-  maxRangeDays,
-  search,
-  isLoading,
-  ...props
-}) => {
+const SearchBar = ({ from, to, search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {
-      start,
-      end
+      from,
+      to
     }
   })
 
   const onSubmit = (data) => search?.(data)
+
+  let QueryMaxRangeDays = 31
+  let todayRange = today()
+  let DataRetentionDays = 180
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
 
   return (
     <FormProvider {...formMethods}>
@@ -143,8 +151,23 @@ const SearchBar = ({
         <Set>
           <DateInputRange
             showDateDropdownMenu
+            maxRangeDays={QueryMaxRangeDays}
             minDate={minDate}
-            maxRangeDays={maxRangeDays}
+            maxDate={maxDate}
+            startProps={{
+              name: "from"
+            }}
+            endProps={{
+              name: "to"
+            }}
+            dateDropdownMenuProps={{
+              thisWeekProps: {
+                end: maxDate
+              },
+              thisMonthProps: {
+                end: maxDate
+              }
+            }}
             fakeTimeLabel
             required
           />
@@ -229,9 +252,23 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
+        accessor: "brandCoveredBonusAdjust",
+        sumColumn: "brandCoveredBonusAdjust",
+        Header: (
+          <Trans zh="平台承担优惠调帐" en="Platfrom-Covered Bonus Adjust" />
+        ),
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "brandCoveredBonus",
+        sumColumn: "brandCoveredBonus",
+        Header: <Trans zh="平台承担红利金额" en="Platfrom-Covered Bonus" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
