@@ -139,6 +139,8 @@ export const FormBody = ({ brandId, record, readonly }) => {
           </NormalLabel>
           <Box alignY="center">{record?.userName}</Box>
 
+          <RealNameBox record={record} />
+
           <NormalLabel>
             <Trans zh="GMS订单号" en="GMS Id" />
           </NormalLabel>
@@ -220,6 +222,21 @@ export const FormBody = ({ brandId, record, readonly }) => {
         />
       </FieldStack>
       <Input type="hidden" value={brandId} />
+    </>
+  )
+}
+
+const RealNameBox = ({ record = {} }) => {
+  let realName = record?.realName
+  if (!realName) {
+    return null
+  }
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="真实姓名" en="Real name" />
+      </NormalLabel>
+      <Box alignY="center">{realName}</Box>
     </>
   )
 }
