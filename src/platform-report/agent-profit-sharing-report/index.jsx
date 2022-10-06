@@ -33,7 +33,7 @@ import { InputField } from "../../input/Input"
 import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
-import { yesterday } from "../../date/range"
+import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import {
   numberDecimalColumn,
@@ -82,7 +82,7 @@ export const Body = () => {
 
 const ReportContent = ({ brandId }) => {
   let dateRange = yesterday()
-  let QueryMaxRangeDays = 31
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     username: "",
@@ -96,7 +96,7 @@ const ReportContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { pageIndex, pageSize, username, from, to } = state
+  let { pageSize, username, from, to } = state
   const toSearchParams = () => ({
     ...toApiParams(state),
     sortby: "username",
@@ -107,17 +107,12 @@ const ReportContent = ({ brandId }) => {
     username ? toSearchParams() : undefined
   )
 
-  let DataRetentionDays = 180
-  let minDate = subDays(dateRange.start, DataRetentionDays)
-
   let columns = useColumns({
     brandId,
     start: from,
     end: to,
     items: data?.items
   })
-  let maxDate = startOfToday()
-
   return (
     <PageContent
       actionBar={
@@ -293,9 +288,6 @@ const SearchBar = ({
   levelType,
   start,
   end,
-  minDate,
-  maxDate,
-  maxRangeDays,
   search,
   isLoading,
   ...props
@@ -317,14 +309,29 @@ const SearchBar = ({
 
   const onSubmit = (data) => search?.(data)
 
+  let QueryMaxRangeDays = 31
+  let todayRange = today()
+  let DataRetentionDays = 180
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
+
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
             showDateDropdownMenu
+            maxRangeDays={QueryMaxRangeDays}
             minDate={minDate}
-            maxRangeDays={maxRangeDays}
+            maxDate={maxDate}
+            dateDropdownMenuProps={{
+              thisWeekProps: {
+                end: maxDate
+              },
+              thisMonthProps: {
+                end: maxDate
+              }
+            }}
             fakeTimeLabel
             required
           />
