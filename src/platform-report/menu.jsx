@@ -23,10 +23,6 @@ import {
   codeLabelPair as agentBonusReportPair
 } from "./agent-profit-sharing-report/menu"
 import {
-  Code as VipReportCode,
-  codeLabelPair as vipReportPair
-} from "./vip-report/menu"
-import {
   Code as BalanceChangeReportCode,
   codeLabelPair as balanceChangeReportPair
 } from "./balance-change-report/menu"
@@ -121,15 +117,6 @@ const label = ({ locale, code }) => {
         locale
       )
 
-    case VipReportCode:
-      return getTrans(
-        {
-          zh: "VIP报表",
-          en: "VIP Report"
-        },
-        locale
-      )
-
     case BalanceChangeReportCode:
       return getTrans(
         {
@@ -166,7 +153,6 @@ export const codeLabelPair = [
         agentContributionReportPair,
         playerContributionReportPair,
         agentBonusReportPair,
-        vipReportPair,
         balanceChangeReportPair,
         gameProviderReportPair
       ]
