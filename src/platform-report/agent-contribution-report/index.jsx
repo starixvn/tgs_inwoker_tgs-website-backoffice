@@ -31,7 +31,7 @@ import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
 import { Code } from "./menu"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
-import { yesterday } from "../../date/range"
+import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { startOfToday, subDays } from "date-fns"
@@ -48,6 +48,7 @@ import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
 import { AgentLevelSelect } from "../../agent/AgentLevel"
+import Big from "big.js"
 
 export { Code }
 
@@ -84,7 +85,6 @@ const ReportContent = ({ brandId }) => {
   let agentUsername = headOf(usernames)
 
   let dateRange = yesterday()
-  let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     agentType: undefined,
@@ -102,8 +102,7 @@ const ReportContent = ({ brandId }) => {
     setPageIndex(0)
   }, [JSON.stringify(usernames)])
 
-  let { pageIndex, pageSize, from, to } = state
-
+  let { pageSize, from, to } = state
   const toSearchParams = () => ({
     ...toApiParams(state),
     username,
@@ -119,18 +118,11 @@ const ReportContent = ({ brandId }) => {
     deleteCache
   } = useAgentContributionList(username ? toSearchParams() : undefined)
 
-  let DataRetentionDays = 180
-  let minDate = subDays(dateRange.start, DataRetentionDays)
-
   let columns = useColumns({
-    brandId,
     usernames,
     setUsernames,
-    start: from,
-    end: to,
     items: data?.items
   })
-  let maxDate = startOfToday()
 
   return (
     <PageContent
@@ -140,21 +132,16 @@ const ReportContent = ({ brandId }) => {
             brandId={brandId}
             agentUsername={agentUsername}
             agentType={state?.agentType}
+            from={state.from}
+            to={state.to}
             levelType={state?.levelType}
             includeAgents={state?.includeAgents}
-            start={from}
-            end={to}
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={QueryMaxRangeDays}
             isLoading={isLoading}
-            search={({ agentUsername, start, end, ...data }) => {
+            search={({ agentUsername, ...data }) => {
               setUsernames([agentUsername])
 
               setState({
                 pageIndex: 0,
-                from: start,
-                to: end,
                 ...data
               })
               mutate()
@@ -239,11 +226,8 @@ const SearchBar = ({
   agentType,
   levelType,
   includeAgents,
-  start,
-  end,
-  minDate,
-  maxDate,
-  maxRangeDays,
+  from,
+  to,
   search,
   isLoading,
   ...props
@@ -254,8 +238,8 @@ const SearchBar = ({
       agentType,
       levelType,
       includeAgents,
-      start,
-      end
+      from,
+      to
     }
   })
 
@@ -271,14 +255,35 @@ const SearchBar = ({
 
   const onSubmit = (data) => search?.(data)
 
+  let QueryMaxRangeDays = 31
+  let todayRange = today()
+  let DataRetentionDays = 180
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
+
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateInputRange
             showDateDropdownMenu
+            maxRangeDays={QueryMaxRangeDays}
             minDate={minDate}
-            maxRangeDays={maxRangeDays}
+            maxDate={maxDate}
+            startProps={{
+              name: "from"
+            }}
+            endProps={{
+              name: "to"
+            }}
+            dateDropdownMenuProps={{
+              thisWeekProps: {
+                end: maxDate
+              },
+              thisMonthProps: {
+                end: maxDate
+              }
+            }}
             fakeTimeLabel
             required
           />
@@ -309,14 +314,7 @@ const PlayerType = "Player"
 const isPlayer = (type = "") => type === PlayerType
 const isAgent = (type = "") => type === AgentType
 
-const useColumns = ({
-  brandId,
-  start,
-  end,
-  usernames = [],
-  setUsernames,
-  items = []
-}) => {
+const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
   let bonusAmountTooltip = useTrans({
     zh: "反水(VIP) + 紅利(活動)",
     en: "Rebate (VIP) + Bonus (Promotion)"
@@ -373,10 +371,24 @@ const useColumns = ({
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "depositAmount",
+        id: "depositAmount",
+        accessor: (row) => row,
         sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
-        disableSortBy: true
+        disableSortBy: true,
+        toValue: ({ depositAmount, handlingFee = 0 } = {}) => {
+          let value = Number.isFinite(depositAmount)
+            ? new Big(depositAmount).minus(handlingFee).toNumber()
+            : depositAmount
+          return value
+        },
+        toTotal: ({ depositAmount, handlingFee = 0 } = {}) => {
+          let value = Number.isFinite(depositAmount)
+            ? new Big(depositAmount).minus(handlingFee).toNumber()
+            : depositAmount
+          return value
+        },
+        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />
       }),
       numberDecimalColumn({
         accessor: "withdrawalAmount",
@@ -428,20 +440,6 @@ const useColumns = ({
         Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
-      /*
-      numberDecimalColumn({
-        accessor: "depositFee",
-        sumColumn: "depositFee",
-        Header: <Trans zh="存款手续费" en="Deposit Fee" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "withdrawFee",
-        sumColumn: "withdrawFee",
-        Header: <Trans zh="提款手续费" en="Withdraw Fee" />,
-        disableSortBy: true
-      }),
-      */
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",

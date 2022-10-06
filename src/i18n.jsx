@@ -157,10 +157,11 @@ export const FormattedNumber = ({
   digits,
   format = "0,0",
   postfix = "",
+  placeholder = "",
   ...props
 }) => {
   if (!Number.isFinite(value)) {
-    return null
+    return placeholder
   }
 
   if (Number.isInteger(digits) && digits >= 0 && digits <= MaxDigits) {
