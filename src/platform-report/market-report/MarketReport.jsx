@@ -252,8 +252,8 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "brandCoveredBonusAdjust",
-        sumColumn: "brandCoveredBonusAdjust",
+        accessor: "platformCoveredBonusAdjust",
+        sumColumn: "platformCoveredBonusAdjust",
         Header: (
           <Trans zh="平台承担优惠调帐" en="Platfrom-Covered Bonus Adjust" />
         ),
@@ -266,8 +266,8 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "brandCoveredBonus",
-        sumColumn: "brandCoveredBonus",
+        accessor: "platformCoveredBonus",
+        sumColumn: "platformCoveredBonus",
         Header: <Trans zh="平台承担红利金额" en="Platfrom-Covered Bonus" />,
         disableSortBy: true
       }),
