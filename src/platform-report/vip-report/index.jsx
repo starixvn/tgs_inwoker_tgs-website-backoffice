@@ -33,6 +33,7 @@ import DownloadButton from "../../button/DownloadButton"
 
 export { Code }
 
+//TODO: rm @ v1.37
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
   if (!isDisplay) {

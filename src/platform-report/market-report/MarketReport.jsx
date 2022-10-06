@@ -4,7 +4,13 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { Stack, Box, Button, Set, Level, Alert, List } from "bumbag"
 import PageContent from "../../page/Content"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { FormattedNumber, Trans, useLangCode, useTrans } from "../../i18n"
+import {
+  FormattedNumber,
+  FormattedNumberDecimal,
+  Trans,
+  useLangCode,
+  useTrans
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
@@ -22,6 +28,7 @@ import { isDev } from "../../env"
 import { usePlatformMarketReportAdditionalExpenseList } from "./client"
 import { AdditionalExpenseDialogDisclosure } from "../AdditionalExpense"
 import { parseISO } from "date-fns"
+import Big from "big.js"
 
 export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
@@ -228,10 +235,24 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "depositAmount",
+        id: "depositAmount",
+        accessor: (row) => row,
         sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
-        disableSortBy: true
+        disableSortBy: true,
+        toValue: ({ depositAmount, handlingFee = 0 } = {}) => {
+          let value = Number.isFinite(depositAmount)
+            ? new Big(depositAmount).minus(handlingFee).toNumber()
+            : depositAmount
+          return value
+        },
+        toTotal: ({ depositAmount, handlingFee = 0 } = {}) => {
+          let value = Number.isFinite(depositAmount)
+            ? new Big(depositAmount).minus(handlingFee).toNumber()
+            : depositAmount
+          return value
+        },
+        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />
       }),
       numberDecimalColumn({
         accessor: "withdrawalAmount",
