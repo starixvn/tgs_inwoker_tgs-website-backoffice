@@ -124,9 +124,6 @@ const ReportContent = ({ brandId }) => {
             levelType={state?.levelType}
             start={from}
             end={to}
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={QueryMaxRangeDays}
             isLoading={isLoading}
             search={({ start, end, ...data }) => {
               setState({
