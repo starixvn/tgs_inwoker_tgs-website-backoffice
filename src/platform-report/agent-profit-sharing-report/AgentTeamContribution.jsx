@@ -65,6 +65,10 @@ export const AgentTeamContributionDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
+  if (!Number.isFinite(value) || value === 0) {
+    return <FormattedNumberDecimal value={value} />
+  }
+
   return (
     <>
       <Disclosure {...dialog} {...props}>

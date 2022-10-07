@@ -94,7 +94,6 @@ export const useAgentProfitSharingChildrenList = (searchParams) =>
 export const useAgentDividendList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/dividends`) : ""
 
-  /*
   //TODO: rm
   let { data, ...rest } = useGet(url)
   data = {
@@ -176,7 +175,7 @@ export const useAgentDividendList = (searchParams) => {
     errors: []
   }
   return { data, ...rest }
-  */
+
   return useGet(url)
 }
 

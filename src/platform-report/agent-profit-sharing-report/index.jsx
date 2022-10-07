@@ -44,12 +44,13 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { useAgentDividendList, API } from "./client"
 import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
-import { AgentBonusDetailDialogDisclosure } from "./AgentBonusDetail"
+import { AgentProfitSharingDialogDisclosure } from "./AgentProfitSharingDialog"
 import { AgentTypeSelect } from "../../agent/AgentType"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
+import { BonusDialogDisclosure } from "../BonusDialog"
 
 export { Code }
 
@@ -373,10 +374,43 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
+        /*
+        id: "bonusAmount",
+        accessor: (row) => row,
+        toValue: (row) => row?.bonusAmount,
+        */
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
         disableSortBy: true
+        /*
+        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
+        Cell: ({ value: record }) => {
+          return (
+            <BonusDialogDisclosure
+              value={record?.bonusAmount}
+              use={Link}
+              useFetch={() => {
+                return {
+                  isLoading: false,
+                  data: {
+                    items: [
+                      {
+                        promotionBonus: 1,
+                        vipRebate: 2,
+                        birthdayBonus: 3,
+                        upgradeBonus: 4,
+                        quarterlyBonus: 5
+                      }
+                    ]
+                  },
+                  error: undefined
+                }
+              }}
+            />
+          )
+        }
+        */
       }),
       numberDecimalColumn({
         accessor: "agentCoveredBonus",
@@ -491,7 +525,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
           disableSortBy: true,
           Cell: ({ value }) => {
             return (
-              <AgentBonusDetailDialogDisclosure
+              <AgentProfitSharingDialogDisclosure
                 brandId={brandId}
                 agentId={value?.id}
                 start={start}
