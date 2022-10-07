@@ -409,20 +409,6 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
         disableSortBy: true
       }),
-      /*
-      numberDecimalColumn({
-        accessor: "depositFee",
-        sumColumn: "depositFee",
-        Header: <Trans zh="存款手续费" en="Deposit Fee" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "withdrawFee",
-        sumColumn: "withdrawFee",
-        Header: <Trans zh="提款手续费" en="Withdraw Fee" />,
-        disableSortBy: true
-      }),
-      */
       numberDecimalColumn({
         id: "winLossAmount",
         accessor: (row) => row,
