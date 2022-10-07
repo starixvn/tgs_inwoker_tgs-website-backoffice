@@ -49,6 +49,7 @@ import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
 import { AgentLevelSelect } from "../../agent/AgentLevel"
 import Big from "big.js"
+import { BonusDialogDisclosure } from "../BonusDialog"
 
 export { Code }
 
@@ -397,6 +398,11 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
+        /*
+        id: "bonusAmount",
+        accessor: (row) => row,
+        toValue: (row) => row?.bonusAmount,
+        */
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
         Header: (

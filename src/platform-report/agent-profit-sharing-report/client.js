@@ -95,6 +95,7 @@ export const useAgentDividendList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/dividends`) : ""
 
   //TODO: rm
+  /*
   let { data, ...rest } = useGet(url)
   data = {
     totalCount: 3,
@@ -175,7 +176,7 @@ export const useAgentDividendList = (searchParams) => {
     errors: []
   }
   return { data, ...rest }
-
+  */
   return useGet(url)
 }
 
