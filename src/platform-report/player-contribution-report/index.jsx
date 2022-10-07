@@ -6,16 +6,7 @@ import {
   useFormContext,
   useWatch
 } from "react-hook-form"
-import {
-  Heading,
-  Stack,
-  Box,
-  Button,
-  Set,
-  useModalState,
-  Text,
-  Level
-} from "bumbag"
+import { Heading, Stack, Box, Button, Set, Link, Text, Level } from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -52,6 +43,7 @@ import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { PlayerHasAgentSelect } from "./PlayerHasAgentSelect"
 import Big from "big.js"
+import { BonusDialogDisclosure } from "../BonusDialog"
 
 export { Code }
 
@@ -319,10 +311,43 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
+        /*
+        id: "bonusAmount",
+        accessor: (row) => row,
+        toValue: (row) => row?.bonusAmount,
+        */
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
         disableSortBy: true
+        /*
+        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
+        Cell: ({ value: record }) => {
+          return (
+            <BonusDialogDisclosure
+              value={record?.bonusAmount}
+              use={Link}
+              useFetch={() => {
+                return {
+                  isLoading: false,
+                  data: {
+                    items: [
+                      {
+                        promotionBonus: 1,
+                        vipRebate: 2,
+                        birthdayBonus: 3,
+                        upgradeBonus: 4,
+                        quarterlyBonus: 5
+                      }
+                    ]
+                  },
+                  error: undefined
+                }
+              }}
+            />
+          )
+        }
+        */
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
