@@ -409,6 +409,34 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
           <Trans zh="红利金额" en="Bonus Amount" title={bonusAmountTooltip} />
         ),
         disableSortBy: true
+        /*
+        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
+        Cell: ({ value: record }) => {
+          return (
+            <BonusDialogDisclosure
+              value={record?.bonusAmount}
+              use={Link}
+              useFetch={() => {
+                return {
+                  isLoading: false,
+                  data: {
+                    items: [
+                      {
+                        promotionBonus: 1,
+                        vipRebate: 2,
+                        birthdayBonus: 3,
+                        upgradeBonus: 4,
+                        quarterlyBonus: 5
+                      }
+                    ]
+                  },
+                  error: undefined
+                }
+              }}
+            />
+          )
+        }
+        */
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
