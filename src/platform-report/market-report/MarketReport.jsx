@@ -289,7 +289,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberDecimalColumn({
         accessor: "platformCoveredBonus",
         sumColumn: "platformCoveredBonus",
-        Header: <Trans zh="平台承担红利金额" en="Platfrom-Covered Bonus" />,
+        Header: <Trans zh="平台承担红利" en="Platfrom-Covered Bonus" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
