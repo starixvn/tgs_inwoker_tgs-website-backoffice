@@ -223,9 +223,16 @@ const useColumns = ({ items = [] }) => {
         }
       }),
       numberDecimalColumn({
-        accessor: "depositAmount",
+        id: "depositAmount",
+        accessor: (row) => row,
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
-        disableSortBy: true
+        disableSortBy: true,
+        toValue: ({ isTotal, depositAmount, handlingFee = 0 } = {}) => {
+          let value = Number.isFinite(depositAmount)
+            ? new Big(depositAmount).minus(handlingFee).toNumber()
+            : depositAmount
+          return value
+        }
       }),
       numberDecimalColumn({
         accessor: "withdrawalAmount",
