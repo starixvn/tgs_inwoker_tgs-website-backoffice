@@ -27,4 +27,4 @@ spec:
     - name: repo-url
       value: git@gitlab.com:rayprosoft/tgs-website-backoffice.git
     - name: image-reference
-      value: registry.gitlab.com/rayprosoft/tgs-website-backoffice:v1.35.0-$(results.commit)
+      value: registry.gitlab.com/rayprosoft/tgs-website-backoffice:v1.35.0

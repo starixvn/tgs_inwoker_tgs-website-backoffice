@@ -156,7 +156,7 @@ const ReportContent = ({ brandId }) => {
               <List.Item>
                 <Trans
                   zh="红利金额 = VIP福利 + VIP反水 + 活动的优惠金额。"
-                  en="Bonus Amount = VIP Rebate + Promotion Bonus Amount."
+                  en="Bonus Amount = VIP Bonus + VIP Rebate + Promotion Bonus Amount."
                 />
               </List.Item>
               <List.Item>
