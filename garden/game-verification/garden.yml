@@ -1,7 +1,8 @@
 kind: Module
 type: container
 name: game-verification
-image: harbor.rpgp.cc/tgs/game-gameverification:202207050541-staging
+image: pgtgs/game-gameverification:202210110826-prod
+disabled: true
 services:
   - name: game-verification
     dependencies:
