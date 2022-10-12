@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: roulette-sign-in
-image: harbor.rpgp.cc/tgs/roulette-sign-in:202206170325-staging
+image: pgtgs/roulette-sign-in:202207270127-prod
 services:
   - name: roulette-sign-in
     dependencies:

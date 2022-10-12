@@ -41,7 +41,7 @@ test("edit and view agent contact", async ({ page, platformCode, agent }) => {
     )
   ])
 
-  let viewDialogSelector = await openViewAgentDialog(page)
+  let viewDialogSelector = await openViewAgentDialog(page, agent)
   await page.click(`${viewDialogSelector} #AgentContactInfo`)
 
   let phoneLocator = page.locator(`${viewDialogSelector} [data-field="phone"]`)

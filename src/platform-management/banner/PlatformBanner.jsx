@@ -31,6 +31,7 @@ import { LocalizationDialogDisclosure } from "../../dialog/LocalizationDialog"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { clone } from "lodash"
+import { isValidDate } from "../../date/isValidDate"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,
@@ -260,6 +261,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
   const { control, getValues, setValue } = useFormContext()
   let brandId = getValues("brandId")
 
+  let now = new Date()
   let BeginTimeFieldName = "beginTime"
   let minDate = useWatch({
     control,
@@ -305,6 +307,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
       <Box id="from-date-box">
         <DateTimeInput
           name={BeginTimeFieldName}
+          minDate={isValidDate(maxDate) ? undefined : now}
           maxDate={maxDate}
           required={required}
           disabled={readOnly}
@@ -318,7 +321,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
         <Set orientation="horizontal">
           <DateTimeInput
             name={EndTimeFieldName}
-            minDate={minDate}
+            minDate={minDate ?? now}
             required={!isPermanent}
             disabled={isPermanent || readOnly}
           />

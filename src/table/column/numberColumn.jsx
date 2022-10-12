@@ -20,13 +20,14 @@ export const numberColumn = ({
 }) => {
   const DefaultCell = ({ value }) => (
     <FormattedNumber
-      value={value}
+      value={toValue(value)}
       format={format}
       digits={digits}
       postfix={postfix}
       title={tooltip}
     />
   )
+
   Cell = Cell ?? DefaultCell
   let basic = {
     Cell,

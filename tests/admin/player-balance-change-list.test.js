@@ -12,16 +12,18 @@ import {
 
 const test = base.extend(Fixture)
 
-test("view player balance change: Adjust", async ({
+test("view player balance change", async ({
   page,
   platformCode,
   player,
   backofficeApi
 }) => {
-  let ExpectedAmount = 10
+  let AddAmount = 10
+  let playerRecord = await backofficeApi.player.getPlayer(player.code)
+  let ExpectedBalance = playerRecord.balance + AddAmount
   await Promise.all([
     backofficeApi.player.addBalance(player.code, {
-      amount: ExpectedAmount
+      amount: AddAmount
     }),
     gotoPlayerListPage(page, platformCode)
   ])
@@ -40,8 +42,11 @@ test("view player balance change: Adjust", async ({
     page.click(BalanceChangeTabSelector)
   ])
 
-  let AmountSelector = `${ViewPlayerDialogSelector} td[data-column-id="amount"]`
-  let amountString = await page.textContent(AmountSelector)
+  let amountString = await page
+    .locator(
+      `${ViewPlayerDialogSelector} table#balanceChange tr[data-row-index="0"] td[data-column-id="amount"] span`
+    )
+    .textContent()
   let amount = numeral(amountString).value()
-  expect(amount).to.equal(ExpectedAmount)
+  expect(amount).to.equal(AddAmount)
 })

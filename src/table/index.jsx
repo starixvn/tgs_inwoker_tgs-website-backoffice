@@ -377,7 +377,7 @@ const TotalBody = ({ table }) => {
           let isStickyCell = isStickyLeft || isStickyRight
 
           let Body = column.TotalCell ?? column.Cell
-          let value = total[columnId]
+          let value = column?.toTotal ? column.toTotal(total) : total[columnId]
           return (
             <Cell
               key={columnId}

@@ -1,10 +1,53 @@
-import React from "react"
-import { Spinner } from "bumbag"
+import React, { useState } from "react"
+import { Spinner, DropdownMenu, Button } from "bumbag"
 import { getTrans, Trans, useLocale, useTrans } from "../i18n"
 import Select from "../select/Select"
 import { usePaymentList } from "./client"
 
-export const PaymentProviderSelect = ({ placeholder, range, ...props }) => {
+const defaultPredicate = () => true
+
+export const PaymentProviderDropdownMenu = ({
+  filter: predicate = defaultPredicate,
+  onChange,
+  children = <Trans zh="支付厂商" en="Payment Provider" />,
+  ...props
+}) => {
+  let { isLoading, data, error } = usePaymentList()
+
+  let menu = data?.filter(predicate)?.map((paymentProvider) => {
+    let { trans, code } = paymentProvider
+    return (
+      <DropdownMenu.Item
+        key={code}
+        onClick={() => {
+          onChange(code)
+        }}
+      >
+        {trans ? <Trans {...trans} /> : code}
+      </DropdownMenu.Item>
+    )
+  })
+  return (
+    <DropdownMenu menu={menu}>
+      <Button
+        iconAfter="chevron-down"
+        isLoading={isLoading}
+        disabled={isLoading}
+        {...props}
+      >
+        {children}
+      </Button>
+    </DropdownMenu>
+  )
+}
+
+//TODO: use filter instead of range?
+export const PaymentProviderSelect = ({
+  placeholder,
+  valueField = "id",
+  range,
+  ...props
+}) => {
   let defaultPlaceholder = useTrans({
     zh: "支付厂商",
     en: "Payment Provider"
@@ -21,10 +64,13 @@ export const PaymentProviderSelect = ({ placeholder, range, ...props }) => {
       }
       return true
     })
-    ?.map(({ trans, code, id }) => ({
-      label: trans?.[locale] ?? code,
-      value: id
-    }))
+    ?.map((item) => {
+      let { trans, code, id } = item
+      return {
+        label: trans?.[locale] ?? code,
+        value: item[valueField]
+      }
+    })
 
   return (
     <Select

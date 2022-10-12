@@ -37,6 +37,7 @@ import {
   PercentageNumberInputField
 } from "../../input/NumberInput"
 import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
+import { PromotionPlayerAutoJoinFieldBox } from "./PromotionPlayerAutoJoinFieldBox"
 
 const DailyTurnoverRebate = "TurnoverRebate"
 const WeeklyTurnoverRebate = "TurnoverRebateWeekly"
@@ -53,6 +54,7 @@ const DefaultSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
+      <PromotionPlayerAutoJoinFieldBox />
       <NormalLabel>
         <Trans zh="流水门槛" en="Turnover Limit" />
       </NormalLabel>

@@ -4,13 +4,19 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { Heading, Stack, Box, Button, Set, Level } from "bumbag"
 import PageContent from "../../page/Content"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { FormattedNumber, Trans, useLangCode, useTrans } from "../../i18n"
+import {
+  FormattedNumber,
+  FormattedNumberDecimal,
+  Trans,
+  useLangCode,
+  useTrans
+} from "../../i18n"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
   useUserLicenseeId
 } from "../../user/context"
-import { yesterday } from "../../date/range"
+import { today, yesterday } from "../../date/range"
 import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -28,6 +34,7 @@ import textColumn, { wrapTextColumn } from "../../table/column/textColumn"
 import { LicenseeCurrencySelect } from "../LicenseeCurrencySelect"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client/index"
+import Big from "big.js"
 
 export { Code }
 
@@ -61,7 +68,6 @@ export const Body = () => {
 
 const ReportContent = ({ licenseeId }) => {
   let dateRange = yesterday()
-  let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     licenseeId,
     currencyCode: undefined,
@@ -73,10 +79,8 @@ const ReportContent = ({ licenseeId }) => {
     setState({ pageIndex: 0, licenseeId })
   }, [licenseeId])
 
+  let { pageSize, from, to } = state
   let culture = useLangCode()
-
-  let { pageIndex, pageSize, from, to } = state
-
   let toSearchParams = () => ({
     ...toApiParams(state),
     sortby: "currencyCode",
@@ -88,12 +92,7 @@ const ReportContent = ({ licenseeId }) => {
   let { isLoading, data, error, mutate, deleteCache } =
     useLicenseeMarketReportList(toSearchParams())
 
-  let DataRetentionDays = 180
-  let minDate = subDays(dateRange.start, DataRetentionDays)
-
   let columns = useColumns({ items: data?.items })
-  let maxDate = startOfToday()
-
   return (
     <PageContent
       actionBar={
@@ -101,18 +100,13 @@ const ReportContent = ({ licenseeId }) => {
           <SearchBar
             licenseeId={licenseeId}
             currencyCode={state?.currencyCode}
-            start={from}
-            end={to}
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={QueryMaxRangeDays}
+            from={state.from}
+            to={state.to}
             isLoading={isLoading}
-            search={({ start, end, ...rest }) => {
+            search={(data) => {
               setState({
                 pageIndex: 0,
-                from: start,
-                to: end,
-                ...rest
+                ...data
               })
               mutate()
             }}
@@ -158,11 +152,8 @@ const ReportContent = ({ licenseeId }) => {
 const SearchBar = ({
   licenseeId,
   currencyCode,
-  start,
-  end,
-  minDate,
-  maxDate,
-  maxRangeDays,
+  from,
+  to,
   search,
   isLoading,
   ...props
@@ -170,12 +161,18 @@ const SearchBar = ({
   let formMethods = useForm({
     defaultValues: {
       currencyCode,
-      start,
-      end
+      from,
+      to
     }
   })
 
   const onSubmit = (data) => search?.(data)
+
+  let QueryMaxRangeDays = 31
+  let todayRange = today()
+  let DataRetentionDays = 180
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
 
   return (
     <FormProvider {...formMethods}>
@@ -183,8 +180,23 @@ const SearchBar = ({
         <Set>
           <DateInputRange
             showDateDropdownMenu
+            maxRangeDays={QueryMaxRangeDays}
             minDate={minDate}
-            maxRangeDays={maxRangeDays}
+            maxDate={maxDate}
+            startProps={{
+              name: "from"
+            }}
+            endProps={{
+              name: "to"
+            }}
+            dateDropdownMenuProps={{
+              thisWeekProps: {
+                end: maxDate
+              },
+              thisMonthProps: {
+                end: maxDate
+              }
+            }}
             fakeTimeLabel
             required
           />
@@ -219,22 +231,17 @@ const useColumns = ({ items = [] }) => {
           return isTotal ? <Trans zh="共计" en="Total" /> : currencyCode
         }
       }),
-      /*
-      numberColumn({
-        accessor: "registeredCount",
-        Header: <Trans zh="注册人数" en="Registered Count" />,
-        disableSortBy: true
-      }),
-      numberColumn({
-        accessor: "firstFundInCount",
-        Header: <Trans zh="首存人数" en="First Fund In Count" />,
-        disableSortBy: true
-      }),
-      */
       numberDecimalColumn({
-        accessor: "depositAmount",
+        id: "depositAmount",
+        accessor: (row) => row,
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
-        disableSortBy: true
+        disableSortBy: true,
+        toValue: ({ isTotal, depositAmount, depositHandlingFee = 0 } = {}) => {
+          let value = Number.isFinite(depositAmount)
+            ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
+            : depositAmount
+          return value
+        }
       }),
       numberDecimalColumn({
         accessor: "withdrawalAmount",

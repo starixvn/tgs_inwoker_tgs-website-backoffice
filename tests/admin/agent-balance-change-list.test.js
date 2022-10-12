@@ -25,7 +25,8 @@ test("view agent balance change list", async ({
     gotoAgentListPage(page, platformCode)
   ])
   await searchAgent(page, agent.username)
-  let dialogSelector = await openViewAgentDialog(page)
+
+  let dialogSelector = await openViewAgentDialog(page, agent)
 
   await Promise.all([
     page.waitForResponse((response) => {
@@ -37,11 +38,14 @@ test("view agent balance change list", async ({
     page.click(`${dialogSelector} #BalanceChange`)
   ])
 
-  let amountLocator = page.locator(
-    `${dialogSelector} [data-column-id="amount"]`
-  )
-  console.log("agent balance change > ", agent.username)
-  let amountString = await amountLocator.first().textContent()
+  let amountString = await page
+    .locator(
+      `${dialogSelector} table#balanceChange tr[data-row-index="0"] [data-column-id="amount"] span`
+    )
+    .textContent()
   let amount = new numeral(amountString).value()
-  expect(amount).to.equals(ExpectedBalanceAmount)
+  expect(amount).to.equals(
+    AddBalanceAmount,
+    `amount in string ${amountString}, expected amount ${AddBalanceAmount}, agent username ${agent.username}`
+  )
 })

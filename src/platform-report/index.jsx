@@ -5,7 +5,6 @@ import { CodeContentPair as OrderReportPair } from "./order-report"
 import { CodeContentPair as AgentContributionReportPair } from "./agent-contribution-report"
 import { CodeContentPair as PlayerContributionReportPair } from "./player-contribution-report"
 import { CodeContentPair as AgentBonusReportPair } from "./agent-profit-sharing-report"
-import { CodeContentPair as VipReportPair } from "./vip-report"
 import { CodeContentPair as BalanceChangeReportPair } from "./balance-change-report"
 import { CodeContentPair as GameProviderReportPair } from "./game-provider-report"
 import { Switch } from "../content"
@@ -19,7 +18,6 @@ const pairs = () => [
   AgentContributionReportPair,
   PlayerContributionReportPair,
   AgentBonusReportPair,
-  VipReportPair,
   BalanceChangeReportPair,
   GameProviderReportPair
 ]

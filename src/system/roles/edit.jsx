@@ -697,6 +697,11 @@ const MenuTableContent = ({ menu = {}, setChecked }) => {
       <Table.Body>
         {subMenus.map((menu) => {
           let { code: subMenuCode, subMenus: subMenuItems = [] } = menu
+          let subMenuLabel = useMenuLabel({ codes: [moduleCode, subMenuCode] })
+          if (!subMenuLabel) {
+            return null
+          }
+
           return (
             <Table.Row key={subMenuCode}>
               <Table.Cell>

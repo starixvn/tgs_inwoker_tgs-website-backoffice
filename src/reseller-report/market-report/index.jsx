@@ -11,7 +11,7 @@ import {
   useUserLicenseeId,
   useUserResellerId
 } from "../../user/context"
-import { yesterday } from "../../date/range"
+import { today, yesterday } from "../../date/range"
 import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -29,6 +29,7 @@ import textColumn, { wrapTextColumn } from "../../table/column/textColumn"
 import { ResellerCurrencySelect } from "../ResellerCurrencySelect"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client/index"
+import Big from "big.js"
 
 export { Code }
 
@@ -57,7 +58,6 @@ export const Body = () => {
 
 const ReportContent = ({ resellerId }) => {
   let dateRange = yesterday()
-  let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     resellerId,
     currencyCode: undefined,
@@ -70,9 +70,7 @@ const ReportContent = ({ resellerId }) => {
   }, [resellerId])
 
   let culture = useLangCode()
-
-  let { pageIndex, pageSize, from, to } = state
-
+  let { pageSize, from, to } = state
   let toSearchParams = () => ({
     ...toApiParams(state),
     sortby: "currencyCode",
@@ -80,16 +78,10 @@ const ReportContent = ({ resellerId }) => {
     to: startOfNextDay(to),
     culture
   })
-
   let { isLoading, data, error, mutate, deleteCache } =
     useResellerMarketReportList(toSearchParams())
 
-  let DataRetentionDays = 180
-  let minDate = subDays(dateRange.start, DataRetentionDays)
-
   let columns = useColumns({ items: data?.items })
-  let maxDate = startOfToday()
-
   return (
     <PageContent
       actionBar={
@@ -97,18 +89,13 @@ const ReportContent = ({ resellerId }) => {
           <SearchBar
             resellerId={resellerId}
             currencyCode={state?.currencyCode}
-            start={from}
-            end={to}
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={QueryMaxRangeDays}
+            from={from}
+            to={to}
             isLoading={isLoading}
-            search={({ start, end, ...rest }) => {
+            search={(data) => {
               setState({
                 pageIndex: 0,
-                from: start,
-                to: end,
-                ...rest
+                ...data
               })
               mutate()
             }}
@@ -156,11 +143,8 @@ const ReportContent = ({ resellerId }) => {
 const SearchBar = ({
   resellerId,
   currencyCode,
-  start,
-  end,
-  minDate,
-  maxDate,
-  maxRangeDays,
+  from,
+  to,
   search,
   isLoading,
   ...props
@@ -168,12 +152,18 @@ const SearchBar = ({
   let formMethods = useForm({
     defaultValues: {
       currencyCode,
-      start,
-      end
+      from,
+      to
     }
   })
 
   const onSubmit = (data) => search?.(data)
+
+  let QueryMaxRangeDays = 31
+  let todayRange = today()
+  let DataRetentionDays = 180
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
 
   return (
     <FormProvider {...formMethods}>
@@ -181,8 +171,23 @@ const SearchBar = ({
         <Set>
           <DateInputRange
             showDateDropdownMenu
+            maxRangeDays={QueryMaxRangeDays}
             minDate={minDate}
-            maxRangeDays={maxRangeDays}
+            maxDate={maxDate}
+            startProps={{
+              name: "from"
+            }}
+            endProps={{
+              name: "to"
+            }}
+            dateDropdownMenuProps={{
+              thisWeekProps: {
+                end: maxDate
+              },
+              thisMonthProps: {
+                end: maxDate
+              }
+            }}
             fakeTimeLabel
             required
           />
@@ -218,9 +223,16 @@ const useColumns = ({ items = [] }) => {
         }
       }),
       numberDecimalColumn({
-        accessor: "depositAmount",
+        id: "depositAmount",
+        accessor: (row) => row,
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
-        disableSortBy: true
+        disableSortBy: true,
+        toValue: ({ isTotal, depositAmount, depositHandlingFee = 0 } = {}) => {
+          let value = Number.isFinite(depositAmount)
+            ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
+            : depositAmount
+          return value
+        }
       }),
       numberDecimalColumn({
         accessor: "withdrawalAmount",
