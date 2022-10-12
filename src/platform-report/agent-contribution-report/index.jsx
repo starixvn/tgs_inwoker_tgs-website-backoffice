@@ -377,15 +377,15 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
         disableSortBy: true,
-        toValue: ({ depositAmount, handlingFee = 0 } = {}) => {
+        toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
-            ? new Big(depositAmount).minus(handlingFee).toNumber()
+            ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
             : depositAmount
           return value
         },
-        toTotal: ({ depositAmount, handlingFee = 0 } = {}) => {
+        toTotal: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
-            ? new Big(depositAmount).minus(handlingFee).toNumber()
+            ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
             : depositAmount
           return value
         },

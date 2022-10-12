@@ -227,9 +227,9 @@ const useColumns = ({ items = [] }) => {
         accessor: (row) => row,
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
         disableSortBy: true,
-        toValue: ({ isTotal, depositAmount, handlingFee = 0 } = {}) => {
+        toValue: ({ isTotal, depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
-            ? new Big(depositAmount).minus(handlingFee).toNumber()
+            ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
             : depositAmount
           return value
         }
