@@ -123,7 +123,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
-export const EditButton = ({ record, onSubmitted, ...props }) => {
+export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -135,7 +135,12 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+        <EditDialog
+          brandId={brandId}
+          record={record}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
       )}
     </>
   )

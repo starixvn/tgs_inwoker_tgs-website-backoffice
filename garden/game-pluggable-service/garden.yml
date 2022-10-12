@@ -19,7 +19,7 @@ services:
       Pluggable__CashServiceClientBaseUrl: "http://cash-service"
       Pluggable__KickPlayerServiceClientBaseUrl: "http://game-kickplayer-server"
       Pluggable__GameProvidersQueryServerClientBaseUrl: "http://game-provider-query-server"
-      Pluggable__GameVerificationClientBaseUrl: "http://game-verification"
+      # Pluggable__GameVerificationClientBaseUrl: "http://game-verification"
       Pluggable__GameFundTransferClientBaseUrl: "http://game-fund-transfer"
       Pluggable__GameCurrencyClientBaseUrl: "http://game-currency"
       Pluggable__GameRoundsClientBaseUrl: "http://game-rounds"
