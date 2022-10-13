@@ -8,42 +8,12 @@ import { searchPlayer } from "./player-list-page.js"
 
 const test = base.extend(Fixture)
 
-test("add or deduct player balance", async ({ page, player, platformCode }) => {
-  let brandId = await gotoPlayerBalanceAdjustmentPage(page, platformCode)
+test("deduct player balance", async ({ page, player, platformCode }) => {
+  await gotoPlayerBalanceAdjustmentPage(page, platformCode)
 
   await searchPlayer(page, player)
-
-  await addBalance(page, player)
   await deductBalance(page, player)
 })
-
-const addBalance = async (page, player) => {
-  let Selector = `#add-balance-dialog`
-  await openDialog(page, Selector)
-
-  let options = await getTransactionTypeOptions(page)
-  let optionIndex = random(0, options.length - 1)
-  let option = options[optionIndex]
-  expect(option).to.not.be.empty
-
-  setTransactionType(page, option)
-
-  let amount = random(100, 1000)
-  await page.fill(`${Selector} input[name="amount"]`, `${amount}`)
-
-  let bucketAmount = random(100, 1000)
-  await page.fill(`${Selector} input[name="bucketAmount"]`, `${bucketAmount}`)
-
-  let [response] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/player/${player.code}/adjust/increase`) &&
-        response.status() === 200
-      )
-    }),
-    page.click(`${Selector} button[type="submit"]`)
-  ])
-}
 
 const deductBalance = async (page, player) => {
   let Selector = `#deduct-balance-dialog`

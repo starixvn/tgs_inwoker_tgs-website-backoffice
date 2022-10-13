@@ -75,6 +75,8 @@ import { useMount, useUnmount } from "react-use"
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
   onSubmitted,
+  id,
+  dialogId = "player-batch-add-balance-dialog",
   ...props
 }) => {
   let dialog = useModalState()
@@ -84,9 +86,10 @@ export const PlayerBatchAddBalanceDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         <Trans zh="批量加钱" en="Batch Add Balance" />
       </Disclosure>
       {dialog.visible && (
@@ -94,6 +97,7 @@ export const PlayerBatchAddBalanceDisclosure = ({
           brandId={brandId}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -115,7 +119,7 @@ const confirmBatchDone = (result) => {
   return false
 }
 
-const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
+const BatchAddDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
   let [batchId, setBatchId] = useState()
   let [batchItems, setBatchItems] = useState()
   let [formData, setSubmit] = useState()
@@ -198,7 +202,7 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
 
   return (
     <FormDialog
-      id="batch-add-balance-dialog"
+      id={dialogId}
       defaultValues={{
         brandId,
         transactionType: null
@@ -228,7 +232,13 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
-const BatchResultDialog = ({ batchId, batchItems, isProcessing, dialog }) => {
+const BatchResultDialog = ({
+  batchId,
+  batchItems,
+  isProcessing,
+  dialog,
+  dialogId
+}) => {
   let {
     isLoading,
     data: result,
@@ -247,6 +257,7 @@ const BatchResultDialog = ({ batchId, batchItems, isProcessing, dialog }) => {
   return (
     <Backdrop {...dialog}>
       <Dialog.Modal
+        id={dialogId}
         hideBackdrop={true}
         hideOnClickOutside={false}
         footer={result && <CloseButtonFooter dialog={dialog} alignX="right" />}
@@ -270,6 +281,7 @@ const BatchResultDialog = ({ batchId, batchItems, isProcessing, dialog }) => {
         )}
         {items && (
           <Table
+            id="batch-add-balance-result"
             columns={columns}
             data={items}
             stickyHead

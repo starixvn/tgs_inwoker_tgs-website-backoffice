@@ -277,7 +277,7 @@ export const Panel = ({
           </>
         )}
         <UserNameLabel />
-        <Text>{username}</Text>
+        <Text data-field="username">{username}</Text>
 
         <RealNameLabel />
         <Box>
