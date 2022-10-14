@@ -178,9 +178,11 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
   })
 
   const onSubmit = ({ items, batchId, ...data } = {}) => {
-    setBatchItems(items)
-    setBatchId(batchId)
-    setSubmit(data)
+    if (!isLoadingBatchStarted) {
+      setBatchItems(items)
+      setBatchId(batchId)
+      setSubmit(data)
+    }
   }
 
   useEffect(() => {
