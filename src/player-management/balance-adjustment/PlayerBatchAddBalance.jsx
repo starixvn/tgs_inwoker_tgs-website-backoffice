@@ -164,7 +164,7 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
     isLoading: isLoadingBatchEnded,
     error: batchEndedError
   } = useIsPlayerBatchAddBalanceEnd(isBatchStarted && !isBatchDone && batchId, {
-    refreshInterval: 10 * SecondInMilliseconds
+    refreshInterval: 3 * SecondInMilliseconds
   })
 
   let isLoading =
@@ -196,6 +196,7 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
         batchItems={batchItems}
         isProcessing={isLoading}
         dialog={dialog}
+        dialogId={dialogId}
       />
     )
   }
@@ -281,7 +282,7 @@ const BatchResultDialog = ({
         )}
         {items && (
           <Table
-            id="batch-add-balance-result"
+            id="result"
             columns={columns}
             data={items}
             stickyHead
@@ -466,6 +467,7 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
       >
         <Box>
           <Button
+            id="upload"
             {...getRootProps({
               refKey: "elementRef"
             })}
@@ -514,6 +516,7 @@ const BatchAddTable = ({ name = "items" }) => {
     <>
       {items && (
         <Table
+          id="preview"
           columns={columns}
           data={items}
           foot={items?.length > 0}
@@ -567,7 +570,10 @@ const useColumns = ({ items, showResult }) => {
           disableSortBy: true,
           Cell: ({ value: isSuccess }) => {
             return (
-              <Text.Block color={isSuccess ? "success" : "warning"}>
+              <Text.Block
+                data-value={isSuccess}
+                color={isSuccess ? "success" : "warning"}
+              >
                 {isSuccess ? (
                   <Trans zh="成功" en="Success" />
                 ) : (
