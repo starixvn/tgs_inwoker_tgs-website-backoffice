@@ -105,7 +105,7 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
             </List.Item>
             <List.Item>
               <Trans
-                zh="平台承担优惠调帐 = 红利金额 * (100% - 总代分红比例)。"
+                zh="平台承担优惠调帐 = 优惠调帐 * (100% - 总代分红比例)。"
                 en="Platform-Covered Bonus Adjust = Bonus Adjust * (100% - Chief Agent Profit Sharing Percentage)."
               />
             </List.Item>
