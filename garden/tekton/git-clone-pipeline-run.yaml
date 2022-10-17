@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: clone-build-push-run
+  generateName: build-bot-run-
 spec:
   pipelineRef:
     name: clone-build-push
@@ -27,4 +27,6 @@ spec:
     - name: repo-url
       value: git@gitlab.com:rayprosoft/tgs-website-backoffice.git
     - name: image-reference
-      value: registry.gitlab.com/rayprosoft/tgs-website-backoffice:v1.35.0
+      value: registry.gitlab.com/rayprosoft/tgs-website-backoffice
+    - name: base-version
+      value: "1.36"

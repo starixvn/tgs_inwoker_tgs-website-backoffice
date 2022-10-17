@@ -269,7 +269,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberDecimalColumn({
         accessor: "bonusAdjustAmount",
         sumColumn: "bonusAdjustAmount",
-        Header: <Trans zh="优惠调帐" en="Bonus Adjustment Amount" />,
+        Header: <Trans zh="优惠调帐" en="Bonus Adjust" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
