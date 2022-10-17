@@ -8,6 +8,8 @@ spec:
       type: string
     - name: image-reference
       type: string
+    - name: base-version
+      type: string
   workspaces:
     - name: shared-data
     - name: git-credentials
@@ -27,8 +29,15 @@ spec:
         # https://github.com/tektoncd/catalog/issues/1052 wait for fix
         - name: userHome
           value: "/home/nonroot"
-    - name: build-push
+    - name: get-build-id
       runAfter: ["fetch-source"]
+      taskRef:
+        name: generate-build-id
+      params:
+        - name: base-version
+          value: $(params.base-version)
+    - name: build-push
+      runAfter: ["get-build-id"]
       taskRef:
         name: kaniko
       workspaces:
@@ -38,4 +47,4 @@ spec:
           workspace: docker-credentials
       params:
         - name: IMAGE
-          value: $(params.image-reference)
+          value: $(params.image-reference):$(tasks.get-build-id.results.build-id)
