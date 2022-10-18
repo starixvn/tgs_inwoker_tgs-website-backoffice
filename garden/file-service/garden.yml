@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: file-service
-image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/file-service:dev-20211230-0657
+image: pgtgs/file-service:dev-2022727-0345
 services:
   - name: file-service
     dependencies:
