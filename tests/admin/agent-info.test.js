@@ -16,6 +16,9 @@ test("edit and view agent info", async ({ page, platformCode, agent }) => {
   await gotoAgentListPage(page, platformCode)
   await searchAgent(page, agent.username)
 
+  console.log(
+    "TODO: use edit & view test, use get agent & update agent api instead"
+  )
   let expected = await editAgent(page, agent)
   await viewAgent(page, agent, expected)
 })

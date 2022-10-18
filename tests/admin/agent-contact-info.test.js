@@ -18,6 +18,9 @@ test("edit and view agent contact", async ({ page, platformCode, agent }) => {
   await gotoAgentListPage(page, platformCode)
   await searchAgent(page, agent.username)
 
+  console.log(
+    "TODO: use edit & view test, use get agent & update agent api instead"
+  )
   let editDialogSelector = await openEditAgentDialog(page)
   await page.click(`${editDialogSelector} #AgentContactInfo`)
 
