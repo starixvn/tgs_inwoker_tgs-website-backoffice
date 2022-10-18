@@ -105,6 +105,7 @@ export const MultiSelect = ({
         fieldState: { isTouched, isDirty, error },
         formState
       }) => {
+        //TODO: support group options
         let controlledValue =
           value?.map?.((item) =>
             props?.options.find((option) => option.value == item)

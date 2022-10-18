@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  useWatch
+} from "react-hook-form"
 import {
   Heading,
   Stack,
@@ -8,16 +13,25 @@ import {
   Button,
   Set,
   Flex,
-  Level,
-  FieldStack
+  Icon,
+  FieldWrapper,
+  Group
 } from "bumbag"
 import { useBrandPaymentList } from "./client"
 import { MultiSelect } from "../../select/MultiSelect"
 import { useLocale, useTrans } from "../../i18n"
 import { usePaymentList } from "../../payment/client"
 import { groupBy } from "ramda"
+import { PaymentProviderDropdownMenu } from "../../payment/PaymentProvider"
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons"
+
+const OptionType = {
+  PaymentProvider: "PaymentProvider",
+  PlatformPayment: "PlatformPayment"
+}
 
 export const BrandPaymentMultiSelect = ({
+  name,
   placeholder,
   brandId,
   transferType,
@@ -26,14 +40,18 @@ export const BrandPaymentMultiSelect = ({
   ...props
 }) => {
   let defaultPlaceholder = useTrans({
-    zh: "通道",
-    en: "Channel"
+    zh: "平台支付",
+    en: "Platform Payment"
   })
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()
-  let { isLoading: isLoadingPaymentList, data: paymentProviderList } =
-    usePaymentList()
+  let {
+    isLoading: isLoadingPaymentProviderList,
+    data: paymentProviderList = [],
+    error: paymentProviderListError
+  } = usePaymentList()
+
   let {
     isLoading,
     data: brandPayment,
@@ -52,52 +70,97 @@ export const BrandPaymentMultiSelect = ({
       : undefined
   )
 
-  let toGroup = toPaymentProviderName(locale, paymentProviderList)
-  let options = toGroupOptions(toGroup, brandPayment?.items)
+  let allPaymentProviderCodes =
+    brandPayment?.items?.map(({ paymentName }) => paymentName) ?? []
 
-  console.log("options", options)
-  return (
-    <MultiSelect
-      placeholder={placeholder}
-      isLoading={isLoadingPaymentList || isLoading}
-      options={options}
-      isMulti={isMulti}
-      {...props}
-    />
-  )
-}
-
-const toPaymentProviderName =
-  (locale, paymentProviderList = []) =>
-  (brandPayment) => {
-    let paymentName = brandPayment.paymentName
-    let paymentProvider = paymentProviderList.find((paymentProvider) => {
-      return paymentProvider.code === paymentName
-    })
-
-    let label = paymentProvider?.trans?.[locale] ?? paymentName
-    return label
-  }
-
-const toGroupOptions = (toGroup, brandPaymentList = []) => {
-  const toOption = (brandPayment) => {
+  let options = brandPayment?.items?.map((brandPayment) => {
     return {
       label: brandPayment.channelName,
       value: brandPayment.id
     }
-  }
-
-  let groups = groupBy((brandPayment) => {
-    let result = toGroup(brandPayment)
-    return result
-  }, brandPaymentList)
-
-  let groupOptions = Object.entries(groups).map(([label, brandPayments]) => {
-    let options = brandPayments.map(toOption)
-    return {
-      label,
-      options
-    }
   })
-  return groupOptions
+
+  let { setValue } = useFormContext()
+  let [paymentProviderCode, setPaymentProviderCode] = useState()
+
+  useEffect(() => {
+    if (paymentProviderCode) {
+      let brandPaymentIdList = brandPayment?.items
+        ?.filter(({ paymentName }) => {
+          return paymentName === paymentProviderCode
+        })
+        ?.map(({ id }) => {
+          return id
+        })
+
+      setValue(name, brandPaymentIdList)
+      setPaymentProviderCode(null)
+    }
+  }, [paymentProviderCode])
+
+  return (
+    <>
+      <Group
+        css={css`
+          & .bb-DropdownMenu,
+          .bb-DropdownMenuButton {
+            border-radius: 6px 0 0 6px;
+          }
+
+          > :last-child > :last-child {
+            border-radius: 0 6px 6px 0;
+          }
+        `}
+      >
+        <PaymentProviderDropdownMenu
+          filter={(paymentProvider) =>
+            allPaymentProviderCodes.includes(paymentProvider.code)
+          }
+          onChange={(code) => {
+            setPaymentProviderCode(code)
+          }}
+          iconAfter=""
+        >
+          <Icon icon={faEllipsisV} type="font-awesome" />
+        </PaymentProviderDropdownMenu>
+        <MultiSelect
+          name={name}
+          placeholder={placeholder}
+          isLoading={isLoadingPaymentProviderList || isLoading}
+          options={options}
+          isMulti={isMulti}
+          {...props}
+        />
+      </Group>
+    </>
+  )
+}
+
+const groupByPaymentProvideCodeOptions = (
+  toPaymentProviderOption,
+  platformPayments = []
+) => {
+  //1. group by
+  let groupedByPaymentProvider = groupBy(
+    ({ paymentName, ...platformPayment }) => {
+      return paymentName
+    },
+    platformPayments
+  )
+  let result = Object.entries(groupedByPaymentProvider).reduce(
+    (options, [paymentCode, platformPayments]) => {
+      let paymentProviderOption = toPaymentProviderOption(paymentCode)
+      let platformPaymentOptions = platformPayments.map((platformPayment) => {
+        return {
+          label: platformPayment.channelName,
+          value: platformPayment.id
+        }
+      })
+
+      return [...options, paymentProviderOption, ...platformPaymentOptions]
+    },
+    []
+  )
+
+  return result
 }

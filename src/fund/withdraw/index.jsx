@@ -56,7 +56,7 @@ import { Update } from "./menu"
 import { ViewFundWithdrawDisclosure } from "./ViewFundWithdraw"
 import { VerifyFundWithdrawDisclosure } from "./VerifyFundWithdraw"
 import { PaymentMethodSelect } from "../../payment/method/PaymentMethod"
-import { UserTypeLabel } from "./UserType"
+import { UserTypeLabel, UserTypeSelect } from "./UserType"
 import clone from "clone-deep"
 import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
@@ -113,7 +113,8 @@ const BodyContent = ({ brandId }) => {
     beginCreateOn: todayRange.start,
     endCreateOn: todayRange.end,
     beginUpdateOn: undefined,
-    endUpdateOn: undefined
+    endUpdateOn: undefined,
+    brandPaymentIds: undefined
   })
 
   useEffect(() => {
@@ -140,6 +141,11 @@ const BodyContent = ({ brandId }) => {
     ec: startOfNextDay(state.endCreateOn),
     bu: state.beginUpdateOn,
     eu: startOfNextDay(state.endUpdateOn),
+    /*
+      Note. backend api use 'bpid' instead of 'brandPaymentIds'
+     */
+    brandPaymentIds: undefined,
+    bpid: state.brandPaymentIds,
     sortby: "CreatedOn",
     orderby: SortOrder.Descending,
     culture
@@ -186,7 +192,8 @@ const BodyContent = ({ brandId }) => {
         beginCreateOn: todayRange.start,
         endCreateOn: todayRange.end,
         beginUpdateOn: undefined,
-        endUpdateOn: undefined
+        endUpdateOn: undefined,
+        brandPaymentIds: undefined
       })
 
       mutateFormList(undefined)
@@ -262,6 +269,7 @@ const BodyContent = ({ brandId }) => {
             endCreateOn={endCreateOn}
             beginUpdateOn={beginUpdateOn}
             endUpdateOn={endUpdateOn}
+            brandPaymentIds={state.brandPaymentIds}
             minDate={minDate}
             maxRangeDays={QueryMaxRangeDays}
             search={(data = {}) => {
@@ -367,6 +375,7 @@ const SearchBar = ({
   endCreateOn,
   beginUpdateOn,
   endUpdateOn,
+  brandPaymentIds,
   minDate,
   maxRangeDays,
   search,
@@ -384,7 +393,8 @@ const SearchBar = ({
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
-      endUpdateOn
+      endUpdateOn,
+      brandPaymentIds
     }
   })
 
@@ -399,7 +409,8 @@ const SearchBar = ({
       beginCreateOn,
       endCreateOn,
       beginUpdateOn,
-      endUpdateOn
+      endUpdateOn,
+      brandPaymentIds
     })
   }, [
     username,
@@ -411,7 +422,8 @@ const SearchBar = ({
     beginCreateOn,
     endCreateOn,
     beginUpdateOn,
-    endUpdateOn
+    endUpdateOn,
+    brandPaymentIds
   ])
 
   let usernameInputPlaceholder = useTrans({
@@ -419,17 +431,10 @@ const SearchBar = ({
     en: "Username"
   })
 
-  let channelNameInputPlaceholder = useTrans({
-    zh: "通道名称",
-    en: "Channel Name"
+  let platformPaymentPlaceholder = useTrans({
+    zh: "提款通道",
+    en: "Withdrawal Channel"
   })
-
-  /*
-  let paymentMethodPlaceholder = useTrans({
-    zh: "提款类型",
-    en: "Withdraw Method"
-  })
-  */
 
   let externalIdPlaceholder = useTrans({
     zh: "三方订单编号",
@@ -447,26 +452,19 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
         <FieldStack orientation="vertical">
-          <Set orientation="horizontal">
+          <Set orientation="horizontal" alignY="bottom">
             <InputField
               name="username"
               showEmptyFieldValueAddonAfter
               placeholder={usernameInputPlaceholder}
             />
-            <InputField
-              name="channelName"
-              showEmptyFieldValueAddonAfter
-              placeholder={channelNameInputPlaceholder}
-            />
-            {/* 
-            TODO: 1.36
-            <BrandPaymentMultiSelect name="bpid" brandId={brandId} /> 
-            */}
-            {/* <PaymentMethodSelect
-              name="method"
-              placeholder={paymentMethodPlaceholder}
-            /> */}
+            <UserTypeSelect name="userType" />
             <FundWithdrawStatusSelect id="status-select" name="status" />
+            <BrandPaymentMultiSelect
+              name="brandPaymentIds"
+              brandId={brandId}
+              placeholder={platformPaymentPlaceholder}
+            />
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}

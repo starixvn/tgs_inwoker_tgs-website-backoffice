@@ -93,6 +93,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
           isLoading={isLoading}
         />
         <Table
+          id="balanceChange"
           columns={columns}
           data={data?.items}
           total={depositOrWithdraw && data?.items?.length > 0 && total}

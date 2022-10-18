@@ -38,7 +38,7 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 
-export const AgentBonusDetailDialogDisclosure = ({
+export const AgentProfitSharingDialogDisclosure = ({
   brandId,
   agentId,
   username,
@@ -49,10 +49,14 @@ export const AgentBonusDetailDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
+  if (!Number.isFinite(value) || value === 0) {
+    return <FormattedNumberDecimal value={value} />
+  }
+  
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <FormattedNumberDecimal value={value} />{" "}
+        <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
         <ReportDialog

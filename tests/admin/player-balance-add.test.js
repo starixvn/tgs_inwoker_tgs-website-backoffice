@@ -3,20 +3,21 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random } from "lodash-es"
 import { selectPlatformByCode } from "../page/content.js"
+import { openDialog } from "../page/dialog.js"
+import { searchPlayer } from "./player-list-page.js"
 
 const test = base.extend(Fixture)
 
-test("add or deduct player balance", async ({ page, platformCode }) => {
-  let brandId = await gotoPlayerBalanceAdjustmentPage(page, platformCode)
-  await addBalance(page)
+test("add player balance", async ({ page, player, platformCode }) => {
+  await gotoPlayerBalanceAdjustmentPage(page, platformCode)
 
-  await deductBalance(page)
+  await searchPlayer(page, player)
+  await addBalance(page, player)
 })
 
-const addBalance = async (page, index = 0) => {
+const addBalance = async (page, player) => {
   let Selector = `#add-balance-dialog`
-  await page.click(`${Selector}-disclosure`)
-  await page.waitForSelector(Selector)
+  await openDialog(page, Selector)
 
   let options = await getTransactionTypeOptions(page)
   let optionIndex = random(0, options.length - 1)
@@ -31,40 +32,12 @@ const addBalance = async (page, index = 0) => {
   let bucketAmount = random(100, 1000)
   await page.fill(`${Selector} input[name="bucketAmount"]`, `${bucketAmount}`)
 
-  let playerCode = await page.inputValue(`${Selector} input[name="playerCode"]`)
-  expect(playerCode).to.not.be.empty
-  let expectedUrl = `/api/player/${playerCode}/adjust/increase`
-
   let [response] = await Promise.all([
     page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
-    page.click(`${Selector} button[type="submit"]`)
-  ])
-}
-
-const deductBalance = async (page) => {
-  let Selector = `#deduct-balance-dialog`
-  await page.click(`${Selector}-disclosure`)
-  await page.waitForSelector(Selector)
-
-  let options = await getTransactionTypeOptions(page)
-  let optionIndex = random(0, options.length - 1)
-  let option = options[optionIndex]
-  expect(option).to.not.be.empty
-
-  setTransactionType(page, option)
-
-  let amount = random(10, 100)
-  await page.fill(`${Selector} input[name="amount"]`, `${amount}`)
-
-  let playerCode = await page.inputValue(`${Selector} input[name="playerCode"]`)
-  expect(playerCode).to.not.be.empty
-  let expectedUrl = `/api/player/${playerCode}/adjust/reduce`
-
-  let [response] = await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
+      return (
+        response.url().endsWith(`/api/player/${player.code}/adjust/increase`) &&
+        response.status() === 200
+      )
     }),
     page.click(`${Selector} button[type="submit"]`)
   ])

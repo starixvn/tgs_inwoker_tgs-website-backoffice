@@ -12,12 +12,18 @@ import faker from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-test("edit and view player info", async ({ page, platformCode, player }) => {
+test("edit and view player info", async ({
+  page,
+  platformCode,
+  player,
+  backofficeApi
+}) => {
   await gotoPlayerListPage(page, platformCode)
   await searchPlayer(page, player)
 
-  let info = await editPlayerInfo(page, player)
-  await viewPlayerInfo(page, info, player)
+  let updated = await editPlayerInfo(page, player)
+  let playerRecord = await backofficeApi.player.getPlayer(player.code)
+  expect(playerRecord.realName).to.equals(updated.realName)
 })
 
 const editPlayerInfo = async (page, player) => {
@@ -42,14 +48,4 @@ const editPlayerInfo = async (page, player) => {
   ])
 
   return info
-}
-
-const viewPlayerInfo = async (page, info, player) => {
-  let dialogSelector = await openViewPlayerDialog(page, player)
-
-  let realNameSelector = page.locator(
-    `${dialogSelector} [data-field="realName"]`
-  )
-  let realName = await realNameSelector.textContent()
-  expect(realName).to.equals(info.realName)
 }

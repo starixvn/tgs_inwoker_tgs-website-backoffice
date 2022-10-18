@@ -72,6 +72,7 @@ export const AgentBalanceChangePanel = ({ brandId, agentId, ...props }) => {
           isLoading={isLoading}
         />
         <Table
+          id="balanceChange"
           columns={columns}
           data={data?.items}
           initialState={state}

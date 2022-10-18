@@ -112,8 +112,6 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={<ConfirmCancelFooter dialog={dialog} />}
       maxWidth="100vw"
       minWidth="85vw"
       placement="top"
@@ -123,7 +121,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
-export const EditButton = ({ record, onSubmitted, ...props }) => {
+export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -135,7 +133,12 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+        <EditDialog
+          brandId={brandId}
+          record={record}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
       )}
     </>
   )
@@ -180,8 +183,6 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={<ConfirmCancelFooter dialog={dialog} />}
       maxWidth="100vw"
       minWidth="85vw"
       placement="top"
@@ -545,7 +546,7 @@ const ViewDialog = ({ record, dialog }) => {
       title={title}
       dialog={dialog}
       showActionButtons={false}
-      footer={<CloseButtonFooter dialog={dialog} />}
+      footer={<CloseButtonFooter dialog={dialog} alignX="right" />}
       maxWidth="100vw"
       minWidth="70vw"
       placement="top"

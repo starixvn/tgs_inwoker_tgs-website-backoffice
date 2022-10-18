@@ -6,16 +6,7 @@ import {
   useFormContext,
   useWatch
 } from "react-hook-form"
-import {
-  Heading,
-  Stack,
-  Box,
-  Button,
-  Set,
-  useModalState,
-  Text,
-  Level
-} from "bumbag"
+import { Heading, Stack, Box, Button, Set, Link, Text, Level } from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -23,14 +14,19 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { FormattedNumber, Trans, useTrans } from "../../i18n"
+import {
+  FormattedNumber,
+  FormattedNumberDecimal,
+  Trans,
+  useTrans
+} from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
 import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
-import { yesterday } from "../../date/range"
+import { today, yesterday } from "../../date/range"
 import dateTimeColumn from "../../table/column/dateTime"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
@@ -46,6 +42,8 @@ import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { PlayerHasAgentSelect } from "./PlayerHasAgentSelect"
+import Big from "big.js"
+import { BonusDialogDisclosure } from "../BonusDialog"
 
 export { Code }
 
@@ -83,7 +81,6 @@ export const Body = () => {
 
 export const PlayerContributionReport = ({ brandId, useFetch }) => {
   let dateRange = yesterday()
-  let QueryMaxRangeDays = 31
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     username: undefined,
@@ -97,7 +94,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { pageIndex, pageSize, from, to } = state
+  let { pageSize, from, to } = state
   const toSearchParams = () => ({
     ...toApiParams(state),
     sortby: "username",
@@ -112,16 +109,12 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
     deleteCache
   } = useFetch(toSearchParams())
 
-  let DataRetentionDays = 180
-  let minDate = subDays(dateRange.start, DataRetentionDays)
-
   let columns = useColumns({
     brandId,
     start: from,
     end: to,
     items: data?.items
   })
-  let maxDate = startOfToday()
 
   return (
     <PageContent
@@ -132,18 +125,13 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
             username={state?.username}
             hasUpperAgent={state?.hasUpperAgent}
             level={state?.level}
-            start={from}
-            end={to}
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={QueryMaxRangeDays}
+            from={state.from}
+            to={state.to}
             isLoading={isLoading}
-            search={({ start, end, ...rest }) => {
+            search={(data) => {
               setState({
                 pageIndex: 0,
-                from: start,
-                to: end,
-                ...rest
+                ...data
               })
               mutate()
             }}
@@ -187,11 +175,8 @@ const SearchBar = ({
   username,
   hasUpperAgent,
   level,
-  start,
-  end,
-  minDate,
-  maxDate,
-  maxRangeDays,
+  from,
+  to,
   search,
   isLoading,
   ...props
@@ -201,8 +186,8 @@ const SearchBar = ({
       username,
       hasUpperAgent,
       level,
-      start,
-      end
+      from,
+      to
     }
   })
 
@@ -213,6 +198,12 @@ const SearchBar = ({
 
   const onSubmit = (data) => search?.(data)
 
+  let QueryMaxRangeDays = 31
+  let todayRange = today()
+  let DataRetentionDays = 180
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
+
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -220,8 +211,23 @@ const SearchBar = ({
           <DateInputRange
             id="date-range"
             showDateDropdownMenu
+            maxRangeDays={QueryMaxRangeDays}
             minDate={minDate}
-            maxRangeDays={maxRangeDays}
+            maxDate={maxDate}
+            startProps={{
+              name: "from"
+            }}
+            endProps={{
+              name: "to"
+            }}
+            dateDropdownMenuProps={{
+              thisWeekProps: {
+                end: maxDate
+              },
+              thisMonthProps: {
+                end: maxDate
+              }
+            }}
             fakeTimeLabel
             required
           />
@@ -279,10 +285,24 @@ const useColumns = ({ items = [] }) => {
         Footer: () => <Box />
       }),
       numberDecimalColumn({
-        accessor: "depositAmount",
+        id: "depositAmount",
+        accessor: (row) => row,
         sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
-        disableSortBy: true
+        disableSortBy: true,
+        toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
+          let value = Number.isFinite(depositAmount)
+            ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
+            : depositAmount
+          return value
+        },
+        toTotal: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
+          let value = Number.isFinite(depositAmount)
+            ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
+            : depositAmount
+          return value
+        },
+        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />
       }),
       numberDecimalColumn({
         accessor: "withdrawalAmount",
@@ -291,10 +311,43 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
+        /*
+        id: "bonusAmount",
+        accessor: (row) => row,
+        toValue: (row) => row?.bonusAmount,
+        */
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
         disableSortBy: true
+        /*
+        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
+        Cell: ({ value: record }) => {
+          return (
+            <BonusDialogDisclosure
+              value={record?.bonusAmount}
+              use={Link}
+              useFetch={() => {
+                return {
+                  isLoading: false,
+                  data: {
+                    items: [
+                      {
+                        promotionBonus: 1,
+                        vipRebate: 2,
+                        birthdayBonus: 3,
+                        upgradeBonus: 4,
+                        quarterlyBonus: 5
+                      }
+                    ]
+                  },
+                  error: undefined
+                }
+              }}
+            />
+          )
+        }
+        */
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",

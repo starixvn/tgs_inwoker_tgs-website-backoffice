@@ -139,6 +139,8 @@ export const FormBody = ({ brandId, record, readonly }) => {
           </NormalLabel>
           <Box alignY="center">{record?.userName}</Box>
 
+          <RealNameBox record={record} />
+
           <NormalLabel>
             <Trans zh="GMS订单号" en="GMS Id" />
           </NormalLabel>
@@ -224,6 +226,21 @@ export const FormBody = ({ brandId, record, readonly }) => {
   )
 }
 
+const RealNameBox = ({ record = {} }) => {
+  let realName = record?.realName
+  if (!realName) {
+    return null
+  }
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="真实姓名" en="Real name" />
+      </NormalLabel>
+      <Box alignY="center">{realName}</Box>
+    </>
+  )
+}
+
 const PayerInfo = ({ brandId, record, disabled }) => {
   let { watch, control } = useFormContext()
 
@@ -235,7 +252,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
   let underReviewOrApproved = underReview || isApproved
 
   let { isLoading, data: brandPayment, error } = useBrandPayment(brandPaymentId)
-  console.log("brandPayment?.extendedData", brandPayment?.extendedData)
+
   let detail = parseJSON(brandPayment?.extendedData)
   let rate = detail?.rate
   let hasRate = Number.isFinite(rate)

@@ -3,20 +3,23 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { random } from "lodash-es"
+import { openDialog } from "../page/dialog.js"
+import { searchAgent } from "./agent-list-page.js"
 
 const test = base.extend(Fixture)
 
-test("add and deduct agent balance", async ({ page, platformCode }) => {
+test("add and deduct agent balance", async ({ page, agent, platformCode }) => {
   let brandId = await gotoAgentBalanceAdjustmentPage(page, platformCode)
-  await addBalance(page)
 
-  await deductBalance(page)
+  await searchAgent(page, agent.username)
+
+  await addBalance(page, agent)
+  await deductBalance(page, agent)
 })
 
-const addBalance = async (page, index = 0) => {
+const addBalance = async (page, agent) => {
   let Selector = `#add-balance-dialog`
-  await page.click(`${Selector}-disclosure`)
-  await page.waitForSelector(Selector)
+  await openDialog(page, Selector)
 
   let options = await getTransactionTypeOptions(page)
   let optionIndex = random(0, options.length - 1)
@@ -28,13 +31,12 @@ const addBalance = async (page, index = 0) => {
   let amount = random(100, 1000)
   await page.fill(`${Selector} input[name="amount"]`, `${amount}`)
 
-  let id = await page.inputValue(`${Selector} input[name="id"]`)
-  expect(id).to.not.be.empty
-  let expectedUrl = `/api/Agent/${id}/adjust/increase`
-
   let [response] = await Promise.all([
     page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
+      return (
+        response.url().endsWith(`/api/Agent/${agent.id}/adjust/increase`) &&
+        response.status() === 200
+      )
     }),
     page.click(`${Selector} button[type="submit"]`)
   ])
@@ -58,11 +60,9 @@ const setTransactionType = async (
   return page.selectOption(selectSelector, option)
 }
 
-const deductBalance = async (page, index = 0) => {
+const deductBalance = async (page, agent) => {
   let Selector = `#deduct-balance-dialog`
-
-  await page.click(`${Selector}-disclosure`)
-  await page.waitForSelector(Selector)
+  await openDialog(page, Selector)
 
   let option = "Other"
   setTransactionType(page, option)
@@ -70,13 +70,12 @@ const deductBalance = async (page, index = 0) => {
   let amount = random(10, 100)
   await page.fill(`${Selector} input[name="amount"]`, `${amount}`)
 
-  let id = await page.inputValue(`${Selector} input[name="id"]`)
-  expect(id).to.not.be.empty
-  let expectedUrl = `/api/Agent/${id}/adjust/reduce`
-
   let [response] = await Promise.all([
     page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
+      return (
+        response.url().endsWith(`/api/Agent/${agent.id}/adjust/reduce`) &&
+        response.status() === 200
+      )
     }),
     page.click(`${Selector} button[type="submit"]`)
   ])

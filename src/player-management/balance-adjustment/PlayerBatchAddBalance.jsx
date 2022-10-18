@@ -69,10 +69,14 @@ import {
   faArrowAltCircleDown
 } from "@fortawesome/free-regular-svg-icons"
 import Backdrop from "../../dialog/Backdrop"
+import { connection } from "../../connection"
+import { useMount, useUnmount } from "react-use"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
   onSubmitted,
+  id,
+  dialogId = "player-batch-add-balance-dialog",
   ...props
 }) => {
   let dialog = useModalState()
@@ -82,9 +86,10 @@ export const PlayerBatchAddBalanceDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         <Trans zh="批量加钱" en="Batch Add Balance" />
       </Disclosure>
       {dialog.visible && (
@@ -92,6 +97,7 @@ export const PlayerBatchAddBalanceDisclosure = ({
           brandId={brandId}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -101,87 +107,115 @@ export const PlayerBatchAddBalanceDisclosure = ({
 //TODO: move to?
 const SecondInMilliseconds = 1000
 
-const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
+const confirmBatchDone = (result) => {
+  if (result === true) {
+    return true //done
+  }
+
+  if (result === null) {
+    return true //no content
+  }
+
+  return false
+}
+
+const BatchAddDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
   let [batchId, setBatchId] = useState()
-  //TODO: isBatchDone true > result dialog, stop useIsPlayerBatchAddBalanceEnd
-  let [isBatchDone, setBatchDone] = useState()
-
-  //TODO: rename to batchItems
-  let [items, setItems] = useState()
-
+  let [batchItems, setBatchItems] = useState()
   let [formData, setSubmit] = useState()
-  //TODO: able to retry with alert dialog
   let {
-    result: isStarted,
-    isLoading: isLoadingStarted,
-    error: startedError,
-    mutate: mutateStarted,
-    deleteCache: deleteStartedCache
+    result: isBatchStarted,
+    isLoading: isLoadingBatchStarted,
+    error: startBatchError,
+    mutate: mutateStartBatch,
+    deleteCache: deleteStartBatchCache
   } = useStartPlayerBatchAddBalance(brandId, batchId, formData)
 
-  //TODO: alert dialog with retry option?
-  //TODO: how to get failed list
+  const resetStartBatch = () => {
+    setBatchId(null)
+    setSubmit(null)
+
+    mutateStartBatch(null, false)
+    deleteStartBatchCache()
+  }
+
+  let [isBatchDone, setBatchDone] = useState()
+
+  const onNotify = ({ Type, BatchId, ...rest } = {}) => {
+    console.log("onNotify Type", Type, "BatchId", BatchId, "rest", rest)
+    if (Type === "BatchAdjustBalance" && BatchId === batchId) {
+      setBatchDone(true)
+    }
+  }
+
+  useMount(() => {
+    console.log("connection on 'notify'")
+    connection?.on("notify", onNotify)
+  })
+
+  useUnmount(() => {
+    console.log("connection off 'notify'")
+    connection?.off("notify", onNotify)
+  })
+
+  //TODO: show alert after fail 3 times?
   let {
-    result: isEnded,
-    isLoading: isEndedLoading,
-    error: endedError
-  } = useIsPlayerBatchAddBalanceEnd(isStarted && !isBatchDone && batchId, {
-    refreshInterval: 10 * SecondInMilliseconds
+    result: isBatchEnded,
+    isLoading: isLoadingBatchEnded,
+    error: batchEndedError
+  } = useIsPlayerBatchAddBalanceEnd(isBatchStarted && !isBatchDone && batchId, {
+    refreshInterval: 3 * SecondInMilliseconds
   })
 
   let isLoading =
-    isLoadingStarted ||
-    isEndedLoading ||
-    (isStarted && !isBatchDone && isEnded === undefined)
+    isLoadingBatchStarted ||
+    isLoadingBatchEnded ||
+    (isBatchStarted && !isBatchDone)
 
   let title = useTrans({
     zh: "批量余额加分",
     en: "Batch Add Balance"
   })
 
-  const onSubmit = ({ items, batchId, transactionType, ...data } = {}) => {
-    setBatchId(batchId)
-    setItems(items)
-    setSubmit(transactionType)
-  }
-
-  //TODO how show failed list?
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
+  const onSubmit = ({ items, batchId, ...data } = {}) => {
+    if (!isLoadingBatchStarted) {
+      setBatchItems(items)
+      setBatchId(batchId)
+      setSubmit(data)
+    }
   }
 
   useEffect(() => {
-    if (isEnded !== undefined && isEnded !== false) {
+    if (confirmBatchDone(isBatchEnded)) {
       setBatchDone(true)
     }
-  }, [isEnded])
+  }, [isBatchEnded])
 
   if (isLoading || isBatchDone) {
-    //TODO: NoContent?
     return (
       <BatchResultDialog
         batchId={batchId}
-        batchItems={items}
+        batchItems={batchItems}
         isProcessing={isLoading}
         dialog={dialog}
+        dialogId={dialogId}
       />
     )
   }
 
-  //TODO: onSubmitted > reload
   return (
     <FormDialog
-      id="batch-add-balance-dialog"
+      id={dialogId}
       defaultValues={{
         brandId,
         transactionType: null
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
-      error={startedError || endedError}
-      onCloseErrorAlert={dialog.hide}
+      error={startBatchError}
+      onCloseErrorAlert={() => {
+        resetStartBatch()
+      }}
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
@@ -201,8 +235,13 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
-//TODO
-const BatchResultDialog = ({ batchId, batchItems, isProcessing, dialog }) => {
+const BatchResultDialog = ({
+  batchId,
+  batchItems,
+  isProcessing,
+  dialog,
+  dialogId
+}) => {
   let {
     isLoading,
     data: result,
@@ -213,21 +252,17 @@ const BatchResultDialog = ({ batchId, batchItems, isProcessing, dialog }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO: merge result + items
-  //TODO: show failed items only?
   let items = result?.map((item, index) => {
     return { ...batchItems[index], ...item }
   })
 
   let columns = useColumns({ items, showResult: true })
-  //TODO: onSubmitted? onCloseDialog?
-  //TODO: showCloseButton after get result
   return (
     <Backdrop {...dialog}>
       <Dialog.Modal
+        id={dialogId}
         hideBackdrop={true}
         hideOnClickOutside={false}
-        // showCloseButton={result}
         footer={result && <CloseButtonFooter dialog={dialog} alignX="right" />}
         minWidth={items && "60vw"}
         maxWidth="95vw"
@@ -249,6 +284,7 @@ const BatchResultDialog = ({ batchId, batchItems, isProcessing, dialog }) => {
         )}
         {items && (
           <Table
+            id="result"
             columns={columns}
             data={items}
             stickyHead
@@ -433,6 +469,7 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
       >
         <Box>
           <Button
+            id="upload"
             {...getRootProps({
               refKey: "elementRef"
             })}
@@ -481,6 +518,7 @@ const BatchAddTable = ({ name = "items" }) => {
     <>
       {items && (
         <Table
+          id="preview"
           columns={columns}
           data={items}
           foot={items?.length > 0}
@@ -534,7 +572,10 @@ const useColumns = ({ items, showResult }) => {
           disableSortBy: true,
           Cell: ({ value: isSuccess }) => {
             return (
-              <Text.Block color={isSuccess ? "success" : "warning"}>
+              <Text.Block
+                data-value={isSuccess}
+                color={isSuccess ? "success" : "warning"}
+              >
                 {isSuccess ? (
                   <Trans zh="成功" en="Success" />
                 ) : (
