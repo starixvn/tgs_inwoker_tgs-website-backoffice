@@ -112,8 +112,6 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={<ConfirmCancelFooter dialog={dialog} />}
       maxWidth="100vw"
       minWidth="85vw"
       placement="top"
@@ -185,8 +183,6 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={<ConfirmCancelFooter dialog={dialog} />}
       maxWidth="100vw"
       minWidth="85vw"
       placement="top"
@@ -550,7 +546,7 @@ const ViewDialog = ({ record, dialog }) => {
       title={title}
       dialog={dialog}
       showActionButtons={false}
-      footer={<CloseButtonFooter dialog={dialog} />}
+      footer={<CloseButtonFooter dialog={dialog} alignX="right" />}
       maxWidth="100vw"
       minWidth="70vw"
       placement="top"
