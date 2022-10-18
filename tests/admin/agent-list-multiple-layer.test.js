@@ -21,30 +21,6 @@ import {
 const test = base.extend(Fixture)
 const { lorem, internet } = faker
 
-test("add one layer agents", async ({ page }) => {
-  await gotoPlatformListPage(page)
-  let platform = await addPlatform(page, {
-    agentDividendType: AgentDividendType.OneLayer
-  })
-
-  await gotoAgentListPage(page, platform.code)
-
-  let agents = await addAgent(page, AgentDividendType.OneLayer)
-  agents = await addAgent(page, AgentDividendType.OneLayer, agents)
-
-  let [parent, agent] = agents
-  await searchAgent(page, agent.username)
-
-  let viewAgentDialogSelector = `#view-agent-dialog`
-  await openDialog(page, viewAgentDialogSelector)
-
-  let parentUsernameLocator = page.locator(
-    `${viewAgentDialogSelector} [data-type="parent-username"]`
-  )
-  let parentUsername = await parentUsernameLocator.textContent()
-  expect(parentUsername).to.equals(parent.username)
-})
-
 test("add multiple layer agents", async ({ page }) => {
   await gotoPlatformListPage(page)
   let platform = await addPlatform(page, {
@@ -68,8 +44,11 @@ test("add multiple layer agents", async ({ page }) => {
   let [parent, agent] = agents
   await searchAgent(page, agent.username)
 
+  /*
+  TODO: test parent agent username?
   let viewProfitSharingDialogSelector = `#agent-profit-sharing-setting-dialog`
   await openDialog(page, viewProfitSharingDialogSelector)
+  */
 })
 
 const configProfitSharing = async (page) => {
