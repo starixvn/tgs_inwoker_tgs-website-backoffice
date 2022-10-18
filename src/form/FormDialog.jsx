@@ -55,6 +55,13 @@ export const FormDialog = ({
             <form
               ref={formRef}
               onSubmit={(event) => {
+                if (isLoading) {
+                  console.warn("form currently loading, skip submit")
+                  event.preventDefault()
+                  event.stopPropagation()
+                  return
+                }
+
                 if (stopPropagation) {
                   event.stopPropagation()
                 }
