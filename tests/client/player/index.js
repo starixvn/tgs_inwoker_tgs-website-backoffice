@@ -1,5 +1,7 @@
 import { adjustBalance, addBalance, deductBalance } from "./adjustBalance.js"
-import { getPlayer, updateInfo } from "./updateInfo.js"
+import { getPlayer } from "./getPlayer.js"
+import { updateInfo } from "./updateInfo.js"
+import { updateContact } from "./updateContact.js"
 import { applyBankManualDepositForm } from "./applyBankManualDepositForm.js"
 
 export default {
@@ -8,5 +10,6 @@ export default {
   addBalance,
   deductBalance,
   updateInfo,
+  updateContact,
   applyBankManualDepositForm
 }

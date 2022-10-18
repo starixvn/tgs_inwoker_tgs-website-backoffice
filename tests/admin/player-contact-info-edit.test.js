@@ -17,13 +17,17 @@ const test = base.extend(Fixture)
 test("edit and view player contact info", async ({
   page,
   platformCode,
-  player
+  player,
+  backofficeApi
 }) => {
   await gotoPlayerListPage(page, platformCode)
   await searchPlayer(page, player)
 
-  let contact = await editPlayerContact(page, player)
-  await viewPlayerContact(page, contact, player)
+  let updated = await editPlayerContact(page, player)
+  let playerRecord = await backofficeApi.player.getPlayer(player.code)
+
+  expect(playerRecord.phone).to.equals(updated.phone)
+  expect(playerRecord.email).to.equals(updated.email)
 })
 
 const editPlayerContact = async (page, player) => {
@@ -51,17 +55,4 @@ const editPlayerContact = async (page, player) => {
   ])
 
   return contact
-}
-
-const viewPlayerContact = async (page, contact, player) => {
-  let dialogSelector = await openViewPlayerDialog(page, player)
-  await page.click(`${dialogSelector} button#contact`)
-
-  let phoneLocator = page.locator(`${dialogSelector} [data-field="phone"]`)
-  let phone = await phoneLocator.textContent()
-  expect(phone).to.equals(contact.phone)
-
-  let emailLocator = page.locator(`${dialogSelector} [data-field="email"]`)
-  let email = await emailLocator.textContent()
-  expect(email).to.equals(contact.email)
 }
