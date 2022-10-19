@@ -23,6 +23,7 @@ const { lorem, internet } = faker
 
 test("add one layer agents", async ({ page }) => {
   await gotoPlatformListPage(page)
+  console.log("TODO: add one layer platform by api?")
   let platform = await addPlatform(page, {
     agentDividendType: AgentDividendType.OneLayer
   })
@@ -33,6 +34,7 @@ test("add one layer agents", async ({ page }) => {
   agents = await addAgent(page, AgentDividendType.OneLayer, agents)
 
   let [parent, agent] = agents
+  console.log("find agent id and use get agent api instead")
   await searchAgent(page, agent.username)
 
   let viewAgentDialogSelector = `#view-agent-dialog`
