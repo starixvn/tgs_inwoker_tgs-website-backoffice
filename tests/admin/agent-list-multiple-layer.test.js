@@ -23,11 +23,10 @@ const { lorem, internet } = faker
 
 test("add multiple layer agents", async ({ page }) => {
   await gotoPlatformListPage(page)
-  console.log("TODO: add multiple layer platform by api?")
   let platform = await addPlatform(page, {
     agentDividendType: AgentDividendType.MultipleLayer
   })
-
+  console.log("multiple layer platform", platform)
   await gotoAgentListPage(page, platform.code)
 
   let agents = await addAgent(page, AgentDividendType.MultipleLayer)

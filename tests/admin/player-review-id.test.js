@@ -15,9 +15,11 @@ test("review player id", async ({
   page,
   platformCode,
   platformToken,
+  platform,
   player,
   operatorApi
 }) => {
+  console.log("TODO: update platform enablePlayerIdentity")
   await gotoPlatformListPage(page)
   await searchPlatform(page, platformCode)
   await updatePlatform(page, { enablePlayerIdentity: true })

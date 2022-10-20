@@ -6,6 +6,7 @@ import faker from "@faker-js/faker"
 export const ViewPlayerDialogSelector = `#view-player-dialog`
 
 export const searchPlatform = async (page, keyword) => {
+  console.log("TODO: get platform by api")
   let inputSelector = `input[name="keyword"]`
   await page.fill(inputSelector, keyword)
 
@@ -124,6 +125,7 @@ export const addPlatform = async (
   await page.click(`${addPlatformSelector} button[type="submit"]`)
   await page.waitForSelector(addPlatformSelector, { state: "detached" })
 
+  console.log("TODO: get platfrom data by api")
   let id = await searchPlatform(page, code)
   return {
     id,

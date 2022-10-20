@@ -7,6 +7,7 @@ import sboGameProviderApi from "../../client/gameProviderApi/sbo/index.js"
 import backofficeApi from "../client/index.js"
 import reportApi from "../../client/reportApi/index.js"
 import reportAggregateApi from "../../client/reportAggregateApi/index.js"
+import { use } from "chai"
 
 const Path = "./.playwright"
 const AuthPath = `${Path}/admin-auth.json`
@@ -24,6 +25,7 @@ export const Fixture = {
   adminUsername: AdminUsername,
   platformCode: "GPI",
   resellerCode: "TGS",
+  licenseeCode: "TGS",
   host: host(),
   platformToken: async ({ platformCode }, use) => {
     let platformToken = await globalApi.platformToken(platformCode)
@@ -68,8 +70,12 @@ export const Fixture = {
     use(adminUserInfo)
   },
   platform: async ({ platformCode, backofficeApi }, use) => {
-    let platform = await backofficeApi.platform.getPlatform(platformCode)
+    let platform = await backofficeApi.platform.findPlatform(platformCode)
     use(platform)
+  },
+  licensee: async ({ licenseeCode, backofficeApi }, use) => {
+    let licensee = await backofficeApi.licensee.findLicensee(licenseeCode)
+    use(licensee)
   },
   agent: async ({ platform }, use) => {
     let { id: brandId } = platform

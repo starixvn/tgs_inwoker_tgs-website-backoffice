@@ -1,10 +1,7 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import numeral from "numeral"
 import faker from "@faker-js/faker"
-import { selectPlatformByCode } from "../page/content.js"
-import { selectByLabel } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import {
   gotoFundWithdraw,
@@ -23,17 +20,19 @@ const { finance } = faker
 test("approve player fund withdraw and paid", async ({
   page,
   platformCode,
+  platform,
   platformToken,
   player,
   backofficeApi,
   operatorApi
 }) => {
   let depositAmount = 100
-  let [platform] = await Promise.all([
-    backofficeApi.platform.getPlatform(platformCode),
-    operatorApi.player.addManualBankCard(platformToken, player.token)
-  ])
+  await operatorApi.player.addManualBankCard(platformToken, player.token)
 
+  console.log(
+    "TODO: update platform by api, platform.enablePlayerIdentity",
+    platform.enablePlayerIdentity
+  )
   if (platform.enablePlayerIdentity) {
     await gotoPlatformListPage(page)
     await searchPlatform(page, platformCode)

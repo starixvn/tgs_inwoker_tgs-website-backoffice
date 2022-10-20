@@ -5,6 +5,7 @@ import round from "./round/index.js"
 import payment from "./payment/index.js"
 import promotion from "./promotion/index.js"
 import platform from "./platform/index.js"
+import licensee from "./licensee/index.js"
 import agent from "./agent/index.js"
 import fund from "./fund/index.js"
 
@@ -18,6 +19,7 @@ export default {
   payment,
   promotion,
   platform,
+  licensee,
   agent,
   fund
 }

@@ -8,8 +8,7 @@ import { gotoPlatformListPage, addPlatform } from "./platform-list-page.js"
 import {
   AgentDividendType,
   addAgent,
-  gotoAgentListPage,
-  searchAgent
+  gotoAgentListPage
 } from "./agent-list-page.js"
 import { openDialog } from "../page/dialog.js"
 import {
@@ -21,10 +20,9 @@ import {
 const test = base.extend(Fixture)
 const { lorem, internet } = faker
 
-test("add one layer agents", async ({ page }) => {
-  await gotoPlatformListPage(page)
-  console.log("TODO: add one layer platform by api?")
-  let platform = await addPlatform(page, {
+test("add one layer agents", async ({ page, licensee, backofficeApi }) => {
+  let platform = await backofficeApi.platform.addPlatform({
+    licenseeId: licensee.id,
     agentDividendType: AgentDividendType.OneLayer
   })
 
@@ -34,20 +32,10 @@ test("add one layer agents", async ({ page }) => {
   agents = await addAgent(page, AgentDividendType.OneLayer, agents)
 
   let [parent, agent] = agents
-  console.log("find agent id and use get agent api instead")
-  await searchAgent(page, agent.username)
-
-  let viewAgentDialogSelector = `#view-agent-dialog`
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().includes(`/api/agent/`) && response.status() === 200
-    }),
-    openDialog(page, viewAgentDialogSelector)
-  ])
-
-  let parentUsernameLocator = page.locator(
-    `${viewAgentDialogSelector} [data-type="parent-username"]`
+  let findAgentResult = await backofficeApi.agent.findAgent(
+    platform.id,
+    agent.username
   )
-  let parentUsername = await parentUsernameLocator.textContent()
-  expect(parentUsername).to.equals(parent.username)
+  let agentRecord = await backofficeApi.agent.getAgent(findAgentResult?.id)
+  expect(agentRecord.parentUsername).to.equals(parent.username)
 })
