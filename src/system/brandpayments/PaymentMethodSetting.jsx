@@ -69,7 +69,7 @@ export const PaymentMethodSetting = ({
       return <FPSSetting brandId={brandId} />
     case USDT:
     case Usdt:
-      return <CryptoSetting brandId={brandId} />
+      return <CryptoSetting brandId={brandId} currency="USDT" />
     case EWallet:
       return <EWalletSetting brandId={brandId} />
     case Pulsa:
@@ -116,7 +116,7 @@ const EWalletSetting = ({ brandId }) => {
   )
 }
 
-const CryptoSetting = ({ brandId }) => {
+const CryptoSetting = ({ brandId, currency = "" }) => {
   return (
     <>
       <Label>
@@ -139,11 +139,12 @@ const CryptoSetting = ({ brandId }) => {
         name="extendedData.rate"
         addonBefore={
           <Button isStatic>
-            <Trans zh="平台幣值" en="Currency" />
+            <Trans zh="1 平台幣值" en="Currency" />
           </Button>
         }
+        addonAfter={<Button isStatic>{currency}</Button>}
         min={0}
-        step={0.01}
+        step={0.0001}
         registerOptions={{
           valueAsNumber: true
         }}

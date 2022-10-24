@@ -21,17 +21,16 @@ import {
 const test = base.extend(Fixture)
 const { lorem, internet } = faker
 
-test("add multiple layer agents", async ({ page, backofficeApi }) => {
-  //TODO: add platform by api
-  await gotoPlatformListPage(page)
-  let platform = await addPlatform(page, {
+test("add multiple layer agents", async ({ page, licensee, backofficeApi }) => {
+  let platform = await backofficeApi.platform.addPlatform({
+    licenseeId: licensee.id,
     agentDividendType: AgentDividendType.MultipleLayer
   })
 
   await gotoAgentListPage(page, platform.code)
 
-  let agents = await addAgent(page, AgentDividendType.MultipleLayer)
   console.log("TODO: add first agent by api?")
+  let agents = await addAgent(page, AgentDividendType.MultipleLayer)
   await configProfitSharing(page)
 
   await gotoPlatformSettingPage(page, platform.code)
@@ -43,13 +42,12 @@ test("add multiple layer agents", async ({ page, backofficeApi }) => {
 
   agents = await addAgent(page, AgentDividendType.MultipleLayer, agents)
   let [parent, agent] = agents
-  console.log("TODO: check agent's agent.parentUsername")
-
-  /*
-  await searchAgent(page, agent.username)
-  let viewProfitSharingDialogSelector = `#agent-profit-sharing-setting-dialog`
-  await openDialog(page, viewProfitSharingDialogSelector)
-  */
+  let findAgentResult = await backofficeApi.agent.findAgent(
+    platform.id,
+    agent.username
+  )
+  let agentRecord = await backofficeApi.agent.getAgent(findAgentResult?.id)
+  expect(agentRecord.parentUsername).to.equals(parent.username)
 })
 
 const configProfitSharing = async (page) => {
