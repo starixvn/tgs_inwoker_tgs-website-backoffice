@@ -125,7 +125,7 @@ export const addPlatform = async (
   await page.click(`${addPlatformSelector} button[type="submit"]`)
   await page.waitForSelector(addPlatformSelector, { state: "detached" })
 
-  console.log("TODO: get platfrom data by api")
+  console.log("TODO: get platform data by api")
   let id = await searchPlatform(page, code)
   return {
     id,
