@@ -139,7 +139,7 @@ const CryptoSetting = ({ brandId, currency = "" }) => {
         name="extendedData.rate"
         addonBefore={
           <Button isStatic>
-            <Trans zh="1 平台幣值" en="Currency" />
+            <Trans zh="1 平台幣值 ＝" en="Currency" />
           </Button>
         }
         addonAfter={<Button isStatic>{currency}</Button>}
