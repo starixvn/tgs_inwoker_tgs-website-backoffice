@@ -5,6 +5,7 @@ import numeral from "numeral"
 import faker from "@faker-js/faker"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
+import { searchByFormId } from "./fund-deposit-page.js"
 
 const test = base.extend(Fixture)
 const { finance } = faker
@@ -54,15 +55,7 @@ const approveDeposit = async (
 
   let expectedBalance = playerBalance + ExpectedDepositAmount
 
-  await page.fill(`input[name="id"]`, formId)
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`id=${formId}`) && response.status() === 200
-      )
-    }),
-    page.click(`button[type="submit"]`)
-  ])
+  await searchByFormId(page, formId)
 
   let TableSelector = `#deposit`
   let depositAmountString = await page.textContent(
