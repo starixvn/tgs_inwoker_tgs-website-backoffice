@@ -52,6 +52,9 @@ export const Fixture = {
   operatorApi: async ({}, use) => {
     use(operatorApi)
   },
+  globalApi: async ({}, use) => {
+    use(globalApi)
+  },
   sboGameProviderApi: ({}, use) => {
     use(sboGameProviderApi)
   },

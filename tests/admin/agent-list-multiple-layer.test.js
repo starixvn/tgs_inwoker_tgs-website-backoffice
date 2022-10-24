@@ -21,16 +21,17 @@ import {
 const test = base.extend(Fixture)
 const { lorem, internet } = faker
 
-test("add multiple layer agents", async ({ page }) => {
+test("add multiple layer agents", async ({ page, backofficeApi }) => {
+  //TODO: add platform by api
   await gotoPlatformListPage(page)
   let platform = await addPlatform(page, {
     agentDividendType: AgentDividendType.MultipleLayer
   })
-  console.log("multiple layer platform", platform)
+
   await gotoAgentListPage(page, platform.code)
 
   let agents = await addAgent(page, AgentDividendType.MultipleLayer)
-
+  console.log("TODO: add first agent by api?")
   await configProfitSharing(page)
 
   await gotoPlatformSettingPage(page, platform.code)
@@ -42,11 +43,10 @@ test("add multiple layer agents", async ({ page }) => {
 
   agents = await addAgent(page, AgentDividendType.MultipleLayer, agents)
   let [parent, agent] = agents
-  console.log("find agent id and use get agent api instead")
-  await searchAgent(page, agent.username)
+  console.log("TODO: check agent's agent.parentUsername")
 
   /*
-  TODO: test parent agent username?
+  await searchAgent(page, agent.username)
   let viewProfitSharingDialogSelector = `#agent-profit-sharing-setting-dialog`
   await openDialog(page, viewProfitSharingDialogSelector)
   */

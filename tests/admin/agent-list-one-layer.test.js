@@ -2,20 +2,13 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { last } from "lodash-es"
-import { selectPlatformByCode } from "../page/content.js"
 import faker from "@faker-js/faker"
-import { gotoPlatformListPage, addPlatform } from "./platform-list-page.js"
 import {
   AgentDividendType,
   addAgent,
   gotoAgentListPage
 } from "./agent-list-page.js"
 import { openDialog } from "../page/dialog.js"
-import {
-  gotoPlatformSettingPage,
-  openProfitSharingSettingDialog,
-  setPlatformProfitSharingSetting
-} from "./platform-setting-page.js"
 
 const test = base.extend(Fixture)
 const { lorem, internet } = faker
