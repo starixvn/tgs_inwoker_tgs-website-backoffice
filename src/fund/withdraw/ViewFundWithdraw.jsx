@@ -291,7 +291,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
               <FormattedNumberDecimal
                 value={rate}
                 digits={4}
-                format="0,0.0000"
+                format="0,0.00[00]"
               />
             </Box>
           </>
