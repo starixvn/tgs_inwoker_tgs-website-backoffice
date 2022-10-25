@@ -19,31 +19,8 @@ test("approve player deposit", async ({
   platformToken,
   player
 }) => {
-  let depositAmount = 10
-  let balance = await approveDeposit(
-    page,
-    operatorApi,
-    backofficeApi,
-    platform,
-    platformCode,
-    platformToken,
-    player,
-    depositAmount
-  )
-})
-
-const approveDeposit = async (
-  page,
-  operatorApi,
-  backofficeApi,
-  platform,
-  platformCode,
-  platformToken,
-  player,
-  deposit
-) => {
-  const ExpectedDepositAmount = deposit
-  let [brandId, playerBalance, formId] = await Promise.all([
+  const ExpectedDepositAmount = 10
+  let [_, playerBalance, formId] = await Promise.all([
     gotoFundDepositPage(page, platformCode),
     operatorApi.wallet(platformToken, player.token),
     backofficeApi.player.applyBankManualDepositForm({
@@ -64,14 +41,6 @@ const approveDeposit = async (
   let depositAmount = numeral(depositAmountString).value()
   expect(depositAmount).to.equal(ExpectedDepositAmount)
 
-  let [download] = await Promise.all([
-    page.waitForEvent("download"),
-    page.click(`#export-report`)
-  ])
-
-  let path = await download.path()
-  expect(path).to.be.not.empty
-
   let VerifyDepositDialogSelector = `#verify-deposit-dialog`
   await openDialog(page, VerifyDepositDialogSelector)
 
@@ -82,43 +51,18 @@ const approveDeposit = async (
         response.status() === 200
       )
     }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/deposit/${platform.id}?`) &&
+        response.status() === 200
+      )
+    }),
     page.click(`${VerifyDepositDialogSelector} button[data-type="approve"]`)
   ])
 
-  await Promise.all([
-    page.waitForSelector(VerifyDepositDialogSelector, {
-      state: "detached"
-    })
-    /*
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/deposit/${brandId}?`) &&
-        response.status() === 200
-      )
-    })
-    */
-  ])
-
-  //TODO: reset status filter to find approved form record
-  // let StatusSelector = `${TableSelector} [data-column-id="status"] span`
-  // await page.waitForSelector(StatusSelector)
-  // let status = await page.$eval(
-  //   StatusSelector,
-  //   ({ dataset }) => dataset.status
-  // )
-  // expect(status).to.equal("Approved")
-
-  // let OperatorSelector = `${TableSelector} [data-column-id="reviewedUserName"]`
-  // let operator = await page.textContent(OperatorSelector)
-  // expect(operator).to.equal(AdminUserName)
-
-  // let TotalAmountSelector = `#total-amount`
-  // let totalAmountString = await page.textContent(TotalAmountSelector)
-  // expect(depositAmountString).to.equal(totalAmountString)
-
   let balance = await operatorApi.wallet(platformToken, player.token)
   expect(balance).to.equal(expectedBalance)
-}
+})
 
 const gotoFundDepositPage = async (page, platformCode) => {
   await page.goto(`/fundmanagement/deposit`, { waitUntil: "networkidle" })

@@ -23,19 +23,8 @@ export const approveWithdraw = async (
   )
   await findApplicationById(page, formId)
 
-  let [download] = await Promise.all([
-    page.waitForEvent("download"),
-    page.click(`#export-report`)
-  ])
-
   let VerifyDialogSelector = `#verify-withdraw-dialog`
-  let [path] = await Promise.all([
-    download.path(),
-    openDialog(page, VerifyDialogSelector)
-  ])
-  expect(path).to.be.not.empty
-
-  await selectManualBrandPayment(page)
+  await openDialog(page, VerifyDialogSelector)
 
   await Promise.all([
     page.waitForResponse((response) => {
@@ -91,7 +80,7 @@ export const reviewPaid = async (
   formId,
   type = "approve"
 ) => {
-  let brandId = await gotoFundWithdraw(page, platformCode, formId)
+  await gotoFundWithdraw(page, platformCode, formId)
   await findApplicationById(page, formId)
 
   let PaidDialogSelector = `#review-paid-dialog`

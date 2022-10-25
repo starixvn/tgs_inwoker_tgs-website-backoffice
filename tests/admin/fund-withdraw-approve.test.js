@@ -8,11 +8,6 @@ import {
   approveWithdraw,
   reviewPaid
 } from "./fund-withdraw-page.js"
-import {
-  gotoPlatformListPage,
-  searchPlatform,
-  updatePlatform
-} from "./platform-list-page.js"
 
 const test = base.extend(Fixture)
 const { finance } = faker
@@ -27,20 +22,9 @@ test("approve player fund withdraw and paid", async ({
   operatorApi
 }) => {
   let depositAmount = 100
-  await operatorApi.player.addManualBankCard(platformToken, player.token)
-
-  console.log(
-    "TODO: update platform by api, platform.enablePlayerIdentity",
-    platform.enablePlayerIdentity
-  )
-  if (platform.enablePlayerIdentity) {
-    await gotoPlatformListPage(page)
-    await searchPlatform(page, platformCode)
-    await updatePlatform(page, { enablePlayerIdentity: false })
-  }
-
-  let [brandId] = await Promise.all([
+  await Promise.all([
     gotoFundWithdraw(page, platformCode),
+    operatorApi.player.addManualBankCard(platformToken, player.token),
     backofficeApi.player.addBalance(player.code, {
       amount: depositAmount
     })
@@ -50,7 +34,7 @@ test("approve player fund withdraw and paid", async ({
   let formId = await approveWithdraw(
     page,
     operatorApi,
-    brandId,
+    platform.id,
     platformToken,
     player,
     withdrawAmount
