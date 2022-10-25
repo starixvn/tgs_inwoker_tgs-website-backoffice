@@ -370,7 +370,11 @@ const CryptoApplyInfoBox = ({ record }) => {
         <Trans zh="匯率" en="Exchange rate" />
       </NormalLabel>
       <Box alignY="center">
-        <FormattedNumberDecimal value={record?.applyInfo?.rate} digits={4} />
+        <FormattedNumberDecimal
+          value={record?.applyInfo?.rate}
+          digits={4}
+          format="0,0.0000"
+        />
       </Box>
       <NormalLabel>
         <Trans zh={bankType} en={bankType} />

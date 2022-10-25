@@ -288,7 +288,11 @@ const PayerInfo = ({ brandId, record, disabled }) => {
               <Trans zh="匯率" en="Exchange rate" />
             </NormalLabel>
             <Box alignY="center">
-              <FormattedNumberDecimal value={rate} digits={4} />
+              <FormattedNumberDecimal
+                value={rate}
+                digits={4}
+                format="0,0.0000"
+              />
             </Box>
           </>
         )}
