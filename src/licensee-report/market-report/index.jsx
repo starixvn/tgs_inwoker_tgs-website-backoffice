@@ -214,7 +214,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         id: "brandCode",
         accessor: (row) => row,
-        Header: <Trans zh="平台" en="Platfrom" />,
+        Header: <Trans zh="平台" en="Platform" />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, brandCode = "" } }) => {
           return isTotal ? "" : brandCode

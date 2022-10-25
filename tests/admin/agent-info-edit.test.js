@@ -12,15 +12,18 @@ import {
 
 const test = base.extend(Fixture)
 
-test("edit and view agent info", async ({ page, platformCode, agent }) => {
+test("edit and view agent info", async ({
+  page,
+  platformCode,
+  agent,
+  backofficeApi
+}) => {
   await gotoAgentListPage(page, platformCode)
   await searchAgent(page, agent.username)
 
-  console.log(
-    "TODO: use edit & view test, use get agent & update agent api instead"
-  )
   let expected = await editAgent(page, agent)
-  await viewAgent(page, agent, expected)
+  let agentRecord = await backofficeApi.agent.getAgent(agent.id)
+  expect(agentRecord.realName).to.equals(expected.realName)
 })
 
 const editAgent = async (page, agent) => {
@@ -42,23 +45,5 @@ const editAgent = async (page, agent) => {
 
   return {
     realName
-  }
-}
-
-const viewAgent = async (page, agent, expected) => {
-  let dialogSelector = await openViewAgentDialog(page, agent)
-  if (expected.realName) {
-    let UpdateViewTimeout = 500
-    await page.waitForTimeout(UpdateViewTimeout)
-
-    let realNameLocator = page.locator(
-      `${dialogSelector} [data-field="realName"]`
-    )
-
-    let realName = await realNameLocator.textContent()
-    expect(realName).to.equals(
-      expected.realName,
-      `agent username ${agent.username}`
-    )
   }
 }

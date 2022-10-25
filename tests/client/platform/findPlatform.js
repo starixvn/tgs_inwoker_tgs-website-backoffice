@@ -1,5 +1,6 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
+import { getPlatform } from "./getPlatform.js"
 
 const API = "api/brand"
 export const findPlatform = async (value = "") => {
@@ -8,16 +9,10 @@ export const findPlatform = async (value = "") => {
   let result = await response.json()
   let filtered = result.items.find(({ code }) => code === value)
 
-  return filtered || result.items[0]
-}
+  let platformId = filtered?.id
+  if (!platformId) {
+    return null
+  }
 
-export const getPlatform = async (value = "") => {
-  let platform = await findPlatform(value)
-
-  let url = `${host}/${API}/${platform.id}`
-
-  let response = await fetcher.get(url)
-  let result = await response.json()
-
-  return result.brand
+  return getPlatform(platformId)
 }

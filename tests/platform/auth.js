@@ -43,7 +43,7 @@ export const Fixture = {
     use(page)
   },
   platform: async ({ platformCode, backofficeApi }, use) => {
-    let platform = await backofficeApi.platform.getPlatform(platformCode)
+    let platform = await backofficeApi.platform.findPlatform(platformCode)
     use(platform)
   },
   platformUser: async ({ page, platformUsername }, use) => {

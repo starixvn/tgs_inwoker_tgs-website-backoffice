@@ -217,7 +217,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "brandCode",
-        Header: <Trans zh="平台" en="Platfrom" />,
+        Header: <Trans zh="平台" en="Platform" />,
         disableSortBy: true
       }),
       textColumn({
