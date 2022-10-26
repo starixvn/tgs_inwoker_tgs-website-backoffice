@@ -9,6 +9,8 @@ export const Update = "update"
 
 export const SystemTransactionType = "systemtransactiontype"
 
+export const BonusAdjustTransactionType = "bonusadjusttransactiontype"
+
 export const BatchAddBalance = "batchaddbalance"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
@@ -37,8 +39,16 @@ export const label = (codes = [], locale = Locales.zh) => {
     case SystemTransactionType:
       return getTrans(
         {
-          zh: "系统报表类型",
-          en: "System Report Type"
+          zh: "系统调帐",
+          en: "System Adjust"
+        },
+        locale
+      )
+    case BonusAdjustTransactionType:
+      return getTrans(
+        {
+          zh: "优惠调帐",
+          en: "Bonus Adjust"
         },
         locale
       )
