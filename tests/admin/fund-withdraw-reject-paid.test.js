@@ -6,11 +6,7 @@ import faker from "@faker-js/faker"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { selectByValue } from "../page/multi-select.js"
-import {
-  gotoFundWithdraw,
-  approveWithdraw,
-  reviewPaid
-} from "./fund-withdraw-page.js"
+import { gotoFundWithdraw, reviewPaid } from "./fund-withdraw-page.js"
 
 const test = base.extend(Fixture)
 const { finance } = faker
@@ -34,20 +30,21 @@ test("reject withdraw paid", async ({
   ])
 
   let withdrawAmount = depositAmount
-  let formId = await approveWithdraw(
-    page,
-    operatorApi,
-    platform.id,
+  let formId = await operatorApi.withdraw.applyManualWithdraw(
     platformToken,
-    player,
-    withdrawAmount
+    player.token,
+    {
+      amount: withdrawAmount
+    }
   )
+  await backofficeApi.fund.withdraw.approve(formId, { brandId: platform.id })
 
   let Reject = "Reject"
   await reviewPaid(page, platformCode, formId, Reject)
 
   let Rejected = "Rejected"
   await selectByValue(page, `#status-select`, Rejected)
+
   await Promise.all([
     page.waitForResponse((response) => {
       return (
