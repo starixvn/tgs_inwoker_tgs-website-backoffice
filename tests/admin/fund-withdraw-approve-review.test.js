@@ -39,8 +39,4 @@ test("approve player fund withdraw and paid", async ({
     player,
     withdrawAmount
   )
-
-  console.log("TODO: fund-wirhdraw-approve-paid.test.js")
-  let Approve = "Approve"
-  await reviewPaid(page, platformCode, formId, Approve)
 })
