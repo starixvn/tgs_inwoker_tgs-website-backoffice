@@ -13,15 +13,19 @@ const test = base.extend(Fixture)
 
 test("review player id", async ({
   page,
-  platformCode,
-  platformToken,
-  player,
-  operatorApi
+  licensee,
+  backofficeApi,
+  operatorApi,
+  globalApi
 }) => {
-  await gotoPlatformListPage(page)
-  await searchPlatform(page, platformCode)
-  await updatePlatform(page, { enablePlayerIdentity: true })
+  let platform = await backofficeApi.platform.addPlatform({
+    licenseeId: licensee.id,
+    enablePlayerIdentity: true
+  })
+  let platformCode = platform.code
+  let platformToken = await globalApi.platformToken(platform.code)
 
+  let player = await operatorApi.player.createAndLogin(platformToken)
   let [playerIdentity] = await Promise.all([
     operatorApi.player.updateIdentity(platformToken, player.token),
     gotoPlayerIdentityListPage(page, platformCode)
@@ -66,10 +70,6 @@ test("review player id", async ({
   ])
   let result = await reviewResponse.json()
   expect(result.valid).to.equal(true)
-
-  await gotoPlatformListPage(page)
-  await searchPlatform(page, platformCode)
-  await updatePlatform(page, { enablePlayerIdentity: false })
 })
 
 const searchPlayer = async (page, player) => {

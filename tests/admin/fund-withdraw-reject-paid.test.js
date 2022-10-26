@@ -17,6 +17,7 @@ const { finance } = faker
 
 test("reject withdraw paid", async ({
   page,
+  platform,
   platformCode,
   platformToken,
   player,
@@ -24,7 +25,7 @@ test("reject withdraw paid", async ({
   backofficeApi
 }) => {
   let depositAmount = 100
-  let [brandId] = await Promise.all([
+  await Promise.all([
     gotoFundWithdraw(page, platformCode),
     operatorApi.player.addManualBankCard(platformToken, player.token),
     backofficeApi.player.addBalance(player.code, {
@@ -36,7 +37,7 @@ test("reject withdraw paid", async ({
   let formId = await approveWithdraw(
     page,
     operatorApi,
-    brandId,
+    platform.id,
     platformToken,
     player,
     withdrawAmount
@@ -50,7 +51,7 @@ test("reject withdraw paid", async ({
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes(`/api/withdraw/${brandId}?`) &&
+        response.url().includes(`/api/withdraw/${platform.id}?`) &&
         response.status() === 200
       )
     }),

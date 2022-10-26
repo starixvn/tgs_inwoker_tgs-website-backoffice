@@ -4,8 +4,11 @@ import { host } from "../host.js"
 const API = "api/agent"
 
 export const getAgent = async (agentId) => {
+  let url = `${host}/${API}/${agentId}`
+
   let response = await fetcher.get(`${host}/${API}/${agentId}`, {
     failOnStatusCode: true
   })
-  return await response.json()
+  let result = await response.json()
+  return result.agent
 }
