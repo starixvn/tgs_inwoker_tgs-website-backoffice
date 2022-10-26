@@ -13,7 +13,7 @@ import {
 import { useTrans, Trans } from "../../i18n"
 import Select from "../../select/Select"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import { SystemTransactionType } from "./menu"
+import { SystemTransactionType, BonusAdjustTransactionType } from "./menu"
 
 export const Bonus = "BonusAdjust"
 const BonusTrans = {
@@ -114,21 +114,25 @@ export const PlayerAdjustBalanceTypeSelect = ({
   placeholder = placeholder ?? defaultPlaceholder
 
   let hasSystemType = useIsDisplayMenuByRoute([SystemTransactionType])
+  let hasBonusAdjust = useIsDisplayMenuByRoute([BonusAdjustTransactionType])
 
-  let options = [
-    {
+  let options = []
+  if (hasBonusAdjust) {
+    options.push({
       label: useTrans(BonusTrans),
       value: Bonus
-    },
-    {
-      label: useTrans(CompanyTrans),
-      value: Company
-    },
-    {
-      label: useTrans(AgentTrans),
-      value: Agent
-    }
-  ]
+    })
+  }
+
+  options.push({
+    label: useTrans(CompanyTrans),
+    value: Company
+  })
+
+  options.push({
+    label: useTrans(AgentTrans),
+    value: Agent
+  })
 
   if (hasSystemType) {
     options.push({

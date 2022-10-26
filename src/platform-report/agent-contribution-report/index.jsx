@@ -439,12 +439,6 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         */
       }),
       numberDecimalColumn({
-        accessor: "companyAdjustAmount",
-        sumColumn: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
         accessor: "bonusAdjustAmount",
         sumColumn: "bonusAdjustAmount",
         Header: <Trans zh="优惠调帐" en="Bonus Adjustment Amount" />,
