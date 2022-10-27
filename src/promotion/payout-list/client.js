@@ -6,7 +6,6 @@ import {
     useDelete
 } from "../../client"
 
-// let API = "/api/promotion"
 let API = "/api/PromotionDispatch"
 
 export const usePromotionPayoutList = (searchParams) => {
