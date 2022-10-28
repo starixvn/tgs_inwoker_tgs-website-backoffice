@@ -8,6 +8,7 @@ import platform from "./platform/index.js"
 import licensee from "./licensee/index.js"
 import agent from "./agent/index.js"
 import fund from "./fund/index.js"
+import gameProvider from "./gameProvider/index.js"
 
 export default {
   init: (options = {}) => {
@@ -21,5 +22,6 @@ export default {
   platform,
   licensee,
   agent,
-  fund
+  fund,
+  gameProvider
 }
