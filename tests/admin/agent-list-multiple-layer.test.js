@@ -29,7 +29,6 @@ test("add multiple layer agents", async ({ page, licensee, backofficeApi }) => {
 
   await gotoAgentListPage(page, platform.code)
 
-  console.log("TODO: add first agent by api?")
   let agents = await addAgent(page, AgentDividendType.MultipleLayer)
   await configProfitSharing(page)
 

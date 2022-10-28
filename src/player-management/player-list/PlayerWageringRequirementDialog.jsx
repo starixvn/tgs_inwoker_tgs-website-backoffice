@@ -84,7 +84,15 @@ const WageringRequirementDialog = ({ playerCode, dialog, ...props }) => {
         hideBackdrop
         hideOnClickOutside={false}
         showCloseButton={true}
+        minWidth="max-content"
+        maxWidth="80vw"
         {...dialog}
+        css={css`
+          & .bb-DialogContent {
+            min-height: max-content;
+            max-height: 95vh;
+          }
+        `}
       >
         <FieldStack>
           <Table
@@ -96,6 +104,12 @@ const WageringRequirementDialog = ({ playerCode, dialog, ...props }) => {
             initialState={state}
             controlledState={state}
             isLoading={isLoading}
+            stickyHead
+            containerProps={{
+              maxHeight: "80vh",
+              minHeight: "max-content",
+              overflow: "auto"
+            }}
           />
         </FieldStack>
       </Dialog.Modal>
@@ -190,7 +204,15 @@ const CompletedWageringDialog = ({ playerBucketId, dialog, ...props }) => {
         hideBackdrop
         hideOnClickOutside={false}
         showCloseButton={true}
+        minWidth="max-content"
+        maxWidth="80vw"
         {...dialog}
+        css={css`
+          & .bb-DialogContent {
+            min-height: max-content;
+            max-height: 85vh;
+          }
+        `}
       >
         <FieldStack>
           <Table
@@ -202,6 +224,12 @@ const CompletedWageringDialog = ({ playerBucketId, dialog, ...props }) => {
             initialState={state}
             controlledState={state}
             isLoading={isLoading}
+            stickyHead
+            containerProps={{
+              maxHeight: "70vh",
+              minHeight: "max-content",
+              overflow: "auto"
+            }}
           />
         </FieldStack>
       </Dialog.Modal>

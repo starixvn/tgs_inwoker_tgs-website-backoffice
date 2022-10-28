@@ -63,4 +63,5 @@ test("view player wagering requirement list", async ({
   expect(wageringRequirement).to.equals(ExpectedWageringRequirementAmount)
 
   //TODO: how to test completed wagering
+  console.log("TODO: how to check completed wagering requirement?")
 })
