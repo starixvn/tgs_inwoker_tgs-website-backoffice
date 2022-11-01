@@ -13,7 +13,7 @@ import {
   Label,
   Dialog,
   Table,
-  useClassName,
+  useModalState,
   FieldStack,
   Switch
 } from "bumbag"
@@ -30,7 +30,7 @@ import AlertDialog from "../../dialog/Alert"
 import Backdrop from "../../dialog/Backdrop"
 import { Tab as _Tab, TabPanel } from "../../tab"
 import Disclosure from "../../dialog/Disclosure"
-import { Modal, useModalState } from "../../dialog/Modal"
+import { Modal } from "../../dialog/Modal"
 import { CancelText, SubmitText } from "../../button/ActionButtons"
 import Input from "../../input/Input"
 import FormDialog from "../../form/FormDialog"

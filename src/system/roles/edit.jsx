@@ -9,7 +9,7 @@ import {
   Button,
   Text,
   FieldStack,
-  FieldWrapper,
+  useModalState,
   Table,
   Set
 } from "bumbag"
@@ -36,7 +36,6 @@ import Disclosure from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
-import { useModalState } from "../../dialog/Modal"
 import cloneDeep from "clone-deep"
 import {
   RoleTypeSelect,

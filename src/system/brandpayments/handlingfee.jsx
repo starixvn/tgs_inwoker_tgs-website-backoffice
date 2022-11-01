@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Stack, Box, Button, Text, Modal, Dialog, Heading } from "bumbag"
-import { useModalState } from "../../dialog/Modal"
+import {
+  Stack,
+  Box,
+  Button,
+  Text,
+  useModalState,
+  Dialog,
+  Heading
+} from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"

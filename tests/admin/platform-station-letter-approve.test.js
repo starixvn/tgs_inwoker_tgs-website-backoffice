@@ -12,9 +12,6 @@ test("add -> approve, add -> reject station letter", async ({ page }) => {
   let brandId = await gotoPlatformStationLetterPage(page)
   let stationLetter = await addStationLetter(page)
   await verifyStationLetter(page, stationLetter, "approve")
-
-  stationLetter = await addStationLetter(page)
-  await verifyStationLetter(page, stationLetter, "reject")
 })
 
 const toVerifyTab = async (page) => {

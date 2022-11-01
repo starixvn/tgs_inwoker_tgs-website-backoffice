@@ -31,13 +31,13 @@ import AlertDialog from "../../dialog/Alert"
 import SequenceColumn from "../../table/column/sequence"
 import textColumn from "../../table/column/textColumn"
 import { Descending } from "../../table/order"
+import { Modal } from "../../dialog/Modal"
 
 export const PlayerWageringRequirementDialogDisclosure = ({
   playerCode,
   ...props
 }) => {
   let dialog = new useModalState()
-
   return (
     <>
       <Disclosure {...dialog} {...props}>
@@ -77,29 +77,24 @@ const WageringRequirementDialog = ({ playerCode, dialog, ...props }) => {
   }
 
   return (
-    <Backdrop {...dialog}>
-      <Dialog.Modal
-        id="wagering-requirement-dialog"
-        title={title}
-        hideBackdrop
-        hideOnClickOutside={false}
-        showCloseButton={true}
-        {...dialog}
-      >
-        <FieldStack>
-          <Table
-            columns={columns}
-            data={data?.items}
-            pageCount={pageCount(state.pageSize, data?.totalCount)}
-            setPageIndex={setPageIndex}
-            setSortOrder={setSortOrder}
-            initialState={state}
-            controlledState={state}
-            isLoading={isLoading}
-          />
-        </FieldStack>
-      </Dialog.Modal>
-    </Backdrop>
+    <Modal id="wagering-requirement-dialog" title={title} {...dialog}>
+      <Table
+        columns={columns}
+        data={data?.items}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        initialState={state}
+        controlledState={state}
+        isLoading={isLoading}
+        stickyHead
+        containerProps={{
+          maxHeight: "80vh",
+          minHeight: "max-content",
+          overflow: "auto"
+        }}
+      />
+    </Modal>
   )
 }
 
@@ -184,28 +179,26 @@ const CompletedWageringDialog = ({ playerBucketId, dialog, ...props }) => {
   }
 
   return (
-    <Backdrop {...dialog}>
-      <Dialog.Modal
-        title={title}
-        hideBackdrop
-        hideOnClickOutside={false}
-        showCloseButton={true}
-        {...dialog}
-      >
-        <FieldStack>
-          <Table
-            columns={columns}
-            data={data?.items}
-            pageCount={pageCount(state.pageSize, data?.totalCount)}
-            setPageIndex={setPageIndex}
-            setSortOrder={setSortOrder}
-            initialState={state}
-            controlledState={state}
-            isLoading={isLoading}
-          />
-        </FieldStack>
-      </Dialog.Modal>
-    </Backdrop>
+    <Modal title={title} {...dialog}>
+      <FieldStack>
+        <Table
+          columns={columns}
+          data={data?.items}
+          pageCount={pageCount(state.pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          initialState={state}
+          controlledState={state}
+          isLoading={isLoading}
+          stickyHead
+          containerProps={{
+            maxHeight: "70vh",
+            minHeight: "max-content",
+            overflow: "auto"
+          }}
+        />
+      </FieldStack>
+    </Modal>
   )
 }
 

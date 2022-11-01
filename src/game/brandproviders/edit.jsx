@@ -7,11 +7,10 @@ import {
   Box,
   Button,
   Text,
-  Group,
+  useModalState,
   Set,
   Flex
 } from "bumbag"
-import { useModalState } from "../../dialog/Modal"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { EditDisclosure } from "../../dialog/Disclosure"

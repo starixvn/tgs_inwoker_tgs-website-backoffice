@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, Level } from "bumbag"
+import { Heading, Stack, Box, Button, Alert, Set, Level, List } from "bumbag"
 import PageContent from "../../page/Content"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import {
@@ -124,26 +124,38 @@ const ReportContent = ({ licenseeId }) => {
       }
       title={<Trans zh="市场报表 - 公司" en="Market Report - Licensee" />}
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        getRowProps={({ original: { isTotal } } = {}) => {
-          if (isTotal) {
-            return {
-              backgroundColor: "white600",
-              fontWeight: "bold"
+      <Stack>
+        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+          <List listStyleType="disc" listStylePosition="inside">
+            <List.Item>
+              <Trans
+                zh="存款金额: 为已扣除手续费之金额。"
+                en="Deposit Amount: The amount after deducting the transfer fee."
+              />
+            </List.Item>
+          </List>
+        </Alert>
+        <Table
+          columns={columns}
+          data={data?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          getRowProps={({ original: { isTotal } } = {}) => {
+            if (isTotal) {
+              return {
+                backgroundColor: "white600",
+                fontWeight: "bold"
+              }
             }
-          }
-          return {}
-        }}
-        stickyHead
-      />
+            return {}
+          }}
+          stickyHead
+        />
+      </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )

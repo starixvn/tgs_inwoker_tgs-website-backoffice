@@ -7,7 +7,7 @@ export default {
   use: {
     acceptDownloads: true,
     launchOptions: {
-      slowMo: 10
+      slowMo: 1
     }
   }
 }

@@ -49,7 +49,7 @@ export const approveWithdraw = async (
     statusLocator.getAttribute("data-status"),
     operatorApi.wallet(platformToken, player.token)
   ])
-  expect(status).to.equal("Approved")
+  expect(status).to.equal("Approved", `status = ${status}, expected "Approved"`)
   expect(balance).to.equal(expectedBalance)
 
   return formId

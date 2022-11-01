@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Box, Dialog } from "bumbag"
+import { Box, Dialog, useModalState } from "bumbag"
 import { View as ViewMenu, Update as UpdateMenu, Contact } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import {
@@ -29,7 +29,6 @@ import {
   FormattedNumberDecimal
 } from "../../i18n"
 import Disclosure from "../../dialog/Disclosure"
-import { Modal, useModalState } from "../../dialog/Modal"
 import { Tabs, TabList, useTabState } from "../../tab"
 import {
   PlayerBalanceChangePanel,
