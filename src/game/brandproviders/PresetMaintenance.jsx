@@ -8,9 +8,9 @@ import {
   Group,
   Set,
   Table,
-  DropdownMenu
+  DropdownMenu,
+  useModalState
 } from "bumbag"
-import { useModalState } from "../../dialog/Modal"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { Disclosure } from "../../dialog/Disclosure"

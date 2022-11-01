@@ -99,6 +99,12 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
               <Trans
+                zh="存款金额: 为已扣除手续费之金额。"
+                en="Deposit Amount: The amount after deducting the transfer fee."
+              />
+            </List.Item>
+            <List.Item>
+              <Trans
                 zh="平台承担红利 = 红利金额 * (100% - 总代分红比例)。"
                 en="Platform-Covered Bonus = Bonus Amount * (100% - Chief Agent Profit Sharing Percentage)."
               />

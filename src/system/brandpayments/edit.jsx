@@ -18,11 +18,10 @@ import {
   Columns,
   Heading,
   Flex,
-  Group,
+  useModalState,
   List as _List,
   applyTheme
 } from "bumbag"
-import { useModalState } from "../../dialog/Modal"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"

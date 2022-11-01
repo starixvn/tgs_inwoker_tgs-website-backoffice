@@ -24,21 +24,15 @@ test("player apply withdraw form", async ({
   backofficeApi,
   operatorApi
 }) => {
-  if (platform.enablePlayerIdentity) {
-    await gotoPlatformListPage(page)
-    await searchPlatform(page, platform.code)
-    await updatePlatform(page, { enablePlayerIdentity: false })
-  }
-
   let depositAmount = 100
   await Promise.all([
     backofficeApi.player.addBalance(player.code, {
       amount: depositAmount
     }),
     operatorApi.player.addManualBankCard(platformToken, player.token),
-    gotoPlayerListPage(page, platform.code)
+    gotoPlayerListPage(page, platform.code),
+    searchPlayer(page, player)
   ])
-  await searchPlayer(page, player)
 
   let dialogSelector = `#apply-withdraw-form-dialog`
   await openDialog(page, dialogSelector)
@@ -49,7 +43,9 @@ test("player apply withdraw form", async ({
     note: lorem.word()
   }
 
+  //TODO: select by id?
   await selectRandomOption(page, `${dialogSelector} select[name="bankInfoId"]`)
+
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)
   await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
 

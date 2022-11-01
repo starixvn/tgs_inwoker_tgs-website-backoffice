@@ -11,7 +11,8 @@ import {
   FieldStack,
   Icon,
   Level,
-  Alert
+  Alert,
+  List
 } from "bumbag"
 import PageContent from "../../page/Content"
 import {
@@ -165,6 +166,16 @@ const ReportContent = ({ brandId }) => {
       title={<Trans zh="代理贡献报表" en="Agent Contribution Report" />}
     >
       <FieldStack>
+        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+          <List listStyleType="disc" listStylePosition="inside">
+            <List.Item>
+              <Trans
+                zh="存款金额: 为已扣除手续费之金额。"
+                en="Deposit Amount: The amount after deducting the transfer fee."
+              />
+            </List.Item>
+          </List>
+        </Alert>
         <AgentBreadcrumb usernames={usernames} setUsernames={setUsernames} />
         {username && (
           <Table

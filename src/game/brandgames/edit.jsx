@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react"
-import { css, Stack, Heading, Box, Button, Text } from "bumbag"
-import { useModalState } from "../../dialog/Modal"
+import { css, Stack, Heading, Box, Button, useModalState } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { EditDisclosure } from "../../dialog/Disclosure"

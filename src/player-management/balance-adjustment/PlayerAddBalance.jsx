@@ -146,12 +146,6 @@ const FormBody = ({}) => {
   })
 
   let TransactionAmountField = "amount"
-  let transactionAmount = useWatch({
-    control,
-    name: TransactionAmountField
-  })
-
-  let hasTransactionAmount = !!transactionAmount
   return (
     <>
       <FieldValues margin="1rem">
@@ -164,10 +158,7 @@ const FormBody = ({}) => {
           <Trans zh="交易类型" en="Transaction Type" />
         </Box>
         <Set>
-          <PlayerAdjustBalanceTypeSelect
-            name={TransactionTypeField}
-            required={hasTransactionAmount}
-          />
+          <PlayerAdjustBalanceTypeSelect name={TransactionTypeField} required />
         </Set>
 
         {showIncludeInNetProfitSetting(transactionType) && (
