@@ -6,7 +6,18 @@ import {
   useFormContext,
   useWatch
 } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, Link, Text, Level } from "bumbag"
+import {
+  Heading,
+  Stack,
+  Box,
+  Button,
+  Set,
+  Link,
+  Text,
+  Alert,
+  Level,
+  List
+} from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -152,19 +163,31 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
       }
       title={<Trans zh="玩家贡献报表" en="Player Contribution Report" />}
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        total={data?.items?.length > 0 && data?.total}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        foot={data?.items?.length > 0}
-        stickyHead
-      />
+      <Stack>
+        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+          <List listStyleType="disc" listStylePosition="inside">
+            <List.Item>
+              <Trans
+                zh="存款金额: 为已扣除手续费之金额。"
+                en="Deposit Amount: The amount after deducting the transfer fee."
+              />
+            </List.Item>
+          </List>
+        </Alert>
+        <Table
+          columns={columns}
+          data={data?.items}
+          total={data?.items?.length > 0 && data?.total}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          foot={data?.items?.length > 0}
+          stickyHead
+        />
+      </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
