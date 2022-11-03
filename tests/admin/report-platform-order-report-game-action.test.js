@@ -31,7 +31,6 @@ test("view platform order report", async ({
 
   await searchPlayer(page, player)
 
-  await viewGameRoundDialog({ page, player, betAmount, betResult })
   await viewGameActionDialog({ page, player, betAmount, betResult })
 })
 
@@ -45,20 +44,6 @@ const searchPlayer = async (page, player) => {
       )
     }),
     page.click(`button[type="submit"]`)
-  ])
-}
-
-const viewGameRoundDialog = async ({ page, player, betAmount, betResult }) => {
-  let GameRoundDialog = `#game-round-dialog`
-  await openDialog(page, GameRoundDialog)
-
-  let betAmountLocator = page.locator(`${GameRoundDialog} #bet-amount`)
-  let betAmountString = await betAmountLocator.textContent()
-  expect(numeral(betAmountString).value()).to.equals(betAmount)
-
-  await Promise.all([
-    page.click(`${GameRoundDialog} button#close-dialog`),
-    page.waitForSelector(GameRoundDialog, { state: "detached" })
   ])
 }
 

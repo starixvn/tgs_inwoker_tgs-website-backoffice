@@ -36,6 +36,7 @@ import formatXml from "xml-formatter"
 import { stringifyJSON } from "../../text/json"
 import { ConfigPaths } from "../../text/editor/MonacoEditor"
 import Disclosure from "../../dialog/Disclosure"
+import { Modal } from "../../dialog/Modal"
 
 loader.config({
   paths: ConfigPaths
@@ -96,21 +97,9 @@ export const GameRoundDialog = ({
   }
 
   return (
-    <Dialog.Modal
-      id={dialogId}
-      title={title}
-      showCloseButton
-      hideOnClickOutside={false}
-      maxWidth="100vw"
-      minWidth="80vw"
-      placement="top"
-      hideBackdrop={hideBackdrop}
-      footer={<CloseButtonFooter dialog={dialog} />}
-      {...dialog}
-      {...props}
-    >
+    <Modal id={dialogId} title={title} placement="top" {...dialog} {...props}>
       <Set orientation="vertical" isFilled>
-        <Columns flexWrap="nowrap" spacing="major-4" marginBottom="0">
+        <Columns flexWrap="nowrap" spacing="major-1" marginBottom="0">
           <Columns.Column>
             <FieldValues>
               <NormalLabel>
@@ -173,7 +162,7 @@ export const GameRoundDialog = ({
           width="100%"
           borderBottom="none"
         ></Box>
-        <Columns flexWrap="nowrap" spacing="major-4" marginTop="minor-1">
+        <Columns flexWrap="nowrap" spacing="major-1" marginTop="minor-1">
           <Columns.Column>
             <FieldValues>
               <NormalLabel>
@@ -259,7 +248,7 @@ export const GameRoundDialog = ({
         </Columns>
         <GameRoundDataCard value={data?.data} />
       </Set>
-    </Dialog.Modal>
+    </Modal>
   )
 }
 
@@ -275,11 +264,7 @@ const EmptyPlaceholderValue = () => (
 
 const GameRoundDataCard = ({ value: items = [], ...props }) => {
   return (
-    <Card
-      title={<Trans zh="开奖结果" en="Result" />}
-      variant="bordered"
-      spacing="major-1"
-    >
+    <Card title={<Trans zh="开奖结果" en="Result" />} variant="bordered">
       <Set orientation="vertical" isFilled>
         {items.map((item, index) => (
           <GameRoundDataContent key={index} value={item} />
@@ -339,7 +324,7 @@ const JsonContent = ({ value = "" }) => {
   return (
     <MonacoEditor
       defaultLanguage="JSON"
-      height="25vh"
+      height="30vh"
       value={formattedValue}
       options={{
         readOnly: true,
@@ -361,7 +346,7 @@ const XmlContent = ({ value = "", ...props }) => {
   return (
     <MonacoEditor
       defaultLanguage="XML"
-      height="25vh"
+      height="30vh"
       value={formattedValue}
       options={{
         readOnly: true,
