@@ -8,7 +8,12 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
-test("system admin > game provider round", async ({ page, player, backofficeApi, sboGameProviderApi }) => {
+test("system admin > game provider round", async ({
+  page,
+  player,
+  backofficeApi,
+  sboGameProviderApi
+}) => {
   let walletAmount = 100
   await Promise.all([
     backofficeApi.player.addBalance(player.code, {
@@ -25,7 +30,6 @@ test("system admin > game provider round", async ({ page, player, backofficeApi,
 
   await searchRound(page, player)
 
-  await viewGameRoundDialog({ page, player, betAmount, betResult })
   await viewGameActionDialog({ page, player, betAmount, betResult })
 })
 
@@ -52,20 +56,6 @@ const searchRound = async (page, player) => {
     `${FirstRowSelector} td[data-column-id="playerCode"]`
   )
   expect(playerCode).equals(player.code)
-}
-
-const viewGameRoundDialog = async ({ page, player, betAmount, betResult }) => {
-  let GameRoundDialog = `#game-round-dialog`
-  await openDialog(page, GameRoundDialog)
-
-  let betAmountLocator = page.locator(`${GameRoundDialog} #bet-amount`)
-  let betAmountString = await betAmountLocator.textContent()
-  expect(numeral(betAmountString).value()).to.equals(betAmount)
-
-  await Promise.all([
-    page.click(`${GameRoundDialog} button#close-dialog`),
-    page.waitForSelector(GameRoundDialog, { state: "detached" })
-  ])
 }
 
 const viewGameActionDialog = async ({ page, player, betAmount, betResult }) => {
