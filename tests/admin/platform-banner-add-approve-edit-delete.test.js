@@ -10,7 +10,7 @@ import faker from "@faker-js/faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("add -> approver -> change status -> update -> reject banner", async ({
+test("add -> approve -> change status -> update -> reject banner", async ({
   page
 }) => {
   await gotoBannerPage(page)
@@ -28,11 +28,6 @@ test("add -> approver -> change status -> update -> reject banner", async ({
 
   await editValidBanner(page, brandId, banner)
   await toEffectiveTab(page)
-  await deleteBanner(page)
-
-  banner = await addBanner(page, brandId)
-  await verifyBanner(page, brandId, banner, "reject")
-  await toRejectedTab(page)
   await deleteBanner(page)
 })
 
