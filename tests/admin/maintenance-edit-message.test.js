@@ -10,30 +10,26 @@ import { random } from "lodash-es"
 
 const test = base.extend(Fixture)
 const { finance, lorem } = faker
-test("platform maintenance edit message", async ({ page, platform }) => {
+test("platform maintenance edit message", async ({
+  page,
+  platform,
+  backofficeApi
+}) => {
   await gotoMaintenancePage(page)
 
-  await searchBy(page, platform.code)
-
-  let expectedMessage = await updateMessage(page)
-  await viewMessage(page, expectedMessage)
-})
-
-const viewMessage = async (page, expectedMessage) => {
-  let dialogSelector = `#view-maintenance-message-dialog`
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes("api/BrandMaintenance/") &&
-        response.status() === 200
-      )
-    }),
-    openDialog(page, dialogSelector)
+  let [maintenance] = await Promise.all([
+    backofficeApi.platform.maintenance.findByPlatformCode(platform.code),
+    searchBy(page, platform.code)
   ])
 
-  let message = await page.textContent(`${dialogSelector} #content`)
-  expect(message).includes(expectedMessage)
-}
+  let expectedMessage = await updateMessage(page)
+
+  let message = await backofficeApi.platform.maintenance.getMessage(
+    maintenance.brandMaintenanceId
+  )
+
+  expect(message).to.equals(expectedMessage)
+})
 
 const updateMessage = async (page, message = lorem.word()) => {
   let dialogSelector = `#edit-maintenance-message-dialog`
