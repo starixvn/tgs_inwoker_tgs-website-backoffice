@@ -31,7 +31,7 @@ export const PageContent = ({
   ...props
 }) => {
   return (
-    <Store.Provider>
+    <Store.Provider value={{}}>
       <_PageContent
         maxWidth="unset"
         height={height}

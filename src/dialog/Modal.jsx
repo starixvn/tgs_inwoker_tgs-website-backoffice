@@ -33,6 +33,7 @@ export const Modal = ({
         showCloseButton={showCloseButton}
         hideBackdrop
         css={css`
+          min-width: 320px;
           width: max-content;
           max-width: 85vw;
 

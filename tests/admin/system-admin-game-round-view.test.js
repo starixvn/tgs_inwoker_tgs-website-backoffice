@@ -8,7 +8,7 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
-test("system admin > game provider round", async ({
+test("view game round", async ({
   page,
   player,
   backofficeApi,

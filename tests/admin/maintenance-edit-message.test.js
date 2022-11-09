@@ -36,7 +36,15 @@ const updateMessage = async (page, message = lorem.word()) => {
   await openDialog(page, dialogSelector)
 
   await page.fill(`${dialogSelector} [name="content"]`, message)
-  await page.click(`${dialogSelector} button[type="submit"]`)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/BrandMaintenance/content/`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`${dialogSelector} button[type="submit"]`)
+  ])
 
   return message
 }
