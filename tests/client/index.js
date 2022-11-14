@@ -9,6 +9,7 @@ import licensee from "./licensee/index.js"
 import agent from "./agent/index.js"
 import fund from "./fund/index.js"
 import gameProvider from "./gameProvider/index.js"
+import system from "./system/index.js"
 
 export default {
   init: (options = {}) => {
@@ -23,5 +24,6 @@ export default {
   licensee,
   agent,
   fund,
-  gameProvider
+  gameProvider,
+  system
 }
