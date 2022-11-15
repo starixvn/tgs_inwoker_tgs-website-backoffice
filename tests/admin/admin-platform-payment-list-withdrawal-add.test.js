@@ -14,7 +14,7 @@ test("add, search, edit and view platform deposit payment", async ({
   const BankTransferCode = "BankTransfer"
 
   let [bankTransferPaymentMethod, brandId] = await Promise.all([
-    backofficeApi.payment.findPaymentMethod(BankTransferCode),
+    backofficeApi.payment.method.find(BankTransferCode),
     gotoAdminPlatformPaymentListPage(page)
   ])
 

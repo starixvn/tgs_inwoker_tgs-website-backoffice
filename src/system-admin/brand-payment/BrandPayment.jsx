@@ -17,16 +17,8 @@ import {
   Columns,
   DropdownMenu
 } from "bumbag"
-import {
-  useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserRoleType,
-  useUserRoleId
-} from "../../user/context"
-import Disclosure, {
-  AddDisclosure,
-  EditDisclosure
-} from "../../dialog/Disclosure"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { EditDisclosure } from "../../dialog/Disclosure"
 import {
   useForm,
   useFormContext,
@@ -40,15 +32,13 @@ import Backdrop from "../../dialog/Backdrop"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
-import { Table } from "../../table"
-import textColumn from "../../table/column/textColumn"
 import { InputField, Input } from "../../input/Input"
-import { CheckboxField } from "../../checkbox/Checkbox"
 import {
   useAddDepositBrandPayment,
   useAddWithdrawBrandPayment,
   useBrandPayment,
-  useUpdateBrandPayment
+  useUpdateBrandPayment,
+  useUpdateBrandPaymentExtendeddata
 } from "../../system/brandpayments/client"
 import BrandPaymentStatus, {
   BrandPaymentStatusSelect
@@ -68,7 +58,9 @@ import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTra
 
 export const EditBrandPaymentDisclosure = ({
   platformPaymentId,
-  onSubmitted
+  onSubmitted,
+  id,
+  dialogId = "edit-platform-payment-dialog"
 }) => {
   let dialog = useModalState()
 
@@ -77,14 +69,16 @@ export const EditBrandPaymentDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure id={id} {...dialog} />
       {dialog.visible && (
         <EditDialog
           platformPaymentId={platformPaymentId}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -147,7 +141,7 @@ export const AddBrandPaymentDisclosure = ({ brandId, onSubmitted }) => {
   )
 }
 
-const EditDialog = ({ platformPaymentId, onSubmitted, dialog }) => {
+const EditDialog = ({ platformPaymentId, onSubmitted, dialog, dialogId }) => {
   let title = useTrans({
     zh: "Edit",
     en: "Edit"
@@ -162,15 +156,11 @@ const EditDialog = ({ platformPaymentId, onSubmitted, dialog }) => {
   } = useBrandPayment(platformPaymentId)
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, deleteCache, mutate } = useUpdateBrandPayment(
-    platformPaymentId,
-    formData
-  )
+  let { isLoading, result, error, deleteCache, mutate } =
+    useUpdateBrandPaymentExtendeddata(platformPaymentId, formData)
 
   const onSubmit = ({ extendedData, ...data }) => {
     setSubmit({
-      ...record,
-      ...data,
       extendedData: parseJSON(extendedData)
     })
   }
@@ -204,8 +194,8 @@ const EditDialog = ({ platformPaymentId, onSubmitted, dialog }) => {
 
   return (
     <FormDialog
+      id={dialogId}
       defaultValues={{
-        ...clone(record),
         extendedData: stringifyJSON(record?.extendedData)
       }}
       onSubmit={onSubmit}

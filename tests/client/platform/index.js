@@ -5,6 +5,7 @@ import { addPlatform } from "./addPlatform.js"
 import * as withdrawPayment from "./withdrawPayment.js"
 import * as liveChat from "./liveChat.js"
 import * as maintenance from "./maintenance.js"
+import payment from "./payment.js"
 
 export default {
   findPlatform,
@@ -13,5 +14,6 @@ export default {
   addPlatform,
   withdrawPayment,
   liveChat,
-  maintenance
+  maintenance,
+  payment
 }
