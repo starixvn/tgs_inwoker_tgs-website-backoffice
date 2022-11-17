@@ -157,8 +157,8 @@ const CompletedWageringDisclosure = ({ playerBucketId, value, ...props }) => {
 
 const CompletedWageringDialog = ({ playerBucketId, dialog, ...props }) => {
   let title = useTrans({
-    zh: "已达流水",
-    en: "Completed Wagering"
+    zh: "流水细项",
+    en: "Turnover Details"
   })
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({})

@@ -82,7 +82,21 @@ export const get = async (id) => {
   return response.json()
 }
 
+export const firstBankManualDepositPayment = async (brandId) => {
+  let paymentList = await listDeposit(brandId)
+
+  let bankPaymentList = paymentList.filter(
+    ({ bankType, paymentName }) =>
+      bankType === "Bank" && paymentName === "Manual"
+  )
+
+  let FirstIndex = 0
+  let bankPayment = bankPaymentList[FirstIndex]
+  return bankPayment
+}
+
 export default {
   addDeposit,
-  get
+  get,
+  firstBankManualDepositPayment
 }

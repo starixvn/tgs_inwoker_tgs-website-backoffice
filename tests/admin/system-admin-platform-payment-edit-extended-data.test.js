@@ -11,10 +11,12 @@ test("edit platform payment extended data", async ({
   platform,
   backofficeApi
 }) => {
-  await page.goto("/systemadmin/brandpayments", { waitUntil: "networkidle" })
-  let platformPayment = await backofficeApi.platform.payment.addDeposit({
-    brandId: platform.id
-  })
+  let [platformPayment] = await Promise.all([
+    backofficeApi.platform.payment.addDeposit({
+      brandId: platform.id
+    }),
+    page.goto("/systemadmin/brandpayments", { waitUntil: "networkidle" })
+  ])
 
   await page.fill(`input[name="keyword"]`, platformPayment.channelName)
   await Promise.all([
@@ -40,7 +42,8 @@ test("edit platform payment extended data", async ({
     openDialog(page, DialogSelector)
   ])
 
-  let jsonString = faker.datatype.json()
+  let expected = { string: `${faker.lorem.word()}-${Date.now()}` }
+  let jsonString = JSON.stringify(expected)
   await page.click(`${DialogSelector} .monaco-editor .monaco-mouse-cursor-text`)
   await page.keyboard.press("Control+A")
   await page.keyboard.press("Backspace")
@@ -56,5 +59,8 @@ test("edit platform payment extended data", async ({
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 
-  //TODO: how to check extendeddata?
+  let platformPaymentRecord = await backofficeApi.platform.payment.get(
+    platformPayment.id
+  )
+  expect(platformPaymentRecord.extendedData.string).to.equals(expected.string)
 })
