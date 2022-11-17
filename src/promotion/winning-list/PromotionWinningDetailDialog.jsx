@@ -4,11 +4,15 @@ import { Stack, Box, Text, Dialog, useModalState } from "bumbag"
 import { DetailDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
 import { Modal } from "../../dialog/Modal"
+import { usePromotionWinningDetail } from "./client"
+import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import AlertDialog from "../../dialog/Alert"
+import { JsonEditor } from "../../text/editor/JsonEditor"
 
 export const PromotionWinningDetailDialogDisclosure = ({
   id,
   dialogId = "promotion-winning-detail-dialog",
-  detailId,
+  recordId,
   ...props
 }) => {
   let dialog = useModalState()
@@ -18,21 +22,29 @@ export const PromotionWinningDetailDialogDisclosure = ({
     <>
       <DetailDisclosure {...dialog} />
       {dialog.visible && (
-        <DetailDialog detailId={detailId} dialog={dialog} dialogId={dialogId} />
+        <DetailDialog recordId={recordId} dialog={dialog} dialogId={dialogId} />
       )}
     </>
   )
 }
 
-const DetailDialog = ({ detailId, dialog, dialogId }) => {
+const DetailDialog = ({ recordId, dialog, dialogId }) => {
   let title = useTrans({
     zh: "详情",
     en: "Detail"
   })
 
+  let { isLoading, data, error } = usePromotionWinningDetail(recordId)
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
+
   return (
-    <Modal id={dialogId} title={title} {...dialog}>
-      Detail
+    <Modal id={dialogId} title={title} {...dialog} minWidth="40vw">
+      <JsonEditor height="30vh" value={data} disabled />
     </Modal>
   )
 }

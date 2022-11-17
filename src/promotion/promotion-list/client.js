@@ -18,10 +18,12 @@ export const usePromotionList = (searchParams) => {
   return useGet(url)
 }
 
+/*
 export const usePromotion = (id) => {
   let url = id ? urlWith(searchParams, `${API}/${id}`) : ""
   return useGet(url)
 }
+*/
 
 export const usePromotionRule = (id) => {
   let url = id ? `${API}/rule/${id}` : ""

@@ -207,10 +207,10 @@ const useColumns = ({ items = [] }) => {
         accessor: (row) => row,
         Header: <Trans zh="详情" en="Detail" />,
         disableSortBy: true,
-        Cell: ({ value }) => {
+        Cell: ({ value: record }) => {
           return (
             <Set alignX="center">
-              <PromotionWinningDetailDialogDisclosure />
+              <PromotionWinningDetailDialogDisclosure recordId={record.id} />
             </Set>
           )
         }
