@@ -8,10 +8,12 @@ import faker from "@faker-js/faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("add -> approve, add -> reject station letter", async ({ page }) => {
+test("approve station letter", async ({ page }) => {
   let brandId = await gotoPlatformStationLetterPage(page)
+
   let stationLetter = await addStationLetter(page)
   await verifyStationLetter(page, stationLetter, "approve")
+  //TODO: get station letter id from?
 })
 
 const toVerifyTab = async (page) => {

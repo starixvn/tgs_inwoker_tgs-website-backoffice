@@ -79,6 +79,7 @@ const WageringRequirementDialog = ({ playerCode, dialog, ...props }) => {
   return (
     <Modal id="wagering-requirement-dialog" title={title} {...dialog}>
       <Table
+        id="wagering-requirement"
         columns={columns}
         data={data?.items}
         pageCount={pageCount(state.pageSize, data?.totalCount)}
@@ -157,8 +158,8 @@ const CompletedWageringDisclosure = ({ playerBucketId, value, ...props }) => {
 
 const CompletedWageringDialog = ({ playerBucketId, dialog, ...props }) => {
   let title = useTrans({
-    zh: "已达流水",
-    en: "Completed Wagering"
+    zh: "流水细项",
+    en: "Turnover Details"
   })
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({})

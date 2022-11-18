@@ -47,8 +47,11 @@ import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import { useBrand } from "../../merchant/platforms/client"
 import { isValidDate } from "../../date/isValidDate"
 import { min, max, endOfToday } from "date-fns"
+import { Modal } from "../../dialog/Modal"
 
 export const AddGameProviderRoundDialogDisclosure = ({
+  id,
+  dialogId = "add-game-provider-round-dialog",
   onSubmitted,
   ...props
 }) => {
@@ -59,17 +62,22 @@ export const AddGameProviderRoundDialogDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <AddDisclosure {...dialog} />
+      <AddDisclosure id={id} {...dialog} {...props} />
       {dialog.visible && (
-        <AddRoundDialog dialog={dialog} onSubmitted={onSubmitted} />
+        <AddRoundDialog
+          dialog={dialog}
+          dialogId={dialogId}
+          onSubmitted={onSubmitted}
+        />
       )}
     </>
   )
 }
 
-const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
+const AddRoundDialog = ({ onSubmitted, dialog, dialogId, ...props }) => {
   let title = useTrans({
     zh: "新增订单",
     en: "Add Round"
@@ -84,7 +92,6 @@ const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
     useAddSystemGameRound(formData)
 
   const onSubmit = (data) => {
-    console.log("onSubmit > data", data)
     setSubmit(data)
   }
 
@@ -96,6 +103,7 @@ const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id={dialogId}
       formRef={formRef}
       defaultValues={{}}
       onSubmit={onSubmit}
@@ -119,24 +127,21 @@ const AddRoundDialog = ({ onSubmitted, dialog, ...props }) => {
     >
       <FormBody />
       {confirmSubmitDialog.visible && (
-        <Backdrop {...confirmSubmitDialog}>
-          <Dialog.Modal
-            actionButtonsProps={{
-              submitText: <SubmitText />,
-              cancelText: <CancelText />,
-              onClickSubmit: () => {
-                confirmSubmitDialog.hide()
-                formRef.current.dispatchEvent(
-                  new Event("submit", { cancelable: true })
-                )
-              }
-            }}
-            {...confirmSubmitDialog}
-            showActionButtons
-          >
-            <Trans zh="確認送出?" en="Confirm Submit?" />
-          </Dialog.Modal>
-        </Backdrop>
+        <Modal
+          id="confirm-dialog"
+          actionButtonsProps={{
+            submitText: <SubmitText />,
+            cancelText: <CancelText />,
+            onClickSubmit: () => {
+              confirmSubmitDialog.hide()
+              formRef.current.requestSubmit()
+            }
+          }}
+          {...confirmSubmitDialog}
+          showActionButtons
+        >
+          <Trans zh="確認送出?" en="Confirm Submit?" />
+        </Modal>
       )}
     </FormDialog>
   )
@@ -209,6 +214,7 @@ const FormBody = ({}) => {
       />
       <FieldStack orientation="horizontal">
         <FieldWrapper
+          id={ExternalCreatedOnField}
           label={<Trans zh="三方投注时间" en="External Created On" />}
         >
           <DateTimeInput
@@ -218,6 +224,7 @@ const FormBody = ({}) => {
           />
         </FieldWrapper>
         <FieldWrapper
+          id={ExternalClosedOnField}
           label={<Trans zh="三方结算时间" en="External Closed On" />}
         >
           <DateTimeInput

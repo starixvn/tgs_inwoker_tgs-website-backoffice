@@ -15,9 +15,13 @@ export const addBalance = async (
   let response = await fetcher.post(
     `${host}/${API}/${agentId}/adjust/increase`,
     {
-      data: formData,
-      failOnStatusCode: true
+      data: formData
     }
   )
-  return await response.json()
+
+  let result = await response.json()
+  if (!result.valid) {
+    console.error("agent addBalance faile", result)
+  }
+  return result
 }

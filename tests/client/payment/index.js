@@ -1,6 +1,5 @@
-import { getPaymentMethods, findPaymentMethod } from "./paymentMethod.js"
+import method from "./method.js"
 
 export default {
-  getPaymentMethods,
-  findPaymentMethod
+  method
 }

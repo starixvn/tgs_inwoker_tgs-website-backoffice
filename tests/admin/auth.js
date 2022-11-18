@@ -49,6 +49,20 @@ export const Fixture = {
     })
     use(backofficeApi)
   },
+  promotionSetting: async ({ backofficeApi }, use) => {
+    const key = "PromotionTypes"
+
+    let promotionSettings = await backofficeApi.system.admin.setting.get(key)
+    if (!promotionSettings) {
+      await backofficeApi.system.admin.setting.add({
+        key,
+        value: PromotionSettingsString
+      })
+      promotionSettings = await backofficeApi.system.admin.setting.get(key)
+    }
+
+    use(promotionSettings)
+  },
   operatorApi: async ({}, use) => {
     use(operatorApi)
   },
@@ -87,3 +101,181 @@ export const Fixture = {
     use(agent)
   }
 }
+
+const PromotionSettingsString = JSON.stringify([
+  {
+    Name: "Deposit",
+    Types: [
+      {
+        Name: "FirstDeposit",
+        SettlementIntervalType: "Instantly",
+        Trans: {
+          En: "Account First Deposit",
+          Zh: "帳號首充"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      },
+      {
+        Name: "DailyFirstDeposit",
+        SettlementIntervalType: "Instantly",
+        Trans: {
+          En: "Daily First Deposit",
+          Zh: "每日首充"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      },
+      {
+        Name: "DailySecondDeposit",
+        SettlementIntervalType: "Instantly",
+        Trans: {
+          En: "Daily Re-Deposit",
+          Zh: "每日再充"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      },
+      {
+        Name: "DepositReward",
+        Trans: {
+          En: "Basic Deposit Bonus",
+          Zh: "充就送"
+        },
+        unlimited: {
+          checked: true,
+          disabled: true
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      }
+    ],
+    Trans: {
+      En: "Deposit",
+      Zh: "充值送"
+    }
+  },
+  {
+    Name: "Turnover",
+    Types: [
+      {
+        Name: "TurnoverRebate",
+        SettlementIntervalType: "Daily",
+        Trans: {
+          En: "Daily Turnover Rebate",
+          Zh: "每日流水返水"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      },
+      {
+        Name: "TurnoverRebateWeekly",
+        SettlementIntervalType: "Weekly",
+        Trans: {
+          En: "Weekly Turnover Rebate",
+          Zh: "每周流水反水"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      }
+    ],
+    Trans: {
+      En: "Turnover",
+      Zh: "流水"
+    }
+  },
+  {
+    Name: "ReliefMoney",
+    Types: [
+      {
+        Name: "ReliefMoneyDaily",
+        SettlementIntervalType: "Daily",
+        Trans: {
+          En: "Daily SOS",
+          Zh: "每日救援金"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      },
+      {
+        Name: "ReliefMoneyWeekly",
+        SettlementIntervalType: "Weekly",
+        Trans: {
+          En: "Weekly SOS",
+          Zh: "每周救援金"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      },
+      {
+        Name: "ReliefMoneyMonthly",
+        SettlementIntervalType: "Monthly",
+        Trans: {
+          En: "Monthly SOS",
+          Zh: "每月救援金"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      }
+    ],
+    Trans: {
+      En: "SOS",
+      Zh: "救援金"
+    }
+  },
+  {
+    Name: "NewUser",
+    Types: [
+      {
+        Name: "Register",
+        SettlementIntervalType: "Instantly",
+        Trans: {
+          En: "Register",
+          Zh: "首次註冊"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        }
+      }
+    ],
+    Trans: {
+      En: "New User",
+      Zh: "新用戶"
+    }
+  },
+  {
+    Name: "Dummy",
+    Types: [
+      {
+        Name: "Dummy",
+        Trans: {
+          En: "Dummy",
+          Zh: "基本活動"
+        }
+      }
+    ],
+    Trans: {
+      En: "Dummy",
+      Zh: "基本活動"
+    }
+  }
+])

@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box, Button, Set, Text, Flex, Stack, Dialog } from "bumbag"
-import {
-  useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserRoleType,
-  useUserRoleId,
-  useUserBrandId
-} from "../../user/context"
+import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Code, View, Update } from "./menu"
 import textColumn from "../../table/column/textColumn"

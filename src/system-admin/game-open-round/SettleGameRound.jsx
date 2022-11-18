@@ -6,25 +6,17 @@ import {
   Box,
   Button,
   Text,
-  Group,
-  Set,
-  Flex,
   FieldStack,
   useModalState,
   Dialog,
-  Card,
   FieldWrapper,
-  Alert,
   Spinner
 } from "bumbag"
 import { Disclosure } from "../../dialog/Disclosure"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
-import LoadingBackdrop from "../../dialog/LoadingBackdrop"
-import { Table } from "../../table"
-import textColumn from "../../table/column/textColumn"
 import { Update } from "./menu"
-import { useForm, useFormContext } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { NumberInputField } from "../../input/NumberInput"
 import { TextareaField } from "../../textarea"
 import { FormDialog } from "../../form/FormDialog"
@@ -39,6 +31,7 @@ import { ConfirmText } from "../../button/ActionButtons"
 import DateTimeInput from "../../date/DateTimeInput"
 import Separator from "../../layout/Separator"
 import { usePlayerMainWallet } from "../../player-management/player-list/client"
+import Modal from "../../dialog/Modal"
 
 export const SettleGameRoundDialogDisclosure = ({
   roundId,
@@ -135,9 +128,7 @@ const SettleGameRoundDialog = ({
         <ConfirmSubmitDialog
           dialog={confirmSubmitDialog}
           onSubmit={() => {
-            formRef.current.dispatchEvent(
-              new Event("submit", { cancelable: true })
-            )
+            formRef.current.requestSubmit()
           }}
         />
       )}
@@ -147,25 +138,23 @@ const SettleGameRoundDialog = ({
 
 const ConfirmSubmitDialog = ({ dialog, onSubmit }) => {
   return (
-    <Backdrop {...dialog}>
-      <Dialog.Modal
-        id="confirm-dialog"
-        title="Are you sure?"
-        {...dialog}
-        showActionButtons
-        actionButtonsProps={{
-          onClickSubmit: () => {
-            dialog.hide()
-            onSubmit?.()
-          }
-        }}
-        type="danger"
-        hideOnClickOutside={false}
-      >
-        Are You Sure? The Round will be canceled permanently, and still need to
-        proceed player’s balance adjustment for the player.
-      </Dialog.Modal>
-    </Backdrop>
+    <Modal
+      id="confirm-dialog"
+      title="Are you sure?"
+      {...dialog}
+      showActionButtons
+      actionButtonsProps={{
+        onClickSubmit: () => {
+          dialog.hide()
+          onSubmit?.()
+        }
+      }}
+      type="danger"
+      hideOnClickOutside={false}
+    >
+      Are You Sure? The Round will be canceled permanently, and still need to
+      proceed player’s balance adjustment for the player.
+    </Modal>
   )
 }
 
