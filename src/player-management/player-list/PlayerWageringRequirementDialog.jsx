@@ -79,6 +79,7 @@ const WageringRequirementDialog = ({ playerCode, dialog, ...props }) => {
   return (
     <Modal id="wagering-requirement-dialog" title={title} {...dialog}>
       <Table
+        id="wagering-requirement"
         columns={columns}
         data={data?.items}
         pageCount={pageCount(state.pageSize, data?.totalCount)}

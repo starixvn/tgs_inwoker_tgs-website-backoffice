@@ -51,8 +51,9 @@ test("view player wagering requirement list", async ({
   ])
 
   let wageringRequirementLocator = page.locator(
-    `${WageringRequirementDialogSelector} [data-column-id="wageringRequirement"]`
+    `${WageringRequirementDialogSelector} table#wagering-requirement [data-column-id="wageringRequirement"]`
   )
+
   let wageringRequirementString = await wageringRequirementLocator.textContent()
   let wageringRequirement = numeral(wageringRequirementString).value()
   expect(wageringRequirement).to.equals(ExpectedWageringRequirementAmount)

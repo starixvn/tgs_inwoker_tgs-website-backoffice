@@ -49,6 +49,12 @@ test("edit platform payment extended data", async ({
   await page.keyboard.press("Backspace")
   await page.keyboard.type(jsonString)
 
+  const halfSecond = 500
+  await page.waitForTimeout(halfSecond)
+
+  let SubmitSelector = `${DialogSelector} button[type="submit"]`
+  await page.focus(SubmitSelector)
+
   await Promise.all([
     page.waitForResponse((response) => {
       return (
@@ -56,8 +62,9 @@ test("edit platform payment extended data", async ({
         response.status() === 200
       )
     }),
-    page.click(`${DialogSelector} button[type="submit"]`)
+    page.click(SubmitSelector)
   ])
+  await page.waitForSelector(DialogSelector, { state: "detached" })
 
   let platformPaymentRecord = await backofficeApi.platform.payment.get(
     platformPayment.id
