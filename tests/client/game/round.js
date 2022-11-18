@@ -14,7 +14,7 @@ export const add = async ({
   gameId,
   externalCreatedOn = startOfDay(new Date()).toISOString(),
   externalClosedOn = startOfDay(new Date()).toISOString(),
-  betAmount,
+  betAmount = 1,
   validBetAmount = 1,
   settleAmount = 1,
   commission = 1,
