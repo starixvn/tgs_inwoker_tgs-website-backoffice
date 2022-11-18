@@ -1,37 +1,28 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { selectRandomPlatform, selectPlatformByCode } from "../page/content.js"
+import { selectPlatformByCode } from "../page/content.js"
+import { openDialog } from "../page/dialog.js"
+import faker from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-test("edit live chat", async ({ page, licensee, backofficeApi }) => {
+test("edit platform live chat", async ({ page, licensee, backofficeApi }) => {
   let platform = await backofficeApi.platform.addPlatform({
     licenseeId: licensee.id
   })
   await backofficeApi.platform.liveChat.add({ brandId: platform.id })
   await gotoPlatformCustomerServicePage(page, platform.code)
 
-  await editLiveChat(page)
-})
-
-const SettingType = {
-  Url: "url",
-  Script: "script"
-}
-
-const editLiveChat = async (page) => {
-  await page.click(`#live-chat-dialog-disclosure`)
-
   let EditDialogSelector = `#edit-live-chat-dialog`
-  await page.waitForSelector(EditDialogSelector)
+  await openDialog(page, EditDialogSelector, `#live-chat-dialog-disclosure`)
 
+  let expected = {
+    string: `${faker.lorem.word()}-${Date.now()}`
+  }
   let liveChat = {
-    name: SettingType.Script,
-    setting: JSON.stringify({
-      script:
-        "<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=c10e2fdd-7e45-4974-be42-38fb9a1b5ed3'></script>"
-    })
+    name: faker.lorem.word(),
+    setting: JSON.stringify(expected)
   }
 
   await page.fill(`${EditDialogSelector} input[name="name"]`, liveChat.name)
@@ -42,21 +33,20 @@ const editLiveChat = async (page) => {
   await page.keyboard.press("Backspace")
   await page.keyboard.type(liveChat.setting)
 
-  let brandId = await page.inputValue(
-    `${EditDialogSelector} input[name="brandId"]`
-  )
-  expect(brandId).to.not.be.empty
-
-  let expectedUrl = `/api/BrandLiveChat/${brandId}`
   await Promise.all([
     page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
+      return (
+        response.url().endsWith(`/api/BrandLiveChat/${platform.id}`) &&
+        response.status() === 200
+      )
     }),
     page.click(`${EditDialogSelector} button[type="submit"]`)
   ])
 
-  return liveChat
-}
+  let liveChatSetting = await backofficeApi.platform.liveChat.get(platform.id)
+  expect(liveChatSetting.name).to.equals(liveChat.name)
+  expect(liveChatSetting.setting.string).to.equals(expected.string)
+})
 
 const gotoPlatformCustomerServicePage = async (page, code) => {
   await page.goto("/platform/imsettings", { waitUntil: "networkidle" })

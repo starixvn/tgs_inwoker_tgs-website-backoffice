@@ -1,9 +1,7 @@
 import { getConfigs } from "./getConfigs.js"
-import { list } from "./list.js"
-import { random } from "./random.js"
+import gameProvider from "./gameProvider.js"
 
 export default {
-  getConfigs,
-  list,
-  random
+  ...gameProvider,
+  getConfigs
 }

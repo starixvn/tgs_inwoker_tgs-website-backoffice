@@ -3,7 +3,7 @@ import { getPlatform } from "./getPlatform.js"
 import { updatePlatform } from "./updatePlatform.js"
 import { addPlatform } from "./addPlatform.js"
 import * as withdrawPayment from "./withdrawPayment.js"
-import * as liveChat from "./liveChat.js"
+import liveChat from "./liveChat.js"
 import * as maintenance from "./maintenance.js"
 import payment from "./payment.js"
 

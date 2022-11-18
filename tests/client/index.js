@@ -1,7 +1,10 @@
 import { initFetcher } from "./fetcher.js"
 import host from "./host.js"
 import player from "./player/index.js"
+import game from "./game/index.js"
+//TODO: move round > game
 import round from "./round/index.js"
+
 import payment from "./payment/index.js"
 import promotion from "./promotion/index.js"
 import platform from "./platform/index.js"
@@ -25,5 +28,6 @@ export default {
   agent,
   fund,
   gameProvider,
+  game,
   system
 }

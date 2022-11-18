@@ -31,6 +31,17 @@ export const add = async ({
   return data
 }
 
+export const get = async (brandId) => {
+  if (!brandId) {
+    console.error("brandId is required for get live chat record")
+    return null
+  }
+
+  let response = await fetcher.get(`${host}/${API}/${brandId}`)
+  let content = await response.json()
+  return content?.data
+}
+
 export const deleteByPlatformId = async (platformId) => {
   if (!platformId) {
     console.error(`delete live chat by platform id ${platformId} failed`)
@@ -46,4 +57,11 @@ export const deleteByPlatformId = async (platformId) => {
   }
 
   return result
+}
+
+export default {
+  add,
+  get,
+  deleteByPlatformId,
+  delete: deleteByPlatformId
 }
