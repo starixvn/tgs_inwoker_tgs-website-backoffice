@@ -9,28 +9,21 @@ const test = base.extend(Fixture)
 
 test.skip("platform game provider report", async ({
   page,
-  platformCode,
+  platform,
   player,
   backofficeApi,
-  sboGameProviderApi,
-  reportApi
+  reportAggregateApi
 }) => {
-  let walletAmount = 100
-  await backofficeApi.player.addBalance(player.code, {
-    amount: walletAmount
-  })
-
-  let betAmount = 10
-  await sboGameProviderApi.placeLoseBet({
-    amount: betAmount,
+  let expectedRound = await backofficeApi.game.round.add(platform.id, {
     playerCode: player.code
   })
 
-  await reportApi.aggregateRound()
-  await reportApi.aggregatePlayer()
+  console.log("TODO: gen game provider report using bo api")
+  await reportAggregateApi.aggregateRound()
+  await reportAggregateApi.aggregatePlayer()
 
   await page.goto("/report/gameproviderreport", { waitUntil: "networkidle" })
-  let brandId = await selectPlatformByCode(page, platformCode)
+  await selectPlatformByCode(page, platform.code)
   await searchToday(page)
 
   let countLocator = page.locator(`[data-column-id="transactionCount"]`).first()
@@ -39,7 +32,9 @@ test.skip("platform game provider report", async ({
 
   let betAmountLocator = page.locator(`[data-column-id="betAmount"]`).first()
   let betAmountString = await betAmountLocator.textContent()
-  expect(numeral(betAmountString).value()).to.greaterThanOrEqual(betAmount)
+  expect(numeral(betAmountString).value()).to.greaterThanOrEqual(
+    expectedRound.betAmount
+  )
 
   let totalCountLocator = page
     .locator(`[data-row-type="total"] [data-column-id="transactionCount"]`)
@@ -51,7 +46,9 @@ test.skip("platform game provider report", async ({
     .locator(`[data-row-type="total"] [data-column-id="betAmount"]`)
     .first()
   let totalBetAmountString = await totalBetAmountLocator.textContent()
-  expect(numeral(totalBetAmountString).value()).to.greaterThanOrEqual(betAmount)
+  expect(numeral(totalBetAmountString).value()).to.greaterThanOrEqual(
+    expectedRound.betAmount
+  )
 })
 
 const searchToday = async (page) => {

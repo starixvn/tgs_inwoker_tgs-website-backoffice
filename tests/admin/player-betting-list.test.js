@@ -14,14 +14,13 @@ const test = base.extend(Fixture)
 
 test("view player betting list and betting detail", async ({
   page,
-  platformCode,
+  platform,
   player,
-  backofficeApi,
-  sboGameProviderApi
+  backofficeApi
 }) => {
   let [expectedRound] = await Promise.all([
-    backofficeApi.game.round.add({ playerCode: player.code }),
-    gotoPlayerListPage(page, platformCode)
+    backofficeApi.game.round.add(platform.id, { playerCode: player.code }),
+    gotoPlayerListPage(page, platform.code)
   ])
 
   await searchPlayer(page, player)

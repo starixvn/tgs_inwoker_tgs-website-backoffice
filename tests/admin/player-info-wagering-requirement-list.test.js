@@ -14,7 +14,7 @@ const test = base.extend(Fixture)
 
 test("view player wagering requirement list", async ({
   page,
-  platformCode,
+  platform,
   player,
   backofficeApi,
   reportAggregateApi
@@ -22,7 +22,7 @@ test("view player wagering requirement list", async ({
   let walletAmount = 100
   let ExpectedWageringRequirementAmount = 100
   await Promise.all([
-    gotoPlayerListPage(page, platformCode),
+    gotoPlayerListPage(page, platform.code),
     backofficeApi.player.addBalance(player.code, {
       amount: walletAmount,
       bucketAmount: ExpectedWageringRequirementAmount
@@ -30,7 +30,7 @@ test("view player wagering requirement list", async ({
   ])
 
   await Promise.all([
-    backofficeApi.game.round.add({ playerCode: player.code }),
+    backofficeApi.game.round.add(platform.id, { playerCode: player.code }),
     searchPlayer(page, player)
   ])
 

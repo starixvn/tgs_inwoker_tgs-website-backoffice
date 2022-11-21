@@ -8,37 +8,25 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
-test("view game round", async ({
-  page,
-  player,
-  backofficeApi,
-  sboGameProviderApi
-}) => {
-  let walletAmount = 100
-  await Promise.all([
-    backofficeApi.player.addBalance(player.code, {
-      amount: walletAmount
+test("view game round", async ({ page, platform, player, backofficeApi }) => {
+  let gameProvider = await backofficeApi.gameProvider.random()
+  let [expectedRound] = await Promise.all([
+    backofficeApi.game.round.add(platform.id, {
+      playerCode: player.code,
+      gameProviderId: gameProvider.id
     }),
     page.goto("/systemadmin/gameproviderround", { waitUntil: "networkidle" })
   ])
 
-  let betAmount = 10
-  let betResult = await sboGameProviderApi.placeLoseBet({
-    amount: betAmount,
-    playerCode: player.code
-  })
+  await searchRound(page, player, gameProvider)
 
-  await searchRound(page, player)
-
-  await viewGameRoundDialog({ page, player, betAmount, betResult })
+  await viewGameRoundDialog({ page, player, expectedRound })
 })
 
-const searchRound = async (page, player) => {
+const searchRound = async (page, player, gameProvider) => {
   await page.fill(`input[name="playerCode"]`, player.code)
 
-  //TODO: use api to get game provider id and select option by value(id)?
-  let gameProviderLabel = "SBOBET"
-  await selectByLabel(page, `select[name="gameProviderId"]`, gameProviderLabel)
+  await selectByValue(page, `select[name="gameProviderId"]`, gameProvider.id)
 
   await Promise.all([
     page.waitForResponse((response) => {
@@ -58,11 +46,11 @@ const searchRound = async (page, player) => {
   expect(playerCode).equals(player.code)
 }
 
-const viewGameRoundDialog = async ({ page, player, betAmount, betResult }) => {
+const viewGameRoundDialog = async ({ page, player, expectedRound }) => {
   let GameRoundDialog = `#game-round-dialog`
   await openDialog(page, GameRoundDialog)
 
   let betAmountLocator = page.locator(`${GameRoundDialog} #bet-amount`)
   let betAmountString = await betAmountLocator.textContent()
-  expect(numeral(betAmountString).value()).to.equals(betAmount)
+  expect(numeral(betAmountString).value()).to.equals(expectedRound.betAmount)
 }

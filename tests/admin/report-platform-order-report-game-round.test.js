@@ -9,29 +9,19 @@ const test = base.extend(Fixture)
 
 test("view platform order report", async ({
   page,
-  platformCode,
+  platform,
   player,
-  backofficeApi,
-  sboGameProviderApi
+  backofficeApi
 }) => {
-  let walletAmount = 100
-  await Promise.all([
-    backofficeApi.player.addBalance(player.code, {
-      amount: walletAmount
-    }),
+  let [expectedRound] = await Promise.all([
+    backofficeApi.game.round.add(platform.id, { playerCode: player.code }),
     page.goto("/report/orderreport", { waitUntil: "networkidle" })
   ])
-  let brandId = await selectPlatformByCode(page, platformCode)
-
-  let betAmount = 10
-  let betResult = await sboGameProviderApi.placeLoseBet({
-    amount: betAmount,
-    playerCode: player.code
-  })
+  await selectPlatformByCode(page, platform.code)
 
   await searchPlayer(page, player)
 
-  await viewGameRoundDialog({ page, player, betAmount, betResult })
+  await viewGameRoundDialog({ page, player, expectedRound })
 })
 
 const searchPlayer = async (page, player) => {
@@ -47,11 +37,11 @@ const searchPlayer = async (page, player) => {
   ])
 }
 
-const viewGameRoundDialog = async ({ page, player, betAmount, betResult }) => {
+const viewGameRoundDialog = async ({ page, player, expectedRound }) => {
   let GameRoundDialog = `#game-round-dialog`
   await openDialog(page, GameRoundDialog)
 
   let betAmountLocator = page.locator(`${GameRoundDialog} #bet-amount`)
   let betAmountString = await betAmountLocator.textContent()
-  expect(numeral(betAmountString).value()).to.equals(betAmount)
+  expect(numeral(betAmountString).value()).to.equals(expectedRound.betAmount)
 }
