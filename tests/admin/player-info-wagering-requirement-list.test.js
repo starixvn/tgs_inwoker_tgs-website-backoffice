@@ -40,6 +40,11 @@ test("view player wagering requirement list", async ({
   await openDialog(page, ViewPlayerDialogSelector)
 
   let WageringRequirementDialogSelector = `#wagering-requirement-dialog`
+
+  console.warn("TODO: create bucket seems need some time?")
+  let HalfSecond = 1000
+  await page.waitForTimeout(HalfSecond)
+
   await Promise.all([
     page.waitForResponse((response) => {
       return (
