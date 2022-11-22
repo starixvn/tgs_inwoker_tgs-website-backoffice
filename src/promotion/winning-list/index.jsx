@@ -51,7 +51,6 @@ const Body = () => {
 
 const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    brandId,
     promotionName: "",
     userName: "",
     from: subDays(startOfToday(new Date()), 3),

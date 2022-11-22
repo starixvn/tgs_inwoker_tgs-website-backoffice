@@ -9,7 +9,7 @@ import {
 //TODO: rm after api done
 import { usePromotionList, usePromotionRule } from "../promotion-list/client"
 
-let API = "/api/DepositAccumulateRoulette"
+let API = "/api/dar"
 
 export const usePromotionWinningList = (brandId, searchParams) => {
   let url = searchParams
