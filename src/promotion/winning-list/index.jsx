@@ -69,7 +69,8 @@ const BodyContent = ({ brandId }) => {
   )
 
   let columns = useColumns({
-    items: data?.items ?? []
+    items: data?.items ?? [],
+    brandId
   })
 
   return (
@@ -185,7 +186,7 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ items = [], brandId }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
@@ -217,6 +218,7 @@ const useColumns = ({ items = [] }) => {
           return (
             <Set alignX="center">
               <PromotionWinningDetailDialogDisclosure
+                brandId={brandId}
                 recordId={record.recordId}
               />
             </Set>

@@ -13,6 +13,7 @@ import { FieldValues } from "../../layout/Grid"
 export const PromotionWinningDetailDialogDisclosure = ({
   id,
   dialogId = "promotion-winning-detail-dialog",
+  brandId,
   recordId,
   ...props
 }) => {
@@ -23,19 +24,24 @@ export const PromotionWinningDetailDialogDisclosure = ({
     <>
       <DetailDisclosure {...dialog} />
       {dialog.visible && (
-        <DetailDialog recordId={recordId} dialog={dialog} dialogId={dialogId} />
+        <DetailDialog
+          brandId={brandId}
+          recordId={recordId}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
       )}
     </>
   )
 }
 
-const DetailDialog = ({ recordId, dialog, dialogId }) => {
+const DetailDialog = ({ brandId, recordId, dialog, dialogId }) => {
   let title = useTrans({
     zh: "中奖内容",
     en: "Winnings"
   })
 
-  let { isLoading, data, error } = usePromotionWinningDetail(recordId)
+  let { isLoading, data, error } = usePromotionWinningDetail(brandId, recordId)
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
