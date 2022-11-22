@@ -17,7 +17,6 @@ test("view player wagering requirement list", async ({
   platformCode,
   player,
   backofficeApi,
-  sboGameProviderApi,
   reportAggregateApi
 }) => {
   let walletAmount = 100
@@ -30,12 +29,8 @@ test("view player wagering requirement list", async ({
     })
   ])
 
-  let BetAmount = 10
-  let [betResult] = await Promise.all([
-    sboGameProviderApi.placeLoseBet({
-      amount: BetAmount,
-      playerCode: player.code
-    }),
+  await Promise.all([
+    backofficeApi.game.round.add({ playerCode: player.code }),
     searchPlayer(page, player)
   ])
 
@@ -56,12 +51,12 @@ test("view player wagering requirement list", async ({
   ])
 
   let wageringRequirementLocator = page.locator(
-    `${WageringRequirementDialogSelector} [data-column-id="wageringRequirement"]`
+    `${WageringRequirementDialogSelector} table#wagering-requirement [data-column-id="wageringRequirement"]`
   )
+
   let wageringRequirementString = await wageringRequirementLocator.textContent()
   let wageringRequirement = numeral(wageringRequirementString).value()
   expect(wageringRequirement).to.equals(ExpectedWageringRequirementAmount)
 
-  //TODO: how to test completed wagering
-  console.log("TODO: how to check completed wagering requirement?")
+  console.log("TODO: test completed wagering detail?")
 })

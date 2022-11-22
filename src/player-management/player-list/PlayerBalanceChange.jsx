@@ -190,7 +190,7 @@ const useColumns = ({ items = [] }) =>
         Cell: ({ value }) => {
           return (
             <Box alignX="center">
-              <Checkbox checked={value} />
+              <Checkbox checked={value} inputProps={{ readOnly: true }} />
             </Box>
           )
         }

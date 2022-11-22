@@ -19,23 +19,12 @@ test("view player betting list and betting detail", async ({
   backofficeApi,
   sboGameProviderApi
 }) => {
-  let walletAmount = 100
-  await Promise.all([
-    backofficeApi.player.addBalance(player.code, {
-      amount: walletAmount
-    }),
+  let [expectedRound] = await Promise.all([
+    backofficeApi.game.round.add({ playerCode: player.code }),
     gotoPlayerListPage(page, platformCode)
   ])
 
-  let ExpectedBetAmount = 10
-  let [winResult] = await Promise.all([
-    sboGameProviderApi.placeWinBet({
-      amount: ExpectedBetAmount,
-      playerCode: player.code
-    }),
-    searchPlayer(page, player)
-  ])
-
+  await searchPlayer(page, player)
   await openDialog(page, ViewPlayerDialogSelector)
 
   let BettingTabSelector = `${ViewPlayerDialogSelector} button#betting`
@@ -52,7 +41,7 @@ test("view player betting list and betting detail", async ({
   let BetAmountSelector = `${ViewPlayerDialogSelector} td[data-column-id="betAmount"]`
   let betAmountString = await page.textContent(BetAmountSelector)
   let betAmount = numeral(betAmountString).value()
-  expect(betAmount).to.equal(ExpectedBetAmount)
+  expect(betAmount).to.equal(expectedRound.betAmount)
 
   let BettingDialogSelector = `#betting-detail-dialog`
   await openDialog(page, BettingDialogSelector)
@@ -60,5 +49,5 @@ test("view player betting list and betting detail", async ({
   let DetailBetAmountSelector = `${BettingDialogSelector} #bet-amount`
   let detailBetAmountString = await page.textContent(DetailBetAmountSelector)
   let detailBetAmount = numeral(detailBetAmountString).value()
-  expect(detailBetAmount).to.equal(ExpectedBetAmount)
+  expect(detailBetAmount).to.equal(expectedRound.betAmount)
 })

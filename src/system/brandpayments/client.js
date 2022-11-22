@@ -5,7 +5,8 @@ import {
   usePostData,
   usePut,
   usePutData,
-  usePostFormData
+  usePostFormData,
+  usePatchData
 } from "../../client"
 
 const API = "/api/brandpayment"
@@ -73,4 +74,9 @@ export const useBrandPaymentDesignatedUsers = (id) => {
 export const usePlayerDepositPaymentList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/player`) : ""
   return useGet(url)
+}
+
+export const useUpdateBrandPaymentExtendeddata = (id, data) => {
+  let url = id && data ? `${API}/extendeddata/${id}` : ""
+  return usePatchData(url, data)
 }

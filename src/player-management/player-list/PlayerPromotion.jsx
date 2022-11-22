@@ -24,7 +24,7 @@ export const PlayerPromotionTab = ({ ...props }) => {
   )
 }
 
-export const PlayerPromotionPanel = ({ playerCode, ...props }) => {
+export const PlayerPromotionPanel = ({ brandId, playerCode, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === Key
 

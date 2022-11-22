@@ -228,7 +228,7 @@ const ThirdPartySetting = ({ brandId }) => {
       </Label>
       <ImageUploadButton
         brandId={brandId}
-        name="extendedData.qrCodeFileUrl"
+        name="extendedData.qrCode"
         prefix="payment"
         showLocalizationAddonAfter={false}
       />

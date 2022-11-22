@@ -27,6 +27,7 @@ export const settleBet = async ({
   gameType = 1,
   gpid = -1
 } = {}) => {
+  console.log("TODO: use backofficeApi.order.add api instead")
   //TODO: use baseURL instead?
   let url = `${host}${prefix}/settle`
 

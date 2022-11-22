@@ -152,7 +152,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      maxWidth="80vw"
+      maxWidth="85vw"
       css={DialogCss}
     >
       <FormBody brandId={brandId} isAdd />
@@ -266,7 +266,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       }}
       title={title}
       dialog={dialog}
-      maxWidth="80vw"
+      maxWidth="85vw"
       stopPropagation
       css={DialogCss}
     >
@@ -428,7 +428,7 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
         <CloseButtonFooter dialog={dialog} alignX="right" onClick={reset} />
       }
       dialog={dialog}
-      maxWidth="80vw"
+      maxWidth="85vw"
       css={DialogCss}
     >
       <FormBody brandId={brandId} readOnly={true} />
@@ -498,7 +498,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let promotionTypeEditable = editable && isAdd
   let required = editable
   return (
-    <FieldStack marginLeft="1rem" paddingBottom="1.5rem">
+    <FieldStack marginLeft="1rem" paddingBottom="1.5rem" width="max-content">
       <FieldValues>
         <NormalLabel>
           <Trans zh="活动名称" en="Promotion Name" />
@@ -520,10 +520,12 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         <Box id="promotion-period-box" alignY="center">
           <DateInputRange
             startProps={{
-              name: "from"
+              name: "from",
+              addonAfter: <Button isStatic>00:00:00</Button>
             }}
             endProps={{
               name: "to",
+              addonAfter: <Button isStatic>00:00:00</Button>,
               minDate: startOfToday
             }}
             minDate={isAdd ? startOfToday : undefined}

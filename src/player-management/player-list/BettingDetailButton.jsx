@@ -16,14 +16,7 @@ export const Button = ({ record, dialogId, ...props }) => {
         <Trans zh="详情" en="Detail" />
       </Disclosure>
       {dialog.visible && (
-        <Backdrop {...dialog}>
-          <GameRoundDialog
-            id={dialogId}
-            record={record}
-            dialog={dialog}
-            hideBackdrop={true}
-          />
-        </Backdrop>
+        <GameRoundDialog id={dialogId} record={record} dialog={dialog} />
       )}
     </>
   )

@@ -10,6 +10,10 @@ import {
   Code as PayoutListCode,
   codeLabelPair as payoutListPair
 } from "./payout-list/menu"
+import {
+  Code as WinningListCode,
+  codeLabelPair as winningListPair
+} from "./winning-list/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faGift } from "@fortawesome/free-solid-svg-icons"
 
@@ -71,6 +75,14 @@ const labelOf = ({ locale, code }) => {
         },
         locale
       )
+    case WinningListCode:
+      return getTrans(
+        {
+          zh: "中奖列表",
+          en: "Winning List"
+        },
+        locale
+      )
     default:
       return ""
   }
@@ -83,6 +95,6 @@ export const codeLabelPair = [
       locale,
       codes,
       label: labelOf,
-      subLabelPairs: [promotionListPair, payoutListPair]
+      subLabelPairs: [promotionListPair, payoutListPair, winningListPair]
     })
 ]
