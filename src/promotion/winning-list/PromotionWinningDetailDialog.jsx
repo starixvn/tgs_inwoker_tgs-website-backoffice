@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Stack, Box, Text, Dialog, useModalState, Label } from "bumbag"
+import { Stack, Box, Text, Dialog, useModalState, Label, Set } from "bumbag"
 import { DetailDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
 import { Modal } from "../../dialog/Modal"
@@ -52,10 +52,10 @@ const DetailDialog = ({ brandId, recordId, dialog, dialogId }) => {
   let record = data?.data
   return (
     <Modal id={dialogId} title={title} {...dialog} minWidth="40vw">
-      <FieldValues>
-        <Trans zh="奖项名称" en="Winning Content" />
+      <Set>
+        <Trans zh="奖项名称：" en="Winning Content：" />
         <span>{record?.winningPrize}</span>
-      </FieldValues>
+      </Set>
     </Modal>
   )
 }
