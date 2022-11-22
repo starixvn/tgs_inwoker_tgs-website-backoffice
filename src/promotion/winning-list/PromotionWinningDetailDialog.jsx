@@ -49,11 +49,12 @@ const DetailDialog = ({ brandId, recordId, dialog, dialogId }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
+  let record = data?.data
   return (
     <Modal id={dialogId} title={title} {...dialog} minWidth="40vw">
       <FieldValues>
         <Trans zh="奖项名称" en="Winning Content" />
-        <Box>{data?.winningPrize}</Box>
+        <Box>{record?.winningPrize}</Box>
       </FieldValues>
     </Modal>
   )
