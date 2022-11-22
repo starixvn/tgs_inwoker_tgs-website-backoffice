@@ -104,7 +104,6 @@ const BodyContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -190,7 +189,7 @@ const useColumns = ({ items = [] }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
-        accessor: "recordId ",
+        accessor: "recordId",
         Header: <Trans zh="中奖 ID" en="Order ID" />,
         disableSortBy: true
       }),

@@ -19,8 +19,9 @@ export const usePromotionWinningList = (brandId, searchParams) => {
 }
 
 export const usePromotionWinningDetail = (brandId, recordId) => {
-  let url = id
-    ? urlWith(searchParams, `${API}/detail/${brandId}/${recordId}`)
-    : ""
+  let url =
+    brandId && recordId
+      ? urlWith(searchParams, `${API}/detail/${brandId}/${recordId}`)
+      : ""
   return useGet(url)
 }
