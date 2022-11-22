@@ -51,7 +51,7 @@ const DetailDialog = ({ brandId, recordId, dialog, dialogId }) => {
 
   let record = data?.data
   return (
-    <Modal id={dialogId} title={title} {...dialog} minWidth="40vw">
+    <Modal id={dialogId} title={title} {...dialog}>
       <Set>
         <Trans zh="奖项名称：" en="Winning Content：" />
         <span>{record?.winningPrize}</span>
