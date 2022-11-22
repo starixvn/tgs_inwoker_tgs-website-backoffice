@@ -9,20 +9,18 @@ import {
 //TODO: rm after api done
 import { usePromotionList, usePromotionRule } from "../promotion-list/client"
 
-let API = "/api/promotion"
+let API = "/api/DepositAccumulateRoulette"
 
-export const usePromotionWinningList = (searchParams) => {
-  //TODO: test only, remove after api done
-  return usePromotionList(searchParams)
-
-  let url = searchParams ? urlWith(searchParams, API) : ""
+export const usePromotionWinningList = (brandId, searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/records/${brandId}`)
+    : ""
   return useGet(url)
 }
 
-export const usePromotionWinningDetail = (id) => {
-  //TODO: test only, remove after api done
-  return usePromotionRule(id)
-
-  let url = id ? urlWith(searchParams, `${API}/${id}`) : ""
+export const usePromotionWinningDetail = (brandId, recordId) => {
+  let url = id
+    ? urlWith(searchParams, `${API}/detail/${brandId}/${recordId}`)
+    : ""
   return useGet(url)
 }

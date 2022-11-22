@@ -30,8 +30,8 @@ export const PromotionWinningDetailDialogDisclosure = ({
 
 const DetailDialog = ({ recordId, dialog, dialogId }) => {
   let title = useTrans({
-    zh: "详情",
-    en: "Detail"
+    zh: "中奖内容",
+    en: "Winnings"
   })
 
   let { isLoading, data, error } = usePromotionWinningDetail(recordId)
