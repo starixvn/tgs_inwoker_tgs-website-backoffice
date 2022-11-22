@@ -10,7 +10,9 @@ import SearchButton from "../../button/SearchButton"
 import { PageContent } from "../../page/Content"
 import AlertDialog from "../../dialog/Alert"
 import { Trans, useTrans } from "../../i18n"
-import { DateInputRange } from "../../date/DateTimeRangeInput"
+import DateTimeRangeInput, {
+  DateInputRange
+} from "../../date/DateTimeRangeInput"
 import BrandBar from "../../report/BrandBar"
 import textColumn from "../../table/column/textColumn"
 import { InputField } from "../../input/Input"
@@ -54,7 +56,7 @@ const BodyContent = ({ brandId }) => {
     promotionName: "",
     userName: "",
     from: subDays(startOfToday(new Date()), 3),
-    to: endOfToday(new Date())
+    to: new Date()
   })
 
   useEffect(() => {
@@ -105,6 +107,7 @@ const BodyContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
@@ -159,7 +162,7 @@ const SearchBar = ({
             minLength={2}
             maxLength={256}
           />
-          <DateInputRange
+          <DateTimeRangeInput
             showDateDropdownMenu
             maxRangeDays={QueryMaxRangeDays}
             minDate={minDate}
