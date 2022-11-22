@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Stack, Box, Text, Dialog, useModalState, Label } from "bumbag"
+import { Stack, Box, Text, Dialog, useModalState, Label, Text } from "bumbag"
 import { DetailDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
 import { Modal } from "../../dialog/Modal"
@@ -54,7 +54,7 @@ const DetailDialog = ({ brandId, recordId, dialog, dialogId }) => {
     <Modal id={dialogId} title={title} {...dialog} minWidth="40vw">
       <FieldValues>
         <Trans zh="奖项名称" en="Winning Content" />
-        <Box>{record?.winningPrize}</Box>
+        {record?.winningPrize}
       </FieldValues>
     </Modal>
   )
