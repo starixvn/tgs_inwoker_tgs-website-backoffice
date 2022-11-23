@@ -8,20 +8,40 @@ import { NormalLabel } from "../../form/Label"
 import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
 import { isNil, complement } from "ramda"
 import { get } from "lodash-es"
+import { useIsAfterStart, useIsBeforeStart, usePromotionType } from "./edit"
 
 const isNotNil = complement(isNil)
 const Name = "rule.playerAutoJoin"
 
 export const PromotionPlayerAutoJoinFieldBox = ({
-  promotionType = "",
   name = Name,
   readOnly,
   disabled
 }) => {
   let { setValue } = useFormContext()
 
-  let promotion = useFindPromotionType(promotionType)
-  let playerAutoJoinProps = get(promotion, name) ?? {}
+  let promotionType = usePromotionType()
+  let promotionSettings = useFindPromotionType(promotionType)
+
+  let editable = !readOnly
+
+  let isBeforeStart = useIsBeforeStart()
+  let isStarted = useIsAfterStart()
+
+  let {
+    /*
+    addProps = {},
+    */
+    editProps = {},
+    /*
+    beforeStartProps = {},
+    afterStartProps = {},
+    beforeEndProps = {},
+    afterEndProps = {},
+    */
+    ...playerAutoJoinProps
+  } = get(promotionSettings, name) ?? {}
+
   useEffect(() => {
     if (isNotNil(playerAutoJoinProps?.checked)) {
       setValue(name, playerAutoJoinProps?.checked)
@@ -32,6 +52,13 @@ export const PromotionPlayerAutoJoinFieldBox = ({
     return null
   }
 
+  if (editable && isStarted) {
+    let { afterStartProps = {} } = editProps
+    playerAutoJoinProps = {
+      ...playerAutoJoinProps,
+      ...afterStartProps
+    }
+  }
   return (
     <>
       <NormalLabel>

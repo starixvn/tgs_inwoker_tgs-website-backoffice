@@ -471,6 +471,64 @@ export const useIsActivePromotion = () => {
   return isAfterStart && isBeforeEnd
 }
 
+export const useIsBeforeStart = () => {
+  let { control } = useFormContext()
+  let start = useWatch({
+    control,
+    name: FromFieldName
+  })
+
+  if (!isValidDate(start)) {
+    return false // or should return null instead?
+  }
+
+  let now = new Date()
+  let isBeforeStart = isBefore(now, start)
+  return isBeforeStart
+}
+
+export const useIsAfterStart = () => {
+  let { control } = useFormContext()
+
+  let start = useWatch({
+    control,
+    name: FromFieldName
+  })
+
+  let now = new Date()
+  let isAfterStart = isAfter(now, start)
+  return isAfterStart
+}
+
+/*
+export const useIsOnEditing = () => {
+  let { control } = useFormContext()
+
+  let id = useWatch({
+    control,
+    name: "id"
+  })
+  return !!id
+}
+
+export const useIsOnAdding = () => {
+  let isEdit = useIsOnEditing()
+  let isAdd = !isEdit
+  return isAdd
+}
+*/
+
+const PromotionTypeFieldName = "promotionType"
+export const usePromotionType = () => {
+  let { control } = useFormContext()
+
+  let promotionType = useWatch({
+    control,
+    name: PromotionTypeFieldName
+  })
+  return promotionType
+}
+
 const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let { start: startOfToday } = today()
   let formMethods = useFormContext()
@@ -482,11 +540,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     name: PromotionTypeGroupFieldName
   })
 
-  let PromotionTypeFieldName = "promotionType"
-  let promotionType = useWatch({
-    control,
-    name: PromotionTypeFieldName
-  })
+  let promotionType = usePromotionType()
 
   let gameTypePlaceholder = useTrans({
     zh: "全部",
