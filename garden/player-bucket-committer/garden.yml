@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: player-bucket-committer
-image: pgtgs/bucket-committer:202211210648.59
+image: pgtgs/bucket-committer:202211220813.65
 services:
   - name: player-bucket-committer
     dependencies:

@@ -16,8 +16,7 @@ test("view player wagering requirement list", async ({
   page,
   platform,
   player,
-  backofficeApi,
-  reportAggregateApi
+  backofficeApi
 }) => {
   let walletAmount = 100
   let ExpectedWageringRequirementAmount = 100
@@ -29,22 +28,33 @@ test("view player wagering requirement list", async ({
     })
   ])
 
-  await Promise.all([
-    backofficeApi.game.round.add(platform.id, { playerCode: player.code }),
-    searchPlayer(page, player)
-  ])
-
-  await reportAggregateApi.aggregateRound()
-  await reportAggregateApi.aggregatePlayer()
+  await searchPlayer(page, player)
 
   await openDialog(page, ViewPlayerDialogSelector)
 
+  let WaitSecond = 1000
+
+  //TODO: test player balance change with wagering requirement
+  // let playerBucketAmount = await backofficeApi.player.bucket.amount(player.code)
+
+  //Note. wait for backend api to write data into db for search
+  let playerBucketList
+  let MaxRetry = 5
+  let retryCount = 0
+  while (
+    (!playerBucketList || playerBucketList.length === 0) &&
+    retryCount++ < MaxRetry
+  ) {
+    playerBucketList = await backofficeApi.player.bucket.list(player.code)
+    await page.waitForTimeout(WaitSecond)
+  }
+
+  playerBucketList = await backofficeApi.player.bucket.list(player.code)
+  let bucketHistory = await backofficeApi.player.bucket.firstHistory(
+    player.code
+  )
+
   let WageringRequirementDialogSelector = `#wagering-requirement-dialog`
-
-  console.warn("TODO: create bucket seems need some time?")
-  let HalfSecond = 1000
-  await page.waitForTimeout(HalfSecond)
-
   await Promise.all([
     page.waitForResponse((response) => {
       return (

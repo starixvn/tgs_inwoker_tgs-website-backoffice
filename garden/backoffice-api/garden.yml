@@ -45,6 +45,7 @@ services:
       BackOffice__ReportAggregateUrl: "http://report-aggregate-api"
       BackOffice__PlayerServiceBaseUrl: "http://player-api"
       BackOffice__MarketingReportBaseUrl: "http://marketing-api"
+      BackOffice__PlayerBucketBaseUrl: "http://player-bucket-api"
       BackOffice__VipLevelServiceBaseUrl: "http://viplevel-api"
     ingresses:
       - hostname: backoffice.localhost
