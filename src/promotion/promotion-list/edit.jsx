@@ -472,37 +472,6 @@ export const useIsActivePromotion = () => {
   return isAfterStart && isBeforeEnd
 }
 
-/*
-export const useIsBeforeStart = () => {
-  let { control } = useFormContext()
-  let start = useWatch({
-    control,
-    name: FromFieldName
-  })
-
-  if (!isValidDate(start)) {
-    return false // or should return null instead?
-  }
-
-  let now = new Date()
-  let isBeforeStart = isBefore(now, start)
-  return isBeforeStart
-}
-
-export const useIsAfterStart = () => {
-  let { control } = useFormContext()
-
-  let start = useWatch({
-    control,
-    name: FromFieldName
-  })
-
-  let now = new Date()
-  let isAfterStart = isAfter(now, start)
-  return isAfterStart
-}
-*/
-
 export const useIsPromotionAdded = () => {
   let { control } = useFormContext()
 
