@@ -6,6 +6,49 @@ import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { NormalLabel } from "../../form/Label"
 import { useIsPromotionAdded } from "./edit"
 import { today } from "../../date/range"
+import { isValidDate } from "../../date/isValidDate"
+import { useForm, useFormContext, useWatch } from "react-hook-form"
+import { parseISO, isAfter, isBefore } from "date-fns"
+
+const FromFieldName = "from"
+export const usePromotionStart = () => {
+  let { control } = useFormContext()
+  let start = useWatch({
+    control,
+    name: FromFieldName
+  })
+
+  if (!isValidDate(start)) {
+    return null
+  }
+  return start
+}
+
+export const useIsBeforePromotionStart = () => {
+  let start = usePromotionStart()
+
+  if (!isValidDate(start)) {
+    return false // or should return null instead?
+  }
+
+  let now = new Date()
+  let isBeforeStart = isBefore(now, start)
+  return isBeforeStart
+}
+
+export const useIsAfterPromotionStart = () => {
+  let start = usePromotionStart()
+
+  if (!isValidDate(start)) {
+    return false // or should return null instead?
+  }
+
+  let now = new Date()
+  let isAfterStart = isAfter(now, start)
+  return isAfterStart
+}
+
+const ToFieldName = "to"
 
 export const PromotionDateRangeFieldBox = ({ disabled, readOnly }) => {
   let isAdded = useIsPromotionAdded()
@@ -22,11 +65,11 @@ export const PromotionDateRangeFieldBox = ({ disabled, readOnly }) => {
       <Box id="promotion-period-box" alignY="center">
         <DateInputRange
           startProps={{
-            name: "from",
+            name: FromFieldName,
             addonAfter: <Button isStatic>00:00:00</Button>
           }}
           endProps={{
-            name: "to",
+            name: ToFieldName,
             addonAfter: <Button isStatic>00:00:00</Button>,
             minDate: startOfToday
           }}

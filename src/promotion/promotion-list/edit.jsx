@@ -472,6 +472,7 @@ export const useIsActivePromotion = () => {
   return isAfterStart && isBeforeEnd
 }
 
+/*
 export const useIsBeforeStart = () => {
   let { control } = useFormContext()
   let start = useWatch({
@@ -500,6 +501,7 @@ export const useIsAfterStart = () => {
   let isAfterStart = isAfter(now, start)
   return isAfterStart
 }
+*/
 
 export const useIsPromotionAdded = () => {
   let { control } = useFormContext()
@@ -523,7 +525,6 @@ export const usePromotionType = () => {
 }
 
 const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
-  let { start: startOfToday } = today()
   let formMethods = useFormContext()
   let { control, setValue } = formMethods
 
@@ -573,7 +574,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             valueFieldName="level"
             brandId={brandId}
             disabled={disabled}
-            required={required}
+            required
           />
         </Box>
 

@@ -8,12 +8,8 @@ import { NormalLabel } from "../../form/Label"
 import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
 import { isNil, complement } from "ramda"
 import { get } from "lodash-es"
-import {
-  useIsAfterStart,
-  useIsBeforeStart,
-  useIsPromotionAdded,
-  usePromotionType
-} from "./edit"
+import { useIsPromotionAdded, usePromotionType } from "./edit"
+import { useIsAfterPromotionStart } from "./PromotionDateRangeFieldBox"
 
 const isNotNil = complement(isNil)
 const Name = "rule.playerAutoJoin"
@@ -32,8 +28,7 @@ export const PromotionPlayerAutoJoinFieldBox = ({
   let editable = !readOnly
   let isOnEditing = isAdded && editable
 
-  let isBeforeStart = useIsBeforeStart()
-  let isStarted = useIsAfterStart()
+  let isStarted = useIsAfterPromotionStart()
 
   let {
     /*
