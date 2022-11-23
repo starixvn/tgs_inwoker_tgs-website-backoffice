@@ -78,6 +78,7 @@ import { PromotionGameTypeFieldBox } from "./PromotionGameTypeFieldBox"
 import { PromotionGameProviderFieldBox } from "./PromotionGameProviderFieldBox"
 import { isPromotionStatusEnabled } from "./PromotionStatus"
 import { isValidDate } from "../../date/isValidDate"
+import { PromotionDateRangeFieldBox } from "./PromotionDateRangeFieldBox"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -500,23 +501,6 @@ export const useIsAfterStart = () => {
   return isAfterStart
 }
 
-/*
-export const useIsOnEditing = () => {
-  let { control } = useFormContext()
-
-  let id = useWatch({
-    control,
-    name: "id"
-  })
-  return !!id
-}
-
-export const useIsOnAdding = () => {
-  let isEdit = useIsOnEditing()
-  let isAdd = !isEdit
-  return isAdd
-}
-*/
 export const useIsPromotionAdded = () => {
   let { control } = useFormContext()
 
@@ -577,25 +561,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           />
         </Box>
 
-        <NormalLabel>
-          <Trans zh="活动时间" en="Promotion Period" />
-        </NormalLabel>
-        <Box id="promotion-period-box" alignY="center">
-          <DateInputRange
-            startProps={{
-              name: "from",
-              addonAfter: <Button isStatic>00:00:00</Button>
-            }}
-            endProps={{
-              name: "to",
-              addonAfter: <Button isStatic>00:00:00</Button>,
-              minDate: startOfToday
-            }}
-            minDate={isAdd ? startOfToday : undefined}
-            disabled={disabled}
-            required={required}
-          />
-        </Box>
+        <PromotionDateRangeFieldBox disabled={disabled} readOnly={readOnly} />
 
         <NormalLabel>
           <Trans zh="活动用户群" en="User Group" />
