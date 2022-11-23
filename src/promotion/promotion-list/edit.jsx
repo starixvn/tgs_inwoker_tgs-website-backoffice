@@ -517,6 +517,15 @@ export const useIsOnAdding = () => {
   return isAdd
 }
 */
+export const useIsPromotionAdded = () => {
+  let { control } = useFormContext()
+
+  let id = useWatch({
+    control,
+    name: "id"
+  })
+  return !!id
+}
 
 const PromotionTypeFieldName = "promotionType"
 export const usePromotionType = () => {
