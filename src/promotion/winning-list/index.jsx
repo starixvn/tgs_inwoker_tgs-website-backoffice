@@ -208,8 +208,8 @@ const useColumns = ({ items = [], brandId }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "promotionId",
-        Header: <Trans zh="活动 ID" en="Promotion ID" />,
+        accessor: "promotionName",
+        Header: <Trans zh="活动名称" en="Promotion Name" />,
         disableSortBy: true
       }),
       textColumn({
