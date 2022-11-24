@@ -11,12 +11,7 @@ import { nanoid } from "nanoid"
 
 const test = base.extend(Fixture)
 
-test("add game round", async ({
-  page,
-  player,
-  backofficeApi,
-  sboGameProviderApi
-}) => {
+test("add game round", async ({ page, platform, player, backofficeApi }) => {
   await page.goto("/systemadmin/gameproviderround", {
     waitUntil: "networkidle"
   })
@@ -67,31 +62,31 @@ test("add game round", async ({
     value: externalClosedOn
   })
 
-  let betAmount = 0
+  let betAmount = 1
   await page.fill(
     `${AddDialogSelector} input[name="betAmount"]`,
     `${betAmount}`
   )
 
-  let validBetAmount = 0
+  let validBetAmount = 1
   await page.fill(
     `${AddDialogSelector} input[name="validBetAmount"]`,
     `${validBetAmount}`
   )
 
-  let settleAmount = 0
+  let settleAmount = 1
   await page.fill(
     `${AddDialogSelector} input[name="settleAmount"]`,
     `${settleAmount}`
   )
 
-  let commission = 0
+  let commission = 1
   await page.fill(
     `${AddDialogSelector} input[name="commission"]`,
     `${commission}`
   )
 
-  let turnover = 0
+  let turnover = 1
   await page.fill(`${AddDialogSelector} input[name="turnover"]`, `${turnover}`)
 
   await selectFirstValidOption(
@@ -99,7 +94,7 @@ test("add game round", async ({
     `${AddDialogSelector} select[name="clientRoundStatus"]`
   )
 
-  let companyWinLoss = 0
+  let companyWinLoss = 1
   await page.fill(
     `${AddDialogSelector} input[name="companyWinLoss"]`,
     `${companyWinLoss}`
@@ -120,39 +115,17 @@ test("add game round", async ({
     page.click(`#confirm-dialog button[type="submit"]`)
   ])
 
-  console.log("TODO: get round by api and check expected values")
+  let round = await backofficeApi.game.round.findByExternalRoundId({
+    brandId: platform.id,
+    externalRoundId
+  })
+
+  expect(round.betAmount).to.equals(betAmount)
+  expect(round.validBetAmount).to.equals(validBetAmount)
+  expect(round.settleAmount).to.equals(settleAmount)
+  //TODO: get data by detail api?
+  // expect(round.commission).to.equals(commission)
+  expect(round.turnover).to.equals(turnover)
+  //TODO: get data by detail api?
+  // expect(round.companyWinLoss).to.equals(companyWinLoss)
 })
-
-const searchRound = async (page, player) => {
-  await page.fill(`input[name="playerCode"]`, player.code)
-
-  //TODO: use api to get game provider id and select option by value(id)?
-  let gameProviderLabel = "SBOBET"
-  await selectByLabel(page, `select[name="gameProviderId"]`, gameProviderLabel)
-
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/RoundReport/system?`) &&
-        response.status() === 200
-      )
-    }),
-    page.click(`button[type="submit"]`)
-  ])
-
-  let FirstRowSelector = `table tbody tr[data-row-index="0"] `
-
-  let playerCode = await page.textContent(
-    `${FirstRowSelector} td[data-column-id="playerCode"]`
-  )
-  expect(playerCode).equals(player.code)
-}
-
-const viewGameRoundDialog = async ({ page, player, betAmount, betResult }) => {
-  let GameRoundDialog = `#game-round-dialog`
-  await openDialog(page, GameRoundDialog)
-
-  let betAmountLocator = page.locator(`${GameRoundDialog} #bet-amount`)
-  let betAmountString = await betAmountLocator.textContent()
-  expect(numeral(betAmountString).value()).to.equals(betAmount)
-}

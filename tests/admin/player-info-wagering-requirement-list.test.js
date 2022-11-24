@@ -14,30 +14,45 @@ const test = base.extend(Fixture)
 
 test("view player wagering requirement list", async ({
   page,
-  platformCode,
+  platform,
   player,
-  backofficeApi,
-  reportAggregateApi
+  backofficeApi
 }) => {
   let walletAmount = 100
   let ExpectedWageringRequirementAmount = 100
   await Promise.all([
-    gotoPlayerListPage(page, platformCode),
+    gotoPlayerListPage(page, platform.code),
     backofficeApi.player.addBalance(player.code, {
       amount: walletAmount,
       bucketAmount: ExpectedWageringRequirementAmount
     })
   ])
 
-  await Promise.all([
-    backofficeApi.game.round.add({ playerCode: player.code }),
-    searchPlayer(page, player)
-  ])
-
-  await reportAggregateApi.aggregateRound()
-  await reportAggregateApi.aggregatePlayer()
+  await searchPlayer(page, player)
 
   await openDialog(page, ViewPlayerDialogSelector)
+
+  let WaitSecond = 1000
+
+  //TODO: test player balance change with wagering requirement
+  // let playerBucketAmount = await backofficeApi.player.bucket.amount(player.code)
+
+  //Note. wait for backend api to write data into db for search
+  let playerBucketList
+  let MaxRetry = 5
+  let retryCount = 0
+  while (
+    (!playerBucketList || playerBucketList.length === 0) &&
+    retryCount++ < MaxRetry
+  ) {
+    playerBucketList = await backofficeApi.player.bucket.list(player.code)
+    await page.waitForTimeout(WaitSecond)
+  }
+
+  playerBucketList = await backofficeApi.player.bucket.list(player.code)
+  let bucketHistory = await backofficeApi.player.bucket.firstHistory(
+    player.code
+  )
 
   let WageringRequirementDialogSelector = `#wagering-requirement-dialog`
   await Promise.all([

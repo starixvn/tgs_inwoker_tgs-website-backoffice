@@ -33,6 +33,12 @@ test("edit platform live chat", async ({ page, licensee, backofficeApi }) => {
   await page.keyboard.press("Backspace")
   await page.keyboard.type(liveChat.setting)
 
+  const halfSecond = 500
+  await page.waitForTimeout(halfSecond)
+
+  let submitButtonSelector = `${EditDialogSelector} button[type="submit"]`
+  await page.focus(submitButtonSelector)
+
   await Promise.all([
     page.waitForResponse((response) => {
       return (
@@ -40,7 +46,7 @@ test("edit platform live chat", async ({ page, licensee, backofficeApi }) => {
         response.status() === 200
       )
     }),
-    page.click(`${EditDialogSelector} button[type="submit"]`)
+    page.click(submitButtonSelector)
   ])
 
   let liveChatSetting = await backofficeApi.platform.liveChat.get(platform.id)

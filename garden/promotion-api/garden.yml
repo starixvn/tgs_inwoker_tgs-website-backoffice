@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-api
-image: pgtgs/promotion-api:202209270610.126
+image: pgtgs/promotion-api:202211230643.176
 services:
   - name: promotion-api
     dependencies:

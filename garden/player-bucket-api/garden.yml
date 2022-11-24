@@ -1,0 +1,16 @@
+kind: Module
+type: container
+name: player-bucket-api
+image: pgtgs/bucket-service:202211220813.65
+services:
+  - name: player-bucket-api
+    dependencies:
+      - postgres
+      - nats
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Nats: "nats://nats:4222"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

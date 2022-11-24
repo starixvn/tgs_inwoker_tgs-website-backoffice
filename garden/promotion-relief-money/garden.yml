@@ -1,0 +1,19 @@
+kind: Module
+type: container
+name: promotion-relief-money
+image: pgtgs/promotion-relief-money-service:202211220710.1
+services:
+  - name: promotion-relief-money
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      # - file-service
+      # - rabbitmq
+    env:
+      ConnectionStrings__Nats: "nats://nats:4222"
+      Promotion__Url: "http://promotion-api"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

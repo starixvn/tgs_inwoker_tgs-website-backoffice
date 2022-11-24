@@ -138,25 +138,33 @@ const TypeLabel = ({ value = "" }) => {
   }
 }
 
-const CompletedWageringDisclosure = ({ playerBucketId, value, ...props }) => {
+const BucketHistoryDisclosure = ({
+  playerBucketId,
+  value,
+  id,
+  dialogId = "bucket-history",
+  ...props
+}) => {
   let dialog = new useModalState()
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
-        <CompletedWageringDialog
+        <BucketHistoryDialog
           playerBucketId={playerBucketId}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
   )
 }
 
-const CompletedWageringDialog = ({ playerBucketId, dialog, ...props }) => {
+const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
   let title = useTrans({
     zh: "流水细项",
     en: "Turnover Details"
@@ -252,7 +260,7 @@ const useWageringRequirementColumns = ({ playerCode, items = [] }) =>
         Header: <Trans zh="已达流水" en="Completed Wagering" />,
         disableSortBy: true,
         Cell: ({ value: record }) => (
-          <CompletedWageringDisclosure
+          <BucketHistoryDisclosure
             playerBucketId={record.id}
             value={record.completedWagering}
           />
