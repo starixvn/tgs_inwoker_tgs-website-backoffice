@@ -52,6 +52,4 @@ const viewBank = async (page, bank, player) => {
   )
   let bankAccount = await bankAccountLocator.textContent()
   expect(bankAccount).to.equals(bank.detail.bankAccount)
-
-  await page.click(`${dialogSelector} .bb-DialogClose`)
 }
