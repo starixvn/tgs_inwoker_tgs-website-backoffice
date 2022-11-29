@@ -2,7 +2,13 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random } from "lodash-es"
-import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
+import {
+  startOfDay,
+  startOfTomorrow,
+  endOfTomorrow,
+  format,
+  addWeeks
+} from "date-fns"
 import { fillDatePicker } from "../fill.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { optionValues } from "../page/select.js"
@@ -170,7 +176,7 @@ const addDepositPromotion = async (page) => {
   let DialogSelector = `#add-promotion-dialog`
   await openDialog(page, DialogSelector)
 
-  let from = startOfDay(new Date())
+  let from = startOfTomorrow(new Date())
   let to = addWeeks(new Date(), 2)
   let promotion = {
     name: `${lorem.word()}-${Date.now()}`,
