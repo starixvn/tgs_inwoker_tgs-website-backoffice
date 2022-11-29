@@ -68,16 +68,23 @@ const editBank = async (page, bank, player) => {
   await page.fill(bankAccountSelector, detail.bankAccount)
 
   await Promise.all([
+    /*
+    TODO: why sometime failed?
     page.waitForResponse((response) => {
       return (
         response.url().includes(`/api/player/${player.code}/bank`) &&
         response.status() === 200
       )
     }),
+    */
+    page.waitForSelector(editBankDialogSelector, { state: "detached" }),
     page.click(`${editBankDialogSelector} button[type="submit"]`)
   ])
 
-  await page.click(`${dialogSelector} .bb-DialogClose`)
+  await Promise.all([
+    page.waitForSelector(dialogSelector, { state: "detached" }),
+    page.click(`${dialogSelector} .bb-DialogClose`)
+  ])
 
   return {
     ...bank,
