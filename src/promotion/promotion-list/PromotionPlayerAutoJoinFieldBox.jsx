@@ -10,6 +10,7 @@ import { isNil, complement } from "ramda"
 import { get } from "lodash-es"
 import { useIsPromotionAdded, usePromotionType } from "./edit"
 import { useIsAfterPromotionStart } from "./PromotionDateRangeFieldBox"
+import { useIsAdminUser } from "../../user/context"
 
 const isNotNil = complement(isNil)
 const Name = "rule.playerAutoJoin"
@@ -29,12 +30,14 @@ export const PromotionPlayerAutoJoinFieldBox = ({
   let isOnEditing = isAdded && editable
 
   let isStarted = useIsAfterPromotionStart()
+  let isAdminUser = useIsAdminUser()
 
   let {
     /*
     addProps = {},
     */
     editProps = {},
+    adminUserOnly = false,
     /*
     beforeStartProps = {},
     afterStartProps = {},
@@ -49,6 +52,10 @@ export const PromotionPlayerAutoJoinFieldBox = ({
       setValue(name, playerAutoJoinProps?.checked)
     }
   }, [playerAutoJoinProps])
+
+  if (adminUserOnly === true && !isAdminUser) {
+    return null
+  }
 
   if (isNotNil(playerAutoJoinProps?.visible) && !playerAutoJoinProps?.visible) {
     return null
