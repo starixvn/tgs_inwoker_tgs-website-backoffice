@@ -405,12 +405,6 @@ const useColumns = ({
           Cell: ({ value: record }) => {
             let now = new Date()
             let isPromotionStarted = isAfter(now, record?.from)
-            console.log(
-              "isPromotionStarted",
-              isPromotionStarted,
-              "record?.from",
-              record?.from
-            )
             return (
               <Set alignX="center">
                 <ViewPromotionDisclosure
