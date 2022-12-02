@@ -54,9 +54,10 @@ const DefaultSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
-      {/* 
-      <PromotionPlayerAutoJoinFieldBox /> 
-      */}
+      <PromotionPlayerAutoJoinFieldBox
+        readOnly={readOnly}
+        disabled={disabled}
+      />
       <NormalLabel>
         <Trans zh="流水门槛" en="Turnover Limit" />
       </NormalLabel>

@@ -41,6 +41,7 @@ const addLiveChat = async (page) => {
   await page.keyboard.press("Control+A")
   await page.keyboard.press("Backspace")
   await page.keyboard.type(liveChat.setting)
+
   const halfSecond = 500
   await page.waitForTimeout(halfSecond)
 

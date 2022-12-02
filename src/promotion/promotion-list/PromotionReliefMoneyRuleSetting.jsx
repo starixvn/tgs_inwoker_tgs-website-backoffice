@@ -42,14 +42,16 @@ import {
   useGameTypeGroupValueOf
 } from "../../game/GameType"
 import { BrandGameProviderCheckboxGroupTable } from "../../game/brandproviders/BrandGameProviderCheckboxGroup"
+import { PromotionPlayerAutoJoinFieldBox } from "./PromotionPlayerAutoJoinFieldBox"
 
-export const PromotionReliefMoneyRuleSettingSetting = ({
+export const PromotionReliefMoneyRuleSetting = ({
   limitedTotalAmount,
   totalAmountLimit,
   readOnly
 }) => {
   let { control, setValue } = useFormContext()
 
+  /*
   let gameTypePlaceholder = useTrans({
     zh: "全部",
     en: "All"
@@ -66,12 +68,13 @@ export const PromotionReliefMoneyRuleSettingSetting = ({
     control,
     name: GameTypeFieldName
   })
+  */
 
   let disabled = readOnly
   let editable = !readOnly
   return (
     <FieldValues>
-      <NormalLabel>
+      {/* <NormalLabel>
         <Trans zh="活动游戏类型" en="Game Type" />
       </NormalLabel>
       <Box>
@@ -123,7 +126,11 @@ export const PromotionReliefMoneyRuleSettingSetting = ({
             />
           </Box>
         </>
-      )}
+      )} */}
+      <PromotionPlayerAutoJoinFieldBox
+        readOnly={readOnly}
+        disabled={disabled}
+      />
       <NormalLabel>
         <Trans zh="彩金百分比" en="Bonus Percentage" />
       </NormalLabel>

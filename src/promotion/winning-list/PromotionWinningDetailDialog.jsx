@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Stack, Box, Text, Dialog, useModalState } from "bumbag"
+import { Stack, Box, Text, Dialog, useModalState, Label, Set } from "bumbag"
 import { DetailDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
 import { Modal } from "../../dialog/Modal"
@@ -8,10 +8,12 @@ import { usePromotionWinningDetail } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { JsonEditor } from "../../text/editor/JsonEditor"
+import { FieldValues } from "../../layout/Grid"
 
 export const PromotionWinningDetailDialogDisclosure = ({
   id,
   dialogId = "promotion-winning-detail-dialog",
+  brandId,
   recordId,
   ...props
 }) => {
@@ -22,19 +24,24 @@ export const PromotionWinningDetailDialogDisclosure = ({
     <>
       <DetailDisclosure {...dialog} />
       {dialog.visible && (
-        <DetailDialog recordId={recordId} dialog={dialog} dialogId={dialogId} />
+        <DetailDialog
+          brandId={brandId}
+          recordId={recordId}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
       )}
     </>
   )
 }
 
-const DetailDialog = ({ recordId, dialog, dialogId }) => {
+const DetailDialog = ({ brandId, recordId, dialog, dialogId }) => {
   let title = useTrans({
-    zh: "详情",
-    en: "Detail"
+    zh: "中奖内容",
+    en: "Winnings"
   })
 
-  let { isLoading, data, error } = usePromotionWinningDetail(recordId)
+  let { isLoading, data, error } = usePromotionWinningDetail(brandId, recordId)
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
@@ -42,9 +49,13 @@ const DetailDialog = ({ recordId, dialog, dialogId }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
+  let record = data?.data
   return (
-    <Modal id={dialogId} title={title} {...dialog} minWidth="40vw">
-      <JsonEditor height="30vh" value={data} disabled />
+    <Modal id={dialogId} title={title} {...dialog}>
+      <Set>
+        <Trans zh="奖项名称：" en="Winning Content：" />
+        <span>{record?.winningPrize}</span>
+      </Set>
     </Modal>
   )
 }

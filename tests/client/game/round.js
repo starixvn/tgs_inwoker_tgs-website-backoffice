@@ -7,22 +7,25 @@ import { startOfDay } from "date-fns"
 
 const API = "api/RoundReport"
 
-export const add = async ({
-  playerCode,
-  externalRoundId = nanoid(),
-  gameProviderId,
-  gameId,
-  externalCreatedOn = startOfDay(new Date()).toISOString(),
-  externalClosedOn = startOfDay(new Date()).toISOString(),
-  betAmount = 1,
-  validBetAmount = 1,
-  settleAmount = 1,
-  commission = 1,
-  turnover = 1,
-  companyWinLoss = 1,
-  clientRoundStatus = "Win",
-  ...data
-} = {}) => {
+export const add = async (
+  platformId,
+  {
+    playerCode,
+    externalRoundId = nanoid(),
+    gameProviderId,
+    gameId,
+    externalCreatedOn = new Date().toISOString(),
+    externalClosedOn = new Date().toISOString(),
+    betAmount = 1,
+    validBetAmount = 1,
+    settleAmount = 1,
+    commission = 1,
+    turnover = 1,
+    companyWinLoss = 1,
+    clientRoundStatus = "Win",
+    ...data
+  } = {}
+) => {
   if (!playerCode) {
     console.error("playerCode is required")
     return null
@@ -35,7 +38,7 @@ export const add = async ({
   }
 
   if (!gameId) {
-    gameId = randomGameIdOf(gameProviderId)
+    gameId = await randomGameIdOf(gameProviderId)
   }
 
   let formData = {
@@ -54,7 +57,9 @@ export const add = async ({
     clientRoundStatus,
     ...data
   }
-  let response = await fetcher.put(`${host}/${API}/system/addround`, {
+
+  let url = `${host}/${API}/system/addround`
+  let response = await fetcher.put(url, {
     data: formData
   })
 
@@ -68,7 +73,13 @@ export const add = async ({
     return null
   }
 
+  let record = await findByExternalRoundId({
+    brandId: platformId,
+    externalRoundId
+  })
+
   return {
+    ...record,
     ...formData
   }
   //http://localhost:3000/api/RoundReport/system/addround
@@ -79,8 +90,18 @@ const randomGameIdOf = async (gameProviderId) => {
   return game.id
 }
 
-export const findByExternalRoundId = async (externalRoundId) => {}
+export const findByExternalRoundId = async ({
+  brandId,
+  externalRoundId,
+  ...searchParams
+} = {}) => {
+  let url = `${host}/${API}?brandId=${brandId}&externalRoundId=${externalRoundId}&showAll=true`
+  let response = await fetcher.get(url)
+  let result = await response.json()
+  return result?.items[0]
+}
 
 export default {
-  add
+  add,
+  findByExternalRoundId
 }

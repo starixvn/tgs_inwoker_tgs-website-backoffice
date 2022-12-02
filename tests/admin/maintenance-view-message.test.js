@@ -21,12 +21,12 @@ test("platform maintenance edit message", async ({
     searchBy(page, platform.code)
   ])
 
-  let expectedMessage = faker.lorem.text()
+  let expectedMessage = faker.lorem.word()
   await backofficeApi.platform.maintenance.updateMessage(
     maintenance.brandMaintenanceId,
     expectedMessage
   )
-  
+
   await viewMessage(page, expectedMessage)
 })
 
@@ -44,16 +44,6 @@ const viewMessage = async (page, expectedMessage) => {
 
   let message = await page.textContent(`${dialogSelector} #content`)
   expect(message).includes(expectedMessage)
-}
-
-const updateMessage = async (page, message = lorem.word()) => {
-  let dialogSelector = `#edit-maintenance-message-dialog`
-  await openDialog(page, dialogSelector)
-
-  await page.fill(`${dialogSelector} [name="content"]`, message)
-  await page.click(`${dialogSelector} button[type="submit"]`)
-
-  return message
 }
 
 const searchBy = async (page, expectedPlatformCode) => {

@@ -42,6 +42,7 @@ import { PromotionNewUserRuleSetting } from "./PromotionNewUserRuleSetting"
 import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
 import { PromotionDepositRuleSetting } from "./PromotionDepositRuleSetting"
 import { PromotionTurnoverRuleSetting } from "./PromotionTurnoverRuleSetting"
+import { PromotionReliefMoneyRuleSetting } from "./PromotionReliefMoneyRuleSetting"
 
 export const PromotionRuleSettingFieldBox = ({
   promotionType,
@@ -121,6 +122,13 @@ export const PromotionRuleSetting = ({
     case PromotionTypeGroup.Turnover:
       return (
         <PromotionTurnoverRuleSetting
+          promotionType={promotionType}
+          readOnly={readOnly}
+        />
+      )
+    case PromotionTypeGroup.ReliefMoney:
+      return (
+        <PromotionReliefMoneyRuleSetting
           promotionType={promotionType}
           readOnly={readOnly}
         />

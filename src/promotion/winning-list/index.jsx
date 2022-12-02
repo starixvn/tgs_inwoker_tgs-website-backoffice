@@ -10,14 +10,17 @@ import SearchButton from "../../button/SearchButton"
 import { PageContent } from "../../page/Content"
 import AlertDialog from "../../dialog/Alert"
 import { Trans, useTrans } from "../../i18n"
-import { DateInputRange } from "../../date/DateTimeRangeInput"
+import DateTimeRangeInput, {
+  DateInputRange
+} from "../../date/DateTimeRangeInput"
 import BrandBar from "../../report/BrandBar"
 import textColumn from "../../table/column/textColumn"
 import { InputField } from "../../input/Input"
 import { today, yesterday } from "../../date/range"
-import { startOfToday, subDays } from "date-fns"
+import { startOfToday, subDays, endOfToday } from "date-fns"
 import dateTimeColumn from "../../table/column/dateTime"
 import { PromotionWinningDetailDialogDisclosure } from "./PromotionWinningDetailDialog"
+import { Descending } from "../../table/order"
 
 export { Code }
 
@@ -50,32 +53,38 @@ const Body = () => {
 
 const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    brandId,
     promotionName: "",
-    player: "",
-    from: undefined,
-    to: undefined
+    userName: "",
+    from: subDays(startOfToday(new Date()), 3),
+    to: new Date()
   })
 
   useEffect(() => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  //TODO: sortby
   let { isLoading, data, error, mutate, deleteCache } = usePromotionWinningList(
-    brandId ? { ...toApiParams(state) /*sortby: "number"*/ } : undefined
+    brandId,
+    brandId
+      ? { ...toApiParams(state), sortby: "CreatedOn", orderby: Descending }
+      : undefined
   )
 
   let columns = useColumns({
-    items: data?.items ?? []
+    items: data?.items ?? [],
+    brandId
   })
-  //TODO: page title
+
   return (
     <PageContent
       title={<Trans zh="中奖列表" en="Winning List" />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
+            promotionName={state.promotionName}
+            userName={state.userName}
+            from={state.from}
+            to={state.to}
             search={({ ...data } = {}) => {
               setState({
                 pageIndex: 0,
@@ -98,16 +107,23 @@ const BodyContent = ({ brandId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        getRowId={(row) => row.id}
+        stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
 }
 
-const SearchBar = ({ from, to, search, isLoading }) => {
+const SearchBar = ({
+  promotionName,
+  userName,
+  from,
+  to,
+  search,
+  isLoading
+}) => {
   let formMethods = useForm({
-    defaultValues: { from, to }
+    defaultValues: { promotionName, userName, from, to }
   })
 
   let nameInputPlaceholder = useTrans({
@@ -117,7 +133,7 @@ const SearchBar = ({ from, to, search, isLoading }) => {
 
   let usernameInputPlaceholder = useTrans({
     zh: "用户名",
-    en: "user name"
+    en: "User name"
   })
 
   const onSubmit = (data) => search(data)
@@ -133,20 +149,20 @@ const SearchBar = ({ from, to, search, isLoading }) => {
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <InputField
-            name="name"
+            name="promotionName"
             showEmptyFieldValueAddonAfter
             placeholder={nameInputPlaceholder}
             minLength={2}
             maxLength={256}
           />
           <InputField
-            name="username"
+            name="userName"
             showEmptyFieldValueAddonAfter
             placeholder={usernameInputPlaceholder}
             minLength={2}
             maxLength={256}
           />
-          <DateInputRange
+          <DateTimeRangeInput
             showDateDropdownMenu
             maxRangeDays={QueryMaxRangeDays}
             minDate={minDate}
@@ -173,44 +189,41 @@ const SearchBar = ({ from, to, search, isLoading }) => {
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ items = [], brandId }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
-        accessor: "orderId",
+        accessor: "recordId",
         Header: <Trans zh="中奖 ID" en="Order ID" />,
         disableSortBy: true
       }),
       dateTimeColumn({
-        accessor: "dateTime",
-        Header: <Trans zh="中奖时间" en="Date & Time" />
+        accessor: "createdOn",
+        Header: <Trans zh="中奖时间" en="Date & Time" />,
+        disableSortBy: true
       }),
       textColumn({
-        accessor: "name",
+        accessor: "userName",
         Header: <Trans zh="玩家用戶名" en="Username" />,
         disableSortBy: true
       }),
-      /*
       textColumn({
-        accessor: "type",
-        Header: <Trans zh="活动类型" en="Promotion Type" />,
-        disableSortBy: true
-      }),
-      */
-      textColumn({
-        accessor: "promotionId",
-        Header: <Trans zh="活动 ID" en="Promotion ID" />,
+        accessor: "promotionName",
+        Header: <Trans zh="活动名称" en="Promotion Name" />,
         disableSortBy: true
       }),
       textColumn({
-        id: "detail",
+        id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="详情" en="Detail" />,
+        Header: <Trans zh="中奖内容" en="Winnings" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
             <Set alignX="center">
-              <PromotionWinningDetailDialogDisclosure recordId={record.id} />
+              <PromotionWinningDetailDialogDisclosure
+                brandId={brandId}
+                recordId={record.recordId}
+              />
             </Set>
           )
         }

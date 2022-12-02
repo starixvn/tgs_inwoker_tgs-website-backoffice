@@ -4,6 +4,7 @@ import { updateInfo } from "./updateInfo.js"
 import { updateContact } from "./updateContact.js"
 import { applyBankManualDepositForm } from "./applyBankManualDepositForm.js"
 import bankCard from "./bankCard.js"
+import bucket from "./bucket.js"
 
 export default {
   getPlayer,
@@ -13,5 +14,6 @@ export default {
   updateInfo,
   updateContact,
   applyBankManualDepositForm,
-  bankCard
+  bankCard,
+  bucket
 }

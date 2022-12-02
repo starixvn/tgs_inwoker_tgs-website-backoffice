@@ -13,7 +13,13 @@ export const fetcher = async (...args) => {
       result = response.body
     }
     if (response.statusCode >= 400) {
-      console.error(`${args[0]} ${response.statusCode}: `, result)
+      let payload = args[1]?.body
+      console.error(
+        `${args[0]} ${response.statusCode}: `,
+        result,
+        "payload",
+        payload
+      )
       return Promise.reject(result)
     }
     return result

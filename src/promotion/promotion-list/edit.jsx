@@ -78,6 +78,7 @@ import { PromotionGameTypeFieldBox } from "./PromotionGameTypeFieldBox"
 import { PromotionGameProviderFieldBox } from "./PromotionGameProviderFieldBox"
 import { isPromotionStatusEnabled } from "./PromotionStatus"
 import { isValidDate } from "../../date/isValidDate"
+import { PromotionDateRangeFieldBox } from "./PromotionDateRangeFieldBox"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -471,8 +472,28 @@ export const useIsActivePromotion = () => {
   return isAfterStart && isBeforeEnd
 }
 
+export const useIsPromotionAdded = () => {
+  let { control } = useFormContext()
+
+  let id = useWatch({
+    control,
+    name: "id"
+  })
+  return !!id
+}
+
+const PromotionTypeFieldName = "promotionType"
+export const usePromotionType = () => {
+  let { control } = useFormContext()
+
+  let promotionType = useWatch({
+    control,
+    name: PromotionTypeFieldName
+  })
+  return promotionType
+}
+
 const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
-  let { start: startOfToday } = today()
   let formMethods = useFormContext()
   let { control, setValue } = formMethods
 
@@ -482,11 +503,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
     name: PromotionTypeGroupFieldName
   })
 
-  let PromotionTypeFieldName = "promotionType"
-  let promotionType = useWatch({
-    control,
-    name: PromotionTypeFieldName
-  })
+  let promotionType = usePromotionType()
 
   let gameTypePlaceholder = useTrans({
     zh: "全部",
@@ -514,25 +531,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           />
         </Box>
 
-        <NormalLabel>
-          <Trans zh="活动时间" en="Promotion Period" />
-        </NormalLabel>
-        <Box id="promotion-period-box" alignY="center">
-          <DateInputRange
-            startProps={{
-              name: "from",
-              addonAfter: <Button isStatic>00:00:00</Button>
-            }}
-            endProps={{
-              name: "to",
-              addonAfter: <Button isStatic>00:00:00</Button>,
-              minDate: startOfToday
-            }}
-            minDate={isAdd ? startOfToday : undefined}
-            disabled={disabled}
-            required={required}
-          />
-        </Box>
+        <PromotionDateRangeFieldBox disabled={disabled} readOnly={readOnly} />
 
         <NormalLabel>
           <Trans zh="活动用户群" en="User Group" />
@@ -544,7 +543,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             valueFieldName="level"
             brandId={brandId}
             disabled={disabled}
-            required={required}
+            required
           />
         </Box>
 
