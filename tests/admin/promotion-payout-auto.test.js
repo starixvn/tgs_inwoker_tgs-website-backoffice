@@ -16,7 +16,8 @@ test("promotion payout auto", async ({
   platformCode,
   platform,
   player,
-  backofficeApi
+  backofficeApi,
+  promotionSetting
 }) => {
   let autoSentPlayerBonus = true
   let promotion = await backofficeApi.promotion.addFirstDeposit({
