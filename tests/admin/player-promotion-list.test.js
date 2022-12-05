@@ -18,7 +18,8 @@ test("view player promotion list", async ({
   platform,
   platformCode,
   player,
-  backofficeApi
+  backofficeApi,
+  promotionSetting
 }) => {
   let promotion = await backofficeApi.promotion.addFirstDeposit({
     brandId: platform.id

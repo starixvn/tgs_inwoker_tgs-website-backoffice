@@ -44,9 +44,82 @@ const WeeklyTurnoverRebate = "TurnoverRebateWeekly"
 
 export const PromotionTurnoverRuleSetting = ({ promotionType, readOnly }) => {
   switch (promotionType) {
+    case DailyTurnoverRebate:
+      return <DailyTurnoverSetting readOnly={readOnly} />
     default:
       return <DefaultSetting readOnly={readOnly} />
   }
+}
+
+//TODO: remove DailyTurnoverSetting and use DefaultSetting when backend api support "流水门槛" setting
+const DailyTurnoverSetting = ({ readOnly }) => {
+  let totalFunds = useTotalFunds()
+  let disabled = readOnly
+  return (
+    <FieldValues>
+      <PromotionPlayerAutoJoinFieldBox
+        readOnly={readOnly}
+        disabled={disabled}
+      />
+      {/* <NormalLabel>
+        <Trans zh="流水门槛" en="Turnover Limit" />
+      </NormalLabel>
+      <NumberInput
+        name="rule.turnoverLimit"
+        defaultValue={0}
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        required
+        disabled={disabled}
+      /> */}
+
+      <NormalLabel>
+        <Trans zh="返水百分比" en="Rebate Percentage" />
+      </NormalLabel>
+      <PercentageNumberInputField
+        name="rule.percentage"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        max="999"
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <Trans zh="返水上限" en="Rebate Limit" />
+      </NormalLabel>
+      <NumberInput
+        name="rule.bonusAmountLimit"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        max={totalFunds}
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <Trans zh="流水倍数" en="Turnover Requirement" />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.turnoverMultiple"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        required
+        disabled={disabled}
+        addonAfter={
+          <Button isStatic tabIndex="-1">
+            <Trans zh="倍" en="Multipliers" />
+          </Button>
+        }
+      />
+    </FieldValues>
+  )
 }
 
 const DefaultSetting = ({ readOnly }) => {

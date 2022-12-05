@@ -38,6 +38,7 @@ import { isDev } from "../../env"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { NumberInput } from "../../input/NumberInput"
 import { isWithinRange } from "../../date/range"
+import { isAfter } from "../../date/isAfter"
 
 export { Code }
 
@@ -402,13 +403,8 @@ const useColumns = ({
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {
-            //TODO: disabled EditPromotionDisclosure: disabled={withinPromotionRange}
             let now = new Date()
-            let withinPromotionRange = isWithinRange(now, {
-              start: record?.from,
-              end: record?.to
-            })
-
+            let isPromotionStarted = isAfter(now, record?.from)
             return (
               <Set alignX="center">
                 <ViewPromotionDisclosure
@@ -420,6 +416,7 @@ const useColumns = ({
                   id="edit-promotion-dialog-disclosure"
                   brandId={brandId}
                   record={record}
+                  disabled={isPromotionStarted}
                   onSubmitted={mutate}
                 />
                 {hasUpdateAuth && (
