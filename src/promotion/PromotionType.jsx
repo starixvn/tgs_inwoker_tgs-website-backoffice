@@ -168,7 +168,7 @@ export const PromotionTypeLabel = ({ value }) => {
     return ""
   }
 
-  let type = groups.reduce((result, group) => {
+  let type = groups?.reduce((result, group) => {
     if (result) {
       return result
     }

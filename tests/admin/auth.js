@@ -47,6 +47,7 @@ export const Fixture = {
       fetcher: context.request,
       host
     })
+
     use(backofficeApi)
   },
   promotionSetting: async ({ backofficeApi }, use) => {
