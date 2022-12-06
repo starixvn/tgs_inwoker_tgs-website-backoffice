@@ -36,6 +36,7 @@ import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog
 import { PlayerDepositFormDialogDisclosure } from "./PlayerDepositFormDialog"
 import { PlayerWithdrawFormDialogDisclosure } from "./PlayerWithdrawFormDialog"
 import { BankInfoFieldGroup } from "./BankInfoTag"
+import { PlayerTagTypeSelect } from "../PlayerTagType"
 
 export { Code }
 
@@ -211,6 +212,10 @@ const SearchBar = ({
     zh: "全民代理上級",
     en: "All Agent Upper Level"
   })
+  let playerTagTypePlaceholder = useTrans({
+    zh: "注册来源",
+    en: "Register from"
+  })
 
   let formMethods = useForm({
     defaultValues: {
@@ -226,6 +231,10 @@ const SearchBar = ({
         <Set alignY="bottom">
           <PlayerStatusSelect name="status" />
           <VipLevelSelect name="vipId" brandId={brandId} />
+          {/* <PlayerTagTypeSelect
+            name="tagType"
+            placeholder={playerTagTypePlaceholder}
+          /> */}
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
