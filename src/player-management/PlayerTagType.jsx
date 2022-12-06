@@ -33,8 +33,8 @@ export const PlayerTagTypeSelect = ({ ...props }) => {
       value: AgentCreated
     },
     {
-      label: useTrans(BackendOfficeCreated),
-      value: BackendOfficeCreatedTrans
+      label: useTrans(BackendOfficeCreatedTrans),
+      value: BackendOfficeCreated
     }
   ]
 
