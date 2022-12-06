@@ -212,8 +212,8 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
             <FieldValues>
               <NormalLabel>
                 <Trans
-                  zh="累积投注金额 （当月）："
-                  en="Required bet amount to up level："
+                  zh="累积投注金额 （当日）："
+                  en="Required Daily bet amount to up level："
                 />
               </NormalLabel>
               {editable && (
@@ -229,8 +229,8 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
 
               <NormalLabel>
                 <Trans
-                  zh="累积存款金额 （当月）："
-                  en="Required deposit amount to up level："
+                  zh="累积存款金额 （当日）："
+                  en="Required Daily deposit amount to up level："
                 />
               </NormalLabel>
               {editable && (
