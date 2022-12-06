@@ -152,7 +152,7 @@ export const toGameTypeString = (value) => {
     case TableGameValue:
       return TableGame
     default:
-      return ""
+      return value
   }
 }
 
@@ -191,7 +191,7 @@ export const toGameTypeValue = (value) => {
     case TableGame:
       return TableGameValue
     default:
-      return null
+      return value
   }
 }
 
