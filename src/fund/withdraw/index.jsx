@@ -485,6 +485,7 @@ const SearchBar = ({
             <BrandPaymentMultiSelect
               name="brandPaymentIds"
               brandId={brandId}
+              transferType={PlatformPaymentTransferType.Withdrawal}
               placeholder={platformPaymentPlaceholder}
             />
             <InputField
