@@ -13,14 +13,10 @@ import {
   FieldStack,
   Alert,
   List,
-  Icon
+  Icon,
+  Breadcrumb
 } from "bumbag"
 import PageContent from "../../page/Content"
-import {
-  useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId
-} from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import {
   FormattedNumber,
@@ -31,8 +27,6 @@ import {
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
-import { Code } from "./menu"
-import BrandBar from "../../report/BrandBar"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -43,6 +37,7 @@ import {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
+//TODO: how to toggle fake client and real client?
 import { useAgentDividend, useAgentDividendList, API } from "./client"
 import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
 import { AgentProfitSharingDialogDisclosure } from "./AgentProfitSharingDialog"
@@ -58,13 +53,12 @@ import {
   faAngleDown,
   faAngleRight,
   faCaretRight,
-  faCaretDown
+  faCaretDown,
+  faChevronRight
 } from "@fortawesome/free-solid-svg-icons"
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
-  //TODO: use setTreePaths instead of setUsernames?
   let [treePaths, setTreePaths] = useState([])
-  let rootAgent = headOf(treePaths)
   let agent = lastOf(treePaths)
 
   const appendTreePath = (node) => {
@@ -72,6 +66,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   }
 
   const backToTreePath = (node) => {
+    //TODO: skip if last node
     let index = treePaths.findIndex((item) => item.id === node.id)
     if (index >= 0) {
       setTreePaths((paths) => {
@@ -85,13 +80,6 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     let node = treePaths.find((node) => node.username === username)
     return !node
   }
-
-  // let treeDepth = treePaths.length
-  /*
-  let [usernames, setUsernames] = useState([])
-  let username = lastOf(usernames)
-  let agentUsername = headOf(usernames)
-  */
 
   let dateRange = yesterday()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
@@ -109,12 +97,9 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  /*
-  TODO
   useEffect(() => {
     setPageIndex(0)
-  }, [JSON.stringify(usernames)])
-  */
+  }, [JSON.stringify(username)])
 
   let { pageSize, from, to } = state
   const toSearchParams = () => ({
@@ -151,7 +136,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     depth: index,
     isParent: true,
     isLeaf: false,
-    isLastParent: index == list.length - 1,
+    isLastParent: isLastIndex(index, list),
     isHighlightedRow: true
   }))
   if (data?.total && data?.items) {
@@ -194,7 +179,6 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
             to={to}
             isLoading={isLoading}
             search={({ username, ...data }) => {
-              //TODO: reset treePath?
               if (state?.username != username) {
                 setTreePaths([])
               }
@@ -269,6 +253,10 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
             </List>
           </Alert>
           <TotalsInfo data={data} />
+          <AgentBreadcrumb
+            treePaths={treePaths}
+            backToTreePath={backToTreePath}
+          />
           <Table
             columns={columns}
             data={items}
@@ -295,6 +283,37 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
       )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
+  )
+}
+
+const AgentBreadcrumb = ({ treePaths = [], backToTreePath }) => {
+  if (treePaths.length === 0) {
+    return null
+  }
+
+  return (
+    <Breadcrumb
+      separator={
+        <Icon icon={faChevronRight} type="font-awesome" color="gray" />
+      }
+    >
+      {treePaths.map((agent, index, list) => {
+        let isCurrent = isLastIndex(index, list)
+        return (
+          <Breadcrumb.Item isCurrent={isCurrent} key={agent.id}>
+            <Breadcrumb.Link
+              onClick={(event) => {
+                if (!isCurrent) {
+                  backToTreePath(agent)
+                }
+              }}
+            >
+              {agent.username}
+            </Breadcrumb.Link>
+          </Breadcrumb.Item>
+        )
+      })}
+    </Breadcrumb>
   )
 }
 
@@ -476,7 +495,13 @@ const useColumns = ({
                   backToTreePath(record)
                 }
               }}
+              whiteSpace="nowrap"
             >
+              {record.isLeaf ? (
+                ""
+              ) : (
+                <Icon icon={faAngleDown} type="font-awesome" />
+              )}
               {record?.username}
             </Container>
           )
