@@ -70,15 +70,12 @@ export const getHeaderButtonColor = () =>
 export const getHeaderButtonBackground = () =>
   window?.env?.loginButtonBackground || "transparent"
 
-const SystemTimezone = "SystemTimezone" //TODO: remove env.html
 const Sidebar = "Sidebar"
-
-const PlayerApplyForm = "PlayerApplyForm"
+const PlatformAgentProfitSharingReport = "PlatformAgentProfitSharingReport" //env.html
 
 export const Features = {
-  SystemTimezone,
   Sidebar,
-  PlayerApplyForm
+  PlatformAgentProfitSharingReport
 }
 
 const listFeatures = () => {
@@ -113,14 +110,12 @@ window.featureX = {
   enableFeatures
 }
 
-export const isPlayerApplyFormEnabled = () => {
-  let feature = PlayerApplyForm
-  return isFeatureEnabled(feature)
-}
-
 export const isFeatureEnabled = (feature = "") => {
   return boolean(window?.env?.features?.[feature])
 }
+
+export const isFeaturePlatformAgentProfitSharingReportEnabled = () =>
+  isFeatureEnabled(PlatformAgentProfitSharingReport)
 
 export default {
   Development,

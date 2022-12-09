@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  useWatch
+} from "react-hook-form"
 import {
   Heading,
   Stack,
@@ -46,11 +51,15 @@ import { useAgentDividendList, API } from "./client"
 import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
 import { AgentProfitSharingDialogDisclosure } from "./AgentProfitSharingDialog"
 import { AgentTypeSelect } from "../../agent/AgentType"
-import { isDev } from "../../env"
+import {
+  isDev,
+  isFeaturePlatformAgentProfitSharingReportEnabled
+} from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
 import { BonusDialogDisclosure } from "../BonusDialog"
+import { PlatformAgentProfitSharingReport } from "./PlatformAgentProfitSharingReport"
 
 export { Code }
 
@@ -69,6 +78,8 @@ export const Body = () => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
 
+  //TODO: how to watch varible change?
+  let reportFeatureFlag = isFeaturePlatformAgentProfitSharingReportEnabled()
   return (
     <Set id="report-body" orientation="vertical" isFilled height="100%">
       <BrandBar
@@ -76,7 +87,10 @@ export const Body = () => {
           setBrandId(value)
         }}
       />
-      {brandId && <ReportContent brandId={brandId} />}
+      {brandId && !reportFeatureFlag && <ReportContent brandId={brandId} />}
+      {brandId && reportFeatureFlag && (
+        <PlatformAgentProfitSharingReport brandId={brandId} />
+      )}
     </Set>
   )
 }
