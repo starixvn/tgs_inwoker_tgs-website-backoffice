@@ -13,7 +13,7 @@ const fakeAgentData = (username = "") => {
   switch (username) {
     case "Sam1010":
       return {
-        username: "Sam1010",
+        username: "reportDate",
         id: "a5320d20-f140-4a1b-bc2a-c05f7bf177a2",
         depositAmount: 0,
         withdrawalAmount: 0,
@@ -87,7 +87,10 @@ export const useAgentDividend = (searchParams) => {
   let { data, ...rest } = useGet(url)
   if (true) {
     data = {
-      agent: fakeAgentData(searchParams?.username),
+      items: [
+        fakeAgentData(searchParams?.username),
+        fakeAgentData(searchParams?.username)
+      ],
       errors: [],
       message: "",
       valid: false

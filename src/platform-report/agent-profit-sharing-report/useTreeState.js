@@ -7,7 +7,8 @@ export const useTreeState = (data = []) => {
   //TODO: how to update node state?
   //TODO: how to fetch children nodes?
   return {
-    useFlatTreeList: () => useFlatTreeList(state)
+    items: useFlatTreeList(state),
+    initTreeState: (data) => setState(initState(data))
   }
 }
 

@@ -56,19 +56,38 @@ import {
   faCaretDown,
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons"
+import { useTreeState } from "./useTreeState"
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let [treePaths, setTreePaths] = useState([])
-  let agent = lastOf(treePaths)
+  let [agentUsername, setAgentUsername] = useState()
 
-  const appendTreePath = (node) => {
-    setTreePaths((paths) => [...paths, node])
+  const appendTreePath = (nodeItems = []) => {
+    setTreePaths((paths) => {
+      let last = lastOf(paths)
+      let agent = headOf(last)
+      let treeDepth = Number.isFinite(agent?.treeDepth)
+        ? agent.treeDepth + 1
+        : 0
+      return [...paths, nodeItems.map((node) => ({ ...node, treeDepth }))]
+    })
   }
 
   const backToTreePath = (node) => {
-    //TODO: skip if last node
-    let index = treePaths.findIndex((item) => item.id === node.id)
+    let index = treePaths.findIndex((items) => {
+      let item = headOf(items)
+      return item.id === node.id
+    })
+
+    let isLast = isLastIndex(index, treePaths)
+    if (isLast) {
+      return //skip
+    }
+
     if (index >= 0) {
+      let items = treePaths[index]
+      let agent = headOf(items)
+      setAgentUsername(agent?.username)
       setTreePaths((paths) => {
         let result = paths.slice(0, index + 1)
         return result
@@ -77,7 +96,10 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   }
 
   const notInsideTreePath = (username = "") => {
-    let node = treePaths.find((node) => node.username === username)
+    let node = treePaths.find((nodeItems) => {
+      let item = headOf(nodeItems)
+      return item.username === username
+    })
     return !node
   }
 
@@ -91,20 +113,18 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     levelType: undefined
   })
 
-  let username = agent?.username || state?.username
-
   useEffect(() => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
   useEffect(() => {
     setPageIndex(0)
-  }, [JSON.stringify(username)])
+  }, [agentUsername])
 
   let { pageSize, from, to } = state
   const toSearchParams = () => ({
     ...toApiParams(state),
-    username,
+    username: agentUsername,
     sortby: "username",
     from,
     to: startOfNextDay(to)
@@ -115,47 +135,74 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     error: agentError,
     mutate: mutateAgent,
     deleteCache: deleteAgentCache
-  } = useAgentDividend(username ? toSearchParams() : undefined)
+  } = useAgentDividend(agentUsername ? toSearchParams() : undefined)
   let {
     isLoading: isLoadingList,
     data,
     error,
     mutate,
     deleteCache
-  } = useAgentDividendList(username ? toSearchParams() : undefined)
+  } = useAgentDividendList(agentUsername ? toSearchParams() : undefined)
   let isLoading = isLoadingAgent || isLoadingList
 
   useEffect(() => {
-    if (agentData?.agent && notInsideTreePath(agentData?.agent?.username)) {
-      appendTreePath(agentData?.agent)
+    if (
+      agentData?.items &&
+      notInsideTreePath(headOf(agentData?.items)?.username)
+    ) {
+      appendTreePath(agentData?.items)
     }
-  }, [agentData?.agent])
+  }, [JSON.stringify(agentData?.items)])
 
-  let items = treePaths.map((node, index, list) => ({
-    ...node,
-    depth: index,
-    isParent: true,
-    isLeaf: false,
-    isLastParent: isLastIndex(index, list),
-    isHighlightedRow: true
-  }))
-  if (data?.total && data?.items) {
+  let items = treePaths.reduce((accumulator, nodeItems, index, list) => {
+    let isLastParent = isLastIndex(index, list)
+    let items = nodeItems.map((node) => ({
+      ...node,
+      isParent: true,
+      isLeaf: false,
+      isLastParent,
+      isHighlightedRow: true
+    }))
+    return [...accumulator, ...items]
+  }, [])
+
+  let lastParent = lastOf(items)
+  let childrenTreeDepth = (lastParent?.treeDepth ?? 0) + 1
+
+  if (data?.total && data?.items?.length > 0) {
     items = [
       ...items,
       {
         ...data.total,
         isTotal: true,
-        depth: treePaths.length,
+        treeDepth: childrenTreeDepth,
         isLeaf: true,
         isHighlightedRow: true
       },
       ...data.items.map((node) => ({
         ...node,
-        depth: treePaths.length,
+        treeDepth: childrenTreeDepth,
         isLeaf: true
       }))
     ]
   }
+
+  //TODO: fix LOOPS!!!
+  /*
+  let { items: rows, initTreeState } = useTreeState()
+  useEffect(() => {
+    if (agentData?.agent && data?.items?.length > 0) {
+      let roots = [
+        {
+          ...agentData?.agent,
+          children: data?.items
+        }
+      ]
+      console.log("roots", roots)
+      initTreeState(roots)
+    }
+  }, [agentData?.agent, JSON.stringify(data)])
+  */
 
   let columns = useColumns({
     brandId,
@@ -163,8 +210,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     to,
     items,
     treePaths,
-    appendTreePath,
-    backToTreePath
+    backToTreePath,
+    setAgentUsername
   })
   return (
     <PageContent
@@ -179,13 +226,12 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
             to={to}
             isLoading={isLoading}
             search={({ username, ...data }) => {
-              if (state?.username != username) {
-                setTreePaths([])
+              if (agentUsername != username) {
+                setAgentUsername(username)
               }
 
               setState({
                 pageIndex: 0,
-                username,
                 ...data
               })
               mutate()
@@ -297,7 +343,8 @@ const AgentBreadcrumb = ({ treePaths = [], backToTreePath }) => {
         <Icon icon={faChevronRight} type="font-awesome" color="gray" />
       }
     >
-      {treePaths.map((agent, index, list) => {
+      {treePaths.map((items, index, list) => {
+        let agent = headOf(items)
         let isCurrent = isLastIndex(index, list)
         return (
           <Breadcrumb.Item isCurrent={isCurrent} key={agent.id}>
@@ -464,9 +511,8 @@ const useColumns = ({
   from,
   to,
   items = [],
-  treePaths = [],
-  appendTreePath,
-  backToTreePath
+  backToTreePath,
+  setAgentUsername
 }) => {
   return useMemo(() => {
     let columns = [
@@ -476,9 +522,10 @@ const useColumns = ({
         Header: <Trans zh="代理用户名" en="Agent Username" />,
         textAlign: "left",
         Cell: ({ value: record }) => {
+          let marginLeft = (record?.treeDepth ?? 0) * 1.5
           if (record?.isTotal) {
             return (
-              <Text.Block marginLeft={`${treePaths?.length ?? 0}rem`}>
+              <Text.Block marginLeft={`${marginLeft}rem`}>
                 <Trans zh="总计" en="Total" />
               </Text.Block>
             )
@@ -487,10 +534,10 @@ const useColumns = ({
           let Container = record?.isLastParent ? Text.Block : Link.Block
           return (
             <Container
-              marginLeft={`${record?.depth ?? 0}rem`}
+              marginLeft={`${marginLeft}rem`}
               onClick={() => {
                 if (record.isLeaf) {
-                  appendTreePath(record)
+                  setAgentUsername(record.username)
                 } else {
                   backToTreePath(record)
                 }
@@ -515,18 +562,12 @@ const useColumns = ({
         textAlign: "right"
       }),
       numberDecimalColumn({
-        /*
-        id: "bonusAmount",
-        accessor: (row) => row,
-        toValue: (row) => row?.bonusAmount,
-        */
         accessor: "bonusAmount",
-        sumColumn: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
         textAlign: "right",
         disableSortBy: true
         /*
-        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
+        TODO: rm?
         Cell: ({ value: record }) => {
           return (
             <BonusDialogDisclosure
@@ -556,46 +597,33 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "agentCoveredBonus",
-        sumColumn: "agentCoveredBonus",
         Header: <Trans zh="代理承担红利" en="Agent-Covered Bonus" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonusAdjustAmount",
-        sumColumn: "bonusAdjustAmount",
         Header: <Trans zh="优惠调帐" en="Bonus Adjustment Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "agentCoveredBonusAdjust",
-        sumColumn: "agentCoveredBonusAdjust",
         Header: <Trans zh="代理承担优惠调帐" en="Agent-Covered Bonus Adjust" />,
         disableSortBy: true
       }),
-
       numberDecimalColumn({
         accessor: "betAmount",
-        sumColumn: "betAmount",
         Header: <Trans zh="投注金额" en="Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "winLossAmount",
         accessor: (row) => row,
-        sumColumn: "winLossAmount",
-        toValue: (row) => row?.winLossAmount,
         Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
-        /*
-        TotalCell: ({ value }) => (
-          <FormattedNumber value={value} format="0,0.00" digits={2} />
-        ),
-        */
         disableSortBy: true,
         Cell: ({ value: record }) => {
           if (!record?.id) {
@@ -623,7 +651,6 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        sumColumn: "netProfit",
         Header: <Trans zh="净盈利" en="Net Profit" />,
         disableSortBy: true
       })
@@ -633,21 +660,13 @@ const useColumns = ({
       ...[
         numberDecimalColumn({
           accessor: "fromPlayerAgentDividendAmount",
-          sumColumn: "fromPlayerAgentDividendAmount",
           Header: <PlayerContributionHeader />,
           disableSortBy: true
         }),
         numberDecimalColumn({
           id: "fromTeamAgentDividendAmount",
           accessor: (row) => row,
-          sumColumn: "fromTeamAgentDividendAmount",
-          toValue: (row) => row?.fromTeamAgentDividendAmount,
           Header: <TeamContributionHeader />,
-          /*
-          TotalCell: ({ value }) => (
-            <FormattedNumber value={value} format="0,0.00" digits={2} />
-          ),
-          */
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record?.id) {
@@ -675,21 +694,13 @@ const useColumns = ({
         }),
         numberDecimalColumn({
           accessor: "agentAdjustAmount",
-          sumColumn: "agentAdjustAmount",
           Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
           disableSortBy: true
         }),
         numberDecimalColumn({
           id: "agentDividendAmount",
           accessor: (row) => row,
-          sumColumn: "agentDividendAmount",
-          toValue: (row) => row?.agentDividendAmount,
           Header: <ProfitSharingAmountHeader />,
-          /*
-          TotalCell: ({ value }) => (
-            <FormattedNumber value={value} format="0,0.00" digits={2} />
-          ),
-          */
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record?.id) {
