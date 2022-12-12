@@ -18,7 +18,7 @@ export const useAgentDividend = (searchParams) => {
       (item) => item.username === searchParams?.username
     )
     data = {
-      agent,
+      items: [agent],
       errors: [],
       message: "",
       valid: false
