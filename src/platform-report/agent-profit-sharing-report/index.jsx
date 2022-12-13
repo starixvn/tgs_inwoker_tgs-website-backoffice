@@ -78,10 +78,20 @@ export const Body = () => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
 
-  //TODO: how to watch varible change?
-  let reportFeatureFlag = isFeaturePlatformAgentProfitSharingReportEnabled()
+  //TODO: rm when report ready
+  let [reportFeatureFlag, setReportFeatureFlag] = useState(
+    isFeaturePlatformAgentProfitSharingReportEnabled()
+  )
   return (
-    <Set id="report-body" orientation="vertical" isFilled height="100%">
+    <Set
+      id="report-body"
+      orientation="vertical"
+      isFilled
+      height="100%"
+      onClick={() => {
+        setReportFeatureFlag(isFeaturePlatformAgentProfitSharingReportEnabled())
+      }}
+    >
       <BrandBar
         onBrandChange={(value) => {
           setBrandId(value)
