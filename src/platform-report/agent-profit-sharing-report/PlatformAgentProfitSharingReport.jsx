@@ -56,6 +56,8 @@ import {
   faCaretDown,
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons"
+import AutoSizer from "react-virtualized-auto-sizer"
+//TODO:
 import { useTreeState } from "./useTreeState"
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
@@ -204,6 +206,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   }, [agentData?.agent, JSON.stringify(data)])
   */
 
+  //TODO: only set stickyLeft if available width > fixed width?
+
   let columns = useColumns({
     brandId,
     from,
@@ -250,8 +254,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
       }
       title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
     >
-      {username && (
-        <FieldStack>
+      {agentUsername && (
+        <FieldStack height="100%">
           <Alert variant="bordered" type="info" accent marginBottom="1rem">
             <List listStyleType="disc" listStylePosition="inside">
               <List.Item>
@@ -303,28 +307,35 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
             treePaths={treePaths}
             backToTreePath={backToTreePath}
           />
-          <Table
-            columns={columns}
-            data={items}
-            initialState={state}
-            controlledState={state}
-            pageCount={pageCount(pageSize, data?.totalCount)}
-            setPageIndex={setPageIndex}
-            setSortOrder={setSortOrder}
-            isLoading={isLoading}
-            getRowProps={({ original: { isHighlightedRow } } = {}) => {
-              if (isHighlightedRow) {
-                return {
-                  backgroundColor: "white600",
-                  fontWeight: "bold"
-                }
-              }
-              return {}
+          <AutoSizer>
+            {({ height, width }) => {
+              return (
+                <Table
+                  columns={columns}
+                  data={items}
+                  initialState={state}
+                  controlledState={state}
+                  pageCount={pageCount(pageSize, data?.totalCount)}
+                  setPageIndex={setPageIndex}
+                  setSortOrder={setSortOrder}
+                  isLoading={isLoading}
+                  stickyHead
+                  hasDividers
+                  isHoverable
+                  autoSize={{ height, width }}
+                  css={css`
+                    td:first-child {
+                      background-color: white;
+                    }
+
+                    tr:hover td:first-child {
+                      background-color: var(--bb-palette-white600, #000000);
+                    }
+                  `}
+                />
+              )
             }}
-            stickyHead
-            hasDividers
-            isHoverable
-          />
+          </AutoSizer>
         </FieldStack>
       )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
@@ -520,6 +531,9 @@ const useColumns = ({
         id: "username",
         accessor: (row) => row,
         Header: <Trans zh="代理用户名" en="Agent Username" />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         textAlign: "left",
         Cell: ({ value: record }) => {
           let marginLeft = (record?.treeDepth ?? 0) * 1.5
@@ -558,13 +572,18 @@ const useColumns = ({
       numberDecimalPercentageColumn({
         accessor: "agentDividendPercentage",
         Header: <Trans zh="分红比例" en="Profit Sharing Percentaget" />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true,
         textAlign: "right"
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
-        textAlign: "right",
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true
         /*
         TODO: rm?
@@ -598,32 +617,50 @@ const useColumns = ({
       numberDecimalColumn({
         accessor: "agentCoveredBonus",
         Header: <Trans zh="代理承担红利" en="Agent-Covered Bonus" />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonusAdjustAmount",
         Header: <Trans zh="优惠调帐" en="Bonus Adjustment Amount" />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "agentCoveredBonusAdjust",
         Header: <Trans zh="代理承担优惠调帐" en="Agent-Covered Bonus Adjust" />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "betAmount",
         Header: <Trans zh="投注金额" en="Bet Amount" />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "winLossAmount",
         accessor: (row) => row,
         Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true,
         Cell: ({ value: record }) => {
           if (!record?.id) {
@@ -652,6 +689,9 @@ const useColumns = ({
       numberDecimalColumn({
         accessor: "netProfit",
         Header: <Trans zh="净盈利" en="Net Profit" />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true
       })
     ]
@@ -661,12 +701,18 @@ const useColumns = ({
         numberDecimalColumn({
           accessor: "fromPlayerAgentDividendAmount",
           Header: <PlayerContributionHeader />,
+          headCell: {
+            whiteSpace: "nowrap"
+          },
           disableSortBy: true
         }),
         numberDecimalColumn({
           id: "fromTeamAgentDividendAmount",
           accessor: (row) => row,
           Header: <TeamContributionHeader />,
+          headCell: {
+            whiteSpace: "nowrap"
+          },
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record?.id) {
@@ -695,12 +741,18 @@ const useColumns = ({
         numberDecimalColumn({
           accessor: "agentAdjustAmount",
           Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
+          headCell: {
+            whiteSpace: "nowrap"
+          },
           disableSortBy: true
         }),
         numberDecimalColumn({
           id: "agentDividendAmount",
           accessor: (row) => row,
           Header: <ProfitSharingAmountHeader />,
+          headCell: {
+            whiteSpace: "nowrap"
+          },
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record?.id) {
