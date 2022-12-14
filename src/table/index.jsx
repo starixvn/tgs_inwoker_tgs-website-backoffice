@@ -18,6 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
+import { useMeasure } from "react-use"
 
 const DefaultState = {
   pageIndex: 0,
@@ -126,6 +127,8 @@ export const Table = ({
   components = {},
   getTableHeadProps,
   containerProps = {},
+  autoSize,
+  minHeight = 5 * 50,
   ...props
 }) => {
   components = {
@@ -189,6 +192,10 @@ export const Table = ({
     en: "Next page"
   })
 
+  // TODO: how to measure height + margin?
+  // let [paginationRef, paginationMeasure] = useMeasure()
+  const PaginationHeight = 60
+
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
   return (
     <>
@@ -215,15 +222,31 @@ export const Table = ({
             }
           `}
         >
-          <_Table width="100%" {...table.getTableProps()} {...props}>
-            {head === true && <Head table={table} />}
-            {total && <TotalBody table={table} />}
-            {body === true && <Body table={table} />}
-            {children}
-            {foot === true && <Foot table={table} />}
-          </_Table>
+          <div
+            css={css`
+              width: ${Number.isFinite(autoSize?.width)
+                ? `${autoSize?.width}px`
+                : "100%"};
+              height: ${Number.isFinite(autoSize?.height)
+                ? `${Math.max(
+                    autoSize?.height - PaginationHeight,
+                    minHeight
+                  )}px`
+                : "auto"};
+              overflow: auto;
+            `}
+          >
+            <_Table width="100%" {...table.getTableProps()} {...props}>
+              {head === true && <Head table={table} />}
+              {total && <TotalBody table={table} />}
+              {body === true && <Body table={table} />}
+              {children}
+              {foot === true && <Foot table={table} />}
+            </_Table>
+          </div>
           {usePagination && pageCount > 0 && (
             <Pagination
+              // ref={paginationRef}
               previousText={previousText}
               nextText={nextText}
               currentPage={getPage()}
@@ -235,6 +258,7 @@ export const Table = ({
               }}
               numberOfPages={pageCount}
               css={css`
+                width: max-content;
                 z-index: 0;
               `}
             />

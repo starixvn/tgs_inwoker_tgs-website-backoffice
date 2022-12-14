@@ -15,6 +15,7 @@ export const numberColumn = ({
   postfix = "",
   sumColumn: sumColumnName = "",
   toValue = defaultValueFn,
+  whiteSpace = "nowrap",
   tooltip,
   ...props
 }) => {
@@ -33,13 +34,10 @@ export const numberColumn = ({
     Cell,
     headCell: {
       textAlign: "center"
-      /*
-      whiteSpace: "nowrap"
-      */
     },
     cell: {
       textAlign: "center",
-      whiteSpace: "nowrap"
+      whiteSpace
     }
   }
 

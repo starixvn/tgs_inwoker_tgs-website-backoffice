@@ -68,6 +68,10 @@ import { isDev } from "../../env"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client"
 import { subDays, parseISO, isAfter, isSameDay, isValid, max } from "date-fns"
+import {
+  PlatformPaymentProviderSelect,
+  PlatformPaymentTransferType
+} from "../../payment/PlatformPaymentProviderSelect"
 
 export { Code }
 
@@ -108,6 +112,7 @@ const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     username: "",
     channel: "",
+    payment: "",
     method: "",
     status: location?.state?.status ?? FundDepositStatus.UnprocessedStatus,
     thirdOrderNo: "",
@@ -167,6 +172,7 @@ const BodyContent = ({ brandId }) => {
         pageIndex: 0,
         username: "",
         channel: "",
+        payment: "",
         method: "",
         status: location?.state?.status ?? "",
         thirdOrderNo: "",
@@ -246,6 +252,7 @@ const BodyContent = ({ brandId }) => {
             brandId={brandId}
             username={username}
             channel={channel}
+            payment={state.payment}
             method={method}
             status={status}
             thirdOrderNo={state.thirdOrderNo}
@@ -411,6 +418,7 @@ const SearchBar = ({
   brandId,
   username,
   channel,
+  payment,
   method,
   status,
   thirdOrderNo,
@@ -430,6 +438,7 @@ const SearchBar = ({
     defaultValues: {
       username,
       channel,
+      payment,
       method,
       status,
       thirdOrderNo,
@@ -446,6 +455,7 @@ const SearchBar = ({
     formMethods.reset({
       username,
       channel,
+      payment,
       method,
       status,
       thirdOrderNo,
@@ -459,6 +469,7 @@ const SearchBar = ({
   }, [
     username,
     channel,
+    payment,
     method,
     status,
     thirdOrderNo,
@@ -478,6 +489,11 @@ const SearchBar = ({
   let channelNameInputPlaceholder = useTrans({
     zh: "通道名称",
     en: "Channel Name"
+  })
+
+  let paymentProviderPlaceholder = useTrans({
+    zh: "金流商",
+    en: "Payment Provider"
   })
 
   let paymentMethodPlaceholder = useTrans({
@@ -511,6 +527,12 @@ const SearchBar = ({
               name="channel"
               showEmptyFieldValueAddonAfter
               placeholder={channelNameInputPlaceholder}
+            />
+            <PlatformPaymentProviderSelect
+              name="payment"
+              brandId={brandId}
+              transferType={PlatformPaymentTransferType.Deposit}
+              placeholder={paymentProviderPlaceholder}
             />
             <PaymentMethodSelect
               name="method"

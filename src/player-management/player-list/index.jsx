@@ -28,7 +28,10 @@ import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { isDev, isPlayerApplyFormEnabled } from "../../env"
+import {
+  isDev,
+  isFeaturePlatformAgentProfitSharingReportEnabled
+} from "../../env"
 import { useBrand } from "../../merchant/platforms/client"
 import { useAllAgentSetting } from "../../agent/all-agent/client"
 import { SortOrder } from "../../table/order"
@@ -36,7 +39,6 @@ import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog
 import { PlayerDepositFormDialogDisclosure } from "./PlayerDepositFormDialog"
 import { PlayerWithdrawFormDialogDisclosure } from "./PlayerWithdrawFormDialog"
 import { BankInfoFieldGroup } from "./BankInfoTag"
-import { PlayerTagTypeSelect } from "../PlayerTagType"
 
 export { Code }
 
@@ -231,10 +233,6 @@ const SearchBar = ({
         <Set alignY="bottom">
           <PlayerStatusSelect name="status" />
           <VipLevelSelect name="vipId" brandId={brandId} />
-          {/* <PlayerTagTypeSelect
-            name="tagType"
-            placeholder={playerTagTypePlaceholder}
-          /> */}
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter

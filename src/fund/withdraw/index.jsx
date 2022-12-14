@@ -67,6 +67,10 @@ import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTra
 import { FundWithdrawPaidDialogDisclosure } from "./FundWithdrawPaid"
 import { RejectFundWithdrawDisclosure } from "./RejectFundWithdraw"
 import { BrandPaymentMultiSelect } from "../../system/brandpayments/BrandPaymentMultiSelect"
+import {
+  PlatformPaymentProviderSelect,
+  PlatformPaymentTransferType
+} from "../../payment/PlatformPaymentProviderSelect"
 
 export { Code }
 
@@ -107,6 +111,7 @@ const BodyContent = ({ brandId }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     username: "",
     channelName: "",
+    payment: "",
     status: location?.state?.status ?? FundWithdrawStatus.UnprocessedStatus,
     thirdOrderNo: "",
     orderNo: "",
@@ -185,6 +190,7 @@ const BodyContent = ({ brandId }) => {
         pageIndex: 0,
         username: "",
         channelName: "",
+        payment: "",
         status: location?.state?.status ?? "",
         thirdOrderNo: "",
         orderNo: "",
@@ -261,6 +267,7 @@ const BodyContent = ({ brandId }) => {
             brandId={brandId}
             username={username}
             channelName={channelName}
+            payment={state.payment}
             status={status}
             thirdOrderNo={state.thirdOrderNo}
             orderNo={state.orderNo}
@@ -367,6 +374,7 @@ const SearchBar = ({
   brandId,
   username,
   channelName,
+  payment,
   status,
   thirdOrderNo,
   orderNo,
@@ -386,6 +394,7 @@ const SearchBar = ({
     defaultValues: {
       username,
       channelName,
+      payment,
       status,
       thirdOrderNo,
       orderNo,
@@ -402,6 +411,7 @@ const SearchBar = ({
     formMethods.reset({
       username,
       channelName,
+      payment,
       status,
       thirdOrderNo,
       orderNo,
@@ -415,6 +425,7 @@ const SearchBar = ({
   }, [
     username,
     channelName,
+    payment,
     status,
     thirdOrderNo,
     orderNo,
@@ -434,6 +445,11 @@ const SearchBar = ({
   let platformPaymentPlaceholder = useTrans({
     zh: "提款通道",
     en: "Withdrawal Channel"
+  })
+
+  let paymentProviderPlaceholder = useTrans({
+    zh: "金流商",
+    en: "Payment Provider"
   })
 
   let externalIdPlaceholder = useTrans({
@@ -459,10 +475,17 @@ const SearchBar = ({
               placeholder={usernameInputPlaceholder}
             />
             <UserTypeSelect name="userType" />
+            <PlatformPaymentProviderSelect
+              name="payment"
+              brandId={brandId}
+              transferType={PlatformPaymentTransferType.Withdrawal}
+              placeholder={paymentProviderPlaceholder}
+            />
             <FundWithdrawStatusSelect id="status-select" name="status" />
             <BrandPaymentMultiSelect
               name="brandPaymentIds"
               brandId={brandId}
+              transferType={PlatformPaymentTransferType.Withdrawal}
               placeholder={platformPaymentPlaceholder}
             />
             <InputField
