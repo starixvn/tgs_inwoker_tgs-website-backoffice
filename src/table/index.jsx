@@ -129,6 +129,7 @@ export const Table = ({
   containerProps = {},
   autoSize,
   minHeight = 5 * 50,
+  tableContainerProps,
   ...props
 }) => {
   components = {
@@ -233,7 +234,7 @@ export const Table = ({
                     minHeight
                   )}px`
                 : "auto"};
-              overflow: auto;
+              overflow: ${autoSize ? "auto" : isSticky ? "visible" : "auto"};
             `}
           >
             <_Table width="100%" {...table.getTableProps()} {...props}>
