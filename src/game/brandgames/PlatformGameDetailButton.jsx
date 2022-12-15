@@ -115,6 +115,7 @@ const PlatformGameDetailDialog = ({
           <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
         )
       }
+      minWidth="40vw"
     >
       <EditBody record={brandGame} readOnly={readOnly} />
     </FormDialog>
@@ -127,7 +128,7 @@ const EditBody = ({ record = {}, readOnly }) => {
 
   let notLobbyGame = notLobbyGameType(gameType)
   return (
-    <Stack orientation="vertical" minWidth="40vw" marginLeft="1rem">
+    <Stack orientation="vertical" marginLeft="1rem">
       <Heading use="h5" marginBottom="major-1">
         <Trans zh="基本资料" en="Basic Information" />
       </Heading>
