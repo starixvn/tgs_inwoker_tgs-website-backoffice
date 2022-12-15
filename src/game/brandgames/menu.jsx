@@ -35,16 +35,16 @@ export const label = ({ codes, locale }) => {
     case ViewDetail:
       return getTrans(
         {
-          zh: "查看游戏详情",
-          en: "View Game Details"
+          zh: "查看详情",
+          en: "View Details"
         },
         locale
       )
     case UpdateDetail:
       return getTrans(
         {
-          zh: "编辑游戏详情",
-          en: "Edit Game Details"
+          zh: "编辑详情",
+          en: "Edit Details"
         },
         locale
       )
