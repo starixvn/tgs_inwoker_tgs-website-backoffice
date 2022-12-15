@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Stack, Heading, Box, Button, useModalState } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import { Update as UpdateMenu } from "./menu"
-import { EditDisclosure } from "../../dialog/Disclosure"
+import { ViewDetail, UpdateDetail } from "./menu"
+import Disclosure, { EditDisclosure } from "../../dialog/Disclosure"
 import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useUpdateBrandGame } from "./client"
 import { Trans, useTrans } from "../../i18n"
@@ -19,24 +19,39 @@ import Switch from "../../switch/Switch"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import Input from "../../input/Input"
 
-export const EditButton = ({ record, onSubmitted, ...props }) => {
+export const PlatformGameDetailButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
-  let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
+
+  let editable = useIsDisplayMenuByRoute([UpdateDetail])
+  let isDisplay = useIsDisplayMenuByRoute([ViewDetail])
   if (!isDisplay) {
     return null
   }
 
+  let readOnly = !editable
   return (
     <>
-      <EditDisclosure {...dialog} {...props} />
+      <Disclosure {...dialog} {...props}>
+        <Trans zh="游戏详情" en="Game Detail" />
+      </Disclosure>
       {dialog.visible && (
-        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+        <PlatformGameDetailDialog
+          record={record}
+          readOnly={readOnly}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-const EditDialog = ({ record = {}, dialog, ...props }) => {
+const PlatformGameDetailDialog = ({
+  record = {},
+  readOnly,
+  dialog,
+  ...props
+}) => {
   let { id } = record
   let {
     data: brandGame,
@@ -65,8 +80,8 @@ const EditDialog = ({ record = {}, dialog, ...props }) => {
   }
 
   let title = useTrans({
-    zh: "编辑",
-    en: "Edit"
+    zh: "游戏详情",
+    en: "Game Detail"
   })
 
   if (isLoadingBrandGame) {
@@ -96,16 +111,17 @@ const EditDialog = ({ record = {}, dialog, ...props }) => {
       showActionButtons={false}
       dialog={dialog}
       footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
+        readOnly ? null : (
+          <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
+        )
       }
-      maxWidth="unset"
     >
-      <EditBody record={brandGame} />
+      <EditBody record={brandGame} readOnly={readOnly} />
     </FormDialog>
   )
 }
 
-const EditBody = ({ record = {} }) => {
+const EditBody = ({ record = {}, readOnly }) => {
   let { gameProviderName, gameType, gameName, gameId, platform, supportHtml5 } =
     record
 
@@ -183,13 +199,17 @@ const EditBody = ({ record = {} }) => {
               <Trans zh="有效投注比例" en="Effective Betting Proportion" />
             </Label>
             <Box alignY="center">
-              <PercentageNumberInputField name="effectiveBettingPercentage" />
+              <PercentageNumberInputField
+                name="effectiveBettingPercentage"
+                readOnly={readOnly}
+                disabled={readOnly}
+              />
             </Box>
 
             <Label fontWeight="normal">
               <Trans zh="是否发放返水" en="Commission Rebate" />
             </Label>
-            <Switch name="rebate" />
+            <Switch name="rebate" disabled={readOnly} />
           </FieldValues>
         </>
       )}

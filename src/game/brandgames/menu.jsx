@@ -7,6 +7,10 @@ export const View = "view"
 
 export const Update = "update"
 
+export const ViewDetail = "viewdetail"
+
+export const UpdateDetail = "updatedetail"
+
 export const label = ({ codes, locale }) => {
   let [code = ""] = codes
   code = code.toLowerCase()
@@ -25,6 +29,22 @@ export const label = ({ codes, locale }) => {
         {
           zh: "编辑",
           en: "Edit"
+        },
+        locale
+      )
+    case ViewDetail:
+      return getTrans(
+        {
+          zh: "查看游戏详情",
+          en: "View Game Details"
+        },
+        locale
+      )
+    case UpdateDetail:
+      return getTrans(
+        {
+          zh: "编辑游戏详情",
+          en: "Edit Game Details"
         },
         locale
       )

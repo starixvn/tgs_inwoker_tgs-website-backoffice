@@ -51,7 +51,6 @@ export const add = async ({
   })
 
   let result = await response.json()
-  console.log("result", result, "url", url, "formData", formData)
   return result
 }
 
