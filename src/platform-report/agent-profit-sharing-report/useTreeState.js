@@ -1,3 +1,4 @@
+import equal from "fast-deep-equal"
 import React, { useState, useEffect, useMemo } from "react"
 
 export const useTreeState = (data = []) => {
@@ -8,7 +9,12 @@ export const useTreeState = (data = []) => {
   //TODO: how to fetch children nodes?
   return {
     items: useFlatTreeList(state),
-    initTreeState: (data) => setState(initState(data))
+    initTreeState: (data) => {
+      let state = initState(data)
+      if (!equal(data, state)) {
+        setState(state)
+      }
+    }
   }
 }
 
@@ -45,7 +51,7 @@ const toIdNodeRecord = (record = {}, nodes = [], depth = 0) => {
       isExpended: false,
       childrenIds: toIds(node.children)
     }
-    return toIdNodeRecord(record, node.children, depth++)
+    return toIdNodeRecord(record, node.children, depth + 1)
   }, record)
 }
 

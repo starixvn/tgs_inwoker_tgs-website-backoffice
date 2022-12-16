@@ -57,8 +57,6 @@ import {
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons"
 import AutoSizer from "react-virtualized-auto-sizer"
-//TODO:
-import { useTreeState } from "./useTreeState"
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let [treePaths, setTreePaths] = useState([])
@@ -189,23 +187,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     ]
   }
 
-  //TODO: fix LOOPS!!!
-  /*
-  let { items: rows, initTreeState } = useTreeState()
-  useEffect(() => {
-    if (agentData?.agent && data?.items?.length > 0) {
-      let roots = [
-        {
-          ...agentData?.agent,
-          children: data?.items
-        }
-      ]
-      console.log("roots", roots)
-      initTreeState(roots)
-    }
-  }, [agentData?.agent, JSON.stringify(data)])
-  */
-
+  //TODO: AutoSizer seems has BUG!!!
   //TODO: only set stickyLeft if available width > fixed width?
 
   let columns = useColumns({
@@ -218,42 +200,38 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     setAgentUsername
   })
   return (
-    <PageContent
-      actionBar={
-        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-          <SearchBar
-            brandId={brandId}
-            username={state?.username}
-            type={state?.type}
-            levelType={state?.levelType}
-            from={from}
-            to={to}
-            isLoading={isLoading}
-            search={({ username, ...data }) => {
-              if (agentUsername != username) {
-                setAgentUsername(username)
-              }
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          brandId={brandId}
+          username={state?.username}
+          type={state?.type}
+          levelType={state?.levelType}
+          from={from}
+          to={to}
+          isLoading={isLoading}
+          search={({ username, ...data }) => {
+            if (agentUsername != username) {
+              setAgentUsername(username)
+            }
 
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-          />
-          {data?.items?.length > 0 && (
-            <Box>
-              <DownloadButton
-                id="export-report"
-                isLoading={isLoading}
-                href={urlWith(toSearchParams(), `${API}/exportAgentDividends`)}
-              />
-            </Box>
-          )}
-        </Level>
-      }
-      title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
-    >
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+        />
+        {data?.items?.length > 0 && (
+          <Box>
+            <DownloadButton
+              id="export-report"
+              isLoading={isLoading}
+              href={urlWith(toSearchParams(), `${API}/exportAgentDividends`)}
+            />
+          </Box>
+        )}
+      </Level>
       {agentUsername && (
         <FieldStack height="100%">
           <Alert variant="bordered" type="info" accent marginBottom="1rem">
@@ -302,6 +280,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               </List.Item>
             </List>
           </Alert>
+
           <TotalsInfo data={data} />
           <AgentBreadcrumb
             treePaths={treePaths}
@@ -339,7 +318,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
         </FieldStack>
       )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
