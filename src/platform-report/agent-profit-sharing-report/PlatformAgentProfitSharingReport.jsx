@@ -16,7 +16,6 @@ import {
   Icon,
   Breadcrumb
 } from "bumbag"
-import PageContent from "../../page/Content"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import {
   FormattedNumber,
@@ -212,10 +211,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
           to={to}
           isLoading={isLoading}
           search={({ username, ...data }) => {
-            if (agentUsername != username) {
-              resetTreePath()
-              setAgentUsername(username)
-            }
+            resetTreePath()
+            setAgentUsername(username)
 
             setState({
               pageIndex: 0,
