@@ -60,28 +60,52 @@ import DownloadButton from "../../button/DownloadButton"
 import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
 import { BonusDialogDisclosure } from "../BonusDialog"
 import { PlatformAgentProfitSharingReport } from "./PlatformAgentProfitSharingReport"
+import {
+  PlatformPageContent,
+  usePlatformId
+} from "../../page/PlatformPageContent"
 
 export { Code }
 
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
-  if (!isDisplay) {
-    return null
-  }
-
-  return <Body />
-}
-
-export const CodeContentPair = [Code, Content]
-
-export const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
 
   //TODO: rm when report ready
   let [reportFeatureFlag, setReportFeatureFlag] = useState(
     isFeaturePlatformAgentProfitSharingReportEnabled()
   )
+
+  if (!isDisplay) {
+    return null
+  }
+
+  return reportFeatureFlag ? (
+    <Report />
+  ) : (
+    <Body setReportFeatureFlag={setReportFeatureFlag} />
+  )
+}
+
+export const CodeContentPair = [Code, Content]
+
+const Report = () => {
+  let title = <Trans zh="代理分红报表" en="Agent Profit Sharing Report" />
+  return (
+    <PlatformPageContent title={title}>
+      <ReportBody />
+    </PlatformPageContent>
+  )
+}
+
+const ReportBody = ({}) => {
+  let brandId = usePlatformId()
+  return <PlatformAgentProfitSharingReport brandId={brandId} />
+}
+
+export const Body = ({ setReportFeatureFlag }) => {
+  let userBrandId = useUserBrandId()
+  let [brandId, setBrandId] = useState(userBrandId)
+
   return (
     <Set
       id="report-body"
@@ -97,10 +121,7 @@ export const Body = () => {
           setBrandId(value)
         }}
       />
-      {brandId && !reportFeatureFlag && <ReportContent brandId={brandId} />}
-      {brandId && reportFeatureFlag && (
-        <PlatformAgentProfitSharingReport brandId={brandId} />
-      )}
+      {brandId && <ReportContent brandId={brandId} />}
     </Set>
   )
 }

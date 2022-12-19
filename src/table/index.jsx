@@ -18,7 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
-import { useMeasure } from "react-use"
+import { useMeasure, useScrollbarWidth } from "react-use"
 
 const DefaultState = {
   pageIndex: 0,
@@ -193,6 +193,7 @@ export const Table = ({
     en: "Next page"
   })
 
+  let scrollbarWidth = useScrollbarWidth()
   // TODO: how to measure height + margin?
   // let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
@@ -230,7 +231,7 @@ export const Table = ({
                 : "100%"};
               height: ${Number.isFinite(autoSize?.height)
                 ? `${Math.max(
-                    autoSize?.height - PaginationHeight,
+                    autoSize?.height - PaginationHeight - scrollbarWidth,
                     minHeight
                   )}px`
                 : "auto"};

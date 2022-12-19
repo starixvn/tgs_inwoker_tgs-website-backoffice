@@ -187,7 +187,6 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     ]
   }
 
-  //TODO: AutoSizer seems has BUG!!!
   //TODO: only set stickyLeft if available width > fixed width?
 
   let columns = useColumns({
@@ -233,7 +232,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
         )}
       </Level>
       {agentUsername && (
-        <FieldStack height="100%">
+        <Set orientation="vertical" height="100%" isFilled>
           <Alert variant="bordered" type="info" accent marginBottom="1rem">
             <List listStyleType="disc" listStylePosition="inside">
               <List.Item>
@@ -315,7 +314,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               )
             }}
           </AutoSizer>
-        </FieldStack>
+        </Set>
       )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>

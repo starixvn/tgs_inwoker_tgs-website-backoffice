@@ -18,7 +18,8 @@ import {
   Link,
   FieldStack,
   Alert,
-  List
+  List,
+  useBreakpoint
 } from "bumbag"
 import Content from "./Content"
 import BrandBar from "../report/BrandBar"
@@ -38,6 +39,8 @@ export const PlatformPageContent = ({
 
   //TODO: save platform id and platform info?
   //TODO: also work with url?
+  let isMobile = useBreakpoint("mobile")
+  //TODO: title and actionbar overflow visible?
   return (
     <Store.Provider value={{ platformId, platform, setPlatform }}>
       <PageContent
@@ -49,12 +52,14 @@ export const PlatformPageContent = ({
         {...props}
       >
         <Set orientation="vertical" isFilled height="100%">
-          <Set orientation="horizontal" marginBottom="1.5rem">
-            <Heading use="h3" marginTop="0" marginBottom="0">
-              {title}
-            </Heading>
+          <Set orientation="horizontal" marginBottom="1.5rem" alignY="center">
+            <Box>
+              <Heading use="h3" marginTop="0" marginBottom="0">
+                {title}
+              </Heading>
+            </Box>
             <BrandBar
-              margin="0"
+              paddingLeft="0"
               paddingTop="0"
               onBrandChange={(value) => {
                 setPlatformId(value)
