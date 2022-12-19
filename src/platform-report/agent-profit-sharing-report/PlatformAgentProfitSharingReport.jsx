@@ -62,6 +62,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let [treePaths, setTreePaths] = useState([])
   let [agentUsername, setAgentUsername] = useState()
 
+  const resetTreePath = () => setTreePaths([])
+
   const appendTreePath = (nodeItems = []) => {
     setTreePaths((paths) => {
       let last = lastOf(paths)
@@ -211,6 +213,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
           isLoading={isLoading}
           search={({ username, ...data }) => {
             if (agentUsername != username) {
+              resetTreePath()
               setAgentUsername(username)
             }
 
@@ -300,7 +303,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                   stickyHead
                   hasDividers
                   isHoverable
-                  autoSize={{ height, width }}
+                  maxSize={{ height, width }}
                   css={css`
                     td:first-child {
                       background-color: white;

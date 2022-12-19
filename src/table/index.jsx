@@ -127,7 +127,7 @@ export const Table = ({
   components = {},
   getTableHeadProps,
   containerProps = {},
-  autoSize,
+  maxSize,
   minHeight = 5 * 50,
   tableContainerProps,
   ...props
@@ -226,16 +226,16 @@ export const Table = ({
         >
           <div
             css={css`
-              width: ${Number.isFinite(autoSize?.width)
-                ? `${autoSize?.width}px`
+              max-width: ${Number.isFinite(maxSize?.width)
+                ? `${maxSize?.width}px`
                 : "100%"};
-              height: ${Number.isFinite(autoSize?.height)
+              max-height: ${Number.isFinite(maxSize?.height)
                 ? `${Math.max(
-                    autoSize?.height - PaginationHeight - scrollbarWidth,
+                    maxSize?.height - PaginationHeight - scrollbarWidth,
                     minHeight
                   )}px`
                 : "auto"};
-              overflow: ${autoSize ? "auto" : isSticky ? "visible" : "auto"};
+              overflow: ${maxSize ? "auto" : isSticky ? "visible" : "auto"};
             `}
           >
             <_Table width="100%" {...table.getTableProps()} {...props}>
