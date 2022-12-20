@@ -240,6 +240,7 @@ export const Table = ({
         >
           <div
             css={css`
+              width: 100%;
               max-width: ${Number.isFinite(maxSize?.width)
                 ? `${maxSize?.width}px`
                 : "100%"};
@@ -248,7 +249,7 @@ export const Table = ({
                     maxSize?.height - PaginationHeight - scrollbarWidth,
                     minHeight
                   )}px`
-                : "auto"};
+                : "none"};
               overflow: ${maxSize ? "auto" : isSticky ? "visible" : "auto"};
             `}
           >
