@@ -137,6 +137,17 @@ export const Table = ({
     ...components
   }
 
+  let stickyColumnRecord = {}
+
+  let setStickyColumn = (columnIndex, isSticky) => {
+    Reflect.set(stickyColumnRecord, columnIndex, isSticky)
+  }
+
+  let isStickyColumn = (columnIndex) => {
+    let isSticky = stickyColumnRecord[columnIndex] ?? false
+    return isSticky
+  }
+
   let table = _useTable(
     {
       components,
@@ -168,7 +179,10 @@ export const Table = ({
       disableMultiSort,
       manualPagination,
       pageCount,
-      manualFilters
+      manualFilters,
+      maxSize,
+      setStickyColumn,
+      isStickyColumn
     },
     useFilters,
     useSortBy,
@@ -273,6 +287,10 @@ export const Table = ({
 
 const defaultProps = () => ({})
 
+const isStickyNotApplicable = (cellWidth, maxWidth) => {
+  return cellWidth * 2 > maxWidth
+}
+
 const Head = ({ table }) => {
   let {
     headerGroups,
@@ -280,7 +298,9 @@ const Head = ({ table }) => {
     getTableHeadProps = defaultProps,
     stickyHead,
     stickyLeft,
-    stickyRight
+    stickyRight,
+    maxSize,
+    setStickyColumn
   } = table
   let { Head } = components
 
@@ -308,8 +328,19 @@ const Head = ({ table }) => {
             let isStickyRight = stickyHead && stickyRight && isLast
             //TODO: support multiple sticky columns?
             let isStickyCell = isStickyLeft || isStickyRight
+            let [cellRef, cellRefMeasure] = useMeasure()
+            if (
+              isStickyCell &&
+              Number.isFinite(maxSize?.width) &&
+              Number.isFinite(cellRefMeasure?.width) &&
+              isStickyNotApplicable(cellRefMeasure?.width, maxSize?.width)
+            ) {
+              isStickyCell = false
+            }
+            setStickyColumn(columnIndex, isStickyCell)
             return (
               <_Table.HeadCell
+                ref={cellRef}
                 css={css`
                   position: ${isStickyCell ? "sticky" : "static"};
                   left: ${isStickyLeft ? 0 : "auto"};
@@ -375,7 +406,8 @@ const TotalBody = ({ table }) => {
     columns,
     components,
     stickyLeft,
-    stickyRight
+    stickyRight,
+    maxSize
   } = table
   let { Body, Row, Cell } = components
 
@@ -436,7 +468,8 @@ const Body = ({ table }) => {
     columns,
     components,
     stickyLeft,
-    stickyRight
+    stickyRight,
+    isStickyColumn
   } = table
   let { Body, Row, Cell } = components
   return (
@@ -468,6 +501,9 @@ const Body = ({ table }) => {
               let isStickyRight = stickyRight && isLast
               //TODO: support multiple sticky columns?
               let isStickyCell = isStickyLeft || isStickyRight
+              if (isStickyCell) {
+                isStickyCell = isStickyColumn(cellIndex)
+              }
               return (
                 <Cell
                   css={css`

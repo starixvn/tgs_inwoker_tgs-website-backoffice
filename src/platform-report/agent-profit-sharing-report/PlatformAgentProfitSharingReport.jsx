@@ -298,6 +298,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                   setSortOrder={setSortOrder}
                   isLoading={isLoading}
                   stickyHead
+                  stickyLeft
                   hasDividers
                   isHoverable
                   maxSize={{ height, width }}

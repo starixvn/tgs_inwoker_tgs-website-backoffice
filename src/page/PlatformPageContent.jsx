@@ -31,6 +31,7 @@ export const PlatformPageContent = ({
   title,
   height = "100%",
   children,
+  padding = "1rem",
   ...props
 }) => {
   let userPlatformId = useUserBrandId()
@@ -49,10 +50,11 @@ export const PlatformPageContent = ({
         wrapperProps={{
           height
         }}
+        padding={padding}
         {...props}
       >
         <Set orientation="vertical" isFilled height="100%">
-          <Set orientation="horizontal" marginBottom="1.5rem" alignY="center">
+          <Set orientation="horizontal" padding="1rem 0" alignY="center">
             <Box>
               <Heading use="h3" marginTop="0" marginBottom="0">
                 {title}
