@@ -55,11 +55,6 @@ export const PlatformPageContent = ({
       >
         <Set orientation="vertical" isFilled height="100%">
           <Set orientation="horizontal" padding="1rem 0" alignY="center">
-            <Box>
-              <Heading use="h3" marginTop="0" marginBottom="0">
-                {title}
-              </Heading>
-            </Box>
             <BrandBar
               paddingLeft="0"
               paddingTop="0"
@@ -67,6 +62,11 @@ export const PlatformPageContent = ({
                 setPlatformId(value)
               }}
             />
+            <Box>
+              <Heading use="h3" marginTop="0" marginBottom="0">
+                {title}
+              </Heading>
+            </Box>
           </Set>
           {platformId && children}
         </Set>

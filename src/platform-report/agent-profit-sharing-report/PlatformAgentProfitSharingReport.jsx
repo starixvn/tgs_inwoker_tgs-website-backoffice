@@ -267,7 +267,10 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
             </List>
           </Alert>
 
-          <TotalsInfo data={data} />
+          {/* 
+          TODO: wait for api support
+          <TotalsInfo data={{}} /> 
+          */}
           <AgentBreadcrumb
             treePaths={treePaths}
             backToTreePath={backToTreePath}
