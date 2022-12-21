@@ -36,8 +36,7 @@ import {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-//TODO: how to toggle fake client and real client?
-import { useAgentDividend, useAgentDividendList, API } from "./client"
+import { useAgentDividend, API } from "./client"
 import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
 import { AgentProfitSharingDialogDisclosure } from "./AgentProfitSharingDialog"
 import { AgentTypeSelect } from "../../agent/AgentType"
@@ -131,29 +130,19 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     to: startOfNextDay(to)
   })
   let {
-    isLoading: isLoadingAgent,
+    isLoading,
     data: agentData,
-    error: agentError,
-    mutate: mutateAgent,
-    deleteCache: deleteAgentCache
-  } = useAgentDividend(agentUsername ? toSearchParams() : undefined)
-  let {
-    isLoading: isLoadingList,
-    data,
     error,
     mutate,
     deleteCache
-  } = useAgentDividendList(agentUsername ? toSearchParams() : undefined)
-  let isLoading = isLoadingAgent || isLoadingList
+  } = useAgentDividend(agentUsername ? toSearchParams() : undefined)
 
   useEffect(() => {
-    if (
-      agentData?.items &&
-      notInsideTreePath(headOf(agentData?.items)?.username)
-    ) {
-      appendTreePath(agentData?.items)
+    let agent = headOf(agentData?.mainItems)
+    if (agent?.username && notInsideTreePath(agent?.username)) {
+      appendTreePath(agentData?.mainItems)
     }
-  }, [JSON.stringify(agentData?.items)])
+  }, [JSON.stringify(agentData?.mainItems)])
 
   let items = treePaths.reduce((accumulator, nodeItems, index, list) => {
     let isLastParent = isLastIndex(index, list)
@@ -170,7 +159,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let lastParent = lastOf(items)
   let childrenTreeDepth = (lastParent?.treeDepth ?? 0) + 1
 
-  if (data?.total && data?.items?.length > 0) {
+  if (agentData?.subTotal && agentData?.subItems?.length > 0) {
     items = [
       ...items,
       {
@@ -180,15 +169,13 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
         isLeaf: true,
         isHighlightedRow: true
       },
-      ...data.items.map((node) => ({
+      ...agentData.subItems.map((node) => ({
         ...node,
         treeDepth: childrenTreeDepth,
         isLeaf: true
       }))
     ]
   }
-
-  //TODO: only set stickyLeft if available width > fixed width?
 
   let columns = useColumns({
     brandId,
@@ -221,7 +208,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
             mutate()
           }}
         />
-        {data?.items?.length > 0 && (
+        {agentData?.mainItems?.length > 0 && (
           <Box>
             <DownloadButton
               id="export-report"
@@ -337,7 +324,7 @@ const AgentBreadcrumb = ({ treePaths = [], backToTreePath }) => {
         let agent = headOf(items)
         let isCurrent = isLastIndex(index, list)
         return (
-          <Breadcrumb.Item isCurrent={isCurrent} key={agent.id}>
+          <Breadcrumb.Item isCurrent={isCurrent} key={agent?.id}>
             <Breadcrumb.Link
               onClick={(event) => {
                 if (!isCurrent) {
@@ -345,7 +332,7 @@ const AgentBreadcrumb = ({ treePaths = [], backToTreePath }) => {
                 }
               }}
             >
-              {agent.username}
+              {agent?.username}
             </Breadcrumb.Link>
           </Breadcrumb.Item>
         )

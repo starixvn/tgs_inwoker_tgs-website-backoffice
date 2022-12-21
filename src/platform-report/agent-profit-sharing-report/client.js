@@ -11,23 +11,14 @@ import {
 export const API = "/api/AgentReport"
 
 export const useAgentDividend = (searchParams) => {
-  let url = searchParams ? urlWith(searchParams, `${API}/dividends`) : ""
+  let url = searchParams ? urlWith(searchParams, `${API}/AgentDividends`) : ""
   let { data, ...rest } = useGet(url)
-  if (data) {
-    let agent = data?.items?.find(
-      (item) => item.username === searchParams?.username
-    )
-    data = {
-      items: [agent],
-      errors: [],
-      message: "",
-      valid: false
-    }
-  }
+  console.log("data", data)
 
   return { data, ...rest }
 }
 
+//TODO: rm?
 export const useAgentDividendList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/dividends`) : ""
   return useGet(url)

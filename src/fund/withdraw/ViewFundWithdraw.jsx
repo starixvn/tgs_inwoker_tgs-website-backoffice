@@ -277,6 +277,7 @@ const PayerInfo = ({ brandId, record, disabled }) => {
             brandId={brandId}
             transferType={BrandPaymentTransferType.Withdrawal}
             paymentStatus={BrandPaymentStatus.Enabled}
+            bankType={record?.bankInfo?.bankType}
             paymentChannelId={record?.bankInfo?.paymentChannelId}
             required
             disabled={disabled}
