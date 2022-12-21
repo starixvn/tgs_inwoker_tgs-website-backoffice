@@ -184,7 +184,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     items,
     treePaths,
     backToTreePath,
-    setAgentUsername
+    setAgentUsername,
+    hasChildren: agentData?.subItems?.length > 0
   })
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -492,7 +493,8 @@ const useColumns = ({
   to,
   items = [],
   backToTreePath,
-  setAgentUsername
+  setAgentUsername,
+  hasChildren = false
 }) => {
   return useMemo(() => {
     let columns = [
@@ -527,9 +529,7 @@ const useColumns = ({
               }}
               whiteSpace="nowrap"
             >
-              {record.isLeaf ? (
-                ""
-              ) : (
+              {record.isParent && hasChildren && (
                 <Icon icon={faAngleDown} type="font-awesome" />
               )}
               {record?.username}
