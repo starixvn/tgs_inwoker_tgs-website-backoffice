@@ -177,6 +177,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     ]
   }
 
+  let maxTreeDepth = lastOf(items)?.treeDepth
+
   let columns = useColumns({
     brandId,
     from,
@@ -185,7 +187,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     treePaths,
     backToTreePath,
     setAgentUsername,
-    hasChildren: agentData?.subItems?.length > 0
+    maxTreeDepth
   })
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -494,7 +496,7 @@ const useColumns = ({
   items = [],
   backToTreePath,
   setAgentUsername,
-  hasChildren = false
+  maxTreeDepth
 }) => {
   return useMemo(() => {
     let columns = [
@@ -529,7 +531,7 @@ const useColumns = ({
               }}
               whiteSpace="nowrap"
             >
-              {record.isParent && hasChildren && (
+              {record.isParent && record.treeDepth < maxTreeDepth && (
                 <Icon icon={faAngleDown} type="font-awesome" />
               )}
               {record?.username}
