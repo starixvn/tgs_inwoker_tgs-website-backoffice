@@ -208,7 +208,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               pageIndex: 0,
               ...data
             })
-            mutate()
+            deleteCache()
+            mutate(null)
           }}
         />
         {agentData?.mainItems?.length > 0 && (
