@@ -240,11 +240,10 @@ export const Table = ({
         >
           <div
             css={css`
-              width: 100%;
-              max-width: ${Number.isFinite(maxSize?.width)
+              width: ${Number.isFinite(maxSize?.width)
                 ? `${maxSize?.width}px`
                 : "100%"};
-              max-height: ${Number.isFinite(maxSize?.height)
+              height: ${Number.isFinite(maxSize?.height)
                 ? `${Math.max(
                     maxSize?.height - PaginationHeight - scrollbarWidth,
                     minHeight

@@ -36,7 +36,7 @@ import {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { useAgentDividend, API } from "./client"
+import { useAgentDividend, API } from "./fakeClient"
 import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
 import { AgentProfitSharingDialogDisclosure } from "./AgentProfitSharingDialog"
 import { AgentTypeSelect } from "../../agent/AgentType"
