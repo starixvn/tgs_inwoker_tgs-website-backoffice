@@ -163,7 +163,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     items = [
       ...items,
       {
-        ...data.total,
+        ...agentData.subTotal,
         isTotal: true,
         treeDepth: childrenTreeDepth,
         isLeaf: true,
