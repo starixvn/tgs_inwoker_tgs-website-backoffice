@@ -128,7 +128,7 @@ export const Table = ({
   getTableHeadProps,
   containerProps = {},
   maxSize,
-  minHeight = 5 * 50,
+  minHeight,
   tableContainerProps,
   ...props
 }) => {
@@ -212,6 +212,10 @@ export const Table = ({
   // let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
 
+  if (data?.length > 5 && !Number.isFinite(minHeight)) {
+    minHeight = 5 * 50
+  }
+
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
   return (
     <>
@@ -243,7 +247,8 @@ export const Table = ({
               width: ${Number.isFinite(maxSize?.width)
                 ? `${maxSize?.width}px`
                 : "100%"};
-              height: ${Number.isFinite(maxSize?.height)
+              height: ${Number.isFinite(maxSize?.height) &&
+              Number.isFinite(minHeight)
                 ? `${Math.max(
                     maxSize?.height - PaginationHeight - scrollbarWidth,
                     minHeight
