@@ -240,7 +240,6 @@ export const Table = ({
         >
           <div
             css={css`
-              min-width: max-content;
               width: ${Number.isFinite(maxSize?.width)
                 ? `${maxSize?.width}px`
                 : "100%"};
