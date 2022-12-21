@@ -283,7 +283,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                   data={items}
                   initialState={state}
                   controlledState={state}
-                  pageCount={pageCount(pageSize, data?.totalCount)}
+                  pageCount={pageCount(pageSize, agentData?.totalCount)}
                   setPageIndex={setPageIndex}
                   setSortOrder={setSortOrder}
                   isLoading={isLoading}

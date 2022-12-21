@@ -12,10 +12,7 @@ export const API = "/api/AgentReport"
 
 export const useAgentDividend = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/AgentDividends`) : ""
-  let { data, ...rest } = useGet(url)
-  console.log("data", data)
-
-  return { data, ...rest }
+  return useGet(url)
 }
 
 //TODO: rm?
