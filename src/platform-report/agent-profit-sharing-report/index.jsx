@@ -79,6 +79,9 @@ export const Content = () => {
     return null
   }
 
+  return <Report />
+
+  //TODO: rm report flag
   return reportFeatureFlag ? (
     <Report />
   ) : (
