@@ -128,7 +128,7 @@ export const DateTimeRangeInput = ({
   disabled,
   addonBefore,
   addonAfter,
-  verticalBelow = "mobile",
+  verticalBelow = "tablet",
   ...props
 } = {}) => {
   let startName = startProps?.name ?? "start"
