@@ -130,18 +130,24 @@ export const useVerifyPlayerID = (formId, data) => {
   return usePostData(url, data)
 }
 
+const PlayerBucketApi = "/api/player/bucket"
+export const usePlayerBucketAmount = (playerCode) => {
+  let url = playerCode ? `${PlayerBucketApi}/amount/${playerCode}` : ""
+  return useGet(url)
+}
+
 export const usePlayerWageringRequirementList = (playerCode, searchParams) => {
   let url =
     playerCode && searchParams
-      ? urlWith(searchParams, `${API}/${playerCode}/playerBuckets`)
+      ? urlWith(searchParams, `${PlayerBucketApi}/${playerCode}`)
       : ""
   return useGet(url)
 }
 
-export const usePlayerCompletedWageringList = (playerCode, searchParams) => {
+export const usePlayerCompletedWageringList = (bucketId, searchParams) => {
   let url =
-    playerCode && searchParams
-      ? urlWith(searchParams, `${API}/${playerCode}/playerBucketHistories`)
+    bucketId && searchParams
+      ? urlWith(searchParams, `${PlayerBucketApi}/history/${bucketId}`)
       : ""
   return useGet(url)
 }

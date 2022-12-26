@@ -20,7 +20,7 @@ import { PlayerOperationTab, PlayerOperationPanel } from "./PlayerOperation"
 import { Tab as PasswordTab, Panel as PasswordPanel } from "./password"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import { usePlayer } from "./client"
+import { usePlayer, usePlayerBucketAmount } from "./client"
 import {
   Trans,
   FormattedDateTime,
@@ -122,7 +122,22 @@ const TabsDialog = ({
     en: "Player info"
   })
 
-  const { data, isLoading, isError, error, mutate } = usePlayer(playerCode)
+  const {
+    data,
+    isLoading: isLoadingPlayer,
+    error: playerError,
+    mutate
+  } = usePlayer(playerCode)
+
+  const {
+    data: wageringRequirement,
+    isLoading: isLoadingWageringRequirement,
+    error: wageringRequirementError
+  } = usePlayerBucketAmount(playerCode)
+
+  let isLoading = isLoadingPlayer || isLoadingWageringRequirement
+  let error = playerError || wageringRequirementError
+  let player = { ...data, wageringRequirement }
 
   const onBankSubmitted = () => {
     mutate()
@@ -133,7 +148,7 @@ const TabsDialog = ({
   return (
     <>
       {isLoading && <LoadingBackdrop {...dialog} />}
-      {isError && <AlertDialog {...error} onClickClose={onClickClose} />}
+      {error && <AlertDialog {...error} onClickClose={onClickClose} />}
       {data && (
         <Dialog.Modal
           title={title}
@@ -155,7 +170,7 @@ const TabsDialog = ({
             <ViewTabs
               playerCode={playerCode}
               brandId={brandId}
-              player={data}
+              player={player}
               showParentUsername={showParentUsername}
               tab={tab}
             />
@@ -164,7 +179,7 @@ const TabsDialog = ({
             <EditTabs
               playerCode={playerCode}
               brandId={brandId}
-              player={data}
+              player={player}
               showParentUsername={showParentUsername}
               tab={tab}
               onSubmitted={() => {

@@ -47,6 +47,7 @@ import { LogExceptionDialogDisclosure } from "../LogExceptionDialog"
 import { useLocation, useHistory } from "react-router-dom"
 import { parseJSON } from "../../text/json"
 import { parseISO } from "date-fns"
+import { JsonDiffEditor } from "../../text/editor/JsonDiffEditor"
 
 export { Code }
 
@@ -58,6 +59,111 @@ export const Content = () => {
 
   return <Body />
 }
+
+const Test = () => {
+  //TODO: how to replace json key
+  let setting = {}
+
+  let a = {
+    rule: {
+      playerAutoJoin: true,
+      percentage: 1,
+      bonusAmountLimit: 2,
+      turnoverMultiple: 3,
+      gameType: "LiveDealer",
+      gameProviderIds: ["8b0fe910-b8c6-440a-ae84-2f797b9a312f"]
+    },
+    autoSentPlayerBonus: true,
+    localization: {
+      "en-US": {
+        name: "en title",
+        subSubject: "en subtitle",
+        desktopBanner:
+          "http://localstack.localhost/tgs-project/promotion/aOimztA3hsF6YOhtTcKq3KOHxJqNyfsa.png",
+        content: "<p>en rules</p>"
+      },
+      "id-ID": { name: "", subSubject: "" },
+      "ja-JP": { name: "", subSubject: "" },
+      "ko-KR": { name: "", subSubject: "" },
+      "th-TH": { name: "", subSubject: "" },
+      "vi-VN": { name: "", subSubject: "" },
+      "zh-CN": {
+        name: "中文 title",
+        subSubject: "中文 subtitle",
+        desktopBanner:
+          "http://localstack.localhost/tgs-project/promotion/ladEDikUVysSGImvKSgNPBGeawVLnLmy.png",
+        content: "<p>中文 條款</p>"
+      },
+      "zh-TW": { name: "", subSubject: "" }
+    },
+    name: "title",
+    from: "2022-12-24T16:00:00.000Z",
+    to: "2022-12-27T16:00:00.000Z",
+    vipLevels: ["1"],
+    promotionTypeGroup: "Turnover",
+    promotionType: "TurnoverRebate",
+    totalAmountLimit: 1000,
+    unlimited: false,
+    subSubject: "subtitle",
+    gameTypeGroup: "LiveDealer",
+    content: "<p>rules</p>",
+    brandId: "4e86719f-243f-46f6-b010-5c758b7285af"
+  }
+
+  //TODO
+  let b = {
+    rule: {
+      playerAutoJoin: true,
+      percentage: 1,
+      bonusAmountLimit: 2,
+      turnoverMultiple: 3,
+      gameType: "LiveDealer",
+      gameProviderIds: ["8b0fe910-b8c6-440a-ae84-2f797b9a312f"]
+    },
+    autoSentPlayerBonus: true,
+    localization: {
+      "en-US": {
+        name: "en title X",
+        subSubject: "en subtitle X",
+        desktopBanner:
+          "http://localstack.localhost/tgs-project/promotion/aOimztA3hsF6YOhtTcKq3KOHxJqNyfsa.png",
+        content: "<p>en rules</p>"
+      },
+      "id-ID": { name: "", subSubject: "" },
+      "ja-JP": { name: "", subSubject: "" },
+      "ko-KR": { name: "", subSubject: "" },
+      "th-TH": { name: "", subSubject: "" },
+      "vi-VN": { name: "", subSubject: "" },
+      "zh-CN": {
+        name: "中文 title X",
+        subSubject: "中文 subtitle X",
+        desktopBanner:
+          "http://localstack.localhost/tgs-project/promotion/ladEDikUVysSGImvKSgNPBGeawVLnLmy.png",
+        content: "<p>中文 條款</p>"
+      },
+      "zh-TW": { name: "", subSubject: "" }
+    },
+    name: "title X",
+    from: "2022-12-24T16:00:00.000Z",
+    to: "2022-12-27T16:00:00.000Z",
+    vipLevels: ["1"],
+    promotionTypeGroup: "Turnover",
+    promotionType: "TurnoverRebate",
+    totalAmountLimit: 1000,
+    unlimited: false,
+    subSubject: "subtitle",
+    gameTypeGroup: "LiveDealer",
+    content: "<p>rules</p>",
+    brandId: "4e86719f-243f-46f6-b010-5c758b7285af"
+  }
+  return (
+    <JsonDiffEditor original={JSON.stringify(a)} modified={JSON.stringify(b)} />
+  )
+}
+
+//TODO: support record
+//TODO: support list
+const mergeTrans = (accum, path, trans, target) => {}
 
 export const CodeContentPair = [Code, Content]
 

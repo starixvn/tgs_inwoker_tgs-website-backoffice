@@ -50,6 +50,7 @@ test("view player wagering requirement list", async ({
   }
 
   playerBucketList = await backofficeApi.player.bucket.list(player.code)
+
   let bucketHistory = await backofficeApi.player.bucket.firstHistory(
     player.code
   )
@@ -58,7 +59,7 @@ test("view player wagering requirement list", async ({
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes(`/api/player/${player.code}/playerBuckets`) &&
+        response.url().includes(`/api/player/bucket/${player.code}`) &&
         response.status() === 200
       )
     }),
