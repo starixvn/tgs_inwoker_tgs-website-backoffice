@@ -41,11 +41,10 @@ export const PaymentProviderDropdownMenu = ({
   )
 }
 
-//TODO: use filter instead of range?
 export const PaymentProviderSelect = ({
   placeholder,
   valueField = "id",
-  range,
+  filter: predicate = defaultPredicate,
   ...props
 }) => {
   let defaultPlaceholder = useTrans({
@@ -57,20 +56,13 @@ export const PaymentProviderSelect = ({
   let locale = useLocale()
   let { isLoading, data, error } = usePaymentList()
 
-  let options = data
-    ?.filter((item) => {
-      if (range) {
-        return range.includes(item.id)
-      }
-      return true
-    })
-    ?.map((item) => {
-      let { trans, code, id } = item
-      return {
-        label: trans?.[locale] ?? code,
-        value: item[valueField]
-      }
-    })
+  let options = data?.filter(predicate)?.map((item) => {
+    let { trans, code, id } = item
+    return {
+      label: trans?.[locale] ?? code,
+      value: item[valueField]
+    }
+  })
 
   return (
     <Select

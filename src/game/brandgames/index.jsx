@@ -19,13 +19,13 @@ import {
   useHasSubMenuByRoute,
   useUserBrandId
 } from "../../user/context"
-import { Code, Update, View } from "./menu"
+import { Code, Update, ViewDetail, UpdateDetail } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Trans, useTrans } from "../../i18n"
 import { SearchButton } from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { useBrandGameList, useChangeBrandGameOrders } from "./client"
-import { EditButton } from "./edit"
+import { PlatformGameDetailButton } from "./PlatformGameDetailButton"
 import { GamePlatformLabel } from "../games/GamePlatform.jsx"
 import { GameTag } from "../games/GameTag"
 import { GameTagSwitch } from "./GameTagSwitch"
@@ -259,8 +259,9 @@ const useColumns = ({
 }) => {
   let { register, getValues } = formMethods
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
-  let hasViewAuth = useIsDisplayMenuByRoute([View])
-  let hasAnyMenu = hasUpdateAuth || hasViewAuth
+  let hasViewDetailAuth = useIsDisplayMenuByRoute([ViewDetail])
+  let hasUpdateDetailAuth = useIsDisplayMenuByRoute([UpdateDetail])
+  let hasAnyMenu = hasViewDetailAuth || hasUpdateDetailAuth
 
   return useMemo(() => {
     let columns = [
@@ -483,7 +484,7 @@ const useColumns = ({
       }
     ]
 
-    if (hasUpdateAuth) {
+    if (hasAnyMenu) {
       columns.push({
         id: "actions",
         disableSortBy: true,
@@ -500,7 +501,7 @@ const useColumns = ({
         Cell: ({ value }) => {
           return (
             <Set orientation="vertical" alignX="center">
-              <EditButton
+              <PlatformGameDetailButton
                 id="edit-game-dialog-disclosure"
                 record={value}
                 onSubmitted={mutate}
