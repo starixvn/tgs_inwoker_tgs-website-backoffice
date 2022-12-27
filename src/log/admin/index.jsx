@@ -48,6 +48,17 @@ import { useLocation, useHistory } from "react-router-dom"
 import { parseJSON } from "../../text/json"
 import { parseISO } from "date-fns"
 import { JsonDiffEditor } from "../../text/editor/JsonDiffEditor"
+import {
+  isObject,
+  isArray,
+  isString,
+  isNumber,
+  isBoolean,
+  get,
+  set
+} from "lodash-es"
+import { isNil } from "ramda"
+import clone from "clone-deep"
 
 export { Code }
 
@@ -62,7 +73,50 @@ export const Content = () => {
 
 const Test = () => {
   //TODO: how to replace json key
-  let setting = {}
+  let settings = {
+    rule: {
+      key: {
+        zh: "規則",
+        en: "rule"
+      },
+      playerAutoJoin: {
+        key: {
+          zh: "自動參加",
+          en: "Auto Join"
+        }
+      },
+      gameType: {
+        key: {
+          zh: "遊戲類型",
+          en: "Game Type"
+        }
+      }
+    },
+    localization: {
+      key: {
+        zh: "多語系",
+        en: "Localization"
+      },
+      "en-US": {
+        key: {
+          zh: "英文",
+          en: "Eng"
+        },
+        desktopBanner: {
+          key: {
+            zh: "桌面Banner",
+            en: "Desktop Banner"
+          }
+        }
+      }
+    },
+    name: {
+      key: {
+        zh: "活动名称",
+        en: "Promotion Name"
+      }
+    }
+  }
 
   let a = {
     rule: {
@@ -157,13 +211,57 @@ const Test = () => {
     brandId: "4e86719f-243f-46f6-b010-5c758b7285af"
   }
   return (
-    <JsonDiffEditor original={JSON.stringify(a)} modified={JSON.stringify(b)} />
+    <JsonDiffEditor
+      original={JSON.stringify(mergeTrans({ settings, target: a }))}
+      modified={JSON.stringify(mergeTrans({ settings, target: b }))}
+    />
   )
 }
 
-//TODO: support record
-//TODO: support list
-const mergeTrans = (accum, path, trans, target) => {}
+const mergeTrans = ({ accum, lang = "zh", settings, target } = {}) => {
+  if (isNil(accum)) {
+    accum = isArray(target) ? [] : {}
+  }
+
+  return Object.entries(target).reduce((accum, [key, value]) => {
+    //TODO: if value is a record or array?
+    let clonedValue = clone(value)
+
+    let settingRecord = get(settings, key)
+    let trans = settingRecord?.key
+    let tran = trans?.[lang]
+    if (tran) {
+      set(accum, tran, clonedValue)
+    } else {
+      set(accum, key, clonedValue)
+    }
+
+    let isDeep = !(isString(value) || isNumber(value) || isBoolean(value))
+    if (isDeep) {
+      if (isArray(value)) {
+        console.log("clonedValue", clonedValue, "")
+        value.map((target, index) => {
+          let accum = clonedValue[index]
+          let settings = settingRecord
+
+          mergeTrans({
+            accum,
+            settings,
+            target
+          })
+        })
+      } else {
+        mergeTrans({
+          accum: clonedValue,
+          settings: settingRecord,
+          target: value
+        })
+      }
+    }
+
+    return accum
+  }, accum)
+}
 
 export const CodeContentPair = [Code, Content]
 
