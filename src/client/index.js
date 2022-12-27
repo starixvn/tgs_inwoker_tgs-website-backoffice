@@ -2,6 +2,7 @@ import { toDataOrError } from "./response"
 import useSWR, { cache } from "swr"
 import { getAcceptLang, getAcceptLangCulture } from "../i18n"
 import { isValid } from "date-fns"
+import { isNil, isEmpty, either } from "ramda"
 
 export const urlWith = (searchParams = {}, url) => {
   let urlSearchParams = Object.entries(searchParams).reduce(
@@ -164,7 +165,7 @@ export const useGet = (url, options = DefaultUpdateOptions) => {
 
   return {
     data,
-    isLoading: !error && !data && fetchData,
+    isLoading: !error && isNil(data) && fetchData,
     isValidating,
     error,
     isError: error,

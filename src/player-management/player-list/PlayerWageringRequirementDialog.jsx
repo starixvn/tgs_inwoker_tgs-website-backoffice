@@ -13,7 +13,7 @@ import {
   Divider
 } from "bumbag"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Disclosure } from "../../dialog/Disclosure"
+import { Disclosure, ViewDisclosure } from "../../dialog/Disclosure"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import Backdrop from "../../dialog/Backdrop"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
@@ -69,7 +69,7 @@ const WageringRequirementDialog = ({ playerCode, dialog, ...props }) => {
 
   let columns = useWageringRequirementColumns({
     playerCode,
-    items: data?.items
+    items: data
   })
 
   if (error) {
@@ -81,7 +81,7 @@ const WageringRequirementDialog = ({ playerCode, dialog, ...props }) => {
       <Table
         id="wagering-requirement"
         columns={columns}
-        data={data?.items}
+        data={data}
         pageCount={pageCount(state.pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
@@ -151,7 +151,7 @@ const BucketHistoryDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog} {...props}>
-        <FormattedNumberDecimal value={value} />
+        <Trans zh="查看" en="Details" />
       </Disclosure>
       {dialog.visible && (
         <BucketHistoryDialog
@@ -255,21 +255,18 @@ const useWageringRequirementColumns = ({ playerCode, items = [] }) =>
         disableSortBy: true
       }),
       numberDecimalColumn({
-        id: "completedWagering",
-        accessor: (row) => row,
-        Header: <Trans zh="已达流水" en="Completed Wagering" />,
-        disableSortBy: true,
-        Cell: ({ value: record }) => (
-          <BucketHistoryDisclosure
-            playerBucketId={record.id}
-            value={record.completedWagering}
-          />
-        )
-      }),
-      numberDecimalColumn({
         accessor: "uncompleteWagering",
         Header: <Trans zh="剩余流水" en="Uncompleted Wagering" />,
         disableSortBy: true
+      }),
+      numberDecimalColumn({
+        id: "actions",
+        accessor: (row) => row,
+        Header: <Trans zh="流水细项" en="Turnover Details" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => (
+          <BucketHistoryDisclosure playerBucketId={record.id} />
+        )
       })
     ],
     [playerCode, JSON.stringify(items)]

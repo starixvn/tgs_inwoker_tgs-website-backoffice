@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: player-bucket-worker
-image: pgtgs/bucket-worker:202211220813.65
+image: pgtgs/bucket-worker:202212220607.89-test1
 services:
   - name: player-bucket-worker
     dependencies:
