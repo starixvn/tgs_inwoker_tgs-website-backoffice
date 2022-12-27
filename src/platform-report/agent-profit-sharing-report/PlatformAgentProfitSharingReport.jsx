@@ -73,6 +73,29 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     })
   }
 
+  const replaceTreePath = (nodeItems = []) => {
+    let agent = headOf(nodeItems)
+
+    setTreePaths((paths) => {
+      let replacedPaths = paths.map((pathItems = []) => {
+        let first = headOf(pathItems)
+        let treeDepth = first.treeDepth
+
+        if (agent.username === first.username) {
+          return nodeItems.map((item) => ({
+            ...item,
+            treeDepth
+          }))
+        }
+
+        return pathItems
+      })
+
+      console.log("paths", paths, "replacedPaths", replacedPaths)
+      return replacedPaths
+    })
+  }
+
   const backToTreePath = (node) => {
     let index = treePaths.findIndex((items) => {
       let item = headOf(items)
@@ -148,8 +171,12 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
       "agents",
       agentData?.mainItems
     )
-    if (agent?.username && notInsideTreePath(agent?.username)) {
-      appendTreePath(agentData?.mainItems)
+    if (agent?.username) {
+      if (notInsideTreePath(agent?.username)) {
+        appendTreePath(agentData?.mainItems)
+      } else {
+        replaceTreePath(agentData?.mainItems)
+      }
     }
   }, [JSON.stringify(agentData?.mainItems)])
 
