@@ -140,7 +140,14 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
 
   useEffect(() => {
     let agent = headOf(agentData?.mainItems)
-    console.log("isLoading", isLoading, "isValidating", isValidating)
+    console.log(
+      "isLoading",
+      isLoading,
+      "isValidating",
+      isValidating,
+      "agents",
+      agentData?.mainItems
+    )
     if (agent?.username && notInsideTreePath(agent?.username)) {
       appendTreePath(agentData?.mainItems)
     }
