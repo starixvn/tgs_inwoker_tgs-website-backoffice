@@ -91,7 +91,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
         return pathItems
       })
 
-      console.log("paths", paths, "replacedPaths", replacedPaths)
+      console.log("from Paths", paths, "to Paths", replacedPaths)
       return replacedPaths
     })
   }
@@ -163,20 +163,21 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
 
   useEffect(() => {
     let agent = headOf(agentData?.mainItems)
-    console.log(
-      "isLoading",
-      isLoading,
-      "isValidating",
-      isValidating,
-      "agents",
-      agentData?.mainItems
-    )
     if (agent?.username) {
       if (notInsideTreePath(agent?.username)) {
         appendTreePath(agentData?.mainItems)
       } else {
         replaceTreePath(agentData?.mainItems)
       }
+
+      console.log(
+        "isLoading",
+        isLoading,
+        "isValidating",
+        isValidating,
+        "agents",
+        agentData?.mainItems
+      )
     }
   }, [JSON.stringify(agentData?.mainItems)])
 
