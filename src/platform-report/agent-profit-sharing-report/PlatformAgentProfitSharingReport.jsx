@@ -169,15 +169,6 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
       } else {
         replaceTreePath(agentData?.mainItems)
       }
-
-      console.log(
-        "isLoading",
-        isLoading,
-        "isValidating",
-        isValidating,
-        "agents",
-        agentData?.mainItems
-      )
     }
   }, [JSON.stringify(agentData?.mainItems)])
 
