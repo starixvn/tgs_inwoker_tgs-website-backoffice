@@ -60,28 +60,61 @@ import DownloadButton from "../../button/DownloadButton"
 import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
 import { BonusDialogDisclosure } from "../BonusDialog"
 import { PlatformAgentProfitSharingReport } from "./PlatformAgentProfitSharingReport"
+import {
+  PlatformPageContent,
+  usePlatformId
+} from "../../page/PlatformPageContent"
 
 export { Code }
 
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
+
+  //TODO: rm
+  /*
+  let [reportFeatureFlag, setReportFeatureFlag] = useState(
+    isFeaturePlatformAgentProfitSharingReportEnabled()
+  )
+  */
+
   if (!isDisplay) {
     return null
   }
 
-  return <Body />
+  return <Report />
+
+  //TODO: rm
+  /*
+  return reportFeatureFlag ? (
+    <Report />
+  ) : (
+    <Body setReportFeatureFlag={setReportFeatureFlag} />
+  )
+  */
 }
 
 export const CodeContentPair = [Code, Content]
 
-export const Body = () => {
+const Report = () => {
+  let title = <Trans zh="代理分红报表" en="Agent Profit Sharing Report" />
+  return (
+    <PlatformPageContent title={title}>
+      <ReportBody />
+    </PlatformPageContent>
+  )
+}
+
+const ReportBody = ({}) => {
+  let brandId = usePlatformId()
+  return <PlatformAgentProfitSharingReport brandId={brandId} />
+}
+
+//TODO: rm Body, use ReportBody
+/*
+export const Body = ({ setReportFeatureFlag }) => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
 
-  //TODO: rm when report ready
-  let [reportFeatureFlag, setReportFeatureFlag] = useState(
-    isFeaturePlatformAgentProfitSharingReportEnabled()
-  )
   return (
     <Set
       id="report-body"
@@ -97,10 +130,7 @@ export const Body = () => {
           setBrandId(value)
         }}
       />
-      {brandId && !reportFeatureFlag && <ReportContent brandId={brandId} />}
-      {brandId && reportFeatureFlag && (
-        <PlatformAgentProfitSharingReport brandId={brandId} />
-      )}
+      {brandId && <ReportContent brandId={brandId} />}
     </Set>
   )
 }
@@ -367,10 +397,6 @@ const SearchBar = ({
           />
           <AgentTypeSelect name="type" />
 
-          {/* 
-          <AgentLevelSelect name="levelType" /> 
-          */}
-
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
@@ -398,43 +424,10 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        /*
-        id: "bonusAmount",
-        accessor: (row) => row,
-        toValue: (row) => row?.bonusAmount,
-        */
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
         disableSortBy: true
-        /*
-        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
-        Cell: ({ value: record }) => {
-          return (
-            <BonusDialogDisclosure
-              value={record?.bonusAmount}
-              use={Link}
-              useFetch={() => {
-                return {
-                  isLoading: false,
-                  data: {
-                    items: [
-                      {
-                        promotionBonus: 1,
-                        vipRebate: 2,
-                        birthdayBonus: 3,
-                        upgradeBonus: 4,
-                        quarterlyBonus: 5
-                      }
-                    ]
-                  },
-                  error: undefined
-                }
-              }}
-            />
-          )
-        }
-        */
       }),
       numberDecimalColumn({
         accessor: "agentCoveredBonus",
@@ -587,3 +580,4 @@ const TeamContributionHeader = () => {
   })
   return <Trans zh="团队贡献" en="Team Contribution" title={title} />
 }
+*/

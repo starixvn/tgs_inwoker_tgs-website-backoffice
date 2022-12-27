@@ -11,7 +11,8 @@ import {
   Dialog,
   FieldWrapper,
   FieldStack,
-  Checkbox
+  Checkbox,
+  useBreakpoint
 } from "bumbag"
 import { useForm, useFormContext, Controller } from "react-hook-form"
 import "react-datepicker/dist/react-datepicker.css"
@@ -127,6 +128,7 @@ export const DateTimeRangeInput = ({
   disabled,
   addonBefore,
   addonAfter,
+  verticalBelow = "tablet",
   ...props
 } = {}) => {
   let startName = startProps?.name ?? "start"
@@ -173,9 +175,11 @@ export const DateTimeRangeInput = ({
     }
   }, [rangeError])
 
+  let isMobile = useBreakpoint("mobile")
+
   return (
     <>
-      <Group {...props}>
+      <Group verticalBelow={verticalBelow} {...props}>
         {showDateDropdownMenu && (
           <DateDropdownMenu
             id="date-range-dropdown-menu"
@@ -186,13 +190,23 @@ export const DateTimeRangeInput = ({
               formMethods?.setValue(startName, start)
               formMethods?.setValue(endName, end)
             }}
-            css={css`
-              button {
-                border-radius: 0px;
-                border-bottom-left-radius: 6px;
-                border-top-left-radius: 6px;
-              }
-            `}
+            css={
+              isMobile
+                ? css`
+                    button {
+                      border-radius: 0px;
+                      border-top-right-radius: 6px;
+                      border-top-left-radius: 6px;
+                    }
+                  `
+                : css`
+                    button {
+                      border-radius: 0px;
+                      border-bottom-left-radius: 6px;
+                      border-top-left-radius: 6px;
+                    }
+                  `
+            }
             {...dateDropdownMenuProps}
           />
         )}

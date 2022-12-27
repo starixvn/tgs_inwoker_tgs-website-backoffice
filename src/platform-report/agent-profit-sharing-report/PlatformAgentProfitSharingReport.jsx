@@ -16,7 +16,6 @@ import {
   Icon,
   Breadcrumb
 } from "bumbag"
-import PageContent from "../../page/Content"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import {
   FormattedNumber,
@@ -37,8 +36,7 @@ import {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-//TODO: how to toggle fake client and real client?
-import { useAgentDividend, useAgentDividendList, API } from "./client"
+import { useAgentDividend, API } from "./client"
 import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
 import { AgentProfitSharingDialogDisclosure } from "./AgentProfitSharingDialog"
 import { AgentTypeSelect } from "../../agent/AgentType"
@@ -57,12 +55,12 @@ import {
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons"
 import AutoSizer from "react-virtualized-auto-sizer"
-//TODO:
-import { useTreeState } from "./useTreeState"
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let [treePaths, setTreePaths] = useState([])
   let [agentUsername, setAgentUsername] = useState()
+
+  const resetTreePath = () => setTreePaths([])
 
   const appendTreePath = (nodeItems = []) => {
     setTreePaths((paths) => {
@@ -132,29 +130,19 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     to: startOfNextDay(to)
   })
   let {
-    isLoading: isLoadingAgent,
+    isLoading,
     data: agentData,
-    error: agentError,
-    mutate: mutateAgent,
-    deleteCache: deleteAgentCache
-  } = useAgentDividend(agentUsername ? toSearchParams() : undefined)
-  let {
-    isLoading: isLoadingList,
-    data,
     error,
     mutate,
     deleteCache
-  } = useAgentDividendList(agentUsername ? toSearchParams() : undefined)
-  let isLoading = isLoadingAgent || isLoadingList
+  } = useAgentDividend(agentUsername ? toSearchParams() : undefined)
 
   useEffect(() => {
-    if (
-      agentData?.items &&
-      notInsideTreePath(headOf(agentData?.items)?.username)
-    ) {
-      appendTreePath(agentData?.items)
+    let agent = headOf(agentData?.mainItems)
+    if (agent?.username && notInsideTreePath(agent?.username)) {
+      appendTreePath(agentData?.mainItems)
     }
-  }, [JSON.stringify(agentData?.items)])
+  }, [JSON.stringify(agentData?.mainItems)])
 
   let items = treePaths.reduce((accumulator, nodeItems, index, list) => {
     let isLastParent = isLastIndex(index, list)
@@ -171,17 +159,17 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let lastParent = lastOf(items)
   let childrenTreeDepth = (lastParent?.treeDepth ?? 0) + 1
 
-  if (data?.total && data?.items?.length > 0) {
+  if (agentData?.subTotal && agentData?.subItems?.length > 0) {
     items = [
       ...items,
       {
-        ...data.total,
+        ...agentData.subTotal,
         isTotal: true,
         treeDepth: childrenTreeDepth,
         isLeaf: true,
         isHighlightedRow: true
       },
-      ...data.items.map((node) => ({
+      ...agentData.subItems.map((node) => ({
         ...node,
         treeDepth: childrenTreeDepth,
         isLeaf: true
@@ -189,24 +177,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     ]
   }
 
-  //TODO: fix LOOPS!!!
-  /*
-  let { items: rows, initTreeState } = useTreeState()
-  useEffect(() => {
-    if (agentData?.agent && data?.items?.length > 0) {
-      let roots = [
-        {
-          ...agentData?.agent,
-          children: data?.items
-        }
-      ]
-      console.log("roots", roots)
-      initTreeState(roots)
-    }
-  }, [agentData?.agent, JSON.stringify(data)])
-  */
-
-  //TODO: only set stickyLeft if available width > fixed width?
+  let maxTreeDepth = lastOf(items)?.treeDepth
 
   let columns = useColumns({
     brandId,
@@ -215,47 +186,44 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     items,
     treePaths,
     backToTreePath,
-    setAgentUsername
+    setAgentUsername,
+    maxTreeDepth
   })
   return (
-    <PageContent
-      actionBar={
-        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-          <SearchBar
-            brandId={brandId}
-            username={state?.username}
-            type={state?.type}
-            levelType={state?.levelType}
-            from={from}
-            to={to}
-            isLoading={isLoading}
-            search={({ username, ...data }) => {
-              if (agentUsername != username) {
-                setAgentUsername(username)
-              }
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          brandId={brandId}
+          username={state?.username}
+          type={state?.type}
+          levelType={state?.levelType}
+          from={from}
+          to={to}
+          isLoading={isLoading}
+          search={({ username, ...data }) => {
+            resetTreePath()
+            setAgentUsername(username)
 
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-          />
-          {data?.items?.length > 0 && (
-            <Box>
-              <DownloadButton
-                id="export-report"
-                isLoading={isLoading}
-                href={urlWith(toSearchParams(), `${API}/exportAgentDividends`)}
-              />
-            </Box>
-          )}
-        </Level>
-      }
-      title={<Trans zh="代理分红报表" en="Agent Profit Sharing Report" />}
-    >
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            deleteCache()
+            mutate(null)
+          }}
+        />
+        {agentData?.mainItems?.length > 0 && (
+          <Box>
+            <DownloadButton
+              id="export-report"
+              isLoading={isLoading}
+              href={urlWith(toSearchParams(), `${API}/exportAgentDividends`)}
+            />
+          </Box>
+        )}
+      </Level>
       {agentUsername && (
-        <FieldStack height="100%">
+        <Set orientation="vertical" height="100%" isFilled>
           <Alert variant="bordered" type="info" accent marginBottom="1rem">
             <List listStyleType="disc" listStylePosition="inside">
               <List.Item>
@@ -302,7 +270,11 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               </List.Item>
             </List>
           </Alert>
-          <TotalsInfo data={data} />
+
+          {/* 
+          TODO: wait for api support
+          <TotalsInfo data={{}} /> 
+          */}
           <AgentBreadcrumb
             treePaths={treePaths}
             backToTreePath={backToTreePath}
@@ -315,14 +287,15 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                   data={items}
                   initialState={state}
                   controlledState={state}
-                  pageCount={pageCount(pageSize, data?.totalCount)}
+                  pageCount={pageCount(pageSize, agentData?.subTotalCount)}
                   setPageIndex={setPageIndex}
                   setSortOrder={setSortOrder}
                   isLoading={isLoading}
                   stickyHead
+                  stickyLeft
                   hasDividers
                   isHoverable
-                  autoSize={{ height, width }}
+                  maxSize={{ height, width }}
                   css={css`
                     td:first-child {
                       background-color: white;
@@ -336,10 +309,10 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               )
             }}
           </AutoSizer>
-        </FieldStack>
+        </Set>
       )}
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
@@ -358,7 +331,7 @@ const AgentBreadcrumb = ({ treePaths = [], backToTreePath }) => {
         let agent = headOf(items)
         let isCurrent = isLastIndex(index, list)
         return (
-          <Breadcrumb.Item isCurrent={isCurrent} key={agent.id}>
+          <Breadcrumb.Item isCurrent={isCurrent} key={agent?.id}>
             <Breadcrumb.Link
               onClick={(event) => {
                 if (!isCurrent) {
@@ -366,7 +339,7 @@ const AgentBreadcrumb = ({ treePaths = [], backToTreePath }) => {
                 }
               }}
             >
-              {agent.username}
+              {agent?.username}
             </Breadcrumb.Link>
           </Breadcrumb.Item>
         )
@@ -523,7 +496,8 @@ const useColumns = ({
   to,
   items = [],
   backToTreePath,
-  setAgentUsername
+  setAgentUsername,
+  maxTreeDepth
 }) => {
   return useMemo(() => {
     let columns = [
@@ -558,9 +532,7 @@ const useColumns = ({
               }}
               whiteSpace="nowrap"
             >
-              {record.isLeaf ? (
-                ""
-              ) : (
+              {record.isParent && record.treeDepth < maxTreeDepth && (
                 <Icon icon={faAngleDown} type="font-awesome" />
               )}
               {record?.username}

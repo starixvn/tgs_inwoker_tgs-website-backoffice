@@ -14,15 +14,26 @@ import {
 import { useBrandPaymentList } from "./client"
 import { Select, SelectField } from "../../select/Select"
 import equals from "fast-deep-equal"
+import { usePaymentChannelList } from "../../payment/channel/client"
 
 export const BrandPaymentSelect = ({
   brandId,
   transferType,
   paymentStatus,
+  bankType,
   paymentChannelId,
   ...props
 }) => {
-  let { isLoading, data, error, deleteCache, mutate } = useBrandPaymentList({
+  let { isLoading: isLoadingPaymentChannelList, data: paymentChannelList } =
+    usePaymentChannelList()
+
+  let {
+    isLoading: isLoadingBrandPaymentList,
+    data,
+    error,
+    deleteCache,
+    mutate
+  } = useBrandPaymentList({
     brandId,
     transferType,
     paymentStatus,
@@ -30,8 +41,28 @@ export const BrandPaymentSelect = ({
     showAll: true
   })
 
-  let options = data?.items
+  let isLoading = isLoadingBrandPaymentList || isLoadingPaymentChannelList
+
+  let items = data?.items?.map((brandPayment) => {
+    let paymentChannel = paymentChannelList?.find(
+      (paymentChannel) => paymentChannel.id === brandPayment.paymentChannelId
+    )
+
+    return {
+      ...brandPayment,
+      paymentChannelCode: paymentChannel?.code
+    }
+  })
+
+  let options = items
     ?.filter((brandPayment) => {
+      if (
+        bankType == "Bank" &&
+        brandPayment.paymentChannelCode === "CustomBank"
+      ) {
+        return true
+      }
+
       if (
         paymentChannelId &&
         paymentChannelId != brandPayment.paymentChannelId

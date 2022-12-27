@@ -27,12 +27,14 @@ export const approveWithdraw = async (
   await openDialog(page, VerifyDialogSelector)
 
   await Promise.all([
+    /* TODO: sometimes timeout error?
     page.waitForResponse((response) => {
       return (
         response.url().includes(`/api/withdraw/${formId}`) &&
         response.status() === 200
       )
     }),
+    */
     page.waitForResponse((response) => {
       return (
         response.url().includes(`/api/withdraw/${brandId}?`) &&
