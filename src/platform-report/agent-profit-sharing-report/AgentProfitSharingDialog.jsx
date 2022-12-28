@@ -52,7 +52,7 @@ export const AgentProfitSharingDialogDisclosure = ({
   if (!Number.isFinite(value) || value === 0) {
     return <FormattedNumberDecimal value={value} />
   }
-  
+
   return (
     <>
       <Disclosure {...dialog} {...props}>
@@ -128,6 +128,9 @@ const ReportDialog = ({
         & .bb-DialogContent {
           max-height: 80vh;
         }
+        & .bb-DialogClose {
+          z-index: 2;
+        }
       `}
     >
       <FieldStack>
@@ -151,6 +154,11 @@ const ReportDialog = ({
           setSortOrder={setSortOrder}
           isLoading={isLoading}
           foot={data?.items?.length > 0}
+          stickyHead
+          containerProps={{
+            maxHeight: "69vh",
+            overflow: "auto"
+          }}
         />
       </FieldStack>
     </Dialog.Modal>
@@ -192,69 +200,6 @@ const useAgentBonusColumns = ({ username = "", items = [] }) => {
           let end = formatDateTime(format, value?.settlementDateTo)
           return <Text.Block>{`${start} - ${end}`}</Text.Block>
         }
-      }),
-
-      numberDecimalColumn({
-        accessor: "liveDealerWinLoss",
-        Header: <Trans zh="真人输赢总金额" en="Live Dealer Win Loss Amount" />,
-        sumColumn: "liveDealerWinLoss",
-        disableSortBy: true
-      }),
-
-      numberDecimalColumn({
-        accessor: "sportsWinLoss",
-        Header: <Trans zh="体育输赢总金额" en="Sports Win Loss Amount" />,
-        sumColumn: "sportsWinLoss",
-        disableSortBy: true
-      }),
-
-      numberDecimalColumn({
-        accessor: "slotWinLoss",
-        Header: <Trans zh="电子输赢总金额" en="EGame Win Loss Amount" />,
-        sumColumn: "slotWinLoss",
-        disableSortBy: true
-      }),
-
-      numberDecimalColumn({
-        accessor: "cardGameWinLoss",
-        Header: <Trans zh="棋牌输赢总金额" en="Card Game Win Loss Amount" />,
-        sumColumn: "cardGameWinLoss",
-        disableSortBy: true
-      }),
-
-      numberDecimalColumn({
-        accessor: "virtualSportsWinLoss",
-        Header: (
-          <Trans zh="虚拟体育输赢总金额" en="Virtual Sports Win Loss Amount" />
-        ),
-        sumColumn: "virtualSportsWinLoss",
-        disableSortBy: true
-      }),
-
-      numberDecimalColumn({
-        accessor: "lotteryWinLoss",
-        Header: <Trans zh="彩票输赢总金额" en="Lottery Win Loss Amount" />,
-        sumColumn: "lotteryWinLoss",
-        disableSortBy: true
-      }),
-
-      numberDecimalPercentageColumn({
-        accessor: "agentDividendPercentage",
-        Header: <Trans zh="分红比例" en="Profit Sharing Percentaget" />,
-        disableSortBy: true
-      }),
-
-      numberDecimalColumn({
-        accessor: "expenditureAmount",
-        Header: (
-          <Trans
-            zh="支出金额"
-            en="Expenditure Amount"
-            title={payoutAmountTooltip}
-          />
-        ),
-        sumColumn: "expenditureAmount",
-        disableSortBy: true
       }),
 
       numberDecimalColumn({

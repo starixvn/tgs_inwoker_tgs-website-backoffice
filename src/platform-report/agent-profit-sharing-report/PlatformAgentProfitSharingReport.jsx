@@ -274,7 +274,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               </List.Item>
               <List.Item>
                 <Trans
-                  zh="净盈利 = 公司输赢金额 - 代理红利 - 代理优惠。"
+                  zh="净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐。"
                   en="Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount."
                 />
               </List.Item>
