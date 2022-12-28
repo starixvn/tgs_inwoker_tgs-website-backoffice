@@ -338,7 +338,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                     tr[data-hightlight] td:first-child {
                       background-color: var(--bb-palette-white600, #000000);
                     }
-                    
+
                     tr:not([data-hightlight]) td:first-child {
                       background-color: white;
                     }
@@ -699,6 +699,7 @@ const useColumns = ({
               end={to}
               username={record?.username}
               value={record?.winLossAmount}
+              agentDividendPercentage={record?.agentDividendPercentage}
               use={Link}
             />
           )
@@ -755,6 +756,7 @@ const useColumns = ({
                 end={to}
                 username={record?.username}
                 value={record?.fromTeamAgentDividendAmount}
+                agentDividendPercentage={record?.agentDividendPercentage}
                 use={Link}
               />
             )
@@ -799,6 +801,7 @@ const useColumns = ({
                 end={to}
                 username={record?.username}
                 value={record?.agentDividendAmount}
+                agentDividendPercentage={record?.agentDividendPercentage}
                 use={Link}
               />
             )
