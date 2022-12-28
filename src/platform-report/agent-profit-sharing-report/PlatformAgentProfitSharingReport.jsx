@@ -179,7 +179,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
       isParent: true,
       isLeaf: false,
       isLastParent,
-      isHighlightedRow: true
+      isHighlightedRow: false
     }))
     return [...accumulator, ...items]
   }, [])
@@ -324,8 +324,22 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                   hasDividers
                   isHoverable
                   maxSize={{ height, width }}
+                  getRowProps={({ original: { isHighlightedRow } }) => {
+                    if (isHighlightedRow) {
+                      return {
+                        backgroundColor: "white600",
+                        fontWeight: "bold",
+                        "data-hightlight": true
+                      }
+                    }
+                    return {}
+                  }}
                   css={css`
-                    td:first-child {
+                    tr[data-hightlight] td:first-child {
+                      background-color: var(--bb-palette-white600, #000000);
+                    }
+
+                    tr:not([data-hightlight]) td:first-child {
                       background-color: white;
                     }
 
@@ -663,6 +677,10 @@ const useColumns = ({
         },
         disableSortBy: true,
         Cell: ({ value: record }) => {
+          if (!record) {
+            return null
+          }
+
           if (!record?.id) {
             return (
               <FormattedNumber
@@ -681,6 +699,7 @@ const useColumns = ({
               end={to}
               username={record?.username}
               value={record?.winLossAmount}
+              agentDividendPercentage={record?.agentDividendPercentage}
               use={Link}
             />
           )
@@ -715,6 +734,10 @@ const useColumns = ({
           },
           disableSortBy: true,
           Cell: ({ value: record }) => {
+            if (!record) {
+              return null
+            }
+
             if (!record?.id) {
               return (
                 <FormattedNumber
@@ -733,6 +756,7 @@ const useColumns = ({
                 end={to}
                 username={record?.username}
                 value={record?.fromTeamAgentDividendAmount}
+                agentDividendPercentage={record?.agentDividendPercentage}
                 use={Link}
               />
             )
@@ -755,6 +779,10 @@ const useColumns = ({
           },
           disableSortBy: true,
           Cell: ({ value: record }) => {
+            if (!record) {
+              return null
+            }
+
             if (!record?.id) {
               return (
                 <FormattedNumber
@@ -773,6 +801,7 @@ const useColumns = ({
                 end={to}
                 username={record?.username}
                 value={record?.agentDividendAmount}
+                agentDividendPercentage={record?.agentDividendPercentage}
                 use={Link}
               />
             )

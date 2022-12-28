@@ -55,7 +55,8 @@ import {
   isNumber,
   isBoolean,
   get,
-  set
+  set,
+  unset
 } from "lodash-es"
 import { isNil } from "ramda"
 import clone from "clone-deep"
@@ -108,6 +109,24 @@ const Test = () => {
             en: "Desktop Banner"
           }
         }
+      },
+      "en-US": {
+        key: {
+          zh: "英文",
+          en: "Eng"
+        },
+        desktopBanner: {
+          key: {
+            zh: "桌面Banner",
+            en: "Desktop Banner"
+          }
+        }
+      }
+    },
+    localizationArray: {
+      key: {
+        zh: "多語系 List",
+        en: "Localization List"
       }
     },
     name: {
@@ -150,6 +169,27 @@ const Test = () => {
       },
       "zh-TW": { name: "", subSubject: "" }
     },
+    localizationArray: [
+      {
+        "en-US": {
+          name: "en title",
+          subSubject: "en subtitle",
+          desktopBanner:
+            "http://localstack.localhost/tgs-project/promotion/aOimztA3hsF6YOhtTcKq3KOHxJqNyfsa.png",
+          content: "<p>en rules</p>"
+        }
+      },
+      {
+        "zh-CN": {
+          name: "中文 title",
+          subSubject: "中文 subtitle",
+          desktopBanner:
+            "http://localstack.localhost/tgs-project/promotion/ladEDikUVysSGImvKSgNPBGeawVLnLmy.png",
+          content: "<p>中文 條款</p>"
+        },
+        "zh-TW": { name: "", subSubject: "" }
+      }
+    ],
     name: "title",
     from: "2022-12-24T16:00:00.000Z",
     to: "2022-12-27T16:00:00.000Z",
@@ -197,6 +237,27 @@ const Test = () => {
       },
       "zh-TW": { name: "", subSubject: "" }
     },
+    localizationArray: [
+      {
+        "en-US": {
+          name: "en title",
+          subSubject: "en subtitle",
+          desktopBanner:
+            "http://localstack.localhost/tgs-project/promotion/aOimztA3hsF6YOhtTcKq3KOHxJqNyfsa.png",
+          content: "<p>en rules</p>"
+        }
+      },
+      {
+        "zh-CN": {
+          name: "中文 title",
+          subSubject: "中文 subtitle",
+          desktopBanner:
+            "http://localstack.localhost/tgs-project/promotion/ladEDikUVysSGImvKSgNPBGeawVLnLmy.png",
+          content: "<p>中文 條款</p>"
+        },
+        "zh-TW": { name: "", subSubject: "" }
+      }
+    ],
     name: "title X",
     from: "2022-12-24T16:00:00.000Z",
     to: "2022-12-27T16:00:00.000Z",
@@ -231,6 +292,7 @@ const mergeTrans = ({ accum, lang = "zh", settings, target } = {}) => {
     let trans = settingRecord?.key
     let tran = trans?.[lang]
     if (tran) {
+      unset(accum, key)
       set(accum, tran, clonedValue)
     } else {
       set(accum, key, clonedValue)
@@ -239,7 +301,6 @@ const mergeTrans = ({ accum, lang = "zh", settings, target } = {}) => {
     let isDeep = !(isString(value) || isNumber(value) || isBoolean(value))
     if (isDeep) {
       if (isArray(value)) {
-        console.log("clonedValue", clonedValue, "")
         value.map((target, index) => {
           let accum = clonedValue[index]
           let settings = settingRecord

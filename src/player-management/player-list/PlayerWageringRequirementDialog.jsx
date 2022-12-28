@@ -172,15 +172,20 @@ const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({})
 
-  let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerCompletedWageringList(playerBucketId, {
-      ...toApiParams(state),
-      sortby: "createdOn",
-      orderby: Descending
-    })
+  let {
+    isLoading,
+    data: items,
+    error,
+    mutate,
+    deleteCache
+  } = usePlayerCompletedWageringList(playerBucketId, {
+    ...toApiParams(state),
+    sortby: "createdOn",
+    orderby: Descending
+  })
 
   let columns = useCompletedWageringColumns({
-    items: data?.items
+    items
   })
 
   if (error) {
@@ -192,7 +197,7 @@ const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
       <FieldStack>
         <Table
           columns={columns}
-          data={data?.items}
+          data={items}
           pageCount={pageCount(state.pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}

@@ -220,7 +220,7 @@ export const Table = ({
   return (
     <>
       {isLoading && (
-        <Box alignX="center">
+        <Box alignX="center" width="100%">
           <Spinner />
         </Box>
       )}
