@@ -328,7 +328,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                     if (isHighlightedRow) {
                       return {
                         backgroundColor: "white600",
-                        fontWeight: "bold"
+                        fontWeight: "bold",
+                        "data-hightlight": true
                       }
                     }
                     return {}
