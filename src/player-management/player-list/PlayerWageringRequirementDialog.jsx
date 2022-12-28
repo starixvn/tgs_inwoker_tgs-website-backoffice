@@ -198,7 +198,6 @@ const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
         <Table
           columns={columns}
           data={items}
-          pageCount={pageCount(state.pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
           initialState={state}
