@@ -179,7 +179,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
       isParent: true,
       isLeaf: false,
       isLastParent,
-      isHighlightedRow: true
+      isHighlightedRow: false
     }))
     return [...accumulator, ...items]
   }, [])
@@ -190,18 +190,19 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   if (agentData?.subTotal && agentData?.subItems?.length > 0) {
     items = [
       ...items,
+      {},
+      ...agentData.subItems.map((node) => ({
+        ...node,
+        treeDepth: childrenTreeDepth,
+        isLeaf: true
+      })),
       {
         ...agentData.subTotal,
         isTotal: true,
         treeDepth: childrenTreeDepth,
         isLeaf: true,
         isHighlightedRow: true
-      },
-      ...agentData.subItems.map((node) => ({
-        ...node,
-        treeDepth: childrenTreeDepth,
-        isLeaf: true
-      }))
+      }
     ]
   }
 
@@ -324,6 +325,15 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                   hasDividers
                   isHoverable
                   maxSize={{ height, width }}
+                  getRowProps={({ original: { isHighlightedRow } }) => {
+                    if (isHighlightedRow) {
+                      return {
+                        backgroundColor: "white600",
+                        fontWeight: "bold"
+                      }
+                    }
+                    return {}
+                  }}
                   css={css`
                     td:first-child {
                       background-color: white;
@@ -560,9 +570,9 @@ const useColumns = ({
               }}
               whiteSpace="nowrap"
             >
-              {record.isParent && record.treeDepth < maxTreeDepth && (
+              {/* {record.isParent && record.treeDepth < maxTreeDepth && (
                 <Icon icon={faAngleDown} type="font-awesome" />
-              )}
+              )} */}
               {record?.username}
             </Container>
           )
@@ -663,6 +673,10 @@ const useColumns = ({
         },
         disableSortBy: true,
         Cell: ({ value: record }) => {
+          if (!record) {
+            return null
+          }
+
           if (!record?.id) {
             return (
               <FormattedNumber
@@ -715,6 +729,10 @@ const useColumns = ({
           },
           disableSortBy: true,
           Cell: ({ value: record }) => {
+            if (!record) {
+              return null
+            }
+
             if (!record?.id) {
               return (
                 <FormattedNumber
@@ -755,6 +773,10 @@ const useColumns = ({
           },
           disableSortBy: true,
           Cell: ({ value: record }) => {
+            if (!record) {
+              return null
+            }
+
             if (!record?.id) {
               return (
                 <FormattedNumber
