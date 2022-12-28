@@ -227,7 +227,7 @@ const useCompletedWageringColumns = ({ items = [] }) =>
         timeFormat: "HH:mm"
       }),
       numberDecimalColumn({
-        accessor: "turnover",
+        accessor: "changeAmount",
         Header: <Trans zh="流水" en="Wagering" />,
         disableSortBy: true,
         format: "+0,0.00"
