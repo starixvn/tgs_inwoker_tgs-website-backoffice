@@ -190,19 +190,18 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   if (agentData?.subTotal && agentData?.subItems?.length > 0) {
     items = [
       ...items,
-      {},
-      ...agentData.subItems.map((node) => ({
-        ...node,
-        treeDepth: childrenTreeDepth,
-        isLeaf: true
-      })),
       {
         ...agentData.subTotal,
         isTotal: true,
         treeDepth: childrenTreeDepth,
         isLeaf: true,
         isHighlightedRow: true
-      }
+      },
+      ...agentData.subItems.map((node) => ({
+        ...node,
+        treeDepth: childrenTreeDepth,
+        isLeaf: true
+      }))
     ]
   }
 
@@ -570,9 +569,9 @@ const useColumns = ({
               }}
               whiteSpace="nowrap"
             >
-              {/* {record.isParent && record.treeDepth < maxTreeDepth && (
+              {record.isParent && record.treeDepth < maxTreeDepth && (
                 <Icon icon={faAngleDown} type="font-awesome" />
-              )} */}
+              )}
               {record?.username}
             </Container>
           )
