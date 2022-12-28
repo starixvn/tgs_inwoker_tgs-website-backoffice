@@ -335,6 +335,10 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                     return {}
                   }}
                   css={css`
+                    tr[data-hightlight] td:first-child {
+                      background-color: var(--bb-palette-white600, #000000);
+                    }
+                    
                     tr:not([data-hightlight]) td:first-child {
                       background-color: white;
                     }
