@@ -36,7 +36,8 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    pageSize: 31
   })
 
   useEffect(() => {
@@ -212,7 +213,6 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         accessor: "registeredCount",
-        sumColumn: "registeredCount",
         Header: <Trans zh="注册人数" en="Registered Count" />,
         disableSortBy: true
       }),

@@ -60,6 +60,7 @@ import {
 } from "lodash-es"
 import { isNil } from "ramda"
 import clone from "clone-deep"
+import { mergeTrans } from "../../record/mergeTrans"
 
 export { Code }
 
@@ -72,9 +73,32 @@ export const Content = () => {
   return <Body />
 }
 
+/*
 const Test = () => {
   //TODO: how to replace json key
   let settings = {
+    key: {
+      key: {
+        zh: "鑰匙",
+        en: "Keyy"
+      }
+    },
+    value: {
+      key: {
+        zh: "價值",
+        en: "Valla",
+        key: {
+          zh: "秘密鑰匙",
+          en: "SeaKey"
+        }
+      },
+      zh: {
+        key: {
+          zh: "中文v",
+          en: "ch v"
+        }
+      }
+    },
     rule: {
       key: {
         zh: "規則",
@@ -109,6 +133,12 @@ const Test = () => {
             en: "Desktop Banner"
           }
         }
+      }
+    },
+    localizationArray: {
+      key: {
+        zh: "多語系 List",
+        en: "Localization List"
       },
       "en-US": {
         key: {
@@ -123,12 +153,6 @@ const Test = () => {
         }
       }
     },
-    localizationArray: {
-      key: {
-        zh: "多語系 List",
-        en: "Localization List"
-      }
-    },
     name: {
       key: {
         zh: "活动名称",
@@ -138,6 +162,12 @@ const Test = () => {
   }
 
   let a = {
+    key: "mykey",
+    value: {
+      key: "value-key",
+      zh: "zh valla",
+      en: "en valla"
+    },
     rule: {
       playerAutoJoin: true,
       percentage: 1,
@@ -206,6 +236,10 @@ const Test = () => {
 
   //TODO
   let b = {
+    key: "mykey2",
+    value: {
+      key: "value-key2"
+    },
     rule: {
       playerAutoJoin: true,
       percentage: 1,
@@ -323,6 +357,7 @@ const mergeTrans = ({ accum, lang = "zh", settings, target } = {}) => {
     return accum
   }, accum)
 }
+*/
 
 export const CodeContentPair = [Code, Content]
 
