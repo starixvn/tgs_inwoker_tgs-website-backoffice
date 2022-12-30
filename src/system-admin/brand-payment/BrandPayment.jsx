@@ -18,7 +18,7 @@ import {
   DropdownMenu
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import { EditDisclosure } from "../../dialog/Disclosure"
+import { EditDisclosure, ViewDisclosure } from "../../dialog/Disclosure"
 import {
   useForm,
   useFormContext,
@@ -56,6 +56,7 @@ import { parseJSON, stringifyJSON } from "../../text/json"
 import { Update } from "./menu"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 
+//TODO: rename to PlatformPaymentDisclosure?
 export const EditBrandPaymentDisclosure = ({
   platformPaymentId,
   onSubmitted,
@@ -64,21 +65,24 @@ export const EditBrandPaymentDisclosure = ({
 }) => {
   let dialog = useModalState()
 
-  let isDisplay = useIsDisplayMenuByRoute([Update])
-  if (!isDisplay) {
-    return null
-  }
+  let editable = useIsDisplayMenuByRoute([Update])
+  let readOnly = !editable
 
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <EditDisclosure id={id} {...dialog} />
+      {readOnly ? (
+        <ViewDisclosure id={id} {...dialog} />
+      ) : (
+        <EditDisclosure id={id} {...dialog} />
+      )}
       {dialog.visible && (
         <EditDialog
           platformPaymentId={platformPaymentId}
           onSubmitted={onSubmitted}
           dialog={dialog}
           dialogId={dialogId}
+          readOnly={readOnly}
         />
       )}
     </>
@@ -141,10 +145,16 @@ export const AddBrandPaymentDisclosure = ({ brandId, onSubmitted }) => {
   )
 }
 
-const EditDialog = ({ platformPaymentId, onSubmitted, dialog, dialogId }) => {
+const EditDialog = ({
+  platformPaymentId,
+  onSubmitted,
+  dialog,
+  readOnly,
+  dialogId
+}) => {
   let title = useTrans({
-    zh: "Edit",
-    en: "Edit"
+    zh: "平台支付",
+    en: "Platform Payment"
   })
 
   let {
@@ -192,6 +202,7 @@ const EditDialog = ({ platformPaymentId, onSubmitted, dialog, dialogId }) => {
     setSubmit(undefined)
   }
 
+  let editable = !readOnly
   return (
     <FormDialog
       id={dialogId}
@@ -211,14 +222,15 @@ const EditDialog = ({ platformPaymentId, onSubmitted, dialog, dialogId }) => {
       dialog={dialog}
       width="65vw"
       maxWidth="80vw"
+      showActionButtons={editable}
     >
-      <EditFormBody brandId={record?.brandId} />
+      <EditFormBody brandId={record?.brandId} readOnly={readOnly} />
     </FormDialog>
   )
 }
 
-const EditFormBody = () => {
-  return <ExtendedDataField />
+const EditFormBody = ({ readOnly }) => {
+  return <ExtendedDataField readOnly={readOnly} />
 }
 
 const AddDepositDialog = ({ title, brandId, dialog, onSubmitted }) => {
@@ -377,11 +389,11 @@ const TransferLimitRangeField = () => {
   )
 }
 
-const ExtendedDataField = () => {
+const ExtendedDataField = ({ readOnly }) => {
   let FieldName = "extendedData"
   return (
     <FieldWrapper label="Extended Data">
-      <JsonEditor name={FieldName} required height="30vh" />
+      <JsonEditor name={FieldName} required height="30vh" disabled={readOnly} />
     </FieldWrapper>
   )
 }
