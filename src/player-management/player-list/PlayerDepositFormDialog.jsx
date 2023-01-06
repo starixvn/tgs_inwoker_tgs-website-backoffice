@@ -144,6 +144,9 @@ const DepositFormDialog = ({
   )
 }
 
+const BankNameField = "bankName"
+const BankAccountField = "bankAccount"
+
 const FormBody = ({ paymentList = [], brandId, playerCode }) => {
   let { control, setValue } = useFormContext()
   let PaymentMethodField = "method"
@@ -189,6 +192,12 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
 
     let bankType = payment?.bankType ?? ""
     setValue(BankTypeField, bankType)
+
+    let bankName = payment?.extendedData?.name ?? ""
+    setValue(BankNameField, bankName)
+
+    let bankAccount = payment?.extendedData?.bankAccount ?? ""
+    setValue(BankAccountField, bankAccount)
   }, [paymentMethod, paymentChannel])
   return (
     <FieldStack marginLeft="1rem" marginRight="1rem">
