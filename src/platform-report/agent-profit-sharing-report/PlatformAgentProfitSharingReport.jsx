@@ -190,18 +190,19 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   if (agentData?.subTotal && agentData?.subItems?.length > 0) {
     items = [
       ...items,
+      {},
+      ...agentData.subItems.map((node) => ({
+        ...node,
+        treeDepth: childrenTreeDepth,
+        isLeaf: true
+      })),
       {
         ...agentData.subTotal,
         isTotal: true,
         treeDepth: childrenTreeDepth,
         isLeaf: true,
         isHighlightedRow: true
-      },
-      ...agentData.subItems.map((node) => ({
-        ...node,
-        treeDepth: childrenTreeDepth,
-        isLeaf: true
-      }))
+      }
     ]
   }
 
@@ -574,9 +575,9 @@ const useColumns = ({
               }}
               whiteSpace="nowrap"
             >
-              {record.isParent && record.treeDepth < maxTreeDepth && (
+              {/* {record.isParent && record.treeDepth < maxTreeDepth && (
                 <Icon icon={faAngleDown} type="font-awesome" />
-              )}
+              )} */}
               {record?.username}
             </Container>
           )
@@ -585,12 +586,12 @@ const useColumns = ({
       }),
       numberDecimalPercentageColumn({
         accessor: "agentDividendPercentage",
-        Header: <Trans zh="分红比例" en="Profit Sharing Percentaget" />,
+        Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
         headCell: {
           whiteSpace: "nowrap"
         },
-        disableSortBy: true,
-        textAlign: "right"
+        textAlign: "right",
+        disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
@@ -598,6 +599,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
         /*
         TODO: rm?
@@ -634,6 +636,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -642,6 +645,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -650,6 +654,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -658,6 +663,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -666,6 +672,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -675,6 +682,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true,
         Cell: ({ value: record }) => {
           if (!record) {
@@ -711,6 +719,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       })
     ]
@@ -723,6 +732,7 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
+          textAlign: "right",
           disableSortBy: true
         }),
         numberDecimalColumn({
@@ -732,6 +742,7 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
+          textAlign: "right",
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {
@@ -768,6 +779,7 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
+          textAlign: "right",
           disableSortBy: true
         }),
         numberDecimalColumn({
@@ -777,6 +789,7 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
+          textAlign: "right",
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {

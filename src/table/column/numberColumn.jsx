@@ -8,6 +8,7 @@ const DefaultNumberFormat = "0,0"
 
 const defaultValueFn = (value) => value
 
+//TODO: change default textAlign to right
 export const numberColumn = ({
   Cell,
   format = DefaultNumberFormat,
@@ -17,6 +18,7 @@ export const numberColumn = ({
   toValue = defaultValueFn,
   whiteSpace = "nowrap",
   tooltip,
+  textAlign = "center",
   ...props
 }) => {
   const DefaultCell = ({ value }) => (
@@ -36,7 +38,7 @@ export const numberColumn = ({
       textAlign: "center"
     },
     cell: {
-      textAlign: "center",
+      textAlign,
       whiteSpace
     }
   }
