@@ -164,7 +164,6 @@ const useColumns = ({ items = [], totals = [] }) => {
       dateTimeColumn({
         accessor: "createdOn",
         Header: <Trans zh="投注时间" en="Created On" />,
-        disableSortBy: true,
         TotalCell: () => <Trans zh="总和" en="Total" />,
         Footer: () => <Trans zh="页总和" en="Page Total" />,
         footerCellProps: {
@@ -174,26 +173,22 @@ const useColumns = ({ items = [], totals = [] }) => {
       numberDecimalColumn({
         accessor: "betAmount",
         sumColumn: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
-        disableSortBy: true
+        Header: <Trans zh="投注金额" en="Bet Amount" />
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注金额" en="Valid Bet Amount" />,
-        disableSortBy: true
+        Header: <Trans zh="有效投注金额" en="Valid Bet Amount" />
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
         sumColumn: "settleAmount",
-        Header: <Trans zh="派彩" en="Settle Amount" />,
-        disableSortBy: true
+        Header: <Trans zh="派彩" en="Settle Amount" />
       }),
       numberDecimalColumn({
         accessor: "winLoss",
         Header: <Trans zh="输赢金额" en="Win Loss" />,
         sumColumn: "winLoss",
-        disableSortBy: true,
         TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
         Cell: ({ value }) => {
           let win = value >= 0

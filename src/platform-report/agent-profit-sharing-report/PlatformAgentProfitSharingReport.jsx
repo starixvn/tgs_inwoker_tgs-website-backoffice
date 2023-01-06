@@ -557,7 +557,7 @@ const useColumns = ({
           if (record?.isTotal) {
             return (
               <Text.Block marginLeft={`${marginLeft}rem`}>
-                <Trans zh="总计" en="Total" />
+                <Trans zh="直属代理总计" en="Direct Agent Total" />
               </Text.Block>
             )
           }
