@@ -42,7 +42,8 @@ export const Panel = ({ playerCode, brandId, player, ...props }) => {
     gameType: "",
     gameProviderId: "",
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    sortBy: [{ id: "createdOn", desc: true }]
   })
 
   let { pageIndex, pageSize, from, to, gameType, gameProviderId } = state
@@ -57,8 +58,6 @@ export const Panel = ({ playerCode, brandId, player, ...props }) => {
     isActive
       ? {
           ...toApiParams(state),
-          sortby: "createdOn",
-          orderby: "descending",
           brandId
         }
       : undefined
