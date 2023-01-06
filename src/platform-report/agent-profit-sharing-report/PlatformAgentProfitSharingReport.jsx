@@ -190,7 +190,9 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   if (agentData?.subTotal && agentData?.subItems?.length > 0) {
     items = [
       ...items,
-      {},
+      {
+        isSeparator: true
+      },
       ...agentData.subItems.map((node) => ({
         ...node,
         treeDepth: childrenTreeDepth,
@@ -553,6 +555,9 @@ const useColumns = ({
         },
         textAlign: "left",
         Cell: ({ value: record }) => {
+          if (record?.isSeparator) {
+            return <Box visibility="hidden">Separator</Box>
+          }
           let marginLeft = (record?.treeDepth ?? 0) * 1.5
           if (record?.isTotal) {
             return (
