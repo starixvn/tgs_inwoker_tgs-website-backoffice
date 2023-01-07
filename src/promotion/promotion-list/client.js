@@ -54,8 +54,9 @@ export const useChangePromotionOrders = (data) => {
   return usePutData(url, data)
 }
 
-export const useChangeLogList = (searchParams) => {
+export const useChangeLogList = (promotionId) => {
   //TODO: return fake data?
+  /*
   return {
     isLoading: false,
     data: [
@@ -103,15 +104,23 @@ export const useChangeLogList = (searchParams) => {
       }
     ]
   }
+  */
 
-  let url = searchParams?.promotionId
-    ? urlWith(searchParams, `${API}/history/${searchParams?.promotionId}`)
-    : ""
+  let url = promotionId ? `${API}/history/${promotionId}` : ""
+
   return useGet(url)
 }
 
-export const useChangeLogDetail = (eventId) => {
+export const useChangeLogDetail = (promotionId, eventId) => {
+  let url =
+    promotionId && eventId
+      ? `${API}/history/detail/${promotionId}/${eventId}`
+      : ""
+
+  return useGet(url)
+
   //TODO: rm fake data
+  /*
   return {
     isLoading: false,
     data: {
@@ -154,5 +163,5 @@ export const useChangeLogDetail = (eventId) => {
       modifier: "test2"
     }
   }
-  //TODO: return fake data?
+  */
 }

@@ -435,9 +435,9 @@ const useColumns = ({
                     }
                   />
                 )}
-                {/* <PromotionChangeLogListDialogDisclosure
+                <PromotionChangeLogListDialogDisclosure
                   promotionId={record.id}
-                /> */}
+                />
               </Set>
             )
           }

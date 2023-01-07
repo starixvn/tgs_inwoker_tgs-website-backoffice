@@ -50,13 +50,10 @@ export const ChangeLogListDialog = ({
   dialogId,
   ...props
 }) => {
-  let {
-    isLoading,
-    data: items,
-    error
-  } = useChangeLogList(promotionId ? { promotionId } : undefined)
+  //TODO: need search params? table state?
+  let { isLoading, data: items, error } = useChangeLogList(promotionId)
 
-  let columns = useColumns({ items })
+  let columns = useColumns({ items, promotionId })
 
   let title = useTrans({
     zh: "日志",
@@ -77,7 +74,7 @@ export const ChangeLogListDialog = ({
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ items = [], promotionId }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
@@ -101,7 +98,12 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="变更详情" en="Change Details" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          return <ChangeLogDetailDisclosure eventId={record?.eventId} />
+          return (
+            <ChangeLogDetailDisclosure
+              promotionId={promotionId}
+              eventId={record?.eventId}
+            />
+          )
         }
       })
     ]
@@ -114,6 +116,7 @@ const useColumns = ({ items = [] }) => {
 const ChangeLogDetailDisclosure = ({
   id,
   dialogId = "promotion-change-log-detail-dialog",
+  promotionId,
   eventId
 }) => {
   let dialog = useModalState()
@@ -124,6 +127,7 @@ const ChangeLogDetailDisclosure = ({
       <DetailDisclosure eventId={eventId} id={id} {...dialog} />
       {dialog.visible && (
         <ChangeLogDetailDialog
+          promotionId={promotionId}
           eventId={eventId}
           dialog={dialog}
           dialogId={dialogId}
@@ -133,8 +137,8 @@ const ChangeLogDetailDisclosure = ({
   )
 }
 
-const ChangeLogDetailDialog = ({ eventId, dialog, dialogId }) => {
-  let { isLoading, data, error } = useChangeLogDetail(eventId)
+const ChangeLogDetailDialog = ({ promotionId, eventId, dialog, dialogId }) => {
+  let { isLoading, data, error } = useChangeLogDetail(promotionId, eventId)
 
   let title = useTrans({
     zh: "详情",
