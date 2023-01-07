@@ -20,6 +20,12 @@ const DisabledTrans = {
   en: "Disabled"
 }
 
+const Archived = "Archived"
+const ArchivedTrans = {
+  zh: "封存",
+  en: Archived
+}
+
 export const isPromotionStatusEnabled = (value) => value === Enabled
 
 export const PromotionStatusSelect = ({ placeholder, ...props }) => {
@@ -37,6 +43,10 @@ export const PromotionStatusSelect = ({ placeholder, ...props }) => {
     {
       label: useTrans(DisabledTrans),
       value: Disabled
+    },
+    {
+      label: useTrans(ArchivedTrans),
+      value: Archived
     }
   ]
 
