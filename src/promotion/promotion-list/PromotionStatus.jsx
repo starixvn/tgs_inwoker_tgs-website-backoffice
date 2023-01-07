@@ -43,11 +43,13 @@ export const PromotionStatusSelect = ({ placeholder, ...props }) => {
     {
       label: useTrans(DisabledTrans),
       value: Disabled
-    },
+    }
+    /*
     {
       label: useTrans(ArchivedTrans),
       value: Archived
     }
+    */
   ]
 
   return <Select placeholder={placeholder} options={options} {...props} />
