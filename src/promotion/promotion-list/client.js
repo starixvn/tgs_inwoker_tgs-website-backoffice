@@ -104,13 +104,13 @@ export const useChangeLogList = (searchParams) => {
     ]
   }
 
-  let url = searchParams?.id
-    ? urlWith(searchParams, `${API}/history/${searchParams?.id}`)
+  let url = searchParams?.promotionId
+    ? urlWith(searchParams, `${API}/history/${searchParams?.promotionId}`)
     : ""
   return useGet(url)
 }
 
-export const useChangeLogDetail = (id) => {
+export const useChangeLogDetail = (eventId) => {
   //TODO: rm fake data
   return {
     isLoading: false,

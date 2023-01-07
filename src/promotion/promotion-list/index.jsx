@@ -39,6 +39,7 @@ import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { NumberInput } from "../../input/NumberInput"
 import { isWithinRange } from "../../date/range"
 import { isAfter } from "../../date/isAfter"
+import { PromotionChangeLogListDialogDisclosure } from "./PromotionChangeLogListDialog"
 
 export { Code }
 
@@ -434,6 +435,9 @@ const useColumns = ({
                     }
                   />
                 )}
+                {/* <PromotionChangeLogListDialogDisclosure
+                  promotionId={record.id}
+                /> */}
               </Set>
             )
           }

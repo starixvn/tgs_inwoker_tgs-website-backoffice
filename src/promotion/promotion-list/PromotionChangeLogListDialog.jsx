@@ -10,10 +10,13 @@ import { JsonEditor } from "../../text/editor/JsonEditor"
 import { ChangeLog } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { useChangeLogList, useChangeLogDetail } from "./client"
+import { Table } from "../../table"
+import textColumn from "../../table/column/textColumn"
+import dateTimeColumn from "../../table/column/dateTime"
 
-export const PromotionChangeLogListDialog = ({
+export const PromotionChangeLogListDialogDisclosure = ({
   id,
-  dialogId = "promotion-change-list-dialog",
+  dialogId = "promotion-change-log-list-dialog",
   promotionId,
   ...props
 }) => {
@@ -31,7 +34,7 @@ export const PromotionChangeLogListDialog = ({
         <Trans zh="日志" en="Logs" />
       </Disclosure>
       {dialog.visible && (
-        <ChangeListDialog
+        <ChangeLogListDialog
           promotionId={promotionId}
           dialog={dialog}
           dialogId={dialogId}
@@ -41,18 +44,112 @@ export const PromotionChangeLogListDialog = ({
   )
 }
 
-export const ChangeListDialog = ({
+export const ChangeLogListDialog = ({
   promotionId,
   dialog,
   dialogId,
   ...props
 }) => {
-  let { isLoading, data: items } = useChangeLogList(
-    promotionId ? { promotionId } : undefined
-  )
+  let {
+    isLoading,
+    data: items,
+    error
+  } = useChangeLogList(promotionId ? { promotionId } : undefined)
+
+  let columns = useColumns({ items })
+
+  let title = useTrans({
+    zh: "日志",
+    en: "Logs"
+  })
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
 
   //TODO: table and dialog
+  return (
+    <Modal id={dialogId} title={title} {...dialog}>
+      <Table columns={columns} data={items} />
+    </Modal>
+  )
+}
+
+const useColumns = ({ items = [] }) => {
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        accessor: "modifier",
+        Header: <Trans zh="操作者" en="Modifier" />,
+        disableSortBy: true
+      }),
+      dateTimeColumn({
+        accessor: "createdOn",
+        Header: <Trans zh="时间" en="Date & Time" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "action",
+        Header: <Trans zh="变更类型" en="Type" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        id: "actions",
+        accessor: (row) => row,
+        Header: <Trans zh="变更详情" en="Change Details" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          return <ChangeLogDetailDisclosure eventId={record?.eventId} />
+        }
+      })
+    ]
+
+    return columns
+  }, [JSON.stringify(items)])
 }
 
 //TODO
-const ChangeLogDetailDisclosure = () => {}
+const ChangeLogDetailDisclosure = ({
+  id,
+  dialogId = "promotion-change-log-detail-dialog",
+  eventId
+}) => {
+  let dialog = useModalState()
+
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
+  return (
+    <>
+      <DetailDisclosure eventId={eventId} id={id} {...dialog} />
+      {dialog.visible && (
+        <ChangeLogDetailDialog
+          eventId={eventId}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
+      )}
+    </>
+  )
+}
+
+const ChangeLogDetailDialog = ({ eventId, dialog, dialogId }) => {
+  let { isLoading, data, error } = useChangeLogDetail(eventId)
+
+  let title = useTrans({
+    zh: "详情",
+    en: "Detail"
+  })
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
+
+  return (
+    <Modal id={dialogId} title={title} {...dialog}>
+      <JsonEditor value={data} disabled />
+    </Modal>
+  )
+}
