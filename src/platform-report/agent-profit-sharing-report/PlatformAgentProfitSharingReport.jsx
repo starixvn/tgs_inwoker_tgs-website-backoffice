@@ -569,17 +569,18 @@ const useColumns = ({
           }
           let marginLeft = (record?.treeDepth ?? 0) * 1.5
           if (record?.isTotal) {
+            //marginLeft={`${marginLeft}rem`}
             return (
-              <Text.Block marginLeft={`${marginLeft}rem`}>
+              <Text.Block>
                 <Trans zh="直属代理总计" en="Direct Agent Total" />
               </Text.Block>
             )
           }
 
           let Container = record?.isLastParent ? Text.Block : Link.Block
+          // marginLeft={`${marginLeft}rem`}
           return (
             <Container
-              marginLeft={`${marginLeft}rem`}
               onClick={() => {
                 if (record.isLeaf) {
                   setAgentUsername(record.username)
