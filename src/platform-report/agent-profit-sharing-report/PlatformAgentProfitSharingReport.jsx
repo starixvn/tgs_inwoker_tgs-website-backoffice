@@ -163,19 +163,15 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   useEffect(() => {
     let agent = headOf(agentData?.mainItems)
     if (agent?.username) {
-      /*
       if (notInsideTreePath(agent?.username)) {
         appendTreePath(agentData?.mainItems)
       } else {
         replaceTreePath(agentData?.mainItems)
       }
-      */
-      resetTreePath()
-      appendTreePath(agentData?.mainItems)
     }
   }, [JSON.stringify(agentData?.mainItems)])
 
-  let items = treePaths.reduce((accumulator, nodeItems, index, list) => {
+  /*treePaths.reduce((accumulator, nodeItems, index, list) => {
     let isLastParent = isLastIndex(index, list)
     let items = nodeItems.map((node) => ({
       ...node,
@@ -186,6 +182,15 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     }))
     return [...accumulator, ...items]
   }, [])
+  */
+
+  let items = agentData?.mainItems?.map((node) => ({
+    ...node,
+    isParent: true,
+    isLeaf: false,
+    isLastParent: true,
+    isHighlightedRow: false
+  }))
 
   let lastParent = lastOf(items)
   let childrenTreeDepth = (lastParent?.treeDepth ?? 0) + 1
