@@ -148,7 +148,7 @@ const ChangeLogDetailDialog = ({ eventId, dialog, dialogId }) => {
   }
 
   return (
-    <Modal id={dialogId} title={title} {...dialog}>
+    <Modal id={dialogId} title={title} width="50vw" {...dialog}>
       <JsonEditor value={data} disabled />
     </Modal>
   )
