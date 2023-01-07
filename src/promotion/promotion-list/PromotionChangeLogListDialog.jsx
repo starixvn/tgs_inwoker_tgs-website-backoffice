@@ -153,7 +153,7 @@ const ChangeLogDetailDialog = ({ promotionId, eventId, dialog, dialogId }) => {
 
   return (
     <Modal id={dialogId} title={title} width="50vw" {...dialog}>
-      <JsonEditor height="60vh" value={data} disabled />
+      <JsonEditor height="80vh" value={data} disabled />
     </Modal>
   )
 }
