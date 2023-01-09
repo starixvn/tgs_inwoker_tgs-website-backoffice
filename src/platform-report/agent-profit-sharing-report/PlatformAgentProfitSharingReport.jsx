@@ -340,9 +340,9 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                   }) => {
                     if (isParent) {
                       return {
-                        backgroundColor: "infoTint",
+                        backgroundColor: "blueTint",
                         fontWeight: "bold",
-                        "data-info-hightlight": true
+                        "data-blue-hightlight": true
                       }
                     }
                     if (isHighlightedRow) {
@@ -367,8 +367,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                       background-color: var(--bb-palette-white600, #000000);
                     }
 
-                    tr[data-info-hightlight] td:first-child {
-                      background-color: var(--bb-palette-infoTint, #e9f0fb);
+                    tr[data-blue-hightlight] td:first-child {
+                      background-color: var(--bb-palette-blueTint, #e9f0fb);
                     }
                   `}
                   tableBorder="0"
