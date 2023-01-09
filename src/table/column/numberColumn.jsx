@@ -55,7 +55,7 @@ export const numberColumn = ({
         )
       },
       footerCellProps: {
-        textAlign: "center"
+        textAlign
       }
     }
   }
