@@ -359,6 +359,10 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                       background-color: var(--bb-palette-white600, #000000);
                     }
 
+                    tr[data-info-hightlight] td:first-child {
+                      background-color: var(--bb-palette-infoTint, #e9f0fb);
+                    }
+
                     tr:not([data-hightlight]) td:first-child {
                       background-color: white;
                     }
