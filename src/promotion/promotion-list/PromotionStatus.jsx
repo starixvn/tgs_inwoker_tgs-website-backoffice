@@ -22,7 +22,7 @@ const DisabledTrans = {
 
 const Archived = "Archived"
 const ArchivedTrans = {
-  zh: "封存",
+  zh: "删除",
   en: Archived
 }
 
@@ -84,6 +84,10 @@ export const PromotionStatusSwitch = ({
     }
   }, [result, error])
 
+  if (value == Archived) {
+    disabled = true
+    checked = false
+  }
   let checked = value === Enabled
   return (
     <>
