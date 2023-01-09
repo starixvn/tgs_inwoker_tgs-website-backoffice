@@ -130,6 +130,7 @@ export const Table = ({
   maxSize,
   minHeight,
   tableContainerProps,
+  tableBorder = "1px solid var(--bb-palette-white800, #000000)",
   ...props
 }) => {
   components = {
@@ -238,7 +239,7 @@ export const Table = ({
             & table.bb-Table {
               border-radius: 6px;
               overflow: ${isSticky ? "visible" : "auto"};
-              border: 1px solid var(--bb-palette-white800, #000000);
+              border: ${tableBorder};
             }
           `}
         >

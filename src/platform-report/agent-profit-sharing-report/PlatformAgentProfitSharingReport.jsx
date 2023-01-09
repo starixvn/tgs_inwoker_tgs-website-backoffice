@@ -154,7 +154,6 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   })
   let {
     isLoading,
-    isValidating,
     data: agentData,
     error,
     mutate,
@@ -172,7 +171,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     }
   }, [JSON.stringify(agentData?.mainItems)])
 
-  let items = treePaths.reduce((accumulator, nodeItems, index, list) => {
+  /*treePaths.reduce((accumulator, nodeItems, index, list) => {
     let isLastParent = isLastIndex(index, list)
     let items = nodeItems.map((node) => ({
       ...node,
@@ -183,6 +182,15 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     }))
     return [...accumulator, ...items]
   }, [])
+  */
+
+  let items = agentData?.mainItems?.map((node) => ({
+    ...node,
+    isParent: true,
+    isLeaf: false,
+    isLastParent: true,
+    isHighlightedRow: false
+  }))
 
   let lastParent = lastOf(items)
   let childrenTreeDepth = (lastParent?.treeDepth ?? 0) + 1
@@ -191,17 +199,20 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     items = [
       ...items,
       {
-        ...agentData.subTotal,
-        isTotal: true,
-        treeDepth: childrenTreeDepth,
-        isLeaf: true,
-        isHighlightedRow: true
+        isSeparator: true
       },
       ...agentData.subItems.map((node) => ({
         ...node,
         treeDepth: childrenTreeDepth,
         isLeaf: true
-      }))
+      })),
+      {
+        ...agentData.subTotal,
+        isTotal: true,
+        treeDepth: childrenTreeDepth,
+        isLeaf: true,
+        isHighlightedRow: true
+      }
     ]
   }
 
@@ -347,6 +358,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                       background-color: var(--bb-palette-white600, #000000);
                     }
                   `}
+                  tableBorder="0"
                 />
               )
             }}
@@ -552,19 +564,23 @@ const useColumns = ({
         },
         textAlign: "left",
         Cell: ({ value: record }) => {
+          if (record?.isSeparator) {
+            return <Box visibility="hidden">Separator</Box>
+          }
           let marginLeft = (record?.treeDepth ?? 0) * 1.5
           if (record?.isTotal) {
+            //marginLeft={`${marginLeft}rem`}
             return (
-              <Text.Block marginLeft={`${marginLeft}rem`}>
-                <Trans zh="总计" en="Total" />
+              <Text.Block>
+                <Trans zh="直属代理总计" en="Direct Agent Total" />
               </Text.Block>
             )
           }
 
           let Container = record?.isLastParent ? Text.Block : Link.Block
+          // marginLeft={`${marginLeft}rem`}
           return (
             <Container
-              marginLeft={`${marginLeft}rem`}
               onClick={() => {
                 if (record.isLeaf) {
                   setAgentUsername(record.username)
@@ -574,9 +590,9 @@ const useColumns = ({
               }}
               whiteSpace="nowrap"
             >
-              {record.isParent && record.treeDepth < maxTreeDepth && (
+              {/* {record.isParent && record.treeDepth < maxTreeDepth && (
                 <Icon icon={faAngleDown} type="font-awesome" />
-              )}
+              )} */}
               {record?.username}
             </Container>
           )
@@ -585,12 +601,12 @@ const useColumns = ({
       }),
       numberDecimalPercentageColumn({
         accessor: "agentDividendPercentage",
-        Header: <Trans zh="分红比例" en="Profit Sharing Percentaget" />,
+        Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
         headCell: {
           whiteSpace: "nowrap"
         },
-        disableSortBy: true,
-        textAlign: "right"
+        textAlign: "right",
+        disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
@@ -598,6 +614,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
         /*
         TODO: rm?
@@ -634,6 +651,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -642,6 +660,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -650,6 +669,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -658,6 +678,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -666,6 +687,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -675,6 +697,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true,
         Cell: ({ value: record }) => {
           if (!record) {
@@ -711,6 +734,7 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
+        textAlign: "right",
         disableSortBy: true
       })
     ]
@@ -723,6 +747,7 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
+          textAlign: "right",
           disableSortBy: true
         }),
         numberDecimalColumn({
@@ -732,6 +757,7 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
+          textAlign: "right",
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {
@@ -768,6 +794,7 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
+          textAlign: "right",
           disableSortBy: true
         }),
         numberDecimalColumn({
@@ -777,6 +804,7 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
+          textAlign: "right",
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {
