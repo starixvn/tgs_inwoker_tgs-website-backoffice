@@ -575,7 +575,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "left",
         Cell: ({ value: record }) => {
           if (record?.isSeparator) {
             return (
@@ -622,7 +621,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -631,7 +629,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
         /*
         TODO: rm?
@@ -668,7 +665,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -677,7 +673,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -686,7 +681,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -695,7 +689,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -704,7 +697,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -714,7 +706,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true,
         Cell: ({ value: record }) => {
           if (!record) {
@@ -751,7 +742,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       })
     ]
@@ -764,7 +754,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          textAlign: "right",
           disableSortBy: true
         }),
         numberDecimalColumn({
@@ -774,7 +763,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          textAlign: "right",
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {
@@ -811,7 +799,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          textAlign: "right",
           disableSortBy: true
         }),
         numberDecimalColumn({
@@ -821,7 +808,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          textAlign: "right",
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {
