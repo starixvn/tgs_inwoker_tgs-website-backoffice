@@ -335,7 +335,16 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                   hasDividers
                   isHoverable
                   maxSize={{ height, width }}
-                  getRowProps={({ original: { isHighlightedRow } }) => {
+                  getRowProps={({
+                    original: { isHighlightedRow, isParent }
+                  }) => {
+                    if (isParent) {
+                      return {
+                        backgroundColor: "infoTint",
+                        fontWeight: "bold",
+                        "data-hightlight": true
+                      }
+                    }
                     if (isHighlightedRow) {
                       return {
                         backgroundColor: "white600",
@@ -565,14 +574,18 @@ const useColumns = ({
         textAlign: "left",
         Cell: ({ value: record }) => {
           if (record?.isSeparator) {
-            return <Box visibility="hidden">Separator</Box>
+            return (
+              <Text.Block>
+                <Trans zh="直属代理" en="Direct Agent" />
+              </Text.Block>
+            )
           }
           let marginLeft = (record?.treeDepth ?? 0) * 1.5
           if (record?.isTotal) {
             //marginLeft={`${marginLeft}rem`}
             return (
               <Text.Block>
-                <Trans zh="直属代理总计" en="Direct Agent Total" />
+                <Trans zh="总计" en="Total" />
               </Text.Block>
             )
           }
