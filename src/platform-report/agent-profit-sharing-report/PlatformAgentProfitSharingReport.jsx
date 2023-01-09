@@ -335,7 +335,16 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                   hasDividers
                   isHoverable
                   maxSize={{ height, width }}
-                  getRowProps={({ original: { isHighlightedRow } }) => {
+                  getRowProps={({
+                    original: { isHighlightedRow, isParent }
+                  }) => {
+                    if (isParent) {
+                      return {
+                        backgroundColor: "blueTint",
+                        fontWeight: "bold",
+                        "data-blue-hightlight": true
+                      }
+                    }
                     if (isHighlightedRow) {
                       return {
                         backgroundColor: "white600",
@@ -346,16 +355,20 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                     return {}
                   }}
                   css={css`
-                    tr[data-hightlight] td:first-child {
-                      background-color: var(--bb-palette-white600, #000000);
-                    }
-
-                    tr:not([data-hightlight]) td:first-child {
+                    tr td:first-child {
                       background-color: white;
                     }
 
                     tr:hover td:first-child {
                       background-color: var(--bb-palette-white600, #000000);
+                    }
+
+                    tr[data-hightlight] td:first-child {
+                      background-color: var(--bb-palette-white600, #000000);
+                    }
+
+                    tr[data-blue-hightlight] td:first-child {
+                      background-color: var(--bb-palette-blueTint, #e9f0fb);
                     }
                   `}
                   tableBorder="0"
@@ -562,17 +575,20 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "left",
         Cell: ({ value: record }) => {
           if (record?.isSeparator) {
-            return <Box visibility="hidden">Separator</Box>
+            return (
+              <Text.Block>
+                <Trans zh="直属代理" en="Direct Agent" />
+              </Text.Block>
+            )
           }
           let marginLeft = (record?.treeDepth ?? 0) * 1.5
           if (record?.isTotal) {
             //marginLeft={`${marginLeft}rem`}
             return (
               <Text.Block>
-                <Trans zh="直属代理总计" en="Direct Agent Total" />
+                <Trans zh="总计" en="Total" />
               </Text.Block>
             )
           }
@@ -605,7 +621,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -614,7 +629,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
         /*
         TODO: rm?
@@ -651,7 +665,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -660,7 +673,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -669,7 +681,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -678,7 +689,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -687,7 +697,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -697,7 +706,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true,
         Cell: ({ value: record }) => {
           if (!record) {
@@ -734,7 +742,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        textAlign: "right",
         disableSortBy: true
       })
     ]
@@ -747,7 +754,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          textAlign: "right",
           disableSortBy: true
         }),
         numberDecimalColumn({
@@ -757,7 +763,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          textAlign: "right",
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {
@@ -794,7 +799,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          textAlign: "right",
           disableSortBy: true
         }),
         numberDecimalColumn({
@@ -804,7 +808,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          textAlign: "right",
           disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {
