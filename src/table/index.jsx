@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react"
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+  forwardRef
+} from "react"
 import { css, Global } from "@emotion/react"
 import { Icon, Table as _Table, Pagination, Set, Spinner, Box } from "bumbag"
 import {
@@ -97,6 +103,65 @@ export const toApiParams = (state, configs = {}) => {
   }
 }
 
+const HeadCell = ({
+  column,
+  columnIndex,
+  isFirstColumn,
+  isLastColumn,
+  table,
+  ...props
+}) => {
+  const StickyHeadZIndex = 1
+  let { stickyHead, stickyLeft, stickyRight, maxSize, setStickyColumn } = table
+
+  let columnProps = column.getHeaderProps({
+    ...column?.headCell,
+    ...column?.getSortByToggleProps()
+  })
+
+  let isStickyLeft = stickyHead && stickyLeft && isFirstColumn
+  let isStickyRight = stickyHead && stickyRight && isLastColumn
+  //TODO: support multiple sticky columns?
+  let isStickyCell = isStickyLeft || isStickyRight
+  let [cellRef, cellRefMeasure] = useMeasure()
+
+  if (
+    isStickyCell &&
+    Number.isFinite(maxSize?.width) &&
+    Number.isFinite(cellRefMeasure?.width) &&
+    isStickyNotApplicable(cellRefMeasure?.width, maxSize?.width)
+  ) {
+    isStickyCell = false
+  }
+  setStickyColumn(columnIndex, isStickyCell)
+
+  return (
+    <_Table.HeadCell
+      ref={cellRef}
+      css={css`
+        position: ${isStickyCell ? "sticky" : "static"};
+        left: ${isStickyLeft ? 0 : "auto"};
+        right: ${isStickyRight ? 0 : "auto"};
+        z-index: ${isStickyCell ? StickyHeadZIndex + 1 : "auto"};
+        background-color: var(--bb-palette-white600, #000000);
+      `}
+      {...props}
+      {...columnProps}
+    >
+      {column.render("Header")}
+      {column.isSorted ? (
+        column.isSortedDesc ? (
+          <Icon icon={faCaretDown} type="font-awesome" />
+        ) : (
+          <Icon icon={faCaretUp} type="font-awesome" />
+        )
+      ) : (
+        ""
+      )}
+    </_Table.HeadCell>
+  )
+}
+
 export const Table = ({
   columns,
   data = [],
@@ -135,6 +200,7 @@ export const Table = ({
 }) => {
   components = {
     ..._Table,
+    HeadCell,
     ...components
   }
 
@@ -306,9 +372,10 @@ const Head = ({ table }) => {
     stickyLeft,
     stickyRight,
     maxSize,
-    setStickyColumn
+    setStickyColumn,
+    allColumns
   } = table
-  let { Head } = components
+  let { Head, HeadCell } = components
 
   const StickyHeadZIndex = 1
   return (
@@ -323,6 +390,20 @@ const Head = ({ table }) => {
       {headerGroups.map((headerGroup) => (
         <_Table.Row {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map((column, columnIndex, list) => {
+            let isFirst = columnIndex == 0
+            let isLast = columnIndex == list.length - 1
+            return (
+              <HeadCell
+                key={columnIndex}
+                column={column}
+                columnIndex={columnIndex}
+                isFirstColumn={isFirst}
+                isLastColumn={isLast}
+                table={table}
+              />
+            )
+
+            /*
             let props = column.getHeaderProps({
               ...column?.headCell,
               ...column?.getSortByToggleProps()
@@ -367,7 +448,8 @@ const Head = ({ table }) => {
                   ""
                 )}
               </_Table.HeadCell>
-            )
+          )
+          */
           })}
         </_Table.Row>
       ))}

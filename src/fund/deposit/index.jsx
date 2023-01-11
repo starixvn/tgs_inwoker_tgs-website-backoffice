@@ -733,6 +733,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
                     id="verify-deposit-dialog-disclosure"
                     brandId={brandId}
                     formId={value.id}
+                    playerCode={value.playerCode}
                     onSubmitted={mutate}
                     onVisibleChange={(visible) => {
                       let delayUpdate = visible
@@ -744,6 +745,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
                   id="view-deposit-dialog-disclosure"
                   brandId={brandId}
                   formId={value.id}
+                  playerCode={value.playerCode}
                   onVisibleChange={(visible) => {
                     let delayUpdate = visible
                     setDelayUpdate(delayUpdate)
