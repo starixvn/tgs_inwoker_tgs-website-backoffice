@@ -61,6 +61,7 @@ export const AgentTeamContributionDialogDisclosure = ({
   start,
   end,
   value,
+  agentDividendPercentage,
   ...props
 }) => {
   let dialog = useModalState()
@@ -82,6 +83,7 @@ export const AgentTeamContributionDialogDisclosure = ({
           value={value}
           start={start}
           end={end}
+          agentDividendPercentage={agentDividendPercentage}
           dialog={dialog}
         />
       )}
@@ -96,6 +98,7 @@ const ReportDialog = ({
   start,
   end,
   value,
+  agentDividendPercentage,
   dialog,
   ...props
 }) => {
@@ -104,6 +107,7 @@ const ReportDialog = ({
       agentId,
       from: start,
       to: startOfNextDay(end),
+      agentDividendPercentage,
       sortby: "settlementDate"
     })
 

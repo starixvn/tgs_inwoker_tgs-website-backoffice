@@ -53,3 +53,18 @@ export const useChangePromotionOrders = (data) => {
   let url = `${API}/changeorders`
   return usePutData(url, data)
 }
+
+export const useChangeLogList = (promotionId) => {
+  let url = promotionId ? `${API}/history/${promotionId}` : ""
+
+  return useGet(url)
+}
+
+export const useChangeLogDetail = (promotionId, eventId) => {
+  let url =
+    promotionId && eventId
+      ? `${API}/history/detail/${promotionId}/${eventId}`
+      : ""
+
+  return useGet(url)
+}

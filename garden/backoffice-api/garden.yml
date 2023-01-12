@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202211211016.64
+image: pgtgs/backoffice-api:202212230702.101
 services:
   - name: backoffice-api
     dependencies:

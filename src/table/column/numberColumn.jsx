@@ -17,6 +17,7 @@ export const numberColumn = ({
   toValue = defaultValueFn,
   whiteSpace = "nowrap",
   tooltip,
+  textAlign = "right",
   ...props
 }) => {
   const DefaultCell = ({ value }) => (
@@ -36,7 +37,7 @@ export const numberColumn = ({
       textAlign: "center"
     },
     cell: {
-      textAlign: "center",
+      textAlign,
       whiteSpace
     }
   }
@@ -54,7 +55,7 @@ export const numberColumn = ({
         )
       },
       footerCellProps: {
-        textAlign: "center"
+        textAlign
       }
     }
   }

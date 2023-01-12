@@ -21,7 +21,7 @@ import {
   faChevronCircleUp
 } from "@fortawesome/free-solid-svg-icons"
 import clone from "clone-deep"
-import { cloneNotEmpty } from "./object/cloneNotEmpty"
+import { cloneNotEmpty } from "./record/cloneNotEmpty"
 
 let themeOptions = cloneNotEmpty(window?.env?.theme)
 console.log("themeOptions", themeOptions)

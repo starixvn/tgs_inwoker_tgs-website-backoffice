@@ -36,7 +36,8 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    pageSize: 31
   })
 
   useEffect(() => {
@@ -133,7 +134,6 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
           isLoading={isLoading}
-          foot={data?.items?.length > 0}
           stickyHead
         />
       </Stack>
@@ -205,45 +205,38 @@ const useColumns = ({ brandId, items = [] }) => {
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
         disableSortBy: true,
-        Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
           textAlign: "center"
         }
       }),
       numberColumn({
         accessor: "registeredCount",
-        sumColumn: "registeredCount",
         Header: <Trans zh="注册人数" en="Registered Count" />,
         disableSortBy: true
       }),
       numberColumn({
         accessor: "depositCount",
-        sumColumn: "depositCount",
         Header: <Trans zh="存款人数" en="Deposit Count" />,
         disableSortBy: true
       }),
       numberColumn({
         accessor: "activePlayer",
-        sumColumn: "activePlayer",
         Header: <Trans zh="活跃玩家" en="Active Player" />,
         disableSortBy: true
       }),
       numberColumn({
         accessor: "loginPlayer",
-        sumColumn: "loginPlayer",
         Header: <Trans zh="登入玩家" en="Login Player" />,
         disableSortBy: true
       }),
       numberColumn({
         accessor: "firstFundInCount",
-        sumColumn: "firstFundInCount",
         Header: <Trans zh="首存人数" en="First Fund In Count" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "depositAmount",
         accessor: (row) => row,
-        sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
         disableSortBy: true,
         toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
@@ -252,35 +245,33 @@ const useColumns = ({ brandId, items = [] }) => {
             : depositAmount
           return value
         },
+        /*
         toTotal: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
             ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
             : depositAmount
           return value
         },
+        */
         TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />
       }),
       numberDecimalColumn({
         accessor: "withdrawalAmount",
-        sumColumn: "withdrawalAmount",
         Header: <Trans zh="提款金额" en="Withdrawal Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
-        sumColumn: "companyAdjustAmount",
         Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonusAdjustAmount",
-        sumColumn: "bonusAdjustAmount",
         Header: <Trans zh="优惠调帐" en="Bonus Adjust" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "platformCoveredBonusAdjust",
-        sumColumn: "platformCoveredBonusAdjust",
         Header: (
           <Trans zh="平台承担优惠调帐" en="Platform-Covered Bonus Adjust" />
         ),
@@ -288,44 +279,37 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        sumColumn: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "platformCoveredBonus",
-        sumColumn: "platformCoveredBonus",
         Header: <Trans zh="平台承担红利" en="Platform-Covered Bonus" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        sumColumn: "betAmount",
         Header: <Trans zh="投注金额" en="Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        sumColumn: "turnover",
         Header: <Trans zh="流水" en="Turnover" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
-        sumColumn: "winLossAmount",
         Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "additionalExpenses",
         accessor: (row) => row,
-        sumColumn: "additionalExpenses",
         Header: (
           <Trans
             zh="额外支出"
@@ -355,7 +339,6 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        sumColumn: "netProfit",
         Header: <Trans zh="净盈利" en="NetProfit" />,
         disableSortBy: true
       })

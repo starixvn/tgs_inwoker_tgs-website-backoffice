@@ -18,7 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
-import { useMeasure } from "react-use"
+import { useMeasure, useScrollbarWidth } from "react-use"
 
 const DefaultState = {
   pageIndex: 0,
@@ -127,14 +127,26 @@ export const Table = ({
   components = {},
   getTableHeadProps,
   containerProps = {},
-  autoSize,
-  minHeight = 5 * 50,
+  maxSize,
+  minHeight,
   tableContainerProps,
+  tableBorder = "1px solid var(--bb-palette-white800, #000000)",
   ...props
 }) => {
   components = {
     ..._Table,
     ...components
+  }
+
+  let stickyColumnRecord = {}
+
+  let setStickyColumn = (columnIndex, isSticky) => {
+    Reflect.set(stickyColumnRecord, columnIndex, isSticky)
+  }
+
+  let isStickyColumn = (columnIndex) => {
+    let isSticky = stickyColumnRecord[columnIndex] ?? false
+    return isSticky
   }
 
   let table = _useTable(
@@ -168,7 +180,10 @@ export const Table = ({
       disableMultiSort,
       manualPagination,
       pageCount,
-      manualFilters
+      manualFilters,
+      maxSize,
+      setStickyColumn,
+      isStickyColumn
     },
     useFilters,
     useSortBy,
@@ -193,15 +208,20 @@ export const Table = ({
     en: "Next page"
   })
 
+  let scrollbarWidth = useScrollbarWidth()
   // TODO: how to measure height + margin?
   // let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
+
+  if (data?.length > 5 && !Number.isFinite(minHeight)) {
+    minHeight = 5 * 50
+  }
 
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
   return (
     <>
       {isLoading && (
-        <Box alignX="center">
+        <Box alignX="center" width="100%">
           <Spinner />
         </Box>
       )}
@@ -219,22 +239,23 @@ export const Table = ({
             & table.bb-Table {
               border-radius: 6px;
               overflow: ${isSticky ? "visible" : "auto"};
-              border: 1px solid var(--bb-palette-white800, #000000);
+              border: ${tableBorder};
             }
           `}
         >
           <div
             css={css`
-              width: ${Number.isFinite(autoSize?.width)
-                ? `${autoSize?.width}px`
+              width: ${Number.isFinite(maxSize?.width)
+                ? `${maxSize?.width}px`
                 : "100%"};
-              height: ${Number.isFinite(autoSize?.height)
+              height: ${Number.isFinite(maxSize?.height) &&
+              Number.isFinite(minHeight)
                 ? `${Math.max(
-                    autoSize?.height - PaginationHeight,
+                    maxSize?.height - PaginationHeight - scrollbarWidth,
                     minHeight
                   )}px`
-                : "auto"};
-              overflow: ${autoSize ? "auto" : isSticky ? "visible" : "auto"};
+                : "max-content"};
+              overflow: ${maxSize ? "auto" : isSticky ? "visible" : "auto"};
             `}
           >
             <_Table width="100%" {...table.getTableProps()} {...props}>
@@ -272,6 +293,10 @@ export const Table = ({
 
 const defaultProps = () => ({})
 
+const isStickyNotApplicable = (cellWidth, maxWidth) => {
+  return cellWidth * 2 > maxWidth
+}
+
 const Head = ({ table }) => {
   let {
     headerGroups,
@@ -279,7 +304,9 @@ const Head = ({ table }) => {
     getTableHeadProps = defaultProps,
     stickyHead,
     stickyLeft,
-    stickyRight
+    stickyRight,
+    maxSize,
+    setStickyColumn
   } = table
   let { Head } = components
 
@@ -307,8 +334,19 @@ const Head = ({ table }) => {
             let isStickyRight = stickyHead && stickyRight && isLast
             //TODO: support multiple sticky columns?
             let isStickyCell = isStickyLeft || isStickyRight
+            let [cellRef, cellRefMeasure] = useMeasure()
+            if (
+              isStickyCell &&
+              Number.isFinite(maxSize?.width) &&
+              Number.isFinite(cellRefMeasure?.width) &&
+              isStickyNotApplicable(cellRefMeasure?.width, maxSize?.width)
+            ) {
+              isStickyCell = false
+            }
+            setStickyColumn(columnIndex, isStickyCell)
             return (
               <_Table.HeadCell
+                ref={cellRef}
                 css={css`
                   position: ${isStickyCell ? "sticky" : "static"};
                   left: ${isStickyLeft ? 0 : "auto"};
@@ -374,7 +412,8 @@ const TotalBody = ({ table }) => {
     columns,
     components,
     stickyLeft,
-    stickyRight
+    stickyRight,
+    maxSize
   } = table
   let { Body, Row, Cell } = components
 
@@ -435,7 +474,8 @@ const Body = ({ table }) => {
     columns,
     components,
     stickyLeft,
-    stickyRight
+    stickyRight,
+    isStickyColumn
   } = table
   let { Body, Row, Cell } = components
   return (
@@ -467,6 +507,9 @@ const Body = ({ table }) => {
               let isStickyRight = stickyRight && isLast
               //TODO: support multiple sticky columns?
               let isStickyCell = isStickyLeft || isStickyRight
+              if (isStickyCell) {
+                isStickyCell = isStickyColumn(cellIndex)
+              }
               return (
                 <Cell
                   css={css`

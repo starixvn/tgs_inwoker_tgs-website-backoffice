@@ -18,6 +18,7 @@ import { sortBy } from "lodash-es"
 export const Key = "wallet-list"
 
 //TODO: rm
+/*
 export const PlayerWalletListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
@@ -25,7 +26,9 @@ export const PlayerWalletListTab = ({ ...props }) => {
     </_Tab>
   )
 }
+*/
 
+/*
 export const PlayerWalletListPanel = ({ player, playerCode, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === Key
@@ -56,6 +59,7 @@ export const PlayerWalletListPanel = ({ player, playerCode, ...props }) => {
     </TabPanel>
   )
 }
+*/
 
 const Body = ({ player, mainWallet, transferWallets = [] }) => {
   let items = sortBy(transferWallets, ["gameProviderName"])

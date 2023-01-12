@@ -20,6 +20,12 @@ const DisabledTrans = {
   en: "Disabled"
 }
 
+const Archived = "Archived"
+const ArchivedTrans = {
+  zh: "删除",
+  en: Archived
+}
+
 export const isPromotionStatusEnabled = (value) => value === Enabled
 
 export const PromotionStatusSelect = ({ placeholder, ...props }) => {
@@ -38,6 +44,12 @@ export const PromotionStatusSelect = ({ placeholder, ...props }) => {
       label: useTrans(DisabledTrans),
       value: Disabled
     }
+    /*
+    {
+      label: useTrans(ArchivedTrans),
+      value: Archived
+    }
+    */
   ]
 
   return <Select placeholder={placeholder} options={options} {...props} />
@@ -72,6 +84,10 @@ export const PromotionStatusSwitch = ({
     }
   }, [result, error])
 
+  if (value == Archived) {
+    disabled = true
+    checked = false
+  }
   let checked = value === Enabled
   return (
     <>

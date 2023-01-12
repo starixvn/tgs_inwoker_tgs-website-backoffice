@@ -251,28 +251,23 @@ const useColumns = ({ items = [], mutate }) => {
             />
           )
         }
+      }),
+      textColumn({
+        id: "actions",
+        accessor: (row) => row,
+        Header: <Trans zh="Actions" en="Actions" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          return (
+            <EditBrandPaymentDisclosure
+              record={value}
+              platformPaymentId={value?.id}
+              onSubmitted={mutate}
+            />
+          )
+        }
       })
     ]
-
-    if (hasUpdateAuth) {
-      columns.push(
-        textColumn({
-          id: "actions",
-          accessor: (row) => row,
-          Header: <Trans zh="Actions" en="Actions" />,
-          disableSortBy: true,
-          Cell: ({ value }) => {
-            return (
-              <EditBrandPaymentDisclosure
-                record={value}
-                platformPaymentId={value?.id}
-                onSubmitted={mutate}
-              />
-            )
-          }
-        })
-      )
-    }
 
     return columns
   }, [JSON.stringify(items)])

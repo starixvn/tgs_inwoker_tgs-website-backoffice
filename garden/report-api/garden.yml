@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: report-api
-image: pgtgs/report-api:202210200839-dev
+image: pgtgs/report-api:202212210346-dev
 services:
   - name: report-api
     dependencies:

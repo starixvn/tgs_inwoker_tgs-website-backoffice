@@ -7,6 +7,8 @@ export const View = "view"
 
 export const Update = "update"
 
+export const ChangeLog = "changelog"
+
 export const label = (codes = [], locale = Locales.zh) => {
   let [code = ""] = codes
   code = code.toLowerCase()
@@ -25,6 +27,14 @@ export const label = (codes = [], locale = Locales.zh) => {
         {
           zh: "编辑",
           en: "Edit"
+        },
+        locale
+      )
+    case ChangeLog:
+      return getTrans(
+        {
+          zh: "变更纪录",
+          en: "Change Log"
         },
         locale
       )

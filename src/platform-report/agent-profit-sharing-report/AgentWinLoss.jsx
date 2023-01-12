@@ -46,6 +46,7 @@ export const AgentWinLossDialogDisclosure = ({
   start,
   end,
   value,
+  agentDividendPercentage,
   ...props
 }) => {
   let dialog = useModalState()
@@ -67,6 +68,7 @@ export const AgentWinLossDialogDisclosure = ({
           winLossAmount={value}
           start={start}
           end={end}
+          agentDividendPercentage={agentDividendPercentage}
           dialog={dialog}
         />
       )}
@@ -81,6 +83,7 @@ const ReportDialog = ({
   winLossAmount,
   start,
   end,
+  agentDividendPercentage,
   dialog
 }) => {
   let { state, setPageIndex, setSortOrder } = useTable({
@@ -95,7 +98,8 @@ const ReportDialog = ({
       ...toApiParams(state),
       sortby: "username",
       from: start,
-      to: startOfNextDay(end)
+      to: startOfNextDay(end),
+      agentDividendPercentage
     }
   )
 
