@@ -6,7 +6,18 @@ import React, {
   forwardRef
 } from "react"
 import { css, Global } from "@emotion/react"
-import { Icon, Table as _Table, Pagination, Set, Spinner, Box } from "bumbag"
+import {
+  Icon,
+  Table as _Table,
+  Pagination,
+  Set,
+  Spinner,
+  Box,
+  DropdownMenu,
+  Button,
+  Popover,
+  Checkbox
+} from "bumbag"
 import {
   useTable as _useTable,
   useSortBy as useTableSortBy,
@@ -20,7 +31,9 @@ import {
   faCaretDown,
   faSlash,
   faTimes,
-  faSearchMinus
+  faSearchMinus,
+  faSort,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons"
 import { Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
@@ -156,7 +169,9 @@ const HeadCell = ({
           <Icon icon={faCaretUp} type="font-awesome" />
         )
       ) : (
-        ""
+        !column.disableSortBy && (
+          <Icon icon={faSort} type="font-awesome" opacity="0.4" />
+        )
       )}
     </_Table.HeadCell>
   )
@@ -363,6 +378,49 @@ const isStickyNotApplicable = (cellWidth, maxWidth) => {
   return cellWidth * 2 > maxWidth
 }
 
+const ActionsHeadRow = ({ table }) => {
+  let { allColumns } = table
+
+  return (
+    <_Table.Row>
+      <_Table.HeadCell colSpan={allColumns.length}>
+        <Popover.State>
+          <Popover.Disclosure use={Button}>Columns</Popover.Disclosure>
+          <Popover usePortal>
+            <Set orientation="vertical">
+              {allColumns.map((column) => (
+                <Checkbox
+                  key={column.id}
+                  label={column.Header}
+                  {...column.getToggleHiddenProps()}
+                />
+              ))}
+            </Set>
+          </Popover>
+        </Popover.State>
+        <DropdownMenu
+          menu={allColumns.map((column) => {
+            let { checked, onChange, ...props } = column.getToggleHiddenProps()
+            return (
+              <DropdownMenu.Item
+                iconBefore={checked ? faCheck : <Box />}
+                color={checked ? "primary" : undefined}
+                onClick={(event) => {
+                  column.toggleHidden(checked)
+                }}
+              >
+                {column.Header}
+              </DropdownMenu.Item>
+            )
+          })}
+        >
+          <Button iconAfter="chevron-down">Columns</Button>
+        </DropdownMenu>
+      </_Table.HeadCell>
+    </_Table.Row>
+  )
+}
+
 const Head = ({ table }) => {
   let {
     headerGroups,
@@ -387,6 +445,7 @@ const Head = ({ table }) => {
       `}
       {...getTableHeadProps()}
     >
+      {/* <ActionsHeadRow table={table} /> */}
       {headerGroups.map((headerGroup) => (
         <_Table.Row {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map((column, columnIndex, list) => {
