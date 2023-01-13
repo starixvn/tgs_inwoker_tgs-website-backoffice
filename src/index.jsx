@@ -18,7 +18,8 @@ import {
   faUser,
   faLanguage,
   faChevronCircleDown,
-  faChevronCircleUp
+  faChevronCircleUp,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons"
 import clone from "clone-deep"
 import { cloneNotEmpty } from "./record/cloneNotEmpty"
@@ -57,7 +58,8 @@ const theme = {
           faUser,
           faLanguage,
           faChevronCircleUp,
-          faChevronCircleDown
+          faChevronCircleDown,
+          faCheck
         ],
         prefix: "solid-",
         type: "font-awesome"

@@ -1,18 +1,38 @@
-import { utcToZonedTime } from "date-fns-tz"
+import {
+  utcToZonedTime,
+  zonedTimeToUtc as _zonedTimeToUtc,
+  formatInTimeZone as _formatInTimeZone
+} from "date-fns-tz/esm"
 import { Button } from "bumbag"
 import { getTimeZones } from "@vvo/tzdb"
 import { range } from "lodash-es"
-import { SelectField } from "../select/Select"
+import { SelectField, Select } from "../select/Select"
 import numeral from "numeral"
 import { isValid } from "date-fns"
 import { Trans } from "../i18n"
+import { isValidDate } from "./isValidDate"
 
-const SystemZoneOffset = 480
+export const SystemZoneOffset = 480
 
 //TODO: memorize?
 export const isClientTimeZoneSameAsSystemTimeZone = () => {
   let clientTimezoneOffset = -1 * new Date().getTimezoneOffset()
   return SystemZoneOffset === clientTimezoneOffset
+}
+
+export const zonedTimeToUtc = (date, offset = SystemZoneOffset) => {
+  if (!isValid(date)) {
+    return date
+  }
+
+  let timeZone = getTimeZones({
+    includeUtc: true
+  }).find(({ currentTimeOffsetInMinutes, ...rest }) => {
+    return currentTimeOffsetInMinutes == offset
+  })
+
+  let result = _zonedTimeToUtc(date, timeZone.name)
+  return isValidDate(result) ? result : date
 }
 
 export const toZonedTime = (date, offset = SystemZoneOffset) => {
@@ -26,23 +46,54 @@ export const toZonedTime = (date, offset = SystemZoneOffset) => {
     return currentTimeOffsetInMinutes == offset
   })
 
-  return utcToZonedTime(date, timeZone.name)
+  let result = utcToZonedTime(date, timeZone.name)
+
+  return isValidDate(result) ? result : date
 }
 
+export const formatInTimeZone = () => {}
+
 export const localTimeOffset = () => -1 * new Date().getTimezoneOffset()
+
+const timezoneOptions = () => {
+  let timezones = getTimeZones({
+    includeUtc: true
+  }).reduce((accum, timezone) => {
+    let timezoneIndex = accum.findIndex(
+      (item) =>
+        item.currentTimeOffsetInMinutes == timezone.currentTimeOffsetInMinutes
+    )
+    if (timezoneIndex < 0) {
+      //not inside
+      accum.push(timezone)
+    }
+
+    return accum
+  }, [])
+
+  return timezones.map((timezone) => {
+    let label = timezone.currentTimeFormat.split(" ")[0]
+    return {
+      label,
+      value: timezone.currentTimeOffsetInMinutes
+    }
+  })
+}
 
 export const TimezoneSelectField = ({
   name = "timezoneOffset",
   defaultValue = localTimeOffset(),
+  prefix = "",
+  rangeStart = -11,
+  rangeEnd = 15,
   ...props
 } = {}) => {
-  let from = -11
-  let to = 15
-  let ranges = range(from, to)
+  let ranges = range(rangeStart, rangeEnd)
+
   let options = ranges.map((value) => {
     let formatted = numeral(value).format("+00")
     return {
-      label: formatted,
+      label: `${prefix}${formatted}`,
       value: value * 60
     }
   })
@@ -60,4 +111,23 @@ export const TimezoneSelectField = ({
       {...props}
     />
   )
+}
+
+export const TimezoneSelect = ({
+  prefix = "GMT",
+  rangeStart = -11,
+  rangeEnd = 15,
+  ...props
+} = {}) => {
+  let ranges = range(rangeStart, rangeEnd)
+
+  let options = ranges.map((value) => {
+    let formatted = numeral(value).format("+0")
+    return {
+      label: `${prefix}${formatted}`,
+      value: value * 60
+    }
+  })
+
+  return <Select options={options} {...props} />
 }

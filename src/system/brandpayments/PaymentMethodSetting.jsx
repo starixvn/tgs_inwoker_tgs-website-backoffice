@@ -118,10 +118,10 @@ const EWalletSetting = ({ brandId }) => {
 const CryptoSetting = ({ brandId, currency = "" }) => {
   return (
     <>
-      <Label>
+      <Label required>
         <Trans zh="钱包地址" en="Wallet Address" />
       </Label>
-      <Input name="extendedData.address" />
+      <Input name="extendedData.address" required />
       <Label>
         <Trans zh="QR Code" en="QR Code" />
       </Label>
