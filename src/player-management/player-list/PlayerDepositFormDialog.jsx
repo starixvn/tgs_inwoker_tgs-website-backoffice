@@ -78,6 +78,44 @@ const ManualCode = "Manual"
 const supportedPaymentList = (list = []) =>
   list.filter(({ paymentCode }) => paymentCode === ManualCode)
 
+const useFormData = (brandId, playerCode) => {
+  let {
+    isLoading: isLoadingPaymentList,
+    data: paymentList,
+    error: paymentListError
+  } = usePlayerDepositPaymentList({
+    brandId,
+    playerCode
+  })
+
+  let {
+    isLoading: isLoadingPlayer,
+    data: player,
+    error: playerError
+  } = usePlayer(playerCode)
+
+  let playerBankTypes = player?.banks?.map((card) => card.bankType)
+
+  paymentList = paymentList?.filter(({ paymentCode, bankType }) => {
+    if (paymentCode != ManualCode) {
+      return false
+    }
+
+    return playerBankTypes?.length > 0
+      ? playerBankTypes?.includes(bankType)
+      : true
+  })
+
+  let isLoading = isLoadingPaymentList || isLoadingPlayer
+  let error = paymentListError || playerError
+
+  return {
+    isLoading,
+    error,
+    paymentList
+  }
+}
+
 const DepositFormDialog = ({
   brandId,
   playerCode,
