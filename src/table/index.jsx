@@ -161,18 +161,20 @@ const HeadCell = ({
       {...props}
       {...columnProps}
     >
-      {column.render("Header")}
-      {column.isSorted ? (
-        column.isSortedDesc ? (
-          <Icon icon={faCaretDown} type="font-awesome" />
+      <Box>
+        {column.render("Header")}
+        {column.isSorted ? (
+          column.isSortedDesc ? (
+            <Icon icon={faCaretDown} type="font-awesome" />
+          ) : (
+            <Icon icon={faCaretUp} type="font-awesome" />
+          )
         ) : (
-          <Icon icon={faCaretUp} type="font-awesome" />
-        )
-      ) : (
-        !column.disableSortBy && (
-          <Icon icon={faSort} type="font-awesome" opacity="0.4" />
-        )
-      )}
+          !column.disableSortBy && (
+            <Icon icon={faSort} type="font-awesome" opacity="0.4" />
+          )
+        )}
+      </Box>
     </_Table.HeadCell>
   )
 }
@@ -211,6 +213,7 @@ export const Table = ({
   minHeight,
   tableContainerProps,
   tableBorder = "1px solid var(--bb-palette-white800, #000000)",
+  toggleHidden = false,
   ...props
 }) => {
   components = {
@@ -302,7 +305,14 @@ export const Table = ({
   return (
     <>
       {isLoading && (
-        <Box alignX="center" width="100%">
+        <Box
+          alignX="center"
+          css={css`
+            width: ${Number.isFinite(maxSize?.width)
+              ? `${maxSize?.width}px`
+              : "100%"};
+          `}
+        >
           <Spinner />
         </Box>
       )}
@@ -324,6 +334,7 @@ export const Table = ({
             }
           `}
         >
+          {toggleHidden && <ActionBar table={table} />}
           <div
             css={css`
               width: ${Number.isFinite(maxSize?.width)
@@ -378,46 +389,29 @@ const isStickyNotApplicable = (cellWidth, maxWidth) => {
   return cellWidth * 2 > maxWidth
 }
 
-const ActionsHeadRow = ({ table }) => {
+const ActionBar = ({ table }) => {
   let { allColumns } = table
 
   return (
-    <_Table.Row>
-      <_Table.HeadCell colSpan={allColumns.length}>
-        <Popover.State>
-          <Popover.Disclosure use={Button}>Columns</Popover.Disclosure>
-          <Popover usePortal>
-            <Set orientation="vertical">
-              {allColumns.map((column) => (
-                <Checkbox
-                  key={column.id}
-                  label={column.Header}
-                  {...column.getToggleHiddenProps()}
-                />
-              ))}
-            </Set>
-          </Popover>
-        </Popover.State>
-        <DropdownMenu
-          menu={allColumns.map((column) => {
-            let { checked, onChange, ...props } = column.getToggleHiddenProps()
-            return (
-              <DropdownMenu.Item
-                iconBefore={checked ? faCheck : <Box />}
-                color={checked ? "primary" : undefined}
-                onClick={(event) => {
-                  column.toggleHidden(checked)
-                }}
-              >
-                {column.Header}
-              </DropdownMenu.Item>
-            )
-          })}
-        >
-          <Button iconAfter="chevron-down">Columns</Button>
-        </DropdownMenu>
-      </_Table.HeadCell>
-    </_Table.Row>
+    <DropdownMenu
+      menu={allColumns.map((column) => {
+        let { checked, onChange, ...props } = column.getToggleHiddenProps()
+        return (
+          <DropdownMenu.Item
+            key={column.id}
+            iconBefore={checked ? "solid-check" : <Box />}
+            color={checked ? "primary" : undefined}
+            onClick={(event) => {
+              column.toggleHidden(checked)
+            }}
+          >
+            {column.Header}
+          </DropdownMenu.Item>
+        )
+      })}
+    >
+      <Button iconAfter="chevron-down">Columns</Button>
+    </DropdownMenu>
   )
 }
 
@@ -445,7 +439,6 @@ const Head = ({ table }) => {
       `}
       {...getTableHeadProps()}
     >
-      {/* <ActionsHeadRow table={table} /> */}
       {headerGroups.map((headerGroup) => (
         <_Table.Row {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map((column, columnIndex, list) => {
