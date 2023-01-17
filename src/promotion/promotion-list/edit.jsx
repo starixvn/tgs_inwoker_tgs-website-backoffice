@@ -79,6 +79,8 @@ import { PromotionGameProviderFieldBox } from "./PromotionGameProviderFieldBox"
 import { isPromotionStatusEnabled } from "./PromotionStatus"
 import { isValidDate } from "../../date/isValidDate"
 import { PromotionDateRangeFieldBox } from "./PromotionDateRangeFieldBox"
+import { zonedTimeToUtc } from "../../date/TimeZone"
+import { formatDateOnly } from "../../date/format"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -165,6 +167,8 @@ const normalizeFormData = ({
   gameType,
   gameProviders = [],
   rule = {},
+  from,
+  to,
   ...data
 }) => {
   let gameProviderIds = gameType
@@ -174,8 +178,13 @@ const normalizeFormData = ({
   rule.gameType = gameType
   rule.gameProviderIds = gameProviderIds
 
+  from = formatDateOnly(from)
+  to = formatDateOnly(to)
+
   return {
     rule,
+    from,
+    to,
     ...data
   }
 }

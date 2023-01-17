@@ -66,6 +66,7 @@ import {
   isAgentProfitSharingMultipleLayer
 } from "../../agent/AgentProfitSharingType"
 import { PlatformTokenActionButtons } from "./PlatformTokenActionButtons"
+import { TimezoneSelect, SystemZoneOffset } from "../../date/TimeZone"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -477,11 +478,6 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
   })
 
   let CheckDividendActiveCountFieldName = "checkDividendActiveCount"
-  let checkDividendActiveCount = useWatch({
-    control,
-    name: CheckDividendActiveCountFieldName
-  })
-
   let checkDividendActiveCountLabel = useTrans({
     zh: "分紅比例需判斷活躍人數",
     en: "Profit sharing affected by active player"
@@ -633,30 +629,6 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           </>
         )}
 
-        {/* 
-        <NormalLabel>
-          <Trans zh="代理承擔手續費" en="代理承担手续费" />
-        </NormalLabel>
-        <Set>
-          <PercentageNumberInputField
-            name="depositFee"
-            addonBefore={
-              <Button isStatic>
-                <Trans zh="存款" en="Deposit" />
-              </Button>
-            }
-          />
-          <PercentageNumberInputField
-            name="withdrawFee"
-            addonBefore={
-              <Button isStatic>
-                <Trans zh="提款" en="Withdraw" />
-              </Button>
-            }
-          />
-        </Set> 
-        */}
-
         <NormalLabel>
           <Trans zh="代理分红周期" en="Agent Profit Sharing Interval" />
         </NormalLabel>
@@ -676,6 +648,19 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
               />
             )}
           </Set>
+        </Box>
+
+        <NormalLabel>
+          <Trans zh="时区" en="Time Zone" />
+        </NormalLabel>
+        <Box>
+          <TimezoneSelect
+            name="timeSpanMinutes"
+            defaultValue={isAdd ? SystemZoneOffset : undefined}
+            rangeStart={0}
+            rangeEnd={13}
+            disabled={readonly}
+          />
         </Box>
 
         <NormalLabel>

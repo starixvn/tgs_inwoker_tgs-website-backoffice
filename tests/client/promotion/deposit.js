@@ -1,6 +1,12 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import { startOfDay, endOfTomorrow, formatISO, addWeeks } from "date-fns"
+import {
+  startOfDay,
+  endOfTomorrow,
+  formatISO,
+  addWeeks,
+  format
+} from "date-fns"
 import faker from "@faker-js/faker"
 
 const { lorem } = faker
@@ -10,8 +16,8 @@ export const addFirstDeposit = async ({
   brandId,
   name = `${lorem.word()}-${Date.now()}`,
   subSubject = lorem.word(),
-  from = formatISO(new Date()),
-  to = formatISO(addWeeks(new Date(), 2)),
+  from = format(new Date(), "yyyy-MM-dd"),
+  to = format(addWeeks(new Date(), 2), "yyyy-MM-dd"),
   vipLevels = [1],
   autoSentPlayerBonus = true,
   unlimited = true,

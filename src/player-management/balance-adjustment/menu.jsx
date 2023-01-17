@@ -13,6 +13,8 @@ export const BonusAdjustTransactionType = "bonusadjusttransactiontype"
 
 export const BatchAddBalance = "batchaddbalance"
 
+export const AdjustLockedAmount = "adjustlockedamount"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {
