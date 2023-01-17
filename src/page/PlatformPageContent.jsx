@@ -29,6 +29,7 @@ const Store = createContext()
 
 export const PlatformPageContent = ({
   title,
+  addonAfterTitle,
   height = "100%",
   children,
   padding = "1rem",
@@ -67,6 +68,7 @@ export const PlatformPageContent = ({
                 {title}
               </Heading>
             </Box>
+            {addonAfterTitle}
           </Set>
           {platformId && children}
         </Set>
