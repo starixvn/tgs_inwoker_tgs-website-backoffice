@@ -44,6 +44,7 @@ import { useFundDepositFormData } from "./useFundDepositFormData"
 export const ViewFundDepositDisclosure = ({
   brandId,
   formId,
+  playerCode,
   onVisibleChange,
   ...props
 }) => {
@@ -65,6 +66,7 @@ export const ViewFundDepositDisclosure = ({
         <ViewFundDepositDialog
           brandId={brandId}
           formId={formId}
+          playerCode={playerCode}
           dialog={dialog}
         />
       )}
@@ -72,16 +74,20 @@ export const ViewFundDepositDisclosure = ({
   )
 }
 
-const ViewFundDepositDialog = ({ brandId, formId, dialog, ...props }) => {
+const ViewFundDepositDialog = ({
+  brandId,
+  formId,
+  playerCode,
+  dialog,
+  ...props
+}) => {
   let title = useTrans({
     zh: "查看存款",
     en: "View Deposit"
   })
 
-  let { depositForm, brandPayment, isLoading, error } = useFundDepositFormData(
-    brandId,
-    formId
-  )
+  let { depositForm, brandPayment, player, isLoading, error } =
+    useFundDepositFormData(brandId, formId, playerCode)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -102,6 +108,7 @@ const ViewFundDepositDialog = ({ brandId, formId, dialog, ...props }) => {
       <FormBody
         record={depositForm}
         brandPayment={brandPayment}
+        player={player}
         readOnly={true}
       />
     </Dialog.Modal>
@@ -112,6 +119,7 @@ export const FormBody = ({
   brandId,
   record,
   brandPayment,
+  player,
   readOnly = false
 }) => {
   let hasAttachment = !!record?.paymentReturn?.manualReceiptFileId
@@ -126,6 +134,8 @@ export const FormBody = ({
             <Trans zh="用户名" en="Username" />
           </NormalLabel>
           <Box alignY="center">{record?.userName}</Box>
+
+          <PlayerBox player={player} />
 
           <NormalLabel>
             <Trans zh="GMS订单号" en="GMS Id" />
@@ -225,6 +235,26 @@ export const FormBody = ({
         />
       </FieldStack>
       <Input type="hidden" value={brandId} />
+    </>
+  )
+}
+
+const PlayerBox = ({ player }) => {
+  if (!player) {
+    return null
+  }
+
+  let playerRealname = player?.realName
+  return (
+    <>
+      {playerRealname && (
+        <>
+          <NormalLabel>
+            <Trans zh="真实姓名" en="Real name" />
+          </NormalLabel>
+          <Box alignY="center">{playerRealname}</Box>
+        </>
+      )}
     </>
   )
 }

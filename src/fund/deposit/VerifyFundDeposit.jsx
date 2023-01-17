@@ -26,6 +26,7 @@ const fireVerifiedEvent = () => {
 export const VerifyFundDepositDisclosure = ({
   brandId,
   formId,
+  playerCode,
   onSubmitted,
   onVisibleChange,
   ...props
@@ -48,6 +49,7 @@ export const VerifyFundDepositDisclosure = ({
         <VerifyFundDepositDialog
           brandId={brandId}
           formId={formId}
+          playerCode={playerCode}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -59,6 +61,7 @@ export const VerifyFundDepositDisclosure = ({
 const VerifyFundDepositDialog = ({
   brandId,
   formId,
+  playerCode,
   onSubmitted,
   dialog,
   ...props
@@ -80,10 +83,11 @@ const VerifyFundDepositDialog = ({
     isLoading: isLoadingDepositFormData,
     depositForm: depositFormData,
     brandPayment,
+    player,
     error: depositFormDataError,
     mutateDepositForm,
     deleteDepositFormCache
-  } = useFundDepositFormData(brandId, formId)
+  } = useFundDepositFormData(brandId, formId, playerCode)
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
@@ -171,6 +175,7 @@ const VerifyFundDepositDialog = ({
         brandId={brandId}
         record={depositFormData}
         brandPayment={brandPayment}
+        player={player}
       />
     </FormDialog>
   )

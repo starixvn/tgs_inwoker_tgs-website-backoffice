@@ -1,7 +1,8 @@
+import { usePlayer } from "../../player-management/player-list/client"
 import { useBrandPayment } from "../../system/brandpayments/client"
 import { useFundDepositForm } from "./client"
 
-export const useFundDepositFormData = (brandId, formId) => {
+export const useFundDepositFormData = (brandId, formId, playerCode) => {
   let {
     data: depositForm,
     isLoading: isLoadingDepositForm,
@@ -17,11 +18,20 @@ export const useFundDepositFormData = (brandId, formId) => {
     deleteCache: deleteBrandPaymentCache
   } = useBrandPayment(depositForm?.brandPaymentId)
 
+  let {
+    data: player,
+    isLoading: isLoadingPlayer,
+    error: playerError,
+    mutate: mutatePlayer,
+    deleteCache: deletePlayerCache
+  } = usePlayer(playerCode)
+
   return {
     depositForm,
     brandPayment,
-    isLoading: isLoadingDepositForm || isLoadingBrandPayment,
-    error: depositFormError || brandPaymentError,
+    player,
+    isLoading: isLoadingDepositForm || isLoadingBrandPayment || isLoadingPlayer,
+    error: depositFormError || brandPaymentError || playerError,
     mutateDepositForm,
     mutateBrandPayment,
     deleteDepositFormCache,
