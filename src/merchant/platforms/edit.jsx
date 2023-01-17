@@ -659,7 +659,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
             defaultValue={isAdd ? SystemZoneOffset : undefined}
             rangeStart={0}
             rangeEnd={13}
-            disabled={readonly}
+            disabled={readonly || !isAdd}
           />
         </Box>
 

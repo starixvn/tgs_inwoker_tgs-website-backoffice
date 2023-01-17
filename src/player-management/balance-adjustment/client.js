@@ -72,3 +72,8 @@ export const usePlayerBatchAddBalanceResult = (batchId) => {
 
   return useGet(url)
 }
+
+export const usePlayerAdjustLockedAmount = (playerCode, formData) => { 
+  let url = playerCode && formData
+    ? `` : ""
+}

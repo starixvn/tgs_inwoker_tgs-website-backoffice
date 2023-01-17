@@ -72,8 +72,7 @@ export const PlayerAdjustLockedAmountDialogDisclosure = ({
       </Disclosure>
       {dialog.visible && (
         <AdjustLockedAmountDialog
-          brandId={brandId}
-          onSubmitted={onSubmitted}
+          playerCode={playerCode}
           dialog={dialog}
           dialogId={dialogId}
         />
@@ -82,4 +81,6 @@ export const PlayerAdjustLockedAmountDialogDisclosure = ({
   )
 }
 
-const AdjustLockedAmountDialog = () => {}
+const AdjustLockedAmountDialog = ({ playerCode }) => {
+  
+}
