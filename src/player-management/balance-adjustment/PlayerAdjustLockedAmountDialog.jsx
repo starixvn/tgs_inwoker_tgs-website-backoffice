@@ -24,7 +24,7 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { usePlayerAdjustReduceBalance } from "./client"
+import { usePlayerAdjustLockedAmount } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -52,6 +52,7 @@ import Checkbox from "../../checkbox"
 
 export const PlayerAdjustLockedAmountDialogDisclosure = ({
   playerCode,
+  username,
   id,
   dialogId = "player-adjust-locked-amount-dialog",
   ...props
@@ -73,6 +74,7 @@ export const PlayerAdjustLockedAmountDialogDisclosure = ({
       {dialog.visible && (
         <AdjustLockedAmountDialog
           playerCode={playerCode}
+          username={username}
           dialog={dialog}
           dialogId={dialogId}
         />
@@ -81,6 +83,66 @@ export const PlayerAdjustLockedAmountDialogDisclosure = ({
   )
 }
 
-const AdjustLockedAmountDialog = ({ playerCode }) => {
-  
+const AdjustLockedAmountDialog = ({
+  playerCode,
+  username,
+  dialog,
+  dialogId
+}) => {
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } =
+    usePlayerAdjustLockedAmount(playerCode, formData)
+
+  let title = useTrans({
+    zh: "解鎖",
+    en: "Unlock"
+  })
+
+  const onSubmit = (data) => {
+    setSubmit(data)
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+
+  return (
+    <FormDialog
+      id={dialogId}
+      defaultValues={{}}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      dialog={dialog}
+      title={title}
+    >
+      <FormBody username={username} />
+    </FormDialog>
+  )
+}
+
+const FormBody = ({ username }) => {
+  return (
+    <FieldValues margin="1rem">
+      <Box alignY="center">
+        <Trans zh="用户名" en="Username" />
+      </Box>
+      <Box alignY="center">{username}</Box>
+
+      <Box alignY="center">
+        <Trans zh="金额" en="Amount" />
+      </Box>
+      <NumberInputField name="lockAmount" step="0.01" required />
+
+      <Box alignY="center">
+        <Trans zh="备注" en="Remark" />
+      </Box>
+
+      <Input name="remark" />
+    </FieldValues>
+  )
 }

@@ -62,6 +62,14 @@ export const label = (codes = [], locale = Locales.zh) => {
         },
         locale
       )
+    case AdjustLockedAmount:
+      return getTrans(
+        {
+          zh: "解鎖",
+          en: "Unlock"
+        },
+        locale
+      )
     default:
       return ""
   }
