@@ -393,6 +393,7 @@ const SearchBar = ({
                 return pass ? true : "one-of-date-range-required"
               }}
             />
+            {/* 
             <DateInputRangeField
               label={<Trans zh="结算时间" en="Closed On" />}
               showDateDropdownMenu
@@ -421,7 +422,8 @@ const SearchBar = ({
                   return pass ? true : "one-of-date-range-required"
                 }
               }}
-            />
+            /> 
+            */}
           </Set>
           <Set orientation="horizontal">
             <InputField
@@ -503,11 +505,13 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="投注时间" en="Created On" />,
         disableSortBy: true
       }),
+      /*
       dateTimeColumn({
         accessor: "closedOn",
         Header: <Trans zh="结算时间" en="Closed On" />,
         disableSortBy: true
       }),
+      */
       textColumn({
         accessor: "gameProviderName",
         Header: <Trans zh="游戏厂商" en="Game Provider" />,
