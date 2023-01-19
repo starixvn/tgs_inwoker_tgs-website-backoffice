@@ -11,6 +11,10 @@ import {
   codeLabelPair as orderReportPair
 } from "./order-report/menu"
 import {
+  Code as OpenRoundCode,
+  codeLabelPair as openRoundPair
+} from "./open-round/menu"
+import {
   Code as AgentContributionReportCode,
   codeLabelPair as agentContributionReportPair
 } from "./agent-contribution-report/menu"
@@ -30,6 +34,14 @@ import {
   Code as GameProviderReportCode,
   codeLabelPair as gameProviderReportPair
 } from "./game-provider-report/menu"
+import {
+  Code as AgentProfitSharingReportCode,
+  codeLabelPair as agentProfitSharingReportPair
+} from "./agent-profit-sharing-report2/menu"
+import {
+  Code as TransferRecordsCode,
+  codeLabelPair as transferRecordsPair
+} from "./transfer-records/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 
@@ -90,6 +102,15 @@ const label = ({ locale, code }) => {
         locale
       )
 
+    case OpenRoundCode:
+      return getTrans(
+        {
+          zh: "未结算订单查询",
+          en: "Unsettled Bet"
+        },
+        locale
+      )
+
     case AgentContributionReportCode:
       return getTrans(
         {
@@ -113,6 +134,24 @@ const label = ({ locale, code }) => {
         {
           zh: "代理分红报表",
           en: "Agent Profit Sharing Report"
+        },
+        locale
+      )
+
+    case AgentProfitSharingReportCode:
+      return getTrans(
+        {
+          zh: "代理分红报表",
+          en: "Agent Profit Sharing Report"
+        },
+        locale
+      )
+
+    case TransferRecordsCode:
+      return getTrans(
+        {
+          zh: "转帐纪录",
+          en: "Transfer Records"
         },
         locale
       )
@@ -150,11 +189,14 @@ export const codeLabelPair = [
       subLabelPairs: [
         marketReportPair,
         orderReportPair,
+        openRoundPair,
         agentContributionReportPair,
         playerContributionReportPair,
         agentBonusReportPair,
         balanceChangeReportPair,
-        gameProviderReportPair
+        gameProviderReportPair,
+        agentProfitSharingReportPair,
+        transferRecordsPair
       ]
     })
 ]
