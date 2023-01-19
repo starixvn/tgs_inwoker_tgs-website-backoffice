@@ -11,6 +11,10 @@ import {
   codeLabelPair as orderReportPair
 } from "./order-report/menu"
 import {
+  Code as OpenRoundCode,
+  codeLabelPair as openRoundPair
+} from "./open-round/menu"
+import {
   Code as AgentContributionReportCode,
   codeLabelPair as agentContributionReportPair
 } from "./agent-contribution-report/menu"
@@ -98,6 +102,15 @@ const label = ({ locale, code }) => {
         locale
       )
 
+    case OpenRoundCode:
+      return getTrans(
+        {
+          zh: "未结算订单查询",
+          en: "Unsettled Bet"
+        },
+        locale
+      )
+
     case AgentContributionReportCode:
       return getTrans(
         {
@@ -124,6 +137,7 @@ const label = ({ locale, code }) => {
         },
         locale
       )
+
     case AgentProfitSharingReportCode:
       return getTrans(
         {
@@ -175,6 +189,7 @@ export const codeLabelPair = [
       subLabelPairs: [
         marketReportPair,
         orderReportPair,
+        openRoundPair,
         agentContributionReportPair,
         playerContributionReportPair,
         agentBonusReportPair,
