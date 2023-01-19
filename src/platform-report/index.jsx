@@ -2,11 +2,14 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { CodeContentPair as MarketReportPair } from "./market-report"
 import { CodeContentPair as OrderReportPair } from "./order-report"
+import { CodeContentPair as OpenRoundPair } from "./open-round"
 import { CodeContentPair as AgentContributionReportPair } from "./agent-contribution-report"
 import { CodeContentPair as PlayerContributionReportPair } from "./player-contribution-report"
 import { CodeContentPair as AgentBonusReportPair } from "./agent-profit-sharing-report"
 import { CodeContentPair as BalanceChangeReportPair } from "./balance-change-report"
 import { CodeContentPair as GameProviderReportPair } from "./game-provider-report"
+import { CodeContentPair as AgentProfitSharingReportPair } from "./agent-profit-sharing-report2"
+import { CodeContentPair as TransferRecordsPair } from "./transfer-records"
 import { Switch } from "../content"
 import { Code, DefaultCodePath, Menu } from "./menu"
 
@@ -15,11 +18,14 @@ export { Code } from "./menu"
 const pairs = () => [
   MarketReportPair,
   OrderReportPair,
+  OpenRoundPair,
   AgentContributionReportPair,
   PlayerContributionReportPair,
   AgentBonusReportPair,
   BalanceChangeReportPair,
-  GameProviderReportPair
+  GameProviderReportPair,
+  AgentProfitSharingReportPair,
+  TransferRecordsPair
 ]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => (
