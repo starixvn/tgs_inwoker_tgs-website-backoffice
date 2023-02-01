@@ -37,6 +37,7 @@ import { PlayerDeductBalanceDisclosure } from "./PlayerDeductBalance"
 import { usePlayerList } from "../player-list/client"
 import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirement"
 import { PlayerBatchAddBalanceDisclosure } from "./PlayerBatchAddBalance"
+import { PlayerAdjustLockedAmountDialogDisclosure } from "./PlayerAdjustLockedAmountDialog"
 
 export { Code }
 
@@ -204,6 +205,10 @@ const useColumns = ({ brandId, items = [], mutate }) => {
                 <PlayerWageringRequirementDialogDisclosure
                   id="wagering-requirement-dialog-disclosure"
                   brandId={brandId}
+                  username={username}
+                  playerCode={playerCode}
+                />
+                <PlayerAdjustLockedAmountDialogDisclosure
                   username={username}
                   playerCode={playerCode}
                 />

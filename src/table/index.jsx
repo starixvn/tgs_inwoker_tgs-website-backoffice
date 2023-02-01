@@ -328,7 +328,6 @@ export const Table = ({
             }
 
             & table.bb-Table {
-              border-radius: 6px;
               overflow: ${isSticky ? "visible" : "auto"};
               border: ${tableBorder};
             }
@@ -404,6 +403,7 @@ const ActionBar = ({ table }) => {
             onClick={(event) => {
               column.toggleHidden(checked)
             }}
+            disabled={column.disableToggleHidden}
           >
             {column.Header}
           </DropdownMenu.Item>

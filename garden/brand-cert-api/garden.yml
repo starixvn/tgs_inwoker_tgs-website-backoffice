@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: brand-cert-api
-image: pgtgs/brand-cert-api:202211090813-dev # brand-cert-api
+image: pgtgs/brand-cert-api:202301120731.36 # brand-cert-api
 services:
   - name: brand-cert-api
     dependencies:
