@@ -3,7 +3,7 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { selectByValue } from "../page/select.js"
+import { selectByValue, selectByLabel } from "../page/select.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import faker from "@faker-js/faker"
@@ -46,7 +46,7 @@ const settleGameRoundBy = async (
   type = Settle.OpenRound
 ) => {
   await page.fill(`input[name="externalRoundId"]`, externalRoundId)
-
+  await selectByLabel(page, `select[name="gameProviderId"]`, "SBOBET")
   await Promise.all([
     page.waitForResponse((response) => {
       return (

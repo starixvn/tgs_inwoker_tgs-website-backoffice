@@ -151,7 +151,7 @@ const SearchBar = ({
             autoFocus
             required
           />
-          <GameProviderSelect name="gameProviderId" />
+          <GameProviderSelect name="gameProviderId" required />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
