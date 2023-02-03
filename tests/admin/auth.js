@@ -73,6 +73,12 @@ export const Fixture = {
   sboGameProviderApi: ({}, use) => {
     use(sboGameProviderApi)
   },
+  sboGameProvider: async ({ backofficeApi, sboGameProviderApi }, use) => {
+    let sboGameProvider = await backofficeApi.gameProvider.findByCode(
+      sboGameProviderApi.code
+    )
+    use(sboGameProvider)
+  },
   reportApi: ({}, use) => {
     use(reportApi)
   },
