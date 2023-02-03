@@ -30,7 +30,6 @@ import { CancelText, SubmitText } from "../../button/ActionButtons"
 import Backdrop from "../../dialog/Backdrop"
 import FormDialog from "../../form/FormDialog"
 import Disclosure from "../../dialog/Disclosure"
-import PaymentMethodBankType from "../../payment/method/PaymentMethodBankType"
 
 const Key = "AgentBankInfo"
 
@@ -76,8 +75,6 @@ const Bank = ({ record = {}, readOnly = false, onSubmitted }) => {
   let editDialog = useModalState()
 
   let editable = !readOnly
-  let isBank = PaymentMethodBankType.isBank(bankType)
-  let isCrypto = PaymentMethodBankType.isCrypto(bankType)
   return (
     <Card>
       {editable && (
