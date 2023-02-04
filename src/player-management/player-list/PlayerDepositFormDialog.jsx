@@ -10,7 +10,9 @@ import {
   Blockquote,
   Dialog,
   useModalState,
-  FieldStack
+  FieldStack,
+  Heading,
+  FieldWrapper
 } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -40,6 +42,7 @@ import { BankType } from "./bank"
 import { InputField } from "../../input/Input"
 import { PlayerPromotionSelect } from "./PlayerPromotionSelect"
 import { TextareaField } from "../../textarea"
+import { isDev } from "../../env"
 
 export const PlayerDepositFormDialogDisclosure = ({
   brandId,
@@ -78,7 +81,7 @@ const ManualCode = "Manual"
 const supportedPaymentList = (list = []) =>
   list.filter(({ paymentCode }) => paymentCode === ManualCode)
 
-const useFormData = (brandId, playerCode) => {
+const useFormData = ({ brandId, playerCode } = {}) => {
   let {
     isLoading: isLoadingPaymentList,
     data: paymentList,
@@ -94,17 +97,7 @@ const useFormData = (brandId, playerCode) => {
     error: playerError
   } = usePlayer(playerCode)
 
-  let playerBankTypes = player?.banks?.map((card) => card.bankType)
-
-  paymentList = paymentList?.filter(({ paymentCode, bankType }) => {
-    if (paymentCode != ManualCode) {
-      return false
-    }
-
-    return playerBankTypes?.length > 0
-      ? playerBankTypes?.includes(bankType)
-      : true
-  })
+  paymentList = supportedPaymentList(paymentList)
 
   let isLoading = isLoadingPaymentList || isLoadingPlayer
   let error = paymentListError || playerError
@@ -112,6 +105,7 @@ const useFormData = (brandId, playerCode) => {
   return {
     isLoading,
     error,
+    player,
     paymentList
   }
 }
@@ -128,10 +122,11 @@ const DepositFormDialog = ({
     en: "Deposit Form"
   })
   let {
-    isLoading: isLoadingPaymentList,
-    data: paymentList,
-    error: paymentListError
-  } = usePlayerDepositPaymentList({
+    isLoading: isLoadingFormData,
+    paymentList,
+    player,
+    error: formDataError
+  } = useFormData({
     brandId,
     playerCode
   })
@@ -140,11 +135,11 @@ const DepositFormDialog = ({
   let { isLoading, result, error, mutate, deleteCache } =
     useApplyPlayerManualDeposit(formData?.bankType, formData)
 
-  if (isLoadingPaymentList) {
+  if (isLoadingFormData) {
     return <LoadingBackdrop {...dialog} />
   }
-  if (paymentListError) {
-    return <AlertDialog {...paymentListError} onClickClose={dialog.hide} />
+  if (formDataError) {
+    return <AlertDialog {...formDataError} onClickClose={dialog.hide} />
   }
 
   const reset = () => {
@@ -162,6 +157,7 @@ const DepositFormDialog = ({
       id={dialogId}
       defaultValues={{
         brandId,
+        player,
         playerCode
       }}
       onSubmit={onSubmit}
@@ -186,7 +182,8 @@ const BankNameField = "bankName"
 const BankAccountField = "bankAccount"
 
 const FormBody = ({ paymentList = [], brandId, playerCode }) => {
-  let { control, setValue } = useFormContext()
+  let { control, setValue, getValues } = useFormContext()
+  let player = getValues("player")
   let PaymentMethodField = "method"
 
   let paymentMethod = useWatch({
@@ -231,6 +228,15 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
     let bankType = payment?.bankType ?? ""
     setValue(BankTypeField, bankType)
 
+    console.log(
+      "payment",
+      payment,
+      `payment.methodCode = paymentMethod = [`,
+      paymentMethod,
+      `], payment.channelCode = paymentChannel = [`,
+      paymentChannel,
+      `]`
+    )
     let bankName = payment?.extendedData?.name ?? ""
     setValue(BankNameField, bankName)
 
@@ -239,6 +245,9 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
   }, [paymentMethod, paymentChannel])
   return (
     <FieldStack marginLeft="1rem" marginRight="1rem">
+      <FieldWrapper label={<Trans zh="真实姓名" en="Real name" />}>
+        <Box>{player.realName}</Box>
+      </FieldWrapper>
       <Set>
         <PlayerPaymentMethodSelect
           name={PaymentMethodField}
@@ -252,7 +261,7 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
           required
         />
       </Set>
-      <Info bankType={bankType} />
+      <ApplyInfo bankType={bankType} />
       {payment && (
         <>
           <AmountInputField required />
@@ -264,7 +273,7 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
   )
 }
 
-const Info = ({ bankType }) => {
+const ApplyInfo = ({ bankType }) => {
   if (!bankType) {
     return null
   }
@@ -273,12 +282,63 @@ const Info = ({ bankType }) => {
     case BankType.Bank:
     case BankType.FPS:
       return <BankInfo />
+    case BankType.EWallet:
+      return <EWalletInfo />
+    case BankType.Pulsa:
+      return <PulsaInfo />
     default:
       return null
   }
 }
 
+const PulsaInfo = () => {
+  let { getValues } = useFormContext()
+  let player = getValues("player")
+
+  //TODO: seems no need for realName input?
+  return (
+    <>
+      <InputField
+        name="phone"
+        label={<Trans zh="电话号码" en="Phone Number" />}
+        required
+      />
+      <InputField name="realName" type="hidden" value={player?.realName} />
+    </>
+  )
+}
+
+const EWalletInfo = () => {
+  let { getValues } = useFormContext()
+  let player = getValues("player")
+  let phoneLabel = useTrans({
+    zh: "电话号码",
+    en: "Phone Number"
+  })
+
+  //TODO: seems no need for realName input?
+  return (
+    <>
+      <InputField name="phone" label={phoneLabel} required />
+      <InputField name="realName" type="hidden" value={player?.realName} />
+    </>
+  )
+}
+
+const useBankType = () => {
+  let { control } = useFormContext()
+  let BankTypeField = "bankType"
+  let bankType = useWatch({
+    control,
+    name: BankTypeField
+  })
+  return bankType
+}
+
 const BankInfo = ({}) => {
+  let { getValues } = useFormContext()
+  let player = getValues("player")
+
   let bankNameLabel = useTrans({
     zh: "银行名称",
     en: "Deposit Bank Name"
@@ -287,10 +347,15 @@ const BankInfo = ({}) => {
     zh: "存款账户",
     en: "Deposit Bank Account"
   })
+
+  let bankType = useBankType()
+  console.log("bankType", bankType, "player.banks", player.banks)
+  //TODO: get player default bank info?
   return (
     <>
       <InputField name="bankName" label={bankNameLabel} required />
       <InputField name="bankAccount" label={bankAccountLabel} required />
+      <InputField name="realName" type="hidden" value={player?.realName} />
     </>
   )
 }

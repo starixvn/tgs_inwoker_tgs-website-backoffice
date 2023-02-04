@@ -412,6 +412,7 @@ const useColumns = ({
               />
               <PlayerWithdrawFormDialogDisclosure
                 brandId={brandId}
+                player={player}
                 playerCode={playerCode}
                 dialogId="apply-withdraw-form-dialog"
               />
