@@ -6,6 +6,7 @@ import Select, { SelectField } from "../../select/Select"
 
 export const PlayerPaymentChannelSelect = ({
   paymentMethod = "",
+  placeholder,
   paymentList = [],
   ...props
 }) => {
@@ -17,11 +18,17 @@ export const PlayerPaymentChannelSelect = ({
     zh: "支付通道",
     en: "Payment Channel"
   })
+  placeholder = placeholder ?? defaultPlaceholder
 
   let options = filterPaymentChannelOptions(paymentMethod, paymentList)
 
   return (
-    <SelectField placeholder="" options={options} label={label} {...props} />
+    <SelectField
+      placeholder={placeholder}
+      options={options}
+      label={label}
+      {...props}
+    />
   )
 }
 

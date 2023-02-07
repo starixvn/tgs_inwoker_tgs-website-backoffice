@@ -12,7 +12,9 @@ import {
   useModalState,
   FieldStack,
   Heading,
-  FieldWrapper
+  FieldWrapper,
+  DropdownMenu,
+  Icon
 } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -42,7 +44,10 @@ import { BankType } from "./bank"
 import { InputField } from "../../input/Input"
 import { PlayerPromotionSelect } from "./PlayerPromotionSelect"
 import { TextareaField } from "../../textarea"
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { isDev } from "../../env"
+import Select from "../../select/Select"
+import head from "../../list/head"
 
 export const PlayerDepositFormDialogDisclosure = ({
   brandId,
@@ -227,21 +232,6 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
 
     let bankType = payment?.bankType ?? ""
     setValue(BankTypeField, bankType)
-
-    console.log(
-      "payment",
-      payment,
-      `payment.methodCode = paymentMethod = [`,
-      paymentMethod,
-      `], payment.channelCode = paymentChannel = [`,
-      paymentChannel,
-      `]`
-    )
-    let bankName = payment?.extendedData?.name ?? ""
-    setValue(BankNameField, bankName)
-
-    let bankAccount = payment?.extendedData?.bankAccount ?? ""
-    setValue(BankAccountField, bankAccount)
   }, [paymentMethod, paymentChannel])
   return (
     <FieldStack marginLeft="1rem" marginRight="1rem">
@@ -292,36 +282,148 @@ const ApplyInfo = ({ bankType }) => {
 }
 
 const PulsaInfo = () => {
-  let { getValues } = useFormContext()
+  let { control, getValues, setValue } = useFormContext()
   let player = getValues("player")
 
-  //TODO: seems no need for realName input?
+  let phone = useWatch({
+    control,
+    name: "phone"
+  })
+
+  let defaultBankCard = useDefaultBankCardsBySelectedBankType()
+  let bankCards = useBankCardsBySelectedBankType()
+  let firstBankCard = head(bankCards)
+  let autoSelectBankCard = defaultBankCard ?? firstBankCard
+  useEffect(() => {
+    if (!phone) {
+      if (autoSelectBankCard) {
+        setValue("phone", autoSelectBankCard?.detail?.phone)
+      }
+    }
+  }, [autoSelectBankCard, phone, JSON.stringify(bankCards)])
+
   return (
     <>
       <InputField
         name="phone"
         label={<Trans zh="电话号码" en="Phone Number" />}
+        addonBefore={<PhoneDropdownMenu />}
         required
       />
-      <InputField name="realName" type="hidden" value={player?.realName} />
     </>
   )
 }
 
 const EWalletInfo = () => {
-  let { getValues } = useFormContext()
+  let { control, getValues, setValue } = useFormContext()
   let player = getValues("player")
+
+  const setBankCard = (bank) => {
+    setValue("realName", bank?.detail?.eMoneyName)
+    setValue("phone", bank?.detail?.phone)
+  }
+
+  let eMoneyName = useWatch({
+    control,
+    name: "realName"
+  })
+
+  let phone = useWatch({
+    control,
+    name: "phone"
+  })
+
+  let defaultBankCard = useDefaultBankCardsBySelectedBankType()
+  let bankCards = useBankCardsBySelectedBankType()
+  let firstBankCard = head(bankCards)
+  useEffect(() => {
+    if (!eMoneyName && !phone) {
+      if (defaultBankCard) {
+        setBankCard(defaultBankCard)
+      } else if (firstBankCard) {
+        setBankCard(firstBankCard)
+      } else if (player.realName) {
+        setValue("realName", player.realName)
+      }
+    }
+  }, [eMoneyName, phone, JSON.stringify(bankCards)])
+
+  let eMoneyNameLabel = useTrans({
+    zh: "E-money name",
+    en: "E-money name"
+  })
   let phoneLabel = useTrans({
     zh: "电话号码",
     en: "Phone Number"
   })
 
-  //TODO: seems no need for realName input?
   return (
     <>
+      <InputField
+        name="realName"
+        label={eMoneyNameLabel}
+        addonBefore={<EMoneyNameMenu onClickBankCard={setBankCard} />}
+      />
       <InputField name="phone" label={phoneLabel} required />
-      <InputField name="realName" type="hidden" value={player?.realName} />
     </>
+  )
+}
+
+const EMoneyNameMenu = ({ onClickBankCard }) => {
+  let bankCards = useBankCardsBySelectedBankType()
+  if (!bankCards?.length) {
+    return null
+  }
+
+  return (
+    <DropdownMenu
+      menu={bankCards.map((bankCard) => (
+        <DropdownMenu.Item onClick={() => onClickBankCard(bankCard)}>
+          {bankCard.detail.eMoneyName}
+        </DropdownMenu.Item>
+      ))}
+    >
+      <Button
+        css={css`
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        `}
+      >
+        <Icon icon={faChevronDown} type="font-awesome" />
+      </Button>
+    </DropdownMenu>
+  )
+}
+
+const PhoneDropdownMenu = () => {
+  let { control, setValue } = useFormContext()
+
+  let bankCards = useBankCardsBySelectedBankType()
+  if (!bankCards?.length) {
+    return null
+  }
+
+  return (
+    <DropdownMenu
+      menu={bankCards.map(({ detail }) => (
+        <DropdownMenu.Item
+          onClick={() => {
+            setValue("phone", detail.phone)
+          }}
+        >
+          {detail.phone}
+        </DropdownMenu.Item>
+      ))}
+    >
+      <Button
+        css={css`
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        `}
+      >
+        <Icon icon={faChevronDown} type="font-awesome" />
+      </Button>
+    </DropdownMenu>
   )
 }
 
@@ -335,28 +437,100 @@ const useBankType = () => {
   return bankType
 }
 
-const BankInfo = ({}) => {
+const useBankCardsBySelectedBankType = () => {
   let { getValues } = useFormContext()
+
+  let player = getValues("player")
+  let selectedBankType = useBankType()
+  let playerBankCards = player?.banks?.filter(
+    ({ bankType }) => bankType === selectedBankType
+  )
+  return playerBankCards ?? []
+}
+
+const useDefaultBankCardsBySelectedBankType = () => {
+  let playerBankCards = useBankCardsBySelectedBankType()
+  return playerBankCards?.find(({ isDefault }) => isDefault)
+}
+
+const BankInfo = ({}) => {
+  let { control, getValues, setValue } = useFormContext()
   let player = getValues("player")
 
-  let bankNameLabel = useTrans({
-    zh: "银行名称",
-    en: "Deposit Bank Name"
+  const setBankCard = (bank) => {
+    setValue("bankName", bank?.detail?.name)
+    setValue("bankAccount", bank?.detail?.bankAccount)
+  }
+
+  let bankName = useWatch({
+    control,
+    name: "bankName"
+  })
+
+  let bankAccount = useWatch({
+    control,
+    name: "bankAccount"
+  })
+  let defaultBankCard = useDefaultBankCardsBySelectedBankType()
+  let bankCards = useBankCardsBySelectedBankType()
+  let firstBankCard = head(bankCards)
+  useEffect(() => {
+    if (!bankName && !bankAccount) {
+      if (defaultBankCard) {
+        setBankCard(defaultBankCard)
+      } else if (firstBankCard) {
+        setBankCard(defaultBankCard)
+      } else if (player.realName) {
+        setValue("bankName", player.realName)
+      }
+    }
+  }, [bankName, bankAccount, JSON.stringify(bankCards)])
+
+  let bankAccountNameLabel = useTrans({
+    zh: "存款账户名",
+    en: "Deposit Bank Account Name"
   })
   let bankAccountLabel = useTrans({
     zh: "存款账户",
     en: "Deposit Bank Account"
   })
 
-  let bankType = useBankType()
-  console.log("bankType", bankType, "player.banks", player.banks)
-  //TODO: get player default bank info?
   return (
     <>
-      <InputField name="bankName" label={bankNameLabel} required />
+      <InputField
+        name="bankName"
+        label={bankAccountNameLabel}
+        addonBefore={<BankNameDropdownMenu onClickBankCard={setBankCard} />}
+        required
+      />
       <InputField name="bankAccount" label={bankAccountLabel} required />
-      <InputField name="realName" type="hidden" value={player?.realName} />
     </>
+  )
+}
+
+const BankNameDropdownMenu = ({ onClickBankCard }) => {
+  let bankCards = useBankCardsBySelectedBankType()
+  if (!bankCards?.length) {
+    return null
+  }
+
+  return (
+    <DropdownMenu
+      menu={bankCards.map((bank) => (
+        <DropdownMenu.Item onClick={() => onClickBankCard(bank)}>
+          {bank.detail.name}
+        </DropdownMenu.Item>
+      ))}
+    >
+      <Button
+        css={css`
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        `}
+      >
+        <Icon icon={faChevronDown} type="font-awesome" />
+      </Button>
+    </DropdownMenu>
   )
 }
 
