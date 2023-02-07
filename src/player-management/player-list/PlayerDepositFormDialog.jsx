@@ -336,17 +336,16 @@ const EWalletInfo = () => {
   let defaultBankCard = useDefaultBankCardsBySelectedBankType()
   let bankCards = useBankCardsBySelectedBankType()
   let firstBankCard = head(bankCards)
+  let autoSelectBankCard = defaultBankCard ?? firstBankCard
   useEffect(() => {
     if (!eMoneyName && !phone) {
-      if (defaultBankCard) {
-        setBankCard(defaultBankCard)
-      } else if (firstBankCard) {
-        setBankCard(firstBankCard)
+      if (autoSelectBankCard) {
+        setBankCard(autoSelectBankCard)
       } else if (player.realName) {
         setValue("realName", player.realName)
       }
     }
-  }, [eMoneyName, phone, JSON.stringify(bankCards)])
+  }, [autoSelectBankCard, eMoneyName, phone, JSON.stringify(bankCards)])
 
   let eMoneyNameLabel = useTrans({
     zh: "E-money name",
@@ -474,17 +473,16 @@ const BankInfo = ({}) => {
   let defaultBankCard = useDefaultBankCardsBySelectedBankType()
   let bankCards = useBankCardsBySelectedBankType()
   let firstBankCard = head(bankCards)
+  let autoSelectBankCard = defaultBankCard ?? firstBankCard
   useEffect(() => {
     if (!bankName && !bankAccount) {
-      if (defaultBankCard) {
-        setBankCard(defaultBankCard)
-      } else if (firstBankCard) {
-        setBankCard(defaultBankCard)
+      if (autoSelectBankCard) {
+        setBankCard(autoSelectBankCard)
       } else if (player.realName) {
         setValue("bankName", player.realName)
       }
     }
-  }, [bankName, bankAccount, JSON.stringify(bankCards)])
+  }, [autoSelectBankCard, bankName, bankAccount, JSON.stringify(bankCards)])
 
   let bankAccountNameLabel = useTrans({
     zh: "存款账户名",
