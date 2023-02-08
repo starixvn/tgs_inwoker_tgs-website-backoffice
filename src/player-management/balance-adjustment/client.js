@@ -72,3 +72,10 @@ export const usePlayerBatchAddBalanceResult = (batchId) => {
 
   return useGet(url)
 }
+
+const PlayerWalletApi = "/api/player/wallet"
+export const usePlayerAdjustLockedAmount = (playerCode, formData) => {
+  let url =
+    playerCode && formData ? `${PlayerWalletApi}/locked/${playerCode}` : ""
+  return usePutData(url, formData)
+}
