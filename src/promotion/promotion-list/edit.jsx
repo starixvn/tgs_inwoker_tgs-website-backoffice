@@ -79,8 +79,8 @@ import { PromotionGameProviderFieldBox } from "./PromotionGameProviderFieldBox"
 import { isPromotionStatusEnabled } from "./PromotionStatus"
 import { isValidDate } from "../../date/isValidDate"
 import { PromotionDateRangeFieldBox } from "./PromotionDateRangeFieldBox"
-import { zonedTimeToUtc } from "../../date/TimeZone"
 import { formatDateOnly } from "../../date/format"
+import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -141,11 +141,9 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
     <FormDialog
       id="add-promotion-dialog"
       defaultValues={{
+        brandId,
         autoSentPlayerBonus: true,
         localization: {}
-        /*
-        vipLevels: [DefaultVipLevel]
-        */
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -344,6 +342,7 @@ const usePromotionFormData = (
 
   data = {
     id,
+    brandId,
     ...cloned,
     vipLevels,
     gameProviders,
@@ -481,6 +480,7 @@ export const useIsActivePromotion = () => {
   return isAfterStart && isBeforeEnd
 }
 
+//TODO: move to usePromotionFormData
 export const useIsPromotionAdded = () => {
   let { control } = useFormContext()
 
@@ -555,6 +555,10 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             required
           />
         </Box>
+
+        {/* 
+        TODO: replace above
+        <PromotionVipLevelsFieldBox disabled={disabled} readOnly={readOnly} /> */}
 
         <NormalLabel>
           <Trans zh="活动类型" en="Promotion Type" />

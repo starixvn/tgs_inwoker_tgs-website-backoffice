@@ -18,6 +18,8 @@ const LuckyDraw = "Lottery"
 
 const Dummy = "Dummy"
 
+const Offline = "Offline"
+
 export const PromotionTypeGroup = {
   Deposit,
   Turnover,
@@ -25,7 +27,8 @@ export const PromotionTypeGroup = {
   Signin,
   NewUser,
   LuckyDraw,
-  Dummy
+  Dummy,
+  Offline
 }
 
 export const useFindPromotionType = (promotionType) => {

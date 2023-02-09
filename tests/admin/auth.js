@@ -284,5 +284,24 @@ const PromotionSettingsString = JSON.stringify([
       En: "Dummy",
       Zh: "基本活動"
     }
+  },
+  {
+    Name: "Offline",
+    Types: [
+      {
+        Name: "LoginReward",
+        Trans: {
+          En: "Login Reward",
+          Zh: "登入送"
+        },
+        vipLevels: {
+          visible: false
+        }
+      }
+    ],
+    Trans: {
+      En: "Offline",
+      Zh: "線下活動"
+    }
   }
 ])

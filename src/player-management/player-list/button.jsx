@@ -37,6 +37,10 @@ import {
 import { PlayerPromotionPanel, PlayerPromotionTab } from "./PlayerPromotion.jsx"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import textColumn from "../../table/column/textColumn"
+import {
+  PlayerVipChangeListPanel,
+  PlayerVipChangeListTab
+} from "./PlayerVipChangeList"
 
 export const ViewButton = ({
   player,
@@ -209,6 +213,7 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
         <PlayerOperationTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
+        {/* <PlayerVipChangeListTab {...tab} /> */}
       </TabList>
       <PlayerPanel
         player={player}
@@ -234,6 +239,11 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
         brandId={brandId}
         {...tab}
       />
+      {/* <PlayerVipChangeListPanel
+        playerCode={playerCode}
+        brandId={brandId}
+        {...tab}
+      /> */}
     </Tabs>
   )
 }

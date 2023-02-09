@@ -11,7 +11,7 @@ import { Tab, TabPanel } from "../../tab"
 import textColumn from "../../table/column/textColumn"
 import { Descending, SortOrder } from "../../table/order"
 import AlertDialog from "../../dialog/Alert"
-import { usePlayerPromotions } from "./client"
+import { usePlayerPromotions, usePlayerVipChangeList } from "./client"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 
 export const Key = "vip-change-list"
@@ -19,7 +19,7 @@ export const Key = "vip-change-list"
 export const PlayerVipChangeListTab = ({ ...props }) => {
   return (
     <Tab tabId={Key} {...props}>
-      <Trans zh="VIP升降记录" en="VIP Records" />
+      <Trans zh="VIP升降級記錄" en="VIP History Record" />
     </Tab>
   )
 }
@@ -28,5 +28,104 @@ export const PlayerVipChangeListPanel = ({ brandId, playerCode, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === Key
 
-  //TODO
+  let dateRange = pastWeek()
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    from: dateRange.start,
+    to: dateRange.end
+  })
+
+  let { isLoading, data, error, mutate, deleteCache } = usePlayerVipChangeList(
+    playerCode,
+    isActive
+      ? toApiParams({
+          ...state
+          /*
+          sortby: "createdOn",
+          orderby: SortOrder.Descending
+          */
+        })
+      : undefined
+  )
+
+  let columns = useColumns({ items: data?.items })
+  return (
+    <TabPanel tabId={Key} {...props}>
+      <Stack spacing="major-2">
+        <SearchBar
+          from={state.from}
+          to={state.to}
+          search={({ ...data } = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+        <Table
+          columns={columns}
+          data={data?.items}
+          pageCount={pageCount(state.pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          initialState={state}
+          controlledState={state}
+          isLoading={isLoading}
+        />
+      </Stack>
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+    </TabPanel>
+  )
 }
+
+const SearchBar = ({ from, to, search, isLoading }) => {
+  let formMethods = useForm({
+    defaultValues: {
+      from,
+      to
+    }
+  })
+
+  const onSubmit = (data) => search(data)
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Set>
+          <DateTimeRangeInput
+            startProps={{
+              name: "from"
+            }}
+            endProps={{
+              name: "to"
+            }}
+          />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
+}
+
+const useColumns = ({ items = [] }) =>
+  useMemo(
+    () => [
+      dateTimeColumn({
+        Header: <Trans zh="时间" en="Time" />,
+        accessor: "createdOn",
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "oldLevel",
+        Header: <Trans zh="结算前等級" en="Before" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "newLevel",
+        Header: <Trans zh="结算后等級" en="After" />,
+        disableSortBy: true
+      })
+    ],
+    [JSON.stringify(items)]
+  )

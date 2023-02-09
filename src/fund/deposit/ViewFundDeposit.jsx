@@ -9,7 +9,10 @@ import {
   Modal,
   Heading,
   Link,
-  Set
+  Set,
+  Card,
+  Icon,
+  useBreakpoint
 } from "bumbag"
 import {
   FormattedDateTime,
@@ -40,6 +43,10 @@ import Textarea, { TextareaField } from "../../textarea"
 import Input, { InputField } from "../../input/Input"
 import { NumberInputField } from "../../input/NumberInput"
 import { useFundDepositFormData } from "./useFundDepositFormData"
+import {
+  faChevronRight,
+  faChevronDown
+} from "@fortawesome/free-solid-svg-icons"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -420,7 +427,11 @@ const CryptoApplyInfoBox = ({ record }) => {
   )
 }
 
+//TODO:
+const ApplyInfo = ({}) => {}
+
 const BankInfoBox = ({ record }) => {
+  let isTablet = useBreakpoint("max-tablet")
   let hasBankInfo = !!record?.applyInfo?.sendBankAccount
   if (!hasBankInfo) {
     return null
@@ -431,28 +442,56 @@ const BankInfoBox = ({ record }) => {
   return (
     <>
       <Heading use="h6">
-        <Trans zh="银行信息" en="Bank Info" />
+        <Trans zh="銀行卡信息" en="Bank Card Info" />
       </Heading>
+      <Set orientation="horizontal" isFilled verticalBelow="tablet">
+        <Card
+          variant="bordered"
+          title={
+            <Heading use="h5">
+              <Trans zh="玩家" en="Player" />
+            </Heading>
+          }
+        >
+          <FieldValues>
+            <NormalLabel>
+              <Trans zh="银行帐户名" en="Bank Account Name" />
+            </NormalLabel>
+            <Box alignY="center">{record?.applyInfo?.sendBankName}</Box>
+            <NormalLabel>
+              <Trans zh="银行卡帐号" en="Bank Card Account" />
+            </NormalLabel>
+            <Box alignY="center">{record?.applyInfo?.sendBankAccount}</Box>
+          </FieldValues>
+        </Card>
+        <Box alignX="center" alignY="center">
+          <Icon
+            icon={isTablet ? faChevronDown : faChevronRight}
+            type="font-awesome"
+          />
+        </Box>
+        <Card
+          variant="bordered"
+          title={
+            <Heading use="h5">
+              <Trans zh="平台" en="Platform" />
+            </Heading>
+          }
+        >
+          <FieldValues>
+            <NormalLabel>
+              <Trans zh="银行帐户名" en="Bank Account Name" />
+            </NormalLabel>
+            <Box alignY="center">{record?.applyInfo?.receiveAccountName}</Box>
+
+            <NormalLabel>
+              <Trans zh="银行卡帐号" en="Bank Card Account" />
+            </NormalLabel>
+            <Box alignY="center">{record?.applyInfo?.receiveBankAccount}</Box>
+          </FieldValues>
+        </Card>
+      </Set>
       <FieldValues marginLeft="1.5rem">
-        <NormalLabel>
-          <Trans zh="银行名称" en="Deposit Bank Account Name" />
-        </NormalLabel>
-        <Box alignY="center">{record?.applyInfo?.sendBankName}</Box>
-        <NormalLabel>
-          <Trans zh="存款账户" en="Deposit Bank Account" />
-        </NormalLabel>
-        <Box alignY="center">{record?.applyInfo?.sendBankAccount}</Box>
-
-        <NormalLabel>
-          <Trans zh="收款账户名" en="Account Name" />
-        </NormalLabel>
-        <Box alignY="center">{record?.applyInfo?.receiveAccountName}</Box>
-
-        <NormalLabel>
-          <Trans zh="银行卡帐号" en="Account" />
-        </NormalLabel>
-        <Box alignY="center">{record?.applyInfo?.receiveBankAccount}</Box>
-
         {hasBankAddress && (
           <>
             <NormalLabel>

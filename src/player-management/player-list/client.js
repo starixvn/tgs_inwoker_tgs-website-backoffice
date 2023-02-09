@@ -172,7 +172,9 @@ export const useApplyPlayerWithdraw = (data) => {
   return usePostData(url, data)
 }
 
-export const usePlayerVipChangeList = (playerCode) => {
-  let url = playerCode ? `${API}/vipAdjustInfos/${playerCode}` : ""
+export const usePlayerVipChangeList = (playerCode, searchParams) => {
+  let url = playerCode
+    ? urlWith(searchParams, `${API}/vipAdjustInfos/${playerCode}`)
+    : ""
   return useGet(url)
 }

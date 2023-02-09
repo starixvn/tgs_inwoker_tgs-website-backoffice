@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react"
+import { css, Global } from "@emotion/react"
 import { Spinner, useModalState, FieldStack, Box, Text, Button } from "bumbag"
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -170,6 +171,10 @@ const VerifyFundDepositDialog = ({
       }}
       title={title}
       dialog={dialog}
+      css={css`
+        width: max-content;
+        max-width: 85vw;
+      `}
     >
       <FormBody
         brandId={brandId}
