@@ -455,7 +455,7 @@ const EditBody = ({ brandId }) => {
   } = useBrandPaymentList({
     brandId,
     transferType: BrandPaymentTransferType.Withdrawal,
-    shoAll: true
+    showAll: true
   })
   let { watch } = useFormContext()
 

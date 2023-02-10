@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import { css, Global } from "@emotion/react"
 import {
   Spinner,
   useModalState,
@@ -47,6 +48,7 @@ import {
   faChevronRight,
   faChevronDown
 } from "@fortawesome/free-solid-svg-icons"
+import BankType from "../../payment/BankType"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -220,13 +222,16 @@ export const FormBody = ({
               </Box>
             </>
           )}
+          {/* 
+          TODO: rm
           <PhoneApplyInfoBox record={record} />
-          <EMoneyNameApplyInfoBox record={record} />
+          <EMoneyNameApplyInfoBox record={record} /> 
+          */}
           <CryptoApplyInfoBox record={record} />
           <SendNoteApplyInfoBox record={record} />
         </FieldValues>
         <Separator />
-        <BankInfoBox record={record} />
+        <ApplyInfoBox applyInfo={record?.applyInfo} />
         <NumberInputField
           name="actualAmount"
           label={<Trans zh="实际存款金额" en="Actual Amount" />}
@@ -345,6 +350,8 @@ const HandlingFeeBox = ({ record, brandPayment }) => {
   )
 }
 
+/*
+TODO: rm
 const PhoneApplyInfoBox = ({ record }) => {
   let phone = record?.applyInfo?.phone
   if (!phone) {
@@ -361,6 +368,7 @@ const PhoneApplyInfoBox = ({ record }) => {
   )
 }
 
+//TODO: rm
 const EMoneyNameApplyInfoBox = ({ record }) => {
   let eMoneyName = record?.applyInfo?.sendEMoneyName
   if (!eMoneyName) {
@@ -376,6 +384,7 @@ const EMoneyNameApplyInfoBox = ({ record }) => {
     </>
   )
 }
+*/
 
 const SendNoteApplyInfoBox = ({ record }) => {
   let sendNote = record?.applyInfo?.sendNote
@@ -427,24 +436,183 @@ const CryptoApplyInfoBox = ({ record }) => {
   )
 }
 
-//TODO:
-const ApplyInfo = ({}) => {}
+const BankApplyInfo = ({ accountName = "", account = "" }) => {
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="银行帐户名" en="Bank Account Name" />
+      </NormalLabel>
+      <Box alignY="center">{accountName}</Box>
+      <NormalLabel>
+        <Trans zh="银行卡帐号" en="Bank Card Account" />
+      </NormalLabel>
+      <Box alignY="center">{account}</Box>
+    </>
+  )
+}
 
-const BankInfoBox = ({ record }) => {
-  let isTablet = useBreakpoint("max-tablet")
-  let hasBankInfo = !!record?.applyInfo?.sendBankAccount
-  if (!hasBankInfo) {
+const NoteApplyInfo = ({ value }) => {
+  if (!value) {
     return null
   }
 
-  let hasBankAddress = !!record?.applyInfo?.receiveBankAccountAddress
-  let hasMemo = !!record?.applyInfo?.memo
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="备註" en="Note" />
+      </NormalLabel>
+      <Box alignY="center">{value}</Box>
+    </>
+  )
+}
+
+const EMoneyNameApplyInfo = ({ value = "" }) => {
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="E-money name" en="E-money name" />
+      </NormalLabel>
+      <Box alignY="center">{value}</Box>
+    </>
+  )
+}
+
+const PhoneApplyInfo = ({ value = "" }) => {
+  return (
+    <>
+      <NormalLabel>
+        <Trans zh="电话号码" en="Phone" />
+      </NormalLabel>
+      <Box alignY="center">{value}</Box>
+    </>
+  )
+}
+
+const PlayerApplyInfoCardBody = ({ applyInfo }) => {
+  let bankType = applyInfo?.bankType
+  switch (bankType) {
+    case BankType.Bank: //refer to ManualDeposit/ManualDepositBankApplyInfo.cs
+    case BankType.FPS: //refer to ManualDeposit/ManualDepositFpsApplyInfo.cs
+      return (
+        <>
+          <BankApplyInfo
+            accountName={applyInfo?.sendBankName}
+            account={applyInfo?.sendBankAccount}
+          />
+        </>
+      )
+    case BankType.EWallet: //refer to ManualDeposit/ManualDepositEWalletApplyInfo.cs
+      return (
+        <>
+          <EMoneyNameApplyInfo value={applyInfo?.sendEMoneyName} />
+          <PhoneApplyInfo value={applyInfo?.sendPhone} />
+        </>
+      )
+    case BankType.Pulsa: //refer to ManualDeposit/ManualDepositPulsaApplyInfo.cs
+      return (
+        <>
+          <PhoneApplyInfo value={applyInfo?.sendPhone} />
+        </>
+      )
+    default:
+      return null
+  }
+}
+
+const PlayerApplyInfoCard = ({ applyInfo }) => {
+  return (
+    <Card
+      variant="bordered"
+      title={
+        <Heading use="h5">
+          <Trans zh="玩家" en="Player" />
+        </Heading>
+      }
+      css={css`
+        flex: 1;
+      `}
+    >
+      <FieldValues>
+        <PlayerApplyInfoCardBody applyInfo={applyInfo} />
+      </FieldValues>
+    </Card>
+  )
+}
+
+const PlatformApplyInfoCardBody = ({ applyInfo }) => {
+  let bankType = applyInfo?.bankType
+  switch (bankType) {
+    case BankType.Bank:
+      return (
+        <BankApplyInfo
+          accountName={applyInfo?.receiveAccountName}
+          account={applyInfo?.receiveBankAccount}
+        />
+      )
+    case BankType.FPS:
+      return <PhoneApplyInfo value={applyInfo?.phone} />
+    case BankType.EWallet:
+      return (
+        <>
+          <EMoneyNameApplyInfo value={applyInfo?.eMoneyName} />
+          <PhoneApplyInfo value={applyInfo?.phone} />
+        </>
+      )
+    case BankType.Pulsa:
+      return <PhoneApplyInfo value={applyInfo?.phone} />
+    default:
+      return null
+  }
+}
+
+const PlatformApplyInfoCard = ({ applyInfo }) => {
+  return (
+    <Card
+      variant="bordered"
+      title={
+        <Heading use="h5">
+          <Trans zh="平台" en="Platform" />
+        </Heading>
+      }
+      css={css`
+        flex: 1;
+      `}
+    >
+      <FieldValues>
+        <PlatformApplyInfoCardBody applyInfo={applyInfo} />
+      </FieldValues>
+    </Card>
+  )
+}
+
+let applyInfoSupportedBankType = [
+  BankType.Bank,
+  BankType.FPS,
+  BankType.EWallet,
+  BankType.Pulsa
+]
+const ApplyInfoBox = ({ applyInfo }) => {
+  let bankType = applyInfo?.bankType
+  let isTablet = useBreakpoint("max-tablet")
+
+  let isSupported = applyInfoSupportedBankType.includes(bankType)
+  if (!isSupported) {
+    return null
+  }
+
+  //TODO: use memo?
+  //TODO: able to rm
+  // let hasBankAddress = !!applyInfo?.receiveBankAccountAddress
+  // let hasMemo = !!applyInfo?.memo
   return (
     <>
       <Heading use="h6">
         <Trans zh="銀行卡信息" en="Bank Card Info" />
       </Heading>
       <Set orientation="horizontal" isFilled verticalBelow="tablet">
+        <PlayerApplyInfoCard applyInfo={applyInfo} flex="1" />
+        {/* 
+        TODO: rm
         <Card
           variant="bordered"
           title={
@@ -457,20 +625,21 @@ const BankInfoBox = ({ record }) => {
             <NormalLabel>
               <Trans zh="银行帐户名" en="Bank Account Name" />
             </NormalLabel>
-            <Box alignY="center">{record?.applyInfo?.sendBankName}</Box>
+            <Box alignY="center">{applyInfo?.sendBankName}</Box>
             <NormalLabel>
               <Trans zh="银行卡帐号" en="Bank Card Account" />
             </NormalLabel>
-            <Box alignY="center">{record?.applyInfo?.sendBankAccount}</Box>
+            <Box alignY="center">{applyInfo?.sendBankAccount}</Box>
           </FieldValues>
-        </Card>
+        </Card> */}
         <Box alignX="center" alignY="center">
           <Icon
             icon={isTablet ? faChevronDown : faChevronRight}
             type="font-awesome"
           />
         </Box>
-        <Card
+        <PlatformApplyInfoCard applyInfo={applyInfo} flex="1" />
+        {/* <Card
           variant="bordered"
           title={
             <Heading use="h5">
@@ -482,15 +651,17 @@ const BankInfoBox = ({ record }) => {
             <NormalLabel>
               <Trans zh="银行帐户名" en="Bank Account Name" />
             </NormalLabel>
-            <Box alignY="center">{record?.applyInfo?.receiveAccountName}</Box>
+            <Box alignY="center">{applyInfo?.receiveAccountName}</Box>
 
             <NormalLabel>
               <Trans zh="银行卡帐号" en="Bank Card Account" />
             </NormalLabel>
-            <Box alignY="center">{record?.applyInfo?.receiveBankAccount}</Box>
+            <Box alignY="center">{applyInfo?.receiveBankAccount}</Box>
           </FieldValues>
-        </Card>
+        </Card> */}
       </Set>
+      {/* 
+      TODO: able to rm?
       <FieldValues marginLeft="1.5rem">
         {hasBankAddress && (
           <>
@@ -498,7 +669,7 @@ const BankInfoBox = ({ record }) => {
               <Trans zh="开户地址" en="Account Address" />
             </NormalLabel>
             <Box alignY="center">
-              {record?.applyInfo?.receiveBankAccountAddress}
+              {applyInfo?.receiveBankAccountAddress}
             </Box>
           </>
         )}
@@ -508,10 +679,10 @@ const BankInfoBox = ({ record }) => {
             <NormalLabel>
               <Trans zh="附言" en="Memo" />
             </NormalLabel>
-            <Box alignY="center">{record?.applyInfo?.memo}</Box>
+            <Box alignY="center">{applyInfo?.memo}</Box>
           </>
         )}
-      </FieldValues>
+      </FieldValues> */}
     </>
   )
 }

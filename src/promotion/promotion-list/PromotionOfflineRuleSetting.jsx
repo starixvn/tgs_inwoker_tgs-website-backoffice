@@ -13,8 +13,9 @@ export const PromotionOfflineRuleSetting = ({ readOnly }) => {
   }
 }
 
-const LoginRewardRuleSetting = ({ }) => {
-    //1. upload btn
-    //2. need review? paging? performance issue?
-    //3. 
+const LoginRewardRuleSetting = ({}) => {
+  //TODO: hide "PromotionTotalFundsFieldBox" field by setting
+  //1. upload btn
+  //2. need review? paging? performance issue?
+  //3.
 }

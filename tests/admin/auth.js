@@ -64,6 +64,72 @@ export const Fixture = {
 
     use(promotionSettings)
   },
+  manualPaymentProvider: async ({ backofficeApi }, use) => {
+    let manualPaymentProvider = await backofficeApi?.payment?.provider?.manual()
+    use(manualPaymentProvider)
+  },
+  eWalletPaymentMethod: async ({ backofficeApi }, use) => {
+    let paymentMethod = await backofficeApi?.payment?.method?.eWallet()
+    use(paymentMethod)
+  },
+  eWalletPaymentChannel: async ({ backofficeApi }, use) => {
+    let channel = await backofficeApi.payment.channel.eWallet()
+    use(channel)
+  },
+  eWalletManualPaymentMethodChannel: async (
+    {
+      backofficeApi,
+      manualPaymentProvider,
+      eWalletPaymentMethod,
+      eWalletPaymentChannel
+    },
+    use
+  ) => {
+    let paymentId = manualPaymentProvider.id
+    let methodId = eWalletPaymentMethod.id
+    let channelId = eWalletPaymentChannel.id
+
+    let pmc = await backofficeApi.payment.paymentMethodChannel.findOrCreate(
+      paymentId,
+      methodId,
+      channelId
+    )
+    use(pmc)
+  },
+  /*
+  TODO:?
+  eWalletManualDepositPayment: async ({ backofficeApi }, use) => {
+
+  },
+  */
+  pulsaPaymentMethod: async ({ backofficeApi }, use) => {
+    let paymentMethod = await backofficeApi?.payment?.method?.pulsa()
+    use(paymentMethod)
+  },
+  pulsaPaymentChannel: async ({ backofficeApi }, use) => {
+    let channel = await backofficeApi.payment.channel.pulsa()
+    use(channel)
+  },
+  pulsaManualPaymentMethodChannel: async (
+    {
+      backofficeApi,
+      manualPaymentProvider,
+      pulsaPaymentMethod,
+      pulsaPaymentChannel
+    },
+    use
+  ) => {
+    let paymentId = manualPaymentProvider.id
+    let methodId = pulsaPaymentMethod.id
+    let channelId = pulsaPaymentChannel.id
+
+    let pmc = await backofficeApi.payment.paymentMethodChannel.findOrCreate(
+      paymentId,
+      methodId,
+      channelId
+    )
+    use(pmc)
+  },
   operatorApi: async ({}, use) => {
     use(operatorApi)
   },
@@ -295,6 +361,9 @@ const PromotionSettingsString = JSON.stringify([
           Zh: "登入送"
         },
         vipLevels: {
+          visible: false
+        },
+        totalFunds: {
           visible: false
         }
       }
