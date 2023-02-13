@@ -451,21 +451,6 @@ const BankApplyInfo = ({ accountName = "", account = "" }) => {
   )
 }
 
-const NoteApplyInfo = ({ value }) => {
-  if (!value) {
-    return null
-  }
-
-  return (
-    <>
-      <NormalLabel>
-        <Trans zh="备註" en="Note" />
-      </NormalLabel>
-      <Box alignY="center">{value}</Box>
-    </>
-  )
-}
-
 const EMoneyNameApplyInfo = ({ value = "" }) => {
   return (
     <>
@@ -492,6 +477,14 @@ const PlayerApplyInfoCardBody = ({ applyInfo }) => {
   let bankType = applyInfo?.bankType
   switch (bankType) {
     case BankType.Bank: //refer to ManualDeposit/ManualDepositBankApplyInfo.cs
+      return (
+        <>
+          <BankApplyInfo
+            accountName={applyInfo?.sendBankName}
+            account={applyInfo?.sendBankAccount}
+          />
+        </>
+      )
     case BankType.FPS: //refer to ManualDeposit/ManualDepositFpsApplyInfo.cs
       return (
         <>

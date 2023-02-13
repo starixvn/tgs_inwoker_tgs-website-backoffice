@@ -270,8 +270,9 @@ const ApplyInfo = ({ bankType }) => {
 
   switch (bankType) {
     case BankType.Bank:
-    case BankType.FPS:
       return <BankInfo />
+    case BankType.FPS:
+      return <FpsInfo />
     case BankType.EWallet:
       return <EWalletInfo />
     case BankType.Pulsa:
@@ -279,6 +280,55 @@ const ApplyInfo = ({ bankType }) => {
     default:
       return null
   }
+}
+
+const FpsInfo = () => {
+  let { control, getValues, setValue } = useFormContext()
+  /*
+  NOTE. 
+  let player = getValues("player")
+
+  let phone = useWatch({
+    control,
+    name: "phone"
+  })
+
+  let defaultBankCard = useDefaultBankCardsBySelectedBankType()
+  let bankCards = useBankCardsBySelectedBankType()
+  let firstBankCard = head(bankCards)
+  let autoSelectBankCard = defaultBankCard ?? firstBankCard
+  useEffect(() => {
+    if (!phone) {
+      if (autoSelectBankCard) {
+        setValue("phone", autoSelectBankCard?.detail?.phone)
+      } else if (player.phone) {
+        setValue("phone", player.phone)
+      }
+    }
+  }, [autoSelectBankCard, phone, JSON.stringify(bankCards)])
+  */
+
+  let bankAccountNameLabel = useTrans({
+    zh: "存款账户名",
+    en: "Deposit Bank Account Name"
+  })
+  let bankAccountLabel = useTrans({
+    zh: "存款账户",
+    en: "Deposit Bank Account"
+  })
+
+  return (
+    <>
+      {/* <InputField
+        name="phone"
+        label={<Trans zh="电话号码" en="Phone Number" />}
+        addonBefore={<PhoneDropdownMenu />}
+        required
+      /> */}
+      <InputField name="bankName" label={bankAccountNameLabel} />
+      <InputField name="bankAccount" label={bankAccountLabel} />
+    </>
+  )
 }
 
 const PulsaInfo = () => {
@@ -298,6 +348,8 @@ const PulsaInfo = () => {
     if (!phone) {
       if (autoSelectBankCard) {
         setValue("phone", autoSelectBankCard?.detail?.phone)
+      } else if (player.phone) {
+        setValue("phone", player.phone)
       }
     }
   }, [autoSelectBankCard, phone, JSON.stringify(bankCards)])
@@ -341,8 +393,9 @@ const EWalletInfo = () => {
     if (!eMoneyName && !phone) {
       if (autoSelectBankCard) {
         setBankCard(autoSelectBankCard)
-      } else if (player.realName) {
+      } else if (player.realName || player.phone) {
         setValue("realName", player.realName)
+        setValue("phone", player.phone)
       }
     }
   }, [autoSelectBankCard, eMoneyName, phone, JSON.stringify(bankCards)])
