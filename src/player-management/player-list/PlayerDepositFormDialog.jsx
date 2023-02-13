@@ -172,7 +172,11 @@ const DepositFormDialog = ({
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}
-      minWidth="40vw"
+      css={css`
+        width: max-content;
+        max-width: 85vw;
+      `}
+      minWidth="45vw"
     >
       <FormBody
         paymentList={supportedPaymentList(paymentList)}
@@ -238,7 +242,7 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
       <FieldWrapper label={<Trans zh="真实姓名" en="Real name" />}>
         <Box>{player.realName}</Box>
       </FieldWrapper>
-      <Set>
+      <Set orientation="horizontal" verticalBelow="tablet">
         <PlayerPaymentMethodSelect
           name={PaymentMethodField}
           paymentList={paymentList}
