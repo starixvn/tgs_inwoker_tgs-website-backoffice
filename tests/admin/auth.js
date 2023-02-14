@@ -96,12 +96,38 @@ export const Fixture = {
     )
     use(pmc)
   },
-  /*
-  TODO:?
-  eWalletManualDepositPayment: async ({ backofficeApi }, use) => {
+  eWalletManualDepositPayment: async (
+    { eWalletManualPaymentMethodChannel, platform, backofficeApi },
+    use
+  ) => {
+    let paymentMethodChannelId = eWalletManualPaymentMethodChannel.id
+    let brandId = platform.id
 
+    let platformPayment = await backofficeApi.platform.payment.create({
+      brandId,
+      transferType: backofficeApi.platform.payment.TransferType.Deposit,
+      paymentMethodChannelId,
+      extendedData: {
+        phone: "000000",
+        eMoneyName: "platformEMoneyName"
+      }
+    })
+    use(platformPayment)
   },
-  */
+  eWalletManualWithdrawPayment: async (
+    { eWalletManualPaymentMethodChannel, platform, backofficeApi },
+    use
+  ) => {
+    let paymentMethodChannelId = eWalletManualPaymentMethodChannel.id
+    let brandId = platform.id
+
+    let platformPayment = await backofficeApi.platform.payment.create({
+      brandId,
+      transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
+      paymentMethodChannelId
+    })
+    use(platformPayment)
+  },
   pulsaPaymentMethod: async ({ backofficeApi }, use) => {
     let paymentMethod = await backofficeApi?.payment?.method?.pulsa()
     use(paymentMethod)

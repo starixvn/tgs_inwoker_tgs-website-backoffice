@@ -84,6 +84,7 @@ const VerifyFundDepositDialog = ({
     isLoading: isLoadingDepositFormData,
     depositForm: depositFormData,
     brandPayment,
+    paymentMethod,
     player,
     error: depositFormDataError,
     mutateDepositForm,
@@ -180,6 +181,7 @@ const VerifyFundDepositDialog = ({
         brandId={brandId}
         record={depositFormData}
         brandPayment={brandPayment}
+        paymentMethod={paymentMethod}
         player={player}
       />
     </FormDialog>

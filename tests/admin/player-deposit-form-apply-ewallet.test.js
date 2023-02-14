@@ -16,9 +16,10 @@ test("player deposit form > apply bank transfer", async ({
   page,
   platform,
   player,
+  eWalletManualDepositPayment,
+  eWalletManualWithdrawPayment,
   backofficeApi
 }) => {
-  console.log("TODO: player-deposit-form-apply-ewallet.test")
   //TODO:
   // * use GpiEWalletDepositPayment
   //    * use name to get gpi payment

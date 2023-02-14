@@ -1,3 +1,4 @@
+import { usePaymentMethodList } from "../../payment/method/client"
 import { usePlayer } from "../../player-management/player-list/client"
 import { useBrandPayment } from "../../system/brandpayments/client"
 import { useFundDepositForm } from "./client"
@@ -19,6 +20,16 @@ export const useFundDepositFormData = (brandId, formId, playerCode) => {
   } = useBrandPayment(depositForm?.brandPaymentId)
 
   let {
+    data: paymentMethodList,
+    isLoading: isLoadingPaymentMethodList,
+    error: paymentMethodListError
+  } = usePaymentMethodList()
+
+  let paymentMethod = paymentMethodList?.find(
+    (paymentMethod) => paymentMethod.id === brandPayment?.paymentMethodId
+  )
+
+  let {
     data: player,
     isLoading: isLoadingPlayer,
     error: playerError,
@@ -29,9 +40,18 @@ export const useFundDepositFormData = (brandId, formId, playerCode) => {
   return {
     depositForm,
     brandPayment,
+    paymentMethod,
     player,
-    isLoading: isLoadingDepositForm || isLoadingBrandPayment || isLoadingPlayer,
-    error: depositFormError || brandPaymentError || playerError,
+    isLoading:
+      isLoadingDepositForm ||
+      isLoadingBrandPayment ||
+      isLoadingPaymentMethodList ||
+      isLoadingPlayer,
+    error:
+      depositFormError ||
+      brandPaymentError ||
+      paymentMethodListError ||
+      playerError,
     mutateDepositForm,
     mutateBrandPayment,
     deleteDepositFormCache,

@@ -95,7 +95,7 @@ const ViewFundDepositDialog = ({
     en: "View Deposit"
   })
 
-  let { depositForm, brandPayment, player, isLoading, error } =
+  let { depositForm, brandPayment, paymentMethod, player, isLoading, error } =
     useFundDepositFormData(brandId, formId, playerCode)
 
   if (isLoading) {
@@ -117,6 +117,7 @@ const ViewFundDepositDialog = ({
       <FormBody
         record={depositForm}
         brandPayment={brandPayment}
+        paymentMethod={paymentMethod}
         player={player}
         readOnly={true}
       />
@@ -128,12 +129,13 @@ export const FormBody = ({
   brandId,
   record,
   brandPayment,
+  paymentMethod,
   player,
   readOnly = false
 }) => {
   let hasAttachment = !!record?.paymentReturn?.manualReceiptFileId
   let attachmentUrl = `/api/fs/${record?.paymentReturn?.manualReceiptFileId}`
-
+  console.log("FormBody paymentMethod", paymentMethod)
   let disabled = readOnly
   return (
     <>
@@ -231,7 +233,10 @@ export const FormBody = ({
           <SendNoteApplyInfoBox record={record} />
         </FieldValues>
         <Separator />
-        <ApplyInfoBox applyInfo={record?.applyInfo} />
+        <ApplyInfoBox
+          applyInfo={record?.applyInfo}
+          paymentMethod={paymentMethod}
+        />
         <NumberInputField
           name="actualAmount"
           label={<Trans zh="实际存款金额" en="Actual Amount" />}
@@ -473,8 +478,7 @@ const PhoneApplyInfo = ({ value = "" }) => {
   )
 }
 
-const PlayerApplyInfoCardBody = ({ applyInfo }) => {
-  let bankType = applyInfo?.bankType
+const PlayerApplyInfoCardBody = ({ applyInfo, bankType }) => {
   switch (bankType) {
     case BankType.Bank: //refer to ManualDeposit/ManualDepositBankApplyInfo.cs
       return (
@@ -512,7 +516,7 @@ const PlayerApplyInfoCardBody = ({ applyInfo }) => {
   }
 }
 
-const PlayerApplyInfoCard = ({ applyInfo }) => {
+const PlayerApplyInfoCard = ({ applyInfo, bankType }) => {
   return (
     <Card
       variant="bordered"
@@ -526,14 +530,13 @@ const PlayerApplyInfoCard = ({ applyInfo }) => {
       `}
     >
       <FieldValues>
-        <PlayerApplyInfoCardBody applyInfo={applyInfo} />
+        <PlayerApplyInfoCardBody applyInfo={applyInfo} bankType={bankType} />
       </FieldValues>
     </Card>
   )
 }
 
-const PlatformApplyInfoCardBody = ({ applyInfo }) => {
-  let bankType = applyInfo?.bankType
+const PlatformApplyInfoCardBody = ({ applyInfo, bankType }) => {
   switch (bankType) {
     case BankType.Bank:
       return (
@@ -558,7 +561,7 @@ const PlatformApplyInfoCardBody = ({ applyInfo }) => {
   }
 }
 
-const PlatformApplyInfoCard = ({ applyInfo }) => {
+const PlatformApplyInfoCard = ({ applyInfo, bankType }) => {
   return (
     <Card
       variant="bordered"
@@ -572,7 +575,7 @@ const PlatformApplyInfoCard = ({ applyInfo }) => {
       `}
     >
       <FieldValues>
-        <PlatformApplyInfoCardBody applyInfo={applyInfo} />
+        <PlatformApplyInfoCardBody applyInfo={applyInfo} bankType={bankType} />
       </FieldValues>
     </Card>
   )
@@ -584,8 +587,8 @@ let applyInfoSupportedBankType = [
   BankType.EWallet,
   BankType.Pulsa
 ]
-const ApplyInfoBox = ({ applyInfo }) => {
-  let bankType = applyInfo?.bankType
+const ApplyInfoBox = ({ applyInfo, paymentMethod }) => {
+  let bankType = paymentMethod?.bankType
   let isTablet = useBreakpoint("max-tablet")
 
   let isSupported = applyInfoSupportedBankType.includes(bankType)
@@ -603,55 +606,22 @@ const ApplyInfoBox = ({ applyInfo }) => {
         <Trans zh="銀行卡信息" en="Bank Card Info" />
       </Heading>
       <Set orientation="horizontal" isFilled verticalBelow="tablet">
-        <PlayerApplyInfoCard applyInfo={applyInfo} flex="1" />
-        {/* 
-        TODO: rm
-        <Card
-          variant="bordered"
-          title={
-            <Heading use="h5">
-              <Trans zh="玩家" en="Player" />
-            </Heading>
-          }
-        >
-          <FieldValues>
-            <NormalLabel>
-              <Trans zh="银行帐户名" en="Bank Account Name" />
-            </NormalLabel>
-            <Box alignY="center">{applyInfo?.sendBankName}</Box>
-            <NormalLabel>
-              <Trans zh="银行卡帐号" en="Bank Card Account" />
-            </NormalLabel>
-            <Box alignY="center">{applyInfo?.sendBankAccount}</Box>
-          </FieldValues>
-        </Card> */}
+        <PlayerApplyInfoCard
+          applyInfo={applyInfo}
+          bankType={bankType}
+          flex="1"
+        />
         <Box alignX="center" alignY="center">
           <Icon
             icon={isTablet ? faChevronDown : faChevronRight}
             type="font-awesome"
           />
         </Box>
-        <PlatformApplyInfoCard applyInfo={applyInfo} flex="1" />
-        {/* <Card
-          variant="bordered"
-          title={
-            <Heading use="h5">
-              <Trans zh="平台" en="Platform" />
-            </Heading>
-          }
-        >
-          <FieldValues>
-            <NormalLabel>
-              <Trans zh="银行帐户名" en="Bank Account Name" />
-            </NormalLabel>
-            <Box alignY="center">{applyInfo?.receiveAccountName}</Box>
-
-            <NormalLabel>
-              <Trans zh="银行卡帐号" en="Bank Card Account" />
-            </NormalLabel>
-            <Box alignY="center">{applyInfo?.receiveBankAccount}</Box>
-          </FieldValues>
-        </Card> */}
+        <PlatformApplyInfoCard
+          applyInfo={applyInfo}
+          bankType={bankType}
+          flex="1"
+        />
       </Set>
       {/* 
       TODO: able to rm?

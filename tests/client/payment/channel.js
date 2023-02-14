@@ -27,7 +27,7 @@ export const find = async (code) => {
   return items?.find((item) => item.code === code)
 }
 
-//TODO: not work?
+//TODO: why not work?
 export const create = async (code) => {
   let url = `${host}/${API}`
   console.warn("TODO: create payment channel")
