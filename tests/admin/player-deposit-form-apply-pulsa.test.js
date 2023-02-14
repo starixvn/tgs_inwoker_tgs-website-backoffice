@@ -1,43 +1,62 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
-import { selectByValue, selectRandomOption } from "../page/select.js"
+import { selectByValue } from "../page/select.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
-import { gotoFundDepositPage, searchByFormId } from "./fund-deposit-page.js"
 import faker from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-const { finance, name, lorem } = faker
+const { name, lorem, phone } = faker
 
 test("player deposit form > apply bank transfer", async ({
   page,
   platform,
-  player
+  player,
+  pulsaPaymentMethod,
+  pulsaPaymentChannel,
+  pulsaManualDepositPayment,
+  pulsaManualWithdrawPayment,
+  backofficeApi
 }) => {
-  console.log("TODO: player-deposit-form-apply-pulsa.test")
   /*
-  await gotoPlayerListPage(page, platform.code)
-  await searchPlayer(page, player)
+   Note. player bank card was design for withdraw at first
+   */
+  let [bank] = await Promise.all([
+    backofficeApi.player.bankCard.add({
+      brandId: platform.id,
+      playerCode: player.code,
+      bankType: pulsaPaymentMethod.bankType,
+      paymentChannelId: pulsaManualWithdrawPayment.paymentChannelId,
+      detail: {
+        phone: "123456"
+      }
+    }),
+    gotoPlayerListPage(page, platform.code)
+  ])
+  console.log("bank", bank, "player", player)
 
   let dialogSelector = `#apply-deposit-form-dialog`
   await openDialog(page, dialogSelector)
 
+  await selectByValue(
+    page,
+    `${dialogSelector} select[name="method"]`,
+    pulsaPaymentMethod.code
+  )
+
+  await selectByValue(
+    page,
+    `${dialogSelector} select[name="channel"]`,
+    pulsaPaymentChannel.code
+  )
+
   let form = {
-    bankName: name.firstName(),
-    bankAccount: finance.account(),
     amount: 10,
     note: lorem.word()
   }
-  await selectPayment(page, dialogSelector)
 
-  await page.fill(`${dialogSelector} input[name="bankName"]`, form.bankName)
-  await page.fill(
-    `${dialogSelector} input[name="bankAccount"]`,
-    form.bankAccount
-  )
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)
   await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
 
@@ -53,16 +72,10 @@ test("player deposit form > apply bank transfer", async ({
 
   let formId = await applyFormResponse.json()
   expect(formId).to.not.be.empty
-  */
+
+  let depositForm = await backofficeApi.fund.deposit.form(platform.id, formId)
+
+  expect(depositForm.amount).equals(form.amount)
+  expect(depositForm.applyInfo.sendPhone).equals(bank.detail.phone)
+  expect(depositForm.applyInfo.sendNote).equals(form.note)
 })
-
-const selectPayment = async (page, dialogSelector) => {
-  let paymentMethod = "BankTransfer"
-  await selectByValue(
-    page,
-    `${dialogSelector} select[name="method"]`,
-    paymentMethod
-  )
-
-  await selectRandomOption(page, `${dialogSelector} select[name="channel"]`)
-}

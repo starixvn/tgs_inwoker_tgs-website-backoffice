@@ -103,7 +103,7 @@ export const Fixture = {
     let paymentMethodChannelId = eWalletManualPaymentMethodChannel.id
     let brandId = platform.id
 
-    let platformPayment = await backofficeApi.platform.payment.create({
+    let platformPayment = await backofficeApi.platform.payment.findOrCreate({
       brandId,
       transferType: backofficeApi.platform.payment.TransferType.Deposit,
       paymentMethodChannelId,
@@ -121,7 +121,7 @@ export const Fixture = {
     let paymentMethodChannelId = eWalletManualPaymentMethodChannel.id
     let brandId = platform.id
 
-    let platformPayment = await backofficeApi.platform.payment.create({
+    let platformPayment = await backofficeApi.platform.payment.findOrCreate({
       brandId,
       transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
       paymentMethodChannelId
@@ -155,6 +155,37 @@ export const Fixture = {
       channelId
     )
     use(pmc)
+  },
+  pulsaManualDepositPayment: async (
+    { pulsaManualPaymentMethodChannel, platform, backofficeApi },
+    use
+  ) => {
+    let paymentMethodChannelId = pulsaManualPaymentMethodChannel.id
+    let brandId = platform.id
+
+    let platformPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId,
+      transferType: backofficeApi.platform.payment.TransferType.Deposit,
+      paymentMethodChannelId,
+      extendedData: {
+        phone: "000000"
+      }
+    })
+    use(platformPayment)
+  },
+  pulsaManualWithdrawPayment: async (
+    { pulsaManualPaymentMethodChannel, platform, backofficeApi },
+    use
+  ) => {
+    let paymentMethodChannelId = pulsaManualPaymentMethodChannel.id
+    let brandId = platform.id
+
+    let platformPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId,
+      transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
+      paymentMethodChannelId
+    })
+    use(platformPayment)
   },
   operatorApi: async ({}, use) => {
     use(operatorApi)

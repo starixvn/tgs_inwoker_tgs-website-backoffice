@@ -13,6 +13,7 @@ export const DefaultPassword = "TgsP@ssw0rd"
 
 export const DefaultCurrencyCode = "CNY"
 
+//TODO: add realName and phone?
 export const create = async (
   platformToken,
   {

@@ -43,26 +43,6 @@ export const find = async ({
   )
 }
 
-//TODO
-/*
-{"brandId":"4e86719f-243f-46f6-b010-5c758b7285af",
-"transferType":"Deposit",
-"paymentStatus":"Enabled",
-"playerListCondition":"MatchOne",
-"allPlayers":true,
-"transferLimitFrom":"0",
-"depositedAmountMin":"0",
-"depositedAmountUnlimited":true,
-"resellerId":"b5a2c708-ab70-4316-9f4d-5d2ad0e77460",
-"licenseeId":"66c5fef5-217b-4929-9a08-72c2479a8f4e",
-"channelName":"test",
-"paymentId":"30cb4d17-2506-4d72-8470-65063b80f9c9",
-"methodId":"67252f3a-6826-45ce-8bbc-c53e2ca7cdcb",
-"channelId":"f69bdc10-2672-4bae-b56c-74312238e17a",
-"paymentMethodChannelId":"2effc7a6-60ab-ed11-8e5c-70b5e82b6cbe",
-"transferLimitTo":"10000","extendedData":{}}
-*/
-
 const typeOf = (transferType) => {
   switch (transferType) {
     case TransferType.Deposit:
@@ -87,6 +67,7 @@ export const create = async ({
   transferLimitTo = 10000,
   paymentStatus = "Enabled",
   playerListCondition = "MatchOne",
+  allPlayers = true,
   ...data
 }) => {
   if (!brandId) {
@@ -102,8 +83,6 @@ export const create = async ({
     return null
   }
 
-  //http://localhost:3000/api/brandpayment/withdraw + POST
-
   let url = `${host}/${API}/${typeOf(transferType)}`
   let formData = {
     brandId,
@@ -117,9 +96,10 @@ export const create = async ({
     transferLimitTo,
     paymentStatus,
     playerListCondition,
+    allPlayers,
     ...data
   }
-  console.log("url", url, "formData", formData)
+
   let response = await fetcher.post(url, { data: formData })
   let result = await response.json()
   if (!result?.valid) {
@@ -128,8 +108,15 @@ export const create = async ({
   }
 
   let payment = await find({ brandId, transferType, paymentMethodChannelId })
-  console.log("payment", payment)
   return { ...formData, ...payment }
+}
+
+export const findOrCreate = async (props) => {
+  let item = await find(props)
+  if (!item) {
+    return create(props)
+  }
+  return item
 }
 
 //TODO: merge with withdrawPayment.js?
@@ -193,9 +180,6 @@ export const addDeposit = async ({
 //1. find payment base on paymentMethodChannelId
 //2. findOrCreate base on paymentMethodChannelId
 //3.
-const listWithdraw = () => {
-  //http://localhost:3000/api/brandpayment?brandId=4e86719f-243f-46f6-b010-5c758b7285af&page=1&rows=20&sortby=number&transferType=Withdrawal
-}
 export const withdraw = {}
 
 export const listDeposit = async (brandId, keyword = "") => {
@@ -235,6 +219,7 @@ export default {
   Type,
   TransferType,
   create,
+  findOrCreate,
   addDeposit,
   get,
   firstBankManualDepositPayment

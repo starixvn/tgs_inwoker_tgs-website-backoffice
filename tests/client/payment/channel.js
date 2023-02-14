@@ -27,11 +27,12 @@ export const find = async (code) => {
   return items?.find((item) => item.code === code)
 }
 
-//TODO: why not work?
 export const create = async (code) => {
   let url = `${host}/${API}`
-  console.warn("TODO: create payment channel")
   let response = await fetcher.put(url, {
+    headers: {
+      "content-type": "application/json"
+    },
     data: code,
     failOnStatusCode: true
   })
