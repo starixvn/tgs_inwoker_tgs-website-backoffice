@@ -3,10 +3,12 @@ import { host } from "../host.js"
 
 const EWallet = "E-wallet"
 const Pulsa = "Pulsa"
+const CustomBank = "CustomBank"
 
 export const Code = {
   EWallet,
-  Pulsa
+  Pulsa,
+  CustomBank
 }
 
 const API = "api/PaymentChannel"
@@ -57,11 +59,14 @@ export const eWallet = async () => findOrCreate(EWallet)
 
 export const pulsa = async () => findOrCreate(Pulsa)
 
+export const customBank = async () => findOrCreate(CustomBank)
+
 export default {
   list,
   find,
   create,
   findOrCreate,
   eWallet,
-  pulsa
+  pulsa,
+  customBank
 }

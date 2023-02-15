@@ -9,11 +9,14 @@ const test = base.extend(Fixture)
 test("edit platform payment extended data", async ({
   page,
   platform,
-  backofficeApi
+  backofficeApi,
+  customBankManualPaymentMethodChannel
 }) => {
   let [platformPayment] = await Promise.all([
-    backofficeApi.platform.payment.addDeposit({
-      brandId: platform.id
+    backofficeApi.platform.payment.findOrCreate({
+      brandId: platform.id,
+      transferType: backofficeApi.platform.payment.TransferType.Deposit,
+      paymentMethodChannelId: customBankManualPaymentMethodChannel.id
     }),
     page.goto("/systemadmin/brandpayments", { waitUntil: "networkidle" })
   ])
@@ -22,7 +25,7 @@ test("edit platform payment extended data", async ({
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes(platformPayment.channelName) &&
+        response.url().includes(`/api/brandpayment?`) &&
         response.status() === 200
       )
     }),

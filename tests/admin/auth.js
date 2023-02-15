@@ -68,6 +68,34 @@ export const Fixture = {
     let manualPaymentProvider = await backofficeApi?.payment?.provider?.manual()
     use(manualPaymentProvider)
   },
+  bankPaymentMethod: async ({ backofficeApi }, use) => {
+    let paymentMethod = await backofficeApi?.payment?.method?.bank()
+    use(paymentMethod)
+  },
+  customBankPaymentChannel: async ({ backofficeApi }, use) => {
+    let channel = await backofficeApi.payment.channel.customBank()
+    use(channel)
+  },
+  customBankManualPaymentMethodChannel: async (
+    {
+      backofficeApi,
+      manualPaymentProvider,
+      bankPaymentMethod,
+      customBankPaymentChannel
+    },
+    use
+  ) => {
+    let paymentId = manualPaymentProvider.id
+    let methodId = bankPaymentMethod.id
+    let channelId = customBankPaymentChannel.id
+
+    let pmc = await backofficeApi.payment.paymentMethodChannel.findOrCreate(
+      paymentId,
+      methodId,
+      channelId
+    )
+    use(pmc)
+  },
   eWalletPaymentMethod: async ({ backofficeApi }, use) => {
     let paymentMethod = await backofficeApi?.payment?.method?.eWallet()
     use(paymentMethod)

@@ -119,69 +119,6 @@ export const findOrCreate = async (props) => {
   return item
 }
 
-//TODO: merge with withdrawPayment.js?
-export const addDeposit = async ({
-  brandId,
-  channelName = `${faker.lorem.word()}-${Date.now()}`,
-  depositedAmountMin = 0,
-  depositedAmountMax = 10000,
-  depositedAmountUnlimited = true,
-  extendedData = {},
-  paymentMethodChannelId,
-  paymentStatus = "Enabled",
-  playerListCondition = "MatchOne",
-  transferLimitFrom = 0,
-  transferLimitTo = 10000,
-  ...data
-} = {}) => {
-  //TODO: POST with form data
-  //TODO: get payment id after create
-  if (!brandId) {
-    console.error("brandId is required")
-    return null
-  }
-  if (!paymentMethodChannelId) {
-    let paymentMethod = await firstBankTransfer()
-    if (!paymentMethod) {
-      console.error("not able to find a bank transfer payment")
-      return null
-    }
-    paymentMethodChannelId = paymentMethod.id
-  }
-
-  let url = `${host}/${API}/deposit`
-  let formData = {
-    brandId,
-    channelName,
-    depositedAmountMin,
-    depositedAmountMax,
-    depositedAmountUnlimited,
-    extendedData,
-    paymentMethodChannelId,
-    paymentStatus,
-    playerListCondition,
-    transferLimitFrom,
-    transferLimitTo,
-    ...data
-  }
-
-  let response = await fetcher.post(url, { data: formData })
-  let result = await response.json()
-  if (!result?.valid) {
-    console.error("addDeposit failed ", result)
-    return null
-  }
-
-  let payment = await findByName(brandId, channelName)
-  return { ...formData, ...payment }
-}
-
-//TODO:
-//1. find payment base on paymentMethodChannelId
-//2. findOrCreate base on paymentMethodChannelId
-//3.
-export const withdraw = {}
-
 export const listDeposit = async (brandId, keyword = "") => {
   const transferType = "Deposit"
   let url = `${host}/${API}?brandId=${brandId}&transferType=${transferType}&keyword=${keyword}&showAll=true`
@@ -220,7 +157,6 @@ export default {
   TransferType,
   create,
   findOrCreate,
-  addDeposit,
   get,
   firstBankManualDepositPayment
 }

@@ -58,6 +58,10 @@ export const eWallet = async () => findOrCreate(EWallet, EWallet)
 
 export const pulsa = async () => findOrCreate(Pulsa, Pulsa)
 
+//TODO: define bankType
+export const bank = async () => findOrCreate(BankTransfer, "Bank")
+
+//TODO: bank or bankTransfer?
 export const bankTransfer = async () => {
   let item = await find(BankTransfer)
   return item
@@ -68,6 +72,7 @@ export default {
   find,
   create,
   findOrCreate,
+  bank,
   bankTransfer,
   eWallet,
   pulsa
