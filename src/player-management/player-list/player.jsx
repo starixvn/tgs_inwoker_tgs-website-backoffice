@@ -268,7 +268,6 @@ export const Panel = ({
     playerPayment
   } = player
 
-  console.log("playerPayment", playerPayment)
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues spacing="major-2">

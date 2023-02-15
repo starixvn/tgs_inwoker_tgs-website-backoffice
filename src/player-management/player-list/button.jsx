@@ -146,10 +146,8 @@ const TabsDialog = ({
   } = usePlayerPayment(playerCode)
 
   let isLoading =
-    isLoadingPlayer ||
-    isLoadingWageringRequirement /* || isLoadingPlayerPayment */
-  let error =
-    playerError || wageringRequirementError /* || playerPaymentError */
+    isLoadingPlayer || isLoadingWageringRequirement || isLoadingPlayerPayment
+  let error = playerError || wageringRequirementError || playerPaymentError
   let player = { ...data, wageringRequirement, playerPayment }
 
   const onBankSubmitted = () => {
