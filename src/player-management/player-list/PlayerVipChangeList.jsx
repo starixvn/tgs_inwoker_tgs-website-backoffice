@@ -4,7 +4,7 @@ import { Spinner, Stack, Flex, Box, Card, Set } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
 import { Trans } from "../../i18n"
-import { pastWeek } from "../../date/range"
+import { pastWeek, today } from "../../date/range"
 import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
 import { Tab, TabPanel } from "../../tab"
@@ -12,6 +12,7 @@ import textColumn from "../../table/column/textColumn"
 import { Descending, SortOrder } from "../../table/order"
 import AlertDialog from "../../dialog/Alert"
 import { usePlayerPromotions, usePlayerVipChangeList } from "./client"
+import { subDays } from "date-fns"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 
 export const Key = "vip-change-list"
@@ -90,11 +91,18 @@ const SearchBar = ({ from, to, search, isLoading }) => {
 
   const onSubmit = (data) => search(data)
 
+  let todayRange = today()
+  let DataRetentionDays = 180
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
+
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
           <DateTimeRangeInput
+            minDate={minDate}
+            maxDate={maxDate}
             startProps={{
               name: "from"
             }}

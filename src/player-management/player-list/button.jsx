@@ -171,7 +171,7 @@ const TabsDialog = ({
           {...dialog}
           {...props}
           css={css`
-            min-width: 80vw;
+            min-width: 85vw;
             min-height: 85vh;
 
             & .bb-DialogContent {
