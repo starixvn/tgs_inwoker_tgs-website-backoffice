@@ -179,3 +179,8 @@ export const usePlayerVipChangeList = (playerCode, searchParams) => {
       : ""
   return useGet(url)
 }
+
+export const usePlayerPayment = (playerCode) => {
+  let url = playerCode ? `${API}/payment/${playerCode}` : ""
+  return useGet(url)
+}

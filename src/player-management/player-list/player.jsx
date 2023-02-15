@@ -264,9 +264,11 @@ export const Panel = ({
     vipLevel = "",
     registeredOn,
     balance,
-    status
+    status,
+    playerPayment
   } = player
 
+  console.log("playerPayment", playerPayment)
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues spacing="major-2">
@@ -357,6 +359,8 @@ export const Panel = ({
 
         <RegistrationDomainLabel />
         <Box>{player?.registerHost}</Box>
+
+        {/* <Trans zh="总存款" en="Total　Deposit" /> */}
       </FieldValues>
     </TabPanel>
   )
