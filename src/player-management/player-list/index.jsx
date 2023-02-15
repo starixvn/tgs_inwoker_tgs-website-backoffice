@@ -192,8 +192,13 @@ const SearchBar = ({
 }) => {
   let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
   let showAllAgent = allAgentSetting.switch
+  let isAdminUser = useIsAdminUser()
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
+  let playerCodePlaceholder = useTrans({
+    zh: "玩家代碼",
+    en: "Player code"
+  })
   let domainInputPlaceholder = useTrans({
     zh: "注册域名",
     en: "Registration Domain"
@@ -240,6 +245,13 @@ const SearchBar = ({
             minLength={2}
             maxLength={256}
           />
+          {isAdminUser && (
+            <InputField
+              name="playerCode"
+              showEmptyFieldValueAddonAfter
+              placeholder={playerCodePlaceholder}
+            />
+          )}
           <InputField
             name="agentName"
             showEmptyFieldValueAddonAfter

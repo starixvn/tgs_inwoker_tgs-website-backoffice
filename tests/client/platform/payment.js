@@ -119,37 +119,10 @@ export const findOrCreate = async (props) => {
   return item
 }
 
-export const listDeposit = async (brandId, keyword = "") => {
-  const transferType = "Deposit"
-  let url = `${host}/${API}?brandId=${brandId}&transferType=${transferType}&keyword=${keyword}&showAll=true`
-
-  let response = await fetcher.get(url)
-  let result = await response.json()
-  return result?.items
-}
-
-export const findByName = async (brandId, value) => {
-  let items = await listDeposit(brandId, value)
-  return items?.[0]
-}
-
 export const get = async (id) => {
   let url = `${host}/${API}/info/${id}`
   let response = await fetcher.get(url)
   return response.json()
-}
-
-export const firstBankManualDepositPayment = async (brandId) => {
-  let paymentList = await listDeposit(brandId)
-
-  let bankPaymentList = paymentList.filter(
-    ({ bankType, paymentName }) =>
-      bankType === "Bank" && paymentName === "Manual"
-  )
-
-  let FirstIndex = 0
-  let bankPayment = bankPaymentList[FirstIndex]
-  return bankPayment
 }
 
 export default {
@@ -157,6 +130,5 @@ export default {
   TransferType,
   create,
   findOrCreate,
-  get,
-  firstBankManualDepositPayment
+  get
 }
