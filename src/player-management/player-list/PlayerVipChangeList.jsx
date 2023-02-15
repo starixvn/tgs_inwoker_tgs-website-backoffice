@@ -30,6 +30,7 @@ export const PlayerVipChangeListPanel = ({ brandId, playerCode, ...props }) => {
 
   let dateRange = pastWeek()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     from: dateRange.start,
     to: dateRange.end
   })
