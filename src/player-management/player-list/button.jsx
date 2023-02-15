@@ -213,7 +213,7 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
         <PlayerOperationTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
-        {/* <PlayerVipChangeListTab {...tab} /> */}
+        <PlayerVipChangeListTab {...tab} />
       </TabList>
       <PlayerPanel
         player={player}
@@ -239,11 +239,11 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
         brandId={brandId}
         {...tab}
       />
-      {/* <PlayerVipChangeListPanel
+      <PlayerVipChangeListPanel
         playerCode={playerCode}
         brandId={brandId}
         {...tab}
-      /> */}
+      />
     </Tabs>
   )
 }
