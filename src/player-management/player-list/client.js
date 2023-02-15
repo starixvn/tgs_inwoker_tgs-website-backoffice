@@ -173,8 +173,9 @@ export const useApplyPlayerWithdraw = (data) => {
 }
 
 export const usePlayerVipChangeList = (playerCode, searchParams) => {
-  let url = playerCode
-    ? urlWith(searchParams, `${API}/vipAdjustInfos/${playerCode}`)
-    : ""
+  let url =
+    playerCode && searchParams?.brandId
+      ? urlWith(searchParams, `${API}/vipAdjustInfos/${playerCode}`)
+      : ""
   return useGet(url)
 }

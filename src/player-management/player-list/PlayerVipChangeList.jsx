@@ -36,7 +36,7 @@ export const PlayerVipChangeListPanel = ({ brandId, playerCode, ...props }) => {
   })
 
   let { isLoading, data, error, mutate, deleteCache } = usePlayerVipChangeList(
-    playerCode,
+    isActive ? playerCode : "",
     isActive
       ? toApiParams({
           ...state
