@@ -171,3 +171,16 @@ export const useApplyPlayerWithdraw = (data) => {
   let url = data ? `${PlayerWithdrawApi}/player` : ""
   return usePostData(url, data)
 }
+
+export const usePlayerVipChangeList = (playerCode, searchParams) => {
+  let url =
+    playerCode && searchParams?.brandId
+      ? urlWith(searchParams, `${API}/vipAdjustInfos/${playerCode}`)
+      : ""
+  return useGet(url)
+}
+
+export const usePlayerPayment = (playerCode) => {
+  let url = playerCode ? `${API}/payment/${playerCode}` : ""
+  return useGet(url)
+}

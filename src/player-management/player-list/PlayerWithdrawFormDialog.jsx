@@ -10,7 +10,8 @@ import {
   Blockquote,
   Dialog,
   useModalState,
-  FieldStack
+  FieldStack,
+  FieldWrapper
 } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -28,9 +29,12 @@ import { usePaymentChannelList } from "../../payment/client"
 import { paymentChannelabel } from "../../payment/channel/client"
 import { TextareaField } from "../../textarea"
 import { NumberInputField } from "../../input/NumberInput"
+import { useFormContext, useWatch } from "react-hook-form"
+import BankType from "../../payment/BankType"
 
 export const PlayerWithdrawFormDialogDisclosure = ({
   brandId,
+  player,
   playerCode,
   id,
   dialogId,
@@ -52,6 +56,7 @@ export const PlayerWithdrawFormDialogDisclosure = ({
       {dialog.visible && (
         <WithdrawFormDialog
           brandId={brandId}
+          player={player}
           playerCode={playerCode}
           dialog={dialog}
           dialogId={dialogId}
@@ -97,6 +102,7 @@ const usePlayerBankInfoList = (playerCode) => {
 
 const WithdrawFormDialog = ({
   brandId,
+  player,
   playerCode,
   dialog,
   dialogId,
@@ -140,6 +146,7 @@ const WithdrawFormDialog = ({
       id={dialogId}
       defaultValues={{
         brandId,
+        player,
         playerCode,
         bankInfoId: defaultBankInfo?.id
       }}
@@ -161,9 +168,14 @@ const WithdrawFormDialog = ({
   )
 }
 
-const FormBody = ({ bankInfoList = [], brandId, playerCode }) => {
+const FormBody = ({ bankInfoList = [] }) => {
+  let { control, getValues } = useFormContext()
+  let player = getValues("player")
   return (
     <FieldStack marginLeft="1rem" marginRight="1rem">
+      <FieldWrapper label={<Trans zh="真实姓名" en="Real name" />}>
+        <Box>{player.realName}</Box>
+      </FieldWrapper>
       <BankInfoSelect bankInfoList={bankInfoList} required />
       <AmountInputField required />
       <NoteInputField />
@@ -189,19 +201,15 @@ const AmountInputField = ({ ...props }) => {
   return <NumberInputField name="amount" label={label} {...props} />
 }
 
+const BankInfoIdFieldName = "bankInfoId"
 const BankInfoSelect = ({
-  name = "bankInfoId",
+  name = BankInfoIdFieldName,
   bankInfoList = [],
   ...props
 }) => {
   let label = useTrans({
     zh: "银行卡",
     en: "Bank"
-  })
-
-  let placeholder = useTrans({
-    zh: "支付通道",
-    en: "Payment Channel"
   })
 
   let options = bankInfoList.map((bankInfo) => {
@@ -220,3 +228,17 @@ const BankInfoSelect = ({
     />
   )
 }
+
+/*
+TODO: rm?
+const useSelectedBankInfo = () => {
+  let { control, getValues } = useFormContext()
+  let bankInfoList = getValues("bankInfoList")
+  let bankInfoId = useWatch({
+    control,
+    name: BankInfoIdFieldName
+  })
+
+  return bankInfoList?.find?.(({ id }) => id === bankInfoId)
+}
+*/

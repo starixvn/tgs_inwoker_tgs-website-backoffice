@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-manual
-image: pgtgs/payment-manual:202208240242-dev
+image: pgtgs/payment-manual:202302020930-dev
 services:
   - name: payment-manual
     dependencies:

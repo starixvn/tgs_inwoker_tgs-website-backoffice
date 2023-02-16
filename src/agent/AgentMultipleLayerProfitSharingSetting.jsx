@@ -287,9 +287,27 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
           <Table.HeadCell>
             <Box></Box>
           </Table.HeadCell>
-          <Table.HeadCell>{activeNumberLabel}</Table.HeadCell>
-          <Table.HeadCell>{netProfitLabel}</Table.HeadCell>
-          <Table.HeadCell>{profitSharingPercentageLabel}</Table.HeadCell>
+          <Table.HeadCell
+            css={css`
+              text-transform: none;
+            `}
+          >
+            {activeNumberLabel}
+          </Table.HeadCell>
+          <Table.HeadCell
+            css={css`
+              text-transform: none;
+            `}
+          >
+            {netProfitLabel}
+          </Table.HeadCell>
+          <Table.HeadCell
+            css={css`
+              text-transform: none;
+            `}
+          >
+            {profitSharingPercentageLabel}
+          </Table.HeadCell>
         </Table.Row>
       </Table.Head>
       <Table.Body>

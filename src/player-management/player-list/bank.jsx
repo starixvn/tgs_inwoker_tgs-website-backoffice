@@ -40,7 +40,6 @@ import {
 } from "../../payment/channel/PaymentChannel"
 import { BrandPaymentMethodBankTypeSelect } from "../../payment/method/BrandPaymentMethodBankType"
 import { useFormContext, useWatch } from "react-hook-form"
-import PaymentMethodBankType from "../../payment/method/PaymentMethodBankType"
 import { useBrandPaymentList } from "../../system/brandpayments/client"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import clone from "clone-deep"
@@ -115,10 +114,6 @@ const Bank = ({
   let editDialog = useModalState()
   let setDefaultDialog = useModalState()
 
-  //TODO: rm?
-  let isBank = PaymentMethodBankType.isBank(bankType)
-  let isCrypto = PaymentMethodBankType.isCrypto(bankType)
-
   return (
     <Card data-field="bank-id" data-value={record.id}>
       <Set alignX="right">
@@ -186,6 +181,7 @@ const Bank = ({
   )
 }
 
+//TODOL: move bank type to payment?
 export const BankType = {
   Bank: "Bank",
   Crypto: "Crypto",
@@ -459,7 +455,7 @@ const EditBody = ({ brandId }) => {
   } = useBrandPaymentList({
     brandId,
     transferType: BrandPaymentTransferType.Withdrawal,
-    shoAll: true
+    showAll: true
   })
   let { watch } = useFormContext()
 

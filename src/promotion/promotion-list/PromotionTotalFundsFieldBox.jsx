@@ -67,7 +67,7 @@ export const PromotionTotalFundsFieldBox = ({
     }
   }, [unlimitedProps])
 
-  //TODO: use unlimitedProps?.hide instead?
+  //TODO: use totalFunds?.visible instead?
   if (fieldNotUsed({ promotionTypeGroup, promotionType })) {
     return null
   }

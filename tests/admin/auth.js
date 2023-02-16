@@ -64,6 +64,157 @@ export const Fixture = {
 
     use(promotionSettings)
   },
+  manualPaymentProvider: async ({ backofficeApi }, use) => {
+    let manualPaymentProvider = await backofficeApi?.payment?.provider?.manual()
+    use(manualPaymentProvider)
+  },
+  bankPaymentMethod: async ({ backofficeApi }, use) => {
+    let paymentMethod = await backofficeApi?.payment?.method?.bank()
+    use(paymentMethod)
+  },
+  customBankPaymentChannel: async ({ backofficeApi }, use) => {
+    let channel = await backofficeApi.payment.channel.customBank()
+    use(channel)
+  },
+  customBankManualPaymentMethodChannel: async (
+    {
+      backofficeApi,
+      manualPaymentProvider,
+      bankPaymentMethod,
+      customBankPaymentChannel
+    },
+    use
+  ) => {
+    let paymentId = manualPaymentProvider.id
+    let methodId = bankPaymentMethod.id
+    let channelId = customBankPaymentChannel.id
+
+    let pmc = await backofficeApi.payment.paymentMethodChannel.findOrCreate(
+      paymentId,
+      methodId,
+      channelId
+    )
+    use(pmc)
+  },
+  eWalletPaymentMethod: async ({ backofficeApi }, use) => {
+    let paymentMethod = await backofficeApi?.payment?.method?.eWallet()
+    use(paymentMethod)
+  },
+  eWalletPaymentChannel: async ({ backofficeApi }, use) => {
+    let channel = await backofficeApi.payment.channel.eWallet()
+    use(channel)
+  },
+  eWalletManualPaymentMethodChannel: async (
+    {
+      backofficeApi,
+      manualPaymentProvider,
+      eWalletPaymentMethod,
+      eWalletPaymentChannel
+    },
+    use
+  ) => {
+    let paymentId = manualPaymentProvider.id
+    let methodId = eWalletPaymentMethod.id
+    let channelId = eWalletPaymentChannel.id
+
+    let pmc = await backofficeApi.payment.paymentMethodChannel.findOrCreate(
+      paymentId,
+      methodId,
+      channelId
+    )
+    use(pmc)
+  },
+  eWalletManualDepositPayment: async (
+    { eWalletManualPaymentMethodChannel, platform, backofficeApi },
+    use
+  ) => {
+    let paymentMethodChannelId = eWalletManualPaymentMethodChannel.id
+    let brandId = platform.id
+
+    let platformPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId,
+      transferType: backofficeApi.platform.payment.TransferType.Deposit,
+      paymentMethodChannelId,
+      extendedData: {
+        phone: "000000",
+        eMoneyName: "platformEMoneyName"
+      }
+    })
+    use(platformPayment)
+  },
+  eWalletManualWithdrawPayment: async (
+    { eWalletManualPaymentMethodChannel, platform, backofficeApi },
+    use
+  ) => {
+    let paymentMethodChannelId = eWalletManualPaymentMethodChannel.id
+    let brandId = platform.id
+
+    let platformPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId,
+      transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
+      paymentMethodChannelId
+    })
+    use(platformPayment)
+  },
+  pulsaPaymentMethod: async ({ backofficeApi }, use) => {
+    let paymentMethod = await backofficeApi?.payment?.method?.pulsa()
+    use(paymentMethod)
+  },
+  pulsaPaymentChannel: async ({ backofficeApi }, use) => {
+    let channel = await backofficeApi.payment.channel.pulsa()
+    use(channel)
+  },
+  pulsaManualPaymentMethodChannel: async (
+    {
+      backofficeApi,
+      manualPaymentProvider,
+      pulsaPaymentMethod,
+      pulsaPaymentChannel
+    },
+    use
+  ) => {
+    let paymentId = manualPaymentProvider.id
+    let methodId = pulsaPaymentMethod.id
+    let channelId = pulsaPaymentChannel.id
+
+    let pmc = await backofficeApi.payment.paymentMethodChannel.findOrCreate(
+      paymentId,
+      methodId,
+      channelId
+    )
+    use(pmc)
+  },
+  pulsaManualDepositPayment: async (
+    { pulsaManualPaymentMethodChannel, platform, backofficeApi },
+    use
+  ) => {
+    let paymentMethodChannelId = pulsaManualPaymentMethodChannel.id
+    let brandId = platform.id
+
+    let platformPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId,
+      transferType: backofficeApi.platform.payment.TransferType.Deposit,
+      paymentMethodChannelId,
+      extendedData: {
+        phone: "000000"
+      }
+    })
+    use(platformPayment)
+  },
+  pulsaManualWithdrawPayment: async (
+    { pulsaManualPaymentMethodChannel, platform, backofficeApi },
+    use
+  ) => {
+    let paymentMethodChannelId = pulsaManualPaymentMethodChannel.id
+    let brandId = platform.id
+
+    let platformPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId,
+      transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
+      paymentMethodChannelId
+    })
+    use(platformPayment)
+  },
   operatorApi: async ({}, use) => {
     use(operatorApi)
   },
@@ -72,6 +223,12 @@ export const Fixture = {
   },
   sboGameProviderApi: ({}, use) => {
     use(sboGameProviderApi)
+  },
+  sboGameProvider: async ({ backofficeApi, sboGameProviderApi }, use) => {
+    let sboGameProvider = await backofficeApi.gameProvider.findByCode(
+      sboGameProviderApi.code
+    )
+    use(sboGameProvider)
   },
   reportApi: ({}, use) => {
     use(reportApi)
@@ -277,6 +434,28 @@ const PromotionSettingsString = JSON.stringify([
     Trans: {
       En: "Dummy",
       Zh: "基本活動"
+    }
+  },
+  {
+    Name: "Offline",
+    Types: [
+      {
+        Name: "LoginReward",
+        Trans: {
+          En: "Login Reward",
+          Zh: "登入送"
+        },
+        vipLevels: {
+          visible: false
+        },
+        totalFunds: {
+          visible: false
+        }
+      }
+    ],
+    Trans: {
+      En: "Offline",
+      Zh: "線下活動"
     }
   }
 ])

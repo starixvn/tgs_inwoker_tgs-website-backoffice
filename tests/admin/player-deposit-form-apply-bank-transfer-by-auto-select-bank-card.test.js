@@ -12,26 +12,31 @@ const test = base.extend(Fixture)
 
 const { finance, name, lorem } = faker
 
-test("player apply deposit form", async ({ page, platform, player }) => {
-  await gotoPlayerListPage(page, platform.code)
+test("player deposit form > apply bank transfer by auto select bank card", async ({
+  page,
+  platform,
+  player,
+  backofficeApi
+}) => {
+  let [bank] = await Promise.all([
+    backofficeApi.player.bankCard.add({
+      brandId: platform.id,
+      playerCode: player.code
+    }),
+    gotoPlayerListPage(page, platform.code)
+  ])
+
   await searchPlayer(page, player)
 
   let dialogSelector = `#apply-deposit-form-dialog`
   await openDialog(page, dialogSelector)
 
   let form = {
-    bankName: name.firstName(),
-    bankAccount: finance.account(),
     amount: 10,
     note: lorem.word()
   }
   await selectPayment(page, dialogSelector)
 
-  await page.fill(`${dialogSelector} input[name="bankName"]`, form.bankName)
-  await page.fill(
-    `${dialogSelector} input[name="bankAccount"]`,
-    form.bankAccount
-  )
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)
   await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
 
@@ -47,6 +52,11 @@ test("player apply deposit form", async ({ page, platform, player }) => {
 
   let formId = await applyFormResponse.json()
   expect(formId).to.not.be.empty
+
+  let depositForm = await backofficeApi.fund.deposit.form(platform.id, formId)
+
+  expect(depositForm.applyInfo.sendBankName).equals(bank.detail.name)
+  expect(depositForm.applyInfo.sendBankAccount).equals(bank.detail.bankAccount)
 })
 
 const selectPayment = async (page, dialogSelector) => {

@@ -10,7 +10,7 @@ const API = "api/brand"
 export const addPlatform = async ({
   licenseeId = "",
   code = `${faker.random.alpha(1)}${faker.random.alphaNumeric(5)}`,
-  name = faker.random.alpha(5),
+  name,
   operationalEmail = faker.internet.email(),
   settlementIntervalType = "Daily",
   currencyCodes = ["CNY"],
@@ -19,6 +19,7 @@ export const addPlatform = async ({
   domains = [],
   ...formData
 } = {}) => {
+  name = name ?? code
   if (!licenseeId) {
     console.error("licenseeId is required")
     return null
