@@ -15,6 +15,8 @@ export const BatchAddBalance = "batchaddbalance"
 
 export const AdjustLockedAmount = "adjustlockedamount"
 
+export const AdjustTransactionAmount = "adjusttransactionamount"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {
@@ -67,6 +69,14 @@ export const label = (codes = [], locale = Locales.zh) => {
         {
           zh: "解鎖",
           en: "Unlock"
+        },
+        locale
+      )
+    case AdjustTransactionAmount:
+      return getTrans(
+        {
+          zh: "交易金額",
+          en: "Transaction Amount"
         },
         locale
       )

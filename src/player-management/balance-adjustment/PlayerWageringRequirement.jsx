@@ -57,12 +57,23 @@ const WageringRequirementDialog = ({
     en: "Balance"
   })
 
-  let { isLoading, data: player, error } = usePlayer(playerCode)
+  let {
+    isLoading: isLoadingPlayer,
+    data: player,
+    error: playerError
+  } = usePlayer(playerCode)
+  let {
+    data: wageringRequirement,
+    isLoading: isLoadingWageringRequirement,
+    error: wageringRequirementError
+  } = usePlayerBucketAmount(playerCode)
 
+  let isLoading = isLoadingPlayer || isLoadingWageringRequirement
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
 
+  let error = playerError || wageringRequirement
   if (error) {
     return <AlertDialog {...error} onClickClose={dialog.close} />
   }
