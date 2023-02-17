@@ -9,7 +9,7 @@ import {
 import { Disclosure } from "../../dialog/Disclosure"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
-import { usePlayer } from "../player-list/client"
+import { usePlayer, usePlayerBucketAmount } from "../player-list/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { View } from "./menu"
@@ -73,7 +73,7 @@ const WageringRequirementDialog = ({
     return <LoadingBackdrop {...dialog} />
   }
 
-  let error = playerError || wageringRequirement
+  let error = playerError || wageringRequirementError
   if (error) {
     return <AlertDialog {...error} onClickClose={dialog.close} />
   }
@@ -100,7 +100,7 @@ const WageringRequirementDialog = ({
 
         <Trans zh="流水" en="Unfinished Wagering" />
         <Box>
-          <FormattedNumberDecimal value={player?.wageringRequirement} />
+          <FormattedNumberDecimal value={wageringRequirement} />
         </Box>
       </FieldValues>
     </Dialog.Modal>
