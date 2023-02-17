@@ -93,12 +93,12 @@ const WageringRequirementDialog = ({
         <Trans zh="用户名" en="Username" />
         <Box>{username}</Box>
 
-        <Trans zh="玩家余额" en="Balance" />
+        <Trans zh="余额" en="Balance" />
         <Box>
           <FormattedNumberDecimal value={player?.balance} />
         </Box>
 
-        <Trans zh="流水金额" en="Turnover Requirement" />
+        <Trans zh="流水" en="Unfinished Wagering" />
         <Box>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
         </Box>
