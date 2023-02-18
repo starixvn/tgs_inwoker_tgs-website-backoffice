@@ -295,7 +295,7 @@ const useCompletedWageringColumns = ({ items = [] }) => {
 
     if (isAdmin) {
       columns.push({
-        accessor: "ExternalId",
+        accessor: "externalId",
         Header: "Reference ID",
         disableSortBy: true
       })
