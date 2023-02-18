@@ -32,6 +32,7 @@ import SequenceColumn from "../../table/column/sequence"
 import textColumn from "../../table/column/textColumn"
 import { Descending } from "../../table/order"
 import { Modal } from "../../dialog/Modal"
+import { useIsAdminUser } from "../../user/context"
 
 export const PlayerWageringRequirementDialogDisclosure = ({
   playerCode,
@@ -215,9 +216,56 @@ const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
   )
 }
 
-const useCompletedWageringColumns = ({ items = [] }) =>
-  useMemo(
-    () => [
+const Game = "Game"
+const GameTrans = {
+  zh: "游戏",
+  en: "Game"
+}
+
+const Adjust = "Adjust"
+const AdjustTrans = {
+  zh: "调整",
+  en: "Adjust"
+}
+
+const Create = "Create"
+const CreateTrans = {
+  zh: "新增",
+  en: "Add"
+}
+
+const CleanUp = "CleanUp"
+const CleanUpTrans = {
+  zh: "清除",
+  en: "Clear"
+}
+
+const BucketType = {
+  Game,
+  Adjust,
+  Create,
+  CleanUp
+}
+
+const BucketTypeLabel = ({ value = "" }) => {
+  switch (value) {
+    case BucketType.Game:
+      return <Trans {...GameTrans} />
+    case BucketType.Adjust:
+      return <Trans {...AdjustTrans} />
+    case BucketType.Create:
+      return <Trans {...CreateTrans} />
+    case BucketType.CleanUp:
+      return <Trans {...CleanUpTrans} />
+    default:
+      return value
+  }
+}
+
+const useCompletedWageringColumns = ({ items = [] }) => {
+  let isAdmin = useIsAdminUser()
+  return useMemo(() => {
+    let columns = [
       sequenceColumn(),
       dateTimeColumn({
         accessor: "createdOn",
@@ -231,10 +279,31 @@ const useCompletedWageringColumns = ({ items = [] }) =>
         Header: <Trans zh="流水" en="Wagering" />,
         disableSortBy: true,
         format: "+0,0.00"
+      }),
+      textColumn({
+        accessor: "remark",
+        Header: <Trans zh="备注" en="Remark" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "type",
+        Header: <Trans zh="类型" en="Type" />,
+        disableSortBy: true,
+        Cell: BucketTypeLabel
       })
-    ],
-    [JSON.stringify(items)]
-  )
+    ]
+
+    if (isAdmin) {
+      columns.push({
+        accessor: "ExternalId",
+        Header: "Reference ID",
+        disableSortBy: true
+      })
+    }
+
+    return columns
+  }, [JSON.stringify(items)])
+}
 
 const useWageringRequirementColumns = ({ playerCode, items = [] }) =>
   useMemo(
@@ -260,7 +329,7 @@ const useWageringRequirementColumns = ({ playerCode, items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "uncompleteWagering",
-        Header: <Trans zh="剩余流水" en="Uncompleted Wagering" />,
+        Header: <Trans zh="流水" en="Unfinished Wagering" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
