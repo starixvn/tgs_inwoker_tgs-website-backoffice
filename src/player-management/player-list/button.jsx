@@ -20,7 +20,7 @@ import { PlayerOperationTab, PlayerOperationPanel } from "./PlayerOperation"
 import { Tab as PasswordTab, Panel as PasswordPanel } from "./password"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import { usePlayer, usePlayerBucketAmount } from "./client"
+import { usePlayer, usePlayerBucketAmount, usePlayerPayment } from "./client"
 import {
   Trans,
   FormattedDateTime,
@@ -37,6 +37,10 @@ import {
 import { PlayerPromotionPanel, PlayerPromotionTab } from "./PlayerPromotion.jsx"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import textColumn from "../../table/column/textColumn"
+import {
+  PlayerVipChangeListPanel,
+  PlayerVipChangeListTab
+} from "./PlayerVipChangeList"
 
 export const ViewButton = ({
   player,
@@ -135,9 +139,16 @@ const TabsDialog = ({
     error: wageringRequirementError
   } = usePlayerBucketAmount(playerCode)
 
-  let isLoading = isLoadingPlayer || isLoadingWageringRequirement
-  let error = playerError || wageringRequirementError
-  let player = { ...data, wageringRequirement }
+  let {
+    data: playerPayment,
+    isLoading: isLoadingPlayerPayment,
+    error: playerPaymentError
+  } = usePlayerPayment(playerCode)
+
+  let isLoading =
+    isLoadingPlayer || isLoadingWageringRequirement || isLoadingPlayerPayment
+  let error = playerError || wageringRequirementError || playerPaymentError
+  let player = { ...data, wageringRequirement, playerPayment }
 
   const onBankSubmitted = () => {
     mutate()
@@ -158,7 +169,7 @@ const TabsDialog = ({
           {...dialog}
           {...props}
           css={css`
-            min-width: 80vw;
+            min-width: 85vw;
             min-height: 85vh;
 
             & .bb-DialogContent {
@@ -209,6 +220,7 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
         <PlayerOperationTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
+        <PlayerVipChangeListTab {...tab} />
       </TabList>
       <PlayerPanel
         player={player}
@@ -230,6 +242,11 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
         {...tab}
       />
       <PlayerPromotionPanel
+        playerCode={playerCode}
+        brandId={brandId}
+        {...tab}
+      />
+      <PlayerVipChangeListPanel
         playerCode={playerCode}
         brandId={brandId}
         {...tab}

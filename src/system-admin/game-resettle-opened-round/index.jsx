@@ -20,13 +20,8 @@ import { Trans, useTrans, getAcceptLangCulture, useLangCode } from "../../i18n"
 import { useLanguageList } from "../../language/client"
 import equals from "fast-deep-equal"
 import { useGameOpenedRoundList, useResettleOpenedRound } from "./client"
-import { CopyTextBox } from "../../text/CopyTextBox"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
-import {
-  GameRoundStatusLabel,
-  GameRoundStatusSelect
-} from "../../game/round/GameRoundStatus"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -53,26 +48,14 @@ const Body = () => {
   let QueryMaxRangeDays = 31
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    /*
-    from: dateRange.start,
-    to: dateRange.end
-    */
     externalRoundId: undefined
   })
-
-  /*
-  let { from, to } = state
-  */
 
   let culture = useLangCode()
   let { isLoading, data, error, mutate, deleteCache } = useGameOpenedRoundList({
     ...toApiParams(state),
     sortby: "createdOn",
     orderby: "descending",
-    /*
-    from,
-    to: startOfNextDay(to),
-    */
     culture
   })
   let columns = useColumns({ items: data?.items, mutate })
@@ -83,8 +66,6 @@ const Body = () => {
     <PageContent
       actionBar={
         <SearchBar
-          // start={from}
-          // end={to}
           externalRoundId={state.externalRoundId}
           gameProviderId={state.gameProviderId}
           minDate={minDate}
@@ -94,10 +75,6 @@ const Body = () => {
           search={({ start, end, ...rest }) => {
             setState({
               pageIndex: 0,
-              /*
-              from: start,
-              to: end,
-              */
               ...rest
             })
             mutate()
@@ -158,11 +135,6 @@ const SearchBar = ({
 
   const onSubmit = (data) => search?.(data)
 
-  let roundIdPlaceholder = useTrans({
-    zh: "订单ID",
-    en: "Round ID"
-  })
-
   let externalRoundIdPlaceholder = useTrans({
     zh: "三方订单ID",
     en: "External ID"
@@ -172,13 +144,6 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          {/* <DateInputRange
-            showDateDropdownMenu
-            minDate={minDate}
-            maxDate={maxDate}
-            maxRangeDays={maxRangeDays}
-            required
-          /> */}
           <InputField
             name="externalRoundId"
             showEmptyFieldValueAddonAfter
@@ -186,7 +151,7 @@ const SearchBar = ({
             autoFocus
             required
           />
-          <GameProviderSelect name="gameProviderId" />
+          <GameProviderSelect name="gameProviderId" required />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>

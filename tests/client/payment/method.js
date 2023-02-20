@@ -3,10 +3,14 @@ import { host } from "../host.js"
 
 const BankTransfer = "BankTransfer"
 const Crypto = "Crypto"
+const EWallet = "EWallet"
+const Pulsa = "Pulsa"
 
 export const Code = {
   BankTransfer,
-  Crypto
+  Crypto,
+  EWallet,
+  Pulsa
 }
 
 const API = "api/PaymentMethod"
@@ -27,7 +31,38 @@ export const find = async (code) => {
   return items?.find((method) => method.code === code)
 }
 
-export const firstBankTransfer = async () => {
+export const create = async (code, bankType) => {
+  let url = `${host}/${API}`
+  let response = await fetcher.put(url, {
+    data: { code, bankType },
+    failOnStatusCode: true
+  })
+
+  if (!response.ok()) {
+    console.error("not able to create payment method ", code)
+    return null //or throw err?
+  }
+
+  return find(code)
+}
+
+export const findOrCreate = async (code, bankType) => {
+  let item = await find(code)
+  if (!item) {
+    return create(code, bankType)
+  }
+  return item
+}
+
+export const eWallet = async () => findOrCreate(EWallet, EWallet)
+
+export const pulsa = async () => findOrCreate(Pulsa, Pulsa)
+
+//TODO: define bankType
+export const bank = async () => findOrCreate(BankTransfer, "Bank")
+
+//TODO: bank or bankTransfer?
+export const bankTransfer = async () => {
   let item = await find(BankTransfer)
   return item
 }
@@ -35,5 +70,10 @@ export const firstBankTransfer = async () => {
 export default {
   list,
   find,
-  firstBankTransfer
+  create,
+  findOrCreate,
+  bank,
+  bankTransfer,
+  eWallet,
+  pulsa
 }

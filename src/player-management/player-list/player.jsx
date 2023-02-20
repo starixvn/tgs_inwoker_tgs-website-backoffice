@@ -264,7 +264,8 @@ export const Panel = ({
     vipLevel = "",
     registeredOn,
     balance,
-    status
+    status,
+    playerPayment
   } = player
 
   return (
@@ -357,6 +358,12 @@ export const Panel = ({
 
         <RegistrationDomainLabel />
         <Box>{player?.registerHost}</Box>
+
+        <Trans zh="总存款" en="Total　Deposit" />
+        <FormattedNumberDecimal value={playerPayment?.totalDepositAmount} />
+
+        <Trans zh="总提款" en="Total　Withdraw" />
+        <FormattedNumberDecimal value={playerPayment?.totalWithdrawAmount} />
       </FieldValues>
     </TabPanel>
   )

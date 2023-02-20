@@ -376,9 +376,7 @@ const ValidBetSettingDialogDisclosure = ({
           dialog={dialog}
           title={label}
           netProfitLabel={<Trans zh="有效投注" en="Valid Bet" />}
-          profitSharingPercentageLabel={
-            <Trans zh="返佣比例" en="Rebate Percentage" />
-          }
+          profitSharingPercentageLabel={<Trans zh="返佣比例" en="Rebate PT" />}
         />
       )}
     </>
@@ -394,8 +392,8 @@ const WinLossSettingDialogDisclosure = ({
   let dialog = useModalState()
 
   let label = useTrans({
-    zh: "玩家输赢返佣设置",
-    en: "Player Win Loss Rebate Setting"
+    zh: "输赢反佣设置",
+    en: "Win Loss Rebate Setting"
   })
   return (
     <>
@@ -413,9 +411,7 @@ const WinLossSettingDialogDisclosure = ({
           dialog={dialog}
           title={label}
           netProfitLabel={<Trans zh="输赢金额" en="Win Loss" />}
-          profitSharingPercentageLabel={
-            <Trans zh="返佣比例" en="Rebate Percentage" />
-          }
+          profitSharingPercentageLabel={<Trans zh="返佣比例" en="Rebate PT" />}
         />
       )}
     </>
@@ -623,7 +619,7 @@ const GameTypeSettingFormCard = ({
               />
               <CheckboxField
                 name="hasWinLoss"
-                label={<Trans zh="玩家输赢" en="Player Win Loss" />}
+                label={<Trans zh="输赢金额" en="Win Loss" />}
                 disabled={isLoading || readOnly}
               />
             </FieldStack>

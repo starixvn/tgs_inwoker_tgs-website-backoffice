@@ -5,7 +5,11 @@ import { useTrans, Trans, useLocale } from "../../i18n"
 import Select, { SelectField } from "../../select/Select"
 import { paymentMethodCodeLabel } from "../../payment/method/client"
 
-export const PlayerPaymentMethodSelect = ({ paymentList = [], ...props }) => {
+export const PlayerPaymentMethodSelect = ({
+  placeholder,
+  paymentList = [],
+  ...props
+}) => {
   let label = useTrans({
     zh: "支付方式",
     en: "Payment Method"
@@ -14,13 +18,19 @@ export const PlayerPaymentMethodSelect = ({ paymentList = [], ...props }) => {
     zh: "支付方式",
     en: "Payment Method"
   })
+  placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()
 
   let options = toPaymentMethodOptions(locale, paymentList)
 
   return (
-    <SelectField placeholder="" options={options} label={label} {...props} />
+    <SelectField
+      placeholder={placeholder}
+      options={options}
+      label={label}
+      {...props}
+    />
   )
 }
 

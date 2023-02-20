@@ -22,6 +22,8 @@ export const PromotionDistributionMethodFieldBox = ({
 
   let promotion = useFindPromotionType(promotionType)
   let autoPayoutProps = promotion?.autoSentPlayerBonus ?? {}
+
+  //TODO: don't force setValue if readOnly?
   useEffect(() => {
     if (isNotNil(autoPayoutProps?.checked)) {
       setValue(AutoPayoutFieldName, autoPayoutProps?.checked)

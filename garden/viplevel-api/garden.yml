@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: viplevel-api
-image: pgtgs/viplevel-api:202209270635.14
+image: pgtgs/viplevel-api:202301300845.25
 services:
   - name: viplevel-api
     dependencies:

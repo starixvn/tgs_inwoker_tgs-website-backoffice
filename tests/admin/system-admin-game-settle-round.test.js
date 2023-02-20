@@ -3,7 +3,7 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { selectByValue } from "../page/select.js"
+import { selectByValue, selectByLabel } from "../page/select.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import faker from "@faker-js/faker"
@@ -15,7 +15,8 @@ test("settle game round", async ({
   page,
   player,
   backofficeApi,
-  sboGameProviderApi
+  sboGameProviderApi,
+  sboGameProvider
 }) => {
   let walletAmount = 100
   await backofficeApi.player.addBalance(player.code, {
@@ -29,10 +30,15 @@ test("settle game round", async ({
   })
 
   await gotoGameOpenRoundPage(page)
-  await settleGameRoundBy(page, externalRoundId, OpenRound)
+  await settleGameRoundBy(page, externalRoundId, sboGameProvider, OpenRound)
 
   await gotoGameResettleOpenedRoundPage(page)
-  await settleGameRoundBy(page, externalRoundId, ResettleOpenedRound)
+  await settleGameRoundBy(
+    page,
+    externalRoundId,
+    sboGameProvider,
+    ResettleOpenedRound
+  )
 })
 
 const OpenRound = "OpenRound"
@@ -43,10 +49,12 @@ const isSettleOpenRound = (type) => type === OpenRound
 const settleGameRoundBy = async (
   page,
   externalRoundId,
+  sboGameProvider,
   type = Settle.OpenRound
 ) => {
   await page.fill(`input[name="externalRoundId"]`, externalRoundId)
-
+  // await selectByLabel(page, `select[name="gameProviderId"]`, "SBOBET")
+  await selectByValue(page, `select[name="gameProviderId"]`, sboGameProvider.id)
   await Promise.all([
     page.waitForResponse((response) => {
       return (

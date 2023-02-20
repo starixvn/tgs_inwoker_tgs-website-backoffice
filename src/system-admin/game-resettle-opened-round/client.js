@@ -9,7 +9,7 @@ import {
 
 const ReportAPI = "/api/RoundReport"
 export const useGameOpenedRoundList = (searchParams) => {
-  let url = searchParams
+  let url = searchParams?.externalRoundId
     ? urlWith(searchParams, `${ReportAPI}/closedRounds`)
     : ""
   return useGet(url)

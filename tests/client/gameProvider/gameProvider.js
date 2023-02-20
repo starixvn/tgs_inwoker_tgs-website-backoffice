@@ -17,7 +17,15 @@ export const random = async () => {
   return items?.[index]
 }
 
+export const findByCode = async (value) => {
+  let url = `${host}/${API}?code=${value}&showAll=true`
+  let response = await fetcher.get(url)
+  let result = await response.json()
+  return result?.items?.[0]
+}
+
 export default {
   list,
-  random
+  random,
+  findByCode
 }

@@ -13,6 +13,8 @@ export const DefaultPassword = "TgsP@ssw0rd"
 
 export const DefaultCurrencyCode = "CNY"
 
+//TODO: add realName and phone?
+//TODO: log error 'User Name' is not in the correct format."
 export const create = async (
   platformToken,
   {
@@ -39,8 +41,8 @@ export const create = async (
     "brand-token": platformToken
   }
 
-  //TODO: check err = 0?
-  //{"uid":"4ueulel28rd6","isnew":true,"err":0,"errmsg":"","errmsgid":null}
+  //TODO: catch error?
+  console.log("create player payload", payload)
   let result = await fetcher(url, {
     method: "POST",
     body: JSON.stringify(payload),
