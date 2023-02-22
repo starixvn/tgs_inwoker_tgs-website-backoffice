@@ -89,12 +89,11 @@ test("view player wagering requirement list", async ({
   let changeAmount = numeral(changeAmountString).value()
   expect(changeAmount).to.equals(ExpectedWageringRequirementAmount)
 
-  //TODO: how to test type = "Create"?
   let type = await page
     .locator(
       `${BucketHistoryDialogSelector} table#bucket-history [data-column-id="type"] > span`
     )
     .getAttribute("data-type")
-  console.log("type", type)
-  console.log("bucketHistory", bucketHistory)
+
+  expect(type).to.equals("Create")
 })
