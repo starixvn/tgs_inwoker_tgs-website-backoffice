@@ -143,7 +143,7 @@ const BucketHistoryDisclosure = ({
   playerBucketId,
   value,
   id,
-  dialogId = "bucket-history",
+  dialogId = "bucket-history-dialog",
   ...props
 }) => {
   let dialog = new useModalState()
@@ -165,7 +165,12 @@ const BucketHistoryDisclosure = ({
   )
 }
 
-const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
+const BucketHistoryDialog = ({
+  playerBucketId,
+  dialog,
+  dialogId,
+  ...props
+}) => {
   let title = useTrans({
     zh: "流水细项",
     en: "Turnover Details"
@@ -194,9 +199,10 @@ const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
   }
 
   return (
-    <Modal title={title} {...dialog}>
+    <Modal id={dialogId} title={title} {...dialog}>
       <FieldStack>
         <Table
+          id="bucket-history"
           columns={columns}
           data={items}
           setPageIndex={setPageIndex}
@@ -250,13 +256,13 @@ const BucketType = {
 const BucketTypeLabel = ({ value = "" }) => {
   switch (value) {
     case BucketType.Game:
-      return <Trans {...GameTrans} />
+      return <Trans {...GameTrans} data-type={BucketType.Game} />
     case BucketType.Adjust:
-      return <Trans {...AdjustTrans} />
+      return <Trans {...AdjustTrans} data-type={BucketType.Adjust} />
     case BucketType.Create:
-      return <Trans {...CreateTrans} />
+      return <Trans {...CreateTrans} data-type={BucketType.Create} />
     case BucketType.CleanUp:
-      return <Trans {...CleanUpTrans} />
+      return <Trans {...CleanUpTrans} data-type={BucketType.CleanUp} />
     default:
       return value
   }
