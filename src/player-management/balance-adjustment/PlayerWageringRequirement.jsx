@@ -9,7 +9,7 @@ import {
 import { Disclosure } from "../../dialog/Disclosure"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
-import { usePlayer } from "../player-list/client"
+import { usePlayer, usePlayerBucketAmount } from "../player-list/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { View } from "./menu"
@@ -57,12 +57,23 @@ const WageringRequirementDialog = ({
     en: "Balance"
   })
 
-  let { isLoading, data: player, error } = usePlayer(playerCode)
+  let {
+    isLoading: isLoadingPlayer,
+    data: player,
+    error: playerError
+  } = usePlayer(playerCode)
+  let {
+    data: wageringRequirement,
+    isLoading: isLoadingWageringRequirement,
+    error: wageringRequirementError
+  } = usePlayerBucketAmount(playerCode)
 
+  let isLoading = isLoadingPlayer || isLoadingWageringRequirement
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
 
+  let error = playerError || wageringRequirementError
   if (error) {
     return <AlertDialog {...error} onClickClose={dialog.close} />
   }
@@ -82,14 +93,14 @@ const WageringRequirementDialog = ({
         <Trans zh="用户名" en="Username" />
         <Box>{username}</Box>
 
-        <Trans zh="玩家余额" en="Balance" />
+        <Trans zh="余额" en="Balance" />
         <Box>
           <FormattedNumberDecimal value={player?.balance} />
         </Box>
 
-        <Trans zh="流水金额" en="Turnover Requirement" />
+        <Trans zh="流水" en="Unfinished Wagering" />
         <Box>
-          <FormattedNumberDecimal value={player?.wageringRequirement} />
+          <FormattedNumberDecimal value={wageringRequirement} />
         </Box>
       </FieldValues>
     </Dialog.Modal>

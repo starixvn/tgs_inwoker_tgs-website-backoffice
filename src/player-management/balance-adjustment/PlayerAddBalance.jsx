@@ -12,32 +12,14 @@ import {
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
+import { Trans, useTrans } from "../../i18n"
+import { ConfirmCancelFooter } from "../../form/ConfirmButtonFooter"
 import {
-  FormattedDateTime,
-  FormattedNumberDecimal,
-  Trans,
-  useTrans
-} from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
-import { Table, toApiParams, useTable, pageCount } from "../../table"
-import { usePlayerAdjustIncreaseBalance } from "./client"
-import LoadingBackdrop from "../../dialog/LoadingBackdrop"
-import dateTimeColumn from "../../table/column/dateTime"
-import {
-  numberDecimalColumn,
-  numberDecimalPercentageColumn
-} from "../../table/column/numberColumn"
-import AlertDialog from "../../dialog/Alert"
-import textColumn from "../../table/column/textColumn"
-import { formatDateTime } from "../../date/format"
+  usePlayerAdjustIncreaseBalance,
+  usePlayerAdjustIncreaseTurnoverRequirement
+} from "./client"
 import { FieldValues } from "../../layout/Grid"
-import { formatNumberDecimal } from "../../number/format"
-import Separator from "../../layout/Separator"
-import { Update } from "./menu"
+import { Update, AdjustTransactionAmount } from "./menu"
 import FormDialog from "../../form/FormDialog"
 import { useFormContext, useWatch } from "react-hook-form"
 import Input from "../../input/Input"
@@ -58,6 +40,9 @@ export const PlayerAddBalanceDisclosure = ({
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([Update])
+  let hasTransactionAmountAuth = useIsDisplayMenuByRoute([
+    AdjustTransactionAmount
+  ])
   if (!isDisplay) {
     return null
   }
@@ -67,8 +52,16 @@ export const PlayerAddBalanceDisclosure = ({
       <Disclosure {...dialog} {...props}>
         <Trans zh="加钱" en="Add Balance" />
       </Disclosure>
-      {dialog.visible && (
+      {dialog.visible && hasTransactionAmountAuth ? (
         <AddDialog
+          brandId={brandId}
+          username={username}
+          playerCode={playerCode}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
+      ) : (
+        <AddTurnoverRequirementDialog
           brandId={brandId}
           username={username}
           playerCode={playerCode}
@@ -131,7 +124,7 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
 }
 
 const FormBody = ({}) => {
-  let { control, getValues } = useFormContext()
+  let { control, getValues, setValue } = useFormContext()
 
   let [username, brandId, playerCode] = getValues([
     "username",
@@ -144,6 +137,8 @@ const FormBody = ({}) => {
     control,
     name: TransactionTypeField
   })
+
+  let IncludeInNetProfitField = "includeInNetProfit"
 
   let TransactionAmountField = "amount"
   return (
@@ -158,7 +153,16 @@ const FormBody = ({}) => {
           <Trans zh="交易类型" en="Transaction Type" />
         </Box>
         <Set>
-          <PlayerAdjustBalanceTypeSelect name={TransactionTypeField} required />
+          <PlayerAdjustBalanceTypeSelect
+            name={TransactionTypeField}
+            required
+            onChange={(event) => {
+              let type = event.target.value
+              if (!showIncludeInNetProfitSetting(type)) {
+                setValue(IncludeInNetProfitField, undefined)
+              }
+            }}
+          />
         </Set>
 
         {showIncludeInNetProfitSetting(transactionType) && (
@@ -166,7 +170,7 @@ const FormBody = ({}) => {
             <Box alignY="center">
               <Trans zh="需算入净盈利" en="Include in Net Profit" />
             </Box>
-            <Checkbox name="includeInNetProfit" />
+            <Checkbox name={IncludeInNetProfitField} defaultChecked={true} />
           </>
         )}
 
@@ -179,6 +183,96 @@ const FormBody = ({}) => {
           <Trans zh="流水金额" en="Turnover Requirement Amount" />
         </Box>
         <NumberInputField name="bucketAmount" min="0" step="0.01" />
+
+        <Box alignY="center">
+          <Trans zh="备注" en="Remark" />
+        </Box>
+        <Input name="remark" />
+      </FieldValues>
+      <Input type="hidden" name="brandId" value={brandId} />
+      <Input type="hidden" name="username" value={username} />
+      <Input type="hidden" name="playerCode" value={playerCode} />
+    </>
+  )
+}
+
+const AddTurnoverRequirementDialog = ({
+  brandId,
+  username,
+  playerCode,
+  onSubmitted,
+  dialog
+}) => {
+  let [formData, setSubmit] = useState()
+  let { result, isLoading, error, mutate, deleteCache } =
+    usePlayerAdjustIncreaseTurnoverRequirement(playerCode, formData)
+
+  let title = useTrans({
+    zh: "余额加分",
+    en: "Add Balance"
+  })
+
+  const onSubmit = (data) => {
+    setSubmit(data)
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+  return (
+    <FormDialog
+      id="add-balance-dialog"
+      defaultValues={{
+        brandId,
+        username,
+        playerCode,
+        transactionType: null
+      }}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      onSubmitted={onSubmitted}
+      title={title}
+      dialog={dialog}
+      showActionButtons={false}
+      footer={
+        <ConfirmCancelFooter
+          isLoading={isLoading}
+          disabled={isLoading}
+          dialog={dialog}
+        />
+      }
+    >
+      <AddTurnoverRequirementFormBody />
+    </FormDialog>
+  )
+}
+
+const AddTurnoverRequirementFormBody = ({}) => {
+  let { control, getValues } = useFormContext()
+
+  let [username, brandId, playerCode] = getValues([
+    "username",
+    "brandId",
+    "playerCode"
+  ])
+
+  return (
+    <>
+      <FieldValues margin="1rem">
+        <Box>
+          <Trans zh="用户名" en="Username" />
+        </Box>
+        <Box alignY="center">{username}</Box>
+
+        <Box alignY="center">
+          <Trans zh="流水金额" en="Turnover Requirement Amount" />
+        </Box>
+        <NumberInputField name="amount" min="0" step="0.01" />
 
         <Box alignY="center">
           <Trans zh="备注" en="Remark" />

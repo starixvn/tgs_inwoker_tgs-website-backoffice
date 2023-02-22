@@ -32,6 +32,7 @@ import SequenceColumn from "../../table/column/sequence"
 import textColumn from "../../table/column/textColumn"
 import { Descending } from "../../table/order"
 import { Modal } from "../../dialog/Modal"
+import { useIsAdminUser } from "../../user/context"
 
 export const PlayerWageringRequirementDialogDisclosure = ({
   playerCode,
@@ -142,7 +143,7 @@ const BucketHistoryDisclosure = ({
   playerBucketId,
   value,
   id,
-  dialogId = "bucket-history",
+  dialogId = "bucket-history-dialog",
   ...props
 }) => {
   let dialog = new useModalState()
@@ -164,7 +165,12 @@ const BucketHistoryDisclosure = ({
   )
 }
 
-const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
+const BucketHistoryDialog = ({
+  playerBucketId,
+  dialog,
+  dialogId,
+  ...props
+}) => {
   let title = useTrans({
     zh: "流水细项",
     en: "Turnover Details"
@@ -193,9 +199,10 @@ const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
   }
 
   return (
-    <Modal title={title} {...dialog}>
+    <Modal id={dialogId} title={title} {...dialog}>
       <FieldStack>
         <Table
+          id="bucket-history"
           columns={columns}
           data={items}
           setPageIndex={setPageIndex}
@@ -215,9 +222,56 @@ const BucketHistoryDialog = ({ playerBucketId, dialog, ...props }) => {
   )
 }
 
-const useCompletedWageringColumns = ({ items = [] }) =>
-  useMemo(
-    () => [
+const Game = "Game"
+const GameTrans = {
+  zh: "游戏",
+  en: "Game"
+}
+
+const Adjust = "Adjust"
+const AdjustTrans = {
+  zh: "调整",
+  en: "Adjust"
+}
+
+const Create = "Create"
+const CreateTrans = {
+  zh: "新增",
+  en: "Add"
+}
+
+const CleanUp = "CleanUp"
+const CleanUpTrans = {
+  zh: "清除",
+  en: "Clear"
+}
+
+const BucketType = {
+  Game,
+  Adjust,
+  Create,
+  CleanUp
+}
+
+const BucketTypeLabel = ({ value = "" }) => {
+  switch (value) {
+    case BucketType.Game:
+      return <Trans {...GameTrans} data-type={BucketType.Game} />
+    case BucketType.Adjust:
+      return <Trans {...AdjustTrans} data-type={BucketType.Adjust} />
+    case BucketType.Create:
+      return <Trans {...CreateTrans} data-type={BucketType.Create} />
+    case BucketType.CleanUp:
+      return <Trans {...CleanUpTrans} data-type={BucketType.CleanUp} />
+    default:
+      return value
+  }
+}
+
+const useCompletedWageringColumns = ({ items = [] }) => {
+  let isAdmin = useIsAdminUser()
+  return useMemo(() => {
+    let columns = [
       sequenceColumn(),
       dateTimeColumn({
         accessor: "createdOn",
@@ -231,10 +285,31 @@ const useCompletedWageringColumns = ({ items = [] }) =>
         Header: <Trans zh="流水" en="Wagering" />,
         disableSortBy: true,
         format: "+0,0.00"
+      }),
+      textColumn({
+        accessor: "remark",
+        Header: <Trans zh="备注" en="Remark" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "type",
+        Header: <Trans zh="类型" en="Type" />,
+        disableSortBy: true,
+        Cell: BucketTypeLabel
       })
-    ],
-    [JSON.stringify(items)]
-  )
+    ]
+
+    if (isAdmin) {
+      columns.push({
+        accessor: "externalId",
+        Header: "Reference ID",
+        disableSortBy: true
+      })
+    }
+
+    return columns
+  }, [JSON.stringify(items)])
+}
 
 const useWageringRequirementColumns = ({ playerCode, items = [] }) =>
   useMemo(
@@ -260,7 +335,7 @@ const useWageringRequirementColumns = ({ playerCode, items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "uncompleteWagering",
-        Header: <Trans zh="剩余流水" en="Uncompleted Wagering" />,
+        Header: <Trans zh="流水" en="Unfinished Wagering" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
