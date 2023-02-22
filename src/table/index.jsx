@@ -16,14 +16,15 @@ import {
   DropdownMenu,
   Button,
   Popover,
-  Checkbox
+  Group
 } from "bumbag"
 import {
   useTable as _useTable,
   useSortBy as useTableSortBy,
   usePagination as useTablePagination,
   useFilters as useTableFilters,
-  useRowState as useTableRowState
+  useRowState as useTableRowState,
+  useColumnOrder
 } from "react-table"
 import { fromIsDescending, equalsDescending } from "./order"
 import {
@@ -38,6 +39,24 @@ import {
 import { Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
 import { useMeasure, useScrollbarWidth } from "react-use"
+import { get } from "lodash-es"
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors
+} from "@dnd-kit/core"
+import {
+  arrayMove,
+  SortableContext,
+  horizontalListSortingStrategy,
+  useSortable
+} from "@dnd-kit/sortable"
+import { CloseButtonFooter } from "../form/ConfirmButtonFooter"
+import { CloseButton } from "../button/CloseButton"
 
 const DefaultState = {
   pageIndex: 0,
@@ -213,7 +232,8 @@ export const Table = ({
   minHeight,
   tableContainerProps,
   tableBorder = "1px solid var(--bb-palette-white800, #000000)",
-  toggleHidden = false,
+  toggleColumnHidden = false,
+  columnOrder = false,
   ...props
 }) => {
   components = {
@@ -267,11 +287,14 @@ export const Table = ({
       manualFilters,
       maxSize,
       setStickyColumn,
-      isStickyColumn
+      isStickyColumn,
+      toggleColumnHidden,
+      columnOrder
     },
     useFilters,
     useSortBy,
-    usePagination
+    usePagination,
+    useColumnOrder
   )
 
   let { gotoPage, state: tableState } = table
@@ -333,7 +356,7 @@ export const Table = ({
             }
           `}
         >
-          {toggleHidden && <ActionBar table={table} />}
+          <ActionBar table={table} />
           <div
             css={css`
               width: ${Number.isFinite(maxSize?.width)
@@ -388,18 +411,51 @@ const isStickyNotApplicable = (cellWidth, maxWidth) => {
   return cellWidth * 2 > maxWidth
 }
 
+//TODO: rename to toggleColumnHidden?
+const Action = {
+  ToggleColumnHidden: "toggleColumnHidden",
+  ColumnOrder: "columnOrder"
+}
+
+const ActionFields = Object.values(Action)
+
 const ActionBar = ({ table }) => {
-  let { allColumns } = table
+  let showActionBar = !!ActionFields.find((actionField) => {
+    let showAction = get(table, actionField)
+    return showAction
+  })
+
+  if (!showActionBar) {
+    return null
+  }
+
+  return (
+    <Set orientation="horizontal" verticalBelow="tablet">
+      <ToggleHiddenDropdownMenu table={table} />
+      <ColumnOrderPopover table={table} />
+    </Set>
+  )
+}
+
+const ToggleHiddenDropdownMenu = ({ table }) => {
+  let { allColumns, toggleColumnHidden } = table
+
+  if (!toggleColumnHidden) {
+    return null
+  }
+
+  let availableColumns = allColumns.filter(
+    ({ disableToggleHidden }) => !disableToggleHidden
+  )
 
   return (
     <DropdownMenu
-      menu={allColumns.map((column) => {
+      menu={availableColumns.map((column) => {
         let { checked, onChange, ...props } = column.getToggleHiddenProps()
         return (
           <DropdownMenu.Item
             key={column.id}
             iconBefore={checked ? "solid-check" : <Box />}
-            color={checked ? "primary" : undefined}
             onClick={(event) => {
               column.toggleHidden(checked)
             }}
@@ -412,6 +468,109 @@ const ActionBar = ({ table }) => {
     >
       <Button iconAfter="chevron-down">Columns</Button>
     </DropdownMenu>
+  )
+}
+
+const ColumnOrderButton = ({ column }) => {
+  let {
+    attributes,
+    listeners,
+    transform,
+    transition,
+    setNodeRef,
+    isDragging,
+    isOver
+  } = useSortable({
+    id: column.id
+  })
+
+  const style = {
+    transform: transform
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      : "",
+    transition: transition
+  }
+
+  return (
+    <Button
+      type="button"
+      ref={setNodeRef}
+      palette={isDragging ? "primary" : isOver ? "success" : "default"}
+      variant={isDragging || isOver ? "outlined" : "default"}
+      {...attributes}
+      {...listeners}
+      style={style}
+    >
+      {column.Header}
+    </Button>
+  )
+}
+
+const ColumnOrderPopover = ({ table }) => {
+  let popover = Popover.useState()
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, {}),
+    useSensor(TouchSensor, {})
+  )
+
+  let { visibleColumns, setColumnOrder } = table
+
+  let items = visibleColumns.map((column) => {
+    return column.id
+  })
+
+  function handleDragEnd(event) {
+    console.log("onDragEnd event", event)
+    const { active, over } = event
+    if (active.id !== over.id) {
+      const oldIndex = items.indexOf(active.id)
+      const newIndex = items.indexOf(over.id)
+      console.log("active", active, "over", over)
+      let result = arrayMove(items, oldIndex, newIndex)
+      setColumnOrder(result)
+    }
+  }
+
+  //TODO: Popover need use "usePortal"?
+  return (
+    <>
+      <Popover.Disclosure use={Button} {...popover}>
+        Column Order
+      </Popover.Disclosure>
+      <Popover
+        hasArrow
+        {...popover}
+        footer={
+          <Box id="test-box" alignX="right" width="100%">
+            <CloseButton width="max-content" onClick={popover.hide} />
+          </Box>
+        }
+        css={css`
+          max-width: 85vw;
+          & .bb-PopoverFooter > .bb-Box {
+            width: 100%;
+          }
+        `}
+      >
+        <DndContext
+          sensors={sensors}
+          onDragEnd={handleDragEnd}
+          collisionDetection={closestCenter}
+        >
+          <Set>
+            <SortableContext
+              items={items}
+              strategy={horizontalListSortingStrategy}
+            >
+              {visibleColumns.map((column) => {
+                return <ColumnOrderButton key={column.id} column={column} />
+              })}
+            </SortableContext>
+          </Set>
+        </DndContext>
+      </Popover>
+    </>
   )
 }
 
@@ -454,54 +613,6 @@ const Head = ({ table }) => {
                 table={table}
               />
             )
-
-            /*
-            let props = column.getHeaderProps({
-              ...column?.headCell,
-              ...column?.getSortByToggleProps()
-            })
-
-            let isFirst = columnIndex == 0
-            let isLast = columnIndex == list.length - 1
-            let isStickyLeft = stickyHead && stickyLeft && isFirst
-            let isStickyRight = stickyHead && stickyRight && isLast
-            //TODO: support multiple sticky columns?
-            let isStickyCell = isStickyLeft || isStickyRight
-            let [cellRef, cellRefMeasure] = useMeasure()
-            if (
-              isStickyCell &&
-              Number.isFinite(maxSize?.width) &&
-              Number.isFinite(cellRefMeasure?.width) &&
-              isStickyNotApplicable(cellRefMeasure?.width, maxSize?.width)
-            ) {
-              isStickyCell = false
-            }
-            setStickyColumn(columnIndex, isStickyCell)
-            return (
-              <_Table.HeadCell
-                ref={cellRef}
-                css={css`
-                  position: ${isStickyCell ? "sticky" : "static"};
-                  left: ${isStickyLeft ? 0 : "auto"};
-                  right: ${isStickyRight ? 0 : "auto"};
-                  z-index: ${isStickyCell ? StickyHeadZIndex + 1 : "auto"};
-                  background-color: var(--bb-palette-white600, #000000);
-                `}
-                {...props}
-              >
-                {column.render("Header")}
-                {column.isSorted ? (
-                  column.isSortedDesc ? (
-                    <Icon icon={faCaretDown} type="font-awesome" />
-                  ) : (
-                    <Icon icon={faCaretUp} type="font-awesome" />
-                  )
-                ) : (
-                  ""
-                )}
-              </_Table.HeadCell>
-          )
-          */
           })}
         </_Table.Row>
       ))}
