@@ -152,6 +152,19 @@ export const usePlayerCompletedWageringList = (bucketId, searchParams) => {
   return useGet(url)
 }
 
+export const usePlayerAutoClearBucketList = (playerCode, status, options) => {
+  let url = ""
+  if (playerCode) {
+    url = `${PlayerBucketApi}/clean-form`
+
+    if (status) {
+      url = `${url}/${status}`
+    }
+  }
+
+  return useGet(url, options)
+}
+
 const PlayerManualDepositApi = "/api/ManualDeposit"
 export const useApplyPlayerManualDeposit = (bankType, data) => {
   let url = bankType && data ? `${PlayerManualDepositApi}/${bankType}` : ""

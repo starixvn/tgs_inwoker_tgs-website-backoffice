@@ -14,6 +14,7 @@ import { NormalLabel } from "../../form/Label"
 import { FormBody } from "./ViewFundWithdraw"
 import { useFundWithdrawForm, useVerifyFundWithdrawForm } from "./client"
 import ReviewFund from "../ReviewFund"
+import { AuditAutoClearBucketDialogDisclosure } from "./AuditAutoClearBucketDialog"
 
 export const FundWithdrawVerified = "FundWithdrawVerified"
 

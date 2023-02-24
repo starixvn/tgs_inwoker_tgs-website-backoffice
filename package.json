@@ -53,7 +53,7 @@
     "@tanstack/react-table": "^8.7.4",
     "@vvo/tzdb": "^6.89.0",
     "animejs": "^3.2.1",
-    "ariakit": "^2.0.0-next.41",
+    "ariakit": "^2.0.0-next.43",
     "big.js": "^6.1.1",
     "boolean": "^3.1.4",
     "bumbag": "2.7.21",
