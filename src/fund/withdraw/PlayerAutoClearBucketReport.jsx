@@ -10,13 +10,16 @@ import {
   Set,
   FieldStack
 } from "bumbag"
-import { Trans } from "../../i18n"
+import { FormattedNumberDecimal, Trans } from "../../i18n"
 import { Table, pageCount, useTable } from "../../table"
 import { textColumn } from "../../table/column/textColumn"
 import AlertDialog from "../../dialog/Alert"
 //TODO: use PageContent?
 import PageContent from "../../page/Content"
-import { ClearBucketStatusSelect } from "./ClearBucketStatus"
+import {
+  ClearBucketStatusLabel,
+  ClearBucketStatusSelect
+} from "./ClearBucketStatus"
 import { usePlayerAutoClearBucketList } from "../../player-management/player-list/client"
 import dateTimeColumn from "../../table/column/dateTime"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
@@ -69,50 +72,61 @@ export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
 const useColumns = ({ items = [] }) => {
   return useMemo(
     () => [
-      textColumn({
-        accessor: "id",
-        Header: <Trans zh="订单ID" en="Id" />,
-        disableSortBy: true
-      }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="投注时间" en="Created On" />,
+        Header: <Trans zh="时间" en="Time" />,
         disableSortBy: true
       }),
       textColumn({
-        accessor: "subGameProviderName",
-        Header: <Trans zh="子游戏厂商" en="Sub Game Provider" />,
+        accessor: "id",
+        Header: <Trans zh="单号" en="Id." />,
         disableSortBy: true
       }),
       textColumn({
-        accessor: "gameName",
-        Header: <Trans zh="游戏名称" en="Game Name" />,
+        accessor: "depositFormId",
+        Header: <Trans zh="存款单号" en="Deposit ID." />,
         disableSortBy: true
       }),
-      numberDecimalColumn({
-        accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "settleAmount",
-        Header: <Trans zh="派彩" en="Settle Amount" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "winLoss",
-        Header: <Trans zh="玩家输赢金额" en="Player Win Loss" />,
-        disableSortBy: true
+      {
+        Header: <Trans zh="钱包余额/剩余流水" en="Balance/Wagering" />,
+        columns: [
+          textColumn({
+            id: "reviewing",
+            accessor: (row) => row,
+            Header: <Trans zh="审核中存款单" en="Reviewing" />,
+            disableSortBy: true,
+            Cell: ({ value: record }) => {
+              return (
+                <Box>
+                  <FormattedNumberDecimal value={record?.reviewBalance} />/
+                  <FormattedNumberDecimal value={record?.reviewBucketAmount} />
+                </Box>
+              )
+            }
+          }),
+          numberDecimalColumn({
+            id: "afterCleared",
+            accessor: (row) => row,
+            Header: <Trans zh="自动清流水后" en="After Cleared" />,
+            disableSortBy: true,
+            Cell: ({ value: record }) => {
+              return (
+                <Box>
+                  <FormattedNumberDecimal value={record?.cleaningBalance} />/
+                  <FormattedNumberDecimal
+                    value={record?.cleaningBucketAmount}
+                  />
+                </Box>
+              )
+            }
+          })
+        ]
+      },
+      textColumn({
+        accessor: "status",
+        Header: <Trans zh="状态" en="Status" />,
+        disableSortBy: true,
+        Cell: ({ value }) => <ClearBucketStatusLabel value={value} />
       })
     ],
     [JSON.stringify(items)]
