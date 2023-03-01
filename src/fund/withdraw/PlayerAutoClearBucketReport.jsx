@@ -10,7 +10,7 @@ import {
   Set,
   FieldStack
 } from "bumbag"
-import { FormattedNumberDecimal, Trans } from "../../i18n"
+import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import { Table, pageCount, useTable } from "../../table"
 import { textColumn } from "../../table/column/textColumn"
 import AlertDialog from "../../dialog/Alert"
@@ -43,21 +43,23 @@ export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
     <PageContent
       title={<Trans zh="自动清流水报表" en="Auto Clear Wagering Report" />}
       actionBar={
-        <ClearBucketStatusSelect
-          value={status}
-          onChange={(event) => {
-            let value = event.target.value
-            setStatus(value)
-          }}
-          disabled={isLoading}
-        />
+        <Box>
+          <ClearBucketStatusSelect
+            value={status}
+            onChange={(event) => {
+              let value = event.target.value
+              setStatus(value)
+            }}
+            disabled={isLoading}
+          />
+        </Box>
       }
     >
       <Table
         columns={columns}
         data={data?.items}
         controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        // pageCount={pageCount(state.pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
@@ -70,6 +72,18 @@ export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
 }
 
 const useColumns = ({ items = [] }) => {
+  let balanceLabel = useTrans({
+    zh: "钱包余额",
+    en: "Balance"
+  })
+  let wageringLabel = useTrans({
+    zh: "剩余流水",
+    en: "Wagering"
+  })
+  let balanceWageringLabel = useTrans({
+    zh: "钱包余额/剩余流水",
+    en: "Balance/Wagering"
+  })
   return useMemo(
     () => [
       dateTimeColumn({
@@ -87,41 +101,54 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="存款单号" en="Deposit ID." />,
         disableSortBy: true
       }),
-      {
-        Header: <Trans zh="钱包余额/剩余流水" en="Balance/Wagering" />,
-        columns: [
-          textColumn({
-            id: "reviewing",
-            accessor: (row) => row,
-            Header: <Trans zh="审核中存款单" en="Reviewing" />,
-            disableSortBy: true,
-            Cell: ({ value: record }) => {
-              return (
-                <Box>
-                  <FormattedNumberDecimal value={record?.reviewBalance} />/
-                  <FormattedNumberDecimal value={record?.reviewBucketAmount} />
-                </Box>
-              )
-            }
-          }),
-          numberDecimalColumn({
-            id: "afterCleared",
-            accessor: (row) => row,
-            Header: <Trans zh="自动清流水后" en="After Cleared" />,
-            disableSortBy: true,
-            Cell: ({ value: record }) => {
-              return (
-                <Box>
-                  <FormattedNumberDecimal value={record?.cleaningBalance} />/
-                  <FormattedNumberDecimal
-                    value={record?.cleaningBucketAmount}
-                  />
-                </Box>
-              )
-            }
-          })
-        ]
-      },
+      textColumn({
+        id: "reviewing",
+        accessor: (row) => row,
+        Header: (
+          <Trans
+            zh="审核中存款单"
+            en="Reviewing"
+            title={balanceWageringLabel}
+          />
+        ),
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          return (
+            <Box>
+              <FormattedNumberDecimal
+                value={record?.reviewBalance}
+                title={balanceLabel}
+              />
+              /
+              <FormattedNumberDecimal
+                value={record?.reviewBucketAmount}
+                title={wageringLabel}
+              />
+            </Box>
+          )
+        }
+      }),
+      numberDecimalColumn({
+        id: "afterCleared",
+        accessor: (row) => row,
+        Header: <Trans zh="自动清流水后" en="After Cleared" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          return (
+            <Box>
+              <FormattedNumberDecimal
+                value={record?.cleaningBalance}
+                title={balanceLabel}
+              />
+              /
+              <FormattedNumberDecimal
+                value={record?.cleaningBucketAmount}
+                title={wageringLabel}
+              />
+            </Box>
+          )
+        }
+      }),
       textColumn({
         accessor: "status",
         Header: <Trans zh="状态" en="Status" />,

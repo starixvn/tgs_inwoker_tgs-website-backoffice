@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react"
-import { Spinner, useModalState, FieldStack, Box, Text, Button } from "bumbag"
+import {
+  Spinner,
+  useModalState,
+  FieldStack,
+  Box,
+  Text,
+  Button,
+  Level
+} from "bumbag"
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
@@ -15,6 +23,7 @@ import { FormBody } from "./ViewFundWithdraw"
 import { useFundWithdrawForm, useVerifyFundWithdrawForm } from "./client"
 import ReviewFund from "../ReviewFund"
 import { AuditAutoClearBucketDialogDisclosure } from "./AuditAutoClearBucketDialog"
+import { isDev } from "../../env"
 
 export const FundWithdrawVerified = "FundWithdrawVerified"
 
@@ -26,6 +35,7 @@ const fireVerifiedEvent = () => {
 export const VerifyFundWithdrawDisclosure = ({
   brandId,
   formId,
+  playerCode,
   onSubmitted,
   onVisibleChange,
   ...props
@@ -48,6 +58,7 @@ export const VerifyFundWithdrawDisclosure = ({
         <VerifyFundWithdrawDialog
           brandId={brandId}
           formId={formId}
+          playerCode={playerCode}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -59,6 +70,7 @@ export const VerifyFundWithdrawDisclosure = ({
 const VerifyFundWithdrawDialog = ({
   brandId,
   formId,
+  playerCode,
   onSubmitted,
   dialog,
   ...props
@@ -154,6 +166,14 @@ const VerifyFundWithdrawDialog = ({
         >
           <Trans zh="拒绝" en="Reject" />
         </Button>
+      }
+      footer={
+        isDev() && playerCode ? (
+          <AuditAutoClearBucketDialogDisclosure
+            brandId={brandId}
+            playerCode={playerCode}
+          />
+        ) : null
       }
       onSubmit={onSubmit}
       isLoading={isLoading}

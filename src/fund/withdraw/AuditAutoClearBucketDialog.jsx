@@ -51,7 +51,7 @@ export const AuditAutoClearBucketDialogDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog} {...props}>
-        TODO
+        <Trans zh="流水確認" en="Wagering Check" />
       </Disclosure>
       {dialog.visible && (
         <AuditAutoClearBucketDialog
@@ -83,7 +83,7 @@ const AuditAutoClearBucketDialog = ({
   }
 
   return (
-    <Modal id={dialogId} {...dialog}>
+    <Modal id={dialogId} title={" "} {...dialog}>
       <Body
         brandId={brandId}
         playerCode={playerCode}

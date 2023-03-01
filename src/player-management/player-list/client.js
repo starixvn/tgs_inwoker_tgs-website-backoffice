@@ -155,7 +155,7 @@ export const usePlayerCompletedWageringList = (bucketId, searchParams) => {
 export const usePlayerAutoClearBucketList = (playerCode, status, options) => {
   let url = ""
   if (playerCode) {
-    url = `${PlayerBucketApi}/clean-form`
+    url = `${PlayerBucketApi}/clean-form/${playerCode}`
 
     if (status) {
       url = `${url}/${status}`

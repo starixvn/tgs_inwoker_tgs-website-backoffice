@@ -14,7 +14,6 @@ const { finance } = faker
 
 test("fund withdraw download", async ({
   page,
-  platformCode,
   platform,
   platformToken,
   player,
@@ -23,7 +22,7 @@ test("fund withdraw download", async ({
 }) => {
   let depositAmount = 100
   await Promise.all([
-    gotoFundWithdraw(page, platformCode),
+    gotoFundWithdraw(page, platform.code),
     operatorApi.player.addManualBankCard(platformToken, player.token),
     backofficeApi.player.addBalance(player.code, {
       amount: depositAmount

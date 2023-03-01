@@ -189,6 +189,7 @@ const HeadCell = ({
             <Icon icon={faCaretUp} type="font-awesome" />
           )
         ) : (
+          column.canSort &&
           !column.disableSortBy && (
             <Icon icon={faSort} type="font-awesome" opacity="0.4" />
           )
