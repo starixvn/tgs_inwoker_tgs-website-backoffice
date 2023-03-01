@@ -131,7 +131,13 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         id: "afterCleared",
         accessor: (row) => row,
-        Header: <Trans zh="自动清流水后" en="After Cleared" />,
+        Header: (
+          <Trans
+            zh="自动清流水后"
+            en="After Cleared"
+            title={balanceWageringLabel}
+          />
+        ),
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

@@ -83,7 +83,17 @@ const AuditAutoClearBucketDialog = ({
   }
 
   return (
-    <Modal id={dialogId} title={" "} {...dialog}>
+    <Modal
+      id={dialogId}
+      title={" "}
+      {...dialog}
+      css={css`
+        min-width: 70vw;
+        & .bb-DialogContent {
+          min-height: 80vh;
+        }
+      `}
+    >
       <Body
         brandId={brandId}
         playerCode={playerCode}
