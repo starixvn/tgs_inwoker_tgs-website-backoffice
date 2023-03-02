@@ -1,23 +1,25 @@
 kind: Module
 type: container
 name: profit-rebate
-image: pgtgs/profit-rebate-service:202211100146-dev
+image: pgtgs/profit-rebate-service:202302090146-prod
 services:
   - name: profit-rebate
     dependencies:
       - postgres
       - redis
-      - mongodb
+      # - mongodb
       - nats
       - rabbitmq
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
-      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
-      ConnectionStrings__MongoDBMessagingConnectionString: "mongodb://root:1qaz2wsx!%40@mongodb/filedb?retryWrites=true&w=majority&authSource=admin"
-      NatsSetting__Urls: "nats://nats:4222"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      # ConnectionStrings__MongoDBMessagingConnectionString: "mongodb://root:1qaz2wsx!%40@mongodb/filedb?retryWrites=true&w=majority&authSource=admin"
       RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
       ProfitRebate__CashBaseUrl: "http://cash-service"
+      ProfitRebate__PlayerBucketBaseUrl: "http://player-bucket-api"
+      ProfitRebate__PlayerServiceBaseUrl: "http://player-api"
     ports:
       - name: http
         containerPort: 80

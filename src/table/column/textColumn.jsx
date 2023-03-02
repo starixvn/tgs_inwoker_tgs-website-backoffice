@@ -12,6 +12,7 @@ export const textColumn = ({
   overflowWrap = "normal",
   textOverflow,
   wordBreak = "normal",
+  headCellProps = {},
   ...props
 }) => ({
   headCell: {
@@ -19,7 +20,8 @@ export const textColumn = ({
     maxWidth,
     textAlign,
     whiteSpace,
-    wordBreak
+    wordBreak,
+    ...headCellProps
   },
   cell: {
     width,

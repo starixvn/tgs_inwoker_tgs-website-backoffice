@@ -31,16 +31,18 @@ import AlertDialog from "../../dialog/Alert"
 import PageContent from "../../page/Content"
 import dateTimeColumn from "../../table/column/dateTime"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
+import { today } from "../../date/range"
 
 export const usePlayerOpenOrder = (brandId, playerCode, prefetchedData) => {
-  let to = startOfNextDay()
+  let dateRange = today()
+  let to = startOfNextDay(dateRange.end)
   let DayRange = 180
   let from = subDays(to, DayRange)
-
   let culture = useLangCode()
-  return useGameRoundList(
+  let searchParams =
     brandId && playerCode
       ? {
+          brandId,
           playerCode,
           sortby: "createdOn",
           orderby: "descending",
@@ -49,7 +51,9 @@ export const usePlayerOpenOrder = (brandId, playerCode, prefetchedData) => {
           culture,
           status: GameRoundStatus.Open
         }
-      : null,
+      : undefined
+  return useGameRoundList(
+    searchParams,
     prefetchedData
       ? {
           fallbackData: prefetchedData

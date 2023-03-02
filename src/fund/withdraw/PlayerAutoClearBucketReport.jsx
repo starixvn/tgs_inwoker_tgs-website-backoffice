@@ -27,7 +27,11 @@ import { numberDecimalColumn } from "../../table/column/numberColumn"
 export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
   let [status, setStatus] = useState()
 
-  let { isLoading, data, error } = usePlayerAutoClearBucketList(
+  let {
+    isLoading,
+    data: items,
+    error
+  } = usePlayerAutoClearBucketList(
     playerCode,
     status,
     prefetchedData
@@ -38,7 +42,7 @@ export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
   )
 
   let { state, setPageIndex, setSortOrder } = useTable({})
-  let columns = useColumns({ items: data?.items })
+  let columns = useColumns({ items })
   return (
     <PageContent
       title={<Trans zh="自动清流水报表" en="Auto Clear Wagering Report" />}
@@ -57,7 +61,7 @@ export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
     >
       <Table
         columns={columns}
-        data={data?.items}
+        data={items}
         controlledState={state}
         // pageCount={pageCount(state.pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
@@ -101,16 +105,74 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="存款单号" en="Deposit ID." />,
         disableSortBy: true
       }),
+      /*
+      {
+        id: "reviewingGroup",
+        Header: <Trans zh="审核中存款单" en="Reviewing" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberDecimalColumn({
+            accessor: "reviewBalance",
+            Header: <Trans zh="钱包余额" en="Balance" />,
+            disableSortBy: true,
+            headCellProps: {
+              whiteSpace: "nowrap"
+            }
+          }),
+          numberDecimalColumn({
+            accessor: "reviewBucketAmount",
+            Header: <Trans zh="剩余流水" en="Wagering" />,
+            disableSortBy: true,
+            headCellProps: {
+              whiteSpace: "nowrap"
+            }
+          })
+        ]
+      },
+      {
+        id: "afterClearedGroup",
+        Header: <Trans zh="自动清流水后" en="After Cleared" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberDecimalColumn({
+            accessor: "cleaningBalance",
+            Header: <Trans zh="钱包余额" en="Balance" />,
+            disableSortBy: true,
+            headCellProps: {
+              whiteSpace: "nowrap"
+            }
+          }),
+          numberDecimalColumn({
+            accessor: "cleaningBucketAmount",
+            Header: <Trans zh="剩余流水" en="Wagering" />,
+            disableSortBy: true,
+            headCellProps: {
+              whiteSpace: "nowrap"
+            }
+          })
+        ]
+      },
+      */
       textColumn({
         id: "reviewing",
         accessor: (row) => row,
         Header: (
-          <Trans
-            zh="审核中存款单"
-            en="Reviewing"
-            title={balanceWageringLabel}
-          />
+          <Set orientation="vertical" alignX="center">
+            <Text.Block>
+              <Trans zh="审核中存款单" en="Reviewing" />
+            </Text.Block>
+            {/* <Text.Block>
+              <Trans zh="钱包余额/剩余流水" en="Balance/Wagering" />
+            </Text.Block> */}
+          </Set>
         ),
+        headCellProps: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
@@ -128,18 +190,34 @@ const useColumns = ({ items = [] }) => {
           )
         }
       }),
-      numberDecimalColumn({
+
+      textColumn({
         id: "afterCleared",
         accessor: (row) => row,
         Header: (
-          <Trans
-            zh="自动清流水后"
-            en="After Cleared"
-            title={balanceWageringLabel}
-          />
+          <Set orientation="vertical" alignX="center">
+            <Text.Block>
+              <Trans zh="自动清流水后" en="After Cleared" />
+            </Text.Block>
+            {/* <Text.Block>
+              <Trans zh="钱包余额/剩余流水" en="Balance/Wagering" />
+            </Text.Block> */}
+          </Set>
         ),
+        headCellProps: {
+          whiteSpace: "nowrap"
+        },
         disableSortBy: true,
         Cell: ({ value: record }) => {
+          let cleaningBalance = record?.cleaningBalance
+          let cleaningBucketAmount = record?.cleaningBucketAmount
+          if (
+            !Number.isFinite(cleaningBalance) &&
+            !Number.isFinite(cleaningBucketAmount)
+          ) {
+            return null
+          }
+
           return (
             <Box>
               <FormattedNumberDecimal
