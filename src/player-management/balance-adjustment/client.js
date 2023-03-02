@@ -20,6 +20,18 @@ export const usePlayerAdjustIncreaseBalance = (playerCode, formData) => {
   return usePostData(url, formData)
 }
 
+const AdjustPlayerBucket = "/api/player/bucket"
+export const usePlayerAdjustIncreaseTurnoverRequirement = (
+  playerCode,
+  formData
+) => {
+  let url =
+    playerCode && formData
+      ? `${AdjustPlayerBucket}/${playerCode}:adjust-increase`
+      : ""
+  return usePutData(url, formData)
+}
+
 export const usePlayerAdjustReduceBalance = (playerCode, formData) => {
   let url = playerCode && formData ? `${API}/${playerCode}/adjust/reduce` : ""
   return usePostData(url, formData)

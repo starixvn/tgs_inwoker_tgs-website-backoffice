@@ -18,6 +18,7 @@ const Cancel = {
   en: "Cancel"
 }
 
+//TODO: move to CloseButton?
 const Close = {
   zh: "关闭",
   en: "Close"
@@ -49,6 +50,7 @@ export const DeleteText = () => <Trans {...Delete} />
 
 export const AddText = () => <Trans {...Add} />
 
+//TODO: move to CloseButton?
 export const CloseText = () => useTrans(Close)
 
 export const SubmitCancel = ({ cancelText, submitText, ...props }) => {

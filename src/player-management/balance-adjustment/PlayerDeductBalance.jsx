@@ -12,31 +12,10 @@ import {
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
-import {
-  FormattedDateTime,
-  FormattedNumberDecimal,
-  Trans,
-  useTrans
-} from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
-import { Table, toApiParams, useTable, pageCount } from "../../table"
+import { Trans, useTrans } from "../../i18n"
+import { ConfirmCancelFooter } from "../../form/ConfirmButtonFooter"
 import { usePlayerAdjustReduceBalance } from "./client"
-import LoadingBackdrop from "../../dialog/LoadingBackdrop"
-import dateTimeColumn from "../../table/column/dateTime"
-import {
-  numberDecimalColumn,
-  numberDecimalPercentageColumn
-} from "../../table/column/numberColumn"
-import AlertDialog from "../../dialog/Alert"
-import textColumn from "../../table/column/textColumn"
-import { formatDateTime } from "../../date/format"
 import { FieldValues } from "../../layout/Grid"
-import { formatNumberDecimal } from "../../number/format"
-import Separator from "../../layout/Separator"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
 import { useFormContext, useWatch } from "react-hook-form"
@@ -135,7 +114,7 @@ const DeductDialog = ({
 }
 
 const FormBody = ({ brandId, username, playerCode }) => {
-  let { watch, control } = useFormContext()
+  let { control, setValue } = useFormContext()
   let { data: player } = usePlayer(playerCode)
 
   let TransactionTypeField = "transactionType"
@@ -144,6 +123,8 @@ const FormBody = ({ brandId, username, playerCode }) => {
     name: TransactionTypeField
   })
   let isTransferTransactionType = isTransfer(transactionType)
+
+  let IncludeInNetProfitField = "includeInNetProfit"
   return (
     <>
       <Input type="hidden" name="brandId" value={brandId} />
@@ -163,6 +144,12 @@ const FormBody = ({ brandId, username, playerCode }) => {
             name={TransactionTypeField}
             transferable={!!player?.agentUsername}
             required
+            onChange={(event) => {
+              let type = event.target.value
+              if (!showIncludeInNetProfitSetting(type)) {
+                setValue(IncludeInNetProfitField, undefined)
+              }
+            }}
           />
         </Set>
 
@@ -171,7 +158,7 @@ const FormBody = ({ brandId, username, playerCode }) => {
             <Box alignY="center">
               <Trans zh="需算入净盈利" en="Include in Net Profit" />
             </Box>
-            <Checkbox name="includeInNetProfit" />
+            <Checkbox name={IncludeInNetProfitField} defaultChecked={true} />
           </>
         )}
 

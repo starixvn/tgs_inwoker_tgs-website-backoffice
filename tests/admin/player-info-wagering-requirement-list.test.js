@@ -34,9 +34,6 @@ test("view player wagering requirement list", async ({
 
   let WaitSecond = 1000
 
-  //TODO: test player balance change with wagering requirement
-  // let playerBucketAmount = await backofficeApi.player.bucket.amount(player.code)
-
   //Note. wait for backend api to write data into db for search
   let playerBucketList
   let MaxRetry = 5
@@ -50,10 +47,6 @@ test("view player wagering requirement list", async ({
   }
 
   playerBucketList = await backofficeApi.player.bucket.list(player.code)
-
-  let bucketHistory = await backofficeApi.player.bucket.firstHistory(
-    player.code
-  )
 
   let WageringRequirementDialogSelector = `#wagering-requirement-dialog`
   await Promise.all([
@@ -74,5 +67,33 @@ test("view player wagering requirement list", async ({
   let wageringRequirement = numeral(wageringRequirementString).value()
   expect(wageringRequirement).to.equals(ExpectedWageringRequirementAmount)
 
-  console.log("TODO: test completed wagering detail?")
+  let bucketHistory = await backofficeApi.player.bucket.firstHistory(
+    player.code
+  )
+
+  let BucketHistoryDialogSelector = `#bucket-history-dialog`
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/player/bucket/history/`) &&
+        response.status() === 200
+      )
+    }),
+    openDialog(page, BucketHistoryDialogSelector)
+  ])
+
+  let changeAmountLocator = page.locator(
+    `${BucketHistoryDialogSelector} table#bucket-history [data-column-id="changeAmount"]`
+  )
+  let changeAmountString = await changeAmountLocator.textContent()
+  let changeAmount = numeral(changeAmountString).value()
+  expect(changeAmount).to.equals(ExpectedWageringRequirementAmount)
+
+  let type = await page
+    .locator(
+      `${BucketHistoryDialogSelector} table#bucket-history [data-column-id="type"] > span`
+    )
+    .getAttribute("data-type")
+
+  expect(type).to.equals("Create")
 })
