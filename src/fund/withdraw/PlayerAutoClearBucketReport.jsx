@@ -24,7 +24,11 @@ import { usePlayerAutoClearBucketList } from "../../player-management/player-lis
 import dateTimeColumn from "../../table/column/dateTime"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 
-export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
+export const PlayerAutoClearBucketReport = ({
+  playerCode,
+  prefetchedData,
+  ...props
+}) => {
   let [status, setStatus] = useState()
 
   let {
@@ -43,6 +47,7 @@ export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
 
   let { state, setPageIndex, setSortOrder } = useTable({})
   let columns = useColumns({ items })
+
   return (
     <PageContent
       title={<Trans zh="自动清流水报表" en="Auto Clear Wagering Report" />}
@@ -58,8 +63,11 @@ export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
           />
         </Box>
       }
+      {...props}
     >
       <Table
+        hasDividers
+        hasCellDividers
         columns={columns}
         data={items}
         controlledState={state}
@@ -67,8 +75,8 @@ export const PlayerAutoClearBucketReport = ({ playerCode, prefetchedData }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        getRowId={(row) => row.id}
-        stickyHead
+        // getRowId={(row) => row.id}
+        // stickyHead
       />
       {error && <AlertDialog {...error} />}
     </PageContent>
@@ -90,22 +98,27 @@ const useColumns = ({ items = [] }) => {
   })
   return useMemo(
     () => [
-      dateTimeColumn({
-        accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
-        disableSortBy: true
-      }),
-      textColumn({
-        accessor: "id",
-        Header: <Trans zh="单号" en="Id." />,
-        disableSortBy: true
-      }),
-      textColumn({
-        accessor: "depositFormId",
-        Header: <Trans zh="存款单号" en="Deposit ID." />,
-        disableSortBy: true
-      }),
-      /*
+      {
+        id: "info",
+        Header: "",
+        columns: [
+          dateTimeColumn({
+            accessor: "createdOn",
+            Header: <Trans zh="时间" en="Time" />,
+            disableSortBy: true
+          }),
+          textColumn({
+            accessor: "id",
+            Header: <Trans zh="单号" en="Id." />,
+            disableSortBy: true
+          }),
+          textColumn({
+            accessor: "depositFormId",
+            Header: <Trans zh="存款单号" en="Deposit ID." />,
+            disableSortBy: true
+          })
+        ]
+      },
       {
         id: "reviewingGroup",
         Header: <Trans zh="审核中存款单" en="Reviewing" />,
@@ -156,83 +169,6 @@ const useColumns = ({ items = [] }) => {
           })
         ]
       },
-      */
-      textColumn({
-        id: "reviewing",
-        accessor: (row) => row,
-        Header: (
-          <Set orientation="vertical" alignX="center">
-            <Text.Block>
-              <Trans zh="审核中存款单" en="Reviewing" />
-            </Text.Block>
-            {/* <Text.Block>
-              <Trans zh="钱包余额/剩余流水" en="Balance/Wagering" />
-            </Text.Block> */}
-          </Set>
-        ),
-        headCellProps: {
-          whiteSpace: "nowrap"
-        },
-        disableSortBy: true,
-        Cell: ({ value: record }) => {
-          return (
-            <Box>
-              <FormattedNumberDecimal
-                value={record?.reviewBalance}
-                title={balanceLabel}
-              />
-              /
-              <FormattedNumberDecimal
-                value={record?.reviewBucketAmount}
-                title={wageringLabel}
-              />
-            </Box>
-          )
-        }
-      }),
-
-      textColumn({
-        id: "afterCleared",
-        accessor: (row) => row,
-        Header: (
-          <Set orientation="vertical" alignX="center">
-            <Text.Block>
-              <Trans zh="自动清流水后" en="After Cleared" />
-            </Text.Block>
-            {/* <Text.Block>
-              <Trans zh="钱包余额/剩余流水" en="Balance/Wagering" />
-            </Text.Block> */}
-          </Set>
-        ),
-        headCellProps: {
-          whiteSpace: "nowrap"
-        },
-        disableSortBy: true,
-        Cell: ({ value: record }) => {
-          let cleaningBalance = record?.cleaningBalance
-          let cleaningBucketAmount = record?.cleaningBucketAmount
-          if (
-            !Number.isFinite(cleaningBalance) &&
-            !Number.isFinite(cleaningBucketAmount)
-          ) {
-            return null
-          }
-
-          return (
-            <Box>
-              <FormattedNumberDecimal
-                value={record?.cleaningBalance}
-                title={balanceLabel}
-              />
-              /
-              <FormattedNumberDecimal
-                value={record?.cleaningBucketAmount}
-                title={wageringLabel}
-              />
-            </Box>
-          )
-        }
-      }),
       textColumn({
         accessor: "status",
         Header: <Trans zh="状态" en="Status" />,

@@ -43,6 +43,15 @@ test.skip("fund withdraw > audit clear bucket", async ({
     brandId: platform.id
   })
 
+  let { externalRoundId, ...result } = await sboGameProviderApi.placeBet({
+    amount: DepositAmount,
+    playerCode: player.code
+  })
+
+  await backofficeApi.player.addBalance(player.code, {
+    amount: DepositAmount
+  })
+
   let balance = await operatorApi.wallet(platformToken, player.token)
   let withdrawAmount = DepositAmount
   let WithdrawFormId = await operatorApi.withdraw.applyManualWithdraw(

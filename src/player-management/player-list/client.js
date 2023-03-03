@@ -6,6 +6,7 @@ import {
   usePutData,
   useDelete
 } from "../../client"
+import { repeat } from "ramda"
 
 let API = "/api/player"
 
@@ -162,7 +163,20 @@ export const usePlayerAutoClearBucketList = (playerCode, status, options) => {
     }
   }
 
+  //TODO: rm after test/dev done
+  let { data, ...rest } = useGet(url, options)
+
+  if (data) {
+    data = repeat(data[0], 20)
+  }
+  console.log("data", data)
+  return {
+    data,
+    ...rest
+  }
+  /*
   return useGet(url, options)
+  */
 }
 
 const PlayerManualDepositApi = "/api/ManualDeposit"

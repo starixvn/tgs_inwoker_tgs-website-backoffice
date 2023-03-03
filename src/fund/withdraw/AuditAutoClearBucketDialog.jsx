@@ -88,7 +88,7 @@ const AuditAutoClearBucketDialog = ({
       title={" "}
       {...dialog}
       css={css`
-        min-width: 70vw;
+        min-width: 75vw;
         & .bb-DialogContent {
           min-height: 80vh;
         }
@@ -137,10 +137,12 @@ const Body = ({
         brandId={brandId}
         playerCode={playerCode}
         prefetchedData={playerOpenOrderData}
+        padding="1rem"
       />
       <PlayerAutoClearBucketReport
         playerCode={playerCode}
         prefetchedData={playerAutoClearBucketData}
+        padding="1rem"
       />
     </Box>
   )

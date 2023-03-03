@@ -57,6 +57,7 @@ import {
 } from "@dnd-kit/sortable"
 import { CloseButtonFooter } from "../form/ConfirmButtonFooter"
 import { CloseButton } from "../button/CloseButton"
+import { Cell } from "./Cell"
 
 const DefaultState = {
   pageIndex: 0,
@@ -144,7 +145,14 @@ const HeadCell = ({
   ...props
 }) => {
   const StickyHeadZIndex = 1
-  let { stickyHead, stickyLeft, stickyRight, maxSize, setStickyColumn } = table
+  let {
+    stickyHead,
+    stickyLeft,
+    stickyRight,
+    maxSize,
+    setStickyColumn,
+    hasCellDividers
+  } = table
 
   let columnProps = column.getHeaderProps({
     ...column?.headCell,
@@ -176,6 +184,12 @@ const HeadCell = ({
         right: ${isStickyRight ? 0 : "auto"};
         z-index: ${isStickyCell ? StickyHeadZIndex + 1 : "auto"};
         background-color: var(--bb-palette-white600, #000000);
+        border-right: ${hasCellDividers
+          ? `1px solid var(--bb-palette-white900, #000000)`
+          : "0"};
+        border-bottom: ${hasCellDividers
+          ? `1px solid var(--bb-palette-white900, #000000)`
+          : "0"};
       `}
       {...props}
       {...columnProps}
@@ -235,10 +249,12 @@ export const Table = ({
   tableBorder = "1px solid var(--bb-palette-white800, #000000)",
   toggleColumnHidden = false,
   columnOrder = false,
+  hasCellDividers,
   ...props
 }) => {
   components = {
     ..._Table,
+    Cell,
     HeadCell,
     ...components
   }
@@ -290,7 +306,8 @@ export const Table = ({
       setStickyColumn,
       isStickyColumn,
       toggleColumnHidden,
-      columnOrder
+      columnOrder,
+      hasCellDividers
     },
     useFilters,
     useSortBy,
@@ -412,7 +429,6 @@ const isStickyNotApplicable = (cellWidth, maxWidth) => {
   return cellWidth * 2 > maxWidth
 }
 
-//TODO: rename to toggleColumnHidden?
 const Action = {
   ToggleColumnHidden: "toggleColumnHidden",
   ColumnOrder: "columnOrder"
@@ -661,7 +677,7 @@ const TotalBody = ({ table }) => {
     stickyRight,
     maxSize
   } = table
-  let { Body, Row, Cell } = components
+  let { Body, Row } = components
 
   return (
     <Body
@@ -689,7 +705,7 @@ const TotalBody = ({ table }) => {
           let Body = column.TotalCell ?? column.Cell
           let value = column?.toTotal ? column.toTotal(total) : total[columnId]
           return (
-            <Cell
+            <_Table.Cell
               key={columnId}
               css={css`
                 position: ${isStickyCell ? "sticky" : "static"};
@@ -701,7 +717,7 @@ const TotalBody = ({ table }) => {
               {...props}
             >
               <Body value={value} />
-            </Cell>
+            </_Table.Cell>
           )
         })}
       </Row>
@@ -723,7 +739,7 @@ const Body = ({ table }) => {
     stickyRight,
     isStickyColumn
   } = table
-  let { Body, Row, Cell } = components
+  let { Body, Row } = components
   return (
     <Body {...getTableBodyProps()}>
       {rows.map((row, rowIndex) => {
@@ -737,6 +753,19 @@ const Body = ({ table }) => {
             {...row.getRowProps(getRowProps(row))}
           >
             {row.cells.map((cell, cellIndex, list) => {
+              let isFirstColumn = cellIndex == 0
+              let isLastColumn = cellIndex == list.length - 1
+              return (
+                <components.Cell
+                  cell={cell}
+                  key={cellIndex}
+                  columnIndex={cellIndex}
+                  isFirstColumn={isFirstColumn}
+                  isLastColumn={isLastColumn}
+                  table={table}
+                />
+              )
+              /*
               //TODO: rename cell?.column?.cell to cellProps?
               let props = cell.getCellProps([
                 {
@@ -757,7 +786,7 @@ const Body = ({ table }) => {
                 isStickyCell = isStickyColumn(cellIndex)
               }
               return (
-                <Cell
+                <components.Cell
                   css={css`
                     position: ${isStickyCell ? "sticky" : "static"};
                     left: ${isStickyLeft ? 0 : "auto"};
@@ -767,17 +796,18 @@ const Body = ({ table }) => {
                   {...props}
                 >
                   {cell.render("Cell")}
-                </Cell>
-              )
+                </components.Cell>
+            )
+            */
             })}
           </Row>
         )
       })}
       {!rows.length && (
         <Row>
-          <Cell textAlign="center" colSpan={columns.length}>
+          <_Table.Cell textAlign="center" colSpan={columns.length}>
             <Trans zh="查无资料" en="No Search Result" />
-          </Cell>
+          </_Table.Cell>
         </Row>
       )}
     </Body>

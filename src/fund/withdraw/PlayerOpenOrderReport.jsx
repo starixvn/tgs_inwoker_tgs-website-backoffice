@@ -65,7 +65,8 @@ export const usePlayerOpenOrder = (brandId, playerCode, prefetchedData) => {
 export const PlayerOpenOrderReport = ({
   brandId,
   playerCode,
-  prefetchedData
+  prefetchedData,
+  ...props
 }) => {
   let { isLoading, data, error } = usePlayerOpenOrder(
     brandId,
@@ -76,7 +77,10 @@ export const PlayerOpenOrderReport = ({
   let { state, setPageIndex, setSortOrder } = useTable({})
   let columns = useColumns({ items: data?.items })
   return (
-    <PageContent title={<Trans zh="未结算订单查询" en="Unsettled Bet" />}>
+    <PageContent
+      title={<Trans zh="未结算订单查询" en="Unsettled Bet" />}
+      {...props}
+    >
       <Table
         columns={columns}
         data={data?.items}
