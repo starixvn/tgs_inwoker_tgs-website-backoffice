@@ -336,12 +336,12 @@ const GameTypePanel = ({ brandId, gameType, readOnly, dialog, ...props }) => {
             gameType={gameType}
             readOnly={readOnly}
           />
-          <WinLossSettingDialogDisclosure
+          {/* <WinLossSettingDialogDisclosure
             id="win-loss-setting-dialog-disclosure"
             brandId={brandId}
             gameType={gameType}
             readOnly={readOnly}
-          />
+          /> */}
         </FieldStack>
       </Stack>
     </TabPanel>
@@ -360,6 +360,8 @@ const ValidBetSettingDialogDisclosure = ({
     zh: "有效投注返佣设置",
     en: "Valid Bet Rebate Setting"
   })
+
+  const MaxProfitSharingPercentage = 10
   return (
     <>
       <Disclosure {...dialog} {...props}>
@@ -377,6 +379,7 @@ const ValidBetSettingDialogDisclosure = ({
           title={label}
           netProfitLabel={<Trans zh="有效投注" en="Valid Bet" />}
           profitSharingPercentageLabel={<Trans zh="返佣比例" en="Rebate PT" />}
+          maxProfitSharingPercentage={MaxProfitSharingPercentage}
         />
       )}
     </>
@@ -468,6 +471,7 @@ const MultileLayerSettingFormDialog = ({
   useUpdate,
   onSubmitted,
   netProfitLabel,
+  maxProfitSharingPercentage,
   profitSharingPercentageLabel,
   dialog,
   title,
@@ -514,6 +518,7 @@ const MultileLayerSettingFormDialog = ({
           name="conditions"
           profitSharingPercentageFieldName="rebatePercentage"
           netProfitLabel={netProfitLabel}
+          maxProfitSharingPercentage={maxProfitSharingPercentage}
           profitSharingPercentageLabel={profitSharingPercentageLabel}
           readOnly={readOnly}
         />
@@ -540,6 +545,7 @@ const GameTypeSettingCard = ({ brandId, gameType, readOnly, dialog }) => {
   return (
     <GameTypeSettingFormCard
       brandId={brandId}
+      gameType={gameType}
       record={record}
       readOnly={readOnly}
       onSubmitted={(formData) => {
@@ -555,6 +561,7 @@ const GameTypeSettingCard = ({ brandId, gameType, readOnly, dialog }) => {
 
 const GameTypeSettingFormCard = ({
   brandId,
+  gameType,
   readOnly,
   record = {},
   onSubmitted
@@ -597,7 +604,7 @@ const GameTypeSettingFormCard = ({
   return (
     <Card variant="bordered" marginTop="0.5rem" marginBottom="1.5rem">
       <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form id={gameType} onSubmit={handleSubmit(onSubmit)}>
           <FieldStack>
             <FieldStack orientation="horizontal">
               <SwitchField
@@ -617,11 +624,11 @@ const GameTypeSettingFormCard = ({
                 label={<Trans zh="有效投注" en="Valid Bet" />}
                 disabled={isLoading || readOnly}
               />
-              <CheckboxField
+              {/* <CheckboxField
                 name="hasWinLoss"
                 label={<Trans zh="输赢金额" en="Win Loss" />}
                 disabled={isLoading || readOnly}
-              />
+              /> */}
             </FieldStack>
             {!readOnly && (
               <Box alignX="right">

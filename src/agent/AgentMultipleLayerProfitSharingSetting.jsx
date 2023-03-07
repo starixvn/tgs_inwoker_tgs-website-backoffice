@@ -264,6 +264,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
   maxLevelSize = MaxNumber,
   parentAgentProfitSharingSettings,
   profitSharingPercentageFieldName = "dividendPercentage",
+  maxProfitSharingPercentage,
   activeNumberLabel = <Trans zh="活跃人数" en="Active Player" />,
   netProfitLabel = <Trans zh="净盈利" en="Net Profit" />,
   profitSharingPercentageLabel = (
@@ -319,6 +320,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
             index={index}
             fieldArray={fieldArray}
             profitSharingPercentageFieldName={profitSharingPercentageFieldName}
+            maxProfitSharingPercentage={maxProfitSharingPercentage}
             parentAgentProfitSharingSettings={parentAgentProfitSharingSettings}
             readOnly={readOnly}
           />
@@ -380,6 +382,7 @@ const SettingRow = ({
   fieldArray,
   readOnly,
   profitSharingPercentageFieldName,
+  maxProfitSharingPercentage,
   parentAgentProfitSharingSettings
 }) => {
   let { control, setValue } = useFormContext()
@@ -485,6 +488,7 @@ const SettingRow = ({
             fieldArrayName={name}
             index={index}
             fieldName={profitSharingPercentageFieldName}
+            maxProfitSharingPercentage={maxProfitSharingPercentage}
             field={field}
             readOnly={readOnly}
             disabled={disabled}
@@ -504,6 +508,7 @@ const ProfitSharingPercentageNumberInputField = ({
   index,
   fieldName,
   field = {},
+  maxProfitSharingPercentage,
   ...props
 }) => {
   let { control } = useFormContext()
@@ -519,7 +524,7 @@ const ProfitSharingPercentageNumberInputField = ({
   let defaultValue = Reflect.get(field, fieldName)
 
   const MinProfitSharingPercentage = 0
-  const MaxProfitSharingPercentage = 100
+  const MaxProfitSharingPercentage = maxProfitSharingPercentage ?? 100
 
   return (
     <PercentageNumberInputField
