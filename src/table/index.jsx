@@ -27,37 +27,13 @@ import {
   useColumnOrder
 } from "react-table"
 import { fromIsDescending, equalsDescending } from "./order"
-import {
-  faCaretUp,
-  faCaretDown,
-  faSlash,
-  faTimes,
-  faSearchMinus,
-  faSort,
-  faCheck
-} from "@fortawesome/free-solid-svg-icons"
 import { Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
-import { useMeasure, useScrollbarWidth } from "react-use"
+import { useScrollbarWidth } from "react-use"
 import { get } from "lodash-es"
-import {
-  closestCenter,
-  DndContext,
-  DragOverlay,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors
-} from "@dnd-kit/core"
-import {
-  arrayMove,
-  SortableContext,
-  horizontalListSortingStrategy,
-  useSortable
-} from "@dnd-kit/sortable"
-import { CloseButtonFooter } from "../form/ConfirmButtonFooter"
-import { CloseButton } from "../button/CloseButton"
 import { Cell } from "./Cell"
+import { HeadCell } from "./HeadCell"
+import { ActionBar } from "./ActionBar"
 
 const DefaultState = {
   pageIndex: 0,
@@ -136,83 +112,6 @@ export const toApiParams = (state, configs = {}) => {
   }
 }
 
-const HeadCell = ({
-  column,
-  columnIndex,
-  isFirstColumn,
-  isLastColumn,
-  table,
-  ...props
-}) => {
-  const StickyHeadZIndex = 1
-  let {
-    stickyHead,
-    stickyLeft,
-    stickyRight,
-    maxSize,
-    setStickyColumn,
-    hasCellDividers
-  } = table
-
-  let columnProps = column.getHeaderProps({
-    ...column?.headCell,
-    ...column?.getSortByToggleProps()
-  })
-
-  let isStickyLeft = stickyHead && stickyLeft && isFirstColumn
-  let isStickyRight = stickyHead && stickyRight && isLastColumn
-  //TODO: support multiple sticky columns?
-  let isStickyCell = isStickyLeft || isStickyRight
-  let [cellRef, cellRefMeasure] = useMeasure()
-
-  if (
-    isStickyCell &&
-    Number.isFinite(maxSize?.width) &&
-    Number.isFinite(cellRefMeasure?.width) &&
-    isStickyNotApplicable(cellRefMeasure?.width, maxSize?.width)
-  ) {
-    isStickyCell = false
-  }
-  setStickyColumn(columnIndex, isStickyCell)
-
-  return (
-    <_Table.HeadCell
-      ref={cellRef}
-      css={css`
-        position: ${isStickyCell ? "sticky" : "static"};
-        left: ${isStickyLeft ? 0 : "auto"};
-        right: ${isStickyRight ? 0 : "auto"};
-        z-index: ${isStickyCell ? StickyHeadZIndex + 1 : "auto"};
-        background-color: var(--bb-palette-white600, #000000);
-        border-right: ${hasCellDividers
-          ? `1px solid var(--bb-palette-white900, #000000)`
-          : "0"};
-        border-bottom: ${hasCellDividers
-          ? `1px solid var(--bb-palette-white900, #000000)`
-          : "0"};
-      `}
-      {...props}
-      {...columnProps}
-    >
-      <Box>
-        {column.render("Header")}
-        {column.isSorted ? (
-          column.isSortedDesc ? (
-            <Icon icon={faCaretDown} type="font-awesome" />
-          ) : (
-            <Icon icon={faCaretUp} type="font-awesome" />
-          )
-        ) : (
-          column.canSort &&
-          !column.disableSortBy && (
-            <Icon icon={faSort} type="font-awesome" opacity="0.4" />
-          )
-        )}
-      </Box>
-    </_Table.HeadCell>
-  )
-}
-
 export const Table = ({
   columns,
   data = [],
@@ -227,6 +126,7 @@ export const Table = ({
   disableMultiSort = true,
   usePagination = useTablePagination,
   pageCount,
+  autoPaging = false,
   setPageIndex,
   manualPagination = true,
   useFilters = useTableFilters,
@@ -268,6 +168,23 @@ export const Table = ({
   let isStickyColumn = (columnIndex) => {
     let isSticky = stickyColumnRecord[columnIndex] ?? false
     return isSticky
+  }
+
+  let pageSize = controlledState?.pageSize ?? initialState?.pageSize
+  if (
+    autoPaging &&
+    Number.isFinite(pageSize) &&
+    data?.length > pageSize &&
+    !Number.isFinite(pageCount)
+  ) {
+    pageCount = toPageCount(pageSize, data?.length)
+
+    let pageIndex = controlledState?.pageIndex ?? initialState?.pageIndex
+    if (Number.isFinite(pageIndex) && Number.isFinite(pageCount)) {
+      let startIndex = pageIndex * pageSize
+      let endIndex = startIndex + pageSize
+      data = data.slice(startIndex, endIndex)
+    }
   }
 
   let table = _useTable(
@@ -343,6 +260,8 @@ export const Table = ({
   }
 
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
+
+  //Note. if table all use hasCellDividers, then "border-collapse" can set to "separate" instead of " ${hasCellDividers ? "separate" : "collapse"}"
   return (
     <>
       {isLoading && (
@@ -366,11 +285,13 @@ export const Table = ({
             & div.bb-Table {
               overflow: ${isSticky ? "visible" : "auto"};
               border: 0;
+              border-radius: 0;
             }
 
             & table.bb-Table {
               overflow: ${isSticky ? "visible" : "auto"};
               border: ${tableBorder};
+              border-collapse: ${hasCellDividers ? "separate" : "collapse"};
             }
           `}
         >
@@ -425,183 +346,12 @@ export const Table = ({
 
 const defaultProps = () => ({})
 
-const isStickyNotApplicable = (cellWidth, maxWidth) => {
-  return cellWidth * 2 > maxWidth
-}
-
-const Action = {
-  ToggleColumnHidden: "toggleColumnHidden",
-  ColumnOrder: "columnOrder"
-}
-
-const ActionFields = Object.values(Action)
-
-const ActionBar = ({ table }) => {
-  let showActionBar = !!ActionFields.find((actionField) => {
-    let showAction = get(table, actionField)
-    return showAction
-  })
-
-  if (!showActionBar) {
-    return null
-  }
-
-  return (
-    <Set orientation="horizontal" verticalBelow="tablet">
-      <ToggleHiddenDropdownMenu table={table} />
-      <ColumnOrderPopover table={table} />
-    </Set>
-  )
-}
-
-const ToggleHiddenDropdownMenu = ({ table }) => {
-  let { allColumns, toggleColumnHidden } = table
-
-  if (!toggleColumnHidden) {
-    return null
-  }
-
-  let availableColumns = allColumns.filter(
-    ({ disableToggleHidden }) => !disableToggleHidden
-  )
-
-  return (
-    <DropdownMenu
-      menu={availableColumns.map((column) => {
-        let { checked, onChange, ...props } = column.getToggleHiddenProps()
-        return (
-          <DropdownMenu.Item
-            key={column.id}
-            iconBefore={checked ? "solid-check" : <Box />}
-            onClick={(event) => {
-              column.toggleHidden(checked)
-            }}
-            disabled={column.disableToggleHidden}
-          >
-            {column.Header}
-          </DropdownMenu.Item>
-        )
-      })}
-    >
-      <Button iconAfter="chevron-down">Columns</Button>
-    </DropdownMenu>
-  )
-}
-
-const ColumnOrderButton = ({ column }) => {
-  let {
-    attributes,
-    listeners,
-    transform,
-    transition,
-    setNodeRef,
-    isDragging,
-    isOver
-  } = useSortable({
-    id: column.id
-  })
-
-  const style = {
-    transform: transform
-      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
-      : "",
-    transition: transition
-  }
-
-  return (
-    <Button
-      type="button"
-      ref={setNodeRef}
-      palette={isDragging ? "primary" : isOver ? "success" : "default"}
-      variant={isDragging || isOver ? "outlined" : "default"}
-      {...attributes}
-      {...listeners}
-      style={style}
-    >
-      {column.Header}
-    </Button>
-  )
-}
-
-const ColumnOrderPopover = ({ table }) => {
-  let popover = Popover.useState()
-
-  const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {})
-  )
-
-  let { visibleColumns, setColumnOrder } = table
-
-  let items = visibleColumns.map((column) => {
-    return column.id
-  })
-
-  function handleDragEnd(event) {
-    console.log("onDragEnd event", event)
-    const { active, over } = event
-    if (active.id !== over.id) {
-      const oldIndex = items.indexOf(active.id)
-      const newIndex = items.indexOf(over.id)
-      console.log("active", active, "over", over)
-      let result = arrayMove(items, oldIndex, newIndex)
-      setColumnOrder(result)
-    }
-  }
-
-  //TODO: Popover need use "usePortal"?
-  return (
-    <>
-      <Popover.Disclosure use={Button} {...popover}>
-        Column Order
-      </Popover.Disclosure>
-      <Popover
-        hasArrow
-        {...popover}
-        footer={
-          <Box id="test-box" alignX="right" width="100%">
-            <CloseButton width="max-content" onClick={popover.hide} />
-          </Box>
-        }
-        css={css`
-          max-width: 85vw;
-          & .bb-PopoverFooter > .bb-Box {
-            width: 100%;
-          }
-        `}
-      >
-        <DndContext
-          sensors={sensors}
-          onDragEnd={handleDragEnd}
-          collisionDetection={closestCenter}
-        >
-          <Set>
-            <SortableContext
-              items={items}
-              strategy={horizontalListSortingStrategy}
-            >
-              {visibleColumns.map((column) => {
-                return <ColumnOrderButton key={column.id} column={column} />
-              })}
-            </SortableContext>
-          </Set>
-        </DndContext>
-      </Popover>
-    </>
-  )
-}
-
 const Head = ({ table }) => {
   let {
     headerGroups,
     components,
     getTableHeadProps = defaultProps,
-    stickyHead,
-    stickyLeft,
-    stickyRight,
-    maxSize,
-    setStickyColumn,
-    allColumns
+    stickyHead
   } = table
   let { Head, HeadCell } = components
 
@@ -637,6 +387,7 @@ const Head = ({ table }) => {
   )
 }
 
+//TODO: need stickyLeft or stickyRight?
 const Foot = ({ table }) => {
   let {
     footerGroups,
@@ -730,21 +481,19 @@ const Body = ({ table }) => {
     rows,
     getTableBodyProps,
     getRowProps = defaultProps,
-    getColumnProps = defaultProps,
-    getCellProps = defaultProps,
     prepareRow,
     columns,
-    components,
-    stickyLeft,
-    stickyRight,
-    isStickyColumn
+    allColumns,
+    components
   } = table
   let { Body, Row } = components
   return (
     <Body {...getTableBodyProps()}>
-      {rows.map((row, rowIndex) => {
+      {rows.map((row, rowIndex, rows) => {
         prepareRow(row)
 
+        let isFirstRow = rowIndex === 0
+        let isLastRow = rowIndex === rows.length - 1
         return (
           <Row
             table={table}
@@ -752,9 +501,9 @@ const Body = ({ table }) => {
             data-row-index={rowIndex}
             {...row.getRowProps(getRowProps(row))}
           >
-            {row.cells.map((cell, cellIndex, list) => {
+            {row.cells.map((cell, cellIndex, columns) => {
               let isFirstColumn = cellIndex == 0
-              let isLastColumn = cellIndex == list.length - 1
+              let isLastColumn = cellIndex == columns.length - 1
               return (
                 <components.Cell
                   cell={cell}
@@ -762,50 +511,18 @@ const Body = ({ table }) => {
                   columnIndex={cellIndex}
                   isFirstColumn={isFirstColumn}
                   isLastColumn={isLastColumn}
+                  isFirstRow={isFirstRow}
+                  isLastRow={isLastRow}
                   table={table}
                 />
               )
-              /*
-              //TODO: rename cell?.column?.cell to cellProps?
-              let props = cell.getCellProps([
-                {
-                  ...cell?.column?.cell
-                },
-                getColumnProps(cell.column),
-                getCellProps(cell)
-              ])
-              let columnId = cell?.column?.id || cell?.column?.accessor
-
-              let isFirst = cellIndex == 0
-              let isLast = cellIndex == list.length - 1
-              let isStickyLeft = stickyLeft && isFirst
-              let isStickyRight = stickyRight && isLast
-              //TODO: support multiple sticky columns?
-              let isStickyCell = isStickyLeft || isStickyRight
-              if (isStickyCell) {
-                isStickyCell = isStickyColumn(cellIndex)
-              }
-              return (
-                <components.Cell
-                  css={css`
-                    position: ${isStickyCell ? "sticky" : "static"};
-                    left: ${isStickyLeft ? 0 : "auto"};
-                    right: ${isStickyRight ? 0 : "auto"};
-                  `}
-                  data-column-id={columnId}
-                  {...props}
-                >
-                  {cell.render("Cell")}
-                </components.Cell>
-            )
-            */
             })}
           </Row>
         )
       })}
       {!rows.length && (
         <Row>
-          <_Table.Cell textAlign="center" colSpan={columns.length}>
+          <_Table.Cell textAlign="center" colSpan={allColumns.length}>
             <Trans zh="查无资料" en="No Search Result" />
           </_Table.Cell>
         </Row>
@@ -822,3 +539,5 @@ export const pageCount = (pageSize, totalCount) => {
   let numberOfPages = Math.ceil(totalCount / pageSize)
   return numberOfPages
 }
+
+const toPageCount = pageCount

@@ -14,7 +14,6 @@ import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import { Table, pageCount, useTable } from "../../table"
 import { textColumn } from "../../table/column/textColumn"
 import AlertDialog from "../../dialog/Alert"
-//TODO: use PageContent?
 import PageContent from "../../page/Content"
 import {
   ClearBucketStatusLabel,
@@ -23,6 +22,7 @@ import {
 import { usePlayerAutoClearBucketList } from "../../player-management/player-list/client"
 import dateTimeColumn from "../../table/column/dateTime"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
+import SequenceColumn from "../../table/column/sequence"
 
 export const PlayerAutoClearBucketReport = ({
   playerCode,
@@ -45,7 +45,9 @@ export const PlayerAutoClearBucketReport = ({
       : null
   )
 
-  let { state, setPageIndex, setSortOrder } = useTable({})
+  let { state, setPageIndex, setSortOrder } = useTable({
+    pageSize: 5
+  })
   let columns = useColumns({ items })
 
   return (
@@ -71,12 +73,11 @@ export const PlayerAutoClearBucketReport = ({
         columns={columns}
         data={items}
         controlledState={state}
-        // pageCount={pageCount(state.pageSize, data?.totalCount)}
+        autoPaging={true}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        // getRowId={(row) => row.id}
-        // stickyHead
+        getRowId={(row) => row.id}
       />
       {error && <AlertDialog {...error} />}
     </PageContent>
@@ -84,18 +85,6 @@ export const PlayerAutoClearBucketReport = ({
 }
 
 const useColumns = ({ items = [] }) => {
-  let balanceLabel = useTrans({
-    zh: "钱包余额",
-    en: "Balance"
-  })
-  let wageringLabel = useTrans({
-    zh: "剩余流水",
-    en: "Wagering"
-  })
-  let balanceWageringLabel = useTrans({
-    zh: "钱包余额/剩余流水",
-    en: "Balance/Wagering"
-  })
   return useMemo(
     () => [
       {

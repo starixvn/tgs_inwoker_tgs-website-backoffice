@@ -88,9 +88,10 @@ const AuditAutoClearBucketDialog = ({
       title={" "}
       {...dialog}
       css={css`
-        min-width: 75vw;
+        min-width: 80vw;
         & .bb-DialogContent {
-          min-height: 80vh;
+          min-height: 70vh;
+          padding: 1rem;
         }
       `}
     >

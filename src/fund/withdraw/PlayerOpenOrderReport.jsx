@@ -27,7 +27,6 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { subDays } from "date-fns"
 import { GameRoundStatus } from "../../game/round/GameRoundStatus"
 import AlertDialog from "../../dialog/Alert"
-//TODO: use PageContent?
 import PageContent from "../../page/Content"
 import dateTimeColumn from "../../table/column/dateTime"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
@@ -74,7 +73,9 @@ export const PlayerOpenOrderReport = ({
     prefetchedData
   )
 
-  let { state, setPageIndex, setSortOrder } = useTable({})
+  let { state, setPageIndex, setSortOrder } = useTable({
+    pageSize: 5
+  })
   let columns = useColumns({ items: data?.items })
   return (
     <PageContent
@@ -90,7 +91,6 @@ export const PlayerOpenOrderReport = ({
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         getRowId={(row) => row.id}
-        stickyHead
       />
       {error && <AlertDialog {...error} />}
     </PageContent>
