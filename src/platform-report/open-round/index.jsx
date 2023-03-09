@@ -40,20 +40,13 @@ import {
   DateInputRange,
   DateInputRangeField
 } from "../../date/DateTimeRangeInput"
-import {
-  GameRoundStatus,
-  GameRoundStatusLabel,
-  GameRoundStatusSelect
-} from "../../game/round/GameRoundStatus"
+import { GameRoundStatus } from "../../game/round/GameRoundStatus"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import { useGameRoundList } from "../../game/round/client"
 import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
-import { isDev } from "../../env"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
-import { splitEvery, any } from "ramda"
-import { isValidDate } from "../../date/isValidDate"
 
 export { Code }
 
@@ -87,22 +80,14 @@ export const Body = () => {
 const ReportContent = ({ brandId }) => {
   let dateRange = today()
   let QueryMaxRangeDays = 31
-  //TODO: rm status
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
-    externalFrom: undefined,
-    externalTo: undefined,
-    externalClosedFrom: undefined,
-    externalClosedTo: undefined,
     from: dateRange.start,
     to: dateRange.end,
-    closedFrom: undefined,
-    closedTo: undefined,
-    sortby: "createdOn",
     username: "",
     roundId: "",
     externalRoundId: "",
-    status: GameRoundStatus.Open,
     gameProviderId: ""
   })
 
@@ -110,18 +95,7 @@ const ReportContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let {
-    pageIndex,
-    pageSize,
-    from,
-    to,
-    closedFrom,
-    closedTo,
-    username,
-    roundId,
-    status,
-    gameProviderId
-  } = state
+  let { pageSize, from, to, username, roundId, gameProviderId } = state
 
   let culture = useLangCode()
   let {
@@ -132,11 +106,10 @@ const ReportContent = ({ brandId }) => {
     deleteCache
   } = useGameRoundList({
     ...toApiParams(state),
+    sortby: "createdOn",
     orderby: "descending",
     from,
     to: startOfNextDay(to),
-    closedFrom,
-    closedTo: startOfNextDay(closedTo),
     culture,
     status: GameRoundStatus.Open
   })
@@ -149,29 +122,20 @@ const ReportContent = ({ brandId }) => {
     <PageContent
       actionBar={
         <SearchBar
-          externalFrom={state.externalFrom}
-          externalTo={state.externalTo}
-          externalClosedFrom={state.externalClosedFrom}
-          externalClosedTo={state.externalClosedTo}
-          start={from}
-          end={to}
-          closedFrom={state?.closedFrom}
-          closedTo={state?.closedTo}
+          from={from}
+          to={to}
           username={username}
           roundId={roundId}
           externalRoundId={state?.externalRoundId}
-          status={status}
           gameProviderId={gameProviderId}
           minDate={minDate}
           maxDate={dateRange.end}
           maxRangeDays={QueryMaxRangeDays}
           isLoading={isLoading}
-          search={({ start, end, ...rest }) => {
+          search={(data) => {
             setState({
               pageIndex: 0,
-              from: start,
-              to: end,
-              ...rest
+              ...data
             })
             mutate()
           }}
@@ -196,21 +160,12 @@ const ReportContent = ({ brandId }) => {
   )
 }
 
-//TODO: rm status
 const SearchBar = ({
-  externalFrom,
-  externalTo,
-  externalClosedFrom,
-  externalClosedTo,
-  start,
-  end,
-  closedFrom,
-  closedTo,
-  sortby,
+  from,
+  to,
   username,
   roundId,
   externalRoundId,
-  status,
   gameProviderId,
   minDate,
   maxDate,
@@ -221,42 +176,20 @@ const SearchBar = ({
 }) => {
   let formMethods = useForm({
     defaultValues: {
-      externalFrom,
-      externalTo,
-      externalClosedFrom,
-      externalClosedTo,
-      start,
-      end,
-      closedFrom,
-      closedTo,
-      sortby,
+      from,
+      to,
       username,
       roundId,
       externalRoundId,
-      status,
       gameProviderId
     }
   })
-  let { control, getValues, setValue } = formMethods
 
   const onSubmit = (data) => search?.(data)
 
   let playerNamePlaceholder = useTrans({
     zh: "用户名",
     en: "Player Name"
-  })
-
-  const ExternalFromField = "externalFrom"
-  const ExternalToField = "externalTo"
-  //TODO: useWatch value to set sort
-
-  const ExternalClosedFromField = "externalClosedFrom"
-  const ExternalClosedToField = "externalClosedTo"
-  //TODO: useWatch value to set sort
-
-  let externalUsernamePlaceholder = useTrans({
-    zh: "三方用戶名",
-    en: "Player Code"
   })
 
   let roundIdPlaceholder = useTrans({
@@ -269,106 +202,19 @@ const SearchBar = ({
     en: "External ID"
   })
 
-  //TODO: rename to from
-  //TODO: apply maxDate={maxDate}
-  const StartField = "start"
-  let startValue = useWatch({ control, name: StartField })
-
-  //TODO: rename to "to"
-  const EndField = "end"
-  let endValue = useWatch({ control, name: EndField })
-  useEffect(() => {
-    if (isValid(startValue) && isValid(endValue)) {
-      setValue("sortby", "createdOn")
-    }
-  }, [startValue, endValue])
-
-  //TODO: apply maxDate={maxDate}
-  const ClosedFromField = "closedFrom"
-  let closedFromValue = useWatch({ control, name: ClosedFromField })
-
-  const ClosedToField = "closedTo"
-  let closedToValue = useWatch({ control, name: ClosedToField })
-  useEffect(() => {
-    if (isValid(closedFromValue) && isValid(closedToValue)) {
-      setValue("sortby", "closedOn")
-    }
-  }, [closedFromValue, closedToValue])
-
-  //TODO: apply to all date range inputs
-  const validateValidDateRanges = (range = {}, otherDateRangeFields = []) => {
-    let allDateRanges = splitEvery(2, [
-      range.start,
-      range.end,
-      ...getValues(otherDateRangeFields)
-    ])
-
-    let pass = any(([start, end]) => {
-      return isValidDate(start) && isValidDate(end)
-    }, allDateRanges)
-
-    return pass ? true : "one-of-date-range-required"
-  }
+  const StartField = "from"
+  const EndField = "to"
 
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <FieldStack orientation="vertical">
           <Set orientation="horizontal">
-            {/* 
-            <DateInputRangeField
-              label={<Trans zh="三方投注时间" en="External Created On" />}
-              showDateDropdownMenu
-              minDate={minDate}
-              maxDate={maxDate}
-              maxRangeDays={maxRangeDays}
-              fakeTimeLabel
-              startProps={{
-                name: ExternalFromField
-              }}
-              endProps={{
-                name: ExternalToField
-              }}
-              validate={(range) =>
-                validateValidDateRanges(range, [
-                  ExternalClosedFromField,
-                  ExternalClosedToField,
-                  StartField,
-                  EndField,
-                  ClosedFromField,
-                  ClosedToField
-                ])
-              }
-            />
-            <DateInputRangeField
-              label={<Trans zh="三方结算时间" en="External Closed On" />}
-              showDateDropdownMenu
-              minDate={minDate}
-              maxDate={maxDate}
-              maxRangeDays={maxRangeDays}
-              fakeTimeLabel
-              startProps={{
-                name: ExternalClosedFromField
-              }}
-              endProps={{
-                name: ExternalClosedToField
-              }}
-              validate={(range) =>
-                validateValidDateRanges(range, [
-                  ExternalFromField,
-                  ExternalToField,
-                  StartField,
-                  EndField,
-                  ClosedFromField,
-                  ClosedToField
-                ])
-              }
-            /> 
-            */}
             <DateInputRangeField
               label={<Trans zh="投注时间" en="Created On" />}
               showDateDropdownMenu
               minDate={minDate}
+              maxDate={maxDate}
               maxRangeDays={maxRangeDays}
               fakeTimeLabel
               startProps={{
@@ -377,53 +223,8 @@ const SearchBar = ({
               endProps={{
                 name: EndField
               }}
-              validate={(createdOn) => {
-                let hasCreatedOn =
-                  isValid(createdOn.start) && isValid(createdOn.end)
-
-                let closedFrom = getValues(ClosedFromField)
-                let closedTo = getValues(ClosedToField)
-                let hasClosedOn = isValid(closedFrom) && isValid(closedTo)
-
-                let pass = hasCreatedOn || hasClosedOn
-                if (pass) {
-                  // clearErrors([ClosedFromField, ClosedToField])
-                }
-
-                return pass ? true : "one-of-date-range-required"
-              }}
+              required
             />
-            {/* 
-            <DateInputRangeField
-              label={<Trans zh="结算时间" en="Closed On" />}
-              showDateDropdownMenu
-              minDate={minDate}
-              maxRangeDays={maxRangeDays}
-              fakeTimeLabel
-              startProps={{
-                name: ClosedFromField
-              }}
-              endProps={{
-                name: ClosedToField
-              }}
-              validate={{
-                validate: (closedOn) => {
-                  let hasClosedOn =
-                    isValid(closedOn.start) && isValid(closedOn.end)
-
-                  let start = getValues(StartField)
-                  let end = getValues(EndField)
-                  let hasCreatedOn = isValid(start) && isValid(end)
-
-                  let pass = hasCreatedOn || hasClosedOn
-                  if (pass) {
-                    // clearErrors([StartField, EndField])
-                  }
-                  return pass ? true : "one-of-date-range-required"
-                }
-              }}
-            /> 
-            */}
           </Set>
           <Set orientation="horizontal">
             <InputField
@@ -442,15 +243,6 @@ const SearchBar = ({
               placeholder={externalRoundIdPlaceholder}
             />
 
-            {/* 
-            TODO: rm status
-            <GameRoundStatusSelect
-              name="status"
-            filter={({value}) => {
-              return value != GameRoundStatus.Open
-            }}
-            /> 
-            */}
             <GameProviderSelect name="gameProviderId" />
             <SearchButton isLoading={isLoading} disabled={isLoading} />
           </Set>
@@ -469,23 +261,6 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true,
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
       }),
-      /*
-      textColumn({
-        accessor: "externalPlayerName",
-        Header: <Trans zh="三方用戶名" en="Player Code" />,
-        disableSortBy: true
-      }),
-      dateTimeColumn({
-        accessor: "externalCreatedOn",
-        Header: <Trans zh="三方投注时间" en="External Created On" />,
-        disableSortBy: true
-      }),
-      dateTimeColumn({
-        accessor: "externalClosedOn",
-        Header: <Trans zh="三方结算时间" en="External Closed On" />,
-        disableSortBy: true
-      }),
-      */
       ellipsisTextColumn({
         accessor: "externalRoundId",
         Header: <Trans zh="三方订单ID" en="External Id" />,
@@ -505,13 +280,6 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="投注时间" en="Created On" />,
         disableSortBy: true
       }),
-      /*
-      dateTimeColumn({
-        accessor: "closedOn",
-        Header: <Trans zh="结算时间" en="Closed On" />,
-        disableSortBy: true
-      }),
-      */
       textColumn({
         accessor: "gameProviderName",
         Header: <Trans zh="游戏厂商" en="Game Provider" />,
@@ -527,23 +295,6 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="游戏名称" en="Game Name" />,
         disableSortBy: true
       }),
-      /*
-      TODO: rm status
-      {
-        accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
-        disableSortBy: true,
-        Cell: GameRoundStatusLabel,
-        headCell: {
-          textAlign: "center",
-          whiteSpace: "nowrap"
-        },
-        cell: {
-          textAlign: "center",
-          whiteSpace: "nowrap"
-        }
-      },
-      */
       textColumn({
         accessor: "currencyCode",
         Header: <Trans zh="币种" en="Currency" />,
@@ -574,9 +325,9 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="玩家输赢金额" en="Player Win Loss" />,
         disableSortBy: true
       }),
-      {
+      textColumn({
         id: "detail",
-        accessor: (record) => record,
+        accessor: (row) => row,
         Header: <Trans zh="详情" en="Detail" />,
         disableSortBy: true,
         Cell: ({ value }) => {
@@ -593,16 +344,8 @@ const useColumns = ({ items = [] }) => {
               />
             </Set>
           )
-        },
-        headCell: {
-          textAlign: "center",
-          whiteSpace: "nowrap"
-        },
-        cell: {
-          textAlign: "center",
-          whiteSpace: "nowrap"
         }
-      }
+      })
     ],
     [JSON.stringify(items)]
   )

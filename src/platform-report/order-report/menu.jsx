@@ -5,7 +5,8 @@ export const Code = "orderreport"
 
 export const View = "view"
 
-export const ViewGameAction = "viewgameaction"
+// TODO: rm
+// export const ViewGameAction = "viewgameaction"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
@@ -22,6 +23,7 @@ export const label = (codes = [], locale = Locales.zh) => {
         },
         locale
       )
+    /*
     case ViewGameAction:
       return getTrans(
         {
@@ -30,6 +32,7 @@ export const label = (codes = [], locale = Locales.zh) => {
         },
         locale
       )
+    */
     default:
       return ""
   }

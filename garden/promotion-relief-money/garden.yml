@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-relief-money
-image: pgtgs/promotion-relief-money-service:202211220710.1
+image: pgtgs/promotion-relief-money-service:202212060225.13
 services:
   - name: promotion-relief-money
     dependencies:

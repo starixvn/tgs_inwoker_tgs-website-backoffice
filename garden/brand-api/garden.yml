@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: brand-api
-image: pgtgs/brand-api:202208030833-dev # brand-api
+image: pgtgs/brand-api:202208170200-prod # brand-api
 services:
   - name: brand-api
     dependencies:
