@@ -80,9 +80,9 @@ export const HeadCell = ({
         {column.render("Header")}
         {column.isSorted ? (
           column.isSortedDesc ? (
-            <Icon icon={faCaretDown} color="info" type="font-awesome" />
+            <Icon icon={faCaretDown} color="blue" type="font-awesome" />
           ) : (
-            <Icon icon={faCaretUp} color="info" type="font-awesome" />
+            <Icon icon={faCaretUp} color="blue" type="font-awesome" />
           )
         ) : (
           column.canSort &&
