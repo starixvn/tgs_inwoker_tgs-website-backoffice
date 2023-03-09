@@ -21,6 +21,7 @@ import {
 
 const defaultProps = () => ({})
 
+//TODO: sticky cell support isHoverable
 export const Cell = ({
   cell,
   columnIndex,

@@ -149,6 +149,7 @@ export const Table = ({
   tableBorder = "1px solid var(--bb-palette-white800, #000000)",
   toggleColumnHidden = false,
   columnOrder = false,
+  hasDividers = true,
   hasCellDividers,
   ...props
 }) => {
@@ -311,7 +312,12 @@ export const Table = ({
               overflow: ${maxSize ? "auto" : isSticky ? "visible" : "auto"};
             `}
           >
-            <_Table width="100%" {...table.getTableProps()} {...props}>
+            <_Table
+              width="100%"
+              {...table.getTableProps()}
+              hasDividers={hasDividers}
+              {...props}
+            >
               {head === true && <Head table={table} />}
               {total && <TotalBody table={table} />}
               {body === true && <Body table={table} />}
