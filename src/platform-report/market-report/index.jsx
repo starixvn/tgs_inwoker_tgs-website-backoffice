@@ -12,10 +12,13 @@ import { Code } from "./menu"
 import BrandBar from "../../report/BrandBar"
 import MarketReport from "./MarketReport"
 import { useMarketReportList, API } from "./client"
+import { MarketReportWithAgent } from "./MarketReportWithAgent"
 
 export { Code }
 
 export const Content = () => {
+  //TODO: switch MarketReportWithAgent
+
   let isDisplay = useIsDisplayMenuByRoute()
   if (!isDisplay) {
     return null

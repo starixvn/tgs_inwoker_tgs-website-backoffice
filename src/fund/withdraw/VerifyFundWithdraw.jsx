@@ -168,7 +168,7 @@ const VerifyFundWithdrawDialog = ({
         </Button>
       }
       footer={
-        isDev() && playerCode ? (
+        playerCode ? (
           <AuditAutoClearBucketDialogDisclosure
             brandId={brandId}
             playerCode={playerCode}

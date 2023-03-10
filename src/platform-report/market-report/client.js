@@ -21,3 +21,13 @@ export const usePlatformMarketReportAdditionalExpenseList = (searchParams) => {
     : ""
   return useGet(url)
 }
+
+export const useMarketReportAgentProfitList = () => {
+  return {
+    data: [{
+      
+    }],
+    isLoading: false,
+    error: null
+  }
+}

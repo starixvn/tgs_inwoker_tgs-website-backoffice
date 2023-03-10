@@ -72,10 +72,12 @@ export const getHeaderButtonBackground = () =>
 
 const Sidebar = "Sidebar"
 const PlatformAgentProfitSharingReport = "PlatformAgentProfitSharingReport" //env.html
+const MarketReportWithAgentProfit = "MarketReportWithAgentProfit"
 
 export const Features = {
   Sidebar,
-  PlatformAgentProfitSharingReport
+  PlatformAgentProfitSharingReport,
+  MarketReportWithAgentProfit
 }
 
 const listFeatures = () => {
@@ -116,6 +118,9 @@ export const isFeatureEnabled = (feature = "") => {
 
 export const isFeaturePlatformAgentProfitSharingReportEnabled = () =>
   isFeatureEnabled(PlatformAgentProfitSharingReport)
+
+export const isFeatureMarketReportWithAgentProfit = () =>
+  isFeatureEnabled(MarketReportWithAgentProfit)
 
 export default {
   Development,
