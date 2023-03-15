@@ -71,7 +71,10 @@ export const getHeaderButtonBackground = () =>
   window?.env?.loginButtonBackground || "transparent"
 
 const Sidebar = "Sidebar"
+
+//TODO: rm
 const PlatformAgentProfitSharingReport = "PlatformAgentProfitSharingReport" //env.html
+
 const MarketReportWithAgentProfit = "MarketReportWithAgentProfit"
 
 export const Features = {
@@ -116,6 +119,7 @@ export const isFeatureEnabled = (feature = "") => {
   return boolean(window?.env?.features?.[feature])
 }
 
+//TODO: rm
 export const isFeaturePlatformAgentProfitSharingReportEnabled = () =>
   isFeatureEnabled(PlatformAgentProfitSharingReport)
 

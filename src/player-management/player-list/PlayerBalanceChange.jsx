@@ -220,7 +220,7 @@ const DepositTrans = {
 const Withdrawal = "Withdrawal"
 const WithdrawLock = "WithdrawLock"
 const WithdrawalTrans = {
-  zh: "提款(包含已取消存款)",
+  zh: "提款(包含已取消提款)",
   en: "Withdrawal/Canceled Withdrawal"
 }
 

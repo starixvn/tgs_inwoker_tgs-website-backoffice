@@ -66,10 +66,15 @@ const AgentProfitDialog = ({ brandId, dialog }) => {
     showAll: true
   })
 
+  //TODO: paramas for api
+  let { isLoading, data, error } = useMarketReportAgentProfitList()
+
   let title = useTrans({
     zh: "代理总分红",
     en: "Agent Profit"
   })
+
+  let columns = useColumns({ items: data?.items })
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -79,9 +84,89 @@ const AgentProfitDialog = ({ brandId, dialog }) => {
     return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
   }
 
+  //TODO: Table support use maxSize instead of containerProps?
   return (
     <Modal title={title} {...dialog}>
-      TODO Table
+      <Table
+        columns={columns}
+        data={data?.items}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        hasCellDividers
+        stickyHead
+        maxSize={{
+          height: "80vh"
+        }}
+      />
     </Modal>
   )
+}
+
+const useColumns = ({ items = [] }) => {
+  return useMemo(() => {
+    let columns = [
+      {
+        id: "agent",
+        Header: "",
+        columns: [
+          textColumn({
+            accessor: "agentName",
+            Header: <Trans zh="总代" en="Master Agent" />,
+            disableSortBy: true
+          }),
+          numberDecimalPercentageColumn({
+            accessor: "agentProfitPercentage",
+            Header: <Trans zh="总代占成" en="PT" />,
+            disableSortBy: true
+          })
+        ]
+      },
+      {
+        id: "profit",
+        Header: <Trans zh="净盈利" en="Net Profit" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberDecimalColumn({
+            accessor: "directPlayerNetProfit",
+            Header: <Trans zh="直属玩家" en="Direct Player Net Profit" />,
+            disableSortBy: true
+          }),
+          numberDecimalColumn({
+            accessor: "teamNetProfit",
+            Header: <Trans zh="团队" en="Team Net Profit" />,
+            disableSortBy: true
+          })
+        ]
+      },
+      numberDecimalColumn({
+        accessor: "agentNetProfit",
+        Header: <Trans zh="代理总分红" en="Agent Net Profit" />,
+        disableSortBy: true
+      }),
+      {
+        id: "company",
+        Header: <Trans zh="公司" en="Company" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberDecimalColumn({
+            accessor: "companyAdjustment",
+            Header: <Trans zh="公司调帐" en="Company Adjustment" />,
+            disableSortBy: true
+          }),
+          numberDecimalColumn({
+            accessor: "companyProfit",
+            Header: <Trans zh="公司分红" en="Company Profit" />,
+            disableSortBy: true
+          })
+        ]
+      }
+    ]
+    return columns
+  }, [JSON.stringify(items)])
 }

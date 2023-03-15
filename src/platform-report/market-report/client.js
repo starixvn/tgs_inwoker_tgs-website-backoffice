@@ -7,6 +7,8 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
+//TODO: rm
+import faker from "@faker-js/faker"
 
 export const API = "/api/MarketReport"
 
@@ -23,10 +25,22 @@ export const usePlatformMarketReportAdditionalExpenseList = (searchParams) => {
 }
 
 export const useMarketReportAgentProfitList = () => {
+  let data = Array.from({ length: 12 }, (_, index) => {
+    return {
+      agentName: faker.name.firstName(),
+      agentProfitPercentage: faker.datatype.number({ min: 0, max: 60 }),
+      directPlayerNetProfit: faker.datatype.number({ min: 100, max: 200 }),
+      teamNetProfit: faker.datatype.number({ min: 100, max: 200 }),
+      agentNetProfit: faker.datatype.number({ min: 100, max: 200 }),
+      companyAdjustment: faker.datatype.number({ min: 100, max: 200 }),
+      companyProfit: faker.datatype.number({ min: 100, max: 200 })
+    }
+  })
   return {
-    data: [{
-      
-    }],
+    data: {
+      items: data,
+      totalCount: data.length
+    },
     isLoading: false,
     error: null
   }

@@ -30,6 +30,7 @@ import { AdditionalExpenseDialogDisclosure } from "../AdditionalExpense"
 import { parseISO } from "date-fns"
 import Big from "big.js"
 import { AgentProfitDialogDisclosure } from "./AgentProfitDialog"
+import AutoSizer from "react-virtualized-auto-sizer"
 
 export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
@@ -64,6 +65,84 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
   } = useFetch(toSearchParams())
 
   let columns = useColumns({ items: data?.items, brandId })
+
+  return (
+    <Set orientation="vertical" isFilled height="100%" spacing="major-2">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          from={state.from}
+          to={state.to}
+          isLoading={isLoading}
+          search={(data) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+        />
+        {data?.items?.length > 0 && (
+          <Box>
+            {exportUrl && (
+              <DownloadButton
+                id="export-report"
+                isLoading={isLoading}
+                href={urlWith(toSearchParams(), exportUrl)}
+              />
+            )}
+          </Box>
+        )}
+      </Level>
+      <Alert variant="bordered" type="info" accent marginBottom="1rem">
+        <List listStyleType="disc" listStylePosition="inside">
+          <List.Item>
+            <Trans
+              zh="存款金额: 为已扣除手续费之金额。"
+              en="Deposit Amount: The amount after deducting the transfer fee."
+            />
+          </List.Item>
+          <List.Item>
+            <Trans
+              zh="平台承担红利 = 红利金额 * (100% - 总代分红比例)。"
+              en="Platform-Covered Bonus = Bonus Amount * (100% - Chief Agent Profit Sharing Percentage)."
+            />
+          </List.Item>
+          <List.Item>
+            <Trans
+              zh="平台承担优惠调帐 = 优惠调帐 * (100% - 总代分红比例)。"
+              en="Platform-Covered Bonus Adjust = Bonus Adjust * (100% - Chief Agent Profit Sharing Percentage)."
+            />
+          </List.Item>
+          <List.Item>
+            <Trans
+              zh="净盈利 = 公司输赢金额 - 平台承担红利 - 平台承担优惠调帐 - 公司调帐 - 代理总分红。"
+              en="Net Profit = CO. W/L - Platform-Covered Bonus - Platform-Covered Bonus Adjust - C.O Adjustment Amount - Agent Profit."
+            />
+          </List.Item>
+        </List>
+      </Alert>
+      <AutoSizer>
+        {({ height, width }) => {
+          return (
+            <Table
+              columns={columns}
+              data={data?.items}
+              total={data?.items?.length > 0 && data?.total}
+              initialState={state}
+              controlledState={state}
+              pageCount={pageCount(pageSize, data?.totalCount)}
+              setPageIndex={setPageIndex}
+              setSortOrder={setSortOrder}
+              isLoading={isLoading}
+              maxSize={{ height, width }}
+              stickyHead
+            />
+          )
+        }}
+      </AutoSizer>
+    </Set>
+  )
+
   return (
     <PageContent
       actionBar={

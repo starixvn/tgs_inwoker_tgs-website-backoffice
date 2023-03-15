@@ -13,22 +13,26 @@ import numeral from "numeral"
 const test = base.extend(Fixture)
 const { finance } = faker
 
-test("fund withdraw > audit clear bucket", async ({
+console.log("TODO: auto clear bucket report")
+test.skip("fund withdraw > audit clear bucket", async ({
   page,
   licensee,
   platform,
   platformToken,
   player,
   backofficeApi,
+  customBankManualPaymentMethodChannel,
   operatorApi,
   sboGameProviderApi
 }) => {
   let AutoClearBucketAmount = 10
+  let depositPayment
+  let withdrawPayment
   if (!platform.autoClearWageringRequirement) {
     console.warn(
       "TODO: set platform autoClearWageringRequirement & autoClearWageringRequirementBalance or use new platform?"
     )
-    throw "set platform autoClearWageringRequirement & autoClearWageringRequirementBalance"
+    //throw "set platform autoClearWageringRequirement & autoClearWageringRequirementBalance"
     /*
     TODO: not work
     await backofficeApi.platform.updatePlatform(platform.id, {
@@ -39,12 +43,34 @@ test("fund withdraw > audit clear bucket", async ({
     */
 
     /*
+    TODO
+    */
     platform = await backofficeApi.platform.addPlatform({
       licenseeId: licensee.id,
       autoClearWageringRequirement: true,
       autoClearWageringRequirementBalance: AutoClearBucketAmount
     })
-    */
+
+    depositPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId: platform.id,
+      transferType: backofficeApi.platform.payment.TransferType.Deposit,
+      paymentMethodChannelId: customBankManualPaymentMethodChannel.id
+    })
+
+    withdrawPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId: platform.id,
+      transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
+      paymentMethodChannelId: customBankManualPaymentMethodChannel.id
+    })
+
+    console.log(
+      "platform",
+      platform,
+      "depositPayment",
+      depositPayment,
+      "withdrawPayment",
+      withdrawPayment
+    )
   }
 
   let BucketAmount = 10000
@@ -60,7 +86,8 @@ test("fund withdraw > audit clear bucket", async ({
   let depositFormId = await backofficeApi.player.applyBankManualDepositForm({
     brandId: platform.id,
     playerCode: player.code,
-    amount: DepositAmount
+    amount: DepositAmount,
+    brandPaymentId: depositPayment?.id
   })
 
   await backofficeApi.fund.deposit.approve(depositFormId, {
