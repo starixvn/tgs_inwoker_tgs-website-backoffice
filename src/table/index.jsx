@@ -492,7 +492,6 @@ const Body = ({ table }) => {
     getTableBodyProps,
     getRowProps = defaultProps,
     prepareRow,
-
     allColumns,
     components
   } = table
