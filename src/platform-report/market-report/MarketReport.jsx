@@ -135,6 +135,7 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
           setSortOrder={setSortOrder}
           isLoading={isLoading}
           stickyHead
+          toggleColumnHidden={true}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}

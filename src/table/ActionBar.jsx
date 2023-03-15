@@ -57,7 +57,13 @@ export const ActionBar = ({ table }) => {
   }
 
   return (
-    <Set orientation="horizontal" verticalBelow="tablet">
+    <Set
+      orientation="horizontal"
+      verticalBelow="tablet"
+      css={css`
+        width: max-content;
+      `}
+    >
       <ToggleHiddenDropdownMenu table={table} />
       <ColumnOrderPopover table={table} />
     </Set>
@@ -93,7 +99,9 @@ const ToggleHiddenDropdownMenu = ({ table }) => {
         )
       })}
     >
-      <Button iconAfter="chevron-down">Columns</Button>
+      <Button iconAfter="chevron-down">
+        <Trans zh="筛选显示栏位" en="Filter" />
+      </Button>
     </DropdownMenu>
   )
 }
@@ -158,7 +166,10 @@ const ColumnOrderPopover = ({ table }) => {
     useSensor(TouchSensor, {})
   )
 
-  let { visibleColumns, setColumnOrder } = table
+  let { visibleColumns, setColumnOrder, columnOrder } = table
+  if (!columnOrder) {
+    return null
+  }
 
   let items = visibleColumns.map((column) => {
     return column.id

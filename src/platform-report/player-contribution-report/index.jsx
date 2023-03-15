@@ -186,6 +186,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
           isLoading={isLoading}
           foot={data?.items?.length > 0}
           stickyHead
+          toggleColumnHidden={true}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}

@@ -114,16 +114,6 @@ export const toApiParams = (state, configs = {}) => {
   }
 }
 
-/*
-const cssSizeValue = (value) => {
-  if (Number.isFinite(value)) {
-    return `${value}px`
-  }
-
-  return value
-}
-*/
-
 export const Table = ({
   columns,
   data = [],
@@ -441,7 +431,7 @@ const TotalBody = ({ table }) => {
   let {
     total,
     getTableBodyProps,
-    columns,
+    allColumns,
     components,
     stickyLeft,
     stickyRight,
@@ -449,6 +439,7 @@ const TotalBody = ({ table }) => {
   } = table
   let { Body, Row } = components
 
+  let columns = allColumns.filter(({ isVisible }) => isVisible)
   return (
     <Body
       id="total"
@@ -501,7 +492,7 @@ const Body = ({ table }) => {
     getTableBodyProps,
     getRowProps = defaultProps,
     prepareRow,
-    columns,
+
     allColumns,
     components
   } = table

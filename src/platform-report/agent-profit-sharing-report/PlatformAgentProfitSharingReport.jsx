@@ -371,7 +371,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                       background-color: var(--bb-palette-blueTint, #e9f0fb);
                     }
                   `}
-                  tableBorder="0"
+                  toggleColumnHidden={true}
                 />
               )
             }}

@@ -154,6 +154,7 @@ const ReportContent = ({ licenseeId }) => {
             return {}
           }}
           stickyHead
+          toggleColumnHidden={true}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}

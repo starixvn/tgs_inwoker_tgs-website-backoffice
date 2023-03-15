@@ -3,12 +3,14 @@ import { css, Global } from "@emotion/react"
 import {
   Dialog,
   useModalState,
-  Stack,
-  Heading,
+  Popover,
+  Icon,
   Text,
   Box,
   Set,
-  FieldStack
+  FieldStack,
+  Alert,
+  List
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure from "../../dialog/Disclosure"
@@ -38,6 +40,7 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { Modal } from "../../dialog/Modal"
+import { zIndexOfModal } from "../../css/zIndex"
 
 export const AgentProfitDialogDisclosure = ({ brandId, value, ...props }) => {
   let dialog = useModalState()
@@ -84,9 +87,42 @@ const AgentProfitDialog = ({ brandId, dialog }) => {
     return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
   }
 
-  //TODO: Table support use maxSize instead of containerProps?
   return (
-    <Modal title={title} {...dialog}>
+    <Modal
+      title={
+        <Set orientation="horizontal" alignY="center">
+          <Text fontSize="1.25em" fontWeight="bold">
+            {title}
+          </Text>
+          <Popover.State placement="bottom">
+            <Popover.Disclosure>
+              <Icon icon="info-circle" color="info" />
+            </Popover.Disclosure>
+            <Popover
+              hasArrow
+              usePortal
+              maxWidth="90vw"
+              css={css`
+                width: max-content;
+                z-index: ${zIndexOfModal()};
+              `}
+            >
+              <Alert variant="bordered" type="info">
+                <List listStyleType="disc" listStylePosition="inside">
+                  <List.Item>
+                    <Trans
+                      zh="净盈利 = 公司输赢金额 - 平台承担红利 - 平台承担优惠调帐 - 公司调帐 - 代理总分红。"
+                      en="Net Profit = CO. W/L - Platform-Covered Bonus - Platform-Covered Bonus Adjust - C.O Adjustment Amount - Agent Profit."
+                    />
+                  </List.Item>
+                </List>
+              </Alert>
+            </Popover>
+          </Popover.State>
+        </Set>
+      }
+      {...dialog}
+    >
       <Table
         columns={columns}
         data={data?.items}
