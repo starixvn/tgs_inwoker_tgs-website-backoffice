@@ -5,7 +5,7 @@ pipeline {
 	
     environment {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
-        Registry = "registry.gitlab.com/rayprosoft/turnkey-gaming-system/"
+        Registry = "pgtgs/"
         gitlab_user_pwd = credentials('gitlab-user-pwd')
         Image = "backoffice-site"
         GitUrl = "gitlab.com/rayprosoft/tgs-website-backoffice.git"
