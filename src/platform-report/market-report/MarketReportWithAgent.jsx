@@ -136,7 +136,6 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
               isLoading={isLoading}
               maxSize={{ height, width }}
               stickyHead
-              toggleColumnHidden={true}
             />
           )
         }}

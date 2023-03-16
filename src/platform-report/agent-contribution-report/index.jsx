@@ -190,7 +190,6 @@ const ReportContent = ({ brandId }) => {
             isLoading={isLoading}
             foot={data?.items?.length > 0}
             stickyHead
-            toggleColumnHidden={true}
           />
         )}
       </FieldStack>

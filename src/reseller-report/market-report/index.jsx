@@ -145,7 +145,6 @@ const ReportContent = ({ resellerId }) => {
             return {}
           }}
           stickyHead
-          toggleColumnHidden={true}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
