@@ -153,6 +153,7 @@ export const Table = ({
   columnOrder = false,
   hasDividers = true,
   hasCellDividers,
+  autoResetHiddenColumns = false,
   ...props
 }) => {
   components = {
@@ -227,7 +228,8 @@ export const Table = ({
       isStickyColumn,
       toggleColumnHidden,
       columnOrder,
-      hasCellDividers
+      hasCellDividers,
+      autoResetHiddenColumns
     },
     useFilters,
     useSortBy,
