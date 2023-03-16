@@ -18,6 +18,7 @@ export const numberColumn = ({
   whiteSpace = "nowrap",
   tooltip,
   textAlign = "right",
+  headCellProps = {},
   ...props
 }) => {
   const DefaultCell = ({ value }) => (
@@ -34,7 +35,8 @@ export const numberColumn = ({
   let basic = {
     Cell,
     headCell: {
-      textAlign: "center"
+      textAlign: "center",
+      ...headCellProps
     },
     cell: {
       textAlign,

@@ -10,9 +10,9 @@ import {
 
 const API = "/api/RoundReport"
 
-export const useGameRoundList = (searchParams) => {
+export const useGameRoundList = (searchParams, options) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
-  return useGet(url)
+  return useGet(url, options)
 }
 
 export const useGameBetRecordList = (searchParams) => {

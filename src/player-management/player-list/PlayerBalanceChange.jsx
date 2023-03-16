@@ -220,8 +220,8 @@ const DepositTrans = {
 const Withdrawal = "Withdrawal"
 const WithdrawLock = "WithdrawLock"
 const WithdrawalTrans = {
-  zh: "提款",
-  en: "Withdrawal"
+  zh: "提款(包含已取消提款)",
+  en: "Withdrawal/Canceled Withdrawal"
 }
 
 const WithdrawCommit = "WithdrawCommit"
@@ -232,13 +232,6 @@ const WithdrawCommitTrans = {
 
 const isDepositOrWithdrawal = (value) =>
   value === Deposit || value === Withdrawal
-
-//TODO: Remove
-const Adjust = "Adjust"
-const AdjustTrans = {
-  zh: "调账",
-  en: "Balance Adjustment"
-}
 
 const Bonus = "Bonus"
 const BonusTrans = {

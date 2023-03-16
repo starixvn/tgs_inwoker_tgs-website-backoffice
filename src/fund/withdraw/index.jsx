@@ -643,6 +643,8 @@ const useColumns = ({
               */
 
             let invalid = isFundInvalid(value?.status)
+
+            let isPlayer = value?.userType === "Player"
             return (
               <Set alignX="center">
                 {underReview && (
@@ -650,6 +652,7 @@ const useColumns = ({
                     id="verify-withdraw-dialog-disclosure"
                     brandId={brandId}
                     formId={value.id}
+                    playerCode={isPlayer && value?.userId}
                     onSubmitted={mutate}
                     onVisibleChange={(visible) => {
                       let delayUpdate = visible

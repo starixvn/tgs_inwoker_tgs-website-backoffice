@@ -6,6 +6,7 @@ import {
   usePutData,
   useDelete
 } from "../../client"
+import { repeat } from "ramda"
 
 let API = "/api/player"
 
@@ -150,6 +151,19 @@ export const usePlayerCompletedWageringList = (bucketId, searchParams) => {
       ? urlWith(searchParams, `${PlayerBucketApi}/history/${bucketId}`)
       : ""
   return useGet(url)
+}
+
+export const usePlayerAutoClearBucketList = (playerCode, status, options) => {
+  let url = ""
+  if (playerCode) {
+    url = `${PlayerBucketApi}/clean-form/${playerCode}`
+
+    if (status) {
+      url = `${url}/${status}`
+    }
+  }
+
+  return useGet(url, options)
 }
 
 const PlayerManualDepositApi = "/api/ManualDeposit"
