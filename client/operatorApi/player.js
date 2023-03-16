@@ -42,7 +42,6 @@ export const create = async (
   }
 
   //TODO: catch error?
-  console.log("create player payload", payload)
   let result = await fetcher(url, {
     method: "POST",
     body: JSON.stringify(payload),

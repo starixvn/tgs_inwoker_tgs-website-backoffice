@@ -440,7 +440,7 @@ const PromotionSettingsString = JSON.stringify([
     Name: "Offline",
     Types: [
       {
-        Name: "LoginReward",
+        Name: "OfflineLoginReward",
         Trans: {
           En: "Login Reward",
           Zh: "登入送"

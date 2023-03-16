@@ -26,7 +26,13 @@ import { Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { InputField, Input } from "../../input/Input"
 import clone from "clone-deep"
-import { useAddPromotion, useUpdatePromotion, usePromotionRule } from "./client"
+import {
+  useAddPromotion,
+  useAddOfflineLoginRewardPromotion,
+  useAddOfflineDepositRewardPromotion,
+  useUpdatePromotion,
+  usePromotionRule
+} from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
@@ -110,6 +116,20 @@ const DialogCss = css`
     padding: 1.5rem 3rem;
   }
 `
+
+/*
+const useAddPromotionFn = (promotionType) => {
+  switch (promotionType) {
+    //TODO: import from?
+    case "OfflineLoginReward":
+      return useAddOfflineLoginRewardPromotion
+    case "OfflineDepositReward":
+      return useAddOfflineDepositRewardPromotion
+    default:
+      return useAddPromotion
+  }
+}
+*/
 
 const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   let [formData, setSubmit] = useState()

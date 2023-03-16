@@ -43,6 +43,7 @@ import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
 import { PromotionDepositRuleSetting } from "./PromotionDepositRuleSetting"
 import { PromotionTurnoverRuleSetting } from "./PromotionTurnoverRuleSetting"
 import { PromotionReliefMoneyRuleSetting } from "./PromotionReliefMoneyRuleSetting"
+import { PromotionOfflineRuleSetting } from "./PromotionOfflineRuleSetting"
 
 export const PromotionRuleSettingFieldBox = ({
   promotionType,
@@ -133,6 +134,11 @@ export const PromotionRuleSetting = ({
           readOnly={readOnly}
         />
       )
+    /*
+    TODO
+    case PromotionTypeGroup.Offline:
+      return <PromotionOfflineRuleSetting readOnly={readOnly} />
+    */
     default:
       return promotionType ? (
         <DefaultSetting promotionType={promotionType} readOnly={readOnly} />
