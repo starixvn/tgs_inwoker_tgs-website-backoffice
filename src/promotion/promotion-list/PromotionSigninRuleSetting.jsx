@@ -46,10 +46,13 @@ import Input from "../../input/Input"
 import { get, set } from "lodash-es"
 import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
 import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
+import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 
 export const PromotionSigninRuleSetting = ({ ...props }) => {
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox {...props} />
+
       <NormalLabel>
         <Trans zh="签到礼金设置" en="Sign-in Reward Setting" />
       </NormalLabel>

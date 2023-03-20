@@ -9,6 +9,7 @@ import Checkbox from "../../checkbox"
 import { NumberInput } from "../../input/NumberInput"
 import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
 import { isNil, complement } from "ramda"
+import { useIsPromotionAdded, usePromotionType } from "./edit"
 
 const isNotNil = complement(isNil)
 
@@ -44,12 +45,9 @@ export const useTotalFunds = () => {
   return isLimited ? totalFunds : null //null, undefined or Number.NaN?
 }
 
-export const PromotionTotalFundsFieldBox = ({
-  promotionType = "",
-  promotionTypeGroup = "",
-  readOnly,
-  disabled
-}) => {
+export const PromotionTotalFundsFieldBox = ({ readOnly, disabled }) => {
+  let promotionType = usePromotionType()
+
   let { setValue } = useFormContext()
   let unlimiteTotalAmountLabel = useTrans({
     zh: "无限",
@@ -67,8 +65,12 @@ export const PromotionTotalFundsFieldBox = ({
     }
   }, [unlimitedProps])
 
+  if (!promotionType) {
+    return null
+  }
+
   //TODO: use totalFunds?.visible instead?
-  if (fieldNotUsed({ promotionTypeGroup, promotionType })) {
+  if (fieldNotUsed({ promotionType })) {
     return null
   }
 

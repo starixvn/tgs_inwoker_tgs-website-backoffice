@@ -38,6 +38,7 @@ import {
 } from "../../input/NumberInput"
 import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
 import { PromotionPlayerAutoJoinFieldBox } from "./PromotionPlayerAutoJoinFieldBox"
+import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 
 const DailyTurnoverRebate = "TurnoverRebate"
 const WeeklyTurnoverRebate = "TurnoverRebateWeekly"
@@ -57,6 +58,8 @@ const DailyTurnoverSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+
       <PromotionPlayerAutoJoinFieldBox
         readOnly={readOnly}
         disabled={disabled}
@@ -127,6 +130,8 @@ const DefaultSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+
       <PromotionPlayerAutoJoinFieldBox
         readOnly={readOnly}
         disabled={disabled}

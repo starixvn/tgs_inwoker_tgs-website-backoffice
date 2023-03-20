@@ -47,6 +47,7 @@ import { sumBy } from "lodash-es"
 import AlertDialog, { AlertDialogModal } from "../../dialog/Alert"
 import { Switch } from "../../switch/Switch"
 import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
+import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 
 const Register = "Register"
 
@@ -64,6 +65,8 @@ export const RegisterRuleSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+
       <NormalLabel>
         <Trans zh="彩金金额" en="Bonus Amount" />
       </NormalLabel>

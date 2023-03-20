@@ -62,6 +62,7 @@ import Big from "big.js"
 import { useMount, useMeasure } from "react-use"
 import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { useIsActivePromotion } from "./edit"
+import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 
 export const DepositLottery = "DepositAccumulateRoulette"
 
@@ -70,6 +71,8 @@ export const PromotionDepositLotteryRuleSetting = ({ readOnly, ...props }) => {
   readOnly = readOnly || isActive
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+
       <NormalLabel>
         <Trans zh="存款累計设置" en="Multi-Deposit Setting" />
       </NormalLabel>

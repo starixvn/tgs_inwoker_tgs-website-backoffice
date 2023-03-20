@@ -62,6 +62,7 @@ import {
   DepositLottery,
   PromotionDepositLotteryRuleSetting
 } from "./PromotionDepositLotteryRuleSetting"
+import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 
 const Roulette = "Roulette"
 
@@ -79,6 +80,8 @@ export const PromotionLotteryRuleSetting = ({ promotionType, ...props }) => {
 export const PromotionRouletteRuleSetting = ({ ...props }) => {
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox {...props} />
+
       <NormalLabel>
         <Trans zh="轮盘设置" en="Roulette Setting" />
       </NormalLabel>

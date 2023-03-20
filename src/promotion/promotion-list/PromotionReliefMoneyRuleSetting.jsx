@@ -43,6 +43,7 @@ import {
 } from "../../game/GameType"
 import { BrandGameProviderCheckboxGroupTable } from "../../game/brandproviders/BrandGameProviderCheckboxGroup"
 import { PromotionPlayerAutoJoinFieldBox } from "./PromotionPlayerAutoJoinFieldBox"
+import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 
 export const PromotionReliefMoneyRuleSetting = ({
   limitedTotalAmount,
@@ -74,6 +75,8 @@ export const PromotionReliefMoneyRuleSetting = ({
   let editable = !readOnly
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+
       {/* <NormalLabel>
         <Trans zh="活动游戏类型" en="Game Type" />
       </NormalLabel>

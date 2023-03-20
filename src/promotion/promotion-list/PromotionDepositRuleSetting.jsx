@@ -25,6 +25,7 @@ import {
   PercentageNumberInputField
 } from "../../input/NumberInput"
 import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
+import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 
 const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
@@ -65,6 +66,8 @@ const DepositRewardSetting = ({ readOnly }) => {
   let bonusAmountLimitHint = bonusAmountLimit / (percentage / 100)
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+
       <NormalLabel>
         <Trans zh="存款最低金额" en="Minimum Deposit Amount" />
       </NormalLabel>
@@ -183,6 +186,8 @@ const DefaultSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+
       <NormalLabel>
         <Trans zh="彩金百分比" en="Bonus Percentage" />
       </NormalLabel>

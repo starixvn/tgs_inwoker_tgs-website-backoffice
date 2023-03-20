@@ -202,6 +202,8 @@ const addDepositPromotion = async (page) => {
     value: promotion.to
   })
 
+  await selectDepositPromotionType(page)
+
   await page.fill(
     `${DialogSelector} input[name="subSubject"]`,
     promotion.subSubject
@@ -211,7 +213,6 @@ const addDepositPromotion = async (page) => {
     `${DialogSelector} #vipLevels input[type="checkbox"] + .bb-CheckboxIcon`
   )
 
-  await selectDepositPromotionType(page)
   await page.fill(
     `${DialogSelector} input[name="totalAmountLimit"]`,
     `${promotion.totalAmountLimit}`

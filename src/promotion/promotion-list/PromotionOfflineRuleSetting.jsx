@@ -15,7 +15,7 @@ import {
 } from "bumbag"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
-import { usePromotionType } from "./edit"
+import { useIsPromotionAdded, usePromotionType } from "./edit"
 import { FieldValues } from "../../layout/Grid"
 import { PromotionBatchUploadPlayerListFieldBox } from "./PromotionBatchUploadPlayerListFieldBox"
 import { NormalLabel } from "../../form/Label"
@@ -35,16 +35,28 @@ export const PromotionOfflineRuleSetting = ({ readOnly }) => {
 }
 
 const LoginRewardRuleSetting = ({ readOnly }) => {
+  let isAdded = useIsPromotionAdded()
+  let isCreate = !isAdded
+
+  if (isAdded) {
+    readOnly = true
+  }
+
+  let BonusAmountField = isAdded ? `rule.bonusAmount` : "bonusAmount"
+  let TurnoverMultipleField = isAdded
+    ? `rule.turnoverMultiple`
+    : "turnoverMultiple"
+
   let disabled = readOnly
   return (
     <FieldValues>
-      <PromotionBatchUploadPlayerListFieldBox />
+      {isCreate && <PromotionBatchUploadPlayerListFieldBox />}
 
       <NormalLabel>
         <Trans zh="彩金金额" en="Bonus Amount" />
       </NormalLabel>
       <NumberInput
-        name="bonusAmount"
+        name={BonusAmountField}
         min="0"
         required
         disabled={disabled}
@@ -57,7 +69,7 @@ const LoginRewardRuleSetting = ({ readOnly }) => {
         <Trans zh="流水倍数" en="Turnover Requirement" />
       </NormalLabel>
       <NumberInputField
-        name="turnoverMultiple"
+        name={TurnoverMultipleField}
         registerOptions={{
           valueAsNumber: true
         }}

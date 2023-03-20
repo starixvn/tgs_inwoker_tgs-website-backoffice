@@ -7,31 +7,32 @@ import { Trans, useTrans } from "../../i18n"
 import { NormalLabel } from "../../form/Label"
 import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
 import { isNil, complement } from "ramda"
+import { useIsPromotionAdded, usePromotionType } from "./edit"
 
 const isNotNil = complement(isNil)
 
 const AutoPayoutFieldName = "autoSentPlayerBonus"
 
-export const PromotionDistributionMethodFieldBox = ({
-  promotionType = "",
-  promotionTypeGroup = "",
-  readOnly,
-  disabled
-}) => {
+export const PromotionDistributionMethodFieldBox = ({ readOnly, disabled }) => {
+  let promotionType = usePromotionType()
+
   let { setValue } = useFormContext()
 
   let promotion = useFindPromotionType(promotionType)
   let autoPayoutProps = promotion?.autoSentPlayerBonus ?? {}
 
-  //TODO: don't force setValue if readOnly?
   useEffect(() => {
     if (isNotNil(autoPayoutProps?.checked)) {
       setValue(AutoPayoutFieldName, autoPayoutProps?.checked)
     }
   }, [autoPayoutProps])
 
+  if (!promotionType) {
+    return null
+  }
+
   //TODO: use autoPayoutProps?.visible instead?
-  if (fieldNotUsed({ promotionTypeGroup, promotionType })) {
+  if (fieldNotUsed({ promotionType })) {
     return null
   }
 

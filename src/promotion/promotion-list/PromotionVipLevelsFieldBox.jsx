@@ -12,10 +12,11 @@ import { useBrandIdFromPromotionForm } from "./usePromotionFormData"
 
 const FieldName = "vipLevels"
 
-export const PromotionVipLevelsFieldBox = ({ disabled, readOnly }) => {
+export const PromotionVipLevelsFieldBox = ({ readOnly }) => {
   let brandId = useBrandIdFromPromotionForm()
   let promotionType = usePromotionType()
 
+  /*
   let promotionTypeSettins = useFindPromotionType(promotionType)
   let { visible = true, ...vipLevelsProps } =
     get(promotionTypeSettins, FieldName) ?? {}
@@ -23,7 +24,9 @@ export const PromotionVipLevelsFieldBox = ({ disabled, readOnly }) => {
   if (!visible) {
     return null
   }
+  */
 
+  let disabled = readOnly
   return (
     <>
       <NormalLabel>

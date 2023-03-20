@@ -47,7 +47,6 @@ import {
   toGameTypeValue,
   useGameTypeGroupValueOf
 } from "../../game/GameType"
-import Separator from "../../layout/Separator"
 import {
   PromotionTypeGroup,
   PromotionTypeGroupSelect,
@@ -68,13 +67,6 @@ import {
 } from "../../input/NumberInput"
 import { Switch } from "../../switch/Switch"
 import { useBrand } from "../../merchant/platforms/client"
-import {
-  ImageUploadButton,
-  ImageLocalizationDialogDisclosure
-} from "../../file/upload/ImageUploadButton"
-import { HtmlEditor } from "../../text/editor/HtmlEditor"
-import Backdrop from "../../dialog/Backdrop"
-import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { parseJSON } from "../../text/json"
 import { PromotionRuleSettingFieldBox } from "./PromotionRuleSettingFieldBox"
 import { PromotionDistributionMethodFieldBox } from "./PromotionDistributionMethodFieldBox"
@@ -87,6 +79,7 @@ import { isValidDate } from "../../date/isValidDate"
 import { PromotionDateRangeFieldBox } from "./PromotionDateRangeFieldBox"
 import { formatDateOnly } from "../../date/format"
 import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
+import { PromotionContentSetting } from "./PromotionContentSetting"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -579,7 +572,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         </Box> 
         */}
 
-        <PromotionVipLevelsFieldBox disabled={disabled} readOnly={readOnly} />
+        {/* <PromotionVipLevelsFieldBox disabled={disabled} readOnly={readOnly} /> */}
 
         <NormalLabel>
           <Trans zh="活动类型" en="Promotion Type" />
@@ -634,8 +627,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         </Box>
 
         <PromotionDistributionMethodFieldBox
-          promotionTypeGroup={promotionTypeGroup}
-          promotionType={promotionType}
           readOnly={readOnly}
           disabled={disabled}
         />
@@ -657,94 +648,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         <PromotionGameProviderFieldBox brandId={brandId} readOnly={readOnly} />
       </FieldValues>
 
-      <Separator />
-
-      <Heading use="h5">
-        <Trans zh="活动内容" en="Promotion Content" />
-      </Heading>
-      <FieldValues>
-        <NormalLabel>
-          <Trans zh="活动子标题" en="Promotion SubTitle" />
-        </NormalLabel>
-        <Box alignY="center">
-          <InputField
-            name="subSubject"
-            brandId={brandId}
-            showLocalizationAddonAfter
-            disabled={disabled}
-            readOnly={readOnly}
-            required={required}
-          />
-        </Box>
-
-        <NormalLabel>
-          <Trans zh="活动 Banner (PC)" en="Promotion Banner (PC)" />
-        </NormalLabel>
-        <Set orientation="vertical" alignY="center">
-          <ImageLocalizationDialogDisclosure
-            id="desktopBanner"
-            brandId={brandId}
-            name="desktopBanner"
-            prefix="promotion"
-            disabled={disabled}
-            readOnly={readOnly}
-            required={required}
-          />
-          <Text.Block color="warning" fontWeight="bold" fontSize="150">
-            <Trans
-              zh="建議尺寸:  1200 x 486px"
-              en="Recommended size: 1200 x 486px"
-            />
-          </Text.Block>
-        </Set>
-
-        <NormalLabel>
-          <Trans zh="活动 Banner (Mobile)" en="Promotion Banner (Mobile)" />
-        </NormalLabel>
-        <Set orientation="vertical" alignY="center">
-          <ImageLocalizationDialogDisclosure
-            id="mobileBanner"
-            brandId={brandId}
-            name="mobileBanner"
-            prefix="promotion"
-            disabled={disabled}
-            readOnly={readOnly}
-            required={required}
-          />
-          <Text.Block color="warning" fontWeight="bold" fontSize="150">
-            <Trans
-              zh="建議尺寸: 690 x 280px"
-              en="Recommended size: 690 x 280px"
-            />
-          </Text.Block>
-        </Set>
-
-        <NormalLabel>
-          <Trans zh="活动内容" en="Promotion Content" />
-        </NormalLabel>
-        <Box alignY="center">
-          <HtmlEditorDisclosure
-            brandId={brandId}
-            name="content"
-            disabled={disabled}
-            readOnly={readOnly}
-          />
-        </Box>
-
-        <NormalLabel>
-          <Trans zh="活动条款与条规" en="Promotion Rules" />
-        </NormalLabel>
-        <Box alignY="center">
-          <HtmlEditorDisclosure
-            brandId={brandId}
-            name="terms"
-            disabled={disabled}
-            readOnly={readOnly}
-          />
-        </Box>
-      </FieldValues>
-
-      <Separator />
+      <PromotionContentSetting readOnly={readOnly} />
 
       <PromotionRuleSettingFieldBox
         promotionTypeGroup={promotionTypeGroup}
@@ -752,88 +656,5 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         readOnly={readOnly}
       />
     </FieldStack>
-  )
-}
-
-const HtmlEditorDisclosure = ({ brandId, name, readOnly }) => {
-  let dialog = useModalState()
-
-  let editTitle = useTrans({
-    zh: "编辑",
-    en: "Edit"
-  })
-  let viewTitle = useTrans({
-    zh: "查看",
-    en: "View"
-  })
-  let title = readOnly ? viewTitle : editTitle
-  return (
-    <>
-      <Disclosure width="fit-content" {...dialog}>
-        {title}
-      </Disclosure>
-      {dialog.visible && (
-        <HtmlEditorDialog
-          brandId={brandId}
-          name={name}
-          readOnly={readOnly}
-          dialog={dialog}
-          title={title}
-        />
-      )}
-    </>
-  )
-}
-
-const HtmlEditorDialog = ({
-  brandId,
-  name,
-  readOnly,
-  dialog,
-  title,
-  ...props
-}) => {
-  let { visible } = props
-  return (
-    <Backdrop
-      {...dialog}
-      css={css`
-        .tox-fullscreen & {
-          top: 0;
-          left: 0;
-          transform: none;
-        }
-      `}
-    >
-      <Dialog.Modal
-        {...dialog}
-        hideBackdrop
-        hideOnClickOutside={false}
-        showCloseButton
-        title={title}
-        width="70vw"
-        maxWidth="80vw"
-        css={css`
-          & .bb-DialogContent {
-            max-height: 80vh;
-          }
-          .tox-fullscreen & {
-            top: 0;
-            left: 0;
-            transform: none;
-          }
-        `}
-      >
-        <HtmlEditor
-          brandId={brandId}
-          name={name}
-          imagesUploadUrl={toFileUploadPath("promotion")}
-          readOnly={readOnly}
-          height="480"
-          active={visible}
-          showLocalizationAddonAfter
-        />
-      </Dialog.Modal>
-    </Backdrop>
   )
 }

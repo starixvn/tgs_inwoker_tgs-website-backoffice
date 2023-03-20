@@ -44,6 +44,8 @@ import { PromotionDepositRuleSetting } from "./PromotionDepositRuleSetting"
 import { PromotionTurnoverRuleSetting } from "./PromotionTurnoverRuleSetting"
 import { PromotionReliefMoneyRuleSetting } from "./PromotionReliefMoneyRuleSetting"
 import { PromotionOfflineRuleSetting } from "./PromotionOfflineRuleSetting"
+import Separator from "../../layout/Separator"
+import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 
 export const PromotionRuleSettingFieldBox = ({
   promotionType,
@@ -56,6 +58,8 @@ export const PromotionRuleSettingFieldBox = ({
 
   return (
     <>
+      <Separator />
+
       <Heading use="h5">
         <Trans zh="規則設定" en="Rule Settings" />
       </Heading>
@@ -69,6 +73,7 @@ export const PromotionRuleSettingFieldBox = ({
   )
 }
 
+//TODO: rm
 const notUsedConfigs = {
   promotionType: [PromotionTypeGroup.Dummy],
   promotionTypeGroup: [PromotionTypeGroup.Dummy]
@@ -92,6 +97,7 @@ export const PromotionRuleSetting = ({
   let { control } = useFormContext()
 
   switch (promotionTypeGroup) {
+    //TODO: rm?
     case PromotionTypeGroup.Signin:
       return (
         <PromotionSigninRuleSetting
@@ -149,6 +155,8 @@ const DefaultSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
+      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+
       <NormalLabel>
         <Trans zh="彩金百分比" en="Bonus Percentage" />
       </NormalLabel>
