@@ -562,6 +562,8 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
         <PromotionDateRangeFieldBox disabled={disabled} readOnly={readOnly} />
 
+        {/* 
+        TODO: rm
         <NormalLabel>
           <Trans zh="活动用户群" en="User Group" />
         </NormalLabel>
@@ -574,11 +576,10 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             disabled={disabled}
             required
           />
-        </Box>
+        </Box> 
+        */}
 
-        {/* 
-        TODO: replace above
-        <PromotionVipLevelsFieldBox disabled={disabled} readOnly={readOnly} /> */}
+        <PromotionVipLevelsFieldBox disabled={disabled} readOnly={readOnly} />
 
         <NormalLabel>
           <Trans zh="活动类型" en="Promotion Type" />

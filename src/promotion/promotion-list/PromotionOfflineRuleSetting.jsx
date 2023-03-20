@@ -27,16 +27,14 @@ export const PromotionOfflineRuleSetting = ({ readOnly }) => {
   let promotionType = usePromotionType()
 
   switch (promotionType) {
+    case LoginReward:
+      return <LoginRewardRuleSetting />
+    default:
+      return null
   }
-
-  return <LoginRewardRuleSetting />
 }
 
 const LoginRewardRuleSetting = ({ readOnly }) => {
-  //TODO: hide "PromotionTotalFundsFieldBox" field by setting
-  //1. upload btn
-  //2. need review? paging? performance issue?
-  //3.
   let disabled = readOnly
   return (
     <FieldValues>

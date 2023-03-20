@@ -134,11 +134,9 @@ export const PromotionRuleSetting = ({
           readOnly={readOnly}
         />
       )
-    /*
-    TODO
+    /* TODO */
     case PromotionTypeGroup.Offline:
       return <PromotionOfflineRuleSetting readOnly={readOnly} />
-    */
     default:
       return promotionType ? (
         <DefaultSetting promotionType={promotionType} readOnly={readOnly} />
