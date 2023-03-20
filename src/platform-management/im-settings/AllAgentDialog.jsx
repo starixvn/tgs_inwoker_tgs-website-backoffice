@@ -47,7 +47,7 @@ import { Tabs, Tab, TabList, TabPanel, useTabState } from "../../tab"
 import { SwitchField } from "../../switch/Switch"
 import { CheckboxField } from "../../checkbox"
 import { SubmitButton } from "../../button/SubmitButton"
-import { AgentMultipleLayerProfitSharingSettingFormBody } from "../../agent/AgentMultipleLayerProfitSharingSetting"
+import { AllAgentProfitSharingSetting } from "./AllAgentSharingSetting"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -514,7 +514,7 @@ const MultileLayerSettingFormDialog = ({
         minWidth="50vw"
         {...props}
       >
-        <AgentMultipleLayerProfitSharingSettingFormBody
+        <AllAgentProfitSharingSetting
           name="conditions"
           profitSharingPercentageFieldName="rebatePercentage"
           netProfitLabel={netProfitLabel}
