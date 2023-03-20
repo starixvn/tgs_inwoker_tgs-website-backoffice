@@ -80,6 +80,7 @@ import { PromotionDateRangeFieldBox } from "./PromotionDateRangeFieldBox"
 import { formatDateOnly } from "../../date/format"
 import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
 import { PromotionContentSetting } from "./PromotionContentSetting"
+import { TypeList as OfflinePromotionTypeList } from "./PromotionOfflineRuleSetting"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -200,6 +201,8 @@ const normalizeFormData = ({
   }
 }
 
+const NotEditablePromtion = [...OfflinePromotionTypeList]
+
 export const EditPromotionDisclosure = ({
   brandId,
   record,
@@ -209,6 +212,12 @@ export const EditPromotionDisclosure = ({
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
+
+  let promotionType = record?.promotionType
+  if (NotEditablePromtion.includes(promotionType)) {
+    return null
+  }
+
   if (!isDisplay) {
     return null
   }

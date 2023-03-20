@@ -22,6 +22,9 @@ import { NormalLabel } from "../../form/Label"
 import { NumberInput, NumberInputField } from "../../input/NumberInput"
 
 const LoginReward = "OfflineLoginReward"
+const DepositReward = "OfflineDepositReward"
+
+export const TypeList = [LoginReward, DepositReward]
 
 export const PromotionOfflineRuleSetting = ({ readOnly }) => {
   let promotionType = usePromotionType()

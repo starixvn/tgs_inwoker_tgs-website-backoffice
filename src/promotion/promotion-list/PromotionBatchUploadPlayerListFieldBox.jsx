@@ -21,7 +21,6 @@ const FieldName = "batchId"
 
 //TODO: only visible when create promotion?
 export const PromotionBatchUploadPlayerListFieldBox = ({
-  disabled,
   readOnly
 }) => {
   //
