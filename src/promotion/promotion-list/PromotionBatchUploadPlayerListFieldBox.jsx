@@ -60,6 +60,7 @@ const BatchUploadField = ({ name = FieldName }) => {
       render={({ field, fieldState: { error }, formState }) => {
         let palette = error ? "danger" : "default"
         let variant = error ? "outlined" : "default"
+        console.log("Controller name", name, "field.value", field.value)
         return (
           <BatchUploadButton name={name} palette={palette} variant={variant} />
         )
@@ -113,7 +114,8 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
 
   let [isBatchDone, setBatchDoneState] = useState()
 
-  const setBatchDone = () => {
+  const setBatchDone = (batchId) => {
+    console.log("setBatchDone", batchId)
     setValue(name, batchId)
     setBatchDoneState(true)
   }
