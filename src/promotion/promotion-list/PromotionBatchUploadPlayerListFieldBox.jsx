@@ -107,6 +107,7 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
   } = usePromotionBatchUploadPlayerList(brandId, clientId, formData)
 
   useEffect(() => {
+    console.log("setBatchId", batchStartedResult?.data)
     setBatchId(batchStartedResult?.data)
   }, [batchStartedResult])
 
@@ -145,7 +146,8 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
       type === "OfflinePromotion" &&
       (payload.batchId === batchId || payload.clientId === clientId)
     ) {
-      setBatchDone()
+      console.log("onNotify payload", payload)
+      setBatchDone(payload.batchId)
     }
   }
 
