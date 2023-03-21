@@ -22,7 +22,6 @@ import AlertDialog from "../../dialog/Alert"
 
 const FieldName = "batchId"
 
-//TODO: batchId required form validation
 //TODO: need readOnly?
 export const PromotionBatchUploadPlayerListFieldBox = ({ readOnly }) => {
   //
@@ -143,6 +142,7 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
       type === "OfflinePromotion" &&
       (msg.batchId === batchId || msg.clientId === clientId)
     ) {
+      setValue(name, batchId)
       setBatchDone(true)
     }
   }
