@@ -110,8 +110,12 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
     setBatchId(batchStartedResult?.data)
   }, [batchStartedResult])
 
-  let [isBatchDone, setBatchDone] = useState()
+  let [isBatchDone, setBatchDoneState] = useState()
 
+  const setBatchDone = () => {
+    setValue(name, batchId)
+    setBatchDoneState(true)
+  }
   /*
   TODO: handle error? just ignore?
   let {
@@ -136,24 +140,20 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
     /*isLoadingBatchEnded ||*/
     (batchStartedResult && !isBatchDone)
 
-  const onNotify = ({ type, ...msg } = {}) => {
-    console.log("onNotify type", type, "msg", msg)
+  const onNotify = ({ type, payload } = {}) => {
     if (
       type === "OfflinePromotion" &&
-      (msg.batchId === batchId || msg.clientId === clientId)
+      (payload.batchId === batchId || payload.clientId === clientId)
     ) {
-      setValue(name, batchId)
-      setBatchDone(true)
+      setBatchDone()
     }
   }
 
   useMount(() => {
-    console.log("connection on 'notify'")
     connection?.on("notify", onNotify)
   })
 
   useUnmount(() => {
-    console.log("connection off 'notify'")
     connection?.off("notify", onNotify)
   })
 
@@ -176,6 +176,7 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
       if (file) {
         let id = nanoid()
         setClientId(id)
+        setFileName(file.name)
 
         let formData = new FormData()
         formData.append("file", file, file.name)
