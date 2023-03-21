@@ -22,8 +22,8 @@ import AlertDialog from "../../dialog/Alert"
 
 const FieldName = "batchId"
 
-//TODO: need readOnly?
-export const PromotionBatchUploadPlayerListFieldBox = ({ readOnly }) => {
+//TODO: require readOnly?
+export const PromotionBatchUploadPlayerListFieldBox = ({}) => {
   //
   /*
   let promotionType = usePromotionType()
@@ -50,7 +50,7 @@ export const PromotionBatchUploadPlayerListFieldBox = ({ readOnly }) => {
 }
 
 const BatchUploadField = ({ name = FieldName }) => {
-  let { control, setValue } = useFormContext()
+  let { control } = useFormContext()
 
   return (
     <Controller
@@ -60,7 +60,6 @@ const BatchUploadField = ({ name = FieldName }) => {
       render={({ field, fieldState: { error }, formState }) => {
         let palette = error ? "danger" : "default"
         let variant = error ? "outlined" : "default"
-        console.log("Controller name", name, "field.value", field.value)
         return (
           <BatchUploadButton name={name} palette={palette} variant={variant} />
         )
@@ -118,7 +117,6 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
     setBatchDoneState(true)
   }
 
-  //TODO: ignore error?
   let {
     result: isBatchEnded,
     isLoading: isLoadingBatchEnded,
@@ -145,7 +143,7 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
       (payload.batchId === batchId || payload.clientId === clientId)
     ) {
       console.log("onNotify setBatchDone payload", payload, "batchId", batchId)
-      //setBatchDone(payload.batchId)
+      setBatchDone(payload.batchId)
     }
   }
 
@@ -186,7 +184,6 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
     }
   })
 
-  //TODO: error dialog
   return (
     <Set orientation="horizontal">
       <Box>

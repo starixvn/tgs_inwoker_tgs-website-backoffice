@@ -142,8 +142,13 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
 
   let [isBatchDone, setBatchDone] = useState()
 
-  const onNotify = ({ type, ...msg } = {}) => {
-    if (type === "BatchAdjustBalance" && msg.batchId === batchId) {
+  const onNotify = ({ type, payload, ...rest } = {}) => {
+    //TODO: debug only, rm later
+    if (type === "BatchAdjustBalance") {
+      console.log("onNotify payload", payload, "batchId", batchId)
+    }
+
+    if (type === "BatchAdjustBalance" && payload.batchId === batchId) {
       setBatchDone(true)
     }
   }
