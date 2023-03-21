@@ -119,6 +119,7 @@ const confirmBatchDone = (result) => {
   return false
 }
 
+//TODO: test onNotify
 const BatchAddDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
   let [batchId, setBatchId] = useState()
   let [batchItems, setBatchItems] = useState()
@@ -141,9 +142,8 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
 
   let [isBatchDone, setBatchDone] = useState()
 
-  const onNotify = ({ Type, BatchId, ...rest } = {}) => {
-    console.log("onNotify Type", Type, "BatchId", BatchId, "rest", rest)
-    if (Type === "BatchAdjustBalance" && BatchId === batchId) {
+  const onNotify = ({ type, ...msg } = {}) => {
+    if (type === "BatchAdjustBalance" && msg.batchId === batchId) {
       setBatchDone(true)
     }
   }

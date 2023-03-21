@@ -14,9 +14,8 @@ const FieldName = "vipLevels"
 
 export const PromotionVipLevelsFieldBox = ({ readOnly }) => {
   let brandId = useBrandIdFromPromotionForm()
-  let promotionType = usePromotionType()
-
   /*
+  let promotionType = usePromotionType()
   let promotionTypeSettins = useFindPromotionType(promotionType)
   let { visible = true, ...vipLevelsProps } =
     get(promotionTypeSettins, FieldName) ?? {}

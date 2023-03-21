@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box, Set, Button, Link, Text } from "bumbag"
-import { useForm, useFormContext, useWatch } from "react-hook-form"
+import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
 import { Trans, useTrans } from "../../i18n"
 import { NormalLabel } from "../../form/Label"
 import { VipLevelCheckboxGroup } from "../../vip-levels/CheckboxGroup"
@@ -16,14 +16,17 @@ import {
 } from "./client"
 import { useDropzone } from "react-dropzone"
 import Input from "../../input/Input"
+import { connection } from "../../connection"
+import { useMount, useUnmount } from "react-use"
+import AlertDialog from "../../dialog/Alert"
 
 const FieldName = "batchId"
 
-//TODO: only visible when create promotion?
-export const PromotionBatchUploadPlayerListFieldBox = ({
-  readOnly
-}) => {
+//TODO: batchId required form validation
+//TODO: need readOnly?
+export const PromotionBatchUploadPlayerListFieldBox = ({ readOnly }) => {
   //
+  /*
   let promotionType = usePromotionType()
 
   let promotionTypeSettins = useFindPromotionType(promotionType)
@@ -33,6 +36,7 @@ export const PromotionBatchUploadPlayerListFieldBox = ({
   if (!visible) {
     return null
   }
+  */
 
   return (
     <>
@@ -40,13 +44,30 @@ export const PromotionBatchUploadPlayerListFieldBox = ({
         <Trans zh="活动用户群" en="User Group" />
       </NormalLabel>
       <Box alignY="center">
-        <BatchUploadButton />
+        <BatchUploadField />
       </Box>
     </>
   )
 }
 
-const BatchUploadButtonField = ({}) => {}
+const BatchUploadField = ({ name = FieldName }) => {
+  let { control, setValue } = useFormContext()
+
+  return (
+    <Controller
+      control={control}
+      name={name}
+      rules={{ required: true }}
+      render={({ field, fieldState: { error }, formState }) => {
+        let palette = error ? "danger" : "default"
+        let variant = error ? "outlined" : "default"
+        return (
+          <BatchUploadButton name={name} palette={palette} variant={variant} />
+        )
+      }}
+    />
+  )
+}
 
 const SecondInMilliseconds = 1000
 
@@ -66,15 +87,16 @@ const confirmBatchDone = (result) => {
   return false
 }
 
-const BatchUploadButton = ({ name = FieldName }) => {
+//TODO: able to focus on error?
+const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
   let { setValue, control, getValues, clearErrors } = useFormContext()
 
   let brandId = useBrandIdFromPromotionForm()
 
   let [clientId, setClientId] = useState()
-  //TODO: seems no need? save in form?
   let [batchId, setBatchId] = useState()
 
+  let [fileName, setFileName] = useState()
   let [formData, setFormData] = useState()
 
   let {
@@ -86,12 +108,13 @@ const BatchUploadButton = ({ name = FieldName }) => {
   } = usePromotionBatchUploadPlayerList(brandId, clientId, formData)
 
   useEffect(() => {
-    console.log("batchStartedResult", batchStartedResult)
     setBatchId(batchStartedResult?.data)
   }, [batchStartedResult])
 
   let [isBatchDone, setBatchDone] = useState()
 
+  /*
+  TODO: handle error? just ignore?
   let {
     result: isBatchEnded,
     isLoading: isLoadingBatchEnded,
@@ -99,23 +122,46 @@ const BatchUploadButton = ({ name = FieldName }) => {
   } = useIsPromotionBatchUploadPlayerListDone(!isBatchDone && batchId, {
     refreshInterval: 3 * SecondInMilliseconds
   })
-
+ 
   useEffect(() => {
     if (confirmBatchDone(isBatchEnded)) {
       setValue(name, batchId)
       setBatchDone(true)
     }
   }, [isBatchEnded])
+   */
 
   //TODO: loading effect? loading modal?
   let isLoading =
     isLoadingBatchStartedResult ||
-    isLoadingBatchEnded ||
+    /*isLoadingBatchEnded ||*/
     (batchStartedResult && !isBatchDone)
 
-  //TODO: when?
+  const onNotify = ({ type, ...msg } = {}) => {
+    console.log("onNotify type", type, "msg", msg)
+    if (
+      type === "OfflinePromotion" &&
+      (msg.batchId === batchId || msg.clientId === clientId)
+    ) {
+      setBatchDone(true)
+    }
+  }
+
+  useMount(() => {
+    console.log("connection on 'notify'")
+    connection?.on("notify", onNotify)
+  })
+
+  useUnmount(() => {
+    console.log("connection off 'notify'")
+    connection?.off("notify", onNotify)
+  })
+
   const reset = () => {
     setClientId(null)
+    setBatchId(null)
+    setFileName(null)
+
     setFormData(null)
     deleteCache()
     mutate(null, false)
@@ -150,11 +196,12 @@ const BatchUploadButton = ({ name = FieldName }) => {
           })}
           isLoading={isLoading}
           disabled={isLoading}
+          palette={palette}
+          variant={variant}
         >
-          <Trans zh="上传文件" en="Upload file" />
+          {fileName ? fileName : <Trans zh="上传文件" en="Upload file" />}
           <input {...getInputProps()} />
         </Button>
-        <Input type="hidden" name={name} value={batchId} />
       </Box>
       <Text.Block>
         <Link
@@ -165,6 +212,13 @@ const BatchUploadButton = ({ name = FieldName }) => {
           <Trans zh="下载文件格式" en="Download Format File" />
         </Link>
       </Text.Block>
+      {batchStartedResultError && (
+        <AlertDialog
+          {...importBatchResultError}
+          placement="center"
+          onClickClose={reset}
+        />
+      )}
     </Set>
   )
 }
