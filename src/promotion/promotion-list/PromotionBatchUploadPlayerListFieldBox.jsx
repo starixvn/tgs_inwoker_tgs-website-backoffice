@@ -108,19 +108,17 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
   } = usePromotionBatchUploadPlayerList(brandId, clientId, formData)
 
   useEffect(() => {
-    console.log("batchStartedResult setBatchId", batchStartedResult?.data)
     setBatchId(batchStartedResult?.data)
   }, [batchStartedResult])
 
   let [isBatchDone, setBatchDoneState] = useState()
 
   const setBatchDone = (batchId) => {
-    console.log("setBatchDone", batchId)
     setValue(name, batchId)
     setBatchDoneState(true)
   }
-  /*
-  TODO: handle error? just ignore?
+
+  //TODO: ignore error?
   let {
     result: isBatchEnded,
     isLoading: isLoadingBatchEnded,
@@ -128,18 +126,17 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
   } = useIsPromotionBatchUploadPlayerListDone(!isBatchDone && batchId, {
     refreshInterval: 3 * SecondInMilliseconds
   })
- 
+
   useEffect(() => {
-    if (confirmBatchDone(isBatchEnded) && batchId) {
+    if (confirmBatchDone(isBatchEnded)) {
+      console.log("polling setBatchDone batchId", batchId)
       setBatchDone(batchId)
     }
   }, [isBatchEnded])
-   */
 
-  //TODO: loading effect? loading modal?
   let isLoading =
     isLoadingBatchStartedResult ||
-    /*isLoadingBatchEnded ||*/
+    isLoadingBatchEnded ||
     (batchStartedResult && !isBatchDone)
 
   const onNotify = ({ type, payload } = {}) => {
@@ -147,8 +144,8 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
       type === "OfflinePromotion" &&
       (payload.batchId === batchId || payload.clientId === clientId)
     ) {
-      console.log("onNotify payload", payload, "batchId", batchId)
-      setBatchDone(payload.batchId)
+      console.log("onNotify setBatchDone payload", payload, "batchId", batchId)
+      //setBatchDone(payload.batchId)
     }
   }
 
