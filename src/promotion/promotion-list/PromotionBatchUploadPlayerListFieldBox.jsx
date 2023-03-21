@@ -86,7 +86,7 @@ const confirmBatchDone = (result) => {
   return false
 }
 
-//TODO: able to focus on error?
+//TODO: focus on error?
 const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
   let { setValue, control, getValues, clearErrors } = useFormContext()
 
