@@ -36,12 +36,23 @@ import {
 } from "@dnd-kit/sortable"
 import { CloseButton } from "../button/CloseButton"
 import { isEmpty, complement } from "ramda"
+import { useLocalStorage } from "react-use"
+import { Checkbox } from "../checkbox"
 
 const notEmpty = complement(isEmpty)
 
 const Action = {
   ToggleColumnHidden: "toggleColumnHidden",
   ColumnOrder: "columnOrder"
+}
+
+export const useTableColumnHiddenLocalStorage = (
+  tableLocalStorageKey = "",
+  initialValue,
+  options
+) => {
+  let key = `${tableLocalStorageKey}:hiddenColumns`
+  return useLocalStorage(key, initialValue, options)
 }
 
 const ActionFields = Object.values(Action)
@@ -71,7 +82,12 @@ export const ActionBar = ({ table }) => {
 }
 
 const ToggleHiddenDropdownMenu = ({ table }) => {
-  let { allColumns, toggleColumnHidden } = table
+  let popover = Popover.useState()
+
+  let { allColumns, toggleColumnHidden, localStorageKey } = table
+
+  let [hiddenColumnList, setHiddenColumnList] =
+    useTableColumnHiddenLocalStorage(localStorageKey, [])
 
   if (!toggleColumnHidden) {
     return null
@@ -81,28 +97,77 @@ const ToggleHiddenDropdownMenu = ({ table }) => {
     ({ disableToggleHidden }) => !disableToggleHidden
   )
 
+  let hiddenColumns = allColumns
+    .filter(({ isVisible }) => !isVisible)
+    .map(({ id }) => id)
+
+  useEffect(() => {
+    if (localStorageKey) {
+      setHiddenColumnList(hiddenColumns)
+    }
+  }, [JSON.stringify(hiddenColumns)])
+
   return (
-    <DropdownMenu
-      menu={availableColumns.map((column) => {
-        let { checked, onChange, ...props } = column.getToggleHiddenProps()
-        return (
-          <DropdownMenu.Item
-            key={column.id}
-            iconBefore={checked ? "solid-check" : <Box />}
-            onClick={(event) => {
-              column.toggleHidden(checked)
-            }}
-            disabled={column.disableToggleHidden}
-          >
-            {toColumnHeader(column)}
-          </DropdownMenu.Item>
-        )
-      })}
-    >
-      <Button iconAfter="chevron-down">
+    <>
+      <Popover.Disclosure use={Button} iconAfter="chevron-down" {...popover}>
         <Trans zh="筛选显示栏位" en="Filter" />
-      </Button>
-    </DropdownMenu>
+      </Popover.Disclosure>
+      <Popover
+        hasArrow
+        {...popover}
+        footer={
+          <Box id="test-box" alignX="right" width="100%">
+            <CloseButton width="max-content" onClick={popover.hide} />
+          </Box>
+        }
+        css={css`
+          overflow: hidden;
+          & .bb-PopoverContent {
+            max-height: 40vh;
+            max-width: 85vw;
+            overflow: auto;
+          }
+
+          & .bb-PopoverFooter > .bb-Box {
+            width: 100%;
+          }
+        `}
+      >
+        <Set orientation="vertical">
+          <ToggleAllHiddenColumnCheckbox columns={availableColumns} />
+          {availableColumns.map((column) => (
+            <ToggleHiddenColumnCheckbox key={column.id} column={column} />
+          ))}
+        </Set>
+      </Popover>
+    </>
+  )
+}
+
+const ToggleAllHiddenColumnCheckbox = ({ columns = [] }) => {
+  let isAllColumnVisible = !columns.find(({ isVisible }) => !isVisible)
+  return (
+    <Checkbox
+      checked={isAllColumnVisible}
+      label={<Trans zh={"全部"} en={"Default"} />}
+      onChange={() => {
+        columns.map((column) => {
+          column.toggleHidden(isAllColumnVisible)
+        })
+      }}
+    />
+  )
+}
+
+const ToggleHiddenColumnCheckbox = ({ column }) => {
+  return (
+    <Checkbox
+      {...column.getToggleHiddenProps()}
+      label={toColumnHeader(column)}
+      css={css`
+        width: max-content;
+      `}
+    />
   )
 }
 

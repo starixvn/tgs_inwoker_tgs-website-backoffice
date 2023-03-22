@@ -31,15 +31,27 @@ import { parseISO } from "date-fns"
 import Big from "big.js"
 import { AgentProfitDialogDisclosure } from "./AgentProfitDialog"
 import AutoSizer from "react-virtualized-auto-sizer"
+import { Code as PageCode } from "./menu"
+import { Code as ModuleCode } from "../menu"
+import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+
+const MainTable = "main"
+const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
+
+  let [hiddenColumns] = useTableColumnHiddenLocalStorage(
+    TableLocalStorageKey,
+    []
+  )
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     from: dateRange.start,
     to: dateRange.end,
-    pageSize: 31
+    pageSize: 31,
+    hiddenColumns
   })
 
   useEffect(() => {
@@ -136,6 +148,8 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
               isLoading={isLoading}
               maxSize={{ height, width }}
               stickyHead
+              localStorageKey={TableLocalStorageKey}
+              toggleColumnHidden={true}
             />
           )
         }}
