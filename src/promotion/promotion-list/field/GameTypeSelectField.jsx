@@ -1,23 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box, Set } from "bumbag"
-import { Switch } from "../../switch/Switch"
+import { Switch } from "../../../switch/Switch"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
-import { Trans, useTrans } from "../../i18n"
-import { NormalLabel } from "../../form/Label"
-import Checkbox from "../../checkbox"
-import { NumberInput } from "../../input/NumberInput"
-import {
-  PromotionTypeGroup,
-  useIsInstantlySettlementIntervalType
-} from "../PromotionType"
-import {
-  GameTypeGroupSelect,
-  GameTypeSelect,
-  toGameTypeString,
-  toGameTypeValue,
-  useGameTypeGroupValueOf
-} from "../../game/GameType"
+import { Trans, useTrans } from "../../../i18n"
+import { NormalLabel } from "../../../form/Label"
+import { PromotionTypeGroup } from "../../PromotionType"
+import { GameTypeGroupSelect, GameTypeSelect } from "../../../game/GameType"
 
 const GameTypeGroupFieldName = "gameTypeGroup"
 
@@ -33,11 +22,7 @@ export const useGameType = () => {
   return gameType
 }
 
-export const PromotionGameTypeFieldBox = ({
-  promotionType = "",
-  promotionTypeGroup = "",
-  readOnly
-}) => {
+export const GameTypeSelectField = ({ readOnly }) => {
   let { control, setValue } = useFormContext()
 
   let gameTypeGroup = useWatch({
@@ -45,12 +30,6 @@ export const PromotionGameTypeFieldBox = ({
     name: GameTypeGroupFieldName
   })
 
-  let gameType = useWatch({
-    control,
-    name: GameTypeFieldName
-  })
-
-  //TODO: able to remove the following useEffect?
   useEffect(() => {
     if (!gameTypeGroup) {
       setValue(GameTypeFieldName, null)
@@ -61,10 +40,6 @@ export const PromotionGameTypeFieldBox = ({
     zh: "全部",
     en: "All"
   })
-
-  if (!hasField({ promotionTypeGroup, promotionType })) {
-    return null
-  }
 
   let disabled = readOnly
   let editable = !readOnly
@@ -117,20 +92,11 @@ export const PromotionGameTypeFieldBox = ({
   )
 }
 
+//TODO: Turnover & ReliefMoney
 const configs = {
   promotionType: [],
   promotionTypeGroup: [
     PromotionTypeGroup.Turnover,
     PromotionTypeGroup.ReliefMoney
   ]
-}
-const hasField = ({ promotionType = "", promotionTypeGroup = "" }) => {
-  if (
-    configs.promotionTypeGroup.includes(promotionTypeGroup) ||
-    configs.promotionType.includes(promotionType)
-  ) {
-    return true
-  }
-
-  return false
 }

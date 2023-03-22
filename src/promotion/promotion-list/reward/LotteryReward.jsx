@@ -18,15 +18,15 @@ import {
   Popover,
   Alert
 } from "bumbag"
-import { useIsDisplayMenuByRoute } from "../../user/context"
+import { useIsDisplayMenuByRoute } from "../../../user/context"
 import Disclosure, {
   AddDisclosure,
   EditDisclosure,
   NewDisclosure,
   ViewDisclosure
-} from "../../dialog/Disclosure"
-import FormDialog from "../../form/FormDialog"
-import { Trans, useTrans } from "../../i18n"
+} from "../../../dialog/Disclosure"
+import FormDialog from "../../../form/FormDialog"
+import { Trans, useTrans } from "../../../i18n"
 import {
   useForm,
   useFormContext,
@@ -39,39 +39,39 @@ import {
   PromotionTypeGroupSelect,
   PromotionTypeSelect,
   usePromotionGroupValueOf
-} from "../PromotionType"
-import { FieldValues } from "../../layout/Grid"
-import { NormalLabel } from "../../form/Label"
-import Input from "../../input/Input"
+} from "../../PromotionType"
+import { FieldValues } from "../../../layout/Grid"
+import { NormalLabel } from "../../../form/Label"
+import Input from "../../../input/Input"
 import {
   NumberInput,
   NumberInputField,
   PercentageNumberInputField
-} from "../../input/NumberInput"
+} from "../../../input/NumberInput"
 import clone from "clone-deep"
-import Backdrop from "../../dialog/Backdrop"
-import { ConfirmText } from "../../button/ActionButtons"
+import Backdrop from "../../../dialog/Backdrop"
+import { ConfirmText } from "../../../button/ActionButtons"
 import { sumBy } from "lodash-es"
-import AlertDialog, { AlertDialogModal } from "../../dialog/Alert"
-import { Switch } from "../../switch/Switch"
+import AlertDialog, { AlertDialogModal } from "../../../dialog/Alert"
+import { Switch } from "../../../switch/Switch"
 import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
-import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../../form/ConfirmButtonFooter"
 import { get, set } from "lodash-es"
 import Big from "big.js"
 import {
   DepositLottery,
-  PromotionDepositLotteryRuleSetting
-} from "./PromotionDepositLotteryRuleSetting"
-import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
+  DepositLotteryRewardRuleSetting
+} from "./DepositLotteryReward"
+import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 
 const Roulette = "Roulette"
 
-export const PromotionLotteryRuleSetting = ({ promotionType, ...props }) => {
+export const LotteryRewardRuleSetting = ({ promotionType, ...props }) => {
   switch (promotionType) {
     case Roulette:
       return <PromotionRouletteRuleSetting {...props} />
     case DepositLottery:
-      return <PromotionDepositLotteryRuleSetting {...props} />
+      return <DepositLotteryRewardRuleSetting {...props} />
     default:
       return null
   }
@@ -80,7 +80,7 @@ export const PromotionLotteryRuleSetting = ({ promotionType, ...props }) => {
 export const PromotionRouletteRuleSetting = ({ ...props }) => {
   return (
     <FieldValues>
-      <PromotionVipLevelsFieldBox {...props} />
+      <VipLevelCheckboxGroupField {...props} />
 
       <NormalLabel>
         <Trans zh="轮盘设置" en="Roulette Setting" />

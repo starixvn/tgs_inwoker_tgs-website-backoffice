@@ -13,37 +13,24 @@ import {
   Heading,
   FieldStack
 } from "bumbag"
-import { useIsDisplayMenuByRoute } from "../../user/context"
-import Disclosure, {
-  AddDisclosure,
-  EditDisclosure,
-  NewDisclosure,
-  ViewDisclosure
-} from "../../dialog/Disclosure"
-import FormDialog from "../../form/FormDialog"
-import { Trans, useTrans } from "../../i18n"
-import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
-import {
-  PromotionTypeGroup,
-  PromotionTypeGroupSelect,
-  PromotionTypeSelect,
-  usePromotionGroupValueOf
-} from "../PromotionType"
-import { FieldValues } from "../../layout/Grid"
-import { NormalLabel } from "../../form/Label"
+import { Trans, useTrans } from "../../../i18n"
+import { FieldValues } from "../../../layout/Grid"
+import { NormalLabel } from "../../../form/Label"
 import {
   NumberInput,
   NumberInputField,
   PercentageNumberInputField
-} from "../../input/NumberInput"
-import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
-import { PromotionPlayerAutoJoinFieldBox } from "./PromotionPlayerAutoJoinFieldBox"
-import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
+} from "../../../input/NumberInput"
+import { useTotalFunds } from "../field/TotalFundsField"
+import { PlayerAutoJoinField } from "../field/PlayerAutoJoinField"
+import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
+import { GameTypeSelectField } from "../field/GameTypeSelectField"
+import { GameProviderSelectField } from "../field/GameProviderSelectField"
 
 const DailyTurnoverRebate = "TurnoverRebate"
 const WeeklyTurnoverRebate = "TurnoverRebateWeekly"
 
-export const PromotionTurnoverRuleSetting = ({ promotionType, readOnly }) => {
+export const TurnoverRewardRuleSetting = ({ promotionType, readOnly }) => {
   switch (promotionType) {
     case DailyTurnoverRebate:
       return <DailyTurnoverSetting readOnly={readOnly} />
@@ -58,12 +45,13 @@ const DailyTurnoverSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
-      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+      <VipLevelCheckboxGroupField readOnly={readOnly} />
 
-      <PromotionPlayerAutoJoinFieldBox
-        readOnly={readOnly}
-        disabled={disabled}
-      />
+      <GameTypeSelectField readOnly={readOnly} />
+
+      <GameProviderSelectField readOnly={readOnly} />
+
+      <PlayerAutoJoinField readOnly={readOnly} disabled={disabled} />
       {/* <NormalLabel>
         <Trans zh="流水门槛" en="Turnover Limit" />
       </NormalLabel>
@@ -130,12 +118,13 @@ const DefaultSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
-      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+      <VipLevelCheckboxGroupField readOnly={readOnly} />
 
-      <PromotionPlayerAutoJoinFieldBox
-        readOnly={readOnly}
-        disabled={disabled}
-      />
+      <GameTypeSelectField readOnly={readOnly} />
+
+      <GameProviderSelectField readOnly={readOnly} />
+
+      <PlayerAutoJoinField readOnly={readOnly} disabled={disabled} />
       <NormalLabel>
         <Trans zh="流水门槛" en="Turnover Limit" />
       </NormalLabel>

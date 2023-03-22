@@ -34,7 +34,7 @@ import { get } from "lodash-es"
 import Separator from "../../layout/Separator"
 
 const FieldName = "content"
-export const PromotionContentSetting = ({ readOnly }) => {
+export const ContentSetting = ({ readOnly }) => {
   let brandId = useBrandIdFromPromotionForm()
 
   let promotionType = usePromotionType()

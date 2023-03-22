@@ -16,42 +16,45 @@ import {
   Controller,
   useWatch
 } from "react-hook-form"
-import { useIsDisplayMenuByRoute } from "../../user/context"
-import { Update, View } from "./menu"
-import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
+import { useIsDisplayMenuByRoute } from "../../../user/context"
+import { Update, View } from "../menu"
+import Disclosure, { ViewDisclosure } from "../../../dialog/Disclosure"
 import {
   FormattedDateTime,
   FormattedNumberDecimal,
   Trans,
   useTrans
-} from "../../i18n"
-import FormDialog from "../../form/FormDialog"
+} from "../../../i18n"
+import FormDialog from "../../../form/FormDialog"
 import clone from "clone-deep"
-import { FieldValues } from "../../layout/Grid"
-import { PromotionTypeLabel, usePromotionGroupLabelOf } from "../PromotionType"
+import { FieldValues } from "../../../layout/Grid"
+import {
+  PromotionTypeLabel,
+  usePromotionGroupLabelOf
+} from "../../PromotionType"
 import {
   CloseButtonFooter,
   ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
+} from "../../../form/ConfirmButtonFooter"
 import {
   MaxNumber,
   NumberInput,
   PercentageNumberInputField
-} from "../../input/NumberInput"
-import { NormalLabel } from "../../form/Label"
+} from "../../../input/NumberInput"
+import { NormalLabel } from "../../../form/Label"
 import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
-import Backdrop from "../../dialog/Backdrop"
-import { ConfirmText } from "../../button/ActionButtons"
-import Input from "../../input/Input"
+import Backdrop from "../../../dialog/Backdrop"
+import { ConfirmText } from "../../../button/ActionButtons"
+import Input from "../../../input/Input"
 import { get, set } from "lodash-es"
 import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
-import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
-import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
+import { useTotalFunds } from "../field/TotalFundsField"
+import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 
-export const PromotionSigninRuleSetting = ({ ...props }) => {
+export const SigninRewardRuleSetting = ({ ...props }) => {
   return (
     <FieldValues>
-      <PromotionVipLevelsFieldBox {...props} />
+      <VipLevelCheckboxGroupField {...props} />
 
       <NormalLabel>
         <Trans zh="签到礼金设置" en="Sign-in Reward Setting" />

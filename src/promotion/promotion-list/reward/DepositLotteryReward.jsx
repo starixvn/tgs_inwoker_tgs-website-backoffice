@@ -18,15 +18,15 @@ import {
   Popover,
   Alert
 } from "bumbag"
-import { useIsDisplayMenuByRoute } from "../../user/context"
+import { useIsDisplayMenuByRoute } from "../../../user/context"
 import Disclosure, {
   AddDisclosure,
   EditDisclosure,
   NewDisclosure,
   ViewDisclosure
-} from "../../dialog/Disclosure"
-import FormDialog from "../../form/FormDialog"
-import { Trans, useTrans } from "../../i18n"
+} from "../../../dialog/Disclosure"
+import FormDialog from "../../../form/FormDialog"
+import { Trans, useTrans } from "../../../i18n"
 import {
   useForm,
   useFormContext,
@@ -39,39 +39,38 @@ import {
   PromotionTypeGroupSelect,
   PromotionTypeSelect,
   usePromotionGroupValueOf
-} from "../PromotionType"
-import { FieldValues } from "../../layout/Grid"
-import { NormalLabel } from "../../form/Label"
-import Input from "../../input/Input"
+} from "../../PromotionType"
+import { FieldValues } from "../../../layout/Grid"
+import { NormalLabel } from "../../../form/Label"
+import Input from "../../../input/Input"
 import {
   MaxNumber,
   NumberInput,
   NumberInputField,
   PercentageNumberInputField
-} from "../../input/NumberInput"
+} from "../../../input/NumberInput"
 import clone from "clone-deep"
-import Backdrop from "../../dialog/Backdrop"
-import { ConfirmText } from "../../button/ActionButtons"
+import Backdrop from "../../../dialog/Backdrop"
+import { ConfirmText } from "../../../button/ActionButtons"
 import { sumBy } from "lodash-es"
-import AlertDialog, { AlertDialogModal } from "../../dialog/Alert"
-import { Switch } from "../../switch/Switch"
+import AlertDialog, { AlertDialogModal } from "../../../dialog/Alert"
+import { Switch } from "../../../switch/Switch"
 import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
-import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../../form/ConfirmButtonFooter"
 import { get, set } from "lodash-es"
 import Big from "big.js"
-import { useMount, useMeasure } from "react-use"
 import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
-import { useIsActivePromotion } from "./edit"
-import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
+import { useIsActivePromotion } from "../edit"
+import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 
 export const DepositLottery = "DepositAccumulateRoulette"
 
-export const PromotionDepositLotteryRuleSetting = ({ readOnly, ...props }) => {
+export const DepositLotteryRewardRuleSetting = ({ readOnly, ...props }) => {
   let isActive = useIsActivePromotion()
   readOnly = readOnly || isActive
   return (
     <FieldValues>
-      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+      <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <NormalLabel>
         <Trans zh="存款累計设置" en="Multi-Deposit Setting" />

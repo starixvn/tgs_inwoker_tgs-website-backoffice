@@ -20,7 +20,7 @@ const { lorem } = faker
 
 test("add and edit promotion", async ({ page, promotionSetting }) => {
   let brandId = await gotoPromotionPage(page)
-  let promotion = await addDepositPromotion(page)
+  let promotion = await addDepositRewardPromotion(page)
 
   await searchPromotion(page, promotion)
 
@@ -172,7 +172,7 @@ const editPromotion = async (page, brandId, record) => {
   return promotion
 }
 
-const addDepositPromotion = async (page) => {
+const addDepositRewardPromotion = async (page) => {
   let DialogSelector = `#add-promotion-dialog`
   await openDialog(page, DialogSelector)
 

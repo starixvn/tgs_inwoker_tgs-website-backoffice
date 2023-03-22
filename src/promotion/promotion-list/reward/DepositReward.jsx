@@ -13,19 +13,19 @@ import {
   Heading,
   FieldStack
 } from "bumbag"
-import { useIsDisplayMenuByRoute } from "../../user/context"
-import FormDialog from "../../form/FormDialog"
-import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
+import { useIsDisplayMenuByRoute } from "../../../user/context"
+import FormDialog from "../../../form/FormDialog"
+import { FormattedNumberDecimal, Trans, useTrans } from "../../../i18n"
 import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
-import { FieldValues } from "../../layout/Grid"
-import { NormalLabel } from "../../form/Label"
+import { FieldValues } from "../../../layout/Grid"
+import { NormalLabel } from "../../../form/Label"
 import {
   NumberInput,
   NumberInputField,
   PercentageNumberInputField
-} from "../../input/NumberInput"
-import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
-import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
+} from "../../../input/NumberInput"
+import { useTotalFunds } from "../field/TotalFundsField"
+import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 
 const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
@@ -33,7 +33,7 @@ const DailySecondDeposit = "DailySecondDeposit"
 
 const DepositReward = "DepositReward"
 
-export const PromotionDepositRuleSetting = ({ promotionType, readOnly }) => {
+export const DepositRewardRuleSetting = ({ promotionType, readOnly }) => {
   switch (promotionType) {
     case DepositReward:
       return <DepositRewardSetting readOnly={readOnly} />
@@ -66,7 +66,7 @@ const DepositRewardSetting = ({ readOnly }) => {
   let bonusAmountLimitHint = bonusAmountLimit / (percentage / 100)
   return (
     <FieldValues>
-      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+      <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <NormalLabel>
         <Trans zh="存款最低金额" en="Minimum Deposit Amount" />
@@ -186,7 +186,7 @@ const DefaultSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
-      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+      <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <NormalLabel>
         <Trans zh="彩金百分比" en="Bonus Percentage" />

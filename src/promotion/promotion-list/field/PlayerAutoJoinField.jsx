@@ -1,25 +1,21 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box } from "bumbag"
-import { Switch } from "../../switch/Switch"
+import { Switch } from "../../../switch/Switch"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
-import { Trans, useTrans } from "../../i18n"
-import { NormalLabel } from "../../form/Label"
-import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
+import { Trans, useTrans } from "../../../i18n"
+import { NormalLabel } from "../../../form/Label"
+import { PromotionTypeGroup, useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
 import { get } from "lodash-es"
-import { useIsPromotionAdded, usePromotionType } from "./edit"
-import { useIsAfterPromotionStart } from "./PromotionDateRangeFieldBox"
-import { useIsAdminUser } from "../../user/context"
+import { useIsPromotionAdded, usePromotionType } from "../edit"
+import { useIsAfterPromotionStart } from "./DateRangeField"
+import { useIsAdminUser } from "../../../user/context"
 
 const isNotNil = complement(isNil)
 const Name = "rule.playerAutoJoin"
 
-export const PromotionPlayerAutoJoinFieldBox = ({
-  name = Name,
-  readOnly,
-  disabled
-}) => {
+export const PlayerAutoJoinField = ({ name = Name, readOnly, disabled }) => {
   let { setValue } = useFormContext()
 
   let promotionType = usePromotionType()

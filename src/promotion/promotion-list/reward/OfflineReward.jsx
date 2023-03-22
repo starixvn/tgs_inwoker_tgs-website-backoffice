@@ -13,20 +13,20 @@ import {
   Heading,
   FieldStack
 } from "bumbag"
-import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
+import { FormattedNumberDecimal, Trans, useTrans } from "../../../i18n"
 import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
-import { useIsPromotionAdded, usePromotionType } from "./edit"
-import { FieldValues } from "../../layout/Grid"
-import { PromotionBatchUploadPlayerListFieldBox } from "./PromotionBatchUploadPlayerListFieldBox"
-import { NormalLabel } from "../../form/Label"
-import { NumberInput, NumberInputField } from "../../input/NumberInput"
+import { useIsPromotionAdded, usePromotionType } from "../edit"
+import { FieldValues } from "../../../layout/Grid"
+import { BatchUploadPlayerListField } from "../field/BatchUploadPlayerListField"
+import { NormalLabel } from "../../../form/Label"
+import { NumberInput, NumberInputField } from "../../../input/NumberInput"
 
 const LoginReward = "OfflineLoginReward"
 const DepositReward = "OfflineDepositReward"
 
 export const TypeList = [LoginReward, DepositReward]
 
-export const PromotionOfflineRuleSetting = ({ readOnly }) => {
+export const OfflineRewardRuleSetting = ({ readOnly }) => {
   let promotionType = usePromotionType()
 
   switch (promotionType) {
@@ -53,7 +53,7 @@ const LoginRewardRuleSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
-      {isCreate && <PromotionBatchUploadPlayerListFieldBox />}
+      {isCreate && <BatchUploadPlayerListField />}
 
       <NormalLabel>
         <Trans zh="彩金金额" en="Bonus Amount" />

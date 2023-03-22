@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box } from "bumbag"
-import { Switch } from "../../switch/Switch"
+import { Switch } from "../../../switch/Switch"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
-import { Trans, useTrans } from "../../i18n"
-import { NormalLabel } from "../../form/Label"
-import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
+import { Trans, useTrans } from "../../../i18n"
+import { NormalLabel } from "../../../form/Label"
+import { PromotionTypeGroup, useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
-import { useIsPromotionAdded, usePromotionType } from "./edit"
+import { usePromotionType } from "../edit"
 
 const isNotNil = complement(isNil)
 
 const AutoPayoutFieldName = "autoSentPlayerBonus"
 
-export const PromotionDistributionMethodFieldBox = ({ readOnly, disabled }) => {
+export const AutoPayoutSwitchField = ({ readOnly, disabled }) => {
   let promotionType = usePromotionType()
 
   let { setValue } = useFormContext()
@@ -52,6 +52,7 @@ export const PromotionDistributionMethodFieldBox = ({ readOnly, disabled }) => {
   )
 }
 
+//TODO: rm
 const notUsedConfigs = {
   promotionType: [PromotionTypeGroup.Dummy],
   promotionTypeGroup: [PromotionTypeGroup.Dummy]

@@ -13,22 +13,9 @@ import {
   Heading,
   FieldStack
 } from "bumbag"
-import { useIsDisplayMenuByRoute } from "../../user/context"
-import Disclosure, {
-  AddDisclosure,
-  EditDisclosure,
-  NewDisclosure,
-  ViewDisclosure
-} from "../../dialog/Disclosure"
-import FormDialog from "../../form/FormDialog"
 import { Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
-import {
-  PromotionTypeGroup,
-  PromotionTypeGroupSelect,
-  PromotionTypeSelect,
-  usePromotionGroupValueOf
-} from "../PromotionType"
+import { PromotionTypeGroup } from "../PromotionType"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import {
@@ -36,23 +23,26 @@ import {
   NumberInputField,
   PercentageNumberInputField
 } from "../../input/NumberInput"
-import { PromotionSigninRuleSetting } from "./PromotionSigninRuleSetting"
-import { PromotionLotteryRuleSetting } from "./PromotionLotteryRuleSetting"
-import { PromotionNewUserRuleSetting } from "./PromotionNewUserRuleSetting"
-import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
-import { PromotionDepositRuleSetting } from "./PromotionDepositRuleSetting"
-import { PromotionTurnoverRuleSetting } from "./PromotionTurnoverRuleSetting"
-import { PromotionReliefMoneyRuleSetting } from "./PromotionReliefMoneyRuleSetting"
-import { PromotionOfflineRuleSetting } from "./PromotionOfflineRuleSetting"
+import { SigninRewardRuleSetting } from "./reward/SigninReward"
+import { LotteryRewardRuleSetting } from "./reward/LotteryReward"
+import { NewUserRewardRuleSetting } from "./reward/NewUserReward"
+import { useTotalFunds } from "./field/TotalFundsField"
+import { DepositRewardRuleSetting } from "./reward/DepositReward"
+import { TurnoverRewardRuleSetting } from "./reward/TurnoverReward"
+import { ReliefMoneyRewardRuleSetting } from "./reward/ReliefMoneyReward"
+import { OfflineRewardRuleSetting } from "./reward/OfflineReward"
 import Separator from "../../layout/Separator"
-import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
+import { VipLevelCheckboxGroupField } from "./field/VipLevelCheckboxGroupField"
+import { Dummy } from "./reward/DummyReward"
 
-export const PromotionRuleSettingFieldBox = ({
+const RuleSettingNotAvailable = [Dummy]
+
+export const RuleSetting = ({
   promotionType,
   promotionTypeGroup,
   ...props
 }) => {
-  if (!promotionType || fieldNotUsed({ promotionType, promotionTypeGroup })) {
+  if (!promotionType || RuleSettingNotAvailable.includes(promotionType)) {
     return null
   }
 
@@ -73,22 +63,6 @@ export const PromotionRuleSettingFieldBox = ({
   )
 }
 
-//TODO: rm
-const notUsedConfigs = {
-  promotionType: [PromotionTypeGroup.Dummy],
-  promotionTypeGroup: [PromotionTypeGroup.Dummy]
-}
-const fieldNotUsed = ({ promotionType = "", promotionTypeGroup = "" }) => {
-  if (
-    notUsedConfigs.promotionTypeGroup.includes(promotionTypeGroup) ||
-    notUsedConfigs.promotionType.includes(promotionType)
-  ) {
-    return true
-  }
-
-  return false
-}
-
 export const PromotionRuleSetting = ({
   readOnly,
   promotionTypeGroup,
@@ -100,62 +74,67 @@ export const PromotionRuleSetting = ({
     //TODO: rm?
     case PromotionTypeGroup.Signin:
       return (
-        <PromotionSigninRuleSetting
+        <SigninRewardRuleSetting
           promotionType={promotionType}
           readOnly={readOnly}
         />
       )
     case PromotionTypeGroup.NewUser:
       return (
-        <PromotionNewUserRuleSetting
+        <NewUserRewardRuleSetting
           promotionType={promotionType}
           readOnly={readOnly}
         />
       )
     case PromotionTypeGroup.LuckyDraw:
       return (
-        <PromotionLotteryRuleSetting
+        <LotteryRewardRuleSetting
           promotionType={promotionType}
           readOnly={readOnly}
         />
       )
     case PromotionTypeGroup.Deposit:
       return (
-        <PromotionDepositRuleSetting
+        <DepositRewardRuleSetting
           promotionType={promotionType}
           readOnly={readOnly}
         />
       )
     case PromotionTypeGroup.Turnover:
       return (
-        <PromotionTurnoverRuleSetting
+        <TurnoverRewardRuleSetting
           promotionType={promotionType}
           readOnly={readOnly}
         />
       )
     case PromotionTypeGroup.ReliefMoney:
       return (
-        <PromotionReliefMoneyRuleSetting
+        <ReliefMoneyRewardRuleSetting
           promotionType={promotionType}
           readOnly={readOnly}
         />
       )
-    /* TODO */
+
     case PromotionTypeGroup.Offline:
-      return <PromotionOfflineRuleSetting readOnly={readOnly} />
+      return <OfflineRewardRuleSetting readOnly={readOnly} />
     default:
+      //TODO: able to rm DefaultSetting?
+      return null
+    /*
       return promotionType ? (
         <DefaultSetting promotionType={promotionType} readOnly={readOnly} />
       ) : null
+      */
   }
 }
 
+//TODO: able to rm?
 const DefaultSetting = ({ readOnly }) => {
   let totalFunds = useTotalFunds()
   let disabled = readOnly
   return (
     <FieldValues>
-      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+      <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <NormalLabel>
         <Trans zh="彩金百分比" en="Bonus Percentage" />

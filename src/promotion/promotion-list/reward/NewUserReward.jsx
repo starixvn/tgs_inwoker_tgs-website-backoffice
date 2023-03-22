@@ -16,15 +16,15 @@ import {
   Table,
   Alert
 } from "bumbag"
-import { useIsDisplayMenuByRoute } from "../../user/context"
+import { useIsDisplayMenuByRoute } from "../../../user/context"
 import Disclosure, {
   AddDisclosure,
   EditDisclosure,
   NewDisclosure,
   ViewDisclosure
-} from "../../dialog/Disclosure"
-import FormDialog from "../../form/FormDialog"
-import { Trans, useTrans } from "../../i18n"
+} from "../../../dialog/Disclosure"
+import FormDialog from "../../../form/FormDialog"
+import { Trans, useTrans } from "../../../i18n"
 import {
   useForm,
   useFormContext,
@@ -32,26 +32,26 @@ import {
   Controller,
   useFieldArray
 } from "react-hook-form"
-import { FieldValues } from "../../layout/Grid"
-import { NormalLabel } from "../../form/Label"
-import Input from "../../input/Input"
+import { FieldValues } from "../../../layout/Grid"
+import { NormalLabel } from "../../../form/Label"
+import Input from "../../../input/Input"
 import {
   NumberInput,
   NumberInputField,
   PercentageNumberInputField
-} from "../../input/NumberInput"
+} from "../../../input/NumberInput"
 import clone from "clone-deep"
-import Backdrop from "../../dialog/Backdrop"
-import { ConfirmText } from "../../button/ActionButtons"
+import Backdrop from "../../../dialog/Backdrop"
+import { ConfirmText } from "../../../button/ActionButtons"
 import { sumBy } from "lodash-es"
-import AlertDialog, { AlertDialogModal } from "../../dialog/Alert"
-import { Switch } from "../../switch/Switch"
-import { useTotalFunds } from "./PromotionTotalFundsFieldBox"
-import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
+import AlertDialog, { AlertDialogModal } from "../../../dialog/Alert"
+import { Switch } from "../../../switch/Switch"
+import { useTotalFunds } from "../field/TotalFundsField"
+import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 
 const Register = "Register"
 
-export const PromotionNewUserRuleSetting = ({ promotionType, ...props }) => {
+export const NewUserRewardRuleSetting = ({ promotionType, ...props }) => {
   switch (promotionType) {
     case Register:
       return <RegisterRuleSetting {...props} />
@@ -65,7 +65,7 @@ export const RegisterRuleSetting = ({ readOnly }) => {
   let disabled = readOnly
   return (
     <FieldValues>
-      <PromotionVipLevelsFieldBox readOnly={readOnly} />
+      <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <NormalLabel>
         <Trans zh="彩金金额" en="Bonus Amount" />

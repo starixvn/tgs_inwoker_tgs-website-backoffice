@@ -68,19 +68,19 @@ import {
 import { Switch } from "../../switch/Switch"
 import { useBrand } from "../../merchant/platforms/client"
 import { parseJSON } from "../../text/json"
-import { PromotionRuleSettingFieldBox } from "./PromotionRuleSettingFieldBox"
-import { PromotionDistributionMethodFieldBox } from "./PromotionDistributionMethodFieldBox"
+import { RuleSetting } from "./RuleSetting"
+import { AutoPayoutSwitchField } from "./field/AutoPayoutSwitchField"
 import { isNil, isEmpty, set } from "lodash-es"
-import { PromotionTotalFundsFieldBox } from "./PromotionTotalFundsFieldBox"
-import { PromotionGameTypeFieldBox } from "./PromotionGameTypeFieldBox"
-import { PromotionGameProviderFieldBox } from "./PromotionGameProviderFieldBox"
+import { TotalFundsField } from "./field/TotalFundsField"
+import { GameTypeSelectField } from "./field/GameTypeSelectField"
+import { GameProviderSelectField } from "./field/GameProviderSelectField"
 import { isPromotionStatusEnabled } from "./PromotionStatus"
 import { isValidDate } from "../../date/isValidDate"
-import { PromotionDateRangeFieldBox } from "./PromotionDateRangeFieldBox"
+import { PromotionDateRangeFieldBox } from "./field/DateRangeField"
 import { formatDateOnly } from "../../date/format"
-import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
-import { PromotionContentSetting } from "./PromotionContentSetting"
-import { TypeList as OfflinePromotionTypeList } from "./PromotionOfflineRuleSetting"
+import { VipLevelCheckboxGroupField } from "./field/VipLevelCheckboxGroupField"
+import { ContentSetting } from "./ContentSetting"
+import { TypeList as OfflinePromotionTypeList } from "./reward/OfflineReward"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -111,20 +111,6 @@ const DialogCss = css`
   }
 `
 
-/*
-const useAddPromotionFn = (promotionType) => {
-  switch (promotionType) {
-    //TODO: import from?
-    case "OfflineLoginReward":
-      return useAddOfflineLoginRewardPromotion
-    case "OfflineDepositReward":
-      return useAddOfflineDepositRewardPromotion
-    default:
-      return useAddPromotion
-  }
-}
-*/
-
 const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   let [formData, setSubmit] = useState()
 
@@ -150,7 +136,6 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  const DefaultVipLevel = "1"
   return (
     <FormDialog
       id="add-promotion-dialog"
@@ -564,25 +549,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
         <PromotionDateRangeFieldBox disabled={disabled} readOnly={readOnly} />
 
-        {/* 
-        TODO: rm
-        <NormalLabel>
-          <Trans zh="活动用户群" en="User Group" />
-        </NormalLabel>
-        <Box alignY="center">
-          <VipLevelCheckboxGroup
-            id="vipLevels"
-            name="vipLevels"
-            valueFieldName="level"
-            brandId={brandId}
-            disabled={disabled}
-            required
-          />
-        </Box> 
-        */}
-
-        {/* <PromotionVipLevelsFieldBox disabled={disabled} readOnly={readOnly} /> */}
-
         <NormalLabel>
           <Trans zh="活动类型" en="Promotion Type" />
         </NormalLabel>
@@ -635,31 +601,14 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           )}
         </Box>
 
-        <PromotionDistributionMethodFieldBox
-          readOnly={readOnly}
-          disabled={disabled}
-        />
+        <AutoPayoutSwitchField readOnly={readOnly} disabled={disabled} />
 
-        <PromotionTotalFundsFieldBox
-          promotionTypeGroup={promotionTypeGroup}
-          promotionType={promotionType}
-          readOnly={readOnly}
-          disabled={disabled}
-        />
-
-        <PromotionGameTypeFieldBox
-          promotionTypeGroup={promotionTypeGroup}
-          promotionType={promotionType}
-          readOnly={readOnly}
-          disabled={disabled}
-        />
-
-        <PromotionGameProviderFieldBox brandId={brandId} readOnly={readOnly} />
+        <TotalFundsField readOnly={readOnly} disabled={disabled} />
       </FieldValues>
 
-      <PromotionContentSetting readOnly={readOnly} />
+      <ContentSetting readOnly={readOnly} />
 
-      <PromotionRuleSettingFieldBox
+      <RuleSetting
         promotionTypeGroup={promotionTypeGroup}
         promotionType={promotionType}
         readOnly={readOnly}

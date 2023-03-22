@@ -2,28 +2,28 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box, Set, Button, Link, Text } from "bumbag"
 import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
-import { Trans, useTrans } from "../../i18n"
-import { NormalLabel } from "../../form/Label"
-import { VipLevelCheckboxGroup } from "../../vip-levels/CheckboxGroup"
-import { PromotionTypeGroup, useFindPromotionType } from "../PromotionType"
-import { usePromotionType } from "./edit"
+import { Trans, useTrans } from "../../../i18n"
+import { NormalLabel } from "../../../form/Label"
+import { VipLevelCheckboxGroup } from "../../../vip-levels/CheckboxGroup"
+import { PromotionTypeGroup, useFindPromotionType } from "../../PromotionType"
+import { usePromotionType } from "../edit"
 import { get } from "lodash-es"
-import { useBrandIdFromPromotionForm } from "./usePromotionFormData"
+import { useBrandIdFromPromotionForm } from "../usePromotionFormData"
 import { nanoid } from "nanoid"
 import {
   usePromotionBatchUploadPlayerList,
   useIsPromotionBatchUploadPlayerListDone
-} from "./client"
+} from "../client"
 import { useDropzone } from "react-dropzone"
-import Input from "../../input/Input"
-import { connection } from "../../connection"
+import Input from "../../../input/Input"
+import { connection } from "../../../connection"
 import { useMount, useUnmount } from "react-use"
-import AlertDialog from "../../dialog/Alert"
+import AlertDialog from "../../../dialog/Alert"
 
 const FieldName = "batchId"
 
 //TODO: require readOnly?
-export const PromotionBatchUploadPlayerListFieldBox = ({}) => {
+export const BatchUploadPlayerListField = ({}) => {
   //
   /*
   let promotionType = usePromotionType()
