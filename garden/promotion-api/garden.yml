@@ -8,6 +8,10 @@ services:
       - postgres
       - redis
       - nats
+      - payment-api
+      - cash-service
+      - brand-cert-api
+      - player-api
       # - file-service
       # - rabbitmq
     env:

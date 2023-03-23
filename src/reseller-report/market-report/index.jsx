@@ -30,6 +30,12 @@ import { ResellerCurrencySelect } from "../ResellerCurrencySelect"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client/index"
 import Big from "big.js"
+import { Code as PageCode } from "./menu"
+import { Code as ModuleCode } from "../menu"
+import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+
+const MainTable = "main"
+const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export { Code }
 
@@ -58,11 +64,18 @@ export const Body = () => {
 
 const ReportContent = ({ resellerId }) => {
   let dateRange = yesterday()
+
+  let [hiddenColumns] = useTableColumnHiddenLocalStorage(
+    TableLocalStorageKey,
+    []
+  )
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     resellerId,
     currencyCode: undefined,
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    hiddenColumns
   })
 
   useEffect(() => {
@@ -145,6 +158,8 @@ const ReportContent = ({ resellerId }) => {
             return {}
           }}
           stickyHead
+          localStorageKey={TableLocalStorageKey}
+          toggleColumnHidden={true}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}

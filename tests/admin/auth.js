@@ -445,10 +445,15 @@ const PromotionSettingsString = JSON.stringify([
           En: "Login Reward",
           Zh: "登入送"
         },
-        vipLevels: {
-          visible: false
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
         },
-        totalFunds: {
+        unlimited: {
+          checked: true,
+          disabled: true
+        },
+        content: {
           visible: false
         }
       }
