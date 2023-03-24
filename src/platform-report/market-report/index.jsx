@@ -9,8 +9,6 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { Code } from "./menu"
-import BrandBar from "../../report/BrandBar"
-import MarketReport from "./MarketReport"
 import { useMarketReportList, API } from "./client"
 import { MarketReportWithAgent } from "./MarketReportWithAgent"
 import { isFeatureMarketReportWithAgentProfit } from "../../env"
@@ -23,21 +21,27 @@ import { Trans } from "../../i18n"
 export { Code }
 
 export const Content = () => {
-  //TODO: switch MarketReportWithAgent
+  /*
+  TODO: rm
   let [reportFeatureFlag, setReportFeatureFlag] = useState(
     isFeatureMarketReportWithAgentProfit()
   )
+  */
 
   let isDisplay = useIsDisplayMenuByRoute()
   if (!isDisplay) {
     return null
   }
 
+  return <Report />
+  /*
+  TODO: rm
   return reportFeatureFlag ? (
     <Report />
   ) : (
     <Body setReportFeatureFlag={setReportFeatureFlag} />
   )
+  */
 }
 
 export const CodeContentPair = [Code, Content]
@@ -61,6 +65,8 @@ const ReportBody = () => {
   )
 }
 
+/*
+TODO: rm
 export const Body = ({ setReportFeatureFlag }) => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
@@ -88,3 +94,4 @@ export const Body = ({ setReportFeatureFlag }) => {
     </Set>
   )
 }
+*/

@@ -149,7 +149,7 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
               maxSize={{ height, width }}
               stickyHead
               localStorageKey={TableLocalStorageKey}
-              toggleColumnHidden={true}
+              toggleColumnHidden={false}
             />
           )
         }}
@@ -301,7 +301,13 @@ const useColumns = ({ brandId, items = [] }) => {
         Header: <Trans zh="代理总分红" en="Agent Profit" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          return <AgentProfitDialogDisclosure brandId={brandId} />
+          return (
+            <AgentProfitDialogDisclosure
+              brandId={brandId}
+              date={record?.reportDate}
+              value={record?.agentProfit}
+            />
+          )
         }
       }),
       numberDecimalColumn({

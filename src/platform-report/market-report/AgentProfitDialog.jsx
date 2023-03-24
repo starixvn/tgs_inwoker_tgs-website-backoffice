@@ -42,35 +42,40 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { Modal } from "../../dialog/Modal"
 import { zIndexOfModal } from "../../css/zIndex"
 
-export const AgentProfitDialogDisclosure = ({ brandId, value, ...props }) => {
+export const AgentProfitDialogDisclosure = ({
+  brandId,
+  value,
+  date,
+  ...props
+}) => {
   let dialog = useModalState()
 
-  /*
   if (!Number.isFinite(value) || value === 0) {
-    return <FormattedNumberDecimal value={value} />
-    }
-    */
+    return <FormattedNumberDecimal value={value} placeholder="-" />
+  }
 
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <FormattedNumberDecimal value={value} placeholder="--" />
+        <FormattedNumberDecimal value={value} placeholder="-" />
       </Disclosure>
       {dialog.visible && (
-        <AgentProfitDialog brandId={brandId} dialog={dialog} />
+        <AgentProfitDialog brandId={brandId} date={date} dialog={dialog} />
       )}
     </>
   )
 }
 
-const AgentProfitDialog = ({ brandId, dialog }) => {
+const AgentProfitDialog = ({ brandId, date, dialog }) => {
   let { state, setPageIndex, setSortOrder } = useTable({
     brandId,
+    date,
     showAll: true
   })
 
-  //TODO: paramas for api
-  let { isLoading, data, error } = useMarketReportAgentProfitList()
+  let { isLoading, data, error } = useMarketReportAgentProfitList(
+    brandId ? toApiParams(state) : null
+  )
 
   let title = useTrans({
     zh: "代理总分红",
@@ -111,8 +116,14 @@ const AgentProfitDialog = ({ brandId, dialog }) => {
                 <List listStyleType="disc" listStylePosition="inside">
                   <List.Item>
                     <Trans
-                      zh="净盈利 = 公司输赢金额 - 平台承担红利 - 平台承担优惠调帐 - 公司调帐 - 代理总分红。"
-                      en="Net Profit = CO. W/L - Platform-Covered Bonus - Platform-Covered Bonus Adjust - C.O Adjustment Amount - Agent Profit."
+                      zh="代理总分红 = (直属玩家净盈利 + 团队净盈利) * 占成。"
+                      en="Agent Profit = (Direct Player Net Profit + Team Net Profit) * PT."
+                    />
+                  </List.Item>
+                  <List.Item>
+                    <Trans
+                      zh="公司分红 =  [(直属玩家净盈利 + 团队净盈利) * 公司占成] - 公司调帐。"
+                      en="Company Profit = [(Direct Player Net Profit + Team Net Profit) * Company PT - Company Adjustment."
                     />
                   </List.Item>
                 </List>
@@ -143,22 +154,16 @@ const AgentProfitDialog = ({ brandId, dialog }) => {
 const useColumns = ({ items = [] }) => {
   return useMemo(() => {
     let columns = [
-      {
-        id: "agent",
-        Header: "",
-        columns: [
-          textColumn({
-            accessor: "agentName",
-            Header: <Trans zh="总代" en="Master Agent" />,
-            disableSortBy: true
-          }),
-          numberDecimalPercentageColumn({
-            accessor: "agentProfitPercentage",
-            Header: <Trans zh="总代占成" en="PT" />,
-            disableSortBy: true
-          })
-        ]
-      },
+      textColumn({
+        accessor: "masterAgentName",
+        Header: <Trans zh="总代理" en="Master Agent" />,
+        disableSortBy: true
+      }),
+      numberDecimalPercentageColumn({
+        accessor: "percentage",
+        Header: <Trans zh="总代占成" en="PT" />,
+        disableSortBy: true
+      }),
       {
         id: "profit",
         Header: <Trans zh="净盈利" en="Net Profit" />,
@@ -168,19 +173,19 @@ const useColumns = ({ items = [] }) => {
         columns: [
           numberDecimalColumn({
             accessor: "directPlayerNetProfit",
-            Header: <Trans zh="直属玩家" en="Direct Player Net Profit" />,
+            Header: <Trans zh="直属玩家" en="Direct Player" />,
             disableSortBy: true
           }),
           numberDecimalColumn({
             accessor: "teamNetProfit",
-            Header: <Trans zh="团队" en="Team Net Profit" />,
+            Header: <Trans zh="团队" en="Team" />,
             disableSortBy: true
           })
         ]
       },
       numberDecimalColumn({
-        accessor: "agentNetProfit",
-        Header: <Trans zh="代理总分红" en="Agent Net Profit" />,
+        accessor: "agentProfit",
+        Header: <Trans zh="代理总分红" en="Agent Profit" />,
         disableSortBy: true
       }),
       {

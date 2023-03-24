@@ -75,11 +75,11 @@ const Sidebar = "Sidebar"
 //TODO: rm
 const PlatformAgentProfitSharingReport = "PlatformAgentProfitSharingReport" //env.html
 
+//TODO: rm
 const MarketReportWithAgentProfit = "MarketReportWithAgentProfit"
 
 export const Features = {
   Sidebar,
-  PlatformAgentProfitSharingReport,
   MarketReportWithAgentProfit
 }
 
@@ -120,9 +120,6 @@ export const isFeatureEnabled = (feature = "") => {
 }
 
 //TODO: rm
-export const isFeaturePlatformAgentProfitSharingReportEnabled = () =>
-  isFeatureEnabled(PlatformAgentProfitSharingReport)
-
 export const isFeatureMarketReportWithAgentProfit = () =>
   isFeatureEnabled(MarketReportWithAgentProfit)
 

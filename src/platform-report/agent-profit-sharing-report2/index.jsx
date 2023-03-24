@@ -53,10 +53,7 @@ import { useAgentDividendList, API } from "./client"
 import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
 import { AgentProfitSharingDialogDisclosure } from "./AgentProfitSharingDialog"
 import { AgentTypeSelect } from "../../agent/AgentType"
-import {
-  isDev,
-  isFeaturePlatformAgentProfitSharingReportEnabled
-} from "../../env"
+import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"

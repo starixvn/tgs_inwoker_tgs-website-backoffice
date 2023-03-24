@@ -286,6 +286,11 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
+        accessor: "agentProfit",
+        Header: <Trans zh="代理总分红" en="Agent Profit" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
         accessor: "betAmount",
         Header: <Trans zh="投注金额" en="Bet Amount" />,
         disableSortBy: true
