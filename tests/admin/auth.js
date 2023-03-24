@@ -456,6 +456,24 @@ const PromotionSettingsString = JSON.stringify([
         content: {
           visible: false
         }
+      },
+      {
+        Name: "OfflineDepositReward",
+        Trans: {
+          En: "Deposit Reward",
+          Zh: "存款送"
+        },
+        autoSentPlayerBonus: {
+          checked: true,
+          disabled: true
+        },
+        unlimited: {
+          checked: true,
+          disabled: true
+        },
+        content: {
+          visible: false
+        }
       }
     ],
     Trans: {

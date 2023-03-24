@@ -106,6 +106,7 @@ export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
 
 const DialogCss = css`
   & .bb-DialogContent {
+    min-height: 60vh;
     position: relative;
     padding: 1.5rem 3rem;
   }

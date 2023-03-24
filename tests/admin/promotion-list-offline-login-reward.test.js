@@ -111,7 +111,9 @@ const addPromotion = async (page, platform, player) => {
     `${promotion.turnoverMultiple}`
   )
 
-  //TODO: retry submit or just wait sometime than click submit?
+  let WaitBatchUploadPlayerTime = 1000
+  await page.waitForTimeout(WaitBatchUploadPlayerTime)
+
   await Promise.all([
     page.waitForResponse((response) => {
       return (
