@@ -80,7 +80,7 @@ import { PromotionDateRangeFieldBox } from "./field/DateRangeField"
 import { formatDateOnly } from "../../date/format"
 import { VipLevelCheckboxGroupField } from "./field/VipLevelCheckboxGroupField"
 import { ContentSetting } from "./ContentSetting"
-import { TypeList as OfflinePromotionTypeList } from "./reward/OfflineReward"
+import { TypeList as OfflinePromotionTypeList } from "./reward/OfflineRewardGroup"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()

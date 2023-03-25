@@ -114,6 +114,7 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
 
   const setBatchDone = (batchId) => {
     setValue(name, batchId)
+    clearErrors(name)
     setBatchDoneState(true)
   }
 
