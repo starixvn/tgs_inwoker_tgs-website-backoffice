@@ -41,10 +41,10 @@ export const PromotionTypes = [
   DepositReward
 ]
 
-const Main = (props) => <MainSetting isAutoPayout={true} {...props} />
+const Main = (props) => <MainSetting autoPayout={true} {...props} />
 
 const DepositRewardMain = (props) => (
-  <MainSetting isAutoPayout={true} isTotalFundsUnlimited={true} {...props} />
+  <MainSetting autoPayout={true} totalFundsUnlimited={true} {...props} />
 )
 
 const Content = ContentSetting

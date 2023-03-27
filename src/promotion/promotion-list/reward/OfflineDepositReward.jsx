@@ -35,7 +35,7 @@ import { MainSetting } from "../MainSetting"
 const PromotionType = "OfflineDepositReward"
 
 const Main = (props) => (
-  <MainSetting isAutoPayout={true} isTotalFundsUnlimited={true} {...props} />
+  <MainSetting autoPayout={true} totalFundsUnlimited={true} {...props} />
 )
 
 const Content = null

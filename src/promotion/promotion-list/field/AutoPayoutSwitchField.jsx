@@ -13,7 +13,7 @@ const isNotNil = complement(isNil)
 
 const AutoPayoutFieldName = "autoSentPlayerBonus"
 
-export const AutoPayoutSwitchField = ({ isAutoPayout, readOnly, disabled }) => {
+export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
   let promotionType = usePromotionType()
 
   let { setValue } = useFormContext()
@@ -22,15 +22,15 @@ export const AutoPayoutSwitchField = ({ isAutoPayout, readOnly, disabled }) => {
   let autoPayoutProps = promotion?.autoSentPlayerBonus ?? {}
 
   useEffect(() => {
+    if (autoPayout) {
+      setValue(AutoPayoutFieldName, autoPayout)
+    }
+
     //TODO: rm
     if (isNotNil(autoPayoutProps?.checked)) {
       setValue(AutoPayoutFieldName, autoPayoutProps?.checked)
     }
-
-    if (isAutoPayout) {
-      setValue(AutoPayoutFieldName, isAutoPayout)
-    }
-  }, [autoPayoutProps, isAutoPayout])
+  }, [autoPayoutProps, autoPayout])
 
   if (!promotionType) {
     return null
@@ -44,8 +44,8 @@ export const AutoPayoutSwitchField = ({ isAutoPayout, readOnly, disabled }) => {
       <Box>
         <AutoOrManualPayoutSwitch
           {...autoPayoutProps}
-          readOnly={readOnly || autoPayoutProps.readOnly}
-          disabled={disabled || autoPayoutProps.disabled}
+          readOnly={readOnly || autoPayoutProps.readOnly || autoPayout}
+          disabled={disabled || autoPayoutProps.disabled || autoPayout}
         />
       </Box>
     </>

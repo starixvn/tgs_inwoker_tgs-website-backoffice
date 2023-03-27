@@ -377,6 +377,22 @@ const PromotionSettingsString = JSON.stringify([
     }
   },
   {
+    Name: "Lottery",
+    Types: [
+      {
+        Name: "DepositAccumulateRoulette",
+        Trans: {
+          En: "Deposit-Lotttory",
+          Zh: "充值抽獎"
+        }
+      }
+    ],
+    Trans: {
+      En: "Lottery",
+      Zh: "抽獎"
+    }
+  },
+  {
     Name: "Dummy",
     Types: [
       {

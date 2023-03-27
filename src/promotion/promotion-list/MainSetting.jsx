@@ -17,22 +17,18 @@ import { AutoPayoutSwitchField } from "./field/AutoPayoutSwitchField"
 import { isNil, isEmpty, set } from "lodash-es"
 import { TotalFundsField } from "./field/TotalFundsField"
 
-export const MainSetting = ({
-  isAutoPayout,
-  isTotalFundsUnlimited,
-  readOnly
-}) => {
+export const MainSetting = ({ autoPayout, totalFundsUnlimited, readOnly }) => {
   let disabled = readOnly
   return (
     <>
       <AutoPayoutSwitchField
-        isAutoPayout={isAutoPayout}
+        autoPayout={autoPayout}
         readOnly={readOnly}
         disabled={disabled}
       />
 
       <TotalFundsField
-        isUnlimited={isTotalFundsUnlimited}
+        unlimited={totalFundsUnlimited}
         readOnly={readOnly}
         disabled={disabled}
       />

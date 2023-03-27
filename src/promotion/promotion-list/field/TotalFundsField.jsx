@@ -45,7 +45,7 @@ export const useTotalFunds = () => {
   return isLimited ? totalFunds : null //null, undefined or Number.NaN?
 }
 
-export const TotalFundsField = ({ isUnlimited, disabled }) => {
+export const TotalFundsField = ({ unlimited, disabled }) => {
   let promotionType = usePromotionType()
 
   let { setValue } = useFormContext()
@@ -60,15 +60,15 @@ export const TotalFundsField = ({ isUnlimited, disabled }) => {
   let unlimitedProps = promotion?.unlimited ?? {}
 
   useEffect(() => {
+    if (unlimited) {
+      setValue(UnlimitedFieldName, unlimited)
+    }
+
     //TODO: rm
     if (isNotNil(unlimitedProps?.checked)) {
       setValue(UnlimitedFieldName, unlimitedProps?.checked)
     }
-
-    if (isUnlimited) {
-      setValue(UnlimitedFieldName, isUnlimited)
-    }
-  }, [unlimitedProps, isUnlimited])
+  }, [unlimitedProps, unlimited])
 
   if (!promotionType) {
     return null
@@ -95,7 +95,7 @@ export const TotalFundsField = ({ isUnlimited, disabled }) => {
         <Checkbox
           name={UnlimitedFieldName}
           label={unlimiteTotalAmountLabel}
-          disabled={disabled}
+          disabled={disabled || unlimited}
           {...unlimitedProps}
         />
       </Set>

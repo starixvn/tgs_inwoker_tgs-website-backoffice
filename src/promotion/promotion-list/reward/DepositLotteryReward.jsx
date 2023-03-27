@@ -68,7 +68,7 @@ import { ContentSetting } from "../ContentSetting"
 export const PromotionType = "DepositAccumulateRoulette"
 
 export const Main = (props) => (
-  <MainSetting isAutoPayout={true} isTotalFundsUnlimited={true} {...props} />
+  <MainSetting autoPayout={true} totalFundsUnlimited={true} {...props} />
 )
 
 export const Content = ContentSetting

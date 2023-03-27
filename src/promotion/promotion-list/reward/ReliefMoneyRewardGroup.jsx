@@ -54,7 +54,7 @@ export const PromotionTypes = [
   ReliefMoneyMonthly
 ]
 
-export const Main = (props) => <MainSetting isAutoPayout={true} {...props} />
+export const Main = (props) => <MainSetting autoPayout={true} {...props} />
 
 export const Content = ContentSetting
 
