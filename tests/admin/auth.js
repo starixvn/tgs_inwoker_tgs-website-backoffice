@@ -270,10 +270,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Account First Deposit",
           Zh: "帳號首充"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       },
       {
@@ -282,10 +278,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Daily First Deposit",
           Zh: "每日首充"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       },
       {
@@ -294,10 +286,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Daily Re-Deposit",
           Zh: "每日再充"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       },
       {
@@ -305,14 +293,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Basic Deposit Bonus",
           Zh: "充就送"
-        },
-        unlimited: {
-          checked: true,
-          disabled: true
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       }
     ],
@@ -330,10 +310,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Daily Turnover Rebate",
           Zh: "每日流水返水"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       },
       {
@@ -342,10 +318,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Weekly Turnover Rebate",
           Zh: "每周流水反水"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       }
     ],
@@ -363,10 +335,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Daily SOS",
           Zh: "每日救援金"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       },
       {
@@ -375,10 +343,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Weekly SOS",
           Zh: "每周救援金"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       },
       {
@@ -387,10 +351,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Monthly SOS",
           Zh: "每月救援金"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       }
     ],
@@ -408,10 +368,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Register",
           Zh: "首次註冊"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
         }
       }
     ],
@@ -444,17 +400,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Login Reward",
           Zh: "登入送"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
-        },
-        unlimited: {
-          checked: true,
-          disabled: true
-        },
-        content: {
-          visible: false
         }
       },
       {
@@ -462,17 +407,6 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Deposit Reward",
           Zh: "存款送"
-        },
-        autoSentPlayerBonus: {
-          checked: true,
-          disabled: true
-        },
-        unlimited: {
-          checked: true,
-          disabled: true
-        },
-        content: {
-          visible: false
         }
       }
     ],

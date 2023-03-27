@@ -67,6 +67,10 @@ const addPromotion = async (page) => {
     promotion.subSubject
   )
 
+  await page.click(
+    `${DialogSelector} #vipLevels input[type="checkbox"] + .bb-CheckboxIcon`
+  )
+
   await Promise.all([
     page.waitForResponse((response) => {
       return (

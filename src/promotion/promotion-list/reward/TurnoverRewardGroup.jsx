@@ -26,21 +26,20 @@ import { PlayerAutoJoinField } from "../field/PlayerAutoJoinField"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 import { GameTypeSelectField } from "../field/GameTypeSelectField"
 import { GameProviderSelectField } from "../field/GameProviderSelectField"
+import { MainSetting } from "../MainSetting"
+import { ContentSetting } from "../ContentSetting"
 
 const DailyTurnoverRebate = "TurnoverRebate"
 const WeeklyTurnoverRebate = "TurnoverRebateWeekly"
 
-export const TurnoverRewardRuleSetting = ({ promotionType, readOnly }) => {
-  switch (promotionType) {
-    case DailyTurnoverRebate:
-      return <DailyTurnoverSetting readOnly={readOnly} />
-    default:
-      return <DefaultSetting readOnly={readOnly} />
-  }
-}
+export const PromotionTypes = [DailyTurnoverRebate, WeeklyTurnoverRebate]
+
+export const Main = (props) => <MainSetting isAutoPayout={true} {...props} />
+
+export const Content = ContentSetting
 
 //TODO: remove DailyTurnoverSetting and use DefaultSetting when backend api support "流水门槛" setting
-const DailyTurnoverSetting = ({ readOnly }) => {
+const DailyTurnoverRule = ({ readOnly }) => {
   let totalFunds = useTotalFunds()
   let disabled = readOnly
   return (
@@ -113,7 +112,7 @@ const DailyTurnoverSetting = ({ readOnly }) => {
   )
 }
 
-const DefaultSetting = ({ readOnly }) => {
+const Rule = ({ readOnly }) => {
   let totalFunds = useTotalFunds()
   let disabled = readOnly
   return (
@@ -184,4 +183,31 @@ const DefaultSetting = ({ readOnly }) => {
       />
     </FieldValues>
   )
+}
+
+export const Rewards = [
+  {
+    PromotionType: DailyTurnoverRebate,
+    Main,
+    Content,
+    Rule: DailyTurnoverRule
+  },
+  {
+    PromotionType: WeeklyTurnoverRebate,
+    Main,
+    Content,
+    Rule
+  }
+]
+
+export default Rewards
+
+//TODO: rm
+export const TurnoverRewardRuleSetting = ({ promotionType, readOnly }) => {
+  switch (promotionType) {
+    case DailyTurnoverRebate:
+      return <DailyTurnoverRule readOnly={readOnly} />
+    default:
+      return <Rule readOnly={readOnly} />
+  }
 }

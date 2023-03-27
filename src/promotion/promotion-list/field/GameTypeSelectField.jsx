@@ -91,12 +91,3 @@ export const GameTypeSelectField = ({ readOnly }) => {
     </>
   )
 }
-
-//TODO: Turnover & ReliefMoney
-const configs = {
-  promotionType: [],
-  promotionTypeGroup: [
-    PromotionTypeGroup.Turnover,
-    PromotionTypeGroup.ReliefMoney
-  ]
-}

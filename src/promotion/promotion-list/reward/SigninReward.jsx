@@ -51,6 +51,7 @@ import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
 import { useTotalFunds } from "../field/TotalFundsField"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 
+//TODO: rm
 export const SigninRewardRuleSetting = ({ ...props }) => {
   return (
     <FieldValues>

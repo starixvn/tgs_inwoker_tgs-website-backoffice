@@ -37,16 +37,6 @@ const FieldName = "content"
 export const ContentSetting = ({ readOnly }) => {
   let brandId = useBrandIdFromPromotionForm()
 
-  let promotionType = usePromotionType()
-
-  let promotionTypeSettins = useFindPromotionType(promotionType)
-  let { visible = true, ...contentProps } =
-    get(promotionTypeSettins, FieldName) ?? {}
-
-  if (!visible || !promotionType) {
-    return null
-  }
-
   let disabled = readOnly
   return (
     <>

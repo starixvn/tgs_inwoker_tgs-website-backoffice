@@ -62,10 +62,18 @@ import Big from "big.js"
 import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { useIsActivePromotion } from "../edit"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
+import { MainSetting } from "../MainSetting"
+import { ContentSetting } from "../ContentSetting"
 
-export const DepositLottery = "DepositAccumulateRoulette"
+export const PromotionType = "DepositAccumulateRoulette"
 
-export const DepositLotteryRewardRuleSetting = ({ readOnly, ...props }) => {
+export const Main = (props) => (
+  <MainSetting isAutoPayout={true} isTotalFundsUnlimited={true} {...props} />
+)
+
+export const Content = ContentSetting
+
+export const Rule = ({ readOnly, ...props }) => {
   let isActive = useIsActivePromotion()
   readOnly = readOnly || isActive
   return (
@@ -91,6 +99,13 @@ export const DepositLotteryRewardRuleSetting = ({ readOnly, ...props }) => {
       />
     </FieldValues>
   )
+}
+
+export default {
+  PromotionType,
+  Main,
+  Content,
+  Rule
 }
 
 const RuleFieldName = "rule"

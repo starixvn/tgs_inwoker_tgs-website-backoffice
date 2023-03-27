@@ -40,16 +40,31 @@ import { PlayerAutoJoinField } from "../field/PlayerAutoJoinField"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 import { GameTypeSelectField } from "../field/GameTypeSelectField"
 import { GameProviderSelectField } from "../field/GameProviderSelectField"
+import { MainSetting } from "../MainSetting"
+import { ContentSetting } from "../ContentSetting"
+import { useIsTotalFundsLimited, useTotalFunds } from "../field/TotalFundsField"
 
-export const ReliefMoneyRewardRuleSetting = ({
-  limitedTotalAmount,
-  totalAmountLimit,
-  readOnly
-}) => {
+const ReliefMoneyDaily = "ReliefMoneyDaily"
+const ReliefMoneyWeekly = "ReliefMoneyWeekly"
+const ReliefMoneyMonthly = "ReliefMoneyMonthly"
+
+export const PromotionTypes = [
+  ReliefMoneyDaily,
+  ReliefMoneyWeekly,
+  ReliefMoneyMonthly
+]
+
+export const Main = (props) => <MainSetting isAutoPayout={true} {...props} />
+
+export const Content = ContentSetting
+
+export const Rule = ({ readOnly }) => {
   let { control, setValue } = useFormContext()
 
+  let limitedTotalAmount = useIsTotalFundsLimited()
+  let totalAmountLimit = useTotalFunds()
+
   let disabled = readOnly
-  let editable = !readOnly
   return (
     <FieldValues>
       <VipLevelCheckboxGroupField readOnly={readOnly} />
@@ -112,3 +127,29 @@ export const ReliefMoneyRewardRuleSetting = ({
     </FieldValues>
   )
 }
+
+export const Rewards = [
+  {
+    PromotionType: ReliefMoneyDaily,
+    Main,
+    Content,
+    Rule
+  },
+  {
+    PromotionType: ReliefMoneyWeekly,
+    Main,
+    Content,
+    Rule
+  },
+  {
+    PromotionType: ReliefMoneyMonthly,
+    Main,
+    Content,
+    Rule
+  }
+]
+
+export default Rewards
+
+//TODO: rm
+export const ReliefMoneyRewardRuleSetting = Rule

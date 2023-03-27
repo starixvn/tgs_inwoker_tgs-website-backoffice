@@ -30,11 +30,13 @@ import { NormalLabel } from "../../../form/Label"
 import { NumberInput, NumberInputField } from "../../../input/NumberInput"
 import { useMount } from "react-use"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { MainSetting } from "../MainSetting"
 
 const PromotionType = "OfflineDepositReward"
 
-//TODO
-const Main = ({}) => {}
+const Main = (props) => (
+  <MainSetting isAutoPayout={true} isTotalFundsUnlimited={true} {...props} />
+)
 
 const Content = null
 
@@ -143,6 +145,7 @@ const RewardSetting = ({
           <Trans zh="存款金额" en="Deposit Amount" />
         </Button>
         <NumberInput
+          data-type={conditionFieldName}
           name={`${name}.${index}.${conditionFieldName}`}
           readOnly={readOnly}
           disabled={disabled}
@@ -161,6 +164,7 @@ const RewardSetting = ({
           <Trans zh="彩金" en="Bonus" />
         </Button>
         <NumberInput
+          data-type={bonusFieldName}
           name={`${name}.${index}.${bonusFieldName}`}
           readOnly={readOnly}
           disabled={disabled}

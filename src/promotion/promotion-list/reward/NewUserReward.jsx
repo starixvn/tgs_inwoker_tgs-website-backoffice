@@ -48,19 +48,16 @@ import AlertDialog, { AlertDialogModal } from "../../../dialog/Alert"
 import { Switch } from "../../../switch/Switch"
 import { useTotalFunds } from "../field/TotalFundsField"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
+import { MainSetting } from "../MainSetting"
+import { ContentSetting } from "../ContentSetting"
 
-const Register = "Register"
+const PromotionType = "Register"
 
-export const NewUserRewardRuleSetting = ({ promotionType, ...props }) => {
-  switch (promotionType) {
-    case Register:
-      return <RegisterRuleSetting {...props} />
-    default:
-      return <RegisterRuleSetting {...props} />
-  }
-}
+export const Main = (props) => <MainSetting isAutoPayout={true} {...props} />
 
-export const RegisterRuleSetting = ({ readOnly }) => {
+export const Content = ContentSetting
+
+export const Rule = ({ readOnly }) => {
   let totalFunds = useTotalFunds()
   let disabled = readOnly
   return (
@@ -100,4 +97,23 @@ export const RegisterRuleSetting = ({ readOnly }) => {
       />
     </FieldValues>
   )
+}
+
+export const Reward = {
+  PromotionType,
+  Main,
+  Content,
+  Rule
+}
+
+export default Reward
+
+//TODO: rm
+export const NewUserRewardRuleSetting = ({ promotionType, ...props }) => {
+  switch (promotionType) {
+    case PromotionType:
+      return <Rule {...props} />
+    default:
+      return <Rule {...props} />
+  }
 }

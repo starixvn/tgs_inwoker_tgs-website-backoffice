@@ -45,7 +45,7 @@ export const useTotalFunds = () => {
   return isLimited ? totalFunds : null //null, undefined or Number.NaN?
 }
 
-export const TotalFundsField = ({ readOnly, disabled }) => {
+export const TotalFundsField = ({ isUnlimited, disabled }) => {
   let promotionType = usePromotionType()
 
   let { setValue } = useFormContext()
@@ -60,17 +60,17 @@ export const TotalFundsField = ({ readOnly, disabled }) => {
   let unlimitedProps = promotion?.unlimited ?? {}
 
   useEffect(() => {
+    //TODO: rm
     if (isNotNil(unlimitedProps?.checked)) {
       setValue(UnlimitedFieldName, unlimitedProps?.checked)
     }
-  }, [unlimitedProps])
+
+    if (isUnlimited) {
+      setValue(UnlimitedFieldName, isUnlimited)
+    }
+  }, [unlimitedProps, isUnlimited])
 
   if (!promotionType) {
-    return null
-  }
-
-  //TODO: use totalFunds?.visible instead?
-  if (fieldNotUsed({ promotionType })) {
     return null
   }
 
@@ -101,19 +101,4 @@ export const TotalFundsField = ({ readOnly, disabled }) => {
       </Set>
     </>
   )
-}
-
-const notUsedConfigs = {
-  promotionType: [PromotionTypeGroup.Dummy],
-  promotionTypeGroup: [PromotionTypeGroup.Dummy]
-}
-const fieldNotUsed = ({ promotionType = "", promotionTypeGroup = "" }) => {
-  if (
-    notUsedConfigs.promotionTypeGroup.includes(promotionTypeGroup) ||
-    notUsedConfigs.promotionType.includes(promotionType)
-  ) {
-    return true
-  }
-
-  return false
 }

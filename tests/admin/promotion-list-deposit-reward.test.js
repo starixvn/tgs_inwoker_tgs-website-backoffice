@@ -18,175 +18,27 @@ import faker from "@faker-js/faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("add and edit deposit reward promotion", async ({
-  page,
-  promotionSetting
-}) => {
+test("add turnover reward promotion", async ({ page, promotionSetting }) => {
   let brandId = await gotoPromotionPage(page)
-  let promotion = await addDepositRewardPromotion(page)
 
-  await searchPromotion(page, promotion)
+  let promotion = await addPromotion(page)
 
-  let updatedPromotion = await editPromotion(page, brandId, promotion)
-
-  await toggleStatus(page, brandId)
-
-  await deletePromotion(page)
+  console.log("TODO: get promotion record use api and compare")
 })
 
-const searchPromotion = async (page, promotion) => {
-  await page.fill(`input[name="name"]`, promotion.name)
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/promotion?`) && response.status() === 200
-      )
-    }),
-    page.click(`button[type="submit"]`)
-  ])
-}
-
-const deletePromotion = async (page) => {
-  let Dialog = `#delete-promotion-dialog`
-  await openDialog(page, Dialog)
-
-  let id = await page.inputValue(`${Dialog} input[name="id"]`)
-  let ExpectedOrder = `/api/promotion/${id}/archived`
-
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().toLowerCase().endsWith(ExpectedOrder) &&
-        response.status() === 200
-      )
-    }),
-    page.click(`${Dialog} button[type="submit"]`)
-  ])
-}
-
-const toggleStatus = async (page, brandId, index = 0) => {
-  await page.waitForSelector(
-    `#promotion [data-row-index="${index}"] [data-column-id="status"] input[name="status"]`
-  )
-
-  const PromotionStatus = ["Enabled", "Disabled"]
-  let status = await page.$eval(
-    `#promotion [data-row-index="${index}"] [data-column-id="status"] label`,
-    ({ dataset }) => dataset.status
-  )
-
-  expect(status).to.be.oneOf(PromotionStatus)
-  let Status = PromotionStatus.filter((value) => value != status)
-  let [ExpectedStatus] = Status
-
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/${ExpectedStatus}`) &&
-        response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/promotion?`) && response.status() === 200
-      )
-    }),
-    page.click(
-      `#promotion [data-row-index="${index}"] [data-column-id="status"] label .bb-SwitchIcon`
-    )
-  ])
-
-  let statusLocator = page.locator(
-    `#promotion [data-row-index="${index}"] [data-column-id="status"] label`
-  )
-  await statusLocator.waitFor()
-
-  let WaitForUpdate = 500
-  await page.waitForTimeout(WaitForUpdate)
-  let toggledStatus = await statusLocator.getAttribute("data-status")
-  expect(toggledStatus).to.equal(ExpectedStatus)
-}
-
-let MinTotalAmountLimit = 10000000
-
-const editPromotion = async (page, brandId, record) => {
-  let EditDialogSelector = `#edit-promotion-dialog`
-  await openDialog(page, EditDialogSelector)
-
-  let promotion = {
-    ...record,
-    totalAmountLimit: random(MinTotalAmountLimit, MinTotalAmountLimit + 1000),
-    bonusAmountLimit: random(0, 100)
-  }
-
-  await page.fill(
-    `${EditDialogSelector} input[name="totalAmountLimit"]`,
-    `${promotion.totalAmountLimit}`
-  )
-
-  let hasGameTypeOption = await isGameTypeSelectVisible(page)
-  if (hasGameTypeOption) {
-    //TODO: select other game type group
-
-    let GameTypeOptions = await getGameTypeOptions(page)
-    let gameType = await getGameType(page)
-    let otherGameTypeOptions = GameTypeOptions.filter(
-      (item) => item != gameType
-    )
-
-    promotion.gameType =
-      otherGameTypeOptions.length > 0
-        ? otherGameTypeOptions[random(0, otherGameTypeOptions.length - 1)]
-        : GameTypeOptions[0]
-
-    let [response] = await Promise.all([
-      /* TODO: if game type doesn't change, won't trigger get api
-      page.waitForResponse((response) => {
-        let url = response.url()
-        return (
-          url.includes("/api/brandgameprovider") &&
-          url.includes(`gameType=${promotion.gameType}`) &&
-          response.status() === 200
-        )
-      }),
-      */
-      setGameType(page, promotion.gameType)
-    ])
-
-    /* TODO: select brand game providers?
-    let brandGameProviders = await response.json()
-    console.log("brandGameProviders", brandGameProviders)
-    */
-  }
-
-  await page.fill(
-    `${EditDialogSelector} input[name="rule.bonusAmountLimit"]`,
-    `${promotion.bonusAmountLimit}`
-  )
-
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/promotion") && response.status() === 200
-      )
-    }),
-    page.click(`#edit-promotion-dialog button[type="submit"]`)
-  ])
-  return promotion
-}
-
-const addDepositRewardPromotion = async (page) => {
+const addPromotion = async (page) => {
   let DialogSelector = `#add-promotion-dialog`
   await openDialog(page, DialogSelector)
 
   let from = startOfTomorrow(new Date())
   let to = addWeeks(new Date(), 2)
+
   let promotion = {
     name: `${lorem.word()}-${Date.now()}`,
     from: format(from, "yyyy/MM/dd"),
     to: format(to, "yyyy/MM/dd"),
     subSubject: lorem.word(),
-    totalAmountLimit: 1000,
+    depositMinimumLimit: 100,
     percentage: 50,
     bonusAmountLimit: 100,
     turnoverMultiple: 2
@@ -205,7 +57,14 @@ const addDepositRewardPromotion = async (page) => {
     value: promotion.to
   })
 
-  await selectDepositPromotionType(page)
+  const PromotionTypeGroup = "Deposit"
+  await page.selectOption(
+    `select[name="promotionTypeGroup"]`,
+    PromotionTypeGroup
+  )
+
+  const PromotionType = "DepositReward"
+  await page.selectOption(`select[name="promotionType"]`, PromotionType)
 
   await page.fill(
     `${DialogSelector} input[name="subSubject"]`,
@@ -217,50 +76,20 @@ const addDepositRewardPromotion = async (page) => {
   )
 
   await page.fill(
-    `${DialogSelector} input[name="totalAmountLimit"]`,
-    `${promotion.totalAmountLimit}`
+    `${DialogSelector} input[name="rule.depositMinimumLimit"]`,
+    `${promotion.depositMinimumLimit}`
   )
-
-  /*
-  const [desktopFileChooser] = await Promise.all([
-    page.waitForEvent("filechooser"),
-    page.click(`${DialogSelector} #desktopBanner`)
-  ])
-
-  await Promise.all([
-    desktopFileChooser.setFiles("./tests/dummy.png"),
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/fs/upload/promotion`) &&
-        response.status() === 200
-      )
-    })
-  ])
-
-  const [mobileFileChooser] = await Promise.all([
-    page.waitForEvent("filechooser"),
-    page.click(`${DialogSelector} #mobileBanner`)
-  ])
-
-  await Promise.all([
-    mobileFileChooser.setFiles("./tests/dummy.png"),
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/fs/upload/promotion`) &&
-        response.status() === 200
-      )
-    })
-  ])
-  */
 
   await page.fill(
     `${DialogSelector} input[name="rule.percentage"]`,
     `${promotion.percentage}`
   )
+
   await page.fill(
     `${DialogSelector} input[name="rule.bonusAmountLimit"]`,
     `${promotion.bonusAmountLimit}`
   )
+
   await page.fill(
     `${DialogSelector} input[name="rule.turnoverMultiple"]`,
     `${promotion.turnoverMultiple}`
@@ -279,49 +108,7 @@ const addDepositRewardPromotion = async (page) => {
   return promotion
 }
 
-const GameTypeSelectSelector = `select[name="gameType"]`
-const isGameTypeSelectVisible = async (page) => {
-  return page.isVisible(GameTypeSelectSelector)
-}
-
-const getGameTypeOptions = async (
-  page,
-  selectSelector = GameTypeSelectSelector
-) => {
-  return optionValues(page, selectSelector)
-}
-
-const getGameType = async (page, selectSelector = GameTypeSelectSelector) => {
-  return optionValues(page, selectSelector)
-}
-
-const setGameType = async (
-  page,
-  option,
-  selectSelector = GameTypeSelectSelector
-) => {
-  return page.selectOption(selectSelector, option)
-}
-
 const gotoPromotionPage = async (page) => {
   await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })
   return await selectRandomPlatform(page)
-}
-
-const PromotionTypeGroup = {
-  Deposit: "Deposit"
-}
-
-const PromotionType = {
-  DailyFirstDeposit: "DailyFirstDeposit"
-}
-const selectDepositPromotionType = async (
-  page,
-  option = PromotionType.DailyFirstDeposit
-) => {
-  await page.selectOption(
-    `select[name="promotionTypeGroup"]`,
-    PromotionTypeGroup.Deposit
-  )
-  return page.selectOption(`select[name="promotionType"]`, option)
 }

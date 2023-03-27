@@ -26,23 +26,30 @@ import {
 } from "../../../input/NumberInput"
 import { useTotalFunds } from "../field/TotalFundsField"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
+import { MainSetting } from "../MainSetting"
+import { ContentSetting } from "../ContentSetting"
 
 const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
 const DailySecondDeposit = "DailySecondDeposit"
-
 const DepositReward = "DepositReward"
 
-export const DepositRewardRuleSetting = ({ promotionType, readOnly }) => {
-  switch (promotionType) {
-    case DepositReward:
-      return <DepositRewardSetting readOnly={readOnly} />
-    default:
-      return promotionType ? <DefaultSetting readOnly={readOnly} /> : null
-  }
-}
+export const PromotionTypes = [
+  FirstDeposit,
+  DailyFirstDeposit,
+  DailySecondDeposit,
+  DepositReward
+]
 
-const DepositRewardSetting = ({ readOnly }) => {
+const Main = (props) => <MainSetting isAutoPayout={true} {...props} />
+
+const DepositRewardMain = (props) => (
+  <MainSetting isAutoPayout={true} isTotalFundsUnlimited={true} {...props} />
+)
+
+const Content = ContentSetting
+
+const DepositRewardRule = ({ readOnly }) => {
   let { control } = useFormContext()
   let totalFunds = useTotalFunds()
   let disabled = readOnly
@@ -180,7 +187,7 @@ const BonusLimitFieldBox = ({ percentage, disabled }) => {
   )
 }
 
-const DefaultSetting = ({ readOnly }) => {
+const DefaultRule = ({ readOnly }) => {
   let { control } = useFormContext()
   let totalFunds = useTotalFunds()
   let disabled = readOnly
@@ -234,4 +241,43 @@ const DefaultSetting = ({ readOnly }) => {
       />
     </FieldValues>
   )
+}
+
+export const Rewards = [
+  {
+    PromotionType: DepositReward,
+    Main: DepositRewardMain,
+    Content,
+    Rule: DepositRewardRule
+  },
+  {
+    PromotionType: FirstDeposit,
+    Main,
+    Content,
+    Rule: DefaultRule
+  },
+  {
+    PromotionType: DailyFirstDeposit,
+    Main,
+    Content,
+    Rule: DefaultRule
+  },
+  {
+    PromotionType: DailySecondDeposit,
+    Main,
+    Content,
+    Rule: DefaultRule
+  }
+]
+
+export default Rewards
+
+//TODO: rm
+export const DepositRewardRuleSetting = ({ promotionType, readOnly }) => {
+  switch (promotionType) {
+    case DepositReward:
+      return <DepositRewardRule readOnly={readOnly} />
+    default:
+      return promotionType ? <DefaultRule readOnly={readOnly} /> : null
+  }
 }

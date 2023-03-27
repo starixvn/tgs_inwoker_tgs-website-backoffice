@@ -33,13 +33,14 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 import OfflineLoginReward from "./OfflineLoginReward"
 import OfflineDepositReward from "./OfflineDepositReward"
 
-//TODO: able to rm? move to edit btn?
-export const TypeList = [
+export const PromotionTypes = [
   OfflineLoginReward.PromotionType,
   OfflineDepositReward.PromotionType
 ]
 
-//TODO: rm?
+export const Rewards = [OfflineLoginReward, OfflineDepositReward]
+
+//TODO: rm
 export const OfflineRewardRuleSetting = ({ readOnly }) => {
   let promotionType = usePromotionType()
 
@@ -52,3 +53,5 @@ export const OfflineRewardRuleSetting = ({ readOnly }) => {
       return null
   }
 }
+
+export default Rewards
