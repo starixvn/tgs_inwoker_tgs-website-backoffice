@@ -301,10 +301,11 @@ const useColumns = ({ brandId, items = [] }) => {
         Header: <Trans zh="代理总分红" en="Agent Profit" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
+          let date = parseISO(record?.reportDate)
           return (
             <AgentProfitDialogDisclosure
               brandId={brandId}
-              date={record?.reportDate}
+              date={date}
               value={record?.agentProfit}
             />
           )
