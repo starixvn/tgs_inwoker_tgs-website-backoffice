@@ -10,7 +10,8 @@ import {
   Set,
   FieldStack,
   Alert,
-  List
+  List,
+  Link
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure from "../../dialog/Disclosure"
@@ -46,6 +47,7 @@ export const AgentProfitDialogDisclosure = ({
   brandId,
   value,
   date,
+  use = Link,
   ...props
 }) => {
   let dialog = useModalState()
@@ -56,7 +58,7 @@ export const AgentProfitDialogDisclosure = ({
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure use={use} {...dialog} {...props}>
         <FormattedNumberDecimal value={value} placeholder="-" />
       </Disclosure>
       {dialog.visible && (
