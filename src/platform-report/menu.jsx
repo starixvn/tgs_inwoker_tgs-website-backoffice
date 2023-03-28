@@ -38,6 +38,10 @@ import {
   Code as TransferRecordsCode,
   codeLabelPair as transferRecordsPair
 } from "./transfer-records/menu"
+import {
+  Code as WinlossReportCode,
+  codeLabelPair as winlossReportPair
+} from "./winloss-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 
@@ -160,7 +164,14 @@ const label = ({ locale, code }) => {
         },
         locale
       )
-
+    case WinlossReportCode:
+      return getTrans(
+        {
+          zh: "输赢报表",
+          en: "Winloss Report"
+        },
+        locale
+      )
     default:
       return ""
   }
@@ -182,7 +193,8 @@ export const codeLabelPair = [
         agentBonusReportPair,
         balanceChangeReportPair,
         gameProviderReportPair,
-        transferRecordsPair
+        transferRecordsPair,
+        winlossReportPair
       ]
     })
 ]

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { Heading, Stack, Box, Button, Set, useModalState } from "bumbag"
-import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -11,6 +10,7 @@ import {
 import { Code } from "./menu"
 import { useMarketReportList, API } from "./client"
 import { MarketReportWithAgent } from "./MarketReportWithAgent"
+//TODO: rm
 import { isFeatureMarketReportWithAgentProfit } from "../../env"
 import {
   PlatformPageContent,
