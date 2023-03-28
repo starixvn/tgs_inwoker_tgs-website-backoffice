@@ -35,10 +35,6 @@ import {
   codeLabelPair as gameProviderReportPair
 } from "./game-provider-report/menu"
 import {
-  Code as AgentProfitSharingReportCode,
-  codeLabelPair as agentProfitSharingReportPair
-} from "./agent-profit-sharing-report2/menu"
-import {
   Code as TransferRecordsCode,
   codeLabelPair as transferRecordsPair
 } from "./transfer-records/menu"
@@ -138,15 +134,6 @@ const label = ({ locale, code }) => {
         locale
       )
 
-    case AgentProfitSharingReportCode:
-      return getTrans(
-        {
-          zh: "代理分红报表",
-          en: "Agent Profit Sharing Report"
-        },
-        locale
-      )
-
     case TransferRecordsCode:
       return getTrans(
         {
@@ -195,7 +182,6 @@ export const codeLabelPair = [
         agentBonusReportPair,
         balanceChangeReportPair,
         gameProviderReportPair,
-        agentProfitSharingReportPair,
         transferRecordsPair
       ]
     })
