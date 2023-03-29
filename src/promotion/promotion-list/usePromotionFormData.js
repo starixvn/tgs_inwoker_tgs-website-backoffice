@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { useFormContext, useWatch } from "react-hook-form"
+import { isPromotionStatusEnabled } from "./PromotionStatus"
+import { isValidDate } from "../../date/isValidDate"
+import { parseISO, isAfter, isBefore } from "date-fns"
 
 export const Field = {
   BrandId: "brandId",
   Id: "id",
-  PromotionType: "promotionType"
+  PromotionType: "promotionType",
+  Status: "status",
+  From: "from",
+  To: "to"
 }
 
 export const useBrandIdFromPromotionForm = () => {
@@ -38,4 +44,47 @@ export const usePromotionType = () => {
     name: Field.PromotionType
   })
   return promotionType
+}
+
+export const usePromotionStartDate = () => {
+  let { control } = useFormContext()
+  let start = useWatch({
+    control,
+    name: Field.From
+  })
+  return start
+}
+
+//TODO: init isStated on form init? and not allow to change the value? use getValue?
+export const useIsPromotionStarted = () => {
+  let { control } = useFormContext()
+}
+
+export const useIsActivePromotion = () => {
+  let { control } = useFormContext()
+  let status = useWatch({
+    control,
+    name: Field.Status
+  })
+
+  let start = usePromotionStartDate()
+
+  let end = useWatch({
+    control,
+    name: Field.To
+  })
+
+  if (!isPromotionStatusEnabled(status)) {
+    return false
+  }
+
+  if (!isValidDate(start) || !isValidDate(end)) {
+    return false
+  }
+
+  let now = new Date()
+  let isAfterStart = isAfter(now, start)
+  let isBeforeEnd = isAfter(end, now)
+
+  return isAfterStart && isBeforeEnd
 }

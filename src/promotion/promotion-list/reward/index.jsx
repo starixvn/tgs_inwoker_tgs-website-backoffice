@@ -15,7 +15,11 @@ import {
 } from "bumbag"
 import { Trans } from "../../../i18n"
 import Separator from "../../../layout/Separator"
-import { usePromotionType } from "../usePromotionFormData"
+import {
+  useIsPromotionAdded,
+  usePromotionType,
+  useIsActivePromotion
+} from "../usePromotionFormData"
 import DepositRewardGroup from "./DepositRewardGroup"
 import TurnoverRewardGroup from "./TurnoverRewardGroup"
 import ReliefMoneyRewardGroup from "./ReliefMoneyRewardGroup"
@@ -38,10 +42,19 @@ const rewards = () => [
   OfflineDepositReward
 ]
 
-export const Main = (props) => {
+export const Main = ({ readOnly, ...props }) => {
   let type = usePromotionType()
   let Reward = rewards().find((reward) => reward.PromotionType === type)
-  return Reward?.Main ? <Reward.Main {...props} /> : null
+
+  /*
+  TODO: also use useIsPromotionStarted() ?
+  let isAdded = useIsPromotionAdded()
+  if (isAdded) {
+    readOnly = true
+  }
+  */
+
+  return Reward?.Main ? <Reward.Main readOnly={readOnly} {...props} /> : null
 }
 
 export const Content = (props) => {
