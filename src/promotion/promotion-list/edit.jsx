@@ -30,17 +30,8 @@ import { useAddPromotion, useUpdatePromotion, usePromotionRule } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
-import { DateInputRange } from "../../date/DateTimeRangeInput"
-import { VipLevelCheckboxGroup } from "../../vip-levels/CheckboxGroup"
 import AlertDialog from "../../dialog/Alert"
-import Checkbox from "../../checkbox"
-import {
-  GameTypeGroupSelect,
-  GameTypeSelect,
-  toGameTypeString,
-  toGameTypeValue,
-  useGameTypeGroupValueOf
-} from "../../game/GameType"
+import { useGameTypeGroupValueOf } from "../../game/GameType"
 import {
   PromotionTypeGroupSelect,
   PromotionTypeSelect,
@@ -48,13 +39,10 @@ import {
 } from "../PromotionType"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
 import { parseISO, isAfter, isBefore } from "date-fns"
-import { today } from "../../date/range"
 import { useBrandGameProviderList } from "../../game/brandproviders/client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { parseJSON } from "../../text/json"
 import { isNil, isEmpty, set } from "lodash-es"
-import { isPromotionStatusEnabled } from "./PromotionStatus"
-import { isValidDate } from "../../date/isValidDate"
 import { PromotionDateRangeFieldBox } from "./field/DateRangeField"
 import { formatDateOnly } from "../../date/format"
 import Reward from "./reward/index"
@@ -430,41 +418,6 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
       <FormBody brandId={brandId} readOnly={true} />
     </FormDialog>
   )
-}
-
-const StatusFieldName = "status"
-const FromFieldName = "from"
-const ToFieldName = "to"
-export const useIsActivePromotion = () => {
-  let { control } = useFormContext()
-  let status = useWatch({
-    control,
-    name: StatusFieldName
-  })
-
-  let start = useWatch({
-    control,
-    name: FromFieldName
-  })
-
-  let end = useWatch({
-    control,
-    name: ToFieldName
-  })
-
-  if (!isPromotionStatusEnabled(status)) {
-    return false
-  }
-
-  if (!isValidDate(start) || !isValidDate(end)) {
-    return false
-  }
-
-  let now = new Date()
-  let isAfterStart = isAfter(now, start)
-  let isBeforeEnd = isAfter(end, now)
-
-  return isAfterStart && isBeforeEnd
 }
 
 //TODO: rm isAdd ?
