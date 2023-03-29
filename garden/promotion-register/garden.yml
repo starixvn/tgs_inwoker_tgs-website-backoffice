@@ -1,0 +1,22 @@
+kind: Module
+type: container
+name: promotion-register
+image: pgtgs/promotion-register-service:2022.12.30.0212-dev
+services:
+  - name: promotion-register
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - promotion-api
+      - player-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      Promotion__Url: "http://promotion-api"
+      Promotion__PlayerServiceBaseUrl: "http://player-api"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

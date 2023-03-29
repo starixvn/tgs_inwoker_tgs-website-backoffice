@@ -18,11 +18,7 @@ import faker from "@faker-js/faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-console.log("TODO: register reward api?")
-test.skip("add register reward promotion", async ({
-  page,
-  promotionSetting
-}) => {
+test("add register reward promotion", async ({ page, promotionSetting }) => {
   let brandId = await gotoPromotionPage(page)
 
   let promotion = await addPromotion(page)
