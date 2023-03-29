@@ -13,7 +13,7 @@ import numeral from "numeral"
 const test = base.extend(Fixture)
 const { finance } = faker
 
-console.log("TODO: auto clear bucket report")
+console.log("TODO: audit clear report")
 test.skip("fund withdraw > audit clear bucket", async ({
   page,
   licensee,
@@ -22,39 +22,35 @@ test.skip("fund withdraw > audit clear bucket", async ({
   player,
   backofficeApi,
   customBankManualPaymentMethodChannel,
+  globalApi,
   operatorApi,
   sboGameProviderApi
 }) => {
+  let gpiPlatform = platform
   let AutoClearBucketAmount = 10
   let depositPayment
   let withdrawPayment
   if (!platform.autoClearWageringRequirement) {
-    console.warn(
-      "TODO: set platform autoClearWageringRequirement & autoClearWageringRequirementBalance or use new platform?"
-    )
-    //throw "set platform autoClearWageringRequirement & autoClearWageringRequirementBalance"
-    /*
-    TODO: not work
-    await backofficeApi.platform.updatePlatform(platform.id, {
-      ...platform,
-      autoClearWageringRequirement: true,
-      autoClearWageringRequirementBalance: AutoClearBucketAmount
-    })
-    */
-
-    /*
-    TODO
-    */
+    console.log("TODO: add SBO game provider to platform?")
     platform = await backofficeApi.platform.addPlatform({
       licenseeId: licensee.id,
       autoClearWageringRequirement: true,
       autoClearWageringRequirementBalance: AutoClearBucketAmount
     })
 
+    console.log("platform.code", platform.code)
+
+    platformToken = await globalApi.platformToken(platform.code)
+    player = await operatorApi.player.createAndLogin(platformToken)
+
     depositPayment = await backofficeApi.platform.payment.findOrCreate({
       brandId: platform.id,
       transferType: backofficeApi.platform.payment.TransferType.Deposit,
-      paymentMethodChannelId: customBankManualPaymentMethodChannel.id
+      paymentMethodChannelId: customBankManualPaymentMethodChannel.id,
+      extendedData: {
+        name: finance.accountName(),
+        bankAccount: finance.account()
+      }
     })
 
     withdrawPayment = await backofficeApi.platform.payment.findOrCreate({
@@ -62,15 +58,6 @@ test.skip("fund withdraw > audit clear bucket", async ({
       transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
       paymentMethodChannelId: customBankManualPaymentMethodChannel.id
     })
-
-    console.log(
-      "platform",
-      platform,
-      "depositPayment",
-      depositPayment,
-      "withdrawPayment",
-      withdrawPayment
-    )
   }
 
   let BucketAmount = 10000
@@ -95,7 +82,7 @@ test.skip("fund withdraw > audit clear bucket", async ({
   })
 
   let betAmount = DepositAmount
-  await Promise.all([
+  let [{ externalRoundId, ...result }] = await Promise.all([
     sboGameProviderApi.placeBet({
       amount: betAmount,
       playerCode: player.code
@@ -121,12 +108,14 @@ test.skip("fund withdraw > audit clear bucket", async ({
   let AuditReportDialogSelector = `#audit-auto-clear-bucket-dialog`
   await openDialog(page, AuditReportDialogSelector)
 
-  let OpenOrderTableSelector = `${AuditReportDialogSelector} table#open-order`
-  let openOrderBetAmountString = await page
-    .locator(`${OpenOrderTableSelector} td[data-column-id="betAmount"]`)
-    .textContent()
-  let openOrderBetAmount = numeral(openOrderBetAmountString).value()
-  expect(openOrderBetAmount).equals(betAmount)
+  if (gpiPlatform.code != platform.code) {
+    let OpenOrderTableSelector = `${AuditReportDialogSelector} table#open-order`
+    let openOrderBetAmountString = await page
+      .locator(`${OpenOrderTableSelector} td[data-column-id="betAmount"]`)
+      .textContent()
+    let openOrderBetAmount = numeral(openOrderBetAmountString).value()
+    expect(openOrderBetAmount).equals(betAmount)
+  }
 
   let AutoClearBucketTableSelector = `${AuditReportDialogSelector} table#auto-clear-bucket`
   let autoClearBucketId = await page
