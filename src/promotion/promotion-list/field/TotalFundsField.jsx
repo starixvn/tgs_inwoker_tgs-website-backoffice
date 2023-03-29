@@ -9,7 +9,7 @@ import Checkbox from "../../../checkbox"
 import { NumberInput } from "../../../input/NumberInput"
 import { PromotionTypeGroup, useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
-import { useIsPromotionAdded, usePromotionType } from "../edit"
+import { usePromotionType } from "../usePromotionFormData"
 
 const isNotNil = complement(isNil)
 

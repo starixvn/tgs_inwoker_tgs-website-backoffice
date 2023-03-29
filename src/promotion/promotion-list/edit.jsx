@@ -26,13 +26,7 @@ import { Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { InputField, Input } from "../../input/Input"
 import clone from "clone-deep"
-import {
-  useAddPromotion,
-  useAddOfflineLoginRewardPromotion,
-  useAddOfflineDepositRewardPromotion,
-  useUpdatePromotion,
-  usePromotionRule
-} from "./client"
+import { useAddPromotion, useUpdatePromotion, usePromotionRule } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
@@ -48,10 +42,8 @@ import {
   useGameTypeGroupValueOf
 } from "../../game/GameType"
 import {
-  PromotionTypeGroup,
   PromotionTypeGroupSelect,
   PromotionTypeSelect,
-  useIsInstantlySettlementIntervalType,
   usePromotionGroupValueOf
 } from "../PromotionType"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
@@ -67,6 +59,7 @@ import { PromotionDateRangeFieldBox } from "./field/DateRangeField"
 import { formatDateOnly } from "../../date/format"
 import Reward from "./reward/index"
 import { PromotionTypes as OfflinePromotionTypeList } from "./reward/OfflineRewardGroup"
+import { usePromotionType, Field } from "./usePromotionFormData"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -474,28 +467,7 @@ export const useIsActivePromotion = () => {
   return isAfterStart && isBeforeEnd
 }
 
-//TODO: move to usePromotionFormData
-export const useIsPromotionAdded = () => {
-  let { control } = useFormContext()
-
-  let id = useWatch({
-    control,
-    name: "id"
-  })
-  return !!id
-}
-
-const PromotionTypeFieldName = "promotionType"
-export const usePromotionType = () => {
-  let { control } = useFormContext()
-
-  let promotionType = useWatch({
-    control,
-    name: PromotionTypeFieldName
-  })
-  return promotionType
-}
-
+//TODO: rm isAdd ?
 const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let formMethods = useFormContext()
   let { control, setValue } = formMethods
@@ -544,7 +516,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
             <PromotionTypeGroupSelect
               name={PromotionTypeGroupFieldName}
               onChange={(event) => {
-                setValue(PromotionTypeFieldName, "")
+                setValue(Field.PromotionType, "")
               }}
               placeholder={gameTypePlaceholder}
               required
@@ -571,7 +543,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         <Box alignY="center">
           {promotionTypeEditable && (
             <PromotionTypeSelect
-              name={PromotionTypeFieldName}
+              name={Field.PromotionType}
               group={promotionTypeGroup}
               required
             />
@@ -579,7 +551,7 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           {!promotionTypeEditable && (
             <>
               <PromotionTypeSelect
-                name={PromotionTypeFieldName}
+                name={Field.PromotionType}
                 value={promotionType}
                 display="none"
               />

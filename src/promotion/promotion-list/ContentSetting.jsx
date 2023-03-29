@@ -15,7 +15,6 @@ import {
 } from "bumbag"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
-import { useIsPromotionAdded, usePromotionType } from "./edit"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import { InputField, Input } from "../../input/Input"

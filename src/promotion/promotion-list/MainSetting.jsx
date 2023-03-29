@@ -18,6 +18,7 @@ import { isNil, isEmpty, set } from "lodash-es"
 import { TotalFundsField } from "./field/TotalFundsField"
 
 export const MainSetting = ({ autoPayout, totalFundsUnlimited, readOnly }) => {
+  
   let disabled = readOnly
   return (
     <>
