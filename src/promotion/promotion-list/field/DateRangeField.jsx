@@ -4,7 +4,7 @@ import { Box, Text, Button } from "bumbag"
 import { Trans, useTrans } from "../../../i18n"
 import { DateInputRange } from "../../../date/DateTimeRangeInput"
 import { NormalLabel } from "../../../form/Label"
-import { useIsPromotionAdded } from "../edit"
+import { useIsAddPromotion } from "../usePromotionFormData"
 import { today } from "../../../date/range"
 import { isValidDate } from "../../../date/isValidDate"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
@@ -50,13 +50,12 @@ export const useIsAfterPromotionStart = () => {
 
 const ToFieldName = "to"
 
-export const PromotionDateRangeFieldBox = ({ disabled, readOnly }) => {
-  let isAdded = useIsPromotionAdded()
-  let isAdd = !isAdded
+export const PromotionDateRangeFieldBox = ({ readOnly }) => {
+  let isAdd = useIsAddPromotion()
 
   let { start: startOfToday } = today()
 
-  let editable = !readOnly
+  let disabled = readOnly
   return (
     <>
       <NormalLabel>

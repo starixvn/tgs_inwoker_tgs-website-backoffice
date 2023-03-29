@@ -300,6 +300,9 @@ const useColumns = ({ brandId, items = [] }) => {
         accessor: (row) => row,
         Header: <Trans zh="代理总分红" en="Agent Profit" />,
         disableSortBy: true,
+        TotalCell: ({ value }) => (
+          <FormattedNumber value={value} format="0,0.00" digits={2} />
+        ),
         Cell: ({ value: record }) => {
           let date = parseISO(record?.reportDate)
           return (

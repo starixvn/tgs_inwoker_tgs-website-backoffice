@@ -5,9 +5,9 @@ import { Switch } from "../../../switch/Switch"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { Trans, useTrans } from "../../../i18n"
 import { NormalLabel } from "../../../form/Label"
-import { PromotionTypeGroup, useFindPromotionType } from "../../PromotionType"
+import { useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
-import { usePromotionType } from "../edit"
+import { usePromotionType } from "../usePromotionFormData"
 
 const isNotNil = complement(isNil)
 

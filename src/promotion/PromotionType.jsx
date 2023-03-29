@@ -115,12 +115,6 @@ export const useSettlementIntervalType = (promotionType) => {
 }
 
 //TODO: remove
-export const useIsInstantlySettlementIntervalType = (promotionType) => {
-  let type = useSettlementIntervalType(promotionType)
-  return type === "Instantly"
-}
-
-//TODO: remove
 export const findPromotionGroup = (promotionGroups = [], promotionType) => {
   return promotionGroups.reduce((result, group) => {
     if (result) {

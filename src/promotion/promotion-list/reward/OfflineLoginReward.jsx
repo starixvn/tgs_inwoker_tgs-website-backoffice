@@ -23,7 +23,7 @@ import {
   Controller,
   useFieldArray
 } from "react-hook-form"
-import { useIsPromotionAdded, usePromotionType } from "../edit"
+import { useIsAddPromotion, useIsPromotionAdded } from "../usePromotionFormData"
 import { FieldValues } from "../../../layout/Grid"
 import { BatchUploadPlayerListField } from "../field/BatchUploadPlayerListField"
 import { NormalLabel } from "../../../form/Label"
@@ -42,7 +42,7 @@ const Content = null
 
 const Rule = ({ readOnly }) => {
   let isAdded = useIsPromotionAdded()
-  let isCreate = !isAdded
+  let isCreate = useIsAddPromotion()
 
   if (isAdded) {
     readOnly = true

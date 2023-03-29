@@ -15,7 +15,7 @@ import {
 } from "bumbag"
 import { Trans } from "../../../i18n"
 import Separator from "../../../layout/Separator"
-import { usePromotionType } from "../edit"
+import { usePromotionType } from "../usePromotionFormData"
 import DepositRewardGroup from "./DepositRewardGroup"
 import TurnoverRewardGroup from "./TurnoverRewardGroup"
 import ReliefMoneyRewardGroup from "./ReliefMoneyRewardGroup"
