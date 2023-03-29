@@ -29,15 +29,28 @@ import { usePlatformMarketReportAdditionalExpenseList } from "./client"
 import { AdditionalExpenseDialogDisclosure } from "../AdditionalExpense"
 import { parseISO } from "date-fns"
 import Big from "big.js"
+import { Code as PageCode } from "./menu"
+import { Code as ModuleCode } from "../menu"
+import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 
+const MainTable = "main"
+const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
+
+//TODO: rm
 export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
   let dateRange = yesterday()
+
+  let [hiddenColumns] = useTableColumnHiddenLocalStorage(
+    TableLocalStorageKey,
+    []
+  )
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     from: dateRange.start,
     to: dateRange.end,
-    pageSize: 31
+    pageSize: 31,
+    hiddenColumns
   })
 
   useEffect(() => {
@@ -135,6 +148,8 @@ export const MarketReport = ({ brandId, useFetch, exportUrl }) => {
           setSortOrder={setSortOrder}
           isLoading={isLoading}
           stickyHead
+          localStorageKey={TableLocalStorageKey}
+          toggleColumnHidden={false}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}

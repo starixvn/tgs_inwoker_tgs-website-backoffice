@@ -68,6 +68,7 @@ export const PlayerAutoClearBucketReport = ({
       {...props}
     >
       <Table
+        id="auto-clear-bucket"
         hasDividers
         hasCellDividers
         columns={columns}

@@ -34,6 +34,8 @@ import { get } from "lodash-es"
 import { Cell } from "./Cell"
 import { HeadCell } from "./HeadCell"
 import { ActionBar } from "./ActionBar"
+import { valueOf as cssSizeValueOf } from "../css/size"
+import Overflow from "../css/overflow"
 
 const DefaultState = {
   pageIndex: 0,
@@ -151,6 +153,8 @@ export const Table = ({
   columnOrder = false,
   hasDividers = true,
   hasCellDividers,
+  autoResetHiddenColumns = false,
+  localStorageKey,
   ...props
 }) => {
   components = {
@@ -225,7 +229,9 @@ export const Table = ({
       isStickyColumn,
       toggleColumnHidden,
       columnOrder,
-      hasCellDividers
+      hasCellDividers,
+      autoResetHiddenColumns,
+      localStorageKey
     },
     useFilters,
     useSortBy,
@@ -262,6 +268,8 @@ export const Table = ({
 
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
 
+  let containerOverflowValue = maxSize ? "auto" : isSticky ? "visible" : "auto"
+  let tableOverflowValue = isSticky ? "visible" : "auto"
   //Note. if table all use hasCellDividers, then "border-collapse" can set to "separate" instead of " ${hasCellDividers ? "separate" : "collapse"}"
   return (
     <>
@@ -269,9 +277,7 @@ export const Table = ({
         <Box
           alignX="center"
           css={css`
-            width: ${Number.isFinite(maxSize?.width)
-              ? `${maxSize?.width}px`
-              : "100%"};
+            width: ${cssSizeValueOf(maxSize?.width) ?? "100%"};
           `}
         >
           <Spinner />
@@ -284,14 +290,16 @@ export const Table = ({
           position="relative"
           css={css`
             & div.bb-Table {
-              overflow: ${isSticky ? "visible" : "auto"};
+              overflow: ${tableOverflowValue};
               border: 0;
               border-radius: 0;
             }
 
             & table.bb-Table {
-              overflow: ${isSticky ? "visible" : "auto"};
-              border: ${tableBorder};
+              overflow: ${tableOverflowValue};
+              border: ${!Overflow.isVisible(tableOverflowValue) || maxSize
+                ? "0"
+                : tableBorder};
               border-collapse: ${hasCellDividers ? "separate" : "collapse"};
             }
           `}
@@ -299,17 +307,16 @@ export const Table = ({
           <ActionBar table={table} />
           <div
             css={css`
-              width: ${Number.isFinite(maxSize?.width)
-                ? `${maxSize?.width}px`
-                : "100%"};
-              height: ${Number.isFinite(maxSize?.height) &&
-              Number.isFinite(minHeight)
-                ? `${Math.max(
-                    maxSize?.height - PaginationHeight - scrollbarWidth,
-                    minHeight
-                  )}px`
+              width: ${cssSizeValueOf(maxSize?.width) ?? "100%"};
+              height: ${maxSize?.height
+                ? `max(calc(${cssSizeValueOf(
+                    maxSize?.height
+                  )} - ${PaginationHeight}px - ${scrollbarWidth}px), ${minHeight}px)`
                 : "max-content"};
-              overflow: ${maxSize ? "auto" : isSticky ? "visible" : "auto"};
+              overflow: ${containerOverflowValue};
+              border: ${Overflow.isVisible(containerOverflowValue)
+                ? "0"
+                : tableBorder};
             `}
           >
             <_Table
@@ -428,7 +435,7 @@ const TotalBody = ({ table }) => {
   let {
     total,
     getTableBodyProps,
-    columns,
+    allColumns,
     components,
     stickyLeft,
     stickyRight,
@@ -436,6 +443,7 @@ const TotalBody = ({ table }) => {
   } = table
   let { Body, Row } = components
 
+  let columns = allColumns.filter(({ isVisible }) => isVisible)
   return (
     <Body
       id="total"
@@ -488,7 +496,6 @@ const Body = ({ table }) => {
     getTableBodyProps,
     getRowProps = defaultProps,
     prepareRow,
-    columns,
     allColumns,
     components
   } = table

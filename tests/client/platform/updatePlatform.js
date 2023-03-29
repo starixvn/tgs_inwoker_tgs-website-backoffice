@@ -4,6 +4,7 @@ import { getPlatform } from "./getPlatform.js"
 
 const API = "api/brand"
 
+//TODO: merge with addPlatform, findPlatform, getPlatform etc
 export const updatePlatform = async (platformId, formData) => {
   let platform = await getPlatform(platformId)
   let data = { ...platform, ...formData }

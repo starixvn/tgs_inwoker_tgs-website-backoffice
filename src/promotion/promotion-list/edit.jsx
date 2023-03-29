@@ -26,7 +26,13 @@ import { Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { InputField, Input } from "../../input/Input"
 import clone from "clone-deep"
-import { useAddPromotion, useUpdatePromotion, usePromotionRule } from "./client"
+import {
+  useAddPromotion,
+  useAddOfflineLoginRewardPromotion,
+  useAddOfflineDepositRewardPromotion,
+  useUpdatePromotion,
+  usePromotionRule
+} from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
@@ -41,7 +47,6 @@ import {
   toGameTypeValue,
   useGameTypeGroupValueOf
 } from "../../game/GameType"
-import Separator from "../../layout/Separator"
 import {
   PromotionTypeGroup,
   PromotionTypeGroupSelect,
@@ -50,37 +55,18 @@ import {
   usePromotionGroupValueOf
 } from "../PromotionType"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
-import { BrandGameProviderCheckboxGroupTable } from "../../game/brandproviders/BrandGameProviderCheckboxGroup"
 import { parseISO, isAfter, isBefore } from "date-fns"
 import { today } from "../../date/range"
 import { useBrandGameProviderList } from "../../game/brandproviders/client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
-import {
-  NumberInput,
-  NumberInputField,
-  PercentageNumberInputField
-} from "../../input/NumberInput"
-import { Switch } from "../../switch/Switch"
-import { useBrand } from "../../merchant/platforms/client"
-import {
-  ImageUploadButton,
-  ImageLocalizationDialogDisclosure
-} from "../../file/upload/ImageUploadButton"
-import { HtmlEditor } from "../../text/editor/HtmlEditor"
-import Backdrop from "../../dialog/Backdrop"
-import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { parseJSON } from "../../text/json"
-import { PromotionRuleSettingFieldBox } from "./PromotionRuleSettingFieldBox"
-import { PromotionDistributionMethodFieldBox } from "./PromotionDistributionMethodFieldBox"
 import { isNil, isEmpty, set } from "lodash-es"
-import { PromotionTotalFundsFieldBox } from "./PromotionTotalFundsFieldBox"
-import { PromotionGameTypeFieldBox } from "./PromotionGameTypeFieldBox"
-import { PromotionGameProviderFieldBox } from "./PromotionGameProviderFieldBox"
 import { isPromotionStatusEnabled } from "./PromotionStatus"
 import { isValidDate } from "../../date/isValidDate"
-import { PromotionDateRangeFieldBox } from "./PromotionDateRangeFieldBox"
+import { PromotionDateRangeFieldBox } from "./field/DateRangeField"
 import { formatDateOnly } from "../../date/format"
-import { PromotionVipLevelsFieldBox } from "./PromotionVipLevelsFieldBox"
+import Reward from "./reward/index"
+import { PromotionTypes as OfflinePromotionTypeList } from "./reward/OfflineRewardGroup"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -106,6 +92,7 @@ export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
 
 const DialogCss = css`
   & .bb-DialogContent {
+    min-height: 60vh;
     position: relative;
     padding: 1.5rem 3rem;
   }
@@ -136,7 +123,6 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  const DefaultVipLevel = "1"
   return (
     <FormDialog
       id="add-promotion-dialog"
@@ -187,6 +173,8 @@ const normalizeFormData = ({
   }
 }
 
+const NotEditablePromtion = [...OfflinePromotionTypeList]
+
 export const EditPromotionDisclosure = ({
   brandId,
   record,
@@ -196,6 +184,12 @@ export const EditPromotionDisclosure = ({
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
+
+  let promotionType = record?.promotionType
+  if (NotEditablePromtion.includes(promotionType)) {
+    return null
+  }
+
   if (!isDisplay) {
     return null
   }
@@ -543,24 +537,6 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
         <PromotionDateRangeFieldBox disabled={disabled} readOnly={readOnly} />
 
         <NormalLabel>
-          <Trans zh="活动用户群" en="User Group" />
-        </NormalLabel>
-        <Box alignY="center">
-          <VipLevelCheckboxGroup
-            id="vipLevels"
-            name="vipLevels"
-            valueFieldName="level"
-            brandId={brandId}
-            disabled={disabled}
-            required
-          />
-        </Box>
-
-        {/* 
-        TODO: replace above
-        <PromotionVipLevelsFieldBox disabled={disabled} readOnly={readOnly} /> */}
-
-        <NormalLabel>
           <Trans zh="活动类型" en="Promotion Type" />
         </NormalLabel>
         <Box alignY="center">
@@ -612,207 +588,12 @@ const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           )}
         </Box>
 
-        <PromotionDistributionMethodFieldBox
-          promotionTypeGroup={promotionTypeGroup}
-          promotionType={promotionType}
-          readOnly={readOnly}
-          disabled={disabled}
-        />
-
-        <PromotionTotalFundsFieldBox
-          promotionTypeGroup={promotionTypeGroup}
-          promotionType={promotionType}
-          readOnly={readOnly}
-          disabled={disabled}
-        />
-
-        <PromotionGameTypeFieldBox
-          promotionTypeGroup={promotionTypeGroup}
-          promotionType={promotionType}
-          readOnly={readOnly}
-          disabled={disabled}
-        />
-
-        <PromotionGameProviderFieldBox brandId={brandId} readOnly={readOnly} />
+        <Reward.Main readOnly={readOnly} />
       </FieldValues>
 
-      <Separator />
+      <Reward.Content readOnly={readOnly} />
 
-      <Heading use="h5">
-        <Trans zh="活动内容" en="Promotion Content" />
-      </Heading>
-      <FieldValues>
-        <NormalLabel>
-          <Trans zh="活动子标题" en="Promotion SubTitle" />
-        </NormalLabel>
-        <Box alignY="center">
-          <InputField
-            name="subSubject"
-            brandId={brandId}
-            showLocalizationAddonAfter
-            disabled={disabled}
-            readOnly={readOnly}
-            required={required}
-          />
-        </Box>
-
-        <NormalLabel>
-          <Trans zh="活动 Banner (PC)" en="Promotion Banner (PC)" />
-        </NormalLabel>
-        <Set orientation="vertical" alignY="center">
-          <ImageLocalizationDialogDisclosure
-            id="desktopBanner"
-            brandId={brandId}
-            name="desktopBanner"
-            prefix="promotion"
-            disabled={disabled}
-            readOnly={readOnly}
-            required={required}
-          />
-          <Text.Block color="warning" fontWeight="bold" fontSize="150">
-            <Trans
-              zh="建議尺寸:  1200 x 486px"
-              en="Recommended size: 1200 x 486px"
-            />
-          </Text.Block>
-        </Set>
-
-        <NormalLabel>
-          <Trans zh="活动 Banner (Mobile)" en="Promotion Banner (Mobile)" />
-        </NormalLabel>
-        <Set orientation="vertical" alignY="center">
-          <ImageLocalizationDialogDisclosure
-            id="mobileBanner"
-            brandId={brandId}
-            name="mobileBanner"
-            prefix="promotion"
-            disabled={disabled}
-            readOnly={readOnly}
-            required={required}
-          />
-          <Text.Block color="warning" fontWeight="bold" fontSize="150">
-            <Trans
-              zh="建議尺寸: 690 x 280px"
-              en="Recommended size: 690 x 280px"
-            />
-          </Text.Block>
-        </Set>
-
-        <NormalLabel>
-          <Trans zh="活动内容" en="Promotion Content" />
-        </NormalLabel>
-        <Box alignY="center">
-          <HtmlEditorDisclosure
-            brandId={brandId}
-            name="content"
-            disabled={disabled}
-            readOnly={readOnly}
-          />
-        </Box>
-
-        <NormalLabel>
-          <Trans zh="活动条款与条规" en="Promotion Rules" />
-        </NormalLabel>
-        <Box alignY="center">
-          <HtmlEditorDisclosure
-            brandId={brandId}
-            name="terms"
-            disabled={disabled}
-            readOnly={readOnly}
-          />
-        </Box>
-      </FieldValues>
-
-      <Separator />
-
-      <PromotionRuleSettingFieldBox
-        promotionTypeGroup={promotionTypeGroup}
-        promotionType={promotionType}
-        readOnly={readOnly}
-      />
+      <Reward.Rule readOnly={readOnly} />
     </FieldStack>
-  )
-}
-
-const HtmlEditorDisclosure = ({ brandId, name, readOnly }) => {
-  let dialog = useModalState()
-
-  let editTitle = useTrans({
-    zh: "编辑",
-    en: "Edit"
-  })
-  let viewTitle = useTrans({
-    zh: "查看",
-    en: "View"
-  })
-  let title = readOnly ? viewTitle : editTitle
-  return (
-    <>
-      <Disclosure width="fit-content" {...dialog}>
-        {title}
-      </Disclosure>
-      {dialog.visible && (
-        <HtmlEditorDialog
-          brandId={brandId}
-          name={name}
-          readOnly={readOnly}
-          dialog={dialog}
-          title={title}
-        />
-      )}
-    </>
-  )
-}
-
-const HtmlEditorDialog = ({
-  brandId,
-  name,
-  readOnly,
-  dialog,
-  title,
-  ...props
-}) => {
-  let { visible } = props
-  return (
-    <Backdrop
-      {...dialog}
-      css={css`
-        .tox-fullscreen & {
-          top: 0;
-          left: 0;
-          transform: none;
-        }
-      `}
-    >
-      <Dialog.Modal
-        {...dialog}
-        hideBackdrop
-        hideOnClickOutside={false}
-        showCloseButton
-        title={title}
-        width="70vw"
-        maxWidth="80vw"
-        css={css`
-          & .bb-DialogContent {
-            max-height: 80vh;
-          }
-          .tox-fullscreen & {
-            top: 0;
-            left: 0;
-            transform: none;
-          }
-        `}
-      >
-        <HtmlEditor
-          brandId={brandId}
-          name={name}
-          imagesUploadUrl={toFileUploadPath("promotion")}
-          readOnly={readOnly}
-          height="480"
-          active={visible}
-          showLocalizationAddonAfter
-        />
-      </Dialog.Modal>
-    </Backdrop>
   )
 }

@@ -55,6 +55,12 @@ import DownloadButton from "../../button/DownloadButton"
 import { PlayerHasAgentSelect } from "./PlayerHasAgentSelect"
 import Big from "big.js"
 import { BonusDialogDisclosure } from "../BonusDialog"
+import { Code as PageCode } from "./menu"
+import { Code as ModuleCode } from "../menu"
+import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+
+const MainTable = "main"
+const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export { Code }
 
@@ -92,13 +98,20 @@ export const Body = () => {
 
 export const PlayerContributionReport = ({ brandId, useFetch }) => {
   let dateRange = yesterday()
+
+  let [hiddenColumns] = useTableColumnHiddenLocalStorage(
+    TableLocalStorageKey,
+    []
+  )
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     username: undefined,
     hasUpperAgent: undefined,
     level: undefined,
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    hiddenColumns
   })
 
   useEffect(() => {
@@ -186,6 +199,8 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
           isLoading={isLoading}
           foot={data?.items?.length > 0}
           stickyHead
+          localStorageKey={TableLocalStorageKey}
+          toggleColumnHidden={false}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}

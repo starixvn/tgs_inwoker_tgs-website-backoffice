@@ -83,6 +83,8 @@ export const create = async ({
     return null
   }
 
+  //TODO: get PMC and auto create extendedData based on type?
+
   let url = `${host}/${API}/${typeOf(transferType)}`
   let formData = {
     brandId,

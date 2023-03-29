@@ -7,7 +7,8 @@ import { selectRandomOption } from "../page/select.js"
 const test = base.extend(Fixture)
 const { internet, name } = faker
 
-test("add, search and edit admin user", async ({ page }) => {
+console.log("TODO: api disabled add admin user")
+test.skip("add, search and edit admin user", async ({ page }) => {
   await gotoAdminUserListPage(page)
 
   let user = await addUser(page, Type.Admin)

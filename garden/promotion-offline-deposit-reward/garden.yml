@@ -1,0 +1,22 @@
+kind: Module
+type: container
+name: promotion-offline-deposit-reward
+image: pgtgs/promotion-offline-deposit:202303030846.14
+services:
+  - name: promotion-offline-deposit-reward
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - promotion-api
+      - payment-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      OfflineDeposit__PromotionServiceUrl: "http://promotion-api"
+      OfflineDeposit__PaymentServiceUrl: "http://payment-api"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

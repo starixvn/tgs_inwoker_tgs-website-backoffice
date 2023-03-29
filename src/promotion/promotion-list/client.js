@@ -4,7 +4,9 @@ import {
   usePostData,
   usePut,
   usePutData,
-  useDelete
+  useDelete,
+  usePostFormData,
+  useHead
 } from "../../client"
 import {
   useSystemSetting,
@@ -30,7 +32,30 @@ export const usePromotionRule = (id) => {
   return useGet(url)
 }
 
+const OfflineLoginRewardApi = "/api/offline-login-reward"
+export const useAddOfflineLoginRewardPromotion = (data) => {
+  let url = data?.brandId
+    ? `${OfflineLoginRewardApi}/${data.brandId}:create`
+    : ""
+
+  return usePutData(url, data)
+}
+
+const OfflineDepositRewardApi = "/api/offline-deposit-reward"
+export const useAddOfflineDepositRewardPromotion = (data) => {
+  let url = data?.brandId
+    ? `${OfflineDepositRewardApi}/${data.brandId}:create`
+    : ""
+  return usePutData(url, data)
+}
+
 export const useAddPromotion = (data) => {
+  switch (data?.promotionType) {
+    case "OfflineLoginReward":
+      return useAddOfflineLoginRewardPromotion(data)
+    case "OfflineDepositReward":
+      return useAddOfflineDepositRewardPromotion(data)
+  }
   return usePostData(API, data)
 }
 
@@ -67,4 +92,53 @@ export const useChangeLogDetail = (promotionId, eventId) => {
       : ""
 
   return useGet(url)
+}
+
+//TODO: also use client Id
+let OfflineApi = "/api/offline"
+export const usePromotionBatchUploadPlayerList = (
+  brandId,
+  clientId,
+  formData
+) => {
+  let url =
+    brandId && clientId && formData
+      ? `${OfflineApi}/${brandId}/${clientId}`
+      : ""
+  return usePostFormData(url, formData)
+}
+
+/*
+export const PromotionBatchUploadPlayerListResult = {
+  Done: "Done",
+  Processing: "Processing"
+}
+*/
+
+export const useIsPromotionBatchUploadPlayerListDone = (
+  batchId,
+  options = {}
+) => {
+  let url = batchId ? `${OfflineApi}/${batchId}` : ""
+  return useHead(url, {
+    toData: (data, response) => {
+      let status = response.status
+      if (status === 200) {
+        //done
+        return true
+      }
+
+      if (status === 202) {
+        //processing
+        return false
+      }
+
+      if (status === 204) {
+        return null //no content
+      }
+
+      return data
+    },
+    ...options
+  })
 }
