@@ -40,6 +40,7 @@ import { NumberInput } from "../../input/NumberInput"
 import { isWithinRange } from "../../date/range"
 import { isAfter } from "../../date/isAfter"
 import { PromotionChangeLogListDialogDisclosure } from "./ChangeLogListDialog"
+import { CopyPromotionDisclosure } from "./CopyPromotion"
 
 export { Code }
 
@@ -420,6 +421,14 @@ const useColumns = ({
                   disabled={isPromotionStarted}
                   onSubmitted={mutate}
                 />
+                {/* 
+                TODO: test case
+                <CopyPromotionDisclosure
+                  id="copy-promotion-dialog-disclosure"
+                  brandId={brandId}
+                  record={record}
+                  onSubmitted={mutate}
+                /> */}
                 {hasUpdateAuth && (
                   <ConfirmDeleteDialogDisclosure
                     disabled={record.status != PromotionStatus.Disabled}

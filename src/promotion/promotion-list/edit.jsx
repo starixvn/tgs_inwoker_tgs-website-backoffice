@@ -72,7 +72,7 @@ export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   )
 }
 
-const DialogCss = css`
+export const DialogCss = css`
   & .bb-DialogContent {
     min-height: 60vh;
     position: relative;
@@ -129,7 +129,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   )
 }
 
-const normalizeFormData = ({
+export const normalizeFormData = ({
   gameType,
   gameProviders = [],
   rule = {},
@@ -259,7 +259,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   )
 }
 
-const usePromotionFormData = (
+export const usePromotionFormData = (
   brandId,
   {
     id,
@@ -431,7 +431,7 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
 }
 
 //TODO: rm isAdd ?
-const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
+export const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let formMethods = useFormContext()
   let { control, setValue } = formMethods
 
