@@ -22,10 +22,11 @@ import Disclosure, {
   ViewDisclosure
 } from "../../dialog/Disclosure"
 import { Trans } from "../../i18n"
+import { usePromotionFormData } from "./edit"
 
 export const CopyPromotionDisclosure = ({
   brandId,
-  id,
+  record,
   onSubmitted,
   ...props
 }) => {
@@ -44,7 +45,7 @@ export const CopyPromotionDisclosure = ({
       {dialog.visible && (
         <CopyDialog
           brandId={brandId}
-          id={id}
+          record={record}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -53,4 +54,8 @@ export const CopyPromotionDisclosure = ({
   )
 }
 
-const CopyDialog = ({}) => {}
+const useCopyPromotionFormData = (brandId, record) => {
+  
+}
+
+const CopyDialog = ({ brandId, record, dialog }) => {}

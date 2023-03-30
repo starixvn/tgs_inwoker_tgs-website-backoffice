@@ -11,7 +11,8 @@ export const Field = {
   PromotionType: "promotionType",
   Status: "status",
   From: "from",
-  To: "to"
+  To: "to",
+  IsPromotionStarted: "isPromotionStarted"
 }
 
 export const useBrandIdFromPromotionForm = () => {
@@ -55,11 +56,12 @@ export const usePromotionStartDate = () => {
   return start
 }
 
-//TODO: init isStarted on form init? and not allow to change the value? use getValue?
 export const useIsPromotionStarted = () => {
-  let { control } = useFormContext()
+  let { control, getValues } = useFormContext()
+  return getValues(Field.IsPromotionStarted)
 }
 
+//TODO: use IsPromotionStarted & isPromotionEnded instead
 export const useIsActivePromotion = () => {
   let { control } = useFormContext()
   let status = useWatch({
