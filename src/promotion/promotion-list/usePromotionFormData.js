@@ -55,7 +55,7 @@ export const usePromotionStartDate = () => {
   return start
 }
 
-//TODO: init isStated on form init? and not allow to change the value? use getValue?
+//TODO: init isStarted on form init? and not allow to change the value? use getValue?
 export const useIsPromotionStarted = () => {
   let { control } = useFormContext()
 }

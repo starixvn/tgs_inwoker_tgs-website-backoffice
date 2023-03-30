@@ -149,7 +149,7 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
               maxSize={{ height, width }}
               stickyHead
               localStorageKey={TableLocalStorageKey}
-              toggleColumnHidden={false}
+              toggleColumnHidden={true}
             />
           )
         }}

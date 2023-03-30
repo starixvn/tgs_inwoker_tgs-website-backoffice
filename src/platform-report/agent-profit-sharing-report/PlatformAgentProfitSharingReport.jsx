@@ -385,7 +385,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                     }
                   `}
                   localStorageKey={TableLocalStorageKey}
-                  toggleColumnHidden={false}
+                  toggleColumnHidden={true}
                 />
               )
             }}

@@ -168,7 +168,7 @@ const ReportContent = ({ licenseeId }) => {
           }}
           stickyHead
           localStorageKey={TableLocalStorageKey}
-          toggleColumnHidden={false}
+          toggleColumnHidden={true}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
