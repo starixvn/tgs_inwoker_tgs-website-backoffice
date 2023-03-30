@@ -125,7 +125,7 @@ const AgentProfitDialog = ({ brandId, date, dialog }) => {
                   <List.Item>
                     <Trans
                       zh="公司分红 =  [(直属玩家净盈利 + 团队净盈利) * 公司占成] - 公司调帐。"
-                      en="Company Profit = [(Direct Player Net Profit + Team Net Profit) * Company PT - Company Adjustment."
+                      en="Company Profit = [(Direct Player Net Profit + Team Net Profit) * Company PT] - Company Adjustment."
                     />
                   </List.Item>
                 </List>

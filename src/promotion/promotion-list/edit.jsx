@@ -39,6 +39,7 @@ import {
 } from "../PromotionType"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
 import { parseISO, isAfter, isBefore } from "date-fns"
+import { isValidDate } from "../../date/isValidDate"
 import { useBrandGameProviderList } from "../../game/brandproviders/client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { parseJSON } from "../../text/json"
@@ -315,7 +316,16 @@ const usePromotionFormData = (
 
   vipLevels = vipLevels.map((vipLevel) => `${vipLevel}`)
 
+  from = parseISO(from)
+  to = parseISO(to)
+
+  let now = new Date()
+  let isPromotionStarted = isAfter(now, from)
+  let isPromotionEnded = isAfter(now, to)
+
   data = {
+    isPromotionStarted,
+    isPromotionEnded,
     id,
     brandId,
     ...cloned,
@@ -325,8 +335,8 @@ const usePromotionFormData = (
     gameTypeGroup,
     gameType,
     localization: parseJSON(localization),
-    from: parseISO(from),
-    to: parseISO(to),
+    from,
+    to,
     rule:
       isEmpty(rule) &&
       (Number.isFinite(cloned?.percentage) ||

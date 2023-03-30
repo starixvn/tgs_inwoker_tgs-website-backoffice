@@ -204,7 +204,7 @@ const ReportContent = ({ brandId }) => {
             foot={data?.items?.length > 0}
             stickyHead
             localStorageKey={TableLocalStorageKey}
-            toggleColumnHidden={false}
+            toggleColumnHidden={true}
           />
         )}
       </FieldStack>

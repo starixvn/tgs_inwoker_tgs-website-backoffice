@@ -15,17 +15,13 @@ import {
 } from "bumbag"
 import { Update, View } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import Disclosure, {
-  AddDisclosure,
-  EditDisclosure,
-  NewDisclosure,
-  ViewDisclosure
-} from "../../dialog/Disclosure"
+import { Disclosure } from "../../dialog/Disclosure"
 import { Trans } from "../../i18n"
+import { usePromotionFormData } from "./edit"
 
 export const CopyPromotionDisclosure = ({
   brandId,
-  id,
+  record,
   onSubmitted,
   ...props
 }) => {
@@ -44,7 +40,7 @@ export const CopyPromotionDisclosure = ({
       {dialog.visible && (
         <CopyDialog
           brandId={brandId}
-          id={id}
+          record={record}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -53,4 +49,8 @@ export const CopyPromotionDisclosure = ({
   )
 }
 
-const CopyDialog = ({}) => {}
+const useCopyPromotionFormData = (brandId, record) => {
+  //TODO: remove id, name, change from & to, reset isPromotionStarted and isPromotionEnded
+}
+
+const CopyDialog = ({ brandId, record, dialog }) => {}

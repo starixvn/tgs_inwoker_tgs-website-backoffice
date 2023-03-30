@@ -200,7 +200,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
           foot={data?.items?.length > 0}
           stickyHead
           localStorageKey={TableLocalStorageKey}
-          toggleColumnHidden={false}
+          toggleColumnHidden={true}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
