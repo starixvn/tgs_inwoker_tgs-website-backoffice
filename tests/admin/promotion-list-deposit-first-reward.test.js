@@ -10,7 +10,7 @@ import {
   addWeeks
 } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { selectRandomPlatform } from "../page/content.js"
+import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import faker from "@faker-js/faker"
@@ -18,11 +18,15 @@ import faker from "@faker-js/faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("add turnover reward promotion", async ({ page, promotionSetting }) => {
-  let brandId = await gotoPromotionPage(page)
+test("add turnover reward promotion", async ({
+  page,
+  platform,
+  backofficeApi,
+  promotionSetting
+}) => {
+  await gotoPromotionPage(page, platform.code)
 
   let promotion = await addPromotion(page)
-
   console.log("TODO: get promotion record use api and compare")
 })
 
@@ -106,7 +110,7 @@ const addPromotion = async (page) => {
   return promotion
 }
 
-const gotoPromotionPage = async (page) => {
+const gotoPromotionPage = async (page, platformCode) => {
   await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })
-  return await selectRandomPlatform(page)
+  return await selectPlatformByCode(page, platformCode)
 }

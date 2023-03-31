@@ -6,7 +6,8 @@ import {
   usePutData,
   useDelete,
   usePostFormData,
-  useHead
+  useHead,
+  usePatchData
 } from "../../client"
 import {
   useSystemSetting,
@@ -20,16 +21,34 @@ export const usePromotionList = (searchParams) => {
   return useGet(url)
 }
 
-/*
-export const usePromotion = (id) => {
-  let url = id ? urlWith(searchParams, `${API}/${id}`) : ""
+export const usePromotionMainInfo = (id) => {
+  let url = id ? `${API}/main/${id}` : ""
   return useGet(url)
 }
-*/
+
+export const useUpdatePromotionMainInfo = (promotionId, data) => {
+  let url = promotionId && data ? `${API}/main/${id}` : ""
+  return usePatchData(url, data)
+}
+
+export const usePromotionContent = (id) => {
+  let url = id ? `${API}/content/${id}` : ""
+  return useGet(url)
+}
+
+export const useUpdatePromotionContent = (promotionId, data) => {
+  let url = promotionId && data ? `${API}/content/${id}` : ""
+  return usePatchData(url, data)
+}
 
 export const usePromotionRule = (id) => {
   let url = id ? `${API}/rule/${id}` : ""
   return useGet(url)
+}
+
+export const useUpdatePromotionRule = (promotionId, data) => {
+  let url = promotionId && data ? `${API}/rule/${id}` : ""
+  return usePatchData(url, data)
 }
 
 const OfflineLoginRewardApi = "/api/offline-login-reward"
@@ -94,7 +113,6 @@ export const useChangeLogDetail = (promotionId, eventId) => {
   return useGet(url)
 }
 
-//TODO: also use client Id
 let OfflineApi = "/api/offline"
 export const usePromotionBatchUploadPlayerList = (
   brandId,
