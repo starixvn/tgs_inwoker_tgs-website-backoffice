@@ -13,8 +13,7 @@ import numeral from "numeral"
 const test = base.extend(Fixture)
 const { finance } = faker
 
-console.log("TODO: audit clear report")
-test.skip("fund withdraw > audit clear bucket", async ({
+test("fund withdraw > audit clear bucket", async ({
   page,
   licensee,
   platform,
@@ -31,14 +30,11 @@ test.skip("fund withdraw > audit clear bucket", async ({
   let depositPayment
   let withdrawPayment
   if (!platform.autoClearWageringRequirement) {
-    console.log("TODO: add SBO game provider to platform?")
     platform = await backofficeApi.platform.addPlatform({
       licenseeId: licensee.id,
       autoClearWageringRequirement: true,
       autoClearWageringRequirementBalance: AutoClearBucketAmount
     })
-
-    console.log("platform.code", platform.code)
 
     platformToken = await globalApi.platformToken(platform.code)
     player = await operatorApi.player.createAndLogin(platformToken)
@@ -69,7 +65,7 @@ test.skip("fund withdraw > audit clear bucket", async ({
     })
   ])
 
-  const DepositAmount = 10
+  const DepositAmount = AutoClearBucketAmount - 1
   let depositFormId = await backofficeApi.player.applyBankManualDepositForm({
     brandId: platform.id,
     playerCode: player.code,
@@ -82,7 +78,7 @@ test.skip("fund withdraw > audit clear bucket", async ({
   })
 
   let betAmount = DepositAmount
-  let [{ externalRoundId, ...result }] = await Promise.all([
+  let [{ externalRoundId, ...betResult }] = await Promise.all([
     sboGameProviderApi.placeBet({
       amount: betAmount,
       playerCode: player.code
@@ -93,6 +89,9 @@ test.skip("fund withdraw > audit clear bucket", async ({
   ])
 
   let withdrawAmount = DepositAmount
+  console.log(
+    "TODO: how to fix sometime apply withdraw fail with InsufficientBucketException"
+  )
   let WithdrawFormId = await operatorApi.withdraw.applyManualWithdraw(
     platformToken,
     player.token,
@@ -108,7 +107,8 @@ test.skip("fund withdraw > audit clear bucket", async ({
   let AuditReportDialogSelector = `#audit-auto-clear-bucket-dialog`
   await openDialog(page, AuditReportDialogSelector)
 
-  if (gpiPlatform.code != platform.code) {
+  //TODO: test open order condition based on betResult instead of compare platform code
+  if (gpiPlatform.code == platform.code) {
     let OpenOrderTableSelector = `${AuditReportDialogSelector} table#open-order`
     let openOrderBetAmountString = await page
       .locator(`${OpenOrderTableSelector} td[data-column-id="betAmount"]`)

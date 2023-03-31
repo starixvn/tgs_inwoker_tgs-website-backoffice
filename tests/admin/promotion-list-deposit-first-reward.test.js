@@ -27,7 +27,6 @@ test("add turnover reward promotion", async ({
   await gotoPromotionPage(page, platform.code)
 
   let promotion = await addPromotion(page)
-  console.log("TODO: get promotion record use api and compare")
 })
 
 const addPromotion = async (page) => {
