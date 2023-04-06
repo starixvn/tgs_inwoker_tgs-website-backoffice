@@ -5,11 +5,6 @@ import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { selectByValue, selectRandomOption } from "../page/select.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
-import {
-  gotoPlatformListPage,
-  searchPlatform,
-  updatePlatform
-} from "./platform-list-page.js"
 import faker from "@faker-js/faker"
 
 const test = base.extend(Fixture)

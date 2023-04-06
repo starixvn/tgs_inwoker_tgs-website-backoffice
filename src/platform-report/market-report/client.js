@@ -21,3 +21,11 @@ export const usePlatformMarketReportAdditionalExpenseList = (searchParams) => {
     : ""
   return useGet(url)
 }
+
+export const useMarketReportAgentProfitList = (searchParams) => {
+  let url =
+    searchParams?.brandId && searchParams?.date
+      ? urlWith(searchParams, `${API}/agentProfit`)
+      : ""
+  return useGet(url)
+}

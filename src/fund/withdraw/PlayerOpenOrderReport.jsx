@@ -83,6 +83,7 @@ export const PlayerOpenOrderReport = ({
       {...props}
     >
       <Table
+        id="open-order"
         columns={columns}
         data={data?.items}
         controlledState={state}

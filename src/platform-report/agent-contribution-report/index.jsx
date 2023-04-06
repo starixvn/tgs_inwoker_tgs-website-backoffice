@@ -51,6 +51,12 @@ import { urlWith } from "../../client"
 import { AgentLevelSelect } from "../../agent/AgentLevel"
 import Big from "big.js"
 import { BonusDialogDisclosure } from "../BonusDialog"
+import { Code as PageCode } from "./menu"
+import { Code as ModuleCode } from "../menu"
+import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+
+const MainTable = "main"
+const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export { Code }
 
@@ -87,13 +93,20 @@ const ReportContent = ({ brandId }) => {
   let agentUsername = headOf(usernames)
 
   let dateRange = yesterday()
+
+  let [hiddenColumns] = useTableColumnHiddenLocalStorage(
+    TableLocalStorageKey,
+    []
+  )
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     agentType: undefined,
     includeAgents: true,
     from: dateRange.start,
     to: dateRange.end,
-    levelType: undefined
+    levelType: undefined,
+    hiddenColumns
   })
 
   useEffect(() => {
@@ -190,6 +203,8 @@ const ReportContent = ({ brandId }) => {
             isLoading={isLoading}
             foot={data?.items?.length > 0}
             stickyHead
+            localStorageKey={TableLocalStorageKey}
+            toggleColumnHidden={true}
           />
         )}
       </FieldStack>

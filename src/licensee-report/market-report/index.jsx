@@ -35,6 +35,12 @@ import { LicenseeCurrencySelect } from "../LicenseeCurrencySelect"
 import DownloadButton from "../../button/DownloadButton"
 import { urlWith } from "../../client/index"
 import Big from "big.js"
+import { Code as PageCode } from "./menu"
+import { Code as ModuleCode } from "../menu"
+import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+
+const MainTable = "main"
+const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export { Code }
 
@@ -68,11 +74,18 @@ export const Body = () => {
 
 const ReportContent = ({ licenseeId }) => {
   let dateRange = yesterday()
+
+  let [hiddenColumns] = useTableColumnHiddenLocalStorage(
+    TableLocalStorageKey,
+    []
+  )
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     licenseeId,
     currencyCode: undefined,
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    hiddenColumns
   })
 
   useEffect(() => {
@@ -154,6 +167,8 @@ const ReportContent = ({ licenseeId }) => {
             return {}
           }}
           stickyHead
+          localStorageKey={TableLocalStorageKey}
+          toggleColumnHidden={true}
         />
       </Stack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
@@ -268,6 +283,11 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "bonusAmount",
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "agentProfit",
+        Header: <Trans zh="代理总分红" en="Agent Profit" />,
         disableSortBy: true
       }),
       numberDecimalColumn({

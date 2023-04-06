@@ -2,36 +2,83 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { Heading, Stack, Box, Button, Set, useModalState } from "bumbag"
-import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
   useUserBrandId
 } from "../../user/context"
 import { Code } from "./menu"
-import BrandBar from "../../report/BrandBar"
-import MarketReport from "./MarketReport"
 import { useMarketReportList, API } from "./client"
+import { MarketReportWithAgent } from "./MarketReportWithAgent"
+//TODO: rm
+import { isFeatureMarketReportWithAgentProfit } from "../../env"
+import {
+  PlatformPageContent,
+  usePlatformId
+} from "../../page/PlatformPageContent"
+import { Trans } from "../../i18n"
 
 export { Code }
 
 export const Content = () => {
+  /*
+  TODO: rm
+  let [reportFeatureFlag, setReportFeatureFlag] = useState(
+    isFeatureMarketReportWithAgentProfit()
+  )
+  */
+
   let isDisplay = useIsDisplayMenuByRoute()
   if (!isDisplay) {
     return null
   }
 
-  return <Body />
+  return <Report />
+  /*
+  TODO: rm
+  return reportFeatureFlag ? (
+    <Report />
+  ) : (
+    <Body setReportFeatureFlag={setReportFeatureFlag} />
+  )
+  */
 }
 
 export const CodeContentPair = [Code, Content]
 
-export const Body = () => {
+const Report = () => {
+  return (
+    <PlatformPageContent title={<Trans zh="市场报表" en="Market Report" />}>
+      <ReportBody />
+    </PlatformPageContent>
+  )
+}
+
+const ReportBody = () => {
+  let brandId = usePlatformId()
+  return (
+    <MarketReportWithAgent
+      brandId={brandId}
+      useFetch={useMarketReportList}
+      exportUrl={`${API}/exportMarkets`}
+    />
+  )
+}
+
+/*
+TODO: rm
+export const Body = ({ setReportFeatureFlag }) => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
 
   return (
-    <Set orientation="vertical" isFilled>
+    <Set
+      orientation="vertical"
+      isFilled
+      onClick={() => {
+        setReportFeatureFlag(isFeatureMarketReportWithAgentProfit())
+      }}
+    >
       <BrandBar
         onBrandChange={(value) => {
           setBrandId(value)
@@ -47,3 +94,4 @@ export const Body = () => {
     </Set>
   )
 }
+*/

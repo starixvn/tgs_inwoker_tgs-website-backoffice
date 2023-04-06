@@ -1,0 +1,56 @@
+import React, { useState, useEffect, useMemo } from "react"
+import { css } from "@emotion/react"
+import {
+  Box,
+  Text,
+  Button,
+  Set,
+  Icon,
+  useModalState,
+  Dialog,
+  Card,
+  Flex,
+  Heading,
+  FieldStack
+} from "bumbag"
+import { Update, View } from "./menu"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { Disclosure } from "../../dialog/Disclosure"
+import { Trans } from "../../i18n"
+import { usePromotionFormData } from "./edit"
+
+export const CopyPromotionDisclosure = ({
+  brandId,
+  record,
+  onSubmitted,
+  ...props
+}) => {
+  let dialog = useModalState()
+
+  let isDisplay = useIsDisplayMenuByRoute([Update])
+  if (!isDisplay) {
+    return null
+  }
+
+  return (
+    <>
+      <Disclosure {...dialog} {...props}>
+        <Trans zh="复制" en="Copy" />
+      </Disclosure>
+      {dialog.visible && (
+        <CopyDialog
+          brandId={brandId}
+          record={record}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
+      )}
+    </>
+  )
+}
+
+const useCopyPromotionFormData = (brandId, record) => {
+  //TODO: remove id, name, change from & to, reset isPromotionStarted and isPromotionEnded
+}
+
+const CopyDialog = ({ brandId, record, dialog }) => {}

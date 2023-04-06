@@ -55,6 +55,12 @@ import {
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons"
 import AutoSizer from "react-virtualized-auto-sizer"
+import { Code as PageCode } from "./menu"
+import { Code as ModuleCode } from "../menu"
+import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+
+const MainTable = "main"
+const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let [treePaths, setTreePaths] = useState([])
@@ -127,13 +133,20 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   }
 
   let dateRange = yesterday()
+
+  let [hiddenColumns] = useTableColumnHiddenLocalStorage(
+    TableLocalStorageKey,
+    []
+  )
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     username: "",
     type: "",
     from: dateRange.start,
     to: dateRange.end,
-    levelType: undefined
+    levelType: undefined,
+    hiddenColumns
   })
 
   useEffect(() => {
@@ -371,7 +384,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                       background-color: var(--bb-palette-blueTint, #e9f0fb);
                     }
                   `}
-                  tableBorder="0"
+                  localStorageKey={TableLocalStorageKey}
+                  toggleColumnHidden={true}
                 />
               )
             }}
