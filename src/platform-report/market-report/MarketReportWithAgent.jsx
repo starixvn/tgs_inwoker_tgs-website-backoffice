@@ -127,13 +127,9 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
           </List.Item>
           <List.Item>
             <Trans
-              zh="净盈利 = 公司输赢金额 - 平台承担红利 - 平台承担优惠调帐 - 公司调帐。"
-              en="Net Profit = CO. W/L - Platform-Covered Bonus - Platform-Covered Bonus Adjust - C.O Adjustment Amount."
-            />
-            {/* <Trans
               zh="净盈利 = 公司输赢金额 - 平台承担红利 - 平台承担优惠调帐 - 公司调帐 - 代理总分红。"
               en="Net Profit = CO. W/L - Platform-Covered Bonus - Platform-Covered Bonus Adjust - C.O Adjustment Amount - Agent Profit."
-            /> */}
+            />
           </List.Item>
         </List>
       </Alert>
@@ -299,7 +295,6 @@ const useColumns = ({ brandId, items = [] }) => {
         Header: <Trans zh="平台承担红利" en="Platform-Covered Bonus" />,
         disableSortBy: true
       }),
-      /*
       numberDecimalColumn({
         id: "agentProfit",
         accessor: (row) => row,
@@ -319,7 +314,6 @@ const useColumns = ({ brandId, items = [] }) => {
           )
         }
       }),
-      */
       numberDecimalColumn({
         accessor: "betAmount",
         Header: <Trans zh="投注金额" en="Bet Amount" />,
