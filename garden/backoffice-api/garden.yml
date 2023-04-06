@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202303240715.261 # pgtgs/backoffice-api:202303300757.265 get brands api error?
+image: pgtgs/backoffice-api:202303310917.267
 services:
   - name: backoffice-api
     dependencies:

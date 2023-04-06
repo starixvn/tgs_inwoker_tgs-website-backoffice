@@ -27,6 +27,31 @@ test("add turnover reward promotion", async ({
   await gotoPromotionPage(page, platform.code)
 
   let promotion = await addPromotion(page)
+
+  let [mainInfo, content, rule] = await Promise.all([
+    backofficeApi.promotion.mainInfo.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.content.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.rule.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    })
+  ])
+
+  expect(mainInfo).not.empty
+
+  expect(content).not.empty
+  expect(promotion.subSubject).equals(content.subSubject)
+
+  expect(rule).not.empty
+  expect(promotion.percentage).equals(rule.percentage)
+  expect(promotion.bonusAmountLimit).equals(rule.bonusAmountLimit)
+  expect(promotion.turnoverMultiple).equals(rule.turnoverMultiple)
 })
 
 const addPromotion = async (page) => {
