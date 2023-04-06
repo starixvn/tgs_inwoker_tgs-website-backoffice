@@ -78,8 +78,51 @@ export const useAddPromotion = (data) => {
   return usePostData(API, data)
 }
 
-export const useUpdatePromotion = (id, data) => {
-  let url = id ? `${API}/${id}` : ""
+export const useUpdatePromotion = (promotionId, data) => {
+  /*
+  let {
+    isLoading: isLoadingMainInfo,
+    error: mainInfoError,
+    data: mainInfoData,
+    mutate: mutateMainInfo,
+    deleteCache: deleteMainInfoCache
+  } = useUpdatePromotionMainInfo(promotionId, data)
+  let {
+    isLoading: isLoadingContent,
+    error: contentError,
+    data: contentData,
+    mutate: mutateContent,
+    deleteCache: deleteContentCache
+  } = useUpdatePromotionContent(promotionId, data)
+  let {
+    isLoading: isLoadingRule,
+    error: ruleError,
+    data: ruleData,
+    mutate: mutateRule,
+    deleteCache: deleteRuleCache
+  } = useUpdatePromotionRule(promotionId, data?.rule)
+
+  return {
+    isLoading: isLoadingMainInfo || isLoadingContent || isLoadingRule,
+    error: mainInfoError || contentError || ruleError,
+    data: [mainInfoData, contentData, ruleData],
+    mutate: (_, shouldRevalidate) => {
+      mutateMainInfo(_, shouldRevalidate)
+      mutateContent(_, shouldRevalidate)
+      mutateRule(_, shouldRevalidate)
+    },
+    deleteCache: () => {
+      deleteMainInfoCache()
+      deleteContentCache()
+      deleteRuleCache()
+    }
+  }
+  */
+
+  /*
+  TODO: rm old update promotion api?
+  */
+  let url = promotionId ? `${API}/${promotionId}` : ""
   return usePutData(url, data)
 }
 

@@ -15,11 +15,7 @@ import {
 } from "bumbag"
 import { Trans } from "../../../i18n"
 import Separator from "../../../layout/Separator"
-import {
-  useIsPromotionAdded,
-  usePromotionType,
-  useIsActivePromotion
-} from "../usePromotionFormData"
+import { usePromotionType } from "../usePromotionFormData"
 import DepositRewardGroup from "./DepositRewardGroup"
 import TurnoverRewardGroup from "./TurnoverRewardGroup"
 import ReliefMoneyRewardGroup from "./ReliefMoneyRewardGroup"
@@ -29,6 +25,7 @@ import DepositLotteryReward from "./DepositLotteryReward"
 import DummyReward from "./DummyReward"
 import OfflineLoginReward from "./OfflineLoginReward"
 import OfflineDepositReward from "./OfflineDepositReward"
+import { useIsPromotionStarted } from "../usePromotionFormData"
 
 const rewards = () => [
   ...DepositRewardGroup,
@@ -44,16 +41,13 @@ const rewards = () => [
 
 export const Main = ({ readOnly, ...props }) => {
   let type = usePromotionType()
-  let Reward = rewards().find((reward) => reward.PromotionType === type)
 
-  /*
-  TODO: also use useIsPromotionStarted() ?
-  let isAdded = useIsPromotionAdded()
-  if (isAdded) {
+  let promotionStarted = useIsPromotionStarted()
+  if (promotionStarted) {
     readOnly = true
   }
-  */
 
+  let Reward = rewards().find((reward) => reward.PromotionType === type)
   return Reward?.Main ? <Reward.Main readOnly={readOnly} {...props} /> : null
 }
 
@@ -63,8 +57,14 @@ export const Content = (props) => {
   return Reward?.Content ? <Reward.Content {...props} /> : null
 }
 
-export const Rule = (props) => {
+export const Rule = ({ readOnly, ...props }) => {
   let type = usePromotionType()
+
+  let promotionStarted = useIsPromotionStarted()
+  if (promotionStarted) {
+    readOnly = true
+  }
+
   let Reward = rewards().find((reward) => reward.PromotionType === type)
   return Reward?.Rule ? (
     <>
@@ -74,7 +74,7 @@ export const Rule = (props) => {
         <Trans zh="規則設定" en="Rule Settings" />
       </Heading>
 
-      <Reward.Rule {...props} />
+      <Reward.Rule readOnly={readOnly} {...props} />
     </>
   ) : null
 }

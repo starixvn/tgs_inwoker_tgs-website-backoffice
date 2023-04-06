@@ -48,7 +48,11 @@ import { PromotionDateRangeFieldBox } from "./field/DateRangeField"
 import { formatDateOnly } from "../../date/format"
 import Reward from "./reward/index"
 import { PromotionTypes as OfflinePromotionTypeList } from "./reward/OfflineRewardGroup"
-import { usePromotionType, Field } from "./usePromotionFormData"
+import {
+  usePromotionType,
+  Field,
+  useIsPromotionStarted
+} from "./usePromotionFormData"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -451,7 +455,7 @@ export const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let disabled = readOnly
   let editable = !readOnly
   let promotionTypeEditable = editable && isAdd
-  let required = editable
+  let promotionStarted = useIsPromotionStarted()
   return (
     <FieldStack marginLeft="1rem" paddingBottom="1.5rem" width="max-content">
       <FieldValues>
@@ -462,10 +466,10 @@ export const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
           <InputField
             name="name"
             brandId={brandId}
-            required={required}
             showLocalizationAddonAfter
-            disabled={disabled}
+            disabled={disabled || promotionStarted}
             maxLength="64"
+            required
           />
         </Box>
 
