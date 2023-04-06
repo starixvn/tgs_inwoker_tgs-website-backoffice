@@ -52,8 +52,6 @@ export const AgentProfitDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
-  return <FormattedNumberDecimal value={value} placeholder="-" />
-
   if (!Number.isFinite(value) || value === 0) {
     return <FormattedNumberDecimal value={value} placeholder="-" />
   }
