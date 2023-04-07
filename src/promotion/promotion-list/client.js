@@ -118,6 +118,7 @@ export const useUpdatePromotion = (promotionId, data) => {
     }
   }
   */
+
   /*
   TODO: rm old update promotion api?
   */

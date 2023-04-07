@@ -31,6 +31,7 @@ test.skip("update first deposit reward promotion", async ({
     { brandId: platform.id }
   )
 
+  //TODO: also update mainInfo & content
   let expectedRule = clone(promotion.rule)
   expectedRule.percentage = expectedRule.percentage + 1
   expectedRule.bonusAmountLimit = expectedRule.bonusAmountLimit + 1
@@ -64,7 +65,7 @@ test.skip("update first deposit reward promotion", async ({
       )
     }),
     */
-    page.waitForTimeout(1000),
+    page.waitForTimeout(500),
     page.waitForSelector(DialogSelector, { state: "detached" }),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])

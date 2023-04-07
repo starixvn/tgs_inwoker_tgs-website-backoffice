@@ -10,6 +10,7 @@ import {
 import faker from "@faker-js/faker"
 import mainInfo from "../mainInfo.js"
 import content from "../content.js"
+import { findByName } from "../list.js"
 
 const API = "api/promotion"
 
@@ -64,7 +65,8 @@ const add =
     })
     let result = await response.json()
 
-    let id = await findPromotionId({ brandId, name: formData.name })
+    let promotion = await findByName(brandId, formData.name)
+    let id = promotion?.id
 
     return {
       ...formData,
@@ -74,12 +76,14 @@ const add =
 
 export const addFirstDeposit = add(FirstDeposit)
 
+/*
 const findPromotionId = async ({ brandId, name }) => {
   let url = `${host}/${API}?brandId=${brandId}&name=${name}&showAll=true`
   let response = await fetcher.get(url)
   let result = await response.json()
   return result.items[0].id
 }
+*/
 
 export const PromotionType = {
   firstDeposit: {
