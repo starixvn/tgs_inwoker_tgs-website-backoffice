@@ -18,7 +18,7 @@ import faker from "@faker-js/faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("add turnover reward promotion", async ({
+test("add first deposit reward promotion", async ({
   page,
   platform,
   backofficeApi,

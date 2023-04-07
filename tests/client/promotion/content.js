@@ -5,6 +5,18 @@ import { findByName } from "./list.js"
 
 const API = "api/promotion/content"
 
+export const random = ({
+  subSubject = faker.lorem.word(),
+  desktopBanner = faker.image.imageUrl(),
+  mobileBanner = faker.image.imageUrl(),
+  ...props
+} = {}) => ({
+  subSubject,
+  desktopBanner,
+  mobileBanner,
+  ...props
+})
+
 export const fetch = async ({ promotionId, platformId, name } = {}) => {
   if (!promotionId) {
     let promotion = await findByName(platformId, name)
@@ -24,6 +36,7 @@ export const fetch = async ({ promotionId, platformId, name } = {}) => {
 export const update = async (promotionId, formData) => {}
 
 export default {
+  random,
   fetch,
   update
 }

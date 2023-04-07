@@ -1,0 +1,22 @@
+kind: Module
+type: container
+name: promotion-rebate
+image: pgtgs/promotion-rebate:202303270647.54
+services:
+  - name: promotion-rebate
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - promotion-api
+      - brand-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      Rebate__PromotionBaseUrl: "http://promotion-api"
+      Rebate__BrandServiceBaseUrl: "http://brand-api"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

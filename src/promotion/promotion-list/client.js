@@ -27,7 +27,7 @@ export const usePromotionMainInfo = (id) => {
 }
 
 export const useUpdatePromotionMainInfo = (promotionId, data) => {
-  let url = promotionId && data ? `${API}/main/${id}` : ""
+  let url = promotionId && data ? `${API}/main/${promotionId}` : ""
   return usePatchData(url, data)
 }
 
@@ -37,7 +37,7 @@ export const usePromotionContent = (id) => {
 }
 
 export const useUpdatePromotionContent = (promotionId, data) => {
-  let url = promotionId && data ? `${API}/content/${id}` : ""
+  let url = promotionId && data ? `${API}/content/${promotionId}` : ""
   return usePatchData(url, data)
 }
 
@@ -47,7 +47,7 @@ export const usePromotionRule = (id) => {
 }
 
 export const useUpdatePromotionRule = (promotionId, data) => {
-  let url = promotionId && data ? `${API}/rule/${id}` : ""
+  let url = promotionId && data ? `${API}/rule/${promotionId}` : ""
   return usePatchData(url, data)
 }
 
@@ -83,29 +83,29 @@ export const useUpdatePromotion = (promotionId, data) => {
   let {
     isLoading: isLoadingMainInfo,
     error: mainInfoError,
-    data: mainInfoData,
+    result: mainInfoResult,
     mutate: mutateMainInfo,
     deleteCache: deleteMainInfoCache
   } = useUpdatePromotionMainInfo(promotionId, data)
   let {
     isLoading: isLoadingContent,
     error: contentError,
-    data: contentData,
+    result: contentResult,
     mutate: mutateContent,
     deleteCache: deleteContentCache
   } = useUpdatePromotionContent(promotionId, data)
   let {
     isLoading: isLoadingRule,
     error: ruleError,
-    data: ruleData,
+    result: ruleResult,
     mutate: mutateRule,
     deleteCache: deleteRuleCache
-  } = useUpdatePromotionRule(promotionId, data?.rule)
+  } = useUpdatePromotionRule(promotionId, data)
 
   return {
     isLoading: isLoadingMainInfo || isLoadingContent || isLoadingRule,
     error: mainInfoError || contentError || ruleError,
-    data: [mainInfoData, contentData, ruleData],
+    result: mainInfoResult && contentResult && ruleResult,
     mutate: (_, shouldRevalidate) => {
       mutateMainInfo(_, shouldRevalidate)
       mutateContent(_, shouldRevalidate)
@@ -118,7 +118,6 @@ export const useUpdatePromotion = (promotionId, data) => {
     }
   }
   */
-
   /*
   TODO: rm old update promotion api?
   */

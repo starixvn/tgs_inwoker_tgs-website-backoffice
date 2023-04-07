@@ -1,0 +1,99 @@
+import { fetcher } from "../../fetcher.js"
+import { host } from "../../host.js"
+import {
+  startOfDay,
+  endOfTomorrow,
+  formatISO,
+  addWeeks,
+  format
+} from "date-fns"
+import faker from "@faker-js/faker"
+import mainInfo from "../mainInfo.js"
+import content from "../content.js"
+
+const API = "api/promotion"
+
+const FirstDeposit = "FirstDeposit"
+const DailyFirstDeposit = "DailyFirstDeposit"
+const DailySecondDeposit = "DailySecondDeposit"
+const DepositReward = "DepositReward"
+
+const ruleBy = (promotionType) => {
+  switch (promotionType) {
+    case DepositReward:
+      return {
+        rule: {
+          depositMinimumLimit: 10,
+          percentage: 10,
+          bonusAmountLimit: 10,
+          turnoverMultiple: 10
+        }
+      }
+
+    default:
+      return {
+        rule: {
+          percentage: 10,
+          bonusAmountLimit: 10,
+          turnoverMultiple: 10
+        }
+      }
+  }
+}
+
+const add =
+  (promotionType) =>
+  async ({ brandId, vipLevels = [1], ...restFormData } = {}) => {
+    if (!brandId) {
+      throw "brandId is required field"
+    }
+
+    let formData = {
+      promotionType,
+      ...mainInfo.random({ promotionType }),
+      ...content.random(),
+      ...ruleBy(promotionType),
+      vipLevels,
+      brandId,
+      ...restFormData
+    }
+
+    let response = await fetcher.post(`${host}/${API}`, {
+      data: formData,
+      failOnStatusCode: true
+    })
+    let result = await response.json()
+
+    let id = await findPromotionId({ brandId, name: formData.name })
+
+    return {
+      ...formData,
+      id
+    }
+  }
+
+export const addFirstDeposit = add(FirstDeposit)
+
+const findPromotionId = async ({ brandId, name }) => {
+  let url = `${host}/${API}?brandId=${brandId}&name=${name}&showAll=true`
+  let response = await fetcher.get(url)
+  let result = await response.json()
+  return result.items[0].id
+}
+
+export const PromotionType = {
+  firstDeposit: {
+    add: add(FirstDeposit)
+  },
+  dailyFirstDeposit: {
+    add: add(DailyFirstDeposit)
+  },
+  dailySecondDeposit: {
+    add: add(DailySecondDeposit)
+  },
+  depositReward: {
+    add: add(DepositReward)
+  }
+}
+
+export default PromotionType

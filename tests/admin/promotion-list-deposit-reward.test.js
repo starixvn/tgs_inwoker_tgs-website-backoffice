@@ -18,7 +18,12 @@ import faker from "@faker-js/faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("add turnover reward promotion", async ({ page, promotionSetting }) => {
+test("add turnover reward promotion", async ({
+  page,
+  platform,
+  backofficeApi,
+  promotionSetting
+}) => {
   let brandId = await gotoPromotionPage(page)
 
   let promotion = await addPromotion(page)
