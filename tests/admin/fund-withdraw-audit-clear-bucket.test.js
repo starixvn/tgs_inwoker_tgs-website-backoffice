@@ -88,10 +88,13 @@ test("fund withdraw > audit clear bucket", async ({
     })
   ])
 
-  let withdrawAmount = DepositAmount
-  console.log(
-    "TODO: how to fix sometime apply withdraw fail with InsufficientBucketException"
+  //TODO: timeout able to fix apply withdraw fail with InsufficientBucketException?
+  console.warn(
+    "TODO: try to fix apply withdraw fail with InsufficientBucketException "
   )
+  // await page.waitForTimeout(3000)
+
+  let withdrawAmount = DepositAmount
   let WithdrawFormId = await operatorApi.withdraw.applyManualWithdraw(
     platformToken,
     player.token,

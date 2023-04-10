@@ -19,17 +19,35 @@ import { utils, write } from "xlsx"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("add offline login reward promotion", async ({
+test("add offline deposit reward promotion", async ({
   page,
   promotionSetting,
   platform,
+  backofficeApi,
   player
 }) => {
   let brandId = await gotoPromotionPage(page, platform.code)
 
   let promotion = await addPromotion(page, platform, player)
 
-  console.log("TODO: get promotion record use api and compare")
+  let [mainInfo, content, rule] = await Promise.all([
+    backofficeApi.promotion.mainInfo.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.content.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.rule.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    })
+  ])
+
+  expect(rule.bucketRate).equals(promotion.turnoverMultiple)
+  expect(rule.hierarchy.phases[0].condition).equals(promotion.condition)
+  expect(rule.hierarchy.phases[0].bonus).equals(promotion.bonus)
 })
 
 const toFileBuffer = (username) => {
@@ -55,8 +73,9 @@ const addPromotion = async (page, platform, player) => {
     name: `${lorem.word()}-${Date.now()}`,
     from: format(from, "yyyy/MM/dd"),
     to: format(to, "yyyy/MM/dd"),
-    bonusAmount: 100,
-    turnoverMultiple: 2
+    turnoverMultiple: 2,
+    condition: 100,
+    bonus: 10
   }
 
   await page.fill(`${DialogSelector} input[name="name"]`, promotion.name)
@@ -78,7 +97,7 @@ const addPromotion = async (page, platform, player) => {
     PromotionTypeGroup
   )
 
-  const PromotionType = "OfflineLoginReward"
+  const PromotionType = "OfflineDepositReward"
   await page.selectOption(`select[name="promotionType"]`, PromotionType)
 
   const [fileChooser] = await Promise.all([
@@ -103,12 +122,18 @@ const addPromotion = async (page, platform, player) => {
   expect(batchId).to.not.empty
 
   await page.fill(
-    `${DialogSelector} input[name="bonusAmount"]`,
-    `${promotion.bonusAmount}`
-  )
-  await page.fill(
     `${DialogSelector} input[name="turnoverMultiple"]`,
     `${promotion.turnoverMultiple}`
+  )
+
+  await page.fill(
+    `${DialogSelector} input[data-type="condition"]`,
+    `${promotion.condition}`
+  )
+
+  await page.fill(
+    `${DialogSelector} input[data-type="bonus"]`,
+    `${promotion.bonus}`
   )
 
   let WaitBatchUploadPlayerTime = 1000
@@ -117,7 +142,7 @@ const addPromotion = async (page, platform, player) => {
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes("/api/offline-login-reward") &&
+        response.url().includes("/api/offline-deposit-reward") &&
         response.status() === 200
       )
     }),
