@@ -34,7 +34,7 @@ import { PromotionTypes as OfflinePromotionTypes } from "./reward/OfflineRewardG
 const NotPromtion = [...OfflinePromotionTypes]
 export const CopyPromotionDisclosure = ({
   brandId,
-  record,
+  promotionId,
   onSubmitted,
   ...props
 }) => {
@@ -59,7 +59,7 @@ export const CopyPromotionDisclosure = ({
       {dialog.visible && (
         <CopyDialog
           brandId={brandId}
-          record={record}
+          promotionId={promotionId}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -68,8 +68,8 @@ export const CopyPromotionDisclosure = ({
   )
 }
 
-const useCopyPromotionFormData = (brandId, record) => {
-  let { isLoading, data, ...rest } = usePromotionFormData(brandId, record)
+const useCopyPromotionFormData = (brandId, promotionId) => {
+  let { isLoading, data, ...rest } = usePromotionFormData(brandId, promotionId)
   if (!isLoading && data) {
     let {
       id,
@@ -99,7 +99,7 @@ const useCopyPromotionFormData = (brandId, record) => {
   return { isLoading, data, ...rest }
 }
 
-const CopyDialog = ({ brandId, record, dialog, onSubmitted }) => {
+const CopyDialog = ({ brandId, promotionId, dialog, onSubmitted }) => {
   let [formData, setSubmit] = useState()
   let {
     isLoading: isLoadingFormData,
@@ -107,7 +107,7 @@ const CopyDialog = ({ brandId, record, dialog, onSubmitted }) => {
     error: loadingFormDataError,
     mutate: mutateFormData,
     deleteCache: deleteFormDataCache
-  } = useCopyPromotionFormData(brandId, record)
+  } = useCopyPromotionFormData(brandId, promotionId)
 
   let { result, isLoading, error, mutate, deleteCache } =
     useAddPromotion(formData)

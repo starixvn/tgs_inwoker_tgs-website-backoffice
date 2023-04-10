@@ -412,12 +412,13 @@ const useColumns = ({
                 <ViewPromotionDisclosure
                   id="view-promotion-dialog-disclosure"
                   brandId={brandId}
-                  record={record}
+                  promotionId={record.id}
                 />
                 <EditPromotionDisclosure
                   id="edit-promotion-dialog-disclosure"
                   brandId={brandId}
-                  record={record}
+                  promotionId={record.id}
+                  promotionType={record.promotionType}
                   disabled={isPromotionStarted}
                   onSubmitted={mutate}
                 />
@@ -426,7 +427,7 @@ const useColumns = ({
                 <CopyPromotionDisclosure
                   id="copy-promotion-dialog-disclosure"
                   brandId={brandId}
-                  record={record}
+                  promotionId={record?.id}
                   onSubmitted={mutate}
                 /> */}
                 {hasUpdateAuth && (

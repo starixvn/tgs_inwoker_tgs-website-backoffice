@@ -6,11 +6,15 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { Trans, useTrans } from "../../../i18n"
 import { NormalLabel } from "../../../form/Label"
 import { PromotionTypeGroup } from "../../PromotionType"
-import { GameTypeGroupSelect, GameTypeSelect } from "../../../game/GameType"
+import {
+  GameTypeGroupSelect,
+  GameTypeSelect,
+  useGameTypeGroupValueOf
+} from "../../../game/GameType"
 
 const GameTypeGroupFieldName = "gameTypeGroup"
 
-const GameTypeFieldName = "gameType"
+const GameTypeFieldName = "rule.gameType"
 
 export const useGameType = () => {
   let { control } = useFormContext()
@@ -25,9 +29,13 @@ export const useGameType = () => {
 export const GameTypeSelectField = ({ readOnly }) => {
   let { control, setValue } = useFormContext()
 
+  let gameType = useGameType()
+  let defaultGameTypeGroup = useGameTypeGroupValueOf(gameType)
+
   let gameTypeGroup = useWatch({
     control,
-    name: GameTypeGroupFieldName
+    name: GameTypeGroupFieldName,
+    defaultValue: defaultGameTypeGroup
   })
 
   useEffect(() => {

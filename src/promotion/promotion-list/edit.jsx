@@ -26,7 +26,13 @@ import { Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { InputField, Input } from "../../input/Input"
 import clone from "clone-deep"
-import { useAddPromotion, useUpdatePromotion, usePromotionRule } from "./client"
+import {
+  useAddPromotion,
+  useUpdatePromotion,
+  usePromotionRule,
+  usePromotionMainInfo,
+  usePromotionContent
+} from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
@@ -134,19 +140,15 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
 }
 
 export const normalizeFormData = ({
-  gameType,
   gameProviders = [],
   rule = {},
   from,
   to,
   ...data
 }) => {
-  let gameProviderIds = gameType
+  rule.gameProviderIds = rule?.gameType
     ? toCheckedGameProviderIds("gameProviderId", gameProviders)
     : null
-
-  rule.gameType = gameType
-  rule.gameProviderIds = gameProviderIds
 
   from = formatDateOnly(from)
   to = formatDateOnly(to)
@@ -163,7 +165,8 @@ const NotEditablePromtion = [...OfflinePromotionTypeList]
 
 export const EditPromotionDisclosure = ({
   brandId,
-  record,
+  promotionId,
+  promotionType,
   onSubmitted,
   ...props
 }) => {
@@ -171,7 +174,6 @@ export const EditPromotionDisclosure = ({
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
 
-  let promotionType = record?.promotionType
   if (NotEditablePromtion.includes(promotionType)) {
     return null
   }
@@ -186,7 +188,7 @@ export const EditPromotionDisclosure = ({
       {dialog.visible && (
         <EditDialog
           brandId={brandId}
-          record={record}
+          promotionId={promotionId}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -195,7 +197,13 @@ export const EditPromotionDisclosure = ({
   )
 }
 
-const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
+const EditDialog = ({
+  brandId,
+  promotionId,
+  onSubmitted,
+  dialog,
+  ...props
+}) => {
   let [formData, setSubmit] = useState()
 
   let {
@@ -204,9 +212,9 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
     error: loadingFormDataError,
     mutate: mutatePromotionFormData,
     deleteCache: deletePromotionFormDataCache
-  } = usePromotionFormData(brandId, record)
+  } = usePromotionFormData(brandId, promotionId)
   let { result, isLoading, error, mutate, deleteCache } = useUpdatePromotion(
-    record?.id,
+    promotionId,
     formData
   )
 
@@ -263,20 +271,22 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   )
 }
 
-export const usePromotionFormData = (
-  brandId,
-  {
-    id,
-    from,
-    to,
-    gameType,
-    gameProviderIds = [],
-    vipLevels = [],
-    localization = {},
-    ...record
-  } = {}
-) => {
-  let cloned = clone(record)
+export const usePromotionFormData = (brandId, promotionId) => {
+  let {
+    isLoading: isLoadingMainInfo,
+    error: mainInfoError,
+    data: mainInfo,
+    mutate: mutateMainInfo,
+    deleteCache: deleteMainInfoCache
+  } = usePromotionMainInfo(promotionId)
+
+  let {
+    isLoading: isLoadingContent,
+    error: contentError,
+    data: content,
+    mutate: mutateContent,
+    deleteCache: deleteContentCache
+  } = usePromotionContent(promotionId)
 
   let {
     isLoading: isLoadingPromotionRule,
@@ -284,7 +294,7 @@ export const usePromotionFormData = (
     data: rule,
     mutate: mutatePromotionRule,
     deleteCache: deletePromotionRuleCache
-  } = usePromotionRule(id)
+  } = usePromotionRule(promotionId)
 
   let {
     data = {},
@@ -293,18 +303,17 @@ export const usePromotionFormData = (
     mutate: mutateBrandGameProviderList,
     deleteCache: deleteBrandGameProviderListCache
   } = useBrandGameProviderList(
-    brandId
+    brandId && rule?.gameType
       ? {
           brandId,
           showAll: true,
           sortby: "gameProviderName",
-          gameType
+          gameType: rule?.gameType
         }
       : undefined
   )
 
-  gameType = rule?.gameType ?? gameType
-  gameProviderIds = rule?.gameProviderIds ?? gameProviderIds
+  let gameProviderIds = rule?.gameProviderIds ?? []
 
   let gameProviders =
     data?.items?.map((gameProvider) => {
@@ -315,13 +324,11 @@ export const usePromotionFormData = (
       }
     }) ?? []
 
-  let promotionTypeGroup = usePromotionGroupValueOf(record?.promotionType)
-  let gameTypeGroup = useGameTypeGroupValueOf(gameType)
+  //TODO: required?
+  let vipLevels = rule?.vipLevels?.map((vipLevel) => `${vipLevel}`) ?? []
 
-  vipLevels = vipLevels.map((vipLevel) => `${vipLevel}`)
-
-  from = parseISO(from)
-  to = parseISO(to)
+  let from = mainInfo?.from && parseISO(mainInfo.from)
+  let to = mainInfo?.to && parseISO(mainInfo.to)
 
   let now = new Date()
   let isPromotionStarted = isAfter(now, from)
@@ -330,38 +337,37 @@ export const usePromotionFormData = (
   data = {
     isPromotionStarted,
     isPromotionEnded,
-    id,
-    brandId,
-    ...cloned,
+    ...mainInfo,
+    id: promotionId,
     vipLevels,
     gameProviders,
-    promotionTypeGroup,
-    gameTypeGroup,
-    gameType,
-    localization: parseJSON(localization),
+    ...content,
+    localization: parseJSON(content?.localization ?? {}),
     from,
     to,
-    rule:
-      isEmpty(rule) &&
-      (Number.isFinite(cloned?.percentage) ||
-        Number.isFinite(cloned?.bonusAmountLimit) ||
-        Number.isFinite(cloned?.turnoverMultiple))
-        ? {
-            percentage: cloned?.percentage,
-            bonusAmountLimit: cloned?.bonusAmountLimit,
-            turnoverMultiple: cloned?.turnoverMultiple
-          }
-        : clone(rule)
+    rule
   }
 
   return {
-    isLoading: isLoadingBrandGameProviderList || isLoadingPromotionRule,
-    error: brandGameProviderError || promotionRuleError,
+    isLoading:
+      isLoadingMainInfo ||
+      isLoadingContent ||
+      isLoadingBrandGameProviderList ||
+      isLoadingPromotionRule,
+    error:
+      mainInfoError ||
+      contentError ||
+      brandGameProviderError ||
+      promotionRuleError,
     mutate: (_, shouldRevalidate) => {
+      mutateMainInfo(_, shouldRevalidate)
+      mutateContent(_, shouldRevalidate)
       mutatePromotionRule(_, shouldRevalidate)
       mutateBrandGameProviderList(_, shouldRevalidate)
     },
     deleteCache: () => {
+      deleteMainInfoCache()
+      deleteContentCache()
       deletePromotionRuleCache()
       deleteBrandGameProviderListCache()
     },
@@ -371,7 +377,7 @@ export const usePromotionFormData = (
 
 export const ViewPromotionDisclosure = ({
   brandId,
-  record,
+  promotionId,
   onSubmitted,
   ...props
 }) => {
@@ -386,16 +392,20 @@ export const ViewPromotionDisclosure = ({
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ViewDialog brandId={brandId} record={record} dialog={dialog} />
+        <ViewDialog
+          brandId={brandId}
+          promotionId={promotionId}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-const ViewDialog = ({ brandId, record, dialog, ...props }) => {
+const ViewDialog = ({ brandId, promotionId, dialog, ...props }) => {
   let { isLoading, data, error, mutate, deleteCache } = usePromotionFormData(
     brandId,
-    record
+    promotionId
   )
 
   let title = useTrans({
@@ -439,13 +449,15 @@ export const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
   let formMethods = useFormContext()
   let { control, setValue } = formMethods
 
+  let promotionType = usePromotionType()
+  let defaultPromotionTypeGroup = usePromotionGroupValueOf(promotionType)
+
   let PromotionTypeGroupFieldName = "promotionTypeGroup"
   let promotionTypeGroup = useWatch({
     control,
-    name: PromotionTypeGroupFieldName
+    name: PromotionTypeGroupFieldName,
+    defaultValue: defaultPromotionTypeGroup
   })
-
-  let promotionType = usePromotionType()
 
   let gameTypePlaceholder = useTrans({
     zh: "全部",
