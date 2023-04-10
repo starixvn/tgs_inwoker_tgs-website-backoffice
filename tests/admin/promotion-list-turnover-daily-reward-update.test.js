@@ -25,18 +25,18 @@ test("update turnover daily reward promotion", async ({
   backofficeApi,
   promotionSetting
 }) => {
-  await gotoPromotionPage(page, platform.code)
-
-  let promotion = await backofficeApi.promotion.reward.turnover.dailyRebate.add(
-    { brandId: platform.id }
-  )
+  let [promotion] = await Promise.all([
+    backofficeApi.promotion.reward.turnover.dailyRebate.add({
+      brandId: platform.id
+    }),
+    gotoPromotionPage(page, platform.code)
+  ])
 
   //TODO: also update mainInfo & content
   let expectedRule = clone(promotion.rule)
   expectedRule.percentage = expectedRule.percentage + 1
   expectedRule.bonusAmountLimit = expectedRule.bonusAmountLimit + 1
   expectedRule.turnoverMultiple = expectedRule.turnoverMultiple + 1
-  console.log("expectedRule", expectedRule, "promotion.name", promotion.name)
 
   await searchByName(page, promotion.name)
 

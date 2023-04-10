@@ -10,7 +10,7 @@ import {
   addWeeks
 } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { selectRandomPlatform, selectPlatformByCode } from "../page/content.js"
+import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import faker from "@faker-js/faker"

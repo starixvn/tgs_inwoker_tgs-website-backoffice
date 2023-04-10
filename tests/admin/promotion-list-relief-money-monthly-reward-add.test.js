@@ -10,7 +10,7 @@ import {
   addWeeks
 } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { selectRandomPlatform } from "../page/content.js"
+import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import faker from "@faker-js/faker"
@@ -18,15 +18,40 @@ import faker from "@faker-js/faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("add relief money reward promotion", async ({
+test("add monthly relief money reward promotion", async ({
   page,
+  platform,
+  backofficeApi,
   promotionSetting
 }) => {
-  let brandId = await gotoPromotionPage(page)
+  await gotoPromotionPage(page, platform.code)
 
   let promotion = await addPromotion(page)
 
-  console.log("TODO: get promotion record use api and compare")
+  let [mainInfo, content, rule] = await Promise.all([
+    backofficeApi.promotion.mainInfo.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.content.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.rule.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    })
+  ])
+
+  expect(mainInfo).not.empty
+
+  expect(content).not.empty
+  expect(promotion.subSubject).equals(content.subSubject)
+
+  expect(rule).not.empty
+  expect(promotion.percentage).equals(rule.percentage)
+  expect(promotion.bonusAmountLimit).equals(rule.bonusAmountLimit)
+  expect(promotion.turnoverMultiple).equals(rule.turnoverMultiple)
 })
 
 const addPromotion = async (page) => {
@@ -109,7 +134,7 @@ const addPromotion = async (page) => {
   return promotion
 }
 
-const gotoPromotionPage = async (page) => {
+const gotoPromotionPage = async (page, platformCode) => {
   await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })
-  return await selectRandomPlatform(page)
+  return await selectPlatformByCode(page, platformCode)
 }

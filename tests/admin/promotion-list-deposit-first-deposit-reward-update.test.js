@@ -18,25 +18,24 @@ import clone from "clone-deep"
 
 const test = base.extend(Fixture)
 
-console.warn("TODO: find out why update first deposit failed?")
-test.skip("update first deposit reward promotion", async ({
+test("update first deposit reward promotion", async ({
   page,
   platform,
   backofficeApi,
   promotionSetting
 }) => {
-  await gotoPromotionPage(page, platform.code)
-
-  let promotion = await backofficeApi.promotion.reward.deposit.firstDeposit.add(
-    { brandId: platform.id }
-  )
+  let [promotion] = await Promise.all([
+    backofficeApi.promotion.reward.deposit.firstDeposit.add({
+      brandId: platform.id
+    }),
+    gotoPromotionPage(page, platform.code)
+  ])
 
   //TODO: also update mainInfo & content
   let expectedRule = clone(promotion.rule)
   expectedRule.percentage = expectedRule.percentage + 1
   expectedRule.bonusAmountLimit = expectedRule.bonusAmountLimit + 1
   expectedRule.turnoverMultiple = expectedRule.turnoverMultiple + 1
-  console.log("expectedRule", expectedRule, "promotion.name", promotion.name)
 
   await searchByName(page, promotion.name)
 
@@ -65,7 +64,7 @@ test.skip("update first deposit reward promotion", async ({
       )
     }),
     */
-    page.waitForTimeout(500),
+    page.waitForTimeout(1000),
     page.waitForSelector(DialogSelector, { state: "detached" }),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])

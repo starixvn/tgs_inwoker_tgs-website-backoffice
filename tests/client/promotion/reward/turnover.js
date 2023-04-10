@@ -63,7 +63,6 @@ const add =
     let result = await response.json()
 
     let promotion = await findByName(brandId, formData.name)
-    console.log("added promotion", promotion)
 
     let id = promotion?.id
 
