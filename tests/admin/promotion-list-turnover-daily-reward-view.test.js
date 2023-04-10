@@ -1,0 +1,75 @@
+import base from "@playwright/test"
+import { Fixture } from "./auth.js"
+import { expect } from "chai"
+import { random } from "lodash-es"
+import {
+  startOfDay,
+  startOfTomorrow,
+  endOfTomorrow,
+  format,
+  addWeeks
+} from "date-fns"
+import { fillDatePicker } from "../fill.js"
+import { selectPlatformByCode } from "../page/content.js"
+import { optionValues } from "../page/select.js"
+import { openDialog } from "../page/dialog.js"
+import faker from "@faker-js/faker"
+import clone from "clone-deep"
+import numeral from "numeral"
+
+const test = base.extend(Fixture)
+const { lorem } = faker
+
+test("view turnover daily reward promotion", async ({
+  page,
+  platform,
+  backofficeApi,
+  promotionSetting
+}) => {
+  let [promotion] = await Promise.all([
+    backofficeApi.promotion.reward.turnover.dailyRebate.add({
+      brandId: platform.id
+    }),
+    gotoPromotionPage(page, platform.code)
+  ])
+
+  await searchByName(page, promotion.name)
+
+  let DialogSelector = `#view-promotion-dialog`
+  await openDialog(page, DialogSelector)
+
+  let percentageString = await page
+    .locator(`${DialogSelector} input[name="rule.percentage"]`)
+    .inputValue()
+  let percentage = numeral(percentageString).value()
+  expect(percentage).equals(promotion.rule.percentage)
+
+  let bonusAmountLimitString = await page
+    .locator(`${DialogSelector} input[name="rule.bonusAmountLimit"]`)
+    .inputValue()
+  let bonusAmountLimit = numeral(bonusAmountLimitString).value()
+  expect(bonusAmountLimit).equals(promotion.rule.bonusAmountLimit)
+
+  let turnoverMultipleString = await page
+    .locator(`${DialogSelector} input[name="rule.turnoverMultiple"]`)
+    .inputValue()
+  let turnoverMultiple = numeral(turnoverMultipleString).value()
+  expect(turnoverMultiple).equals(promotion.rule.turnoverMultiple)
+})
+
+const searchByName = async (page, name) => {
+  await page.fill(`input[name="name"]`, name)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`name=${name}`) && response.status() === 200
+      )
+    }),
+    page.click(`button[type="submit"]`)
+  ])
+}
+
+const gotoPromotionPage = async (page, platformCode) => {
+  await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })
+  return await selectPlatformByCode(page, platformCode)
+}
