@@ -428,6 +428,7 @@ const useColumns = ({
                   id="copy-promotion-dialog-disclosure"
                   brandId={brandId}
                   promotionId={record?.id}
+                  promotionType={record.promotionType}
                   onSubmitted={mutate}
                 /> */}
                 {hasUpdateAuth && (

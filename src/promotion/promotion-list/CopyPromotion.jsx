@@ -35,6 +35,7 @@ const NotPromtion = [...OfflinePromotionTypes]
 export const CopyPromotionDisclosure = ({
   brandId,
   promotionId,
+  promotionType,
   onSubmitted,
   ...props
 }) => {
@@ -42,7 +43,6 @@ export const CopyPromotionDisclosure = ({
 
   let isDisplay = useIsDisplayMenuByRoute([Update])
 
-  let promotionType = record?.promotionType
   if (NotPromtion.includes(promotionType)) {
     return null
   }
