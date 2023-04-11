@@ -18,7 +18,7 @@ import clone from "clone-deep"
 
 const test = base.extend(Fixture)
 
-test("update turnover weekly reward promotion", async ({
+test("update weekly turnover reward promotion", async ({
   page,
   platform,
   backofficeApi,

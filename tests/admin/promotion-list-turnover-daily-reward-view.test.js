@@ -19,7 +19,7 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
-test("view turnover daily reward promotion", async ({
+test("view daily turnover reward promotion", async ({
   page,
   platform,
   backofficeApi,

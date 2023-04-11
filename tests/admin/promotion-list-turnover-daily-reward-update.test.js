@@ -19,7 +19,7 @@ import clone from "clone-deep"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("update turnover daily reward promotion", async ({
+test("update daily turnover reward promotion", async ({
   page,
   platform,
   backofficeApi,
