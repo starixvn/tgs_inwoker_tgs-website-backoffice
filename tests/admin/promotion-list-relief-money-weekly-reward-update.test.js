@@ -83,7 +83,7 @@ test("update weekly relief money reward promotion", async ({
       name: promotion.name
     })
   ])
-  console.log("rule", rule)
+
   expect(rule.percentage).equals(expectedRule.percentage)
   expect(rule.bonusAmountLimit).equals(expectedRule.bonusAmountLimit)
   expect(rule.turnoverMultiple).equals(expectedRule.turnoverMultiple)

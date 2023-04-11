@@ -24,7 +24,7 @@ test("add dummy reward promotion", async ({
   backofficeApi,
   promotionSetting
 }) => {
-  let brandId = await gotoPromotionPage(page, platform.code)
+  await gotoPromotionPage(page, platform.code)
 
   let promotion = await addPromotion(page)
 

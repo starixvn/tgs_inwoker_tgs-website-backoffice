@@ -76,15 +76,6 @@ const add =
 
 export const addFirstDeposit = add(FirstDeposit)
 
-/*
-const findPromotionId = async ({ brandId, name }) => {
-  let url = `${host}/${API}?brandId=${brandId}&name=${name}&showAll=true`
-  let response = await fetcher.get(url)
-  let result = await response.json()
-  return result.items[0].id
-}
-*/
-
 export const PromotionType = {
   firstDeposit: {
     add: add(FirstDeposit)
