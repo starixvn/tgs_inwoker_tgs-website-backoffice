@@ -21,19 +21,6 @@ const FieldName = "batchId"
 
 //TODO: require readOnly?
 export const BatchUploadPlayerListField = ({}) => {
-  //
-  /*
-  let promotionType = usePromotionType()
-
-  let promotionTypeSettins = useFindPromotionType(promotionType)
-  let { visible = true, ...batchIdProps } =
-    get(promotionTypeSettins, FieldName) ?? {}
-
-  if (!visible) {
-    return null
-  }
-  */
-
   return (
     <>
       <NormalLabel>

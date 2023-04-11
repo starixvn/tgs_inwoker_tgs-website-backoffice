@@ -26,7 +26,7 @@ test("add offline login reward promotion", async ({
   backofficeApi,
   player
 }) => {
-  let brandId = await gotoPromotionPage(page, platform.code)
+  await gotoPromotionPage(page, platform.code)
 
   let promotion = await addPromotion(page, platform, player)
 

@@ -36,6 +36,11 @@ test("view deposit reward promotion", async ({
   let DialogSelector = `#view-promotion-dialog`
   await openDialog(page, DialogSelector)
 
+  let promotionType = await page
+    .locator(`${DialogSelector} select[name="promotionType"]`)
+    .inputValue()
+  expect(promotionType).equals(promotion.promotionType)
+
   let name = await page
     .locator(`${DialogSelector} input[name="name"]`)
     .inputValue()

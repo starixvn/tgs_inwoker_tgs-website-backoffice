@@ -37,6 +37,7 @@ export const useIsAddPromotion = () => {
 
 export const useIsPromotionAdded = useHasPromotionId
 
+//TODO: move to field.
 export const usePromotionType = () => {
   let { control } = useFormContext()
 

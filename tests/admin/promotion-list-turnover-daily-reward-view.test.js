@@ -18,7 +18,6 @@ import clone from "clone-deep"
 import numeral from "numeral"
 
 const test = base.extend(Fixture)
-const { lorem } = faker
 
 test("view turnover daily reward promotion", async ({
   page,
@@ -37,6 +36,21 @@ test("view turnover daily reward promotion", async ({
 
   let DialogSelector = `#view-promotion-dialog`
   await openDialog(page, DialogSelector)
+
+  let promotionType = await page
+    .locator(`${DialogSelector} select[name="promotionType"]`)
+    .inputValue()
+  expect(promotionType).equals(promotion.promotionType)
+
+  let name = await page
+    .locator(`${DialogSelector} input[name="name"]`)
+    .inputValue()
+  expect(name).equals(promotion.name)
+
+  let subSubject = await page
+    .locator(`${DialogSelector} input[name="subSubject"]`)
+    .inputValue()
+  expect(subSubject).equals(promotion.subSubject)
 
   let percentageString = await page
     .locator(`${DialogSelector} input[name="rule.percentage"]`)

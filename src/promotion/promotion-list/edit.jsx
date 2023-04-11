@@ -37,7 +37,6 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import AlertDialog from "../../dialog/Alert"
-import { useGameTypeGroupValueOf } from "../../game/GameType"
 import {
   PromotionTypeGroupSelect,
   PromotionTypeSelect,
@@ -59,6 +58,7 @@ import {
   Field,
   useIsPromotionStarted
 } from "./usePromotionFormData"
+import { PromotionTypeField } from "./field/PromotionTypeField"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -134,7 +134,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       maxWidth="85vw"
       css={DialogCss}
     >
-      <FormBody brandId={brandId} isAdd />
+      <FormBody brandId={brandId} />
     </FormDialog>
   )
 }
@@ -444,29 +444,10 @@ const ViewDialog = ({ brandId, promotionId, dialog, ...props }) => {
   )
 }
 
-//TODO: rm isAdd ?
-export const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
-  let formMethods = useFormContext()
-  let { control, setValue } = formMethods
-
-  let promotionType = usePromotionType()
-  let defaultPromotionTypeGroup = usePromotionGroupValueOf(promotionType)
-
-  let PromotionTypeGroupFieldName = "promotionTypeGroup"
-  let promotionTypeGroup = useWatch({
-    control,
-    name: PromotionTypeGroupFieldName,
-    defaultValue: defaultPromotionTypeGroup
-  })
-
-  let gameTypePlaceholder = useTrans({
-    zh: "全部",
-    en: "All"
-  })
+export const FormBody = ({ brandId, readOnly = false }) => {
+  let { control, setValue } = useFormContext()
 
   let disabled = readOnly
-  let editable = !readOnly
-  let promotionTypeEditable = editable && isAdd
   let promotionStarted = useIsPromotionStarted()
   return (
     <FieldStack marginLeft="1rem" paddingBottom="1.5rem" width="max-content">
@@ -487,57 +468,7 @@ export const FormBody = ({ brandId, readOnly = false, isAdd = false }) => {
 
         <PromotionDateRangeFieldBox disabled={disabled} readOnly={readOnly} />
 
-        <NormalLabel>
-          <Trans zh="活动类型" en="Promotion Type" />
-        </NormalLabel>
-        <Box alignY="center">
-          {promotionTypeEditable && (
-            <PromotionTypeGroupSelect
-              name={PromotionTypeGroupFieldName}
-              onChange={(event) => {
-                setValue(Field.PromotionType, "")
-              }}
-              placeholder={gameTypePlaceholder}
-              required
-            />
-          )}
-          {!promotionTypeEditable && (
-            <>
-              <PromotionTypeGroupSelect
-                name={PromotionTypeGroupFieldName}
-                value={promotionTypeGroup}
-                display="none"
-              />
-              <PromotionTypeGroupSelect
-                value={promotionTypeGroup}
-                disabled="none"
-              />
-            </>
-          )}
-        </Box>
-
-        <NormalLabel>
-          <Trans zh="活动子类型" en="Promotion SubType" />
-        </NormalLabel>
-        <Box alignY="center">
-          {promotionTypeEditable && (
-            <PromotionTypeSelect
-              name={Field.PromotionType}
-              group={promotionTypeGroup}
-              required
-            />
-          )}
-          {!promotionTypeEditable && (
-            <>
-              <PromotionTypeSelect
-                name={Field.PromotionType}
-                value={promotionType}
-                display="none"
-              />
-              <PromotionTypeSelect value={promotionType} disabled />
-            </>
-          )}
-        </Box>
+        <PromotionTypeField readOnly={readOnly} />
 
         <Reward.Main readOnly={readOnly} />
       </FieldValues>
