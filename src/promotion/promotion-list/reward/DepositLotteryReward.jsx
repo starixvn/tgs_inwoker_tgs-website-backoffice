@@ -60,7 +60,7 @@ import { CloseButtonFooter } from "../../../form/ConfirmButtonFooter"
 import { get, set } from "lodash-es"
 import Big from "big.js"
 import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
-import { useIsActivePromotion } from "../usePromotionFormData"
+import { useIsPromotionStarted } from "../usePromotionFormData"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
@@ -74,8 +74,11 @@ export const Main = (props) => (
 export const Content = ContentSetting
 
 export const Rule = ({ readOnly, ...props }) => {
-  let isActive = useIsActivePromotion()
-  readOnly = readOnly || isActive
+  let started = useIsPromotionStarted()
+  if (started) {
+    readOnly = true
+  }
+
   return (
     <FieldValues>
       <VipLevelCheckboxGroupField readOnly={readOnly} />

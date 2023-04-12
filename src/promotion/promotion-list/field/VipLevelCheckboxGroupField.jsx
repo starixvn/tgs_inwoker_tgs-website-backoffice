@@ -5,12 +5,12 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { Trans, useTrans } from "../../../i18n"
 import { NormalLabel } from "../../../form/Label"
 import { VipLevelCheckboxGroup } from "../../../vip-levels/CheckboxGroup"
-import { useBrandIdFromPromotionForm } from "../usePromotionFormData"
+import { usePromotionBrandId } from "../usePromotionFormData"
 
 const FieldName = "vipLevels"
 
 export const VipLevelCheckboxGroupField = ({ readOnly }) => {
-  let brandId = useBrandIdFromPromotionForm()
+  let brandId = usePromotionBrandId()
 
   let disabled = readOnly
   return (

@@ -422,15 +422,13 @@ const useColumns = ({
                   disabled={isPromotionStarted}
                   onSubmitted={mutate}
                 />
-                {/* 
-                TODO: test case
                 <CopyPromotionDisclosure
                   id="copy-promotion-dialog-disclosure"
                   brandId={brandId}
                   promotionId={record?.id}
                   promotionType={record.promotionType}
                   onSubmitted={mutate}
-                /> */}
+                />
                 {hasUpdateAuth && (
                   <ConfirmDeleteDialogDisclosure
                     disabled={record.status != PromotionStatus.Disabled}

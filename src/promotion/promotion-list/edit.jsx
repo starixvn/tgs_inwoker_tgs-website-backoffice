@@ -53,11 +53,7 @@ import { PromotionDateRangeFieldBox } from "./field/DateRangeField"
 import { formatDateOnly } from "../../date/format"
 import Reward from "./reward/index"
 import { PromotionTypes as OfflinePromotionTypeList } from "./reward/OfflineRewardGroup"
-import {
-  usePromotionType,
-  Field,
-  useIsPromotionStarted
-} from "./usePromotionFormData"
+import { useIsPromotionStarted } from "./usePromotionFormData"
 import { PromotionTypeField } from "./field/PromotionTypeField"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {

@@ -18,12 +18,8 @@ import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import { InputField, Input } from "../../input/Input"
-import { NumberInput, NumberInputField } from "../../input/NumberInput"
-import { useBrandIdFromPromotionForm } from "./usePromotionFormData"
-import {
-  ImageUploadButton,
-  ImageLocalizationDialogDisclosure
-} from "../../file/upload/ImageUploadButton"
+import { usePromotionBrandId } from "./usePromotionFormData"
+import { ImageLocalizationDialogDisclosure } from "../../file/upload/ImageUploadButton"
 import { Disclosure } from "../../dialog/Disclosure"
 import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import Backdrop from "../../dialog/Backdrop"
@@ -34,7 +30,7 @@ import Separator from "../../layout/Separator"
 
 const FieldName = "content"
 export const ContentSetting = ({ readOnly }) => {
-  let brandId = useBrandIdFromPromotionForm()
+  let brandId = usePromotionBrandId()
 
   let disabled = readOnly
   return (

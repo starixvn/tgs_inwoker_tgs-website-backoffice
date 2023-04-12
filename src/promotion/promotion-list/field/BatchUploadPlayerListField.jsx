@@ -5,7 +5,7 @@ import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
 import { Trans, useTrans } from "../../../i18n"
 import { NormalLabel } from "../../../form/Label"
 import { get } from "lodash-es"
-import { useBrandIdFromPromotionForm } from "../usePromotionFormData"
+import { usePromotionBrandId } from "../usePromotionFormData"
 import { nanoid } from "nanoid"
 import {
   usePromotionBatchUploadPlayerList,
@@ -74,7 +74,7 @@ const confirmBatchDone = (result) => {
 const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
   let { setValue, control, getValues, clearErrors } = useFormContext()
 
-  let brandId = useBrandIdFromPromotionForm()
+  let brandId = usePromotionBrandId()
 
   let [clientId, setClientId] = useState()
   let [batchId, setBatchId] = useState()
