@@ -197,7 +197,7 @@ const EditBody = ({ record = {}, readOnly }) => {
           </Heading>
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="有效投注比例" en="Effective Betting Proportion" />
+              <Trans zh="流水比例" en="Turnover Percentage" />
             </Label>
             <Box alignY="center">
               <PercentageNumberInputField
