@@ -28,7 +28,6 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const Report = () => {
-  //TODO: rename to "盈亏", eng?
   return (
     <PlatformPageContent title={<Trans zh="输赢报表" en="Winloss Report" />}>
       <ReportBody />
@@ -41,6 +40,6 @@ const ReportBody = () => {
   return <WinlossReport brandId={brandId} />
 }
 
-const WinlossReport = () => {
+const WinlossReport = ({ brandId }) => {
   return null
 }
