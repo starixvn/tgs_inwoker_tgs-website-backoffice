@@ -21,7 +21,7 @@ import { SearchButton } from "../../button/SearchButton"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import equals from "fast-deep-equal"
-import { MerchantStatusMenu } from "../MerchantStatus"
+import { MerchantStatusMenu, MerchantStatusSelect } from "../MerchantStatus"
 import { EditBrandBetLimitGameProviderBetLimit } from "./BrandBetLimitGameProviderBetLimitDialog"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
@@ -52,7 +52,8 @@ export const CodeContentPair = [Code, Content]
 
 const Body = () => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    keyword: ""
+    keyword: "",
+    status: null
   })
   let { pageSize, keyword } = state
 
@@ -107,7 +108,8 @@ const Body = () => {
 const SearchForm = ({ search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {
-      keyword: ""
+      keyword: "",
+      status: null
     }
   })
 
@@ -127,6 +129,7 @@ const SearchForm = ({ search, isLoading, ...props }) => {
             showEmptyFieldValueAddonAfter
             placeholder={searchPlaceHolder}
           />
+          <MerchantStatusSelect name="status" />
 
           <SearchButton isLoading={isLoading} />
         </Set>
