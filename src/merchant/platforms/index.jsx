@@ -26,7 +26,7 @@ import { EditBrandBetLimitGameProviderBetLimit } from "./BrandBetLimitGameProvid
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { BrandLogoDialogDisclosure } from "./BrandLogoDialog"
-import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
+// import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
 
 export { Code }
 
@@ -54,7 +54,7 @@ const Body = () => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     keyword: ""
   })
-  let { pageIndex, pageSize, keyword } = state
+  let { pageSize, keyword } = state
 
   let { isLoading, data, error, mutate, deleteCache } = useBrandList({
     ...toApiParams(state),

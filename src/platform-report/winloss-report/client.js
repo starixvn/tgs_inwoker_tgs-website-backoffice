@@ -24,13 +24,36 @@ export const useWinlossReportTreePath = ({
   }
   switch (username) {
     case "agentParent":
-      return downline ? {} : {}
+      return downline
+        ? {
+            items: [{ name: "agentChild", type: "Agent" }]
+          }
+        : {
+            items: []
+          }
     case "agentChild":
-      return downline ? {} : {}
+      return downline
+        ? {
+            items: [{ name: "player", type: "Player" }]
+          }
+        : {
+            items: [{ name: "agentParent", type: "Agent" }]
+          }
     case "player":
-      return downline ? {} : {}
+      return downline
+        ? {
+            items: []
+          }
+        : {
+            items: [
+              { name: "agentParent", type: "Agent" },
+              { name: "agentChild", type: "Agent" }
+            ]
+          }
     default:
-      return {}
+      return {
+        items: []
+      }
   }
 }
 

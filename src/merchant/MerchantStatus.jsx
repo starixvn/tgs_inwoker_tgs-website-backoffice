@@ -80,6 +80,10 @@ const toPalette = (value) => {
 
 const defaultEnableMenuItem = (_) => true
 
+export const MerchantStatusStatus = ({ ...props}) => { 
+  
+}
+
 export const MerchantStatusMenu = ({
   record = {},
   useChangeStatus,

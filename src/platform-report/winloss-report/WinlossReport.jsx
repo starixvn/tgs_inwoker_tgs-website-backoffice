@@ -55,6 +55,7 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+import { UsernameInputGroup } from "./UsernameInputGroup"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -87,7 +88,7 @@ export const WinlossReport = ({ brandId }) => {
     type: "",
     from: dateRange.start,
     to: dateRange.end,
-    orderId
+    orderId: null
     /*
     hiddenColumns
     */
@@ -119,5 +120,82 @@ export const WinlossReport = ({ brandId }) => {
 
   //TODO: useEffect > update when user click search btn
 
+  console.log("treePathData", treePathData)
   //TODO: useColumns
+  return (
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar />
+      </Level>
+    </Set>
+  )
+}
+
+//TODO: set type = Agent as default?
+const SearchBar = ({
+  brandId,
+  username,
+  type,
+  from,
+  to,
+  search,
+  isLoading
+}) => {
+  let formMethods = useForm({
+    defaultValues: {
+      username,
+      type,
+      from,
+      to
+    }
+  })
+
+  let roundIdPlaceholder = useTrans({
+    zh: "订单ID",
+    en: "Round ID"
+  })
+
+  const onSubmit = (data) => search?.(data)
+
+  let QueryMaxRangeDays = 31
+  let todayRange = today()
+  let DataRetentionDays = 180
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
+
+  return (
+    <FormProvider {...formMethods}>
+      <Set>
+        <DateInputRange
+          showDateDropdownMenu
+          maxRangeDays={QueryMaxRangeDays}
+          minDate={minDate}
+          maxDate={maxDate}
+          startProps={{
+            name: "from"
+          }}
+          endProps={{
+            name: "to"
+          }}
+          dateDropdownMenuProps={{
+            thisWeekProps: {
+              end: maxDate
+            },
+            thisMonthProps: {
+              end: maxDate
+            }
+          }}
+          fakeTimeLabel
+          required
+        />
+        <UsernameInputGroup />
+        <InputField
+          name="roundId"
+          showEmptyFieldValueAddonAfter
+          placeholder={roundIdPlaceholder}
+        />
+        <SearchButton isLoading={isLoading} disabled={isLoading} />
+      </Set>
+    </FormProvider>
+  )
 }
