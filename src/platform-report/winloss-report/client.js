@@ -15,63 +15,231 @@ export const API = "/api/AgentReport"
 export const useWinlossReportTreePath = ({
   username,
   downline,
-  orderId,
+  roundId,
   ...searchParams
 } = {}) => {
   // agentParent > agentChild > player
-  if (orderId) {
-    return {}
+  // agent123 -> agent456 > player123
+  if (roundId) {
+    return {
+      data: {
+        items: [
+          { username: "agentParent", type: "Agent" },
+          { username: "agentChild", type: "Agent" },
+          { username: "player", type: "Player" }
+        ]
+      }
+    }
   }
   switch (username) {
     case "agentParent":
-      return downline
-        ? {
-            items: [{ name: "agentChild", type: "Agent" }]
-          }
-        : {
-            items: []
-          }
+      return {
+        data: {
+          items: []
+        }
+      }
     case "agentChild":
-      return downline
-        ? {
-            items: [{ name: "player", type: "Player" }]
-          }
-        : {
-            items: [{ name: "agentParent", type: "Agent" }]
-          }
+      return {
+        data: {
+          items: [{ username: "agentParent", type: "Agent" }]
+        }
+      }
     case "player":
-      return downline
-        ? {
-            items: []
-          }
-        : {
-            items: [
-              { name: "agentParent", type: "Agent" },
-              { name: "agentChild", type: "Agent" }
-            ]
-          }
+      return {
+        data: {
+          items: [
+            { username: "agentParent", type: "Agent" },
+            { username: "agentChild", type: "Agent" }
+          ]
+        }
+      }
+    case "agent123":
+      return {
+        data: {
+          items: []
+        }
+      }
+    case "agent456":
+      return {
+        data: {
+          items: [{ username: "agent123", type: "Agent" }]
+        }
+      }
+    case "player123":
+      return {
+        data: {
+          items: [
+            { username: "agent123", type: "Agent" },
+            { username: "agent456", type: "Agent" }
+          ]
+        }
+      }
     default:
       return {
-        items: []
+        data: {
+          items: []
+        }
       }
   }
 }
 
-//no orderId?
+//no roundId?
 export const useWinlossReport = ({
   username,
   downline,
-  orderId,
+  roundId,
   ...searchParams
 } = {}) => {
   switch (username) {
     case "agentParent":
-      return downline ? {} : {}
+      return downline
+        ? {
+            data: {
+              items: [
+                {
+                  username: "agentChild",
+                  type: "Agent"
+                }
+              ]
+            }
+          }
+        : {
+            data: {
+              items: [
+                {
+                  username: "agentParent",
+                  type: "Agent"
+                }
+              ]
+            }
+          }
     case "agentChild":
-      return downline ? {} : {}
+      return downline
+        ? {
+            data: {
+              items: [
+                {
+                  username: "player",
+                  type: "Player"
+                }
+              ]
+            }
+          }
+        : {
+            data: {
+              items: [
+                {
+                  username: "agentChild",
+                  type: "Agent"
+                }
+              ]
+            }
+          }
+    //TODO: user order report api?
     case "player":
-      return downline ? {} : {}
+      return downline
+        ? {
+            data: {
+              items: [
+                {
+                  username: "xxx-order",
+                  type: "Order"
+                }
+              ]
+            }
+          }
+        : {
+            data: {
+              items: [
+                {
+                  username: "player",
+                  type: "Player"
+                }
+              ]
+            }
+          }
+    case "agent123":
+      return downline
+        ? {
+            data: {
+              items: [
+                {
+                  username: "agent456",
+                  type: "Agent"
+                }
+              ]
+            }
+          }
+        : {
+            data: {
+              items: [
+                {
+                  username: "agent123",
+                  type: "Agent"
+                }
+              ]
+            }
+          }
+    case "agent456":
+      return downline
+        ? {
+            data: {
+              items: [
+                {
+                  username: "player789",
+                  type: "Player"
+                }
+              ]
+            }
+          }
+        : {
+            data: {
+              items: [
+                {
+                  username: "agent456",
+                  type: "Agent"
+                }
+              ]
+            }
+          }
+    case "player789":
+      return downline
+        ? {
+            data: {
+              items: [
+                {
+                  username: "xxx-order",
+                  type: "Order"
+                }
+              ]
+            }
+          }
+        : {
+            data: {
+              items: [
+                {
+                  username: "player789",
+                  type: "Player"
+                }
+              ]
+            }
+          }
     default:
-      return {}
+      let items = [
+        {
+          username: "agentParent",
+          type: "Agent"
+        },
+        {
+          username: "agent123",
+          type: "Agent"
+        }
+      ]
+
+      return {
+        data: {
+          items
+        }
+      }
   }
 }

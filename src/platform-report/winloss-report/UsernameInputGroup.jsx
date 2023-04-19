@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Group } from "bumbag"
-import { UserTypeSelect } from "./UserTypeSelect"
+import { UserTypeSelect } from "./UserType"
 import { InputField } from "../../input/Input"
 import { useTrans } from "../../i18n"
 

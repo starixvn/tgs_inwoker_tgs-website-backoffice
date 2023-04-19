@@ -16,10 +16,21 @@ const PlayerTrans = {
   en: "Player"
 }
 
-//TODO: default placeholder?
+export const UserTypeLabel = ({ value = "" }) => {
+  switch (value) {
+    case Agent:
+      return <Trans {...AgentTrans} />
+    case Player:
+      return <Trans {...PlayerTrans} />
+    default:
+      return value
+  }
+}
+
 export const UserTypeSelect = ({
   placeholder,
   defaultValue = Agent,
+  required = true,
   ...props
 }) => {
   let options = [
