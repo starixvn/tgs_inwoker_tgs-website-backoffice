@@ -13,6 +13,7 @@ import {
   usePlatformId
 } from "../../page/PlatformPageContent"
 import { Trans } from "../../i18n"
+import { WinlossReport } from "./WinlossReport"
 
 export { Code }
 
@@ -38,8 +39,4 @@ const Report = () => {
 const ReportBody = () => {
   let brandId = usePlatformId()
   return <WinlossReport brandId={brandId} />
-}
-
-const WinlossReport = ({ brandId }) => {
-  return null
 }
