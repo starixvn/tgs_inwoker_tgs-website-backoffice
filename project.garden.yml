@@ -15,7 +15,7 @@ kind: Module
 type: container
 name: backoffice-site
 dockerfile: Dockerfile
-disabled: false
+disabled: true
 exclude:
   - garden
   - spec
@@ -74,6 +74,7 @@ services:
 kind: Module
 type: exec
 name: backoffice-site-test
+disabled: true
 include: [.]
 exclude: [src, garden]
 tests:

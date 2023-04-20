@@ -25,7 +25,11 @@ import {
 } from "./client"
 import BrandBar from "../../report/BrandBar"
 import { formatDateTime, formatDayMonthYear } from "../../date/format"
-import { PromotionTypeLabel, usePromotionGroupLabelOf } from "../PromotionType"
+import {
+  PromotionTypeLabel,
+  PromotionTypeSelectGroup,
+  usePromotionGroupLabelOf
+} from "../PromotionType"
 import { VipLevelListDialogDisclosure } from "../../vip-levels/VipLevelList"
 import { formatNumber } from "../../number/format"
 import PromotionStatus, {
@@ -249,7 +253,16 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
         <Set>
-          <DateInputRange />
+          <DateInputRange
+          /*
+          TODO: required msg?
+          requiredBothIfHasOne={true}
+          */
+          />
+          {/* 
+          TODO: name?
+          <PromotionTypeSelectGroup /> 
+          */}
           <PromotionStatusSelect name="status" />
           <InputField
             name="name"

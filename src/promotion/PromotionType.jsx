@@ -1,8 +1,10 @@
 import React from "react"
-import { Spinner } from "bumbag"
+import { Spinner, Group, Popover, Button } from "bumbag"
 import { getTrans, Trans, useLocale, useTrans } from "../i18n"
-import Select from "../select/Select"
+import Select, { SelectField } from "../select/Select"
 import { usePromotionTypeList } from "./client"
+import { useFormContext } from "react-hook-form"
+import { faFilter } from "@fortawesome/free-solid-svg-icons"
 
 const Deposit = "Deposit"
 
@@ -212,3 +214,32 @@ export const PromotionTypeSelect = ({ placeholder, group, ...props }) => {
     />
   )
 }
+
+export const PromotionTypeSelectGroup = ({
+  name = "",
+  promotionTypeProps = {},
+  ...props
+}) => {
+  let formContext = useFormContext()
+  let promotionTypeGroupName = promotionTypeProps?.name ?? "promotionTypeGroup"
+
+  let promotionTypeGroup =
+    promotionTypeGroupName && formContext?.watch(promotionTypeGroupName)
+
+  return (
+    <Group>
+      <PromotionTypeGroupSelect
+        name={promotionTypeGroupName}
+        onChange={(event) => {
+          formContext?.setValue?.(name, "")
+        }}
+        {...promotionTypeProps}
+      />
+      <PromotionTypeSelect name={name} group={promotionTypeGroup} {...props} />
+    </Group>
+  )
+}
+
+//TODO: use faFilter icon + checkbox menu/popup?
+//TODO: default filter fn by promotion group
+// export const PromotionTypeSelectExt = ({ name, filter, ...props }) => {}

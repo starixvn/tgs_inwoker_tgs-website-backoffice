@@ -40,6 +40,10 @@ const theme = {
         base: {
           fontSize: "1rem",
           padding: "0.6rem 1rem"
+          /*
+          TODO: reset textTransform
+          textTransform: "none"
+          */
         }
       }
     }
