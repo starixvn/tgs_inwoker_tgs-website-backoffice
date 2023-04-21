@@ -49,7 +49,7 @@ export const AllContents = ({ codes }) => {
         )
       })}
 
-      <Route path="*" element={<PageContent>...</PageContent>} />
+      <Route path="*" element={<PageContent></PageContent>} />
     </_Routes>
   )
 }
