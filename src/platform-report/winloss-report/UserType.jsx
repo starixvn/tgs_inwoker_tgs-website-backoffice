@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Text } from "bumbag"
+import { DropdownMenu, Button } from "bumbag"
 import { useTrans, Trans } from "../../i18n"
 import { Select } from "../../select/Select"
+import { useFormContext } from "react-hook-form"
 
 export const Agent = "Agent"
 const AgentTrans = {
@@ -27,12 +28,59 @@ export const UserTypeLabel = ({ value = "" }) => {
   }
 }
 
-export const UserTypeSelect = ({
+const UserTypeSwitchMenu = ({ value, onChange }) => {
+  switch (value) {
+    case Agent:
+      return (
+        <DropdownMenu.Item onClick={() => onChange?.(Player)}>
+          <UserTypeLabel value={Player} />
+        </DropdownMenu.Item>
+      )
+    case Player:
+      return (
+        <DropdownMenu.Item onClick={() => onChange?.(Agent)}>
+          <UserTypeLabel value={Agent} />
+        </DropdownMenu.Item>
+      )
+    default:
+      return null
+  }
+}
+
+//TODO: use UserTypeDropdownMenu instead
+export const UserTypeDropdownMenu = ({
+  name = "type",
   placeholder,
+  value,
   defaultValue = Agent,
   required = true,
   ...props
 }) => {
+  let formMethods = useFormContext()
+  value = value ?? formMethods?.watch(name, defaultValue) ?? defaultValue
+
+  //TODO: wrap props?.onChange event?
+  //TODO: use event or value?
+  let onChange = (value) => {
+    props?.onChange?.(value)
+
+    if (name && formMethods) {
+      //TODO: use event or value?
+      formMethods.setValue(name, value)
+    }
+  }
+
+  return (
+    <DropdownMenu
+      menu={<UserTypeSwitchMenu value={value} onChange={onChange} />}
+      {...props}
+    >
+      <Button iconAfter="chevron-down">
+        <UserTypeLabel value={value} />
+      </Button>
+    </DropdownMenu>
+  )
+  /*
   let options = [
     {
       label: useTrans(AgentTrans),
@@ -58,4 +106,5 @@ export const UserTypeSelect = ({
       {...props}
     />
   )
+  */
 }

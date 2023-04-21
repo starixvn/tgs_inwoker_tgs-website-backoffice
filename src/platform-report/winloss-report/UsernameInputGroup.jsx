@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Group } from "bumbag"
-import { UserTypeSelect } from "./UserType"
+import { UserTypeDropdownMenu } from "./UserType"
 import { InputField } from "../../input/Input"
 import { useTrans } from "../../i18n"
 
@@ -16,7 +16,16 @@ export const UsernameInputGroup = ({ name = "username", userTypeProps }) => {
     <InputField
       name={name}
       addonBefore={
-        <UserTypeSelect name={defaultUserTypeName} {...userTypeProps} />
+        <UserTypeDropdownMenu
+          name={defaultUserTypeName}
+          {...userTypeProps}
+          css={css`
+            & .bb-DropdownMenuButton {
+              border-top-right-radius: 0;
+              border-bottom-right-radius: 0;
+            }
+          `}
+        />
       }
       showEmptyFieldValueAddonAfter
       placeholder={usernamePlaceholder}
