@@ -10,7 +10,7 @@ import { CodeContentPair as GameRoundPair } from "./game-open-round"
 import { CodeContentPair as GameResettleOpenedRoundPair } from "./game-resettle-opened-round"
 import { CodeContentPair as PlatformGameProviderPair } from "./platform-game-provider"
 import { CodeContentPair as GameProviderRoundPair } from "./game-provider-round"
-import { Switch } from "../content"
+import { Routes } from "../content"
 import { Code, DefaultCodePath, Menu } from "./menu"
 
 export { Code } from "./menu"
@@ -30,7 +30,7 @@ const pairs = () => [
 ]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => (
-  <Switch path={path} pairs={pairs()} />
+  <Routes path={path} pairs={pairs()} />
 )
 
 export const codeMenuContentPair = [Code, [Menu, Content]]

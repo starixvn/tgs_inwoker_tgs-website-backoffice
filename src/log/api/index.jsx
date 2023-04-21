@@ -42,7 +42,7 @@ import { useApiLogList } from "./client"
 import { LogDetailDialogDisclosure } from "../LogDetailDialog"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { SortOrder } from "../../table/order"
-import { useLocation, useHistory } from "react-router-dom"
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { parseJSON } from "../../text/json"
 import { parseISO } from "date-fns"
 
@@ -63,7 +63,8 @@ const StateQueryName = "state"
 const Body = ({}) => {
   let todayRange = today()
   let { search, ...location } = useLocation()
-  let history = useHistory()
+  let navigate = useNavigate()
+  let [searchParams, setSearchParams] = useSearchParams()
   let stateString = new URLSearchParams(search).get(StateQueryName)
   let initState = parseJSON(stateString) ?? {}
   if (typeof initState.from === "string") {
@@ -77,9 +78,13 @@ const Body = ({}) => {
 
   const syncSearchParams = (record) => {
     let search = `${StateQueryName}=${JSON.stringify(record)}`
-    history.replace({
+    setSearchParams(search)
+    /*
+    TODO: how
+    navigate.replace({
       search
     })
+    */
   }
 
   let { pageIndex, pageSize } = state

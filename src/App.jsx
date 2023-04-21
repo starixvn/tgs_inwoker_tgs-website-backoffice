@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Global, css } from "@emotion/react"
-import { Switch, Route, useLocation } from "react-router-dom"
+import { Routes, Route, useLocation, Navigate } from "react-router-dom"
 import {
   Container,
   PageContent,
@@ -28,7 +28,7 @@ import {
   useUserId
 } from "./user/context"
 import { Form as Login, Path as LoginPath } from "./user/login"
-import { Route as AuthRouter } from "./user/auth"
+import { RequireAuth } from "./user/auth"
 import { AllMenus } from "./menu"
 import { AllContents } from "./content"
 import { useUsername, useDeauth } from "./user/context"
@@ -59,8 +59,6 @@ if (isDev()) {
 }
 
 function App() {
-  let isUserAuthed = useUserIsAuthed()
-
   return (
     <SWRConfig
       value={{
@@ -68,16 +66,19 @@ function App() {
         shouldRetryOnError: false
       }}
     >
-      <Switch>
-        <Route path={LoginPath}>
-          <Login />
-        </Route>
-        <AuthRouter path="*">
-          <Layout>
-            <AllContents />
-          </Layout>
-        </AuthRouter>
-      </Switch>
+      <Routes>
+        <Route path={LoginPath} element={<Login />} />
+        <Route
+          path="*"
+          element={
+            <RequireAuth>
+              <Layout>
+                <AllContents />
+              </Layout>
+            </RequireAuth>
+          }
+        />
+      </Routes>
     </SWRConfig>
   )
 }

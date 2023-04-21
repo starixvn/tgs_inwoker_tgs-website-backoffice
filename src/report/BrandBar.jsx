@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { useLocation, useHistory, useRouteMatch } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { Heading, Stack, Box, Button, Set, useModalState } from "bumbag"
 import {
@@ -21,9 +21,8 @@ export const BrandBar = ({
   onResellerChange,
   ...props
 }) => {
-  let { url } = useRouteMatch()
   let location = useLocation()
-  let history = useHistory()
+  let navigate = useNavigate()
 
   let userRoleType = useUserRoleType()
 
@@ -41,9 +40,12 @@ export const BrandBar = ({
 
   useEffect(() => {
     if (!equals(state, location?.state)) {
-      history.replace(url, {
-        ...location?.state,
-        ...state
+      navigate(location.pathname, {
+        replace: true,
+        state: {
+          ...location?.state,
+          ...state
+        }
       })
     }
   }, [JSON.stringify(state), JSON.stringify(location?.state ?? {})])

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Code, Menu, DefaultPaths } from "./menu"
-import { Switch } from "../content"
+import { Routes } from "../content"
 import { Code as BannerCode, Content as BannerContent } from "./banner"
 import {
   Code as AnnouncementCode,
@@ -33,7 +33,7 @@ const pairs = () => [
 ]
 
 export const Content = ({ codes, path = DefaultPaths, ...props }) => (
-  <Switch path={path} pairs={pairs()} />
+  <Routes path={path} pairs={pairs()} />
 )
 
 export const codeMenuContentPair = [Code, [Menu, Content]]
