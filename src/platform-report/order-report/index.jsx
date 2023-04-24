@@ -457,9 +457,9 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ items = [] }) => {
-  return useMemo(
-    () => [
+export const useColumns = ({ items = [], filter: predicate }) => {
+  return useMemo(() => {
+    let columns = [
       textColumn({
         accessor: "playerName",
         Header: <Trans zh="用户名" en="Player Name" />,
@@ -598,7 +598,11 @@ const useColumns = ({ items = [] }) => {
           whiteSpace: "nowrap"
         }
       }
-    ],
-    [JSON.stringify(items)]
-  )
+    ]
+
+    if (predicate) {
+      return columns.filter(predicate)
+    }
+    return columns
+  }, [JSON.stringify(items)])
 }

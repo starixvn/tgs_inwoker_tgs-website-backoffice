@@ -17,6 +17,11 @@ const PlayerTrans = {
   en: "Player"
 }
 
+export const UserType = {
+  Agent,
+  Player
+}
+
 export const UserTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Agent:
@@ -47,7 +52,6 @@ const UserTypeSwitchMenu = ({ value, onChange }) => {
   }
 }
 
-//TODO: use UserTypeDropdownMenu instead
 export const UserTypeDropdownMenu = ({
   name = "type",
   placeholder,

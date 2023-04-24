@@ -21,7 +21,8 @@ import {
   FormattedNumber,
   Trans,
   useTrans,
-  FormattedNumberDecimal
+  FormattedNumberDecimal,
+  useLangCode
 } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
@@ -36,12 +37,10 @@ import {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { useWinlossReportTreePath, useWinlossReport } from "./client"
-import { AgentTypeSelect } from "../../agent/AgentType"
+import { useWinlossReportPath, useWinlossReport } from "./client"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
-import { BonusDialogDisclosure } from "../BonusDialog"
 import headOf from "../../list/head"
 import { isLastIndex, last } from "../../list/last"
 import {
@@ -56,51 +55,46 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { UsernameInputGroup } from "./UsernameInputGroup"
-import { UserTypeLabel } from "./UserType"
+import { UserTypeLabel, UserType } from "./UserType"
+import { useColumns as usePlayerOrderColumns } from "../order-report/index"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const WinlossReport = ({ brandId }) => {
-  //TODO: append tree path and
-  // { type: Agent | Player, name, id }
-  //TODO: rename to path?
-  let [reportUsername, setReportUsername] = useState()
+  let [path, setPath] = useState([])
   let [downline, setDownline] = useState(false)
-  let [treePaths, setTreePaths] = useState([])
+
+  let [reportUsername, setReportUsername] = useState()
+  let [reportUserType, setReportUserType] = useState()
 
   const resetPath = (path = []) => {
-    setTreePaths(path)
+    setPath(path)
   }
 
-  //TODO: needed?
-  const replacePath = (path = []) => {
-    setTreePaths(path)
-  }
-
-  //TODO: when click on agent or player
-  const appendTreePath = (node) => {
+  const appendPath = (node) => {
     setReportUsername(node.username)
+    setReportUserType(node.type)
     setDownline(true)
 
-    setTreePaths((paths) => {
+    setPath((paths) => {
       return [...paths, node]
     })
   }
 
-  //TODO click parent
-  const backToTreePath = (node) => {
+  const backToPath = (node) => {
     setReportUsername(node.username)
+    setReportUserType(node.type)
     setDownline(true)
-    let index = treePaths.findIndex((item) => item.username === node.username)
+    let index = path.findIndex((item) => item.username === node.username)
 
-    let isLast = isLastIndex(index, treePaths)
+    let isLast = isLastIndex(index, path)
     if (isLast) {
       return //skip
     }
 
     if (index >= 0) {
-      setTreePaths((paths) => {
+      setPath((paths) => {
         let result = paths.slice(0, index + 1)
         return result
       })
@@ -115,28 +109,25 @@ export const WinlossReport = ({ brandId }) => {
   )
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    /*
     brandId,
-    */
     username: "",
     from: dateRange.start,
     to: dateRange.end
     /*
     type: "",
-    orderId: null
+    roundId: null
     hiddenColumns
     */
   })
 
-  /*
   useEffect(() => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
-  */
 
   let { pageSize, from, to } = state
+
   //TODO for download api params
-  const toSearchParams = () => ({
+  const toPathSearchParams = () => ({
     ...toApiParams(state)
     /*
     sortby: "username",
@@ -146,22 +137,26 @@ export const WinlossReport = ({ brandId }) => {
   })
 
   let {
-    isLoading: isLoadingPath,
+    isLoading: isLoadingPathData,
     data: pathData,
-    error: pathError,
-    mutate: mutatePath,
-    deleteCache: deletePathCache
-  } = useWinlossReportTreePath(toSearchParams())
+    error: pathDataError,
+    mutate: mutatePathData,
+    deleteCache: deletePathDataCache
+  } = useWinlossReportPath(toPathSearchParams())
 
   useEffect(() => {
     resetPath(pathData?.items)
   }, [JSON.stringify(pathData?.items)])
 
+  let culture = useLangCode()
+  //TODO: need diff sort/order param for user/order data type?
   const toReportSearchParams = () => {
     let result = {
       ...toApiParams(state),
       username: reportUsername ?? state?.username,
-      downline
+      type: reportUserType ?? state?.type,
+      downline,
+      culture
       /*
     sortby: "username",
     from,
@@ -179,26 +174,36 @@ export const WinlossReport = ({ brandId }) => {
     deleteCache: deleteReportDataCache
   } = useWinlossReport(toReportSearchParams())
 
-  console.log("reportData", reportData)
-  let isLoading = isLoadingPath || isLoadingReportData
-  //TODO: useEffect > update when user click search btn
+  let isLoading = isLoadingPathData || isLoadingReportData
+  let error = pathDataError || reportDataError
 
-  //TODO: useColumns
+  const reset = () => {
+    deletePathDataCache()
+    mutatePathData(null, false)
+
+    deleteReportDataCache()
+    mutateReportData(null, false)
+  }
+
   let columns = useColumns({
     items: reportData?.items,
-    appendTreePath
+    path,
+    appendPath
   })
   return (
-    <Set orientation="vertical" isFilled height="100%">
+    <Set orientation="vertical" isFilled height="100%" spacing="major-2">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
-          // brandId={brandId}
+          brandId={brandId}
           username={state?.username}
           type={state?.type}
           from={state?.from}
           to={state?.to}
           search={(data = {}) => {
+            reset()
+
             setReportUsername(undefined)
+            setReportUserType(undefined)
             setDownline(false)
             resetPath()
 
@@ -206,16 +211,17 @@ export const WinlossReport = ({ brandId }) => {
               pageIndex: 0,
               ...data
             })
-            // deleteCache()
-            // mutate(null)
           }}
         />
       </Level>
+      {/* 
+      TODO: rm debug info code
       <Heading>Breadcrumb params</Heading>
-      <Box>{JSON.stringify(toSearchParams())}</Box>
+      <Box>{JSON.stringify(toPathSearchParams())}</Box>
       <Heading>Report params</Heading>
-      <Box>{JSON.stringify(toReportSearchParams())}</Box>
-      <UserBreadcrumb treePaths={treePaths} backToTreePath={backToTreePath} />
+      <Box>{JSON.stringify(toReportSearchParams())}</Box> 
+      */}
+      <UserBreadcrumb treePaths={path} backToTreePath={backToPath} />
       <AutoSizer>
         {({ height, width }) => {
           return (
@@ -233,6 +239,7 @@ export const WinlossReport = ({ brandId }) => {
           )
         }}
       </AutoSizer>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
     </Set>
   )
 }
@@ -268,8 +275,14 @@ const UserBreadcrumb = ({ treePaths = [], backToTreePath }) => {
   )
 }
 
-//TODO: set type = Agent as default?
-const SearchBar = ({ username, type, from, to, search, isLoading }) => {
+const SearchBar = ({
+  username,
+  type = UserType.Agent,
+  from,
+  to,
+  search,
+  isLoading
+}) => {
   let formMethods = useForm({
     defaultValues: {
       username,
@@ -331,24 +344,19 @@ const SearchBar = ({ username, type, from, to, search, isLoading }) => {
   )
 }
 
-const useColumns = ({ items = [], appendTreePath }) => {
+const useUserColumns = ({ items = [], appendPath }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
         id: "username",
         accessor: (row) => row,
         Header: <Trans zh="用户名" en="Username" />,
-        /*
-        headCell: {
-          whiteSpace: "nowrap"
-        },
-        */
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
             <Link.Block
               onClick={() => {
-                appendTreePath(record)
+                appendPath(record)
               }}
             >
               {record.username}
@@ -365,4 +373,12 @@ const useColumns = ({ items = [], appendTreePath }) => {
     ]
     return columns
   }, [JSON.stringify(items)])
+}
+
+const useColumns = ({ path = [], ...props }) => {
+  let isPlayerOrderData = last(path)?.type === UserType.Player
+
+  return isPlayerOrderData
+    ? usePlayerOrderColumns(props)
+    : useUserColumns(props)
 }

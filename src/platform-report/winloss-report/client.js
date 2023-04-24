@@ -7,12 +7,13 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
+import { useGameRoundList } from "../../game/round/client"
 
 export const API = "/api/AgentReport"
 
 //TODO:
-// username, type, downline?,
-export const useWinlossReportTreePath = ({
+const FakePlayerUsername = "Herman1682314945488"
+export const useWinlossReportPath = ({
   username,
   downline,
   roundId,
@@ -26,9 +27,11 @@ export const useWinlossReportTreePath = ({
         items: [
           { username: "agentParent", type: "Agent" },
           { username: "agentChild", type: "Agent" },
-          { username: "player", type: "Player" }
+          { username: FakePlayerUsername, type: "Player" }
         ]
-      }
+      },
+      mutate: () => ({}),
+      deleteCache: () => ({})
     }
   }
   switch (username) {
@@ -36,63 +39,72 @@ export const useWinlossReportTreePath = ({
       return {
         data: {
           items: []
-        }
+        },
+        mutate: () => ({}),
+        deleteCache: () => ({})
       }
     case "agentChild":
       return {
         data: {
           items: [{ username: "agentParent", type: "Agent" }]
-        }
+        },
+        mutate: () => ({}),
+        deleteCache: () => ({})
       }
-    case "player":
+    case FakePlayerUsername:
       return {
         data: {
           items: [
             { username: "agentParent", type: "Agent" },
             { username: "agentChild", type: "Agent" }
           ]
-        }
+        },
+        mutate: () => ({}),
+        deleteCache: () => ({})
       }
     case "agent123":
       return {
         data: {
           items: []
-        }
+        },
+        mutate: () => ({}),
+        deleteCache: () => ({})
       }
     case "agent456":
       return {
         data: {
           items: [{ username: "agent123", type: "Agent" }]
-        }
+        },
+        mutate: () => ({}),
+        deleteCache: () => ({})
       }
-    case "player123":
+    case FakePlayerUsername:
       return {
         data: {
           items: [
             { username: "agent123", type: "Agent" },
             { username: "agent456", type: "Agent" }
           ]
-        }
+        },
+        mutate: () => ({}),
+        deleteCache: () => ({})
       }
     default:
       return {
         data: {
           items: []
-        }
+        },
+        mutate: () => ({}),
+        deleteCache: () => ({})
       }
   }
 }
 
 //no roundId?
-export const useWinlossReport = ({
-  username,
-  downline,
-  roundId,
-  ...searchParams
-} = {}) => {
-  switch (username) {
+export const useWinlossReport = (searchParams) => {
+  switch (searchParams?.username) {
     case "agentParent":
-      return downline
+      return searchParams?.downline
         ? {
             data: {
               items: [
@@ -101,7 +113,9 @@ export const useWinlossReport = ({
                   type: "Agent"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
         : {
             data: {
@@ -111,19 +125,23 @@ export const useWinlossReport = ({
                   type: "Agent"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
     case "agentChild":
-      return downline
+      return searchParams?.downline
         ? {
             data: {
               items: [
                 {
-                  username: "player",
+                  username: FakePlayerUsername,
                   type: "Player"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
         : {
             data: {
@@ -133,11 +151,13 @@ export const useWinlossReport = ({
                   type: "Agent"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
     //TODO: user order report api?
-    case "player":
-      return downline
+    case FakePlayerUsername:
+      return searchParams?.downline
         ? {
             data: {
               items: [
@@ -146,20 +166,24 @@ export const useWinlossReport = ({
                   type: "Order"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
         : {
             data: {
               items: [
                 {
-                  username: "player",
+                  username: FakePlayerUsername,
                   type: "Player"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
     case "agent123":
-      return downline
+      return searchParams?.downline
         ? {
             data: {
               items: [
@@ -168,7 +192,9 @@ export const useWinlossReport = ({
                   type: "Agent"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
         : {
             data: {
@@ -178,19 +204,23 @@ export const useWinlossReport = ({
                   type: "Agent"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
     case "agent456":
-      return downline
+      return searchParams?.downline
         ? {
             data: {
               items: [
                 {
-                  username: "player789",
+                  username: FakePlayerUsername,
                   type: "Player"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
         : {
             data: {
@@ -200,10 +230,12 @@ export const useWinlossReport = ({
                   type: "Agent"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
-    case "player789":
-      return downline
+    case FakePlayerUsername:
+      return searchParams?.downline
         ? {
             data: {
               items: [
@@ -212,17 +244,21 @@ export const useWinlossReport = ({
                   type: "Order"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
         : {
             data: {
               items: [
                 {
-                  username: "player789",
+                  username: FakePlayerUsername,
                   type: "Player"
                 }
               ]
-            }
+            },
+            mutate: () => ({}),
+            deleteCache: () => ({})
           }
     default:
       let items = [
@@ -239,7 +275,9 @@ export const useWinlossReport = ({
       return {
         data: {
           items
-        }
+        },
+        mutate: () => ({}),
+        deleteCache: () => ({})
       }
   }
 }
