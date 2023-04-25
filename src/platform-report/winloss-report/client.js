@@ -140,7 +140,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: "agentChild",
-                  type: "Agent"
+                  type: "Agent",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -152,7 +158,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: "agentParent",
-                  type: "Agent"
+                  type: "Agent",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -166,7 +178,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: FakePlayerUsername,
-                  type: "Player"
+                  type: "Player",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -178,7 +196,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: "agentChild",
-                  type: "Agent"
+                  type: "Agent",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -200,7 +224,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: FakePlayerUsername,
-                  type: "Player"
+                  type: "Player",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -214,7 +244,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: "agent456",
-                  type: "Agent"
+                  type: "Agent",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -226,7 +262,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: "agent123",
-                  type: "Agent"
+                  type: "Agent",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -240,7 +282,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: FakePlayerUsername,
-                  type: "Player"
+                  type: "Player",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -252,7 +300,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: "agent456",
-                  type: "Agent"
+                  type: "Agent",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -273,7 +327,13 @@ export const useWinlossReport = (searchParams) => {
               items: [
                 {
                   username: FakePlayerUsername,
-                  type: "Player"
+                  type: "Player",
+                  tickets: 35,
+                  turnover: 7800,
+                  playerWinloss: -1600,
+                  playerSpecial: 240,
+                  agentWinloss: 980,
+                  agentSpecial: -156
                 }
               ]
             },
@@ -284,11 +344,23 @@ export const useWinlossReport = (searchParams) => {
       let items = [
         {
           username: "agentParent",
-          type: "Agent"
+          type: "Agent",
+          tickets: 35,
+          turnover: 7800,
+          playerWinloss: -1600,
+          playerSpecial: 240,
+          agentWinloss: 980,
+          agentSpecial: -156
         },
         {
           username: "agent123",
-          type: "Agent"
+          type: "Agent",
+          tickets: 35,
+          turnover: 7800,
+          playerWinloss: -1600,
+          playerSpecial: 240,
+          agentWinloss: 980,
+          agentSpecial: -156
         }
       ]
 

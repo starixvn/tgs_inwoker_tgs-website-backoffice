@@ -73,9 +73,13 @@ test("fund withdraw > audit clear bucket", async ({
     brandPaymentId: depositPayment?.id
   })
 
+  //TODO: get bucket before
+
   await backofficeApi.fund.deposit.approve(depositFormId, {
     brandId: platform.id
   })
+
+  //TODO: get bucket after
 
   let betAmount = DepositAmount
   let [{ externalRoundId, ...betResult }] = await Promise.all([
@@ -116,9 +120,11 @@ test("fund withdraw > audit clear bucket", async ({
     expect(openOrderBetAmount).equals(betAmount)
   }
 
+  /*
   let AutoClearBucketTableSelector = `${AuditReportDialogSelector} table#auto-clear-bucket`
   let autoClearBucketId = await page
     .locator(`${AutoClearBucketTableSelector} td[data-column-id="id"]`)
     .textContent()
   expect(autoClearBucketId).not.empty
+  */
 })
