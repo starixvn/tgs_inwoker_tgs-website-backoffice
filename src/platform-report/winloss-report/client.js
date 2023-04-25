@@ -101,6 +101,36 @@ export const useWinlossReportPath = ({
 }
 
 //no roundId?
+const FakeOrders = [
+  {
+    type: "Order",
+    additionalData: "",
+    betAmount: 1.0,
+    closedOn: "2023-04-24T05:42:31.563046+00:00",
+    createdOn: "2023-04-24T05:42:31.563046+00:00",
+    currencyCode: "CNY",
+    externalClosedOn: "2023-04-24T05:42:25.774+00:00",
+    externalCreatedOn: "2023-04-24T05:42:25.774+00:00",
+    externalPlayerCode: "4ujrm784ukwo",
+    externalRoundId: "sRKuAVtWEsxEelpU7AO94",
+    gameId: 4000001,
+    gameName: "Baccarat Classic",
+    gameProviderCode: "AWC_SG",
+    gameProviderId: "8b0fe910-b8c6-440a-ae84-2f797b9a312f",
+    gameProviderName: "AWC_SG",
+    id: "b1c8fb84-8701-0000-0001-00002af4f405",
+    platformType: "Desktop",
+    playerCode: "4ujrm784ukwo",
+    playerName: "Herman1682314945488",
+    settleAmount: 1,
+    status: "Win",
+    subGameProviderName: "AWC_SG",
+    turnover: 1.0,
+    updatedOn: "0001-01-01T00:00:00+00:00",
+    validBetAmount: 1,
+    winLoss: -1.0
+  }
+]
 export const useWinlossReport = (searchParams) => {
   switch (searchParams?.username) {
     case "agentParent":
@@ -160,12 +190,7 @@ export const useWinlossReport = (searchParams) => {
       return searchParams?.downline
         ? {
             data: {
-              items: [
-                {
-                  username: "xxx-order",
-                  type: "Order"
-                }
-              ]
+              items: FakeOrders
             },
             mutate: () => ({}),
             deleteCache: () => ({})
@@ -238,12 +263,7 @@ export const useWinlossReport = (searchParams) => {
       return searchParams?.downline
         ? {
             data: {
-              items: [
-                {
-                  username: "xxx-order",
-                  type: "Order"
-                }
-              ]
+              items: FakeOrders
             },
             mutate: () => ({}),
             deleteCache: () => ({})
