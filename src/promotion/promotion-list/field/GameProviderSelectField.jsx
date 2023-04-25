@@ -5,10 +5,10 @@ import { Trans, useTrans } from "../../../i18n"
 import { NormalLabel } from "../../../form/Label"
 import { BrandGameProviderCheckboxGroupTable } from "../../../game/brandproviders/BrandGameProviderCheckboxGroup"
 import { useGameType } from "./GameTypeSelectField"
-import { useBrandIdFromPromotionForm } from "../usePromotionFormData"
+import { usePromotionBrandId } from "../usePromotionFormData"
 
 export const GameProviderSelectField = ({ readOnly }) => {
-  let brandId = useBrandIdFromPromotionForm()
+  let brandId = usePromotionBrandId()
   let gameType = useGameType()
 
   if (!gameType) {

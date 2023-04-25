@@ -15,7 +15,7 @@ export const Field = {
   IsPromotionStarted: "isPromotionStarted"
 }
 
-export const useBrandIdFromPromotionForm = () => {
+export const usePromotionBrandId = () => {
   let { getValues } = useFormContext()
   return getValues(Field.BrandId)
 }
@@ -37,16 +37,7 @@ export const useIsAddPromotion = () => {
 
 export const useIsPromotionAdded = useHasPromotionId
 
-export const usePromotionType = () => {
-  let { control } = useFormContext()
-
-  let promotionType = useWatch({
-    control,
-    name: Field.PromotionType
-  })
-  return promotionType
-}
-
+/*
 export const usePromotionStartDate = () => {
   let { control } = useFormContext()
   let start = useWatch({
@@ -55,38 +46,9 @@ export const usePromotionStartDate = () => {
   })
   return start
 }
+*/
 
 export const useIsPromotionStarted = () => {
   let { control, getValues } = useFormContext()
   return getValues(Field.IsPromotionStarted)
-}
-
-//TODO: use IsPromotionStarted & isPromotionEnded instead
-export const useIsActivePromotion = () => {
-  let { control } = useFormContext()
-  let status = useWatch({
-    control,
-    name: Field.Status
-  })
-
-  let start = usePromotionStartDate()
-
-  let end = useWatch({
-    control,
-    name: Field.To
-  })
-
-  if (!isPromotionStatusEnabled(status)) {
-    return false
-  }
-
-  if (!isValidDate(start) || !isValidDate(end)) {
-    return false
-  }
-
-  let now = new Date()
-  let isAfterStart = isAfter(now, start)
-  let isBeforeEnd = isAfter(end, now)
-
-  return isAfterStart && isBeforeEnd
 }

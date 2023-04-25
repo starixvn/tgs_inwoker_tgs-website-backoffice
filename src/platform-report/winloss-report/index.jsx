@@ -13,6 +13,7 @@ import {
   usePlatformId
 } from "../../page/PlatformPageContent"
 import { Trans } from "../../i18n"
+import { WinlossReport } from "./WinlossReport"
 
 export { Code }
 
@@ -28,7 +29,6 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const Report = () => {
-  //TODO: rename to "盈亏", eng?
   return (
     <PlatformPageContent title={<Trans zh="输赢报表" en="Winloss Report" />}>
       <ReportBody />
@@ -39,8 +39,4 @@ const Report = () => {
 const ReportBody = () => {
   let brandId = usePlatformId()
   return <WinlossReport brandId={brandId} />
-}
-
-const WinlossReport = () => {
-  return null
 }

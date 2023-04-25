@@ -10,7 +10,7 @@ import {
   addWeeks
 } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { selectRandomPlatform } from "../page/content.js"
+import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import faker from "@faker-js/faker"
@@ -18,12 +18,40 @@ import faker from "@faker-js/faker"
 const test = base.extend(Fixture)
 const { lorem } = faker
 
-test("add turnover reward promotion", async ({ page, promotionSetting }) => {
-  let brandId = await gotoPromotionPage(page)
+test("add relief money reward promotion", async ({
+  page,
+  platform,
+  backofficeApi,
+  promotionSetting
+}) => {
+  await gotoPromotionPage(page, platform.code)
 
   let promotion = await addPromotion(page)
 
-  console.log("TODO: get promotion record use api and compare")
+  let [mainInfo, content, rule] = await Promise.all([
+    backofficeApi.promotion.mainInfo.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.content.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.rule.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    })
+  ])
+
+  expect(mainInfo).not.empty
+
+  expect(content).not.empty
+  expect(promotion.subSubject).equals(content.subSubject)
+
+  expect(rule).not.empty
+  expect(promotion.percentage).equals(rule.percentage)
+  expect(promotion.bonusAmountLimit).equals(rule.bonusAmountLimit)
+  expect(promotion.turnoverMultiple).equals(rule.turnoverMultiple)
 })
 
 const addPromotion = async (page) => {
@@ -37,7 +65,11 @@ const addPromotion = async (page) => {
     name: `${lorem.word()}-${Date.now()}`,
     from: format(from, "yyyy/MM/dd"),
     to: format(to, "yyyy/MM/dd"),
-    subSubject: lorem.word()
+    subSubject: lorem.word(),
+    totalAmountLimit: 1000,
+    percentage: 50,
+    bonusAmountLimit: 100,
+    turnoverMultiple: 2
   }
 
   await page.fill(`${DialogSelector} input[name="name"]`, promotion.name)
@@ -53,13 +85,13 @@ const addPromotion = async (page) => {
     value: promotion.to
   })
 
-  const PromotionTypeGroup = "Dummy"
+  const PromotionTypeGroup = "ReliefMoney"
   await page.selectOption(
     `select[name="promotionTypeGroup"]`,
     PromotionTypeGroup
   )
 
-  const PromotionType = "Dummy"
+  const PromotionType = "ReliefMoneyDaily"
   await page.selectOption(`select[name="promotionType"]`, PromotionType)
 
   await page.fill(
@@ -69,6 +101,24 @@ const addPromotion = async (page) => {
 
   await page.click(
     `${DialogSelector} #vipLevels input[type="checkbox"] + .bb-CheckboxIcon`
+  )
+
+  await page.fill(
+    `${DialogSelector} input[name="totalAmountLimit"]`,
+    `${promotion.totalAmountLimit}`
+  )
+
+  await page.fill(
+    `${DialogSelector} input[name="rule.percentage"]`,
+    `${promotion.percentage}`
+  )
+  await page.fill(
+    `${DialogSelector} input[name="rule.bonusAmountLimit"]`,
+    `${promotion.bonusAmountLimit}`
+  )
+  await page.fill(
+    `${DialogSelector} input[name="rule.turnoverMultiple"]`,
+    `${promotion.turnoverMultiple}`
   )
 
   await Promise.all([
@@ -84,7 +134,7 @@ const addPromotion = async (page) => {
   return promotion
 }
 
-const gotoPromotionPage = async (page) => {
+const gotoPromotionPage = async (page, platformCode) => {
   await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })
-  return await selectRandomPlatform(page)
+  return await selectPlatformByCode(page, platformCode)
 }

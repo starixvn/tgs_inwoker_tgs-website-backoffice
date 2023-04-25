@@ -7,9 +7,9 @@ import { Trans, useTrans } from "../../../i18n"
 import { NormalLabel } from "../../../form/Label"
 import Checkbox from "../../../checkbox"
 import { NumberInput } from "../../../input/NumberInput"
-import { PromotionTypeGroup, useFindPromotionType } from "../../PromotionType"
+import { useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
-import { usePromotionType } from "../usePromotionFormData"
+import { usePromotionType } from "./PromotionTypeField"
 
 const isNotNil = complement(isNil)
 

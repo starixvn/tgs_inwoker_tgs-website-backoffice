@@ -1,17 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react"
-import {
-  css,
-  Stack,
-  Heading,
-  Box,
-  Button,
-  Select as _Select,
-  SelectMenu,
-  DropdownMenu
-} from "bumbag"
+import { css, Stack, Heading, Box, Button, DropdownMenu } from "bumbag"
 import { useForm, useFormContext, Controller } from "react-hook-form"
 import Alert, { AlertDialog } from "../dialog/Alert"
 import { useTrans, Trans } from "../i18n"
+import { Select, SelectField } from "../select/Select"
 
 const Active = "Active"
 const ActiveTrans = {
@@ -80,6 +72,35 @@ const toPalette = (value) => {
 
 const defaultEnableMenuItem = (_) => true
 
+export const MerchantStatusSelect = ({ placeholder, ...props }) => {
+  let defaultPlaceholder = useTrans({
+    zh: "状态",
+    en: "Status"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
+
+  let options = [
+    {
+      value: Active,
+      label: useTrans(ActiveTrans)
+    },
+    {
+      value: Maintenance,
+      label: useTrans(MaintenanceTrans)
+    },
+    {
+      value: Inactive,
+      label: useTrans(InactiveTrans)
+    },
+    {
+      value: Archived,
+      label: useTrans(ArchivedTrans)
+    }
+  ]
+
+  return <Select placeholder={placeholder} options={options} {...props} />
+}
+
 export const MerchantStatusMenu = ({
   record = {},
   useChangeStatus,
@@ -109,7 +130,7 @@ export const MerchantStatusMenu = ({
     }
   }, [result, error])
 
-  if (readOnly || disabled) {
+  if (readOnly || disabled || status === Archived) {
     return (
       <Button
         palette={toPalette(status)}

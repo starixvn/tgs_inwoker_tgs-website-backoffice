@@ -23,13 +23,30 @@ test("add offline login reward promotion", async ({
   page,
   promotionSetting,
   platform,
+  backofficeApi,
   player
 }) => {
-  let brandId = await gotoPromotionPage(page, platform.code)
+  await gotoPromotionPage(page, platform.code)
 
   let promotion = await addPromotion(page, platform, player)
 
-  console.log("TODO: get promotion record use api and compare")
+  let [mainInfo, content, rule] = await Promise.all([
+    backofficeApi.promotion.mainInfo.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.content.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    }),
+    backofficeApi.promotion.rule.fetch({
+      platformId: platform.id,
+      name: promotion.name
+    })
+  ])
+
+  expect(rule.bonusAmount).equals(promotion.bonusAmount)
+  expect(rule.turnoverMultiple).equals(promotion.turnoverMultiple)
 })
 
 const toFileBuffer = (username) => {

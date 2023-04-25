@@ -7,7 +7,7 @@ import { Trans, useTrans } from "../../../i18n"
 import { NormalLabel } from "../../../form/Label"
 import { useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
-import { usePromotionType } from "../usePromotionFormData"
+import { usePromotionType } from "./PromotionTypeField"
 
 const isNotNil = complement(isNil)
 
