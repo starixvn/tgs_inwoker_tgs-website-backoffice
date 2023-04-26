@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Group } from "bumbag"
-import { UserTypeDropdownMenu } from "./UserType"
+import { MemberTypeDropdownMenu } from "./MemberType"
 import { InputField } from "../../input/Input"
 import { useTrans } from "../../i18n"
 
@@ -16,7 +16,7 @@ export const UsernameInputGroup = ({ name = "username", userTypeProps }) => {
     <InputField
       name={name}
       addonBefore={
-        <UserTypeDropdownMenu
+        <MemberTypeDropdownMenu
           name={defaultUserTypeName}
           {...userTypeProps}
           css={css`

@@ -9,16 +9,22 @@ import {
 } from "../../client"
 import { useGameRoundList } from "../../game/round/client"
 
-export const API = "/api/AgentReport"
+export const API = "/api/AgentWinLossReport"
 
-//TODO:
+//TODO: rm fake
 const FakePlayerUsername = "Herman1682314945488"
-export const useWinlossReportPath = ({
+export const useWinlossReportPath = (
+  searchParams
+  /*{
   username,
-  downline,
   roundId,
   ...searchParams
-} = {}) => {
+} = {}
+*/
+) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/breadcrumb`) : ""
+  return useGet(url)
+
   // agentParent > agentChild > player
   // agent123 -> agent456 > player123
   if (roundId) {
@@ -132,6 +138,10 @@ const FakeOrders = [
   }
 ]
 export const useWinlossReport = (searchParams) => {
+  //TODO: if has roundId? or memberType = Player?
+  let url = searchParams ? urlWith(searchParams, `${API}/agentWinLoss`) : ""
+  return useGet(url)
+
   switch (searchParams?.username) {
     case "agentParent":
       return searchParams?.downline
@@ -146,7 +156,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -164,7 +178,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -184,7 +202,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -202,7 +224,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -230,7 +256,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -250,7 +280,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -268,7 +302,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -288,7 +326,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -306,7 +348,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -333,7 +379,11 @@ export const useWinlossReport = (searchParams) => {
                   playerWinloss: -1600,
                   playerSpecial: 240,
                   agentWinloss: 980,
-                  agentSpecial: -156
+                  agentSpecial: -156,
+                  agentTotal: 824,
+                  companyWinloss: 620,
+                  companySpecial: -54,
+                  companyTotal: 536
                 }
               ]
             },
@@ -350,7 +400,11 @@ export const useWinlossReport = (searchParams) => {
           playerWinloss: -1600,
           playerSpecial: 240,
           agentWinloss: 980,
-          agentSpecial: -156
+          agentSpecial: -156,
+          agentTotal: 824,
+          companyWinloss: 620,
+          companySpecial: -54,
+          companyTotal: 536
         },
         {
           username: "agent123",
@@ -360,7 +414,11 @@ export const useWinlossReport = (searchParams) => {
           playerWinloss: -1600,
           playerSpecial: 240,
           agentWinloss: 980,
-          agentSpecial: -156
+          agentSpecial: -156,
+          agentTotal: 824,
+          companyWinloss: 620,
+          companySpecial: -54,
+          companyTotal: 536
         }
       ]
 
