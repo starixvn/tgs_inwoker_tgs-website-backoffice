@@ -5,13 +5,13 @@ import { useTrans, Trans } from "../../i18n"
 import { Select } from "../../select/Select"
 import { useFormContext } from "react-hook-form"
 
-export const Agent = "Agent"
+export const Agent = "agent"
 const AgentTrans = {
   zh: "代理",
   en: "Agent"
 }
 
-export const Player = "Player"
+export const Player = "player"
 const PlayerTrans = {
   zh: "玩家",
   en: "Player"
