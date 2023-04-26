@@ -423,7 +423,7 @@ const useUserColumns = ({ items = [], appendPath }) => {
         },
         columns: [
           numberDecimalColumn({
-            accessor: "winloss",
+            accessor: "winLoss",
             Header: <Trans zh="输赢" en="Winloss" />,
             disableSortBy: true
           }),
