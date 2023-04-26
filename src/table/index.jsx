@@ -439,7 +439,8 @@ const TotalBody = ({ table }) => {
     components,
     stickyLeft,
     stickyRight,
-    maxSize
+    maxSize,
+    hasCellDividers
   } = table
   let { Body, Row } = components
 
@@ -476,6 +477,12 @@ const TotalBody = ({ table }) => {
                 position: ${isStickyCell ? "sticky" : "static"};
                 left: ${isStickyLeft ? 0 : "auto"};
                 right: ${isStickyRight ? 0 : "auto"};
+                border-right: ${hasCellDividers
+                  ? `1px solid var(--bb-palette-white800, #000000)`
+                  : "0"};
+                border-bottom: ${hasCellDividers
+                  ? `1px solid var(--bb-palette-white800, #000000)`
+                  : "0"};
               `}
               data-column-id={columnId}
               data-type="total"
