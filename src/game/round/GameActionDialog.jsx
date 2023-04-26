@@ -27,6 +27,10 @@ export const GameActionDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
+  if (!roundId) {
+    return null
+  }
+
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>

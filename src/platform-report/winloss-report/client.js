@@ -8,7 +8,7 @@ import {
   usePostFormData
 } from "../../client"
 import { useGameRoundList } from "../../game/round/client"
-import { Player } from "./MemberType"
+import { Player, isPlayerMemberType } from "./MemberType"
 
 export const API = "/api/AgentWinLossReport"
 
@@ -139,8 +139,11 @@ const FakeOrders = [
   }
 ]
 export const useWinlossReport = (searchParams) => {
-  //TODO: test
-  if (searchParams?.memberType === Player && searchParams?.downline === true) {
+  //TODO: rm, use useGameRoundList @ index.js
+  if (
+    isPlayerMemberType(searchParams?.memberType) &&
+    searchParams?.downline === true
+  ) {
     return useGameRoundList(searchParams)
   }
 
