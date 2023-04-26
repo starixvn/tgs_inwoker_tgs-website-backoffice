@@ -574,17 +574,16 @@ export const useColumns = ({ items = [], filter: predicate }) => {
         accessor: (record) => record,
         Header: <Trans zh="详情" en="Detail" />,
         disableSortBy: true,
-        Cell: ({ value }) => {
-          let { id: roundId } = value
+        Cell: ({ value: record }) => {
           return (
             <Set alignX="center">
               <GameRoundButton
                 id="game-round-dialog-disclosure"
-                record={value}
+                record={record}
               />
               <GameActionDialogDisclosure
                 id="game-action-dialog-disclosure"
-                roundId={roundId}
+                roundId={record?.id}
               />
             </Set>
           )
