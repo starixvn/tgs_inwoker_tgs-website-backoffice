@@ -197,6 +197,7 @@ export const WinlossReport = ({ brandId }) => {
     mutateReportData(data, false)
   }
 
+  console.log("reportData?.items", reportData?.items)
   let columns = useColumns({
     items: reportData?.items,
     path,
@@ -390,7 +391,7 @@ const useUserColumns = ({ items = [], appendPath }) => {
                     appendPath(record)
                   }}
                 >
-                  {record.username}
+                  {record?.username}
                 </Link.Block>
               )
             }
