@@ -64,6 +64,7 @@ const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const WinlossReport = ({ brandId }) => {
   let [path, setPath] = useState([])
+  console.log("path", path)
   //TODO: rm
   // let [downline, setDownline] = useState(false)
 
@@ -493,6 +494,7 @@ const useUserColumns = ({ items = [], appendPath }) => {
 const useColumns = ({ path = [], ...props }) => {
   let isPlayerOrderData = last(path)?.memberType === MemberType.Player
 
+  console.log("isPlayerOrderData", isPlayerOrderData, "path", path)
   return isPlayerOrderData
     ? usePlayerOrderColumns(props)
     : useUserColumns(props)
