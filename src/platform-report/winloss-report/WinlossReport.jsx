@@ -491,7 +491,7 @@ const useUserColumns = ({ items = [], appendPath }) => {
 }
 
 const useColumns = ({ path = [], ...props }) => {
-  let isPlayerOrderData = last(path)?.type === MemberType.Player
+  let isPlayerOrderData = last(path)?.memberType === MemberType.Player
 
   return isPlayerOrderData
     ? usePlayerOrderColumns(props)

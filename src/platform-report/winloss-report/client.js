@@ -8,6 +8,7 @@ import {
   usePostFormData
 } from "../../client"
 import { useGameRoundList } from "../../game/round/client"
+import { Player } from "./MemberType"
 
 export const API = "/api/AgentWinLossReport"
 
@@ -138,7 +139,11 @@ const FakeOrders = [
   }
 ]
 export const useWinlossReport = (searchParams) => {
-  //TODO: if has roundId? or memberType = Player?
+  //TODO: test
+  if (searchParams?.memberType === Player && searchParams?.downline === true) {
+    return useGameRoundList(searchParams)
+  }
+
   let url = searchParams ? urlWith(searchParams, `${API}/agentWinLoss`) : ""
   return useGet(url)
 
