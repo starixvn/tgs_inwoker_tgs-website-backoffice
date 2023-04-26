@@ -55,7 +55,7 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { UsernameInputGroup } from "./UsernameInputGroup"
-import { MemberTypeLabel, MemberType } from "./MemberType"
+import { MemberTypeLabel, MemberType, isPlayerMemberType } from "./MemberType"
 import { useColumns as usePlayerOrderColumns } from "../order-report/index"
 import { PlayerSpecial } from "./PlayerSpecial"
 
@@ -492,9 +492,8 @@ const useUserColumns = ({ items = [], appendPath }) => {
 }
 
 const useColumns = ({ path = [], ...props }) => {
-  let isPlayerOrderData = last(path)?.memberType === MemberType.Player
+  let isPlayerOrderData = isPlayerMemberType(last(path)?.memberType)
 
-  console.log("isPlayerOrderData", isPlayerOrderData, "path", path)
   return isPlayerOrderData
     ? usePlayerOrderColumns(props)
     : useUserColumns(props)

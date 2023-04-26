@@ -17,6 +17,9 @@ const PlayerTrans = {
   en: "Player"
 }
 
+export const isPlayerMemberType = (value = "") =>
+  value.toLowerCase() === Player.toLowerCase()
+
 export const MemberType = {
   Agent,
   Player
