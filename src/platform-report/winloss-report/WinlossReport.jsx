@@ -394,7 +394,8 @@ const useUserColumns = ({ items = [], appendPath }) => {
                   {record?.username}
                 </Link.Block>
               )
-            }
+            },
+            TotalCell: () => <Trans zh="总计" en="Total" />
           }),
           textColumn({
             accessor: "memberType",
