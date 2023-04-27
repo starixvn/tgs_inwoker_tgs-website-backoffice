@@ -75,7 +75,16 @@ export const PlayerSpecialDialogDisclosure = ({
   to
 }) => {
   let dialog = useModalState()
-
+  console.log(
+    "PlayerSpecial brandId",
+    brandId,
+    "agentId",
+    agentId,
+    "from",
+    from,
+    "to",
+    to
+  )
   if (!Number.isFinite(value) || value === 0) {
     return <FormattedNumberDecimal value={value} />
   }

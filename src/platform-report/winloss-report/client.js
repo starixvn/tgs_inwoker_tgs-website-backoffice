@@ -30,16 +30,20 @@ export const useWinlossReport = (searchParams) => {
 }
 
 export const useWinlossReportPlayerSpecial = (searchParams) => {
-  let url = searchParams ? `${API}/agentPlayerSpecialDetail` : ""
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/agentPlayerSpecialDetail`)
+    : ""
   return useGet(url)
 }
 
 export const useWinlossReportAgentTotal = (searchParams) => {
-  let url = searchParams ? `${API}/agentTotalDetail` : ""
+  let url = searchParams ? urlWith(searchParams, `${API}/agentTotalDetail`) : ""
   return useGet(url)
 }
 
 export const useWinlossReportCompanyTotal = (searchParams) => {
-  let url = searchParams ? `${API}/companyTotalDetail` : ""
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/companyTotalDetail`)
+    : ""
   return useGet(url)
 }
