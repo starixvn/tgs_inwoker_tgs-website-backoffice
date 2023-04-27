@@ -57,19 +57,13 @@ import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { UsernameInputGroup } from "./UsernameInputGroup"
 import { MemberTypeLabel, MemberType, isPlayerMemberType } from "./MemberType"
 import { useColumns as usePlayerOrderColumns } from "../order-report/index"
-import { PlayerSpecial } from "./PlayerSpecial"
+import { PlayerSpecialDialogDisclosure } from "./PlayerSpecial"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const WinlossReport = ({ brandId }) => {
   let [path, setPath] = useState([])
-  //TODO: rm
-  // let [downline, setDownline] = useState(false)
-
-  //TODO: use PathSearchParams state instead?
-  // let [reportUsername, setReportUsername] = useState()
-  // let [reportUserType, setReportUserType] = useState()
 
   let [searchParams, setSearchParams] = useState({
     brandId,
@@ -160,14 +154,15 @@ export const WinlossReport = ({ brandId }) => {
   let culture = useLangCode()
 
   //TODO: sort?
-  //TODO: append roundId here?
+  //TODO: also roundId here?
+  to = startOfNextDay(to)
   let username = state?.username ?? searchParams?.username
   let memberType = state?.memberType ?? searchParams?.memberType
   const toReportSearchParams = () => {
     let result = {
       ...toApiParams(state),
       from,
-      to: startOfNextDay(to),
+      to,
       username,
       memberType,
       culture
@@ -200,6 +195,9 @@ export const WinlossReport = ({ brandId }) => {
   console.log("reportData?.items", reportData?.items)
   let columns = useColumns({
     items: reportData?.items,
+    brandId,
+    from,
+    to,
     path,
     appendPath
   })
@@ -376,7 +374,7 @@ const SearchBar = ({
   )
 }
 
-const useUserColumns = ({ items = [], appendPath }) => {
+const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
   return useMemo(() => {
     let columns = [
       {
@@ -432,12 +430,25 @@ const useUserColumns = ({ items = [], appendPath }) => {
             disableSortBy: true
           }),
           numberDecimalColumn({
-            accessor: "special",
+            id: "special",
+            accessor: (row) => row,
             Header: <Trans zh="特别" en="Special" />,
-            disableSortBy: true
-            /*
-            Cell: PlayerSpecial
-            */
+            disableSortBy: true,
+            Cell: ({ value: record }) => {
+              if (isPlayerMemberType(record?.memberType)) {
+                return <FormattedNumberDecimal value={record?.special} />
+              }
+
+              return (
+                <PlayerSpecialDialogDisclosure
+                  value={record?.special}
+                  brandId={brandId}
+                  agentId={record?.id}
+                  from={from}
+                  to={to}
+                />
+              )
+            }
           })
         ]
       },

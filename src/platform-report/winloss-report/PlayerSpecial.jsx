@@ -41,6 +41,7 @@ import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
+import { useWinlossReportPlayerSpecial } from "./client"
 
 //TODO: a record?
 export const PlayerSpecial = ({ value }) => {
@@ -53,12 +54,12 @@ export const PlayerSpecial = ({ value }) => {
       <Popover.Disclosure use={Link}>
         <FormattedNumberDecimal value={value} />
       </Popover.Disclosure>
-      {/* <Popover.Disclosure>
+      <Popover.Disclosure>
         <Set orientation="horizontal" whiteSpace="nowrap" width="max-content">
           <Icon icon={faPlus} type="font-awesome" />
           <FormattedNumberDecimal value={value} />
         </Set>
-      </Popover.Disclosure> */}
+      </Popover.Disclosure>
       <Popover hasArrow usePortal>
         TODO: table
       </Popover>
@@ -66,7 +67,13 @@ export const PlayerSpecial = ({ value }) => {
   )
 }
 
-export const PlayerSpecialDialogDisclosure = ({}) => {
+export const PlayerSpecialDialogDisclosure = ({
+  value,
+  brandId,
+  agentId,
+  from,
+  to
+}) => {
   let dialog = useModalState()
 
   if (!Number.isFinite(value) || value === 0) {
@@ -78,15 +85,89 @@ export const PlayerSpecialDialogDisclosure = ({}) => {
       <Disclosure use={Link} {...dialog}>
         <FormattedNumberDecimal value={value} />
       </Disclosure>
-      {dialog.visible && <PlayerSpecialDialog dialog={dialog} />}
+      {dialog.visible && (
+        <PlayerSpecialDialog
+          brandId={brandId}
+          agentId={agentId}
+          from={from}
+          to={to}
+          dialog={dialog}
+        />
+      )}
     </>
   )
 }
 
-const PlayerSpecialDialog = ({ dialog }) => {
+const Bonus = "bonus"
+const BonusTrans = {
+  zh: "优惠",
+  en: "Bonus"
+}
+
+const BonusAdjust = "bonusAdjust"
+const BonusAdjustTrans = {
+  zh: "优惠调帐",
+  en: "Bonus Adjust"
+}
+
+const ProductFee = "productFee"
+const ProductFeeTrans = {
+  zh: "平台费用",
+  en: "Product Fee"
+}
+
+const Type = {
+  Bonus,
+  BonusAdjust,
+  ProductFee
+}
+
+const TypeLabel = ({ value = "" }) => {
+  switch (value) {
+    case Bonus:
+      return <Trans {...BonusTrans} />
+    case BonusAdjust:
+      return <Trans {...BonusAdjustTrans} />
+    case ProductFee:
+      return <Trans {...ProductFeeTrans} />
+    default:
+      return value
+  }
+}
+
+const PlayerSpecialDialog = ({ brandId, agentId, from, to, dialog }) => {
+  let {
+    data = {},
+    isLoading,
+    error,
+    mutate,
+    deleteCache
+  } = useWinlossReportPlayerSpecial({
+    brandId,
+    agentId,
+    from,
+    to
+  })
+
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (error) {
+    return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
+  }
+
+  data = Object.entries(data).map(([key, value]) => {
+    return {
+      type: key,
+      value
+    }
+  })
+  console.log("TODO: record to list", data)
+
   return (
     <Modal title="" {...dialog}>
-      <Box>TODO</Box>
+      <Box>{JSON.stringify(data)}</Box>
     </Modal>
   )
 }
