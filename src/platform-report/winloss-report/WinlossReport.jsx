@@ -449,10 +449,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
                 />
               )
             },
-            TotalCell: ({ value: record }) => {
-              console.log("record or value", record)
-              return <FormattedNumberDecimal value={record?.special} />
-            }
+            TotalCell: FormattedNumberDecimal
           })
         ]
       },
