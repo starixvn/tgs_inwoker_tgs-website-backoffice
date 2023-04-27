@@ -114,7 +114,6 @@ export const WinlossReport = ({ brandId }) => {
       downline: true
     })
 
-    // setDownline(true)
     let index = path.findIndex((item) => item.username === node.username)
 
     let isLast = isLastIndex(index, path)
@@ -156,7 +155,7 @@ export const WinlossReport = ({ brandId }) => {
   let culture = useLangCode()
 
   //TODO: sort?
-  //TODO: also roundId here?
+  //TODO: roundId?
   to = startOfNextDay(to)
   let username = state?.username ?? searchParams?.username
   let memberType = state?.memberType ?? searchParams?.memberType
