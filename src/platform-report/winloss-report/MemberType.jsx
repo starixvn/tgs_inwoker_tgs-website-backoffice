@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { DropdownMenu, Button } from "bumbag"
 import { useTrans, Trans } from "../../i18n"
-import { Select } from "../../select/Select"
 import { useFormContext } from "react-hook-form"
 
 export const Agent = "agent"

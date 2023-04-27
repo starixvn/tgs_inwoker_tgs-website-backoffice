@@ -64,7 +64,6 @@ const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const WinlossReport = ({ brandId }) => {
   let [path, setPath] = useState([])
-  console.log("path", path)
   //TODO: rm
   // let [downline, setDownline] = useState(false)
 
@@ -214,23 +213,27 @@ export const WinlossReport = ({ brandId }) => {
           from={state?.from}
           to={state?.to}
           search={(data = {}) => {
-            reset()
+            console.log("data", data)
+            //TODO: use reset?
+            resetPath()
 
             // setReportUsername(undefined)
             // setReportUserType(undefined)
             setSearchParams({
               brandId,
-              ...data
+              username: data.username,
+              memberType: data.memberType,
+              roundId: data.roundId
             })
+            mutatePathData()
 
             // setDownline(false)
-            resetPath()
-
             setState({
               pageIndex: 0,
               ...data,
               downline: false
             })
+            mutateReportData()
           }}
         />
       </Level>
