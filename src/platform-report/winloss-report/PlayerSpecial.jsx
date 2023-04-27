@@ -43,7 +43,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportPlayerSpecial } from "./client"
 
-//TODO: a record?
+/*
 export const PlayerSpecial = ({ value }) => {
   if (!Number.isFinite(value) || value === 0) {
     return <FormattedNumberDecimal value={value} />
@@ -66,6 +66,7 @@ export const PlayerSpecial = ({ value }) => {
     </Popover.State>
   )
 }
+*/
 
 export const PlayerSpecialDialogDisclosure = ({
   value,
@@ -75,16 +76,7 @@ export const PlayerSpecialDialogDisclosure = ({
   to
 }) => {
   let dialog = useModalState()
-  console.log(
-    "PlayerSpecial brandId",
-    brandId,
-    "agentId",
-    agentId,
-    "from",
-    from,
-    "to",
-    to
-  )
+
   if (!Number.isFinite(value) || value === 0) {
     return <FormattedNumberDecimal value={value} />
   }

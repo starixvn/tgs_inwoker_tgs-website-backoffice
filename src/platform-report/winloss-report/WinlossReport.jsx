@@ -58,6 +58,8 @@ import { UsernameInputGroup } from "./UsernameInputGroup"
 import { MemberTypeLabel, MemberType, isPlayerMemberType } from "./MemberType"
 import { useColumns as usePlayerOrderColumns } from "../order-report/index"
 import { PlayerSpecialDialogDisclosure } from "./PlayerSpecial"
+import { AgentTotalDialogDisclosure } from "./AgentTotal"
+import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -471,9 +473,26 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             disableSortBy: true
           }),
           numberDecimalColumn({
-            accessor: "agentTotal",
+            id: "agentTotal",
+            accessor: (row) => row,
             Header: <Trans zh="总和" en="Total" />,
-            disableSortBy: true
+            disableSortBy: true,
+            Cell: ({ value: record }) => {
+              if (isPlayerMemberType(record?.memberType)) {
+                return <FormattedNumberDecimal value={record?.special} />
+              }
+
+              return (
+                <AgentTotalDialogDisclosure
+                  value={record?.agentTotal}
+                  brandId={brandId}
+                  agentId={record?.id}
+                  from={from}
+                  to={to}
+                />
+              )
+            },
+            TotalCell: FormattedNumberDecimal
           })
         ]
       },
@@ -497,7 +516,24 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
           numberDecimalColumn({
             accessor: "companyTotal",
             Header: <Trans zh="总和" en="Total" />,
-            disableSortBy: true
+            disableSortBy: true,
+            disableSortBy: true,
+            Cell: ({ value: record }) => {
+              if (isPlayerMemberType(record?.memberType)) {
+                return <FormattedNumberDecimal value={record?.special} />
+              }
+
+              return (
+                <CompanyTotalDialogDisclosure
+                  value={record?.companyTotal}
+                  brandId={brandId}
+                  agentId={record?.id}
+                  from={from}
+                  to={to}
+                />
+              )
+            },
+            TotalCell: FormattedNumberDecimal
           })
         ]
       }
