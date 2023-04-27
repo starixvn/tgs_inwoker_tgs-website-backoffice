@@ -60,6 +60,7 @@ import { useColumns as usePlayerOrderColumns } from "../order-report/index"
 import { PlayerSpecialDialogDisclosure } from "./PlayerSpecial"
 import { AgentTotalDialogDisclosure } from "./AgentTotal"
 import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
+import equals from "fast-deep-equal"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -151,7 +152,7 @@ export const WinlossReport = ({ brandId }) => {
 
   useEffect(() => {
     resetPath(pathData?.items)
-  }, [JSON.stringify(pathData?.items)])
+  }, [!equals(pathData?.items, path), JSON.stringify(pathData?.items)])
 
   let culture = useLangCode()
 
