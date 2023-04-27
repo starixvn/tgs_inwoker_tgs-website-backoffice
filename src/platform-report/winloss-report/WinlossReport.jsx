@@ -514,7 +514,8 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             disableSortBy: true
           }),
           numberDecimalColumn({
-            accessor: "companyTotal",
+            id: "companyTotal",
+            accessor: (row) => row,
             Header: <Trans zh="总和" en="Total" />,
             disableSortBy: true,
             disableSortBy: true,
