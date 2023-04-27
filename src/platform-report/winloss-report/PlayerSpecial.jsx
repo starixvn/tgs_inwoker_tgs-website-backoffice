@@ -173,7 +173,6 @@ const PlayerSpecialDialog = ({ brandId, agentId, from, to, dialog }) => {
 
   return (
     <Modal title={title} {...dialog}>
-      <Box>{JSON.stringify(data)}</Box>
       <Table columns={columns} data={items} foot={items?.length > 0} />
     </Modal>
   )
@@ -192,7 +191,11 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "value",
         Header: <Trans zh="金额" en="Amount" />,
-        sumColumn: "value"
+        sumColumn: "value",
+        disableSortBy: true,
+        footerCellProps: {
+          textAlign: "center"
+        }
       })
     ]
 

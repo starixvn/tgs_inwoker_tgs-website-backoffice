@@ -62,7 +62,7 @@ export const CompanyTotalDialogDisclosure = ({
         <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
-        <AgentTotalDialog
+        <CompanyTotalDialog
           brandId={brandId}
           agentId={agentId}
           from={from}
