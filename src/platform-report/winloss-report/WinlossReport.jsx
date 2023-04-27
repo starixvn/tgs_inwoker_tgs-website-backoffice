@@ -147,8 +147,8 @@ export const WinlossReport = ({ brandId }) => {
   } = useWinlossReportPath(searchParams)
 
   useEffect(() => {
-    resetPath(pathData?.items)
-  }, [!equals(pathData?.items, path), JSON.stringify(pathData?.items)])
+    resetPath(pathData)
+  }, [!equals(pathData, path), JSON.stringify(pathData)])
 
   let culture = useLangCode()
 
