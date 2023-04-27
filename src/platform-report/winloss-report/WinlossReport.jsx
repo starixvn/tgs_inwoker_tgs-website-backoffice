@@ -60,7 +60,6 @@ import { useColumns as usePlayerOrderColumns } from "../order-report/index"
 import { PlayerSpecialDialogDisclosure } from "./PlayerSpecial"
 import { AgentTotalDialogDisclosure } from "./AgentTotal"
 import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
-import equals from "fast-deep-equal"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -102,7 +101,6 @@ export const WinlossReport = ({ brandId }) => {
       memberType: node.memberType,
       downline: true
     })
-    // setDownline(true)
 
     setPath((paths) => {
       return [...paths, node]
@@ -110,8 +108,6 @@ export const WinlossReport = ({ brandId }) => {
   }
 
   const backToPath = (node) => {
-    // setReportUsername(node.username)
-    // setReportUserType(node.type)
     setState({
       username: node.username,
       memberType: node.memberType,
@@ -195,7 +191,6 @@ export const WinlossReport = ({ brandId }) => {
     mutateReportData(data, false)
   }
 
-  console.log("reportData?.items", reportData?.items)
   let columns = useColumns({
     items: reportData?.items,
     brandId,
@@ -214,12 +209,7 @@ export const WinlossReport = ({ brandId }) => {
           from={state?.from}
           to={state?.to}
           search={(data = {}) => {
-            console.log("data", data)
-            //TODO: use reset?
             resetPath()
-
-            // setReportUsername(undefined)
-            // setReportUserType(undefined)
             setSearchParams({
               brandId,
               username: data.username,
@@ -228,7 +218,6 @@ export const WinlossReport = ({ brandId }) => {
             })
             mutatePathData()
 
-            // setDownline(false)
             setState({
               pageIndex: 0,
               ...data,
@@ -238,14 +227,7 @@ export const WinlossReport = ({ brandId }) => {
           }}
         />
       </Level>
-      {/* 
-      TODO: rm debug info code
-      <Heading>Breadcrumb params</Heading>
-      <Box>{JSON.stringify(toPathSearchParams())}</Box>
-      <Heading>Report params</Heading>
-      <Box>{JSON.stringify(toReportSearchParams())}</Box> 
-      */}
-      <UserBreadcrumb treePaths={path} backToTreePath={backToPath} />
+      <UserBreadcrumb path={path} backToPath={backToPath} />
       <AutoSizer>
         {({ height, width }) => {
           return (
@@ -277,8 +259,8 @@ export const WinlossReport = ({ brandId }) => {
   )
 }
 
-const UserBreadcrumb = ({ treePaths = [], backToTreePath }) => {
-  if (treePaths.length === 0) {
+const UserBreadcrumb = ({ path = [], backToPath }) => {
+  if (path.length === 0) {
     return null
   }
 
@@ -288,14 +270,14 @@ const UserBreadcrumb = ({ treePaths = [], backToTreePath }) => {
         <Icon icon={faChevronRight} type="font-awesome" color="gray" />
       }
     >
-      {treePaths.map((user, index, list) => {
+      {path.map((user, index, list) => {
         let isCurrent = isLastIndex(index, list)
         return (
           <Breadcrumb.Item isCurrent={isCurrent} key={user?.id ?? index}>
             <Breadcrumb.Link
               onClick={(event) => {
                 if (!isCurrent) {
-                  backToTreePath(user)
+                  backToPath(user)
                 }
               }}
             >

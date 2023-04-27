@@ -154,6 +154,15 @@ const PlayerSpecialDialog = ({ brandId, agentId, from, to, dialog }) => {
     zh: "玩家特别",
     en: "Player Special"
   })
+
+  let items = Object.entries(data).map(([key, value]) => {
+    return {
+      type: key,
+      value
+    }
+  })
+
+  let columns = useColumns({ items })
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
@@ -162,16 +171,31 @@ const PlayerSpecialDialog = ({ brandId, agentId, from, to, dialog }) => {
     return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
   }
 
-  data = Object.entries(data).map(([key, value]) => {
-    return {
-      type: key,
-      value
-    }
-  })
-
   return (
     <Modal title={title} {...dialog}>
       <Box>{JSON.stringify(data)}</Box>
+      <Table columns={columns} data={items} foot={items?.length > 0} />
     </Modal>
   )
+}
+
+const useColumns = ({ items = [] }) => {
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        accessor: "type",
+        Header: <Trans zh="特别" en="Special" />,
+        disableSortBy: true,
+        Cell: TypeLabel,
+        Footer: () => <Trans zh="总计" en="Total" />
+      }),
+      numberDecimalColumn({
+        accessor: "value",
+        Header: <Trans zh="金额" en="Amount" />,
+        sumColumn: "value"
+      })
+    ]
+
+    return columns
+  }, [JSON.stringify(items)])
 }
