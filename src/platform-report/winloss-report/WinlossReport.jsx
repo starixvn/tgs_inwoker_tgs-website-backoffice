@@ -281,7 +281,7 @@ const UserBreadcrumb = ({ path = [], backToPath }) => {
                 }
               }}
             >
-              {user?.username}
+              {user?.username ?? user?.name}
             </Breadcrumb.Link>
           </Breadcrumb.Item>
         )
