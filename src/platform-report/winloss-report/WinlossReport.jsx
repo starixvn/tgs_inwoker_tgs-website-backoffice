@@ -147,6 +147,7 @@ export const WinlossReport = ({ brandId }) => {
   } = useWinlossReportPath(searchParams)
 
   useEffect(() => {
+    console.log("pathData", pathData)
     if (path.length === 0 && state?.downline === false) {
       resetPath(pathData)
     }
