@@ -149,6 +149,10 @@ const PlayerSpecialDialog = ({ brandId, agentId, from, to, dialog }) => {
     to
   })
 
+  let title = useTrans({
+    zh: "玩家特别",
+    en: "Player Special"
+  })
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
@@ -163,10 +167,9 @@ const PlayerSpecialDialog = ({ brandId, agentId, from, to, dialog }) => {
       value
     }
   })
-  console.log("TODO: record to list", data)
 
   return (
-    <Modal title="" {...dialog}>
+    <Modal title={title} {...dialog}>
       <Box>{JSON.stringify(data)}</Box>
     </Modal>
   )
