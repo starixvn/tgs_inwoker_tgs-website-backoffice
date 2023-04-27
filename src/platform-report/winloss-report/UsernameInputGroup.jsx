@@ -11,13 +11,11 @@ export const UsernameInputGroup = ({ name = "username", userTypeProps }) => {
     en: "Username"
   })
 
-  let defaultUserTypeName = "type"
   return (
     <InputField
       name={name}
       addonBefore={
         <MemberTypeDropdownMenu
-          name={defaultUserTypeName}
           {...userTypeProps}
           css={css`
             & .bb-DropdownMenuButton {
