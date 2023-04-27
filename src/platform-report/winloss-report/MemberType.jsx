@@ -68,9 +68,11 @@ export const MemberTypeDropdownMenu = ({
   //TODO: wrap props?.onChange event?
   //TODO: use event or value?
   let onChange = (value) => {
+    console.log("onChange", value)
     props?.onChange?.(value)
 
     if (name && formMethods) {
+      console.log("formMethods.setValue name", name, "value", value)
       //TODO: use event or value?
       formMethods.setValue(name, value)
     }
