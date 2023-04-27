@@ -223,7 +223,7 @@ export const WinlossReport = ({ brandId }) => {
             setState({
               pageIndex: 0,
               ...data,
-              downline: false
+              downline: !!data?.roundId ? true : false
             })
             mutateReportData()
           }}
