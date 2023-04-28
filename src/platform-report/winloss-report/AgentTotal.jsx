@@ -96,7 +96,11 @@ const AgentTotalDialog = ({ brandId, agentId, from, to, dialog }) => {
 
   return (
     <Modal title={title} {...dialog}>
-      <Table columns={columns} data={data} foot={data?.length > 0} />
+      <Table
+        columns={columns}
+        data={data}
+        // foot={data?.length > 0}
+      />
     </Modal>
   )
 }
@@ -116,12 +120,19 @@ const useColumns = ({ items = [] }) => {
               <FormattedDate value={record?.to} />
             </Set>
           )
+        },
+        Footer: () => <Trans zh="总计" en="Total" />,
+        footerCellProps: {
+          textAlign: "center"
         }
       }),
       numberDecimalPercentageColumn({
         accessor: "percentage",
         Header: <Trans zh="佔成" en="P/T" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Footer: () => {
+          return null
+        }
       }),
       {
         id: "player",
@@ -133,12 +144,14 @@ const useColumns = ({ items = [] }) => {
           numberDecimalColumn({
             accessor: "playerWinLoss",
             Header: <Trans zh="输赢" en="Winloss" />,
-            disableSortBy: true
+            disableSortBy: true,
+            sumColumn: "playerWinLoss"
           }),
           numberDecimalColumn({
             accessor: "playerSpecial",
             Header: <Trans zh="特别" en="Special" />,
-            disableSortBy: true
+            disableSortBy: true,
+            sumColumn: "playerSpecial"
           })
         ]
       },
@@ -152,17 +165,20 @@ const useColumns = ({ items = [] }) => {
           numberDecimalColumn({
             accessor: "agentWinLoss",
             Header: <Trans zh="输赢" en="Winloss" />,
-            disableSortBy: true
+            disableSortBy: true,
+            sumColumn: "agentWinLoss"
           }),
           numberDecimalColumn({
             accessor: "agentSpecial",
             Header: <Trans zh="特别" en="Special" />,
-            disableSortBy: true
+            disableSortBy: true,
+            sumColumn: "agentWinLoss"
           }),
           numberDecimalColumn({
             accessor: "agentTotal",
             Header: <Trans zh="总和" en="Total" />,
-            disableSortBy: true
+            disableSortBy: true,
+            sumColumn: "agentWinLoss"
           })
         ]
       }
