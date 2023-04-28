@@ -96,7 +96,7 @@ const AgentTotalDialog = ({ brandId, agentId, from, to, dialog }) => {
 
   return (
     <Modal title={title} {...dialog}>
-      <Table columns={columns} data={items} foot={items?.length > 0} />
+      <Table columns={columns} data={data} foot={data?.length > 0} />
     </Modal>
   )
 }

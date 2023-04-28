@@ -186,7 +186,10 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="特别" en="Special" />,
         disableSortBy: true,
         Cell: TypeLabel,
-        Footer: () => <Trans zh="总计" en="Total" />
+        Footer: () => <Trans zh="总计" en="Total" />,
+        footerCellProps: {
+          textAlign: "center"
+        }
       }),
       numberDecimalColumn({
         accessor: "value",
@@ -194,7 +197,7 @@ const useColumns = ({ items = [] }) => {
         sumColumn: "value",
         disableSortBy: true,
         footerCellProps: {
-          textAlign: "center"
+          textAlign: "right"
         }
       })
     ]
