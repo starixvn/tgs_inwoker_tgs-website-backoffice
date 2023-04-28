@@ -416,15 +416,19 @@ const Foot = ({ table }) => {
     <Foot fontWeight="semibold" {...getTableFootProps()}>
       {footerGroups.map((group) => (
         <_Table.Row {...group.getFooterGroupProps()}>
-          {group.headers.map((column) => (
-            <_Table.Cell
-              {...column.getFooterProps({
-                ...column?.footerCellProps
-              })}
-            >
-              {column.render("Footer")}
-            </_Table.Cell>
-          ))}
+          {group.headers.map((column) => {
+            console.log("column", column)
+            console.log("column.render('Footer')", column.render("Footer"))
+            return (
+              <_Table.Cell
+                {...column.getFooterProps({
+                  ...column?.footerCellProps
+                })}
+              >
+                {column.render("Footer")}
+              </_Table.Cell>
+            )
+          })}
         </_Table.Row>
       ))}
     </Foot>
