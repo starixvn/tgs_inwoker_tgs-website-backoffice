@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-rebate
-image: pgtgs/promotion-rebate:202303270647.54
+image: pgtgs/promotion-rebate:202304100233.57
 services:
   - name: promotion-rebate
     dependencies:

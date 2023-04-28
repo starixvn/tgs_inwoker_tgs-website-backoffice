@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-api
-image: pgtgs/promotion-api:202303270607.232
+image: pgtgs/promotion-api:202304280610.241
 services:
   - name: promotion-api
     dependencies:
@@ -12,18 +12,16 @@ services:
       - cash-service
       - brand-cert-api
       - player-api
-      # - file-service
-      # - rabbitmq
+      - player-bucket-api
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
       ConnectionStrings__Nats: "nats://nats:4222"
       Promotion__PaymentServiceBaseUrl: "http://payment-api"
-      # Promotion__FileServiceBaseUrl: "http://file-service"
       Promotion__CashBaseUrl: "http://cash-service"
       Promotion__BrandServiceBaseUrl: "http://brand-cert-api"
       Promotion__PlayerServiceBaseUrl: "http://player-api"
-      # RabbitMQ__RabbitMQUrl: "amqp://rabbitmq:5672"
+      Promotion__PlayerBucketBaseUrl: "http://player-bucket-api"
     ports:
       - name: http
         containerPort: 80
