@@ -245,6 +245,7 @@ export const WinlossReport = ({ brandId }) => {
               isLoading={isLoading}
               maxSize={{ height, width }}
               hasCellDividers
+              stickyHead
             />
           )
         }}

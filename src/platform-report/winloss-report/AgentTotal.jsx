@@ -16,6 +16,7 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure from "../../dialog/Disclosure"
 import {
+  FormattedDate,
   FormattedDateTime,
   FormattedNumberDecimal,
   Trans,
@@ -83,6 +84,8 @@ const AgentTotalDialog = ({ brandId, agentId, from, to, dialog }) => {
     en: "Agent Total"
   })
 
+  let columns = useColumns({ items: data })
+
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
@@ -93,7 +96,77 @@ const AgentTotalDialog = ({ brandId, agentId, from, to, dialog }) => {
 
   return (
     <Modal title={title} {...dialog}>
-      <Box>{JSON.stringify(data)}</Box>
+      <Table columns={columns} data={items} foot={items?.length > 0} />
     </Modal>
   )
+}
+
+const useColumns = ({ items = [] }) => {
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        id: "settlePeriod",
+        accessor: (row) => row,
+        Header: <Trans zh="結算區間" en="Settle Period" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          return (
+            <Set orientation="horizontal">
+              <FormattedDate value={record?.from} />
+              <FormattedDate value={record?.to} />
+            </Set>
+          )
+        }
+      }),
+      numberDecimalPercentageColumn({
+        accessor: "percentage",
+        Header: <Trans zh="佔成" en="P/T" />,
+        disableSortBy: true
+      }),
+      {
+        id: "player",
+        Header: <Trans zh="玩家" en="Player" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberDecimalColumn({
+            accessor: "playerWinLoss",
+            Header: <Trans zh="输赢" en="Winloss" />,
+            disableSortBy: true
+          }),
+          numberDecimalColumn({
+            accessor: "playerSpecial",
+            Header: <Trans zh="特别" en="Special" />,
+            disableSortBy: true
+          })
+        ]
+      },
+      {
+        id: "agent",
+        Header: <Trans zh="代理" en="Agent" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberDecimalColumn({
+            accessor: "agentWinLoss",
+            Header: <Trans zh="输赢" en="Winloss" />,
+            disableSortBy: true
+          }),
+          numberDecimalColumn({
+            accessor: "agentSpecial",
+            Header: <Trans zh="特别" en="Special" />,
+            disableSortBy: true
+          }),
+          numberDecimalColumn({
+            accessor: "agentTotal",
+            Header: <Trans zh="总和" en="Total" />,
+            disableSortBy: true
+          })
+        ]
+      }
+    ]
+    return columns
+  }, [JSON.stringify(items)])
 }
