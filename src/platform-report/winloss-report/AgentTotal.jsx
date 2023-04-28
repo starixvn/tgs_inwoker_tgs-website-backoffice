@@ -142,6 +142,7 @@ const useColumns = ({ items = [] }) => {
         headCell: {
           textAlign: "center"
         },
+        Footer: () => null,
         columns: [
           numberDecimalColumn({
             accessor: "playerWinLoss",
@@ -163,6 +164,7 @@ const useColumns = ({ items = [] }) => {
         headCell: {
           textAlign: "center"
         },
+        Footer: () => null,
         columns: [
           numberDecimalColumn({
             accessor: "agentWinLoss",
