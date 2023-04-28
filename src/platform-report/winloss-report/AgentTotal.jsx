@@ -99,7 +99,8 @@ const AgentTotalDialog = ({ brandId, agentId, from, to, dialog }) => {
       <Table
         columns={columns}
         data={data}
-        // foot={data?.length > 0}
+        foot={data?.length > 0}
+        hasCellDividers
       />
     </Modal>
   )
@@ -117,6 +118,7 @@ const useColumns = ({ items = [] }) => {
           return (
             <Set orientation="horizontal">
               <FormattedDate value={record?.from} />
+              -
               <FormattedDate value={record?.to} />
             </Set>
           )
