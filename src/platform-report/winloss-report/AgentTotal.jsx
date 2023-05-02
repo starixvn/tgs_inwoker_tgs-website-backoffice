@@ -35,7 +35,7 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { formatDateTime } from "../../date/format"
+import { formatDateTime, formatYearMonthDay } from "../../date/format"
 import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
@@ -115,9 +115,10 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="結算區間" en="Settle Period" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          let start = formatDateTime(record?.from)
-          let end = formatDateTime(record?.to)
-          console.log("start", start, "end", end)
+          let start = formatYearMonthDay(record?.from)
+          let end = formatYearMonthDay(record?.to)
+          return <Text.Block>{`${start} - ${end}`}</Text.Block>
+          /*
           return (
             <Set orientation="horizontal">
               <FormattedDate value={record?.from} />
@@ -125,6 +126,7 @@ const useColumns = ({ items = [] }) => {
               <FormattedDate value={record?.to} />
             </Set>
           )
+          */
         },
         Footer: () => <Trans zh="总计" en="Total" />,
         footerCellProps: {
