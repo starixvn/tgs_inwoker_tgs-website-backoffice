@@ -105,7 +105,7 @@ export const WinlossReport = ({ brandId }) => {
       downline: true
     })
 
-    setPath((paths) => {
+    setPath((paths = []) => {
       return [...paths, node]
     })
   }
@@ -125,8 +125,8 @@ export const WinlossReport = ({ brandId }) => {
     }
 
     if (index >= 0) {
-      setPath((paths) => {
-        let result = paths.slice(0, index + 1)
+      setPath((path = []) => {
+        let result = path?.slice(0, index + 1)
         return result
       })
     }
