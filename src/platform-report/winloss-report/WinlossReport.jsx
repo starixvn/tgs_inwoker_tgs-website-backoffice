@@ -218,14 +218,14 @@ export const WinlossReport = ({ brandId }) => {
               memberType: data.memberType,
               roundId: data.roundId
             })
-            mutatePathData()
+            mutatePathData(undefined, true)
 
             setState({
               pageIndex: 0,
               ...data,
               downline: !!data?.roundId ? true : false
             })
-            mutateReportData()
+            mutateReportData(undefined, true)
           }}
         />
       </Level>

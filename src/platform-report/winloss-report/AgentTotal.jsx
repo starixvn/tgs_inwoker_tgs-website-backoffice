@@ -115,10 +115,13 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="結算區間" en="Settle Period" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
+          let start = formatDateTime(record?.from)
+          let end = formatDateTime(record?.to)
+          console.log("start", start, "end", end)
           return (
             <Set orientation="horizontal">
               <FormattedDate value={record?.from} />
-              <Icon icon={faMinus} type="font-awesome" />
+              <Icon icon={faMinus} type="font-awesome" color="text200" />
               <FormattedDate value={record?.to} />
             </Set>
           )
