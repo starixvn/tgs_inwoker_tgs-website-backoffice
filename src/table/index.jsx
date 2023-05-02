@@ -36,6 +36,7 @@ import { HeadCell } from "./HeadCell"
 import { ActionBar } from "./ActionBar"
 import { valueOf as cssSizeValueOf } from "../css/size"
 import Overflow from "../css/overflow"
+import head from "../list/head"
 
 const DefaultState = {
   pageIndex: 0,
@@ -400,37 +401,52 @@ const Head = ({ table }) => {
   )
 }
 
+// addonBefore? addonAfter?
 //TODO: need stickyLeft or stickyRight?
 const Foot = ({ table }) => {
+  //TODO: use visibleColumns instead of footerGroups???
   let {
     footerGroups,
+    visibleColumns,
     components,
     getTableFootProps = defaultProps,
     stickyFoot,
     stickyLeft,
-    stickyRight
+    stickyRight,
+    hasCellDividers
   } = table
   let { Foot } = components
 
+  //TODO: possible to skip column.render?
+  let footer = column.render("Footer")
+  if (column.accessor === "percentage") {
+    console.log("footer", footer)
+  }
+
+  let headFooterGroup = head(footerGroups)
   return (
     <Foot fontWeight="semibold" {...getTableFootProps()}>
-      {footerGroups.map((group) => (
-        <_Table.Row {...group.getFooterGroupProps()}>
-          {group.headers.map((column) => {
-            console.log("column", column)
-            console.log("column.render('Footer')", column.render("Footer"))
-            return (
-              <_Table.Cell
-                {...column.getFooterProps({
-                  ...column?.footerCellProps
-                })}
-              >
-                {column.render("Footer")}
-              </_Table.Cell>
-            )
-          })}
-        </_Table.Row>
-      ))}
+      <_Table.Row {...headFooterGroup.getFooterGroupProps()}>
+        {headFooterGroup.headers.map((column) => {
+          return (
+            <_Table.Cell
+              {...column.getFooterProps({
+                ...column?.footerCellProps
+              })}
+              css={css`
+                border-right: ${hasCellDividers
+                  ? `1px solid var(--bb-palette-white800, #000000)`
+                  : "0"};
+                border-bottom: ${hasCellDividers
+                  ? `1px solid var(--bb-palette-white800, #000000)`
+                  : "0"};
+              `}
+            >
+              {column.render("Footer")}
+            </_Table.Cell>
+          )
+        })}
+      </_Table.Row>
     </Foot>
   )
 }

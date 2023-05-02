@@ -176,13 +176,13 @@ const useColumns = ({ items = [] }) => {
             accessor: "agentSpecial",
             Header: <Trans zh="特别" en="Special" />,
             disableSortBy: true,
-            sumColumn: "agentWinLoss"
+            sumColumn: "agentSpecial"
           }),
           numberDecimalColumn({
             accessor: "agentTotal",
             Header: <Trans zh="总和" en="Total" />,
             disableSortBy: true,
-            sumColumn: "agentWinLoss"
+            sumColumn: "agentTotal"
           })
         ]
       }
