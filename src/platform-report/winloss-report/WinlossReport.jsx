@@ -68,7 +68,7 @@ const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const WinlossReport = ({ brandId }) => {
-  let [path, setPath] = useState(null)
+  let [path, setPath] = useState(undefined)
 
   let [searchParams, setSearchParams] = useState({
     brandId,
@@ -214,7 +214,7 @@ export const WinlossReport = ({ brandId }) => {
           from={state?.from}
           to={state?.to}
           search={(data = {}) => {
-            setPath(null)
+            setPath(undefined)
             setSearchParams({
               brandId,
               username: data.username,
