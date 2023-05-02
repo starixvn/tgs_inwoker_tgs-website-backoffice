@@ -132,7 +132,6 @@ export const WinlossReport = ({ brandId }) => {
     }
   }
 
-  //TODO: test
   useEffect(() => {
     setPath([])
     setSearchParams((state) => ({ ...state, brandId }))
@@ -151,10 +150,12 @@ export const WinlossReport = ({ brandId }) => {
 
   useEffect(() => {
     //TODO: able to pathData?.length > 0 && rm isNil(path)?
-    if (pathData?.length > 0 /*&& isNil(path)*/) {
+    /*
+    if (pathData?.length > 0 && isNil(path)) {
       console.log("resetPath", pathData)
-      resetPath(pathData)
     }
+    */
+    resetPath(pathData)
   }, [JSON.stringify(pathData)])
 
   let culture = useLangCode()
