@@ -60,12 +60,15 @@ import { useColumns as usePlayerOrderColumns } from "../order-report/index"
 import { PlayerSpecialDialogDisclosure } from "./PlayerSpecial"
 import { AgentTotalDialogDisclosure } from "./AgentTotal"
 import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
+import { isNil, isEmpty, either } from "ramda"
+
+let isNilOrEmpty = either(isNil, isEmpty)
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const WinlossReport = ({ brandId }) => {
-  let [path, setPath] = useState([])
+  let [path, setPath] = useState(null)
 
   let [searchParams, setSearchParams] = useState({
     brandId,
@@ -147,10 +150,10 @@ export const WinlossReport = ({ brandId }) => {
 
   useEffect(() => {
     console.log("pathData", pathData)
-    if (path.length === 0 && state?.downline === false) {
+    if (isNil(path)) {
       resetPath(pathData)
     }
-  }, [state?.downline, JSON.stringify(pathData)])
+  }, [JSON.stringify(path), JSON.stringify(pathData)])
 
   let culture = useLangCode()
 
@@ -211,13 +214,14 @@ export const WinlossReport = ({ brandId }) => {
           from={state?.from}
           to={state?.to}
           search={(data = {}) => {
-            resetPath()
+            setPath(null)
             setSearchParams({
               brandId,
               username: data.username,
               memberType: data.memberType,
               roundId: data.roundId
             })
+            deletePathDataCache()
             mutatePathData(undefined, true)
 
             setState({
@@ -225,6 +229,7 @@ export const WinlossReport = ({ brandId }) => {
               ...data,
               downline: !!data?.roundId ? true : false
             })
+            deleteReportDataCache()
             mutateReportData(undefined, true)
           }}
         />
