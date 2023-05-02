@@ -40,7 +40,7 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportAgentTotal } from "./client"
 
@@ -118,7 +118,7 @@ const useColumns = ({ items = [] }) => {
           return (
             <Set orientation="horizontal">
               <FormattedDate value={record?.from} />
-              -
+              <Icon icon={faMinus} type="font-awesome" />
               <FormattedDate value={record?.to} />
             </Set>
           )
