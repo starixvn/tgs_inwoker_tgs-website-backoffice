@@ -68,7 +68,7 @@ const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const WinlossReport = ({ brandId }) => {
-  let [path, setPath] = useState(undefined)
+  let [path, setPath] = useState([])
 
   let [searchParams, setSearchParams] = useState({
     brandId,
@@ -132,13 +132,10 @@ export const WinlossReport = ({ brandId }) => {
     }
   }
 
-  //TODO
+  //TODO: test
   useEffect(() => {
-    setPath(undefined)
+    setPath([])
     setSearchParams((state) => ({ ...state, brandId }))
-    // mutatePathData(null, true)
-
-    //?
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
@@ -152,11 +149,10 @@ export const WinlossReport = ({ brandId }) => {
     deleteCache: deletePathDataCache
   } = useWinlossReportPath(searchParams)
 
-  //TODO: use initPath === true?
-  console.log("pathData", pathData)
   useEffect(() => {
-    console.log("useEffect pathData", pathData)
-    if (pathData?.length > 0 && isNil(path)) {
+    //TODO: able to pathData?.length > 0 && rm isNil(path)?
+    if (pathData?.length > 0 /*&& isNil(path)*/) {
+      console.log("resetPath", pathData)
       resetPath(pathData)
     }
   }, [JSON.stringify(pathData)])
