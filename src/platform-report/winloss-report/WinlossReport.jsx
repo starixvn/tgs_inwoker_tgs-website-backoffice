@@ -150,7 +150,7 @@ export const WinlossReport = ({ brandId }) => {
 
   useEffect(() => {
     console.log("pathData", pathData)
-    if (isNil(path)) {
+    if (pathData?.length > 1 && isNil(path)) {
       resetPath(pathData)
     }
   }, [JSON.stringify(path), JSON.stringify(pathData)])
