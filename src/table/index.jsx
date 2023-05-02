@@ -417,9 +417,13 @@ const Foot = ({ table }) => {
   } = table
   let { Foot } = components
 
-  //TODO: possible to skip column.render?
-  let footer = column.render("Footer")
-  if (column.accessor === "percentage") {
+  let footer = visibleColumns
+    .find((column) => {
+      let result = column.accessor === "percentage"
+      return result
+    })
+    ?.render("Footer")
+  if (footer) {
     console.log("footer", footer)
   }
 
