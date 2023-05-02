@@ -226,7 +226,7 @@ export const WinlossReport = ({ brandId }) => {
               roundId: data.roundId
             })
             deletePathDataCache()
-            mutatePathData(undefined, true)
+            mutatePathData(null, true)
 
             setState({
               pageIndex: 0,
@@ -234,7 +234,7 @@ export const WinlossReport = ({ brandId }) => {
               downline: !!data?.roundId ? true : false
             })
             deleteReportDataCache()
-            mutateReportData(undefined, true)
+            mutateReportData(null, true)
           }}
         />
       </Level>
