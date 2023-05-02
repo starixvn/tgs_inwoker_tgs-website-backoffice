@@ -132,11 +132,14 @@ export const WinlossReport = ({ brandId }) => {
     }
   }
 
+  //TODO
+  /*
   useEffect(() => {
     resetPath()
     setSearchParams((state) => ({ ...state, brandId }))
     setState({ pageIndex: 0, brandId, downline: false })
   }, [brandId])
+  */
 
   let { pageSize, from, to } = state
 
@@ -148,8 +151,9 @@ export const WinlossReport = ({ brandId }) => {
     deleteCache: deletePathDataCache
   } = useWinlossReportPath(searchParams)
 
+  console.log("pathData", pathData)
   useEffect(() => {
-    console.log("pathData", pathData)
+    console.log("useEffect pathData", pathData)
     if (pathData?.length > 1 && isNil(path)) {
       resetPath(pathData)
     }
