@@ -68,6 +68,8 @@ const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const WinlossReport = ({ brandId }) => {
+  //TODO: need initPath?
+  let [initPath, setInitPath] = useState(true)
   let [path, setPath] = useState(undefined)
 
   let [searchParams, setSearchParams] = useState({
@@ -99,6 +101,8 @@ export const WinlossReport = ({ brandId }) => {
   }
 
   const appendPath = (node = {}) => {
+    setInitPath(false)
+
     setState({
       username: node.username,
       memberType: node.memberType,
@@ -111,6 +115,8 @@ export const WinlossReport = ({ brandId }) => {
   }
 
   const backToPath = (node) => {
+    setInitPath(false)
+
     setState({
       username: node.username,
       memberType: node.memberType,
@@ -151,13 +157,14 @@ export const WinlossReport = ({ brandId }) => {
     deleteCache: deletePathDataCache
   } = useWinlossReportPath(searchParams)
 
+  //TODO: use initPath === true?
   console.log("pathData", pathData)
   useEffect(() => {
     console.log("useEffect pathData", pathData)
     if (pathData?.length > 0 && isNil(path)) {
       resetPath(pathData)
     }
-  }, [JSON.stringify(path), JSON.stringify(pathData)])
+  }, [JSON.stringify(pathData)])
 
   let culture = useLangCode()
 
@@ -218,7 +225,10 @@ export const WinlossReport = ({ brandId }) => {
           from={state?.from}
           to={state?.to}
           search={(data = {}) => {
+            setInitPath(true)
+
             setPath(undefined)
+
             setSearchParams({
               brandId,
               username: data.username,
