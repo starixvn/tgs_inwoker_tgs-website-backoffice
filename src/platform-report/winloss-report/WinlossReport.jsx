@@ -68,8 +68,6 @@ const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export const WinlossReport = ({ brandId }) => {
-  //TODO: need initPath?
-  let [initPath, setInitPath] = useState(true)
   let [path, setPath] = useState(undefined)
 
   let [searchParams, setSearchParams] = useState({
@@ -101,8 +99,6 @@ export const WinlossReport = ({ brandId }) => {
   }
 
   const appendPath = (node = {}) => {
-    setInitPath(false)
-
     setState({
       username: node.username,
       memberType: node.memberType,
@@ -115,8 +111,6 @@ export const WinlossReport = ({ brandId }) => {
   }
 
   const backToPath = (node) => {
-    setInitPath(false)
-
     setState({
       username: node.username,
       memberType: node.memberType,
@@ -139,13 +133,14 @@ export const WinlossReport = ({ brandId }) => {
   }
 
   //TODO
-  /*
   useEffect(() => {
-    resetPath()
+    setPath(undefined)
     setSearchParams((state) => ({ ...state, brandId }))
-    setState({ pageIndex: 0, brandId, downline: false })
+    // mutatePathData(null, true)
+
+    //?
+    setState({ pageIndex: 0, brandId })
   }, [brandId])
-  */
 
   let { pageSize, from, to } = state
 
@@ -225,8 +220,6 @@ export const WinlossReport = ({ brandId }) => {
           from={state?.from}
           to={state?.to}
           search={(data = {}) => {
-            setInitPath(true)
-
             setPath(undefined)
 
             setSearchParams({
