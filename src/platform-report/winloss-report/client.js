@@ -18,10 +18,7 @@ export const useWinlossReportPath = (searchParams) => {
 }
 
 export const useWinlossReport = (searchParams) => {
-  if (
-    isPlayerMemberType(searchParams?.memberType) &&
-    searchParams?.downline === true
-  ) {
+  if (searchParams?.roundId /*&& searchParams?.downline === true*/) {
     return useGameRoundList(searchParams)
   }
 
