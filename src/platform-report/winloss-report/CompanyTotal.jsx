@@ -83,6 +83,8 @@ const CompanyTotalDialog = ({ brandId, agentId, from, to, dialog }) => {
     en: "Company Total"
   })
 
+  let columns = useColumns({ items: data })
+
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
@@ -93,7 +95,102 @@ const CompanyTotalDialog = ({ brandId, agentId, from, to, dialog }) => {
 
   return (
     <Modal title={title} {...dialog}>
-      <Box>{JSON.stringify(data)}</Box>
+      <Table
+        columns={columns}
+        data={data}
+        foot={data?.length > 0}
+        hasCellDividers
+      />
     </Modal>
   )
+}
+
+const useColumns = ({ items = [] }) => {
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        id: "settlePeriod",
+        accessor: (row) => row,
+        Header: <Trans zh="結算區間" en="Settle Period" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          let start = formatYearMonthDay(record?.from)
+          let end = formatYearMonthDay(record?.to)
+          return <Text.Block>{`${start} - ${end}`}</Text.Block>
+          /*
+          return (
+            <Set orientation="horizontal">
+              <FormattedDate value={record?.from} />
+              <Icon icon={faMinus} type="font-awesome" color="text200" />
+              <FormattedDate value={record?.to} />
+            </Set>
+          )
+          */
+        },
+        Footer: () => <Trans zh="总计" en="Total" />,
+        footerCellProps: {
+          textAlign: "center"
+        }
+      }),
+      numberDecimalPercentageColumn({
+        accessor: "percentage",
+        Header: <Trans zh="佔成" en="P/T" />,
+        disableSortBy: true,
+        Footer: () => {
+          return null
+        }
+      }),
+      {
+        id: "player",
+        Header: <Trans zh="玩家" en="Player" />,
+        headCell: {
+          textAlign: "center"
+        },
+        Footer: () => null,
+        columns: [
+          numberDecimalColumn({
+            accessor: "playerWinLoss",
+            Header: <Trans zh="输赢" en="Winloss" />,
+            disableSortBy: true,
+            sumColumn: "playerWinLoss"
+          }),
+          numberDecimalColumn({
+            accessor: "playerSpecial",
+            Header: <Trans zh="特别" en="Special" />,
+            disableSortBy: true,
+            sumColumn: "playerSpecial"
+          })
+        ]
+      },
+      {
+        id: "company",
+        Header: <Trans zh="公司" en="Company" />,
+        headCell: {
+          textAlign: "center"
+        },
+        Footer: () => null,
+        columns: [
+          numberDecimalColumn({
+            accessor: "companyWinLoss",
+            Header: <Trans zh="输赢" en="Winloss" />,
+            disableSortBy: true,
+            sumColumn: "companyWinLoss"
+          }),
+          numberDecimalColumn({
+            accessor: "companySpecial",
+            Header: <Trans zh="特别" en="Special" />,
+            disableSortBy: true,
+            sumColumn: "companySpecial"
+          }),
+          numberDecimalColumn({
+            accessor: "companyTotal",
+            Header: <Trans zh="总和" en="Total" />,
+            disableSortBy: true,
+            sumColumn: "companyTotal"
+          })
+        ]
+      }
+    ]
+    return columns
+  }, [JSON.stringify(items)])
 }
