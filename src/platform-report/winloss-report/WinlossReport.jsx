@@ -61,6 +61,7 @@ import { PlayerSpecialDialogDisclosure } from "./PlayerSpecial"
 import { AgentTotalDialogDisclosure } from "./AgentTotal"
 import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
 import { isNil, isEmpty, either } from "ramda"
+import { isArray } from "lodash-es"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -155,7 +156,9 @@ export const WinlossReport = ({ brandId }) => {
       console.log("resetPath", pathData)
     }
     */
-    resetPath(pathData)
+    if (isArray(pathData)) {
+      resetPath(pathData)
+    }
   }, [JSON.stringify(pathData)])
 
   let culture = useLangCode()
