@@ -60,7 +60,6 @@ test("player deposit form > apply bank transfer", async ({
     eWalletPaymentMethod.code
   )
 
-  //TODO: need to wait for another api?
   await selectByValue(
     page,
     `${dialogSelector} select[name="channel"]`,
@@ -82,7 +81,6 @@ test("player deposit form > apply bank transfer", async ({
     note: lorem.word()
   }
 
-  console.log("player", player)
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)
   await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
 
