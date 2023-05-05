@@ -317,11 +317,6 @@ const SearchBar = ({
     }
   })
 
-  let roundIdPlaceholder = useTrans({
-    zh: "订单ID",
-    en: "Round ID"
-  })
-
   const onSubmit = (data) => search?.(data)
 
   let QueryMaxRangeDays = 31
@@ -357,13 +352,6 @@ const SearchBar = ({
             required
           />
           <TypeInputGroup />
-          {/* 
-          <InputField
-            name="roundId"
-            showEmptyFieldValueAddonAfter
-            placeholder={roundIdPlaceholder}
-          /> 
-          */}
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
@@ -372,9 +360,7 @@ const SearchBar = ({
 }
 
 const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
-  console.log("useUserColumns", items)
   return useMemo(() => {
-    console.log("useUserColumns > useMemo")
     let columns = [
       {
         id: "info",
@@ -476,15 +462,9 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             disableSortBy: true,
             Cell: ({ value: record }) => {
               if (isPlayer(record?.memberType)) {
-                return <FormattedNumberDecimal value={record?.special} />
+                return <FormattedNumberDecimal value={record?.agentTotal} />
               }
 
-              console.log(
-                "record?.agentTotal",
-                record?.agentTotal,
-                "record",
-                record
-              )
               return (
                 <AgentTotalDialogDisclosure
                   value={record?.agentTotal}
@@ -524,7 +504,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             disableSortBy: true,
             Cell: ({ value: record }) => {
               if (isPlayer(record?.memberType)) {
-                return <FormattedNumberDecimal value={record?.special} />
+                return <FormattedNumberDecimal value={record?.companyTotal} />
               }
 
               return (
