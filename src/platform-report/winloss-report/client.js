@@ -8,6 +8,7 @@ import {
   usePostFormData
 } from "../../client"
 import { useGameRoundList } from "../../game/round/client"
+import { isPlayer } from "./Type"
 
 export const API = "/api/AgentWinLossReport"
 
@@ -17,7 +18,10 @@ export const useWinlossReportPath = (searchParams) => {
 }
 
 export const useWinlossReport = (searchParams) => {
-  if (searchParams?.roundId /*&& searchParams?.downline === true*/) {
+  if (
+    searchParams?.roundId ||
+    (isPlayer(searchParams?.memberType) && searchParams?.downline === true)
+  ) {
     return useGameRoundList(searchParams)
   }
 

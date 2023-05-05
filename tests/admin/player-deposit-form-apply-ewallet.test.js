@@ -46,6 +46,9 @@ test("player deposit form > apply bank transfer", async ({
       )
     }),
     page.waitForResponse((response) => {
+      let url = response.url()
+      let result = response.url().includes(`/api/player/${player.code}`)
+      console.log("result", result, "url", url)
       return (
         response.url().includes(`/api/player/${player.code}`) &&
         response.status() === 200
