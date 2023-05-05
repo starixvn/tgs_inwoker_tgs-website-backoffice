@@ -44,6 +44,12 @@ test("player deposit form > apply bank transfer", async ({
         response.status() === 200
       )
     }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/player/${player.code}`) &&
+        response.status() === 200
+      )
+    }),
     openDialog(page, dialogSelector)
   ])
 
