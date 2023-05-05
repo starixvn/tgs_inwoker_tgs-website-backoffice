@@ -216,6 +216,7 @@ export const WinlossReport = ({ brandId }) => {
           search={(data = {}) => {
             setPath(undefined)
 
+            console.log("search data", data)
             setSearchParams({
               brandId,
               username: data.username,
