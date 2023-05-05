@@ -372,7 +372,9 @@ const SearchBar = ({
 }
 
 const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
+  console.log("useUserColumns", items)
   return useMemo(() => {
+    console.log("useUserColumns > useMemo")
     let columns = [
       {
         id: "info",
