@@ -41,7 +41,7 @@ export const TypeInputGroup = ({
     />
   )
 
-  switch (value) {
+  switch (type) {
     case Type.Round:
       return <RoundIdInputField addonBefore={addonBefore} {...inputProps} />
     case Type.Agent:
