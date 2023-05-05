@@ -47,9 +47,22 @@ export const firstHistory = async (playerCode) => {
   return result
 }
 
+export const clear = async (playerCode) => {
+  if (!playerCode) {
+    return null
+  }
+
+  let url = `${host}/api/player/${playerCode}/clear`
+  let response = await fetcher.put(url)
+  let result = await response.json()
+
+  return result
+}
+
 export default {
   amount,
   list,
   history,
-  firstHistory
+  firstHistory,
+  clear
 }

@@ -73,13 +73,10 @@ test("fund withdraw > audit clear bucket", async ({
     brandPaymentId: depositPayment?.id
   })
 
-  //TODO: get bucket before
-
+  //Note. after approve, system will clear BucketAmount and add 1x DepositAmount wagering requirement
   await backofficeApi.fund.deposit.approve(depositFormId, {
     brandId: platform.id
   })
-
-  //TODO: get bucket after
 
   let betAmount = DepositAmount
   let [{ externalRoundId, ...betResult }] = await Promise.all([
@@ -89,10 +86,32 @@ test("fund withdraw > audit clear bucket", async ({
     }),
     backofficeApi.player.addBalance(player.code, {
       amount: DepositAmount
-    })
+    }),
+    backofficeApi.player.bucket.clear(player.code)
   ])
 
-  await page.waitForTimeout(2000)
+  //Note. wait for uncompleteWagering change to 0 by `backofficeApi.player.bucket.clear(player.code)`
+  let WaitSecond = 1000
+  let playerBucketList
+  let MaxRetry = 10
+  let retryCount = 0
+  let wageringRequirement
+  let uncompleteWagering
+  while (
+    !(
+      Number.isFinite(wageringRequirement) &&
+      wageringRequirement < BucketAmount &&
+      Number.isFinite(uncompleteWagering) &&
+      uncompleteWagering === 0
+    ) &&
+    retryCount++ < MaxRetry
+  ) {
+    playerBucketList = await backofficeApi.player.bucket.list(player.code)
+    // console.log(`${retryCount}. playerBucketList`, playerBucketList)
+    wageringRequirement = playerBucketList?.[0]?.wageringRequirement
+    uncompleteWagering = playerBucketList?.[0]?.uncompleteWagering
+    await page.waitForTimeout(WaitSecond)
+  }
 
   let withdrawAmount = DepositAmount
   let WithdrawFormId = await operatorApi.withdraw.applyManualWithdraw(

@@ -54,8 +54,8 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
-import { UsernameInputGroup } from "./UsernameInputGroup"
-import { MemberTypeLabel, MemberType, isPlayerMemberType } from "./MemberType"
+import { TypeInputGroup } from "./TypeInputGroup"
+import { TypeLabel, Type, isPlayer } from "./Type"
 import { useColumns as usePlayerOrderColumns } from "../order-report/index"
 import { PlayerSpecialDialogDisclosure } from "./PlayerSpecial"
 import { AgentTotalDialogDisclosure } from "./AgentTotal"
@@ -74,7 +74,7 @@ export const WinlossReport = ({ brandId }) => {
   let [searchParams, setSearchParams] = useState({
     brandId,
     username: "",
-    memberType: MemberType.Agent,
+    memberType: Type.Agent,
     roundId: ""
   })
 
@@ -150,12 +150,6 @@ export const WinlossReport = ({ brandId }) => {
   } = useWinlossReportPath(searchParams)
 
   useEffect(() => {
-    //TODO: able to pathData?.length > 0 && rm isNil(path)?
-    /*
-    if (pathData?.length > 0 && isNil(path)) {
-      console.log("resetPath", pathData)
-    }
-    */
     if (isArray(pathData)) {
       resetPath(pathData)
     }
@@ -307,7 +301,7 @@ const UserBreadcrumb = ({ path = [], backToPath }) => {
 
 const SearchBar = ({
   username,
-  memberType = MemberType.Agent,
+  memberType = Type.Agent,
   from,
   to,
   search,
@@ -361,12 +355,14 @@ const SearchBar = ({
             fakeTimeLabel
             required
           />
-          <UsernameInputGroup />
+          <TypeInputGroup />
+          {/* 
           <InputField
             name="roundId"
             showEmptyFieldValueAddonAfter
             placeholder={roundIdPlaceholder}
-          />
+          /> 
+          */}
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
@@ -403,7 +399,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             accessor: "memberType",
             Header: <Trans zh="类型" en="Type" />,
             disableSortBy: true,
-            Cell: MemberTypeLabel
+            Cell: TypeLabel
           }),
           numberColumn({
             accessor: "roundCount",
@@ -435,7 +431,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             Header: <Trans zh="特别" en="Special" />,
             disableSortBy: true,
             Cell: ({ value: record }) => {
-              if (isPlayerMemberType(record?.memberType)) {
+              if (isPlayer(record?.memberType)) {
                 return <FormattedNumberDecimal value={record?.special} />
               }
 
@@ -476,7 +472,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             Header: <Trans zh="总和" en="Total" />,
             disableSortBy: true,
             Cell: ({ value: record }) => {
-              if (isPlayerMemberType(record?.memberType)) {
+              if (isPlayer(record?.memberType)) {
                 return <FormattedNumberDecimal value={record?.special} />
               }
 
@@ -518,7 +514,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             disableSortBy: true,
             disableSortBy: true,
             Cell: ({ value: record }) => {
-              if (isPlayerMemberType(record?.memberType)) {
+              if (isPlayer(record?.memberType)) {
                 return <FormattedNumberDecimal value={record?.special} />
               }
 
@@ -542,7 +538,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
 }
 
 const useColumns = ({ path = [], ...props }) => {
-  let isPlayerOrderData = isPlayerMemberType(last(path)?.memberType)
+  let isPlayerOrderData = isPlayer(last(path)?.memberType)
 
   return isPlayerOrderData
     ? usePlayerOrderColumns(props)

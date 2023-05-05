@@ -8,7 +8,6 @@ import {
   usePostFormData
 } from "../../client"
 import { useGameRoundList } from "../../game/round/client"
-import { Player, isPlayerMemberType } from "./MemberType"
 
 export const API = "/api/AgentWinLossReport"
 

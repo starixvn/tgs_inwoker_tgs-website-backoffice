@@ -38,7 +38,15 @@ test("player deposit form > apply bank transfer", async ({
   ])
 
   let dialogSelector = `#apply-deposit-form-dialog`
-  await openDialog(page, dialogSelector)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes("/api/brandpayment/player") &&
+        response.status() === 200
+      )
+    }),
+    openDialog(page, dialogSelector)
+  ])
 
   await selectByValue(
     page,
@@ -46,24 +54,39 @@ test("player deposit form > apply bank transfer", async ({
     eWalletPaymentMethod.code
   )
 
+  //TODO: need to wait for another api?
   await selectByValue(
     page,
     `${dialogSelector} select[name="channel"]`,
     eWalletPaymentChannel.code
   )
 
+  let realName = await page
+    .locator(`${dialogSelector} input[name="realName"]`)
+    .inputValue()
+  expect(realName).equals(bank.detail.eMoneyName)
+
+  let phone = await page
+    .locator(`${dialogSelector} input[name="phone"]`)
+    .inputValue()
+  expect(phone).equals(bank.detail.phone)
+
   let form = {
     amount: 10,
     note: lorem.word()
   }
 
+  console.log("player", player)
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)
   await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
+
+  // const halfSecond = 500
+  // await page.waitForTimeout(halfSecond)
 
   let [applyFormResponse] = await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes("/api/ManualDeposit/") &&
+        response.url().includes("/api/ManualDeposit/EWallet") &&
         response.status() === 200
       )
     }),
