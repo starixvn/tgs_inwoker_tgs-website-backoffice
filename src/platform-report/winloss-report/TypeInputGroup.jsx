@@ -6,6 +6,7 @@ import { InputField } from "../../input/Input"
 import { useTrans } from "../../i18n"
 import { useFormContext } from "react-hook-form"
 import { Type } from "./Type"
+import { useUnmount } from "react-use"
 
 export const TypeInputGroup = ({
   name = "memberType",
@@ -75,6 +76,12 @@ const UsernameInputField = ({
   showEmptyFieldValueAddonAfter = true,
   ...props
 }) => {
+  let formMethods = useFormContext()
+
+  useUnmount(() => {
+    formMethods.setValue(name, "")
+  })
+
   let placeholder = useTrans({
     zh: "用户名",
     en: "Username"
@@ -95,6 +102,12 @@ const RoundIdInputField = ({
   showEmptyFieldValueAddonAfter = true,
   ...props
 }) => {
+  let formMethods = useFormContext()
+
+  useUnmount(() => {
+    formMethods.setValue(name, "")
+  })
+
   let placeholder = useTrans({
     zh: "订单ID",
     en: "Round ID"
