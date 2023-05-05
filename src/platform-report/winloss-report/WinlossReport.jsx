@@ -477,6 +477,12 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
                 return <FormattedNumberDecimal value={record?.special} />
               }
 
+              console.log(
+                "record?.agentTotal",
+                record?.agentTotal,
+                "record",
+                record
+              )
               return (
                 <AgentTotalDialogDisclosure
                   value={record?.agentTotal}

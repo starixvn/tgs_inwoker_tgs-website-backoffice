@@ -417,6 +417,7 @@ const Foot = ({ table }) => {
   } = table
   let { Foot } = components
 
+  //TODO: rm
   let footer = visibleColumns
     .find((column) => {
       let result = column.accessor === "percentage"
