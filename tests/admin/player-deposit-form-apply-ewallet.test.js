@@ -46,9 +46,6 @@ test("player deposit form > apply bank transfer", async ({
       )
     }),
     page.waitForResponse((response) => {
-      let url = response.url()
-      let result = response.url().includes(`/api/player/${player.code}`)
-      console.log("result", result, "url", url)
       return (
         response.url().includes(`/api/player/${player.code}`) &&
         response.status() === 200
@@ -86,9 +83,6 @@ test("player deposit form > apply bank transfer", async ({
 
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)
   await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
-
-  // const halfSecond = 500
-  // await page.waitForTimeout(halfSecond)
 
   let [applyFormResponse] = await Promise.all([
     page.waitForResponse((response) => {

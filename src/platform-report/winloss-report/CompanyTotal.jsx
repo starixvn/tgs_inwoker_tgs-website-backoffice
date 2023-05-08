@@ -117,15 +117,6 @@ const useColumns = ({ items = [] }) => {
           let start = formatYearMonthDay(record?.from)
           let end = formatYearMonthDay(record?.to)
           return <Text.Block>{`${start} - ${end}`}</Text.Block>
-          /*
-          return (
-            <Set orientation="horizontal">
-              <FormattedDate value={record?.from} />
-              <Icon icon={faMinus} type="font-awesome" color="text200" />
-              <FormattedDate value={record?.to} />
-            </Set>
-          )
-          */
         },
         Footer: () => <Trans zh="总计" en="Total" />,
         footerCellProps: {

@@ -78,9 +78,6 @@ test("player deposit form > apply bank transfer", async ({
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)
   await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
 
-  // const halfSecond = 500
-  // await page.waitForTimeout(halfSecond)
-
   let [applyFormResponse] = await Promise.all([
     page.waitForResponse((response) => {
       return (
