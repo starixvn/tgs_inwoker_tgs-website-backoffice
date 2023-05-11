@@ -7,7 +7,10 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
-import { useGameRoundList } from "../../game/round/client"
+import {
+  useGameRoundList,
+  API as RoundReportAPI
+} from "../../game/round/client"
 import { isPlayer } from "./Type"
 
 export const API = "/api/AgentWinLossReport"
@@ -47,7 +50,7 @@ export const useWinlossReportCompanyTotal = (searchParams) => {
 
 export const useExportWinlossReportUrl = (searchParams) => {
   let path = isQueryGameRound(searchParams)
-    ? `${API}/exportRounds`
+    ? `${RoundReportAPI}/exportRounds`
     : `${API}/exportAgentWinLoss`
   let url = searchParams ? urlWith(searchParams, path) : ""
   return url

@@ -8,7 +8,7 @@ import {
   usePostFormData
 } from "../../client"
 
-const API = "/api/RoundReport"
+export const API = "/api/RoundReport"
 
 export const useGameRoundList = (searchParams, options) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
