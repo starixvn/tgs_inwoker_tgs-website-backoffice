@@ -37,7 +37,11 @@ import numberColumn, {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { useWinlossReportPath, useWinlossReport } from "./client"
+import {
+  useWinlossReportPath,
+  useWinlossReport,
+  useExportWinlossReportUrl
+} from "./client"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
@@ -204,6 +208,7 @@ export const WinlossReport = ({ brandId }) => {
     path,
     appendPath
   })
+
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
@@ -216,7 +221,6 @@ export const WinlossReport = ({ brandId }) => {
           search={(data = {}) => {
             setPath(undefined)
 
-            console.log("search data", data)
             setSearchParams({
               brandId,
               username: data.username,
@@ -235,6 +239,15 @@ export const WinlossReport = ({ brandId }) => {
             mutateReportData(null, true)
           }}
         />
+        {reportData?.items?.length > 0 && (
+          <Box>
+            <DownloadButton
+              id="export-report"
+              isLoading={isLoading}
+              href={useExportWinlossReportUrl(toReportSearchParams())}
+            />
+          </Box>
+        )}
       </Level>
       <UserBreadcrumb path={path} backToPath={backToPath} />
       <AutoSizer>

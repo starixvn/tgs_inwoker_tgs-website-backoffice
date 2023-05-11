@@ -18,10 +18,7 @@ export const useWinlossReportPath = (searchParams) => {
 }
 
 export const useWinlossReport = (searchParams) => {
-  if (
-    searchParams?.roundId ||
-    (isPlayer(searchParams?.memberType) && searchParams?.downline === true)
-  ) {
+  if (isQueryGameRound(searchParams)) {
     return useGameRoundList(searchParams)
   }
 
@@ -46,4 +43,23 @@ export const useWinlossReportCompanyTotal = (searchParams) => {
     ? urlWith(searchParams, `${API}/companyTotalDetail`)
     : ""
   return useGet(url)
+}
+
+export const useExportWinlossReportUrl = (searchParams) => {
+  let path = isQueryGameRound(searchParams)
+    ? `${API}/exportRounds`
+    : `${API}/exportAgentWinLoss`
+  let url = searchParams ? urlWith(searchParams, path) : ""
+  return url
+}
+
+const isQueryGameRound = (searchParams) => {
+  if (
+    searchParams?.roundId ||
+    (isPlayer(searchParams?.memberType) && searchParams?.downline === true)
+  ) {
+    return true
+  }
+
+  return false
 }
