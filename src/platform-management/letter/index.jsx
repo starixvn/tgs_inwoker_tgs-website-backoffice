@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { Box, Flex, Set, Button, Text, Stack } from "bumbag"
+import { Box, Flex, Set, Button, Text, Stack, Level } from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -25,6 +25,7 @@ import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { Input } from "../../input/Input"
 import { useLetterList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
+import { AddLetterDisclosure } from "./AddLetter"
 
 export { Code }
 
@@ -60,13 +61,33 @@ const Body = () => {
 
   return (
     <Set orientation="vertical" isFilled>
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar />
+        <Box>
+          <AddLetterDisclosure brandId={brandId} />
+        </Box>
+      </Level>
       <AutoSizer>
         {({ height, width }) => {
-          return ""
+          return JSON.stringify(data)
         }}
       </AutoSizer>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
+  )
+}
+
+const SearchBar = () => {
+  let formMethods = useForm({
+    defaultValues: {}
+  })
+
+  const onSubmit = (data) => search?.(data)
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}></form>
+    </FormProvider>
   )
 }
 

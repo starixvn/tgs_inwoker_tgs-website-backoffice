@@ -17,3 +17,8 @@ export const useLetterList = ({ brandId, ...searchParams } = {}) => {
   let url = brandId ? urlWith(searchParams, `${API}/${brandId}`) : ""
   return useGet(url)
 }
+
+export const useAddLetter = (brandId, data) => {
+  let url = brandId && data ? `${API}/${brandId}` : ""
+  return usePutData(url, data)
+}
