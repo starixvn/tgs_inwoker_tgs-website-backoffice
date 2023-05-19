@@ -48,6 +48,7 @@ services:
       BackOffice__MarketingReportBaseUrl: "http://marketing-api"
       BackOffice__PlayerBucketBaseUrl: "http://player-bucket-api"
       BackOffice__VipLevelServiceBaseUrl: "http://viplevel-api"
+      BackOffice__StationLetterBaseUrl: "http://station-letter"
     ingresses:
       - hostname: backoffice.localhost
         path: /api

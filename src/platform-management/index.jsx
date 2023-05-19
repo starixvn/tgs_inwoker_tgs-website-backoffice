@@ -20,6 +20,7 @@ import {
   Code as IPAddressCode,
   Content as IPAddressContent
 } from "./ip-address"
+import { Code as LetterCode, Content as LetterContent } from "./letter"
 
 export { Code }
 
@@ -29,7 +30,8 @@ const pairs = () => [
   [StationLetterCode, StationLetterContent],
   [VipLevelCode, VipLevelContent],
   [IMSettingsCode, IMSettingsContent],
-  [IPAddressCode, IPAddressContent]
+  [IPAddressCode, IPAddressContent],
+  [LetterCode, LetterContent]
 ]
 
 export const Content = ({ codes, path = DefaultPaths, ...props }) => (
