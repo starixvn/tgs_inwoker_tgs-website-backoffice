@@ -26,6 +26,7 @@ import { Input } from "../../input/Input"
 import { useLetterList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { AddLetterDisclosure } from "./AddLetter"
+import textColumn from "../../table/column/textColumn"
 
 export { Code }
 
@@ -93,7 +94,23 @@ const SearchBar = () => {
 
 const useColumns = ({ items = [] }) => {
   return useMemo(() => {
-    let columns = []
+    let columns = [
+      dateTimeColumn({
+        accessor: "sentOn",
+        Header: <Trans zh="时间" en="Date" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "receiver",
+        Header: <Trans zh="用户名" en="Username" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "subject",
+        Header: <Trans zh="用户名" en="Username" />,
+        disableSortBy: true
+      })
+    ]
 
     return columns
   }, [JSON.stringify(items)])
