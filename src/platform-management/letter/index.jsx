@@ -27,6 +27,7 @@ import { useLetterList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { AddLetterDisclosure } from "./AddLetter"
 import textColumn from "../../table/column/textColumn"
+import { LetterBoxType, LetterBoxTypeButtons } from "./LetterBoxType"
 
 export { Code }
 
@@ -46,6 +47,9 @@ export const Content = () => {
 const Body = () => {
   let brandId = usePlatformId()
 
+  //TODO
+  let [letterBoxType, setLetterBoxType] = useState(LetterBoxType.Inbox)
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId
   })
@@ -57,9 +61,12 @@ const Body = () => {
   let toSearchParams = () => ({ ...toApiParams(state) })
 
   let { isLoading, data, error, mutate, deleteCache } = useLetterList(
+    brandId,
+    letterBoxType,
     toSearchParams()
   )
 
+  //TODO: search fn
   return (
     <Set orientation="vertical" isFilled>
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
@@ -78,16 +85,24 @@ const Body = () => {
   )
 }
 
-const SearchBar = () => {
+const SearchBar = ({ letterBoxType, search }) => {
   let formMethods = useForm({
-    defaultValues: {}
+    defaultValues: {
+      letterBoxType
+    }
   })
 
   const onSubmit = (data) => search?.(data)
 
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={formMethods.handleSubmit(onSubmit)}></form>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <LetterBoxTypeButtons
+          onChange={(value) => {
+            formMethods.setValue(letterBoxType, value)
+          }}
+        />
+      </form>
     </FormProvider>
   )
 }
@@ -101,7 +116,7 @@ const useColumns = ({ items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "receiver",
+        accessor: "sender",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       }),
