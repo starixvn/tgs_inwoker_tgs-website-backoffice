@@ -29,7 +29,7 @@ import {
 import { fromIsDescending, equalsDescending } from "./order"
 import { Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
-import { useScrollbarWidth } from "react-use"
+import { useMeasure, useScrollbarWidth } from "react-use"
 import { get } from "lodash-es"
 import { Cell } from "./Cell"
 import { HeadCell } from "./HeadCell"
