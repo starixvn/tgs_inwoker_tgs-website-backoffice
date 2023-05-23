@@ -93,10 +93,6 @@ export const WinlossReport = ({ brandId }) => {
     from: dateRange.start,
     to: dateRange.end,
     downline: false
-    /*
-    TODO: here?
-    roundId: null
-    */
   })
 
   const resetPath = (path = []) => {
@@ -161,8 +157,6 @@ export const WinlossReport = ({ brandId }) => {
 
   let culture = useLangCode()
 
-  //TODO: sort?
-  //TODO: roundId?
   to = startOfNextDay(to)
   let username = state?.username ?? searchParams?.username
   let memberType = state?.memberType ?? searchParams?.memberType
@@ -174,9 +168,6 @@ export const WinlossReport = ({ brandId }) => {
       username,
       memberType,
       culture
-      /*
-    sortby: "username",
-    */
     }
     return result
   }
