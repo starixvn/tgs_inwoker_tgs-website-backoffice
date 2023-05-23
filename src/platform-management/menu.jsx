@@ -23,6 +23,7 @@ import {
   Code as IPAddressCode,
   codeLabelPair as ipAddressPair
 } from "./ip-address/menu"
+import { Code as LetterCode, codeLabelPair as letterPair } from "./letter/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUniversity } from "@fortawesome/free-solid-svg-icons"
 
@@ -116,6 +117,14 @@ const labelOf = ({ locale, code }) => {
         },
         locale
       )
+    case LetterCode:
+      return getTrans(
+        {
+          zh: "站內信",
+          en: "Memo"
+        },
+        locale
+      )
     default:
       return ""
   }
@@ -134,7 +143,8 @@ export const codeLabelPair = [
         stationLetterPair,
         vipLevelPair,
         imSettingsPair,
-        ipAddressPair
+        ipAddressPair,
+        letterPair
       ]
     })
 ]

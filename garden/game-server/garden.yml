@@ -1,0 +1,15 @@
+kind: Module
+type: container
+name: game-server
+image: pgtgs/game-server:202304100601.23
+services:
+  - name: game-server
+    dependencies:
+      - postgres
+    env:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

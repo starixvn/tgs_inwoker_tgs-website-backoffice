@@ -38,7 +38,7 @@ test("player deposit form > apply bank transfer by auto select bank card", async
   await selectPayment(page, dialogSelector)
 
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)
-  await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
+  // await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
 
   let [applyFormResponse] = await Promise.all([
     page.waitForResponse((response) => {

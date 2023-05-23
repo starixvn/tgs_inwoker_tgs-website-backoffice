@@ -24,17 +24,35 @@ export const approveWithdraw = async (
   await findApplicationById(page, formId)
 
   let VerifyDialogSelector = `#verify-withdraw-dialog`
-  await openDialog(page, VerifyDialogSelector)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/PaymentChannel`) &&
+        response.status() === 200
+      )
+    }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/brandpayment?brandId=${brandId}`) &&
+        response.status() === 200
+      )
+    }),
+    openDialog(page, VerifyDialogSelector)
+  ])
+
+  let platformPaymentOptionSelector = `${VerifyDialogSelector} select[name="brandPaymentId"] option`
+  let platformPaymentOptionCount = await page
+    .locator(platformPaymentOptionSelector)
+    .count()
+  expect(platformPaymentOptionCount).gte(1)
 
   await Promise.all([
-    /* TODO: sometimes timeout error?
     page.waitForResponse((response) => {
       return (
         response.url().includes(`/api/withdraw/${formId}`) &&
         response.status() === 200
       )
     }),
-    */
     page.waitForResponse((response) => {
       return (
         response.url().includes(`/api/withdraw/${brandId}?`) &&
@@ -55,11 +73,6 @@ export const approveWithdraw = async (
   expect(balance).to.equal(expectedBalance)
 
   return formId
-}
-
-const selectManualBrandPayment = async (page) => {
-  let SelectSelector = `select[name="brandPaymentId"]`
-  return selectByLabel(page, SelectSelector, "Manual_BankTransfer_Custom")
 }
 
 export const findApplicationById = async (page, formId) => {

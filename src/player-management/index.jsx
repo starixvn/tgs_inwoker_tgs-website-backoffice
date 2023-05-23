@@ -4,7 +4,7 @@ import { CodeContentPair as PlayerListPair } from "./player-list"
 import { CodeContentPair as OnlinePlayerListPair } from "./online-player-list"
 import { CodeContentPair as BalanceAdjustmentPair } from "./balance-adjustment"
 import { CodeContentPair as PlayerIdentityPair } from "./player-identity"
-import { Switch } from "../content"
+import { Routes } from "../content"
 import { Code, DefaultCodePath, Menu } from "./menu"
 
 export { Code } from "./menu"
@@ -17,7 +17,7 @@ const pairs = () => [
 ]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => (
-  <Switch path={path} pairs={pairs()} />
+  <Routes path={path} pairs={pairs()} />
 )
 
 export const codeMenuContentPair = [Code, [Menu, Content]]

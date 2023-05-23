@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react"
-import { useHistory, useLocation, useRouteMatch } from "react-router-dom"
+import { useNavigate, useLocation, useMatch } from "react-router-dom"
 import client from "../client"
 import memoize from "fast-memoize"
 import { memoizedFind as findMenu } from "../menu"
@@ -27,7 +27,7 @@ export const Provider = ({ value = initState(), children }) => {
 export const useAuth = () => {
   let context = useContext(Store)
   let { set, isLoading, setLoading } = context
-  let history = useHistory()
+  let navigate = useNavigate()
   let location = useLocation()
   let DefaultRedirectState = { from: { pathname: "/" } }
   let { from } = location.state ?? DefaultRedirectState
@@ -42,7 +42,7 @@ export const useAuth = () => {
         setLoading(false)
         let newState = { userInfo }
         set(newState)
-        history.replace(from)
+        navigate(from, { replace: true })
 
         try {
           localStorage.setItem(Key, JSON.stringify(newState))
@@ -155,8 +155,8 @@ export const useIsBrandUser = () => {
 }
 
 export const useMenuByRoute = (extCodes = []) => {
-  let { path = "" } = useRouteMatch()
-  let [_, ...codes] = path.split("/")
+  let { pathname = "" } = useLocation({})
+  let [_, ...codes] = pathname.split("/")
   codes = [...codes, ...extCodes]
 
   let { state = {} } = useContext(Store)

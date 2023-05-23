@@ -35,10 +35,23 @@ test("player deposit form > apply bank transfer", async ({
     }),
     gotoPlayerListPage(page, platform.code)
   ])
-  console.log("bank", bank, "player", player)
 
   let dialogSelector = `#apply-deposit-form-dialog`
-  await openDialog(page, dialogSelector)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes("/api/brandpayment/player") &&
+        response.status() === 200
+      )
+    }),
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/player/${player.code}`) &&
+        response.status() === 200
+      )
+    }),
+    openDialog(page, dialogSelector)
+  ])
 
   await selectByValue(
     page,
@@ -52,6 +65,11 @@ test("player deposit form > apply bank transfer", async ({
     pulsaPaymentChannel.code
   )
 
+  let phone = await page
+    .locator(`${dialogSelector} input[name="phone"]`)
+    .inputValue()
+  expect(phone).equals(bank.detail.phone)
+
   let form = {
     amount: 10,
     note: lorem.word()
@@ -63,7 +81,7 @@ test("player deposit form > apply bank transfer", async ({
   let [applyFormResponse] = await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes("/api/ManualDeposit/") &&
+        response.url().includes("/api/ManualDeposit/Pulsa") &&
         response.status() === 200
       )
     }),
