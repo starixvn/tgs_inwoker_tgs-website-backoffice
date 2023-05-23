@@ -262,6 +262,11 @@ export const Table = ({
   // TODO: how to measure height + margin?
   let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
+
+  if (data?.length > 5 && !Number.isFinite(minHeight)) {
+    minHeight = 5 * 50
+  }
+
   console.log(
     "css height",
     `${
@@ -278,10 +283,6 @@ export const Table = ({
     "paginationMeasure",
     paginationMeasure
   )
-
-  if (data?.length > 5 && !Number.isFinite(minHeight)) {
-    minHeight = 5 * 50
-  }
 
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
 
