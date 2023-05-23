@@ -259,6 +259,7 @@ export const Table = ({
   })
 
   let scrollbarWidth = useScrollbarWidth()
+  let [tableRef, tableMeasure] = useMeasure()
   // TODO: how to measure height + margin?
   let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
@@ -268,6 +269,8 @@ export const Table = ({
   }
 
   console.log(
+    "tableMeasure",
+    tableMeasure,
     "css height",
     `${
       maxSize?.height
@@ -338,6 +341,7 @@ export const Table = ({
             `}
           >
             <_Table
+              ref={tableRef}
               width="100%"
               {...table.getTableProps()}
               hasDividers={hasDividers}
@@ -433,17 +437,6 @@ const Foot = ({ table }) => {
     hasCellDividers
   } = table
   let { Foot } = components
-
-  //TODO: rm
-  let footer = visibleColumns
-    .find((column) => {
-      let result = column.accessor === "percentage"
-      return result
-    })
-    ?.render("Footer")
-  if (footer) {
-    console.log("footer", footer)
-  }
 
   let headFooterGroup = head(footerGroups)
   return (
