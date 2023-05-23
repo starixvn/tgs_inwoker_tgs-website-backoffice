@@ -29,7 +29,7 @@ import {
 import { fromIsDescending, equalsDescending } from "./order"
 import { Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
-import { useScrollbarWidth } from "react-use"
+import { useMeasure, useScrollbarWidth } from "react-use"
 import { get } from "lodash-es"
 import { Cell } from "./Cell"
 import { HeadCell } from "./HeadCell"
@@ -260,8 +260,16 @@ export const Table = ({
 
   let scrollbarWidth = useScrollbarWidth()
   // TODO: how to measure height + margin?
-  // let [paginationRef, paginationMeasure] = useMeasure()
+  let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
+  console.log(
+    "maxSize",
+    maxSize,
+    "scrollbarWidth",
+    scrollbarWidth,
+    "paginationMeasure",
+    paginationMeasure
+  )
 
   if (data?.length > 5 && !Number.isFinite(minHeight)) {
     minHeight = 5 * 50
@@ -335,7 +343,7 @@ export const Table = ({
           </div>
           {usePagination && pageCount > 0 && (
             <Pagination
-              // ref={paginationRef}
+              ref={paginationRef}
               previousText={previousText}
               nextText={nextText}
               currentPage={getPage()}
