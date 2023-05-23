@@ -24,6 +24,7 @@ import {
 import Content from "./Content"
 import BrandBar from "../report/BrandBar"
 import { useUserBrandId } from "../user/context"
+import { useMeasure } from "react-use"
 
 const Store = createContext()
 
@@ -80,6 +81,10 @@ export const PlatformPageContent = ({
 export const usePlatformId = () => {
   let { platformId } = useContext(Store) ?? {}
   return platformId
+}
+
+export const usePageContentMeasure = () => { 
+  
 }
 
 export const usePlatform = () => {
