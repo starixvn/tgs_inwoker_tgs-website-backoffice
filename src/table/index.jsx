@@ -263,6 +263,8 @@ export const Table = ({
   let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
   console.log(
+    "maxSize",
+    maxSize,
     "scrollbarWidth",
     scrollbarWidth,
     "paginationMeasure",
