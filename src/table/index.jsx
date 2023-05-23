@@ -268,17 +268,12 @@ export const Table = ({
     minHeight = 5 * 50
   }
 
+  let height = maxSize?.height - PaginationHeight - scrollbarWidth
   console.log(
+    "height",
+    height,
     "tableMeasure",
     tableMeasure,
-    "css height",
-    `${
-      maxSize?.height
-        ? `max(calc(${cssSizeValueOf(
-            maxSize?.height
-          )} - ${PaginationHeight}px - ${scrollbarWidth}px), ${minHeight}px)`
-        : "max-content"
-    }`,
     "maxSize",
     maxSize,
     "scrollbarWidth",
