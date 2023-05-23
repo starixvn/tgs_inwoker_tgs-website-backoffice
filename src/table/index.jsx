@@ -264,9 +264,12 @@ export const Table = ({
   let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
 
+  /*
+  TODO: rm minHeight?
   if (data?.length > 5 && !Number.isFinite(minHeight)) {
     minHeight = 5 * 50
   }
+  */
 
   let height = maxSize?.height - PaginationHeight - scrollbarWidth
   console.log(
@@ -324,10 +327,8 @@ export const Table = ({
           <div
             css={css`
               width: ${cssSizeValueOf(maxSize?.width) ?? "100%"};
-              height: ${maxSize?.height
-                ? `max(calc(${cssSizeValueOf(
-                    maxSize?.height
-                  )} - ${PaginationHeight}px - ${scrollbarWidth}px), ${minHeight}px)`
+              height: ${tableMeasure?.height > height
+                ? `${height}px`
                 : "max-content"};
               overflow: ${containerOverflowValue};
               border: ${Overflow.isVisible(containerOverflowValue)
