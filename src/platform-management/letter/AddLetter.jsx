@@ -31,7 +31,7 @@ import { AddDisclosure } from "../../dialog/Disclosure"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
 import { useFormContext } from "react-hook-form"
-import { useSendLetter } from "./client"
+import { useAddLetter } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
@@ -64,7 +64,7 @@ export const AddLetterDisclosure = ({ brandId, onSubmitted, ...props }) => {
 const AddDialog = ({ brandId, dialog }) => {
   let [formData, setSubmit] = useState()
 
-  let { isLoading, result, error, mutate, deleteCache } = useSendLetter(
+  let { isLoading, result, error, mutate, deleteCache } = useAddLetter(
     brandId,
     formData
   )

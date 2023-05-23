@@ -28,6 +28,7 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { AddLetterDisclosure } from "./AddLetter"
 import textColumn from "../../table/column/textColumn"
 import { LetterBoxType, LetterBoxTypeButtons } from "./LetterBoxType"
+import SearchButton from "../../button/SearchButton"
 
 export { Code }
 
@@ -47,7 +48,6 @@ export const Content = () => {
 const Body = () => {
   let brandId = usePlatformId()
 
-  //TODO
   let [letterBoxType, setLetterBoxType] = useState(LetterBoxType.Inbox)
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
@@ -55,7 +55,7 @@ const Body = () => {
   })
 
   useEffect(() => {
-    setState({ pageIndex: 0, brandId })
+    setState({ pageIndex: 0 })
   }, [brandId])
 
   let toSearchParams = () => ({ ...toApiParams(state) })
@@ -66,15 +66,27 @@ const Body = () => {
     toSearchParams()
   )
 
-  //TODO: search fn
   return (
     <Set orientation="vertical" isFilled>
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-        <SearchBar />
+        <SearchBar
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate(null, true)
+          }}
+        />
         <Box>
           <AddLetterDisclosure brandId={brandId} />
         </Box>
       </Level>
+      <LetterBoxTypeButtons
+        onChange={(value) => {
+          setLetterBoxType(value)
+        }}
+      />
       <AutoSizer>
         {({ height, width }) => {
           return JSON.stringify(data)
@@ -85,11 +97,9 @@ const Body = () => {
   )
 }
 
-const SearchBar = ({ letterBoxType, search }) => {
+const SearchBar = ({ search, isLoading }) => {
   let formMethods = useForm({
-    defaultValues: {
-      letterBoxType
-    }
+    defaultValues: {}
   })
 
   const onSubmit = (data) => search?.(data)
@@ -97,17 +107,15 @@ const SearchBar = ({ letterBoxType, search }) => {
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-        <LetterBoxTypeButtons
-          onChange={(value) => {
-            formMethods.setValue(letterBoxType, value)
-          }}
-        />
+        <Set>
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
       </form>
     </FormProvider>
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ items = [], letterBoxType }) => {
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
@@ -124,6 +132,15 @@ const useColumns = ({ items = [] }) => {
         accessor: "subject",
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
+      }),
+      textColumn({
+        id: "actions",
+        accessor: (row) => row,
+        Header: <Trans zh="操作" en="Actions" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          return <Set></Set>
+        }
       })
     ]
 

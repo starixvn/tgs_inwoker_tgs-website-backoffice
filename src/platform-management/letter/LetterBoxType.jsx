@@ -41,6 +41,7 @@ export const LetterBoxTypeButtons = ({
   return (
     <OptionButtons
       type={type}
+      palette="info"
       options={options}
       value={value}
       onChange={(val) => {

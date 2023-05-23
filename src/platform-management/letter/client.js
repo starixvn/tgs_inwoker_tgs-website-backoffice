@@ -14,13 +14,7 @@ import { LetterBoxType } from "./LetterBoxType"
 
 const InboxAPI = "/api/station-letter"
 
-export const useLetterList = (brandId, letterBoxType, searchParams) => {
-  let url =
-    brandId && letterBoxType && searchParams
-      ? urlWith(searchParams, `${toLetterBoxAPI(letterBoxType)}/${brandId}`)
-      : ""
-  return useGet(url)
-}
+const SentAPI = "/api/delivery-box"
 
 const toLetterBoxAPI = (value) => {
   switch (value) {
@@ -32,7 +26,23 @@ const toLetterBoxAPI = (value) => {
   }
 }
 
-export const useSendLetter = (brandId, data) => {
+export const useLetterList = (brandId, letterBoxType, searchParams) => {
+  let url =
+    brandId && letterBoxType && searchParams
+      ? urlWith(searchParams, `${toLetterBoxAPI(letterBoxType)}/${brandId}`)
+      : ""
+  return useGet(url)
+}
+
+export const useLetter = (brandId, letterBoxType, letterId) => {
+  let url =
+    brandId && letterBoxType && letterId
+      ? `${toLetterBoxAPI(letterBoxType)}/${brandId}/${letterId}`
+      : ""
+  return useGet(url)
+}
+
+export const useAddLetter = (brandId, data) => {
   let url = brandId && data ? `${InboxAPI}/${brandId}` : ""
   return usePutData(url, data)
 }
@@ -40,10 +50,4 @@ export const useSendLetter = (brandId, data) => {
 export const useReplyLetter = (brandId, letterId, data) => {
   let url = brandId && letterId && data ? `${InboxAPI}/${brandId}:reply` : ""
   return usePutData(url, data)
-}
-
-const SentAPI = "/api/delivery-box"
-export const useSentLetter = (brandId, letterId) => {
-  let url = brandId && letterId ? `${SentAPI}/${letterId}` : ""
-  return useGet(url)
 }
