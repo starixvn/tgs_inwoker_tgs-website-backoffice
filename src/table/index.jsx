@@ -267,7 +267,7 @@ export const Table = ({
   const RowHeight = 50
   //TODO: need to handle data.length <= 5 &&
   if (data?.length > 5 && !Number.isFinite(minHeight)) {
-    minHeight = RowHeight * 50
+    minHeight = RowHeight * 5
   }
 
   let height = maxSize?.height - PaginationHeight - scrollbarWidth
