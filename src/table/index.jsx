@@ -261,29 +261,13 @@ export const Table = ({
   let scrollbarWidth = useScrollbarWidth()
   let [tableRef, tableMeasure] = useMeasure()
   // TODO: how to measure height + margin?
-  let [paginationRef, paginationMeasure] = useMeasure()
+  // let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
 
-  /*
-  TODO: rm minHeight?
-  if (data?.length > 5 && !Number.isFinite(minHeight)) {
-    minHeight = 5 * 50
-  }
-  */
+  const RowHeight = 50
+  minHeight = minHeight ?? 5 * RowHeight
 
   let height = maxSize?.height - PaginationHeight - scrollbarWidth
-  console.log(
-    "height",
-    height,
-    "tableMeasure",
-    tableMeasure,
-    "maxSize",
-    maxSize,
-    "scrollbarWidth",
-    scrollbarWidth,
-    "paginationMeasure",
-    paginationMeasure
-  )
 
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
 
@@ -328,7 +312,7 @@ export const Table = ({
             css={css`
               width: ${cssSizeValueOf(maxSize?.width) ?? "100%"};
               height: ${tableMeasure?.height > height
-                ? `${height}px`
+                ? `${Math.max(height, minHeight)}px`
                 : "max-content"};
               overflow: ${containerOverflowValue};
               border: ${Overflow.isVisible(containerOverflowValue)
@@ -352,7 +336,7 @@ export const Table = ({
           </div>
           {usePagination && pageCount > 0 && (
             <Pagination
-              ref={paginationRef}
+              // ref={paginationRef}
               previousText={previousText}
               nextText={nextText}
               currentPage={getPage()}
