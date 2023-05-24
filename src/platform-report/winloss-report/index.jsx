@@ -107,8 +107,8 @@ const Report = () => {
                 </List.Item>
                 <List.Item>
                   <Trans
-                    zh="公司特别: (0 - 代理特别) * (100% - 代理占成)。"
-                    en="Company Special: (0 - Agent Special) * (100% - P/T)."
+                    zh="公司特别: (0 - 玩家特别) * (100% - 代理占成)。"
+                    en="Company Special: (0 - Player Special) * (100% - P/T)."
                   />
                 </List.Item>
                 <List.Item>

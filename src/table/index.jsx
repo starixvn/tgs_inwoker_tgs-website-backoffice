@@ -265,7 +265,10 @@ export const Table = ({
   const PaginationHeight = 60
 
   const RowHeight = 50
-  minHeight = minHeight ?? 5 * RowHeight
+  //TODO: need to handle data.length <= 5 &&
+  if (data?.length > 5 && !Number.isFinite(minHeight)) {
+    minHeight = RowHeight * 50
+  }
 
   let height = maxSize?.height - PaginationHeight - scrollbarWidth
 
@@ -311,7 +314,8 @@ export const Table = ({
           <div
             css={css`
               width: ${cssSizeValueOf(maxSize?.width) ?? "100%"};
-              height: ${tableMeasure?.height > height
+              height: ${tableMeasure?.height > height &&
+              Number.isFinite(minHeight)
                 ? `${Math.max(height, minHeight)}px`
                 : "max-content"};
               overflow: ${containerOverflowValue};
