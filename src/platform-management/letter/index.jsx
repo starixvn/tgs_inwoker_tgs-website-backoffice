@@ -39,7 +39,7 @@ export const Content = () => {
   }
 
   return (
-    <PlatformPageContent>
+    <PlatformPageContent title={<Trans zh="站内信" en="Station Letter" />}>
       <Body />
     </PlatformPageContent>
   )
@@ -66,6 +66,11 @@ const Body = () => {
     toSearchParams()
   )
 
+  let items = data?.items
+  let columns = useColumns({
+    items
+  })
+
   return (
     <Set orientation="vertical" isFilled>
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
@@ -89,7 +94,20 @@ const Body = () => {
       />
       <AutoSizer>
         {({ height, width }) => {
-          return JSON.stringify(data)
+          return (
+            <Table
+              columns={columns}
+              data={items}
+              initialState={state}
+              controlledState={state}
+              pageCount={pageCount(state?.pageSize, data?.totalCount)}
+              setPageIndex={setPageIndex}
+              setSortOrder={setSortOrder}
+              isLoading={isLoading}
+              maxSize={{ height, width }}
+              stickyHead
+            />
+          )
         }}
       </AutoSizer>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
