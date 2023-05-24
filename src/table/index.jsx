@@ -259,10 +259,24 @@ export const Table = ({
   })
 
   let scrollbarWidth = useScrollbarWidth()
+  let [tableRef, tableMeasure] = useMeasure()
   // TODO: how to measure height + margin?
   let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
+
+  /*
+  TODO: rm minHeight?
+  if (data?.length > 5 && !Number.isFinite(minHeight)) {
+    minHeight = 5 * 50
+  }
+  */
+
+  let height = maxSize?.height - PaginationHeight - scrollbarWidth
   console.log(
+    "height",
+    height,
+    "tableMeasure",
+    tableMeasure,
     "maxSize",
     maxSize,
     "scrollbarWidth",
@@ -270,10 +284,6 @@ export const Table = ({
     "paginationMeasure",
     paginationMeasure
   )
-
-  if (data?.length > 5 && !Number.isFinite(minHeight)) {
-    minHeight = 5 * 50
-  }
 
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
 
@@ -317,10 +327,8 @@ export const Table = ({
           <div
             css={css`
               width: ${cssSizeValueOf(maxSize?.width) ?? "100%"};
-              height: ${maxSize?.height
-                ? `max(calc(${cssSizeValueOf(
-                    maxSize?.height
-                  )} - ${PaginationHeight}px - ${scrollbarWidth}px), ${minHeight}px)`
+              height: ${tableMeasure?.height > height
+                ? `${height}px`
                 : "max-content"};
               overflow: ${containerOverflowValue};
               border: ${Overflow.isVisible(containerOverflowValue)
@@ -329,6 +337,7 @@ export const Table = ({
             `}
           >
             <_Table
+              ref={tableRef}
               width="100%"
               {...table.getTableProps()}
               hasDividers={hasDividers}
@@ -424,17 +433,6 @@ const Foot = ({ table }) => {
     hasCellDividers
   } = table
   let { Foot } = components
-
-  //TODO: rm
-  let footer = visibleColumns
-    .find((column) => {
-      let result = column.accessor === "percentage"
-      return result
-    })
-    ?.render("Footer")
-  if (footer) {
-    console.log("footer", footer)
-  }
 
   let headFooterGroup = head(footerGroups)
   return (
