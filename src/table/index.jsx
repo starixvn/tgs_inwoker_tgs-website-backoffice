@@ -29,13 +29,14 @@ import {
 import { fromIsDescending, equalsDescending } from "./order"
 import { Trans, useTrans } from "../i18n"
 import clone from "clone-deep"
-import { useScrollbarWidth } from "react-use"
+import { useMeasure, useScrollbarWidth } from "react-use"
 import { get } from "lodash-es"
 import { Cell } from "./Cell"
 import { HeadCell } from "./HeadCell"
 import { ActionBar } from "./ActionBar"
 import { valueOf as cssSizeValueOf } from "../css/size"
 import Overflow from "../css/overflow"
+import head from "../list/head"
 
 const DefaultState = {
   pageIndex: 0,
@@ -258,13 +259,18 @@ export const Table = ({
   })
 
   let scrollbarWidth = useScrollbarWidth()
+  let [tableRef, tableMeasure] = useMeasure()
   // TODO: how to measure height + margin?
   // let [paginationRef, paginationMeasure] = useMeasure()
   const PaginationHeight = 60
 
+  const RowHeight = 50
+  //TODO: need to handle data.length <= 5 &&
   if (data?.length > 5 && !Number.isFinite(minHeight)) {
-    minHeight = 5 * 50
+    minHeight = RowHeight * 5
   }
+
+  let height = maxSize?.height - PaginationHeight - scrollbarWidth
 
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
 
@@ -308,10 +314,9 @@ export const Table = ({
           <div
             css={css`
               width: ${cssSizeValueOf(maxSize?.width) ?? "100%"};
-              height: ${maxSize?.height
-                ? `max(calc(${cssSizeValueOf(
-                    maxSize?.height
-                  )} - ${PaginationHeight}px - ${scrollbarWidth}px), ${minHeight}px)`
+              height: ${tableMeasure?.height > height &&
+              Number.isFinite(minHeight)
+                ? `${Math.max(height, minHeight)}px`
                 : "max-content"};
               overflow: ${containerOverflowValue};
               border: ${Overflow.isVisible(containerOverflowValue)
@@ -320,6 +325,7 @@ export const Table = ({
             `}
           >
             <_Table
+              ref={tableRef}
               width="100%"
               {...table.getTableProps()}
               hasDividers={hasDividers}
@@ -400,33 +406,46 @@ const Head = ({ table }) => {
   )
 }
 
+// addonBefore? addonAfter?
 //TODO: need stickyLeft or stickyRight?
 const Foot = ({ table }) => {
+  //TODO: use visibleColumns instead of footerGroups???
   let {
     footerGroups,
+    visibleColumns,
     components,
     getTableFootProps = defaultProps,
     stickyFoot,
     stickyLeft,
-    stickyRight
+    stickyRight,
+    hasCellDividers
   } = table
   let { Foot } = components
 
+  let headFooterGroup = head(footerGroups)
   return (
     <Foot fontWeight="semibold" {...getTableFootProps()}>
-      {footerGroups.map((group) => (
-        <_Table.Row {...group.getFooterGroupProps()}>
-          {group.headers.map((column) => (
+      <_Table.Row {...headFooterGroup.getFooterGroupProps()}>
+        {headFooterGroup.headers.map((column) => {
+          return (
             <_Table.Cell
               {...column.getFooterProps({
                 ...column?.footerCellProps
               })}
+              css={css`
+                border-right: ${hasCellDividers
+                  ? `1px solid var(--bb-palette-white800, #000000)`
+                  : "0"};
+                border-bottom: ${hasCellDividers
+                  ? `1px solid var(--bb-palette-white800, #000000)`
+                  : "0"};
+              `}
             >
               {column.render("Footer")}
             </_Table.Cell>
-          ))}
-        </_Table.Row>
-      ))}
+          )
+        })}
+      </_Table.Row>
     </Foot>
   )
 }
@@ -439,7 +458,8 @@ const TotalBody = ({ table }) => {
     components,
     stickyLeft,
     stickyRight,
-    maxSize
+    maxSize,
+    hasCellDividers
   } = table
   let { Body, Row } = components
 
@@ -476,6 +496,12 @@ const TotalBody = ({ table }) => {
                 position: ${isStickyCell ? "sticky" : "static"};
                 left: ${isStickyLeft ? 0 : "auto"};
                 right: ${isStickyRight ? 0 : "auto"};
+                border-right: ${hasCellDividers
+                  ? `1px solid var(--bb-palette-white800, #000000)`
+                  : "0"};
+                border-bottom: ${hasCellDividers
+                  ? `1px solid var(--bb-palette-white800, #000000)`
+                  : "0"};
               `}
               data-column-id={columnId}
               data-type="total"

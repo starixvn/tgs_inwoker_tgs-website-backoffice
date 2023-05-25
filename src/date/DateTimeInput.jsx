@@ -29,6 +29,7 @@ export const DateTimeInput = ({
     formState: { errors }
   } = formMethods
 
+  //TODO: able to use setCustomValidity fn?
   const validDateRequired = (value) => {
     if (required) {
       return isValid(value)

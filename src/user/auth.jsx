@@ -1,25 +1,15 @@
 import React, { createContext, useContext, useState } from "react"
-import { Route as RouteBase, Redirect } from "react-router-dom"
+import { Route as RouteBase, Navigate, useLocation } from "react-router-dom"
 import { useIsAuthed } from "./context"
 import { Path as LoginPath } from "./login"
 
-export const Route = ({ children, ...rest }) => {
-  let isAuthed = useIsAuthed()
-  return (
-    <RouteBase
-      {...rest}
-      render={({ location }) =>
-        isAuthed ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: LoginPath,
-              state: { from: location }
-            }}
-          />
-        )
-      }
-    />
-  )
+export const RequireAuth = ({ children, ...rest }) => {
+  let auth = useIsAuthed()
+  let location = useLocation()
+
+  if (!auth) {
+    return <Navigate to={LoginPath} state={{ from: location }} replace />
+  }
+
+  return children
 }

@@ -7,71 +7,62 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
+import {
+  useGameRoundList,
+  API as RoundReportAPI
+} from "../../game/round/client"
+import { isPlayer } from "./Type"
 
-export const API = "/api/AgentReport"
+export const API = "/api/AgentWinLossReport"
 
-//TODO:
-// username, type, downline?,
-export const useWinlossReportTreePath = ({
-  username,
-  downline,
-  orderId,
-  ...searchParams
-} = {}) => {
-  // agentParent > agentChild > player
-  if (orderId) {
-    return {}
-  }
-  switch (username) {
-    case "agentParent":
-      return downline
-        ? {
-            items: [{ name: "agentChild", type: "Agent" }]
-          }
-        : {
-            items: []
-          }
-    case "agentChild":
-      return downline
-        ? {
-            items: [{ name: "player", type: "Player" }]
-          }
-        : {
-            items: [{ name: "agentParent", type: "Agent" }]
-          }
-    case "player":
-      return downline
-        ? {
-            items: []
-          }
-        : {
-            items: [
-              { name: "agentParent", type: "Agent" },
-              { name: "agentChild", type: "Agent" }
-            ]
-          }
-    default:
-      return {
-        items: []
-      }
-  }
+export const useWinlossReportPath = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/breadcrumb`) : ""
+  return useGet(url)
 }
 
-//no orderId?
-export const useWinlossReport = ({
-  username,
-  downline,
-  orderId,
-  ...searchParams
-} = {}) => {
-  switch (username) {
-    case "agentParent":
-      return downline ? {} : {}
-    case "agentChild":
-      return downline ? {} : {}
-    case "player":
-      return downline ? {} : {}
-    default:
-      return {}
+export const useWinlossReport = (searchParams) => {
+  if (isQueryGameRound(searchParams)) {
+    return useGameRoundList(searchParams)
   }
+
+  let url = searchParams ? urlWith(searchParams, `${API}/agentWinLoss`) : ""
+  return useGet(url)
+}
+
+export const useWinlossReportPlayerSpecial = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/agentPlayerSpecialDetail`)
+    : ""
+  return useGet(url)
+}
+
+export const useWinlossReportAgentTotal = (searchParams) => {
+  let url = searchParams ? urlWith(searchParams, `${API}/agentTotalDetail`) : ""
+  return useGet(url)
+}
+
+export const useWinlossReportCompanyTotal = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/companyTotalDetail`)
+    : ""
+  return useGet(url)
+}
+
+export const useExportWinlossReportUrl = (searchParams) => {
+  let path = isQueryGameRound(searchParams)
+    ? `${RoundReportAPI}/exportRounds`
+    : `${API}/exportAgentWinLoss`
+  let url = searchParams ? urlWith(searchParams, path) : ""
+  return url
+}
+
+const isQueryGameRound = (searchParams) => {
+  if (
+    searchParams?.roundId ||
+    (isPlayer(searchParams?.memberType) && searchParams?.downline === true)
+  ) {
+    return true
+  }
+
+  return false
 }

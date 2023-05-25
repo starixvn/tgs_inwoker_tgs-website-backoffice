@@ -1,30 +1,29 @@
 import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
-import { Switch as _Switch, Route, useRouteMatch } from "react-router-dom"
+import { Routes as _Routes, Route } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
-import { Route as AuthRouter } from "./user/auth"
+import { RequireAuth } from "./user/auth"
 import PageNotFound from "./page/NotFound"
 import { allMenuContentPairs } from "./menu"
 import { PageContent } from "bumbag"
 
-export const Switch = ({ codes, path, pairs = [], ...props }) => {
-  let route = useRouteMatch()
+export const Routes = ({ codes, path, pairs = [], ...props }) => {
   let authCodes = useMenuCodes(path)
   codes = codes ?? authCodes
 
   return (
-    <_Switch>
+    <_Routes>
       {codes.map((code) => {
         return (
-          <Route key={code} path={`${route?.path}/${code}`}>
-            <ValueByCode code={code} pairs={pairs} />
-          </Route>
+          <Route
+            key={code}
+            path={code}
+            element={<ValueByCode code={code} pairs={pairs} />}
+          />
         )
       })}
-      <Route>
-        <PageNotFound />
-      </Route>
-    </_Switch>
+      <Route element={<PageNotFound />} />
+    </_Routes>
   )
 }
 
@@ -33,21 +32,25 @@ export const AllContents = ({ codes }) => {
   codes = codes ?? authCodes
   let list = allMenuContentPairs()
   return (
-    <_Switch>
+    <_Routes>
       {codes.map((code) => {
-        let path = `/${code}`
+        let path = `${code}/*`
 
         return (
-          <AuthRouter key={code} path={path}>
-            <ContentByCode code={code} pairs={list} />
-          </AuthRouter>
+          <Route
+            key={code}
+            path={path}
+            element={
+              <RequireAuth>
+                <ContentByCode code={code} pairs={list} />
+              </RequireAuth>
+            }
+          />
         )
       })}
 
-      <AuthRouter path="*">
-        <PageContent></PageContent>
-      </AuthRouter>
-    </_Switch>
+      <Route path="*" element={<PageContent></PageContent>} />
+    </_Routes>
   )
 }
 

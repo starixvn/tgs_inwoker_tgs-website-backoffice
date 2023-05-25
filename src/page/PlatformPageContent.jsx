@@ -39,12 +39,17 @@ export const PlatformPageContent = ({
   let [platformId, setPlatformId] = useState(userPlatformId)
   let [platform, setPlatform] = useState()
 
-  //TODO: save platform id and platform info?
   //TODO: also work with url?
   let isMobile = useBreakpoint("mobile")
   //TODO: title and actionbar overflow visible?
   return (
-    <Store.Provider value={{ platformId, platform, setPlatform }}>
+    <Store.Provider
+      value={{
+        platformId,
+        platform,
+        setPlatform
+      }}
+    >
       <PageContent
         maxWidth="unset"
         height={height}

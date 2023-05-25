@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global, keyframes } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { useLocation, useHistory } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import {
   Heading,
   Stack,
@@ -42,7 +42,7 @@ export const TopNavNotifyItem = ({
   children,
   ...props
 }) => {
-  let history = useHistory()
+  let navigate = useNavigate()
   let { pathname } = useLocation()
 
   let {
@@ -108,9 +108,12 @@ export const TopNavNotifyItem = ({
 
             let samePage = pathname == href
             if (samePage) {
-              history.replace(href, state)
+              navigate(href, {
+                replace: true,
+                state
+              })
             } else {
-              history.push(href, state)
+              navigate(href, { state })
             }
           }}
         >

@@ -457,9 +457,9 @@ const SearchBar = ({
   )
 }
 
-const useColumns = ({ items = [] }) => {
-  return useMemo(
-    () => [
+export const useColumns = ({ items = [], filter: predicate }) => {
+  return useMemo(() => {
+    let columns = [
       textColumn({
         accessor: "playerName",
         Header: <Trans zh="用户名" en="Player Name" />,
@@ -574,17 +574,16 @@ const useColumns = ({ items = [] }) => {
         accessor: (record) => record,
         Header: <Trans zh="详情" en="Detail" />,
         disableSortBy: true,
-        Cell: ({ value }) => {
-          let { id: roundId } = value
+        Cell: ({ value: record }) => {
           return (
             <Set alignX="center">
               <GameRoundButton
                 id="game-round-dialog-disclosure"
-                record={value}
+                record={record}
               />
               <GameActionDialogDisclosure
                 id="game-action-dialog-disclosure"
-                roundId={roundId}
+                roundId={record?.id}
               />
             </Set>
           )
@@ -598,7 +597,11 @@ const useColumns = ({ items = [] }) => {
           whiteSpace: "nowrap"
         }
       }
-    ],
-    [JSON.stringify(items)]
-  )
+    ]
+
+    if (predicate) {
+      return columns.filter(predicate)
+    }
+    return columns
+  }, [JSON.stringify(items)])
 }

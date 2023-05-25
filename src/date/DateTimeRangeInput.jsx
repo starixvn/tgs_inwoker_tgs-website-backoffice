@@ -107,6 +107,7 @@ export const DateHourRangeInput = ({
   )
 }
 
+//TODO: dev & test requiredBothIfHasOne
 export const DateTimeRangeInput = ({
   startProps,
   endProps,
@@ -124,6 +125,7 @@ export const DateTimeRangeInput = ({
   showDateDropdownMenu = false,
   dateDropdownMenuProps = {},
   required,
+  requiredBothIfHasOne = false,
   disabled,
   addonBefore,
   addonAfter,
@@ -175,7 +177,6 @@ export const DateTimeRangeInput = ({
   }, [rangeError])
 
   let isMobile = useBreakpoint("mobile")
-
   return (
     <>
       <Group verticalBelow={verticalBelow} {...props}>
@@ -220,7 +221,7 @@ export const DateTimeRangeInput = ({
           timeCaption={timeCaption}
           minDate={minDate}
           maxDate={startMaxDate([startProps?.maxDate, maxDate, end])}
-          required={required}
+          required={required || (requiredBothIfHasOne && isValid(end))}
           disabled={disabled}
           validate={
             Number.isInteger(maxRangeDays)
@@ -258,7 +259,7 @@ export const DateTimeRangeInput = ({
           timeCaption={timeCaption}
           minDate={endMinDate([endProps?.minDate, minDate, start])}
           maxDate={maxDate}
-          required={required}
+          required={required || (requiredBothIfHasOne && isValid(start))}
           disabled={disabled}
           validate={
             Number.isInteger(maxRangeDays)

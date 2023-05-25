@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202304170742.280
+image: pgtgs/backoffice-api:202305220919.321
 services:
   - name: backoffice-api
     dependencies:
@@ -27,6 +27,7 @@ services:
       - nats
       - operator-api
       - file-service
+      - init-seeding
       - promotion-api
       - report-api
       # - log-api
@@ -47,6 +48,7 @@ services:
       BackOffice__MarketingReportBaseUrl: "http://marketing-api"
       BackOffice__PlayerBucketBaseUrl: "http://player-bucket-api"
       BackOffice__VipLevelServiceBaseUrl: "http://viplevel-api"
+      BackOffice__StationLetterBaseUrl: "http://station-letter"
     ingresses:
       - hostname: backoffice.localhost
         path: /api
