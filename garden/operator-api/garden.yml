@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: operator-api
-image: pgtgs/operator-api:202209280502.20
+image: pgtgs/operator-api:202305190250.267
 services:
   - name: operator-api
     dependencies:
@@ -10,6 +10,7 @@ services:
       - nats
       - file-service
       - promotion-api
+      - station-letter
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
@@ -20,6 +21,7 @@ services:
       Operator__BrandCertificateBaseUrl: "http://brand-cert-api"
       Operator__CashBaseUrl: "http://cash-service"
       Operator__PlayerServiceBaseUrl: "http://player-api"
+      Operator__StationLetterBaseUrl: "http://station-letter"
       Promotion__Url: "http://promotion-api"
       ForwardedHeaders__ForwardedForHeaderName: "X-Forwarded-For"
     ingresses:
@@ -33,4 +35,4 @@ services:
       - name: http
         containerPort: 80
         servicePort: 80
-        localPort: 3003
+        localPort: 3003 # http://localhost:3003/swagger/index.html

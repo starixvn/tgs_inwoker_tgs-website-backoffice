@@ -236,6 +236,27 @@ export const updateIdentity = async (platformToken, playerToken) => {
   return formData
 }
 
+export const sendLetter = async (
+  platformToken,
+  playerToken,
+  formData = { subject: "subject", content: "content" }
+) => {
+  let headers = {
+    "Content-Type": "application/json",
+    "brand-token": platformToken,
+    Token: playerToken
+  }
+
+  let url = `${api()}/station-letter`
+  let result = await fetcher(url, {
+    method: "PUT",
+    body: JSON.stringify(formData),
+    headers
+  })
+  console.log("result", result)
+  return result
+}
+
 export default {
   create,
   login,
@@ -243,5 +264,6 @@ export default {
   addManualBankCard,
   findBankInfoIdByType,
   uploadIdentity,
-  updateIdentity
+  updateIdentity,
+  sendLetter
 }

@@ -32,6 +32,7 @@ services:
       - report-api
       # - log-api
       - payment-api
+      - station-letter
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
