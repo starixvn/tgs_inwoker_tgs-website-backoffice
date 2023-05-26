@@ -24,6 +24,7 @@ import {
 import Content from "./Content"
 import BrandBar from "../report/BrandBar"
 import { useUserBrandId } from "../user/context"
+import { useMeasure } from "react-use"
 
 const Store = createContext()
 
@@ -39,6 +40,7 @@ export const PlatformPageContent = ({
   let [platformId, setPlatformId] = useState(userPlatformId)
   let [platform, setPlatform] = useState()
 
+  let [ref, measure] = useMeasure()
   //TODO: also work with url?
   let isMobile = useBreakpoint("mobile")
   //TODO: title and actionbar overflow visible?
@@ -47,10 +49,12 @@ export const PlatformPageContent = ({
       value={{
         platformId,
         platform,
-        setPlatform
+        setPlatform,
+        width: measure?.width
       }}
     >
       <PageContent
+        ref={ref}
         maxWidth="unset"
         height={height}
         wrapperProps={{
@@ -85,6 +89,11 @@ export const PlatformPageContent = ({
 export const usePlatformId = () => {
   let { platformId } = useContext(Store) ?? {}
   return platformId
+}
+
+export const usePlatformPageContentWidth = () => {
+  let { width } = useContext(Store) ?? {}
+  return width
 }
 
 export const usePlatform = () => {
