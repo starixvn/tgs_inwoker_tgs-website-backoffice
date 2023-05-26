@@ -67,6 +67,7 @@ import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
 import { isNil, isEmpty, either } from "ramda"
 import { isArray } from "lodash-es"
 import { useMeasure } from "react-use"
+import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -201,8 +202,8 @@ export const WinlossReport = ({ brandId }) => {
     appendPath
   })
 
-  let [boxRef, boxMeasure] = useMeasure()
-  console.log("boxMeasure", boxMeasure)
+  let pageWidth = usePlatformPageContentWidth()
+
   const HeadMarginBottom = 16
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
@@ -245,14 +246,11 @@ export const WinlossReport = ({ brandId }) => {
         )}
       </Level>
       <UserBreadcrumb path={path} backToPath={backToPath} />
-      <Box ref={boxRef} flex="1">
+      <Box flex="1">
         <AutoSizer disableWidth={true}>
           {({ height }) => {
-            console.log("height", height, "boxMeasure", boxMeasure)
-            let width = boxMeasure?.width
-            if (Number.isFinite(boxMeasure?.height)) {
-              height = height /*- boxMeasure?.height*/ - HeadMarginBottom
-            }
+            let width = pageWidth
+            height -= HeadMarginBottom
             return (
               <Table
                 columns={columns}
