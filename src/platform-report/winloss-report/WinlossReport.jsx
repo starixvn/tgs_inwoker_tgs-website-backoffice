@@ -66,6 +66,7 @@ import { AgentTotalDialogDisclosure } from "./AgentTotal"
 import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
 import { isNil, isEmpty, either } from "ramda"
 import { isArray } from "lodash-es"
+import { useMeasure } from "react-use"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -200,49 +201,62 @@ export const WinlossReport = ({ brandId }) => {
     appendPath
   })
 
+  let [headRef, headMeasure] = useMeasure()
+  const HeadMarginBottom = 16
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
-      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-        <SearchBar
-          brandId={brandId}
-          username={searchParams?.username}
-          memberType={searchParams?.memberType}
-          from={state?.from}
-          to={state?.to}
-          search={(data = {}) => {
-            setPath(undefined)
+      <Set
+        ref={headRef}
+        orientation="vertical"
+        isFilled
+        marginBottom={`${HeadMarginBottom}px`}
+      >
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            brandId={brandId}
+            username={searchParams?.username}
+            memberType={searchParams?.memberType}
+            from={state?.from}
+            to={state?.to}
+            search={(data = {}) => {
+              setPath(undefined)
 
-            setSearchParams({
-              brandId,
-              username: data.username,
-              memberType: data.memberType,
-              roundId: data.roundId
-            })
-            deletePathDataCache()
-            mutatePathData(null, true)
+              setSearchParams({
+                brandId,
+                username: data.username,
+                memberType: data.memberType,
+                roundId: data.roundId
+              })
+              deletePathDataCache()
+              mutatePathData(null, true)
 
-            setState({
-              pageIndex: 0,
-              ...data,
-              downline: !!data?.roundId ? true : false
-            })
-            deleteReportDataCache()
-            mutateReportData(null, true)
-          }}
-        />
-        {reportData?.items?.length > 0 && (
-          <Box>
-            <DownloadButton
-              id="export-report"
-              isLoading={isLoading}
-              href={useExportWinlossReportUrl(toReportSearchParams())}
-            />
-          </Box>
-        )}
-      </Level>
-      <UserBreadcrumb path={path} backToPath={backToPath} />
-      <AutoSizer>
-        {({ height, width }) => {
+              setState({
+                pageIndex: 0,
+                ...data,
+                downline: !!data?.roundId ? true : false
+              })
+              deleteReportDataCache()
+              mutateReportData(null, true)
+            }}
+          />
+          {reportData?.items?.length > 0 && (
+            <Box>
+              <DownloadButton
+                id="export-report"
+                isLoading={isLoading}
+                href={useExportWinlossReportUrl(toReportSearchParams())}
+              />
+            </Box>
+          )}
+        </Level>
+        <UserBreadcrumb path={path} backToPath={backToPath} />
+      </Set>
+      <AutoSizer disableWidth={true}>
+        {({ height }) => {
+          let width = headMeasure?.width
+          if (Number.isFinite(headMeasure?.height)) {
+            height = height - headMeasure?.height - HeadMarginBottom
+          }
           return (
             <Table
               columns={columns}

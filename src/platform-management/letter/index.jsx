@@ -27,8 +27,14 @@ import { useLetterList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { AddLetterDisclosure } from "./AddLetter"
 import textColumn from "../../table/column/textColumn"
-import { LetterBoxType, LetterBoxTypeButtons } from "./LetterBoxType"
+import {
+  LetterBoxType,
+  LetterBoxTypeButtons,
+  isSentLetterBox
+} from "./LetterBoxType"
 import SearchButton from "../../button/SearchButton"
+import { ViewLetterDisclosure } from "./ViewLetter"
+import { ReplyLetterDisclosure } from "./ReplyLetter"
 
 export { Code }
 
@@ -68,7 +74,9 @@ const Body = () => {
 
   let items = data?.items
   let columns = useColumns({
-    items
+    brandId,
+    items,
+    letterBoxType
   })
 
   return (
@@ -84,7 +92,14 @@ const Body = () => {
           }}
         />
         <Box>
-          <AddLetterDisclosure brandId={brandId} />
+          <AddLetterDisclosure
+            brandId={brandId}
+            onSubmitted={() => {
+              if (isSentLetterBox(letterBoxType)) {
+                mutate()
+              }
+            }}
+          />
         </Box>
       </Level>
       <LetterBoxTypeButtons
@@ -133,7 +148,7 @@ const SearchBar = ({ search, isLoading }) => {
   )
 }
 
-const useColumns = ({ items = [], letterBoxType }) => {
+const useColumns = ({ brandId, items = [], letterBoxType }) => {
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
@@ -156,8 +171,21 @@ const useColumns = ({ items = [], letterBoxType }) => {
         accessor: (row) => row,
         Header: <Trans zh="操作" en="Actions" />,
         disableSortBy: true,
-        Cell: ({ value }) => {
-          return <Set></Set>
+        Cell: ({ value: record }) => {
+          return (
+            <Set alignX="center">
+              <ViewLetterDisclosure
+                brandId={brandId}
+                letterBoxType={letterBoxType}
+                letterId={record?.id}
+              />
+              <ReplyLetterDisclosure
+                brandId={brandId}
+                letterBoxType={letterBoxType}
+                letterId={record?.id}
+              />
+            </Set>
+          )
         }
       })
     ]

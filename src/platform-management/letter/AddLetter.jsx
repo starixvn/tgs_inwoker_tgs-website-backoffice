@@ -37,6 +37,7 @@ import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
 import { TextareaField } from "../../textarea"
 
+//TODO: onSubmitted
 export const AddLetterDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
@@ -59,9 +60,7 @@ export const AddLetterDisclosure = ({ brandId, onSubmitted, ...props }) => {
   )
 }
 
-//TODO: need onSubmitted?
-//TODO: receiver is playerCode(4ujz9vxp0m1y) or username(Phyllis1684475339619)?
-const AddDialog = ({ brandId, dialog }) => {
+const AddDialog = ({ brandId, dialog, onSubmitted }) => {
   let [formData, setSubmit] = useState()
 
   let { isLoading, result, error, mutate, deleteCache } = useAddLetter(
@@ -100,6 +99,7 @@ const AddDialog = ({ brandId, dialog }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
+      onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
     >

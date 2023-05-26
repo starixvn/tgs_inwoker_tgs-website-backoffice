@@ -28,6 +28,7 @@ export const Fixture = {
   licenseeCode: "TGS",
   host: host(),
   platformToken: async ({ platformCode }, use) => {
+    //TODO: use brand-cert-api to get platform token
     let platformToken = await globalApi.platformToken(platformCode)
     use(platformToken)
   },

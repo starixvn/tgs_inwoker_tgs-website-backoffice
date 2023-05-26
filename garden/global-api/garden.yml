@@ -1,5 +1,6 @@
 kind: Module
 type: container
+# TODO: use brand-cert-api to get platform token
 name: global-api
 image: registry.gitlab.com/rayprosoft/turnkey-gaming-system/global-api:202202140755-dev # global-api
 services:
