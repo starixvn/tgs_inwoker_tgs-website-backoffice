@@ -270,6 +270,7 @@ export const Table = ({
     minHeight = RowHeight * 5
   }
 
+  //TODO: only min scrollbarWidth when tableMeasure?.height > height
   let height = maxSize?.height - PaginationHeight - scrollbarWidth
 
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0

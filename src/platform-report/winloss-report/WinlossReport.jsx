@@ -66,6 +66,7 @@ import { AgentTotalDialogDisclosure } from "./AgentTotal"
 import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
 import { isNil, isEmpty, either } from "ramda"
 import { isArray } from "lodash-es"
+import { useMeasure } from "react-use"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -200,9 +201,17 @@ export const WinlossReport = ({ brandId }) => {
     appendPath
   })
 
+  let [actionBarRef, actionBarMeasure] = useMeasure()
+  console.log("actionBarMeasure", actionBarMeasure)
+
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
-      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+      <Level
+        ref={actionBarRef}
+        alignY="bottom"
+        alignX="left"
+        verticalBelow="mobile"
+      >
         <SearchBar
           brandId={brandId}
           username={searchParams?.username}
@@ -241,8 +250,9 @@ export const WinlossReport = ({ brandId }) => {
         )}
       </Level>
       <UserBreadcrumb path={path} backToPath={backToPath} />
-      <AutoSizer>
-        {({ height, width }) => {
+      <AutoSizer disableWidth={true}>
+        {({ height }) => {
+          let width = actionBarMeasure?.width
           return (
             <Table
               columns={columns}
