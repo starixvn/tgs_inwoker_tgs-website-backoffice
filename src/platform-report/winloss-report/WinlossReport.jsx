@@ -201,80 +201,77 @@ export const WinlossReport = ({ brandId }) => {
     appendPath
   })
 
-  let [headRef, headMeasure] = useMeasure()
+  let [boxRef, boxMeasure] = useMeasure()
+  console.log("boxMeasure", boxMeasure)
   const HeadMarginBottom = 16
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
-      <Set
-        ref={headRef}
-        orientation="vertical"
-        isFilled
-        marginBottom={`${HeadMarginBottom}px`}
-      >
-        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-          <SearchBar
-            brandId={brandId}
-            username={searchParams?.username}
-            memberType={searchParams?.memberType}
-            from={state?.from}
-            to={state?.to}
-            search={(data = {}) => {
-              setPath(undefined)
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          brandId={brandId}
+          username={searchParams?.username}
+          memberType={searchParams?.memberType}
+          from={state?.from}
+          to={state?.to}
+          search={(data = {}) => {
+            setPath(undefined)
 
-              setSearchParams({
-                brandId,
-                username: data.username,
-                memberType: data.memberType,
-                roundId: data.roundId
-              })
-              deletePathDataCache()
-              mutatePathData(null, true)
+            setSearchParams({
+              brandId,
+              username: data.username,
+              memberType: data.memberType,
+              roundId: data.roundId
+            })
+            deletePathDataCache()
+            mutatePathData(null, true)
 
-              setState({
-                pageIndex: 0,
-                ...data,
-                downline: !!data?.roundId ? true : false
-              })
-              deleteReportDataCache()
-              mutateReportData(null, true)
-            }}
-          />
-          {reportData?.items?.length > 0 && (
-            <Box>
-              <DownloadButton
-                id="export-report"
-                isLoading={isLoading}
-                href={useExportWinlossReportUrl(toReportSearchParams())}
-              />
-            </Box>
-          )}
-        </Level>
-        <UserBreadcrumb path={path} backToPath={backToPath} />
-      </Set>
-      <AutoSizer disableWidth={true}>
-        {({ height }) => {
-          let width = headMeasure?.width
-          if (Number.isFinite(headMeasure?.height)) {
-            height = height - headMeasure?.height - HeadMarginBottom
-          }
-          return (
-            <Table
-              columns={columns}
-              data={reportData?.items}
-              total={reportData?.items?.length > 0 && reportData?.total}
-              initialState={state}
-              controlledState={state}
-              pageCount={pageCount(pageSize, reportData?.totalCount)}
-              setPageIndex={setPageIndex}
-              setSortOrder={setSortOrder}
+            setState({
+              pageIndex: 0,
+              ...data,
+              downline: !!data?.roundId ? true : false
+            })
+            deleteReportDataCache()
+            mutateReportData(null, true)
+          }}
+        />
+        {reportData?.items?.length > 0 && (
+          <Box>
+            <DownloadButton
+              id="export-report"
               isLoading={isLoading}
-              maxSize={{ height, width }}
-              hasCellDividers
-              stickyHead
+              href={useExportWinlossReportUrl(toReportSearchParams())}
             />
-          )
-        }}
-      </AutoSizer>
+          </Box>
+        )}
+      </Level>
+      <UserBreadcrumb path={path} backToPath={backToPath} />
+      <Box ref={boxRef} flex="1">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            console.log("height", height, "boxMeasure", boxMeasure)
+            let width = boxMeasure?.width
+            if (Number.isFinite(boxMeasure?.height)) {
+              height = height /*- boxMeasure?.height*/ - HeadMarginBottom
+            }
+            return (
+              <Table
+                columns={columns}
+                data={reportData?.items}
+                total={reportData?.items?.length > 0 && reportData?.total}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(pageSize, reportData?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                hasCellDividers
+                stickyHead
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
       {error && (
         <AlertDialog
           {...error}
