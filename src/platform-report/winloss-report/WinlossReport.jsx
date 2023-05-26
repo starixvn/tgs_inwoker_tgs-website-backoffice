@@ -201,58 +201,68 @@ export const WinlossReport = ({ brandId }) => {
     appendPath
   })
 
-  let [actionBarRef, actionBarMeasure] = useMeasure()
-  console.log("actionBarMeasure", actionBarMeasure)
-
+  let [headRef, headMeasure] = useMeasure()
+  const HeadMarginBottom = 16
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
-      <Level
-        ref={actionBarRef}
-        alignY="bottom"
-        alignX="left"
-        verticalBelow="mobile"
+      <Set
+        ref={headRef}
+        orientation="vertical"
+        isFilled
+        marginBottom={`${HeadMarginBottom}px`}
       >
-        <SearchBar
-          brandId={brandId}
-          username={searchParams?.username}
-          memberType={searchParams?.memberType}
-          from={state?.from}
-          to={state?.to}
-          search={(data = {}) => {
-            setPath(undefined)
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            brandId={brandId}
+            username={searchParams?.username}
+            memberType={searchParams?.memberType}
+            from={state?.from}
+            to={state?.to}
+            search={(data = {}) => {
+              setPath(undefined)
 
-            setSearchParams({
-              brandId,
-              username: data.username,
-              memberType: data.memberType,
-              roundId: data.roundId
-            })
-            deletePathDataCache()
-            mutatePathData(null, true)
+              setSearchParams({
+                brandId,
+                username: data.username,
+                memberType: data.memberType,
+                roundId: data.roundId
+              })
+              deletePathDataCache()
+              mutatePathData(null, true)
 
-            setState({
-              pageIndex: 0,
-              ...data,
-              downline: !!data?.roundId ? true : false
-            })
-            deleteReportDataCache()
-            mutateReportData(null, true)
-          }}
-        />
-        {reportData?.items?.length > 0 && (
-          <Box>
-            <DownloadButton
-              id="export-report"
-              isLoading={isLoading}
-              href={useExportWinlossReportUrl(toReportSearchParams())}
-            />
-          </Box>
-        )}
-      </Level>
-      <UserBreadcrumb path={path} backToPath={backToPath} />
+              setState({
+                pageIndex: 0,
+                ...data,
+                downline: !!data?.roundId ? true : false
+              })
+              deleteReportDataCache()
+              mutateReportData(null, true)
+            }}
+          />
+          {reportData?.items?.length > 0 && (
+            <Box>
+              <DownloadButton
+                id="export-report"
+                isLoading={isLoading}
+                href={useExportWinlossReportUrl(toReportSearchParams())}
+              />
+            </Box>
+          )}
+        </Level>
+        <UserBreadcrumb path={path} backToPath={backToPath} />
+      </Set>
       <AutoSizer disableWidth={true}>
         {({ height }) => {
-          let width = actionBarMeasure?.width
+          console.log(
+            "height",
+            height,
+            "headMeasure?.height",
+            headMeasure?.height
+          )
+          let width = headMeasure?.width
+          if (Number.isFinite(headMeasure?.height)) {
+            height -= headMeasure?.height
+          }
           return (
             <Table
               columns={columns}
