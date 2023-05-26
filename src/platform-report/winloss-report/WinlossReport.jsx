@@ -253,15 +253,9 @@ export const WinlossReport = ({ brandId }) => {
       </Set>
       <AutoSizer disableWidth={true}>
         {({ height }) => {
-          console.log(
-            "height",
-            height,
-            "headMeasure?.height",
-            headMeasure?.height
-          )
           let width = headMeasure?.width
           if (Number.isFinite(headMeasure?.height)) {
-            height -= headMeasure?.height
+            height = height - headMeasure?.height - HeadMarginBottom
           }
           return (
             <Table
