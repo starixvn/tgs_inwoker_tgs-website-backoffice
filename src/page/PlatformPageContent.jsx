@@ -41,7 +41,7 @@ export const PlatformPageContent = ({
   let [platform, setPlatform] = useState()
 
   let [ref, measure] = useMeasure()
-  console.log("page content width", measure?.width)
+
   //TODO: also work with url?
   let isMobile = useBreakpoint("mobile")
   //TODO: title and actionbar overflow visible?

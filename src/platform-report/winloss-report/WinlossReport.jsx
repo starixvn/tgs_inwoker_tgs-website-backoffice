@@ -203,8 +203,6 @@ export const WinlossReport = ({ brandId }) => {
   })
 
   let pageWidth = usePlatformPageContentWidth()
-  let [boxRef, boxMeasure] = useMeasure()
-  console.log("boxMeasure", boxMeasure)
 
   const HeadMarginBottom = 16
   return (
@@ -248,12 +246,11 @@ export const WinlossReport = ({ brandId }) => {
         )}
       </Level>
       <UserBreadcrumb path={path} backToPath={backToPath} />
-      <Box ref={boxRef} flex="1">
+      <Box flex="1">
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth
             height -= HeadMarginBottom
-            console.log("report height", height)
             return (
               <Table
                 columns={columns}
