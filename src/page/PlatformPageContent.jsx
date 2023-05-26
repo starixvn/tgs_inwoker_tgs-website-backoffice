@@ -41,6 +41,7 @@ export const PlatformPageContent = ({
   let [platform, setPlatform] = useState()
 
   let [ref, measure] = useMeasure()
+
   //TODO: also work with url?
   let isMobile = useBreakpoint("mobile")
   //TODO: title and actionbar overflow visible?
