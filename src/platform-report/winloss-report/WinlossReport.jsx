@@ -204,7 +204,6 @@ export const WinlossReport = ({ brandId }) => {
 
   let pageWidth = usePlatformPageContentWidth()
 
-  const Spacing = 16 //major-2
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
@@ -250,7 +249,6 @@ export const WinlossReport = ({ brandId }) => {
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth
-            height -= Spacing
             return (
               <Table
                 columns={columns}
