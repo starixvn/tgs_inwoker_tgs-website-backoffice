@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
@@ -204,7 +204,7 @@ export const WinlossReport = ({ brandId }) => {
 
   let pageWidth = usePlatformPageContentWidth()
 
-  const HeadMarginBottom = 16
+  const Spacing = 16 //major-2
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
@@ -250,7 +250,7 @@ export const WinlossReport = ({ brandId }) => {
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth
-            height -= HeadMarginBottom
+            height -= Spacing
             return (
               <Table
                 columns={columns}
