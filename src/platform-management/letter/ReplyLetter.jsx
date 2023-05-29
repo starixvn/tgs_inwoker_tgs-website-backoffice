@@ -37,9 +37,11 @@ import { useAddLetter, useLetter, useReplyLetter } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
-import { TextareaField } from "../../textarea"
+import Textarea, { TextareaField } from "../../textarea"
 import Modal from "../../dialog/Modal"
 import { isSentLetterBox } from "./LetterBoxType"
+import AlertDialog from "../../dialog/Alert"
+import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 
 //TODO: need onSubmitted?
 export const ReplyLetterDisclosure = ({
@@ -67,6 +69,8 @@ export const ReplyLetterDisclosure = ({
       {dialog.visible && (
         <ReplyLetterDialog
           brandId={brandId}
+          letterBoxType={letterBoxType}
+          letterId={letterId}
           //   onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -75,8 +79,40 @@ export const ReplyLetterDisclosure = ({
   )
 }
 
-//TODO: wait for op-api
-const ReplyLetterDialog = ({ brandId, letterId, dialog }) => {
+//TODO: onSubmitted??
+const ReplyLetterDialog = ({
+  brandId,
+  letterId,
+  letterBoxType,
+  dialog,
+  ...props
+}) => {
+  let { isLoading, data, error, mutate, deleteCache } = useLetter(
+    brandId,
+    letterBoxType,
+    letterId
+  )
+
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
+
+  return (
+    <ReplyLetterFormDialog
+      brandId={brandId}
+      letterId={letterId}
+      content={data?.content}
+      dialog={dialog}
+      {...props}
+    />
+  )
+}
+
+const ReplyLetterFormDialog = ({ brandId, letterId, content, dialog }) => {
   let [data, setSubmit] = useState()
 
   let { result, isLoading, error, mutate, deleteCache } = useReplyLetter(
@@ -110,13 +146,25 @@ const ReplyLetterDialog = ({ brandId, letterId, dialog }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      // onSubmitted={onSubmitted}
+      // onSubmttied={onSubmitted}
       title={title}
       dialog={dialog}
     >
-      <ReplyLetterFormBody />
+      <ReplyLetterFormBody content={content} />
     </FormDialog>
   )
 }
 
-const ReplyLetterFormBody = ({}) => {}
+const ReplyLetterFormBody = ({ content }) => {
+  return (
+    <FieldValues paddingLeft="1rem">
+      <Label>
+        <Trans zh="內容" en="Content" />
+      </Label>
+      <Set orientation="vertical" isFilled>
+        <Textarea name="content" />
+        <Textarea value={content} readOnly disabled />
+      </Set>
+    </FieldValues>
+  )
+}

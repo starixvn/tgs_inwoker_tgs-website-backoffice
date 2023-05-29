@@ -48,6 +48,9 @@ export const useAddLetter = (brandId, data) => {
 }
 
 export const useReplyLetter = (brandId, letterId, data) => {
-  let url = brandId && letterId && data ? `${InboxAPI}/${brandId}:reply` : ""
+  let url =
+    brandId && letterId && data
+      ? `${InboxAPI}/${brandId}/${letterId}:reply`
+      : ""
   return usePutData(url, data)
 }
