@@ -15,7 +15,8 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { Trans } from "../../i18n"
 import {
   PlatformPageContent,
-  usePlatformId
+  usePlatformId,
+  usePlatformPageContentWidth
 } from "../../page/PlatformPageContent"
 import { View, Update } from "./menu"
 import { useFormContext, useForm, FormProvider } from "react-hook-form"
@@ -79,8 +80,10 @@ const Body = () => {
     letterBoxType
   })
 
+  let pageWidth = usePlatformPageContentWidth()
+
   return (
-    <Set orientation="vertical" isFilled>
+    <Set orientation="vertical" isFilled height="100%">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           search={(data = {}) => {
@@ -104,27 +107,33 @@ const Body = () => {
       </Level>
       <LetterBoxTypeButtons
         onChange={(value) => {
+          //TODO: doesn't clear items when switch letter box type
+          deleteCache()
+          mutate(null, true)
           setLetterBoxType(value)
         }}
       />
-      <AutoSizer>
-        {({ height, width }) => {
-          return (
-            <Table
-              columns={columns}
-              data={items}
-              initialState={state}
-              controlledState={state}
-              pageCount={pageCount(state?.pageSize, data?.totalCount)}
-              setPageIndex={setPageIndex}
-              setSortOrder={setSortOrder}
-              isLoading={isLoading}
-              maxSize={{ height, width }}
-              stickyHead
-            />
-          )
-        }}
-      </AutoSizer>
+      <Box flex="1">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                columns={columns}
+                data={items}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(state?.pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                stickyHead
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
   )
@@ -163,7 +172,7 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
       }),
       textColumn({
         accessor: "subject",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <Trans zh="主旨" en="Subject" />,
         disableSortBy: true
       }),
       textColumn({
