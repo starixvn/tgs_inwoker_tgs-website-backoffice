@@ -85,11 +85,6 @@ export const usePlayerBalanceChangeTotalAmount = (searchParams) => {
   return useGet(url)
 }
 
-export const useClearPlayerWageringRequirement = (playerCode) => {
-  let url = playerCode ? `${API}/${playerCode}/clear` : ""
-  return usePutData(url, true)
-}
-
 export const usePlayerPromotions = (playerCode, searchParams) => {
   let url =
     playerCode && searchParams
@@ -132,6 +127,11 @@ export const useVerifyPlayerID = (formId, data) => {
 }
 
 const PlayerBucketApi = "/api/player/bucket"
+export const useClearPlayerWageringRequirement = (playerCode) => {
+  let url = playerCode ? `${PlayerBucketApi}/${playerCode}` : ""
+  return useDelete(url)
+}
+
 export const usePlayerBucketAmount = (playerCode) => {
   let url = playerCode ? `${PlayerBucketApi}/amount/${playerCode}` : ""
   return useGet(url)
