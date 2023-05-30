@@ -5,6 +5,9 @@ import AsyncSelect from "react-select/async"
 import { API, usePlayerList } from "./client"
 import { urlWith } from "../../client"
 
-export const PlayerSelect = ({ ...props }) => {}
+//TODO: form ctrl
+export const PlayerSelect = ({ ...props }) => {
+    let [] = useState()
+}
 
 const usePlayerOptions = () => {}
