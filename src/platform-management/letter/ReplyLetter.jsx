@@ -105,14 +105,20 @@ const ReplyLetterDialog = ({
     <ReplyLetterFormDialog
       brandId={brandId}
       letterId={letterId}
-      content={data?.content}
+      letter={data}
       dialog={dialog}
       {...props}
     />
   )
 }
 
-const ReplyLetterFormDialog = ({ brandId, letterId, content, dialog }) => {
+const ReplyLetterFormDialog = ({
+  brandId,
+  letterId,
+  letter,
+  onSubmitted,
+  dialog
+}) => {
   let [data, setSubmit] = useState()
 
   let { result, isLoading, error, mutate, deleteCache } = useReplyLetter(
@@ -146,24 +152,44 @@ const ReplyLetterFormDialog = ({ brandId, letterId, content, dialog }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      // onSubmttied={onSubmitted}
+      onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
+      placement="top"
+      minHeight="70vh"
+      minWidth="80vw"
     >
-      <ReplyLetterFormBody content={content} />
+      <ReplyLetterFormBody context={letter?.quotation ?? letter?.content} />
     </FormDialog>
   )
 }
 
-const ReplyLetterFormBody = ({ content }) => {
+const ReplyLetterFormBody = ({ context }) => {
   return (
     <FieldValues paddingLeft="1rem">
       <Label>
         <Trans zh="內容" en="Content" />
       </Label>
-      <Set orientation="vertical" isFilled>
-        <Textarea name="content" />
-        <Textarea value={content} readOnly disabled />
+      <Set orientation="vertical" isFilled height="100%">
+        <Textarea
+          name="content"
+          autoFocus
+          css={css`
+            textarea {
+              min-height: 30vh;
+            }
+          `}
+        />
+        <Textarea
+          value={context}
+          readOnly
+          disabled
+          css={css`
+            textarea {
+              min-height: 30vh;
+            }
+          `}
+        />
       </Set>
     </FieldValues>
   )
