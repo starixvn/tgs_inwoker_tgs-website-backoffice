@@ -36,7 +36,6 @@ import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog
 import { PlayerDepositFormDialogDisclosure } from "./PlayerDepositFormDialog"
 import { PlayerWithdrawFormDialogDisclosure } from "./PlayerWithdrawFormDialog"
 import { BankInfoFieldGroup } from "./BankInfoTag"
-import { PlayerSelect } from "./PlayerSelect"
 
 export { Code }
 
@@ -234,7 +233,6 @@ const SearchBar = ({
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
-          {/* <PlayerSelect brandId={brandId} /> */}
           <PlayerStatusSelect name="status" />
           <VipLevelSelect name="vipId" brandId={brandId} />
           <InputField
