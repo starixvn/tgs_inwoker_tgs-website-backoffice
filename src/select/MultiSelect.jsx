@@ -45,6 +45,24 @@ const MultiValueContainer = ({ data, innerProps, ...props }) => {
   )
 }
 
+const Menu = ({ children, innerProps, ...props }) => {
+  return (
+    <components.Menu
+      innerProps={{
+        ...innerProps,
+        "data-dialog": ""
+      }}
+      {...props}
+      css={css`
+        x-index: 2;
+      `}
+    >
+      {children}
+    </components.Menu>
+  )
+}
+
+//TODO: how to forwardRef innerRef?
 const MenuList = ({ children, innerProps, ...props }) => {
   return (
     <components.MenuList
@@ -57,6 +75,13 @@ const MenuList = ({ children, innerProps, ...props }) => {
       {children}
     </components.MenuList>
   )
+}
+
+export const Components = {
+  Option,
+  DropdownIndicator,
+  MultiValueContainer,
+  Menu
 }
 
 export const MultiSelect = ({
@@ -120,12 +145,7 @@ export const MultiSelect = ({
               let value = data.map(({ value }) => value)
               formContext.setValue(name, value)
             }}
-            components={{
-              Option,
-              DropdownIndicator,
-              MultiValueContainer,
-              MenuList
-            }}
+            components={Components}
             isMulti={isMulti}
             styles={{
               control: (styles) => ({
