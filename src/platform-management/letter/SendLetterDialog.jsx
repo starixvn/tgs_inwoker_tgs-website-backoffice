@@ -31,14 +31,18 @@ import { AddDisclosure } from "../../dialog/Disclosure"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
 import { useFormContext } from "react-hook-form"
-import { useAddLetter } from "./client"
+import { SendLetterType, SendLetterTypeSelect } from "./SendLetterType"
+import { useSendLetter } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
 import { TextareaField } from "../../textarea"
 
-//TODO: onSubmitted
-export const AddLetterDisclosure = ({ brandId, onSubmitted, ...props }) => {
+export const SendLetterDialogDisclosure = ({
+  brandId,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([Update])
@@ -50,7 +54,7 @@ export const AddLetterDisclosure = ({ brandId, onSubmitted, ...props }) => {
     <>
       <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <AddDialog
+        <SendDialog
           brandId={brandId}
           onSubmitted={onSubmitted}
           dialog={dialog}
@@ -60,11 +64,13 @@ export const AddLetterDisclosure = ({ brandId, onSubmitted, ...props }) => {
   )
 }
 
-const AddDialog = ({ brandId, dialog, onSubmitted }) => {
+const SendDialog = ({ brandId, dialog, onSubmitted }) => {
+  let [sendLetterType, setLetterBoxType] = useState(SendLetterType.AllPlayers)
   let [formData, setSubmit] = useState()
 
-  let { isLoading, result, error, mutate, deleteCache } = useAddLetter(
+  let { isLoading, result, error, mutate, deleteCache } = useSendLetter(
     brandId,
+    sendLetterType,
     formData
   )
 
@@ -73,7 +79,9 @@ const AddDialog = ({ brandId, dialog, onSubmitted }) => {
     en: "Add Memo"
   })
 
-  const onSubmit = ({ receiver, ...data } = {}) => {
+  //TODO: receivers
+  const onSubmit = ({ sendLetterType, receiver, ...data } = {}) => {
+    setLetterBoxType(sendLetterType)
     setSubmit({
       ...data,
       receivers: [receiver]
@@ -90,6 +98,7 @@ const AddDialog = ({ brandId, dialog, onSubmitted }) => {
     <FormDialog
       defaultValues={{
         brandId,
+        sendLetterType: SendLetterType.AllPlayers,
         receivers: [],
         subject: "subject",
         content: "content"
@@ -108,12 +117,17 @@ const AddDialog = ({ brandId, dialog, onSubmitted }) => {
   )
 }
 
-//TODO: readOnly?
+const PlayersFieldBox = () => {}
+
+//TODO: need readOnly?
 const FormBody = ({ readOnly = false }) => {
   return (
     <FieldStack>
-      <Label required>receiver</Label>
-      <InputField name="receiver" required />
+      <Label required>Type</Label>
+      <Box>
+        <SendLetterTypeSelect />
+        <InputField name="receiver" required />
+      </Box>
       <Label name="subject" required>
         <Trans zh="主题" en="Subject" />
       </Label>

@@ -31,6 +31,12 @@ test("clear player wagering requirement", async ({
   await openDialog(page, ClearWageringRequirementDialogSelector)
 
   await Promise.all([
+    page.waitForResponse((response) => {
+      return (
+        response.url().includes(`/api/player/bucket/${player.code}`) &&
+        response.status() === 200
+      )
+    }),
     page
       .locator(`${ClearWageringRequirementDialogSelector}[role="dialog"]`)
       .waitFor({ state: "detached" }),

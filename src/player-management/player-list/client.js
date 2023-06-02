@@ -8,7 +8,7 @@ import {
 } from "../../client"
 import { repeat } from "ramda"
 
-let API = "/api/player"
+export let API = "/api/player"
 
 export const usePlayerList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
