@@ -26,7 +26,7 @@ import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { Input } from "../../input/Input"
 import { useLetterList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
-import { AddLetterDisclosure } from "./AddLetter"
+import { SendLetterDialogDisclosure } from "./SendLetterDialog"
 import textColumn from "../../table/column/textColumn"
 import {
   LetterBoxType,
@@ -95,7 +95,7 @@ const Body = () => {
           }}
         />
         <Box>
-          <AddLetterDisclosure
+          <SendLetterDialogDisclosure
             brandId={brandId}
             onSubmitted={() => {
               if (isSentLetterBox(letterBoxType)) {
