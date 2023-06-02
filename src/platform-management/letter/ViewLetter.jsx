@@ -88,13 +88,7 @@ const ViewDialog = ({ brandId, letterBoxType, letterId, dialog }) => {
   }
 
   return (
-    <Modal
-      title={title}
-      {...dialog}
-      placement="top"
-      minHeight="70vh"
-      minWidth="80vw"
-    >
+    <Modal title={title} {...dialog} placement="top" minWidth="80vw">
       <FieldValues marginLeft="1rem">
         <Label>
           <Trans zh="主旨" en="Subject" />

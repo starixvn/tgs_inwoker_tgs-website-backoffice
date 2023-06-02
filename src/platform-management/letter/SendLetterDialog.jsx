@@ -111,19 +111,23 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
+      placement="top"
+      minWidth="80vw"
     >
       <FormBody />
     </FormDialog>
   )
 }
 
-const PlayersFieldBox = () => {}
+const GroupFieldBox = () => {}
 
 //TODO: need readOnly?
 const FormBody = ({ readOnly = false }) => {
   return (
-    <FieldStack>
-      <Label required>Type</Label>
+    <FieldValues>
+      <Label required>
+        <Trans zh="群组" en="Group" />
+      </Label>
       <Box>
         <SendLetterTypeSelect />
         <InputField name="receiver" required />
@@ -135,7 +139,14 @@ const FormBody = ({ readOnly = false }) => {
       <Label name="content" required>
         <Trans zh="内容" en="Content" />
       </Label>
-      <TextareaField name="content" />
-    </FieldStack>
+      <TextareaField
+        name="content"
+        css={css`
+          textarea {
+            min-height: 45vh;
+          }
+        `}
+      />
+    </FieldValues>
   )
 }

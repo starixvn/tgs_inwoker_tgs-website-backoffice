@@ -156,7 +156,6 @@ const ReplyLetterFormDialog = ({
       title={title}
       dialog={dialog}
       placement="top"
-      minHeight="70vh"
       minWidth="80vw"
     >
       <ReplyLetterFormBody context={letter?.quotation ?? letter?.content} />
