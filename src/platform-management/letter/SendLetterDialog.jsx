@@ -38,7 +38,6 @@ import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
 import { TextareaField } from "../../textarea"
 
-//TODO: need onSubmitted?
 export const SendLetterDialogDisclosure = ({
   brandId,
   onSubmitted,
@@ -118,9 +117,7 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
   )
 }
 
-const PlayersFieldBox = () => { 
-
-}
+const PlayersFieldBox = () => {}
 
 //TODO: need readOnly?
 const FormBody = ({ readOnly = false }) => {
