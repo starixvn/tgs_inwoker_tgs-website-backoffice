@@ -30,13 +30,14 @@ import {
 import { AddDisclosure } from "../../dialog/Disclosure"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
-import { useFormContext } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 import { SendLetterType, SendLetterTypeSelect } from "./SendLetterType"
 import { useSendLetter } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
 import { TextareaField } from "../../textarea"
+import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
 
 export const SendLetterDialogDisclosure = ({
   brandId,
@@ -64,6 +65,8 @@ export const SendLetterDialogDisclosure = ({
   )
 }
 
+//TODO: player multi select
+//TODO: receivers
 const SendDialog = ({ brandId, dialog, onSubmitted }) => {
   let [sendLetterType, setLetterBoxType] = useState(SendLetterType.AllPlayers)
   let [formData, setSubmit] = useState()
@@ -94,6 +97,7 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
     setSubmit(undefined)
   }
 
+  //TODO: rm hardcode
   return (
     <FormDialog
       defaultValues={{
@@ -119,23 +123,59 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
   )
 }
 
-const GroupFieldBox = () => {}
+//TODO: change based on form.sendLetterType
+const GroupFieldBox = () => {
+  let { control } = useFormContext()
+  let brandId = useWatch({
+    control,
+    name: "brandId"
+  })
+  let sendLetterType = useWatch({
+    control,
+    name: "sendLetterType"
+  })
+  console.log("sendLetterType", sendLetterType)
+  return (
+    <>
+      <Label required>
+        <Trans zh="群组" en="Group" />
+      </Label>
+      <Set isFilled>
+        <SendLetterTypeSelect />
+        <GroupFieldBody brandId={brandId} sendLetterType={sendLetterType} />
+      </Set>
+    </>
+  )
+}
+
+//TODO: how flex true?
+const GroupFieldBody = ({ brandId, sendLetterType }) => {
+  switch (sendLetterType) {
+    case SendLetterType.AllPlayers:
+      return null
+    case SendLetterType.DesignatedPlayers:
+      return (
+        <PlayerSelect
+          brandId={brandId}
+          name="receivers"
+          isMulti={true}
+          width="100%"
+        />
+      )
+    default:
+      return null
+  }
+}
 
 //TODO: need readOnly?
 const FormBody = ({ readOnly = false }) => {
   return (
     <FieldValues>
-      <Label required>
-        <Trans zh="群组" en="Group" />
-      </Label>
-      <Box>
-        <SendLetterTypeSelect />
-        <InputField name="receiver" required />
-      </Box>
+      <GroupFieldBox />
       <Label name="subject" required>
         <Trans zh="主题" en="Subject" />
       </Label>
-      <InputField name="subject" required disabled={readOnly} />
+      <InputField name="subject" required />
       <Label name="content" required>
         <Trans zh="内容" en="Content" />
       </Label>
