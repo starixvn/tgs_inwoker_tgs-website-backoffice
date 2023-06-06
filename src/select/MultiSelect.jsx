@@ -3,7 +3,13 @@ import { css } from "@emotion/react"
 import { Select, Input } from "bumbag"
 import { Trans, useTrans } from "../i18n"
 import ReactSelect, { components } from "react-select"
-import { useForm, useFormContext, Controller, useWatch } from "react-hook-form"
+import {
+  useForm,
+  useFormContext,
+  Controller,
+  useWatch,
+  useFormState
+} from "react-hook-form"
 
 const Option = ({ data, innerProps, ...props } = {}) => {
   return (
@@ -45,6 +51,70 @@ const MultiValueContainer = ({ data, innerProps, ...props }) => {
   )
 }
 
+const Control = ({ children, ...props }) => {
+  let name = props?.selectProps?.name
+
+  let formMethods = useFormContext()
+  let formState = useFormState({ control: formMethods?.control })
+  let error = formState?.errors?.[name]
+
+  return (
+    <components.Control
+      {...props}
+      css={css`
+        min-height: 2.75em;
+        border: 1px solid
+          var(
+            ${error ? "--bb-palette-danger" : "--bb-palette-white900"},
+            #000000
+          );
+
+        :focus-within {
+          border-color: var(--bb-palette-primary, #000000);
+          box-shadow: var(--bb-palette-primaryTint, #000000) 0px 0px 0px 3px;
+        }
+      `}
+    >
+      {children}
+    </components.Control>
+  )
+}
+
+const IndicatorsContainer = ({ children, ...props }) => {
+  let notLoading = !props?.selectProps?.isLoading
+  return (
+    <components.IndicatorsContainer {...props}>
+      {notLoading && (
+        <div
+          css={css`
+            width: 40px;
+          `}
+        ></div>
+      )}
+      {children}
+    </components.IndicatorsContainer>
+  )
+}
+
+const Menu = ({ children, innerProps, ...props }) => {
+  return (
+    <components.Menu
+      innerProps={{
+        ...innerProps,
+        "data-dialog": ""
+      }}
+      {...props}
+      css={css`
+        z-index: 2;
+      `}
+    >
+      {children}
+    </components.Menu>
+  )
+}
+
+//TODO: how to forwardRef innerRef?
+//TODO: rm
 const MenuList = ({ children, innerProps, ...props }) => {
   return (
     <components.MenuList
@@ -57,6 +127,15 @@ const MenuList = ({ children, innerProps, ...props }) => {
       {children}
     </components.MenuList>
   )
+}
+
+export const Components = {
+  Control,
+  IndicatorsContainer,
+  Menu,
+  Option,
+  DropdownIndicator,
+  MultiValueContainer
 }
 
 export const MultiSelect = ({
@@ -120,23 +199,9 @@ export const MultiSelect = ({
               let value = data.map(({ value }) => value)
               formContext.setValue(name, value)
             }}
-            components={{
-              Option,
-              DropdownIndicator,
-              MultiValueContainer,
-              MenuList
-            }}
+            components={Components}
             isMulti={isMulti}
             styles={{
-              control: (styles) => ({
-                ...styles,
-                minHeight: "2.75em",
-                ":focus-within": {
-                  "box-shadow":
-                    "var(--bb-palette-primaryTint, #000000) 0px 0px 0px 3px",
-                  "border-color": "var(--bb-palette-primary, #000000)"
-                }
-              }),
               clearIndicator: (styles) => ({ ...styles, display: "none" }),
               indicatorSeparator: (styles) => ({ ...styles, display: "none" }),
               dropdownIndicator: (styles) => ({

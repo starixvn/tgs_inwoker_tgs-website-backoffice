@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202305220919.321
+image: pgtgs/backoffice-api:202305300633.325
 services:
   - name: backoffice-api
     dependencies:
@@ -32,6 +32,7 @@ services:
       - report-api
       # - log-api
       - payment-api
+      - station-letter
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"

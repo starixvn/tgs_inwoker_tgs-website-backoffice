@@ -15,7 +15,8 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { Trans } from "../../i18n"
 import {
   PlatformPageContent,
-  usePlatformId
+  usePlatformId,
+  usePlatformPageContentWidth
 } from "../../page/PlatformPageContent"
 import { View, Update } from "./menu"
 import { useFormContext, useForm, FormProvider } from "react-hook-form"
@@ -25,10 +26,16 @@ import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { Input } from "../../input/Input"
 import { useLetterList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
-import { AddLetterDisclosure } from "./AddLetter"
+import { SendLetterDialogDisclosure } from "./SendLetterDialog"
 import textColumn from "../../table/column/textColumn"
-import { LetterBoxType, LetterBoxTypeButtons } from "./LetterBoxType"
+import {
+  LetterBoxType,
+  LetterBoxTypeButtons,
+  isSentLetterBox
+} from "./LetterBoxType"
 import SearchButton from "../../button/SearchButton"
+import { ViewLetterDisclosure } from "./ViewLetter"
+import { ReplyLetterDisclosure } from "./ReplyLetter"
 
 export { Code }
 
@@ -68,11 +75,15 @@ const Body = () => {
 
   let items = data?.items
   let columns = useColumns({
-    items
+    brandId,
+    items,
+    letterBoxType
   })
 
+  let pageWidth = usePlatformPageContentWidth()
+
   return (
-    <Set orientation="vertical" isFilled>
+    <Set orientation="vertical" isFilled height="100%">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           search={(data = {}) => {
@@ -84,32 +95,45 @@ const Body = () => {
           }}
         />
         <Box>
-          <AddLetterDisclosure brandId={brandId} />
+          <SendLetterDialogDisclosure
+            brandId={brandId}
+            onSubmitted={() => {
+              if (isSentLetterBox(letterBoxType)) {
+                mutate()
+              }
+            }}
+          />
         </Box>
       </Level>
       <LetterBoxTypeButtons
         onChange={(value) => {
+          //TODO: doesn't clear items when switch letter box type
+          deleteCache()
+          mutate(null, true)
           setLetterBoxType(value)
         }}
       />
-      <AutoSizer>
-        {({ height, width }) => {
-          return (
-            <Table
-              columns={columns}
-              data={items}
-              initialState={state}
-              controlledState={state}
-              pageCount={pageCount(state?.pageSize, data?.totalCount)}
-              setPageIndex={setPageIndex}
-              setSortOrder={setSortOrder}
-              isLoading={isLoading}
-              maxSize={{ height, width }}
-              stickyHead
-            />
-          )
-        }}
-      </AutoSizer>
+      <Box flex="1">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                columns={columns}
+                data={items}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(state?.pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                stickyHead
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
   )
@@ -133,7 +157,7 @@ const SearchBar = ({ search, isLoading }) => {
   )
 }
 
-const useColumns = ({ items = [], letterBoxType }) => {
+const useColumns = ({ brandId, items = [], letterBoxType }) => {
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
@@ -148,7 +172,7 @@ const useColumns = ({ items = [], letterBoxType }) => {
       }),
       textColumn({
         accessor: "subject",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <Trans zh="主旨" en="Subject" />,
         disableSortBy: true
       }),
       textColumn({
@@ -156,8 +180,21 @@ const useColumns = ({ items = [], letterBoxType }) => {
         accessor: (row) => row,
         Header: <Trans zh="操作" en="Actions" />,
         disableSortBy: true,
-        Cell: ({ value }) => {
-          return <Set></Set>
+        Cell: ({ value: record }) => {
+          return (
+            <Set alignX="center">
+              <ViewLetterDisclosure
+                brandId={brandId}
+                letterBoxType={letterBoxType}
+                letterId={record?.id}
+              />
+              <ReplyLetterDisclosure
+                brandId={brandId}
+                letterBoxType={letterBoxType}
+                letterId={record?.id}
+              />
+            </Set>
+          )
         }
       })
     ]

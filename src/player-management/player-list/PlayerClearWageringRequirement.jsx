@@ -35,7 +35,7 @@ export const PlayerClearWageringRequirementDisclosure = ({
   )
 }
 
-const ResetDialog = ({ playerCode, username, onSubmitted, dialog }) => {
+const ResetDialog = ({ playerCode, onSubmitted, dialog }) => {
   let title = useTrans({
     zh: "清除滿足提款金額？",
     en: "Clear Wagering Requirement？"

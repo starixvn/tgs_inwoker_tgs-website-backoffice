@@ -94,6 +94,15 @@ export const FormDialog = ({
         showCloseButton={showCloseButton}
         hideOnClickOutside={hideOnClickOutside}
         {...dialog}
+        css={css`
+          width: max-content;
+          max-width: 85vw;
+
+          & .bb-DialogContent {
+            min-height: max-content;
+            max-height: 85vh;
+          }
+        `}
         {...props}
       >
         {children}

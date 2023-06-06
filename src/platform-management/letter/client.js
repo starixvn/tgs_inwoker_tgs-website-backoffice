@@ -11,6 +11,7 @@ import client, {
   usePostFormData
 } from "../../client"
 import { LetterBoxType } from "./LetterBoxType"
+import { SendLetterType } from "./SendLetterType"
 
 const InboxAPI = "/api/station-letter"
 
@@ -42,12 +43,28 @@ export const useLetter = (brandId, letterBoxType, letterId) => {
   return useGet(url)
 }
 
-export const useAddLetter = (brandId, data) => {
-  let url = brandId && data ? `${InboxAPI}/${brandId}` : ""
+export const useSendLetter = (brandId, sendLetterType, data) => {
+  let url =
+    brandId && sendLetterType && data
+      ? `${InboxAPI}/${toSendLetterPath(sendLetterType)}/${brandId}`
+      : ""
   return usePutData(url, data)
 }
 
+const toSendLetterPath = (value) => {
+  switch (value) {
+    case SendLetterType.DesignatedPlayers:
+      return "player"
+    case SendLetterType.AllPlayers:
+    default:
+      return "all"
+  }
+}
+
 export const useReplyLetter = (brandId, letterId, data) => {
-  let url = brandId && letterId && data ? `${InboxAPI}/${brandId}:reply` : ""
+  let url =
+    brandId && letterId && data
+      ? `${InboxAPI}/${brandId}/${letterId}:reply`
+      : ""
   return usePutData(url, data)
 }

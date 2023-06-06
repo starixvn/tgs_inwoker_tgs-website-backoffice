@@ -265,12 +265,11 @@ export const Table = ({
   const PaginationHeight = 60
 
   const RowHeight = 50
-  //TODO: need to handle data.length <= 5 &&
   if (data?.length > 5 && !Number.isFinite(minHeight)) {
     minHeight = RowHeight * 5
   }
 
-  let height = maxSize?.height - PaginationHeight - scrollbarWidth
+  let height = maxSize?.height - PaginationHeight
 
   let isSticky = stickyHead || stickyFoot || stickyLeft > 0 || stickyRight > 0
 

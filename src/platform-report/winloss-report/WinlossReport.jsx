@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
@@ -66,6 +66,8 @@ import { AgentTotalDialogDisclosure } from "./AgentTotal"
 import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
 import { isNil, isEmpty, either } from "ramda"
 import { isArray } from "lodash-es"
+import { useMeasure } from "react-use"
+import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -200,6 +202,8 @@ export const WinlossReport = ({ brandId }) => {
     appendPath
   })
 
+  let pageWidth = usePlatformPageContentWidth()
+
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
@@ -241,26 +245,29 @@ export const WinlossReport = ({ brandId }) => {
         )}
       </Level>
       <UserBreadcrumb path={path} backToPath={backToPath} />
-      <AutoSizer>
-        {({ height, width }) => {
-          return (
-            <Table
-              columns={columns}
-              data={reportData?.items}
-              total={reportData?.items?.length > 0 && reportData?.total}
-              initialState={state}
-              controlledState={state}
-              pageCount={pageCount(pageSize, reportData?.totalCount)}
-              setPageIndex={setPageIndex}
-              setSortOrder={setSortOrder}
-              isLoading={isLoading}
-              maxSize={{ height, width }}
-              hasCellDividers
-              stickyHead
-            />
-          )
-        }}
-      </AutoSizer>
+      <Box flex="1">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                columns={columns}
+                data={reportData?.items}
+                total={reportData?.items?.length > 0 && reportData?.total}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(pageSize, reportData?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                hasCellDividers
+                stickyHead
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
       {error && (
         <AlertDialog
           {...error}
