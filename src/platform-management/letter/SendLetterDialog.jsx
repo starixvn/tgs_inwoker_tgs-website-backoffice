@@ -30,13 +30,14 @@ import {
 import { AddDisclosure } from "../../dialog/Disclosure"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
-import { useFormContext } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 import { SendLetterType, SendLetterTypeSelect } from "./SendLetterType"
 import { useSendLetter } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
 import { TextareaField } from "../../textarea"
+import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
 
 export const SendLetterDialogDisclosure = ({
   brandId,
@@ -79,13 +80,9 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
     en: "Add Memo"
   })
 
-  //TODO: receivers
-  const onSubmit = ({ sendLetterType, receiver, ...data } = {}) => {
+  const onSubmit = ({ sendLetterType, ...data } = {}) => {
     setLetterBoxType(sendLetterType)
-    setSubmit({
-      ...data,
-      receivers: [receiver]
-    })
+    setSubmit(data)
   }
 
   const reset = () => {
@@ -100,8 +97,8 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
         brandId,
         sendLetterType: SendLetterType.AllPlayers,
         receivers: [],
-        subject: "subject",
-        content: "content"
+        subject: "",
+        content: ""
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -119,23 +116,56 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
   )
 }
 
-const GroupFieldBox = () => {}
+const GroupFieldBox = () => {
+  let { control } = useFormContext()
+  let brandId = useWatch({
+    control,
+    name: "brandId"
+  })
+  let sendLetterType = useWatch({
+    control,
+    name: "sendLetterType"
+  })
 
-//TODO: need readOnly?
-const FormBody = ({ readOnly = false }) => {
   return (
-    <FieldValues>
+    <>
       <Label required>
         <Trans zh="群组" en="Group" />
       </Label>
-      <Box>
+      <Set orientation="vertical" isFilled width="100%">
         <SendLetterTypeSelect />
-        <InputField name="receiver" required />
-      </Box>
+        <GroupFieldBody brandId={brandId} sendLetterType={sendLetterType} />
+      </Set>
+    </>
+  )
+}
+
+const GroupFieldBody = ({ brandId, sendLetterType }) => {
+  switch (sendLetterType) {
+    case SendLetterType.AllPlayers:
+      return null
+    case SendLetterType.DesignatedPlayers:
+      return (
+        <PlayerSelect
+          brandId={brandId}
+          name="receivers"
+          isMulti={true}
+          flex="1"
+        />
+      )
+    default:
+      return null
+  }
+}
+
+const FormBody = ({}) => {
+  return (
+    <FieldValues>
+      <GroupFieldBox />
       <Label name="subject" required>
         <Trans zh="主题" en="Subject" />
       </Label>
-      <InputField name="subject" required disabled={readOnly} />
+      <InputField name="subject" required />
       <Label name="content" required>
         <Trans zh="内容" en="Content" />
       </Label>

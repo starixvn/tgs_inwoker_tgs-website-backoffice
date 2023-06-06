@@ -43,11 +43,11 @@ import { isSentLetterBox } from "./LetterBoxType"
 import AlertDialog from "../../dialog/Alert"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 
-//TODO: need onSubmitted?
 export const ReplyLetterDisclosure = ({
   brandId,
   letterBoxType,
   letterId,
+  onSubmitted,
   ...props
 }) => {
   let dialog = useModalState()
@@ -71,7 +71,7 @@ export const ReplyLetterDisclosure = ({
           brandId={brandId}
           letterBoxType={letterBoxType}
           letterId={letterId}
-          //   onSubmitted={onSubmitted}
+          onSubmitted={onSubmitted}
           dialog={dialog}
         />
       )}
@@ -79,12 +79,12 @@ export const ReplyLetterDisclosure = ({
   )
 }
 
-//TODO: onSubmitted??
 const ReplyLetterDialog = ({
   brandId,
   letterId,
   letterBoxType,
   dialog,
+  onSubmitted,
   ...props
 }) => {
   let { isLoading, data, error, mutate, deleteCache } = useLetter(
@@ -107,6 +107,7 @@ const ReplyLetterDialog = ({
       letterId={letterId}
       letter={data}
       dialog={dialog}
+      onSubmitted={onSubmitted}
       {...props}
     />
   )

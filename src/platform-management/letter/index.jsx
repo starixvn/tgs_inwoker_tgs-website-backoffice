@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { Box, Flex, Set, Button, Text, Stack, Level } from "bumbag"
+import { Box, Flex, Set, Button, Text, Icon, Level } from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -36,6 +36,7 @@ import {
 import SearchButton from "../../button/SearchButton"
 import { ViewLetterDisclosure } from "./ViewLetter"
 import { ReplyLetterDisclosure } from "./ReplyLetter"
+import { faReply } from "@fortawesome/free-solid-svg-icons"
 
 export { Code }
 
@@ -129,6 +130,15 @@ const Body = () => {
                 isLoading={isLoading}
                 maxSize={{ height, width }}
                 stickyHead
+                getRowProps={({ original: { replied } } = {}) => {
+                  if (replied) {
+                    return {
+                      //TODO: define white500 = #fefeff
+                      backgroundColor: "#fefeff" //white500
+                    }
+                  }
+                  return {}
+                }}
               />
             )
           }}
@@ -171,9 +181,33 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
         disableSortBy: true
       }),
       textColumn({
-        accessor: "subject",
+        id: "subject",
+        accessor: (row) => row,
         Header: <Trans zh="主旨" en="Subject" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          return (
+            <Set alignX="center" alignY="center">
+              {record.replied ? (
+                <Icon
+                  icon={faReply}
+                  type="font-awesome"
+                  color="text200"
+                  css={css`
+                    transform: scaleX(-1);
+                  `}
+                />
+              ) : (
+                <Box
+                  css={css`
+                    width: 20px;
+                  `}
+                ></Box>
+              )}
+              <Box>{record.subject}</Box>
+            </Set>
+          )
+        }
       }),
       textColumn({
         id: "actions",
