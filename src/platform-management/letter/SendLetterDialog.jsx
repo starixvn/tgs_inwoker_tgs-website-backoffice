@@ -65,8 +65,6 @@ export const SendLetterDialogDisclosure = ({
   )
 }
 
-//TODO: player multi select
-//TODO: receivers
 const SendDialog = ({ brandId, dialog, onSubmitted }) => {
   let [sendLetterType, setLetterBoxType] = useState(SendLetterType.AllPlayers)
   let [formData, setSubmit] = useState()
@@ -82,13 +80,9 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
     en: "Add Memo"
   })
 
-  //TODO: receivers
-  const onSubmit = ({ sendLetterType, receiver, ...data } = {}) => {
+  const onSubmit = ({ sendLetterType, ...data } = {}) => {
     setLetterBoxType(sendLetterType)
-    setSubmit({
-      ...data,
-      receivers: [receiver]
-    })
+    setSubmit(data)
   }
 
   const reset = () => {
@@ -97,15 +91,14 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
     setSubmit(undefined)
   }
 
-  //TODO: rm hardcode
   return (
     <FormDialog
       defaultValues={{
         brandId,
         sendLetterType: SendLetterType.AllPlayers,
         receivers: [],
-        subject: "subject",
-        content: "content"
+        subject: "",
+        content: ""
       }}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -123,7 +116,6 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
   )
 }
 
-//TODO: change based on form.sendLetterType
 const GroupFieldBox = () => {
   let { control } = useFormContext()
   let brandId = useWatch({
@@ -134,13 +126,13 @@ const GroupFieldBox = () => {
     control,
     name: "sendLetterType"
   })
-  console.log("sendLetterType", sendLetterType)
+
   return (
     <>
       <Label required>
         <Trans zh="群组" en="Group" />
       </Label>
-      <Set isFilled>
+      <Set orientation="vertical" isFilled width="100%">
         <SendLetterTypeSelect />
         <GroupFieldBody brandId={brandId} sendLetterType={sendLetterType} />
       </Set>
@@ -148,7 +140,6 @@ const GroupFieldBox = () => {
   )
 }
 
-//TODO: how flex true?
 const GroupFieldBody = ({ brandId, sendLetterType }) => {
   switch (sendLetterType) {
     case SendLetterType.AllPlayers:
@@ -159,7 +150,7 @@ const GroupFieldBody = ({ brandId, sendLetterType }) => {
           brandId={brandId}
           name="receivers"
           isMulti={true}
-          width="100%"
+          flex="1"
         />
       )
     default:
@@ -167,8 +158,7 @@ const GroupFieldBody = ({ brandId, sendLetterType }) => {
   }
 }
 
-//TODO: need readOnly?
-const FormBody = ({ readOnly = false }) => {
+const FormBody = ({}) => {
   return (
     <FieldValues>
       <GroupFieldBox />
