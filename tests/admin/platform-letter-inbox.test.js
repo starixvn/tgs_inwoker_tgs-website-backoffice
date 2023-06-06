@@ -7,7 +7,7 @@ import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 
-test("letter reply", async ({
+test("view letter inbox", async ({
   page,
   platform,
   player,
