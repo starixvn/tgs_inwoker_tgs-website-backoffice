@@ -114,6 +114,7 @@ export const WinlossReport = ({ brandId }) => {
   }
 
   const backToPath = (node) => {
+    console.log("backToPath state: ", state)
     setState({
       username: node.username,
       memberType: node.memberType,

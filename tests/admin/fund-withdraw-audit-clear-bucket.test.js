@@ -14,7 +14,7 @@ const test = base.extend(Fixture)
 const { finance } = faker
 
 console.warn("TODO: fix audit clear bucket report")
-test.skip("fund withdraw > audit clear bucket", async ({
+test("fund withdraw > audit clear bucket", async ({
   page,
   licensee,
   platform,
