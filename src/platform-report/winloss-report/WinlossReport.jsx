@@ -105,7 +105,8 @@ export const WinlossReport = ({ brandId }) => {
     setState({
       username: node.username,
       memberType: node.memberType,
-      downline: true
+      downline: true,
+      pageIndex: 0
     })
 
     setPath((paths = []) => {
@@ -114,11 +115,11 @@ export const WinlossReport = ({ brandId }) => {
   }
 
   const backToPath = (node) => {
-    console.log("backToPath state: ", state)
     setState({
       username: node.username,
       memberType: node.memberType,
-      downline: true
+      downline: true,
+      pageIndex: 0
     })
 
     let index = path.findIndex((item) => item.username === node.username)
