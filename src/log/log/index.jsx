@@ -200,7 +200,7 @@ const useColumns = ({ items = [] } = {}) => {
     let columns = [
       textColumn({
         accessor: "id",
-        Header: <Trans zh="Id" en="Id" />,
+        Header: <Trans zh="ID" en="ID" />,
         disableSortBy: true,
         Cell: ({ value = "" }) => value
       }),
