@@ -529,7 +529,7 @@ const useColumns = ({ items = [] } = {}) => {
     let columns = [
       textColumn({
         accessor: "id",
-        Header: <Trans zh="Id" en="Id" />,
+        Header: <Trans zh="ID" en="ID" />,
         disableSortBy: true,
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
       }),
@@ -541,7 +541,7 @@ const useColumns = ({ items = [] } = {}) => {
       }),
       textColumn({
         accessor: "ip",
-        Header: <Trans zh="Ip" en="Ip" />,
+        Header: <Trans zh="IP" en="IP" />,
         disableSortBy: true,
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
       }),
