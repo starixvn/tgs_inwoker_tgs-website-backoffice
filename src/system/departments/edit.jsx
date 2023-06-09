@@ -95,7 +95,6 @@ const AddDialog = ({ onSubmitted, dialog, ...props }) => {
       title={title}
       dialog={dialog}
       minWidth="50vw"
-      maxWidth="unset"
     >
       <EditBody isAdd={true} />
     </FormDialog>

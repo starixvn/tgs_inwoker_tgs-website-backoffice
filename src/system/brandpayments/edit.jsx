@@ -203,7 +203,6 @@ const EditDialog = ({
       title={title}
       showCloseButton
       showActionButtons={false}
-      maxWidth="unset"
       width="80vw"
       height="95vh"
       maxHeight="95vh"
@@ -406,7 +405,6 @@ const AddDialog = ({
       title={title}
       showCloseButton
       showActionButtons={false}
-      maxWidth="unset"
       width="80vw"
       height="95vh"
       maxHeight="95vh"

@@ -89,7 +89,6 @@ const EditDialog = ({ record, dialog, ...props }) => {
       footer={
         <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
       }
-      maxWidth="unset"
     >
       <EditBody record={record} />
     </FormDialog>
