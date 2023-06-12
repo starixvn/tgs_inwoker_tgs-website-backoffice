@@ -6,7 +6,7 @@ import React, {
   forwardRef
 } from "react"
 import { css, Global } from "@emotion/react"
-import { Pagination, Set } from "bumbag"
+import { Pagination, Text, Set } from "bumbag"
 import { Trans, useTrans } from "../i18n"
 
 export const Footer = forwardRef(({ table, setPageIndex }, ref) => {

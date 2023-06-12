@@ -122,7 +122,6 @@ const Body = () => {
               <Table
                 columns={columns}
                 data={items}
-                totalCount={data?.totalCount}
                 initialState={state}
                 controlledState={state}
                 pageCount={pageCount(state?.pageSize, data?.totalCount)}

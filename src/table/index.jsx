@@ -207,6 +207,7 @@ export const Table = ({
       getTableHeadProps,
       columns,
       data,
+      totalCount,
       total,
       getRowId,
       getRowProps,
@@ -327,7 +328,11 @@ export const Table = ({
               {foot === true && <Foot table={table} />}
             </_Table>
           </div>
-          <Footer table={table} setPageIndex={setPageIndex} />
+          <Footer
+            table={table}
+            totalCount={totalCount}
+            setPageIndex={setPageIndex}
+          />
         </Set>
       )}
     </>
