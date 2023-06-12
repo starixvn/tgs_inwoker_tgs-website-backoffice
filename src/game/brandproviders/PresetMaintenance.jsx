@@ -144,7 +144,6 @@ const EditDialog = ({ record, dialog, ...props }) => {
       }
       placement="top"
       minWidth="60vw"
-      maxWidth="unset"
     >
       <EditBody
         setScheduleStatus={setScheduleStatus}

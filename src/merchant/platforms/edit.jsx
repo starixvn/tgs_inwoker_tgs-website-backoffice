@@ -165,7 +165,6 @@ const AddDialog = ({ onSubmitted, dialog }) => {
       dialog={dialog}
       placement="top"
       minWidth="60vw"
-      maxWidth="unset"
       css={css`
         & .bb-DialogContent {
           position: relative;
@@ -254,7 +253,6 @@ const ViewDialog = ({ brandId, licenseeId, dialog, ...props }) => {
       footer={<CloseButtonFooter dialog={dialog} onClickClose={reset} />}
       placement="top"
       minWidth="60vw"
-      maxWidth="unset"
       css={css`
         & .bb-DialogContent {
           position: relative;
@@ -399,7 +397,6 @@ const EditDialog = ({ brandId, licenseeId, onSubmitted, dialog, ...props }) => {
       dialog={dialog}
       placement="top"
       minWidth="60vw"
-      maxWidth="unset"
       css={css`
         & .bb-DialogContent {
           position: relative;
