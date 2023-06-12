@@ -15,8 +15,9 @@ import {
   Box,
   DropdownMenu,
   Button,
-  Popover,
-  Group
+  Group,
+  Flex,
+  Text
 } from "bumbag"
 import {
   useTable as _useTable,
@@ -37,6 +38,7 @@ import { ActionBar } from "./ActionBar"
 import { valueOf as cssSizeValueOf } from "../css/size"
 import Overflow from "../css/overflow"
 import head from "../list/head"
+import { Footer } from "./Footer"
 
 const DefaultState = {
   pageIndex: 0,
@@ -115,9 +117,11 @@ export const toApiParams = (state, configs = {}) => {
   }
 }
 
+//TODO: extract Footer?
 export const Table = ({
   columns,
   data = [],
+  totalCount,
   total,
   getRowId,
   getRowProps,
@@ -240,29 +244,15 @@ export const Table = ({
     useColumnOrder
   )
 
-  let { gotoPage, state: tableState } = table
-  let { pageIndex } = tableState
+  let { state: tableState } = table
 
   useEffect(() => {
     setSortOrder && setSortOrder(tableState?.sortBy)
   }, [JSON.stringify(tableState?.sortBy)])
 
-  const getPage = () => pageIndex + 1
-
-  let previousText = useTrans({
-    zh: "前一页",
-    en: "Previous page"
-  })
-  let nextText = useTrans({
-    zh: "下一页",
-    en: "Next page"
-  })
-
-  let scrollbarWidth = useScrollbarWidth()
   let [tableRef, tableMeasure] = useMeasure()
-  // TODO: how to measure height + margin?
-  // let [paginationRef, paginationMeasure] = useMeasure()
-  const PaginationHeight = 60
+
+  const PaginationHeight = 60 //TODO: measure footer height + margin?
 
   const RowHeight = 50
   if (data?.length > 5 && !Number.isFinite(minHeight)) {
@@ -337,25 +327,7 @@ export const Table = ({
               {foot === true && <Foot table={table} />}
             </_Table>
           </div>
-          {usePagination && pageCount > 0 && (
-            <Pagination
-              // ref={paginationRef}
-              previousText={previousText}
-              nextText={nextText}
-              currentPage={getPage()}
-              onChangePage={(page) => {
-                let pageIndex = page - 1
-                setPageIndex(pageIndex)
-
-                gotoPage(pageIndex)
-              }}
-              numberOfPages={pageCount}
-              css={css`
-                width: max-content;
-                z-index: 0;
-              `}
-            />
-          )}
+          <Footer table={table} setPageIndex={setPageIndex} />
         </Set>
       )}
     </>

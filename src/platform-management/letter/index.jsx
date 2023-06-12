@@ -122,6 +122,7 @@ const Body = () => {
               <Table
                 columns={columns}
                 data={items}
+                totalCount={data?.totalCount}
                 initialState={state}
                 controlledState={state}
                 pageCount={pageCount(state?.pageSize, data?.totalCount)}
@@ -188,7 +189,7 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
         Cell: ({ value: record }) => {
           return (
             <Set alignX="center" alignY="center">
-              {record.replied ? (
+              {record.replied && (
                 <Icon
                   icon={faReply}
                   type="font-awesome"
@@ -197,12 +198,6 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
                     transform: scaleX(-1);
                   `}
                 />
-              ) : (
-                <Box
-                  css={css`
-                    width: 20px;
-                  `}
-                ></Box>
               )}
               <Box>{record.subject}</Box>
             </Set>
