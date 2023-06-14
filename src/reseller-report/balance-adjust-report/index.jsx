@@ -31,7 +31,11 @@ import Big from "big.js"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
-import { ResellerPageContent } from "../../page/ResellerPageContent"
+import {
+  ResellerPageContent,
+  useResellerId
+} from "../../page/ResellerPageContent"
+import { BalanceAdjustReport } from "./BalanceAdjustReport"
 
 export { Code }
 
@@ -57,5 +61,6 @@ const Report = () => {
 }
 
 const ReportBody = () => {
-  return ""
+  let resellerId = useResellerId()
+  return <BalanceAdjustReport resellerId={resellerId} />
 }

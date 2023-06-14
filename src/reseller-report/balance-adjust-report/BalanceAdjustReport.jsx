@@ -37,11 +37,7 @@ import numberColumn, {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import {
-  useWinlossReportPath,
-  useWinlossReport,
-  useExportWinlossReportUrl
-} from "./client"
+import { useBalanceAdjustReportList } from "./client"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
@@ -58,12 +54,6 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
-import { TypeInputGroup } from "./TypeInputGroup"
-import { TypeLabel, Type, isPlayer } from "./Type"
-import { useColumns as usePlayerOrderColumns } from "../order-report/index"
-import { PlayerSpecialDialogDisclosure } from "./PlayerSpecial"
-import { AgentTotalDialogDisclosure } from "./AgentTotal"
-import { CompanyTotalDialogDisclosure } from "./CompanyTotal"
 import { isNil, isEmpty, either } from "ramda"
 import { isArray } from "lodash-es"
 import { useMeasure } from "react-use"
@@ -74,10 +64,203 @@ let isNilOrEmpty = either(isNil, isEmpty)
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
-export const BalanceAdjustReport = ({ resellerId }) => {
+export const BalanceAdjustReport = ({ resellerId, from, to }) => {
   //TODO:
-  // 1. page layout
-  // 2. useBalanceAdjustReportList > fake data
-  // 3. columns & table
   // 4. dialogs
+  let dateRange = today()
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    resellerId,
+    from: dateRange.start,
+    to: dateRange.end
+  })
+
+  useEffect(() => {
+    setState({ pageIndex: 0, resellerId })
+  }, [resellerId])
+
+  //TODO: from & to -> date string
+  let { isLoading, data, error, mutate, deleteCache } =
+    useBalanceAdjustReportList(toApiParams(state))
+
+  let columns = useColumns({
+    items: data?.items,
+    resellerId,
+    from: state?.from,
+    to: state?.to
+  })
+
+  let pageWidth = useResellerPageContentWidth()
+  return (
+    <Set orientation="vertical" isFilled height="100%" spacing="major-2">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar from={state?.from} to={state?.to} />
+      </Level>
+      <Box flex="1">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                columns={columns}
+                data={data?.items}
+                initialState={state}
+                controlledState={state}
+                // pageCount={pageCount(pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                hasCellDividers
+                stickyHead
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+    </Set>
+  )
+}
+
+const SearchBar = ({ from, to, search, isLoading }) => {
+  let formMethods = useForm({
+    defaultValues: {
+      from,
+      to
+    }
+  })
+
+  const onSubmit = (data) => search?.(data)
+
+  let QueryMaxRangeDays = 31
+  let todayRange = today()
+  let DataRetentionDays = 180
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Set>
+          <DateInputRange
+            showDateDropdownMenu
+            maxRangeDays={QueryMaxRangeDays}
+            minDate={minDate}
+            maxDate={maxDate}
+            startProps={{
+              name: "from"
+            }}
+            endProps={{
+              name: "to"
+            }}
+            dateDropdownMenuProps={{
+              thisWeekProps: {
+                end: maxDate
+              },
+              thisMonthProps: {
+                end: maxDate
+              }
+            }}
+            fakeTimeLabel
+            required
+          />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
+}
+
+//TODO: dialog disclosures
+const useColumns = ({ items = [], resellerId, from, to }) => {
+  return useMemo(() => [
+    {
+      id: "info",
+      Header: "",
+      columns: [
+        textColumn({
+          accessor: "licenseeCode",
+          Header: <Trans zh="公司" en="Licensee" />,
+          disableSortBy: true
+        }),
+        textColumn({
+          accessor: "brandCode",
+          Header: <Trans zh="平台" en="Platform" />,
+          disableSortBy: true
+        }),
+        textColumn({
+          accessor: "currencyCode",
+          Header: <Trans zh="币种" en="Currency" />,
+          disableSortBy: true
+        })
+      ]
+    },
+    {
+      id: "playerAdjustCount",
+      Header: <Trans zh="玩家调帐次数" en="Player Adjust Count" />,
+      headCell: {
+        textAlign: "center"
+      },
+      columns: [
+        numberColumn({
+          accessor: "playerCompanyAdjustCount",
+          Header: <Trans zh="公司" en="Company" />,
+          disableSortBy: true
+        }),
+        numberColumn({
+          accessor: "playerAgentAdjustCount",
+          Header: <Trans zh="代理" en="Agent" />,
+          disableSortBy: true
+        }),
+        numberColumn({
+          accessor: "playerBounsAdjustCount",
+          Header: <Trans zh="优惠" en="Bonus" />,
+          disableSortBy: true
+        }),
+        numberColumn({
+          accessor: "playerSystemAdjustCount",
+          Header: <Trans zh="系統" en="System" />,
+          disableSortBy: true
+        }),
+        numberColumn({
+          accessor: "playerTransferAdjustCount",
+          Header: <Trans zh="转帐" en="Transfer" />,
+          disableSortBy: true
+        })
+      ]
+    },
+    {
+      id: "agentAdjustCount",
+      Header: <Trans zh="代理调帐次数" en="Agent Adjust Count" />,
+      headCell: {
+        textAlign: "center"
+      },
+      columns: [
+        numberColumn({
+          accessor: "agentAdjustCount",
+          Header: <Trans zh="代理调帐" en="Agent Adjust" />,
+          disableSortBy: true
+        })
+      ]
+    },
+    {
+      id: "adjustAmount",
+      Header: <Trans zh="金額" en="Amount" />,
+      headCell: {
+        textAlign: "center"
+      },
+      columns: [
+        numberDecimalColumn({
+          accessor: "playerAdjustAmount",
+          Header: <Trans zh="玩家调帐" en="Player Adjust" />,
+          disableSortBy: true
+        }),
+        numberDecimalColumn({
+          accessor: "agentAdjustAmount",
+          Header: <Trans zh="代理调帐" en="Agent Adjust" />,
+          disableSortBy: true
+        })
+      ]
+    }
+  ])
 }
