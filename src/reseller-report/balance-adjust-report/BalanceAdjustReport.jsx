@@ -58,6 +58,8 @@ import { isNil, isEmpty, either } from "ramda"
 import { isArray } from "lodash-es"
 import { useMeasure } from "react-use"
 import { useResellerPageContentWidth } from "../../page/ResellerPageContent"
+import { AdjustListDialogDisclosure } from "./AdjustListDialog"
+import { UserType } from "./UserType"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -251,14 +253,38 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
       },
       columns: [
         numberDecimalColumn({
-          accessor: "playerAdjustAmount",
+          id: "playerAdjustAmount",
+          accessor: (row) => row,
           Header: <Trans zh="玩家调帐" en="Player Adjust" />,
-          disableSortBy: true
+          disableSortBy: true,
+          Cell: ({ value: record }) => {
+            //TODO: params: brandId
+            return (
+              <AdjustListDialogDisclosure
+                userType={UserType.Player}
+                value={record?.playerAdjustAmount}
+                from={from}
+                to={to}
+              />
+            )
+          }
         }),
         numberDecimalColumn({
-          accessor: "agentAdjustAmount",
+          id: "agentAdjustAmount",
+          accessor: (row) => row,
           Header: <Trans zh="代理调帐" en="Agent Adjust" />,
-          disableSortBy: true
+          disableSortBy: true,
+          Cell: ({ value: record }) => {
+            //TODO: params brandId
+            return (
+              <AdjustListDialogDisclosure
+                userType={UserType.Agent}
+                value={record?.agentAdjustAmount}
+                from={from}
+                to={to}
+              />
+            )
+          }
         })
       ]
     }

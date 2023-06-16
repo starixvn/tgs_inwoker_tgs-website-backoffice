@@ -42,10 +42,11 @@ import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
+import { usePlatformAdjustList } from "./client"
 
-export const PlatformUserAdjustDialogDisclosure = ({
+export const AdjustListDialogDisclosure = ({
   value,
-  platformId,
+  brandId,
   userType,
   from,
   to
@@ -62,8 +63,9 @@ export const PlatformUserAdjustDialogDisclosure = ({
         <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
-        <PlatformUserAdjustDialog
-          platformId={platformId}
+        <AdjustListDialog
+          brandId={brandId}
+          userType={userType}
           from={from}
           to={to}
           dialog={dialog}
@@ -75,9 +77,17 @@ export const PlatformUserAdjustDialogDisclosure = ({
 
 //TODO: fake api & data
 //TODO: data table total fake data
-const PlatformUserAdjustDialog = ({ platformId, from, to, dialog }) => {
+const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
+  let { data, isLoading, error, mutate, deleteCache } = usePlatformAdjustList(
+    brandId,
+    userType,
+    { from, to }
+  )
+
   let title = useTrans({
     zh: "调帐报表",
     en: "Balance Adjust Report"
   })
+
+  //TODO: useColumns
 }

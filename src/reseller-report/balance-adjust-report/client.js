@@ -67,11 +67,7 @@ export const UserType = {
   Agent
 }
 
-export const usePlatformUserAdjustList = (
-  platformId,
-  userType,
-  searchParams
-) => {
+export const usePlatformAdjustList = (brandId, userType, searchParams) => {
   return {
     isLoading: false,
     data: {
