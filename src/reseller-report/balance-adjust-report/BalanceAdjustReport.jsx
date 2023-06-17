@@ -76,13 +76,16 @@ export const BalanceAdjustReport = ({ resellerId, from, to }) => {
     to: dateRange.end
   })
 
-  useEffect(() => {
-    setState({ pageIndex: 0, resellerId })
-  }, [resellerId])
-
+  //TODO: pagination?
   //TODO: from & to -> date string
   let { isLoading, data, error, mutate, deleteCache } =
     useBalanceAdjustReportList(toApiParams(state))
+
+  useEffect(() => {
+    if (resellerId != state.resellerId) {
+      setState({ resellerId, pageIndex: 0 })
+    }
+  }, [resellerId])
 
   let columns = useColumns({
     items: data?.items,
@@ -91,6 +94,7 @@ export const BalanceAdjustReport = ({ resellerId, from, to }) => {
     to: state?.to
   })
 
+  //TODO: SearchBar search fn
   let pageWidth = useResellerPageContentWidth()
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
@@ -101,10 +105,11 @@ export const BalanceAdjustReport = ({ resellerId, from, to }) => {
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth
+            console.log("AutoSizer hgh", height)
             return (
               <Table
                 columns={columns}
-                data={data?.items}
+                data={data}
                 initialState={state}
                 controlledState={state}
                 // pageCount={pageCount(pageSize, data?.totalCount)}
@@ -175,118 +180,123 @@ const SearchBar = ({ from, to, search, isLoading }) => {
 
 //TODO: dialog disclosures
 const useColumns = ({ items = [], resellerId, from, to }) => {
-  return useMemo(() => [
-    {
-      id: "info",
-      Header: "",
-      columns: [
-        textColumn({
-          accessor: "licenseeCode",
-          Header: <Trans zh="公司" en="Licensee" />,
-          disableSortBy: true
-        }),
-        textColumn({
-          accessor: "brandCode",
-          Header: <Trans zh="平台" en="Platform" />,
-          disableSortBy: true
-        }),
-        textColumn({
-          accessor: "currencyCode",
-          Header: <Trans zh="币种" en="Currency" />,
-          disableSortBy: true
-        })
-      ]
-    },
-    {
-      id: "playerAdjustCount",
-      Header: <Trans zh="玩家调帐次数" en="Player Adjust Count" />,
-      headCell: {
-        textAlign: "center"
+  return useMemo(
+    () => [
+      {
+        id: "info",
+        Header: "",
+        columns: [
+          textColumn({
+            accessor: "licensee",
+            Header: <Trans zh="公司" en="Licensee" />,
+            disableSortBy: true
+          }),
+          textColumn({
+            accessor: "brand",
+            Header: <Trans zh="平台" en="Platform" />,
+            disableSortBy: true
+          }),
+          textColumn({
+            accessor: "currencyCode",
+            Header: <Trans zh="币种" en="Currency" />,
+            disableSortBy: true
+          })
+        ]
       },
-      columns: [
-        numberColumn({
-          accessor: "playerCompanyAdjustCount",
-          Header: <Trans zh="公司" en="Company" />,
-          disableSortBy: true
-        }),
-        numberColumn({
-          accessor: "playerAgentAdjustCount",
-          Header: <Trans zh="代理" en="Agent" />,
-          disableSortBy: true
-        }),
-        numberColumn({
-          accessor: "playerBounsAdjustCount",
-          Header: <Trans zh="优惠" en="Bonus" />,
-          disableSortBy: true
-        }),
-        numberColumn({
-          accessor: "playerSystemAdjustCount",
-          Header: <Trans zh="系統" en="System" />,
-          disableSortBy: true
-        }),
-        numberColumn({
-          accessor: "playerTransferAdjustCount",
-          Header: <Trans zh="转帐" en="Transfer" />,
-          disableSortBy: true
-        })
-      ]
-    },
-    {
-      id: "agentAdjustCount",
-      Header: <Trans zh="代理调帐次数" en="Agent Adjust Count" />,
-      headCell: {
-        textAlign: "center"
+      {
+        id: "playerAdjustCount",
+        Header: <Trans zh="玩家调帐次数" en="Player Adjust Count" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberColumn({
+            accessor: "company",
+            Header: <Trans zh="公司" en="Company" />,
+            disableSortBy: true
+          }),
+          numberColumn({
+            accessor: "agent",
+            Header: <Trans zh="代理" en="Agent" />,
+            disableSortBy: true
+          }),
+          numberColumn({
+            accessor: "bonus",
+            Header: <Trans zh="优惠" en="Bonus" />,
+            disableSortBy: true
+          }),
+          numberColumn({
+            accessor: "system",
+            Header: <Trans zh="系統" en="System" />,
+            disableSortBy: true
+          }),
+          numberColumn({
+            accessor: "transfer",
+            Header: <Trans zh="转帐" en="Transfer" />,
+            disableSortBy: true
+          })
+        ]
       },
-      columns: [
-        numberColumn({
-          accessor: "agentAdjustCount",
-          Header: <Trans zh="代理调帐" en="Agent Adjust" />,
-          disableSortBy: true
-        })
-      ]
-    },
-    {
-      id: "adjustAmount",
-      Header: <Trans zh="金額" en="Amount" />,
-      headCell: {
-        textAlign: "center"
+      {
+        id: "agentAdjustCount",
+        Header: <Trans zh="代理调帐次数" en="Agent Adjust Count" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberColumn({
+            accessor: "agentOther",
+            Header: <Trans zh="代理调帐" en="Agent Adjust" />,
+            disableSortBy: true
+          })
+        ]
       },
-      columns: [
-        numberDecimalColumn({
-          id: "playerAdjustAmount",
-          accessor: (row) => row,
-          Header: <Trans zh="玩家调帐" en="Player Adjust" />,
-          disableSortBy: true,
-          Cell: ({ value: record }) => {
-            //TODO: params: brandId
-            return (
-              <AdjustListDialogDisclosure
-                userType={UserType.Player}
-                value={record?.playerAdjustAmount}
-                from={from}
-                to={to}
-              />
-            )
-          }
-        }),
-        numberDecimalColumn({
-          id: "agentAdjustAmount",
-          accessor: (row) => row,
-          Header: <Trans zh="代理调帐" en="Agent Adjust" />,
-          disableSortBy: true,
-          Cell: ({ value: record }) => {
-            //TODO: params brandId
-            return (
-              <AdjustListDialogDisclosure
-                userType={UserType.Agent}
-                value={record?.agentAdjustAmount}
-                from={from}
-                to={to}
-              />
-            )
-          }
-        })
-      ]
-    }
-  ])
+      {
+        id: "adjustAmount",
+        Header: <Trans zh="金額" en="Amount" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberDecimalColumn({
+            id: "playerAdjustAmount",
+            accessor: (row) => row,
+            Header: <Trans zh="玩家调帐" en="Player Adjust" />,
+            disableSortBy: true,
+            Cell: ({ value: record }) => {
+              //TODO: params: brandId
+              return (
+                <AdjustListDialogDisclosure
+                  brandId={record?.brandId}
+                  userType={UserType.Player}
+                  value={record?.playerAdjustAmount}
+                  from={from}
+                  to={to}
+                />
+              )
+            }
+          }),
+          numberDecimalColumn({
+            id: "agentAdjustAmount",
+            accessor: (row) => row,
+            Header: <Trans zh="代理调帐" en="Agent Adjust" />,
+            disableSortBy: true,
+            Cell: ({ value: record }) => {
+              //TODO: params brandId
+              return (
+                <AdjustListDialogDisclosure
+                  brandId={record?.brandId}
+                  userType={UserType.Agent}
+                  value={record?.agentAdjustAmount}
+                  from={from}
+                  to={to}
+                />
+              )
+            }
+          })
+        ]
+      }
+    ],
+    [JSON.stringify(items), resellerId, from, to]
+  )
 }

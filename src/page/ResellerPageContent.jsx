@@ -69,7 +69,9 @@ export const ResellerPageContent = ({
               paddingLeft="0"
               paddingTop="0"
               end={Reseller}
-              onResellerChange={setResellerId}
+              onResellerChange={(value) => {
+                setResellerId(value)
+              }}
             />
             <Box>
               <Heading use="h3" marginTop="0" marginBottom="0">

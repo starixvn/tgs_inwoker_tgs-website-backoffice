@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: cash-worker
-image: pgtgs/cashservice-worker:202306010851.37
+image: pgtgs/cashservice-worker:202306160724.45
 services:
   - name: cash-worker
     dependencies:

@@ -75,8 +75,6 @@ export const AdjustListDialogDisclosure = ({
   )
 }
 
-//TODO: fake api & data
-//TODO: data table total fake data
 const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
   let { data, isLoading, error, mutate, deleteCache } = usePlatformAdjustList(
     brandId,
@@ -89,5 +87,18 @@ const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
     en: "Balance Adjust Report"
   })
 
-  //TODO: useColumns
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (error) {
+    return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
+  }
+
+  //TODO: table & useColumns
+  return (
+    <Modal title={title} {...dialog}>
+      {JSON.stringify(data)}
+    </Modal>
+  )
 }

@@ -1,4 +1,4 @@
-import "./tracing"
+// import "./tracing"
 import { toDataOrError } from "./response"
 import useSWR, { cache } from "swr"
 import { getAcceptLang, getAcceptLangCulture } from "../i18n"

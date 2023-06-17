@@ -7,9 +7,18 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
+import { UserType } from "./UserType"
 
-//TODO: fake
+const API = "/api/adjust-wallet"
+
 export const useBalanceAdjustReportList = (searchParams) => {
+  let url =
+    searchParams?.resellerId && searchParams
+      ? urlWith(searchParams, `${API}/summary/${searchParams?.resellerId}`)
+      : ""
+
+  return useGet(url)
+
   return {
     isLoading: false,
     data: {
@@ -60,14 +69,25 @@ export const useBalanceAdjustReportList = (searchParams) => {
   }
 }
 
-const Player = "Player"
-const Agent = "Agent"
-export const UserType = {
-  Player,
-  Agent
+const toAdjustListPath = (value) => {
+  switch (value) {
+    case UserType.Player:
+      return "player"
+    case UserType.Agent:
+      return "agent"
+    default:
+      return ""
+  }
 }
 
+//TODO: integrate api
 export const usePlatformAdjustList = (brandId, userType, searchParams) => {
+  let path = toAdjustListPath(userType)
+  let url =
+    brandId && path ? urlWith(searchParams, `${API}/${path}/${brandId}`) : ""
+
+  return useGet(url)
+
   return {
     isLoading: false,
     data: {
