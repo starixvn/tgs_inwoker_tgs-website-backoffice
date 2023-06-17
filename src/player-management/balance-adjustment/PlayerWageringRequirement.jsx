@@ -75,7 +75,7 @@ const WageringRequirementDialog = ({
 
   let error = playerError || wageringRequirementError
   if (error) {
-    return <AlertDialog {...error} onClickClose={dialog.close} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   return (

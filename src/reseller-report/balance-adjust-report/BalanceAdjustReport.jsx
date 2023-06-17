@@ -105,7 +105,6 @@ export const BalanceAdjustReport = ({ resellerId, from, to }) => {
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth
-            console.log("AutoSizer hgh", height)
             return (
               <Table
                 columns={columns}

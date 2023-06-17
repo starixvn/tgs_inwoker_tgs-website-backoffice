@@ -56,7 +56,7 @@ export const AdjustListDialogDisclosure = ({
   if (!Number.isFinite(value) || value === 0) {
     return <FormattedNumberDecimal value={value} />
   }
-
+  console.log("dialog.visible", dialog.visible)
   return (
     <>
       <Disclosure use={Link} {...dialog}>
@@ -92,7 +92,7 @@ const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
   }
 
   if (error) {
-    return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   //TODO: table & useColumns
