@@ -56,7 +56,7 @@ export const AdjustListDialogDisclosure = ({
   if (!Number.isFinite(value) || value === 0) {
     return <FormattedNumberDecimal value={value} />
   }
-  console.log("dialog.visible", dialog.visible)
+
   return (
     <>
       <Disclosure use={Link} {...dialog}>

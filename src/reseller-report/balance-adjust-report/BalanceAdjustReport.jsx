@@ -66,9 +66,7 @@ let isNilOrEmpty = either(isNil, isEmpty)
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
-export const BalanceAdjustReport = ({ resellerId, from, to }) => {
-  //TODO:
-  // 4. dialogs
+export const BalanceAdjustReport = ({ resellerId }) => {
   let dateRange = today()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     resellerId,
@@ -94,12 +92,21 @@ export const BalanceAdjustReport = ({ resellerId, from, to }) => {
     to: state?.to
   })
 
-  //TODO: SearchBar search fn
   let pageWidth = useResellerPageContentWidth()
   return (
     <Set orientation="vertical" isFilled height="100%" spacing="major-2">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-        <SearchBar from={state?.from} to={state?.to} />
+        <SearchBar
+          from={state?.from}
+          to={state?.to}
+          search={(data) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+        />
       </Level>
       <Box flex="1">
         <AutoSizer disableWidth={true}>
