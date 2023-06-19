@@ -117,7 +117,6 @@ export const toApiParams = (state, configs = {}) => {
   }
 }
 
-//TODO: extract Footer?
 export const Table = ({
   columns,
   data = [],

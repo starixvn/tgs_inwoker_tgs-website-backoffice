@@ -43,6 +43,9 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
 import { usePlatformAdjustList } from "./client"
+import sequenceColumn from "../../table/column/sequence"
+import { isPlayer } from "./UserType"
+import { PlayerAdjustBalanceTypeLabel } from "../../player-management/balance-adjustment/PlayerAdjustBalanceType"
 
 export const AdjustListDialogDisclosure = ({
   value,
@@ -75,6 +78,7 @@ export const AdjustListDialogDisclosure = ({
   )
 }
 
+//TODO: search bar
 const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
   let { data, isLoading, error, mutate, deleteCache } = usePlatformAdjustList(
     brandId,
@@ -87,6 +91,8 @@ const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
     en: "Balance Adjust Report"
   })
 
+  let columns = useColumns({ items: data, userType })
+
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
@@ -95,10 +101,64 @@ const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO: table & useColumns
+  //TODO: table pagination
+  //TODO: stickyHead?
   return (
     <Modal title={title} {...dialog}>
-      {JSON.stringify(data)}
+      <Table
+        columns={columns}
+        data={data?.items}
+        // pageCount={pageCount(pageSize, data?.totalCount)}
+        // hasCellDividers
+      />
     </Modal>
   )
+}
+
+const useColumns = ({ items = [], userType }) => {
+  return useMemo(() => {
+    let columns = [
+      sequenceColumn(),
+      dateTimeColumn({
+        accessor: "createdOn",
+        Header: <Trans zh="时间" en="Time" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "userName",
+        Header: <Trans zh="用戶名" en="Username" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        id: "adjustType",
+        accessor: (row) => row,
+        Header: <Trans zh="调帐类型" en="Adjust Type" />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          //TODO: agent adjustType???
+          return isPlayer(userType) ? (
+            <PlayerAdjustBalanceTypeLabel value={record?.adjustType} />
+          ) : (
+            record?.adjustType
+          )
+        }
+      }),
+      numberDecimalColumn({
+        accessor: "amount",
+        Header: <Trans zh="金额" en="Amount" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "operator",
+        Header: <Trans zh="操作者" en="Adjust By" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "remark",
+        Header: <Trans zh="备注" en="Remark" />,
+        disableSortBy: true
+      })
+    ]
+    return columns
+  }, [JSON.stringify(items)])
 }

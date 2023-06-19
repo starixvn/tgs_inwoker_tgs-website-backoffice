@@ -270,7 +270,6 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
             Header: <Trans zh="玩家调帐" en="Player Adjust" />,
             disableSortBy: true,
             Cell: ({ value: record }) => {
-              //TODO: params: brandId
               return (
                 <AdjustListDialogDisclosure
                   brandId={record?.brandId}
@@ -288,7 +287,6 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
             Header: <Trans zh="代理调帐" en="Agent Adjust" />,
             disableSortBy: true,
             Cell: ({ value: record }) => {
-              //TODO: params brandId
               return (
                 <AdjustListDialogDisclosure
                   brandId={record?.brandId}

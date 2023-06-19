@@ -21,6 +21,8 @@ export const UserType = {
   Agent
 }
 
+export const isPlayer = (value) => value === Player
+
 const UserTypeLabel = ({ userType }) => {
   switch (userType) {
     case Player:
