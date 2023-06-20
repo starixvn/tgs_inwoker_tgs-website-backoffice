@@ -74,8 +74,6 @@ export const BalanceAdjustReport = ({ resellerId }) => {
     to: dateRange.end
   })
 
-  //TODO: pagination?
-  //TODO: from & to -> date string
   let { isLoading, data, error, mutate, deleteCache } =
     useBalanceAdjustReportList(toApiParams(state))
 
@@ -118,7 +116,7 @@ export const BalanceAdjustReport = ({ resellerId }) => {
                 data={data}
                 initialState={state}
                 controlledState={state}
-                // pageCount={pageCount(pageSize, data?.totalCount)}
+                // pageCount={pageCount(state.pageSize, data?.totalCount)}
                 setPageIndex={setPageIndex}
                 setSortOrder={setSortOrder}
                 isLoading={isLoading}

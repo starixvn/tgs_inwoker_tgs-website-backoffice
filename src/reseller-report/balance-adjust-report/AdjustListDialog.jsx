@@ -13,8 +13,10 @@ import {
   Icon,
   Link
 } from "bumbag"
+import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure from "../../dialog/Disclosure"
+import SearchButton from "../../button/SearchButton"
 import {
   FormattedDate,
   FormattedDateTime,
@@ -46,6 +48,9 @@ import { usePlatformAdjustList } from "./client"
 import sequenceColumn from "../../table/column/sequence"
 import { isPlayer } from "./UserType"
 import { PlayerAdjustBalanceTypeLabel } from "../../player-management/balance-adjustment/PlayerAdjustBalanceType"
+import { InputField } from "../../input/Input"
+import { AdjustTypeSelect, AdjustTypeLabel } from "./AdjustType"
+import { useMeasure } from "react-use"
 
 export const AdjustListDialogDisclosure = ({
   value,
@@ -78,12 +83,16 @@ export const AdjustListDialogDisclosure = ({
   )
 }
 
-//TODO: search bar
 const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    from,
+    to
+  })
+
   let { data, isLoading, error, mutate, deleteCache } = usePlatformAdjustList(
     brandId,
     userType,
-    { from, to }
+    toApiParams(state)
   )
 
   let title = useTrans({
@@ -93,29 +102,102 @@ const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
 
   let columns = useColumns({ items: data, userType })
 
+  let maxHeightInVH = 70 //vh
+  let minHeight = 300
+  let maxHeight = Math.max(
+    (window.innerHeight * maxHeightInVH) / 100,
+    minHeight
+  )
+
+  /*
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
+  */
 
   if (error) {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO: table pagination
-  //TODO: stickyHead?
   return (
-    <Modal title={title} {...dialog}>
-      <Table
-        columns={columns}
-        data={data?.items}
-        // pageCount={pageCount(pageSize, data?.totalCount)}
-        // hasCellDividers
-      />
+    <Modal title={title} placement="top" {...dialog}>
+      <FieldStack
+        orientation="vertical"
+        isFilled
+        minHeight="20vh"
+        maxHeight="80vh"
+      >
+        <SearchBar
+          userType={userType}
+          search={(data) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+        />
+        <Table
+          columns={columns}
+          data={data?.items}
+          pageCount={pageCount(state.pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          stickyHead
+          maxSize={
+            Number.isFinite(maxHeight) ? { height: maxHeight } : undefined
+          }
+        />
+      </FieldStack>
     </Modal>
   )
 }
 
-const useColumns = ({ items = [], userType }) => {
+const SearchBar = ({ userType, search, isLoading }) => {
+  let formMethods = useForm({
+    defaultValues: {
+      type: null,
+      user: "",
+      operator: ""
+    }
+  })
+
+  let userPlaceholder = useTrans({
+    zh: "用戶名",
+    en: "Username"
+  })
+
+  let operatorPlaceholder = useTrans({
+    zh: "操作者",
+    en: "Adjust By"
+  })
+
+  const onSubmit = (data) => search?.(data)
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Set>
+          <AdjustTypeSelect userType={userType} />
+          <InputField
+            name="user"
+            placeholder={userPlaceholder}
+            showEmptyFieldValueAddonAfter
+          />
+          <InputField
+            name="operator"
+            placeholder={operatorPlaceholder}
+            showEmptyFieldValueAddonAfter
+          />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
+}
+
+const useColumns = ({ items = [] }) => {
   return useMemo(() => {
     let columns = [
       sequenceColumn(),
@@ -130,18 +212,10 @@ const useColumns = ({ items = [], userType }) => {
         disableSortBy: true
       }),
       textColumn({
-        id: "adjustType",
-        accessor: (row) => row,
+        accessor: "adjustType",
         Header: <Trans zh="调帐类型" en="Adjust Type" />,
         disableSortBy: true,
-        Cell: ({ value: record }) => {
-          //TODO: agent adjustType???
-          return isPlayer(userType) ? (
-            <PlayerAdjustBalanceTypeLabel value={record?.adjustType} />
-          ) : (
-            record?.adjustType
-          )
-        }
+        Cell: AdjustTypeLabel
       }),
       numberDecimalColumn({
         accessor: "amount",

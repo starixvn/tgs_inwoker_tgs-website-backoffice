@@ -16,41 +16,44 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { SystemTransactionType, BonusAdjustTransactionType } from "./menu"
 
 export const Bonus = "BonusAdjust"
-const BonusTrans = {
+export const BonusTrans = {
   zh: "优惠调帐",
   en: "Bonus Adjust"
 }
 
 export const Company = "CompanyAdjust"
-const CompanyTrans = {
+export const CompanyTrans = {
   zh: "公司调账",
   en: "Company Adjust"
 }
 
 export const Agent = "AgentAdjust"
-const AgentTrans = {
+export const AgentTrans = {
   zh: "代理调账",
   en: "Agent Adjust"
 }
 
 export const System = "SystemAdjust"
-const SystemTrans = {
+export const SystemTrans = {
   zh: "系統调账",
   en: "System Adjust"
 }
 
 export const Transfer = "TransferAdjust"
-const TransferTrans = {
+export const TransferTrans = {
   zh: "转帐",
   en: "Transfer"
 }
+
+const List = [Bonus, Company, Agent, System, Transfer]
 
 export default {
   Bonus,
   Company,
   Agent,
   System,
-  Transfer
+  Transfer,
+  List
 }
 
 export const showIncludeInNetProfitSetting = (type) =>

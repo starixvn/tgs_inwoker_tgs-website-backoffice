@@ -251,8 +251,9 @@ export const Table = ({
   }, [JSON.stringify(tableState?.sortBy)])
 
   let [tableRef, tableMeasure] = useMeasure()
+  let [footerRef, footerMeasure] = useMeasure()
 
-  const PaginationHeight = 60 //TODO: measure footer height + margin?
+  const PaginationHeight = footerMeasure?.height > 0 ? 60 : 0 //TODO: measure footer height + margin?
 
   const RowHeight = 50
   if (data?.length > 5 && !Number.isFinite(minHeight)) {
@@ -328,6 +329,7 @@ export const Table = ({
             </_Table>
           </div>
           <Footer
+            ref={footerRef}
             table={table}
             totalCount={totalCount}
             setPageIndex={setPageIndex}
