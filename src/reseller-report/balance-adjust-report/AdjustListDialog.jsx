@@ -53,6 +53,8 @@ import { AdjustTypeSelect, AdjustTypeLabel } from "./AdjustType"
 import { useMeasure } from "react-use"
 
 export const AdjustListDialogDisclosure = ({
+  id,
+  dialogId,
   value,
   brandId,
   userType,
@@ -65,9 +67,10 @@ export const AdjustListDialogDisclosure = ({
     return <FormattedNumberDecimal value={value} />
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure use={Link} {...dialog}>
+      <Disclosure id={id} use={Link} {...dialog}>
         <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
@@ -77,13 +80,21 @@ export const AdjustListDialogDisclosure = ({
           from={from}
           to={to}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
   )
 }
 
-const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
+const AdjustListDialog = ({
+  brandId,
+  userType,
+  from,
+  to,
+  dialog,
+  dialogId
+}) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     from,
     to
@@ -120,7 +131,7 @@ const AdjustListDialog = ({ brandId, userType, from, to, dialog }) => {
   }
 
   return (
-    <Modal title={title} placement="top" {...dialog}>
+    <Modal id={dialogId} title={title} placement="top" {...dialog}>
       <FieldStack
         orientation="vertical"
         isFilled

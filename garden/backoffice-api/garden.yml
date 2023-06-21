@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202306160939.344
+image: pgtgs/backoffice-api:202306210635.371
 services:
   - name: backoffice-api
     dependencies:
@@ -51,6 +51,7 @@ services:
       BackOffice__VipLevelServiceBaseUrl: "http://viplevel-api"
       BackOffice__StationLetterBaseUrl: "http://station-letter"
       BackOffice__CashQueryBaseUrl: "http://cash-query"
+      BackOffice__AgentBaseUrl: "http://agent-service"
     ingresses:
       - hostname: backoffice.localhost
         path: /api

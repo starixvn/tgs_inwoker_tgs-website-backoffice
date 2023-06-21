@@ -112,17 +112,18 @@ export const BalanceAdjustReport = ({ resellerId }) => {
             let width = pageWidth
             return (
               <Table
+                id="balance-adjust"
                 columns={columns}
                 data={data}
                 initialState={state}
                 controlledState={state}
-                // pageCount={pageCount(state.pageSize, data?.totalCount)}
                 setPageIndex={setPageIndex}
                 setSortOrder={setSortOrder}
                 isLoading={isLoading}
                 maxSize={{ height, width }}
                 hasCellDividers
                 stickyHead
+                getRowId={(row) => row.brandId}
               />
             )
           }}
@@ -182,7 +183,6 @@ const SearchBar = ({ from, to, search, isLoading }) => {
   )
 }
 
-//TODO: dialog disclosures
 const useColumns = ({ items = [], resellerId, from, to }) => {
   return useMemo(
     () => [
@@ -270,6 +270,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
             Cell: ({ value: record }) => {
               return (
                 <AdjustListDialogDisclosure
+                  dialogId={`${record?.brand}-player-adjust-dialog`}
                   brandId={record?.brandId}
                   userType={UserType.Player}
                   value={record?.playerAdjustAmount}
@@ -287,6 +288,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
             Cell: ({ value: record }) => {
               return (
                 <AdjustListDialogDisclosure
+                  dialogId={`${record?.brand}-agent-adjust-dialog`}
                   brandId={record?.brandId}
                   userType={UserType.Agent}
                   value={record?.agentAdjustAmount}
