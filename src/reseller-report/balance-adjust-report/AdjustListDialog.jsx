@@ -147,6 +147,7 @@ const AdjustListDialog = ({
             })
             mutate()
           }}
+          isLoading={isLoading}
         />
         <Table
           columns={columns}
