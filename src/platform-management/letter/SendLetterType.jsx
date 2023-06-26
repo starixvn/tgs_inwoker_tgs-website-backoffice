@@ -1,33 +1,47 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Box, OptionButtons } from "bumbag"
-import { useTrans } from "../../i18n"
+import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
 
-const AllPlayers = "All"
-const DesignatedPlayers = "Players"
+const AllPlayers = "BrandAllPlayers"
+const AllPlayersTrans = {
+  zh: "全部玩家",
+  en: "All Players"
+}
+
+const DesignatedPlayers = "Receivers"
+const DesignatedPlayersTrans = {
+  zh: "特定玩家",
+  en: "Designated Players"
+}
+
 export const SendLetterType = {
   AllPlayers,
   DesignatedPlayers
 }
 
-//TODO: placeholder
 export const SendLetterTypeSelect = ({ name = "sendLetterType", ...props }) => {
   let options = [
     {
-      label: useTrans({
-        zh: "全部玩家",
-        en: "All Players"
-      }),
+      label: useTrans(AllPlayersTrans),
       value: AllPlayers
     },
     {
-      label: useTrans({
-        zh: "特定玩家",
-        en: "Designated Players"
-      }),
+      label: useTrans(DesignatedPlayersTrans),
       value: DesignatedPlayers
     }
   ]
   return <Select name={name} options={options} {...props} />
+}
+
+export const SendLetterTypeLabel = ({ value = "" }) => {
+  switch (value) {
+    case AllPlayers:
+      return <Trans {...AllPlayersTrans} />
+    case DesignatedPlayers:
+      return <Trans {...DesignatedPlayersTrans} />
+    default:
+      return value
+  }
 }

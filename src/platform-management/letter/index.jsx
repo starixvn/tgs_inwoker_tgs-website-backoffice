@@ -12,7 +12,7 @@ import { Code } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { Trans } from "../../i18n"
+import { Trans, useTrans } from "../../i18n"
 import {
   PlatformPageContent,
   usePlatformId,
@@ -23,7 +23,7 @@ import { useFormContext, useForm, FormProvider } from "react-hook-form"
 import AlertDialog from "../../dialog/Alert"
 import { SortOrder } from "../../table/order"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
-import { Input } from "../../input/Input"
+import { Input, InputField } from "../../input/Input"
 import { useLetterList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { SendLetterDialogDisclosure } from "./SendLetterDialog"
@@ -31,12 +31,15 @@ import textColumn from "../../table/column/textColumn"
 import {
   LetterBoxType,
   LetterBoxTypeButtons,
+  isInbox,
   isSentLetterBox
 } from "./LetterBoxType"
 import SearchButton from "../../button/SearchButton"
 import { ViewLetterDisclosure } from "./ViewLetter"
 import { ReplyLetterDisclosure } from "./ReplyLetter"
 import { faReply } from "@fortawesome/free-solid-svg-icons"
+import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
+import { SendLetterTypeLabel } from "./SendLetterType"
 
 export { Code }
 
@@ -66,6 +69,15 @@ const Body = () => {
     setState({ pageIndex: 0 })
   }, [brandId])
 
+  /*
+  useEffect(() => {
+    setState({
+      player: "",
+      operator: ""
+    })
+  }, [letterBoxType])
+  */
+
   let toSearchParams = () => ({ ...toApiParams(state) })
 
   let { isLoading, data, error, mutate, deleteCache } = useLetterList(
@@ -87,6 +99,8 @@ const Body = () => {
     <Set orientation="vertical" isFilled height="100%">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
+          brandId={brandId}
+          letterBoxType={letterBoxType}
           search={(data = {}) => {
             setState({
               pageIndex: 0,
@@ -109,8 +123,14 @@ const Body = () => {
       <LetterBoxTypeButtons
         onChange={(value) => {
           //TODO: doesn't clear items when switch letter box type
+          setState({
+            player: "",
+            operator: ""
+          })
+
           deleteCache()
           mutate(null, true)
+
           setLetterBoxType(value)
         }}
       />
@@ -149,10 +169,27 @@ const Body = () => {
   )
 }
 
-const SearchBar = ({ search, isLoading }) => {
+const SearchBar = ({ brandId, letterBoxType, search, isLoading }) => {
   let formMethods = useForm({
-    defaultValues: {}
+    defaultValues: {
+      player: "",
+      operator: ""
+    }
   })
+
+  let senderPlaceholder = useTrans({
+    zh: "寄件人",
+    en: "Sender"
+  })
+
+  /*
+  useEffect(() => {
+    formMethods.reset({
+      player: "",
+      operator: ""
+    })
+  }, [letterBoxType])
+  */
 
   const onSubmit = (data) => search?.(data)
 
@@ -160,6 +197,12 @@ const SearchBar = ({ search, isLoading }) => {
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          {isInbox(letterBoxType) && (
+            <PlayerSelect name="player" brandId={brandId} />
+          )}
+          {isSentLetterBox(letterBoxType) && (
+            <InputField name="operator" placeholder={senderPlaceholder} />
+          )}
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
@@ -174,12 +217,29 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
         accessor: "sentOn",
         Header: <Trans zh="时间" en="Date" />,
         disableSortBy: true
-      }),
-      textColumn({
-        accessor: "sender",
-        Header: <Trans zh="用户名" en="Username" />,
-        disableSortBy: true
-      }),
+      })
+    ]
+
+    if (isInbox(letterBoxType)) {
+      columns.push(
+        textColumn({
+          accessor: "sender",
+          Header: <Trans zh="用户名" en="Username" />,
+          disableSortBy: true
+        })
+      )
+    } else if (isSentLetterBox(letterBoxType)) {
+      columns.push(
+        textColumn({
+          accessor: "receiverType",
+          Header: <Trans zh="收件人" en="Receiver" />,
+          disableSortBy: true,
+          Cell: SendLetterTypeLabel
+        })
+      )
+    }
+
+    columns.push(
       textColumn({
         id: "subject",
         accessor: (row) => row,
@@ -202,7 +262,20 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
             </Set>
           )
         }
-      }),
+      })
+    )
+
+    if (isSentLetterBox(letterBoxType)) {
+      columns.push(
+        textColumn({
+          accessor: "operator",
+          Header: <Trans zh="寄件人" en="Sender" />,
+          disableSortBy: true
+        })
+      )
+    }
+
+    columns.push(
       textColumn({
         id: "actions",
         accessor: (row) => row,
@@ -225,7 +298,7 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
           )
         }
       })
-    ]
+    )
 
     return columns
   }, [JSON.stringify(items)])

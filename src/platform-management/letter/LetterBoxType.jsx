@@ -20,6 +20,8 @@ export const LetterBoxType = {
   Sent
 }
 
+export const isInbox = (value) => value === Inbox
+
 export const isSentLetterBox = (value) => value === Sent
 
 export const LetterBoxTypeButtons = ({
