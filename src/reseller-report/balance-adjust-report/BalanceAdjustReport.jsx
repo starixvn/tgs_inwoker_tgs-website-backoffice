@@ -201,7 +201,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
             disableSortBy: true
           }),
           textColumn({
-            accessor: "currencyCode",
+            accessor: "currency",
             Header: <Trans zh="币种" en="Currency" />,
             disableSortBy: true
           })

@@ -10,7 +10,7 @@ import {
   Set,
   FieldStack,
   Popover,
-  Icon,
+  Level,
   Link
 } from "bumbag"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
@@ -44,13 +44,13 @@ import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
-import { usePlatformAdjustList } from "./client"
+import { usePlatformAdjustList, exportPlatformAdjustListPath } from "./client"
 import sequenceColumn from "../../table/column/sequence"
 import { isPlayer } from "./UserType"
 import { PlayerAdjustBalanceTypeLabel } from "../../player-management/balance-adjustment/PlayerAdjustBalanceType"
 import { InputField } from "../../input/Input"
 import { AdjustTypeSelect, AdjustTypeLabel } from "./AdjustType"
-import { useMeasure } from "react-use"
+import DownloadButton from "../../button/DownloadButton"
 
 export const AdjustListDialogDisclosure = ({
   id,
@@ -138,17 +138,26 @@ const AdjustListDialog = ({
         minHeight="20vh"
         maxHeight="80vh"
       >
-        <SearchBar
-          userType={userType}
-          search={(data) => {
-            setState({
-              pageIndex: 0,
-              ...data
-            })
-            mutate()
-          }}
-          isLoading={isLoading}
-        />
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            userType={userType}
+            search={(data) => {
+              setState({
+                pageIndex: 0,
+                ...data
+              })
+              mutate()
+            }}
+            isLoading={isLoading}
+          />
+          <Box>
+            <DownloadButton
+              id="export-report"
+              isLoading={isLoading}
+              href={exportPlatformAdjustListPath(brandId, userType)}
+            />
+          </Box>
+        </Level>
         <Table
           columns={columns}
           data={data?.items}
