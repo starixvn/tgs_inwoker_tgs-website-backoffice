@@ -39,8 +39,21 @@ export const usePlatformAdjustList = (brandId, userType, searchParams) => {
   return useGet(url)
 }
 
-export const exportPlatformAdjustListPath = (brandId = "", userType) => {
+export const exportBalanceAdjustListPath = (resellerId, searchParams) => {
+  return resellerId && searchParams
+    ? urlWith(searchParams, `${API}/summary/${resellerId}:export`)
+    : ""
+}
+
+export const exportPlatformAdjustListPath = (
+  brandId = "",
+  userType,
+  searchParams
+) => {
   let path = toAdjustListPath(userType)
-  let url = brandId && path ? `${API}/${path}/${brandId}:export` : ""
+  let url =
+    brandId && path && searchParams
+      ? urlWith(searchParams, `${API}/${path}/${brandId}:export`)
+      : ""
   return url
 }

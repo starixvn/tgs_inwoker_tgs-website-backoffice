@@ -21,8 +21,24 @@ test("view reseller balance adjust report", async ({
   ])
   await gotoResellerBalanceAdjustReportPage(page, platform.code)
 
+  let [downloadAdjustList] = await Promise.all([
+    page.waitForEvent("download"),
+    page.click(`#export-report`)
+  ])
+
+  let adjustListPath = await downloadAdjustList.path()
+  expect(adjustListPath).to.be.not.empty
+
   let playerAdjustDialog = `#${platform.code}-player-adjust-dialog`
   await openDialog(page, playerAdjustDialog)
+
+  let [downloadPlatformAdjustList] = await Promise.all([
+    page.waitForEvent("download"),
+    page.click(`${playerAdjustDialog} #export-report`)
+  ])
+
+  let platformAdjustListPath = await downloadPlatformAdjustList.path()
+  expect(platformAdjustListPath).to.be.not.empty
 
   await page.fill(`${playerAdjustDialog} input[name="user"]`, player.username)
 

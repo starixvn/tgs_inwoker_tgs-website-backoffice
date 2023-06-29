@@ -154,7 +154,10 @@ const AdjustListDialog = ({
             <DownloadButton
               id="export-report"
               isLoading={isLoading}
-              href={exportPlatformAdjustListPath(brandId, userType)}
+              href={exportPlatformAdjustListPath(brandId, userType, {
+                from,
+                to
+              })}
             />
           </Box>
         </Level>

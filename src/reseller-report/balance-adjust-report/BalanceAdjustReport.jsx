@@ -37,7 +37,10 @@ import numberColumn, {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { useBalanceAdjustReportList } from "./client"
+import {
+  useBalanceAdjustReportList,
+  exportBalanceAdjustListPath
+} from "./client"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
@@ -84,7 +87,7 @@ export const BalanceAdjustReport = ({ resellerId }) => {
   }, [resellerId])
 
   let columns = useColumns({
-    items: data?.items,
+    items: data,
     resellerId,
     from: state?.from,
     to: state?.to
@@ -105,6 +108,17 @@ export const BalanceAdjustReport = ({ resellerId }) => {
             mutate()
           }}
         />
+        {data?.length > 0 && (
+          <Box>
+            <DownloadButton
+              id="export-report"
+              href={exportBalanceAdjustListPath(resellerId, {
+                from: state.from,
+                to: state.to
+              })}
+            />
+          </Box>
+        )}
       </Level>
       <Box flex="1">
         <AutoSizer disableWidth={true}>
