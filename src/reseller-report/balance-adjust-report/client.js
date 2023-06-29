@@ -11,7 +11,7 @@ import { UserType } from "./UserType"
 
 const API = "/api/adjust-wallet"
 
-export const useBalanceAdjustReportList = (searchParams) => {
+export const useBalanceAdjustList = (searchParams) => {
   let url =
     searchParams?.resellerId && searchParams
       ? urlWith(searchParams, `${API}/summary/${searchParams?.resellerId}`)

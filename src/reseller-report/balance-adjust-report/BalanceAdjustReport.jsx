@@ -37,10 +37,7 @@ import numberColumn, {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import {
-  useBalanceAdjustReportList,
-  exportBalanceAdjustListPath
-} from "./client"
+import { useBalanceAdjustList, exportBalanceAdjustListPath } from "./client"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
@@ -77,8 +74,9 @@ export const BalanceAdjustReport = ({ resellerId }) => {
     to: dateRange.end
   })
 
-  let { isLoading, data, error, mutate, deleteCache } =
-    useBalanceAdjustReportList(toApiParams(state))
+  let { isLoading, data, error, mutate, deleteCache } = useBalanceAdjustList(
+    toApiParams(state)
+  )
 
   useEffect(() => {
     if (resellerId != state.resellerId) {
