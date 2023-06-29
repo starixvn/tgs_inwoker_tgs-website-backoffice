@@ -131,7 +131,15 @@ const AdjustListDialog = ({
   }
 
   return (
-    <Modal id={dialogId} title={title} placement="top" {...dialog}>
+    <Modal
+      id={dialogId}
+      title={title}
+      placement="top"
+      {...dialog}
+      css={css`
+        min-width: 60vw;
+      `}
+    >
       <FieldStack
         orientation="vertical"
         isFilled
