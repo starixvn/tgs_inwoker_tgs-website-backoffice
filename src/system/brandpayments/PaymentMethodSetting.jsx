@@ -43,6 +43,7 @@ const USDT = "USDT"
 const Usdt = "Usdt"
 const EWallet = "EWallet"
 const Pulsa = "Pulsa"
+const Coinsph = "Coinsph"
 
 export const PaymentMethodSetting = ({
   brandId,
@@ -73,9 +74,35 @@ export const PaymentMethodSetting = ({
       return <EWalletSetting brandId={brandId} />
     case Pulsa:
       return <PulsaSetting brandId={brandId} />
+    case Coinsph:
+      return <CoinsphSetting brandId={brandId} />
     default:
       return null
   }
+}
+
+const CoinsphSetting = ({ brandId }) => {
+  return (
+    <>
+      <Label required>
+        <Trans zh="电话号码" en="Phone" />
+      </Label>
+      <Input name="extendedData.phone" required />
+      <Label required>
+        <Trans zh="真实姓名" en="Real Name" />
+      </Label>
+      <Input name="extendedData.name" required />
+      <Label>
+        <Trans zh="QR Code" en="QR Code" />
+      </Label>
+      <ImageUploadButton
+        brandId={brandId}
+        name="extendedData.qrCode"
+        prefix="payment"
+        showLocalizationAddonAfter={false}
+      />
+    </>
+  )
 }
 
 const PulsaSetting = ({ brandId }) => {
