@@ -15,16 +15,16 @@ const SentTrans = {
   en: "Sent"
 }
 
-export const LetterBoxType = {
+export const BoxType = {
   Inbox,
   Sent
 }
 
 export const isInbox = (value) => value === Inbox
 
-export const isSentLetterBox = (value) => value === Sent
+export const isSentBox = (value) => value === Sent
 
-export const LetterBoxTypeButtons = ({
+export const BoxTypeButtons = ({
   type = "radio",
   defaultValue = Inbox,
   onChange,

@@ -39,7 +39,7 @@ import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
 import Textarea, { TextareaField } from "../../textarea"
 import Modal from "../../dialog/Modal"
-import { isSentLetterBox } from "./LetterBoxType"
+import { isSentBox } from "./BoxType"
 import AlertDialog from "../../dialog/Alert"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 
@@ -52,7 +52,7 @@ export const ReplyLetterDisclosure = ({
 }) => {
   let dialog = useModalState()
 
-  if (isSentLetterBox(letterBoxType)) {
+  if (isSentBox(letterBoxType)) {
     return null
   }
 

@@ -28,18 +28,13 @@ import { useLetterList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { SendLetterDialogDisclosure } from "./SendLetterDialog"
 import textColumn from "../../table/column/textColumn"
-import {
-  LetterBoxType,
-  LetterBoxTypeButtons,
-  isInbox,
-  isSentLetterBox
-} from "./LetterBoxType"
+import { BoxType, BoxTypeButtons, isInbox, isSentBox } from "./BoxType"
 import SearchButton from "../../button/SearchButton"
 import { ViewLetterDisclosure } from "./ViewLetter"
 import { ReplyLetterDisclosure } from "./ReplyLetter"
 import { faReply } from "@fortawesome/free-solid-svg-icons"
 import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
-import { SendLetterTypeLabel } from "./SendLetterType"
+import { LetterTypeLabel } from "./LetterType"
 
 export { Code }
 
@@ -59,7 +54,7 @@ export const Content = () => {
 const Body = () => {
   let brandId = usePlatformId()
 
-  let [letterBoxType, setLetterBoxType] = useState(LetterBoxType.Inbox)
+  let [letterBoxType, setLetterBoxType] = useState(BoxType.Inbox)
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId
@@ -113,14 +108,14 @@ const Body = () => {
           <SendLetterDialogDisclosure
             brandId={brandId}
             onSubmitted={() => {
-              if (isSentLetterBox(letterBoxType)) {
+              if (isSentBox(letterBoxType)) {
                 mutate()
               }
             }}
           />
         </Box>
       </Level>
-      <LetterBoxTypeButtons
+      <BoxTypeButtons
         onChange={(value) => {
           //TODO: doesn't clear items when switch letter box type
           setState({
@@ -200,7 +195,7 @@ const SearchBar = ({ brandId, letterBoxType, search, isLoading }) => {
           {isInbox(letterBoxType) && (
             <PlayerSelect name="player" brandId={brandId} />
           )}
-          {isSentLetterBox(letterBoxType) && (
+          {isSentBox(letterBoxType) && (
             <InputField name="operator" placeholder={senderPlaceholder} />
           )}
           <SearchButton isLoading={isLoading} disabled={isLoading} />
@@ -228,13 +223,13 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
           disableSortBy: true
         })
       )
-    } else if (isSentLetterBox(letterBoxType)) {
+    } else if (isSentBox(letterBoxType)) {
       columns.push(
         textColumn({
           accessor: "receiverType",
           Header: <Trans zh="收件人" en="Receiver" />,
           disableSortBy: true,
-          Cell: SendLetterTypeLabel
+          Cell: LetterTypeLabel
         })
       )
     }
@@ -265,7 +260,7 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
       })
     )
 
-    if (isSentLetterBox(letterBoxType)) {
+    if (isSentBox(letterBoxType)) {
       columns.push(
         textColumn({
           accessor: "operator",

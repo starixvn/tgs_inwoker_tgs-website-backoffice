@@ -31,7 +31,7 @@ import { AddDisclosure } from "../../dialog/Disclosure"
 import { Update } from "./menu"
 import FormDialog from "../../form/FormDialog"
 import { useFormContext, useWatch } from "react-hook-form"
-import { SendLetterType, SendLetterTypeSelect } from "./SendLetterType"
+import { LetterType, LetterTypeSelect } from "./LetterType"
 import { useSendLetter } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
@@ -66,12 +66,12 @@ export const SendLetterDialogDisclosure = ({
 }
 
 const SendDialog = ({ brandId, dialog, onSubmitted }) => {
-  let [sendLetterType, setLetterBoxType] = useState(SendLetterType.AllPlayers)
+  let [letterType, setLetterType] = useState(LetterType.AllPlayers)
   let [formData, setSubmit] = useState()
 
   let { isLoading, result, error, mutate, deleteCache } = useSendLetter(
     brandId,
-    sendLetterType,
+    letterType,
     formData
   )
 
@@ -80,8 +80,8 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
     en: "Add Memo"
   })
 
-  const onSubmit = ({ sendLetterType, ...data } = {}) => {
-    setLetterBoxType(sendLetterType)
+  const onSubmit = ({ letterType, ...data } = {}) => {
+    setLetterType(letterType)
     setSubmit(data)
   }
 
@@ -95,7 +95,7 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
     <FormDialog
       defaultValues={{
         brandId,
-        sendLetterType: SendLetterType.AllPlayers,
+        letterType: LetterType.AllPlayers,
         receivers: [],
         subject: "",
         content: ""
@@ -122,9 +122,9 @@ const GroupFieldBox = () => {
     control,
     name: "brandId"
   })
-  let sendLetterType = useWatch({
+  let letterType = useWatch({
     control,
-    name: "sendLetterType"
+    name: "letterType"
   })
 
   return (
@@ -133,18 +133,18 @@ const GroupFieldBox = () => {
         <Trans zh="群组" en="Group" />
       </Label>
       <Set orientation="vertical" isFilled width="100%">
-        <SendLetterTypeSelect />
-        <GroupFieldBody brandId={brandId} sendLetterType={sendLetterType} />
+        <LetterTypeSelect />
+        <GroupFieldBody brandId={brandId} letterType={letterType} />
       </Set>
     </>
   )
 }
 
-const GroupFieldBody = ({ brandId, sendLetterType }) => {
-  switch (sendLetterType) {
-    case SendLetterType.AllPlayers:
+const GroupFieldBody = ({ brandId, letterType }) => {
+  switch (letterType) {
+    case LetterType.AllPlayers:
       return null
-    case SendLetterType.DesignatedPlayers:
+    case LetterType.DesignatedPlayers:
       return (
         <PlayerSelect
           brandId={brandId}

@@ -18,12 +18,12 @@ const DesignatedPlayersTrans = {
   en: "Designated Players"
 }
 
-export const SendLetterType = {
+export const LetterType = {
   AllPlayers,
   DesignatedPlayers
 }
 
-export const SendLetterTypeSelect = ({ name = "sendLetterType", ...props }) => {
+export const LetterTypeSelect = ({ name = "letterType", ...props }) => {
   let options = [
     {
       label: useTrans(AllPlayersTrans),
@@ -37,7 +37,7 @@ export const SendLetterTypeSelect = ({ name = "sendLetterType", ...props }) => {
   return <Select name={name} options={options} {...props} />
 }
 
-export const SendLetterTypeLabel = ({ value = "" }) => {
+export const LetterTypeLabel = ({ value = "" }) => {
   switch (value) {
     case AllPlayers:
       return <Trans {...AllPlayersTrans} />

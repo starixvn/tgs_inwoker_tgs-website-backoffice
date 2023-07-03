@@ -38,6 +38,7 @@ import Textarea, { TextareaField } from "../../textarea"
 import Modal from "../../dialog/Modal"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
+import { isInbox } from "./BoxType"
 
 export const ViewLetterDisclosure = ({
   brandId,
@@ -65,6 +66,13 @@ export const ViewLetterDisclosure = ({
       )}
     </>
   )
+}
+
+//TODO: box type and receivers
+const SentBoxFields = ({ letterBoxType, record }) => {
+  if (isInbox(letterBoxType)) {
+    return null
+  }
 }
 
 const ViewDialog = ({ brandId, letterBoxType, letterId, dialog }) => {

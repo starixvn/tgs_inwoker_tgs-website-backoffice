@@ -3,10 +3,11 @@ import { css, Global } from "@emotion/react"
 import { Box, OptionButtons } from "bumbag"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
-import { SendLetterType, SendLetterTypeSelect } from "./SendLetterType"
+import { LetterType, LetterTypeSelect } from "./LetterType"
 import Label from "../../form/Label"
 import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
 
+//TODO: rm?
 export const SelectPlayerField = ({
   name,
   designatedPlayersProps = {},
