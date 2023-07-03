@@ -3,6 +3,8 @@ import { css, Global } from "@emotion/react"
 import { Box, OptionButtons } from "bumbag"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import Label from "../../form/Label"
+import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
 
 const AllPlayers = "BrandAllPlayers"
 const AllPlayersTrans = {
