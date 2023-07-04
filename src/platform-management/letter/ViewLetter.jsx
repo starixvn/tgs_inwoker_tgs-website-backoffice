@@ -11,7 +11,8 @@ import {
   Columns,
   Heading,
   Level,
-  Dialog
+  Dialog,
+  Spinner
 } from "bumbag"
 import {
   useIsDisplayMenuByRoute,
@@ -39,6 +40,12 @@ import Modal from "../../dialog/Modal"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { isInbox } from "./BoxType"
+import {
+  LetterTypeLabel,
+  isAllPlayers,
+  isDesignatedPlayers
+} from "./LetterType"
+import { usePlayer } from "../../player-management/player-list/client"
 
 export const ViewLetterDisclosure = ({
   brandId,
@@ -68,11 +75,42 @@ export const ViewLetterDisclosure = ({
   )
 }
 
-//TODO: box type and receivers
-const SentBoxFields = ({ letterBoxType, record }) => {
-  if (isInbox(letterBoxType)) {
+const ReceiverField = ({ receiverType, receiver = [] }) => {
+  let { isLoading, data: player } = usePlayer(receiver?.[0])
+
+  if (!receiverType) {
     return null
   }
+
+  if (isDesignatedPlayers(receiverType)) {
+    return (
+      <>
+        <Label>
+          <Trans zh="收件人" en="Receiver" />
+        </Label>
+        <Box>
+          {receiver.length === 1 ? (
+            isLoading ? (
+              <Spinner />
+            ) : (
+              player.username
+            )
+          ) : (
+            <LetterTypeLabel value={receiverType} />
+          )}
+        </Box>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <Label>
+        <Trans zh="收件人" en="Receiver" />
+      </Label>
+      <LetterTypeLabel value={receiverType} />
+    </>
+  )
 }
 
 const ViewDialog = ({ brandId, boxType, letterId, dialog }) => {
@@ -98,6 +136,10 @@ const ViewDialog = ({ brandId, boxType, letterId, dialog }) => {
   return (
     <Modal title={title} {...dialog} placement="top" minWidth="80vw">
       <FieldValues marginLeft="1rem">
+        <ReceiverField
+          receiverType={data?.receiverType}
+          receiver={data?.receiver}
+        />
         <Label>
           <Trans zh="主旨" en="Subject" />
         </Label>

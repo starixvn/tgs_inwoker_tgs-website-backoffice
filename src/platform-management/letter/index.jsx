@@ -194,7 +194,11 @@ const SearchBar = ({ brandId, boxType, search, isLoading }) => {
         <Set>
           {isInbox(boxType) && <PlayerSelect name="player" brandId={brandId} />}
           {isSentBox(boxType) && (
-            <InputField name="operator" placeholder={senderPlaceholder} />
+            <InputField
+              name="operator"
+              placeholder={senderPlaceholder}
+              showEmptyFieldValueAddonAfter
+            />
           )}
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>

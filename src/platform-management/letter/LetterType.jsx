@@ -23,6 +23,10 @@ export const LetterType = {
   DesignatedPlayers
 }
 
+export const isAllPlayers = (value) => value === AllPlayers
+
+export const isDesignatedPlayers = (value) => value === DesignatedPlayers
+
 export const LetterTypeSelect = ({ name = "letterType", ...props }) => {
   let options = [
     {
