@@ -54,7 +54,7 @@ export const Content = () => {
 const Body = () => {
   let brandId = usePlatformId()
 
-  let [letterBoxType, setLetterBoxType] = useState(BoxType.Inbox)
+  let [boxType, setBoxType] = useState(BoxType.Inbox)
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId
@@ -77,7 +77,7 @@ const Body = () => {
 
   let { isLoading, data, error, mutate, deleteCache } = useLetterList(
     brandId,
-    letterBoxType,
+    boxType,
     toSearchParams()
   )
 
@@ -85,7 +85,7 @@ const Body = () => {
   let columns = useColumns({
     brandId,
     items,
-    letterBoxType
+    boxType
   })
 
   let pageWidth = usePlatformPageContentWidth()
@@ -95,7 +95,7 @@ const Body = () => {
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           brandId={brandId}
-          letterBoxType={letterBoxType}
+          boxType={boxType}
           search={(data = {}) => {
             setState({
               pageIndex: 0,
@@ -108,7 +108,7 @@ const Body = () => {
           <SendLetterDialogDisclosure
             brandId={brandId}
             onSubmitted={() => {
-              if (isSentBox(letterBoxType)) {
+              if (isSentBox(boxType)) {
                 mutate()
               }
             }}
@@ -126,7 +126,7 @@ const Body = () => {
           deleteCache()
           mutate(null, true)
 
-          setLetterBoxType(value)
+          setBoxType(value)
         }}
       />
       <Box flex="1">
@@ -164,7 +164,7 @@ const Body = () => {
   )
 }
 
-const SearchBar = ({ brandId, letterBoxType, search, isLoading }) => {
+const SearchBar = ({ brandId, boxType, search, isLoading }) => {
   let formMethods = useForm({
     defaultValues: {
       player: "",
@@ -183,7 +183,7 @@ const SearchBar = ({ brandId, letterBoxType, search, isLoading }) => {
       player: "",
       operator: ""
     })
-  }, [letterBoxType])
+  }, [boxType])
   */
 
   const onSubmit = (data) => search?.(data)
@@ -192,10 +192,8 @@ const SearchBar = ({ brandId, letterBoxType, search, isLoading }) => {
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
-          {isInbox(letterBoxType) && (
-            <PlayerSelect name="player" brandId={brandId} />
-          )}
-          {isSentBox(letterBoxType) && (
+          {isInbox(boxType) && <PlayerSelect name="player" brandId={brandId} />}
+          {isSentBox(boxType) && (
             <InputField name="operator" placeholder={senderPlaceholder} />
           )}
           <SearchButton isLoading={isLoading} disabled={isLoading} />
@@ -205,7 +203,7 @@ const SearchBar = ({ brandId, letterBoxType, search, isLoading }) => {
   )
 }
 
-const useColumns = ({ brandId, items = [], letterBoxType }) => {
+const useColumns = ({ brandId, items = [], boxType }) => {
   return useMemo(() => {
     let columns = [
       dateTimeColumn({
@@ -215,7 +213,7 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
       })
     ]
 
-    if (isInbox(letterBoxType)) {
+    if (isInbox(boxType)) {
       columns.push(
         textColumn({
           accessor: "sender",
@@ -223,7 +221,7 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
           disableSortBy: true
         })
       )
-    } else if (isSentBox(letterBoxType)) {
+    } else if (isSentBox(boxType)) {
       columns.push(
         textColumn({
           accessor: "receiverType",
@@ -260,7 +258,7 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
       })
     )
 
-    if (isSentBox(letterBoxType)) {
+    if (isSentBox(boxType)) {
       columns.push(
         textColumn({
           accessor: "operator",
@@ -281,12 +279,12 @@ const useColumns = ({ brandId, items = [], letterBoxType }) => {
             <Set alignX="center">
               <ViewLetterDisclosure
                 brandId={brandId}
-                letterBoxType={letterBoxType}
+                boxType={boxType}
                 letterId={record?.id}
               />
               <ReplyLetterDisclosure
                 brandId={brandId}
-                letterBoxType={letterBoxType}
+                boxType={boxType}
                 letterId={record?.id}
               />
             </Set>

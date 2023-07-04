@@ -172,6 +172,8 @@ const AdjustListDialog = ({
         <Table
           columns={columns}
           data={data?.items}
+          initialState={state}
+          controlledState={state}
           pageCount={pageCount(state.pageSize, data?.totalCount)}
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}

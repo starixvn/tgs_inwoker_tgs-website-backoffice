@@ -42,7 +42,7 @@ import { isInbox } from "./BoxType"
 
 export const ViewLetterDisclosure = ({
   brandId,
-  letterBoxType,
+  boxType,
   letterId,
   ...props
 }) => {
@@ -59,7 +59,7 @@ export const ViewLetterDisclosure = ({
       {dialog.visible && (
         <ViewDialog
           brandId={brandId}
-          letterBoxType={letterBoxType}
+          boxType={boxType}
           letterId={letterId}
           dialog={dialog}
         />
@@ -75,10 +75,10 @@ const SentBoxFields = ({ letterBoxType, record }) => {
   }
 }
 
-const ViewDialog = ({ brandId, letterBoxType, letterId, dialog }) => {
+const ViewDialog = ({ brandId, boxType, letterId, dialog }) => {
   let { isLoading, data, error, mutate, deleteCache } = useLetter(
     brandId,
-    letterBoxType,
+    boxType,
     letterId
   )
 

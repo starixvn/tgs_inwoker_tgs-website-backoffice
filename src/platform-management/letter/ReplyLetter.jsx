@@ -45,14 +45,14 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 
 export const ReplyLetterDisclosure = ({
   brandId,
-  letterBoxType,
+  boxType,
   letterId,
   onSubmitted,
   ...props
 }) => {
   let dialog = useModalState()
 
-  if (isSentBox(letterBoxType)) {
+  if (isSentBox(boxType)) {
     return null
   }
 
@@ -69,7 +69,7 @@ export const ReplyLetterDisclosure = ({
       {dialog.visible && (
         <ReplyLetterDialog
           brandId={brandId}
-          letterBoxType={letterBoxType}
+          boxType={boxType}
           letterId={letterId}
           onSubmitted={onSubmitted}
           dialog={dialog}
@@ -82,14 +82,14 @@ export const ReplyLetterDisclosure = ({
 const ReplyLetterDialog = ({
   brandId,
   letterId,
-  letterBoxType,
+  boxType,
   dialog,
   onSubmitted,
   ...props
 }) => {
   let { isLoading, data, error, mutate, deleteCache } = useLetter(
     brandId,
-    letterBoxType,
+    boxType,
     letterId
   )
 
