@@ -28,6 +28,7 @@ import { useTotalFunds } from "../field/TotalFundsField"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
+import { usePromotionBrandId } from "../usePromotionFormData"
 
 const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
@@ -54,7 +55,9 @@ const DepositRewardMain = (props) => (
 const Content = ContentSetting
 
 //TODO: platfrom payment multi select?
+//TODO: need brandId? for payment multi select
 const DepositPaymentRewardRule = ({ readOnly }) => {
+  let brandId = usePromotionBrandId()
   let totalFunds = useTotalFunds()
 
   let disabled = readOnly
@@ -115,12 +118,6 @@ const DepositRewardRule = ({ readOnly }) => {
   let { control } = useFormContext()
   let totalFunds = useTotalFunds()
   let disabled = readOnly
-
-  let BonusAmountLimitField = "rule.bonusAmountLimit"
-  let bonusAmountLimit = useWatch({
-    control,
-    name: BonusAmountLimitField
-  })
 
   let PercentageField = "rule.percentage"
   let percentage = useWatch({
