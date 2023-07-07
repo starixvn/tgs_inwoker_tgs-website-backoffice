@@ -29,21 +29,22 @@ import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
 import { usePromotionBrandId } from "../usePromotionFormData"
+import { PaymentChannelSelect } from "../../../payment/channel/PaymentChannel"
+import { usePaymentMethodChannelList } from "../../../payment/client"
 
 const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
 const DailySecondDeposit = "DailySecondDeposit"
 const DepositReward = "DepositReward"
 
-//TODO: confirm promotion code/name with backend
-const DepositPaymentReward = "DepositPaymentReward"
+const DepositPaymentChannelReward = "PromoteDepositChannel"
 
 export const PromotionTypes = [
   FirstDeposit,
   DailyFirstDeposit,
   DailySecondDeposit,
   DepositReward,
-  DepositPaymentReward
+  DepositPaymentChannelReward
 ]
 
 const Main = (props) => <MainSetting autoPayout={true} {...props} />
@@ -58,6 +59,15 @@ const Content = ContentSetting
 //TODO: need brandId? for payment multi select
 const DepositPaymentRewardRule = ({ readOnly }) => {
   let brandId = usePromotionBrandId()
+  let {
+    isLoading,
+    data: paymentMethodChannelList,
+    error
+  } = usePaymentMethodChannelList()
+  let paymentChannelIds = paymentMethodChannelList?.allData?.map(
+    ({ channelId }) => channelId
+  )
+
   let totalFunds = useTotalFunds()
 
   let disabled = readOnly
@@ -65,6 +75,16 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
   return (
     <FieldValues>
       <VipLevelCheckboxGroupField readOnly={readOnly} />
+
+      <NormalLabel>
+        <Trans zh="金流渠道" en="Payment Channel" />
+      </NormalLabel>
+      <PaymentChannelSelect
+        name="rule.channelIds[0]"
+        range={paymentChannelIds}
+        required
+        disabled={disabled}
+      />
 
       <NormalLabel>
         <Trans zh="彩金百分比" en="Bonus Percentage" />
@@ -302,7 +322,7 @@ export const Rewards = [
     Rule: DefaultRule
   },
   {
-    PromotionType: DepositPaymentReward,
+    PromotionType: DepositPaymentChannelReward,
     Main,
     Content,
     Rule: DepositPaymentRewardRule

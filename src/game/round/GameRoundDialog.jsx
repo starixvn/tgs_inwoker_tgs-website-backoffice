@@ -204,9 +204,19 @@ export const GameRoundDialog = ({
               <NormalLabel whiteSpace="normal">
                 <Trans zh="流水" en="Turnover" />
               </NormalLabel>
-              <Box alignY="center">
-                <FormattedNumberDecimal value={record.turnover} />
-              </Box>
+              <Box alignY="center"></Box>
+
+              {/* 
+              TODO: check api field name 
+              <NormalLabel whiteSpace="normal">
+                <Trans zh="流水比例" en="Turnover Percentage" />
+              </NormalLabel>
+              <Box>
+                <FormattedNumberDecimal
+                  value={record.effectiveBettingPercentage}
+                />
+              </Box> 
+              */}
 
               <NormalLabel whiteSpace="normal">
                 <Trans zh="输赢金额" en="Win Loss" />
