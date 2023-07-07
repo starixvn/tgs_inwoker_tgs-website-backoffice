@@ -20,7 +20,8 @@ import {
   Trans,
   FormattedNumber,
   useLangCode,
-  FormattedNumberDecimal
+  FormattedNumberDecimal,
+  FormattedNumberDecimalPercentage
 } from "../../i18n"
 import { useGameRound } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -204,25 +205,24 @@ export const GameRoundDialog = ({
               <NormalLabel whiteSpace="normal">
                 <Trans zh="流水" en="Turnover" />
               </NormalLabel>
-              <Box alignY="center"></Box>
+              <Box alignY="center">
+                <FormattedNumberDecimal value={record.originalTurnover} />
+              </Box>
 
-              {/* 
-              TODO: check api field name 
               <NormalLabel whiteSpace="normal">
                 <Trans zh="流水比例" en="Turnover Percentage" />
               </NormalLabel>
-              <Box>
+              <Box alignY="center">
                 <FormattedNumberDecimal
                   value={record.effectiveBettingPercentage}
                 />
-              </Box> 
-              */}
+              </Box>
 
               <NormalLabel whiteSpace="normal">
                 <Trans zh="输赢金额" en="Win Loss" />
               </NormalLabel>
               <Box alignY="center">
-                <FormattedNumberDecimal value={record.winLoss} />
+                <FormattedNumberDecimalPercentage value={record.winLoss} />
               </Box>
 
               <NormalLabel whiteSpace="normal">
