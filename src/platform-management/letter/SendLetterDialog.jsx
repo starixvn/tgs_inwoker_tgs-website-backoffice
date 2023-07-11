@@ -4,15 +4,10 @@ import {
   Stack,
   FieldStack,
   Box,
-  Button,
-  Text,
-  Modal,
   Set,
   useModalState,
-  Columns,
-  Heading,
-  Level,
-  Dialog
+  Button,
+  Disclosure
 } from "bumbag"
 import {
   useIsDisplayMenuByRoute,
@@ -38,6 +33,7 @@ import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
 import { TextareaField } from "../../textarea"
 import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
+import { DoubleConfirmDialogDisclosure } from "./DoubleConfirmDialog"
 
 export const SendLetterDialogDisclosure = ({
   brandId,
@@ -108,6 +104,16 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
+      actionButtonsProps={{
+        cancelProps: {
+          display: "none"
+        },
+        addonButtons: (
+          <>
+            <DoubleConfirmDialogDisclosure dialog={dialog} />
+          </>
+        )
+      }}
       placement="top"
       minWidth="80vw"
     >

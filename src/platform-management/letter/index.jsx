@@ -64,15 +64,6 @@ const Body = () => {
     setState({ pageIndex: 0 })
   }, [brandId])
 
-  /*
-  useEffect(() => {
-    setState({
-      player: "",
-      operator: ""
-    })
-  }, [letterBoxType])
-  */
-
   let toSearchParams = () => ({ ...toApiParams(state) })
 
   let { isLoading, data, error, mutate, deleteCache } = useLetterList(
@@ -117,7 +108,6 @@ const Body = () => {
       </Level>
       <BoxTypeButtons
         onChange={(value) => {
-          //TODO: doesn't clear items when switch letter box type
           setState({
             player: "",
             operator: ""
@@ -176,15 +166,6 @@ const SearchBar = ({ brandId, boxType, search, isLoading }) => {
     zh: "寄件人",
     en: "Sender"
   })
-
-  /*
-  useEffect(() => {
-    formMethods.reset({
-      player: "",
-      operator: ""
-    })
-  }, [boxType])
-  */
 
   const onSubmit = (data) => search?.(data)
 
