@@ -42,6 +42,7 @@ import Modal from "../../dialog/Modal"
 import { isSentBox } from "./BoxType"
 import AlertDialog from "../../dialog/Alert"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import { DoubleConfirmDialogDisclosure } from "./DoubleConfirmDialog"
 
 export const ReplyLetterDisclosure = ({
   brandId,
@@ -156,6 +157,16 @@ const ReplyLetterFormDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
+      actionButtonsProps={{
+        cancelProps: {
+          display: "none"
+        },
+        addonButtons: (
+          <>
+            <DoubleConfirmDialogDisclosure dialog={dialog} />
+          </>
+        )
+      }}
       placement="top"
       minWidth="80vw"
     >
