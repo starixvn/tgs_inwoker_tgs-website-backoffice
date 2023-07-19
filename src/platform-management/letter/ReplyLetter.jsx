@@ -39,20 +39,21 @@ import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
 import Textarea, { TextareaField } from "../../textarea"
 import Modal from "../../dialog/Modal"
-import { isSentLetterBox } from "./LetterBoxType"
+import { isSentBox } from "./BoxType"
 import AlertDialog from "../../dialog/Alert"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import { DoubleConfirmDialogDisclosure } from "./DoubleConfirmDialog"
 
 export const ReplyLetterDisclosure = ({
   brandId,
-  letterBoxType,
+  boxType,
   letterId,
   onSubmitted,
   ...props
 }) => {
   let dialog = useModalState()
 
-  if (isSentLetterBox(letterBoxType)) {
+  if (isSentBox(boxType)) {
     return null
   }
 
@@ -69,7 +70,7 @@ export const ReplyLetterDisclosure = ({
       {dialog.visible && (
         <ReplyLetterDialog
           brandId={brandId}
-          letterBoxType={letterBoxType}
+          boxType={boxType}
           letterId={letterId}
           onSubmitted={onSubmitted}
           dialog={dialog}
@@ -82,14 +83,14 @@ export const ReplyLetterDisclosure = ({
 const ReplyLetterDialog = ({
   brandId,
   letterId,
-  letterBoxType,
+  boxType,
   dialog,
   onSubmitted,
   ...props
 }) => {
   let { isLoading, data, error, mutate, deleteCache } = useLetter(
     brandId,
-    letterBoxType,
+    boxType,
     letterId
   )
 
@@ -156,6 +157,16 @@ const ReplyLetterFormDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
+      actionButtonsProps={{
+        cancelProps: {
+          display: "none"
+        },
+        addonButtons: (
+          <>
+            <DoubleConfirmDialogDisclosure dialog={dialog} />
+          </>
+        )
+      }}
       placement="top"
       minWidth="80vw"
     >

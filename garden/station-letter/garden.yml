@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: station-letter
-image: pgtgs/station-letter:202305220905.14
+image: pgtgs/station-letter:202306210539.16
 services:
   - name: station-letter
     dependencies:

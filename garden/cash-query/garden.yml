@@ -1,0 +1,14 @@
+kind: Module
+type: container
+name: cash-query
+image: pgtgs/cashservice-query:202306190300.48
+services:
+  - name: cash-query
+    dependencies:
+      - postgres
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

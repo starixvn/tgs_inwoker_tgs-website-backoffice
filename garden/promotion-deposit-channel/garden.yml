@@ -1,0 +1,24 @@
+kind: Module
+type: container
+name: promotion-deposit-channel
+image: pgtgs/promote-deposit-channel:202307060913.2
+services:
+  - name: promotion-deposit-channel
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - promotion-api
+      - payment-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      PromoteDepositChannel__PromotionServiceUrl: "http://promotion-api"
+      PromoteDepositChannel__PaymentServiceUrl: "http://payment-api"
+      PromoteDepositChannel__PlayerServicieUrl: "http://player-api"
+      PromoteDepositChannel__VipLevelServiceUrl: "http://viplevel-api"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

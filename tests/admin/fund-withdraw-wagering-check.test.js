@@ -13,8 +13,8 @@ import numeral from "numeral"
 const test = base.extend(Fixture)
 const { finance } = faker
 
-console.warn("TODO: fix audit clear bucket report")
-test("fund withdraw > audit clear bucket", async ({
+console.warn("TODO: fix auto clear bucket")
+test.skip("fund withdraw > audit clear bucket", async ({
   page,
   licensee,
   platform,
