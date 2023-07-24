@@ -34,6 +34,9 @@ export const useAuth = () => {
 
   return (data = {}) => {
     setLoading(true)
+
+    client.get(`api/status`)
+
     return client
       .post("api/auth", {
         data
