@@ -170,13 +170,6 @@ const ReportContent = ({}) => {
 
   const toSearchParams = () => ({
     ...toApiParams(state),
-    /*
-    TODO: remove
-    externalTo: startOfNextMinute(state.externalTo),
-    externalClosedTo: startOfNextMinute(state.externalClosedTo),
-    to: startOfNextMinute(state.to),
-    closedTo: startOfNextMinute(state.closedTo),
-    */
     culture
   })
 
@@ -243,6 +236,7 @@ const ReportContent = ({}) => {
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
+        totalCount={data?.totalCount}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}

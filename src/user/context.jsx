@@ -34,7 +34,7 @@ export const useAuth = () => {
 
   return (data = {}) => {
     setLoading(true)
-
+    //TODO: rm or dev env only?
     client.get(`api/status`)
 
     return client
