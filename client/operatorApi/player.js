@@ -253,8 +253,8 @@ export const sendLetter = async (
     body: JSON.stringify(formData),
     headers
   })
-  console.log("result", result)
-  return result
+
+  return formData
 }
 
 export default {

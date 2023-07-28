@@ -49,6 +49,8 @@ export const ReplyLetterDisclosure = ({
   boxType,
   letterId,
   onSubmitted,
+  id,
+  dialogId = "reply-letter-dialog",
   ...props
 }) => {
   let dialog = useModalState()
@@ -62,9 +64,10 @@ export const ReplyLetterDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <Trans zh="回覆" en="Reply" />
       </Disclosure>
       {dialog.visible && (
@@ -74,6 +77,7 @@ export const ReplyLetterDisclosure = ({
           letterId={letterId}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -86,6 +90,7 @@ const ReplyLetterDialog = ({
   boxType,
   dialog,
   onSubmitted,
+  dialogId,
   ...props
 }) => {
   let { isLoading, data, error, mutate, deleteCache } = useLetter(
@@ -108,6 +113,7 @@ const ReplyLetterDialog = ({
       letterId={letterId}
       letter={data}
       dialog={dialog}
+      dialogId={dialogId}
       onSubmitted={onSubmitted}
       {...props}
     />
@@ -119,7 +125,8 @@ const ReplyLetterFormDialog = ({
   letterId,
   letter,
   onSubmitted,
-  dialog
+  dialog,
+  dialogId
 }) => {
   let [data, setSubmit] = useState()
 
@@ -146,6 +153,7 @@ const ReplyLetterFormDialog = ({
 
   return (
     <FormDialog
+      id={dialogId}
       defaultValues={{
         content: ""
       }}

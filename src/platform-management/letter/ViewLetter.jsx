@@ -51,6 +51,8 @@ export const ViewLetterDisclosure = ({
   brandId,
   boxType,
   letterId,
+  id,
+  dialogId = "view-letter-dialog",
   ...props
 }) => {
   let dialog = useModalState()
@@ -60,15 +62,17 @@ export const ViewLetterDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <ViewDisclosure {...dialog} {...props} />
+      <ViewDisclosure id={id} {...dialog} {...props} />
       {dialog.visible && (
         <ViewDialog
           brandId={brandId}
           boxType={boxType}
           letterId={letterId}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -113,7 +117,7 @@ const ReceiverField = ({ receiverType, receiver = [] }) => {
   )
 }
 
-const ViewDialog = ({ brandId, boxType, letterId, dialog }) => {
+const ViewDialog = ({ brandId, boxType, letterId, dialog, dialogId }) => {
   let { isLoading, data, error, mutate, deleteCache } = useLetter(
     brandId,
     boxType,
@@ -134,7 +138,13 @@ const ViewDialog = ({ brandId, boxType, letterId, dialog }) => {
   }
 
   return (
-    <Modal title={title} {...dialog} placement="top" minWidth="80vw">
+    <Modal
+      id={dialogId}
+      title={title}
+      {...dialog}
+      placement="top"
+      minWidth="80vw"
+    >
       <FieldValues marginLeft="1rem">
         <ReceiverField
           receiverType={data?.receiverType}
@@ -143,12 +153,19 @@ const ViewDialog = ({ brandId, boxType, letterId, dialog }) => {
         <Label>
           <Trans zh="主旨" en="Subject" />
         </Label>
-        <Input name="subject" value={data?.subject} readOnly disabled />
+        <Input
+          name="subject"
+          data-type="subject"
+          value={data?.subject}
+          readOnly
+          disabled
+        />
         <Label>
           <Trans zh="內容" en="Content" />
         </Label>
         <Textarea
           name="content"
+          data-type="content"
           value={data?.content}
           readOnly
           disabled
