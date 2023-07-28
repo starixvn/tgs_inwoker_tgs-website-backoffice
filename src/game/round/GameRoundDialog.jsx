@@ -213,7 +213,7 @@ export const GameRoundDialog = ({
                 <Trans zh="流水比例" en="Turnover Percentage" />
               </NormalLabel>
               <Box alignY="center">
-                <FormattedNumberDecimal
+                <FormattedNumberDecimalPercentage
                   value={record.effectiveBettingPercentage}
                 />
               </Box>
@@ -222,7 +222,7 @@ export const GameRoundDialog = ({
                 <Trans zh="输赢金额" en="Win Loss" />
               </NormalLabel>
               <Box alignY="center">
-                <FormattedNumberDecimalPercentage value={record.winLoss} />
+                <FormattedNumberDecimal value={record.winLoss} />
               </Box>
 
               <NormalLabel whiteSpace="normal">

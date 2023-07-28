@@ -236,7 +236,7 @@ const ReportContent = ({}) => {
         initialState={state}
         controlledState={state}
         pageCount={pageCount(pageSize, data?.totalCount)}
-        totalCount={data?.totalCount}
+        // totalCount={data?.totalCount}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
