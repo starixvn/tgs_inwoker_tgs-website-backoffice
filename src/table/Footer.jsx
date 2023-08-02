@@ -8,6 +8,7 @@ import React, {
 import { css, Global } from "@emotion/react"
 import { Pagination, Text, Set } from "bumbag"
 import { Trans, useTrans } from "../i18n"
+import { formatNumber } from "../number/format"
 
 export const Footer = forwardRef(({ table, setPageIndex }, ref) => {
   let previousText = useTrans({
@@ -34,6 +35,7 @@ export const Footer = forwardRef(({ table, setPageIndex }, ref) => {
 
   const getPage = () => state.pageIndex + 1
 
+  let formattedTotalCount = formatNumber(totalCount)
   return (
     <Set
       ref={ref}
@@ -64,7 +66,10 @@ export const Footer = forwardRef(({ table, setPageIndex }, ref) => {
       )}
       {Number.isFinite(totalCount) && (
         <Text>
-          <Trans zh={`筆數：${totalCount}`} en={`Rows：${totalCount}`} />
+          <Trans
+            zh={`筆數：${formattedTotalCount}`}
+            en={`Rows：${formattedTotalCount}`}
+          />
         </Text>
       )}
     </Set>
