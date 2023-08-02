@@ -184,7 +184,7 @@ const ReportContent = ({}) => {
   let maxDate = endOfDay(new Date())
 
   let columns = useColumns({ items: data?.items })
-  let formattedTotalCount = formatNumber(data?.totalCount) ?? "-"
+  let formattedTotalCount = formatNumber(data?.totalCount) || "-"
   return (
     <PageContent
       actionBar={
