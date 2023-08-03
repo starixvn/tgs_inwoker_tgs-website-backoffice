@@ -133,6 +133,11 @@ const ReportContent = ({ brandId }) => {
     deleteCache
   } = useAgentContributionList(username ? toSearchParams() : undefined)
 
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
+  }
+
   let columns = useColumns({
     usernames,
     setUsernames,
@@ -208,7 +213,7 @@ const ReportContent = ({ brandId }) => {
           />
         )}
       </FieldStack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={reset} />}
     </PageContent>
   )
 }
@@ -400,6 +405,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         accessor: (row) => row,
         sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        disableSortBy: true,
         toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
             ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
@@ -417,7 +423,8 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       numberDecimalColumn({
         accessor: "withdrawalAmount",
         sumColumn: "withdrawalAmount",
-        Header: <Trans zh="提款金额" en="Withdrawal Amount" />
+        Header: <Trans zh="提款金额" en="Withdrawal Amount" />,
+        disableSortBy: true
       }),
       numberDecimalColumn({
         /*
@@ -478,6 +485,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />
+        // disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
