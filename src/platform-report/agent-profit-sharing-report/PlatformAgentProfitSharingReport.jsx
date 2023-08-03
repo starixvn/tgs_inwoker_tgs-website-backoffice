@@ -626,16 +626,14 @@ const useColumns = ({
               {record?.username}
             </Container>
           )
-        },
-        disableSortBy: true
+        }
       }),
       numberDecimalPercentageColumn({
         accessor: "agentDividendPercentage",
         Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
         headCell: {
           whiteSpace: "nowrap"
-        },
-        disableSortBy: true
+        }
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
@@ -677,40 +675,35 @@ const useColumns = ({
         Header: <Trans zh="代理承担红利" en="Agent-Covered Bonus" />,
         headCell: {
           whiteSpace: "nowrap"
-        },
-        disableSortBy: true
+        }
       }),
       numberDecimalColumn({
         accessor: "bonusAdjustAmount",
         Header: <Trans zh="优惠调帐" en="Bonus Adjustment Amount" />,
         headCell: {
           whiteSpace: "nowrap"
-        },
-        disableSortBy: true
+        }
       }),
       numberDecimalColumn({
         accessor: "agentCoveredBonusAdjust",
         Header: <Trans zh="代理承担优惠调帐" en="Agent-Covered Bonus Adjust" />,
         headCell: {
           whiteSpace: "nowrap"
-        },
-        disableSortBy: true
+        }
       }),
       numberDecimalColumn({
         accessor: "betAmount",
         Header: <Trans zh="投注金额" en="Bet Amount" />,
         headCell: {
           whiteSpace: "nowrap"
-        },
-        disableSortBy: true
+        }
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
         headCell: {
           whiteSpace: "nowrap"
-        },
-        disableSortBy: true
+        }
       }),
       numberDecimalColumn({
         id: "winLossAmount",
@@ -719,7 +712,6 @@ const useColumns = ({
         headCell: {
           whiteSpace: "nowrap"
         },
-        disableSortBy: true,
         Cell: ({ value: record }) => {
           if (!record) {
             return null
@@ -754,8 +746,7 @@ const useColumns = ({
         Header: <Trans zh="净盈利" en="Net Profit" />,
         headCell: {
           whiteSpace: "nowrap"
-        },
-        disableSortBy: true
+        }
       })
     ]
 
@@ -766,8 +757,7 @@ const useColumns = ({
           Header: <PlayerContributionHeader />,
           headCell: {
             whiteSpace: "nowrap"
-          },
-          disableSortBy: true
+          }
         }),
         numberDecimalColumn({
           id: "fromTeamAgentDividendAmount",
@@ -776,7 +766,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {
               return null
@@ -811,8 +800,7 @@ const useColumns = ({
           Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
           headCell: {
             whiteSpace: "nowrap"
-          },
-          disableSortBy: true
+          }
         }),
         numberDecimalColumn({
           id: "agentDividendAmount",
