@@ -133,11 +133,6 @@ const ReportContent = ({ brandId }) => {
     deleteCache
   } = useAgentContributionList(username ? toSearchParams() : undefined)
 
-  const reset = () => {
-    deleteCache()
-    mutate(null, false)
-  }
-
   let columns = useColumns({
     usernames,
     setUsernames,
@@ -213,7 +208,7 @@ const ReportContent = ({ brandId }) => {
           />
         )}
       </FieldStack>
-      {error && <AlertDialog {...error} onClickClose={reset} />}
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
 }
@@ -484,8 +479,8 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />
-        // disableSortBy: true
+        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
