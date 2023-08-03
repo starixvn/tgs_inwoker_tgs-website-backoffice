@@ -377,8 +377,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
           textAlign: "center"
-        },
-        disableSortBy: true
+        }
       }),
       textColumn({
         accessor: "type",
@@ -394,15 +393,13 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
               return value
           }
         },
-        Footer: () => <Box />,
-        disableSortBy: true
+        Footer: () => <Box />
       }),
       numberDecimalColumn({
         id: "depositAmount",
         accessor: (row) => row,
         sumColumn: "depositAmount",
         Header: <Trans zh="存款金额" en="Deposit Amount" />,
-        disableSortBy: true,
         toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
             ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
@@ -420,8 +417,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       numberDecimalColumn({
         accessor: "withdrawalAmount",
         sumColumn: "withdrawalAmount",
-        Header: <Trans zh="提款金额" en="Withdrawal Amount" />,
-        disableSortBy: true
+        Header: <Trans zh="提款金额" en="Withdrawal Amount" />
       }),
       numberDecimalColumn({
         /*
@@ -433,8 +429,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         sumColumn: "bonusAmount",
         Header: (
           <Trans zh="红利金额" en="Bonus Amount" title={bonusAmountTooltip} />
-        ),
-        disableSortBy: true
+        )
         /*
         TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
         Cell: ({ value: record }) => {
@@ -467,38 +462,32 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       numberDecimalColumn({
         accessor: "bonusAdjustAmount",
         sumColumn: "bonusAdjustAmount",
-        Header: <Trans zh="优惠调帐" en="Bonus Adjustment Amount" />,
-        disableSortBy: true
+        Header: <Trans zh="优惠调帐" en="Bonus Adjustment Amount" />
       }),
       numberDecimalColumn({
         accessor: "agentAdjustAmount",
         sumColumn: "agentAdjustAmount",
-        Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />,
-        disableSortBy: true
+        Header: <Trans zh="代理调账" en="Agent Adjustment Amount" />
       }),
       numberDecimalColumn({
         accessor: "betAmount",
         sumColumn: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
-        disableSortBy: true
+        Header: <Trans zh="投注金额" en="Bet Amount" />
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
-        disableSortBy: true
+        Header: <Trans zh="有效投注" en="Valid Bet Amount" />
       }),
       numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
-        disableSortBy: true
+        Header: <Trans zh="流水" en="Turnover" />
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
-        disableSortBy: true
+        Header: <Trans zh="公司输赢金额" en="Co. W/L" />
       }),
       numberDecimalColumn({
         accessor: "netProfit",

@@ -821,7 +821,6 @@ const useColumns = ({
           headCell: {
             whiteSpace: "nowrap"
           },
-          disableSortBy: true,
           Cell: ({ value: record }) => {
             if (!record) {
               return null
