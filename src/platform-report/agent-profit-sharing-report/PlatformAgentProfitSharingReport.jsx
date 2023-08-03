@@ -146,7 +146,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     from: dateRange.start,
     to: dateRange.end,
     levelType: undefined,
-    sortby: "username",
+    sortBy: [{ id: "username", desc: false }],
     hiddenColumns
   })
 
