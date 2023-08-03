@@ -4,9 +4,119 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Back Office</title>
+    <style>
+      /* Box sizing rules */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        text-rendering: optimizeSpeed;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+          "Helvetica Neue", sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      #root,
+      body,
+      html {
+        height: 100%;
+      }
+
+      /* Inherit fonts for inputs and buttons */
+      input,
+      button,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      .box {
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .card {
+        width: 370px;
+        border-radius: 6px;
+        padding: 1.5rem;
+        box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.15),
+          0px 0px 2px 1px rgba(0, 0, 0, 0.02);
+
+        @media screen and (max-width: 576px) {
+          width: 95%;
+        }
+      }
+
+      .header {
+        font-weight: 600;
+        font-size: 1.25em;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+
+      .field {
+        margin-bottom: 0.5rem;
+      }
+
+      :focus-visible {
+        outline: none;
+      }
+
+      .input {
+        color: #161e2e;
+        border: 1px solid #d9d9e1;
+        height: 2.75em;
+        width: 100%;
+        border-radius: 6px;
+        padding: 0.4em 0.8em;
+      }
+
+      .input:focus {
+        border-color: #574feb;
+        box-shadow: #eeedfd 0px 0px 0px 3px;
+      }
+
+      .submit-button {
+        cursor: pointer;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 600;
+        min-height: 2.75rem;
+        justify-content: center;
+        padding: 0 1rem;
+        text-decoration: none;
+        hyphens: auto;
+        transition: box-shadow 0.1s ease-in-out 0s, border 0.1s,
+          background-color 0.1s;
+        border: #d9d9e1;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .flex-column {
+        flex-direction: column;
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="root"></div>
     <script type="module">
       const e = new Set(),
         n = new Set()
@@ -460,15 +570,21 @@
         watch = C
       //------
 
+      const En = "en"
+      const Zh = "zh"
+      const LangList = [Zh, En]
+
       const Locales = {
-        en: "en",
-        zh: "zh"
+        en: En,
+        zh: Zh
       }
 
-      const getAcceptLang = (key = "lang") => {
+      const LangLocalStorageKey = "lang"
+
+      const getLang = () => {
         let lang
         try {
-          lang = localStorage.getItem(key)
+          lang = localStorage.getItem(LangLocalStorageKey)
           if (lang) {
             return lang
           }
@@ -489,87 +605,107 @@
         return lang ?? Locales.en
       }
 
-      let currentLang = getAcceptLang()
       const state = reactive({
-        lang: getAcceptLang()
+        lang: getLang()
       })
-      console.log("state", state)
+
+      const setLang = (value) => {
+        if (!LangList.includes(value)) {
+          return
+        }
+
+        try {
+          state.lang = value
+          localStorage.setItem(LangLocalStorageKey, value)
+        } catch (error) {
+          //ignore
+        }
+      }
 
       const useTrans = (props = {}) => {
-        // let lang = getAcceptLang()
         return Reflect.get(props, state.lang)
       }
 
-      //TODO: use css style
-      const fieldBox = (props = {}, children = []) => {
-        return html` <div style="margin-bottom: 0.5rem;">${children}</div> `
+      const langSelect = () => {
+        return html`<select
+          value="${state.lang}"
+          @change="${(event) => {
+            setLang(event.target.value)
+          }}"
+        >
+          <option value="zh" ${state.lang == Zh ? "selected" : ""}>中文</option>
+          <option value="en" ${state.lang == En ? "selected" : ""}>
+            English
+          </option>
+        </select> `
       }
 
-      //TODO: useInputStyles
-      //TODO: use label as parent + display: flex?
-      const usernameInputField = () => {
+      const useLoginTrans = () =>
+        useTrans({
+          zh: "登录",
+          en: "Login"
+        })
+
+      const usernameInput = () => {
         let placeholder = useTrans({
           zh: "帐号",
           en: "Username"
         })
 
-        return fieldBox(
-          {},
-          html`<input
-            type="text"
-            name="userName"
-            placeholder="${placeholder}"
-            autocomplete="username"
-            style="
-              color: #161e2e;
-              border: 1px solid #d9d9e1;
-              height: 2.75em;
-              width: 100%;
-              border-radius: 6px;
-              padding: 0.4em 0.8em;
-            "
-          /> `
-        )
+        return html`<input
+          name="userName"
+          type="text"
+          placeholder="${placeholder}"
+          autocomplete="username"
+          class="input"
+        /> `
       }
 
-      //TODO
-      const passwordInputField = () => {}
+      const passwordInput = () => {
+        let placeholder = useTrans({
+          zh: "密码",
+          en: "Password"
+        })
 
+        return html`
+          <input
+            name="password"
+            type="password"
+            placeholder="${placeholder}"
+            autocomplete="current-password"
+            class="input"
+          />
+        `
+      }
+
+      //TODO: get host -> button background color
       const submitButton = () => {
         let label = useTrans({
           zh: "登录",
           en: "Login"
         })
 
-        return html` <button type="submit">${label}</button> `
+        return html`
+          <button type="submit" class="submit-button">${label}</button>
+        `
       }
 
-      //TODO: UsernameInput, PasswordInput, SubmitButton, Form?
       html`
-        <div
-          style="
-            width: 370px;
-            @media screen and (max-width: 576px) {
-              width: 95%;
-            }
-            border-radius: 6px;
-            padding: 1.5rem;
-          "
-        >
-          <form id="fLogin">
-            <div>
-              <label for="iUserName">UserName: </label>
-              ${usernameInputField()}
+        <div class="box">
+          <div class="card">
+            <div class="header flex">
+              <span>${() => useLoginTrans()}</span>
             </div>
-            <div>
-              <label for="iPassword">Password: </label>
-              <input id="iPassword" name="password" type="password" />
-            </div>
-            <div>${submitButton()}</div>
-          </form>
+            <form id="fLogin">
+              <div class="body flex flex-column">
+                <div class="field">${() => usernameInput()}</div>
+                <div class="field">${() => passwordInput()}</div>
+                ${() => submitButton()}
+              </div>
+            </form>
+          </div>
         </div>
-      `(document.getElementById("app"))
-      // template(document.getElementById("app"))
+      `(document.getElementById("root"))
     </script>
   </body>
 </html>

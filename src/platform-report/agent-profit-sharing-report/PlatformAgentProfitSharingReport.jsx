@@ -642,8 +642,7 @@ const useColumns = ({
         Header: <Trans zh="红利金额" en="Bonus Amount" />,
         headCell: {
           whiteSpace: "nowrap"
-        },
-        disableSortBy: true
+        }
         /*
         TODO: rm?
         Cell: ({ value: record }) => {

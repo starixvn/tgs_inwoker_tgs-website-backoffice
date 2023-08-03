@@ -503,8 +503,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" title={netProfitTooltip} />,
-        disableSortBy: true
+        Header: <Trans zh="净盈利" en="Net Profit" title={netProfitTooltip} />
       })
     ],
     [
