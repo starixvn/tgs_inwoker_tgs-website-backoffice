@@ -106,6 +106,7 @@ const ReportContent = ({ brandId }) => {
     from: dateRange.start,
     to: dateRange.end,
     levelType: undefined,
+    sortby: "username",
     hiddenColumns
   })
 
@@ -121,7 +122,6 @@ const ReportContent = ({ brandId }) => {
   const toSearchParams = () => ({
     ...toApiParams(state),
     username,
-    sortby: "username",
     from,
     to: startOfNextDay(to)
   })
