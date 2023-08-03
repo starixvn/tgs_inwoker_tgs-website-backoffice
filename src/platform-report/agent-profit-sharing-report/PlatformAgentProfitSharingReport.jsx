@@ -146,6 +146,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     from: dateRange.start,
     to: dateRange.end,
     levelType: undefined,
+    sortby: "username",
     hiddenColumns
   })
 
@@ -161,7 +162,6 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   const toSearchParams = () => ({
     ...toApiParams(state),
     username: agentUsername,
-    sortby: "username",
     from,
     to: startOfNextDay(to)
   })
