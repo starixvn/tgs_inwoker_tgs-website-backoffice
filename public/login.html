@@ -104,7 +104,7 @@
         hyphens: auto;
         transition: box-shadow 0.1s ease-in-out 0s, border 0.1s,
           background-color 0.1s;
-        border: #d9d9e1;
+        border: 1px solid #d9d9e1;
       }
 
       .flex {
@@ -659,6 +659,7 @@
           type="text"
           placeholder="${placeholder}"
           autocomplete="username"
+          required
           class="input"
         /> `
       }
@@ -675,6 +676,7 @@
             type="password"
             placeholder="${placeholder}"
             autocomplete="current-password"
+            required
             class="input"
           />
         `
@@ -688,7 +690,17 @@
         })
 
         return html`
-          <button type="submit" class="submit-button">${label}</button>
+          <button
+            type="submit"
+            class="submit-button"
+            style="
+              color: ${(window.env && window.env.loginButtonColor) ||
+            "#212121"}; 
+              background: ${(window.env && window.env.loginButtonBackground) ||
+            "#fcfcfd"};"
+          >
+            ${label}
+          </button>
         `
       }
 
