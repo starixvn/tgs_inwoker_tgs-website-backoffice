@@ -12,6 +12,7 @@ export const numberColumn = ({
   Cell,
   format = DefaultNumberFormat,
   digits,
+  placeholder,
   postfix = "",
   sumColumn: sumColumnName = "",
   toValue = defaultValueFn,
@@ -27,6 +28,7 @@ export const numberColumn = ({
       format={format}
       digits={digits}
       postfix={postfix}
+      placeholder={placeholder}
       title={tooltip}
     />
   )
