@@ -16,7 +16,8 @@ import {
   FieldStack,
   FieldWrapper,
   Level,
-  Dialog
+  Dialog,
+  Text
 } from "bumbag"
 import PageContent from "../../page/Content"
 import {
@@ -82,6 +83,7 @@ import Disclosure from "../../dialog/Disclosure"
 import { urlWith } from "../../client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { AddGameProviderRoundDialogDisclosure } from "./AddGameProviderRoundDialog"
+import { formatNumber } from "../../number/format"
 
 export { Code }
 
@@ -182,6 +184,7 @@ const ReportContent = ({}) => {
   let maxDate = endOfDay(new Date())
 
   let columns = useColumns({ items: data?.items })
+  let formattedTotalCount = formatNumber(data?.totalCount) || "-"
   return (
     <PageContent
       actionBar={
@@ -229,26 +232,33 @@ const ReportContent = ({}) => {
       }
       title={<Trans zh="订单管理" en="Order Management" />}
     >
-      <Table
-        columns={columns}
-        data={data?.items}
-        total={data?.items?.length > 0 && data?.total}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
-        // totalCount={data?.totalCount}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        getRowId={(row) => row.id}
-        stickyHead
-        stickyRight
-        css={css`
-          tr td:last-child:not([data-type="total"]) {
-            background-color: #fff;
-          }
-        `}
-      />
+      <FieldStack>
+        <Text.Block>
+          <Trans
+            zh={`筆數：${formattedTotalCount}`}
+            en={`Rows：${formattedTotalCount}`}
+          />
+        </Text.Block>
+        <Table
+          columns={columns}
+          data={data?.items}
+          total={data?.items?.length > 0 && data?.total}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(pageSize, data?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+          getRowId={(row) => row.id}
+          stickyHead
+          stickyRight
+          css={css`
+            tr td:last-child:not([data-type="total"]) {
+              background-color: #fff;
+            }
+          `}
+        />
+      </FieldStack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
