@@ -31,6 +31,7 @@ import AlertDialog from "../../dialog/Alert"
 import { sortBy } from "lodash-es"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Disclosure from "../../dialog/Disclosure"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
 
 export const PlayerWalletBalanceDialogDisclosure = ({
   playerCode,
@@ -261,13 +262,23 @@ const useColumns = ({ items = [], playerCode, onSubmitted }) => {
         Header: <Trans zh="游戏商" en="Game Provider" />,
         disableSortBy: true
       }),
-      textColumn({
-        accessor: "balance",
-        Header: <Trans zh="转帐錢包" en="Transfer wallet" />,
+      numberDecimalColumn({
+        accessor: "freeBalance",
+        Header: <Trans zh="转帐钱包" en="Transfer Wallet" />,
         disableSortBy: true,
-        Cell: ({ value }) => {
-          return <FormattedNumberDecimal value={value} placeholder="--" />
-        }
+        placeholder: "--"
+      }),
+      numberDecimalColumn({
+        accessor: "outstandingBalance",
+        Header: <Trans zh="未结余额" en="Unsettled Balance" />,
+        disableSortBy: true,
+        placeholder: "--"
+      }),
+      numberDecimalColumn({
+        accessor: "balance",
+        Header: <Trans zh="总余额" en="Total" />,
+        disableSortBy: true,
+        placeholder: "--"
       })
     ]
 
