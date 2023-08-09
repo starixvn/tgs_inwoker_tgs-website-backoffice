@@ -105,9 +105,6 @@ export const TimezoneSelectField = ({
 
   let options = ranges.map((value) => {
     let formatted = numeral(value).format(TimezoneNumberFormat)
-    if (value === 5.5) {
-      console.log("formatted", formatted)
-    }
     return {
       label: `${prefix}${formatted}`,
       value: value * 60
