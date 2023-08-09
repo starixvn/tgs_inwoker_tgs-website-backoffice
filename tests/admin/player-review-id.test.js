@@ -22,7 +22,6 @@ test("review player id", async ({
     licenseeId: licensee.id,
     enablePlayerIdentity: true
   })
-  console.log("platform.code", platform.code)
   let platformCode = platform.code
   let platformToken = await globalApi.platformToken(platform.code)
 
