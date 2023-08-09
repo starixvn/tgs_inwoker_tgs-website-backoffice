@@ -32,12 +32,12 @@ export const Content = () => {
     return null
   }
 
-  return <ContentBox />
+  return <PlatformDashboardPage />
 }
 
 export const CodeContentPair = [Code, Content]
 
-const ContentBox = () => {
+export const PlatformDashboardPage = () => {
   return (
     <PlatformPageContent title={<Trans zh="Dashboard" en="Dashboard" />}>
       <Body />
@@ -46,5 +46,5 @@ const ContentBox = () => {
 }
 
 const Body = () => {
-  return ""
+  return "dashboard page"
 }

@@ -80,6 +80,19 @@ const timezoneOptions = () => {
   })
 }
 
+const timezoneRange = (start, end) => {
+  let ranges = range(start, end)
+
+  if (end >= 6) {
+    let index = ranges.findIndex((value) => value === 6)
+    ranges.splice(index, 0, 5.5)
+  }
+
+  return ranges
+}
+
+const TimezoneNumberFormat = "+0[.]0"
+
 export const TimezoneSelectField = ({
   name = "timezoneOffset",
   defaultValue = localTimeOffset(),
@@ -88,10 +101,13 @@ export const TimezoneSelectField = ({
   rangeEnd = 15,
   ...props
 } = {}) => {
-  let ranges = range(rangeStart, rangeEnd)
+  let ranges = timezoneRange(rangeStart, rangeEnd)
 
   let options = ranges.map((value) => {
-    let formatted = numeral(value).format("+00")
+    let formatted = numeral(value).format(TimezoneNumberFormat)
+    if (value === 5.5) {
+      console.log("formatted", formatted)
+    }
     return {
       label: `${prefix}${formatted}`,
       value: value * 60
@@ -119,10 +135,10 @@ export const TimezoneSelect = ({
   rangeEnd = 15,
   ...props
 } = {}) => {
-  let ranges = range(rangeStart, rangeEnd)
+  let ranges = timezoneRange(rangeStart, rangeEnd)
 
   let options = ranges.map((value) => {
-    let formatted = numeral(value).format("+0")
+    let formatted = numeral(value).format(TimezoneNumberFormat)
     return {
       label: `${prefix}${formatted}`,
       value: value * 60
