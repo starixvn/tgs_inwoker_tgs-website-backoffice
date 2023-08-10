@@ -674,6 +674,8 @@
           <input
             name="password"
             type="password"
+            minlength="8"
+            maxlength="16"
             placeholder="${placeholder}"
             autocomplete="current-password"
             required
@@ -682,7 +684,6 @@
         `
       }
 
-      //TODO: get host -> button background color
       const submitButton = () => {
         let label = useTrans({
           zh: "登录",

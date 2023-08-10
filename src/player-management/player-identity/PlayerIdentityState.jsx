@@ -23,6 +23,12 @@ const RejectTrans = {
   en: "Rejected"
 }
 
+export const isApprove = (value) => value === Approve
+
+export const isReject = (value) => value === Reject
+
+export const isApproveOrReject = (value) => isApprove(value) || isReject(value)
+
 export const isPlayerIdentityWaitingVerify = (value) => {
   return value === WaitingVerify
 }

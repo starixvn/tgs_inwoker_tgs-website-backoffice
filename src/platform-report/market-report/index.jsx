@@ -10,8 +10,6 @@ import {
 import { Code } from "./menu"
 import { useMarketReportList, API } from "./client"
 import { MarketReportWithAgent } from "./MarketReportWithAgent"
-//TODO: rm
-import { isFeatureMarketReportWithAgentProfit } from "../../env"
 import {
   PlatformPageContent,
   usePlatformId

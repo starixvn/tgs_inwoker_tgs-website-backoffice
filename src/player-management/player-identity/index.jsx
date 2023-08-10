@@ -33,6 +33,7 @@ import PlayerIdentityState, {
 } from "./PlayerIdentityState"
 import { Descending } from "../../table/order"
 import { PlayerIdentityAttachment } from "./PlayerIdentityAttachment"
+import { ResetPlayerIdentityAuthDisclosure } from "./ResetPlayerIdentityAuth"
 
 export { Code }
 
@@ -281,6 +282,9 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
                     status={status}
                     onSubmitted={mutate}
                   />
+                )}
+                {isDev() && enablePlayerIdentity && (
+                  <ResetPlayerIdentityAuthDisclosure record={record} />
                 )}
               </Set>
             )

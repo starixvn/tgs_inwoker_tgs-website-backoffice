@@ -7,6 +7,8 @@ export const View = "view"
 
 export const Update = "update"
 
+export const Reset = "reset"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {

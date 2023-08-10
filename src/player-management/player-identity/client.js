@@ -1,7 +1,9 @@
+import { isBoolean } from "lodash-es"
 import {
   urlWith,
   useGet,
   usePostData,
+  usePut,
   usePutData,
   useDelete,
   usePostFormData
@@ -35,4 +37,13 @@ export const useUploadPlayerIdentityAttachment = (
       ? `${API}/${brandId}/${playerCode}/upload`
       : ""
   return usePostFormData(url, body)
+}
+
+const PlayerAPI = "/api/player"
+export const useUpdatePlayerIdentity = (playerCode, identityAuthentication) => {
+  let url =
+    playerCode && isBoolean(identityAuthentication)
+      ? `${PlayerAPI}/identityauth/${playerCode}/${identityAuthentication}`
+      : ""
+  return usePut(url)
 }
