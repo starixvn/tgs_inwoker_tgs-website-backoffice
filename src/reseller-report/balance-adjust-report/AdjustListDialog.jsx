@@ -51,6 +51,7 @@ import { PlayerAdjustBalanceTypeLabel } from "../../player-management/balance-ad
 import { InputField } from "../../input/Input"
 import { AdjustTypeSelect, AdjustTypeLabel } from "./AdjustType"
 import DownloadButton from "../../button/DownloadButton"
+import { isSubtract } from "./operation"
 
 export const AdjustListDialogDisclosure = ({
   id,
@@ -252,9 +253,16 @@ const useColumns = ({ items = [] }) => {
         Cell: AdjustTypeLabel
       }),
       numberDecimalColumn({
-        accessor: "amount",
+        id: "amount",
+        accessor: (row) => row,
         Header: <Trans zh="金额" en="Amount" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          let amount = isSubtract(record?.operationMode)
+            ? record.amount * -1
+            : record.amount
+          return <FormattedNumberDecimal value={amount} />
+        }
       }),
       textColumn({
         accessor: "operator",
