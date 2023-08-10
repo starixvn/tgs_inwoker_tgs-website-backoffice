@@ -10,12 +10,13 @@ import {
   FieldStack,
   Link,
   Button,
-  Divider
+  Alert
 } from "bumbag"
 import { Disclosure } from "../../dialog/Disclosure"
 import { isApproveOrReject, isApprove, isReject } from "./PlayerIdentityState"
 import { useTrans } from "../../i18n"
 import { useUpdatePlayerIdentity } from "./client"
+import { FormDialog } from "../../form/FormDialog"
 
 //TODO: auth menu
 export const ResetPlayerIdentityAuthDisclosure = ({ record }) => {
@@ -36,7 +37,7 @@ export const ResetPlayerIdentityAuthDisclosure = ({ record }) => {
   )
 }
 
-const useResetLabel = ({ status }) => {
+const useResetLabel = (status) => {
   let resetApprove = useTrans({
     zh: "重设核准",
     en: "Reset Approve"
@@ -72,9 +73,11 @@ const ResetDialog = ({ record, dialog }) => {
   let [formData, setSubmit] = useState()
   let { result, isLoading, error, deleteCache, mutate } =
     useUpdatePlayerIdentity(
-      formData.playerCode,
-      formData.identityAuthentication
+      formData?.playerCode,
+      formData?.identityAuthentication
     )
+
+  let label = useResetLabel(record?.status)
 
   const onSubmit = () => {
     let playerCode = record?.playerCode
@@ -94,11 +97,14 @@ const ResetDialog = ({ record, dialog }) => {
   return (
     <FormDialog
       defaultValues={{}}
-      onSubmit={setSubmit}
+      onSubmit={onSubmit}
       isLoading={isLoading}
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-    ></FormDialog>
+      dialog={dialog}
+    >
+      <Alert title={`${label}?`} type="warning" variant="" />
+    </FormDialog>
   )
 }
