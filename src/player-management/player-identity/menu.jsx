@@ -32,6 +32,14 @@ export const label = (codes = [], locale = Locales.zh) => {
         },
         locale
       )
+    case Reset:
+      return getTrans(
+        {
+          zh: "重设",
+          en: "Reset"
+        },
+        locale
+      )
     default:
       return ""
   }
