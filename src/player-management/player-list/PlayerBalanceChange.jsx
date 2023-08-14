@@ -230,6 +230,18 @@ const WithdrawCommitTrans = {
   en: "Complete Withdrawal"
 }
 
+const Transfer = "Transfer"
+const TransferTrans = {
+  zh: "转帐(含转帐取消)",
+  en: "Transfer (Includes Canceled Transfer)"
+}
+
+const TransferRollback = "TransferRollback"
+const TransferRollbackTrans = {
+  zh: "转帐取消",
+  en: "Transfer Canceled"
+}
+
 const isDepositOrWithdrawal = (value) =>
   value === Deposit || value === Withdrawal
 
@@ -346,6 +358,17 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTrans(CancelWithdrawalTrans),
       value: CancelWithdrawal
     },
+    /*
+    TODO: api support
+    {
+      label: useTrans(TransferTrans),
+      value: Transfer
+    },
+    {
+      label: useTrans(TransferRollbackTrans),
+      value: TransferRollback
+    },
+    */
     ...adjustPlayerBalanceTypeOptions,
     {
       label: useTrans(BonusTrans),
@@ -419,6 +442,10 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...WithdrawalTrans} />
     case WithdrawCommit:
       return <Trans {...WithdrawCommitTrans} />
+    case Transfer:
+      return <Trans {...TransferTrans} />
+    case TransferRollback:
+      return <Trans {...TransferRollbackTrans} />
     case PlayerAdjustBalanceType.Company:
     case PlayerAdjustBalanceType.Agent:
     case PlayerAdjustBalanceType.System:
