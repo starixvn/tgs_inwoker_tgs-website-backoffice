@@ -336,7 +336,6 @@ const CancelWithdrawalTrans = {
   en: "Cancel Withdrawal"
 }
 
-//TODO: check with backend api
 export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTrans({
     zh: "交易类型",
@@ -359,6 +358,8 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTrans(CancelWithdrawalTrans),
       value: CancelWithdrawal
     },
+    /*
+    TODO: api support
     {
       label: useTrans(TransferTrans),
       value: Transfer
@@ -367,6 +368,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTrans(TransferRollbackTrans),
       value: TransferRollback
     },
+    */
     ...adjustPlayerBalanceTypeOptions,
     {
       label: useTrans(BonusTrans),

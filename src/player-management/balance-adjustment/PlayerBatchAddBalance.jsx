@@ -458,12 +458,12 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
       <FieldWrapper
         label={
           <FieldStack>
-            {/* <Alert variant="bordered" type="info" accent>
+            <Alert variant="bordered" type="info" accent>
               <Trans
                 zh="請注意，若輸入小於0的流水金額，將視為0。"
                 en="Please note that any wagering requirement amount below 0 will be considered as 0."
               />
-            </Alert> */}
+            </Alert>
             <Text.Block>
               <Trans zh="汇入" en="Import" />
               <Link
