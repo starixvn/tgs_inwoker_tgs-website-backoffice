@@ -11,9 +11,7 @@ import {
   Button,
   Text,
   Dialog,
-  Modal,
-  Table,
-  useClassName
+  Group
 } from "bumbag"
 import { FieldValues } from "../../layout/Grid"
 import {
@@ -46,6 +44,7 @@ import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequi
 import Textarea from "../../textarea"
 import { isValid, parse } from "date-fns"
 import { defaultFormatDate } from "../../date/format"
+import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 
 export const Key = "player"
 
@@ -59,6 +58,7 @@ export const Tab = ({ ...props }) => {
 
 export const EditPanel = ({
   brandId,
+  brand,
   playerCode = "",
   player: { birthdate = "", ...player },
   showParentUsername,
@@ -108,6 +108,7 @@ export const EditPanel = ({
         <form onSubmit={formMethods.handleSubmit(onSubmit)}>
           <EditForm
             brandId={brandId}
+            brand={brand}
             playerCode={playerCode}
             player={player}
             showParentUsername={showParentUsername}
@@ -125,6 +126,7 @@ export const EditPanel = ({
 
 const EditForm = ({
   brandId,
+  brand,
   playerCode = "",
   player = {},
   showParentUsername,
@@ -173,14 +175,19 @@ const EditForm = ({
         </Box>
 
         <IdentityCardNumberLabel />
-        <Box>
+        <Group>
           <Input
             name="idNumber"
             defaultValue={player?.idNumber}
             disabled
             readOnly
           />
-        </Box>
+          {brand?.enablePlayerIdentity && player.idNumber && (
+            <Button disabled>
+              <PlayerIdentityStateIcon value={player.identityAuthentication} />
+            </Button>
+          )}
+        </Group>
 
         <VIPLevelLabel />
         <Box>
@@ -253,6 +260,7 @@ const EditForm = ({
 
 export const Panel = ({
   player = {},
+  brand,
   showParentUsername,
   onSubmitted,
   ...props
@@ -293,7 +301,12 @@ export const Panel = ({
         </Box>
 
         <IdentityCardNumberLabel />
-        <Box>{player.idNumber}</Box>
+        <Set orientation="horizontal" alignY="center">
+          <Text.Block>{player.idNumber}</Text.Block>
+          {brand?.enablePlayerIdentity && player.idNumber && (
+            <PlayerIdentityStateIcon value={player.identityAuthentication} />
+          )}
+        </Set>
 
         <VIPLevelLabel />
         <Box>
