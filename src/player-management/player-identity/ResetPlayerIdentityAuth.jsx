@@ -17,15 +17,18 @@ import { isApproveOrReject, isApprove, isReject } from "./PlayerIdentityState"
 import { useTrans } from "../../i18n"
 import { useUpdatePlayerIdentity } from "./client"
 import { FormDialog } from "../../form/FormDialog"
+import { Reset } from "./menu"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 
-//TODO: auth menu
 export const ResetPlayerIdentityAuthDisclosure = ({ record }) => {
   let dialog = useModalState()
+
+  let hasAuth = useIsDisplayMenuByRoute([Reset])
 
   let label = useResetLabel(record?.status)
 
   let reviewed = isApproveOrReject(record?.status)
-  if (!reviewed) {
+  if (!reviewed || !hasAuth) {
     return null
   }
 
@@ -100,6 +103,7 @@ const ResetDialog = ({ record, dialog }) => {
       onSubmit={onSubmit}
       isLoading={isLoading}
       result={result}
+      onSubmitted={reset}
       error={error}
       onCloseErrorAlert={reset}
       dialog={dialog}

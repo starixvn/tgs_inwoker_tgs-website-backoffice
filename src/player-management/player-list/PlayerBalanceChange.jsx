@@ -358,8 +358,6 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTrans(CancelWithdrawalTrans),
       value: CancelWithdrawal
     },
-    /*
-    TODO: api support
     {
       label: useTrans(TransferTrans),
       value: Transfer
@@ -368,7 +366,6 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTrans(TransferRollbackTrans),
       value: TransferRollback
     },
-    */
     ...adjustPlayerBalanceTypeOptions,
     {
       label: useTrans(BonusTrans),

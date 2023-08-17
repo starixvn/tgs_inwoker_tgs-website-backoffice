@@ -283,7 +283,7 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
                     onSubmitted={mutate}
                   />
                 )}
-                {isDev() && enablePlayerIdentity && (
+                {enablePlayerIdentity && (
                   <ResetPlayerIdentityAuthDisclosure record={record} />
                 )}
               </Set>
