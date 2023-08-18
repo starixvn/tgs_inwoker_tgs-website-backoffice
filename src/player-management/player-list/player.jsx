@@ -45,6 +45,7 @@ import Textarea from "../../textarea"
 import { isValid, parse } from "date-fns"
 import { defaultFormatDate } from "../../date/format"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
+import { PlayerBucketListDialogDisclosure } from "./PlayerBucketList"
 
 export const Key = "player"
 
@@ -341,6 +342,10 @@ export const Panel = ({
             id="wagering-requirement-dialog-disclosure"
             playerCode={player.playerCode}
           />
+          {/* 
+          TODO: test case
+          <PlayerBucketListDialogDisclosure playerCode={player.playerCode} /> 
+          */}
         </Set>
 
         <StatusLabel />

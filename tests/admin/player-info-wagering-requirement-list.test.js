@@ -18,6 +18,7 @@ test("view player wagering requirement list", async ({
   player,
   backofficeApi
 }) => {
+  console.log("player.code", player.code)
   let walletAmount = 100
   let ExpectedWageringRequirementAmount = 100
   await Promise.all([
