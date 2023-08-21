@@ -344,7 +344,7 @@ export const Panel = ({
           />
           {/* 
           TODO: test case
-          <PlayerBucketListDialogDisclosure playerCode={player.playerCode} /> 
+          <PlayerBucketListDialogDisclosure playerCode={player.playerCode} />
           */}
         </Set>
 

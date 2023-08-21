@@ -64,7 +64,6 @@ export const PlayerBucketListDialogDisclosure = ({
   )
 }
 
-//TODO: fake api & data
 const PlayerBucketListDialog = ({ playerCode, dialog, dialogId }) => {
   let title = useTrans({
     zh: "流水需求",
@@ -117,12 +116,16 @@ const PlayerBucketListDialog = ({ playerCode, dialog, dialogId }) => {
 const usePlayerBucketListColumns = ({ playerCode, items = [] }) =>
   useMemo(() => {
     let columns = [
-      sequenceColumn(),
       textColumn({
         accessor: "type",
         Header: <Trans zh="类型" en="Type" />,
         disableSortBy: true,
         Cell: PlatformBucketLabel
+      }),
+      numberDecimalColumn({
+        accessor: "amount",
+        Header: <Trans zh="流水需求" en="Wagering Requirements" />,
+        disableSortBy: true
       }),
       textColumn({
         id: "actions",
@@ -134,6 +137,7 @@ const usePlayerBucketListColumns = ({ playerCode, items = [] }) =>
             <PlayerBucketItemsDialogDisclosure
               playerCode={playerCode}
               type={record?.type}
+              data-type={record?.type}
             />
           )
         }
@@ -153,7 +157,7 @@ const PlayerBucketItemsDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <ViewDisclosure id={id} {...dialog} />
+      <ViewDisclosure id={id} {...dialog} {...props} />
       {dialog.visible && (
         <PlayerBucketItemsDialog
           playerCode={playerCode}
