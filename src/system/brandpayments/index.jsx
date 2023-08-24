@@ -125,7 +125,7 @@ const BodyContent = ({ brandId }) => {
           />
           <Set>
             {/* {isWithdrawalPlatformPayment(transferType) && (
-                <BrandAutoWithdrawDialogDisclosure brandId={brandId} />             
+              <BrandAutoWithdrawDialogDisclosure brandId={brandId} />
             )} */}
             <AddBrandPaymentButton
               id="add-payment-dialog-disclosure"
