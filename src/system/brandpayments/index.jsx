@@ -32,14 +32,16 @@ import {
   BrandPaymentStatusSelect,
   BrandPaymentStatusToggleButton
 } from "./BrandPaymentStatus"
-import TransferType from "./BrandPaymentTransferType"
+import TransferType, {
+  isWithdrawalPlatformPayment
+} from "./BrandPaymentTransferType"
 import { useChangeBrandPaymentOrders, useBrandPaymentList } from "./client"
 import { View as ViewMenu, Update as UpdateMenu } from "./menu"
 import { Detail as ConditionDetail } from "./condition"
 import { AddBrandPaymentButton, EditButton } from "./edit"
 import { ViewButton as LogsButton } from "./logs"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
-import Alert, { AlertDialog } from "../../dialog/Alert"
+import { AlertDialog } from "../../dialog/Alert"
 import { DesignatedPlayersLink } from "./DesignatedPlayersLink"
 import { InputField } from "../../input/Input"
 import { formatNumber } from "../../number/format"
@@ -49,6 +51,7 @@ import { PaymentProviderLabel } from "../../payment/PaymentProvider"
 import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import { NumberInput } from "../../input/NumberInput"
+import { BrandAutoWithdrawDialogDisclosure } from "./BrandAutoWithdraw"
 
 export { Code }
 
@@ -120,12 +123,17 @@ const BodyContent = ({ brandId }) => {
             }}
             isLoading={isLoading}
           />
-          <AddBrandPaymentButton
-            id="add-payment-dialog-disclosure"
-            transferType={transferType}
-            brandId={brandId}
-            onSubmitted={mutate}
-          />
+          <Set>
+            {/* {isWithdrawalPlatformPayment(transferType) && (
+                <BrandAutoWithdrawDialogDisclosure brandId={brandId} />             
+            )} */}
+            <AddBrandPaymentButton
+              id="add-payment-dialog-disclosure"
+              transferType={transferType}
+              brandId={brandId}
+              onSubmitted={mutate}
+            />
+          </Set>
         </Level>
       }
     >
