@@ -135,7 +135,7 @@ const BrandPaymentCheckboxGroupTable = ({
       : undefined
   )
 
-  //TODO: filter manual?
+  //TODO: filter out manual provider?
   let items = brandPayment?.items
   let { setValue, control, getValues } = useFormContext()
 
@@ -165,7 +165,7 @@ const BrandPaymentCheckboxGroupTable = ({
     setValue(name, value)
   }
 
-  let columns = useColumns2({
+  let columns = useColumns({
     items: brandPayment?.items,
     brandPaymentIds,
     addBrandPaymentId,
@@ -174,6 +174,7 @@ const BrandPaymentCheckboxGroupTable = ({
     removeAllBrandPaymentIds
   })
 
+  //TODO: atlease one required validation on table?
   return (
     <Controller
       name={name}
@@ -184,27 +185,9 @@ const BrandPaymentCheckboxGroupTable = ({
       defaultValue={brandPaymentIds}
     />
   )
-  /*
-  
-  //TODO: string array?
-  let fieldArray = useFieldArray({
-    name,
-    control,
-    keyName: "_id"
-  })
-
-  
-
-  let columns = useColumns({
-    items: brandPayment?.items,
-    fieldArray
-  })
-
-  return <Table isLoading={isLoading} columns={columns} data={items} />
-  */
 }
 
-const useColumns2 = ({
+const useColumns = ({
   items = [],
   brandPaymentIds,
   addBrandPaymentId,
@@ -262,55 +245,4 @@ const useColumns2 = ({
     ]
     return columns
   }, [JSON.stringify(items), JSON.stringify(brandPaymentIds)])
-}
-
-// TODO: AllBrandPaymentsCheckbox
-const useColumns = ({ items = [], fieldArray = [] }) => {
-  const removeBrandPayment = (brandPaymentId) => {
-    let index = fieldArray.fields.findIndex((item) => {
-      return item.id === brandPaymentId
-    })
-    if (index >= 0) {
-      fieldArray.remove(index)
-    }
-  }
-
-  console.log("fieldArray.fields", fieldArray.fields)
-
-  return useMemo(() => {
-    let columns = [
-      textColumn({
-        id: "checkbox",
-        accessor: (row) => row,
-        disableSortBy: true,
-        Cell: ({ value: brandPayment }) => {
-          //TODO: checked?
-          let index = fieldArray.fields.findIndex((item) => {
-            return item.id === brandPayment.id
-          })
-          let checked = index >= 0
-          return (
-            <Checkbox
-              checked={checked}
-              onChange={(event) => {
-                let checked = event.target.checked
-                if (checked) {
-                  fieldArray.append(brandPayment)
-                } else {
-                  removeBrandPayment(brandPayment.id)
-                }
-              }}
-            />
-          )
-        }
-      }),
-      textColumn({
-        accessor: "channelName",
-        Header: <Trans zh="通道名称" en="Channel Name" />,
-        disableSortBy: true
-      })
-    ]
-
-    return columns
-  }, [JSON.stringify(items), JSON.stringify(fieldArray.fields)])
 }
