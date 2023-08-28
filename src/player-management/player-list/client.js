@@ -240,3 +240,8 @@ export const usePlayerBucketList = (playerCode) => {
     deleteCache: () => {}
   }
 }
+
+//TODO: use different api?
+export const usePlayerBucketItems = (playerCode, searchParams) => {
+  return usePlayerWageringRequirementList(playerCode, searchParams)
+}
