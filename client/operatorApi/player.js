@@ -191,6 +191,46 @@ export const addManualBankCard = async (
   return result
 }
 
+export const addBankCard = async (
+  platformToken,
+  playerToken,
+  {
+    paymentchannelid,
+    bankAccount = finance.account(),
+    name = finance.accountName(),
+    bankName = "bankName",
+    bankBranch = "bankBranch"
+  } = {}
+) => {
+  if (!paymentchannelid) {
+    throw "paymentchannelid is required"
+  }
+
+  let url = `${api()}/bankinfo`
+  let payload = {
+    banktype: "Bank",
+    paymentchannelid,
+    detail: {
+      bankName,
+      bankBranch,
+      name,
+      bankAccount
+    }
+  }
+  let headers = {
+    "Content-Type": "application/json",
+    "brand-token": platformToken,
+    Token: playerToken
+  }
+
+  let result = await fetcher(url, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers
+  })
+  return result
+}
+
 const dummyImagePath = fileURLToPath(new URL("./dummy.png", import.meta.url))
 export const uploadIdentity = async (platformToken, playerToken) => {
   const form = new FormData()
@@ -262,6 +302,7 @@ export default {
   login,
   createAndLogin,
   addManualBankCard,
+  addBankCard,
   findBankInfoIdByType,
   uploadIdentity,
   updateIdentity,

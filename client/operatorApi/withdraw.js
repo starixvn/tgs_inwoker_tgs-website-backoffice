@@ -68,8 +68,39 @@ export const applyManualWithdraw = async (
   return result.data
 }
 
+export const applyWithdraw = async (
+  platformToken,
+  playerToken,
+  { bankinfoid, amount } = {}
+) => {
+  if (!bankinfoid) {
+    bankinfoid = await findBankInfoIdByType(platformToken, playerToken)
+  }
+
+  let payload = {
+    bankinfoid,
+    amount
+  }
+
+  let url = `${api()}/withdraw`
+  let headers = {
+    "Content-Type": "application/json",
+    "brand-token": platformToken,
+    Token: playerToken
+  }
+
+  let result = await fetcher(url, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers
+  })
+
+  return result.data
+}
+
 export default {
   paymentOptions,
   findManualPaymentChannelId,
-  applyManualWithdraw
+  applyManualWithdraw,
+  applyWithdraw
 }
