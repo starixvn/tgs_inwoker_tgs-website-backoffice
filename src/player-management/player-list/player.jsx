@@ -343,7 +343,7 @@ export const Panel = ({
             playerCode={player.playerCode}
           />
           {/* 
-          TODO: test case
+          TODO: rm PlayerWageringRequirementDialogDisclosure & it's test case and add "PlayerBucketListDialogDisclosure"
           <PlayerBucketListDialogDisclosure playerCode={player.playerCode} />
           */}
         </Set>

@@ -40,7 +40,7 @@ const LotteryTrans = {
 }
 
 const AllTrans = [
-  ["Main", MainTrans],
+  ["", MainTrans],
   ["LiveDealer", LiveDealerTrans],
   ["Sports", SportsTrans],
   ["EGame", EGameTrans],

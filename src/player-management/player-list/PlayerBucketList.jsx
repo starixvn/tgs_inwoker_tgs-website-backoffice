@@ -74,7 +74,6 @@ const PlayerBucketListDialog = ({ playerCode, dialog, dialogId }) => {
     playerCode
   })
 
-  //TODO: sortby & orderby? need extra params?
   let {
     isLoading,
     data: items,
@@ -117,7 +116,7 @@ const usePlayerBucketListColumns = ({ playerCode, items = [] }) =>
   useMemo(() => {
     let columns = [
       textColumn({
-        accessor: "type",
+        accessor: "bucketType",
         Header: <Trans zh="类型" en="Type" />,
         disableSortBy: true,
         Cell: PlatformBucketLabel
@@ -136,8 +135,7 @@ const usePlayerBucketListColumns = ({ playerCode, items = [] }) =>
           return (
             <PlayerBucketItemsDialogDisclosure
               playerCode={playerCode}
-              type={record?.type}
-              data-type={record?.type}
+              bucketType={record?.bucketType}
             />
           )
         }
@@ -148,7 +146,7 @@ const usePlayerBucketListColumns = ({ playerCode, items = [] }) =>
 
 const PlayerBucketItemsDialogDisclosure = ({
   playerCode,
-  type,
+  bucketType,
   id,
   dialogId = "bucket-items-dialog",
   ...props
@@ -161,7 +159,7 @@ const PlayerBucketItemsDialogDisclosure = ({
       {dialog.visible && (
         <PlayerBucketItemsDialog
           playerCode={playerCode}
-          type={type}
+          bucketType={bucketType}
           dialog={dialog}
           dialogId={dialogId}
         />
@@ -172,12 +170,12 @@ const PlayerBucketItemsDialogDisclosure = ({
 
 const PlayerBucketItemsDialog = ({
   playerCode,
-  type,
+  bucketType = "",
   dialog,
   dialogId,
   ...props
 }) => {
-  let label = usePlatformBucketLabel(type)
+  let label = usePlatformBucketLabel(bucketType)
   let title = useTrans({
     zh: `流水纪录 - ${label}`,
     en: `Wagering Requirement Records - ${label}`
@@ -187,9 +185,9 @@ const PlayerBucketItemsDialog = ({
     playerCode
   })
 
-  //TODO: need params? sortby & orderby?
   let { isLoading, data, error, mutate, deleteCache } = usePlayerBucketItems(
     playerCode,
+    bucketType,
     {
       ...toApiParams(state),
       sortby: "createdOn",
@@ -199,7 +197,7 @@ const PlayerBucketItemsDialog = ({
 
   let columns = useBucketItemsColumns({
     playerCode,
-    type,
+    type: bucketType,
     items: data
   })
 
