@@ -90,6 +90,23 @@ const useIsAutoWithdrawEnabled = (name = AutoWithdrawName) => {
   return value
 }
 
+//TODO: apply
+const useNotManualBrandPaymentList = (brandId, options) => {
+  let { data, ...rest } = useBrandPaymentList(
+    useBrandPaymentListParams(brandId),
+    options
+  )
+
+  let brandPaymentList = data?.items?.filter(
+    ({ paymentName }) => paymentName != "Manual"
+  )
+
+  return {
+    brandPaymentList,
+    ...rest
+  }
+}
+
 const useAutoWithdrawFormData = (brandId) => {
   let {
     isLoading: isLoadingBrandAutoWithdraw,
@@ -102,9 +119,9 @@ const useAutoWithdrawFormData = (brandId) => {
 
   let {
     isLoading: isLoadingBrandPaymentList,
-    data: brandPaymentListData,
+    brandPaymentList,
     error: brandPaymentListError
-  } = useBrandPaymentList(brandId)
+  } = useNotManualBrandPaymentList(brandId)
 
   let isLoading =
     isLoadingBrandAutoWithdraw ||
@@ -119,7 +136,7 @@ const useAutoWithdrawFormData = (brandId) => {
       : {
           brandPaymentIds: []
         },
-    brandPaymentList: brandPaymentListData?.items,
+    brandPaymentList,
     error,
     mutate,
     deleteCache
@@ -222,21 +239,25 @@ const AutoWithdrawFormDialog = ({
       dialog={dialog}
       title={title}
     >
-      <FieldValues>
+      <FieldValues
+        css={css`
+          margin: 0 1rem;
+          grid-template-columns: auto 1fr;
+          gap: 1rem;
+        `}
+      >
         <Box alignY="center">
           <Trans zh="自动出款" en="Auto Payments" />
         </Box>
         <AutoWithdrawGroupField />
 
         <Trans zh="金流通道" en="Payments" />
-        <Box>
-          <BrandPaymentCheckboxGroupTable
-            brandId={brandId}
-            transferTyp={TransferType.Withdrawal}
-            paymentStatus={BrandPaymentStatus.Enabled}
-            prefetchedData={brandPaymentList}
-          />
-        </Box>
+        <BrandPaymentCheckboxGroupTable
+          brandId={brandId}
+          transferTyp={TransferType.Withdrawal}
+          paymentStatus={BrandPaymentStatus.Enabled}
+          prefetchedData={brandPaymentList}
+        />
       </FieldValues>
     </FormDialog>
   )
@@ -248,23 +269,16 @@ const BrandPaymentCheckboxGroupTable = ({
   prefetchedData,
   ...props
 }) => {
-  let brandPaymentListParams = useBrandPaymentListParams(brandId)
-  let {
-    isLoading,
-    data: brandPayment,
-    error,
-    deleteCache,
-    mutate
-  } = useBrandPaymentList(
-    brandPaymentListParams,
-    prefetchedData
-      ? {
-          fallbackData: prefetchedData
-        }
-      : undefined
-  )
+  let { isLoading, brandPaymentList, error, deleteCache, mutate } =
+    useNotManualBrandPaymentList(
+      brandId,
+      prefetchedData
+        ? {
+            fallbackData: prefetchedData
+          }
+        : undefined
+    )
 
-  let items = brandPayment?.items
   let { setValue, control, getValues, clearErrors } = useFormContext()
 
   let brandPaymentIds = useWatch({
@@ -278,7 +292,7 @@ const BrandPaymentCheckboxGroupTable = ({
   }
 
   const addAllBrandPaymentIds = () => {
-    let value = items?.map(({ id }) => id)
+    let value = brandPaymentList?.map(({ id }) => id)
     setValue(name, value)
   }
 
@@ -310,7 +324,7 @@ const BrandPaymentCheckboxGroupTable = ({
       render={({ field, fieldState }) => {
         let columns = useColumns({
           fieldState,
-          items: brandPayment?.items,
+          items: brandPaymentList,
           brandPaymentIds,
           addBrandPaymentId,
           addAllBrandPaymentIds,
@@ -323,7 +337,7 @@ const BrandPaymentCheckboxGroupTable = ({
           <Table
             isLoading={isLoading}
             columns={columns}
-            data={items}
+            data={brandPaymentList}
             stickyHead
             containerProps={{
               maxHeight: "60vh",
