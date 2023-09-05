@@ -10,7 +10,8 @@ import {
   useModalState,
   Popover,
   Icon,
-  List
+  List,
+  Columns
 } from "bumbag"
 import {
   useIsDisplayMenuByRoute,
@@ -23,6 +24,7 @@ import {
   usePlatformId
 } from "../../page/PlatformPageContent"
 import { Trans } from "../../i18n"
+import { PlatformOverview } from "./PlatformOverview"
 
 export { Code }
 
@@ -38,13 +40,40 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 export const PlatformDashboardPage = () => {
+  //TODO: title with brand code?
   return (
-    <PlatformPageContent title={<Trans zh="Dashboard" en="Dashboard" />}>
+    <PlatformPageContent>
       <Body />
     </PlatformPageContent>
   )
 }
 
+//TODO: layout?
 const Body = () => {
-  return "dashboard page"
+  return (
+    <Columns>
+      <Columns.Column>
+        <WelcomeBox />
+        <PlatformOverview />
+      </Columns.Column>
+      <Columns.Column>
+        <PlayerTableBox />
+      </Columns.Column>
+      <Columns.Column>
+        <GameTableBox />
+      </Columns.Column>
+    </Columns>
+  )
+}
+
+const WelcomeBox = () => {
+  return "TODO: Brand Code"
+}
+
+const PlayerTableBox = () => {
+  return "player table"
+}
+
+const GameTableBox = () => {
+  return "game table"
 }
