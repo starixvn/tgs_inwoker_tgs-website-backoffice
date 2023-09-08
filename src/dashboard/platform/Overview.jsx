@@ -240,17 +240,19 @@ const OnlinePlayerCountStat = () => {
 //H.
 export const DepositSuccessRateStat = ({}) => {
   let id = usePlatformId()
-  let { isLoading, data: rate, error } = usePlatformDepositSuccessRate(id)
+  let { isLoading, data: record, error } = usePlatformDepositSuccessRate(id)
 
+  let trend = trendOf(record?.yesterdaySuccessRate, record?.todaySuccessRate)
   return (
     <Stat>
       <StatHeader>
         <Trans zh="存款成功率" en="Deposit Approval Rate" />
+        {trend && <TrendIcon value={trend} />}
       </StatHeader>
 
       <StatBody isLoading={isLoading}>
         <FormattedNumberDecimalPercentage
-          value={rate}
+          value={record?.todaySuccessRate}
           format="0,0"
           placeholder="-"
         />
