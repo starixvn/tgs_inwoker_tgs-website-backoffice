@@ -70,17 +70,20 @@ export const getHeaderButtonColor = () =>
 export const getHeaderButtonBackground = () =>
   window?.env?.loginButtonBackground || "transparent"
 
+/* TODO: able to rm?
 const Sidebar = "Sidebar"
-
-//TODO: rm
-const PlatformAgentProfitSharingReport = "PlatformAgentProfitSharingReport" //env.html
+*/
 
 //TODO: rm
 const MarketReportWithAgentProfit = "MarketReportWithAgentProfit"
 
+const OAuth = "OAuth" //public/env.html
+
 export const Features = {
-  Sidebar,
-  MarketReportWithAgentProfit
+  /*
+  MarketReportWithAgentProfit,
+  */
+  OAuth
 }
 
 const listFeatures = () => {
@@ -120,8 +123,12 @@ export const isFeatureEnabled = (feature = "") => {
 }
 
 //TODO: rm
+/*
 export const isFeatureMarketReportWithAgentProfit = () =>
   isFeatureEnabled(MarketReportWithAgentProfit)
+*/
+
+export const isFeatureOAuthEnabled = () => isFeatureEnabled(OAuth)
 
 export default {
   Development,

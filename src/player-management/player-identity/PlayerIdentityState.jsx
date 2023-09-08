@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Text, Set, Icon } from "bumbag"
-import { faCertificate } from "@fortawesome/free-solid-svg-icons"
+import {
+  faCertificate,
+  faCheck,
+  faUserCheck,
+  faUserSlash
+} from "@fortawesome/free-solid-svg-icons"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
 
@@ -22,6 +27,12 @@ const RejectTrans = {
   zh: "已拒绝",
   en: "Rejected"
 }
+
+export const isApprove = (value) => value === Approve
+
+export const isReject = (value) => value === Reject
+
+export const isApproveOrReject = (value) => isApprove(value) || isReject(value)
 
 export const isPlayerIdentityWaitingVerify = (value) => {
   return value === WaitingVerify
@@ -65,10 +76,10 @@ export const PlayerIdentityStateLabel = ({ value = "" }) => {
 
 export const PlayerIdentityStateIcon = ({ value }) => {
   switch (value) {
-    case Approve:
-      return <Icon icon={faCertificate} type="font-awesome" color="green" />
-    case Reject:
-      return <Icon icon={faCertificate} type="font-awesome" color="gray" />
+    case true:
+      return <Icon icon={faUserCheck} type="font-awesome" color="green" />
+    case false:
+      return <Icon icon={faUserSlash} type="font-awesome" color="gray" />
     default:
       return null
   }

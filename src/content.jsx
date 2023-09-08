@@ -6,6 +6,8 @@ import { RequireAuth } from "./user/auth"
 import PageNotFound from "./page/NotFound"
 import { allMenuContentPairs } from "./menu"
 import { PageContent } from "bumbag"
+import { Code as DashboardCode } from "./dashboard/menu"
+import { DashboardContent } from "./dashboard"
 
 export const Routes = ({ codes, path, pairs = [], ...props }) => {
   let authCodes = useMenuCodes(path)
@@ -31,23 +33,28 @@ export const AllContents = ({ codes }) => {
   let authCodes = useMenuCodes()
   codes = codes ?? authCodes
   let list = allMenuContentPairs()
+
+  // let hasDashboard = codes.includes(DashboardCode)
   return (
     <_Routes>
-      {codes.map((code) => {
-        let path = `${code}/*`
+      {/* <Route path="/" element={<DashboardContent />} /> */}
+      {codes
+        // .filter((code) => code != DashboardCode)
+        .map((code) => {
+          let path = `${code}/*`
 
-        return (
-          <Route
-            key={code}
-            path={path}
-            element={
-              <RequireAuth>
-                <ContentByCode code={code} pairs={list} />
-              </RequireAuth>
-            }
-          />
-        )
-      })}
+          return (
+            <Route
+              key={code}
+              path={path}
+              element={
+                <RequireAuth>
+                  <ContentByCode code={code} pairs={list} />
+                </RequireAuth>
+              }
+            />
+          )
+        })}
 
       <Route path="*" element={<PageContent></PageContent>} />
     </_Routes>

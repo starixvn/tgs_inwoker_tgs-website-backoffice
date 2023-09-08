@@ -45,6 +45,7 @@ import {
 export const ViewButton = ({
   player,
   brandId,
+  brand,
   showParentUsername,
   ...props
 }) => {
@@ -65,6 +66,7 @@ export const ViewButton = ({
           id="view-player-dialog"
           playerCode={player.playerCode}
           brandId={brandId}
+          brand={brand}
           dialog={dialog}
           showParentUsername={showParentUsername}
         />
@@ -75,6 +77,7 @@ export const ViewButton = ({
 
 export const EditButton = ({
   brandId,
+  brand,
   player,
   showParentUsername,
   onSubmitted,
@@ -97,6 +100,7 @@ export const EditButton = ({
           id="edit-player-dialog"
           edit={true}
           brandId={brandId}
+          brand={brand}
           playerCode={player.playerCode}
           showParentUsername={showParentUsername}
           onSubmitted={onSubmitted}
@@ -110,6 +114,7 @@ export const EditButton = ({
 const TabsDialog = ({
   playerCode,
   brandId,
+  brand,
   edit = false,
   dialog,
   onSubmitted,
@@ -181,6 +186,7 @@ const TabsDialog = ({
             <ViewTabs
               playerCode={playerCode}
               brandId={brandId}
+              brand={brand}
               player={player}
               showParentUsername={showParentUsername}
               tab={tab}
@@ -190,6 +196,7 @@ const TabsDialog = ({
             <EditTabs
               playerCode={playerCode}
               brandId={brandId}
+              brand={brand}
               player={player}
               showParentUsername={showParentUsername}
               tab={tab}
@@ -208,7 +215,14 @@ const TabsDialog = ({
   )
 }
 
-const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
+const ViewTabs = ({
+  playerCode,
+  brandId,
+  brand,
+  showParentUsername,
+  player,
+  tab
+}) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
   return (
     <Tabs isFitted>
@@ -224,6 +238,7 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
       </TabList>
       <PlayerPanel
         player={player}
+        brand={brand}
         showParentUsername={showParentUsername}
         {...tab}
       />
@@ -257,6 +272,7 @@ const ViewTabs = ({ playerCode, brandId, showParentUsername, player, tab }) => {
 
 const EditTabs = ({
   brandId,
+  brand,
   playerCode,
   player,
   showParentUsername,
@@ -278,6 +294,7 @@ const EditTabs = ({
         player={player}
         showParentUsername={showParentUsername}
         brandId={brandId}
+        brand={brand}
         playerCode={playerCode}
         onSubmitted={onSubmitted}
         onClickClose={onClickClose}

@@ -401,11 +401,13 @@ const useColumns = ({
                 id="view-player-dialog-disclosure"
                 player={player}
                 brandId={brandId}
+                brand={brand}
                 showParentUsername={showAllAgent}
               />
               <EditButton
                 id="edit-player-dialog-disclosure"
                 brandId={brandId}
+                brand={brand}
                 player={player}
                 showParentUsername={showAllAgent}
                 onSubmitted={mutate}

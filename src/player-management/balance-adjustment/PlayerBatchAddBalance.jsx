@@ -13,7 +13,8 @@ import {
   Text,
   Link,
   Icon,
-  Spinner
+  Spinner,
+  Alert
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
@@ -456,16 +457,24 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
     <>
       <FieldWrapper
         label={
-          <Text.Block>
-            <Trans zh="汇入" en="Import" />
-            <Link
-              href="/api/batch-adj-balance"
-              download="batch.xlsx"
-              marginLeft="1rem"
-            >
-              <Trans zh="下载文件格式" en="Download Format File" />
-            </Link>
-          </Text.Block>
+          <FieldStack>
+            <Alert variant="bordered" type="info" accent>
+              <Trans
+                zh="請注意，若輸入小於0的流水金額，將視為0。"
+                en="Please note that any wagering requirement amount below 0 will be considered as 0."
+              />
+            </Alert>
+            <Text.Block>
+              <Trans zh="汇入" en="Import" />
+              <Link
+                href="/api/batch-adj-balance"
+                download="batch.xlsx"
+                marginLeft="1rem"
+              >
+                <Trans zh="下载文件格式" en="Download Format File" />
+              </Link>
+            </Text.Block>
+          </FieldStack>
         }
       >
         <Box>
