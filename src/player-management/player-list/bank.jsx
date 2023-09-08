@@ -242,6 +242,11 @@ const ViewBank = ({ record }) => {
       <Box alignY="center" data-field="bankAccount">
         {record?.detail?.bankAccount ?? ""}
       </Box>
+
+      <Box alignY="center">IFSC Code</Box>
+      <Box alignY="center" data-field="IFSCcode">
+        {record?.detail?.IFSCcode ?? ""}
+      </Box>
     </>
   )
 }
@@ -535,6 +540,11 @@ const EditBank = ({}) => {
       </Box>
       <Box>
         <Input name="detail.bankAccount" />
+      </Box>
+
+      <Box alignY="center">IFSC code</Box>
+      <Box>
+        <Input name="detail.IFSCcode" />
       </Box>
     </>
   )

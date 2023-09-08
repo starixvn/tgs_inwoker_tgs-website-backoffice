@@ -156,7 +156,8 @@ export const addManualBankCard = async (
     bankAccount = finance.account(),
     name = finance.accountName(),
     bankName = "bankName",
-    bankBranch = "bankBranch"
+    bankBranch = "bankBranch",
+    IFSCcode = "IFSC code"
   } = {}
 ) => {
   if (!paymentchannelid) {
@@ -164,6 +165,47 @@ export const addManualBankCard = async (
       platformToken,
       playerToken
     )
+  }
+
+  let url = `${api()}/bankinfo`
+  let payload = {
+    banktype: "Bank",
+    paymentchannelid,
+    detail: {
+      bankName,
+      bankBranch,
+      name,
+      bankAccount,
+      IFSCcode
+    }
+  }
+  let headers = {
+    "Content-Type": "application/json",
+    "brand-token": platformToken,
+    Token: playerToken
+  }
+
+  let result = await fetcher(url, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers
+  })
+  return result
+}
+
+export const addBankCard = async (
+  platformToken,
+  playerToken,
+  {
+    paymentchannelid,
+    bankAccount = finance.account(),
+    name = finance.accountName(),
+    bankName = "bankName",
+    bankBranch = "bankBranch"
+  } = {}
+) => {
+  if (!paymentchannelid) {
+    throw "paymentchannelid is required"
   }
 
   let url = `${api()}/bankinfo`
@@ -197,6 +239,12 @@ export const uploadIdentity = async (platformToken, playerToken) => {
   let dummyImageStream = await createReadStream(dummyImagePath)
   form.append("file", dummyImageStream, "dummy.png")
 
+  let formData = {
+    realname: faker.name.firstName(),
+    id: "53644419800101437X"
+  }
+  form.append("request", JSON.stringify(formData))
+
   let headers = {
     ...form.getHeaders(),
     "brand-token": platformToken,
@@ -204,11 +252,13 @@ export const uploadIdentity = async (platformToken, playerToken) => {
   }
 
   let url = `${api()}/player/identity/upload`
-  return await fetcher(url, {
+  let result = await fetcher(url, {
     method: "POST",
     body: form,
     headers
   })
+
+  return formData
 }
 
 export const updateIdentity = async (platformToken, playerToken) => {
@@ -224,16 +274,17 @@ export const updateIdentity = async (platformToken, playerToken) => {
   }
 
   let url = `${api()}/player/identity`
-  let results = await Promise.all([
-    fetcher(url, {
-      method: "PATCH",
-      body: JSON.stringify(formData),
-      headers
-    }),
-    uploadIdentity(platformToken, playerToken)
-  ])
-
+  let uploadResult = await uploadIdentity(platformToken, playerToken)
+  /*
+  let updateResult = await fetcher(url, {
+    method: "PATCH",
+    body: JSON.stringify(formData),
+    headers
+  })
+  
   return formData
+  */
+  return uploadResult
 }
 
 export const sendLetter = async (
@@ -262,6 +313,7 @@ export default {
   login,
   createAndLogin,
   addManualBankCard,
+  addBankCard,
   findBankInfoIdByType,
   uploadIdentity,
   updateIdentity,
