@@ -156,7 +156,8 @@ export const addManualBankCard = async (
     bankAccount = finance.account(),
     name = finance.accountName(),
     bankName = "bankName",
-    bankBranch = "bankBranch"
+    bankBranch = "bankBranch",
+    IFSCcode = "IFSC code"
   } = {}
 ) => {
   if (!paymentchannelid) {
@@ -174,7 +175,8 @@ export const addManualBankCard = async (
       bankName,
       bankBranch,
       name,
-      bankAccount
+      bankAccount,
+      IFSCcode
     }
   }
   let headers = {

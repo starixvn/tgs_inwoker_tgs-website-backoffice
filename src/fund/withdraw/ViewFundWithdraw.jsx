@@ -354,6 +354,7 @@ const PayeeInfo = ({ record }) => {
   let hasAccountName = !!record?.bankInfo?.detail?.name
   let hasBankAccount = !!record?.bankInfo?.detail?.bankAccount
   let hasMemo = !!record?.bankInfo?.detail?.memo
+  let hasIFSCcode = !!record?.bankInfo?.detail?.IFSCcode
   let isBank = hasAccountName && hasBankAccount
 
   let hasAddress = !!record?.bankInfo?.detail?.address
@@ -451,6 +452,13 @@ const PayeeInfo = ({ record }) => {
               <Trans zh="附言" en="Memo" />
             </NormalLabel>
             <Box alignY="center">{record?.bankInfo?.detail?.memo}</Box>
+          </>
+        )}
+
+        {hasIFSCcode && (
+          <>
+            <NormalLabel>IFSC code</NormalLabel>
+            <Box alignY="center">{record?.bankInfo?.detail?.IFSCcode}</Box>
           </>
         )}
 

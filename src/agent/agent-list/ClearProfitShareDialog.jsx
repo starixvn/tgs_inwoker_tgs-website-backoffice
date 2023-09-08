@@ -26,7 +26,7 @@ export const ClearProfitShareDialogDisclosure = ({ agentId }) => {
 }
 
 const ResetDialog = ({ agentId, dialog }) => {
-  let label = useTrans({
+  let confirm = useTrans({
     zh: "确定清除？",
     en: "Clear Wagering Requirement？"
   })
