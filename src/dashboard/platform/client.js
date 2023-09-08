@@ -28,9 +28,12 @@ export const usePlatformNetDeposit = (id) => {
   return useGet(url)
 }
 
-export const usePlatformDepositSuccessRate = (id) => {
-  let url = id ? `${API}/success-rate/${id}` : ""
-  return useGet(url)
+//TODO: rm fake api
+export const usePlatformGrossProfit = (id) => {
+  return {
+    isLoading: false,
+    data: 38
+  }
 }
 
 const WithdrawApi = "/api/withdraw"
@@ -52,6 +55,44 @@ export const usePlatformOutstandingWithdrawal = (id) => {
   let { data, ...rest } = useGet(url)
   return {
     data: data?.sum,
+    ...rest
+  }
+}
+
+const PlayerOnlineApi = "/api/playeronline"
+export const usePlatformOnlinePlayerCount = (id) => {
+  let url = id ? `${PlayerOnlineApi}?brandId=${id}` : ""
+
+  let { data, ...rest } = useGet(url)
+  return {
+    data: data?.onlineUsers,
+    ...rest
+  }
+}
+
+export const usePlatformDepositSuccessRate = (id) => {
+  let url = id ? `${API}/success-rate/${id}` : ""
+  return useGet(url)
+}
+
+export let PlayerApi = "/api/player"
+
+//TODO: fake api with items
+export const usePlatformTopPlayerList = (id) => {
+  let url = id
+    ? urlWith(
+        {
+          brandId: id,
+          status: "Enabled",
+          page: 1,
+          rows: 10
+        },
+        PlayerApi
+      )
+    : ""
+  let { data, ...rest } = useGet(url)
+  return {
+    data: data?.items,
     ...rest
   }
 }

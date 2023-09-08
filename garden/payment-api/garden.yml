@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-api
-image: pgtgs/payment-api:202309050246.288
+image: pgtgs/payment-api:202309070845.306
 services:
   - name: payment-api
     dependencies:
@@ -13,6 +13,9 @@ services:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
       ConnectionStrings__Nats: "nats://nats:4222"
+      Payment__PlayerServiceBaseUrl: "http://player-api"
+      Payment__CashServiceBaseUrl: "http://cash-service"
+      Payment__PlayerBucketServiceBaseUrl: "http://player-bucket-api"
     ports:
       - name: http
         containerPort: 80

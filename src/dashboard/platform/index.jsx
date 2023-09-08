@@ -24,7 +24,7 @@ import {
   usePlatformId
 } from "../../page/PlatformPageContent"
 import { Trans } from "../../i18n"
-import { PlatformOverview } from "./PlatformOverview"
+import { Overview } from "./Overview"
 
 export { Code }
 
@@ -54,7 +54,7 @@ const Body = () => {
     <Columns>
       <Columns.Column>
         <WelcomeBox />
-        <PlatformOverview />
+        <Overview />
       </Columns.Column>
       <Columns.Column>
         <PlayerTableBox />

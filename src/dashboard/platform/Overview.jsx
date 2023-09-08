@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import {
-  Heading,
+  Columns,
   Stack,
   Box,
   Button,
@@ -12,13 +12,18 @@ import {
   Text,
   Card,
   Spinner,
-  Level
+  Level,
+  useBreakpoint
 } from "bumbag"
 import { usePlatformId } from "../../page/PlatformPageContent"
 import {
   usePlatformNewPlayerCount,
   usePlatformPlayerLoginCount,
   usePlatformNetDeposit,
+  usePlatformGrossProfit,
+  usePlatformReviewingWithdrawal,
+  usePlatformOutstandingWithdrawal,
+  usePlatformOnlinePlayerCount,
   usePlatformDepositSuccessRate
 } from "./client"
 import {
@@ -27,17 +32,31 @@ import {
   FormattedNumberDecimalPercentage,
   Trans
 } from "../../i18n"
-import { TrendIcon, Trend } from "./TrendIcon"
+import { TrendIcon, Trend, trendOf } from "./TrendIcon"
 
-//TODO: use grid layout?
-export const PlatformOverview = ({}) => {
+//TODO: layout for mobile, breakpoint value?
+export const Overview = ({}) => {
+  let isMobile = useBreakpoint("mobile")
+  let isTablet = useBreakpoint("max-tablet")
   return (
-    <Set>
-      <NewPlayerCountStat />
-      <PlayerLoginCountStat />
-      <NetDepositStat />
-      <DepositSuccessRateStat />
-    </Set>
+    <>
+      <Box
+        css={css`
+          display: grid;
+          grid-gap: 1rem;
+          grid-template-columns: repeat(2, minmax(0px, 1fr));
+        `}
+      >
+        <NewPlayerCountStat />
+        <PlayerLoginCountStat />
+        <NetDepositStat />
+        <GrossProfitStat />
+        <ReviewingWithdrawalStat />
+        <OutstandingWithdrawalStat />
+        <OnlinePlayerCountStat />
+        <DepositSuccessRateStat />
+      </Box>
+    </>
   )
 }
 
@@ -123,38 +142,99 @@ const PlayerLoginCountStat = () => {
 }
 
 //C.
-//TODO: trend diff with yesterday, wait for api
 const NetDepositStat = ({}) => {
   let id = usePlatformId()
-  let { isLoading, data: netDeposit, error } = usePlatformNetDeposit(id)
+  let { isLoading, data: record, error } = usePlatformNetDeposit(id)
 
+  let trend = trendOf(record?.yesterdayNetDeposit, record?.todayNetDeposit)
   return (
     <Stat>
       <StatHeader>
         <Trans zh="存提差" en="Net Deposits" />
+        {trend && <TrendIcon value={trend} />}
       </StatHeader>
 
       <StatBody isLoading={isLoading}>
-        <FormattedNumberDecimal
-          value={netDeposit}
-          format="0,0[.]00"
-          placeholder="-"
-        />
+        <FormattedNumber value={record?.todayNetDeposit} placeholder="-" />
       </StatBody>
     </Stat>
   )
 }
 
 //D.
-//TODO
+//TODO: fake api
 const GrossProfitStat = () => {
   let id = usePlatformId()
+  let { isLoading, data: value, error } = usePlatformGrossProfit(id)
+
+  return (
+    <Stat>
+      <StatHeader>
+        <Trans zh="毛利" en="Gross Profit" />
+      </StatHeader>
+
+      <StatBody isLoading={isLoading}>
+        <FormattedNumber value={value} placeholder="-" />
+      </StatBody>
+    </Stat>
+  )
 }
 
 //E.
 //TODO:
 const ReviewingWithdrawalStat = () => {
-  
+  let id = usePlatformId()
+  let { isLoading, data: value, error } = usePlatformReviewingWithdrawal(id)
+
+  return (
+    <Stat>
+      <StatHeader>
+        <Trans zh="待處理提款" en="Reviewing Withdrawal" />
+      </StatHeader>
+
+      <StatBody isLoading={isLoading}>
+        <FormattedNumber value={value} placeholder="-" />
+      </StatBody>
+    </Stat>
+  )
+}
+
+//F.
+//TODO:
+const OutstandingWithdrawalStat = () => {
+  let id = usePlatformId()
+  let { isLoading, data: value, error } = usePlatformOutstandingWithdrawal(id)
+
+  return (
+    <Stat>
+      <StatHeader>
+        <Trans zh="待支付提款" en="Outstanding Withdrawal" />
+      </StatHeader>
+
+      <StatBody isLoading={isLoading}>
+        <FormattedNumber value={value} placeholder="-" />
+      </StatBody>
+    </Stat>
+  )
+}
+
+//G.
+//TODO
+const OnlinePlayerCountStat = () => {
+  let id = usePlatformId()
+  let { isLoading, data: value, error } = usePlatformOnlinePlayerCount(id)
+
+  return (
+    <Stat>
+      <StatHeader>
+        <Trans zh="在線人數" en="Online Players" />
+      </StatHeader>
+
+      <StatBody isLoading={isLoading}>
+        <FormattedNumber value={value} placeholder="-" />
+      </StatBody>
+    </Stat>
+  )
 }
 
 //H.

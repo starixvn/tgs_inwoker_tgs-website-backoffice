@@ -20,6 +20,7 @@ test("player apply withdraw form", async ({
   operatorApi
 }) => {
   let depositAmount = 100
+
   await Promise.all([
     backofficeApi.player.addBalance(player.code, {
       amount: depositAmount
@@ -28,6 +29,9 @@ test("player apply withdraw form", async ({
     gotoPlayerListPage(page, platform.code),
     searchPlayer(page, player)
   ])
+
+  let playerRecord = await backofficeApi.player.getPlayer(player.code)
+  expect(playerRecord.balance).equals(depositAmount)
 
   let dialogSelector = `#apply-withdraw-form-dialog`
   await openDialog(page, dialogSelector)

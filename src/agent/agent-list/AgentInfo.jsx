@@ -525,6 +525,18 @@ const BalanceBox = ({ value = "", ...props }) => {
   )
 }
 
+//TODO: confirm dialog
+const AccumulatedProfitShareBox = ({ value, editable = false }) => {
+  return (
+    <>
+      <Trans zh="清除累计结算分红" en="Clear Accumulated Profit Share" />
+      <Text>
+        <FormattedNumberDecimal data-value={value} value={value} {...props} />
+      </Text>
+    </>
+  )
+}
+
 const AgentStatusBox = ({ value = "", children, ...props }) => {
   return (
     <>

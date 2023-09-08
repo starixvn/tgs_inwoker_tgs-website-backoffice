@@ -16,6 +16,19 @@ export const Trend = {
   Down
 }
 
+export const trendOf = (...[first, second]) => {
+  if (Number.isFinite(first) && Number.isFinite(second)) {
+    if (second > first) {
+      return Up
+    }
+    if (second < first) {
+      return Down
+    }
+    return Flat
+  }
+  return null
+}
+
 export const TrendIcon = ({ value }) => {
   switch (value) {
     case Up:

@@ -237,6 +237,12 @@ export const uploadIdentity = async (platformToken, playerToken) => {
   let dummyImageStream = await createReadStream(dummyImagePath)
   form.append("file", dummyImageStream, "dummy.png")
 
+  let formData = {
+    realname: faker.name.firstName(),
+    id: "53644419800101437X"
+  }
+  form.append("request", JSON.stringify(formData))
+
   let headers = {
     ...form.getHeaders(),
     "brand-token": platformToken,
@@ -244,11 +250,13 @@ export const uploadIdentity = async (platformToken, playerToken) => {
   }
 
   let url = `${api()}/player/identity/upload`
-  return await fetcher(url, {
+  let result = await fetcher(url, {
     method: "POST",
     body: form,
     headers
   })
+
+  return formData
 }
 
 export const updateIdentity = async (platformToken, playerToken) => {
@@ -264,16 +272,17 @@ export const updateIdentity = async (platformToken, playerToken) => {
   }
 
   let url = `${api()}/player/identity`
-  let results = await Promise.all([
-    fetcher(url, {
-      method: "PATCH",
-      body: JSON.stringify(formData),
-      headers
-    }),
-    uploadIdentity(platformToken, playerToken)
-  ])
-
+  let uploadResult = await uploadIdentity(platformToken, playerToken)
+  /*
+  let updateResult = await fetcher(url, {
+    method: "PATCH",
+    body: JSON.stringify(formData),
+    headers
+  })
+  
   return formData
+  */
+  return uploadResult
 }
 
 export const sendLetter = async (
