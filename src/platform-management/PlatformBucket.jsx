@@ -62,7 +62,7 @@ const findTrans = (value = "") => {
 export const usePlatformBucketLabel = (type = "") => {
   let locale = useLocale()
   let trans = findTrans(type)
-  return trans?.[locale]
+  return trans?.[locale] ?? type
 }
 
 export const PlatformBucketLabel = ({ value = "" }) => {

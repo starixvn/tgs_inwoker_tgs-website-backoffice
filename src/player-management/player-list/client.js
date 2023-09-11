@@ -148,7 +148,10 @@ export const usePlayerBucketItems = (
   searchParams
 ) => {
   let url = playerCode
-    ? urlWith(searchParams, `${PlayerBucketApi}/${playerCode}/${bucketType}`)
+    ? urlWith(
+        searchParams,
+        `${PlayerBucketApi}/${playerCode}${bucketType ? `/${bucketType}` : ""}`
+      )
     : ""
   return useGet(url)
 }
