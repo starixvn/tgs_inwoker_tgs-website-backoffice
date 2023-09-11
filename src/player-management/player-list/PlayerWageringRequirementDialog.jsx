@@ -34,6 +34,7 @@ import { Descending } from "../../table/order"
 import { Modal } from "../../dialog/Modal"
 import { useIsAdminUser } from "../../user/context"
 
+//TODO: rm
 export const PlayerWageringRequirementDialogDisclosure = ({
   playerCode,
   ...props

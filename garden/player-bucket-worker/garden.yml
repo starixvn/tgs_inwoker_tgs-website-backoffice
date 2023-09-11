@@ -19,3 +19,4 @@ services:
       - name: http
         containerPort: 80
         servicePort: 80
+        localPort: 3092 # http://localhost:3092/swagger/index.html

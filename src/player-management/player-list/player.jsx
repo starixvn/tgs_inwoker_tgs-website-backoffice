@@ -338,14 +338,7 @@ export const Panel = ({
         </Box>
         <Set>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
-          <PlayerWageringRequirementDialogDisclosure
-            id="wagering-requirement-dialog-disclosure"
-            playerCode={player.playerCode}
-          />
-          {/* 
-          TODO: rm PlayerWageringRequirementDialogDisclosure & it's test case and add "PlayerBucketListDialogDisclosure"
           <PlayerBucketListDialogDisclosure playerCode={player.playerCode} />
-          */}
         </Set>
 
         <StatusLabel />
