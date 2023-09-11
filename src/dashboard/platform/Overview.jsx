@@ -180,8 +180,7 @@ const GrossProfitStat = () => {
   )
 }
 
-//E.
-//TODO:
+//E. > no trend
 const ReviewingWithdrawalStat = () => {
   let id = usePlatformId()
   let { isLoading, data: value, error } = usePlatformReviewingWithdrawal(id)
@@ -199,8 +198,7 @@ const ReviewingWithdrawalStat = () => {
   )
 }
 
-//F.
-//TODO:
+//F. > no trend
 const OutstandingWithdrawalStat = () => {
   let id = usePlatformId()
   let { isLoading, data: value, error } = usePlatformOutstandingWithdrawal(id)
@@ -218,8 +216,7 @@ const OutstandingWithdrawalStat = () => {
   )
 }
 
-//G.
-//TODO
+//G. > no trend
 const OnlinePlayerCountStat = () => {
   let id = usePlatformId()
   let { isLoading, data: value, error } = usePlatformOnlinePlayerCount(id)

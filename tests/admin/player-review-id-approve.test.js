@@ -26,7 +26,6 @@ test("review player id", async ({
   let platformToken = await globalApi.platformToken(platform.code)
 
   let player = await operatorApi.player.createAndLogin(platformToken)
-  console.log("platformCode", platformCode, "player.username", player.username)
   let [playerIdentity] = await Promise.all([
     operatorApi.player.updateIdentity(platformToken, player.token),
     gotoPlayerIdentityListPage(page, platformCode)
