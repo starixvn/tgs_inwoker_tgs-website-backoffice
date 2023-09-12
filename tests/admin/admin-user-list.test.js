@@ -1,11 +1,10 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { selectRandomOption } from "../page/select.js"
 
 const test = base.extend(Fixture)
-const { internet, name } = faker
 
 console.log("TODO: api disabled add admin user")
 test.skip("add, search and edit admin user", async ({ page }) => {
@@ -44,12 +43,12 @@ const addUser = async (page, type = Type.Admin) => {
   await page.click(`${DialogSelector}-disclosure`)
   await page.waitForSelector(DialogSelector)
 
-  let password = `${internet.password(8)}a1`
+  let password = `${faker.internet.password({ length: 8 })}a1`
   let user = {
     type,
-    username: `${internet.userName()}-${Date.now()}`,
+    username: `${faker.internet.userName()}-${Date.now()}`,
     password,
-    name: `${name.firstName()} ${name.lastName()}`
+    name: `${faker.person.firstName()} ${name.lastName()}`
   }
 
   await page.fill(`${DialogSelector} input[name="username"]`, user.username)
@@ -105,7 +104,7 @@ const edit = async (page, user) => {
   let DialogSelector = `#edit-user-dialog`
   await page.click(`${DialogSelector}-disclosure`)
 
-  user.name = `${name.firstName()} ${name.lastName()}`
+  user.name = `${faker.person.firstName()} ${name.lastName()}`
   await page.fill(`input[name="name"]`, user.name)
 
   let id = await page.inputValue(`input[name="id"]`)

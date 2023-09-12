@@ -1,12 +1,11 @@
 import { fetcher } from "../fetcher.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { api } from "./api.js"
 import FormData from "form-data"
 import { fileURLToPath } from "url"
 import fsExtra from "fs-extra"
 import { findManualPaymentChannelId } from "./withdraw.js"
 
-const { finance } = faker
 const { createReadStream } = fsExtra
 
 export const DefaultPassword = "TgsP@ssw0rd"
@@ -18,7 +17,7 @@ export const DefaultCurrencyCode = "CNY"
 export const create = async (
   platformToken,
   {
-    username = `${faker.name.firstName()}${new Date().getTime()}`,
+    username = `${faker.person.firstName()}${new Date().getTime()}`,
     currency = DefaultCurrencyCode,
     pwd = DefaultPassword,
     confirmpwd = DefaultPassword,
@@ -91,7 +90,7 @@ export const login = async (
 export const createAndLogin = async (
   platformToken,
   {
-    username = `${faker.name.firstName()}${new Date().getTime()}`,
+    username = `${faker.person.firstName()}${new Date().getTime()}`,
     currency = DefaultCurrencyCode,
     pwd = DefaultPassword,
     confirmpwd = DefaultPassword,
@@ -153,8 +152,8 @@ export const addManualBankCard = async (
   playerToken,
   {
     paymentchannelid,
-    bankAccount = finance.account(),
-    name = finance.accountName(),
+    bankAccount = faker.finance.accountNumber(),
+    name = faker.finance.accountName(),
     bankName = "bankName",
     bankBranch = "bankBranch",
     IFSCcode = "IFSC code"
@@ -198,8 +197,8 @@ export const addBankCard = async (
   playerToken,
   {
     paymentchannelid,
-    bankAccount = finance.account(),
-    name = finance.accountName(),
+    bankAccount = faker.finance.accountNumber(),
+    name = faker.finance.accountName(),
     bankName = "bankName",
     bankBranch = "bankBranch"
   } = {}
@@ -240,7 +239,7 @@ export const uploadIdentity = async (platformToken, playerToken) => {
   form.append("file", dummyImageStream, "dummy.png")
 
   let formData = {
-    realname: faker.name.firstName(),
+    realname: faker.person.firstName(),
     id: "53644419800101437X"
   }
   form.append("request", JSON.stringify(formData))
@@ -263,7 +262,7 @@ export const uploadIdentity = async (platformToken, playerToken) => {
 
 export const updateIdentity = async (platformToken, playerToken) => {
   let formData = {
-    realname: faker.name.firstName(),
+    realname: faker.person.firstName(),
     id: "53644419800101437X"
   }
 

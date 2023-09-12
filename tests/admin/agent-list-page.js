@@ -1,8 +1,7 @@
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { add, random, last } from "lodash-es"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
-const { lorem, internet } = faker
 
 export const AgentDividendType = {
   OneLayer: "OneLayer",
@@ -35,15 +34,15 @@ export const addAgent = async (page, agentDividendType, agents = []) => {
       : 100,
     true
   )
-  let password = `${internet.password(8)}a1`
+  let password = `${faker.internet.password({ length: 8 })}a1`
   let agent = {
-    username: `${faker.name.firstName()}${new Date().getTime()}`,
+    username: `${faker.person.firstName()}${new Date().getTime()}`,
     password,
     confirmPassword: password,
     levelType,
     parentUsername: parentAgent && parentAgent.username,
     dividendPercentage,
-    remarks: lorem.sentence()
+    remarks: faker.lorem.sentence()
   }
 
   const AddAgentDialogSelector = `#add-agent-dialog`

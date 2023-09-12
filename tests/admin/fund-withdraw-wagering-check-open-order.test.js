@@ -1,7 +1,6 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import faker from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
 import {
   gotoFundWithdraw,
@@ -11,7 +10,6 @@ import {
 import numeral from "numeral"
 
 const test = base.extend(Fixture)
-const { finance } = faker
 
 console.warn("TODO: fix audit clear bucket report")
 test("fund withdraw > audit clear bucket", async ({

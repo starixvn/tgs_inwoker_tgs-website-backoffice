@@ -1,7 +1,7 @@
 import { fetcher } from "../../fetcher.js"
 import { host } from "../../host.js"
 import camelcaseKeys from "camelcase-keys"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const API = "api/setting"
 
@@ -27,6 +27,7 @@ export const get = async (key = "") => {
   return setting
 }
 
+//TODO: fake data json?
 export const add = async ({
   key,
   description = faker.lorem.word(),

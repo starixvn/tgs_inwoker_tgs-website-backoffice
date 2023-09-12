@@ -1,6 +1,5 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
 
 const API = "api/BrandMaintenance"
 

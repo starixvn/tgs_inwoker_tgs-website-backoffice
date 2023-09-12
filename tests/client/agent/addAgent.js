@@ -1,18 +1,17 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { add, random, last } from "lodash-es"
-const { lorem, internet, name } = faker
 
 const API = "api/agent"
 export const addAgent = async ({
   brandId,
   type = "Cash",
-  username = `${name.firstName()}-${Date.now()}`,
-  password = `${internet.password(8)}a1`,
+  username = `${faker.person.firstName()}-${Date.now()}`,
+  password = `${faker.internet.password({ length: 8 })}a1`,
   levelType = "Chief",
   dividendPercentage = random(0, 100, true).toFixed(2),
-  remarks = lorem.sentence(),
+  remarks = faker.lorem.sentence(),
   ...restFormData
 } = {}) => {
   if (!brandId) {

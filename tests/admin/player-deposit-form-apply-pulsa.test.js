@@ -4,11 +4,9 @@ import { expect } from "chai"
 import { openDialog } from "../page/dialog.js"
 import { selectByValue } from "../page/select.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-
-const { name, lorem, phone } = faker
 
 test("player deposit form > apply bank transfer", async ({
   page,
@@ -72,7 +70,7 @@ test("player deposit form > apply bank transfer", async ({
 
   let form = {
     amount: 10,
-    note: lorem.word()
+    note: faker.lorem.word()
   }
 
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)

@@ -10,6 +10,8 @@ import client, {
   usePutData,
   usePostFormData
 } from "../../client"
+import { faker } from "@faker-js/faker"
+console.log("faker", faker)
 
 let API = "/api/overview"
 
@@ -91,8 +93,22 @@ export const usePlatformTopPlayerList = (id) => {
       )
     : ""
   let { data, ...rest } = useGet(url)
+
+  let items = data?.items?.map((player) => {
+    return {
+      ...player,
+      deposit: faker.number.int(100),
+      withdraw: faker.number.int(100),
+      bet: faker.number.int(1000),
+      payout: faker.number.int(1000),
+      winLoss: faker.number.int({
+        min: -100,
+        max: 100
+      })
+    }
+  })
   return {
-    data: data?.items,
+    data: items,
     ...rest
   }
 }

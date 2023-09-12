@@ -7,7 +7,6 @@ import {
   addWeeks,
   format
 } from "date-fns"
-import faker from "@faker-js/faker"
 import mainInfo from "../mainInfo.js"
 import content from "../content.js"
 import { findByName } from "../list.js"

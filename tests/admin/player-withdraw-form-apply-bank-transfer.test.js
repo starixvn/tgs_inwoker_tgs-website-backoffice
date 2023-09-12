@@ -5,11 +5,9 @@ import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { selectByValue, selectRandomOption } from "../page/select.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-
-const { finance, name, lorem } = faker
 
 test("player apply withdraw form", async ({
   page,
@@ -39,7 +37,7 @@ test("player apply withdraw form", async ({
   let withdrawAmount = depositAmount
   let form = {
     amount: withdrawAmount,
-    note: lorem.word()
+    note: faker.lorem.word()
   }
 
   //TODO: select by id?

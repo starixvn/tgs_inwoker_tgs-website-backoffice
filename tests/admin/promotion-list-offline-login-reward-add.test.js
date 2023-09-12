@@ -13,11 +13,10 @@ import { fillDatePicker } from "../fill.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { utils, write } from "xlsx"
 
 const test = base.extend(Fixture)
-const { lorem } = faker
 
 test("add offline login reward promotion", async ({
   page,
@@ -69,7 +68,7 @@ const addPromotion = async (page, platform, player) => {
   let to = addWeeks(new Date(), 2)
 
   let promotion = {
-    name: `${lorem.word()}-${Date.now()}`,
+    name: `${faker.lorem.word()}-${Date.now()}`,
     from: format(from, "yyyy/MM/dd"),
     to: format(to, "yyyy/MM/dd"),
     bonusAmount: 100,

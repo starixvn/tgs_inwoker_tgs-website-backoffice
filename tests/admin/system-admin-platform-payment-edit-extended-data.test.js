@@ -1,7 +1,7 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)

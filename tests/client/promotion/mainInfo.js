@@ -1,6 +1,6 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { findByName } from "./list.js"
 import { addWeeks, format } from "date-fns"
 
@@ -17,7 +17,7 @@ export const random = ({
   to = format(addWeeks(new Date(), 2), "yyyy-MM-dd"),
   autoSentPlayerBonus = true,
   unlimited = true,
-  totalAmountLimit = faker.datatype.number({
+  totalAmountLimit = faker.number.int({
     min: MinTotalAmountLimit,
     max: MaxTotalAmountLimit
   }),

@@ -1,11 +1,10 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { selectRandomOption, selectByValue } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
-const { finance, commerce } = faker
 
 test("add, search, edit and view platform deposit payment", async ({
   page,
@@ -42,10 +41,10 @@ const addWithdrawalPayment = async (page, bankTransferPaymentMethod) => {
   await selectRandomOption(page, ChannelSelectSelector)
 
   let payment = {
-    channelName: commerce.productName(),
+    channelName: faker.commerce.productName(),
     extendedData: {
-      name: finance.accountName(),
-      bankAccount: finance.account()
+      name: faker.finance.accountName(),
+      bankAccount: faker.finance.accountNumber()
     },
     transferLimitFrom: 0,
     transferLimitTo: 100,

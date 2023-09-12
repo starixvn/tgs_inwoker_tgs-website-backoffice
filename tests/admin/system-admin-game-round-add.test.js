@@ -6,8 +6,7 @@ import { selectByLabel, selectFirstValidOption } from "../page/select.js"
 import numeral from "numeral"
 import { fillDatePicker } from "../fill.js"
 import { startOfDay, endOfTomorrow, format } from "date-fns"
-import faker from "@faker-js/faker"
-import { nanoid } from "nanoid"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
@@ -42,7 +41,7 @@ test("add game round", async ({ page, platform, player, backofficeApi }) => {
     `${AddDialogSelector} select[name="gameId"]`
   )
 
-  let externalRoundId = faker.datatype.uuid()
+  let externalRoundId = faker.string.uuid()
   page.fill(
     `${AddDialogSelector} input[name="externalRoundId"]`,
     externalRoundId

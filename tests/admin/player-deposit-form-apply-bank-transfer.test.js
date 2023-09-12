@@ -6,11 +6,9 @@ import { openDialog } from "../page/dialog.js"
 import { selectByValue, selectRandomOption } from "../page/select.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
 import { gotoFundDepositPage, searchByFormId } from "./fund-deposit-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-
-const { finance, name, lorem } = faker
 
 test("player deposit form > apply bank transfer", async ({
   page,
@@ -24,10 +22,10 @@ test("player deposit form > apply bank transfer", async ({
   await openDialog(page, dialogSelector)
 
   let form = {
-    bankName: name.firstName(),
-    bankAccount: finance.account(),
+    bankName: faker.person.firstName(),
+    bankAccount: faker.finance.accountNumber(),
     amount: 10,
-    note: lorem.word()
+    note: faker.lorem.word()
   }
   await selectPayment(page, dialogSelector)
 

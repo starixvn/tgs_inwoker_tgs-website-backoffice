@@ -3,6 +3,8 @@ import { css, Global } from "@emotion/react"
 import { usePlatformTopPlayerList } from "./client"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { textColumn } from "../../table/column/textColumn"
+import { Trans } from "../../i18n"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
 
 export const TopPlayerTable = ({ brandId }) => {
   //TODO: sort options?
@@ -37,6 +39,26 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         Header: <Trans zh="玩家用戶名" en="Player" />,
         accessor: "username",
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "deposit",
+        Header: <Trans zh="存款" en="Deposit" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "withdraw",
+        Header: <Trans zh="提款" en="Withdraw" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "bet",
+        Header: <Trans zh="投注" en="Bet" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "winLoss",
+        Header: <Trans zh="赢输" en="W/L" />,
         disableSortBy: true
       })
     ]

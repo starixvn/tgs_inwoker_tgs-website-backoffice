@@ -2,14 +2,12 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import faker from "@faker-js/faker"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { selectByValue } from "../page/multi-select.js"
 import { gotoFundWithdraw, reviewPaid } from "./fund-withdraw-page.js"
 
 const test = base.extend(Fixture)
-const { finance } = faker
 
 test("reject withdraw paid", async ({
   page,

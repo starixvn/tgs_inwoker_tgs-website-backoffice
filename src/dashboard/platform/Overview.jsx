@@ -108,16 +108,24 @@ const StatBody = ({ isLoading, children, ...props }) => {
 // A.
 const NewPlayerCountStat = () => {
   let id = usePlatformId()
-  let { isLoading, data: count, error } = usePlatformNewPlayerCount(id)
+  let { isLoading, data: record, error } = usePlatformNewPlayerCount(id)
 
+  let trend = trendOf(
+    record?.yesterdayPlayerRegisterCount,
+    record?.todayPlayerRegisterCount
+  )
   return (
     <Stat>
       <StatHeader>
         <Trans zh="注册人数" en="New Players" />
+        {trend && <TrendIcon value={trend} />}
       </StatHeader>
 
       <StatBody isLoading={isLoading}>
-        <FormattedNumber value={count} placeholder="-" />
+        <FormattedNumber
+          value={record?.todayPlayerRegisterCount}
+          placeholder="-"
+        />
       </StatBody>
     </Stat>
   )

@@ -1,12 +1,9 @@
 import { fetcher } from "../fetcher.js"
-import faker from "@faker-js/faker"
 import { api } from "./api.js"
 import FormData from "form-data"
 import { fileURLToPath } from "url"
 import fsExtra from "fs-extra"
 import { bankInfoList, findBankInfoIdByType } from "./player.js"
-
-const { finance } = faker
 
 let cache = new Map()
 //TODO: test if cache works?

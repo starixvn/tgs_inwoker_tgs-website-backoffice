@@ -13,11 +13,9 @@ import { fillDatePicker } from "../fill.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
 import numeral from "numeral"
 
 const test = base.extend(Fixture)
-const { lorem } = faker
 
 test("view register reward promotion", async ({
   page,

@@ -11,7 +11,7 @@ import {
   openViewPlayerDialog,
   searchPlayer
 } from "./player-list-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
@@ -49,8 +49,8 @@ const editBank = async (page, bank, player) => {
   await openDialog(page, editBankDialogSelector)
 
   let detail = {
-    bankName: faker.name.firstName(),
-    bankBranch: faker.name.firstName(),
+    bankName: faker.person.firstName(),
+    bankBranch: faker.person.firstName(),
     name: faker.finance.accountName(),
     bankAccount: faker.finance.account()
   }

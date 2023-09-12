@@ -10,7 +10,7 @@ import {
   openEditPlayerDialog,
   openViewPlayerDialog
 } from "./player-list-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
@@ -24,7 +24,7 @@ test("edit and view player contact info", async ({
   await searchPlayer(page, player)
 
   let contact = {
-    phone: faker.phone.phoneNumber(),
+    phone: faker.phone.number(),
     email: faker.internet.email()
   }
   await backofficeApi.player.updateContact(player.code, contact)

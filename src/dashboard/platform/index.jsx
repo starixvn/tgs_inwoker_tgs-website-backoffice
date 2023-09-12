@@ -25,6 +25,7 @@ import {
 } from "../../page/PlatformPageContent"
 import { Trans } from "../../i18n"
 import { Overview } from "./Overview"
+import { TopPlayerTable } from "./TopPlayerTable"
 
 export { Code }
 
@@ -71,7 +72,8 @@ const WelcomeBox = () => {
 }
 
 const PlayerTableBox = () => {
-  return "player table"
+  let id = usePlatformId()
+  return <TopPlayerTable brandId={id} />
 }
 
 const GameTableBox = () => {

@@ -10,7 +10,7 @@ import {
   openEditAgentDialog,
   openViewAgentDialog
 } from "./agent-list-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
@@ -27,7 +27,7 @@ test("edit and view agent contact", async ({
   await page.click(`${editDialogSelector} #AgentContactInfo`)
 
   let contact = {
-    phone: faker.phone.phoneNumber(),
+    phone: faker.phone.number(),
     email: faker.internet.email()
   }
 

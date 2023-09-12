@@ -2,7 +2,6 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { last } from "lodash-es"
-import faker from "@faker-js/faker"
 import {
   AgentDividendType,
   addAgent,
@@ -11,7 +10,6 @@ import {
 import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
-const { lorem, internet } = faker
 
 test("add one layer agents", async ({ page, licensee, backofficeApi }) => {
   let platform = await backofficeApi.platform.addPlatform({
