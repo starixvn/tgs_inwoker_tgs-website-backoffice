@@ -84,6 +84,7 @@ import {
   isAgentProfitSharingOneLayer
 } from "../AgentProfitSharingType"
 import Textarea from "../../textarea"
+import { ClearProfitShareDialogDisclosure } from "./ClearProfitShareDialog"
 
 const Key = "AgentInfo"
 
@@ -111,7 +112,7 @@ const EditPanel = ({
   let formMethods = useForm({
     defaultValues: clone(record)
   })
-  let { control } = formMethods
+  let { control, setValue } = formMethods
 
   let agentId = record?.id
   let [formData, setSubmit] = useState()
@@ -173,6 +174,12 @@ const EditPanel = ({
   let agentType = useWatch({
     control,
     name: AgentTypeField
+  })
+
+  const ProfitSharingField = "accumulatedProfitSharing"
+  let accumulatedProfitSharing = useWatch({
+    name: ProfitSharingField,
+    control
   })
 
   let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
@@ -237,6 +244,19 @@ const EditPanel = ({
               <RegistrationBox value={record?.registeredOn} />
 
               <BalanceBox value={record?.balance} />
+
+              {/* 
+              TODO: api support
+              TODO: add test case
+              <AccumulatedProfitSharingBox value={accumulatedProfitSharing}>
+                <ClearProfitShareDialogDisclosure
+                  agentId={agentId}
+                  onSubmitted={() => {
+                    setValue(ProfitSharingField, 0)
+                  }}
+                />
+              </AccumulatedProfitSharingBox>
+               */}
 
               <AgentStatusBox>
                 <AgentStatusSelect name="status" placeholder={false} required />
@@ -525,18 +545,6 @@ const BalanceBox = ({ value = "", ...props }) => {
   )
 }
 
-//TODO: confirm dialog
-const AccumulatedProfitShareBox = ({ value, editable = false }) => {
-  return (
-    <>
-      <Trans zh="清除累计结算分红" en="Clear Accumulated Profit Share" />
-      <Text>
-        <FormattedNumberDecimal data-value={value} value={value} {...props} />
-      </Text>
-    </>
-  )
-}
-
 const AgentStatusBox = ({ value = "", children, ...props }) => {
   return (
     <>
@@ -609,13 +617,14 @@ const DividendBox = ({ value, type, children, ...props }) => {
   )
 }
 
-const AccumulatedProfitSharingBox = ({ value, ...props }) => {
+const AccumulatedProfitSharingBox = ({ value, children, ...props }) => {
   return (
     <>
       <Trans zh="累计结算分红金额" en="Accumulated Profit Sharing" />
-      <Text>
+      <Set>
         <FormattedNumberDecimal data-value={value} value={value} {...props} />
-      </Text>
+        {children}
+      </Set>
     </>
   )
 }
