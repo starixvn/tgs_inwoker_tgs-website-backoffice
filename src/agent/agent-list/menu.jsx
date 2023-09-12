@@ -16,7 +16,7 @@ export const UpdateDomain = "updatedomain"
 //TODO: required?
 export const LookupWhois = "lookupwhois"
 
-export const ClearProfitSharing = "clearprofitsharing"
+export const ClearProfitSharing = "clearprofitshare"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
