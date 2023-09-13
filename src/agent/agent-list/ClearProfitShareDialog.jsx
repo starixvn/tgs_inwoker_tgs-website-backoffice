@@ -13,6 +13,8 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 export const ClearProfitShareDialogDisclosure = ({
   agentId,
   onSubmitted,
+  id,
+  dialogId = "clear-agent-profit-share-dialog",
   ...props
 }) => {
   let dialog = useModalState()
@@ -27,9 +29,10 @@ export const ClearProfitShareDialogDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         {label}
       </Disclosure>
       {dialog.visible && (
@@ -37,13 +40,14 @@ export const ClearProfitShareDialogDisclosure = ({
           agentId={agentId}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
   )
 }
 
-const ResetDialog = ({ agentId, onSubmitted, dialog }) => {
+const ResetDialog = ({ agentId, onSubmitted, dialog, dialogId }) => {
   let confirm = useTrans({
     zh: "确定清除？",
     en: "Are you sure you want to clear？"
@@ -72,7 +76,7 @@ const ResetDialog = ({ agentId, onSubmitted, dialog }) => {
     <>
       <Backdrop {...dialog}>
         <FormDialog
-          id="clear-agent-profit-sharing-dialog"
+          id={dialogId}
           onSubmit={onSubmit}
           stopPropagation={true}
           onSubmitted={() => {
@@ -93,8 +97,10 @@ const ResetDialog = ({ agentId, onSubmitted, dialog }) => {
             margin="1rem 2rem 1em 0rem"
             minWidth="250px"
           >
-            <Icon icon="warning" color="warning" />
-            <Text.Block fontWeight="bold">{confirm}</Text.Block>
+            <Icon icon="warning" color="warning" fontSize="1.25rem" />
+            <Text.Block fontWeight="bold" fontSize="1.25rem">
+              {confirm}
+            </Text.Block>
           </Set>
         </FormDialog>
       </Backdrop>

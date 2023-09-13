@@ -8,6 +8,7 @@ import {
   openEditAgentDialog,
   openViewAgentDialog
 } from "./agent-list-page.js"
+import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 
@@ -22,4 +23,25 @@ test("clear agent sharing profit", async ({
   await searchAgent(page, agent.username)
 
   let dialogSelector = await openEditAgentDialog(page)
+  let ClearAgentProfitShareDialog = `#clear-agent-profit-share-dialog`
+
+  await openDialog(
+    page,
+    ClearAgentProfitShareDialog,
+    `${dialogSelector} ${ClearAgentProfitShareDialog}-disclosure`
+  )
+
+  await Promise.all([
+    page.waitForResponse((response) => {
+      let isRequest = `/api/agent/${agent.id}/clear-negative-commission`
+
+      return (
+        response
+          .url()
+          .includes(`/api/agent/${agent.id}/clear-negative-commission`) &&
+        response.status() === 200
+      )
+    }),
+    page.click(`${ClearAgentProfitShareDialog} button[type="submit"]`)
+  ])
 })

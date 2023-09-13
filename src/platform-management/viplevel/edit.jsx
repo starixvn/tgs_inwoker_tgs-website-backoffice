@@ -377,6 +377,53 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
             </FieldValues>
           </Set>
+          <Heading use="h5" marginTop="1rem">
+            <Trans zh="提款限制" en="Withdrawal Policy" />
+          </Heading>
+          <Set
+            orientation="vertical"
+            marginLeft="1rem"
+            marginRight="1rem"
+            isFilled
+          >
+            <FieldValues>
+              <NormalLabel>
+                <Trans zh="單日次數：" en="Transactions per Day：" />
+              </NormalLabel>
+              {editable && (
+                <Box>
+                  <NumberInputField
+                    name="withdrawTransactionsPerDay"
+                    min="1"
+                    addonBefore={<Button isStatic>＜＝</Button>}
+                  />
+                </Box>
+              )}
+              {readonly && (
+                <Box alignY="center">
+                  <FormattedNumber value={record?.withdrawTransactionsPerDay} />
+                </Box>
+              )}
+
+              <NormalLabel>
+                <Trans zh="單日總額：" en="Total Amount per Day：" />
+              </NormalLabel>
+              {editable && (
+                <Box>
+                  <NumberInputField
+                    name="withdrawTotalAmountPerDay"
+                    min="1"
+                    addonBefore={<Button isStatic>＜＝</Button>}
+                  />
+                </Box>
+              )}
+              {readonly && (
+                <Box alignY="center">
+                  <FormattedNumber value={record?.withdrawTotalAmountPerDay} />
+                </Box>
+              )}
+            </FieldValues>
+          </Set>
         </Set>
         <Set orientation="vertical" isFilled flex="1">
           <Heading use="h5">
