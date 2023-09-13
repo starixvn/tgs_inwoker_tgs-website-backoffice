@@ -16,7 +16,7 @@ export const UpdateDomain = "updatedomain"
 //TODO: required?
 export const LookupWhois = "lookupwhois"
 
-export const ClearProfitSharing = "clearprofitshare"
+export const ClearProfitShare = "clearprofitshare"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
@@ -53,7 +53,7 @@ export const label = (codes = [], locale = Locales.zh) => {
       return "Edit Ingress"
     case UpdateDnsZone:
       return "Edit DNS Zone"
-    case ClearProfitSharing:
+    case ClearProfitShare:
       return getTrans(
         {
           zh: "清除累計結算分紅",

@@ -7,7 +7,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { FormDialog, WarningConfirmFormDialog } from "../../form/FormDialog"
 import AlertDialog from "../../dialog/Alert"
 import { useClearAgentProfitShare } from "./client"
-import { ClearProfitSharing } from "./menu"
+import { ClearProfitShare } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 
 export const ClearProfitShareDialogDisclosure = ({
@@ -22,7 +22,7 @@ export const ClearProfitShareDialogDisclosure = ({
     en: "Clear Accumulated Profit Share"
   })
 
-  let hasAuth = useIsDisplayMenuByRoute([ClearProfitSharing])
+  let hasAuth = useIsDisplayMenuByRoute([ClearProfitShare])
   if (!hasAuth) {
     return null
   }

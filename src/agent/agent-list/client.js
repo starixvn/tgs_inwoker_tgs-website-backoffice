@@ -94,6 +94,11 @@ export const useDeleteAgentDomain = (brandId, agentId, domain) => {
   return useDelete(url)
 }
 
+export const useClearAgentProfitShare = (id) => {
+  let url = id ? `${API}/${id}/clear-negative-commission` : ""
+  return usePut(url)
+}
+
 const DomainSettingApi = "/api/DomainSetting"
 export const useApplyAgentIngress = (agentId) => {
   let url = agentId ? `${DomainSettingApi}/ingress/${agentId}` : ""
@@ -113,14 +118,4 @@ export const useCreateAgentDnsZone = (agentId) => {
 export const useDeleteAgentDnsZone = (agentId) => {
   let url = agentId ? `${DomainSettingApi}/dns-zone/${agentId}` : ""
   return useDelete(url)
-}
-
-//TODO: integrate api and remove fake api
-export const useClearAgentProfitShare = (id) => {
-  return {
-    isLoading: false,
-    result: id && true,
-    mutate: () => {},
-    deleteCache: () => {}
-  }
 }

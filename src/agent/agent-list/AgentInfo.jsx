@@ -248,6 +248,7 @@ const EditPanel = ({
               {/* 
               TODO: api support
               TODO: add test case
+               */}
               <AccumulatedProfitSharingBox value={accumulatedProfitSharing}>
                 <ClearProfitShareDialogDisclosure
                   agentId={agentId}
@@ -256,7 +257,6 @@ const EditPanel = ({
                   }}
                 />
               </AccumulatedProfitSharingBox>
-               */}
 
               <AgentStatusBox>
                 <AgentStatusSelect name="status" placeholder={false} required />
