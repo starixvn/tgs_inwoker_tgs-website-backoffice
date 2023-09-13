@@ -1,13 +1,17 @@
 kind: Module
 type: container
 name: payment-api
-image: pgtgs/payment-api:202309080358.308
+image: pgtgs/payment-api:202309130202.313
 services:
   - name: payment-api
     dependencies:
       - postgres
       - redis
       - nats
+      - player-api
+      - cash-service
+      - player-bucket-api
+      - viplevel-api
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
@@ -16,6 +20,7 @@ services:
       Payment__PlayerServiceBaseUrl: "http://player-api"
       Payment__CashServiceBaseUrl: "http://cash-service"
       Payment__PlayerBucketServiceBaseUrl: "http://player-bucket-api"
+      Payment__VipLevelServiceBaseUrl: "http://viplevel-api"
     ports:
       - name: http
         containerPort: 80
