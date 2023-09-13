@@ -395,7 +395,11 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
                   <NumberInputField
                     name="withdrawTransactionsPerDay"
                     min="1"
-                    addonBefore={<Button isStatic>＜＝</Button>}
+                    addonBefore={
+                      <Button isStatic tabIndex="-1">
+                        ＜＝
+                      </Button>
+                    }
                   />
                 </Box>
               )}
@@ -413,7 +417,11 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
                   <NumberInputField
                     name="withdrawTotalAmountPerDay"
                     min="1"
-                    addonBefore={<Button isStatic>＜＝</Button>}
+                    addonBefore={
+                      <Button isStatic tabIndex="-1">
+                        ＜＝
+                      </Button>
+                    }
                   />
                 </Box>
               )}
