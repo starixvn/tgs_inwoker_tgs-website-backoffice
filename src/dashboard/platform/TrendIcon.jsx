@@ -33,34 +33,52 @@ export const TrendIcon = ({ value }) => {
   switch (value) {
     case Up:
       return (
-        <Button palette="success" isStatic size="small" minHeight="1.5rem">
+        <Button
+          palette="success"
+          isStatic
+          size="small"
+          minHeight="1rem"
+          padding="0 0.25rem"
+        >
           <Icon
             icon={faArrowTrendUp}
             type="font-awesome"
             color={"white"}
-            fontSize="300"
+            fontSize="250"
           />
         </Button>
       )
     case Down:
       return (
-        <Button palette="danger" isStatic size="small" minHeight="1.5rem">
+        <Button
+          palette="danger"
+          isStatic
+          size="small"
+          minHeight="1rem"
+          padding="0 0.25rem"
+        >
           <Icon
             icon={faArrowTrendDown}
             type="font-awesome"
             color={"white"}
-            fontSize="300"
+            fontSize="250"
           />
         </Button>
       )
     case Flat:
       return (
-        <Button palette="warning" isStatic size="small" minHeight="1.5rem">
+        <Button
+          palette="warning"
+          isStatic
+          size="small"
+          minHeight="1rem"
+          padding="0 0.25rem"
+        >
           <Icon
             icon={faMinus}
             type="font-awesome"
             color={"white"}
-            fontSize="300"
+            fontSize="250"
           />
         </Button>
       )

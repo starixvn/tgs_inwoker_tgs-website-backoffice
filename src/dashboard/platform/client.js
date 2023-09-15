@@ -10,8 +10,8 @@ import client, {
   usePutData,
   usePostFormData
 } from "../../client"
+//TODO: rm faker
 import { faker } from "@faker-js/faker"
-console.log("faker", faker)
 
 let API = "/api/overview"
 
@@ -77,10 +77,12 @@ export const usePlatformDepositSuccessRate = (id) => {
   return useGet(url)
 }
 
-export let PlayerApi = "/api/player"
-
 //TODO: fake api with items
 export const usePlatformTopPlayerList = (id) => {
+  let url = id ? `${API}/top-ten/${id}` : ""
+  return useGet(url)
+
+  /*
   let url = id
     ? urlWith(
         {
@@ -89,7 +91,7 @@ export const usePlatformTopPlayerList = (id) => {
           page: 1,
           rows: 10
         },
-        PlayerApi
+        "/api/player"
       )
     : ""
   let { data, ...rest } = useGet(url)
@@ -107,6 +109,41 @@ export const usePlatformTopPlayerList = (id) => {
       })
     }
   })
+  return {
+    data: items,
+    ...rest
+  }
+  */
+}
+
+//http://localhost:3000/api/brandgame?page=1&rows=20&sortby=displayOrder&brandId=4e86719f-243f-46f6-b010-5c758b7285af
+let GameApi = "/api/brandgame"
+//TODO: fake api
+export const usePlatformTopGameList = (id) => {
+  let url = id
+    ? urlWith(
+        {
+          brandId: id,
+          page: 1,
+          rows: 10
+        },
+        GameApi
+      )
+    : ""
+  let { data, ...rest } = useGet(url)
+
+  let items = data?.items?.map((game) => {
+    return {
+      ...game,
+      providerAbbr: faker.string.alpha(5).toUpperCase(),
+      bet: faker.number.int(1000),
+      winLoss: faker.number.int({
+        min: -100,
+        max: 100
+      })
+    }
+  })
+
   return {
     data: items,
     ...rest

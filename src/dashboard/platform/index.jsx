@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useLayoutEffect } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
@@ -11,7 +11,9 @@ import {
   Popover,
   Icon,
   List,
-  Columns
+  Columns,
+  useBreakpoint,
+  useBreakpointValue
 } from "bumbag"
 import {
   useIsDisplayMenuByRoute,
@@ -26,6 +28,8 @@ import {
 import { Trans } from "../../i18n"
 import { Overview } from "./Overview"
 import { TopPlayerTable } from "./TopPlayerTable"
+import { TopGameTable } from "./TopGameTable"
+import { useMeasure } from "react-use"
 
 export { Code }
 
@@ -49,25 +53,32 @@ export const PlatformDashboardPage = () => {
   )
 }
 
-//TODO: layout?
 const Body = () => {
   return (
     <Columns>
-      <Columns.Column>
+      <Columns.Column spread={3}>
         <WelcomeBox />
         <Overview />
       </Columns.Column>
-      <Columns.Column>
-        <PlayerTableBox />
-      </Columns.Column>
-      <Columns.Column>
-        <GameTableBox />
+      <Columns.Column spread={9}>
+        <Columns>
+          <Columns.Column>
+            <PlayerTableBox />
+          </Columns.Column>
+          <Columns.Column>
+            <GameTableBox />
+          </Columns.Column>
+        </Columns>
       </Columns.Column>
     </Columns>
   )
 }
 
 const WelcomeBox = () => {
+  let isMobile = useBreakpoint("mobile")
+  let isDesktop = useBreakpoint("desktop")
+  let isWidescreen = useBreakpoint("widescreen")
+  let isFullHD = useBreakpoint("fullHD")
   return "TODO: Brand Code"
 }
 
@@ -77,5 +88,6 @@ const PlayerTableBox = () => {
 }
 
 const GameTableBox = () => {
-  return "game table"
+  let id = usePlatformId()
+  return <TopGameTable brandId={id} />
 }

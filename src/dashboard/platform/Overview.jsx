@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useLayoutEffect
+} from "react"
 import { css, Global } from "@emotion/react"
 import {
   Columns,
@@ -33,18 +39,25 @@ import {
   Trans
 } from "../../i18n"
 import { TrendIcon, Trend, trendOf } from "./TrendIcon"
+import { useMeasure } from "react-use"
 
 //TODO: layout for mobile, breakpoint value?
+//TODO: find minwidth: 250?
+const MinWidth = 230
 export const Overview = ({}) => {
-  let isMobile = useBreakpoint("mobile")
-  let isTablet = useBreakpoint("max-tablet")
+  let [ref, measure] = useMeasure()
   return (
     <>
       <Box
+        ref={ref}
         css={css`
           display: grid;
-          grid-gap: 1rem;
-          grid-template-columns: repeat(2, minmax(0px, 1fr));
+          grid-gap: 0.5rem;
+          grid-template-columns: repeat(
+            ${measure.width > MinWidth ? 2 : 1},
+            minmax(0, 1fr)
+          );
+          overflow: auto;
         `}
       >
         <NewPlayerCountStat />
@@ -75,17 +88,19 @@ export const Stat = ({ children, ...props }) => {
   )
 }
 
-const StatHeader = ({ children, ...props }) => {
+//TODO: left min size?
+//TODO: mobile?
+const StatHeader = ({ title = "", icon, children, ...props }) => {
   return (
     <Level
-      alignY="center"
       spacing="major-1"
       css={css`
-        gap: 0.5rem;
+        gap: 0.25rem;
       `}
       {...props}
     >
-      {children}
+      <Box fontSize="150">{title}</Box>
+      <Box>{icon}</Box>
     </Level>
   )
 }
@@ -116,10 +131,10 @@ const NewPlayerCountStat = () => {
   )
   return (
     <Stat>
-      <StatHeader>
-        <Trans zh="注册人数" en="New Players" />
-        {trend && <TrendIcon value={trend} />}
-      </StatHeader>
+      <StatHeader
+        title={<Trans zh="注册人数" en="New Players" />}
+        icon={trend && <TrendIcon value={trend} />}
+      />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber
@@ -138,9 +153,7 @@ const PlayerLoginCountStat = () => {
 
   return (
     <Stat>
-      <StatHeader>
-        <Trans zh="登入人數" en="Login Players" />
-      </StatHeader>
+      <StatHeader title={<Trans zh="登入人數" en="Login Players" />} />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={count} placeholder="-" />
@@ -157,10 +170,10 @@ const NetDepositStat = ({}) => {
   let trend = trendOf(record?.yesterdayNetDeposit, record?.todayNetDeposit)
   return (
     <Stat>
-      <StatHeader>
-        <Trans zh="存提差" en="Net Deposits" />
-        {trend && <TrendIcon value={trend} />}
-      </StatHeader>
+      <StatHeader
+        title={<Trans zh="存提差" en="Net Deposits" />}
+        icon={trend && <TrendIcon value={trend} />}
+      />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={record?.todayNetDeposit} placeholder="-" />
@@ -177,9 +190,7 @@ const GrossProfitStat = () => {
 
   return (
     <Stat>
-      <StatHeader>
-        <Trans zh="毛利" en="Gross Profit" />
-      </StatHeader>
+      <StatHeader title={<Trans zh="毛利" en="Gross Profit" />} />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={value} placeholder="-" />
@@ -195,9 +206,7 @@ const ReviewingWithdrawalStat = () => {
 
   return (
     <Stat>
-      <StatHeader>
-        <Trans zh="待處理提款" en="Reviewing Withdrawal" />
-      </StatHeader>
+      <StatHeader title={<Trans zh="待處理提款" en="Reviewing Withdrawal" />} />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={value} placeholder="-" />
@@ -213,9 +222,9 @@ const OutstandingWithdrawalStat = () => {
 
   return (
     <Stat>
-      <StatHeader>
-        <Trans zh="待支付提款" en="Outstanding Withdrawal" />
-      </StatHeader>
+      <StatHeader
+        title={<Trans zh="待支付提款" en="Outstanding Withdrawal" />}
+      />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={value} placeholder="-" />
@@ -231,9 +240,7 @@ const OnlinePlayerCountStat = () => {
 
   return (
     <Stat>
-      <StatHeader>
-        <Trans zh="在線人數" en="Online Players" />
-      </StatHeader>
+      <StatHeader title={<Trans zh="在線人數" en="Online Players" />} />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={value} placeholder="-" />
@@ -250,10 +257,10 @@ export const DepositSuccessRateStat = ({}) => {
   let trend = trendOf(record?.yesterdaySuccessRate, record?.todaySuccessRate)
   return (
     <Stat>
-      <StatHeader>
-        <Trans zh="存款成功率" en="Deposit Approval Rate" />
-        {trend && <TrendIcon value={trend} />}
-      </StatHeader>
+      <StatHeader
+        title={<Trans zh="存款成功率" en="Deposit Approval Rate" />}
+        icon={trend && <TrendIcon value={trend} />}
+      />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumberDecimalPercentage

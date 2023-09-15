@@ -1,16 +1,18 @@
 kind: Module
 type: container
 name: payment-withdraw-limit
-image: pgtgs/payment-withdraw-limit:202309120342.3
+image: pgtgs/payment-withdraw-limit:202309140632.5
 services:
   - name: payment-withdraw-limit
     dependencies:
       - redis
       - nats
+      - brand-cert-api
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
       ConnectionStrings__Nats: "nats://nats:4222"
+      WithdrawLimit__BrandCertificateBaseUrl: "http://brand-cert-api"
     ports:
       - name: http
         containerPort: 80
