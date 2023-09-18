@@ -63,7 +63,10 @@ export const Overview = ({}) => {
         <NewPlayerCountStat />
         <PlayerLoginCountStat />
         <NetDepositStat />
-        <GrossProfitStat />
+        {/* 
+        TODO: api
+        <GrossProfitStat /> 
+        */}
         <ReviewingWithdrawalStat />
         <OutstandingWithdrawalStat />
         <OnlinePlayerCountStat />

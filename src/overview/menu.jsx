@@ -9,15 +9,15 @@ import {
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons"
 
-export const Code = "dashboard"
+export const Code = "overview"
 
 export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
 
 export const nameMessages = {
-  zh: "Dashboard",
-  en: "Dashboard"
+  zh: "总览",
+  en: "Overview"
 }
 
 export const Menu = ({

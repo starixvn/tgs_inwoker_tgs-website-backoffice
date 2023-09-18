@@ -97,6 +97,7 @@ export const usePlatformPageContentWidth = () => {
   return width
 }
 
+//TODO: rm
 export const usePlatform = () => {
   let { platformId, platform, setPlatform } = useContext(Store) ?? {}
   useEffect(() => {

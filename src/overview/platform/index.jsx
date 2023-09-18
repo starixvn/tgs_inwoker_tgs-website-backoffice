@@ -13,7 +13,8 @@ import {
   List,
   Columns,
   useBreakpoint,
-  useBreakpointValue
+  Spinner,
+  FieldStack
 } from "bumbag"
 import {
   useIsDisplayMenuByRoute,
@@ -26,6 +27,7 @@ import {
   usePlatformId
 } from "../../page/PlatformPageContent"
 import { Trans } from "../../i18n"
+import { useBrand } from "../../merchant/platforms/client"
 import { Overview } from "./Overview"
 import { TopPlayerTable } from "./TopPlayerTable"
 import { TopGameTable } from "./TopGameTable"
@@ -54,16 +56,29 @@ export const PlatformDashboardPage = () => {
 }
 
 const Body = () => {
+  let id = usePlatformId()
+  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(id)
+
+  if (isLoading) {
+    return (
+      <Box alignY="center" alignX="center">
+        <Spinner />
+      </Box>
+    )
+  }
+
+  console.log("brand", brand)
+
   return (
     <Columns>
       <Columns.Column spread={3}>
-        <WelcomeBox />
+        <WelcomeBox brand={brand} />
         <Overview />
       </Columns.Column>
       <Columns.Column spread={9}>
         <Columns>
           <Columns.Column>
-            <PlayerTableBox />
+            <PlayerTableBox brand={brand} />
           </Columns.Column>
           <Columns.Column>
             <GameTableBox />
@@ -74,17 +89,24 @@ const Body = () => {
   )
 }
 
-const WelcomeBox = () => {
-  let isMobile = useBreakpoint("mobile")
-  let isDesktop = useBreakpoint("desktop")
-  let isWidescreen = useBreakpoint("widescreen")
-  let isFullHD = useBreakpoint("fullHD")
-  return "TODO: Brand Code"
+const WelcomeBox = ({ brand }) => {
+  // let isMobile = useBreakpoint("mobile")
+  // let isDesktop = useBreakpoint("desktop")
+  // let isWidescreen = useBreakpoint("widescreen")
+  // let isFullHD = useBreakpoint("fullHD")
+  return (
+    <Box marginBottom="0.5rem">
+      <Trans
+        zh={`欢迎回来，${brand.code}`}
+        en={`Welcome back, ${brand.code}`}
+      />
+    </Box>
+  )
 }
 
-const PlayerTableBox = () => {
+const PlayerTableBox = ({ brand }) => {
   let id = usePlatformId()
-  return <TopPlayerTable brandId={id} />
+  return <TopPlayerTable brand={brand} brandId={id} />
 }
 
 const GameTableBox = () => {

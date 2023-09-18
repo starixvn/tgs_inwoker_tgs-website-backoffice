@@ -77,9 +77,9 @@ export const usePlatformDepositSuccessRate = (id) => {
   return useGet(url)
 }
 
-//TODO: fake api with items
-export const usePlatformTopPlayerList = (id) => {
-  let url = id ? `${API}/top-ten/${id}` : ""
+export const usePlatformTopPlayerList = (id, searchParams) => {
+  let url =
+    id && searchParams ? urlWith(searchParams, `${API}/top-ten/${id}`) : ""
   return useGet(url)
 
   /*
@@ -99,16 +99,18 @@ export const usePlatformTopPlayerList = (id) => {
   let items = data?.items?.map((player) => {
     return {
       ...player,
+      playerUserName: player.username,
       deposit: faker.number.int(100),
       withdraw: faker.number.int(100),
       bet: faker.number.int(1000),
-      payout: faker.number.int(1000),
+      settle: faker.number.int(1000),
       winLoss: faker.number.int({
         min: -100,
         max: 100
       })
     }
   })
+
   return {
     data: items,
     ...rest
@@ -116,10 +118,11 @@ export const usePlatformTopPlayerList = (id) => {
   */
 }
 
-//http://localhost:3000/api/brandgame?page=1&rows=20&sortby=displayOrder&brandId=4e86719f-243f-46f6-b010-5c758b7285af
-let GameApi = "/api/brandgame"
-//TODO: fake api
-export const usePlatformTopGameList = (id) => {
+export const usePlatformTopGameList = (id, searchParams) => {
+  let url =
+    id && searchParams ? urlWith(searchParams, `${API}/top-ten/game/${id}`) : ""
+  return useGet(url)
+  /*
   let url = id
     ? urlWith(
         {
@@ -127,7 +130,7 @@ export const usePlatformTopGameList = (id) => {
           page: 1,
           rows: 10
         },
-        GameApi
+        "/api/brandgame"
       )
     : ""
   let { data, ...rest } = useGet(url)
@@ -135,7 +138,6 @@ export const usePlatformTopGameList = (id) => {
   let items = data?.items?.map((game) => {
     return {
       ...game,
-      providerAbbr: faker.string.alpha(5).toUpperCase(),
       bet: faker.number.int(1000),
       winLoss: faker.number.int({
         min: -100,
@@ -148,4 +150,5 @@ export const usePlatformTopGameList = (id) => {
     data: items,
     ...rest
   }
+  */
 }
