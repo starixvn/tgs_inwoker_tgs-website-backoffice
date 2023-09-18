@@ -67,8 +67,6 @@ const Body = () => {
     )
   }
 
-  console.log("brand", brand)
-
   return (
     <Columns>
       <Columns.Column spread={3}>

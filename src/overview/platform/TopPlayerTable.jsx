@@ -46,7 +46,7 @@ export const TopPlayerTable = ({ brand, brandId }) => {
     isLoading,
     error,
     deleteCache
-  } = usePlatformTopPlayerList(brandId, sortType, ascending)
+  } = usePlatformTopPlayerList(brandId, { sortType, ascending })
 
   return (
     <>
