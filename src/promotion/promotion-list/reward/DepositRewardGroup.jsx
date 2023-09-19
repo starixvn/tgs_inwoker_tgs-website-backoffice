@@ -246,7 +246,6 @@ const BonusLimitFieldBox = ({ percentage, disabled }) => {
   )
 }
 
-//TODO: confirm 活动游戏类型 en trans
 const BucketTypeLabel = () => {
   return (
     <NormalLabel>
