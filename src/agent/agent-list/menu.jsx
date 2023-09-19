@@ -18,6 +18,8 @@ export const LookupWhois = "lookupwhois"
 
 export const ClearProfitShare = "clearprofitshare"
 
+export const ChangeWithdrawalPassword = "changewithdrawalpassword"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {
@@ -58,6 +60,14 @@ export const label = (codes = [], locale = Locales.zh) => {
         {
           zh: "清除累計結算分紅",
           en: "Clear Accumulated Profit Share"
+        },
+        locale
+      )
+    case ChangeWithdrawalPassword:
+      return getTrans(
+        {
+          zh: "修改提款密码",
+          en: "Change Withdrawal Password"
         },
         locale
       )

@@ -30,7 +30,7 @@ const Key = "AgentPassword"
 export const AgentPasswordTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="修改密码" en="Update Password" />
+      <Trans zh="修改登入密码" en="Change Login Password" />
     </_Tab>
   )
 }

@@ -36,6 +36,7 @@ import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog
 import { PlayerDepositFormDialogDisclosure } from "./PlayerDepositFormDialog"
 import { PlayerWithdrawFormDialogDisclosure } from "./PlayerWithdrawFormDialog"
 import { BankInfoFieldGroup } from "./BankInfoTag"
+import { useLocation } from "react-router-dom"
 
 export { Code }
 
@@ -51,6 +52,13 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
+  //TODO: test back & forward btns multiple times
+  //TODO: try to get brandId from location.state?
+  /*
+  let location = useLocation()
+  console.log("location.state", location.state)
+  */
+
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
   let {

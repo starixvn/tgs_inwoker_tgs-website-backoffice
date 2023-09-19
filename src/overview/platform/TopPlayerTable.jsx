@@ -67,10 +67,11 @@ export const TopPlayerTable = ({ brand, brandId }) => {
   )
 }
 
+const ColumnSize = 6
 const LoadingRow = () => {
   return (
     <Table.Row>
-      <Table.Cell colSpan={5}>
+      <Table.Cell colSpan={ColumnSize}>
         <Box alignX="center">
           <Spinner />
         </Box>
@@ -82,7 +83,7 @@ const LoadingRow = () => {
 const EmptyRow = () => {
   return (
     <Table.Row>
-      <Table.Cell colSpan={6} textAlign="center">
+      <Table.Cell colSpan={ColumnSize} textAlign="center">
         <Trans zh="查无资料" en="No Search Result" />
       </Table.Cell>
     </Table.Row>

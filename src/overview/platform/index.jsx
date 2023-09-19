@@ -88,10 +88,10 @@ const Body = () => {
 }
 
 const WelcomeBox = ({ brand }) => {
-  // let isMobile = useBreakpoint("mobile")
-  // let isDesktop = useBreakpoint("desktop")
-  // let isWidescreen = useBreakpoint("widescreen")
-  // let isFullHD = useBreakpoint("fullHD")
+  if (!brand?.code) {
+    return null
+  }
+
   return (
     <Box marginBottom="0.5rem">
       <Trans

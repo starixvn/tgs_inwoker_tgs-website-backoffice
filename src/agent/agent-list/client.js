@@ -4,7 +4,8 @@ import {
   usePostData,
   usePut,
   usePutData,
-  useDelete
+  useDelete,
+  usePatchData
 } from "../../client"
 
 let API = "/api/agent"
@@ -42,6 +43,11 @@ export const useAddAgent = (formData) => {
 export const useUpdateAgent = (agentId, data) => {
   let url = agentId ? `${API}/${agentId}` : ""
   return usePutData(url, data)
+}
+
+export const useUpdateAgentWithdrawPassword = (data) => {
+  let url = data ? `${API}/pay-password` : ""
+  return usePatchData(url, data)
 }
 
 export const useAddAgentBank = (agentId, data) => {

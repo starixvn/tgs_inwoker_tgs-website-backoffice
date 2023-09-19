@@ -79,17 +79,14 @@ export const PlatformBucketSelect = ({
   filter: predicate = DefaultFilter,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "类型",
-    en: "Type"
-  })
+  let defaultPlaceholder = useTrans(MainTrans)
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()
   let { isLoading, data: items, error } = usePlatformBucketList(platformId)
 
   let options = items
-    ?.map(({ type }) => {
+    ?.map((type) => {
       let trans = findTrans(type)
       return {
         value: type,
