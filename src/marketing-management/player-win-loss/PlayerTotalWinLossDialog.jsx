@@ -85,7 +85,7 @@ const PlayerTotalWinLossDialog = ({ playerCode, from, to, dialog }) => {
   let columns = useColumns({ items: data?.items })
 
   if (error) {
-    return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   return (

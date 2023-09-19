@@ -80,3 +80,24 @@ export const useUpdateBrandPaymentExtendeddata = (id, data) => {
   let url = id && data ? `${API}/extendeddata/${id}` : ""
   return usePatchData(url, data)
 }
+
+//TODO: fake api result
+export const useUpdatePlatformAutoWithdraw = (platformId, data) => {
+  if (platformId && data) {
+    return {
+      result: true,
+      error: undefined,
+      isLoading: false,
+      mutate: () => {},
+      deleteCache: () => {}
+    }
+  }
+
+  return {
+    result: null,
+    error: undefined,
+    isLoading: false,
+    mutate: () => {},
+    deleteCache: () => {}
+  }
+}

@@ -124,7 +124,7 @@ const ReportDialog = ({
   }
 
   if (error) {
-    return <AlertDialog {...error} {...dialog} onClickClose={dialog.close} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   return (

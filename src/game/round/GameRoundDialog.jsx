@@ -20,7 +20,8 @@ import {
   Trans,
   FormattedNumber,
   useLangCode,
-  FormattedNumberDecimal
+  FormattedNumberDecimal,
+  FormattedNumberDecimalPercentage
 } from "../../i18n"
 import { useGameRound } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -205,7 +206,16 @@ export const GameRoundDialog = ({
                 <Trans zh="流水" en="Turnover" />
               </NormalLabel>
               <Box alignY="center">
-                <FormattedNumberDecimal value={record.turnover} />
+                <FormattedNumberDecimal value={record.originalTurnover} />
+              </Box>
+
+              <NormalLabel whiteSpace="normal">
+                <Trans zh="流水比例" en="Turnover Percentage" />
+              </NormalLabel>
+              <Box alignY="center">
+                <FormattedNumberDecimalPercentage
+                  value={record.effectiveBettingPercentage}
+                />
               </Box>
 
               <NormalLabel whiteSpace="normal">

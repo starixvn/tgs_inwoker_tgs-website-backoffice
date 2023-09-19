@@ -10,8 +10,8 @@ import client, {
   usePutData,
   usePostFormData
 } from "../../client"
-import { LetterBoxType } from "./LetterBoxType"
-import { SendLetterType } from "./SendLetterType"
+import { BoxType } from "./BoxType"
+import { LetterType } from "./LetterType"
 
 const InboxAPI = "/api/station-letter"
 
@@ -19,43 +19,43 @@ const SentAPI = "/api/delivery-box"
 
 const toLetterBoxAPI = (value) => {
   switch (value) {
-    case LetterBoxType.Sent:
+    case BoxType.Sent:
       return SentAPI
-    case LetterBoxType.Inbox:
+    case BoxType.Inbox:
     default:
       return InboxAPI
   }
 }
 
-export const useLetterList = (brandId, letterBoxType, searchParams) => {
+export const useLetterList = (brandId, boxType, searchParams) => {
   let url =
-    brandId && letterBoxType && searchParams
-      ? urlWith(searchParams, `${toLetterBoxAPI(letterBoxType)}/${brandId}`)
+    brandId && boxType && searchParams
+      ? urlWith(searchParams, `${toLetterBoxAPI(boxType)}/${brandId}`)
       : ""
   return useGet(url)
 }
 
-export const useLetter = (brandId, letterBoxType, letterId) => {
+export const useLetter = (brandId, boxType, letterId) => {
   let url =
-    brandId && letterBoxType && letterId
-      ? `${toLetterBoxAPI(letterBoxType)}/${brandId}/${letterId}`
+    brandId && boxType && letterId
+      ? `${toLetterBoxAPI(boxType)}/${brandId}/${letterId}`
       : ""
   return useGet(url)
 }
 
-export const useSendLetter = (brandId, sendLetterType, data) => {
+export const useSendLetter = (brandId, letterType, data) => {
   let url =
-    brandId && sendLetterType && data
-      ? `${InboxAPI}/${toSendLetterPath(sendLetterType)}/${brandId}`
+    brandId && letterType && data
+      ? `${InboxAPI}/${toSendLetterPath(letterType)}/${brandId}`
       : ""
   return usePutData(url, data)
 }
 
 const toSendLetterPath = (value) => {
   switch (value) {
-    case SendLetterType.DesignatedPlayers:
+    case LetterType.DesignatedPlayers:
       return "player"
-    case SendLetterType.AllPlayers:
+    case LetterType.AllPlayers:
     default:
       return "all"
   }

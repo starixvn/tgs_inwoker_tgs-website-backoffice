@@ -442,7 +442,7 @@ const MultileLayerSettingDialog = ({
   }
 
   if (error) {
-    return <AlertDialog {...error} onClickClose={dialog.close} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   return (
@@ -536,7 +536,7 @@ const GameTypeSettingCard = ({ brandId, gameType, readOnly, dialog }) => {
   }
 
   if (error) {
-    return <AlertDialog {...error} onClickClose={dialog.close} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   let record = data?.brandAllAgentGameTypes?.find(

@@ -6,6 +6,10 @@ import {
   Code as MarketReportCode,
   codeLabelPair as marketReportPair
 } from "./market-report/menu"
+import {
+  Code as BalanceAdjustReportCode,
+  codeLabelPair as balanceAdjustReportPair
+} from "./balance-adjust-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 
@@ -58,6 +62,14 @@ const label = ({ locale, code }) => {
         locale
       )
 
+    case BalanceAdjustReportCode:
+      return getTrans(
+        {
+          zh: "调帐报表",
+          en: "Balance Adjust Report"
+        },
+        locale
+      )
     default:
       return ""
   }
@@ -70,6 +82,6 @@ export const codeLabelPair = [
       locale,
       codes,
       label,
-      subLabelPairs: [marketReportPair]
+      subLabelPairs: [marketReportPair, balanceAdjustReportPair]
     })
 ]

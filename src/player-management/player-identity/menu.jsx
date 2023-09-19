@@ -7,6 +7,8 @@ export const View = "view"
 
 export const Update = "update"
 
+export const Reset = "reset"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {
@@ -27,6 +29,14 @@ export const label = (codes = [], locale = Locales.zh) => {
         {
           zh: "编辑",
           en: "Edit"
+        },
+        locale
+      )
+    case Reset:
+      return getTrans(
+        {
+          zh: "重设",
+          en: "Reset"
         },
         locale
       )

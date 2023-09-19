@@ -11,7 +11,8 @@ import {
   Columns,
   Heading,
   Level,
-  Dialog
+  Dialog,
+  Spinner
 } from "bumbag"
 import {
   useIsDisplayMenuByRoute,
@@ -38,11 +39,20 @@ import Textarea, { TextareaField } from "../../textarea"
 import Modal from "../../dialog/Modal"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
+import { isInbox } from "./BoxType"
+import {
+  LetterTypeLabel,
+  isAllPlayers,
+  isDesignatedPlayers
+} from "./LetterType"
+import { usePlayer } from "../../player-management/player-list/client"
 
 export const ViewLetterDisclosure = ({
   brandId,
-  letterBoxType,
+  boxType,
   letterId,
+  id,
+  dialogId = "view-letter-dialog",
   ...props
 }) => {
   let dialog = useModalState()
@@ -52,25 +62,65 @@ export const ViewLetterDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <ViewDisclosure {...dialog} {...props} />
+      <ViewDisclosure id={id} {...dialog} {...props} />
       {dialog.visible && (
         <ViewDialog
           brandId={brandId}
-          letterBoxType={letterBoxType}
+          boxType={boxType}
           letterId={letterId}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
   )
 }
 
-const ViewDialog = ({ brandId, letterBoxType, letterId, dialog }) => {
+const ReceiverField = ({ receiverType, receiver = [] }) => {
+  let { isLoading, data: player } = usePlayer(receiver?.[0])
+
+  if (!receiverType) {
+    return null
+  }
+
+  if (isDesignatedPlayers(receiverType)) {
+    return (
+      <>
+        <Label>
+          <Trans zh="收件人" en="Receiver" />
+        </Label>
+        <Box>
+          {receiver.length === 1 ? (
+            isLoading ? (
+              <Spinner />
+            ) : (
+              player.username
+            )
+          ) : (
+            <LetterTypeLabel value={receiverType} />
+          )}
+        </Box>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <Label>
+        <Trans zh="收件人" en="Receiver" />
+      </Label>
+      <LetterTypeLabel value={receiverType} />
+    </>
+  )
+}
+
+const ViewDialog = ({ brandId, boxType, letterId, dialog, dialogId }) => {
   let { isLoading, data, error, mutate, deleteCache } = useLetter(
     brandId,
-    letterBoxType,
+    boxType,
     letterId
   )
 
@@ -88,17 +138,34 @@ const ViewDialog = ({ brandId, letterBoxType, letterId, dialog }) => {
   }
 
   return (
-    <Modal title={title} {...dialog} placement="top" minWidth="80vw">
+    <Modal
+      id={dialogId}
+      title={title}
+      {...dialog}
+      placement="top"
+      minWidth="80vw"
+    >
       <FieldValues marginLeft="1rem">
+        <ReceiverField
+          receiverType={data?.receiverType}
+          receiver={data?.receiver}
+        />
         <Label>
           <Trans zh="主旨" en="Subject" />
         </Label>
-        <Input name="subject" value={data?.subject} readOnly disabled />
+        <Input
+          name="subject"
+          data-type="subject"
+          value={data?.subject}
+          readOnly
+          disabled
+        />
         <Label>
           <Trans zh="內容" en="Content" />
         </Label>
         <Textarea
           name="content"
+          data-type="content"
           value={data?.content}
           readOnly
           disabled

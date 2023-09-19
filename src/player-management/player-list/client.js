@@ -198,3 +198,50 @@ export const usePlayerPayment = (playerCode) => {
   let url = playerCode ? `${API}/payment/${playerCode}` : ""
   return useGet(url)
 }
+
+//TODO:
+export const usePlayerBucketList = (playerCode) => {
+  let data = [
+    {
+      type: "Main",
+      amount: 800
+    },
+    {
+      type: "LiveDealer",
+      amount: 0
+    },
+    {
+      type: "Sports",
+      amount: 450
+    },
+    {
+      type: "EGame",
+      amount: 450
+    },
+    {
+      type: "CardGame",
+      amount: 0
+    },
+    {
+      type: "VirtualSports",
+      amount: 0
+    },
+    {
+      type: "Lottery",
+      amount: 0
+    }
+  ]
+
+  return {
+    data,
+    error: undefined,
+    isLoading: false,
+    mutate: () => {},
+    deleteCache: () => {}
+  }
+}
+
+//TODO: use different api?
+export const usePlayerBucketItems = (playerCode, searchParams) => {
+  return usePlayerWageringRequirementList(playerCode, searchParams)
+}

@@ -17,7 +17,7 @@ const WithdrawalTrans = {
 
 export const isDepositPlatformPayment = (value) => value === Deposit
 
-export const isWithdrawalPlatformPayment = (value) => value === Deposit
+export const isWithdrawalPlatformPayment = (value) => value === Withdrawal
 
 export default {
   Deposit,

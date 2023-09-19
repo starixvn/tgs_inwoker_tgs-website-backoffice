@@ -58,6 +58,7 @@ module.exports = {
     //   src: "/fs/.*",
     //   dest: (req, res) => fileApiProxy.web(req, res)
     // },
+    { match: "routes", src: "/login.html", dest: "/login.html" },
     { match: "routes", src: ".*", dest: "/index.html" }
   ]
 }

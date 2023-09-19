@@ -17,6 +17,7 @@ const Option = ({ data, innerProps, ...props } = {}) => {
       data={data}
       innerProps={{
         "data-option-value": data?.value,
+        "data-option-label": data?.label,
         ...innerProps
       }}
       {...props}

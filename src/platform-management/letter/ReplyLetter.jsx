@@ -39,20 +39,23 @@ import Label from "../../form/Label"
 import { InputField } from "../../input/Input"
 import Textarea, { TextareaField } from "../../textarea"
 import Modal from "../../dialog/Modal"
-import { isSentLetterBox } from "./LetterBoxType"
+import { isSentBox } from "./BoxType"
 import AlertDialog from "../../dialog/Alert"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import { DoubleConfirmDialogDisclosure } from "./DoubleConfirmDialog"
 
 export const ReplyLetterDisclosure = ({
   brandId,
-  letterBoxType,
+  boxType,
   letterId,
   onSubmitted,
+  id,
+  dialogId = "reply-letter-dialog",
   ...props
 }) => {
   let dialog = useModalState()
 
-  if (isSentLetterBox(letterBoxType)) {
+  if (isSentBox(boxType)) {
     return null
   }
 
@@ -61,18 +64,20 @@ export const ReplyLetterDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <Trans zh="回覆" en="Reply" />
       </Disclosure>
       {dialog.visible && (
         <ReplyLetterDialog
           brandId={brandId}
-          letterBoxType={letterBoxType}
+          boxType={boxType}
           letterId={letterId}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -82,14 +87,15 @@ export const ReplyLetterDisclosure = ({
 const ReplyLetterDialog = ({
   brandId,
   letterId,
-  letterBoxType,
+  boxType,
   dialog,
   onSubmitted,
+  dialogId,
   ...props
 }) => {
   let { isLoading, data, error, mutate, deleteCache } = useLetter(
     brandId,
-    letterBoxType,
+    boxType,
     letterId
   )
 
@@ -107,6 +113,7 @@ const ReplyLetterDialog = ({
       letterId={letterId}
       letter={data}
       dialog={dialog}
+      dialogId={dialogId}
       onSubmitted={onSubmitted}
       {...props}
     />
@@ -118,7 +125,8 @@ const ReplyLetterFormDialog = ({
   letterId,
   letter,
   onSubmitted,
-  dialog
+  dialog,
+  dialogId
 }) => {
   let [data, setSubmit] = useState()
 
@@ -145,6 +153,7 @@ const ReplyLetterFormDialog = ({
 
   return (
     <FormDialog
+      id={dialogId}
       defaultValues={{
         content: ""
       }}
@@ -156,6 +165,16 @@ const ReplyLetterFormDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
+      actionButtonsProps={{
+        cancelProps: {
+          display: "none"
+        },
+        addonButtons: (
+          <>
+            <DoubleConfirmDialogDisclosure dialog={dialog} />
+          </>
+        )
+      }}
       placement="top"
       minWidth="80vw"
     >
