@@ -52,7 +52,7 @@ const editBank = async (page, bank, player) => {
     bankName: faker.person.firstName(),
     bankBranch: faker.person.firstName(),
     name: faker.finance.accountName(),
-    bankAccount: faker.finance.account()
+    bankAccount: faker.finance.accountNumber()
   }
 
   let bankNameSelector = `${editBankDialogSelector} input[name="detail.bankName"]`

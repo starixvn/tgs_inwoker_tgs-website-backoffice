@@ -4,11 +4,12 @@ import { faker } from "@faker-js/faker"
 
 const API = "api/BrandLiveChat"
 
-//TODO: fake json data
 export const add = async ({
   brandId,
   name = `${faker.person.firstName()}-${Date.now()}`,
-  setting = faker.datatype.json()
+  setting = JSON.stringify({
+    a: faker.number.int(100)
+  })
 }) => {
   let data = {
     brandId,

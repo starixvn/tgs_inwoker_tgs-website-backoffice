@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202309190219.522
+image: pgtgs/backoffice-api:202309190240.524
 services:
   - name: backoffice-api
     dependencies:
@@ -52,8 +52,7 @@ services:
       BackOffice__StationLetterBaseUrl: "http://station-letter"
       BackOffice__CashQueryBaseUrl: "http://cash-query"
       BackOffice__AgentBaseUrl: "http://agent-service"
-      # TODO: setup service
-      BackOffice__GameWagersServiceBaseUrl: "https://localhost:7152"
+      BackOffice__GameWagersServiceBaseUrl: "http://game-wagers"
     ingresses:
       - hostname: backoffice.localhost
         path: /api

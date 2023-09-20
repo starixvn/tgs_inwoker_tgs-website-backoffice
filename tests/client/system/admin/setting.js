@@ -27,11 +27,12 @@ export const get = async (key = "") => {
   return setting
 }
 
-//TODO: fake data json?
 export const add = async ({
   key,
   description = faker.lorem.word(),
-  value = faker.datatype.json(),
+  value = JSON.stringify({
+    a: faker.number.int(100)
+  }),
   ...data
 } = {}) => {
   if (!key) {
