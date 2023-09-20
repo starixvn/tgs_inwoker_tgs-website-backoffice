@@ -47,7 +47,6 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 export const PlatformDashboardPage = () => {
-  //TODO: title with brand code?
   return (
     <PlatformPageContent>
       <Body />
