@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
+import { Link, useLocation } from "react-router-dom"
 import {
   Heading,
   Stack,
@@ -109,13 +110,28 @@ const PlayerRows = ({ items = [], brand }) => {
 
 //TODO: player detail dialog
 //TODO: sticky last cell
-const PlayerRow = ({ player = {}, index }) => {
+const PlayerRow = ({ player = {}, brand, index }) => {
   let isEven = index % 2 != 0
   return useMemo(() => {
     let isWin = player.winLoss >= 0
     return (
       <Table.Row>
-        <Table.Cell textAlign="left">{player.playerUserName}</Table.Cell>
+        <Table.Cell textAlign="left">
+          {/* 
+          TODO: has player view auth
+          <Button variant="link" palette="primary">
+            <Link
+              to={`/playermanagement/playerlist?username=${player.playerUsername}`}
+              state={{
+                brandId: brand.id,
+                playerUsername: player.playerUsername
+              }}
+            >
+              {player.playerUsername}
+            </Link>
+          </Button> */}
+          {player.playerUsername}
+        </Table.Cell>
         <Table.Cell textAlign="right">
           <FormattedNumber value={player.deposit} />
         </Table.Cell>

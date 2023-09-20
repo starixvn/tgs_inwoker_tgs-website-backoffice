@@ -30,9 +30,12 @@ export const BrandBar = ({
   let userLicenseeId = useUserLicenseeId()
   let userBrandId = useUserBrandId()
 
-  let initialState = location?.state ?? {}
+  // TODO: able to rm initialState?
+  // let initialState = location?.state ?? {}
   let [state, setState] = useState({
+    /*
     ...initialState,
+    */
     resellerId: userResellerId ?? location?.state?.resellerId,
     licenseeId: userLicenseeId ?? location?.state?.licenseeId,
     brandId: userBrandId ?? location?.state?.brandId

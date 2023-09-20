@@ -36,7 +36,7 @@ import { PlayerWalletBalanceDialogDisclosure } from "./PlayerWalletBalanceDialog
 import { PlayerDepositFormDialogDisclosure } from "./PlayerDepositFormDialog"
 import { PlayerWithdrawFormDialogDisclosure } from "./PlayerWithdrawFormDialog"
 import { BankInfoFieldGroup } from "./BankInfoTag"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export { Code }
 
@@ -52,15 +52,11 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  //TODO: test back & forward btns multiple times
-  //TODO: try to get brandId from location.state?
-  /*
   let location = useLocation()
-  console.log("location.state", location.state)
-  */
+  let navigate = useNavigate()
 
   let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
+  let [brandId, setBrandId] = useState(userBrandId ?? location?.state?.brandId)
   let {
     isLoading: isLoadingBrand,
     data: brand,
@@ -107,10 +103,14 @@ const Body = () => {
 }
 
 const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
+  let location = useLocation()
+  let navigate = useNavigate()
+  console.log("location?.state", location?.state)
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: PlayerStatus.Enabled,
     vipId: "",
-    username: "",
+    username: location?.state?.playerUsername ?? "",
     parentUsername: "",
     beginRegisteredOn: "",
     endRegisteredOn: ""
@@ -125,7 +125,6 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
     pageSize,
     status,
     vipId,
-    username = "",
     beginRegisteredOn,
     endRegisteredOn
   } = state
@@ -142,6 +141,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
     brandId,
     endRegisteredOn: startOfNextDay(endRegisteredOn)
   })
+
   let columns = useColumns({
     mutate,
     items: data?.items,
@@ -157,9 +157,21 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
         <SearchBar
           brandId={brandId}
           brand={brand}
+          username={state.username}
           status={status}
           allAgentSetting={allAgentSetting}
           search={(data = {}) => {
+            if (
+              location?.state?.playerUsername &&
+              location.state.playerUsername != data.username
+            ) {
+              let state = { ...location.state, playerUsername: "" }
+              navigate(location.pathname, {
+                state,
+                replace: true
+              })
+            }
+
             setState({
               pageIndex: 0,
               ...data
@@ -189,6 +201,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
 const SearchBar = ({
   brandId,
   brand,
+  username,
   status,
   allAgentSetting,
   search,
@@ -231,6 +244,7 @@ const SearchBar = ({
 
   let formMethods = useForm({
     defaultValues: {
+      username,
       status
     }
   })
