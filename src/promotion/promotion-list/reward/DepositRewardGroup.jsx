@@ -76,7 +76,11 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
       <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <BucketTypeLabel />
-      <PlatformBucketSelect name="rule.bucketTypes[0]" platformId={brandId} />
+      <PlatformBucketSelect
+        name="rule.bucketTypes[0]"
+        platformId={brandId}
+        disabled={disabled}
+      />
 
       <NormalLabel>
         <Trans zh="金流渠道" en="Payment Channel" />
@@ -153,7 +157,11 @@ const DepositRewardRule = ({ readOnly }) => {
       <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <BucketTypeLabel />
-      <PlatformBucketSelect name="rule.bucketTypes[0]" platformId={brandId} />
+      <PlatformBucketSelect
+        name="rule.bucketTypes[0]"
+        platformId={brandId}
+        disabled={disabled}
+      />
 
       <NormalLabel>
         <Trans zh="存款最低金额" en="Minimum Deposit Amount" />
@@ -265,7 +273,11 @@ const DefaultRule = ({ readOnly }) => {
       <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <BucketTypeLabel />
-      <PlatformBucketSelect name="rule.bucketTypes[0]" platformId={brandId} />
+      <PlatformBucketSelect
+        name="rule.bucketTypes[0]"
+        platformId={brandId}
+        disabled={disabled}
+      />
 
       <NormalLabel>
         <Trans zh="彩金百分比" en="Bonus Percentage" />
