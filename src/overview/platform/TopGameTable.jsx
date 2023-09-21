@@ -82,7 +82,7 @@ const GameRows = ({ items = [] }) => {
 const GameRow = ({ game = {}, index }) => {
   let isEven = index % 2 != 0
   return useMemo(() => {
-    let isWin = game.WinLoss >= 0
+    let isWin = game.winLoss >= 0
     return (
       <Table.Row>
         <Table.Cell textAlign="left">
