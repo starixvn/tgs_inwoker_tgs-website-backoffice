@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-wagers
-image: pgtgs/game-gamewagers:202309210219.15
+image: pgtgs/game-gamewagers:202309220201.16
 services:
   - name: game-wagers
     dependencies:

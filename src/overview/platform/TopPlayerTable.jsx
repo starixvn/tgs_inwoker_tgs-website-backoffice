@@ -13,7 +13,7 @@ import {
   List,
   Columns,
   useBreakpoint,
-  useBreakpointValue,
+  Card,
   Table,
   Spinner
 } from "bumbag"
@@ -51,19 +51,27 @@ export const TopPlayerTable = ({ brand, brandId }) => {
 
   return (
     <>
-      <Table hasDividers isStriped>
-        <Head
-          sortType={sortType}
-          setSortType={setSortType}
-          ascending={ascending}
-          setAscending={setAscending}
-        />
-        <Table.Body>
-          {isLoading && <LoadingRow />}
-          {!isLoading && <PlayerRows brand={brand} items={items} />}
-        </Table.Body>
-      </Table>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      <Card
+        title={<Trans zh="十大玩家" en="Top 10 Players" />}
+        variant="bordered"
+        css={css`
+          padding: 0.75rem;
+        `}
+      >
+        <Table hasDividers isStriped>
+          <Head
+            sortType={sortType}
+            setSortType={setSortType}
+            ascending={ascending}
+            setAscending={setAscending}
+          />
+          <Table.Body>
+            {isLoading && <LoadingRow />}
+            {!isLoading && <PlayerRows brand={brand} items={items} />}
+          </Table.Body>
+        </Table>
+        {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      </Card>
     </>
   )
 }

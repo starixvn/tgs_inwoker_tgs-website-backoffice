@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { Heading, Stack, Box, Button, Set, Icon, Table, Spinner } from "bumbag"
+import {
+  Heading,
+  Stack,
+  Box,
+  Button,
+  Set,
+  Icon,
+  Table,
+  Spinner,
+  Card
+} from "bumbag"
 import { usePlatformTopGameList } from "./client"
 import { SortableHead, SortDescendingOnlyHead } from "./TopTableHead"
 import { Trans, FormattedNumber } from "../../i18n"
@@ -28,19 +38,27 @@ export const TopGameTable = ({ brandId }) => {
 
   return (
     <>
-      <Table hasDividers isStriped>
-        <Head
-          sortType={sortType}
-          setSortType={setSortType}
-          ascending={ascending}
-          setAscending={setAscending}
-        />
-        <Table.Body>
-          {isLoading && <LoadingRow />}
-          {!isLoading && <GameRows items={items} />}
-        </Table.Body>
-      </Table>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      <Card
+        title={<Trans zh="十大游戏" en="Top 10 Games" />}
+        variant="bordered"
+        css={css`
+          padding: 0.75rem;
+        `}
+      >
+        <Table hasDividers isStriped>
+          <Head
+            sortType={sortType}
+            setSortType={setSortType}
+            ascending={ascending}
+            setAscending={setAscending}
+          />
+          <Table.Body>
+            {isLoading && <LoadingRow />}
+            {!isLoading && <GameRows items={items} />}
+          </Table.Body>
+        </Table>
+        {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      </Card>
     </>
   )
 }
@@ -49,7 +67,7 @@ export const TopGameTable = ({ brandId }) => {
 const LoadingRow = () => {
   return (
     <Table.Row>
-      <Table.Cell colSpan={3}>
+      <Table.Cell colSpan={4}>
         <Box alignX="center">
           <Spinner />
         </Box>
@@ -62,7 +80,7 @@ const LoadingRow = () => {
 const EmptyRow = () => {
   return (
     <Table.Row>
-      <Table.Cell colSpan={3} textAlign="center">
+      <Table.Cell colSpan={4} textAlign="center">
         <Trans zh="查无资料" en="No Search Result" />
       </Table.Cell>
     </Table.Row>
@@ -85,9 +103,8 @@ const GameRow = ({ game = {}, index }) => {
     let isWin = game.winLoss >= 0
     return (
       <Table.Row>
-        <Table.Cell textAlign="left">
-          {game.gameProviderName} / {game.gameName}
-        </Table.Cell>
+        <Table.Cell textAlign="left">{game.gameProviderName}</Table.Cell>
+        <Table.Cell textAlign="left">{game.gameName}</Table.Cell>
         <Table.Cell textAlign="right">
           <FormattedNumber value={game.bet} />
         </Table.Cell>
@@ -104,6 +121,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
     return (
       <Table.Head>
         <Table.Row>
+          <Table.HeadCell></Table.HeadCell>
           <Table.HeadCell textAlign="center">
             <Trans zh="游戏厂商 / 游戏名称" en="Provider / Game Name" />
           </Table.HeadCell>

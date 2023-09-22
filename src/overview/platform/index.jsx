@@ -67,13 +67,13 @@ const Body = () => {
   }
 
   return (
-    <Columns>
+    <Columns spacing="minor-2">
       <Columns.Column spread={3}>
         <WelcomeBox brand={brand} />
         <Overview />
       </Columns.Column>
       <Columns.Column spread={9}>
-        <Columns>
+        <Columns spacing="minor-2">
           <Columns.Column>
             <PlayerTableBox brand={brand} />
           </Columns.Column>

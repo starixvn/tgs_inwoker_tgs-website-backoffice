@@ -48,30 +48,38 @@ export const Overview = ({}) => {
   let [ref, measure] = useMeasure()
   return (
     <>
-      <Box
-        ref={ref}
+      <Card
+        title={<Trans zh="运营概况" en="Overview" />}
+        variant="bordered"
         css={css`
-          display: grid;
-          grid-gap: 0.5rem;
-          grid-template-columns: repeat(
-            ${measure.width > MinWidth ? 2 : 1},
-            minmax(0, 1fr)
-          );
-          overflow: auto;
+          padding: 0.75rem;
         `}
       >
-        <NewPlayerCountStat />
-        <PlayerLoginCountStat />
-        <NetDepositStat />
-        {/* 
+        <Box
+          ref={ref}
+          css={css`
+            display: grid;
+            grid-gap: 0.5rem;
+            grid-template-columns: repeat(
+              ${measure.width > MinWidth ? 2 : 1},
+              minmax(0, 1fr)
+            );
+            overflow: auto;
+          `}
+        >
+          <NewPlayerCountStat />
+          <PlayerLoginCountStat />
+          <NetDepositStat />
+          {/* 
         TODO: api
         <GrossProfitStat /> 
         */}
-        <ReviewingWithdrawalStat />
-        <OutstandingWithdrawalStat />
-        <OnlinePlayerCountStat />
-        <DepositSuccessRateStat />
-      </Box>
+          <ReviewingWithdrawalStat />
+          <OutstandingWithdrawalStat />
+          <OnlinePlayerCountStat />
+          <DepositSuccessRateStat />
+        </Box>
+      </Card>
     </>
   )
 }

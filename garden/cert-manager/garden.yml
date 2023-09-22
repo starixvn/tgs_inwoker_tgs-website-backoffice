@@ -1,0 +1,6 @@
+kind: Module
+name: cert-manager
+type: kubernetes
+disabled: true
+files:
+  - cert-manager.yaml
