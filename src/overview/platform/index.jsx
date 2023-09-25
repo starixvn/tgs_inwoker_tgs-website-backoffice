@@ -55,6 +55,9 @@ export const PlatformDashboardPage = () => {
 }
 
 const Body = () => {
+  //TODO: set spread based on table's col width
+  let isFullHD = useBreakpoint("fullHD")
+  console.log("isFullHD", isFullHD)
   let id = usePlatformId()
   let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(id)
 
@@ -74,10 +77,10 @@ const Body = () => {
       </Columns.Column>
       <Columns.Column spread={9}>
         <Columns spacing="minor-2">
-          <Columns.Column>
+          <Columns.Column spread="6">
             <PlayerTableBox brand={brand} />
           </Columns.Column>
-          <Columns.Column>
+          <Columns.Column spread="6">
             <GameTableBox />
           </Columns.Column>
         </Columns>
@@ -101,12 +104,12 @@ const WelcomeBox = ({ brand }) => {
   )
 }
 
-const PlayerTableBox = ({ brand }) => {
+const PlayerTableBox = ({ brand, ...props }) => {
   let id = usePlatformId()
-  return <TopPlayerTable brand={brand} brandId={id} />
+  return <TopPlayerTable brand={brand} brandId={id} {...props} />
 }
 
-const GameTableBox = () => {
+const GameTableBox = (props) => {
   let id = usePlatformId()
-  return <TopGameTable brandId={id} />
+  return <TopGameTable brandId={id} {...props} />
 }

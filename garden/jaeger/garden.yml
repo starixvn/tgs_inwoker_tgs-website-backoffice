@@ -1,7 +1,7 @@
 kind: Module
 name: jaeger
 type: kubernetes
-disabled: true
+# disabled: true
 files:
   - jaeger-operator.yaml
   - simplest.yaml

@@ -22,6 +22,7 @@ import { usePlatformTopPlayerList } from "./client"
 import { FormattedNumberDecimal, FormattedNumber, Trans } from "../../i18n"
 import { faSort, faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons"
 import { SortableHead, SortDescendingOnlyHead } from "./TopTableHead"
+import { useMeasure } from "react-use"
 
 const Deposit = "deposit"
 const Withdraw = "withdraw"
@@ -37,8 +38,7 @@ const TopPlayerColumns = {
   WinLoss
 }
 
-//TODO: sticky head? overflow
-export const TopPlayerTable = ({ brand, brandId }) => {
+export const TopPlayerTable = ({ brand, brandId, maxWidth }) => {
   let [sortType, setSortType] = useState(TopPlayerColumns.Deposit)
   let [ascending, setAscending] = useState(false)
 
@@ -56,6 +56,19 @@ export const TopPlayerTable = ({ brand, brandId }) => {
         variant="bordered"
         css={css`
           padding: 0.75rem;
+          & .bb-Table {
+            max-width: 100%;
+            overflow: auto;
+
+            tr:nth-child(even) td,
+            thead tr th {
+              background-color: var(--bb-palette-white600, #000000);
+            }
+
+            tr:nth-child(odd) td {
+              background-color: white;
+            }
+          }
         `}
       >
         <Table hasDividers isStriped>
@@ -116,6 +129,18 @@ const PlayerRows = ({ items = [], brand }) => {
   })
 }
 
+const stickyLeft = css`
+  z-index: 1;
+  position: sticky;
+  left: 0;
+`
+
+const playerNameColumnCss = css`
+  max-width: 8.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
 //TODO: player detail dialog
 //TODO: sticky last cell
 const PlayerRow = ({ player = {}, brand, index }) => {
@@ -124,7 +149,7 @@ const PlayerRow = ({ player = {}, brand, index }) => {
     let isWin = player.winLoss >= 0
     return (
       <Table.Row>
-        <Table.Cell textAlign="left">
+        <Table.Cell textAlign="left" css={playerNameColumnCss}>
           {/* 
           TODO: has player view auth
           <Button variant="link" palette="primary">
@@ -152,7 +177,14 @@ const PlayerRow = ({ player = {}, brand, index }) => {
         <Table.Cell textAlign="right">
           <FormattedNumber value={player.settle} />
         </Table.Cell>
-        <Table.Cell textAlign="right" color={isWin ? "success" : "danger"}>
+        <Table.Cell
+          textAlign="right"
+          color={isWin ? "success" : "danger"}
+          css={css`
+            position: sticky;
+            right: 0;
+          `}
+        >
           <FormattedNumber value={player.winLoss} format="+0,0" />
         </Table.Cell>
       </Table.Row>
@@ -163,9 +195,13 @@ const PlayerRow = ({ player = {}, brand, index }) => {
 const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
   return useMemo(() => {
     return (
-      <Table.Head>
+      <Table.Head
+        css={css`
+          white-space: nowrap;
+        `}
+      >
         <Table.Row>
-          <Table.HeadCell textAlign="center">
+          <Table.HeadCell textAlign="center" css={playerNameColumnCss}>
             <Trans zh="玩家用戶名" en="Player" />
           </Table.HeadCell>
           <SortDescendingOnlyHead
@@ -215,6 +251,11 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
             ascending={ascending}
             setAscending={setAscending}
             textAlign="center"
+            css={css`
+              z-index: 1;
+              position: sticky;
+              right: 0;
+            `}
           >
             <Trans zh="输赢" en="W/L" />
           </SortableHead>

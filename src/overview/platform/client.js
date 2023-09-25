@@ -99,7 +99,7 @@ export const usePlatformTopPlayerList = (id, searchParams) => {
   let items = data?.items?.map((player) => {
     return {
       ...player,
-      playerUserName: player.username,
+      playerUsername: player.username,
       deposit: faker.number.int(100),
       withdraw: faker.number.int(100),
       bet: faker.number.int(1000),
@@ -122,6 +122,7 @@ export const usePlatformTopGameList = (id, searchParams) => {
   let url =
     id && searchParams ? urlWith(searchParams, `${API}/top-ten/game/${id}`) : ""
   return useGet(url)
+
   /*
   let url = id
     ? urlWith(

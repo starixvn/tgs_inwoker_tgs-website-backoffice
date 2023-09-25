@@ -24,7 +24,6 @@ const TopGameColumns = {
   WinLoss
 }
 
-//TODO: sticky head? overflow
 export const TopGameTable = ({ brandId }) => {
   let [sortType, setSortType] = useState(TopGameColumns.WinLoss)
   let [ascending, setAscending] = useState(false)
@@ -43,6 +42,19 @@ export const TopGameTable = ({ brandId }) => {
         variant="bordered"
         css={css`
           padding: 0.75rem;
+          & .bb-Table {
+            max-width: 100%;
+            overflow: auto;
+
+            tr:nth-child(even) td,
+            thead tr th {
+              background-color: var(--bb-palette-white600, #000000);
+            }
+
+            tr:nth-child(odd) td {
+              background-color: white;
+            }
+          }
         `}
       >
         <Table hasDividers isStriped>
@@ -108,7 +120,15 @@ const GameRow = ({ game = {}, index }) => {
         <Table.Cell textAlign="right">
           <FormattedNumber value={game.bet} />
         </Table.Cell>
-        <Table.Cell textAlign="right" color={isWin ? "success" : "danger"}>
+        <Table.Cell
+          textAlign="right"
+          color={isWin ? "success" : "danger"}
+          css={css`
+            z-index: 1;
+            position: sticky;
+            right: 0;
+          `}
+        >
           <FormattedNumber value={game.winLoss} format="+0,0" />
         </Table.Cell>
       </Table.Row>
@@ -119,10 +139,18 @@ const GameRow = ({ game = {}, index }) => {
 const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
   return useMemo(() => {
     return (
-      <Table.Head>
+      <Table.Head
+        css={css`
+          white-space: nowrap;
+        `}
+      >
         <Table.Row>
-          <Table.HeadCell></Table.HeadCell>
+          <Table.HeadCell>
+            {/* <Trans zh="游戏厂商" en="Provider" /> */}
+          </Table.HeadCell>
           <Table.HeadCell textAlign="center">
+            {/* <Trans zh="游戏名称" en="Game Name" /> */}
+
             <Trans zh="游戏厂商 / 游戏名称" en="Provider / Game Name" />
           </Table.HeadCell>
           <SortDescendingOnlyHead
@@ -142,6 +170,11 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
             ascending={ascending}
             setAscending={setAscending}
             textAlign="center"
+            css={css`
+              z-index: 1;
+              position: sticky;
+              right: 0;
+            `}
           >
             <Trans zh="输赢" en="W/L" />
           </SortableHead>

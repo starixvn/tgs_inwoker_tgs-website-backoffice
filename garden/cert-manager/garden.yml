@@ -1,6 +1,7 @@
 kind: Module
 name: cert-manager
 type: kubernetes
-disabled: true
+# disabled: true
 files:
   - cert-manager.yaml
+  - selfsigned-cluster-issuer.yaml
