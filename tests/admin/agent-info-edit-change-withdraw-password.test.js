@@ -19,7 +19,6 @@ test("change agent withdraw password", async ({
   agent,
   backofficeApi
 }) => {
-  console.log("agent.username", agent.username)
   await gotoAgentListPage(page, platformCode)
   await searchAgent(page, agent.username)
 
