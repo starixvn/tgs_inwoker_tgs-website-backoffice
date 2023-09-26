@@ -46,7 +46,7 @@ export const AgentOperationListPanel = ({
   let { pageSize, from, to } = state
   let { isLoading, data, error, mutate, deleteCache } = useAgentOperations(
     isActive ? agentId : undefined,
-    toApiParams({ ...state, sortby: "createdOn", orderby: Descending })
+    toApiParams({ ...state, sortby: "CreatedOn", orderby: Descending })
   )
 
   let columns = useColumns({ items: data?.items })
@@ -118,7 +118,9 @@ const useColumns = ({ items = [] }) =>
         accessor: "operation",
         Header: <Trans zh="操作项" en="Operation Item" />,
         disableSortBy: true,
-        Cell: ({ value }) => <AgentOperationLabel value={value} />
+        Cell: ({ value }) => (
+          <AgentOperationLabel value={value} data-type={value} />
+        )
       }),
       textColumn({
         accessor: "createdByUsername",
@@ -134,22 +136,27 @@ const AgentOperation = {
   Info: "Info",
   Contact: "Contact",
   Password: "Password",
+  PayPassword: "PayPassword",
   Bank: "Bank",
   Agent: "Agent"
 }
 
-const AgentOperationLabel = ({ value }) => {
+const AgentOperationLabel = ({ value, ...props }) => {
   switch (value) {
     case AgentOperation.Info:
-      return <Trans zh="修改代理信息" en="Edit Agent Info" />
+      return <Trans zh="修改代理信息" en="Edit Agent Info" {...props} />
     case AgentOperation.Contact:
-      return <Trans zh="修改联系信息" en="Edit Contact Info" />
+      return <Trans zh="修改联系信息" en="Edit Contact Info" {...props} />
     case AgentOperation.Password:
-      return <Trans zh="修改密码" en="Edit Password" />
+      return <Trans zh="修改登入密码" en="Edit Login Password" {...props} />
+    case AgentOperation.PayPassword:
+      return (
+        <Trans zh="修改提款密码" en="Edit Withdrawal Password" {...props} />
+      )
     case AgentOperation.Bank:
-      return <Trans zh="修改银行卡信息" en="Edit Bank" />
+      return <Trans zh="修改银行卡信息" en="Edit Bank" {...props} />
     case AgentOperation.Agent:
-      return <Trans zh="修改上级" en="Edit Upper Level Agent" />
+      return <Trans zh="修改上级" en="Edit Upper Level Agent" {...props} />
     default:
       return value
   }

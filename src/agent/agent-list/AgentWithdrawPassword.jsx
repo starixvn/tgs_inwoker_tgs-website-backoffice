@@ -34,7 +34,6 @@ export const AgentWithdrawPasswordTab = ({ ...props }) => {
   )
 }
 
-//TODO: add pay password test case
 const PasswordFieldName = "payPassword"
 export const AgentWithdrawPasswordPanel = ({
   agentId,
