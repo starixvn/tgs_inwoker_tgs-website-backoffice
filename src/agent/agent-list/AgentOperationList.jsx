@@ -27,12 +27,18 @@ export const AgentOperationListTab = ({ ...props }) => {
   )
 }
 
-export const AgentOperationListPanel = ({ agentId, record, ...props }) => {
+export const AgentOperationListPanel = ({
+  agentId,
+  brandId,
+  record,
+  ...props
+}) => {
   let { selectedId } = props
   let isActive = selectedId === Key
 
   let dateRange = pastWeek()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     from: dateRange.start,
     to: dateRange.end
   })

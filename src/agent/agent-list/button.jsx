@@ -802,7 +802,11 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
       />
       <AgentContactInfoPanel record={record} readonly {...tab} />
       {/* <AgentBankInfoPanel record={record} readonly {...tab} /> */}
-      <AgentOperationListPanel agentId={record?.id} {...tab} />
+      <AgentOperationListPanel
+        agentId={record?.id}
+        brandId={brandId}
+        {...tab}
+      />
       <AgentBalanceChangePanel
         brandId={brandId}
         agentId={record?.id}
