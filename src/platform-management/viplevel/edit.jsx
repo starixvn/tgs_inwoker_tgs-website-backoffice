@@ -53,7 +53,7 @@ import {
   PercentageNumberInputField
 } from "../../input/NumberInput"
 import clone from "clone-deep"
-import { useFormContext } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -192,10 +192,27 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   )
 }
 
+const LevelKeepConditionField = "levelKeepCondition"
+const LevelKeepAccumulateBetAmountField = "levelKeepAccumulateBetAmount"
+const LevelKeepAccumulateDepositField = "levelKeepAccumulateDeposit"
+
 const EditBody = ({ record, readonly = false, isAdd = false }) => {
-  let { getValues } = useFormContext()
+  let { getValues, setValue, control } = useFormContext()
   let editable = !readonly
   let id = getValues("id")
+
+  let levelKeepCondition = useWatch({
+    name: LevelKeepConditionField,
+    control
+  })
+
+  useEffect(() => {
+    if (editable && levelKeepCondition) {
+      setValue(LevelKeepAccumulateBetAmountField, 0)
+      setValue(LevelKeepAccumulateDepositField, 0)
+    }
+  }, [editable, levelKeepCondition])
+
   return (
     <FieldStack orientation="vertical" paddingBottom="1.5rem">
       <Level width="100%">
@@ -265,7 +282,11 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               </NormalLabel>
               {editable && (
                 <Box>
-                  <NumberInput name="levelKeepAccumulateBetAmount" min="0" />
+                  <NumberInput
+                    name="levelKeepAccumulateBetAmount"
+                    min="0"
+                    disabled={levelKeepCondition}
+                  />
                 </Box>
               )}
               {readonly && (
@@ -284,7 +305,11 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               </NormalLabel>
               {editable && (
                 <Box>
-                  <NumberInput name="levelKeepAccumulateDeposit" min="0" />
+                  <NumberInput
+                    name="levelKeepAccumulateDeposit"
+                    min="0"
+                    disabled={levelKeepCondition}
+                  />
                 </Box>
               )}
               {readonly && (

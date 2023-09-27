@@ -52,8 +52,8 @@ const label = ({ locale, code }) => {
     case PlatformCode:
       return getTrans(
         {
-          zh: "平台",
-          en: "Platform"
+          zh: "平台总览",
+          en: "Overview"
         },
         locale
       )

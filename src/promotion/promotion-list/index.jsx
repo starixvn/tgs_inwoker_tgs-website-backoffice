@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css } from "@emotion/react"
-import { Box, Button, Set, Text, Flex, Stack, Dialog } from "bumbag"
+import { Box, Button, Set, Text, Flex, Stack, Dialog, Group } from "bumbag"
 import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Code, View, Update } from "./menu"
 import textColumn from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
-import { useForm, FormProvider } from "react-hook-form"
+import {
+  useForm,
+  FormProvider,
+  useWatch,
+  useFormContext
+} from "react-hook-form"
 import { Input, InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
 import { PageContent } from "../../page/Content"
@@ -23,11 +28,13 @@ import {
   useDeletePromotion,
   useChangePromotionOrders
 } from "./client"
+import { usePromotionTypeList } from "../client"
 import BrandBar from "../../report/BrandBar"
 import { formatDateTime, formatDayMonthYear } from "../../date/format"
 import {
+  PromotionTypeGroupSelect,
+  PromotionTypeSelect,
   PromotionTypeLabel,
-  PromotionTypeSelectGroup,
   usePromotionGroupLabelOf
 } from "../PromotionType"
 import { VipLevelListDialogDisclosure } from "../../vip-levels/VipLevelList"
@@ -111,11 +118,13 @@ const BodyContent = ({ brandId }) => {
             }}
             isLoading={isLoading}
           />
-          <AddPromotionDisclosure
-            id="add-promotion-dialog-disclosure"
-            brandId={brandId}
-            onSubmitted={mutate}
-          />
+          <Box>
+            <AddPromotionDisclosure
+              id="add-promotion-dialog-disclosure"
+              brandId={brandId}
+              onSubmitted={mutate}
+            />
+          </Box>
         </Flex>
       }
     >
@@ -233,6 +242,80 @@ const DataTable = ({
   )
 }
 
+const PromotionTypeField = "promotionType"
+const PromotionTypeSelectGroupField = (props) => {
+  let { setValue, control } = useFormContext()
+  let {
+    isLaoding: isLoadingPromotionGroups,
+    data: promotionGroups,
+    error
+  } = usePromotionTypeList()
+
+  const findPromotionTypeValues = (promotionGroup) => {
+    let group = promotionGroups?.find(({ name }) => {
+      return name === promotionGroup
+    })
+
+    return group?.types?.map(({ name }) => name)
+  }
+
+  const setPromotionType = (list = []) => {
+    setValue(PromotionTypeField, list)
+  }
+
+  let [group, setGroup] = useState(0)
+
+  let promotionType = useWatch({
+    name: PromotionTypeField,
+    control
+  })
+
+  let [promotionTypeSelectValue, setPromotionTypeSelectValue] = useState()
+
+  useEffect(() => {
+    if (promotionType.length === 0 || promotionType.length > 1) {
+      setPromotionTypeSelectValue("")
+    }
+  }, [JSON.stringify(promotionType)])
+
+  return (
+    <Group>
+      <PromotionTypeGroupSelect
+        onChange={(event) => {
+          let value = event.target.value
+          setGroup(value)
+          if (!value) {
+            setPromotionType([])
+          } else {
+            let selected = findPromotionTypeValues(value)
+            setPromotionType(selected)
+            if (selected.length === 1) {
+              setPromotionTypeSelectValue(selected[0])
+            }
+          }
+        }}
+      />
+      <PromotionTypeSelect
+        value={promotionTypeSelectValue}
+        group={group}
+        onChange={(event) => {
+          let value = event.target.value
+          if (!value) {
+            let selected = findPromotionTypeValues(group)
+            setPromotionType(selected)
+            if (selected.length === 1) {
+              setPromotionTypeSelectValue(selected[0])
+            }
+          } else {
+            setPromotionType([value])
+            setPromotionTypeSelectValue(value)
+          }
+        }}
+      />
+    </Group>
+  )
+}
+
 const SearchBar = ({
   status = "",
   name = "",
@@ -246,7 +329,7 @@ const SearchBar = ({
     en: "Name"
   })
   let formMethods = useForm({
-    defaultValues: { status, name, start, end }
+    defaultValues: { status, name, start, end, promotionType: [] }
   })
 
   return (
@@ -259,16 +342,18 @@ const SearchBar = ({
           requiredBothIfHasOne={true}
           */
           />
-          {/* 
-          TODO: name?
-          <PromotionTypeSelectGroup /> 
-          */}
           <PromotionStatusSelect name="status" />
           <InputField
             name="name"
             showEmptyFieldValueAddonAfter
             placeholder={namePlaceholder}
           />
+
+          {/* 
+          TODO: check api impl yet?
+          <PromotionTypeSelectGroupField /> 
+          */}
+
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>

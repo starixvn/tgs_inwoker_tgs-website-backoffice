@@ -16,7 +16,7 @@ data:
       logging:
         loglevel: debug
       jaeger:
-        endpoint: "simplest-collector:14250"
+        endpoint: "jaeger-collector.observability.svc.cluster.local:14250"
         tls:
           insecure: true
     extensions:
