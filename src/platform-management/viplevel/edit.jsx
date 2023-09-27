@@ -283,7 +283,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               {editable && (
                 <Box>
                   <NumberInput
-                    name="levelKeepAccumulateBetAmount"
+                    name={LevelKeepAccumulateBetAmountField}
                     min="0"
                     disabled={levelKeepCondition}
                   />
@@ -306,7 +306,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               {editable && (
                 <Box>
                   <NumberInput
-                    name="levelKeepAccumulateDeposit"
+                    name={LevelKeepAccumulateDepositField}
                     min="0"
                     disabled={levelKeepCondition}
                   />
@@ -320,7 +320,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
             </FieldValues>
             {editable && (
               <Checkbox
-                name="levelKeepCondition"
+                name={LevelKeepConditionField}
                 label={
                   <Trans
                     zh="无需等级维持条件"
