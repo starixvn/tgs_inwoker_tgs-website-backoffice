@@ -43,10 +43,15 @@ test("player deposit form > apply bank transfer", async ({
       )
     }),
     page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/${player.code}`) &&
-        response.status() === 200
-      )
+      let url = response.url()
+      let isApi = url.includes(`/api/player/${player.code}`)
+      if (isApi && !response.ok()) {
+        throw Error(
+          `get player api failed [ /api/player/${player.code} ] error`
+        )
+      }
+
+      return isApi
     }),
     openDialog(page, dialogSelector)
   ])

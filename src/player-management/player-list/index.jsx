@@ -105,7 +105,6 @@ const Body = () => {
 const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
   let location = useLocation()
   let navigate = useNavigate()
-  console.log("location?.state", location?.state)
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: PlayerStatus.Enabled,
