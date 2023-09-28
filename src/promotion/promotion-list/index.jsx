@@ -52,6 +52,7 @@ import { isWithinRange } from "../../date/range"
 import { isAfter } from "../../date/isAfter"
 import { PromotionChangeLogListDialogDisclosure } from "./ChangeLogListDialog"
 import { CopyPromotionDisclosure } from "./CopyPromotion"
+import { formatDateOnly } from "../../date/format"
 
 export { Code }
 
@@ -96,7 +97,14 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { isLoading, data, error, mutate, deleteCache } = usePromotionList(
-    brandId ? { ...toApiParams(state), sortby: "number" } : undefined
+    brandId
+      ? {
+          ...toApiParams(state),
+          sortby: "number",
+          from: formatDateOnly(state.from),
+          to: formatDateOnly(state.to)
+        }
+      : undefined
   )
 
   return (
@@ -349,10 +357,7 @@ const SearchBar = ({
             placeholder={namePlaceholder}
           />
 
-          {/* 
-          TODO: check api impl yet?
-          <PromotionTypeSelectGroupField /> 
-          */}
+          <PromotionTypeSelectGroupField />
 
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>

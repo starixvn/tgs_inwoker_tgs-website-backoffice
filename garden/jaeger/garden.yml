@@ -5,7 +5,7 @@ disabled: true
 files:
   - jaeger-operator.yaml
   - jaeger.yaml
-namespace: observability
+namespace: o
 portForwards:
   - name: jaeger-query
     resource: service/jaeger-query
