@@ -31,7 +31,7 @@ import { useBrand } from "../../merchant/platforms/client"
 import { Overview } from "./Overview"
 import { TopPlayerTable } from "./TopPlayerTable"
 import { TopGameTable } from "./TopGameTable"
-import { useMeasure } from "react-use"
+import { useGameProviderCodeStylePairs } from "../client"
 
 export { Code }
 
@@ -56,7 +56,19 @@ export const PlatformDashboardPage = () => {
 
 const Body = () => {
   let id = usePlatformId()
-  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(id)
+  let {
+    isLoading: isLoadingBrand,
+    data: brand,
+    error,
+    mutate,
+    deleteCache
+  } = useBrand(id)
+  let {
+    isLoading: isLoadingGameProviderCodeStylePairs,
+    data: gameProviderCodeStylePairs
+  } = useGameProviderCodeStylePairs()
+
+  let isLoading = isLoadingBrand || isLoadingGameProviderCodeStylePairs
 
   if (isLoading) {
     return (
@@ -78,7 +90,9 @@ const Body = () => {
             <PlayerTableBox brand={brand} />
           </Columns.Column>
           <Columns.Column spread={6}>
-            <GameTableBox />
+            <GameTableBox
+              gameProviderCodeStylePairs={gameProviderCodeStylePairs}
+            />
           </Columns.Column>
         </Columns>
       </Columns.Column>

@@ -4,6 +4,7 @@ import {
   Heading,
   Stack,
   Box,
+  Text,
   Button,
   Set,
   Icon,
@@ -15,6 +16,8 @@ import { usePlatformTopGameList } from "./client"
 import { SortableHead, SortDescendingOnlyHead } from "./TopTableHead"
 import { Trans, FormattedNumber } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
+import { useGameProviderCodeStylePairs } from "../client"
+import cloneDeep from "clone-deep"
 
 const Bet = "bet"
 const WinLoss = "winLoss"
@@ -24,7 +27,7 @@ const TopGameColumns = {
   WinLoss
 }
 
-export const TopGameTable = ({ brandId }) => {
+export const TopGameTable = ({ brandId, gameProviderCodeStylePairs = [] }) => {
   let [sortType, setSortType] = useState(TopGameColumns.WinLoss)
   let [ascending, setAscending] = useState(false)
 
@@ -66,7 +69,12 @@ export const TopGameTable = ({ brandId }) => {
           />
           <Table.Body>
             {isLoading && <LoadingRow />}
-            {!isLoading && <GameRows items={items} />}
+            {!isLoading && (
+              <GameRows
+                items={items}
+                gameProviderCodeStylePairs={gameProviderCodeStylePairs}
+              />
+            )}
           </Table.Body>
         </Table>
         {error && <AlertDialog {...error} onClickClose={deleteCache} />}
@@ -99,23 +107,69 @@ const EmptyRow = () => {
   )
 }
 
-const GameRows = ({ items = [] }) => {
+const GameRows = ({ items = [], gameProviderCodeStylePairs = [] }) => {
   if (items.length === 0) {
     return <EmptyRow />
   }
 
   return items.map((game, index) => {
-    return <GameRow game={game} index={index} />
+    return (
+      <GameRow
+        key={index}
+        game={game}
+        index={index}
+        gameProviderCodeStylePairs={gameProviderCodeStylePairs}
+      />
+    )
   })
 }
 
-const GameRow = ({ game = {}, index }) => {
-  let isEven = index % 2 != 0
+const useGameProviderCodeBoxStyle = (gameProviderCode = "", pairs = []) => {
+  let defaultStyle = {
+    "background-color": "#e6e6eb"
+  }
+
+  let styleIndex = 1
+  let style = pairs?.find(([code]) => code === gameProviderCode)?.[styleIndex]
+  if (!style) {
+    style = cloneDeep(defaultStyle)
+  }
+
+  return css`
+    ${style}
+  `
+}
+
+const GameProviderCodeBox = ({ code, gameProviderCodeStylePairs = [] }) => {
+  let style = useGameProviderCodeBoxStyle(code, gameProviderCodeStylePairs)
+  if (!code) {
+    return null
+  }
+
+  return (
+    <Text
+      css={css`
+        border-radius: 6px;
+        padding: 0.25rem 0.75rem;
+        ${style}
+      `}
+    >
+      {code}
+    </Text>
+  )
+}
+
+const GameRow = ({ game = {}, index, gameProviderCodeStylePairs = [] }) => {
   return useMemo(() => {
     let isWin = game.winLoss >= 0
     return (
       <Table.Row>
-        <Table.Cell textAlign="left">{game.gameProviderName}</Table.Cell>
+        <Table.Cell textAlign="left">
+          <GameProviderCodeBox
+            code={game.gameProviderName}
+            gameProviderCodeStylePairs={gameProviderCodeStylePairs}
+          />
+        </Table.Cell>
         <Table.Cell textAlign="left">{game.gameName}</Table.Cell>
         <Table.Cell textAlign="right">
           <FormattedNumber value={game.bet} />

@@ -40,10 +40,13 @@ test("player deposit form > apply bank transfer by auto select bank card", async
 
   let [applyFormResponse] = await Promise.all([
     page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/ManualDeposit/") &&
-        response.status() === 200
-      )
+      let url = response.url()
+      let isApi = url.includes("/api/ManualDeposit/")
+      if (isApi && !response.ok()) {
+        throw Error(`api /api/ManualDeposit/ error`)
+      }
+
+      return isApi
     }),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
