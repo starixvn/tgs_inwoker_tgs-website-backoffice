@@ -47,7 +47,7 @@ test("player deposit form > apply bank transfer", async ({
 
       let isApi = url.includes(`/api/player/${player.code}`)
       console.log(
-        "isApi",
+        "player-deposit-form-apply-pulsa: isApi",
         isApi,
         "url",
         url,
