@@ -44,8 +44,15 @@ test("player deposit form > apply bank transfer", async ({
     }),
     page.waitForResponse((response) => {
       let url = response.url()
-      console.log("debug api url", url)
+
       let isApi = url.includes(`/api/player/${player.code}`)
+      console.log(
+        "isApi",
+        isApi,
+        "url",
+        url,
+        "includes? [" + `/api/player/${player.code}` + "]"
+      )
       if (isApi && !response.ok()) {
         throw Error(
           `get player api failed [ /api/player/${player.code} ] error`

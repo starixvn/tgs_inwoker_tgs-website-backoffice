@@ -30,29 +30,24 @@ data:
           grpc:
             endpoint: "0.0.0.0:4317"
     processors:
+      batch:
     extensions:
       health_check: {}
+      pprof:
+      zpages:
     exporters:
       jaeger:
         endpoint: "jaeger-collector.default.svc.cluster.local:14250"
         insecure: true
-      prometheus:
-        endpoint: 0.0.0.0:8889
-        namespace: "testapp"
       logging:
 
     service:
-      extensions: [health_check]
+      extensions: [health_check, pprof, zpages]
       pipelines:
         traces:
           receivers: [otlp]
-          processors: []
-          exporters: [jaeger]
-
-        metrics:
-          receivers: [otlp]
-          processors: []
-          exporters: [prometheus, logging]
+          processors: [batch]
+          exporters: [jaeger, logging]
 ---
 apiVersion: v1
 kind: Service
@@ -78,7 +73,7 @@ spec:
   type: NodePort
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: otel-collector
   namespace: observability
@@ -91,8 +86,8 @@ spec:
       app: opentelemetry
       component: otel-collector
   minReadySeconds: 5
-  progressDeadlineSeconds: 120
-  replicas: 1 #TODO - adjust this to your own requirements
+  # progressDeadlineSeconds: 120
+  # replicas: 1 #TODO - adjust this to your own requirements
   template:
     metadata:
       annotations:

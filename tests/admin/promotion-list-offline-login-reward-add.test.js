@@ -132,10 +132,12 @@ const addPromotion = async (page, platform, player) => {
 
   await Promise.all([
     page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/offline-login-reward") &&
-        response.status() === 200
-      )
+      let url = response.url()
+      let isApi = response.url().includes("/api/offline-login-reward")
+      if (isApi && !response.ok()) {
+        throw Error(`api /api/offline-login-reward error`)
+      }
+      return isApi
     }),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])

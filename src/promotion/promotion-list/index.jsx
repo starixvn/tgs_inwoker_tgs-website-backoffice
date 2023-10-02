@@ -264,14 +264,29 @@ const PromotionTypeSelectGroupField = (props) => {
       return name === promotionGroup
     })
 
-    return group?.types?.map(({ name }) => name)
+    return group?.types?.map(({ name }) => name) ?? []
   }
+
+  /*
+  const findPromotionGroupValue = (promotionType) => {
+    if (!promotionType) {
+      return ""
+    }
+
+    let group = promotionGroups?.find(({ name, types = [] }) => {
+      let promotionTypes = types.map(({ name }) => name)
+      let isInclude = promotionTypes.includes(promotionType)
+      return isInclude
+    })
+    return group?.name ?? ""
+  }
+  */
 
   const setPromotionType = (list = []) => {
     setValue(PromotionTypeField, list)
   }
 
-  let [group, setGroup] = useState(0)
+  let [group, setGroup] = useState()
 
   let promotionType = useWatch({
     name: PromotionTypeField,
@@ -315,6 +330,12 @@ const PromotionTypeSelectGroupField = (props) => {
               setPromotionTypeSelectValue(selected[0])
             }
           } else {
+            /*
+            TODO: seems no need to auto select group
+            if (!group) {
+              let groupValue = findPromotionGroupValue(value)
+            }
+            */
             setPromotionType([value])
             setPromotionTypeSelectValue(value)
           }

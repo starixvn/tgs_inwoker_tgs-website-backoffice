@@ -140,10 +140,12 @@ const addPromotion = async (page, platform, player) => {
 
   await Promise.all([
     page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/offline-deposit-reward") &&
-        response.status() === 200
-      )
+      let url = response.url()
+      let isApi = url.includes("/api/offline-deposit-reward")
+      if (isApi && !response.ok()) {
+        throw Error(`api /api/offline-deposit-reward error`)
+      }
+      return isApi
     }),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
