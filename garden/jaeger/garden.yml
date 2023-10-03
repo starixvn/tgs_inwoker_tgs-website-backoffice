@@ -3,6 +3,7 @@ name: jaeger
 type: kubernetes
 disabled: true
 files:
+  # v1.42
   - jaeger-operator.yaml
   - jaeger.yaml
 namespace: o

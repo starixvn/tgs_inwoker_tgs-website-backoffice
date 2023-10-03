@@ -259,7 +259,11 @@ const PromotionTypeSelectGroupField = (props) => {
     error
   } = usePromotionTypeList()
 
-  const findPromotionTypeValues = (promotionGroup) => {
+  const findPromotionTypeValues = (promotionGroup = "") => {
+    if (!promotionGroup) {
+      return []
+    }
+
     let group = promotionGroups?.find(({ name }) => {
       return name === promotionGroup
     })
@@ -282,6 +286,8 @@ const PromotionTypeSelectGroupField = (props) => {
   }
   */
 
+  let [promotionTypeSelectValue, setPromotionTypeSelectValue] = useState()
+
   const setPromotionType = (list = []) => {
     setValue(PromotionTypeField, list)
   }
@@ -293,8 +299,6 @@ const PromotionTypeSelectGroupField = (props) => {
     control
   })
 
-  let [promotionTypeSelectValue, setPromotionTypeSelectValue] = useState()
-
   useEffect(() => {
     if (promotionType.length === 0 || promotionType.length > 1) {
       setPromotionTypeSelectValue("")
@@ -305,39 +309,44 @@ const PromotionTypeSelectGroupField = (props) => {
     <Group>
       <PromotionTypeGroupSelect
         onChange={(event) => {
-          let value = event.target.value
-          setGroup(value)
-          if (!value) {
-            setPromotionType([])
-          } else {
-            let selected = findPromotionTypeValues(value)
-            setPromotionType(selected)
-            if (selected.length === 1) {
-              setPromotionTypeSelectValue(selected[0])
-            }
+          let promotionGroup = event.target.value
+          setGroup(promotionGroup)
+
+          let promotionTypes = findPromotionTypeValues(promotionGroup)
+          setPromotionType(promotionTypes)
+
+          /*
+          TODO: rm, seems no need to auto select
+          if (promotionTypes.length === 1) {
+            setPromotionTypeSelectValue(promotionTypes[0])
           }
+          */
         }}
       />
       <PromotionTypeSelect
         value={promotionTypeSelectValue}
         group={group}
         onChange={(event) => {
-          let value = event.target.value
-          if (!value) {
-            let selected = findPromotionTypeValues(group)
-            setPromotionType(selected)
-            if (selected.length === 1) {
-              setPromotionTypeSelectValue(selected[0])
+          let promotionType = event.target.value
+          if (!promotionType) {
+            let promotionTypes = findPromotionTypeValues(group)
+            setPromotionType(promotionTypes)
+
+            /*
+            TODO: rm, seems no need to auto select
+            if (promotionTypes.length === 1) {
+              setPromotionTypeSelectValue(promotionTypes[0])
             }
+            */
           } else {
             /*
-            TODO: seems no need to auto select group
+            TODO: rm, seems no need to auto select group
             if (!group) {
               let groupValue = findPromotionGroupValue(value)
             }
             */
-            setPromotionType([value])
-            setPromotionTypeSelectValue(value)
+            setPromotionType([promotionType])
+            setPromotionTypeSelectValue(promotionType)
           }
         }}
       />
