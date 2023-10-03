@@ -34,6 +34,8 @@ test("player deposit form > apply bank transfer", async ({
     gotoPlayerListPage(page, platform.code)
   ])
 
+  await searchPlayer(page, player)
+
   let dialogSelector = `#apply-deposit-form-dialog`
   await Promise.all([
     page.waitForResponse((response) => {
@@ -46,13 +48,6 @@ test("player deposit form > apply bank transfer", async ({
       let url = response.url()
 
       let isApi = url.includes(`/api/player/${player.code}`)
-      console.log(
-        "player-deposit-form-apply-pulsa: isApi",
-        isApi,
-        "url",
-        url,
-        "includes? [" + `/api/player/${player.code}` + "]"
-      )
       if (isApi && !response.ok()) {
         throw Error(
           `get player api failed [ /api/player/${player.code} ] error`
