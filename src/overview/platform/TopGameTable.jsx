@@ -125,8 +125,9 @@ const GameRows = ({ items = [], gameProviderCodeStylePairs = [] }) => {
 }
 
 const useGameProviderCodeBoxStyle = (gameProviderCode = "", pairs = []) => {
+  //TODO: default background color: #e6e6eb or transparent?
   let defaultStyle = {
-    "background-color": "#e6e6eb"
+    "background-color": "transparent"
   }
 
   let styleIndex = 1
