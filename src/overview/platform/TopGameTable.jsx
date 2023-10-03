@@ -130,7 +130,7 @@ const useGameProviderCodeBoxStyle = (gameProviderCode = "", pairs = []) => {
   }
 
   let styleIndex = 1
-  let style = pairs?.find(([code]) => code === gameProviderCode)?.[styleIndex]
+  let style = pairs?.find?.(([code]) => code === gameProviderCode)?.[styleIndex]
   if (!style) {
     style = cloneDeep(defaultStyle)
   }
