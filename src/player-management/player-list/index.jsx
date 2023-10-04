@@ -37,6 +37,7 @@ import { PlayerDepositFormDialogDisclosure } from "./PlayerDepositFormDialog"
 import { PlayerWithdrawFormDialogDisclosure } from "./PlayerWithdrawFormDialog"
 import { BankInfoFieldGroup } from "./BankInfoTag"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useEffectOnce } from "react-use"
 
 export { Code }
 
@@ -115,7 +116,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
     endRegisteredOn: ""
   })
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (location?.state?.playerUsername) {
       let state = { ...location.state, playerUsername: "" }
       navigate(location.pathname, {
