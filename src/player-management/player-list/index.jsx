@@ -116,6 +116,16 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
   })
 
   useEffect(() => {
+    if (location?.state?.playerUsername) {
+      let state = { ...location.state, playerUsername: "" }
+      navigate(location.pathname, {
+        state,
+        replace: true
+      })
+    }
+  }, [location?.state?.playerUsername])
+
+  useEffect(() => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
@@ -160,6 +170,8 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
           status={status}
           allAgentSetting={allAgentSetting}
           search={(data = {}) => {
+            /*
+            TODO: rm
             if (
               location?.state?.playerUsername &&
               location.state.playerUsername != data.username
@@ -170,6 +182,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
                 replace: true
               })
             }
+            */
 
             setState({
               pageIndex: 0,

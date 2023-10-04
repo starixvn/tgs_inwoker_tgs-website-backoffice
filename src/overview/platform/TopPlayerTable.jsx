@@ -22,6 +22,8 @@ import { usePlatformTopPlayerList } from "./client"
 import { FormattedNumberDecimal, FormattedNumber, Trans } from "../../i18n"
 import { faSort, faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons"
 import { SortableHead, SortDescendingOnlyHead } from "./TopTableHead"
+import { Code as PlayerMenuCode } from "../../player-management/menu"
+import { Code as PlayerListMenuCode } from "../../player-management/player-list/menu"
 import { useMeasure } from "react-use"
 
 const Deposit = "deposit"
@@ -136,34 +138,30 @@ const stickyLeft = css`
 `
 
 const playerNameColumnCss = css`
-  max-width: 8.5rem;
+  max-width: 9.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
 `
 
-//TODO: player detail dialog
-//TODO: sticky last cell
 const PlayerRow = ({ player = {}, brand, index }) => {
-  let isEven = index % 2 != 0
   return useMemo(() => {
     let isWin = player.winLoss >= 0
     return (
       <Table.Row>
         <Table.Cell textAlign="left" css={playerNameColumnCss}>
-          {/* 
-          TODO: has player view auth
-          <Button variant="link" palette="primary">
-            <Link
-              to={`/playermanagement/playerlist?username=${player.playerUsername}`}
-              state={{
-                brandId: brand.id,
-                playerUsername: player.playerUsername
-              }}
-            >
-              {player.playerUsername}
-            </Link>
-          </Button> */}
-          {player.playerUsername}
+          <Link
+            to={`/${PlayerMenuCode}/${PlayerListMenuCode}`}
+            state={{
+              brandId: brand.id,
+              playerUsername: player.playerUsername
+            }}
+            css={css`
+              color: #574feb;
+            `}
+            title={player.playerUsername}
+          >
+            {player.playerUsername}
+          </Link>
         </Table.Cell>
         <Table.Cell textAlign="right">
           <FormattedNumber value={player.deposit} />

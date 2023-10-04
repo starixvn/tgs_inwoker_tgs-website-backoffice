@@ -39,10 +39,9 @@ import {
   Trans
 } from "../../i18n"
 import { TrendIcon, Trend, trendOf } from "./TrendIcon"
-import { useMeasure } from "react-use"
+import { useMeasure, useEffectOnce } from "react-use"
+import Sync from "./sync"
 
-//TODO: layout for mobile, breakpoint value?
-//TODO: find minwidth: 250?
 const MinWidth = 230
 export const Overview = ({}) => {
   let [ref, measure] = useMeasure()
@@ -134,12 +133,22 @@ const StatBody = ({ isLoading, children, ...props }) => {
 // A.
 const NewPlayerCountStat = () => {
   let id = usePlatformId()
-  let { isLoading, data: record, error } = usePlatformNewPlayerCount(id)
+  let { isLoading, data: record, error, mutate } = usePlatformNewPlayerCount(id)
 
   let trend = trendOf(
     record?.yesterdayPlayerRegisterCount,
     record?.todayPlayerRegisterCount
   )
+
+  /*
+  TODO: need refresh?
+  */
+  function refresh() {
+    mutate(null, true)
+  }
+
+  useEffectOnce(() => Sync.on(refresh))
+
   return (
     <Stat>
       <StatHeader
