@@ -41,6 +41,7 @@ export const PlayerOperationPanel = ({ playerCode, ...props }) => {
   let useFetch = devEnv ? usePlayerHistoryList : useOperations
   */
 
+  //TODO: setup local dev env
   let { pageSize, from, to } = state
   let { isLoading, data, error, mutate, deleteCache } = usePlayerHistoryList(
     isActive ? playerCode : undefined,
