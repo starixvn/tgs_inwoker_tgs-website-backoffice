@@ -81,41 +81,6 @@ export const usePlatformTopPlayerList = (id, searchParams) => {
   let url =
     id && searchParams ? urlWith(searchParams, `${API}/top-ten/${id}`) : ""
   return useGet(url)
-
-  /*
-  let url = id
-    ? urlWith(
-        {
-          brandId: id,
-          status: "Enabled",
-          page: 1,
-          rows: 10
-        },
-        "/api/player"
-      )
-    : ""
-  let { data, ...rest } = useGet(url)
-
-  let items = data?.items?.map((player) => {
-    return {
-      ...player,
-      playerUsername: player.username,
-      deposit: faker.number.int(100),
-      withdraw: faker.number.int(100),
-      bet: faker.number.int(1000),
-      settle: faker.number.int(1000),
-      winLoss: faker.number.int({
-        min: -100,
-        max: 100
-      })
-    }
-  })
-
-  return {
-    data: items,
-    ...rest
-  }
-  */
 }
 
 export const usePlatformTopGameList = (id, searchParams) => {
@@ -129,7 +94,8 @@ export const usePlatformTopGameList = (id, searchParams) => {
         {
           brandId: id,
           page: 1,
-          rows: 10
+          rows: 10,
+          culture: "zh-CN"
         },
         "/api/brandgame"
       )

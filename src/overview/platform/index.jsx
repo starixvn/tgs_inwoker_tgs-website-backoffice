@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useLayoutEffect } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
@@ -32,7 +32,6 @@ import { Overview } from "./Overview"
 import { TopPlayerTable } from "./TopPlayerTable"
 import { TopGameTable } from "./TopGameTable"
 import { useGameProviderCodeStylePairs } from "../client"
-import Sync from "./sync"
 
 export { Code }
 
@@ -55,7 +54,6 @@ export const PlatformDashboardPage = () => {
   )
 }
 
-//TODO: how to update every apis?
 const Body = () => {
   /*
   TODO: need isDesktop or isWideScreen to decide spread?

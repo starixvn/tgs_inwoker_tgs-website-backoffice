@@ -27,7 +27,6 @@ import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { subDays } from "date-fns"
 import { SettleGameRoundDialogDisclosure } from "../game-open-round/SettleGameRound"
-import copy from "clipboard-copy"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 
 export { Code }

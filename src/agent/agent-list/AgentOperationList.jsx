@@ -16,6 +16,7 @@ import textColumn from "../../table/column/textColumn"
 import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
 import { Descending } from "../../table/order"
+import { endOfDay } from "date-fns"
 
 const Key = "AgentOperationList"
 
@@ -40,7 +41,7 @@ export const AgentOperationListPanel = ({
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     from: dateRange.start,
-    to: dateRange.end
+    to: endOfDay(dateRange.end)
   })
 
   let { pageSize, from, to } = state

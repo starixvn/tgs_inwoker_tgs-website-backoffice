@@ -14,10 +14,11 @@ import {
 } from "bumbag"
 import { usePlatformTopGameList } from "./client"
 import { SortableHead, SortDescendingOnlyHead } from "./TopTableHead"
-import { Trans, FormattedNumber } from "../../i18n"
+import { Trans, FormattedNumber, useLangCode } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import { useGameProviderCodeStylePairs } from "../client"
 import cloneDeep from "clone-deep"
+import { CopyTextBox } from "../../text/CopyTextBox"
 
 const Bet = "bet"
 const WinLoss = "winLoss"
@@ -31,12 +32,13 @@ export const TopGameTable = ({ brandId, gameProviderCodeStylePairs = [] }) => {
   let [sortType, setSortType] = useState(TopGameColumns.WinLoss)
   let [ascending, setAscending] = useState(false)
 
+  let culture = useLangCode()
   let {
     data: items = [],
     isLoading,
     error,
     deleteCache
-  } = usePlatformTopGameList(brandId, { sortType, ascending })
+  } = usePlatformTopGameList(brandId, { sortType, ascending, culture })
 
   return (
     <>
@@ -83,11 +85,11 @@ export const TopGameTable = ({ brandId, gameProviderCodeStylePairs = [] }) => {
   )
 }
 
-//TODO: move to?
+const ColumnSize = 4
 const LoadingRow = () => {
   return (
     <Table.Row>
-      <Table.Cell colSpan={4}>
+      <Table.Cell colSpan={ColumnSize}>
         <Box alignX="center">
           <Spinner />
         </Box>
@@ -96,11 +98,10 @@ const LoadingRow = () => {
   )
 }
 
-//TODO: move to?
 const EmptyRow = () => {
   return (
     <Table.Row>
-      <Table.Cell colSpan={4} textAlign="center">
+      <Table.Cell colSpan={ColumnSize} textAlign="center">
         <Trans zh="查无资料" en="No Search Result" />
       </Table.Cell>
     </Table.Row>
@@ -171,7 +172,16 @@ const GameRow = ({ game = {}, index, gameProviderCodeStylePairs = [] }) => {
             gameProviderCodeStylePairs={gameProviderCodeStylePairs}
           />
         </Table.Cell>
-        <Table.Cell textAlign="left">{game.gameName}</Table.Cell>
+        <Table.Cell textAlign="left">
+          <CopyTextBox
+            value={game.gameName}
+            textAlign="left"
+            css={css`
+              white-space: nowrap;
+              max-width: 18rem;
+            `}
+          />
+        </Table.Cell>
         <Table.Cell textAlign="right">
           <FormattedNumber value={game.bet} />
         </Table.Cell>
@@ -200,12 +210,8 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
         `}
       >
         <Table.Row>
-          <Table.HeadCell>
-            {/* <Trans zh="游戏厂商" en="Provider" /> */}
-          </Table.HeadCell>
+          <Table.HeadCell></Table.HeadCell>
           <Table.HeadCell textAlign="center">
-            {/* <Trans zh="游戏名称" en="Game Name" /> */}
-
             <Trans zh="游戏厂商 / 游戏名称" en="Provider / Game Name" />
           </Table.HeadCell>
           <SortDescendingOnlyHead
@@ -238,61 +244,3 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
     )
   }, [sortType, setSortType, ascending, setAscending])
 }
-
-/*
-export const TopGameTable = ({ brandId }) => {
-  //TODO: sort options?
-  let { state, setState, setPageIndex, setSortOrder } = useTable({})
-
-  useEffect(() => {
-    setState({ pageIndex: 0, brandId })
-  }, [brandId])
-
-  //TODO: handle api error
-  let { data: items = [], isLoading, error } = usePlatformTopGameList(brandId)
-  let columns = useColumns({ items })
-
-  //TODO: sort options?
-  return (
-    <Table
-      columns={columns}
-      data={items}
-      initialState={state}
-      controlledState={state}
-      setPageIndex={setPageIndex}
-      setSortOrder={setSortOrder}
-      isLoading={isLoading}
-    />
-  )
-}
-
-//TODO: columns, sort options here?
-const useColumns = ({ items = [] }) => {
-  return useMemo(() => {
-    let columns = [
-      textColumn({
-        id: "name",
-        accessor: (row) => row,
-        Header: <Trans zh="游戏厂商 / 游戏名称" en="Provider / Game Name" />,
-        disableSortBy: true,
-        Cell: ({ value: game }) => {
-          let abbr = game?.providerAbbr ?? ""
-          let name = game?.gameName ?? ""
-          return abbr && name ? `${abbr} / ${name}` : ""
-        }
-      }),
-      numberDecimalColumn({
-        accessor: "bet",
-        Header: <Trans zh="投注" en="Bet" />,
-        disableSortBy: true
-      }),
-      numberDecimalColumn({
-        accessor: "winLoss",
-        Header: <Trans zh="输赢" en="W/L" />,
-        disableSortBy: true
-      })
-    ]
-    return columns
-  }, [JSON.stringify(items)])
-}
-*/

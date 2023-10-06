@@ -4,7 +4,6 @@ export const on = (handler) => {
   document.addEventListener(EventName, handler)
 
   return () => {
-    console.log("of handler")
     off(handler)
   }
 }

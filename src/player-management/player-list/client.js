@@ -66,6 +66,18 @@ export const useOperations = (playerCode, searchParams) => {
   return useGet(url)
 }
 
+export const usePlayerHistoryList = (playerCode, searchParams) => {
+  let url = playerCode
+    ? urlWith(searchParams, `${API}/histories/${playerCode}`)
+    : ""
+  return useGet(url)
+}
+
+export const usePlayerHistory = (eventId) => {
+  let url = eventId ? `${API}/history/${eventId}` : ""
+  return useGet(url)
+}
+
 export const useBettings = (playerCode, searchParams) => {
   let url = playerCode
     ? urlWith(searchParams, `${API}/${playerCode}/bettings`)

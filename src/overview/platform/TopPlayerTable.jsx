@@ -73,7 +73,7 @@ export const TopPlayerTable = ({ brand, brandId, maxWidth }) => {
           }
         `}
       >
-        <Table hasDividers isStriped>
+        <Table id="top-player" hasDividers isStriped>
           <Head
             sortType={sortType}
             setSortType={setSortType}
@@ -199,7 +199,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
         `}
       >
         <Table.Row>
-          <Table.HeadCell textAlign="center" css={playerNameColumnCss}>
+          <Table.HeadCell textAlign="center">
             <Trans zh="玩家用戶名" en="Player" />
           </Table.HeadCell>
           <SortDescendingOnlyHead
