@@ -13,6 +13,7 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import textColumn from "../../table/column/textColumn"
 import { Descending } from "../../table/order"
 import AlertDialog from "../../dialog/Alert"
+import { isDev } from "../../env"
 
 export const Key = "operation"
 
@@ -34,8 +35,14 @@ export const PlayerOperationPanel = ({ playerCode, ...props }) => {
     to: dateRange.end
   })
 
+  //TODO: rm test
+  /*
+  let devEnv = isDev()
+  let useFetch = devEnv ? usePlayerHistoryList : useOperations
+  */
+
   let { pageSize, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = useOperations(
+  let { isLoading, data, error, mutate, deleteCache } = usePlayerHistoryList(
     isActive ? playerCode : undefined,
     toApiParams({ ...state, sortby: "createdOn", orderby: Descending })
   )
