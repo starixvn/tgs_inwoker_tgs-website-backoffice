@@ -40,7 +40,7 @@ export const PlayerWithdrawFormDialogDisclosure = ({
   dialogId,
   ...props
 }) => {
-  let dialog = new useModalState()
+  let dialog = useModalState()
 
   let withdrawalFormAuth = useIsDisplayMenuByRoute([WithdrawalForm])
   if (!withdrawalFormAuth) {
@@ -228,17 +228,3 @@ const BankInfoSelect = ({
     />
   )
 }
-
-/*
-TODO: rm?
-const useSelectedBankInfo = () => {
-  let { control, getValues } = useFormContext()
-  let bankInfoList = getValues("bankInfoList")
-  let bankInfoId = useWatch({
-    control,
-    name: BankInfoIdFieldName
-  })
-
-  return bankInfoList?.find?.(({ id }) => id === bankInfoId)
-}
-*/

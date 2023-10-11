@@ -23,10 +23,7 @@ import {
   usePlayerTransferToMainWallet
 } from "./client"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
-import SearchButton from "../../button/SearchButton"
-import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import textColumn from "../../table/column/textColumn"
-import { Descending } from "../../table/order"
 import AlertDialog from "../../dialog/Alert"
 import { sortBy } from "lodash-es"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -37,7 +34,7 @@ export const PlayerWalletBalanceDialogDisclosure = ({
   playerCode,
   ...props
 }) => {
-  let dialog = new useModalState()
+  let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([View])
   if (!isDisplay) {

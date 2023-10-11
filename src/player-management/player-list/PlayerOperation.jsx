@@ -3,7 +3,7 @@ import { css, Global } from "@emotion/react"
 import { Spinner, Stack, Flex, Box, Card, Set } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
-import { useOperations, usePlayerHistoryList, usePlayerHistory } from "./client"
+import { useOperations } from "./client"
 import { Trans } from "../../i18n"
 import { pastWeek } from "../../date/range"
 import DateTimeRangeInput from "../../date/DateTimeRangeInput"
@@ -13,7 +13,6 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import textColumn from "../../table/column/textColumn"
 import { Descending } from "../../table/order"
 import AlertDialog from "../../dialog/Alert"
-import { isDev } from "../../env"
 
 export const Key = "operation"
 
@@ -35,15 +34,8 @@ export const PlayerOperationPanel = ({ playerCode, ...props }) => {
     to: dateRange.end
   })
 
-  //TODO: rm test
-  /*
-  let devEnv = isDev()
-  let useFetch = devEnv ? usePlayerHistoryList : useOperations
-  */
-
-  //TODO: setup local dev env
   let { pageSize, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = usePlayerHistoryList(
+  let { isLoading, data, error, mutate, deleteCache } = useOperations(
     isActive ? playerCode : undefined,
     toApiParams({ ...state, sortby: "createdOn", orderby: Descending })
   )

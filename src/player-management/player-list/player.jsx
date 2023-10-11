@@ -40,7 +40,6 @@ import { PlayerClearWageringRequirementDisclosure } from "./PlayerClearWageringR
 import { useIsAdminUser } from "../../user/context"
 import { isDev } from "../../env"
 import { DateInput } from "../../date/DateInput"
-import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirementDialog"
 import Textarea from "../../textarea"
 import { isValid, parse } from "date-fns"
 import { defaultFormatDate } from "../../date/format"
