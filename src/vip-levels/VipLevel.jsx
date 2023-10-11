@@ -14,3 +14,7 @@ export const VipLevelLabel = ({ value, placeholder = "-", ...props }) => {
 
     return value ?? placeholder
 }
+
+export const VipLevelIdLabel = ({ value }) => { 
+
+}

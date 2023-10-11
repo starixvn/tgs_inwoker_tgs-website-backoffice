@@ -261,7 +261,7 @@ const ViewTabs = ({
       <PlayerOperationPanel playerCode={playerCode} {...tab} />
       {/* 
       TODO: impl
-      <PlayerHistoryListPanel playerCode={playerCode} {...tab} /> 
+        <PlayerHistoryListPanel playerCode={playerCode} brandId={brandId} {...tab} />
       */}
       <PlayerBalanceChangePanel
         playerCode={playerCode}

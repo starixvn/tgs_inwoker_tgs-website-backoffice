@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Spinner, Stack, Flex, Box, useModalState, Set } from "bumbag"
-import { useTable, Table, pageCount, toApiParams } from "../../table"
+import { Spinner, Stack, Flex, Box, useModalState, Set, Table } from "bumbag"
+import {
+  useTable,
+  Table as DataTable,
+  pageCount,
+  toApiParams
+} from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
 import { usePlayerHistoryList, usePlayerHistory } from "./client"
 import { Trans, useTrans } from "../../i18n"
@@ -17,6 +22,10 @@ import { isDev } from "../../env"
 import { DetailDisclosure } from "../../dialog/Disclosure"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Modal from "../../dialog/Modal"
+import { PlayerStatusLabel } from "../PlayerStatus"
+import { equals, includes } from "ramda"
+import { StatusLabel, BirthdayLabel } from "./player"
+import { LineLabel, MessengerLabel, ViberLabel, WhatsappLabel } from "./contact"
 
 export const Key = "history"
 
@@ -28,7 +37,7 @@ export const PlayerHistoryListTab = ({ ...props }) => {
   )
 }
 
-export const PlayerHistoryListPanel = ({ playerCode, ...props }) => {
+export const PlayerHistoryListPanel = ({ playerCode, brandId, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === Key
 
@@ -44,7 +53,7 @@ export const PlayerHistoryListPanel = ({ playerCode, ...props }) => {
     toApiParams({ ...state, sortby: "createdOn", orderby: Descending })
   )
 
-  let columns = useColumns({ items: data?.items })
+  let columns = useColumns({ items: data?.items, brandId })
   return (
     <TabPanel tabId={Key} {...props}>
       <Stack spacing="major-2">
@@ -62,7 +71,7 @@ export const PlayerHistoryListPanel = ({ playerCode, ...props }) => {
           }}
           isLoading={isLoading}
         />
-        <Table
+        <DataTable
           columns={columns}
           data={data?.items}
           pageCount={pageCount(pageSize, data?.totalCount)}
@@ -122,7 +131,10 @@ const ActionTypeLabel = ({ value = "" }) => {
   }
 }
 
-const useColumns = ({ items = [] }) =>
+const isCreate = equals(Create)
+const isUpdate = equals(Update)
+
+const useColumns = ({ items = [], brandId }) =>
   useMemo(
     () => [
       dateTimeColumn({
@@ -149,7 +161,11 @@ const useColumns = ({ items = [] }) =>
         Cell: ({ value: record }) => {
           return (
             <Set alignX="center">
-              <PlayerHistoryDialogDisclosure eventId={record?.eventId} />
+              <PlayerHistoryDialogDisclosure
+                action={record?.action}
+                eventId={record?.eventId}
+                brandId={brandId}
+              />
             </Set>
           )
         }
@@ -158,25 +174,38 @@ const useColumns = ({ items = [] }) =>
     [JSON.stringify(items)]
   )
 
-const PlayerHistoryDialogDisclosure = ({ eventId }) => {
+const PlayerHistoryDialogDisclosure = ({ action, eventId, brandId }) => {
   let dialog = useModalState()
 
   return (
     <>
       <DetailDisclosure {...dialog} />
       {dialog.visible && (
-        <PlayerHistoryDialog eventId={eventId} dialog={dialog} />
+        <PlayerHistoryDialog
+          action={action}
+          eventId={eventId}
+          brandId={brandId}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-//TODO: "add", value: json?
-//TODO: detail table
-const PlayerHistoryDialog = ({ eventId, dialog, ...props }) => {
+const PlayerHistoryDialog = ({
+  action,
+  eventId,
+  brandId,
+  dialog,
+  ...props
+}) => {
   let { isLoading, data: detail, error } = usePlayerHistory(eventId)
 
-  let columns = usePlayerHistoryColumns({})
+  //TODO: process changeSets?
+  let items = detail?.changeSets
+  let columns = usePlayerHistoryColumns({
+    items: detail?.changeSets
+  })
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
@@ -187,9 +216,48 @@ const PlayerHistoryDialog = ({ eventId, dialog, ...props }) => {
 
   return (
     <Modal title=" " {...dialog}>
-      {JSON.stringify(detail)}
+      {JSON.stringify(items)}
+      {/*
+      <DataTable columns={columns} data={items} /> 
+      */}
     </Modal>
   )
+}
+
+const OperationColumnLabel = () => <Trans zh="操作" en="Operation" />
+const FieldColumnLabel = () => <Trans zh="栏位" en="Field" />
+const ValueColumnKabel = () => <Trans zh="值" en="Value" />
+
+//TODO: fields?
+const CreatePlayerTable = ({ player = [] }) => {
+  return (
+    <Table>
+      <CreatePlayerTableHead />
+      <Table.Body></Table.Body>
+    </Table>
+  )
+}
+
+const CreatePlayerTableHead = () => {
+  return (
+    <Table.Head>
+      <Table.Row>
+        <Table.HeadCell>
+          <OperationColumnLabel />
+        </Table.HeadCell>
+        <Table.HeadCell>
+          <FieldColumnLabel />
+        </Table.HeadCell>
+        <Table.HeadCell>
+          <ValueColumnKabel />
+        </Table.HeadCell>
+      </Table.Row>
+    </Table.Head>
+  )
+}
+
+const CreatePlayerBody = ({ player = [] }) => {
+  return <Table.Body></Table.Body>
 }
 
 //TODO
@@ -198,23 +266,77 @@ const Add = "add"
 const OperationLabel = ({ value = "" }) => {
   switch (value) {
     case Replace:
-      return <Trans {...Update} />
+      return <Trans {...UpdateTrans} />
     case Add:
       return <Trans {...CreateTrans} />
     default:
       return value
   }
 }
-const usePlayerHistoryColumns = ({ items = [] }) => {
+const usePlayerHistoryColumns = ({ items = [], brandId }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
         accessor: "op",
-        Header: <Trans zh="操作" en="Operation" />,
+        Header: <OperationColumnLabel />,
         disableSortBy: true,
         Cell: OperationLabel
+      }),
+      textColumn({
+        id: "label",
+        accessor: (row) => row,
+        Header: FieldColumnLabel,
+        disableSortBy: true,
+        Cell: ChangeSetLabel
+      }),
+      textColumn({
+        id: "value",
+        accessor: (row) => row,
+        Header: ValueColumnKabel,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          return <ChangeSetField value={value} brandId={brandId} />
+        }
       })
     ]
     return columns
   }, [JSON.stringify(items)])
+}
+
+//TODO:
+const StringValue = ({ value = "" }) => value
+
+const PathLabelValueList = [
+  [equals("/status"), StatusLabel, PlayerStatusLabel],
+  [includes("/Birthdate"), BirthdayLabel],
+  [includes("/FacebookMessenger"), MessengerLabel],
+  [includes("/Line"), LineLabel],
+  [includes("/WhatsApp"), WhatsappLabel],
+  [includes("/Viber"), ViberLabel]
+]
+
+const toLabel = (path = "") => {
+  let result = PathLabelValueList.find(([fn]) => {
+    return fn(path)
+  })
+  let labelIndex = 1
+  return result?.[labelIndex] ?? StringValue
+}
+
+const toField = (path = "") => {
+  let result = PathLabelValueList.find(([fn]) => {
+    return fn(path)
+  })
+  let fieldIndex = 2
+  return result?.[fieldIndex] ?? StringValue
+}
+
+const ChangeSetLabel = ({ value = {} }) => {
+  let Label = toLabel(value.path)
+  return <Label value={value.path} />
+}
+
+const ChangeSetField = ({ value = {}, brandId }) => {
+  let Field = toField(value.path)
+  return <Field value={value.value} brandId={brandId} />
 }
