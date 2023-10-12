@@ -106,12 +106,12 @@ const useAllAgentRebateData = (searchParams) => {
 export const AllAgentRebateReport = ({ brandId }) => {
   let dateRange = yesterday()
 
-  //TODO: default sort
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId,
     username: "",
     from: dateRange.start,
-    to: dateRange.end
+    to: dateRange.end,
+    sortBy: [{ id: "settleDateTime", desc: true }]
   })
 
   useEffect(() => {
@@ -169,6 +169,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
                 columns={columns}
                 data={data?.items}
                 total={data?.items?.length > 0 && data?.total}
+                isTotalFooter={true}
                 initialState={state}
                 controlledState={state}
                 pageCount={pageCount(state.pageSize, data?.totalCount)}
@@ -258,7 +259,8 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         accessor: "username",
         Header: <Trans zh="全民代理上級" en="All Agent Username" />,
-        disableSortBy: true
+        disableSortBy: true,
+        TotalCell: <Trans zh="总计" en="Total" />
       }),
       dateTimeColumn({
         id: "settleDateTime",

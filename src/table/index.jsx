@@ -122,6 +122,7 @@ export const Table = ({
   data = [],
   totalCount,
   total,
+  isTotalFooter = false,
   getRowId,
   getRowProps,
   initialState,
@@ -322,9 +323,10 @@ export const Table = ({
               {...props}
             >
               {head === true && <Head table={table} />}
-              {total && <TotalBody table={table} />}
+              {total && isTotalFooter === false && <TotalBody table={table} />}
               {body === true && <Body table={table} />}
               {children}
+              {total && isTotalFooter === true && <TotalBody table={table} />}
               {foot === true && <Foot table={table} />}
             </_Table>
           </div>
