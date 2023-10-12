@@ -263,7 +263,7 @@ const useColumns = ({ items = [] }) => {
         accessor: "username",
         Header: <Trans zh="全民代理上級" en="All Agent Username" />,
         disableSortBy: true,
-        TotalCell: <Trans zh="总计" en="Total" />
+        TotalCell: () => <Trans zh="总计" en="Total" />
       }),
       dateTimeColumn({
         id: "settleDateTime",
@@ -272,7 +272,6 @@ const useColumns = ({ items = [] }) => {
         timeFormat: false,
         Header: <Trans zh="結算日期" en="Settlement Date" />,
         disableSortBy: true
-        // TotalCell: () => <Trans zh="总计" en="Total" />
       }),
       numberColumn({
         accessor: "maxActivePlayerNumber",
