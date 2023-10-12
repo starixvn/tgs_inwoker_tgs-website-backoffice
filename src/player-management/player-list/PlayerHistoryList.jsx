@@ -229,16 +229,16 @@ const FieldColumnLabel = () => <Trans zh="栏位" en="Field" />
 const ValueColumnKabel = () => <Trans zh="值" en="Value" />
 
 //TODO: fields?
-const CreatePlayerTable = ({ player = [] }) => {
+const PlayerTable = ({ player = [] }) => {
   return (
     <Table>
-      <CreatePlayerTableHead />
+      <PlayerTableHead />
       <Table.Body></Table.Body>
     </Table>
   )
 }
 
-const CreatePlayerTableHead = () => {
+const PlayerTableHead = () => {
   return (
     <Table.Head>
       <Table.Row>
@@ -256,7 +256,7 @@ const CreatePlayerTableHead = () => {
   )
 }
 
-const CreatePlayerBody = ({ player = [] }) => {
+const PlayerBody = ({ player = [] }) => {
   return <Table.Body></Table.Body>
 }
 

@@ -240,6 +240,7 @@ const ViewTabs = ({
         TODO: impl
           <PlayerHistoryListTab {...tab} />
         */}
+        <PlayerHistoryListTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
         <PlayerVipChangeListTab {...tab} />
@@ -263,6 +264,11 @@ const ViewTabs = ({
       TODO: impl
         <PlayerHistoryListPanel playerCode={playerCode} brandId={brandId} {...tab} />
       */}
+      <PlayerHistoryListPanel
+        playerCode={playerCode}
+        brandId={brandId}
+        {...tab}
+      />
       <PlayerBalanceChangePanel
         playerCode={playerCode}
         brandId={brandId}
