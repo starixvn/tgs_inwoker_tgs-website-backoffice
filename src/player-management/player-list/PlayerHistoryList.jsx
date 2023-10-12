@@ -24,8 +24,21 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Modal from "../../dialog/Modal"
 import { PlayerStatusLabel } from "../PlayerStatus"
 import { equals, includes } from "ramda"
-import { StatusLabel, BirthdayLabel } from "./player"
-import { LineLabel, MessengerLabel, ViberLabel, WhatsappLabel } from "./contact"
+import {
+  StatusLabel,
+  BirthdayLabel,
+  RealNameLabel,
+  RemarkLabel
+} from "./player"
+import {
+  LineLabel,
+  MessengerLabel,
+  TelegramLabel,
+  ViberLabel,
+  WhatsappLabel
+} from "./contact"
+import { boolean } from "boolean"
+import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 
 export const Key = "history"
 
@@ -263,12 +276,23 @@ const PlayerBody = ({ player = [] }) => {
 //TODO
 const Replace = "replace"
 const Add = "add"
+const AddTrans = {
+  zh: "新增",
+  en: "Add"
+}
+const Remove = "remove"
+const RemoveTrans = {
+  zh: "移除",
+  en: "Remove"
+}
 const OperationLabel = ({ value = "" }) => {
   switch (value) {
     case Replace:
       return <Trans {...UpdateTrans} />
     case Add:
-      return <Trans {...CreateTrans} />
+      return <Trans {...AddTrans} />
+    case Remove:
+      return <Trans {...RemoveTrans} />
     default:
       return value
   }
@@ -306,13 +330,32 @@ const usePlayerHistoryColumns = ({ items = [], brandId }) => {
 //TODO:
 const StringValue = ({ value = "" }) => value
 
+//TODO: identityAuthentication Label & checkbox or icon?
+const IdentityAuthenticationLabel = () => (
+  <Trans zh="身份认证" en="Identity Authentication" />
+)
+
+//TODO: add tooltip?
+const IdentityAuthenticationIcon = ({ value = "" }) => {
+  let isAuth = boolean(value)
+  return <PlayerIdentityStateIcon value={isAuth} />
+}
+
 const PathLabelValueList = [
+  [equals("/RealName"), RealNameLabel],
   [equals("/status"), StatusLabel, PlayerStatusLabel],
+  [
+    equals("/identityAuthentication"),
+    IdentityAuthenticationLabel,
+    IdentityAuthenticationIcon
+  ],
+  [equals("//Remark"), RemarkLabel],
   [includes("/Birthdate"), BirthdayLabel],
   [includes("/FacebookMessenger"), MessengerLabel],
   [includes("/Line"), LineLabel],
   [includes("/WhatsApp"), WhatsappLabel],
-  [includes("/Viber"), ViberLabel]
+  [includes("/Viber"), ViberLabel],
+  [includes("/Telegram", TelegramLabel)]
 ]
 
 const toLabel = (path = "") => {

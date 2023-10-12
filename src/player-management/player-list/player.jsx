@@ -381,7 +381,7 @@ export const Panel = ({
 
 const UserNameLabel = () => <Trans zh="用户名" en="User name" />
 
-const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
+export const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
 
 export const BirthdayLabel = () => <Trans zh="生日" en="Birthday" />
 
@@ -403,7 +403,7 @@ const WageringRequirementLabel = () => (
 
 export const StatusLabel = () => <Trans zh="状态" en="Status" />
 
-const RemarkLabel = () => <Trans zh="备注" en="Remark" />
+export const RemarkLabel = () => <Trans zh="备注" en="Remark" />
 
 const RegisterIPLabel = () => <Trans zh="注册IP地址" en="Register IP" />
 
