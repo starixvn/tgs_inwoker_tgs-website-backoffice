@@ -150,7 +150,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
           }}
         />
       </Level>
-      <Alert variant="bordered" type="info" accent marginBottom="1rem">
+      <Alert variant="bordered" type="info" accent>
         <List listStyleType="disc" listStylePosition="inside">
           <List.Item>
             <Trans
@@ -175,6 +175,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
                 setPageIndex={setPageIndex}
                 setSortOrder={setSortOrder}
                 isLoading={isLoading}
+                maxSize={{ height, width }}
                 stickyHead
               />
             )
@@ -214,8 +215,11 @@ const SearchBar = ({ username, from, to, search, isLoading }) => {
           <DateInputRange
             label={<Trans zh="結算日期" en="Settlement Date" />}
             showDateDropdownMenu
-            maxRangeDays={QueryMaxRangeDays}
-            minDate={minDate}
+            /*
+            TODO
+                maxRangeDays={QueryMaxRangeDays}
+                minDate={minDate}
+            */
             maxDate={maxDate}
             startProps={{
               name: "from"
