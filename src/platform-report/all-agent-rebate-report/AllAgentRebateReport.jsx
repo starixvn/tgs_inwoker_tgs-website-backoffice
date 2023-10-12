@@ -27,7 +27,10 @@ import {
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
-import { DateInputRange } from "../../date/DateTimeRangeInput"
+import {
+  DateInputRange,
+  DateInputRangeField
+} from "../../date/DateTimeRangeInput"
 import { today, yesterday } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import numberColumn, {
@@ -133,7 +136,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
   let pageWidth = usePlatformPageContentWidth()
 
   return (
-    <Set orientation="vertical" isFilled height="100%">
+    <Set orientation="vertical" isFilled height="100%" spacing="major-2">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           username={state?.username}
@@ -212,8 +215,8 @@ const SearchBar = ({ username, from, to, search, isLoading }) => {
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-        <Set>
-          <DateInputRange
+        <Set alignY="bottom">
+          <DateInputRangeField
             label={<Trans zh="結算日期" en="Settlement Date" />}
             showDateDropdownMenu
             /*
