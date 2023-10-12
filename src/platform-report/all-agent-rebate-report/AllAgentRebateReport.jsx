@@ -150,39 +150,37 @@ export const AllAgentRebateReport = ({ brandId }) => {
           }}
         />
       </Level>
-      <Set orientation="vertical" height="100%" isFilled>
-        <Alert variant="bordered" type="info" accent marginBottom="1rem">
-          <List listStyleType="disc" listStylePosition="inside">
-            <List.Item>
-              <Trans
-                zh="最大活跃人数：各游戏类型活跃人数之顶"
-                en="Max. Active Player: the highest number of active players recorded among different game types."
+      <Alert variant="bordered" type="info" accent marginBottom="1rem">
+        <List listStyleType="disc" listStylePosition="inside">
+          <List.Item>
+            <Trans
+              zh="最大活跃人数：各游戏类型活跃人数之顶"
+              en="Max. Active Player: the highest number of active players recorded among different game types."
+            />
+          </List.Item>
+        </List>
+      </Alert>
+      <Box flex="1">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                columns={columns}
+                data={data?.items}
+                total={data?.items?.length > 0 && data?.total}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(state.pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                stickyHead
               />
-            </List.Item>
-          </List>
-        </Alert>
-        <Box flex="1">
-          <AutoSizer disableWidth={true}>
-            {({ height }) => {
-              let width = pageWidth
-              return (
-                <Table
-                  columns={columns}
-                  data={data?.items}
-                  total={data?.items?.length > 0 && data?.total}
-                  initialState={state}
-                  controlledState={state}
-                  pageCount={pageCount(state.pageSize, data?.totalCount)}
-                  setPageIndex={setPageIndex}
-                  setSortOrder={setSortOrder}
-                  isLoading={isLoading}
-                  stickyHead
-                />
-              )
-            }}
-          </AutoSizer>
-        </Box>
-      </Set>
+            )
+          }}
+        </AutoSizer>
+      </Box>
     </Set>
   )
 }
@@ -240,8 +238,6 @@ const SearchBar = ({ username, from, to, search, isLoading }) => {
             name="username"
             showEmptyFieldValueAddonAfter
             placeholder={usernamePlaceholder}
-            requiredMessage=""
-            required
             autoFocus
           />
 
