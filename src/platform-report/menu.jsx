@@ -42,6 +42,10 @@ import {
   Code as WinlossReportCode,
   codeLabelPair as winlossReportPair
 } from "./winloss-report/menu"
+import {
+  Code as AllAgentRebateReportCode,
+  codeLabelPair as allAgentRebateReportPair
+} from "./all-agent-rebate-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 
@@ -172,6 +176,16 @@ const label = ({ locale, code }) => {
         },
         locale
       )
+
+    case AllAgentRebateReportCode:
+      return getTrans(
+        {
+          zh: "全民代理返水报表",
+          en: "All Agent Rebate Report"
+        },
+        locale
+      )
+
     default:
       return ""
   }
@@ -194,7 +208,8 @@ export const codeLabelPair = [
         balanceChangeReportPair,
         gameProviderReportPair,
         transferRecordsPair,
-        winlossReportPair
+        winlossReportPair,
+        allAgentRebateReportPair
       ]
     })
 ]
