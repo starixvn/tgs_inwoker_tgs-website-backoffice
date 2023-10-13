@@ -40,29 +40,17 @@ import numberColumn, {
 import { startOfToday, subDays } from "date-fns"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { isDev } from "../../env"
-import { urlWith } from "../../client"
-import DownloadButton from "../../button/DownloadButton"
-import headOf from "../../list/head"
-import { isLastIndex, last } from "../../list/last"
-import {
-  faAngleDown,
-  faAngleRight,
-  faCaretRight,
-  faCaretDown,
-  faChevronRight
-} from "@fortawesome/free-solid-svg-icons"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { isNil, isEmpty, either } from "ramda"
-import { isArray } from "lodash-es"
-import { useMeasure } from "react-use"
 import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
 import { useAllAgentRebateList, useAllAgentRebateTotalAmount } from "./client"
 import dateTimeColumn from "../../table/column/dateTime"
 import { AllAgentRebateDialogDisclosure } from "./AllAgentRebateDialog"
+import { parseISO } from "date-fns"
+import { toDate } from "../../date/toDate"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -285,7 +273,7 @@ const useColumns = ({ items = [], brandId }) => {
               value={record?.maxActivePlayerNumber}
               username={record?.username}
               playerCode={record?.playerCode}
-              settleDateTime={record?.settleDateTime}
+              settleDateTime={toDate(record?.settleDateTime)}
             />
           )
         }

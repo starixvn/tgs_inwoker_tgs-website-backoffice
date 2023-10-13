@@ -8,7 +8,8 @@ import {
   Text,
   Box,
   Set,
-  FieldStack
+  FieldStack,
+  Link
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure from "../../dialog/Disclosure"
@@ -60,7 +61,7 @@ export const AllAgentRebateDialogDisclosure = ({
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure use={Link} {...dialog} {...props}>
         <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
