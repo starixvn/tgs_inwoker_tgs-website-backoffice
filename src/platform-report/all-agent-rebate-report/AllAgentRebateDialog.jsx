@@ -49,7 +49,8 @@ export const AllAgentRebateDialogDisclosure = ({
   value,
   username,
   playerCode,
-  settleDateTime
+  settleDateTime,
+  ...props
 }) => {
   let dialog = useModalState()
 
