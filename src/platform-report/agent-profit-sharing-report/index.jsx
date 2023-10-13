@@ -32,30 +32,7 @@ import {
   useTrans,
   FormattedNumberDecimal
 } from "../../i18n"
-import SearchButton from "../../button/SearchButton"
-import equals from "fast-deep-equal"
-import { InputField } from "../../input/Input"
 import { Code } from "./menu"
-import BrandBar from "../../report/BrandBar"
-import { DateInputRange } from "../../date/DateTimeRangeInput"
-import { today, yesterday } from "../../date/range"
-import { startOfNextDay } from "../../date/startOfNextDay"
-import {
-  numberDecimalColumn,
-  numberDecimalPercentageColumn
-} from "../../table/column/numberColumn"
-import { startOfToday, subDays } from "date-fns"
-import AlertDialog from "../../dialog/Alert"
-import textColumn from "../../table/column/textColumn"
-import { useAgentDividendList, API } from "./client"
-import { AgentWinLossDialogDisclosure } from "./AgentWinLoss"
-import { AgentProfitSharingDialogDisclosure } from "./AgentProfitSharingDialog"
-import { AgentTypeSelect } from "../../agent/AgentType"
-import { isDev } from "../../env"
-import { urlWith } from "../../client"
-import DownloadButton from "../../button/DownloadButton"
-import { AgentTeamContributionDialogDisclosure } from "./AgentTeamContribution"
-import { BonusDialogDisclosure } from "../BonusDialog"
 import { PlatformAgentProfitSharingReport } from "./PlatformAgentProfitSharingReport"
 import {
   PlatformPageContent,

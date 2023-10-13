@@ -16,7 +16,9 @@ import Disclosure from "../../dialog/Disclosure"
 import {
   FormattedDate,
   FormattedDateTime,
+  FormattedNumber,
   FormattedNumberDecimal,
+  FormattedNumberDecimalPercentage,
   Trans,
   useTrans
 } from "../../i18n"
@@ -38,11 +40,11 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import Modal from "../../dialog/Modal"
 import {
   useAllAgentRebateDetails,
   useAllAgentRebateGameTypeDetails
 } from "./client"
-import Modal from "../../dialog/Modal"
 
 //TODO
 export const AllAgentRebateDialogDisclosure = ({
@@ -118,6 +120,29 @@ const useReportData = (searchParams) => {
   }
 }
 
+const ActivePlayersByGameType = ({ gameType = "", items = [] }) => {
+  let record = items.find(
+    ({ allAgentGameType }) => allAgentGameType === gameType
+  )
+
+  if (!Number.isFinite(record?.activePlayerNumber)) {
+    return ""
+  }
+
+  return <FormattedNumber value={record?.activePlayerNumber} />
+}
+
+const RebatePercentageByGameType = ({ gameType = "", items = [] }) => {
+  let record = items.find(
+    ({ allAgentGameType }) => allAgentGameType === gameType
+  )
+  if (!Number.isFinite(record?.rebatePercentage)) {
+    return ""
+  }
+
+  return <FormattedNumberDecimalPercentage value={record?.rebatePercentage} />
+}
+
 //TODO: client side pagnation
 //TODO: useTable? or useState?
 const ReportDialog = ({
@@ -136,6 +161,11 @@ const ReportDialog = ({
     brandId,
     playerCode,
     settleDateTime
+  })
+
+  let columns = useColumns({
+    items: data?.items,
+    gameTypeDetails: data?.gameTypeDetails
   })
 
   if (isLoading) {
@@ -160,8 +190,118 @@ const ReportDialog = ({
           </Text.Block>
         </FieldValues>
         <Separator />
-        {JSON.stringify(data)}
+        <Table columns={columns} data={data?.items} />
       </FieldStack>
     </Modal>
   )
+}
+
+const GameType = {
+  Sportsbook: "Sportsbook",
+  VirtualSports: "VirtualSports",
+  LiveDealer: "LiveDealer",
+  CardGame: "CardGame",
+  Lottery: "Lottery",
+  Slot: "Slot"
+}
+
+const GameTypeTrans = {
+  Sportsbook: {
+    zh: "体育",
+    en: "Sports"
+  },
+  VirtualSports: {
+    zh: "虚拟体育",
+    en: "Virtual Sports"
+  },
+  LiveDealer: {
+    zh: "真人",
+    en: "Live Dealer"
+  },
+  CardGame: {
+    zh: "棋牌",
+    en: "Card Game"
+  },
+  Lottery: {
+    zh: "彩票",
+    en: "Lottery"
+  },
+  Slot: {
+    zh: "电子",
+    en: "EGame"
+  }
+}
+
+const ValidBetLabel = () => <Trans zh="有效投注" en="Valid Bet" />
+const RebateLabel = () => <Trans zh="返水金额" en="Rebate" />
+
+//TODO: column align
+const useColumns = ({ items = [], gameTypeDetails = [], brandId }) => {
+  return useMemo(() => {
+    let columns = [
+      {
+        id: "gameType",
+        Header: <Trans zh="游戏类型" en="Game Type" />,
+        columns: [
+          {
+            id: "gameTypeActivePlayers",
+            Header: <Trans zh="活跃人数" en="Active Players" />,
+            columns: [
+              {
+                id: "gameTypeRebatePercentage",
+                Header: <Trans zh="返水比例" en="Rebate P/T" />,
+                columns: [
+                  textColumn({
+                    accessor: "username",
+                    Header: <Trans zh="直属玩家" en="Players" />
+                  }),
+                  numberDecimalColumn({
+                    accessor: "rebateSubTotal",
+                    Header: <Trans zh="有效投注" en="Valid Bet" />
+                  })
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: GameType.LiveDealer,
+        Header: <Trans {...GameTypeTrans.LiveDealer} />,
+        columns: [
+          {
+            id: "liveDealerPlayers",
+            Header: (
+              <ActivePlayersByGameType
+                gameType={GameType.LiveDealer}
+                items={gameTypeDetails}
+              />
+            ),
+            columns: [
+              {
+                id: "liveDealerRebatePercentage",
+                Header: (
+                  <RebatePercentageByGameType
+                    ggameType={GameType.LiveDealer}
+                    items={gameTypeDetails}
+                  />
+                ),
+                columns: [
+                  numberDecimalColumn({
+                    accessor: "liveDealerValidBet",
+                    Header: <ValidBetLabel />
+                  }),
+                  numberDecimalColumn({
+                    accessor: "virtualSportsRebate",
+                    Header: <RebateLabel />
+                  })
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+    return columns
+  }, [JSON.stringify(items), JSON.stringify(gameTypeDetails)])
 }

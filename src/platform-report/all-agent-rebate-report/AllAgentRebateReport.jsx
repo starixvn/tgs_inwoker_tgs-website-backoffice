@@ -46,11 +46,11 @@ import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { isNil, isEmpty, either } from "ramda"
 import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
-import { useAllAgentRebateList, useAllAgentRebateTotalAmount } from "./client"
 import dateTimeColumn from "../../table/column/dateTime"
 import { AllAgentRebateDialogDisclosure } from "./AllAgentRebateDialog"
 import { parseISO } from "date-fns"
 import { toDate } from "../../date/toDate"
+import { useAllAgentRebateList, useAllAgentRebateTotalAmount } from "./client"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -176,6 +176,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
           }}
         </AutoSizer>
       </Box>
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
   )
 }
