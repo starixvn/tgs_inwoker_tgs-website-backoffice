@@ -326,8 +326,8 @@ export const Table = ({
               {total && isTotalFooter === false && <TotalBody table={table} />}
               {body === true && <Body table={table} />}
               {children}
-              {total && isTotalFooter === true && <TotalBody table={table} />}
               {foot === true && <Foot table={table} />}
+              {total && isTotalFooter === true && <TotalBody table={table} />}
             </_Table>
           </div>
           <Footer

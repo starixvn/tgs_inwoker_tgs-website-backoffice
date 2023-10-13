@@ -23,3 +23,17 @@ export const useAllAgentRebateTotalAmount = (searchParams) => {
     : ""
   return useGet(url)
 }
+
+export const useAllAgentRebateDetails = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/player-all-agent-rebate-details`)
+    : ""
+  return useGet(url)
+}
+
+export const useAllAgentRebateGameTypeDetails = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/player-all-agent-rebate-detail-game-types`)
+    : ""
+  return useGet(url)
+}

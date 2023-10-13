@@ -62,6 +62,7 @@ import { useMeasure } from "react-use"
 import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
 import { useAllAgentRebateList, useAllAgentRebateTotalAmount } from "./client"
 import dateTimeColumn from "../../table/column/dateTime"
+import { AllAgentRebateDialogDisclosure } from "./AllAgentRebateDialog"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -130,7 +131,8 @@ export const AllAgentRebateReport = ({ brandId }) => {
   )
 
   let columns = useColumns({
-    items: data?.items
+    items: data?.items,
+    brandId
   })
 
   let pageWidth = usePlatformPageContentWidth()
@@ -256,7 +258,7 @@ const SearchBar = ({ username, from, to, search, isLoading }) => {
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ items = [], brandId }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
@@ -270,12 +272,23 @@ const useColumns = ({ items = [] }) => {
         accessor: "settleDateTime",
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
-        Header: <Trans zh="結算日期" en="Settlement Date" />,
-        disableSortBy: true
+        Header: <Trans zh="結算日期" en="Settlement Date" />
       }),
       numberColumn({
-        accessor: "maxActivePlayerNumber",
-        Header: <Trans zh="最大活跃人数" en="Max. Active Player" />
+        id: "maxActivePlayerNumber",
+        accessor: (row) => row,
+        Header: <Trans zh="最大活跃人数" en="Max. Active Player" />,
+        Cell: ({ value: record }) => {
+          return (
+            <AllAgentRebateDialogDisclosure
+              brandId={brandId}
+              value={record?.maxActivePlayerNumber}
+              username={record?.username}
+              playerCode={record?.playerCode}
+              settleDateTime={record?.settleDateTime}
+            />
+          )
+        }
       }),
       numberDecimalColumn({
         accessor: "validBet",
