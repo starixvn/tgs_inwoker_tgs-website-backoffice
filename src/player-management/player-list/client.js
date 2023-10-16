@@ -4,7 +4,8 @@ import {
   usePostData,
   usePut,
   usePutData,
-  useDelete
+  useDelete,
+  usePatchData
 } from "../../client"
 import { repeat } from "ramda"
 
@@ -54,9 +55,16 @@ export const useSetDefaultPlayerBank = (playerCode, id) => {
   return usePut(url)
 }
 
+//TODO: rm
 export const useEditPlayerPassword = (playerCode, data) => {
   let url = playerCode ? `${API}/${playerCode}/password` : ""
   return usePutData(url, data)
+}
+
+export const useUpdatePlayerPassword = (playerCode, password) => {
+  let url =
+    playerCode && password ? `${API}/password/${playerCode}/${password}` : ""
+  return usePatchData(url)
 }
 
 export const useOperations = (playerCode, searchParams) => {
