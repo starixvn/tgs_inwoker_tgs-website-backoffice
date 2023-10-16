@@ -42,6 +42,33 @@ export const useAllAgentRebateList = (searchParams) => {
       rebate: 0.0,
       settleDateTime: "2023-02-09T16:00:00+00:00",
       sentOn: "2023-02-10T16:35:07.324504+00:00"
+    },
+    {
+      username: "qatest0923",
+      playerCode: "4uhyekcw88dy",
+      maxActivePlayerNumber: 2,
+      validBet: 14.0,
+      rebate: 0.35,
+      settleDateTime: "2023-02-13T16:00:00+00:00",
+      sentOn: "2023-02-14T16:35:08.982617+00:00"
+    },
+    {
+      username: "qatest0923",
+      playerCode: "4uhyekcw88dy",
+      maxActivePlayerNumber: 2,
+      validBet: 0.0,
+      rebate: 0.0,
+      settleDateTime: "2023-02-12T16:00:00+00:00",
+      sentOn: "2023-02-13T16:35:01.920243+00:00"
+    },
+    {
+      username: "qatest0923",
+      playerCode: "4uhyekcw88dy",
+      maxActivePlayerNumber: 2,
+      validBet: 0.0,
+      rebate: 0.0,
+      settleDateTime: "2023-02-09T16:00:00+00:00",
+      sentOn: "2023-02-10T16:35:07.324504+00:00"
     }
   ]
 
@@ -69,6 +96,74 @@ export const useAllAgentRebateDetails = (searchParams) => {
     : ""
   let { data, ...rest } = useGet(url)
   data = [
+    {
+      username: "qatest2022113011",
+      playerCode: "4uhyekcw88dy",
+      rebateSubTotal: 0.325,
+      sportsbookValidBet: 0.0,
+      sportsbookRebate: 0.0,
+      virtualSportsValidBet: 0.0,
+      virtualSportsRebate: 0.0,
+      liveDealerValidBet: 0.0,
+      liveDealerRebate: 0.0,
+      cardGameValidBet: 13.0,
+      cardGameRebate: 0.325,
+      lotteryValidBet: 0.0,
+      lotteryRebate: 0.0,
+      slotValidBet: 0.0,
+      slotRebate: 0.0
+    },
+    {
+      username: "qatest2022113012",
+      playerCode: "4uhyekcw88dy",
+      rebateSubTotal: 0.025,
+      sportsbookValidBet: 0.0,
+      sportsbookRebate: 0.0,
+      virtualSportsValidBet: 0.0,
+      virtualSportsRebate: 0.0,
+      liveDealerValidBet: 0.0,
+      liveDealerRebate: 0.0,
+      cardGameValidBet: 1.0,
+      cardGameRebate: 0.025,
+      lotteryValidBet: 0.0,
+      lotteryRebate: 0.0,
+      slotValidBet: 0.0,
+      slotRebate: 0.0
+    },
+    {
+      username: "qatest2022113011",
+      playerCode: "4uhyekcw88dy",
+      rebateSubTotal: 0.325,
+      sportsbookValidBet: 0.0,
+      sportsbookRebate: 0.0,
+      virtualSportsValidBet: 0.0,
+      virtualSportsRebate: 0.0,
+      liveDealerValidBet: 0.0,
+      liveDealerRebate: 0.0,
+      cardGameValidBet: 13.0,
+      cardGameRebate: 0.325,
+      lotteryValidBet: 0.0,
+      lotteryRebate: 0.0,
+      slotValidBet: 0.0,
+      slotRebate: 0.0
+    },
+    {
+      username: "qatest2022113012",
+      playerCode: "4uhyekcw88dy",
+      rebateSubTotal: 0.025,
+      sportsbookValidBet: 0.0,
+      sportsbookRebate: 0.0,
+      virtualSportsValidBet: 0.0,
+      virtualSportsRebate: 0.0,
+      liveDealerValidBet: 0.0,
+      liveDealerRebate: 0.0,
+      cardGameValidBet: 1.0,
+      cardGameRebate: 0.025,
+      lotteryValidBet: 0.0,
+      lotteryRebate: 0.0,
+      slotValidBet: 0.0,
+      slotRebate: 0.0
+    },
     {
       username: "qatest2022113011",
       playerCode: "4uhyekcw88dy",

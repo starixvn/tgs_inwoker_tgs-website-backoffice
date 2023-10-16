@@ -247,7 +247,7 @@ export const WinlossReport = ({ brandId }) => {
         )}
       </Level>
       <UserBreadcrumb path={path} backToPath={backToPath} />
-      <Box flex="1">
+      <Box flex="1 0 50%">
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth

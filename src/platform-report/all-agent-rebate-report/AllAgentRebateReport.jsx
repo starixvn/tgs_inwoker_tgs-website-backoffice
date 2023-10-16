@@ -103,7 +103,8 @@ export const AllAgentRebateReport = ({ brandId }) => {
     username: "",
     from: dateRange.start,
     to: dateRange.end,
-    sortBy: [{ id: "settleDateTime", desc: true }]
+    sortBy: [{ id: "settleDateTime", desc: true }],
+    pageSize: 5
   })
 
   useEffect(() => {
@@ -143,17 +144,19 @@ export const AllAgentRebateReport = ({ brandId }) => {
           }}
         />
       </Level>
-      <Alert variant="bordered" type="info" accent>
-        <List listStyleType="disc" listStylePosition="inside">
-          <List.Item>
-            <Trans
-              zh="最大活跃人数：各游戏类型活跃人数之顶"
-              en="Max. Active Player: the highest number of active players recorded among different game types."
-            />
-          </List.Item>
-        </List>
-      </Alert>
-      <Box flex="1">
+      <Box>
+        <Alert variant="bordered" type="info" accent>
+          <List listStyleType="disc" listStylePosition="inside">
+            <List.Item>
+              <Trans
+                zh="最大活跃人数：各游戏类型活跃人数之最大值。"
+                en="Max. Active Player: the highest number of active players recorded among different game types."
+              />
+            </List.Item>
+          </List>
+        </Alert>
+      </Box>
+      <Box flex="1 0 50%">
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth
@@ -168,6 +171,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
                 pageCount={pageCount(state.pageSize, data?.totalCount)}
                 setPageIndex={setPageIndex}
                 setSortOrder={setSortOrder}
+                autoPaging={true}
                 isLoading={isLoading}
                 maxSize={{ height, width }}
                 stickyHead

@@ -45,8 +45,8 @@ import {
   useAllAgentRebateDetails,
   useAllAgentRebateGameTypeDetails
 } from "./client"
+import { camelCase } from "lodash-es"
 
-//TODO
 export const AllAgentRebateDialogDisclosure = ({
   brandId,
   value,
@@ -143,8 +143,6 @@ const RebatePercentageByGameType = ({ gameType = "", items = [] }) => {
   return <FormattedNumberDecimalPercentage value={record?.rebatePercentage} />
 }
 
-//TODO: client side pagnation
-//TODO: useTable? or useState?
 const ReportDialog = ({
   brandId,
   username,
@@ -155,6 +153,10 @@ const ReportDialog = ({
   let title = useTrans({
     zh: "全民代理返水细项",
     en: "All Agent Rebate Detail"
+  })
+
+  let { state, setPageIndex, setSortOrder } = useTable({
+    pageSize: 5
   })
 
   let { isLoading, data, error } = useReportData({
@@ -176,21 +178,36 @@ const ReportDialog = ({
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO
   return (
-    <Modal title={title} {...dialog}>
-      <FieldStack>
+    <Modal
+      title={title}
+      placement="top"
+      css={css`
+        max-width: 95vw;
+      `}
+      {...dialog}
+    >
+      <FieldStack spacing="major-1" paddingBottom="0.5rem">
         <FieldValues marginLeft="1rem">
           <Trans zh="全民代理上级" en="All Agent Username" />
-          <Text.Block alignY="center">{username}</Text.Block>
+          <Box alignY="center">{username}</Box>
 
           <Trans zh="结算日期" en="Settlement Date" />
-          <Text.Block>
+          <Box alignY="center">
             <FormattedDate value={settleDateTime} dateFormat="dd/MM/yyyy" />
-          </Text.Block>
+          </Box>
         </FieldValues>
         <Separator />
-        <Table columns={columns} data={data?.items} />
+        <Table
+          columns={columns}
+          data={data?.items}
+          foot={data?.items?.length > 0}
+          controlledState={state}
+          autoPaging={true}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          hasCellDividers
+        />
       </FieldStack>
     </Modal>
   )
@@ -235,29 +252,103 @@ const GameTypeTrans = {
 const ValidBetLabel = () => <Trans zh="有效投注" en="Valid Bet" />
 const RebateLabel = () => <Trans zh="返水金额" en="Rebate" />
 
-//TODO: column align
+const gameTypeColumn = (gameType, gameTypeDetails = []) => {
+  if (!gameType) {
+    return null
+  }
+
+  let trans = GameTypeTrans?.[gameType]
+  if (!trans) {
+    return null
+  }
+
+  let gameTypeAccessor = camelCase(gameType)
+  return {
+    id: gameType,
+    Header: <Trans {...trans} />,
+    headCell: {
+      textAlign: "center"
+    },
+    columns: [
+      {
+        id: `${gameTypeAccessor}-players`,
+        Header: (
+          <ActivePlayersByGameType
+            gameType={gameType}
+            items={gameTypeDetails}
+          />
+        ),
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          {
+            id: `${gameTypeAccessor}-rebate-percentage`,
+            Header: (
+              <RebatePercentageByGameType
+                gameType={gameType}
+                items={gameTypeDetails}
+              />
+            ),
+            headCell: {
+              textAlign: "center"
+            },
+            columns: [
+              numberDecimalColumn({
+                accessor: `${gameTypeAccessor}ValidBet`,
+                sumColumn: `${gameTypeAccessor}ValidBet`,
+                Header: <ValidBetLabel />,
+                disableSortBy: true
+              }),
+              numberDecimalColumn({
+                accessor: `${gameTypeAccessor}Rebate`,
+                sumColumn: `${gameTypeAccessor}Rebate`,
+                Header: <RebateLabel />,
+                disableSortBy: true
+              })
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+
 const useColumns = ({ items = [], gameTypeDetails = [], brandId }) => {
   return useMemo(() => {
     let columns = [
       {
         id: "gameType",
         Header: <Trans zh="游戏类型" en="Game Type" />,
+        headCell: {
+          textAlign: "center"
+        },
         columns: [
           {
             id: "gameTypeActivePlayers",
             Header: <Trans zh="活跃人数" en="Active Players" />,
+            headCell: {
+              textAlign: "center"
+            },
             columns: [
               {
                 id: "gameTypeRebatePercentage",
                 Header: <Trans zh="返水比例" en="Rebate P/T" />,
+                headCell: {
+                  textAlign: "center"
+                },
                 columns: [
                   textColumn({
                     accessor: "username",
-                    Header: <Trans zh="直属玩家" en="Players" />
+                    Header: <Trans zh="直属玩家" en="Players" />,
+                    Footer: () => <Trans zh="总计" en="Total" />,
+                    disableSortBy: true
                   }),
                   numberDecimalColumn({
                     accessor: "rebateSubTotal",
-                    Header: <Trans zh="有效投注" en="Valid Bet" />
+                    sumColumn: "rebateSubTotal",
+                    Header: <Trans zh="返水小计" en="Rebate Subtotal" />,
+                    disableSortBy: true
                   })
                 ]
               }
@@ -265,42 +356,12 @@ const useColumns = ({ items = [], gameTypeDetails = [], brandId }) => {
           }
         ]
       },
-      {
-        id: GameType.LiveDealer,
-        Header: <Trans {...GameTypeTrans.LiveDealer} />,
-        columns: [
-          {
-            id: "liveDealerPlayers",
-            Header: (
-              <ActivePlayersByGameType
-                gameType={GameType.LiveDealer}
-                items={gameTypeDetails}
-              />
-            ),
-            columns: [
-              {
-                id: "liveDealerRebatePercentage",
-                Header: (
-                  <RebatePercentageByGameType
-                    ggameType={GameType.LiveDealer}
-                    items={gameTypeDetails}
-                  />
-                ),
-                columns: [
-                  numberDecimalColumn({
-                    accessor: "liveDealerValidBet",
-                    Header: <ValidBetLabel />
-                  }),
-                  numberDecimalColumn({
-                    accessor: "virtualSportsRebate",
-                    Header: <RebateLabel />
-                  })
-                ]
-              }
-            ]
-          }
-        ]
-      }
+      gameTypeColumn(GameType.LiveDealer, gameTypeDetails),
+      gameTypeColumn(GameType.Sportsbook, gameTypeDetails),
+      gameTypeColumn(GameType.VirtualSports, gameTypeDetails),
+      gameTypeColumn(GameType.Slot, gameTypeDetails),
+      gameTypeColumn(GameType.CardGame, gameTypeDetails),
+      gameTypeColumn(GameType.Lottery, gameTypeDetails)
     ]
     return columns
   }, [JSON.stringify(items), JSON.stringify(gameTypeDetails)])
