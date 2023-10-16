@@ -162,7 +162,7 @@ const useColumns = ({ items = [], brandId }) =>
         Cell: ActionTypeLabel
       }),
       textColumn({
-        accessor: "createdByUsername",
+        accessor: "modifier",
         Header: <Trans zh="操作者" en="Operator" />,
         disableSortBy: true
       }),
@@ -214,7 +214,6 @@ const PlayerHistoryDialog = ({
 }) => {
   let { isLoading, data: detail, error } = usePlayerHistory(eventId)
 
-  //TODO: process changeSets?
   let items = detail?.changeSets
   let columns = usePlayerHistoryColumns({
     items: detail?.changeSets
@@ -227,12 +226,11 @@ const PlayerHistoryDialog = ({
     return <AlertDialog {...dialog} onClickClose={dialog.hide} />
   }
 
+  //TODO: update vs create table?
   return (
     <Modal title=" " {...dialog}>
       {JSON.stringify(items)}
-      {/*
-      <DataTable columns={columns} data={items} /> 
-      */}
+      <DataTable columns={columns} data={items} />
     </Modal>
   )
 }
@@ -341,7 +339,11 @@ const IdentityAuthenticationIcon = ({ value = "" }) => {
   return <PlayerIdentityStateIcon value={isAuth} />
 }
 
+const PasswordLabel = () => <Trans zh="密码" en="Password" />
+
+//TODO: test each one
 const PathLabelValueList = [
+  [equals("/password"), PasswordLabel],
   [equals("/RealName"), RealNameLabel],
   [equals("/status"), StatusLabel, PlayerStatusLabel],
   [

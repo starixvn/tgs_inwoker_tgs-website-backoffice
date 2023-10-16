@@ -49,7 +49,7 @@ export const Panel = ({
   let formMethods = useForm()
 
   let [submitData, setSubmit] = useState()
-  let { result, error, isLoading } = useUpdatePlayerPassword(
+  let { result, error, isLoading, mutate, deleteCache } = useUpdatePlayerPassword(
     playerCode,
     submitData
   )
@@ -64,6 +64,7 @@ export const Panel = ({
   }
 
   const reset = () => {
+    deleteCache()
     setSubmit(undefined)
   }
 
