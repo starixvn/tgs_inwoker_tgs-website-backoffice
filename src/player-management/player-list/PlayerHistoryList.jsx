@@ -232,7 +232,7 @@ const PlayerHistoryDialog = ({
   }
 
   return (
-    <Modal title=" " {...dialog}>
+    <Modal title={<Box padding="1ch"></Box>} {...dialog}>
       <DataTable columns={columns} data={items} />
     </Modal>
   )

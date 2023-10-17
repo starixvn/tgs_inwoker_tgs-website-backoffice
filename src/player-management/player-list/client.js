@@ -67,6 +67,11 @@ export const useUpdatePlayerPassword = (playerCode, password) => {
   return usePatchData(url)
 }
 
+export const useUpdatePlayerContact = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
+  return usePatchData(url, data)
+}
+
 export const useOperations = (playerCode, searchParams) => {
   let url = playerCode
     ? urlWith(searchParams, `${API}/${playerCode}/operations`)
