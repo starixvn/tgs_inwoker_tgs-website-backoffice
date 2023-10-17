@@ -379,7 +379,7 @@ export const Panel = ({
   )
 }
 
-const UserNameLabel = () => <Trans zh="用户名" en="User name" />
+export const UserNameLabel = () => <Trans zh="用户名" en="User name" />
 
 export const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
 
@@ -387,9 +387,11 @@ export const BirthdayLabel = () => <Trans zh="生日" en="Birthday" />
 
 const IdentityCardNumberLabel = () => <Trans zh="身分证" en="IC Number" />
 
-const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
+export const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
 
-const AgentUsernameLabel = () => <Trans zh="上级代理" en="Upper Level Agent" />
+export const AgentUsernameLabel = () => (
+  <Trans zh="上级代理" en="Upper Level Agent" />
+)
 
 const AllAgentUpperLevelLabel = () => (
   <Trans zh="全民代理上級" en="All Agent Upper Level" />

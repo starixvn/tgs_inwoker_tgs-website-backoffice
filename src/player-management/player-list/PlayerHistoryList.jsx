@@ -23,11 +23,14 @@ import { DetailDisclosure } from "../../dialog/Disclosure"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Modal from "../../dialog/Modal"
 import { PlayerStatusLabel } from "../PlayerStatus"
-import { equals, includes } from "ramda"
+import { equals, includes, pipe, prop } from "ramda"
 import {
+  UserNameLabel,
+  RealNameLabel,
+  VIPLevelLabel,
+  AgentUsernameLabel,
   StatusLabel,
   BirthdayLabel,
-  RealNameLabel,
   RemarkLabel
 } from "./player"
 import {
@@ -40,6 +43,9 @@ import {
 import { boolean } from "boolean"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { isString } from "lodash-es"
+import { FieldValues } from "../../layout/Grid"
+import { VipLevelIdLabel } from "../../vip-levels/VipLevel"
+import { AgentIdUsername } from "../../agent/agent-list/AgentUsername"
 
 export const Key = "history"
 
@@ -145,9 +151,6 @@ const ActionTypeLabel = ({ value = "" }) => {
   }
 }
 
-const isCreate = equals(Create)
-const isUpdate = equals(Update)
-
 const useColumns = ({ items = [], brandId }) =>
   useMemo(
     () => [
@@ -217,7 +220,8 @@ const PlayerHistoryDialog = ({
 
   let items = detail?.changeSets
   let columns = usePlayerHistoryColumns({
-    items: detail?.changeSets
+    items: detail?.changeSets,
+    brandId
   })
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -227,10 +231,8 @@ const PlayerHistoryDialog = ({
     return <AlertDialog {...dialog} onClickClose={dialog.hide} />
   }
 
-  //TODO: update vs create table?
   return (
     <Modal title=" " {...dialog}>
-      {JSON.stringify(items)}
       <DataTable columns={columns} data={items} />
     </Modal>
   )
@@ -240,39 +242,6 @@ const OperationColumnLabel = () => <Trans zh="操作" en="Operation" />
 const FieldColumnLabel = () => <Trans zh="栏位" en="Field" />
 const ValueColumnKabel = () => <Trans zh="值" en="Value" />
 
-//TODO: fields?
-const PlayerTable = ({ player = [] }) => {
-  return (
-    <Table>
-      <PlayerTableHead />
-      <Table.Body></Table.Body>
-    </Table>
-  )
-}
-
-const PlayerTableHead = () => {
-  return (
-    <Table.Head>
-      <Table.Row>
-        <Table.HeadCell>
-          <OperationColumnLabel />
-        </Table.HeadCell>
-        <Table.HeadCell>
-          <FieldColumnLabel />
-        </Table.HeadCell>
-        <Table.HeadCell>
-          <ValueColumnKabel />
-        </Table.HeadCell>
-      </Table.Row>
-    </Table.Head>
-  )
-}
-
-const PlayerBody = ({ player = [] }) => {
-  return <Table.Body></Table.Body>
-}
-
-//TODO
 const Replace = "replace"
 const Add = "add"
 const AddTrans = {
@@ -326,15 +295,14 @@ const usePlayerHistoryColumns = ({ items = [], brandId }) => {
   }, [JSON.stringify(items)])
 }
 
-//TODO:
 const StringValue = ({ value = "" }) =>
   isString(value) ? value : JSON.stringify(value)
 
-//TODO: identityAuthentication Label & checkbox or icon?
 const IdentityAuthenticationLabel = () => (
   <Trans zh="身份认证" en="Identity Authentication" />
 )
 
+//TODO: test
 //TODO: add tooltip?
 const IdentityAuthenticationIcon = ({ value = "" }) => {
   let isAuth = boolean(value)
@@ -343,49 +311,99 @@ const IdentityAuthenticationIcon = ({ value = "" }) => {
 
 const PasswordLabel = () => <Trans zh="密码" en="Password" />
 
-//TODO: support object & array?
+//TODO: use babel instead?
+const isAddPlayer = pipe(prop("op"), equals(Add))
+const getPath = prop("path")
+
+const Player = ({ value: player = {}, brandId }) => {
+  return (
+    <FieldValues>
+      {player.username && (
+        <>
+          <Box alignX="left">
+            <UserNameLabel />
+          </Box>
+          <Box alignY="center">{player.username}</Box>
+        </>
+      )}
+      {player.vipId && (
+        <>
+          <Box alignX="left">
+            <VIPLevelLabel />
+          </Box>
+
+          <Box alignX="left">
+            <VipLevelIdLabel value={player.vipId} brandId={brandId} />
+          </Box>
+        </>
+      )}
+      {player.agentId && (
+        <>
+          <Box alignX="left">
+            <AgentUsernameLabel />
+          </Box>
+          <Box alignX="left">
+            <AgentIdUsername value={player.agentId} />
+          </Box>
+        </>
+      )}
+      {player.status && (
+        <>
+          <Box alignX="left">
+            <StatusLabel />
+          </Box>
+          <Box alignX="left">
+            <PlayerStatusLabel value={player.status} />
+          </Box>
+        </>
+      )}
+    </FieldValues>
+  )
+}
+
 //TODO: test each one
-const PathLabelValueList = [
-  [equals("/password"), PasswordLabel],
-  [equals("/RealName"), RealNameLabel],
-  [equals("/status"), StatusLabel, PlayerStatusLabel],
+//TODO: use babel instead?
+const LabelValueList = [
+  [pipe(getPath, equals("/password")), PasswordLabel],
+  [pipe(getPath, equals("/RealName")), RealNameLabel],
+  [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
   [
-    equals("/identityAuthentication"),
+    pipe(getPath, equals("/identityAuthentication")),
     IdentityAuthenticationLabel,
     IdentityAuthenticationIcon
   ],
-  [equals("//Remark"), RemarkLabel],
-  [includes("/Birthdate"), BirthdayLabel],
-  [includes("/FacebookMessenger"), MessengerLabel],
-  [includes("/Line"), LineLabel],
-  [includes("/WhatsApp"), WhatsappLabel],
-  [includes("/Viber"), ViberLabel],
-  [includes("/Telegram"), TelegramLabel]
+  [pipe(getPath, includes("/Remark")), RemarkLabel],
+  [pipe(getPath, includes("/Birthdate")), BirthdayLabel],
+  [pipe(getPath, includes("/FacebookMessenger")), MessengerLabel],
+  [pipe(getPath, includes("/Line")), LineLabel],
+  [pipe(getPath, includes("/WhatsApp")), WhatsappLabel],
+  [pipe(getPath, includes("/Viber")), ViberLabel],
+  [pipe(getPath, includes("/Telegram")), TelegramLabel],
+  [isAddPlayer, StringValue, Player]
 ]
 
-const toLabel = (path = "") => {
-  let result = PathLabelValueList.find(([fn]) => {
-    return fn(path)
+const toLabel = (value) => {
+  let result = LabelValueList.find(([fn]) => {
+    return fn(value)
   })
   let labelIndex = 1
   return result?.[labelIndex] ?? StringValue
 }
 
-//TODO: support array and object?
-const toField = (path = "") => {
-  let result = PathLabelValueList.find(([fn]) => {
-    return fn(path)
+const toField = (value) => {
+  let result = LabelValueList.find(([fn]) => {
+    return fn(value)
   })
   let fieldIndex = 2
   return result?.[fieldIndex] ?? StringValue
 }
 
 const ChangeSetLabel = ({ value = {} }) => {
-  let Label = toLabel(value.path)
+  let Label = toLabel(value)
   return <Label value={value.path} />
 }
 
 const ChangeSetField = ({ value = {}, brandId }) => {
-  let Field = toField(value.path)
+  let Field = toField(value)
   return <Field value={value.value} brandId={brandId} />
 }
