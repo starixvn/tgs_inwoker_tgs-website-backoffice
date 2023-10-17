@@ -39,6 +39,7 @@ import {
 } from "./contact"
 import { boolean } from "boolean"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
+import { isString } from "lodash-es"
 
 export const Key = "history"
 
@@ -326,7 +327,8 @@ const usePlayerHistoryColumns = ({ items = [], brandId }) => {
 }
 
 //TODO:
-const StringValue = ({ value = "" }) => value
+const StringValue = ({ value = "" }) =>
+  isString(value) ? value : JSON.stringify(value)
 
 //TODO: identityAuthentication Label & checkbox or icon?
 const IdentityAuthenticationLabel = () => (
@@ -341,6 +343,7 @@ const IdentityAuthenticationIcon = ({ value = "" }) => {
 
 const PasswordLabel = () => <Trans zh="密码" en="Password" />
 
+//TODO: support object & array?
 //TODO: test each one
 const PathLabelValueList = [
   [equals("/password"), PasswordLabel],
@@ -357,7 +360,7 @@ const PathLabelValueList = [
   [includes("/Line"), LineLabel],
   [includes("/WhatsApp"), WhatsappLabel],
   [includes("/Viber"), ViberLabel],
-  [includes("/Telegram", TelegramLabel)]
+  [includes("/Telegram"), TelegramLabel]
 ]
 
 const toLabel = (path = "") => {
@@ -368,6 +371,7 @@ const toLabel = (path = "") => {
   return result?.[labelIndex] ?? StringValue
 }
 
+//TODO: support array and object?
 const toField = (path = "") => {
   let result = PathLabelValueList.find(([fn]) => {
     return fn(path)
