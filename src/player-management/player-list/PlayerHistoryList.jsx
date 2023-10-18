@@ -362,7 +362,6 @@ const Player = ({ value: player = {}, brandId }) => {
 }
 
 //TODO: test each one
-//TODO: use babel instead?
 const LabelValueList = [
   [pipe(getPath, equals("/password")), PasswordLabel],
   [pipe(getPath, equals("/RealName")), RealNameLabel],

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { useEditPlayerContact } from "./client"
+import { useEditPlayerContact, useUpdatePlayerContact } from "./client"
 import { FormProvider, useForm } from "react-hook-form"
 import {
   Spinner,
@@ -93,6 +93,7 @@ export const EditPanel = ({
     }
   }, [result])
 
+  //TODO: only submit diff value
   const onSubmit = setSubmit
 
   const clearResult = () => setSubmit(null)

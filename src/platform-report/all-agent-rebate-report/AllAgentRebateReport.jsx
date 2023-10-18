@@ -214,11 +214,8 @@ const SearchBar = ({ username, from, to, search, isLoading }) => {
           <DateInputRangeField
             label={<Trans zh="結算日期" en="Settlement Date" />}
             showDateDropdownMenu
-            /*
-            TODO
-                maxRangeDays={QueryMaxRangeDays}
-                minDate={minDate}
-            */
+            maxRangeDays={QueryMaxRangeDays}
+            minDate={minDate}
             maxDate={maxDate}
             startProps={{
               name: "from"

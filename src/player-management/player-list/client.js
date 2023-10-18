@@ -7,7 +7,6 @@ import {
   useDelete,
   usePatchData
 } from "../../client"
-import { repeat } from "ramda"
 
 export let API = "/api/player"
 
@@ -30,9 +29,15 @@ export const useEditPlayerInfo = (playerCode, data) => {
   return usePutData(url, data)
 }
 
+//TODO: rm? or use original
 export const useEditPlayerContact = (playerCode, data) => {
   let url = playerCode ? `${API}/${playerCode}/contact` : ""
   return usePutData(url, data)
+}
+
+export const useUpdatePlayerContact = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
+  return usePatchData(url, data)
 }
 
 export const useAddPlayerBank = (playerCode, data) => {
@@ -65,11 +70,6 @@ export const useUpdatePlayerPassword = (playerCode, password) => {
   let url =
     playerCode && password ? `${API}/password/${playerCode}/${password}` : ""
   return usePatchData(url)
-}
-
-export const useUpdatePlayerContact = (playerCode, data) => {
-  let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
-  return usePatchData(url, data)
 }
 
 export const useOperations = (playerCode, searchParams) => {
