@@ -245,10 +245,6 @@ const EditPanel = ({
 
               <BalanceBox value={record?.balance} />
 
-              {/* 
-              TODO: api support
-              TODO: add test case
-               */}
               <AccumulatedProfitSharingBox value={accumulatedProfitSharing}>
                 <ClearProfitShareDialogDisclosure
                   agentId={agentId}

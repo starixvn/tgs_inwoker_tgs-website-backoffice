@@ -98,8 +98,6 @@ export const Stat = ({ children, ...props }) => {
   )
 }
 
-//TODO: left min size?
-//TODO: mobile?
 const StatHeader = ({ title = "", icon, children, ...props }) => {
   return (
     <Level
