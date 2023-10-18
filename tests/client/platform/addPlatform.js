@@ -1,6 +1,6 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { findPlatform } from "./findPlatform.js"
 import { getLicensee } from "../licensee/getLicensee.js"
 import { getConfigs } from "../gameProvider/getConfigs.js"
@@ -9,7 +9,7 @@ const API = "api/brand"
 
 export const addPlatform = async ({
   licenseeId = "",
-  code = `${faker.random.alpha(1)}${faker.random.alphaNumeric(5)}`,
+  code = `${faker.string.alpha(1)}${faker.string.alphanumeric(5)}`,
   name,
   operationalEmail = faker.internet.email(),
   settlementIntervalType = "Daily",

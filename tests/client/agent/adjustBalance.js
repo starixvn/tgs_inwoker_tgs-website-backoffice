@@ -21,7 +21,10 @@ export const addBalance = async (
 
   let result = await response.json()
   if (!result.valid) {
-    console.error("agent addBalance faile", result)
+    throw Error(
+      `add balance failed, url: [${`${host}/${API}/${agentId}/adjust/increase`}], formData: `,
+      formData
+    )
   }
   return result
 }

@@ -2,10 +2,8 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import faker from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-const { finance } = faker
 
 const SecondInMilliseconds = 1000
 test.use({ timeout: 40 * SecondInMilliseconds })

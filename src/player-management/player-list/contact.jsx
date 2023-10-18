@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { useEditPlayerContact } from "./client"
+import { useEditPlayerContact, useUpdatePlayerContact } from "./client"
 import { FormProvider, useForm } from "react-hook-form"
 import {
   Spinner,
@@ -93,6 +93,7 @@ export const EditPanel = ({
     }
   }, [result])
 
+  //TODO: only submit diff value
   const onSubmit = setSubmit
 
   const clearResult = () => setSubmit(null)
@@ -169,16 +170,16 @@ const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
 
 const EmailLabel = () => <Trans zh="邮箱" en="Email" />
 
-const QQLabel = () => <Trans zh="QQ" en="QQ" />
+export const QQLabel = () => <Trans zh="QQ" en="QQ" />
 
-const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
+export const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
 
-const TelegramLabel = () => <Trans zh="Telegram" en="Telegram" />
+export const TelegramLabel = () => <Trans zh="Telegram" en="Telegram" />
 
-const ViberLabel = () => <Trans zh="Viber" en="Viber" />
+export const ViberLabel = () => <Trans zh="Viber" en="Viber" />
 
-const MessengerLabel = () => <Trans zh="Messenger" en="Messenger" />
+export const MessengerLabel = () => <Trans zh="Messenger" en="Messenger" />
 
-const LineLabel = () => <Trans zh="Line" en="Line" />
+export const LineLabel = () => <Trans zh="Line" en="Line" />
 
-const WhatsappLabel = () => <Trans zh="Whatsapp" en="Whatsapp" />
+export const WhatsappLabel = () => <Trans zh="Whatsapp" en="Whatsapp" />

@@ -2,10 +2,9 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { selectRandomOption } from "../page/select.js"
 import { selectRandomPlatform } from "../page/content.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-const { lorem, phone, datatype } = faker
 
 test("add, edit and remove messenger", async ({ page }) => {
   await gotoPlatformCustomerServicePage(page)
@@ -29,8 +28,8 @@ const addInstantMessaging = async (page) => {
 
   let instantMessaging = {
     type,
-    phone: phone.phoneNumber(),
-    appId: datatype.uuid()
+    phone: faker.phone.number(),
+    appId: faker.string.uuid()
   }
 
   await page.fill(
@@ -65,8 +64,8 @@ const editInstantMessaging = async (page) => {
 
   let instantMessaging = {
     type,
-    phone: phone.phoneNumber(),
-    appId: datatype.uuid()
+    phone: faker.phone.number(),
+    appId: faker.string.uuid()
   }
 
   await page.fill(

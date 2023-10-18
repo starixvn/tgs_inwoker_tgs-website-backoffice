@@ -4,9 +4,9 @@ import {
   usePostData,
   usePut,
   usePutData,
-  useDelete
+  useDelete,
+  usePatchData
 } from "../../client"
-import { repeat } from "ramda"
 
 export let API = "/api/player"
 
@@ -29,9 +29,15 @@ export const useEditPlayerInfo = (playerCode, data) => {
   return usePutData(url, data)
 }
 
+//TODO: rm? or use original
 export const useEditPlayerContact = (playerCode, data) => {
   let url = playerCode ? `${API}/${playerCode}/contact` : ""
   return usePutData(url, data)
+}
+
+export const useUpdatePlayerContact = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
+  return usePatchData(url, data)
 }
 
 export const useAddPlayerBank = (playerCode, data) => {
@@ -54,15 +60,34 @@ export const useSetDefaultPlayerBank = (playerCode, id) => {
   return usePut(url)
 }
 
+//TODO: rm
 export const useEditPlayerPassword = (playerCode, data) => {
   let url = playerCode ? `${API}/${playerCode}/password` : ""
   return usePutData(url, data)
+}
+
+export const useUpdatePlayerPassword = (playerCode, password) => {
+  let url =
+    playerCode && password ? `${API}/password/${playerCode}/${password}` : ""
+  return usePatchData(url)
 }
 
 export const useOperations = (playerCode, searchParams) => {
   let url = playerCode
     ? urlWith(searchParams, `${API}/${playerCode}/operations`)
     : ""
+  return useGet(url)
+}
+
+export const usePlayerHistoryList = (playerCode, searchParams) => {
+  let url = playerCode
+    ? urlWith(searchParams, `${API}/histories/${playerCode}`)
+    : ""
+  return useGet(url)
+}
+
+export const usePlayerHistory = (eventId) => {
+  let url = eventId ? `${API}/history/${eventId}` : ""
   return useGet(url)
 }
 
@@ -132,8 +157,27 @@ export const useClearPlayerWageringRequirement = (playerCode) => {
   return useDelete(url)
 }
 
+export const usePlayerBucketList = (playerCode) => {
+  let url = playerCode ? `${PlayerBucketApi}/type/amount/${playerCode}` : ""
+  return useGet(url)
+}
+
 export const usePlayerBucketAmount = (playerCode) => {
   let url = playerCode ? `${PlayerBucketApi}/amount/${playerCode}` : ""
+  return useGet(url)
+}
+
+export const usePlayerBucketItems = (
+  playerCode,
+  bucketType = "",
+  searchParams
+) => {
+  let url = playerCode
+    ? urlWith(
+        searchParams,
+        `${PlayerBucketApi}/${playerCode}${bucketType ? `/${bucketType}` : ""}`
+      )
+    : ""
   return useGet(url)
 }
 
@@ -197,51 +241,4 @@ export const usePlayerVipChangeList = (playerCode, searchParams) => {
 export const usePlayerPayment = (playerCode) => {
   let url = playerCode ? `${API}/payment/${playerCode}` : ""
   return useGet(url)
-}
-
-//TODO:
-export const usePlayerBucketList = (playerCode) => {
-  let data = [
-    {
-      type: "Main",
-      amount: 800
-    },
-    {
-      type: "LiveDealer",
-      amount: 0
-    },
-    {
-      type: "Sports",
-      amount: 450
-    },
-    {
-      type: "EGame",
-      amount: 450
-    },
-    {
-      type: "CardGame",
-      amount: 0
-    },
-    {
-      type: "VirtualSports",
-      amount: 0
-    },
-    {
-      type: "Lottery",
-      amount: 0
-    }
-  ]
-
-  return {
-    data,
-    error: undefined,
-    isLoading: false,
-    mutate: () => {},
-    deleteCache: () => {}
-  }
-}
-
-//TODO: use different api?
-export const usePlayerBucketItems = (playerCode, searchParams) => {
-  return usePlayerWageringRequirementList(playerCode, searchParams)
 }

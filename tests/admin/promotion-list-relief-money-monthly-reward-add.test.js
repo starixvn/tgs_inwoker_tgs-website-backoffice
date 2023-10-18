@@ -13,10 +13,9 @@ import { fillDatePicker } from "../fill.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-const { lorem } = faker
 
 test("add monthly relief money reward promotion", async ({
   page,
@@ -62,10 +61,10 @@ const addPromotion = async (page) => {
   let to = addWeeks(new Date(), 2)
 
   let promotion = {
-    name: `${lorem.word()}-${Date.now()}`,
+    name: `${faker.lorem.word()}-${Date.now()}`,
     from: format(from, "yyyy/MM/dd"),
     to: format(to, "yyyy/MM/dd"),
-    subSubject: lorem.word(),
+    subSubject: faker.lorem.word(),
     totalAmountLimit: 1000,
     percentage: 50,
     bonusAmountLimit: 100,

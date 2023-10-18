@@ -11,9 +11,9 @@ import {
 
 const API = "/api/brandpayment"
 
-export const useBrandPaymentList = (searchParams) => {
+export const useBrandPaymentList = (searchParams, options) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
-  return useGet(url)
+  return useGet(url, options)
 }
 
 export const useBrandPayment = (id) => {
@@ -81,23 +81,12 @@ export const useUpdateBrandPaymentExtendeddata = (id, data) => {
   return usePatchData(url, data)
 }
 
-//TODO: fake api result
-export const useUpdatePlatformAutoWithdraw = (platformId, data) => {
-  if (platformId && data) {
-    return {
-      result: true,
-      error: undefined,
-      isLoading: false,
-      mutate: () => {},
-      deleteCache: () => {}
-    }
-  }
+export const usePlatformAutoWithdraw = (id) => {
+  let url = id ? `${API}/autowithdraw/${id}` : ""
+  return useGet(url)
+}
 
-  return {
-    result: null,
-    error: undefined,
-    isLoading: false,
-    mutate: () => {},
-    deleteCache: () => {}
-  }
+export const useUpdatePlatformAutoWithdraw = (id, data) => {
+  let url = id && data ? `${API}/autowithdraw/${id}` : ""
+  return usePatchData(url, data)
 }

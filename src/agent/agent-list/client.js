@@ -4,7 +4,8 @@ import {
   usePostData,
   usePut,
   usePutData,
-  useDelete
+  useDelete,
+  usePatchData
 } from "../../client"
 
 let API = "/api/agent"
@@ -42,6 +43,11 @@ export const useAddAgent = (formData) => {
 export const useUpdateAgent = (agentId, data) => {
   let url = agentId ? `${API}/${agentId}` : ""
   return usePutData(url, data)
+}
+
+export const useUpdateAgentWithdrawPassword = (data) => {
+  let url = data ? `${API}/pay-password` : ""
+  return usePatchData(url, data)
 }
 
 export const useAddAgentBank = (agentId, data) => {
@@ -92,6 +98,11 @@ export const useDeleteAgentDomain = (brandId, agentId, domain) => {
       ? `${API}/domain/${brandId}/${agentId}?domain=${domain}`
       : ""
   return useDelete(url)
+}
+
+export const useClearAgentProfitShare = (id) => {
+  let url = id ? `${API}/${id}/clear-negative-commission` : ""
+  return usePut(url)
 }
 
 const DomainSettingApi = "/api/DomainSetting"

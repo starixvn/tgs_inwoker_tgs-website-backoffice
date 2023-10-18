@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: agent-service
-image: pgtgs/agent-service:202306140304.43
+image: pgtgs/agent-service:202310020400.60
 services:
   - name: agent-service
     dependencies:

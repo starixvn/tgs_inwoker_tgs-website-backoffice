@@ -1,9 +1,7 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
 import { firstBankDepositPayment } from "./depositPayment.js"
-import faker from "@faker-js/faker"
-
-const { finance } = faker
+import { faker } from "@faker-js/faker"
 
 const API = "api/ManualDeposit"
 export const applyBankManualDepositForm = async ({
@@ -12,7 +10,7 @@ export const applyBankManualDepositForm = async ({
   playerCode,
   brandPaymentId,
   bankName = "abc",
-  bankAccount = finance.account(),
+  bankAccount = faker.finance.accountNumber(),
   ...formData
 } = {}) => {
   let brandPayment = await firstBankDepositPayment(brandId, playerCode)

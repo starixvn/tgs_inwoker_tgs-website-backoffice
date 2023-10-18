@@ -3,11 +3,12 @@ name: jaeger
 type: kubernetes
 disabled: true
 files:
+  # v1.42
   - jaeger-operator.yaml
-  - simplest.yaml
-namespace: observability
+  - jaeger.yaml
+namespace: o
 portForwards:
-  - name: simplest-query
-    resource: service/simplest-query
+  - name: jaeger-query
+    resource: service/jaeger-query
     targetPort: 16686
     localPort: 16686

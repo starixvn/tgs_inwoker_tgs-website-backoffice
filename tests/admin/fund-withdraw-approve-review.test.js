@@ -1,7 +1,6 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import faker from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
 import {
   gotoFundWithdraw,
@@ -10,7 +9,6 @@ import {
 } from "./fund-withdraw-page.js"
 
 const test = base.extend(Fixture)
-const { finance } = faker
 
 test("approve player fund withdraw and paid", async ({
   page,

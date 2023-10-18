@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202308040653.402
+image: pgtgs/backoffice-api:202310180128.565
 services:
   - name: backoffice-api
     dependencies:
@@ -52,6 +52,9 @@ services:
       BackOffice__StationLetterBaseUrl: "http://station-letter"
       BackOffice__CashQueryBaseUrl: "http://cash-query"
       BackOffice__AgentBaseUrl: "http://agent-service"
+      BackOffice__GameWagersServiceBaseUrl: "http://game-wagers"
+      OTEL_SERVICE_NAME: "BackOffice-Api(local)"
+      NODE_IP: "otel-collector.observability.svc.cluster.local:4317"
     ingresses:
       - hostname: backoffice.localhost
         path: /api

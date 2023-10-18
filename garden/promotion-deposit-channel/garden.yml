@@ -10,6 +10,8 @@ services:
       - nats
       - promotion-api
       - payment-api
+      - player-api
+      - viplevel-api
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Nats: "nats://nats:4222"

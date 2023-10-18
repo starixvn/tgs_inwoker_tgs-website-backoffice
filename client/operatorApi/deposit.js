@@ -1,12 +1,11 @@
 import { fetcher } from "../fetcher.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { api } from "./api.js"
 import FormData from "form-data"
 import { fileURLToPath } from "url"
 import fsExtra from "fs-extra"
 
 const { createReadStream } = fsExtra
-const { finance } = faker
 
 //TODO: cache
 export const paymentOptions = async (platformToken, playerToken) => {
@@ -56,7 +55,12 @@ const appendManualDepositProof = async (platformToken, playerToken, formId) => {
 export const applyManualDeposit = async (
   platformToken,
   playerToken,
-  { paymentid, account = finance.account(), amount, promotionid } = {}
+  {
+    paymentid,
+    account = faker.finance.accountNumber(),
+    amount,
+    promotionid
+  } = {}
 ) => {
   if (!paymentid) {
     paymentid = await findManualPaymentId(platformToken, playerToken)

@@ -12,13 +12,13 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
+console.log("TODO: player bucket list")
 test.skip("view player bucket list", async ({
   page,
   platform,
   player,
   backofficeApi
 }) => {
-  console.log("player.code", player.code)
   let walletAmount = 100
   let ExpectedWageringRequirementAmount = 100
   await Promise.all([
@@ -51,36 +51,43 @@ test.skip("view player bucket list", async ({
 
   let BucketListDialogSelector = `#bucket-list-dialog`
   await Promise.all([
-    /*
-    TODO
+    page.waitForResponse((response) => {
+      return (
+        response
+          .url()
+          .includes(`/api/player/bucket/type/amount/${player.code}`) &&
+        response.status() === 200
+      )
+    }),
+    openDialog(page, BucketListDialogSelector)
+  ])
+
+  let mainBucketAmountLocator = page.locator(
+    `${BucketListDialogSelector} table#bucket-list [data-column-id="amount"]`
+  )
+
+  let mainBucketAmountString = await mainBucketAmountLocator.textContent()
+  let mainBucketAmount = numeral(mainBucketAmountString).value()
+  expect(mainBucketAmount).to.equals(ExpectedWageringRequirementAmount)
+
+  let BucketItemsDialogSelector = `#bucket-items-dialog`
+  await Promise.all([
     page.waitForResponse((response) => {
       return (
         response.url().includes(`/api/player/bucket/${player.code}`) &&
         response.status() === 200
       )
     }),
-    */
-    openDialog(page, BucketListDialogSelector)
+    openDialog(page, BucketItemsDialogSelector)
   ])
 
-  /*
-  TODO: check amount?
   let wageringRequirementLocator = page.locator(
-    `${WageringRequirementDialogSelector} table#bucket-list [data-column-id="wageringRequirement"]`
+    `${BucketItemsDialogSelector} table#bucket-items [data-column-id="wageringRequirement"]`
   )
 
   let wageringRequirementString = await wageringRequirementLocator.textContent()
   let wageringRequirement = numeral(wageringRequirementString).value()
   expect(wageringRequirement).to.equals(ExpectedWageringRequirementAmount)
-  */
-
-  let BucketItemsDialogSelector = `#bucket-items-dialog`
-  openDialog(
-    page,
-    BucketItemsDialogSelector,
-    `[data-type="Main"]${BucketItemsDialogSelector}-disclosure`
-  )
-  //TODO: check amount
 
   let bucketHistory = await backofficeApi.player.bucket.firstHistory(
     player.code
@@ -88,19 +95,14 @@ test.skip("view player bucket list", async ({
 
   let BucketHistoryDialogSelector = `#bucket-history-dialog`
   await Promise.all([
-    /*
-    TODO
     page.waitForResponse((response) => {
       return (
         response.url().includes(`/api/player/bucket/history/`) &&
         response.status() === 200
       )
     }),
-    */
     openDialog(page, BucketHistoryDialogSelector)
   ])
-  /*
-  TODO
 
   let changeAmountLocator = page.locator(
     `${BucketHistoryDialogSelector} table#bucket-history [data-column-id="changeAmount"]`
@@ -116,5 +118,4 @@ test.skip("view player bucket list", async ({
     .getAttribute("data-type")
 
   expect(type).to.equals("Create")
-  */
 })

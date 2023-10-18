@@ -1,6 +1,6 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { firstBankTransfer } from "../payment/paymentMethodChannel.js"
 
 const API = "api/BrandPayment"

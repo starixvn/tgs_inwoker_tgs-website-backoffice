@@ -13,10 +13,9 @@ import { fillDatePicker } from "../fill.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-const { lorem } = faker
 
 test("add dummy reward promotion", async ({
   page,
@@ -55,10 +54,10 @@ const addPromotion = async (page) => {
   let to = addWeeks(new Date(), 2)
 
   let promotion = {
-    name: `${lorem.word()}-${Date.now()}`,
+    name: `${faker.lorem.word()}-${Date.now()}`,
     from: format(from, "yyyy/MM/dd"),
     to: format(to, "yyyy/MM/dd"),
-    subSubject: lorem.word()
+    subSubject: faker.lorem.word()
   }
 
   await page.fill(`${DialogSelector} input[name="name"]`, promotion.name)

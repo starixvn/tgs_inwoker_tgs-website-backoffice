@@ -65,7 +65,7 @@ export const PlatformPageContent = ({
         {...props}
       >
         <Set orientation="vertical" isFilled height="100%">
-          <Set orientation="horizontal" padding="1rem 0" alignY="center">
+          <Set orientation="horizontal" padding="0.5rem 0" alignY="center">
             <BrandBar
               paddingLeft="0"
               paddingTop="0"
@@ -97,6 +97,7 @@ export const usePlatformPageContentWidth = () => {
   return width
 }
 
+//TODO: rm
 export const usePlatform = () => {
   let { platformId, platform, setPlatform } = useContext(Store) ?? {}
   useEffect(() => {

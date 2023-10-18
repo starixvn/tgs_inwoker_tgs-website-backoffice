@@ -8,7 +8,6 @@ import {
   openEditPlayerDialog,
   openViewPlayerDialog
 } from "./player-list-page.js"
-import faker from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 

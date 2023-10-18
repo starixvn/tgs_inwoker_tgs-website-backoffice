@@ -10,7 +10,7 @@ import {
   openEditPlayerDialog,
   openViewPlayerDialog
 } from "./player-list-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
@@ -35,7 +35,7 @@ const editPlayerContact = async (page, player) => {
   await page.click(`${dialogSelector} button#contact`)
 
   let contact = {
-    phone: faker.phone.phoneNumber(),
+    phone: faker.phone.number(),
     email: faker.internet.email()
   }
 

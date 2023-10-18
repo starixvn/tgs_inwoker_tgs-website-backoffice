@@ -1,11 +1,9 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-
-const { internet } = faker
 
 test("login fail", async ({ page, adminUsername }) => {
   await page.goto(`/login`, { waitUntil: "networkidle" })
@@ -18,7 +16,7 @@ test("login fail", async ({ page, adminUsername }) => {
 
   let passwordInputSelectot = `form input[name="password"]`
   await page.click(passwordInputSelectot)
-  await page.type(passwordInputSelectot, `${internet.password()}123`)
+  await page.type(passwordInputSelectot, `${faker.internet.password()}123`)
 
   let [loginResponse] = await Promise.all([
     page.waitForResponse((response) => {

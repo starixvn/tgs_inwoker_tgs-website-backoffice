@@ -6,8 +6,6 @@ import {
   usePutData,
   useDelete
 } from "../../client"
-//TODO: rm after api done
-import { usePromotionList, usePromotionRule } from "../promotion-list/client"
 
 let API = "/api/dar"
 

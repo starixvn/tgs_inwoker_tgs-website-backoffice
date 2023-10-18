@@ -84,7 +84,8 @@ function App() {
 }
 
 const HeaderHeight = "60px"
-const sidebarWidth = 250
+//TODO: fine tune width
+const sidebarWidth = 200
 const FooterHeight = "0px" //"30px"
 
 const Layout = ({ children }) => {

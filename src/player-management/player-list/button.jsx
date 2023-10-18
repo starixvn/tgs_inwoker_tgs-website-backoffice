@@ -41,6 +41,10 @@ import {
   PlayerVipChangeListPanel,
   PlayerVipChangeListTab
 } from "./PlayerVipChangeList"
+import {
+  PlayerHistoryListPanel,
+  PlayerHistoryListTab
+} from "./PlayerHistoryList"
 
 export const ViewButton = ({
   player,
@@ -174,7 +178,7 @@ const TabsDialog = ({
           {...dialog}
           {...props}
           css={css`
-            min-width: 85vw;
+            min-width: 90vw;
             min-height: 85vh;
 
             & .bb-DialogContent {
@@ -232,6 +236,10 @@ const ViewTabs = ({
         <BankTab {...tab} />
         <BettingTab {...tab} />
         <PlayerOperationTab {...tab} />
+        {/* 
+        TODO: impl
+          <PlayerHistoryListTab {...tab} />
+        */}
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
         <PlayerVipChangeListTab {...tab} />
@@ -251,6 +259,10 @@ const ViewTabs = ({
         {...tab}
       />
       <PlayerOperationPanel playerCode={playerCode} {...tab} />
+      {/* 
+      TODO: impl
+        <PlayerHistoryListPanel playerCode={playerCode} brandId={brandId} {...tab} />
+      */}
       <PlayerBalanceChangePanel
         playerCode={playerCode}
         brandId={brandId}

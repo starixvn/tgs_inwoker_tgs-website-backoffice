@@ -1,14 +1,14 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { findByName } from "./list.js"
 
 const API = "api/promotion/content"
 
 export const random = ({
   subSubject = faker.lorem.word(),
-  desktopBanner = faker.image.imageUrl(),
-  mobileBanner = faker.image.imageUrl(),
+  desktopBanner = faker.image.url(),
+  mobileBanner = faker.image.url(),
   ...props
 } = {}) => ({
   subSubject,

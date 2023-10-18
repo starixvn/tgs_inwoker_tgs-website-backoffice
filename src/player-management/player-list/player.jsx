@@ -40,7 +40,6 @@ import { PlayerClearWageringRequirementDisclosure } from "./PlayerClearWageringR
 import { useIsAdminUser } from "../../user/context"
 import { isDev } from "../../env"
 import { DateInput } from "../../date/DateInput"
-import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirementDialog"
 import Textarea from "../../textarea"
 import { isValid, parse } from "date-fns"
 import { defaultFormatDate } from "../../date/format"
@@ -338,14 +337,7 @@ export const Panel = ({
         </Box>
         <Set>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
-          <PlayerWageringRequirementDialogDisclosure
-            id="wagering-requirement-dialog-disclosure"
-            playerCode={player.playerCode}
-          />
-          {/* 
-          TODO: test case
           <PlayerBucketListDialogDisclosure playerCode={player.playerCode} />
-          */}
         </Set>
 
         <StatusLabel />
@@ -387,17 +379,19 @@ export const Panel = ({
   )
 }
 
-const UserNameLabel = () => <Trans zh="用户名" en="User name" />
+export const UserNameLabel = () => <Trans zh="用户名" en="User name" />
 
-const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
+export const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
 
-const BirthdayLabel = () => <Trans zh="生日" en="Birthday" />
+export const BirthdayLabel = () => <Trans zh="生日" en="Birthday" />
 
 const IdentityCardNumberLabel = () => <Trans zh="身分证" en="IC Number" />
 
-const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
+export const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
 
-const AgentUsernameLabel = () => <Trans zh="上级代理" en="Upper Level Agent" />
+export const AgentUsernameLabel = () => (
+  <Trans zh="上级代理" en="Upper Level Agent" />
+)
 
 const AllAgentUpperLevelLabel = () => (
   <Trans zh="全民代理上級" en="All Agent Upper Level" />
@@ -409,9 +403,9 @@ const WageringRequirementLabel = () => (
   <Trans zh="需滿足提款金額" en="Wagering requirement" />
 )
 
-const StatusLabel = () => <Trans zh="状态" en="Status" />
+export const StatusLabel = () => <Trans zh="状态" en="Status" />
 
-const RemarkLabel = () => <Trans zh="备注" en="Remark" />
+export const RemarkLabel = () => <Trans zh="备注" en="Remark" />
 
 const RegisterIPLabel = () => <Trans zh="注册IP地址" en="Register IP" />
 

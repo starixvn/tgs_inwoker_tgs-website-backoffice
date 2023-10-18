@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: operator-api
-image: pgtgs/operator-api:202306300904.287
+image: pgtgs/operator-api:202309140920.316
 services:
   - name: operator-api
     dependencies:
@@ -22,6 +22,7 @@ services:
       Operator__CashBaseUrl: "http://cash-service"
       Operator__PlayerServiceBaseUrl: "http://player-api"
       Operator__StationLetterBaseUrl: "http://station-letter"
+      Operator__PlayerBucketBaseUrl: "http://player-bucket-api"
       Promotion__Url: "http://promotion-api"
       ForwardedHeaders__ForwardedForHeaderName: "X-Forwarded-For"
     ingresses:

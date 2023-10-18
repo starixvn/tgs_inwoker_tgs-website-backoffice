@@ -26,7 +26,7 @@ export const Footer = forwardRef(({ table, setPageIndex }, ref) => {
 
   let { pageCount, totalCount, state, gotoPage } = table
 
-  let infos = [state?.pageIndex, pageCount, totalCount].filter(Number.isFinite)
+  let infos = [pageCount, totalCount].filter(Number.isFinite)
   let noFooter = infos.length === 0
 
   if (noFooter) {

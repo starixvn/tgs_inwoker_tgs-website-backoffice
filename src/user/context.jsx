@@ -3,6 +3,11 @@ import { useNavigate, useLocation, useMatch } from "react-router-dom"
 import client from "../client"
 import memoize from "fast-memoize"
 import { memoizedFind as findMenu } from "../menu"
+import { Code as OverviewCode } from "../overview/menu"
+import {
+  Code as PlatformOverviewCode,
+  View as ViewPlatformOverviewAuth
+} from "../overview/platform/menu"
 
 const Key = "user"
 
@@ -44,6 +49,18 @@ export const useAuth = () => {
       .then(({ userInfo, ..._ }) => {
         setLoading(false)
         let newState = { userInfo }
+
+        let overviewAuths = findCodes(
+          [OverviewCode, PlatformOverviewCode],
+          userInfo.menus
+        )
+        if (
+          overviewAuths.includes(ViewPlatformOverviewAuth) &&
+          from.pathname === "/"
+        ) {
+          from.pathname = `/${OverviewCode}/${PlatformOverviewCode}`
+        }
+
         set(newState)
         navigate(from, { replace: true })
 

@@ -1,7 +1,7 @@
 import { fetcher } from "../../fetcher.js"
 import { host } from "../../host.js"
 import camelcaseKeys from "camelcase-keys"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const API = "api/setting"
 
@@ -30,7 +30,9 @@ export const get = async (key = "") => {
 export const add = async ({
   key,
   description = faker.lorem.word(),
-  value = faker.datatype.json(),
+  value = JSON.stringify({
+    a: faker.number.int(100)
+  }),
   ...data
 } = {}) => {
   if (!key) {

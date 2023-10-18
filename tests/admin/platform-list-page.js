@@ -1,7 +1,7 @@
 import { selectPlatformByCode } from "../page/content.js"
 import { selectByLabel, selectRandomOption } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 export const ViewPlayerDialogSelector = `#view-player-dialog`
 
@@ -72,8 +72,8 @@ export const addPlatform = async (
   {
     resellerCode = "TGS",
     licenseeCode = "TGS",
-    code = `${faker.random.alpha(1)}${faker.random.alphaNumeric(5)}`,
-    name = faker.random.alpha(5),
+    code = `${faker.string.alpha(1)}${faker.string.alphanumeric(5)}`,
+    name = faker.string.alpha(5),
     operationalEmail = faker.internet.email(),
     agentDividendType = AgentDividendType.OneLayer,
     settlementIntervalType = SettlementIntervalType.Daily,

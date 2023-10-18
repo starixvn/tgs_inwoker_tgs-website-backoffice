@@ -61,5 +61,5 @@ export const findOrCreate = async (paymentId, methodId, channelId) => {
 
 export default {
   firstBankTransfer,
-  findOrCreate
+  findOrCreate,
 }

@@ -65,6 +65,16 @@ export const Fixture = {
 
     use(promotionSettings)
   },
+  //TODO: need?
+  /*
+  gameProviderCodeColorPairs: async ({ backofficeApi }, use) => {
+    const key = "GameProviderCodeColorPairs"
+
+    let settings = await backofficeApi.system.admin.setting.get(key)
+    if (!settings) {
+    }
+  },
+  */
   manualPaymentProvider: async ({ backofficeApi }, use) => {
     let manualPaymentProvider = await backofficeApi?.payment?.provider?.manual()
     use(manualPaymentProvider)

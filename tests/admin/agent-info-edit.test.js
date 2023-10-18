@@ -1,7 +1,7 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { selectPlatformByCode } from "../page/content.js"
 import {
   gotoAgentListPage,
@@ -28,7 +28,7 @@ test("edit and view agent info", async ({
 
 const editAgent = async (page, agent) => {
   let dialogSelector = await openEditAgentDialog(page)
-  let realName = faker.name.findName()
+  let realName = faker.person.firstName()
 
   await page.fill(`${dialogSelector} input[name="realName"]`, realName)
   await Promise.all([

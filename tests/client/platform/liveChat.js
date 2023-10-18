@@ -1,13 +1,15 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const API = "api/BrandLiveChat"
 
 export const add = async ({
   brandId,
-  name = `${faker.name.firstName()}-${Date.now()}`,
-  setting = faker.datatype.json()
+  name = `${faker.person.firstName()}-${Date.now()}`,
+  setting = JSON.stringify({
+    a: faker.number.int(100)
+  })
 }) => {
   let data = {
     brandId,

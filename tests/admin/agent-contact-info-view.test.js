@@ -10,7 +10,7 @@ import {
   openEditAgentDialog,
   openViewAgentDialog
 } from "./agent-list-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
@@ -21,7 +21,7 @@ test("edit and view agent contact", async ({
   backofficeApi
 }) => {
   let expected = {
-    phone: faker.phone.phoneNumber(),
+    phone: faker.phone.number(),
     email: faker.internet.email()
   }
   await Promise.all([

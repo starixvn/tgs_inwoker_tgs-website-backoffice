@@ -1,10 +1,9 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-const { image } = faker
 
 test("add and edit platform, search platform", async ({ page }) => {
   await gotoPlatformListPage(page)
@@ -81,9 +80,9 @@ const editLogo = async (page, record = {}) => {
 }
 
 const randomLogo = () => ({
-  desktop: image.imageUrl(),
-  mobile: image.imageUrl(),
-  loading: image.imageUrl()
+  desktop: faker.image.url(),
+  mobile: faker.image.url(),
+  loading: faker.image.url()
 })
 
 const gotoPlatformListPage = async (page) => {

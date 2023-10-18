@@ -2,6 +2,8 @@ kind: Module
 name: open-telemetry
 type: kubernetes
 disabled: true
+dependencies:
+  - jaeger
 files:
   - otel-collector.yaml
-  - otel-configmap.yaml
+  # - otel-configmap.yaml

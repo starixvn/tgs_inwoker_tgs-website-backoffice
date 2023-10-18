@@ -1,12 +1,11 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
-const { lorem } = faker
+import { faker } from "@faker-js/faker"
 
 const API = "api/Round"
 export const settleOpenRound = async (
   roundId,
-  { remark = lorem.word(), ...data } = {}
+  { remark = faker.lorem.word(), ...data } = {}
 ) => {
   let url = `${host}/${API}/${roundId}/CloseGameRound`
 

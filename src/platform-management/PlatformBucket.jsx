@@ -40,10 +40,10 @@ const LotteryTrans = {
 }
 
 const AllTrans = [
-  ["Main", MainTrans],
+  ["", MainTrans],
   ["LiveDealer", LiveDealerTrans],
-  ["Sports", SportsTrans],
-  ["EGame", EGameTrans],
+  ["Sportsbook", SportsTrans],
+  ["Slot", EGameTrans],
   ["CardGame", CardGameTrans],
   ["VirtualSports", VirtualSportsTrans],
   ["Lottery", LotteryTrans]
@@ -62,7 +62,7 @@ const findTrans = (value = "") => {
 export const usePlatformBucketLabel = (type = "") => {
   let locale = useLocale()
   let trans = findTrans(type)
-  return trans?.[locale]
+  return trans?.[locale] ?? type
 }
 
 export const PlatformBucketLabel = ({ value = "" }) => {
@@ -79,17 +79,14 @@ export const PlatformBucketSelect = ({
   filter: predicate = DefaultFilter,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "类型",
-    en: "Type"
-  })
+  let defaultPlaceholder = useTrans(MainTrans)
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()
   let { isLoading, data: items, error } = usePlatformBucketList(platformId)
 
   let options = items
-    ?.map(({ type }) => {
+    ?.map((type) => {
       let trans = findTrans(type)
       return {
         value: type,

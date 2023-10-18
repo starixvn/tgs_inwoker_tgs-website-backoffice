@@ -14,7 +14,7 @@ export const Content = ({ codes, path = DefaultCodePath, ...props }) => (
   <Routes path={path} pairs={pairs()} />
 )
 
-export const DashboardContent = ({}) => {
+export const OverviewContent = ({}) => {
   //TODO: get user role?
   //TODO: role -> page
   return <PlatformDashboardPage />

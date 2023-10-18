@@ -23,7 +23,6 @@ test("review player id", async ({
     enablePlayerIdentity: true
   })
   let platformCode = platform.code
-  console.log("platformCode", platformCode)
   let platformToken = await globalApi.platformToken(platform.code)
 
   let player = await operatorApi.player.createAndLogin(platformToken)
