@@ -58,13 +58,13 @@ export const AllAgentRebateDialogDisclosure = ({
   let dialog = useModalState()
 
   if (!Number.isFinite(value) || value === 0) {
-    return <FormattedNumberDecimal value={value} />
+    return <FormattedNumber value={value} />
   }
 
   return (
     <>
       <Disclosure use={Link} {...dialog} {...props}>
-        <FormattedNumberDecimal value={value} />
+        <FormattedNumber value={value} />
       </Disclosure>
       {dialog.visible && (
         <ReportDialog
