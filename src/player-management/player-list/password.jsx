@@ -24,7 +24,7 @@ import {
 import { FieldValues } from "../../layout/Grid"
 import AlertDialog from "../../dialog/Alert"
 import { Trans, FormattedDateTime, FormattedNumber } from "../../i18n"
-import { useUpdatePlayerPassword } from "./client"
+import { useEditPlayerPassword, useUpdatePlayerPassword } from "./client"
 import { SubmitCancel } from "../../button/ActionButtons"
 import { Tab as _Tab, TabPanel } from "../../tab"
 import { PasswordInputField } from "../../input/PasswordInput"
@@ -49,7 +49,7 @@ export const Panel = ({
   let formMethods = useForm()
 
   let [submitData, setSubmit] = useState()
-  let { result, error, isLoading, mutate, deleteCache } = useUpdatePlayerPassword(
+  let { result, error, isLoading, mutate, deleteCache } = useEditPlayerPassword(
     playerCode,
     submitData
   )
@@ -59,8 +59,8 @@ export const Panel = ({
     }
   }, [result])
 
-  const onSubmit = ({ password }) => {
-    setSubmit(password)
+  const onSubmit = (data) => {
+    setSubmit(data)
   }
 
   const reset = () => {

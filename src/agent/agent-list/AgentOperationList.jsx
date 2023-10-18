@@ -149,10 +149,10 @@ const AgentOperationLabel = ({ value, ...props }) => {
     case AgentOperation.Contact:
       return <Trans zh="修改联系信息" en="Edit Contact Info" {...props} />
     case AgentOperation.Password:
-      return <Trans zh="修改登入密码" en="Edit Login Password" {...props} />
+      return <Trans zh="修改登入密码" en="Change Login Password" {...props} />
     case AgentOperation.PayPassword:
       return (
-        <Trans zh="修改提款密码" en="Edit Withdrawal Password" {...props} />
+        <Trans zh="修改提款密码" en="Change Withdrawal Password" {...props} />
       )
     case AgentOperation.Bank:
       return <Trans zh="修改银行卡信息" en="Edit Bank" {...props} />
