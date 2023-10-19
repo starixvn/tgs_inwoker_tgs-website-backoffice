@@ -29,6 +29,7 @@ import { SubmitCancel } from "../../button/ActionButtons"
 import { Tab as _Tab, TabPanel } from "../../tab"
 import { PasswordInputField } from "../../input/PasswordInput"
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
+import { isDev } from "../../env"
 
 export const Key = "password"
 
@@ -49,6 +50,10 @@ export const Panel = ({
   let formMethods = useForm()
 
   let [submitData, setSubmit] = useState()
+
+  let isDevEnv = isDev()
+  console.log("isDevEnv", isDevEnv)
+
   let { result, error, isLoading, mutate, deleteCache } = useEditPlayerPassword(
     playerCode,
     submitData

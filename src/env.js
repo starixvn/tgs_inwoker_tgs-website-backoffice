@@ -22,7 +22,12 @@ const Development = "development"
 
 const Production = "production"
 
-export const isDev = () => window?.env?.mode?.toLowerCase?.() === Development
+export const isDev = () => {
+  return (
+    window?.env?.mode?.toLowerCase?.() === Development ||
+    boolean(import.meta.env.SNOWPACK_PUBLIC_IS_DEV)
+  )
+}
 
 export const isProduction = () => window?.env?.mode === Production
 
