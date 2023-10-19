@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "start": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack dev --reload",
+    "start": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) SNOWPACK_PUBLIC_IS_DEV=true snowpack dev --reload",
     "build": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack build",
     "build:docker": "cross-var docker build . -t $npm_package_config_container_registry/$npm_package_name:$npm_package_version",
     "push:docker": "cross-var docker push $npm_package_config_container_registry/$npm_package_name:$npm_package_version",
