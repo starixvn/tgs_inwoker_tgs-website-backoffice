@@ -53,7 +53,7 @@ export const PasswordInputField = ({
 
   let passwordNotMatchMessage = useTrans({
     zh: "密码不符",
-    en: "Password not match"
+    en: "Passwords do not match"
   })
 
   return (
