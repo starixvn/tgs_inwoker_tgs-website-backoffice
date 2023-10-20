@@ -54,7 +54,7 @@ services:
       BackOffice__AgentBaseUrl: "http://agent-service"
       BackOffice__GameWagersServiceBaseUrl: "http://game-wagers"
       OTEL_SERVICE_NAME: "BackOffice-Api(local)"
-      NODE_IP: "otel-collector.observability.svc.cluster.local:4317"
+      NODE_IP: "http://jaeger-collector.default.svc.cluster.local"
     ingresses:
       - hostname: backoffice.localhost
         path: /api
