@@ -41,7 +41,16 @@ export const Tab = (props = {}) => {
   )
 }
 
-export const Panel = ({
+//TODO: replace CurrentUpdatePasswordPanel with UpdatePasswordPanel
+export const Panel = (props) => {
+  return isDev() ? (
+    <UpdatePasswordPanel {...props} />
+  ) : (
+    <CurrentUpdatePasswordPanel {...props} />
+  )
+}
+
+const UpdatePasswordPanel = ({
   playerCode = "",
   onSubmitted,
   onClickClose,
@@ -51,8 +60,44 @@ export const Panel = ({
 
   let [submitData, setSubmit] = useState()
 
-  let isDevEnv = isDev()
-  console.log("isDevEnv", isDevEnv)
+  let { result, error, isLoading, mutate, deleteCache } =
+    useUpdatePlayerPassword(playerCode, submitData)
+  useEffect(() => {
+    if (result) {
+      onSubmitted?.()
+    }
+  }, [result])
+
+  const onSubmit = (data) => {
+    setSubmit(data?.password)
+  }
+
+  const reset = () => {
+    deleteCache()
+    setSubmit(undefined)
+  }
+
+  return (
+    <TabPanel tabId={Key} {...props}>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <Body isLoading={isLoading} onClickClose={onClickClose} />
+        </form>
+      </FormProvider>
+    </TabPanel>
+  )
+}
+
+const CurrentUpdatePasswordPanel = ({
+  playerCode = "",
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
+  let formMethods = useForm()
+
+  let [submitData, setSubmit] = useState()
 
   let { result, error, isLoading, mutate, deleteCache } = useEditPlayerPassword(
     playerCode,

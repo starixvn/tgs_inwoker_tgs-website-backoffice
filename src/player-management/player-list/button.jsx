@@ -236,10 +236,7 @@ const ViewTabs = ({
         <BankTab {...tab} />
         <BettingTab {...tab} />
         <PlayerOperationTab {...tab} />
-        {/* 
-        TODO: impl
-          <PlayerHistoryListTab {...tab} />
-        */}
+        {isDev() && <PlayerHistoryListTab {...tab} />}
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
         <PlayerVipChangeListTab {...tab} />
@@ -259,10 +256,13 @@ const ViewTabs = ({
         {...tab}
       />
       <PlayerOperationPanel playerCode={playerCode} {...tab} />
-      {/* 
-      TODO: impl
-        <PlayerHistoryListPanel playerCode={playerCode} brandId={brandId} {...tab} />
-      */}
+      {isDev() && (
+        <PlayerHistoryListPanel
+          playerCode={playerCode}
+          brandId={brandId}
+          {...tab}
+        />
+      )}
       <PlayerBalanceChangePanel
         playerCode={playerCode}
         brandId={brandId}

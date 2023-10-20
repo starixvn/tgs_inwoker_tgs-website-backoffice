@@ -1,12 +1,12 @@
 kind: Module
 name: jaeger
 type: kubernetes
-disabled: true
+disabled: false
 files:
   # v1.42
   - jaeger-operator.yaml
   - jaeger.yaml
-namespace: o
+namespace: observability
 portForwards:
   - name: jaeger-query
     resource: service/jaeger-query
