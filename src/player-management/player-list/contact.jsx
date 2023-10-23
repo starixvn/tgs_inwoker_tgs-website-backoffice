@@ -215,9 +215,9 @@ const Body = ({ onClickClose }) => {
   )
 }
 
-const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
+export const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
 
-const EmailLabel = () => <Trans zh="邮箱" en="Email" />
+export const EmailLabel = () => <Trans zh="邮箱" en="Email" />
 
 export const QQLabel = () => <Trans zh="QQ" en="QQ" />
 
