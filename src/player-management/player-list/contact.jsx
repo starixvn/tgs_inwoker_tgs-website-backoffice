@@ -25,6 +25,8 @@ import { AreaPhoneInputGruop } from "../../input/PhoneInput"
 import clone from "clone-deep"
 import { Contact } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
+import { diff } from "../../object/diff"
+import { isDev } from "../../env"
 
 export const Key = "contact"
 
@@ -74,7 +76,15 @@ export const Panel = ({ player = {}, ...props }) => {
   )
 }
 
-export const EditPanel = ({
+export const EditPanel = (props) => {
+  return isDev() ? (
+    <UpdateContactPanel {...props} />
+  ) : (
+    <CurrentPlayerContactPanel {...props} />
+  )
+}
+
+const CurrentPlayerContactPanel = ({
   playerCode = "",
   player = {},
   onSubmitted,
@@ -93,8 +103,46 @@ export const EditPanel = ({
     }
   }, [result])
 
-  //TODO: only submit diff value
   const onSubmit = setSubmit
+
+  const clearResult = () => setSubmit(null)
+
+  return (
+    <TabPanel tabId={Key} {...props}>
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <Body onClickClose={onClickClose} />
+        </form>
+      </FormProvider>
+      {error && <AlertDialog {...error} onClickClose={clearResult} />}
+    </TabPanel>
+  )
+}
+
+const UpdateContactPanel = ({
+  playerCode = "",
+  player = {},
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
+  let formMethods = useForm({
+    defaultValues: clone(player)
+  })
+
+  let [submitData, setSubmit] = useState()
+  let { result, error, mutate } = useUpdatePlayerContact(playerCode, submitData)
+  useEffect(() => {
+    if (result && !error) {
+      onSubmitted && onSubmitted()
+    }
+  }, [result])
+
+  const onSubmit = (data) => {
+    let formData = diff(data, player)
+
+    setSubmit(formData)
+  }
 
   const clearResult = () => setSubmit(null)
 
@@ -166,9 +214,9 @@ const Body = ({ onClickClose }) => {
   )
 }
 
-const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
+export const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
 
-const EmailLabel = () => <Trans zh="邮箱" en="Email" />
+export const EmailLabel = () => <Trans zh="邮箱" en="Email" />
 
 export const QQLabel = () => <Trans zh="QQ" en="QQ" />
 

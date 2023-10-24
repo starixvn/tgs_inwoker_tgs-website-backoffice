@@ -163,7 +163,7 @@ const GameProviderCodeBox = ({ code, gameProviderCodeStylePairs = [] }) => {
 
 const GameRow = ({ game = {}, index, gameProviderCodeStylePairs = [] }) => {
   return useMemo(() => {
-    let isWin = game.winLoss >= 0
+    let isPlayerWin = game.winLoss >= 0
     return (
       <Table.Row>
         <Table.Cell textAlign="left">
@@ -187,7 +187,7 @@ const GameRow = ({ game = {}, index, gameProviderCodeStylePairs = [] }) => {
         </Table.Cell>
         <Table.Cell
           textAlign="right"
-          color={isWin ? "success" : "danger"}
+          color={isPlayerWin ? "danger" : "success"}
           css={css`
             z-index: 1;
             position: sticky;

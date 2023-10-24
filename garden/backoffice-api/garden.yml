@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202310190238.573
+image: pgtgs/backoffice-api:202310230828.585
 services:
   - name: backoffice-api
     dependencies:
@@ -54,6 +54,8 @@ services:
       BackOffice__AgentBaseUrl: "http://agent-service"
       BackOffice__GameWagersServiceBaseUrl: "http://game-wagers"
       OTEL_SERVICE_NAME: "BackOffice-Api(local)"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://jaeger-collector.default.svc.cluster.local:4317"
+      # TODO: NODE_IP required?
       NODE_IP: "http://jaeger-collector.default.svc.cluster.local"
     ingresses:
       - hostname: backoffice.localhost

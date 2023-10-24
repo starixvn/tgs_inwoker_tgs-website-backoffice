@@ -34,11 +34,15 @@ import {
   RemarkLabel
 } from "./player"
 import {
+  MobileLabel,
+  EmailLabel,
+  QQLabel,
   LineLabel,
   MessengerLabel,
   TelegramLabel,
   ViberLabel,
-  WhatsappLabel
+  WhatsappLabel,
+  WeChatLabel
 } from "./contact"
 import { boolean } from "boolean"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
@@ -361,6 +365,8 @@ const Player = ({ value: player = {}, brandId }) => {
   )
 }
 
+const AreaCodeLabel = () => <Trans zh="区号" en="Area Code" />
+
 //TODO: test each one
 const LabelValueList = [
   [pipe(getPath, equals("/password")), PasswordLabel],
@@ -373,11 +379,18 @@ const LabelValueList = [
   ],
   [pipe(getPath, includes("/Remark")), RemarkLabel],
   [pipe(getPath, includes("/Birthdate")), BirthdayLabel],
-  [pipe(getPath, includes("/FacebookMessenger")), MessengerLabel],
-  [pipe(getPath, includes("/Line")), LineLabel],
-  [pipe(getPath, includes("/WhatsApp")), WhatsappLabel],
-  [pipe(getPath, includes("/Viber")), ViberLabel],
-  [pipe(getPath, includes("/Telegram")), TelegramLabel],
+
+  [pipe(getPath, equals("/properties/AreaCode")), AreaCodeLabel],
+  [pipe(getPath, equals("/properties/Phone")), MobileLabel],
+  [pipe(getPath, equals("/properties/Email")), EmailLabel],
+  [pipe(getPath, equals("/properties/Qq")), QQLabel],
+  [pipe(getPath, equals("/properties/Wechat")), WeChatLabel],
+  [pipe(getPath, equals("/properties/Telegram")), TelegramLabel],
+  [pipe(getPath, equals("/properties/Viber")), ViberLabel],
+  [pipe(getPath, equals("/properties/FacebookMessenger")), MessengerLabel],
+  [pipe(getPath, equals("/properties/Line")), LineLabel],
+  [pipe(getPath, equals("/properties/WhatsApp")), WhatsappLabel],
+
   [isAddPlayer, StringValue, Player]
 ]
 

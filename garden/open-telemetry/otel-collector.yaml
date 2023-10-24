@@ -28,26 +28,27 @@ data:
       otlp:
         protocols:
           grpc:
-            endpoint: "0.0.0.0:4317"
+
     processors:
       batch:
-    extensions:
-      health_check: {}
-      pprof:
-      zpages:
+
     exporters:
-      jaeger:
-        endpoint: "jaeger-collector.default.svc.cluster.local:14250"
-        insecure: true
+      otlp:
+        endpoint: "jaeger-collector.default.svc.cluster.local:4317"
+        tls:
+          insecure: true
       logging:
 
+    extensions:
+      health_check: {}
+
     service:
-      extensions: [health_check, pprof, zpages]
+      extensions: [health_check]
       pipelines:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [jaeger, logging]
+          exporters: [otlp, logging]
 ---
 apiVersion: v1
 kind: Service

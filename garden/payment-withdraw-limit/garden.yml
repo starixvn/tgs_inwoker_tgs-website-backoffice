@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-withdraw-limit
-image: pgtgs/payment-withdraw-limit:202309140632.5
+image: pgtgs/payment-withdraw-limit:202310200345.7
 services:
   - name: payment-withdraw-limit
     dependencies:
