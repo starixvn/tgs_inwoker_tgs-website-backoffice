@@ -5,27 +5,25 @@ const isArrayOrObject = (target) => isObject(target) || isArray(target)
 
 const isNilOrEmpty = (value) => isNil(value) || isEmpty(value)
 
-export const toDiff = (target, origin) => {
+export const diff = (target, origin) => {
   let accum = isArrayOrObject(target) ? empty(target) : null
 
   if (accum) {
     let diffs = Object.entries(target).reduce((accum, [key, value]) => {
       let originValue = Reflect.get(origin, key)
 
-      let diff = isArrayOrObject(value)
-        ? toDiff(value, originValue)
+      let diffs = isArrayOrObject(value)
+        ? diff(value, originValue)
         : diffOrNil(value, originValue)
 
-      if (isNilOrEmpty(diff)) {
+      if (isNilOrEmpty(diffs)) {
         return accum
       }
 
-      Reflect.set(accum, key, diff)
+      Reflect.set(accum, key, diffs)
       return accum
     }, accum)
 
-    //TODO: rm log
-    console.log("diffs", diffs, "target", target, "origin", origin)
     return diffs
   } else {
     //not array or object

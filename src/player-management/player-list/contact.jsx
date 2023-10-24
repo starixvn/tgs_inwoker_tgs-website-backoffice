@@ -25,7 +25,7 @@ import { AreaPhoneInputGruop } from "../../input/PhoneInput"
 import clone from "clone-deep"
 import { Contact } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import { toDiff } from "../../object/diff"
+import { diff } from "../../object/diff"
 import { isDev } from "../../env"
 
 export const Key = "contact"
@@ -138,11 +138,10 @@ const UpdateContactPanel = ({
     }
   }, [result])
 
-  //TODO: only submit diff value
   const onSubmit = (data) => {
-    let diffs = toDiff(data, player)
+    let formData = diff(data, player)
 
-    setSubmit(diffs)
+    setSubmit(formData)
   }
 
   const clearResult = () => setSubmit(null)
