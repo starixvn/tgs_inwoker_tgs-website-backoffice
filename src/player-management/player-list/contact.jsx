@@ -140,7 +140,7 @@ const UpdateContactPanel = ({
 
   const onSubmit = (data) => {
     let formData = diff(data, player)
-    console.log("formData", formData)
+
     setSubmit(formData)
   }
 
