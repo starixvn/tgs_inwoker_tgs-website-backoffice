@@ -1,10 +1,11 @@
-import { isArray, isObject, isNil, isString } from "lodash-es"
+import { isArray, isObject, isNil } from "lodash-es"
 import { isEmpty, empty } from "ramda"
 
 const isArrayOrObject = (target) => isObject(target) || isArray(target)
 
 const isNilOrEmpty = (value) => isNil(value) || isEmpty(value)
 
+//TODO: support array value change?
 export const diff = (target, origin) => {
   let accum = isArrayOrObject(target) ? empty(target) : null
 
