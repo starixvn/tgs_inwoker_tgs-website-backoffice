@@ -41,7 +41,7 @@ const TopPlayerColumns = {
 }
 
 export const TopPlayerTable = ({ brand, brandId, maxWidth }) => {
-  let [sortType, setSortType] = useState(TopPlayerColumns.Deposit)
+  let [sortType, setSortType] = useState(TopPlayerColumns.WinLoss)
   let [ascending, setAscending] = useState(false)
 
   let {
@@ -145,7 +145,7 @@ const playerNameColumnCss = css`
 
 const PlayerRow = ({ player = {}, brand, index }) => {
   return useMemo(() => {
-    let isWin = player.winLoss >= 0
+    let isPlayerWin = player.winLoss >= 0
     return (
       <Table.Row>
         <Table.Cell textAlign="left" css={playerNameColumnCss}>
@@ -177,7 +177,7 @@ const PlayerRow = ({ player = {}, brand, index }) => {
         </Table.Cell>
         <Table.Cell
           textAlign="right"
-          color={isWin ? "success" : "danger"}
+          color={isPlayerWin ? "danger" : "success"}
           css={css`
             position: sticky;
             right: 0;

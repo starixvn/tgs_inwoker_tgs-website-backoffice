@@ -29,6 +29,21 @@ export const useEditPlayerInfo = (playerCode, data) => {
   return usePutData(url, data)
 }
 
+//TODO
+export const useUpdatePlayerInfo = (
+  playerCode,
+  ...[infoData, statusData, agentData, allAgentPlayerData]
+) => {}
+
+//TODO
+export const useUpdatePlayerStatus = (playerCode, data) => {}
+
+//TODO
+export const useUpdatePlayerAgent = (playerCode, data) => {}
+
+//TODO
+export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {}
+
 //TODO: rm? or use original
 export const useEditPlayerContact = (playerCode, data) => {
   let url = playerCode ? `${API}/${playerCode}/contact` : ""
