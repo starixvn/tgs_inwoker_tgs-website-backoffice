@@ -277,7 +277,11 @@ export const usePut = (url, settings, options = DefaultUpdateOptions) => {
   }
 }
 
-export const usePatchData = (url, data, options = DefaultUpdateOptions) => {
+export const usePatchData = (
+  url,
+  data,
+  { dropEmptyValuesDisabled = false, ...options } = DefaultUpdateOptions
+) => {
   let keys = url ? [url, data] : null
   let {
     data: result,
@@ -289,7 +293,7 @@ export const usePatchData = (url, data, options = DefaultUpdateOptions) => {
     (url, data) =>
       patch(url, {
         data,
-        dropEmptyValuesDisabled: options?.dropEmptyValuesDisabled
+        dropEmptyValuesDisabled
       }),
     options
   )

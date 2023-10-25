@@ -53,7 +53,7 @@ export const useEditPlayerContact = (playerCode, data) => {
 export const useUpdatePlayerContact = (playerCode, data) => {
   let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
   return usePatchData(url, data, {
-    disableDropEmptyValues: true,
+    dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
 }
