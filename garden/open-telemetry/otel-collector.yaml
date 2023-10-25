@@ -31,7 +31,7 @@ data:
       batch:
 
     exporters:
-      otel/jaeger:
+      otlp/jaeger:
         endpoint: "jaeger-collector.default.svc.cluster.local:4317"
         insecure: true
       logging:
@@ -45,7 +45,7 @@ data:
         traces:
           receivers: [otlp]
           processors:
-          exporters: [otel/jaeger, logging]
+          exporters: [otlp/jaeger, logging]
 ---
 apiVersion: v1
 kind: Service
