@@ -26,13 +26,14 @@ data:
       otlp:
         protocols:
           grpc:
+            endpoint: "0.0.0.0:4317"
 
     processors:
       batch:
 
     exporters:
       otlp/jaeger:
-        endpoint: "jaeger-collector.default.svc.cluster.local:4317"
+        endpoint: "jaeger-collector.observability.svc.cluster.local:4317"
         insecure: true
       logging:
 
@@ -45,7 +46,7 @@ data:
         traces:
           receivers: [otlp]
           processors:
-          exporters: [otlp/jaeger, logging]
+          exporters: [logging, otlp/jaeger]
 ---
 apiVersion: v1
 kind: Service

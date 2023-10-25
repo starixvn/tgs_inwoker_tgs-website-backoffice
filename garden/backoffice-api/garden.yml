@@ -56,7 +56,7 @@ services:
       OTEL_SERVICE_NAME: "BackOffice-Api(local)"
       # OTEL_EXPORTER_OTLP_ENDPOINT: "http://jaeger-collector.default.svc.cluster.local:4317"
       # TODO: NODE_IP required?
-      NODE_IP: "http://jaeger-collector.default.svc.cluster.local"
+      NODE_IP: "otel-collector.observability.svc.cluster.local"
     ingresses:
       - hostname: backoffice.localhost
         path: /api

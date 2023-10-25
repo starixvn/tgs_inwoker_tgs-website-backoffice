@@ -12,3 +12,7 @@ portForwards:
     resource: service/jaeger-query
     targetPort: 16686
     localPort: 16686
+  # - name: jaeger-collector
+  #   resource: service/jaeger-collector
+  #   targetPort: 4317
+  #   localPort: 4317
