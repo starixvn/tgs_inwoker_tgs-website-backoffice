@@ -30,10 +30,10 @@ export const useEditPlayerInfo = (playerCode, data) => {
 }
 
 //TODO
-export const useUpdatePlayerInfo = (
-  playerCode,
-  ...[infoData, statusData, agentData, allAgentPlayerData]
-) => {}
+export const useUpdatePlayer = (playerCode, formData) => {}
+
+//TODO
+export const useUpdatePlayerInfo = (playerCode, data) => {}
 
 //TODO
 export const useUpdatePlayerStatus = (playerCode, data) => {}
@@ -52,7 +52,10 @@ export const useEditPlayerContact = (playerCode, data) => {
 
 export const useUpdatePlayerContact = (playerCode, data) => {
   let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
-  return usePatchData(url, data)
+  return usePatchData(url, data, {
+    disableDropEmptyValues: true,
+    dedupingInterval: 100
+  })
 }
 
 export const useAddPlayerBank = (playerCode, data) => {

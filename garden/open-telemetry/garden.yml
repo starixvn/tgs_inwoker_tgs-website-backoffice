@@ -1,7 +1,7 @@
 kind: Module
 name: open-telemetry
 type: kubernetes
-disabled: true
+disabled: false
 dependencies:
   - jaeger
 files:

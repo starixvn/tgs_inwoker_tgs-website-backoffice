@@ -141,6 +141,8 @@ const UpdateContactPanel = ({
   const onSubmit = (data) => {
     let formData = diff(data, player)
 
+    //TODO: rm log
+    console.log("diff formData", formData)
     setSubmit(formData)
   }
 

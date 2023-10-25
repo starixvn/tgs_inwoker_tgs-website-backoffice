@@ -23,8 +23,6 @@ metadata:
 data:
   otel-collector-config: |
     receivers:
-      # Make sure to add the otlp receiver.
-      # This will open up the receiver on port 4317
       otlp:
         protocols:
           grpc:
@@ -33,22 +31,21 @@ data:
       batch:
 
     exporters:
-      otlp/jaeger:
+      otel/jaeger:
         endpoint: "jaeger-collector.default.svc.cluster.local:4317"
-        tls:
-          insecure: true
+        insecure: true
       logging:
 
     extensions:
-      health_check: {}
+      health_check:
 
     service:
       extensions: [health_check]
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [batch]
-          exporters: [otlp/jaeger, logging]
+          processors:
+          exporters: [otel/jaeger, logging]
 ---
 apiVersion: v1
 kind: Service
@@ -64,17 +61,18 @@ spec:
       port: 4317
       protocol: TCP
       targetPort: 4317
-      nodePort: 30080
+      # nodePort: 30080
     - name: metrics # Default endpoint for metrics.
       port: 8889
       protocol: TCP
       targetPort: 8889
   selector:
     component: otel-collector
-  type: NodePort
+  # type: NodePort
 ---
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
+# kind: DaemonSet
 metadata:
   name: otel-collector
   namespace: observability
