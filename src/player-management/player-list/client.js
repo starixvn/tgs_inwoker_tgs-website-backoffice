@@ -95,13 +95,9 @@ export const useUpdatePlayer = (playerCode, data) => {
   //TODO: util fns for merge swr results
   let isLoading = items.findIndex(({ isLoading }) => isLoading == true) >= 0
 
-  let result = items.reduce((result, item) => {
-    if (result && item.result) {
-      return item.result
-    }
-
-    return result
-  }, null)
+  //TODO: test & study better way to deal with result?
+  let [info, status, agent, allAgent] = items
+  let result = info.result && status.result && agent.result && allAgent.result
 
   let error = items.find(({ error }) => !isNil(error))?.error
 

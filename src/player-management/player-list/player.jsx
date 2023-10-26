@@ -57,6 +57,9 @@ export const Tab = ({ ...props }) => {
 }
 
 export const EditPanel = (props) => {
+  return <CurrentPlayerInfoPanel {...props} />
+
+  //TODO
   return isDev() ? (
     <UpdatePlayerInfoPanel {...props} />
   ) : (
