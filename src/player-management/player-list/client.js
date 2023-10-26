@@ -30,7 +30,6 @@ export const useEditPlayerInfo = (playerCode, data) => {
   return usePutData(url, data)
 }
 
-//TODO: getter & setter?
 const UpdatePlayerFormDataField = {
   Info: "info",
   Status: "status",
@@ -38,7 +37,7 @@ const UpdatePlayerFormDataField = {
   AllAgentPlayer: "allAgentPlayer"
 }
 
-const toUpdatePlayerFormData = (data) => {
+export const toUpdatePlayerFormData = (data) => {
   if (isNil(data)) {
     return data
   }
@@ -52,7 +51,7 @@ const toUpdatePlayerFormData = (data) => {
 
     status,
     agentUsername,
-    parentUsername: parentPlayerUsername
+    parentUsername
   } = data
 
   return {
@@ -65,30 +64,27 @@ const toUpdatePlayerFormData = (data) => {
     },
     status: { status },
     agent: { agentUsername },
-    allAgentPlayer: { parentPlayerUsername }
+    allAgentPlayer: { parentPlayerUsername: parentUsername }
   }
 }
 
 export const useUpdatePlayer = (playerCode, data) => {
-  let formData = toUpdatePlayerFormData(data)
-
   let items = [
     useUpdatePlayerInfo(
       playerCode,
-      formData && Reflect.get(formData, UpdatePlayerFormDataField.Info)
+      data && Reflect.get(data, UpdatePlayerFormDataField.Info)
     ),
     useUpdatePlayerStatus(
       playerCode,
-      formData && Reflect.get(formData, UpdatePlayerFormDataField.Status)
+      data && Reflect.get(data, UpdatePlayerFormDataField.Status)
     ),
     useUpdatePlayerAgent(
       playerCode,
-      formData && Reflect.get(formData, UpdatePlayerFormDataField.Agent)
+      data && Reflect.get(data, UpdatePlayerFormDataField.Agent)
     ),
     useUpdatePlayerAllAgentPlayer(
       playerCode,
-      formData &&
-        Reflect.get(formData, UpdatePlayerFormDataField.AllAgentPlayer)
+      data && Reflect.get(data, UpdatePlayerFormDataField.AllAgentPlayer)
     )
   ]
 

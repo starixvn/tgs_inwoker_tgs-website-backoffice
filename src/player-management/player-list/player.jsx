@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
-import { useEditPlayerInfo, useUpdatePlayer } from "./client"
+import {
+  useEditPlayerInfo,
+  useUpdatePlayer,
+  toUpdatePlayerFormData
+} from "./client"
 import {
   Spinner,
   Stack,
@@ -57,9 +61,6 @@ export const Tab = ({ ...props }) => {
 }
 
 export const EditPanel = (props) => {
-  return <CurrentPlayerInfoPanel {...props} />
-
-  //TODO
   return isDev() ? (
     <UpdatePlayerInfoPanel {...props} />
   ) : (
@@ -107,10 +108,11 @@ const UpdatePlayerInfoPanel = ({
     if (isValid(birthdate)) {
       birthdate = defaultFormatDate(birthdate)
     }
-    setSubmit({
+    let formData = toUpdatePlayerFormData({
       birthdate,
       ...data
     })
+    setSubmit(formData)
   }
 
   return (

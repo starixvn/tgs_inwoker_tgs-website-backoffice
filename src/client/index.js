@@ -280,16 +280,9 @@ export const usePut = (url, settings, options = DefaultUpdateOptions) => {
 export const usePatchData = (
   url,
   data,
-  {
-    stringifyData = false,
-    dropEmptyValuesDisabled = false,
-    ...options
-  } = DefaultUpdateOptions
+  { dropEmptyValuesDisabled = false, ...options } = DefaultUpdateOptions
 ) => {
-  //TODO: update swr lib version -> rm JSON.stringify(data)
-  let keys = url
-    ? [url, stringifyData && data ? JSON.stringify(data) : data]
-    : null
+  let keys = url ? [url, data] : null
   let {
     data: result,
     error,
