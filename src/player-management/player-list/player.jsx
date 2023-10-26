@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
-import { useEditPlayerInfo } from "./client"
+import { useEditPlayerInfo, useUpdatePlayer } from "./client"
 import {
   Spinner,
   Stack,
@@ -56,7 +56,84 @@ export const Tab = ({ ...props }) => {
   )
 }
 
-export const EditPanel = ({
+export const EditPanel = (props) => {
+  return isDev() ? (
+    <UpdatePlayerInfoPanel {...props} />
+  ) : (
+    <CurrentPlayerInfoPanel {...props} />
+  )
+}
+
+const UpdatePlayerInfoPanel = ({
+  brandId,
+  brand,
+  playerCode = "",
+  player: { birthdate = "", ...player },
+  showParentUsername,
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
+  let formMethods = useForm({
+    defaultValues: clone({
+      birthdate: parse(birthdate, "yyyy/MM/dd", new Date()),
+      ...player
+    })
+  })
+
+  let [submitData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } = useUpdatePlayer(
+    playerCode,
+    submitData
+  )
+
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
+    setSubmit(undefined)
+  }
+
+  useEffect(() => {
+    if (result && !error) {
+      reset()
+      onSubmitted?.()
+    }
+  }, [result])
+
+  const onSubmit = ({ birthdate, ...data } = {}) => {
+    if (isValid(birthdate)) {
+      birthdate = defaultFormatDate(birthdate)
+    }
+    setSubmit({
+      birthdate,
+      ...data
+    })
+  }
+
+  return (
+    <TabPanel tabId={Key} {...props}>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <EditForm
+            brandId={brandId}
+            brand={brand}
+            playerCode={playerCode}
+            player={player}
+            showParentUsername={showParentUsername}
+            isLoading={isLoading}
+            onClickClose={() => {
+              reset()
+              onClickClose?.()
+            }}
+          />
+        </form>
+      </FormProvider>
+    </TabPanel>
+  )
+}
+
+const CurrentPlayerInfoPanel = ({
   brandId,
   brand,
   playerCode = "",

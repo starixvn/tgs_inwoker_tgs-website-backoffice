@@ -7,6 +7,7 @@ import {
   useDelete,
   usePatchData
 } from "../../client"
+import { isNil } from "lodash-es"
 
 export let API = "/api/player"
 
@@ -29,20 +30,119 @@ export const useEditPlayerInfo = (playerCode, data) => {
   return usePutData(url, data)
 }
 
-//TODO
-export const useUpdatePlayer = (playerCode, formData) => {}
+//TODO: getter & setter?
+const UpdatePlayerFormDataField = {
+  Info: "info",
+  Status: "status",
+  Agent: "agent",
+  AllAgentPlayer: "allAgentPlayer"
+}
 
-//TODO
-export const useUpdatePlayerInfo = (playerCode, data) => {}
+const toUpdatePlayerFormData = (data) => {
+  if (isNil(data)) {
+    return data
+  }
 
-//TODO
-export const useUpdatePlayerStatus = (playerCode, data) => {}
+  let {
+    realName,
+    birthdate,
+    idNumber,
+    vipId,
+    remark,
 
-//TODO
-export const useUpdatePlayerAgent = (playerCode, data) => {}
+    status,
+    agentUsername,
+    parentUsername: parentPlayerUsername
+  } = data
 
-//TODO
-export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {}
+  return {
+    info: {
+      realName,
+      birthdate,
+      idNumber,
+      vipId,
+      remark
+    },
+    status: { status },
+    agent: { agentUsername },
+    allAgentPlayer: { parentPlayerUsername }
+  }
+}
+
+export const useUpdatePlayer = (playerCode, data) => {
+  let formData = toUpdatePlayerFormData(data)
+
+  let items = [
+    useUpdatePlayerInfo(
+      playerCode,
+      formData && Reflect.get(formData, UpdatePlayerFormDataField.Info)
+    ),
+    useUpdatePlayerStatus(
+      playerCode,
+      formData && Reflect.get(formData, UpdatePlayerFormDataField.Status)
+    ),
+    useUpdatePlayerAgent(
+      playerCode,
+      formData && Reflect.get(formData, UpdatePlayerFormDataField.Agent)
+    ),
+    useUpdatePlayerAllAgentPlayer(
+      playerCode,
+      formData &&
+        Reflect.get(formData, UpdatePlayerFormDataField.AllAgentPlayer)
+    )
+  ]
+
+  //TODO: util fns for merge swr results
+  let isLoading = items.findIndex(({ isLoading }) => isLoading == true) >= 0
+
+  let result = items.reduce((result, item) => {
+    if (result && item.result) {
+      return item.result
+    }
+
+    return result
+  }, null)
+
+  let error = items.find(({ error }) => !isNil(error))?.error
+
+  let mutate = (_, shouldRevalidate) =>
+    items.forEach(({ mutate }) => {
+      mutate(_, shouldRevalidate)
+    })
+
+  let deleteCache = () =>
+    items.forEach(({ deleteCache }) => {
+      deleteCache()
+    })
+
+  return {
+    isLoading,
+    result,
+    error,
+    mutate,
+    deleteCache
+  }
+}
+
+export const useUpdatePlayerInfo = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/info/${playerCode}` : ""
+  return usePatchData(url, data, { stringifyData: true })
+}
+
+export const useUpdatePlayerStatus = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/status/${playerCode}` : ""
+  return usePatchData(url, data, { stringifyData: true })
+}
+
+export const useUpdatePlayerAgent = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/agent/${playerCode}` : ""
+  return usePatchData(url, data, { stringifyData: true })
+}
+
+export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/parent-player/${playerCode}` : ""
+  return usePatchData(url, data, { stringifyData: true })
+}
 
 //TODO: rm? or use original
 export const useEditPlayerContact = (playerCode, data) => {

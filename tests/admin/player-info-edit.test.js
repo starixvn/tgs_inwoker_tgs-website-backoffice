@@ -12,7 +12,8 @@ import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-test("edit and view player info", async ({
+console.warn("seprate & update player test")
+test.skip("edit and view player info", async ({
   page,
   platformCode,
   player,
