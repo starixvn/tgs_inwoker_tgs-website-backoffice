@@ -29,6 +29,7 @@ import {
   showIncludeInNetProfitSetting
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
+import { PlatformBucketSelect } from "../../platform-management/PlatformBucket"
 
 export const PlayerAddBalanceDisclosure = ({
   brandId,
@@ -164,6 +165,13 @@ const FormBody = ({}) => {
             }}
           />
         </Set>
+
+        <Box alignY="center">
+          <Trans zh="活动游戏类型" en="Game Type" />
+        </Box>
+        <Box>
+          <PlatformBucketSelect name="bucketTypes[0]" platformId={brandId} />
+        </Box>
 
         {showIncludeInNetProfitSetting(transactionType) && (
           <>

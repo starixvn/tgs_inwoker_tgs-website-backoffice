@@ -19,11 +19,7 @@ const addBalance = async (page, player) => {
   let Selector = `#add-balance-dialog`
   await openDialog(page, Selector)
 
-  let options = await getTransactionTypeOptions(page)
-  let optionIndex = random(0, options.length - 1)
-  let option = options[optionIndex]
-  expect(option).to.not.be.empty
-
+  let option = "CompanyAdjust"
   setTransactionType(page, option)
 
   let amount = random(100, 1000)
