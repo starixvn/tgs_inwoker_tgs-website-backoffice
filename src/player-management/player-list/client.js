@@ -7,7 +7,10 @@ import {
   useDelete,
   usePatchData
 } from "../../client"
-import { isNil } from "lodash-es"
+import { isEmpty, isNil } from "lodash-es"
+import { either } from "ramda"
+
+let isNilOrEmpty = either(isNil, isEmpty)
 
 export let API = "/api/player"
 
@@ -51,7 +54,7 @@ export const toUpdatePlayerFormData = (data) => {
 
     status,
     agentUsername,
-    parentUsername
+    parentUsername: parentPlayerUsername
   } = data
 
   return {
@@ -63,8 +66,10 @@ export const toUpdatePlayerFormData = (data) => {
       remark
     },
     status: { status },
-    agent: { agentUsername },
-    allAgentPlayer: { parentPlayerUsername: parentUsername }
+    agent: isNilOrEmpty(agentUsername) ? null : { agentUsername },
+    allAgentPlayer: isNilOrEmpty(parentPlayerUsername)
+      ? null
+      : { parentPlayerUsername }
   }
 }
 
@@ -91,9 +96,20 @@ export const useUpdatePlayer = (playerCode, data) => {
   //TODO: util fns for merge swr results
   let isLoading = items.findIndex(({ isLoading }) => isLoading == true) >= 0
 
-  //TODO: test & study better way to deal with result?
-  let [info, status, agent, allAgent] = items
-  let result = info.result && status.result && agent.result && allAgent.result
+  let result = items.reduce(
+    (accum, item, index, list) => {
+      if (isNil(accum)) {
+        return accum
+      }
+
+      if (item.hasUrl) {
+        accum = item.result
+      }
+
+      return accum
+    },
+    data ? true : false
+  )
 
   let error = items.find(({ error }) => !isNil(error))?.error
 
@@ -118,22 +134,55 @@ export const useUpdatePlayer = (playerCode, data) => {
 
 export const useUpdatePlayerInfo = (playerCode, data) => {
   let url = playerCode && data ? `${API}/info/${playerCode}` : ""
-  return usePatchData(url, data, { stringifyData: true })
+
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
 }
 
 export const useUpdatePlayerStatus = (playerCode, data) => {
   let url = playerCode && data ? `${API}/status/${playerCode}` : ""
-  return usePatchData(url, data, { stringifyData: true })
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
 }
 
 export const useUpdatePlayerAgent = (playerCode, data) => {
   let url = playerCode && data ? `${API}/agent/${playerCode}` : ""
-  return usePatchData(url, data, { stringifyData: true })
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
 }
 
 export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {
   let url = playerCode && data ? `${API}/parent-player/${playerCode}` : ""
-  return usePatchData(url, data, { stringifyData: true })
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
 }
 
 //TODO: rm? or use original
