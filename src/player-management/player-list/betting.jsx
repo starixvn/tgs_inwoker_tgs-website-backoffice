@@ -180,6 +180,11 @@ const useColumns = ({ items = [], totals = [] }) => {
         Header: <Trans zh="有效投注金额" en="Valid Bet Amount" />
       }),
       numberDecimalColumn({
+        accessor: "turnover",
+        sumColumn: "turnover",
+        Header: <Trans zh="流水" en="Turnover" />
+      }),
+      numberDecimalColumn({
         accessor: "settleAmount",
         sumColumn: "settleAmount",
         Header: <Trans zh="派彩" en="Settle Amount" />
