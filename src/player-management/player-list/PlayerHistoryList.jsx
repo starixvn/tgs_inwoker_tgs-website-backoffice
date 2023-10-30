@@ -369,8 +369,11 @@ const AreaCodeLabel = () => <Trans zh="区号" en="Area Code" />
 
 //TODO: test each one
 const LabelValueList = [
+  [pipe(getPath, equals("/properties/RealName")), RealNameLabel],
+  [pipe(getPath, equals("/properties/Birthdate")), BirthdayLabel],
+
   [pipe(getPath, equals("/password")), PasswordLabel],
-  [pipe(getPath, equals("/RealName")), RealNameLabel],
+
   [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
   [
     pipe(getPath, equals("/identityAuthentication")),
@@ -378,7 +381,6 @@ const LabelValueList = [
     IdentityAuthenticationIcon
   ],
   [pipe(getPath, includes("/Remark")), RemarkLabel],
-  [pipe(getPath, includes("/Birthdate")), BirthdayLabel],
 
   [pipe(getPath, equals("/properties/AreaCode")), AreaCodeLabel],
   [pipe(getPath, equals("/properties/Phone")), MobileLabel],

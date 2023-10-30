@@ -167,7 +167,7 @@ const FormBody = ({}) => {
         </Set>
 
         <Box alignY="center">
-          <Trans zh="活动游戏类型" en="Game Type" />
+          <Trans zh="游戏类型" en="Game Type" />
         </Box>
         <Box>
           <PlatformBucketSelect name="bucketTypes[0]" platformId={brandId} />

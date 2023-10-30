@@ -11,6 +11,10 @@ const isEmptyArray = (value) => isArray(value) && isEmpty(value)
 const isEmptyObject = (value) => isPlainObject(value) && isEmpty(value)
 
 export const diff = (target, origin) => {
+  if (isNil(origin)) {
+    return target
+  }
+
   let accum = isArrayOrObject(target) ? empty(target) : null
 
   if (accum) {
