@@ -110,8 +110,8 @@ export const PlatformBucketSelectField = (props) => (
   <PlatformBucketSelect as={SelectField} {...props} />
 )
 
-//TODO: platform bucket multiple select
-//TODO: test ariakit multi select?
+/*
 export const PlatformBucketMultiSelect = (props) => (
   <PlatformBucketSelect as={MultiSelect} isMulti={true} {...props} />
 )
+*/
