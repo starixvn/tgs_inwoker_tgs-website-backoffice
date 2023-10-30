@@ -19,7 +19,7 @@ export const diff = (target, origin) => {
 
   if (accum) {
     let diffs = Object.entries(target).reduce((accum, [key, value]) => {
-      let originValue = Reflect.get(origin, key)
+      let originValue = isObject(origin) ? Reflect.get(origin, key) : null
 
       let diffs = isArrayOrObject(value)
         ? diff(value, originValue)
@@ -46,6 +46,7 @@ export const diff = (target, origin) => {
   }
 }
 
+//TODO: support nil as valid value?
 const diffOrNil = (target, origin) => {
   if (isNilOrEmpty(target) && isNilOrEmpty(origin)) {
     return null

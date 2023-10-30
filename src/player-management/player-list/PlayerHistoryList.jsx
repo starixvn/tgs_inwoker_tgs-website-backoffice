@@ -306,8 +306,6 @@ const IdentityAuthenticationLabel = () => (
   <Trans zh="身份认证" en="Identity Authentication" />
 )
 
-//TODO: test
-//TODO: add tooltip?
 const IdentityAuthenticationIcon = ({ value = "" }) => {
   let isAuth = boolean(value)
   return <PlayerIdentityStateIcon value={isAuth} />
@@ -315,7 +313,6 @@ const IdentityAuthenticationIcon = ({ value = "" }) => {
 
 const PasswordLabel = () => <Trans zh="密码" en="Password" />
 
-//TODO: use babel instead?
 const isAddPlayer = pipe(prop("op"), equals(Add))
 const getPath = prop("path")
 
@@ -367,20 +364,23 @@ const Player = ({ value: player = {}, brandId }) => {
 
 const AreaCodeLabel = () => <Trans zh="区号" en="Area Code" />
 
-//TODO: test each one
 const LabelValueList = [
   [pipe(getPath, equals("/properties/RealName")), RealNameLabel],
   [pipe(getPath, equals("/properties/Birthdate")), BirthdayLabel],
-
-  [pipe(getPath, equals("/password")), PasswordLabel],
-
-  [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
+  [pipe(getPath, equals("/properties/VipId")), VIPLevelLabel, VipLevelIdLabel],
+  [
+    pipe(getPath, equals("/properties/AgentId")),
+    AgentUsernameLabel,
+    AgentIdUsername
+  ],
+  [pipe(getPath, includes("/Remark")), RemarkLabel],
   [
     pipe(getPath, equals("/identityAuthentication")),
     IdentityAuthenticationLabel,
     IdentityAuthenticationIcon
   ],
-  [pipe(getPath, includes("/Remark")), RemarkLabel],
+
+  [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
 
   [pipe(getPath, equals("/properties/AreaCode")), AreaCodeLabel],
   [pipe(getPath, equals("/properties/Phone")), MobileLabel],
@@ -392,6 +392,8 @@ const LabelValueList = [
   [pipe(getPath, equals("/properties/FacebookMessenger")), MessengerLabel],
   [pipe(getPath, equals("/properties/Line")), LineLabel],
   [pipe(getPath, equals("/properties/WhatsApp")), WhatsappLabel],
+
+  [pipe(getPath, equals("/password")), PasswordLabel],
 
   [isAddPlayer, StringValue, Player]
 ]

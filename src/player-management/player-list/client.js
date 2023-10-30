@@ -46,26 +46,15 @@ export const toUpdatePlayerFormData = (data) => {
   }
 
   let {
-    realName,
-    birthdate,
-    idNumber,
-    vipId,
-    remark,
-
     status,
     agentUsername,
-    parentUsername: parentPlayerUsername
+    parentUsername: parentPlayerUsername,
+    ...info
   } = data
 
   return {
-    info: {
-      realName,
-      birthdate,
-      idNumber,
-      vipId,
-      remark
-    },
-    status: { status },
+    info,
+    status: isNilOrEmpty(status) ? null : { status },
     agent: isNilOrEmpty(agentUsername) ? null : { agentUsername },
     allAgentPlayer: isNilOrEmpty(parentPlayerUsername)
       ? null
@@ -93,7 +82,6 @@ export const useUpdatePlayer = (playerCode, data) => {
     )
   ]
 
-  //TODO: util fns for merge swr results
   let isLoading = items.findIndex(({ isLoading }) => isLoading == true) >= 0
 
   let result = items.reduce(

@@ -49,6 +49,7 @@ import { isValid, parse } from "date-fns"
 import { defaultFormatDate } from "../../date/format"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { PlayerBucketListDialogDisclosure } from "./PlayerBucketList"
+import { diff } from "../../object/diff"
 
 export const Key = "player"
 
@@ -72,17 +73,19 @@ const UpdatePlayerInfoPanel = ({
   brandId,
   brand,
   playerCode = "",
-  player: { birthdate = "", ...player },
+  player,
   showParentUsername,
   onSubmitted,
   onClickClose,
   ...props
 }) => {
+  let defaultValues = clone({
+    ...player,
+    birthdate: parse(player?.birthdate ?? "", "yyyy/MM/dd", new Date())
+  })
+
   let formMethods = useForm({
-    defaultValues: clone({
-      birthdate: parse(birthdate, "yyyy/MM/dd", new Date()),
-      ...player
-    })
+    defaultValues
   })
 
   let [submitData, setSubmit] = useState()
@@ -104,15 +107,20 @@ const UpdatePlayerInfoPanel = ({
     }
   }, [result])
 
-  const onSubmit = ({ birthdate, ...data } = {}) => {
-    if (isValid(birthdate)) {
-      birthdate = defaultFormatDate(birthdate)
-    }
-    let formData = toUpdatePlayerFormData({
-      birthdate,
-      ...data
-    })
-    setSubmit(formData)
+  const onSubmit = ({ birthdate, wageringRequirement: _, ...data } = {}) => {
+    //drop wageringRequirement not updatable value
+
+    //TODO: reset birthdate to empty value?
+    birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : birthdate
+
+    let formData = diff(
+      {
+        birthdate,
+        ...data
+      },
+      player
+    )
+    setSubmit(toUpdatePlayerFormData(formData))
   }
 
   return (
