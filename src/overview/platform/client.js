@@ -10,8 +10,8 @@ import client, {
   usePutData,
   usePostFormData
 } from "../../client"
-//TODO: rm faker
-import { faker } from "@faker-js/faker"
+import { today } from "../../date/range"
+import { startOfNextDay } from "../../date/startOfNextDay"
 
 let API = "/api/overview"
 
@@ -40,19 +40,32 @@ export const usePlatformGrossProfit = (id) => {
 
 const WithdrawApi = "/api/withdraw"
 export const usePlatformReviewingWithdrawal = (id) => {
+  let todayRange = today()
+
+  let beginCreateOn = todayRange.start
+  let endCreateOn = startOfNextDay(todayRange.end)
+
   let url = id
-    ? `${WithdrawApi}/${id}?status=Review&status=Invalid&showAll=true`
+    ? `${WithdrawApi}/${id}?status=Review&status=Invalid&bc=${beginCreateOn.toISOString()}&ec=${endCreateOn.toISOString()}&showAll=true`
     : ""
 
   let { data, ...rest } = useGet(url)
+
   return {
-    data: data?.sum,
+    data: data?.totalCount,
     ...rest
   }
 }
 
 export const usePlatformOutstandingWithdrawal = (id) => {
-  let url = id ? `${WithdrawApi}/${id}?status=Approved&showAll=true` : ""
+  let todayRange = today()
+
+  let beginCreateOn = todayRange.start
+  let endCreateOn = startOfNextDay(todayRange.end)
+
+  let url = id
+    ? `${WithdrawApi}/${id}?status=Approved&bc=${beginCreateOn.toISOString()}&ec=${endCreateOn.toISOString()}&&showAll=true`
+    : ""
 
   let { data, ...rest } = useGet(url)
   return {

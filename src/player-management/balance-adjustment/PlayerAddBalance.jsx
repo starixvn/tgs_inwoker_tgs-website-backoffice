@@ -30,6 +30,7 @@ import {
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
 import { PlatformBucketSelect } from "../../platform-management/PlatformBucket"
+import { isDev } from "../../env"
 
 export const PlayerAddBalanceDisclosure = ({
   brandId,
