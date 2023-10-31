@@ -96,7 +96,10 @@ const CurrentPlayerContactPanel = ({
   })
 
   let [submitData, setSubmit] = useState()
-  let { result, error, mutate } = useEditPlayerContact(playerCode, submitData)
+  let { result, error, mutate, clearCache } = useEditPlayerContact(
+    playerCode,
+    submitData
+  )
   useEffect(() => {
     if (result && !error) {
       onSubmitted && onSubmitted()
@@ -105,7 +108,10 @@ const CurrentPlayerContactPanel = ({
 
   const onSubmit = setSubmit
 
-  const clearResult = () => setSubmit(null)
+  const reset = () => {
+    clearCache()
+    setSubmit(null)
+  }
 
   return (
     <TabPanel tabId={Key} {...props}>
@@ -114,7 +120,7 @@ const CurrentPlayerContactPanel = ({
           <Body onClickClose={onClickClose} />
         </form>
       </FormProvider>
-      {error && <AlertDialog {...error} onClickClose={clearResult} />}
+      {error && <AlertDialog {...error} onClickClose={reset} />}
     </TabPanel>
   )
 }
@@ -131,7 +137,10 @@ const UpdateContactPanel = ({
   })
 
   let [submitData, setSubmit] = useState()
-  let { result, error, mutate } = useUpdatePlayerContact(playerCode, submitData)
+  let { result, error, mutate, clearCache } = useUpdatePlayerContact(
+    playerCode,
+    submitData
+  )
   useEffect(() => {
     if (result && !error) {
       onSubmitted && onSubmitted()
@@ -144,7 +153,10 @@ const UpdateContactPanel = ({
     setSubmit(formData)
   }
 
-  const clearResult = () => setSubmit(null)
+  const reset = () => {
+    clearCache()
+    setSubmit(null)
+  }
 
   return (
     <TabPanel tabId={Key} {...props}>
@@ -153,7 +165,7 @@ const UpdateContactPanel = ({
           <Body onClickClose={onClickClose} />
         </form>
       </FormProvider>
-      {error && <AlertDialog {...error} onClickClose={clearResult} />}
+      {error && <AlertDialog {...error} onClickClose={reset} />}
     </TabPanel>
   )
 }

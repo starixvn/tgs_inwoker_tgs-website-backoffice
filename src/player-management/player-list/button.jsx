@@ -228,6 +228,8 @@ const ViewTabs = ({
   tab
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
+  //TODO: remove after stg, prod released
+  let enablePlayerHistory = isDev()
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -235,8 +237,8 @@ const ViewTabs = ({
         {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <BettingTab {...tab} />
-        <PlayerOperationTab {...tab} />
-        {isDev() && <PlayerHistoryListTab {...tab} />}
+        {!enablePlayerHistory && <PlayerOperationTab {...tab} />}
+        {enablePlayerHistory && <PlayerHistoryListTab {...tab} />}
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
         <PlayerVipChangeListTab {...tab} />
@@ -255,8 +257,10 @@ const ViewTabs = ({
         brandId={brandId}
         {...tab}
       />
-      <PlayerOperationPanel playerCode={playerCode} {...tab} />
-      {isDev() && (
+      {!enablePlayerHistory && (
+        <PlayerOperationPanel playerCode={playerCode} {...tab} />
+      )}
+      {enablePlayerHistory && (
         <PlayerHistoryListPanel
           playerCode={playerCode}
           brandId={brandId}

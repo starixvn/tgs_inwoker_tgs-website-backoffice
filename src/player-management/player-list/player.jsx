@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
-import { useEditPlayerInfo } from "./client"
+import {
+  useEditPlayerInfo,
+  useUpdatePlayer,
+  toUpdatePlayerFormData
+} from "./client"
 import {
   Spinner,
   Stack,
@@ -45,6 +49,7 @@ import { isValid, parse } from "date-fns"
 import { defaultFormatDate } from "../../date/format"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { PlayerBucketListDialogDisclosure } from "./PlayerBucketList"
+import { diff } from "../../object/diff"
 
 export const Key = "player"
 
@@ -56,7 +61,92 @@ export const Tab = ({ ...props }) => {
   )
 }
 
-export const EditPanel = ({
+export const EditPanel = (props) => {
+  return isDev() ? (
+    <UpdatePlayerInfoPanel {...props} />
+  ) : (
+    <CurrentPlayerInfoPanel {...props} />
+  )
+}
+
+const UpdatePlayerInfoPanel = ({
+  brandId,
+  brand,
+  playerCode = "",
+  player,
+  showParentUsername,
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
+  let defaultValues = clone({
+    ...player,
+    birthdate: parse(player?.birthdate ?? "", "yyyy/MM/dd", new Date())
+  })
+
+  let formMethods = useForm({
+    defaultValues
+  })
+
+  let [submitData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } = useUpdatePlayer(
+    playerCode,
+    submitData
+  )
+
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
+    setSubmit(undefined)
+  }
+
+  useEffect(() => {
+    if (result && !error) {
+      reset()
+      onSubmitted?.()
+    }
+  }, [result])
+
+  const onSubmit = ({ birthdate, wageringRequirement: _, ...data } = {}) => {
+    //drop wageringRequirement not updatable value
+
+    //TODO: reset birthdate to empty value?
+    birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : birthdate
+
+    let formData = diff(
+      {
+        birthdate,
+        ...data
+      },
+      player
+    )
+    setSubmit(toUpdatePlayerFormData(formData))
+  }
+
+  return (
+    <TabPanel tabId={Key} {...props}>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <EditForm
+            brandId={brandId}
+            brand={brand}
+            playerCode={playerCode}
+            player={player}
+            showParentUsername={showParentUsername}
+            isLoading={isLoading}
+            onClickClose={() => {
+              reset()
+              onClickClose?.()
+            }}
+          />
+        </form>
+      </FormProvider>
+    </TabPanel>
+  )
+}
+
+const CurrentPlayerInfoPanel = ({
   brandId,
   brand,
   playerCode = "",

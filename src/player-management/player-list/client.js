@@ -7,6 +7,10 @@ import {
   useDelete,
   usePatchData
 } from "../../client"
+import { isEmpty, isNil } from "lodash-es"
+import { either } from "ramda"
+
+let isNilOrEmpty = either(isNil, isEmpty)
 
 export let API = "/api/player"
 
@@ -29,20 +33,145 @@ export const useEditPlayerInfo = (playerCode, data) => {
   return usePutData(url, data)
 }
 
-//TODO
-export const useUpdatePlayerInfo = (
-  playerCode,
-  ...[infoData, statusData, agentData, allAgentPlayerData]
-) => {}
+const UpdatePlayerFormDataField = {
+  Info: "info",
+  Status: "status",
+  Agent: "agent",
+  AllAgentPlayer: "allAgentPlayer"
+}
 
-//TODO
-export const useUpdatePlayerStatus = (playerCode, data) => {}
+export const toUpdatePlayerFormData = (data) => {
+  if (isNil(data)) {
+    return data
+  }
 
-//TODO
-export const useUpdatePlayerAgent = (playerCode, data) => {}
+  let {
+    status,
+    agentUsername,
+    parentUsername: parentPlayerUsername,
+    ...info
+  } = data
 
-//TODO
-export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {}
+  return {
+    info,
+    status: isNilOrEmpty(status) ? null : { status },
+    agent: isNilOrEmpty(agentUsername) ? null : { agentUsername },
+    allAgentPlayer: isNilOrEmpty(parentPlayerUsername)
+      ? null
+      : { parentPlayerUsername }
+  }
+}
+
+export const useUpdatePlayer = (playerCode, data) => {
+  let items = [
+    useUpdatePlayerInfo(
+      playerCode,
+      data && Reflect.get(data, UpdatePlayerFormDataField.Info)
+    ),
+    useUpdatePlayerStatus(
+      playerCode,
+      data && Reflect.get(data, UpdatePlayerFormDataField.Status)
+    ),
+    useUpdatePlayerAgent(
+      playerCode,
+      data && Reflect.get(data, UpdatePlayerFormDataField.Agent)
+    ),
+    useUpdatePlayerAllAgentPlayer(
+      playerCode,
+      data && Reflect.get(data, UpdatePlayerFormDataField.AllAgentPlayer)
+    )
+  ]
+
+  let isLoading = items.findIndex(({ isLoading }) => isLoading == true) >= 0
+
+  let result = items.reduce(
+    (accum, item, index, list) => {
+      if (isNil(accum)) {
+        return accum
+      }
+
+      if (item.hasUrl) {
+        accum = item.result
+      }
+
+      return accum
+    },
+    data ? true : false
+  )
+
+  let error = items.find(({ error }) => !isNil(error))?.error
+
+  let mutate = (_, shouldRevalidate) =>
+    items.forEach(({ mutate }) => {
+      mutate(_, shouldRevalidate)
+    })
+
+  let deleteCache = () =>
+    items.forEach(({ deleteCache }) => {
+      deleteCache()
+    })
+
+  return {
+    isLoading,
+    result,
+    error,
+    mutate,
+    deleteCache
+  }
+}
+
+export const useUpdatePlayerInfo = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/info/${playerCode}` : ""
+
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
+}
+
+export const useUpdatePlayerStatus = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/status/${playerCode}` : ""
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
+}
+
+export const useUpdatePlayerAgent = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/agent/${playerCode}` : ""
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
+}
+
+export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/parent-player/${playerCode}` : ""
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
+}
 
 //TODO: rm? or use original
 export const useEditPlayerContact = (playerCode, data) => {
@@ -52,7 +181,10 @@ export const useEditPlayerContact = (playerCode, data) => {
 
 export const useUpdatePlayerContact = (playerCode, data) => {
   let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
-  return usePatchData(url, data)
+  return usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
 }
 
 export const useAddPlayerBank = (playerCode, data) => {

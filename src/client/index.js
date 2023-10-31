@@ -93,6 +93,7 @@ const fetchApi = async (
   url,
   { headers = {}, body, data, ...options } = {}
 ) => {
+  let dropEmptyValuesDisabled = options?.dropEmptyValuesDisabled ?? false
   if (!headers["Accept-Language"]) {
     headers["Accept-Language"] = getAcceptLangCulture()
   }
@@ -107,7 +108,9 @@ const fetchApi = async (
   return fetch(url, {
     method,
     headers,
-    body: body ?? JSON.stringify(dropEmptyValues(data)),
+    body:
+      body ??
+      JSON.stringify(dropEmptyValuesDisabled ? data : dropEmptyValues(data)),
     ...options
   })
     .catch((error) => {
@@ -274,14 +277,26 @@ export const usePut = (url, settings, options = DefaultUpdateOptions) => {
   }
 }
 
-export const usePatchData = (url, data, options = DefaultUpdateOptions) => {
+export const usePatchData = (
+  url,
+  data,
+  { dropEmptyValuesDisabled = false, ...options } = DefaultUpdateOptions
+) => {
   let keys = url ? [url, data] : null
   let {
     data: result,
     error,
     isValidating,
     mutate
-  } = useSWR(keys, (url, data) => patch(url, { data }), options)
+  } = useSWR(
+    keys,
+    (url, data) =>
+      patch(url, {
+        data,
+        dropEmptyValuesDisabled
+      }),
+    options
+  )
 
   return {
     result,
