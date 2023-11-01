@@ -77,7 +77,8 @@ const useAllAgentRebateData = (searchParams) => {
     rebateList && rebateTotalAmount
       ? {
           items: rebateList,
-          total: rebateTotalAmount
+          total: rebateTotalAmount,
+          totalCount: rebateTotalAmount.totalCount
         }
       : undefined
   return {
@@ -103,8 +104,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
     username: "",
     from: dateRange.start,
     to: dateRange.end,
-    sortBy: [{ id: "settleDateTime", desc: true }],
-    pageSize: 5
+    sortBy: [{ id: "settleDateTime", desc: true }]
   })
 
   useEffect(() => {
@@ -171,7 +171,6 @@ export const AllAgentRebateReport = ({ brandId }) => {
                 pageCount={pageCount(state.pageSize, data?.totalCount)}
                 setPageIndex={setPageIndex}
                 setSortOrder={setSortOrder}
-                autoPaging={true}
                 isLoading={isLoading}
                 maxSize={{ height, width }}
                 stickyHead
@@ -201,9 +200,9 @@ const SearchBar = ({ username, from, to, search, isLoading }) => {
 
   const onSubmit = (data) => search?.(data)
 
-  let QueryMaxRangeDays = 3
+  let QueryMaxRangeDays = 14
   let todayRange = today()
-  let DataRetentionDays = 30
+  let DataRetentionDays = 90
   let minDate = subDays(todayRange.start, DataRetentionDays)
   let maxDate = todayRange.end
 

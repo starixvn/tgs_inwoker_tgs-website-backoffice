@@ -12,34 +12,35 @@ import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-console.warn("seprate & update player test")
-test.skip("edit and view player info", async ({
+test("update player agent", async ({
   page,
   platformCode,
   player,
+  agent,
   backofficeApi
 }) => {
   await gotoPlayerListPage(page, platformCode)
   await searchPlayer(page, player)
 
-  let updated = await editPlayerInfo(page, player)
+  let agentUsername = agent.username
+  await updatePlayerAgent(page, player, agentUsername)
+
   let playerRecord = await backofficeApi.player.getPlayer(player.code)
-  expect(playerRecord.realName).to.equals(updated.realName)
+  expect(playerRecord.agentUsername).to.equals(agentUsername)
 })
 
-const editPlayerInfo = async (page, player) => {
+const updatePlayerAgent = async (page, player, agentUsername) => {
   let dialogSelector = await openEditPlayerDialog(page)
 
-  let info = {
-    realName: faker.person.firstName()
-  }
-
-  await page.fill(`${dialogSelector} input[name="realName"]`, info.realName)
+  await page.fill(
+    `${dialogSelector} input[name="agentUsername"]`,
+    agentUsername
+  )
 
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes(`/api/player/${player.code}/info`) &&
+        response.url().includes(`/api/player/agent/${player.code}`) &&
         response.status() === 200
       )
     }),
@@ -47,6 +48,4 @@ const editPlayerInfo = async (page, player) => {
       `${dialogSelector} [aria-labelledby="player"] button[type="submit"]`
     )
   ])
-
-  return info
 }

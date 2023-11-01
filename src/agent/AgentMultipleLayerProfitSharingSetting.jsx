@@ -197,7 +197,6 @@ const SettingDisclosure = ({
                 onChange={(data) => {
                   let editable = !readOnly
                   if (editable) {
-                    console.log("setValue", data)
                     setValue(name, data, { shouldValidate: true })
                   }
                 }}
