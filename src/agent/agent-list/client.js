@@ -45,6 +45,20 @@ export const useUpdateAgent = (agentId, data) => {
   return usePutData(url, data)
 }
 
+export const useUpdateAgentContact = (agentId, data) => {
+  let url = agentId && data ? `${API}/contact/${agentId}` : ""
+
+  return usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+}
+
+export const useUpdateAgentLoginPassword = (agentId, password) => {
+  let url = agentId && password ? `${API}/password/${agentId}/${password}` : ""
+  return usePatchData(url)
+}
+
 export const useUpdateAgentWithdrawPassword = (data) => {
   let url = data ? `${API}/pay-password` : ""
   return usePatchData(url, data)
@@ -63,6 +77,16 @@ export const useUpdateAgentBank = (id, data) => {
 export const useDeleteAgentBank = (id) => {
   let url = id ? `${API}/bank/${id}` : ""
   return useDelete(url)
+}
+
+export const useAgentHistoryList = (agentId, searchParams) => {
+  let url = agentId ? urlWith(searchParams, `${API}/histories/${agentId}`) : ""
+  return useGet(url)
+}
+
+export const useAgentHistory = (eventId) => {
+  let url = eventId ? `${API}/history/${eventId}` : ""
+  return useGet(url)
 }
 
 export const useAgentOperations = (agentId, searchParams) => {
