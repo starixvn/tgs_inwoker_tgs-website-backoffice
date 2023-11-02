@@ -108,6 +108,7 @@ import {
   isAgentProfitSharingMultipleLayer
 } from "../AgentProfitSharingType"
 import { useBrand } from "../../merchant/platforms/client"
+import { AgentHistoryListPanel, AgentHistoryListTab } from "./AgentHistoryList"
 
 export const AddAgentButton = ({
   brandId,
@@ -782,6 +783,7 @@ const TabsDialog = ({
 }
 
 const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
+  let enableAgentHistory = isDev()
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -789,6 +791,7 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         <AgentContactInfoTab {...tab} />
         {/* <AgentBankInfoTab {...tab} /> */}
         <AgentOperationListTab {...tab} />
+        {enableAgentHistory && <AgentHistoryListTab {...tab} />}
         <AgentBalanceChangeTab {...tab} />
         <AgentDomainListTab {...tab} />
       </TabList>
@@ -807,6 +810,13 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         brandId={brandId}
         {...tab}
       />
+      {enableAgentHistory && (
+        <AgentHistoryListPanel
+          agentId={record?.id}
+          brandId={brandId}
+          {...tab}
+        />
+      )}
       <AgentBalanceChangePanel
         brandId={brandId}
         agentId={record?.id}
