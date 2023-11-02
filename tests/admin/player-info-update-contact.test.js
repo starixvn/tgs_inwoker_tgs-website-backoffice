@@ -14,7 +14,7 @@ import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-test("edit and view player contact info", async ({
+test("update player contact", async ({
   page,
   platformCode,
   player,
