@@ -21,9 +21,10 @@ import { SubmitCancel } from "../../button/ActionButtons"
 import { Tab as _Tab, TabPanel } from "../../tab"
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import Input from "../../input/Input"
-import { useAgent, useUpdateAgent } from "./client"
+import { useAgent, useUpdateAgent, useUpdateAgentLoginPassword } from "./client"
 import clone from "clone-deep"
 import { PasswordInputField } from "../../input/PasswordInput"
+import { isDev } from "../../env"
 
 const Key = "AgentPassword"
 
@@ -35,7 +36,81 @@ export const AgentPasswordTab = ({ ...props }) => {
   )
 }
 
-export const AgentPasswordPanel = ({
+export const AgentPasswordPanel = (props) => {
+  return isDev() ? (
+    <UpdateAgentLoginPasswordPanel {...props} />
+  ) : (
+    <CurrentAgentLoginPasswordPanel {...props} />
+  )
+}
+
+const UpdateAgentLoginPasswordPanel = ({
+  record,
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
+  let agentId = record?.id
+  let formMethods = useForm({
+    defaultValues: {}
+  })
+  let { watch } = formMethods
+  let password = watch("password")
+
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } =
+    useUpdateAgentLoginPassword(agentId, formData)
+
+  useEffect(() => {
+    if (result) {
+      onSubmitted?.()
+    }
+  }, [result])
+
+  const onSubmit = ({ password }) => {
+    setSubmit(password)
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+
+  return (
+    <TabPanel tabId={Key} {...props}>
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <Stack>
+            <FieldValues>
+              <Trans zh="新密码" en="New password" />
+              <Box>
+                <PasswordInputField name="password" />
+              </Box>
+
+              <Trans zh="确认新密码" en="Confirm password" />
+              <Box>
+                <PasswordInputField
+                  name="confirmPassword"
+                  matchPassword={password}
+                />
+              </Box>
+            </FieldValues>
+            <Box alignX="right">
+              <SubmitCancel
+                isLoading={isLoading}
+                onClickCancel={onClickClose}
+              />
+            </Box>
+          </Stack>
+        </form>
+      </FormProvider>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+    </TabPanel>
+  )
+}
+
+const CurrentAgentLoginPasswordPanel = ({
   record,
   onSubmitted,
   onClickClose,
