@@ -3,7 +3,6 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { last } from "lodash-es"
 import { selectPlatformByCode } from "../page/content.js"
-import faker from "@faker-js/faker"
 import { gotoPlatformListPage, addPlatform } from "./platform-list-page.js"
 import {
   AgentDividendType,
@@ -19,7 +18,6 @@ import {
 } from "./platform-setting-page.js"
 
 const test = base.extend(Fixture)
-const { lorem, internet } = faker
 
 test("add multiple layer agents", async ({ page, licensee, backofficeApi }) => {
   let platform = await backofficeApi.platform.addPlatform({

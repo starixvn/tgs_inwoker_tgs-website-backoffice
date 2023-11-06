@@ -8,7 +8,12 @@ import {
 } from "../client"
 
 //TODO: rm fake data
-export const usePlatformBucketList = (platformId) => {
+const PlayerBucketAPI = "/api/player/bucket"
+export const usePlatformBucketList = (id) => {
+  let url = id ? `${PlayerBucketAPI}/by-brand/${id}` : ""
+  return useGet(url)
+
+  /*
   let data = [
     {
       type: "Main"
@@ -40,4 +45,5 @@ export const usePlatformBucketList = (platformId) => {
     mutate: () => {},
     deleteCache: () => {}
   }
+  */
 }

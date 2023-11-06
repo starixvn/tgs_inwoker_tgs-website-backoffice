@@ -5,10 +5,9 @@ import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { fillDatePicker } from "../fill.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-const { lorem } = faker
 
 test("add -> reject -> reject announcement", async ({ page }) => {
   let brandId = await gotoPlatformAnnouncementPage(page)
@@ -185,8 +184,8 @@ const editEffectiveAnnouncement = async (
 
   const NewAnnouncement = {
     ...announcement,
-    subject: lorem.word(),
-    content: lorem.sentence()
+    subject: faker.lorem.word(),
+    content: faker.databaselorem.sentence()
   }
 
   await page.fill(
@@ -264,10 +263,10 @@ const addAnnouncement = async (page) => {
   let from = startOfDay(new Date())
   let to = endOfTomorrow(new Date())
   const Announcement = {
-    subject: lorem.word(),
+    subject: faker.lorem.word(),
     from: format(from, "yyyy/MM/dd"),
     to: format(to, "yyyy/MM/dd"),
-    content: lorem.sentence()
+    content: faker.lorem.sentence()
   }
 
   await page.fill(

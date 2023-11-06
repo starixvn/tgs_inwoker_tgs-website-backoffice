@@ -197,7 +197,7 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
       </Text.Block>
       {batchStartedResultError && (
         <AlertDialog
-          {...importBatchResultError}
+          {...batchStartedResultError}
           placement="center"
           onClickClose={reset}
         />

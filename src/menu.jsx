@@ -10,12 +10,12 @@ import { Link, useLocation } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
 import { usePage, SideNav, Box, Level, Icon, Button } from "bumbag"
 import memoize from "fast-memoize"
-import { codeMenuContentPair as dashboardPair } from "./dashboard"
+import { codeMenuContentPair as overviewPair } from "./overview"
 import {
-  Code as DashboardCode,
-  nameMessages as DashboardNameMessages,
-  codeLabelPair as dashboardLabelPair
-} from "./dashboard/menu"
+  Code as OvewviewCode,
+  nameMessages as OverviewNameMessages,
+  codeLabelPair as overviewLabelPair
+} from "./overview/menu"
 import { codeMenuContentPair as platformPair } from "./platform-management"
 import {
   Code as PlatformCode,
@@ -229,7 +229,7 @@ const MenuItem = ({ code, path, label, sidebar, isActive, ...props }) => {
 }
 
 export const allMenuContentPairs = () => [
-  dashboardPair,
+  overviewPair,
   platformPair,
   promotionPair,
   playerManagementPair,
@@ -261,7 +261,7 @@ export const useLabel = ({ codes = [] }) => {
   let locale = useLocale()
   let label = moduleLabel
   let subLabelPairs = [
-    dashboardLabelPair,
+    overviewLabelPair,
     playerManagementLabelPair,
     agentManagementLabelPair,
     systemLabelPair,
@@ -301,8 +301,8 @@ export const findlLabel = ({ locale, codes = [], label, subLabelPairs }) => {
 
 const moduleLabel = ({ code = "", locale }) => {
   switch (code) {
-    case DashboardCode:
-      return getTrans(DashboardNameMessages, locale)
+    case OvewviewCode:
+      return getTrans(OverviewNameMessages, locale)
     case PlatformCode:
       return getTrans(PlatformNameMessages, locale)
     case PromotionCode:

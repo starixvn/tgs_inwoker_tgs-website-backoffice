@@ -2,13 +2,11 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import faker from "@faker-js/faker"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { searchByFormId } from "./fund-deposit-page.js"
 
 const test = base.extend(Fixture)
-const { finance } = faker
 
 test("approve player deposit", async ({
   page,

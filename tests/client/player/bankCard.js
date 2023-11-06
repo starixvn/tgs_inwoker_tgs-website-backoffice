@@ -1,6 +1,6 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { firstBankManualWithdrawPayment } from "../platform/withdrawPayment.js"
 
 const API = "api/player"
@@ -28,10 +28,10 @@ export const add = async ({
     paymentChannelId = platformPayment?.paymentChannelId
 
     detail = {
-      bankAccount: faker.finance.account(),
+      bankAccount: faker.finance.accountNumber(),
       bankBranch: faker.lorem.word(),
-      bankName: faker.company.companyName(),
-      name: faker.name.firstName()
+      bankName: faker.company.name(),
+      name: faker.person.firstName()
     }
   }
 

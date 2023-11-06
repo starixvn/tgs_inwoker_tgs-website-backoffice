@@ -1,13 +1,17 @@
 import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
-import { Routes as _Routes, Route } from "react-router-dom"
+import { Routes as _Routes, Route, Navigate } from "react-router-dom"
 import { useMenuCodes } from "./user/context"
 import { RequireAuth } from "./user/auth"
 import PageNotFound from "./page/NotFound"
 import { allMenuContentPairs } from "./menu"
 import { PageContent } from "bumbag"
-import { Code as DashboardCode } from "./dashboard/menu"
-import { DashboardContent } from "./dashboard"
+import { Code as OverviewCode } from "./overview/menu"
+import {
+  Code as PlatformCode,
+  View as ViewPlatformOverview
+} from "./overview/platform/menu"
+import { OverviewContent } from "./overview"
 
 export const Routes = ({ codes, path, pairs = [], ...props }) => {
   let authCodes = useMenuCodes(path)
@@ -34,12 +38,18 @@ export const AllContents = ({ codes }) => {
   codes = codes ?? authCodes
   let list = allMenuContentPairs()
 
-  // let hasDashboard = codes.includes(DashboardCode)
+  let hasPlatformOverviewAuth = useMenuCodes([
+    OverviewCode,
+    PlatformCode
+  ])?.includes(ViewPlatformOverview)
+
+  //TODO: auto redirect to overview?
+  // let hasDashboard = codes.includes(OverviewCode)
   return (
     <_Routes>
-      {/* <Route path="/" element={<DashboardContent />} /> */}
+      {/* <Route path="/" element={<OverviewContent />} /> */}
       {codes
-        // .filter((code) => code != DashboardCode)
+        // .filter((code) => code != OverviewCode)
         .map((code) => {
           let path = `${code}/*`
 
@@ -56,7 +66,18 @@ export const AllContents = ({ codes }) => {
           )
         })}
 
-      <Route path="*" element={<PageContent></PageContent>} />
+      <Route
+        path="*"
+        element={
+          <RequireAuth>
+            {hasPlatformOverviewAuth ? (
+              <Navigate to={`/${OverviewCode}/${PlatformCode}`} />
+            ) : (
+              <PageContent></PageContent>
+            )}
+          </RequireAuth>
+        }
+      />
     </_Routes>
   )
 }

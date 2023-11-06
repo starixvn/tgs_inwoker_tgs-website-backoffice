@@ -1,0 +1,18 @@
+kind: Module
+type: container
+name: game-wagers-reset
+image: pgtgs/game-gamewagers-reset:202309230527.11
+services:
+  - name: game-wagers-reset
+    dependencies:
+      - postgres
+      - nats
+      - mongodb
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      ConnectionStrings__Mongo: "mongodb://root:1qaz2wsx!%40@mongodb/filedb?retryWrites=true&w=majority&authSource=admin"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80

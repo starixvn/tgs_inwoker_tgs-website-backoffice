@@ -4,9 +4,13 @@ import {
   usePostData,
   usePut,
   usePutData,
-  useDelete
+  useDelete,
+  usePatchData
 } from "../../client"
-import { repeat } from "ramda"
+import { isEmpty, isNil } from "lodash-es"
+import { either } from "ramda"
+
+let isNilOrEmpty = either(isNil, isEmpty)
 
 export let API = "/api/player"
 
@@ -29,9 +33,158 @@ export const useEditPlayerInfo = (playerCode, data) => {
   return usePutData(url, data)
 }
 
+const UpdatePlayerFormDataField = {
+  Info: "info",
+  Status: "status",
+  Agent: "agent",
+  AllAgentPlayer: "allAgentPlayer"
+}
+
+export const toUpdatePlayerFormData = (data) => {
+  if (isNil(data)) {
+    return data
+  }
+
+  let {
+    status,
+    agentUsername,
+    parentUsername: parentPlayerUsername,
+    ...info
+  } = data
+
+  return {
+    info,
+    status: isNilOrEmpty(status) ? null : { status },
+    agent: isNilOrEmpty(agentUsername) ? null : { agentUsername },
+    allAgentPlayer: isNilOrEmpty(parentPlayerUsername)
+      ? null
+      : { parentPlayerUsername }
+  }
+}
+
+export const useUpdatePlayer = (playerCode, data) => {
+  let items = [
+    useUpdatePlayerInfo(
+      playerCode,
+      data && Reflect.get(data, UpdatePlayerFormDataField.Info)
+    ),
+    useUpdatePlayerStatus(
+      playerCode,
+      data && Reflect.get(data, UpdatePlayerFormDataField.Status)
+    ),
+    useUpdatePlayerAgent(
+      playerCode,
+      data && Reflect.get(data, UpdatePlayerFormDataField.Agent)
+    ),
+    useUpdatePlayerAllAgentPlayer(
+      playerCode,
+      data && Reflect.get(data, UpdatePlayerFormDataField.AllAgentPlayer)
+    )
+  ]
+
+  let isLoading = items.findIndex(({ isLoading }) => isLoading == true) >= 0
+
+  let result = items.reduce(
+    (accum, item, index, list) => {
+      if (isNil(accum)) {
+        return accum
+      }
+
+      if (item.hasUrl) {
+        accum = item.result
+      }
+
+      return accum
+    },
+    data ? true : false
+  )
+
+  let error = items.find(({ error }) => !isNil(error))?.error
+
+  let mutate = (_, shouldRevalidate) =>
+    items.forEach(({ mutate }) => {
+      mutate(_, shouldRevalidate)
+    })
+
+  let deleteCache = () =>
+    items.forEach(({ deleteCache }) => {
+      deleteCache()
+    })
+
+  return {
+    isLoading,
+    result,
+    error,
+    mutate,
+    deleteCache
+  }
+}
+
+export const useUpdatePlayerInfo = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/info/${playerCode}` : ""
+
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
+}
+
+export const useUpdatePlayerStatus = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/status/${playerCode}` : ""
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
+}
+
+export const useUpdatePlayerAgent = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/agent/${playerCode}` : ""
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
+}
+
+export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/parent-player/${playerCode}` : ""
+  let rest = usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+
+  return {
+    hasUrl: !isEmpty(url),
+    ...rest
+  }
+}
+
+//TODO: rm? or use original
 export const useEditPlayerContact = (playerCode, data) => {
   let url = playerCode ? `${API}/${playerCode}/contact` : ""
   return usePutData(url, data)
+}
+
+export const useUpdatePlayerContact = (playerCode, data) => {
+  let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
+  return usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
 }
 
 export const useAddPlayerBank = (playerCode, data) => {
@@ -54,15 +207,34 @@ export const useSetDefaultPlayerBank = (playerCode, id) => {
   return usePut(url)
 }
 
+//TODO: rm
 export const useEditPlayerPassword = (playerCode, data) => {
   let url = playerCode ? `${API}/${playerCode}/password` : ""
   return usePutData(url, data)
+}
+
+export const useUpdatePlayerPassword = (playerCode, password) => {
+  let url =
+    playerCode && password ? `${API}/password/${playerCode}/${password}` : ""
+  return usePatchData(url)
 }
 
 export const useOperations = (playerCode, searchParams) => {
   let url = playerCode
     ? urlWith(searchParams, `${API}/${playerCode}/operations`)
     : ""
+  return useGet(url)
+}
+
+export const usePlayerHistoryList = (playerCode, searchParams) => {
+  let url = playerCode
+    ? urlWith(searchParams, `${API}/histories/${playerCode}`)
+    : ""
+  return useGet(url)
+}
+
+export const usePlayerHistory = (eventId) => {
+  let url = eventId ? `${API}/history/${eventId}` : ""
   return useGet(url)
 }
 
@@ -132,8 +304,27 @@ export const useClearPlayerWageringRequirement = (playerCode) => {
   return useDelete(url)
 }
 
+export const usePlayerBucketList = (playerCode) => {
+  let url = playerCode ? `${PlayerBucketApi}/type/amount/${playerCode}` : ""
+  return useGet(url)
+}
+
 export const usePlayerBucketAmount = (playerCode) => {
   let url = playerCode ? `${PlayerBucketApi}/amount/${playerCode}` : ""
+  return useGet(url)
+}
+
+export const usePlayerBucketItems = (
+  playerCode,
+  bucketType = "",
+  searchParams
+) => {
+  let url = playerCode
+    ? urlWith(
+        searchParams,
+        `${PlayerBucketApi}/${playerCode}${bucketType ? `/${bucketType}` : ""}`
+      )
+    : ""
   return useGet(url)
 }
 
@@ -197,51 +388,4 @@ export const usePlayerVipChangeList = (playerCode, searchParams) => {
 export const usePlayerPayment = (playerCode) => {
   let url = playerCode ? `${API}/payment/${playerCode}` : ""
   return useGet(url)
-}
-
-//TODO:
-export const usePlayerBucketList = (playerCode) => {
-  let data = [
-    {
-      type: "Main",
-      amount: 800
-    },
-    {
-      type: "LiveDealer",
-      amount: 0
-    },
-    {
-      type: "Sports",
-      amount: 450
-    },
-    {
-      type: "EGame",
-      amount: 450
-    },
-    {
-      type: "CardGame",
-      amount: 0
-    },
-    {
-      type: "VirtualSports",
-      amount: 0
-    },
-    {
-      type: "Lottery",
-      amount: 0
-    }
-  ]
-
-  return {
-    data,
-    error: undefined,
-    isLoading: false,
-    mutate: () => {},
-    deleteCache: () => {}
-  }
-}
-
-//TODO: use different api?
-export const usePlayerBucketItems = (playerCode, searchParams) => {
-  return usePlayerWageringRequirementList(playerCode, searchParams)
 }

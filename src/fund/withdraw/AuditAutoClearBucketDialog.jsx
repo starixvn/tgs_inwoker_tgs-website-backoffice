@@ -37,6 +37,7 @@ import {
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Modal from "../../dialog/Modal"
 import { PlayerAutoClearBucketReport } from "./PlayerAutoClearBucketReport"
+import { isDev } from "../../env"
 
 export const AuditAutoClearBucketDialogDisclosure = ({
   brandId,
@@ -140,14 +141,13 @@ const Body = ({
         prefetchedData={playerOpenOrderData}
         padding="1rem"
       />
-      {/* 
-      TODO: rm
-      <PlayerAutoClearBucketReport
-        playerCode={playerCode}
-        prefetchedData={playerAutoClearBucketData}
-        padding="1rem"
-      /> 
-      */}
+      {isDev() && (
+        <PlayerAutoClearBucketReport
+          playerCode={playerCode}
+          prefetchedData={playerAutoClearBucketData}
+          padding="1rem"
+        />
+      )}
     </Box>
   )
 }

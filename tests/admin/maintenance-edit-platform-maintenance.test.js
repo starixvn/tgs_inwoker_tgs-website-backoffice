@@ -5,11 +5,10 @@ import { fillDatePicker } from "../fill.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
 import { random } from "lodash-es"
 
 const test = base.extend(Fixture)
-const { finance, lorem } = faker
+
 test("platform maintenance edit platform maintenance time", async ({
   page,
   platform

@@ -1,7 +1,7 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import numeral from "numeral"
@@ -26,12 +26,23 @@ test("edit and view agent domain list", async ({
   ])
 
   await searchAgent(page, agent.username)
-  await deleteDomain(page, domain)
+  await deleteDomain(page, domain, platform, agent)
 })
 
-const deleteDomain = async (page, domain) => {
+const deleteDomain = async (page, domain, platform, agent) => {
   let editDialogSelector = await openEditAgentDialog(page)
-  await page.click(`${editDialogSelector} #AgentDomainList`)
+  await Promise.all([
+    page.waitForResponse((response) => {
+      let url = response.url()
+      let isApi = url.includes(`/api/agent/domain/${platform.id}/${agent.id}`)
+      if (isApi && !response.ok()) {
+        return Error(`api /api/agent/domain/{platform.id}/{agent.id} failed`)
+      }
+
+      return isApi
+    }),
+    page.click(`${editDialogSelector} #AgentDomainList`)
+  ])
 
   let inputLocator = await page.locator(
     `${editDialogSelector} [aria-labelledby="AgentDomainList"] input[type="text"]`

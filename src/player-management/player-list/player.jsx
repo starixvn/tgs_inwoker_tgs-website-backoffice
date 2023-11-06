@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
-import { useEditPlayerInfo } from "./client"
+import {
+  useEditPlayerInfo,
+  useUpdatePlayer,
+  toUpdatePlayerFormData
+} from "./client"
 import {
   Spinner,
   Stack,
@@ -40,12 +44,12 @@ import { PlayerClearWageringRequirementDisclosure } from "./PlayerClearWageringR
 import { useIsAdminUser } from "../../user/context"
 import { isDev } from "../../env"
 import { DateInput } from "../../date/DateInput"
-import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirementDialog"
 import Textarea from "../../textarea"
 import { isValid, parse } from "date-fns"
 import { defaultFormatDate } from "../../date/format"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { PlayerBucketListDialogDisclosure } from "./PlayerBucketList"
+import { diff } from "../../object/diff"
 
 export const Key = "player"
 
@@ -57,7 +61,92 @@ export const Tab = ({ ...props }) => {
   )
 }
 
-export const EditPanel = ({
+export const EditPanel = (props) => {
+  return isDev() ? (
+    <UpdatePlayerInfoPanel {...props} />
+  ) : (
+    <CurrentPlayerInfoPanel {...props} />
+  )
+}
+
+const UpdatePlayerInfoPanel = ({
+  brandId,
+  brand,
+  playerCode = "",
+  player,
+  showParentUsername,
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
+  let defaultValues = clone({
+    ...player,
+    birthdate: parse(player?.birthdate ?? "", "yyyy/MM/dd", new Date())
+  })
+
+  let formMethods = useForm({
+    defaultValues
+  })
+
+  let [submitData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } = useUpdatePlayer(
+    playerCode,
+    submitData
+  )
+
+  const reset = () => {
+    deleteCache()
+    mutate(null, false)
+    setSubmit(undefined)
+  }
+
+  useEffect(() => {
+    if (result && !error) {
+      reset()
+      onSubmitted?.()
+    }
+  }, [result])
+
+  const onSubmit = ({ birthdate, wageringRequirement: _, ...data } = {}) => {
+    //drop wageringRequirement not updatable value
+
+    //TODO: reset birthdate to empty value?
+    birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : birthdate
+
+    let formData = diff(
+      {
+        birthdate,
+        ...data
+      },
+      player
+    )
+    setSubmit(toUpdatePlayerFormData(formData))
+  }
+
+  return (
+    <TabPanel tabId={Key} {...props}>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <EditForm
+            brandId={brandId}
+            brand={brand}
+            playerCode={playerCode}
+            player={player}
+            showParentUsername={showParentUsername}
+            isLoading={isLoading}
+            onClickClose={() => {
+              reset()
+              onClickClose?.()
+            }}
+          />
+        </form>
+      </FormProvider>
+    </TabPanel>
+  )
+}
+
+const CurrentPlayerInfoPanel = ({
   brandId,
   brand,
   playerCode = "",
@@ -338,14 +427,7 @@ export const Panel = ({
         </Box>
         <Set>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
-          <PlayerWageringRequirementDialogDisclosure
-            id="wagering-requirement-dialog-disclosure"
-            playerCode={player.playerCode}
-          />
-          {/* 
-          TODO: test case
           <PlayerBucketListDialogDisclosure playerCode={player.playerCode} />
-          */}
         </Set>
 
         <StatusLabel />
@@ -387,17 +469,19 @@ export const Panel = ({
   )
 }
 
-const UserNameLabel = () => <Trans zh="用户名" en="User name" />
+export const UserNameLabel = () => <Trans zh="用户名" en="User name" />
 
-const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
+export const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
 
-const BirthdayLabel = () => <Trans zh="生日" en="Birthday" />
+export const BirthdayLabel = () => <Trans zh="生日" en="Birthday" />
 
 const IdentityCardNumberLabel = () => <Trans zh="身分证" en="IC Number" />
 
-const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
+export const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
 
-const AgentUsernameLabel = () => <Trans zh="上级代理" en="Upper Level Agent" />
+export const AgentUsernameLabel = () => (
+  <Trans zh="上级代理" en="Upper Level Agent" />
+)
 
 const AllAgentUpperLevelLabel = () => (
   <Trans zh="全民代理上級" en="All Agent Upper Level" />
@@ -409,9 +493,9 @@ const WageringRequirementLabel = () => (
   <Trans zh="需滿足提款金額" en="Wagering requirement" />
 )
 
-const StatusLabel = () => <Trans zh="状态" en="Status" />
+export const StatusLabel = () => <Trans zh="状态" en="Status" />
 
-const RemarkLabel = () => <Trans zh="备注" en="Remark" />
+export const RemarkLabel = () => <Trans zh="备注" en="Remark" />
 
 const RegisterIPLabel = () => <Trans zh="注册IP地址" en="Register IP" />
 

@@ -4,11 +4,9 @@ import { expect } from "chai"
 import { openDialog } from "../page/dialog.js"
 import { selectByValue, selectRandomOption } from "../page/select.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-
-const { name, lorem, phone } = faker
 
 test("player deposit form > apply bank transfer", async ({
   page,
@@ -30,12 +28,14 @@ test("player deposit form > apply bank transfer", async ({
       bankType: eWalletPaymentMethod.bankType,
       paymentChannelId: eWalletManualWithdrawPayment.paymentChannelId,
       detail: {
-        eMoneyName: name.firstName(),
+        eMoneyName: faker.person.firstName(),
         phone: "123456"
       }
     }),
     gotoPlayerListPage(page, platform.code)
   ])
+
+  await searchPlayer(page, player)
 
   let dialogSelector = `#apply-deposit-form-dialog`
   await Promise.all([
@@ -46,10 +46,15 @@ test("player deposit form > apply bank transfer", async ({
       )
     }),
     page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/${player.code}`) &&
-        response.status() === 200
-      )
+      let url = response.url()
+      let isApi = url.includes(`/api/player/${player.code}`)
+      if (isApi && !response.ok()) {
+        throw Error(
+          `get player api failed [ /api/player/${player.code} ] error`
+        )
+      }
+
+      return isApi
     }),
     openDialog(page, dialogSelector)
   ])
@@ -78,7 +83,7 @@ test("player deposit form > apply bank transfer", async ({
 
   let form = {
     amount: 10,
-    note: lorem.word()
+    note: faker.lorem.word()
   }
 
   await page.fill(`${dialogSelector} input[name="amount"]`, `${form.amount}`)

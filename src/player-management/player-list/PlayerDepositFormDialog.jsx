@@ -45,8 +45,6 @@ import { InputField } from "../../input/Input"
 import { PlayerPromotionSelect } from "./PlayerPromotionSelect"
 import { TextareaField } from "../../textarea"
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
-import { isDev } from "../../env"
-import Select from "../../select/Select"
 import head from "../../list/head"
 
 export const PlayerDepositFormDialogDisclosure = ({
@@ -56,7 +54,7 @@ export const PlayerDepositFormDialogDisclosure = ({
   dialogId,
   ...props
 }) => {
-  let dialog = new useModalState()
+  let dialog = useModalState()
 
   let depositFormAuth = useIsDisplayMenuByRoute([DepositForm])
   if (!depositFormAuth) {

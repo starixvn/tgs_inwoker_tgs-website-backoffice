@@ -1,6 +1,5 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
-import faker from "@faker-js/faker"
 import { findByName } from "./list.js"
 
 const API = "api/promotion/rule"

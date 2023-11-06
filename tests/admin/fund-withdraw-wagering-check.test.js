@@ -1,7 +1,7 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
 import {
   gotoFundWithdraw,
@@ -11,7 +11,6 @@ import {
 import numeral from "numeral"
 
 const test = base.extend(Fixture)
-const { finance } = faker
 
 console.warn("TODO: fix auto clear bucket")
 test.skip("fund withdraw > audit clear bucket", async ({
@@ -45,8 +44,8 @@ test.skip("fund withdraw > audit clear bucket", async ({
       transferType: backofficeApi.platform.payment.TransferType.Deposit,
       paymentMethodChannelId: customBankManualPaymentMethodChannel.id,
       extendedData: {
-        name: finance.accountName(),
-        bankAccount: finance.account()
+        name: faker.finance.accountName(),
+        bankAccount: faker.finance.accountNumber()
       }
     })
 

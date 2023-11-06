@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { useEditPlayerContact } from "./client"
+import { useEditPlayerContact, useUpdatePlayerContact } from "./client"
 import { FormProvider, useForm } from "react-hook-form"
 import {
   Spinner,
@@ -25,6 +25,8 @@ import { AreaPhoneInputGruop } from "../../input/PhoneInput"
 import clone from "clone-deep"
 import { Contact } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
+import { diff } from "../../object/diff"
+import { isDev } from "../../env"
 
 export const Key = "contact"
 
@@ -74,7 +76,15 @@ export const Panel = ({ player = {}, ...props }) => {
   )
 }
 
-export const EditPanel = ({
+export const EditPanel = (props) => {
+  return isDev() ? (
+    <UpdateContactPanel {...props} />
+  ) : (
+    <CurrentPlayerContactPanel {...props} />
+  )
+}
+
+const CurrentPlayerContactPanel = ({
   playerCode = "",
   player = {},
   onSubmitted,
@@ -86,7 +96,10 @@ export const EditPanel = ({
   })
 
   let [submitData, setSubmit] = useState()
-  let { result, error, mutate } = useEditPlayerContact(playerCode, submitData)
+  let { result, error, mutate, clearCache } = useEditPlayerContact(
+    playerCode,
+    submitData
+  )
   useEffect(() => {
     if (result && !error) {
       onSubmitted && onSubmitted()
@@ -95,7 +108,10 @@ export const EditPanel = ({
 
   const onSubmit = setSubmit
 
-  const clearResult = () => setSubmit(null)
+  const reset = () => {
+    clearCache()
+    setSubmit(null)
+  }
 
   return (
     <TabPanel tabId={Key} {...props}>
@@ -104,7 +120,52 @@ export const EditPanel = ({
           <Body onClickClose={onClickClose} />
         </form>
       </FormProvider>
-      {error && <AlertDialog {...error} onClickClose={clearResult} />}
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+    </TabPanel>
+  )
+}
+
+const UpdateContactPanel = ({
+  playerCode = "",
+  player = {},
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
+  let formMethods = useForm({
+    defaultValues: clone(player)
+  })
+
+  let [submitData, setSubmit] = useState()
+  let { result, error, mutate, clearCache } = useUpdatePlayerContact(
+    playerCode,
+    submitData
+  )
+  useEffect(() => {
+    if (result && !error) {
+      onSubmitted && onSubmitted()
+    }
+  }, [result])
+
+  const onSubmit = (data) => {
+    let formData = diff(data, player)
+
+    setSubmit(formData)
+  }
+
+  const reset = () => {
+    clearCache()
+    setSubmit(null)
+  }
+
+  return (
+    <TabPanel tabId={Key} {...props}>
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <Body onClickClose={onClickClose} />
+        </form>
+      </FormProvider>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
     </TabPanel>
   )
 }
@@ -165,20 +226,20 @@ const Body = ({ onClickClose }) => {
   )
 }
 
-const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
+export const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
 
-const EmailLabel = () => <Trans zh="邮箱" en="Email" />
+export const EmailLabel = () => <Trans zh="邮箱" en="Email" />
 
-const QQLabel = () => <Trans zh="QQ" en="QQ" />
+export const QQLabel = () => <Trans zh="QQ" en="QQ" />
 
-const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
+export const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
 
-const TelegramLabel = () => <Trans zh="Telegram" en="Telegram" />
+export const TelegramLabel = () => <Trans zh="Telegram" en="Telegram" />
 
-const ViberLabel = () => <Trans zh="Viber" en="Viber" />
+export const ViberLabel = () => <Trans zh="Viber" en="Viber" />
 
-const MessengerLabel = () => <Trans zh="Messenger" en="Messenger" />
+export const MessengerLabel = () => <Trans zh="Messenger" en="Messenger" />
 
-const LineLabel = () => <Trans zh="Line" en="Line" />
+export const LineLabel = () => <Trans zh="Line" en="Line" />
 
-const WhatsappLabel = () => <Trans zh="Whatsapp" en="Whatsapp" />
+export const WhatsappLabel = () => <Trans zh="Whatsapp" en="Whatsapp" />

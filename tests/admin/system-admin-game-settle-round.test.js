@@ -6,10 +6,9 @@ import { fillDatePicker } from "../fill.js"
 import { selectByValue, selectByLabel } from "../page/select.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-const { lorem, phone, datatype, image, finance, internet, commerce } = faker
 
 test("settle game round", async ({
   page,
@@ -77,7 +76,7 @@ const settleGameRoundBy = async (
     winLoss: 0,
     clientRoundStatus: "Win", // Win, Loss, Draw, or Void
     adjustAmount: 0,
-    remark: lorem.word()
+    remark: faker.lorem.word()
   }
 
   await fillDatePicker({

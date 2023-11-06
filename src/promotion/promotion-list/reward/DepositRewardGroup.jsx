@@ -31,6 +31,7 @@ import { ContentSetting } from "../ContentSetting"
 import { usePromotionBrandId } from "../usePromotionFormData"
 import { PaymentChannelSelect } from "../../../payment/channel/PaymentChannel"
 import { usePaymentMethodChannelList } from "../../../payment/client"
+import { PlatformBucketSelect } from "../../../platform-management/PlatformBucket"
 
 const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
@@ -55,8 +56,6 @@ const DepositRewardMain = (props) => (
 
 const Content = ContentSetting
 
-//TODO: platfrom payment multi select?
-//TODO: need brandId? for payment multi select
 const DepositPaymentRewardRule = ({ readOnly }) => {
   let brandId = usePromotionBrandId()
   let {
@@ -75,6 +74,13 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
   return (
     <FieldValues>
       <VipLevelCheckboxGroupField readOnly={readOnly} />
+
+      <BucketTypeLabel />
+      <PlatformBucketSelect
+        name="rule.bucketTypes[0]"
+        platformId={brandId}
+        disabled={disabled}
+      />
 
       <NormalLabel>
         <Trans zh="金流渠道" en="Payment Channel" />
@@ -136,6 +142,7 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
 
 const DepositRewardRule = ({ readOnly }) => {
   let { control } = useFormContext()
+  let brandId = usePromotionBrandId()
   let totalFunds = useTotalFunds()
   let disabled = readOnly
 
@@ -148,6 +155,13 @@ const DepositRewardRule = ({ readOnly }) => {
   return (
     <FieldValues>
       <VipLevelCheckboxGroupField readOnly={readOnly} />
+
+      <BucketTypeLabel />
+      <PlatformBucketSelect
+        name="rule.bucketTypes[0]"
+        platformId={brandId}
+        disabled={disabled}
+      />
 
       <NormalLabel>
         <Trans zh="存款最低金额" en="Minimum Deposit Amount" />
@@ -240,13 +254,30 @@ const BonusLimitFieldBox = ({ percentage, disabled }) => {
   )
 }
 
+const BucketTypeLabel = () => {
+  return (
+    <NormalLabel>
+      <Trans zh="活动游戏类型" en="Game Type" />
+    </NormalLabel>
+  )
+}
+
 const DefaultRule = ({ readOnly }) => {
   let { control } = useFormContext()
   let totalFunds = useTotalFunds()
+  let brandId = usePromotionBrandId()
+
   let disabled = readOnly
   return (
     <FieldValues>
       <VipLevelCheckboxGroupField readOnly={readOnly} />
+
+      <BucketTypeLabel />
+      <PlatformBucketSelect
+        name="rule.bucketTypes[0]"
+        platformId={brandId}
+        disabled={disabled}
+      />
 
       <NormalLabel>
         <Trans zh="彩金百分比" en="Bonus Percentage" />

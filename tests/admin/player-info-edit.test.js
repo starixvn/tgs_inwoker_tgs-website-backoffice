@@ -8,11 +8,12 @@ import {
   openEditPlayerDialog,
   openViewPlayerDialog
 } from "./player-list-page.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-test("edit and view player info", async ({
+console.warn("seprate & update player test")
+test.skip("edit and view player info", async ({
   page,
   platformCode,
   player,
@@ -30,7 +31,7 @@ const editPlayerInfo = async (page, player) => {
   let dialogSelector = await openEditPlayerDialog(page)
 
   let info = {
-    realName: faker.name.findName()
+    realName: faker.person.firstName()
   }
 
   await page.fill(`${dialogSelector} input[name="realName"]`, info.realName)

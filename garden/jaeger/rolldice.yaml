@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rolldice
+  name: rolldice
+  namespace: backoffice-site-default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rolldice
+  template:
+    metadata:
+      labels:
+        app: rolldice
+    spec:
+      containers:
+        - image: rolldice
+          imagePullPolicy: IfNotPresent
+          name: rolldice
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: "Rolldice"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rolldice
+  name: rolldice
+  namespace: backoffice-site-default
+spec:
+  ports:
+    - name: web
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 31080
+  selector:
+    app: rolldice
+  type: NodePort

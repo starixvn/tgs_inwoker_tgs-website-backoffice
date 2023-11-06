@@ -80,6 +80,11 @@ export const DateInputRangeField = ({
           )}
         </FieldStack>
       }
+      css={css`
+        .bb-FieldWrapperLabelWrapper {
+          margin-bottom: 0.25rem;
+        }
+      `}
     >
       <DateInputRange startProps={startProps} endProps={endProps} {...props} />
     </FieldWrapper>

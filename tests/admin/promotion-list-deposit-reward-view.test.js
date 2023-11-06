@@ -12,7 +12,6 @@ import {
 import { fillDatePicker } from "../fill.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
 import clone from "clone-deep"
 import numeral from "numeral"
 

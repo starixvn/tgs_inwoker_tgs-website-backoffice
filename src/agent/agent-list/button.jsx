@@ -12,7 +12,11 @@ import {
   Text,
   Spinner
 } from "bumbag"
-import { View as ViewMenu, Update as UpdateMenu } from "./menu"
+import {
+  View as ViewMenu,
+  Update as UpdateMenu,
+  ChangeWithdrawalPassword
+} from "./menu"
 import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
@@ -38,6 +42,10 @@ import {
   AgentOperationListTab
 } from "./AgentOperationList"
 import { AgentPasswordPanel, AgentPasswordTab } from "./AgentPassword"
+import {
+  AgentWithdrawPasswordPanel,
+  AgentWithdrawPasswordTab
+} from "./AgentWithdrawPassword"
 import FormDialog from "../../form/FormDialog"
 import {
   CloseButtonFooter,
@@ -100,7 +108,6 @@ import {
   isAgentProfitSharingMultipleLayer
 } from "../AgentProfitSharingType"
 import { useBrand } from "../../merchant/platforms/client"
-import SuperExpressive from "super-expressive"
 
 export const AddAgentButton = ({
   brandId,
@@ -795,7 +802,11 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
       />
       <AgentContactInfoPanel record={record} readonly {...tab} />
       {/* <AgentBankInfoPanel record={record} readonly {...tab} /> */}
-      <AgentOperationListPanel agentId={record?.id} {...tab} />
+      <AgentOperationListPanel
+        agentId={record?.id}
+        brandId={brandId}
+        {...tab}
+      />
       <AgentBalanceChangePanel
         brandId={brandId}
         agentId={record?.id}
@@ -821,6 +832,9 @@ const EditTabs = ({
   onBankSubmitted,
   onClickClose
 }) => {
+  let hasChangeWithdrawPasswordAuth = useIsDisplayMenuByRoute([
+    ChangeWithdrawalPassword
+  ])
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -828,6 +842,7 @@ const EditTabs = ({
         <AgentContactInfoTab {...tab} />
         {/* <AgentBankInfoTab {...tab} /> */}
         <AgentPasswordTab {...tab} />
+        {hasChangeWithdrawPasswordAuth && <AgentWithdrawPasswordTab {...tab} />}
         <AgentDomainListTab {...tab} />
       </TabList>
       <AgentInfoPanel
@@ -862,6 +877,14 @@ const EditTabs = ({
         onClickClose={onClickClose}
         {...tab}
       />
+      {hasChangeWithdrawPasswordAuth && (
+        <AgentWithdrawPasswordPanel
+          agentId={agentId}
+          onSubmitted={onSubmitted}
+          onClickClose={onClickClose}
+          {...tab}
+        />
+      )}
       <AgentDomainListPanel
         brandId={brandId}
         agentId={agentId}

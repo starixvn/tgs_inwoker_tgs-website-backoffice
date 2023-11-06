@@ -4,7 +4,7 @@ metadata:
   name: configmap-otel-collector
   namespace: observability
 data:
-  otel-config: | 
+  otel-config: |
     receivers:
       otlp/2:
         protocols:
@@ -16,7 +16,7 @@ data:
       logging:
         loglevel: debug
       jaeger:
-        endpoint: "jaeger-collector:14250"
+        endpoint: "jaeger-collector.default.svc.cluster.local:14250"
         tls:
           insecure: true
     extensions:

@@ -41,6 +41,10 @@ import {
   PlayerVipChangeListPanel,
   PlayerVipChangeListTab
 } from "./PlayerVipChangeList"
+import {
+  PlayerHistoryListPanel,
+  PlayerHistoryListTab
+} from "./PlayerHistoryList"
 
 export const ViewButton = ({
   player,
@@ -174,7 +178,7 @@ const TabsDialog = ({
           {...dialog}
           {...props}
           css={css`
-            min-width: 85vw;
+            min-width: 90vw;
             min-height: 85vh;
 
             & .bb-DialogContent {
@@ -224,6 +228,8 @@ const ViewTabs = ({
   tab
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
+  //TODO: remove after stg, prod released
+  let enablePlayerHistory = isDev()
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -231,7 +237,8 @@ const ViewTabs = ({
         {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <BettingTab {...tab} />
-        <PlayerOperationTab {...tab} />
+        {!enablePlayerHistory && <PlayerOperationTab {...tab} />}
+        {enablePlayerHistory && <PlayerHistoryListTab {...tab} />}
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
         <PlayerVipChangeListTab {...tab} />
@@ -250,7 +257,16 @@ const ViewTabs = ({
         brandId={brandId}
         {...tab}
       />
-      <PlayerOperationPanel playerCode={playerCode} {...tab} />
+      {!enablePlayerHistory && (
+        <PlayerOperationPanel playerCode={playerCode} {...tab} />
+      )}
+      {enablePlayerHistory && (
+        <PlayerHistoryListPanel
+          playerCode={playerCode}
+          brandId={brandId}
+          {...tab}
+        />
+      )}
       <PlayerBalanceChangePanel
         playerCode={playerCode}
         brandId={brandId}

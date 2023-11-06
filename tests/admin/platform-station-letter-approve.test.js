@@ -3,10 +3,9 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-const { lorem } = faker
 
 test("approve station letter", async ({ page }) => {
   let brandId = await gotoPlatformStationLetterPage(page)
@@ -85,8 +84,8 @@ const addStationLetter = async (page) => {
   await openDialog(page, DialogSelector)
 
   let letter = {
-    subject: lorem.word(),
-    content: lorem.sentence()
+    subject: faker.lorem.word(),
+    content: faker.lorem.sentence()
   }
 
   await page.fill(

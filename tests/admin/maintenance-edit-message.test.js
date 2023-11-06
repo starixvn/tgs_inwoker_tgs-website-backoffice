@@ -5,11 +5,10 @@ import { fillDatePicker } from "../fill.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
-import faker from "@faker-js/faker"
-import { random } from "lodash-es"
+import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
-const { finance, lorem } = faker
+
 test("platform maintenance edit message", async ({
   page,
   platform,
@@ -31,7 +30,7 @@ test("platform maintenance edit message", async ({
   expect(message).to.equals(expectedMessage)
 })
 
-const updateMessage = async (page, message = lorem.word()) => {
+const updateMessage = async (page, message = faker.lorem.word()) => {
   let dialogSelector = `#edit-maintenance-message-dialog`
   await openDialog(page, dialogSelector)
 
