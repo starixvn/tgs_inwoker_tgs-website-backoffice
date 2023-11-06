@@ -210,11 +210,13 @@ const ViewPanel = ({ record = {}, ...props }) => {
   )
 }
 
+export const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
+
 const MobileBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="手机号码" en="Mobile" />
+        <MobileLabel />
       </Box>
 
       {children ? children : <Text data-field="phone">{value}</Text>}
@@ -222,11 +224,13 @@ const MobileBox = ({ value = "", children }) => {
   )
 }
 
+export const EmailLabel = () => <Trans zh="邮箱" en="Email" />
+
 const EmailBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="邮箱" en="Email" />
+        <EmailLabel />
       </Box>
 
       {children ? children : <Text data-field="email">{value}</Text>}
@@ -234,11 +238,13 @@ const EmailBox = ({ value = "", children }) => {
   )
 }
 
+export const QqLabel = () => <Trans zh="QQ" en="QQ" />
+
 const QqBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="QQ" en="QQ" />
+        <QqLabel />
       </Box>
 
       {children ? children : <Text>{value}</Text>}
@@ -246,11 +252,13 @@ const QqBox = ({ value = "", children }) => {
   )
 }
 
+export const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
+
 const WeChatBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="微信号" en="WeChat" />
+        <WeChatLabel />
       </Box>
 
       {children ? children : <Text>{value}</Text>}

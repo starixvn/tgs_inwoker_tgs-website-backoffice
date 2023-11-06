@@ -101,7 +101,11 @@ export const AgentInfoTab = ({ ...props }) => {
 export const AgentInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
-const EditPanel = ({
+const EditPanel = (props) => {
+  return <CurrentAgentPanel {...props} />
+}
+
+const CurrentAgentPanel = ({
   brandId,
   agentProfitSharingType,
   record,

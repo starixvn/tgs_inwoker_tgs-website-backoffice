@@ -95,7 +95,7 @@ const Body = () => {
       {brandError && <AlertDialog {...brandError} onClickClose={deleteCache} />}
       {allAgentSettingError && (
         <AlertDialog
-          {...brandError}
+          {...allAgentSettingError}
           onClickClose={deleteAllAgentSettingCache}
         />
       )}
@@ -222,7 +222,7 @@ const SearchBar = ({
   ...props
 }) => {
   let hasPhoneFilterAuth = useIsDisplayMenuByRoute([PhoneFilter])
-  let showAllAgent = allAgentSetting.switch
+  let showAllAgent = allAgentSetting?.switch
   let isAdminUser = useIsAdminUser()
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
@@ -350,7 +350,7 @@ const useColumns = ({
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   let hasAnyMenu = hasViewAuth || hasUpdateAuth
 
-  let showAllAgent = allAgentSetting.switch
+  let showAllAgent = allAgentSetting?.switch
 
   return useMemo(() => {
     let columns = [sequenceColumn()]

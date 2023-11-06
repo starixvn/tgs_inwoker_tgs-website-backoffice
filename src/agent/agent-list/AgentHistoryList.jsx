@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
-import { Spinner, Stack, Flex, Box, Card, Set } from "bumbag"
+import { Spinner, Stack, Flex, Box, Card, Set, useModalState } from "bumbag"
 import { FieldValues } from "../../layout/Grid"
 import { Trans, FormattedDateTime, FormattedNumber, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import { SubmitCancel } from "../../button/ActionButtons"
 import { Tab as _Tab, TabPanel } from "../../tab"
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
-import Input from "../../input/Input"
-import { useAgentHistoryList } from "./client"
+import { useAgentHistory, useAgentHistoryList } from "./client"
 import { pastWeek } from "../../date/range"
 import { Table, useTable, toApiParams, pageCount } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -17,6 +16,17 @@ import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
 import { Descending } from "../../table/order"
 import { endOfDay } from "date-fns"
+import { isString } from "lodash-es"
+import { equals, includes, pipe, prop } from "ramda"
+import Modal from "../../dialog/Modal"
+import { DetailDisclosure } from "../../dialog/Disclosure"
+import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import {
+  MobileLabel,
+  EmailLabel,
+  QqLabel,
+  WeChatLabel
+} from "./AgentContactInfo"
 
 const Key = "AgentHistoryList"
 
@@ -152,9 +162,7 @@ const useColumns = ({ items = [], brandId }) =>
         accessor: "modifier",
         Header: <Trans zh="操作者" en="Operator" />,
         disableSortBy: true
-      })
-      /*
-      TODO
+      }),
       textColumn({
         id: "detail",
         accessor: (row) => row,
@@ -172,7 +180,6 @@ const useColumns = ({ items = [], brandId }) =>
           )
         }
       })
-      */
     ],
     [JSON.stringify(items)]
   )
@@ -195,14 +202,147 @@ const AgentHistoryDialogDisclosure = ({ action, eventId, brandId }) => {
   )
 }
 
-//TODO
-const AgentHistoryDialog = ({
-  action,
-  eventId,
-  brandId,
-  dialog,
-  ...props
-}) => {}
+const AgentHistoryDialog = ({ action, eventId, brandId, dialog, ...props }) => {
+  let { isLoading, data: detail, error } = useAgentHistory(eventId)
+
+  let items = detail?.changeSets
+  let columns = useAgentHistoryColumns({
+    items: detail?.changeSets,
+    brandId
+  })
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (error) {
+    return <AlertDialog {...dialog} onClickClose={dialog.hide} />
+  }
+
+  return (
+    <Modal title={<Box padding="1ch"></Box>} {...dialog}>
+      <Table columns={columns} data={items} />
+    </Modal>
+  )
+}
+
+//TODO: move to?
+const Replace = "replace"
+const Add = "add"
+const AddTrans = {
+  zh: "新增",
+  en: "Add"
+}
+const Remove = "remove"
+const RemoveTrans = {
+  zh: "移除",
+  en: "Remove"
+}
+const OperationLabel = ({ value = "" }) => {
+  switch (value) {
+    case Replace:
+      return <Trans {...UpdateTrans} />
+    case Add:
+      return <Trans {...AddTrans} />
+    case Remove:
+      return <Trans {...RemoveTrans} />
+    default:
+      return value
+  }
+}
+
+const useAgentHistoryColumns = ({ items = [], brandId }) => {
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        accessor: "op",
+        Header: <Trans zh="操作" en="Operation" />,
+        disableSortBy: true,
+        Cell: OperationLabel
+      }),
+      textColumn({
+        id: "label",
+        accessor: (row) => row,
+        Header: <Trans zh="栏位" en="Field" />,
+        disableSortBy: true,
+        Cell: ChangeSetLabel
+      }),
+      textColumn({
+        id: "value",
+        accessor: (row) => row,
+        Header: <Trans zh="值" en="Value" />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          return <ChangeSetField value={value} brandId={brandId} />
+        }
+      })
+    ]
+    return columns
+  }, [JSON.stringify(items)])
+}
+
+const PasswordLabel = () => <Trans zh="登入密码" en="Login Password" />
+
+const StringValue = ({ value = "" }) =>
+  isString(value) ? value : JSON.stringify(value)
+
+const getPath = prop("path")
+
+//TODO: withdraw password?
+//TODO addAgent
+const LabelValueList = [
+  [pipe(getPath, equals("/Phone")), MobileLabel],
+  [pipe(getPath, equals("/Email")), EmailLabel],
+  [pipe(getPath, equals("/Wechat")), WeChatLabel],
+  [pipe(getPath, equals("/Qq")), QqLabel],
+
+  [pipe(getPath, equals("/password")), PasswordLabel]
+  /*
+  [pipe(getPath, equals("/properties/RealName")), RealNameLabel],
+  [pipe(getPath, equals("/properties/Birthdate")), BirthdayLabel],
+  [pipe(getPath, equals("/properties/VipId")), VIPLevelLabel, VipLevelIdLabel],
+  [
+    pipe(getPath, equals("/properties/AgentId")),
+    AgentUsernameLabel,
+    AgentIdUsername
+  ],
+  [pipe(getPath, includes("/Remark")), RemarkLabel],
+  [
+    pipe(getPath, equals("/identityAuthentication")),
+    IdentityAuthenticationLabel,
+    IdentityAuthenticationIcon
+  ],
+
+  [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
+
+  [isAddPlayer, StringValue, Player]
+  */
+]
+
+const toLabel = (value) => {
+  let result = LabelValueList.find(([fn]) => {
+    return fn(value)
+  })
+  let labelIndex = 1
+  return result?.[labelIndex] ?? StringValue
+}
+
+const toField = (value) => {
+  let result = LabelValueList.find(([fn]) => {
+    return fn(value)
+  })
+  let fieldIndex = 2
+  return result?.[fieldIndex] ?? StringValue
+}
+
+const ChangeSetLabel = ({ value = {} }) => {
+  let Label = toLabel(value)
+  return <Label value={value.path} />
+}
+
+const ChangeSetField = ({ value = {}, brandId }) => {
+  let Field = toField(value)
+  return <Field value={value.value} brandId={brandId} />
+}
 
 /*
 const AgentOperation = {
