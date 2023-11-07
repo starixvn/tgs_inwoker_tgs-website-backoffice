@@ -34,7 +34,7 @@ import {
   useWatch
 } from "react-hook-form"
 import { Input, InputField } from "../../input/Input"
-import { useAgent, useUpdateAgent } from "./client"
+import { useAgent, useUpdateAgent, useUpdateAgentV2 } from "./client"
 import { AgentStatusLabel, AgentStatusSelect } from "../AgentStatus"
 import { AgentLevelLabel, AgentLevelSelect, isAgentHead } from "../AgentLevel"
 import {
@@ -85,6 +85,10 @@ import {
 } from "../AgentProfitSharingType"
 import Textarea from "../../textarea"
 import { ClearProfitShareDialogDisclosure } from "./ClearProfitShareDialog"
+import { isEmpty, isNil } from "lodash-es"
+import { either } from "ramda"
+
+let isNilOrEmpty = either(isNil, isEmpty)
 
 const Key = "AgentInfo"
 
@@ -102,7 +106,246 @@ export const AgentInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
 const EditPanel = (props) => {
-  return <CurrentAgentPanel {...props} />
+  return isDev() ? (
+    <UpdateAgentPanel {...props} />
+  ) : (
+    <CurrentAgentPanel {...props} />
+  )
+}
+
+//TODO
+const UpdateAgentPanel = ({
+  brandId,
+  agentProfitSharingType,
+  record,
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
+  let formMethods = useForm({
+    defaultValues: clone(record)
+  })
+  let { control, setValue } = formMethods
+
+  let agentId = record?.id
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } = useUpdateAgentV2(
+    agentId,
+    formData
+  )
+
+  useEffect(() => {
+    if (result && !error) {
+      reset()
+      onSubmitted && onSubmitted()
+    }
+  }, [result])
+
+  let agentUsernamePlaceholder = useTrans({
+    zh: "代理用户名",
+    en: "Agent Username"
+  })
+
+  const ParentUsernameFieldName = "parentUsername"
+  let currentParentUsername = record.parentUsername
+  let parentUsername = useWatch({
+    control,
+    name: ParentUsernameFieldName
+  })
+
+  let willChangeParent =
+    currentParentUsername &&
+    parentUsername &&
+    currentParentUsername != parentUsername
+
+  const LevelTypeFieldName = "levelType"
+  let levelType = useWatch({
+    control,
+    name: LevelTypeFieldName
+  })
+
+  let changeLevelType = levelType != record.levelType
+  let displayParentUsername =
+    changeLevelType && levelType == AgentLevel.Chief ? "none" : "block"
+
+  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
+
+  //TODO: diff
+  const onSubmit = ({
+    type,
+    parentUsername,
+    dividendPercentage,
+    agentDividendConditions,
+    status,
+
+    realName,
+    remarks,
+
+    ...data
+  } = {}) => {
+    //TODO: isNil?
+    let formData = { status: { status }, info: { realName, remarks } }
+
+    if (oneLayer) {
+      formData = {
+        ...formData,
+        oneLayer: {
+          type,
+          parentUsername,
+          dividendPercentage
+        }
+      }
+    }
+
+    if (multipleLayer) {
+      formData = {
+        ...formData,
+        multipleLayer: {
+          type,
+          parentUsername,
+          agentDividendConditions
+        }
+      }
+    }
+
+    console.log("formData", formData)
+    setSubmit(formData)
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+
+  let agentHead = isAgentHead(record?.levelType)
+
+  const AgentTypeField = "type"
+
+  const ProfitSharingField = "accumulatedProfitSharing"
+  let accumulatedProfitSharing = useWatch({
+    name: ProfitSharingField,
+    control
+  })
+
+  return (
+    <TabPanel tabId={Key} {...props}>
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <Stack>
+            <FieldValues>
+              <UsernameBox value={record?.username} />
+
+              <RealNameBox>
+                <Input name="realName" />
+              </RealNameBox>
+
+              <AgentTypeBox>
+                <Box alignY="center">
+                  {!agentHead && (
+                    <>
+                      <AgentTypeSelect
+                        name={AgentTypeField}
+                        value={record?.type}
+                        display="none"
+                      />
+                      <AgentTypeSelect value={record?.type} disabled />
+                    </>
+                  )}
+                  {agentHead && <AgentTypeSelect name={AgentTypeField} />}
+                </Box>
+              </AgentTypeBox>
+
+              <AgentLevelBox>
+                <AgentLevelSelect
+                  name={LevelTypeFieldName}
+                  disabled={agentHead}
+                />
+              </AgentLevelBox>
+
+              {!agentHead && (
+                <>
+                  <ParentAgentUsername display={displayParentUsername}>
+                    <Set
+                      orientation="vertical"
+                      isFilled
+                      display={displayParentUsername}
+                    >
+                      <Input
+                        name={ParentUsernameFieldName}
+                        placeholder={agentUsernamePlaceholder}
+                        required
+                        disabled={
+                          changeLevelType && levelType == AgentLevel.Chief
+                        }
+                      />
+                      {willChangeParent && <ChangeParentWarning />}
+                    </Set>
+                  </ParentAgentUsername>
+                </>
+              )}
+
+              <RegistrationBox value={record?.registeredOn} />
+
+              <BalanceBox value={record?.balance} />
+
+              <AccumulatedProfitSharingBox value={accumulatedProfitSharing}>
+                <ClearProfitShareDialogDisclosure
+                  agentId={agentId}
+                  onSubmitted={() => {
+                    setValue(ProfitSharingField, 0)
+                  }}
+                />
+              </AccumulatedProfitSharingBox>
+
+              <AgentStatusBox>
+                <AgentStatusSelect name="status" placeholder={false} required />
+              </AgentStatusBox>
+
+              {oneLayer && (
+                <>
+                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <Box>
+                    <AgentOneLayerDividendPercentageInputField
+                      brandId={brandId}
+                      parentUsername={record.parentUsername}
+                    />
+                  </Box>
+                </>
+              )}
+              {multipleLayer && (
+                <>
+                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <Box>
+                    <AgentMultipleLayerProfitSharingSettingDialogDisclosure
+                      brandId={brandId}
+                      parentUsername={record.parentUsername}
+                    />
+                  </Box>
+                </>
+              )}
+
+              <RemarkLabel />
+              <Textarea name="remarks" />
+            </FieldValues>
+            <Input
+              type="hidden"
+              name="id"
+              value={formMethods.getValues("id")}
+            />
+            <Box alignX="right">
+              <SubmitCancel
+                isLoading={isLoading}
+                onClickCancel={onClickClose}
+              />
+            </Box>
+          </Stack>
+        </form>
+      </FormProvider>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+    </TabPanel>
+  )
 }
 
 const CurrentAgentPanel = ({
