@@ -1,8 +1,8 @@
 import { isEmpty, isNil } from "lodash-es"
-import { either, not } from "ramda"
+import { either, complement } from "ramda"
 
 let isNilOrEmpty = either(isNil, isEmpty)
-let notEmpty = not(isNilOrEmpty)
+let notEmpty = complement(isNilOrEmpty)
 
 const anyKey = (items = []) => notEmpty(items.find(({ key }) => notEmpty(key)))
 
