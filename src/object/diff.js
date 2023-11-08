@@ -1,12 +1,19 @@
 import { isArray, isObject, isPlainObject, isNil } from "lodash-es"
-import { isEmpty, empty } from "ramda"
+import { isEmpty, empty, all } from "ramda"
 
 const isArrayOrObject = (target) => isObject(target) || isArray(target)
 
 const isNilOrEmpty = (value) => isNil(value) || isEmpty(value)
 
-//TODO: check every item in array
-const isEmptyArray = (value) => isArray(value) && isEmpty(value)
+const isEmptyArray = (value, originArray) => {
+  let empty = isArray(value) && isEmpty(value)
+  if (empty) {
+    return empty
+  }
+
+  let isAllEmptyObject = isArray(value) && all(isNilOrEmpty, value)
+  return isAllEmptyObject && value.length === originArray?.length
+}
 
 const isEmptyObject = (value) => isPlainObject(value) && isEmpty(value)
 
@@ -25,7 +32,7 @@ export const diff = (target, origin) => {
         ? diff(value, originValue)
         : diffOrNil(value, originValue)
 
-      if (isNil(diffs) || isEmptyArray(diffs)) {
+      if (isNil(diffs) || isEmptyArray(diffs, originValue)) {
         return accum
       }
 

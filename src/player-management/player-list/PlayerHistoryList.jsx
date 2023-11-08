@@ -242,10 +242,6 @@ const PlayerHistoryDialog = ({
   )
 }
 
-const OperationColumnLabel = () => <Trans zh="操作" en="Operation" />
-const FieldColumnLabel = () => <Trans zh="栏位" en="Field" />
-const ValueColumnKabel = () => <Trans zh="值" en="Value" />
-
 const Replace = "replace"
 const Add = "add"
 const AddTrans = {
@@ -274,21 +270,21 @@ const usePlayerHistoryColumns = ({ items = [], brandId }) => {
     let columns = [
       textColumn({
         accessor: "op",
-        Header: <OperationColumnLabel />,
+        Header: <Trans zh="操作" en="Operation" />,
         disableSortBy: true,
         Cell: OperationLabel
       }),
       textColumn({
         id: "label",
         accessor: (row) => row,
-        Header: FieldColumnLabel,
+        Header: <Trans zh="栏位" en="Field" />,
         disableSortBy: true,
         Cell: ChangeSetLabel
       }),
       textColumn({
         id: "value",
         accessor: (row) => row,
-        Header: ValueColumnKabel,
+        Header: <Trans zh="值" en="Value" />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return <ChangeSetField value={value} brandId={brandId} />

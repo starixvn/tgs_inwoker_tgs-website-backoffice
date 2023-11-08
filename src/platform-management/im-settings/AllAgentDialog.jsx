@@ -90,7 +90,7 @@ const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
       {...dialog}
       minWidth="60vw"
     >
-      <DialogBody brandId={brandId} readOnly={readOnly} />
+      <DialogBody brandId={brandId} dialog={dialog} readOnly={readOnly} />
     </Dialog.Modal>
   )
 }

@@ -107,10 +107,14 @@ const UpdatePlayerInfoPanel = ({
     }
   }, [result])
 
-  const onSubmit = ({ birthdate, wageringRequirement: _, ...data } = {}) => {
-    //drop wageringRequirement not updatable value
+  const onSubmit = ({
+    birthdate,
+    wageringRequirement: _,
+    banks,
+    ...data
+  } = {}) => {
+    //drop wageringRequirement & banks not updatable value
 
-    //TODO: reset birthdate to empty value?
     birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : birthdate
 
     let formData = diff(

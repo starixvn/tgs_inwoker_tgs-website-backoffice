@@ -14,6 +14,9 @@ export const AgentOneLayerDividendPercentageInputField = ({
   brandId = "",
   parentUsername = "",
   max,
+  registerOptions = {
+    valueAsNumber: true
+  },
   ...props
 }) => {
   let { isLoading, data, error, mutate, deleteCache } =
@@ -30,6 +33,7 @@ export const AgentOneLayerDividendPercentageInputField = ({
         name={name}
         max={max}
         required={required}
+        registerOptions={registerOptions}
         {...props}
       />
       {parentAgentProfitSharing >= 0 && (
