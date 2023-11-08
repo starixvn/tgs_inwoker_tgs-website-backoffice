@@ -6,13 +6,13 @@ const isArrayOrObject = (target) => isObject(target) || isArray(target)
 const isNilOrEmpty = (value) => isNil(value) || isEmpty(value)
 
 const isEmptyArray = (value, originArray) => {
-  let isEmpty = isArray(value) && isEmpty(value)
-  if (isEmpty) {
-    return isEmpty
+  let empty = isArray(value) && isEmpty(value)
+  if (empty) {
+    return empty
   }
 
-  let isAllEmptyItems = isArray(value) && all(isNilOrEmpty, value)
-  return isAllEmptyItems && value.length === originArray?.length
+  let isAllEmptyObject = isArray(value) && all(isNilOrEmpty, value)
+  return isAllEmptyObject && value.length === originArray?.length
 }
 
 const isEmptyObject = (value) => isPlainObject(value) && isEmpty(value)
