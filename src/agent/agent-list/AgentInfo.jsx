@@ -266,7 +266,7 @@ const UpdateAgentPanel = ({
               <AgentLevelBox>
                 <AgentLevelSelect
                   name={LevelTypeFieldName}
-                  // disabled={agentHead}
+                  disabled={agentHead}
                   onChange={(event) => {
                     let isChief = event.target.value === AgentLevel.Chief
                     let isAgent = event.target.value === AgentLevel.Agent
