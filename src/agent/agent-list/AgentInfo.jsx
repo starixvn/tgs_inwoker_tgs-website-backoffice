@@ -266,16 +266,17 @@ const UpdateAgentPanel = ({
               <AgentLevelBox>
                 <AgentLevelSelect
                   name={LevelTypeFieldName}
-                  disabled={agentHead}
+                  // disabled={agentHead}
                   onChange={(event) => {
                     let isChief = event.target.value === AgentLevel.Chief
                     let isAgent = event.target.value === AgentLevel.Agent
-                    let isOriginAgent = record.levelType === AgentLevel.Agent
                     if (isChief) {
                       setValue(ParentUsernameFieldName, "")
                     } else if (isAgent) {
-                      //TODO: need reset back to origin value?
-                      setValue(ParentUsernameFieldName, record?.parentUsername)
+                      setValue(
+                        ParentUsernameFieldName,
+                        record?.parentUsername ?? ""
+                      )
                     }
                   }}
                 />

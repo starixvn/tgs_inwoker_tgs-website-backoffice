@@ -109,7 +109,6 @@ export const useUpdateAgentStatus = (agentId, data) => {
 
 export const useUpdateAgentOneLayer = (agentId, data) => {
   let url = agentId && data ? `${API}/one-layer/${agentId}` : ""
-  console.log("url", url)
 
   let rest = usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
