@@ -110,7 +110,9 @@ const UpdatePlayerInfoPanel = ({
   const onSubmit = ({
     birthdate,
     wageringRequirement: _,
+    /*
     banks,
+    */
     ...data
   } = {}) => {
     //drop wageringRequirement & banks not updatable value
