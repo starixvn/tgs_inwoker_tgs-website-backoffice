@@ -114,7 +114,7 @@ const EditPanel = (props) => {
   )
 }
 
-//TODO
+//TODO: test change parent & reset config
 const UpdateAgentPanel = ({
   brandId,
   agentProfitSharingType,
@@ -165,12 +165,11 @@ const UpdateAgentPanel = ({
     name: LevelTypeFieldName
   })
 
-  let changeLevelType = levelType != record.levelType
-
-  let isChief = levelType == AgentLevel.Chief
+  // let changeLevelType = levelType != record.levelType
+  // let isChief = levelType == AgentLevel.Chief
   let isAgent = levelType == AgentLevel.Agent
   //TODO: rm displayParentUsername?
-  let displayParentUsername = changeLevelType && isChief ? "none" : "block"
+  // let displayParentUsername = changeLevelType && isChief ? "none" : "block"
 
   let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
@@ -284,12 +283,8 @@ const UpdateAgentPanel = ({
 
               {isAgent && (
                 <>
-                  <ParentAgentUsername display={displayParentUsername}>
-                    <Set
-                      orientation="vertical"
-                      isFilled
-                      display={displayParentUsername}
-                    >
+                  <ParentAgentUsername>
+                    <Set orientation="vertical" isFilled>
                       <Input
                         name={ParentUsernameFieldName}
                         placeholder={agentUsernamePlaceholder}
