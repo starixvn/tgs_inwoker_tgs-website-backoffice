@@ -166,8 +166,8 @@ const UpdateAgentPanel = ({
   })
 
   let changeLevelType = levelType != record.levelType
-  let displayParentUsername =
-    changeLevelType && levelType == AgentLevel.Chief ? "none" : "block"
+  let isChief = levelType == AgentLevel.Chief
+  let displayParentUsername = changeLevelType && isChief ? "none" : "block"
 
   let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
@@ -278,7 +278,7 @@ const UpdateAgentPanel = ({
                       <Input
                         name={ParentUsernameFieldName}
                         placeholder={agentUsernamePlaceholder}
-                        required
+                        required={isChief}
                         disabled={
                           changeLevelType && levelType == AgentLevel.Chief
                         }
@@ -720,11 +720,13 @@ const UsernameBox = ({ value = "", children }) => {
   )
 }
 
+export const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
+
 const RealNameBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="真实姓名" en="Real name" />
+        <RealNameLabel />
       </Box>
       {children ? children : <Text data-field="realName">{value}</Text>}
     </>
@@ -791,10 +793,12 @@ const BalanceBox = ({ value = "", ...props }) => {
   )
 }
 
+export const StatusLabel = () => <Trans zh="状态" en="Status" />
+
 const AgentStatusBox = ({ value = "", children, ...props }) => {
   return (
     <>
-      <Trans zh="状态" en="Status" />
+      <StatusLabel />
 
       {children ? (
         children
@@ -875,7 +879,7 @@ const AccumulatedProfitSharingBox = ({ value, children, ...props }) => {
   )
 }
 
-const RemarkLabel = () => <Trans zh="备注" en="Remark" />
+export const RemarkLabel = () => <Trans zh="备注" en="Remark" />
 
 const RebateBox = ({ label, value, type, children }) => {
   let isCredit = isAgentTypeCredit(type)

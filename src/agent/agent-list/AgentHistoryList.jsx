@@ -21,12 +21,14 @@ import { equals, includes, pipe, prop } from "ramda"
 import Modal from "../../dialog/Modal"
 import { DetailDisclosure } from "../../dialog/Disclosure"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import { RealNameLabel, StatusLabel, RemarkLabel } from "./AgentInfo"
 import {
   MobileLabel,
   EmailLabel,
   QqLabel,
   WeChatLabel
 } from "./AgentContactInfo"
+import { AgentStatusLabel } from "../AgentStatus"
 
 const Key = "AgentHistoryList"
 
@@ -290,6 +292,10 @@ const getPath = prop("path")
 //TODO: withdraw password?
 //TODO addAgent
 const LabelValueList = [
+  [pipe(getPath, equals("/RealName")), RealNameLabel],
+  [pipe(getPath, equals("/status")), StatusLabel, AgentStatusLabel],
+  [pipe(getPath, includes("/Remark")), RemarkLabel],
+
   [pipe(getPath, equals("/Phone")), MobileLabel],
   [pipe(getPath, equals("/Email")), EmailLabel],
   [pipe(getPath, equals("/Wechat")), WeChatLabel],
@@ -297,7 +303,7 @@ const LabelValueList = [
 
   [pipe(getPath, equals("/password")), PasswordLabel]
   /*
-  [pipe(getPath, equals("/properties/RealName")), RealNameLabel],
+  
   [pipe(getPath, equals("/properties/Birthdate")), BirthdayLabel],
   [pipe(getPath, equals("/properties/VipId")), VIPLevelLabel, VipLevelIdLabel],
   [
@@ -305,14 +311,11 @@ const LabelValueList = [
     AgentUsernameLabel,
     AgentIdUsername
   ],
-  [pipe(getPath, includes("/Remark")), RemarkLabel],
   [
     pipe(getPath, equals("/identityAuthentication")),
     IdentityAuthenticationLabel,
     IdentityAuthenticationIcon
   ],
-
-  [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
 
   [isAddPlayer, StringValue, Player]
   */
