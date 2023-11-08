@@ -167,14 +167,10 @@ const UpdateAgentPanel = ({
 
   let changeLevelType = levelType != record.levelType
 
+  let isChief = levelType == AgentLevel.Chief
   let isAgent = levelType == AgentLevel.Agent
-  useEffect(() => {
-    //TODO: reset parent name to ""?
-    console.log("levelType", levelType)
-  }, [levelType])
-
-  let displayParentUsername =
-    changeLevelType && levelType == AgentLevel.Chief ? "none" : "block"
+  //TODO: rm displayParentUsername?
+  let displayParentUsername = changeLevelType && isChief ? "none" : "block"
 
   let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
@@ -271,6 +267,10 @@ const UpdateAgentPanel = ({
                 <AgentLevelSelect
                   name={LevelTypeFieldName}
                   disabled={agentHead}
+                  onChange={(event) => {
+                    let isChief = event.target.value === AgentLevel.Chief
+                    console.log("isChief", isChief)
+                  }}
                 />
               </AgentLevelBox>
 
