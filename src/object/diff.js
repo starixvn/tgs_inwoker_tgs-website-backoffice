@@ -32,7 +32,7 @@ export const diff = (target, origin) => {
         ? diff(value, originValue)
         : diffOrNil(value, originValue)
 
-      if (isNil(diffs) || isEmptyArray(diffs)) {
+      if (isNil(diffs) || isEmptyArray(diffs, originValue)) {
         return accum
       }
 
