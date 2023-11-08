@@ -87,6 +87,7 @@ import Textarea from "../../textarea"
 import { ClearProfitShareDialogDisclosure } from "./ClearProfitShareDialog"
 import { isEmpty, isNil } from "lodash-es"
 import { either } from "ramda"
+import { diff } from "../../object/diff"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -184,6 +185,8 @@ const UpdateAgentPanel = ({
 
     ...data
   } = {}) => {
+    //TODO: diffs first
+
     //TODO: isNil?
     let formData = { status: { status }, info: { realName, remarks } }
 

@@ -1,23 +1,26 @@
 import { isEmpty, isNil } from "lodash-es"
-import { either } from "ramda"
+import { either, not } from "ramda"
 
 let isNilOrEmpty = either(isNil, isEmpty)
+let notEmpty = not(isNilOrEmpty)
 
-//TODO: use hasUrl? able to rm hasUrl?
-export const useApiMerge = (items = [], initResult) => {
+const anyKey = (items = []) => notEmpty(items.find(({ key }) => notEmpty(key)))
+
+export const useApiMerge = (items = []) => {
   let isLoading = items.findIndex(({ isLoading }) => isLoading == true) >= 0
 
+  let hasKey = anyKey(items)
   let result = items.reduce((accum, item, index, list) => {
     if (isNil(accum)) {
       return accum
     }
 
-    if (item.hasUrl) {
+    if (item.key) {
       accum = item.result
     }
 
     return accum
-  }, initResult)
+  }, hasKey)
 
   let error = items.find(({ error }) => !isNil(error))?.error
 
