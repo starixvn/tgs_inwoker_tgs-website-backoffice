@@ -166,8 +166,15 @@ const UpdateAgentPanel = ({
   })
 
   let changeLevelType = levelType != record.levelType
-  let isChief = levelType == AgentLevel.Chief
-  let displayParentUsername = changeLevelType && isChief ? "none" : "block"
+
+  let isAgent = levelType == AgentLevel.Agent
+  useEffect(() => {
+    //TODO: reset parent name to ""?
+    console.log("levelType", levelType)
+  }, [levelType])
+
+  let displayParentUsername =
+    changeLevelType && levelType == AgentLevel.Chief ? "none" : "block"
 
   let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
@@ -267,7 +274,7 @@ const UpdateAgentPanel = ({
                 />
               </AgentLevelBox>
 
-              {!agentHead && (
+              {isAgent && (
                 <>
                   <ParentAgentUsername display={displayParentUsername}>
                     <Set
@@ -278,10 +285,7 @@ const UpdateAgentPanel = ({
                       <Input
                         name={ParentUsernameFieldName}
                         placeholder={agentUsernamePlaceholder}
-                        required={isChief}
-                        disabled={
-                          changeLevelType && levelType == AgentLevel.Chief
-                        }
+                        required
                       />
                       {willChangeParent && <ChangeParentWarning />}
                     </Set>
