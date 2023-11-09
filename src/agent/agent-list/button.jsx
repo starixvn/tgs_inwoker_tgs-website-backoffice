@@ -357,7 +357,9 @@ const FormBody = ({ isAdd }) => {
   )
 }
 
-const ProfitSharingBox = ({ isAdd = false }) => {
+//TODO: test isAdd = true
+//TODO: oneLayer & multipleLayer params
+const ProfitSharingBox = ({ isAdd = false /*oneLayer, multipleLayer*/ }) => {
   let label = (
     <NormalLabel required>
       <Trans zh="代理分红" en="Profit Sharing" />
@@ -420,10 +422,11 @@ const ProfitSharingBox = ({ isAdd = false }) => {
   )
 }
 
-const ConfigFormBody = ({ record }) => {
+const ConfigFormBody = ({ record, oneLayer, multipleLayer }) => {
   let isCash = isAgentTypeCash(record?.type)
   let isCredit = isAgentTypeCredit(record?.type)
 
+  console.log("oneLayer", oneLayer, "multipleLayer", multipleLayer)
   return (
     <Set orientation="vertical" isFilled>
       <Set orientation="vertical" marginLeft="1rem" marginRight="1rem" isFilled>
@@ -471,7 +474,12 @@ const ConfigFormBody = ({ record }) => {
             <AgentLevelLabel value={record?.levelType} />
           </Text.Block>
 
-          {isCash && <ProfitSharingBox />}
+          {isCash && (
+            <ProfitSharingBox
+              oneLayer={oneLayer}
+              multipleLayer={multipleLayer}
+            />
+          )}
 
           {/* {isCredit && (
             <>
@@ -593,7 +601,13 @@ export const EditButton = ({
   )
 }
 
-export const ConfigButton = ({ brandId, agentId, onSubmitted, ...props }) => {
+export const ConfigButton = ({
+  brandId,
+  agentId,
+  agentProfitSharingType,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -610,6 +624,7 @@ export const ConfigButton = ({ brandId, agentId, onSubmitted, ...props }) => {
         <ConfigDialog
           brandId={brandId}
           agentId={agentId}
+          agentProfitSharingType={agentProfitSharingType}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -618,7 +633,23 @@ export const ConfigButton = ({ brandId, agentId, onSubmitted, ...props }) => {
   )
 }
 
-const ConfigDialog = ({ brandId, agentId, onSubmitted, dialog }) => {
+//TODO: test multiple layer
+//TODO: use new api
+const ConfigDialog = (props) => {
+  return isDev() ? (
+    <UpdateConfigDialog {...props} />
+  ) : (
+    <CurrentConfigDialog {...props} />
+  )
+}
+
+const UpdateConfigDialog = ({
+  brandId,
+  agentId,
+  agentProfitSharingType,
+  onSubmitted,
+  dialog
+}) => {
   let {
     isLoading: isLoadingAgent,
     data: agent,
@@ -645,6 +676,9 @@ const ConfigDialog = ({ brandId, agentId, onSubmitted, dialog }) => {
   if (loadingAgentError) {
     return <AlertDialog {...loadingAgentError} onClickClose={dialog.hide} />
   }
+
+  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
   const onSubmit = (data) => {
     setSubmit({
@@ -694,7 +728,105 @@ const ConfigDialog = ({ brandId, agentId, onSubmitted, dialog }) => {
       minWidth="60vw"
       placement="top"
     >
-      <ConfigFormBody record={agent} />
+      <ConfigFormBody
+        record={agent}
+        oneLayer={oneLayer}
+        multipleLayer={multipleLayer}
+      />
+    </FormDialog>
+  )
+}
+
+const CurrentConfigDialog = ({
+  brandId,
+  agentId,
+  agentProfitSharingType,
+  onSubmitted,
+  dialog
+}) => {
+  let {
+    isLoading: isLoadingAgent,
+    data: agent,
+    error: loadingAgentError,
+    mutate: mutateAgent,
+    deleteCache: deleteAgentCache
+  } = useAgent(agentId)
+
+  let [formData, setSubmit] = useState()
+  let { result, error, mutate, deleteCache, isLoading } = useUpdateAgent(
+    agentId,
+    formData
+  )
+
+  let title = useTrans({
+    zh: "比例配制",
+    en: "Config Agent"
+  })
+
+  if (isLoadingAgent) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (loadingAgentError) {
+    return <AlertDialog {...loadingAgentError} onClickClose={dialog.hide} />
+  }
+
+  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
+
+  const onSubmit = (data) => {
+    setSubmit({
+      updateType: AgentUpdateType.Info,
+      brandId,
+      ...agent,
+      ...data
+    })
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+
+  return (
+    <FormDialog
+      id="config-agent-dialog"
+      defaultValues={{
+        ...clone(agent),
+        dividendPercentage: "",
+        liveDealerRebatePercentage: "",
+        slotRebatePercentage: "",
+        cardGameRebatePercentage: "",
+        lotteryRebatePercentage: "",
+        sportsRebatePercentage: "",
+        virtualSportsRebatePercentage: ""
+      }}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        deleteAgentCache()
+        mutateAgent(undefined, false)
+
+        reset()
+        onSubmitted?.()
+      }}
+      title={title}
+      dialog={dialog}
+      showActionButtons={false}
+      footer={<ConfirmCancelFooter dialog={dialog} isLoading={isLoading} />}
+      maxWidth="100vw"
+      minWidth="60vw"
+      placement="top"
+    >
+      <ConfigFormBody
+        record={agent}
+        oneLayer={oneLayer}
+        multipleLayer={multipleLayer}
+      />
     </FormDialog>
   )
 }
