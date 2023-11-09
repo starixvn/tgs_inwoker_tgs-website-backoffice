@@ -694,7 +694,7 @@ const UpdateConfigDialog = ({
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
   const onSubmit = (data) => {
-    let formData = useAgentUpdateFormData(data)
+    let formData = useAgentUpdateFormData(data, agentProfitSharingType)
     console.log("formData", formData)
 
     setSubmit(formData)
