@@ -121,61 +121,43 @@ export const useUpdateAgentV2 = (agentId, data) => {
     )
   ]
 
-  return useApiMerge(items, data ? true : false)
+  return useApiMerge(items)
 }
 
 export const useUpdateAgentInfo = (agentId, data) => {
   let url = agentId && data ? `${API}/info/${agentId}` : ""
 
-  let rest = usePatchData(url, data, {
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdateAgentStatus = (agentId, data) => {
   let url = agentId && data ? `${API}/status/${agentId}` : ""
-  let rest = usePatchData(url, data, {
+
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdateAgentOneLayer = (agentId, data) => {
   let url = agentId && data ? `${API}/one-layer/${agentId}` : ""
 
-  let rest = usePatchData(url, data, {
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdateAgentMultipleLayer = (agentId, data) => {
   let url = agentId && data ? `${API}/multiple-layer/${agentId}` : ""
-  let rest = usePatchData(url, data, {
+
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdateAgentContact = (agentId, data) => {

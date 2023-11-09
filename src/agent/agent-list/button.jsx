@@ -20,7 +20,13 @@ import {
 import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import { useAddAgent, useAgent, useUpdateAgent, useAgentList } from "./client"
+import {
+  useAddAgent,
+  useAgent,
+  useUpdateAgent,
+  useUpdateAgentV2,
+  useAgentUpdateFormData
+} from "./client"
 import {
   Trans,
   FormattedDateTime,
@@ -666,7 +672,7 @@ const UpdateConfigDialog = ({
   } = useAgent(agentId)
 
   let [formData, setSubmit] = useState()
-  let { result, error, mutate, deleteCache, isLoading } = useUpdateAgent(
+  let { result, error, mutate, deleteCache, isLoading } = useUpdateAgentV2(
     agentId,
     formData
   )
@@ -688,14 +694,10 @@ const UpdateConfigDialog = ({
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
   const onSubmit = (data) => {
+    let formData = useAgentUpdateFormData(data)
+    console.log("formData", formData)
 
-
-    setSubmit({
-      updateType: AgentUpdateType.Info,
-      brandId,
-      ...agent,
-      ...data
-    })
+    setSubmit(formData)
   }
 
   const reset = () => {
