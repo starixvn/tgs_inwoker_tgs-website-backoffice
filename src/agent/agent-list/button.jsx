@@ -138,9 +138,17 @@ export const AddAgentButton = ({
   )
 }
 
-const AddDialog = ({ brandId, onSubmitted, dialog }) => {
+const AddDialog = ({
+  brandId,
+  agentProfitSharingType,
+  onSubmitted,
+  dialog
+}) => {
   let [formData, setSubmit] = useState()
   let { result, error, mutate, deleteCache, isLoading } = useAddAgent(formData)
+
+  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
   const onSubmit = (data) => {
     setSubmit(data)
@@ -179,7 +187,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
       minWidth="60vw"
       placement="top"
     >
-      <FormBody isAdd />
+      <FormBody isAdd oneLayer={oneLayer} multipleLayer={multipleLayer} />
     </FormDialog>
   )
 }
@@ -188,7 +196,7 @@ const AlphabetNumberOnly = new RegExp("^[A-Za-z0-9]+$")
 
 const BrandIdField = "brandId"
 const ParentUsernameFieldName = "parentUsername"
-const FormBody = ({ isAdd }) => {
+const FormBody = ({ isAdd, oneLayer, multipleLayer }) => {
   let { control, getValues } = useFormContext()
 
   const LevelTypeFieldName = "levelType"
@@ -277,7 +285,13 @@ const FormBody = ({ isAdd }) => {
             </>
           )}
 
-          {isCash && <ProfitSharingBox isAdd={isAdd} />}
+          {isCash && (
+            <ProfitSharingBox
+              isAdd={isAdd}
+              oneLayer={oneLayer}
+              multipleLayer={multipleLayer}
+            />
+          )}
 
           {/* {isCredit && (
             <>
@@ -359,7 +373,7 @@ const FormBody = ({ isAdd }) => {
 
 //TODO: test isAdd = true
 //TODO: oneLayer & multipleLayer params
-const ProfitSharingBox = ({ isAdd = false /*oneLayer, multipleLayer*/ }) => {
+const ProfitSharingBox = ({ isAdd = false, oneLayer, multipleLayer }) => {
   let label = (
     <NormalLabel required>
       <Trans zh="代理分红" en="Profit Sharing" />
@@ -373,10 +387,6 @@ const ProfitSharingBox = ({ isAdd = false /*oneLayer, multipleLayer*/ }) => {
   })
 
   let brandId = getValues(BrandIdField)
-  let { isLoading, data: brand, error } = useBrand(brandId)
-  if (isLoading) {
-    return null
-  }
 
   //TODO: need to handle brandError?
   /*
@@ -392,7 +402,6 @@ const ProfitSharingBox = ({ isAdd = false /*oneLayer, multipleLayer*/ }) => {
   }
   */
 
-  let oneLayer = isAgentProfitSharingOneLayer(brand?.agentDividendType)
   if (oneLayer) {
     return (
       <>
@@ -412,6 +421,7 @@ const ProfitSharingBox = ({ isAdd = false /*oneLayer, multipleLayer*/ }) => {
     return null
   }
 
+  //multipleLayer
   return (
     <>
       {label}
