@@ -436,6 +436,7 @@ const ProfitSharingBox = ({ isAdd = false, oneLayer, multipleLayer }) => {
   )
 }
 
+//TODO: use agentProfitSharingType instead of oneLayer, multipleLayer?
 const ConfigFormBody = ({ record, oneLayer, multipleLayer }) => {
   let isCash = isAgentTypeCash(record?.type)
   let isCredit = isAgentTypeCredit(record?.type)

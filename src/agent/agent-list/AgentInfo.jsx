@@ -119,7 +119,6 @@ const EditPanel = (props) => {
   )
 }
 
-//TODO: test change parent & reset config
 const UpdateAgentPanel = ({
   brandId,
   agentProfitSharingType,
@@ -170,20 +169,17 @@ const UpdateAgentPanel = ({
     name: LevelTypeFieldName
   })
 
-  // let changeLevelType = levelType != record.levelType
-  // let isChief = levelType == AgentLevel.Chief
   let isAgent = levelType == AgentLevel.Agent
-  //TODO: rm displayParentUsername?
-  // let displayParentUsername = changeLevelType && isChief ? "none" : "block"
 
   let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
   //TODO: diff
   const onSubmit = (data) => {
-    //TODO: diffs first
+    let diffs = diff(data, record)
+    console.log("diffs", diffs)
+    //TODO: use diffs as data
     let formData = useAgentUpdateFormData(data, agentProfitSharingType)
-    console.log("formData", formData)
     setSubmit(formData)
   }
 
@@ -812,31 +808,6 @@ const AgentTypeBox = ({ value, children, ...props }) => {
       ) : (
         <Text>
           <AgentTypeLabel data-value={value} value={value} {...props} />
-        </Text>
-      )}
-    </>
-  )
-}
-
-const DividendBox = ({ value, type, children, ...props }) => {
-  let isCash = isAgentTypeCash(type)
-  if (!isCash) {
-    return null
-  }
-
-  return (
-    <>
-      <Trans zh="分红比例" en="Profit Sharing Percentage" />
-      {children ? (
-        children
-      ) : (
-        <Text>
-          <FormattedNumberDecimal
-            data-value={value}
-            value={value}
-            postfix="%"
-            {...props}
-          />
         </Text>
       )}
     </>
