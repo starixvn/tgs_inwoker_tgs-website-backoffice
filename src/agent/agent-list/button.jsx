@@ -371,8 +371,6 @@ const FormBody = ({ isAdd, oneLayer, multipleLayer }) => {
   )
 }
 
-//TODO: test isAdd = true
-//TODO: oneLayer & multipleLayer params
 const ProfitSharingBox = ({ isAdd = false, oneLayer, multipleLayer }) => {
   let label = (
     <NormalLabel required>
@@ -436,7 +434,6 @@ const ConfigFormBody = ({ record, oneLayer, multipleLayer }) => {
   let isCash = isAgentTypeCash(record?.type)
   let isCredit = isAgentTypeCredit(record?.type)
 
-  console.log("oneLayer", oneLayer, "multipleLayer", multipleLayer)
   return (
     <Set orientation="vertical" isFilled>
       <Set orientation="vertical" marginLeft="1rem" marginRight="1rem" isFilled>
@@ -691,6 +688,8 @@ const UpdateConfigDialog = ({
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
   const onSubmit = (data) => {
+
+
     setSubmit({
       updateType: AgentUpdateType.Info,
       brandId,

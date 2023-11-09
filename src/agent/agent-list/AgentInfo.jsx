@@ -34,7 +34,12 @@ import {
   useWatch
 } from "react-hook-form"
 import { Input, InputField } from "../../input/Input"
-import { useAgent, useUpdateAgent, useUpdateAgentV2 } from "./client"
+import {
+  useAgent,
+  useUpdateAgent,
+  useUpdateAgentV2,
+  useAgentUpdateFormData
+} from "./client"
 import { AgentStatusLabel, AgentStatusSelect } from "../AgentStatus"
 import { AgentLevelLabel, AgentLevelSelect, isAgentHead } from "../AgentLevel"
 import {
@@ -175,45 +180,9 @@ const UpdateAgentPanel = ({
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
   //TODO: diff
-  const onSubmit = ({
-    type,
-    parentUsername,
-    dividendPercentage,
-    agentDividendConditions,
-    status,
-
-    realName,
-    remarks,
-
-    ...data
-  } = {}) => {
+  const onSubmit = (data) => {
     //TODO: diffs first
-
-    //TODO: isNil?
-    let formData = { status: { status }, info: { realName, remarks } }
-
-    if (oneLayer) {
-      formData = {
-        ...formData,
-        oneLayer: {
-          type,
-          parentUsername,
-          dividendPercentage
-        }
-      }
-    }
-
-    if (multipleLayer) {
-      formData = {
-        ...formData,
-        multipleLayer: {
-          type,
-          parentUsername,
-          agentDividendConditions
-        }
-      }
-    }
-
+    let formData = useAgentUpdateFormData(data, agentProfitSharingType)
     console.log("formData", formData)
     setSubmit(formData)
   }

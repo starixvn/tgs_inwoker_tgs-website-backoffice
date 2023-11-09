@@ -10,6 +10,10 @@ import {
 import { isEmpty, isNil } from "lodash-es"
 import { either } from "ramda"
 import { useApiMerge } from "../../client/useApiMerge."
+import {
+  isAgentProfitSharingMultipleLayer,
+  isAgentProfitSharingOneLayer
+} from "../AgentProfitSharingType"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -55,6 +59,46 @@ const UpdateAgentFormDataField = {
   Status: "status",
   OneLayer: "oneLayer",
   MultipleLayer: "multipleLayer"
+}
+
+export const useAgentUpdateFormData = (data, agentProfitSharingType) => {
+  if (isNil(data)) {
+    return data
+  }
+
+  let {
+    type,
+    parentUsername,
+    dividendPercentage,
+    agentDividendConditions,
+    status,
+
+    realName,
+    remarks
+  } = data
+
+  let formData = {
+    info: { realName, remarks },
+    status: isNilOrEmpty(status) ? null : { status }
+  }
+
+  if (isAgentProfitSharingOneLayer(agentProfitSharingType)) {
+    Reflect.set(formData, UpdateAgentFormDataField.OneLayer, {
+      type,
+      parentUsername,
+      dividendPercentage
+    })
+  }
+
+  if (isAgentProfitSharingMultipleLayer(agentProfitSharingType)) {
+    Reflect.set(formData, UpdateAgentFormDataField.MultipleLayer, {
+      type,
+      parentUsername,
+      agentDividendConditions
+    })
+  }
+
+  return formData
 }
 
 export const useUpdateAgentV2 = (agentId, data) => {
