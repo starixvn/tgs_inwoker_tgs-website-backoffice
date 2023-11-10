@@ -95,6 +95,7 @@ export const FormDialog = ({
         hideOnClickOutside={hideOnClickOutside}
         {...dialog}
         css={css`
+          min-width: 320px;
           width: max-content;
           max-width: 85vw;
 

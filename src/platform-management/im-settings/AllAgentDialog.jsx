@@ -148,7 +148,8 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let {
     isLoading: isLoadingSettings,
     data: settings,
-    error: settingsError
+    error: settingsError,
+    mutate: mutateSettings
   } = useAllAgentSetting(brandId)
 
   let [formData, setSubmit] = useState()
@@ -186,6 +187,9 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
         result={result}
         error={error}
         onCloseErrorAlert={reset}
+        onSubmitted={() => {
+          mutateSettings(null, false)
+        }}
         dialog={dialog}
         showActionButtons={readOnly ? false : true}
         {...props}
@@ -204,8 +208,6 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
     </Backdrop>
   )
 }
-
-const SettlementCycleFormBody = () => {}
 
 const AllAgentMainSwitchBox = ({ brandId, readOnly, dialog }) => {
   let { isLoading, data, error, mutate, deleteCache } =
