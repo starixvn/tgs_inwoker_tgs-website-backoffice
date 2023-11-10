@@ -4,7 +4,8 @@ import {
   usePostData,
   usePut,
   usePutData,
-  useDelete
+  useDelete,
+  usePatchData
 } from "../../client"
 
 let API = "/api/BrandAllAgent"
@@ -71,4 +72,9 @@ formData: {
 export const useUpdateAllAgentGameTypeSwitch = (formData) => {
   let url = formData?.brandId ? `${API}/gameType` : ""
   return usePutData(url, formData)
+}
+
+export const useUpdateAllAgentSettlementCycle = (data) => {
+  let url = data?.brandId ? `${API}/settlement-interval` : ""
+  return usePatchData(url, data)
 }
