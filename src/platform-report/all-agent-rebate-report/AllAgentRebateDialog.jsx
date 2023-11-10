@@ -202,10 +202,19 @@ const ReportDialog = ({
 
           <Trans zh="结算日期" en="Settlement Date" />
           <Box alignY="center">
-            <FormattedDate value={settleDateTime} dateFormat="dd/MM/yyyy" />
+            <FormattedDate value={settleDateTime} dateFormat="yyyy/MM/dd" />
           </Box>
 
-          {isDev() && <></>}
+          {isDev() && (
+            <>
+              <Trans zh="全民代理上级" en="All Agent Username" />
+              <Set orientation="horizontal">
+                <FormattedDate value={from} dateFormat="yyyy/MM/dd" />
+                <Box>-</Box>
+                <FormattedDate value={to} dateFormat="yyyy/MM/dd" />
+              </Set>
+            </>
+          )}
         </FieldValues>
         <Separator />
         <Table
