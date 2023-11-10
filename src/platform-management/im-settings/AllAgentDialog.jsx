@@ -130,7 +130,7 @@ const SettlementCycleDialogDisclosure = ({ brandId, readOnly }) => {
 
   return (
     <>
-      <Disclosure {...dialog}>{labellabel}</Disclosure>
+      <Disclosure {...dialog}>{label}</Disclosure>
       {dialog.visible && (
         <SettlementCycleDialog
           brandId={brandId}
