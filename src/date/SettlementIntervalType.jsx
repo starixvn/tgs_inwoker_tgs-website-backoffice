@@ -7,19 +7,19 @@ import { range } from "lodash"
 const Daily = "Daily"
 const DailyTrans = {
   zh: "每日",
-  en: "Daily"
+  en: "Everyday"
 }
 
 const Weekly = "Weekly"
 const WeeklyTrans = {
   zh: "每周",
-  en: "Weekly"
+  en: "Every Week"
 }
 
 const Monthly = "Monthly"
 const MonthlyTrans = {
   zh: "每月",
-  en: "Monthly"
+  en: "Every Month"
 }
 
 const Instantly = "Instantly"
@@ -33,7 +33,7 @@ export const SettlementIntervalTypeSelect = ({
 }) => {
   let defaultPlaceholder = useTrans({
     zh: "周期",
-    en: "Interval"
+    en: "Cycle"
   })
   placeholder = placeholder ?? defaultPlaceholder
 
