@@ -125,7 +125,6 @@ const DialogBody = ({ brandId, readOnly, dialog }) => {
   )
 }
 
-//TODO: test readOnly
 const SettlementCycleDialogDisclosure = ({ brandId, readOnly }) => {
   let dialog = useModalState()
   let label = useTrans({
