@@ -121,6 +121,7 @@ const DialogBody = ({ brandId, readOnly, dialog }) => {
   )
 }
 
+//TODO: test readOnly
 const SettlementCycleDialogDisclosure = ({ brandId, readOnly }) => {
   let dialog = useModalState()
   let label = useTrans({
@@ -143,7 +144,7 @@ const SettlementCycleDialogDisclosure = ({ brandId, readOnly }) => {
   )
 }
 
-const SettlementCycleDialog = ({ brandId, readonly, dialog, ...props }) => {
+const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let {
     isLoading: isLoadingSettings,
     data: settings,
@@ -174,29 +175,37 @@ const SettlementCycleDialog = ({ brandId, readonly, dialog, ...props }) => {
   }
 
   return (
-    <FormDialog
-      defaultValues={{
-        brandId,
-        settlementIntervalType: settings?.settlementIntervalType
-      }}
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      result={result}
-      error={error}
-      onCloseErrorAlert={reset}
-      dialog={dialog}
-      {...props}
-    >
-      <FieldValues>
-        <Trans zh="周期" en="Cycle" />
-        <SettlementIntervalTypeSelect
-          name="settlementIntervalType"
-          disabled={readonly}
-        />
-      </FieldValues>
-    </FormDialog>
+    <Backdrop {...dialog}>
+      <FormDialog
+        defaultValues={{
+          brandId,
+          settlementIntervalType: settings?.settlementIntervalType
+        }}
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        result={result}
+        error={error}
+        onCloseErrorAlert={reset}
+        dialog={dialog}
+        showActionButtons={readOnly ? false : true}
+        {...props}
+      >
+        <FieldValues marginLeft="1rem">
+          <Box alignY="center">
+            <Trans zh="周期" en="Cycle" />
+          </Box>
+          <SettlementIntervalTypeSelect
+            name="settlementIntervalType"
+            required
+            disabled={readOnly}
+          />
+        </FieldValues>
+      </FormDialog>
+    </Backdrop>
   )
 }
+
+const SettlementCycleFormBody = () => {}
 
 const AllAgentMainSwitchBox = ({ brandId, readOnly, dialog }) => {
   let { isLoading, data, error, mutate, deleteCache } =
