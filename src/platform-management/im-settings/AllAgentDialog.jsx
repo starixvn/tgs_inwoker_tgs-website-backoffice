@@ -188,7 +188,7 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
         error={error}
         onCloseErrorAlert={reset}
         onSubmitted={() => {
-          mutateSettings(null, false)
+          mutateSettings(null, true)
         }}
         dialog={dialog}
         showActionButtons={readOnly ? false : true}
