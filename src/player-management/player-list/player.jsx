@@ -61,6 +61,7 @@ export const Tab = ({ ...props }) => {
   )
 }
 
+//TODO: rm isDev() for 1.39
 export const EditPanel = (props) => {
   return isDev() ? (
     <UpdatePlayerInfoPanel {...props} />
@@ -150,6 +151,7 @@ const UpdatePlayerInfoPanel = ({
   )
 }
 
+//TODO: rm CurrentPlayerInfoPanel after 1.39
 const CurrentPlayerInfoPanel = ({
   brandId,
   brand,

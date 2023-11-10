@@ -50,6 +50,7 @@ import { CheckboxField } from "../../checkbox"
 import { SubmitButton } from "../../button/SubmitButton"
 import { AllAgentProfitSharingSetting } from "./AllAgentSharingSetting"
 import { SettlementIntervalTypeSelect } from "../../date/SettlementIntervalType"
+import { isDev } from "../../env"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -97,6 +98,7 @@ const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
   )
 }
 
+//TODO:rm isDev() for 1.39
 const DialogBody = ({ brandId, readOnly, dialog }) => {
   return (
     <FieldStack>
@@ -106,10 +108,12 @@ const DialogBody = ({ brandId, readOnly, dialog }) => {
           readOnly={readOnly}
           dialog={dialog}
         />
-        <SettlementCycleDialogDisclosure
-          brandId={brandId}
-          readOnly={readOnly}
-        />
+        {isDev() && (
+          <SettlementCycleDialogDisclosure
+            brandId={brandId}
+            readOnly={readOnly}
+          />
+        )}
       </Set>
 
       <AllAgentGameTypeTabs

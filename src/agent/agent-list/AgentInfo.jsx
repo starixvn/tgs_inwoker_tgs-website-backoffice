@@ -111,6 +111,7 @@ export const AgentInfoTab = ({ ...props }) => {
 export const AgentInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
+//TODO:rm isDev() for 1.39
 const EditPanel = (props) => {
   return isDev() ? (
     <UpdateAgentPanel {...props} />
@@ -323,6 +324,7 @@ const UpdateAgentPanel = ({
   )
 }
 
+//TODO: rm CurrentAgentPanel after 1.39
 const CurrentAgentPanel = ({
   brandId,
   agentProfitSharingType,

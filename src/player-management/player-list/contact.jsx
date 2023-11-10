@@ -76,6 +76,7 @@ export const Panel = ({ player = {}, ...props }) => {
   )
 }
 
+//TODO: rm isDev() for 1.39
 export const EditPanel = (props) => {
   return isDev() ? (
     <UpdateContactPanel {...props} />
@@ -84,6 +85,7 @@ export const EditPanel = (props) => {
   )
 }
 
+//TODO: rm CurrentPlayerContactPanel after 1.39
 const CurrentPlayerContactPanel = ({
   playerCode = "",
   player = {},

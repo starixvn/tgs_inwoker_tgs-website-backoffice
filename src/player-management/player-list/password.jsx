@@ -41,7 +41,7 @@ export const Tab = (props = {}) => {
   )
 }
 
-//TODO: replace CurrentUpdatePasswordPanel with UpdatePasswordPanel
+//TODO: replace CurrentUpdatePasswordPanel with UpdatePasswordPanel for 1.39
 export const Panel = (props) => {
   return isDev() ? (
     <UpdatePasswordPanel {...props} />

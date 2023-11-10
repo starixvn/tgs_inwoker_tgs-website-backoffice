@@ -926,6 +926,7 @@ const TabsDialog = ({
   )
 }
 
+//TODO: use AgentHistoryListTab instead of AgentOperationListTab for 1.39
 const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
   let enableAgentHistory = isDev()
   return (

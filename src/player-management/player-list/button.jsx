@@ -219,6 +219,7 @@ const TabsDialog = ({
   )
 }
 
+//TODO: use PlayerHistoryListTab instead of PlayerOperationTab for 1.39
 const ViewTabs = ({
   playerCode,
   brandId,

@@ -38,6 +38,7 @@ export const AgentContactInfoTab = ({ ...props }) => {
 export const AgentContactInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
+//TODO:rm isDev() for 1.39
 const EditPanel = (props) => {
   return isDev() ? (
     <UpdateAgentContactPanel {...props} />
@@ -46,6 +47,7 @@ const EditPanel = (props) => {
   )
 }
 
+//TODO: rm CurrentAgentContactPanel after 1.39
 const CurrentAgentContactPanel = ({
   record,
   onSubmitted,

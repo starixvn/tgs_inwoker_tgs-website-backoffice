@@ -16,6 +16,7 @@ import AlertDialog from "../../dialog/Alert"
 
 export const Key = "operation"
 
+//TODO: rm PlayerOperationTab after 1.39
 export const PlayerOperationTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>

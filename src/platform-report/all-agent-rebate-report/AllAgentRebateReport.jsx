@@ -275,6 +275,8 @@ const useColumns = ({ items = [], brandId }) => {
               username={record?.username}
               playerCode={record?.playerCode}
               settleDateTime={toDate(record?.settleDateTime)}
+              from={record?.from}
+              to={record?.to}
             />
           )
         }

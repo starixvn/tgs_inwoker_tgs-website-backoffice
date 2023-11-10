@@ -46,6 +46,7 @@ import {
   useAllAgentRebateGameTypeDetails
 } from "./client"
 import { camelCase } from "lodash-es"
+import { isDev } from "../../env"
 
 export const AllAgentRebateDialogDisclosure = ({
   brandId,
@@ -53,6 +54,8 @@ export const AllAgentRebateDialogDisclosure = ({
   username,
   playerCode,
   settleDateTime,
+  from,
+  to,
   ...props
 }) => {
   let dialog = useModalState()
@@ -72,6 +75,8 @@ export const AllAgentRebateDialogDisclosure = ({
           username={username}
           playerCode={playerCode}
           settleDateTime={settleDateTime}
+          from={from}
+          to={to}
           dialog={dialog}
         />
       )}
@@ -148,6 +153,8 @@ const ReportDialog = ({
   username,
   playerCode,
   settleDateTime,
+  from,
+  to,
   dialog
 }) => {
   let title = useTrans({
@@ -178,6 +185,7 @@ const ReportDialog = ({
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
+  //TODO: rm isDev() for 1.39
   return (
     <Modal
       title={title}
@@ -196,6 +204,8 @@ const ReportDialog = ({
           <Box alignY="center">
             <FormattedDate value={settleDateTime} dateFormat="dd/MM/yyyy" />
           </Box>
+
+          {isDev() && <></>}
         </FieldValues>
         <Separator />
         <Table
