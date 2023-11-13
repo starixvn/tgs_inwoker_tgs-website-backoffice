@@ -52,10 +52,11 @@ export const diff = (target, origin) => {
 }
 
 const diffOrUndefined = (target, origin) => {
+  const NoDiffs = undefined
   if (isNilOrEmpty(target) && isNilOrEmpty(origin)) {
-    return null
+    return NoDiffs
   }
 
   let isDiff = target !== origin
-  return isDiff ? target : undefined
+  return isDiff ? target : NoDiffs
 }
