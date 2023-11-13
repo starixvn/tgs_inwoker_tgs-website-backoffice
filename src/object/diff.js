@@ -1,4 +1,4 @@
-import { isArray, isObject, isPlainObject, isNil } from "lodash-es"
+import { isArray, isObject, isPlainObject, isNil, isUndefined } from "lodash-es"
 import { isEmpty, empty, all } from "ramda"
 
 const isArrayOrObject = (target) => isObject(target) || isArray(target)
@@ -30,9 +30,9 @@ export const diff = (target, origin) => {
 
       let diffs = isArrayOrObject(value)
         ? diff(value, originValue)
-        : diffOrNil(value, originValue)
+        : diffOrUndefined(value, originValue)
 
-      if (isNil(diffs) || isEmptyArray(diffs, originValue)) {
+      if (isUndefined(diffs) || isEmptyArray(diffs, originValue)) {
         return accum
       }
 
@@ -47,18 +47,15 @@ export const diff = (target, origin) => {
     return diffs
   } else {
     //not array or object
-
-    //TODO: use diffOrEmpty instead?
-    return diffOrNil(target, origin)
+    return diffOrUndefined(target, origin)
   }
 }
 
-//TODO: support nil as valid value?
-const diffOrNil = (target, origin) => {
+const diffOrUndefined = (target, origin) => {
   if (isNilOrEmpty(target) && isNilOrEmpty(origin)) {
     return null
   }
 
   let isDiff = target !== origin
-  return isDiff ? target : null
+  return isDiff ? target : undefined
 }
