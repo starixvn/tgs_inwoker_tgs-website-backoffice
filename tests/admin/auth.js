@@ -1,7 +1,8 @@
 import base from "@playwright/test"
 import { loginUser, login } from "../auth.js"
 import { host } from "../env.js"
-import globalApi from "../../client/globalApi/index.js"
+// import globalApi from "../../client/globalApi/index.js"
+import brandCertApi from "../../client/brandCertApi/index.js"
 import operatorApi from "../../client/operatorApi/index.js"
 import sboGameProviderApi from "../../client/gameProviderApi/sbo/index.js"
 import backofficeApi from "../client/index.js"
@@ -29,7 +30,7 @@ export const Fixture = {
   host: host(),
   platformToken: async ({ platformCode }, use) => {
     //TODO: use brand-cert-api to get platform token
-    let platformToken = await globalApi.platformToken(platformCode)
+    let platformToken = await brandCertApi.platformToken(platformCode)
     use(platformToken)
   },
   player: async ({ platformToken }, use) => {
@@ -229,8 +230,14 @@ export const Fixture = {
   operatorApi: async ({}, use) => {
     use(operatorApi)
   },
+  /*
+  TODO: rm
   globalApi: async ({}, use) => {
     use(globalApi)
+  },
+  */
+  brandCertApi: async ({}, use) => {
+    use(brandCertApi)
   },
   sboGameProviderApi: ({}, use) => {
     use(sboGameProviderApi)

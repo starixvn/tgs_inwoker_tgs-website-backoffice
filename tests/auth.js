@@ -13,6 +13,7 @@ const admin = async ({ browser }) =>
     storageStatePath: AdminAuthPath
   })
 
+//TODO: rm reseller?
 const ResellerAuthPath = `${Path}/reseller-auth.json`
 const ResellerUserName = "reseller.enabled"
 const reseller = async ({ browser }) =>
@@ -25,6 +26,7 @@ const reseller = async ({ browser }) =>
 
 const PlatformAuthPath = `${Path}/platform-auth.json`
 const PlatformUserName = "brand.enabled"
+//TODO: rm platform?
 const platform = async ({ browser }) =>
   login({
     username: PlatformUserName,
@@ -115,12 +117,14 @@ export const login = async ({
   }
 }
 
+//TODO: rm Reseller & Platform?
 export const StorageState = {
   Admin: AdminAuthPath,
   Reseller: ResellerAuthPath,
   Platform: PlatformAuthPath
 }
 
+//TODO: rm Reseller & Platform? create on demand?
 export const UserName = {
   Admin: AdminUserName,
   Reseller: ResellerUserName,

@@ -20,7 +20,6 @@ test("fund withdraw > audit clear bucket", async ({
   player,
   backofficeApi,
   customBankManualPaymentMethodChannel,
-  globalApi,
   operatorApi,
   sboGameProviderApi
 }) => {

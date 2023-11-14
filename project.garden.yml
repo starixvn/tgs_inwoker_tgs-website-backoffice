@@ -9,6 +9,9 @@ providers:
   - name: local-kubernetes # The name of the provider plugin to use.
     environments: ["develop"]
     setupIngressController: false # "nginx"
+    imagePullSecrets:
+      - name: regcred # docker auth
+        namespace: default
 
 ---
 kind: Module

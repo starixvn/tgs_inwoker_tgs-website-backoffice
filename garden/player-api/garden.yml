@@ -7,10 +7,12 @@ services:
     dependencies:
       - postgres
       - marketing-api
+      - cash-service
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       PlayerService__MarketingReportBaseUrl: "http://marketing-api"
+      PlayerService__CashServiceBaseUrl: "http://cash-service"
     ports:
       - name: http
         containerPort: 80

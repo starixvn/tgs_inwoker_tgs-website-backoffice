@@ -115,6 +115,7 @@ import {
 } from "../AgentProfitSharingType"
 import { useBrand } from "../../merchant/platforms/client"
 import { AgentHistoryListPanel, AgentHistoryListTab } from "./AgentHistoryList"
+import { diff } from "../../object/diff"
 
 export const AddAgentButton = ({
   brandId,
@@ -153,9 +154,6 @@ const AddDialog = ({
   let [formData, setSubmit] = useState()
   let { result, error, mutate, deleteCache, isLoading } = useAddAgent(formData)
 
-  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
-  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
-
   const onSubmit = (data) => {
     setSubmit(data)
   }
@@ -193,7 +191,7 @@ const AddDialog = ({
       minWidth="60vw"
       placement="top"
     >
-      <FormBody isAdd oneLayer={oneLayer} multipleLayer={multipleLayer} />
+      <FormBody isAdd agentProfitSharingType={agentProfitSharingType} />
     </FormDialog>
   )
 }
@@ -202,7 +200,7 @@ const AlphabetNumberOnly = new RegExp("^[A-Za-z0-9]+$")
 
 const BrandIdField = "brandId"
 const ParentUsernameFieldName = "parentUsername"
-const FormBody = ({ isAdd, oneLayer, multipleLayer }) => {
+const FormBody = ({ isAdd, agentProfitSharingType }) => {
   let { control, getValues } = useFormContext()
 
   const LevelTypeFieldName = "levelType"
@@ -294,8 +292,7 @@ const FormBody = ({ isAdd, oneLayer, multipleLayer }) => {
           {isCash && (
             <ProfitSharingBox
               isAdd={isAdd}
-              oneLayer={oneLayer}
-              multipleLayer={multipleLayer}
+              agentProfitSharingType={agentProfitSharingType}
             />
           )}
 
@@ -377,7 +374,7 @@ const FormBody = ({ isAdd, oneLayer, multipleLayer }) => {
   )
 }
 
-const ProfitSharingBox = ({ isAdd = false, oneLayer, multipleLayer }) => {
+const ProfitSharingBox = ({ isAdd = false, agentProfitSharingType }) => {
   let label = (
     <NormalLabel required>
       <Trans zh="代理分红" en="Profit Sharing" />
@@ -406,7 +403,7 @@ const ProfitSharingBox = ({ isAdd = false, oneLayer, multipleLayer }) => {
   }
   */
 
-  if (oneLayer) {
+  if (isAgentProfitSharingOneLayer(agentProfitSharingType)) {
     return (
       <>
         {label}
@@ -436,8 +433,7 @@ const ProfitSharingBox = ({ isAdd = false, oneLayer, multipleLayer }) => {
   )
 }
 
-//TODO: use agentProfitSharingType instead of oneLayer, multipleLayer?
-const ConfigFormBody = ({ record, oneLayer, multipleLayer }) => {
+const ConfigFormBody = ({ record, agentProfitSharingType }) => {
   let isCash = isAgentTypeCash(record?.type)
   let isCredit = isAgentTypeCredit(record?.type)
 
@@ -489,10 +485,7 @@ const ConfigFormBody = ({ record, oneLayer, multipleLayer }) => {
           </Text.Block>
 
           {isCash && (
-            <ProfitSharingBox
-              oneLayer={oneLayer}
-              multipleLayer={multipleLayer}
-            />
+            <ProfitSharingBox agentProfitSharingType={agentProfitSharingType} />
           )}
 
           {/* {isCredit && (
@@ -647,8 +640,6 @@ export const ConfigButton = ({
   )
 }
 
-//TODO: test multiple layer
-//TODO: use new api
 const ConfigDialog = (props) => {
   return isDev() ? (
     <UpdateConfigDialog {...props} />
@@ -657,6 +648,7 @@ const ConfigDialog = (props) => {
   )
 }
 
+//TODO: need diffs? seems yes
 const UpdateConfigDialog = ({
   brandId,
   agentId,
@@ -691,12 +683,8 @@ const UpdateConfigDialog = ({
     return <AlertDialog {...loadingAgentError} onClickClose={dialog.hide} />
   }
 
-  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
-  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
-
   const onSubmit = (data) => {
     let formData = useAgentUpdateFormData(data, agentProfitSharingType)
-    console.log("formData", formData)
 
     setSubmit(formData)
   }
@@ -710,16 +698,7 @@ const UpdateConfigDialog = ({
   return (
     <FormDialog
       id="config-agent-dialog"
-      defaultValues={{
-        ...clone(agent),
-        dividendPercentage: "",
-        liveDealerRebatePercentage: "",
-        slotRebatePercentage: "",
-        cardGameRebatePercentage: "",
-        lotteryRebatePercentage: "",
-        sportsRebatePercentage: "",
-        virtualSportsRebatePercentage: ""
-      }}
+      defaultValues={clone(agent)}
       onSubmit={onSubmit}
       isLoading={isLoading}
       result={result}
@@ -742,8 +721,7 @@ const UpdateConfigDialog = ({
     >
       <ConfigFormBody
         record={agent}
-        oneLayer={oneLayer}
-        multipleLayer={multipleLayer}
+        agentProfitSharingType={agentProfitSharingType}
       />
     </FormDialog>
   )

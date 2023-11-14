@@ -6,7 +6,7 @@ import { gotoPlayerListPage } from "./player-list-page.js"
 const test = base.extend(Fixture)
 
 test("player list", async ({ page, platformCode, player }) => {
-  let brandId = await gotoPlayerListPage(page, platformCode)
+  await gotoPlayerListPage(page, platformCode)
   await page.fill(`input[name="username"]`, player.username)
 
   await Promise.all([
