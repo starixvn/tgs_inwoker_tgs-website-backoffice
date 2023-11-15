@@ -20,7 +20,7 @@ import { endOfDay } from "date-fns"
 
 const Key = "AgentOperationList"
 
-//TODO: rm AgentOperationListTab after 1.39
+//TODO:1.40 > rm AgentOperationListTab
 export const AgentOperationListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>

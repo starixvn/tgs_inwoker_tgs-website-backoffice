@@ -141,9 +141,6 @@ const useColumns = ({ items = [], mutate }) => {
         Header: <Trans zh="玩家" en="Username" />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          //TODO: player info dialog
-          let { playerCode } = record
-
           return record.username
         }
       }),

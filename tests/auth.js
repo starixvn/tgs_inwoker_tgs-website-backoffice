@@ -135,8 +135,10 @@ export const PlatformCode = "TGS"
 
 export default {
   admin,
+  /*
   reseller,
   platform,
+  */
   StorageState,
   UserName,
   PlatformCode

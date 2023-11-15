@@ -84,7 +84,6 @@ function App() {
 }
 
 const HeaderHeight = "60px"
-//TODO: fine tune width
 const sidebarWidth = 200
 const FooterHeight = "0px" //"30px"
 
@@ -304,7 +303,6 @@ const Sidebar = () => {
   let { pathname: selectedId } = useLocation()
   let { isCollapsed, sidebar } = usePage()
 
-  //TODO: report bug to bumbag?
   useEffect(() => {
     if (!isCollapsed) {
       sidebar.drawer.hide()

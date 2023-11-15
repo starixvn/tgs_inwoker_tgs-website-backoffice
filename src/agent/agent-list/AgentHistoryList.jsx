@@ -289,8 +289,6 @@ const StringValue = ({ value = "" }) =>
 
 const getPath = prop("path")
 
-//TODO: withdraw password?
-//TODO addAgent
 const LabelValueList = [
   [pipe(getPath, equals("/RealName")), RealNameLabel],
   [pipe(getPath, equals("/status")), StatusLabel, AgentStatusLabel],
@@ -302,23 +300,6 @@ const LabelValueList = [
   [pipe(getPath, equals("/Qq")), QqLabel],
 
   [pipe(getPath, equals("/password")), PasswordLabel]
-  /*
-  
-  [pipe(getPath, equals("/properties/Birthdate")), BirthdayLabel],
-  [pipe(getPath, equals("/properties/VipId")), VIPLevelLabel, VipLevelIdLabel],
-  [
-    pipe(getPath, equals("/properties/AgentId")),
-    AgentUsernameLabel,
-    AgentIdUsername
-  ],
-  [
-    pipe(getPath, equals("/identityAuthentication")),
-    IdentityAuthenticationLabel,
-    IdentityAuthenticationIcon
-  ],
-
-  [isAddPlayer, StringValue, Player]
-  */
 ]
 
 const toLabel = (value) => {

@@ -7,14 +7,24 @@ import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 
-test("edit platform credit", async ({ page, host, platformCode }) => {
-  await gotoPlatformCreditPage(page, host)
+test("edit platform credit", async ({
+  page,
+  host,
+  licensee,
+  backofficeApi
+}) => {
+  let [platform] = await Promise.all([
+    backofficeApi.platform.addPlatform({
+      licenseeId: licensee.id
+    }),
+    gotoPlatformCreditPage(page, host)
+  ])
 
-  await page.fill(`input[name="keyword"]`, platformCode)
+  await page.fill(`input[name="keyword"]`, platform.code)
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes(`keyword=${platformCode}`) &&
+        response.url().includes(`keyword=${platform.code}`) &&
         response.status() === 200
       )
     }),

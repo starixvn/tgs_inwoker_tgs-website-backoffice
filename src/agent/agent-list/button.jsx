@@ -389,20 +389,6 @@ const ProfitSharingBox = ({ isAdd = false, agentProfitSharingType }) => {
 
   let brandId = getValues(BrandIdField)
 
-  //TODO: need to handle brandError?
-  /*
-  if (brandError) {
-    return (
-      <>
-        {label}
-        <Box>
-          <AlertDialog />
-        </Box>
-      </>
-    )
-  }
-  */
-
   if (isAgentProfitSharingOneLayer(agentProfitSharingType)) {
     return (
       <>
@@ -648,7 +634,6 @@ const ConfigDialog = (props) => {
   )
 }
 
-//TODO: need diffs? seems yes
 const UpdateConfigDialog = ({
   brandId,
   agentId,
@@ -683,9 +668,23 @@ const UpdateConfigDialog = ({
     return <AlertDialog {...loadingAgentError} onClickClose={dialog.hide} />
   }
 
-  const onSubmit = (data) => {
-    let formData = useAgentUpdateFormData(data, agentProfitSharingType)
+  const onSubmit = ({
+    type,
+    dividendPercentage,
+    agentDividendConditions,
+    ...data
+  }) => {
+    let formData = useAgentUpdateFormData(
+      {
+        ...diff(data, agent),
+        type,
+        dividendPercentage,
+        agentDividendConditions
+      },
+      agentProfitSharingType
+    )
 
+    console.log("formData", formData)
     setSubmit(formData)
   }
 
@@ -727,6 +726,7 @@ const UpdateConfigDialog = ({
   )
 }
 
+//TODO:1.40 > rm CurrentConfigDialog
 const CurrentConfigDialog = ({
   brandId,
   agentId,
@@ -904,7 +904,7 @@ const TabsDialog = ({
   )
 }
 
-//TODO: use AgentHistoryListTab instead of AgentOperationListTab for 1.39
+//TODO:1.39 > use AgentHistoryListTab instead of AgentOperationListTab
 const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
   let enableAgentHistory = isDev()
   return (
@@ -913,7 +913,7 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         <AgentInfoTab {...tab} />
         <AgentContactInfoTab {...tab} />
         {/* <AgentBankInfoTab {...tab} /> */}
-        <AgentOperationListTab {...tab} />
+        {!enableAgentHistory && <AgentOperationListTab {...tab} />}
         {enableAgentHistory && <AgentHistoryListTab {...tab} />}
         <AgentBalanceChangeTab {...tab} />
         <AgentDomainListTab {...tab} />
@@ -928,11 +928,13 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
       />
       <AgentContactInfoPanel record={record} readonly {...tab} />
       {/* <AgentBankInfoPanel record={record} readonly {...tab} /> */}
-      <AgentOperationListPanel
-        agentId={record?.id}
-        brandId={brandId}
-        {...tab}
-      />
+      {!enableAgentHistory && (
+        <AgentOperationListPanel
+          agentId={record?.id}
+          brandId={brandId}
+          {...tab}
+        />
+      )}
       {enableAgentHistory && (
         <AgentHistoryListPanel
           agentId={record?.id}

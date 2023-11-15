@@ -10,15 +10,21 @@ const test = base.extend(Fixture)
 test("pay platform credit and list payment list", async ({
   page,
   host,
-  platformCode
+  licensee,
+  backofficeApi
 }) => {
-  await gotoPlatformCreditPage(page, host)
-  await page.fill(`input[name="keyword"]`, platformCode)
+  let [platform] = await Promise.all([
+    backofficeApi.platform.addPlatform({
+      licenseeId: licensee.id
+    }),
+    gotoPlatformCreditPage(page, host)
+  ])
+  await page.fill(`input[name="keyword"]`, platform.code)
 
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes(`keyword=${platformCode}`) &&
+        response.url().includes(`keyword=${platform.code}`) &&
         response.status() === 200
       )
     }),
@@ -44,10 +50,14 @@ test("pay platform credit and list payment list", async ({
   expect(paymentResult.valid).to.be.true
 
   let PaymentListDialogSelector = `#platform-credit-payment-list-dialog`
-  await openDialog(page, PaymentListDialogSelector)
-  page.waitForSelector(
-    `${PaymentListDialogSelector} #platform-credit-payments tbody`
-  )
+  await Promise.all([
+    page.waitForResponse((response) => {
+      let apiUrl = response.url()
+
+      return apiUrl.includes(`paymentRecords`) && response.status() === 200
+    }),
+    openDialog(page, PaymentListDialogSelector)
+  ])
 
   let paymentAmounts = await page.evaluate(() =>
     Array.from(

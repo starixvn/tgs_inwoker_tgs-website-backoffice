@@ -55,6 +55,9 @@ export const create = async (
   }
 }
 
+// payload: {"type":"CreatePlayer","input":{"username":"samchuang001","pwd":"xxx","upper":"","invitationcode":""}}
+// export const register = () => {}
+
 const Type = {
   Desktop: 0,
   Mobile: 1

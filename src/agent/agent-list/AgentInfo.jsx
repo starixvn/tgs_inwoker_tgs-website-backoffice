@@ -111,7 +111,7 @@ export const AgentInfoTab = ({ ...props }) => {
 export const AgentInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
-//TODO:rm isDev() for 1.39
+//TODO:1.39 > rm isDev()
 const EditPanel = (props) => {
   return isDev() ? (
     <UpdateAgentPanel {...props} />
@@ -175,12 +175,15 @@ const UpdateAgentPanel = ({
   let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
-  //TODO: diff
-  const onSubmit = (data) => {
-    let diffs = diff(data, record)
-    console.log("diffs", diffs)
-    //TODO: use diffs as data
-    let formData = useAgentUpdateFormData(data, agentProfitSharingType)
+  const onSubmit = ({ type, agentDividendConditions, ...data }) => {
+    let formData = useAgentUpdateFormData(
+      {
+        ...diff(data, record),
+        type,
+        agentDividendConditions
+      },
+      agentProfitSharingType
+    )
     setSubmit(formData)
   }
 
@@ -324,7 +327,7 @@ const UpdateAgentPanel = ({
   )
 }
 
-//TODO: rm CurrentAgentPanel after 1.39
+//TODO:1.40 > rm CurrentAgentPanel
 const CurrentAgentPanel = ({
   brandId,
   agentProfitSharingType,

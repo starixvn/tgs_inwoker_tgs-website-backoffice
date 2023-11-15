@@ -219,7 +219,7 @@ const TabsDialog = ({
   )
 }
 
-//TODO: use PlayerHistoryListTab instead of PlayerOperationTab for 1.39
+//TODO:1.39 > use PlayerHistoryListTab instead of PlayerOperationTab
 const ViewTabs = ({
   playerCode,
   brandId,
@@ -229,7 +229,7 @@ const ViewTabs = ({
   tab
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
-  //TODO: remove after stg, prod released
+  //TODO:1.39 > isDev()
   let enablePlayerHistory = isDev()
   return (
     <Tabs isFitted>

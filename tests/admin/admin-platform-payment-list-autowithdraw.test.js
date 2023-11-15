@@ -11,7 +11,7 @@ test("platform autowithdraw", async ({
   licensee,
   backofficeApi,
   customBankManualPaymentMethodChannel,
-  globalApi,
+  brandCertApi,
   operatorApi
 }) => {
   let AutoWithdrawAmount = 10
@@ -19,7 +19,7 @@ test("platform autowithdraw", async ({
     licenseeId: licensee.id
   })
 
-  let platformToken = await globalApi.platformToken(platform.code)
+  let platformToken = await brandCertApi.platformToken(platform.code)
   let player = await operatorApi.player.createAndLogin(platformToken)
 
   let primePay = await backofficeApi.payment.provider.findByCode("PrimePay")

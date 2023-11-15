@@ -38,7 +38,7 @@ export const AgentContactInfoTab = ({ ...props }) => {
 export const AgentContactInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
-//TODO:rm isDev() for 1.39
+//TODO:1.39 > rm isDev()
 const EditPanel = (props) => {
   return isDev() ? (
     <UpdateAgentContactPanel {...props} />
@@ -47,7 +47,7 @@ const EditPanel = (props) => {
   )
 }
 
-//TODO: rm CurrentAgentContactPanel after 1.39
+//TODO:1.40: rm CurrentAgentContactPanel
 const CurrentAgentContactPanel = ({
   record,
   onSubmitted,
@@ -127,7 +127,6 @@ const UpdateAgentContactPanel = ({
   onClickClose,
   ...props
 }) => {
-  //TODO: util fn to get props?
   let formMethods = useForm({
     defaultValues: {
       phone: record?.phone,

@@ -98,7 +98,7 @@ const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
   )
 }
 
-//TODO:rm isDev() for 1.39
+//TODO:1.39 > rm isDev()
 const DialogBody = ({ brandId, readOnly, dialog }) => {
   return (
     <FieldStack>

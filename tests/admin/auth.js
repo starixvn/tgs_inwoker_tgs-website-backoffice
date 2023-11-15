@@ -1,7 +1,6 @@
 import base from "@playwright/test"
 import { loginUser, login } from "../auth.js"
 import { host } from "../env.js"
-// import globalApi from "../../client/globalApi/index.js"
 import brandCertApi from "../../client/brandCertApi/index.js"
 import operatorApi from "../../client/operatorApi/index.js"
 import sboGameProviderApi from "../../client/gameProviderApi/sbo/index.js"
@@ -29,7 +28,6 @@ export const Fixture = {
   licenseeCode: "TGS",
   host: host(),
   platformToken: async ({ platformCode }, use) => {
-    //TODO: use brand-cert-api to get platform token
     let platformToken = await brandCertApi.platformToken(platformCode)
     use(platformToken)
   },
@@ -230,12 +228,6 @@ export const Fixture = {
   operatorApi: async ({}, use) => {
     use(operatorApi)
   },
-  /*
-  TODO: rm
-  globalApi: async ({}, use) => {
-    use(globalApi)
-  },
-  */
   brandCertApi: async ({}, use) => {
     use(brandCertApi)
   },
@@ -259,6 +251,7 @@ export const Fixture = {
     use(page)
   },
   adminUser: async ({ page, adminUsername }, use) => {
+    //TODO: able use login api without page?
     let adminUserInfo = await loginUser(page, adminUsername)
     use(adminUserInfo)
   },
