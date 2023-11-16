@@ -11,6 +11,10 @@ import {
   Content as PlatformCreditContent
 } from "./platform-credit"
 import {
+  Code as PlatformAccountFundCode,
+  Content as PlatformAccountFundContent
+} from "./platform-account-fund"
+import {
   Code as MaintenanceCode,
   Content as MaintenanceContent
 } from "./maintenance"
@@ -23,7 +27,8 @@ const pairs = () => [
   [BrandCode, PlatformContent] /* TODO: rm */,
   [PlatformCode, PlatformContent],
   [PlatformCreditCode, PlatformCreditContent],
-  [MaintenanceCode, MaintenanceContent]
+  [PlatformAccountFundCode, PlatformAccountFundContent],
+  [(MaintenanceCode, MaintenanceContent)]
 ]
 
 export const Content = ({ codes, path = DefaultPaths, ...props }) => (

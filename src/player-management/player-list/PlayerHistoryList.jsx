@@ -361,14 +361,10 @@ const Player = ({ value: player = {}, brandId }) => {
 const AreaCodeLabel = () => <Trans zh="区号" en="Area Code" />
 
 const LabelValueList = [
-  [pipe(getPath, equals("/properties/RealName")), RealNameLabel],
-  [pipe(getPath, equals("/properties/Birthdate")), BirthdayLabel],
-  [pipe(getPath, equals("/properties/VipId")), VIPLevelLabel, VipLevelIdLabel],
-  [
-    pipe(getPath, equals("/properties/AgentId")),
-    AgentUsernameLabel,
-    AgentIdUsername
-  ],
+  [pipe(getPath, includes("/RealName")), RealNameLabel],
+  [pipe(getPath, includes("/Birthdate")), BirthdayLabel],
+  [pipe(getPath, includes("/VipId")), VIPLevelLabel, VipLevelIdLabel],
+  [pipe(getPath, includes("/AgentId")), AgentUsernameLabel, AgentIdUsername],
   [pipe(getPath, includes("/Remark")), RemarkLabel],
   [
     pipe(getPath, equals("/identityAuthentication")),
@@ -378,9 +374,9 @@ const LabelValueList = [
 
   [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
 
-  [pipe(getPath, equals("/properties/AreaCode")), AreaCodeLabel],
-  [pipe(getPath, equals("/properties/Phone")), MobileLabel],
-  [pipe(getPath, equals("/properties/Email")), EmailLabel],
+  [pipe(getPath, includes("/AreaCode")), AreaCodeLabel],
+  [pipe(getPath, includes("/Phone")), MobileLabel],
+  [pipe(getPath, includes("/Email")), EmailLabel],
   [pipe(getPath, equals("/properties/Qq")), QQLabel],
   [pipe(getPath, equals("/properties/Wechat")), WeChatLabel],
   [pipe(getPath, equals("/properties/Telegram")), TelegramLabel],
