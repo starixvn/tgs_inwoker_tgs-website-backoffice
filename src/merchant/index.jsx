@@ -28,7 +28,7 @@ const pairs = () => [
   [PlatformCode, PlatformContent],
   [PlatformCreditCode, PlatformCreditContent],
   [PlatformAccountFundCode, PlatformAccountFundContent],
-  [(MaintenanceCode, MaintenanceContent)]
+  [MaintenanceCode, MaintenanceContent]
 ]
 
 export const Content = ({ codes, path = DefaultPaths, ...props }) => (

@@ -111,7 +111,7 @@ export const AgentInfoTab = ({ ...props }) => {
 export const AgentInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
-//TODO:1.39 > rm isDev()
+//TODO:1.39 > rm isDev(), use UpdateAgentPanel
 const EditPanel = (props) => {
   return isDev() ? (
     <UpdateAgentPanel {...props} />

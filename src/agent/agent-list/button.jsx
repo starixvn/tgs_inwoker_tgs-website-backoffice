@@ -626,6 +626,7 @@ export const ConfigButton = ({
   )
 }
 
+//TODO:1.39 > rm isDev(), use UpdateConfigDialog
 const ConfigDialog = (props) => {
   return isDev() ? (
     <UpdateConfigDialog {...props} />
@@ -684,7 +685,6 @@ const UpdateConfigDialog = ({
       agentProfitSharingType
     )
 
-    console.log("formData", formData)
     setSubmit(formData)
   }
 

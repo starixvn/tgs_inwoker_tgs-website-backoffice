@@ -22,6 +22,12 @@ import { View, Update } from "./menu"
 import { useFormContext, useForm, FormProvider } from "react-hook-form"
 import AlertDialog from "../../dialog/Alert"
 import { useMeasure } from "react-use"
+import { PlatformAccountFundTypeSelect } from "./PlatformAccountFundType"
+import SearchButton from "../../button/SearchButton"
+import { DateInputRange } from "../../date/DateTimeRangeInput"
+import { today } from "../../date/range"
+import { usePlatformAccountFundList } from "./client"
+import { subDays } from "date-fns"
 
 export { Code }
 
@@ -40,20 +46,95 @@ export const Content = () => {
 
 const Body = () => {
   let brandId = usePlatformId()
+
+  let todayRange = today()
+
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    from: todayRange.start,
+    to: todayRange.end
+  })
+
+  //TODO: need?
+  /*
+  useEffect(() => {
+    setState({ pageIndex: 0, brandId })
+  }, [brandId])
+  */
+
+  let { isLoading, data, error, mutate, deleteCache } =
+    usePlatformAccountFundList(toApiParams(state))
+
   //TODO: how to get available height?
   let [ref, measure] = useMeasure()
   console.log("measure", measure)
 
   return (
     <Set ref={ref} orientation="vertical" isFilled height="100%">
-      <Level alignY="bottom" alignX="left" verticalBelow="mobile"></Level>
-      <Box flex="1 0 50%"></Box>
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          from={state.from}
+          to={state.to}
+          isLoading={isLoading}
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate(null, true)
+          }}
+        />
+      </Level>
+      <Box flex="1 0 50%">{JSON.stringify(data)}</Box>
     </Set>
   )
 }
 
-const SearchBar = ({ search, ...props }) => {
+//TODO: confirm api params
+const SearchBar = ({ type, from, to, search, isLoading, ...props }) => {
   let formMethods = useForm({
-    defaultValues: {}
+    defaultValues: {
+      type,
+      from,
+      to
+    }
   })
+
+  const onSubmit = (data) => search?.(data)
+
+  let QueryMaxRangeDays = 31
+  let todayRange = today()
+  let DataRetentionDays = 365
+  let minDate = subDays(todayRange.start, DataRetentionDays)
+  let maxDate = todayRange.end
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Set>
+          <PlatformAccountFundTypeSelect name="type" />
+          <DateInputRange
+            showDateDropdownMenu
+            maxRangeDays={QueryMaxRangeDays}
+            minDate={minDate}
+            maxDate={maxDate}
+            startProps={{
+              name: "from"
+            }}
+            endProps={{
+              name: "to"
+            }}
+            dateDropdownMenuProps={{
+              thisWeekProps: {
+                end: maxDate
+              },
+              thisMonthProps: {
+                end: maxDate
+              }
+            }}
+          />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
 }
