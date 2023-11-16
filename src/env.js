@@ -29,6 +29,16 @@ export const isDev = () => {
   )
 }
 
+const isLocal = () => {
+  return boolean(import.meta.env.SNOWPACK_PUBLIC_IS_LOCAL)
+}
+
+export const isLocalDev = () => {
+  let dev = isDev()
+  let local = isLocal()
+  return dev && local
+}
+
 export const isProduction = () => window?.env?.mode === Production
 
 export const getLoginImageUrl = () => window?.env?.loginImageUrl || ""

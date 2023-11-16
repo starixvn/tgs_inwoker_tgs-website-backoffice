@@ -14,24 +14,40 @@ const test = base.extend(Fixture)
 
 test("update player all agent player", async ({
   page,
-  platformCode,
-  player,
+  licensee,
+  brandCertApi,
   backofficeApi,
-  operatorApi,
-  platformToken
+  operatorApi
 }) => {
-  await gotoPlayerListPage(page, platformCode)
-  await searchPlayer(page, player)
+  let platform = await backofficeApi.platform.addPlatform({
+    licenseeId: licensee.id
+  })
 
-  let allAgentPlayer = await operatorApi.player.createAndLogin(platformToken)
+  let [platformToken] = await Promise.all([
+    brandCertApi.platformToken(platform.code),
+    backofficeApi.platform.allAgent.enable(platform.id),
+    gotoPlayerListPage(page, platform.code)
+  ])
+
+  let [allAgentPlayer, player] = await Promise.all([
+    operatorApi.player.createAndLogin(platformToken),
+    operatorApi.player.createAndLogin(platformToken)
+  ])
+
+  await searchPlayer(page, player)
   let parentUsername = allAgentPlayer.username
-  await updatePlayerStatus(page, player, parentUsername)
+
+  await updatePlayerAllAgentPlayer(page, player, parentUsername)
 
   let playerRecord = await backofficeApi.player.getPlayer(player.code)
   expect(playerRecord.parentUsername).to.equals(parentUsername)
 })
 
-const updatePlayerStatus = async (page, player, allAgentPlayerUsername) => {
+const updatePlayerAllAgentPlayer = async (
+  page,
+  player,
+  allAgentPlayerUsername
+) => {
   let dialogSelector = await openEditPlayerDialog(page)
 
   await page.fill(

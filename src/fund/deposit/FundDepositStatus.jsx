@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Select } from "../../select/Select"
-import { MultiSelect } from "../../select/MultiSelect"
+import { MultiSelectBox } from "../../select/MultiSelectBox"
 import { Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, Controller, useWatch } from "react-hook-form"
 import { isDev } from "../../env"
@@ -95,7 +95,7 @@ export const FundDepositStatusSelect = ({
   ]
 
   return (
-    <MultiSelect
+    <MultiSelectBox
       name={name}
       placeholder={placeholder}
       options={options}

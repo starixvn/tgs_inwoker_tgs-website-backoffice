@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Locales, Trans, useLocale, useTrans } from "../i18n"
 import { Select, SelectField } from "../select/Select"
-import { MultiSelect } from "../select/MultiSelect"
 import { usePlatformBucketList } from "./client"
 
 const MainTrans = {
@@ -111,6 +110,7 @@ export const PlatformBucketSelectField = (props) => (
 )
 
 /*
+TODO
 export const PlatformBucketMultiSelect = (props) => (
   <PlatformBucketSelect as={MultiSelect} isMulti={true} {...props} />
 )

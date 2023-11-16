@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
-import { MultiSelect } from "../../select/MultiSelect"
+import { MultiSelectBox } from "../../select/MultiSelectBox"
 import { isDev } from "../../env"
 
 const Review = "Review"
@@ -97,7 +97,7 @@ export const FundWithdrawStatusSelect = ({
   ]
 
   return (
-    <MultiSelect
+    <MultiSelectBox
       placeholder={placeholder}
       options={options}
       isMulti={isMulti}
