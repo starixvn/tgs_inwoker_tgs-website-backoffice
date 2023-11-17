@@ -182,6 +182,11 @@ const UpdateAgentPanel = ({
     agentDividendConditions,
     ...data
   }) => {
+    if (willChangeParent) {
+      //change agent parent, reset dividendPercentage
+      dividendPercentage = 0
+    }
+
     let formData = useAgentUpdateFormData(
       {
         ...diff(data, record),
@@ -290,13 +295,13 @@ const UpdateAgentPanel = ({
                 <AgentStatusSelect name="status" placeholder={false} required />
               </AgentStatusBox>
 
-              {oneLayer && (
+              {oneLayer && !willChangeParent && (
                 <>
                   <Trans zh="分红比例" en="Profit Sharing Percentage" />
                   <Box>
                     <AgentOneLayerDividendPercentageInputField
                       brandId={brandId}
-                      parentUsername={record.parentUsername}
+                      parentUsername={parentUsername}
                     />
                   </Box>
                 </>
