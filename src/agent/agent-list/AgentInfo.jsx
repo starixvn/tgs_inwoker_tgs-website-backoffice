@@ -177,6 +177,7 @@ const UpdateAgentPanel = ({
 
   const onSubmit = ({
     type,
+    parentUsername,
     dividendPercentage,
     agentDividendConditions,
     ...data
@@ -185,6 +186,7 @@ const UpdateAgentPanel = ({
       {
         ...diff(data, record),
         type,
+        parentUsername,
         dividendPercentage,
         agentDividendConditions
       },

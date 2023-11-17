@@ -671,6 +671,7 @@ const UpdateConfigDialog = ({
 
   const onSubmit = ({
     type,
+    parentUsername,
     dividendPercentage,
     agentDividendConditions,
     ...data
@@ -679,6 +680,7 @@ const UpdateConfigDialog = ({
       {
         ...diff(data, agent),
         type,
+        parentUsername,
         dividendPercentage,
         agentDividendConditions
       },
