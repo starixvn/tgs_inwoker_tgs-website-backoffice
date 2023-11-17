@@ -28,6 +28,7 @@ import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
 import { usePlatformAccountFundList } from "./client"
 import { subDays } from "date-fns"
+import { AlertSettingDialogDisclosure } from "./AlertSettingDialog"
 
 export { Code }
 
@@ -83,6 +84,9 @@ const Body = () => {
             mutate(null, true)
           }}
         />
+        <Set>
+          <AlertSettingDialogDisclosure />
+        </Set>
       </Level>
       <Box flex="1 0 50%">{JSON.stringify(data)}</Box>
     </Set>
