@@ -175,11 +175,17 @@ const UpdateAgentPanel = ({
   let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
-  const onSubmit = ({ type, agentDividendConditions, ...data }) => {
+  const onSubmit = ({
+    type,
+    dividendPercentage,
+    agentDividendConditions,
+    ...data
+  }) => {
     let formData = useAgentUpdateFormData(
       {
         ...diff(data, record),
         type,
+        dividendPercentage,
         agentDividendConditions
       },
       agentProfitSharingType
