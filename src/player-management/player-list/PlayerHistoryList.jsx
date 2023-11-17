@@ -56,7 +56,7 @@ export const Key = "history"
 export const PlayerHistoryListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="操作记录" en="Operating records" />
+      <Trans zh="操作记录" en="Editing Records" />
     </_Tab>
   )
 }
@@ -159,19 +159,19 @@ const useColumns = ({ items = [], brandId }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <Trans zh="操作时间" en="Date&Time" />,
         accessor: "createdOn",
         disableSortBy: true
       }),
       textColumn({
         accessor: "action",
-        Header: <Trans zh="操作项" en="Operation Item" />,
+        Header: <Trans zh="操作项" en="Type" />,
         disableSortBy: true,
         Cell: ActionTypeLabel
       }),
       textColumn({
         accessor: "modifier",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <Trans zh="操作者" en="Updated By" />,
         disableSortBy: true
       }),
       textColumn({
@@ -270,7 +270,7 @@ const usePlayerHistoryColumns = ({ items = [], brandId }) => {
     let columns = [
       textColumn({
         accessor: "op",
-        Header: <Trans zh="操作" en="Operation" />,
+        Header: <Trans zh="操作" en="Type" />,
         disableSortBy: true,
         Cell: OperationLabel
       }),
@@ -284,7 +284,7 @@ const usePlayerHistoryColumns = ({ items = [], brandId }) => {
       textColumn({
         id: "value",
         accessor: (row) => row,
-        Header: <Trans zh="值" en="Value" />,
+        Header: <Trans zh="值" en="After" />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return <ChangeSetField value={value} brandId={brandId} />
@@ -307,7 +307,7 @@ const IdentityAuthenticationIcon = ({ value = "" }) => {
   return <PlayerIdentityStateIcon value={isAuth} />
 }
 
-const PasswordLabel = () => <Trans zh="密码" en="Password" />
+const PasswordLabel = () => <Trans zh="登入密碼" en="Login Password" />
 
 const isAddPlayer = pipe(prop("op"), equals(Add))
 const getPath = prop("path")
