@@ -21,15 +21,14 @@ const Name = {
   LobbyAccessSuspension
 }
 
-const useAccessSuspensionValue = (name) => {
+const useSuspensionValue = (name) => {
   let { watch } = useFormContext()
 
   return watch(name)
 }
 
-export const useGameAccessSuspensionValue = (
-  name = Name.GameAccessSuspension
-) => useAccessSuspensionValue(name)
+export const useGameSuspensionValue = (name = Name.GameAccessSuspension) =>
+  useSuspensionValue(name)
 
 const inputFieldStyle = css`
   margin: 0 0.5rem;
@@ -38,7 +37,7 @@ const inputFieldStyle = css`
   line-height: 1.5;
 `
 
-export const GameAccessSuspensionInputField = ({
+export const GameSuspensionInputField = ({
   name = Name.GameAccessSuspension,
   defaultValue = 80,
   max = 90,
@@ -67,8 +66,8 @@ const boxBodyStyle = css`
   line-height: 38px;
 `
 
-export const GameAccessSuspensionInputBox = ({
-  children = <GameAccessSuspensionInputField />,
+export const GameSuspensionInputBox = ({
+  children = <GameSuspensionInputField />,
   ...props
 }) => {
   return (
@@ -95,11 +94,10 @@ export const GameAccessSuspensionInputBox = ({
   )
 }
 
-export const useLobbyAccessSuspensionValue = (
-  name = Name.LobbyAccessSuspension
-) => useAccessSuspensionValue(name)
+export const useLobbySuspensionValue = (name = Name.LobbyAccessSuspension) =>
+  useSuspensionValue(name)
 
-export const LobbyAccessSuspensionInputField = ({
+export const LobbySuspensionInputField = ({
   name = Name.LobbyAccessSuspension,
   max = 95,
   registerOptions = {
@@ -108,7 +106,7 @@ export const LobbyAccessSuspensionInputField = ({
   size = "small",
   ...props
 }) => {
-  let min = useGameAccessSuspensionValue()
+  let min = useGameSuspensionValue()
   return (
     <PercentageNumberInputField
       name={name}
@@ -123,8 +121,8 @@ export const LobbyAccessSuspensionInputField = ({
   )
 }
 
-export const LobbyAccessSuspensionInputBox = ({
-  children = <LobbyAccessSuspensionInputField />,
+export const LobbySuspensionInputBox = ({
+  children = <LobbySuspensionInputField />,
   ...props
 }) => {
   return (

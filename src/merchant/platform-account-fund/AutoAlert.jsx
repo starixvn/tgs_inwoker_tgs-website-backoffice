@@ -10,10 +10,7 @@ import {
 } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { PercentageNumberInputField } from "../../input/NumberInput"
-import {
-  useGameAccessSuspensionValue,
-  useLobbyAccessSuspensionValue
-} from "./AccessSuspension"
+import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
 
 const BalanceAlert = "balanceAlert"
 
@@ -60,7 +57,7 @@ export const BalanceAlertInputBox = ({
   ...props
 }) => {
   let balanceAlertValue = useBalanceAlertValue()
-  let gameAccessSuspensionValue = useGameAccessSuspensionValue()
+  let gameSuspensionValue = useGameSuspensionValue()
   return (
     <Box {...props}>
       <Trans
@@ -78,7 +75,7 @@ export const BalanceAlertInputBox = ({
 
             <Text>{"，或 ≥ "}</Text>
             <FormattedNumberDecimalPercentage
-              value={gameAccessSuspensionValue}
+              value={gameSuspensionValue}
               placeholder="-"
             />
 
@@ -96,7 +93,7 @@ export const BalanceAlertInputBox = ({
 
             <Text>{", or ≥ "}</Text>
             <FormattedNumberDecimalPercentage
-              value={gameAccessSuspensionValue}
+              value={gameSuspensionValue}
               placeholder="-"
             />
 
@@ -109,8 +106,8 @@ export const BalanceAlertInputBox = ({
 }
 
 export const LowBalanceAlertBox = ({ ...props }) => {
-  let gameAccessSuspensionValue = useGameAccessSuspensionValue()
-  let lobbyAccessSuspensionValue = useLobbyAccessSuspensionValue()
+  let gameSuspensionValue = useGameSuspensionValue()
+  let lobbySuspensionValue = useLobbySuspensionValue()
 
   return (
     <Box {...props}>
@@ -119,20 +116,71 @@ export const LowBalanceAlertBox = ({ ...props }) => {
           <span css={boxBodyStyle}>
             <Text>{"當已用額度% > "}</Text>
             <FormattedNumberDecimalPercentage
-              value={gameAccessSuspensionValue}
+              value={gameSuspensionValue}
               placeholder="-"
             />
             <Text>
               {"後寄送，每3小時寄送一次，直至加值或重置，或已用額度 ≥ "}
             </Text>
             <FormattedNumberDecimalPercentage
-              value={lobbyAccessSuspensionValue}
+              value={lobbySuspensionValue}
               placeholder="-"
             />
             <Text>{"為止。"}</Text>
           </span>
         }
-        en={<span css={boxBodyStyle}></span>}
+        en={
+          <span css={boxBodyStyle}>
+            <Text>{"When Usage P/T is greater than "}</Text>
+            <FormattedNumberDecimalPercentage
+              value={gameSuspensionValue}
+              placeholder="-"
+            />
+            <Text>
+              {
+                ", the alert will be sent every 3 hours until top-up, reset, or the usage P/T is ≥ "
+              }
+            </Text>
+            <FormattedNumberDecimalPercentage
+              value={lobbySuspensionValue}
+              placeholder="-"
+            />
+            <Text>{"."}</Text>
+          </span>
+        }
+      />
+    </Box>
+  )
+}
+
+export const LobbySuspensionAlert = ({}) => {
+  let lobbySuspensionValue = useLobbySuspensionValue()
+
+  return (
+    <Box {...props}>
+      <Trans
+        zh={
+          <span css={boxBodyStyle}>
+            <Text>{"當使用比例 > "}</Text>
+            <FormattedNumberDecimalPercentage
+              value={lobbySuspensionValue}
+              placeholder="-"
+            />
+            <Text>{"後寄送，每3小時寄送一次，直至再次充值為止。"}</Text>
+          </span>
+        }
+        en={
+          <span css={boxBodyStyle}>
+            <Text>{"When Usage P/T is greater than "}</Text>
+            <FormattedNumberDecimalPercentage
+              value={lobbySuspensionValue}
+              placeholder="-"
+            />
+            <Text>
+              {", the alert will be sent every 3 hours until top-up or reset."}
+            </Text>
+          </span>
+        }
       />
     </Box>
   )

@@ -2,18 +2,13 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import {
   useModalState,
-  Heading,
+  Icon,
   FieldStack,
   Text,
   Set,
-  Table,
-  Button,
-  DropdownMenu,
-  Icon,
+  List,
   Box,
   Alert,
-  Group,
-  Spinner,
   Columns
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -21,14 +16,8 @@ import { Update, View } from "./menu"
 import Disclosure from "../../dialog/Disclosure"
 import { Trans, useLocale, useTrans, Locales } from "../../i18n"
 import FormDialog from "../../form/FormDialog"
-import {
-  GameAccessSuspensionInputBox,
-  LobbyAccessSuspensionInputBox
-} from "./AccessSuspension"
+import { GameSuspensionInputBox, LobbySuspensionInputBox } from "./Suspension"
 import { BalanceAlertInputBox, LowBalanceAlertBox } from "./AutoAlert"
-import Input from "../../input/Input"
-import { PercentageNumberInputField } from "../../input/NumberInput"
-import { FieldValues } from "../../layout/Grid"
 
 export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -71,7 +60,7 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   )
 }
 
-//TODO: layout
+//TODO: alert recipient
 const AccessSuspensionSetting = ({ ...props }) => {
   return (
     <FieldStack>
@@ -79,8 +68,15 @@ const AccessSuspensionSetting = ({ ...props }) => {
         <Trans zh="停權設置" en="Access Suspension" />
       </Text.Block>
       <FieldStack paddingLeft="1rem">
-        <GameAccessSuspensionInputBox />
-        <LobbyAccessSuspensionInputBox />
+        <GameSuspensionInputBox />
+        <LobbySuspensionInputBox />
+        <Set orientation="horizontal">
+          <Icon icon="info-circle" color="info" />
+          <Trans
+            zh="若須重啟遊戲或平台，請於加值或重置後，通知系統管理員。"
+            en="To resume the access to all games or to platform, please top-up or reset, and reach out to system administrator for reactivation."
+          />
+        </Set>
       </FieldStack>
     </FieldStack>
   )
@@ -118,5 +114,3 @@ const AutoAlertSetting = ({}) => {
     </FieldStack>
   )
 }
-
-export const EmegencyAlertBox = () => {}
