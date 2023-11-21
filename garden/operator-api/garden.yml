@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: operator-api
-image: pgtgs/operator-api:202311140836.329
+image: pgtgs/operator-api:202311200145.333
 services:
   - name: operator-api
     dependencies:

@@ -14,15 +14,21 @@ import {
   Alert,
   Group,
   Spinner,
-  Link
+  Columns
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update, View } from "./menu"
 import Disclosure from "../../dialog/Disclosure"
 import { Trans, useLocale, useTrans, Locales } from "../../i18n"
 import FormDialog from "../../form/FormDialog"
+import {
+  GameAccessSuspensionInputBox,
+  LobbyAccessSuspensionInputBox
+} from "./AccessSuspension"
+import { BalanceAlertInputBox, LowBalanceAlertBox } from "./AutoAlert"
 import Input from "../../input/Input"
 import { PercentageNumberInputField } from "../../input/NumberInput"
+import { FieldValues } from "../../layout/Grid"
 
 export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -45,11 +51,6 @@ export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   )
 }
 
-//TODO: ref to promotion, useWatch
-const useGameAccessSuspensionValue = () => {}
-const usePlayerAccessSuspensionValue = () => {}
-const usePlatformAccessSuspensionValue = () => {}
-
 const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let title = useTrans({
     zh: "催收設置",
@@ -58,56 +59,64 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
 
   return (
     <FormDialog dialog={dialog} title={title}>
-      <AccessSuspensionSetting />
+      <Columns>
+        <Columns.Column>
+          <AccessSuspensionSetting />
+        </Columns.Column>
+        <Columns.Column>
+          <AutoAlertSetting />
+        </Columns.Column>
+      </Columns>
     </FormDialog>
   )
 }
 
 //TODO: layout
 const AccessSuspensionSetting = ({ ...props }) => {
-  let gameAccessSuspensionInput = (
-    <PercentageNumberInputField name="gameAccessSuspension" />
-  )
-
-  let playerAccessSuspensionInput = (
-    <PercentageNumberInputField name="playerAccessSuspension" />
-  )
-
-  let platformAccessSuspensionInput = (
-    <PercentageNumberInputField name="platformAccessSuspension" />
-  )
-
   return (
     <FieldStack>
       <Text.Block fontWeight="bold">
         <Trans zh="停權設置" en="Access Suspension" />
       </Text.Block>
       <FieldStack paddingLeft="1rem">
-        <Box>
-          <Trans
-            zh={
-              <Set orientation="horizontal">
-                <Text>{"當已用額度%大於"}</Text>
-                {gameAccessSuspensionInput}
-                <Text>{"，系統將限制玩家進入所有遊戲。"}</Text>
-              </Set>
-            }
-            en={
-              <Set orientation="horizontal">
-                <Text>{"When Usage P/T exceeds "}</Text>
-                {gameAccessSuspensionInput}
-                <Text>
-                  {
-                    ", the system will suspend the players’ access to all games."
-                  }
-                </Text>
-              </Set>
-            }
-          />
+        <GameAccessSuspensionInputBox />
+        <LobbyAccessSuspensionInputBox />
+      </FieldStack>
+    </FieldStack>
+  )
+}
+
+const LineHeightStyle = css`
+  line-height: 38px;
+`
+
+const AutoAlertSetting = ({}) => {
+  return (
+    <FieldStack>
+      <Text.Block fontWeight="bold">
+        <Trans zh="通知信設置" en="Auto Alert Setting" />
+      </Text.Block>
+      <FieldStack paddingLeft="1rem">
+        <Box
+          css={css`
+            display: grid;
+            grid-gap: 0.5rem;
+            grid-template-columns: auto 1fr;
+          `}
+        >
+          <Box css={LineHeightStyle}>
+            <Trans zh="加值通知：" en="Balance Alert:" />
+          </Box>
+          <BalanceAlertInputBox />
+
+          <Box css={LineHeightStyle}>
+            <Trans zh="緊急加值通知：" en="Balance Low Alert:" />
+          </Box>
+          <LowBalanceAlertBox />
         </Box>
       </FieldStack>
     </FieldStack>
   )
 }
 
-const AutoAlertSetting = ({}) => {}
+export const EmegencyAlertBox = () => {}
