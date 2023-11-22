@@ -4,7 +4,8 @@ import { useForm, useFormContext } from "react-hook-form"
 import { useTrans } from "../i18n"
 import Input from "./Input"
 
-const EmailReg = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+const EmailReg =
+  /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
 export const EmailInput = ({ type = "mail", name = "email", ...props }) => {
   //TODO: error msg popup?
@@ -23,6 +24,7 @@ export const EmailInput = ({ type = "mail", name = "email", ...props }) => {
 
         return true
       }}
+      {...props}
     />
   )
 }

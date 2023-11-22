@@ -10,15 +10,15 @@ import {
 } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { PercentageNumberInputField } from "../../input/NumberInput"
-import { useBalanceAlertValue } from "./AutoAlert"
+import { useBalanceAlertValue } from "./MainSetting"
 
-const GameAccessSuspension = "gameAccessSuspension"
+const GameSuspension = "gameSuspension"
 
-const LobbyAccessSuspension = "lobbyAccessSuspension"
+const LobbySuspension = "lobbySuspension"
 
 const Name = {
-  GameAccessSuspension,
-  LobbyAccessSuspension
+  GameSuspension,
+  LobbySuspension
 }
 
 const useSuspensionValue = (name) => {
@@ -38,7 +38,7 @@ const inputFieldStyle = css`
 `
 
 export const GameSuspensionInputField = ({
-  name = Name.GameAccessSuspension,
+  name = Name.GameSuspension,
   defaultValue = 80,
   max = 90,
   registerOptions = {
@@ -98,7 +98,7 @@ export const useLobbySuspensionValue = (name = Name.LobbyAccessSuspension) =>
   useSuspensionValue(name)
 
 export const LobbySuspensionInputField = ({
-  name = Name.LobbyAccessSuspension,
+  name = Name.LobbySuspension,
   max = 95,
   registerOptions = {
     valueAsNumber: true

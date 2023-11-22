@@ -28,7 +28,6 @@ import Disclosure, {
   EditDisclosure,
   ViewDisclosure
 } from "../../dialog/Disclosure"
-import { Tabs, TabList, useTabState } from "../../tab"
 import FormDialog from "../../form/FormDialog"
 import {
   CloseButtonFooter,

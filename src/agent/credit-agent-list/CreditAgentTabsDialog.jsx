@@ -28,7 +28,6 @@ import Disclosure, {
   EditDisclosure,
   ViewDisclosure
 } from "../../dialog/Disclosure"
-import { Tabs, TabList, useTabState } from "../../tab"
 import { AgentInfoKey, AgentInfoPanel, AgentInfoTab } from "./AgentInfo"
 import { AgentContactInfoPanel, AgentContactInfoTab } from "./AgentContactInfo"
 import { AgentBankInfoPanel, AgentBankInfoTab } from "./AgentBankInfo"

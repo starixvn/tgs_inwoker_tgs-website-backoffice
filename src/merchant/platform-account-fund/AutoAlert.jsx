@@ -12,6 +12,7 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
 
+/*
 const BalanceAlert = "balanceAlert"
 
 export const useBalanceAlertValue = (name = BalanceAlert) => {
@@ -120,13 +121,13 @@ export const LowBalanceAlertBox = ({ ...props }) => {
               placeholder="-"
             />
             <Text>
-              {"後寄送，每3小時寄送一次，直至加值或重置，或已用額度 ≥ "}
+              {" 後寄送，每3小時寄送一次，直至加值或重置，或已用額度 ≥ "}
             </Text>
             <FormattedNumberDecimalPercentage
               value={lobbySuspensionValue}
               placeholder="-"
             />
-            <Text>{"為止。"}</Text>
+            <Text>{" 為止。"}</Text>
           </span>
         }
         en={
@@ -166,7 +167,7 @@ export const LobbySuspensionAlert = ({}) => {
               value={lobbySuspensionValue}
               placeholder="-"
             />
-            <Text>{"後寄送，每3小時寄送一次，直至再次充值為止。"}</Text>
+            <Text>{" 後寄送，每3小時寄送一次，直至再次充值為止。"}</Text>
           </span>
         }
         en={
@@ -185,3 +186,4 @@ export const LobbySuspensionAlert = ({}) => {
     </Box>
   )
 }
+*/
