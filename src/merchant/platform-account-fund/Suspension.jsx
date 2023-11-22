@@ -27,14 +27,14 @@ const useSuspensionValue = (name) => {
   return watch(name)
 }
 
-export const useGameSuspensionValue = (name = Name.GameAccessSuspension) =>
+export const useGameSuspensionValue = (name = Name.GameSuspension) =>
   useSuspensionValue(name)
 
 const inputFieldStyle = css`
   margin: 0 0.5rem;
   display: inline-flex;
-  flex: 0 0 max-content;
   line-height: 1.5;
+  flex: 0 0 max-content;
 `
 
 export const GameSuspensionInputField = ({
@@ -94,7 +94,7 @@ export const GameSuspensionInputBox = ({
   )
 }
 
-export const useLobbySuspensionValue = (name = Name.LobbyAccessSuspension) =>
+export const useLobbySuspensionValue = (name = Name.LobbySuspension) =>
   useSuspensionValue(name)
 
 export const LobbySuspensionInputField = ({

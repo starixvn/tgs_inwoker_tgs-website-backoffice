@@ -17,7 +17,9 @@ import { AlertRecipientInputList } from "./AlertRecipient"
 import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
 //TODO: tab
 
-export const TabId = "Main"
+export const TabId = "main"
+
+export const isMainTab = (v) => v === TabId
 
 //TODO
 export const MainSettingTab = (props) => {
@@ -28,16 +30,18 @@ export const MainSettingTab = (props) => {
   )
 }
 
+export const toMainSettingFormData = (data) => {}
+
 //TODO: onSubmit?
 //TODO: how form update?
-export const MainSettingPanel = ({ ...props }) => {
+export const MainSettingPanel = ({ setDefaultValues, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
 
   //TODO: set form init values?
   useEffect(() => {
     if (isActive) {
-      console.log("TODO: rest form default values")
+      console.log("TODO: nee to reset form default values")
     }
   }, [isActive])
 

@@ -45,6 +45,24 @@ export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   )
 }
 
+//TODO
+const toFetchApi = (tabId) => {
+  switch (tabId) {
+    case MainTabId:
+  }
+
+  const fakeFetchApi = (formData) => {
+    return {
+      isLoading: false,
+      result: formData ? true : false,
+      error: null,
+      mutate: () => {},
+      deleteCache: () => {}
+    }
+  }
+  return fakeFetchApi
+}
+
 //TODO: how to do form update?
 //TODO: use Tab here?
 //TODO: move to MainSetting?
@@ -60,20 +78,27 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
 
   let [defaultValues, setDefaultValues] = useState({})
   let [formData, setSubmit] = useState()
-  let [onSubmit, setOnSubmit] = useState()
-  let [useFetch, setFetch] = useState()
+  let useFetch = toFetchApi(tab.selectedId)
+  let { isLoading, result, error, mutate, deleteCache } = useFetch(formData)
 
-  //TODO: set fetch fn?
-  //TODO: set onSubmit fn?
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
 
   return (
     <FormDialog
       defaultValues={defaultValues}
       onSubmit={(data) => {
         console.log("onSubmit", data)
-        let values = onSubmit?.(data)
-        setSubmit(values)
+
+        console.log("TODO: setSubmit formData")
       }}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}
     >
@@ -81,12 +106,7 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
         <TabList {...tab}>
           <MainSettingTab {...tab} />
         </TabList>
-        <MainSettingPanel
-          setDefaultValues={setDefaultValues}
-          setOnSubmit={setOnSubmit}
-          setFetch={setFetch}
-          {...tab}
-        />
+        <MainSettingPanel setDefaultValues={setDefaultValues} {...tab} />
       </Tabs>
     </FormDialog>
   )
