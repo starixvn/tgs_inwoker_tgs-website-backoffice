@@ -908,6 +908,7 @@ const TabsDialog = ({
 
 //TODO:1.39 > use AgentHistoryListTab instead of AgentOperationListTab
 const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
+  //TODO:1.39 rm  isDev()
   let enableAgentHistory = isDev()
   return (
     <Tabs isFitted>

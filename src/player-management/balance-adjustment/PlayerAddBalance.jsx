@@ -125,7 +125,7 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
   )
 }
 
-//TODO: rm isDev for 1.39
+//TODO:1.39 rm isDev
 const FormBody = ({}) => {
   let { control, getValues, setValue } = useFormContext()
 

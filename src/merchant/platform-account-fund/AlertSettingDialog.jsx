@@ -58,13 +58,35 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
     selectedId: MainTabId
   })
 
+  let [defaultValues, setDefaultValues] = useState({})
+  let [formData, setSubmit] = useState()
+  let [onSubmit, setOnSubmit] = useState()
+  let [useFetch, setFetch] = useState()
+
+  //TODO: set fetch fn?
+  //TODO: set onSubmit fn?
+
   return (
-    <FormDialog dialog={dialog} title={title}>
+    <FormDialog
+      defaultValues={defaultValues}
+      onSubmit={(data) => {
+        console.log("onSubmit", data)
+        let values = onSubmit?.(data)
+        setSubmit(values)
+      }}
+      dialog={dialog}
+      title={title}
+    >
       <Tabs>
         <TabList {...tab}>
           <MainSettingTab {...tab} />
         </TabList>
-        <MainSettingPanel {...tab} />
+        <MainSettingPanel
+          setDefaultValues={setDefaultValues}
+          setOnSubmit={setOnSubmit}
+          setFetch={setFetch}
+          {...tab}
+        />
       </Tabs>
     </FormDialog>
   )

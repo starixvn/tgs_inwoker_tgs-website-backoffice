@@ -185,7 +185,7 @@ const ReportDialog = ({
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO: rm isDev() for 1.39
+  //TODO:1.39 > rm isDev()
   return (
     <Modal
       title={title}

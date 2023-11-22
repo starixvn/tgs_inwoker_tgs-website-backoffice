@@ -13,6 +13,7 @@ import { PercentageNumberInputField } from "../../input/NumberInput"
 import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
 
 /*
+TODO: moved to MainSetting
 const BalanceAlert = "balanceAlert"
 
 export const useBalanceAlertValue = (name = BalanceAlert) => {

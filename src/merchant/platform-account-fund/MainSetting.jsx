@@ -34,6 +34,13 @@ export const MainSettingPanel = ({ ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
 
+  //TODO: set form init values?
+  useEffect(() => {
+    if (isActive) {
+      console.log("TODO: rest form default values")
+    }
+  }, [isActive])
+
   return (
     <TabPanel tabId={TabId} {...props}>
       <Columns>

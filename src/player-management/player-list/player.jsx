@@ -151,7 +151,6 @@ const UpdatePlayerInfoPanel = ({
   )
 }
 
-//TODO:1.39 > rename to OldPlayerInfoPanel?
 //TODO:1.40 > rm CurrentPlayerInfoPanel
 const CurrentPlayerInfoPanel = ({
   brandId,
