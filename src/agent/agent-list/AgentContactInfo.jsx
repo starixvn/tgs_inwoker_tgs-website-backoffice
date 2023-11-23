@@ -24,6 +24,7 @@ import Input from "../../input/Input"
 import { useUpdateAgent, useUpdateAgentContact } from "./client"
 import clone from "clone-deep"
 import { isDev } from "../../env"
+import { diff } from "../../object/diff"
 
 const Key = "AgentContactInfo"
 
@@ -150,7 +151,7 @@ const UpdateAgentContactPanel = ({
   }, [result])
 
   const onSubmit = (data) => {
-    setSubmit(data)
+    setSubmit(diff(data, record))
   }
 
   const reset = () => {

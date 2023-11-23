@@ -5,7 +5,7 @@ import PageContent from "../../page/Content"
 import { AddButton, EditButton, EditPasswordButton } from "./edit"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { AdminStatusLabel } from "./AdminStatus"
+import { AdminStatusLabel, AdminStatusSelect } from "./AdminStatus"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -20,6 +20,8 @@ import equals from "fast-deep-equal"
 import { FormProvider, useForm } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
+import textColumn from "../../table/column/textColumn"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -60,6 +62,8 @@ const Body = () => {
         <>
           <SearchBar
             username={username}
+            department={state.department}
+            role={state.role}
             search={(data = {}) => {
               setState({
                 pageIndex: 0,
@@ -67,7 +71,7 @@ const Body = () => {
               })
               mutate()
             }}
-            isPending={isLoading}
+            isLoading={isLoading}
           />
           <AddButton id="add-user-dialog-disclosure" onSubmitted={mutate} />
         </>
@@ -88,7 +92,15 @@ const Body = () => {
   )
 }
 
-const SearchBar = ({ username = "", search, isLoading, ...props }) => {
+//TODO:1.39 rm isDev(), add department and role inputs
+const SearchBar = ({
+  username = "",
+  department = "",
+  role = "",
+  search,
+  isLoading,
+  ...props
+}) => {
   let formMethods = useForm({
     defaultValues: { username }
   })
@@ -102,6 +114,16 @@ const SearchBar = ({ username = "", search, isLoading, ...props }) => {
             showEmptyFieldValueAddonAfter
             placeholder={useSearchInputPlaceHolder()}
           />
+          {isDev() && (
+            <>
+              <InputField
+                name="department"
+                showEmptyFieldValueAddonAfter
+                placeholder={useDepartmentPlaceholder()}
+              />
+              <AdminStatusSelect name="role" />
+            </>
+          )}
           <SearchButton isLoading={isLoading} />
         </Set>
       </form>
@@ -109,10 +131,16 @@ const SearchBar = ({ username = "", search, isLoading, ...props }) => {
   )
 }
 
+const useDepartmentPlaceholder = () =>
+  useTrans({
+    zh: "部门",
+    en: "Department"
+  })
+
 const useSearchInputPlaceHolder = () =>
   useTrans({
-    zh: "管理员用户名输入框",
-    en: "Input admin user name"
+    zh: "用戶名",
+    en: "Username"
   })
 
 const useColumns = ({ mutate, items = [] }) => {
@@ -122,28 +150,16 @@ const useColumns = ({ mutate, items = [] }) => {
   return useMemo(() => {
     let columns = [
       sequenceColumn(),
-      {
+      textColumn({
         Header: <Trans zh="用户名" en="Username" />,
         accessor: "username",
-        disableSortBy: true,
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        }
-      },
-      {
+        disableSortBy: true
+      }),
+      textColumn({
         Header: <Trans zh="姓名" en="Name" />,
         accessor: "name",
-        disableSortBy: true,
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        }
-      },
+        disableSortBy: true
+      }),
       {
         Header: <Trans zh="部门" en="Department" />,
         accessor: "departmentName",
@@ -168,17 +184,11 @@ const useColumns = ({ mutate, items = [] }) => {
           whiteSpace: "nowrap"
         }
       },
-      {
-        Header: <Trans zh="最近登入IP" en="Last Login IP" />,
+      textColumn({
         accessor: "lastLoginIp",
-        disableSortBy: true,
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        }
-      },
+        Header: <Trans zh="最近登入IP" en="Last Login IP" />,
+        disableSortBy: true
+      }),
       dateTimeColumn({
         Header: <Trans zh="最近登入时间" en="Last Login Time" />,
         accessor: "lastLoginTime",
@@ -189,16 +199,10 @@ const useColumns = ({ mutate, items = [] }) => {
         accessor: "createdOn",
         disableSortBy: true
       }),
-      {
-        disableSortBy: true,
+      textColumn({
         Header: <Trans zh="状态" en="Status" />,
         accessor: "status",
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        },
+        disableSortBy: true,
         Cell: ({ value }) => (
           <Text.Block
             css={css`
@@ -208,7 +212,7 @@ const useColumns = ({ mutate, items = [] }) => {
             <AdminStatusLabel value={value} />
           </Text.Block>
         )
-      }
+      })
     ]
 
     if (hasAnyMenu) {
