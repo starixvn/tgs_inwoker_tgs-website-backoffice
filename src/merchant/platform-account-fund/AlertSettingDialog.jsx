@@ -64,8 +64,6 @@ const toFetchApi = (tabId) => {
 }
 
 //TODO: how to do form update?
-//TODO: use Tab here?
-//TODO: move to MainSetting?
 const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let title = useTrans({
     zh: "催收設置",
@@ -76,28 +74,34 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
     selectedId: MainTabId
   })
 
+  //TODO: test
   let [defaultValues, setDefaultValues] = useState({})
-  let [formData, setSubmit] = useState()
-  let useFetch = toFetchApi(tab.selectedId)
-  let { isLoading, result, error, mutate, deleteCache } = useFetch(formData)
+  // let [formData, setFormData] = useState()
+  let [onSubmit, setSubmit] = useState((data) => {
+    console.log("submit", data)
+  })
+  let [fetchResult, setFetchResult] = useState()
 
+  // let useFetch = toFetchApi(tab.selectedId)
+  // let { isLoading, result, error, mutate, deleteCache } = useFetch(formData)
+
+  //TODO: reset fn?
+  let [reset, setReset] = useState()
+  /*
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
     setSubmit(undefined)
   }
+  */
 
   return (
     <FormDialog
       defaultValues={defaultValues}
-      onSubmit={(data) => {
-        console.log("onSubmit", data)
-
-        console.log("TODO: setSubmit formData")
-      }}
-      isLoading={isLoading}
-      result={result}
-      error={error}
+      onSubmit={onSubmit}
+      isLoading={fetchResult?.isLoading}
+      result={fetchResult?.result}
+      error={fetchResult?.error}
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}

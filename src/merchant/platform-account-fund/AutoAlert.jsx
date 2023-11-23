@@ -12,6 +12,14 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
 
+export const TabId = "autoAlert"
+
+export const AutoAlertTab = (props) => {}
+
+export const AutoAlertPanel = ({ ...props }) => {
+  let { selectedId } = props
+  let isActive = selectedId === TabId
+}
 /*
 TODO: moved to MainSetting
 const BalanceAlert = "balanceAlert"

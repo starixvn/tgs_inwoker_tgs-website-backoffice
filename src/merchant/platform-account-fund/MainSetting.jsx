@@ -11,17 +11,18 @@ import {
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
-import { GameSuspensionInputBox, LobbySuspensionInputBox } from "./Suspension"
-// import { BalanceAlertInputBox, LowBalanceAlertBox } from "./AutoAlert"
+import {
+  GameSuspensionInputBox,
+  LobbySuspensionInputBox,
+  useGameSuspensionValue,
+  useLobbySuspensionValue
+} from "./Suspension"
 import { AlertRecipientInputList } from "./AlertRecipient"
-import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
-//TODO: tab
 
 export const TabId = "main"
 
 export const isMainTab = (v) => v === TabId
 
-//TODO
 export const MainSettingTab = (props) => {
   return (
     <Tab tabId={TabId} {...props}>
@@ -29,8 +30,6 @@ export const MainSettingTab = (props) => {
     </Tab>
   )
 }
-
-export const toMainSettingFormData = (data) => {}
 
 //TODO: onSubmit?
 //TODO: how form update?
@@ -44,6 +43,8 @@ export const MainSettingPanel = ({ setDefaultValues, ...props }) => {
       console.log("TODO: nee to reset form default values")
     }
   }, [isActive])
+
+  //TODO: return null if not active?
 
   return (
     <TabPanel tabId={TabId} {...props}>
