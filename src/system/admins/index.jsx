@@ -41,7 +41,8 @@ const Body = () => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     username: "",
     departmentName: "",
-    role: ""
+    role: "",
+    status: ""
   })
 
   let { pageIndex, pageSize, username = "" } = state
@@ -65,6 +66,7 @@ const Body = () => {
             username={username}
             departmentName={state.departmentName}
             role={state.role}
+            status={state.status}
             search={(data = {}) => {
               setState({
                 pageIndex: 0,
@@ -98,12 +100,13 @@ const SearchBar = ({
   username = "",
   departmentName = "",
   role = "",
+  status = "",
   search,
   isLoading,
   ...props
 }) => {
   let formMethods = useForm({
-    defaultValues: { username, departmentName, role }
+    defaultValues: { username, departmentName, role, status }
   })
 
   return (
@@ -122,7 +125,12 @@ const SearchBar = ({
                 showEmptyFieldValueAddonAfter
                 placeholder={useDepartmentPlaceholder()}
               />
-              <AdminStatusSelect name="role" />
+              <InputField
+                name="role"
+                showEmptyFieldValueAddonAfter
+                placeholder={useRolePlaceholder()}
+              />
+              <AdminStatusSelect name="status" />
             </>
           )}
           <SearchButton isLoading={isLoading} />
@@ -131,6 +139,12 @@ const SearchBar = ({
     </FormProvider>
   )
 }
+
+const useRolePlaceholder = () =>
+  useTrans({
+    zh: "权限组",
+    en: "Role"
+  })
 
 const useDepartmentPlaceholder = () =>
   useTrans({
