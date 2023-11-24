@@ -35,7 +35,7 @@ const Key = "AgentHistoryList"
 export const AgentHistoryListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="操作记录" en="Operating records" />
+      <Trans zh="操作记录" en="Editing Records" />
     </_Tab>
   )
 }
