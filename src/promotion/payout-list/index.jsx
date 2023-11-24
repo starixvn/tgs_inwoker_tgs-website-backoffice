@@ -96,6 +96,9 @@ const BodyContent = ({ brandId }) => {
   }
 
   const dropBatchPayout = (record) => {
+    //TODO: rm
+    console.log("dropBatchPayout record?.id", record?.id, "record", record)
+
     let payouts = batchPayouts.filter((payout) => payout.id != record?.id)
     setBatchPayouts(payouts)
   }
