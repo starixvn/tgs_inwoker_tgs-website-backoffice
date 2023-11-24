@@ -9,17 +9,33 @@ import {
   FormattedNumberDecimalPercentage
 } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
+import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
 
 export const TabId = "autoAlert"
 
-export const AutoAlertTab = (props) => {}
+export const AutoAlertTab = (props) => {
+  return (
+    <Tab tabId={TabId} {...props}>
+      <Trans zh="通知信-自動" en="Auto Alert" />
+    </Tab>
+  )
+}
 
 export const AutoAlertPanel = ({ ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
+
+  //TODO: return null if not active?
+
+  return (
+    <TabPanel tabId={TabId} {...props}>
+      TODO: Auto Alert
+    </TabPanel>
+  )
 }
+
 /*
 TODO: moved to MainSetting
 const BalanceAlert = "balanceAlert"

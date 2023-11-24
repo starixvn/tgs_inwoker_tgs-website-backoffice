@@ -39,14 +39,15 @@ export const CodeContentPair = [Code, Content]
 const Body = () => {
   let userId = useUserId()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    username: ""
+    username: "",
+    departmentName: "",
+    role: ""
   })
 
   let { pageIndex, pageSize, username = "" } = state
 
   let { isLoading, data, error, mutate, deleteCache } = useAdminList({
-    ...toApiParams(state),
-    sortby: "username"
+    ...toApiParams(state)
   })
 
   const filterOutCurrentUser = (items = []) =>
@@ -62,7 +63,7 @@ const Body = () => {
         <>
           <SearchBar
             username={username}
-            department={state.department}
+            departmentName={state.departmentName}
             role={state.role}
             search={(data = {}) => {
               setState({
@@ -95,14 +96,14 @@ const Body = () => {
 //TODO:1.39 rm isDev(), add department and role inputs
 const SearchBar = ({
   username = "",
-  department = "",
+  departmentName = "",
   role = "",
   search,
   isLoading,
   ...props
 }) => {
   let formMethods = useForm({
-    defaultValues: { username }
+    defaultValues: { username, departmentName, role }
   })
 
   return (
@@ -117,7 +118,7 @@ const SearchBar = ({
           {isDev() && (
             <>
               <InputField
-                name="department"
+                name="departmentName"
                 showEmptyFieldValueAddonAfter
                 placeholder={useDepartmentPlaceholder()}
               />

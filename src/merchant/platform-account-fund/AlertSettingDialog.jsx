@@ -22,7 +22,7 @@ import {
   TabId as MainTabId,
   MainSettingTab,
   MainSettingPanel
-} from "./MainSetting"
+} from "./Setting.Main"
 
 export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -77,7 +77,7 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   //TODO: test
   let [defaultValues, setDefaultValues] = useState({})
   // let [formData, setFormData] = useState()
-  let [onSubmit, setSubmit] = useState((data) => {
+  let [onSubmit, setOnSubmit] = useState((data) => {
     console.log("submit", data)
   })
   let [fetchResult, setFetchResult] = useState()

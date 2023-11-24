@@ -10,7 +10,7 @@ import {
 } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { PercentageNumberInputField } from "../../input/NumberInput"
-import { useBalanceAlertValue } from "./MainSetting"
+import { useBalanceAlertValue } from "./Setting.Main"
 
 const GameSuspension = "gameSuspension"
 
