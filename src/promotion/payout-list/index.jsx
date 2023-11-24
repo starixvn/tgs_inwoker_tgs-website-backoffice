@@ -96,10 +96,12 @@ const BodyContent = ({ brandId }) => {
   }
 
   const dropBatchPayout = (record) => {
-    //TODO: rm
-    console.log("dropBatchPayout record?.id", record?.id, "record", record)
-
-    let payouts = batchPayouts.filter((payout) => payout.id != record?.id)
+    let payouts = batchPayouts.filter((payout) => {
+      return (
+        payout?.playerCode != record?.playerCode &&
+        payout?.promotionBonusId != record?.promotionBonusId
+      )
+    })
     setBatchPayouts(payouts)
   }
 
