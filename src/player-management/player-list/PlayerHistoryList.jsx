@@ -284,7 +284,7 @@ const usePlayerHistoryColumns = ({ items = [], brandId }) => {
       textColumn({
         id: "value",
         accessor: (row) => row,
-        Header: <Trans zh="值" en="After" />,
+        Header: <Trans zh="值" en="Value" />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return <ChangeSetField value={value} brandId={brandId} />
