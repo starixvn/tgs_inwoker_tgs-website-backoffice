@@ -375,7 +375,7 @@ const LabelValueList = [
   [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
 
   [pipe(getPath, includes("/AreaCode")), AreaCodeLabel],
-  [pipe(getPath, includes("/Phone")), MobileLabel],
+  [pipe(getPath, equals("/Phone")), MobileLabel],
   [pipe(getPath, includes("/Email")), EmailLabel],
   [pipe(getPath, equals("/properties/Qq")), QQLabel],
   [pipe(getPath, equals("/properties/Wechat")), WeChatLabel],
