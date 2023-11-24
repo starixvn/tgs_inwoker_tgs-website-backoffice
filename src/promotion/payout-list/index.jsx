@@ -97,9 +97,9 @@ const BodyContent = ({ brandId }) => {
 
   const dropBatchPayout = (record) => {
     let payouts = batchPayouts.filter((payout) => {
-      return (
-        payout?.playerCode != record?.playerCode &&
-        payout?.promotionBonusId != record?.promotionBonusId
+      return !(
+        payout?.playerCode === record?.playerCode &&
+        payout?.promotionBonusId === record?.promotionBonusId
       )
     })
     setBatchPayouts(payouts)
