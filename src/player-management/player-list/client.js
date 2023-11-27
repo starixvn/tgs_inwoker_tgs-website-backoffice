@@ -7,6 +7,7 @@ import {
   useDelete,
   usePatchData
 } from "../../client"
+import { useApiMerge } from "../../client/useApiMerge."
 import { isEmpty, isNil } from "lodash-es"
 import { either } from "ramda"
 
@@ -55,7 +56,7 @@ export const toUpdatePlayerFormData = (data) => {
   return {
     info,
     status: isNilOrEmpty(status) ? null : { status },
-    agent: isNilOrEmpty(agentUsername) ? null : { agentUsername },
+    agent: isNil(agentUsername) ? null : { agentUsername },
     allAgentPlayer: isNilOrEmpty(parentPlayerUsername)
       ? null
       : { parentPlayerUsername }
@@ -82,95 +83,40 @@ export const useUpdatePlayer = (playerCode, data) => {
     )
   ]
 
-  let isLoading = items.findIndex(({ isLoading }) => isLoading == true) >= 0
-
-  let result = items.reduce(
-    (accum, item, index, list) => {
-      if (isNil(accum)) {
-        return accum
-      }
-
-      if (item.hasUrl) {
-        accum = item.result
-      }
-
-      return accum
-    },
-    data ? true : false
-  )
-
-  let error = items.find(({ error }) => !isNil(error))?.error
-
-  let mutate = (_, shouldRevalidate) =>
-    items.forEach(({ mutate }) => {
-      mutate(_, shouldRevalidate)
-    })
-
-  let deleteCache = () =>
-    items.forEach(({ deleteCache }) => {
-      deleteCache()
-    })
-
-  return {
-    isLoading,
-    result,
-    error,
-    mutate,
-    deleteCache
-  }
+  return useApiMerge(items)
 }
 
 export const useUpdatePlayerInfo = (playerCode, data) => {
   let url = playerCode && data ? `${API}/info/${playerCode}` : ""
 
-  let rest = usePatchData(url, data, {
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdatePlayerStatus = (playerCode, data) => {
   let url = playerCode && data ? `${API}/status/${playerCode}` : ""
-  let rest = usePatchData(url, data, {
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdatePlayerAgent = (playerCode, data) => {
   let url = playerCode && data ? `${API}/agent/${playerCode}` : ""
-  let rest = usePatchData(url, data, {
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {
   let url = playerCode && data ? `${API}/parent-player/${playerCode}` : ""
-  let rest = usePatchData(url, data, {
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 //TODO: rm? or use original

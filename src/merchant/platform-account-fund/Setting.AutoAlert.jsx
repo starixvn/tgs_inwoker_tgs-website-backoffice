@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Box, Set, Flex, Text, Group } from "bumbag"
+import { Box, Set, Flex, Text, Group, FieldStack } from "bumbag"
 import {
   Trans,
   useLocale,
@@ -23,15 +23,16 @@ export const AutoAlertTab = (props) => {
   )
 }
 
+const BodyStyle = css``
+
 export const AutoAlertPanel = ({ ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
-
   //TODO: return null if not active?
 
   return (
     <TabPanel tabId={TabId} {...props}>
-      TODO: Auto Alert
+      <FieldStack></FieldStack>
     </TabPanel>
   )
 }

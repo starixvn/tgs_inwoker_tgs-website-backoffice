@@ -33,7 +33,14 @@ import { AllMenus } from "./menu"
 import { AllContents } from "./content"
 import { useUsername, useDeauth } from "./user/context"
 import { SWRConfig } from "swr"
-import { Trans, useLocale, Locales, useEnglish, useChinese } from "./i18n"
+import {
+  Trans,
+  useLocale,
+  Locales,
+  useEnglish,
+  useChinese,
+  useVietnamese
+} from "./i18n"
 import { AdminUserChangePasswordDialog } from "./system/admins/edit"
 import {
   getHeaderBackground,
@@ -267,9 +274,11 @@ const LangItem = ({ ...props }) => {
   let locale = useLocale()
   let chinese = "中文"
   let english = "English"
+  let vietnamese = "Tiếng Việt"
 
   let useEn = useEnglish()
   let useZh = useChinese()
+  let useVi = useVietnamese()
   return (
     <TopNav.Item {...props}>
       <DropdownMenu
@@ -277,6 +286,7 @@ const LangItem = ({ ...props }) => {
           <>
             <DropdownMenu.Item onClick={useZh}>{chinese}</DropdownMenu.Item>
             <DropdownMenu.Item onClick={useEn}>{english}</DropdownMenu.Item>
+            <DropdownMenu.Item onClick={useVi}>{vietnamese}</DropdownMenu.Item>
           </>
         }
       >
@@ -292,6 +302,7 @@ const LangItem = ({ ...props }) => {
           <Hide below={collapseBelow}>
             {locale === Locales.zh && chinese}
             {locale === Locales.en && english}
+            {locale === Locales.vi && vietnamese}
           </Hide>
         </Button>
       </DropdownMenu>

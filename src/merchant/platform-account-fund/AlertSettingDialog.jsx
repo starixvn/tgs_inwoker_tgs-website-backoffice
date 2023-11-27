@@ -23,6 +23,8 @@ import {
   MainSettingTab,
   MainSettingPanel
 } from "./Setting.Main"
+import { AutoAlertPanel, AutoAlertTab } from "./Setting.AutoAlert"
+import { ManualAlertPanel, ManualAlertTab } from "./Setting.ManualAlert"
 
 export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -46,6 +48,7 @@ export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
 }
 
 //TODO
+/*
 const toFetchApi = (tabId) => {
   switch (tabId) {
     case MainTabId:
@@ -62,6 +65,7 @@ const toFetchApi = (tabId) => {
   }
   return fakeFetchApi
 }
+*/
 
 //TODO: how to do form update?
 const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
@@ -105,12 +109,20 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}
+      placement="top"
+      css={css`
+        min-width: 85vw;
+      `}
     >
       <Tabs>
         <TabList {...tab}>
           <MainSettingTab {...tab} />
+          <AutoAlertTab {...tab} />
+          <ManualAlertTab {...tab} />
         </TabList>
         <MainSettingPanel setDefaultValues={setDefaultValues} {...tab} />
+        <AutoAlertPanel setDefaultValues={setDefaultValues} {...tab} />
+        <ManualAlertPanel setDefaultValues={setDefaultValues} {...tab} />
       </Tabs>
     </FormDialog>
   )
