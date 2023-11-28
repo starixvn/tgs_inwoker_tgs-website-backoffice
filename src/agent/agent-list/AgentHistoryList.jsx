@@ -283,6 +283,7 @@ const useAgentHistoryColumns = ({ items = [], brandId }) => {
 }
 
 const PasswordLabel = () => <Trans zh="登入密码" en="Login Password" />
+const WithdrawPassword = () => <Trans zh="提款密码" en="Withdrawal Password" />
 
 const StringValue = ({ value = "" }) =>
   isString(value) ? value : JSON.stringify(value)
@@ -299,7 +300,8 @@ const LabelValueList = [
   [pipe(getPath, equals("/Wechat")), WeChatLabel],
   [pipe(getPath, equals("/Qq")), QqLabel],
 
-  [pipe(getPath, equals("/password")), PasswordLabel]
+  [pipe(getPath, equals("/password")), PasswordLabel],
+  [pipe(getPath, equals("/withdrawPassword")), WithdrawPassword]
 ]
 
 const toLabel = (value) => {

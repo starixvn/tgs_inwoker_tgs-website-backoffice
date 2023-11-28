@@ -12,6 +12,8 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
+import Input from "../../input/Input"
+import Textarea from "../../textarea"
 
 export const TabId = "autoAlert"
 
@@ -23,7 +25,11 @@ export const AutoAlertTab = (props) => {
   )
 }
 
-const BodyStyle = css``
+const BodyStyle = css`
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: auto 1fr;
+`
 
 export const AutoAlertPanel = ({ ...props }) => {
   let { selectedId } = props
@@ -32,184 +38,87 @@ export const AutoAlertPanel = ({ ...props }) => {
 
   return (
     <TabPanel tabId={TabId} {...props}>
-      <FieldStack></FieldStack>
+      <Box css={BodyStyle}>
+        <Box fontWeight="bold">
+          <Trans zh="加值通知" en="Balance Alert" />
+        </Box>
+        <BalanceAlertBox />
+
+        <Box fontWeight="bold">
+          <Trans zh="緊急加值通知" en="Balance Low Alert" />
+        </Box>
+        <LowBalanceAlertBox />
+
+        <Box fontWeight="bold">
+          <Trans zh="平台停用通知" en="Suspension Alert" />
+        </Box>
+        <SuspensionAlertBox />
+      </Box>
     </TabPanel>
   )
 }
 
-/*
-TODO: moved to MainSetting
-const BalanceAlert = "balanceAlert"
-
-export const useBalanceAlertValue = (name = BalanceAlert) => {
-  let { control, watch } = useFormContext()
-
-  return watch(name)
-}
-
-const inputFieldStyle = css`
-  margin: 0 0.5rem;
-  display: inline-flex;
-  flex: 0 0 max-content;
-  line-height: 1.5;
+const TextareaStyle = css`
+  textarea {
+    min-height: 15vh;
+  }
 `
 
-export const BalanceAlertInputField = ({
-  name = BalanceAlert,
-  defaultValue = 60,
-  max = 70,
-  registerOptions = {
-    valueAsNumber: true
-  },
-  size = "small",
-  ...props
-}) => (
-  <PercentageNumberInputField
-    name={name}
-    defaultValue={defaultValue}
-    max={max}
-    registerOptions={registerOptions}
-    size={size}
-    css={inputFieldStyle}
-    {...props}
-  />
-)
-
-const boxBodyStyle = css`
-  line-height: 38px;
-`
-
-export const BalanceAlertInputBox = ({
-  children = <BalanceAlertInputField />,
-  ...props
-}) => {
-  let balanceAlertValue = useBalanceAlertValue()
-  let gameSuspensionValue = useGameSuspensionValue()
+const AlertBox = ({ name = "", subject = "", defaultValue = "" }) => {
   return (
-    <Box {...props}>
-      <Trans
-        zh={
-          <span css={boxBodyStyle}>
-            <Text>{"當已用額度% > "}</Text>
-            {children}
-            <Text>{"寄送，每3小時寄送一次"}</Text>
+    <Box css={BodyStyle}>
+      <Trans zh="主旨" en="Subject" />
+      <Input value={subject} disabled size="small" />
 
-            <Text>{"，直至已用額度% ≤ "}</Text>
-            <FormattedNumberDecimalPercentage
-              value={balanceAlertValue}
-              placeholder="-"
-            />
-
-            <Text>{"，或 ≥ "}</Text>
-            <FormattedNumberDecimalPercentage
-              value={gameSuspensionValue}
-              placeholder="-"
-            />
-
-            <Text>{"。"}</Text>
-          </span>
-        }
-        en={
-          <span css={boxBodyStyle}>
-            <Text>{"When Usage P/T is greater than "}</Text>
-            {children}
-            <Text>{", the alert will be sent every 3 hours"}</Text>
-
-            <Text>{" until the Usage P/T is ≤ "}</Text>
-            <FormattedNumberDecimalPercentage value={balanceAlertValue} />
-
-            <Text>{", or ≥ "}</Text>
-            <FormattedNumberDecimalPercentage
-              value={gameSuspensionValue}
-              placeholder="-"
-            />
-
-            <Text>{"."}</Text>
-          </span>
-        }
+      <Trans zh="內容" en="Message" />
+      <Textarea
+        name={name}
+        defaultValue={defaultValue}
+        size="small"
+        css={TextareaStyle}
       />
     </Box>
   )
 }
 
-export const LowBalanceAlertBox = ({ ...props }) => {
-  let gameSuspensionValue = useGameSuspensionValue()
-  let lobbySuspensionValue = useLobbySuspensionValue()
-
+const BalanceAlertBox = () => {
+  //TODO: useTrans for defaultValue & subject?
   return (
-    <Box {...props}>
-      <Trans
-        zh={
-          <span css={boxBodyStyle}>
-            <Text>{"當已用額度% > "}</Text>
-            <FormattedNumberDecimalPercentage
-              value={gameSuspensionValue}
-              placeholder="-"
-            />
-            <Text>
-              {" 後寄送，每3小時寄送一次，直至加值或重置，或已用額度 ≥ "}
-            </Text>
-            <FormattedNumberDecimalPercentage
-              value={lobbySuspensionValue}
-              placeholder="-"
-            />
-            <Text>{" 為止。"}</Text>
-          </span>
-        }
-        en={
-          <span css={boxBodyStyle}>
-            <Text>{"When Usage P/T is greater than "}</Text>
-            <FormattedNumberDecimalPercentage
-              value={gameSuspensionValue}
-              placeholder="-"
-            />
-            <Text>
-              {
-                ", the alert will be sent every 3 hours until top-up, reset, or the usage P/T is ≥ "
-              }
-            </Text>
-            <FormattedNumberDecimalPercentage
-              value={lobbySuspensionValue}
-              placeholder="-"
-            />
-            <Text>{"."}</Text>
-          </span>
-        }
-      />
-    </Box>
+    <AlertBox
+      name="balanceAlertMessage"
+      subject={"[Licensee][Brand] 加值通知 Warning: Balance low"}
+      defaultValue={`敬愛的夥伴您好，您的平台目前剩餘額度不足，為避免影響會員遊戲體驗，請盡速聯繫貴司對應商務進行加值，謝謝您。
+Dear Partner,
+We wanted to inform you that your site currently has reached a high balance usage. To maintain the stability and quality of your gaming experience, we kindly recommend reaching out to your designated business contact for a top-up. Thank you.
+`}
+    />
   )
 }
 
-export const LobbySuspensionAlert = ({}) => {
-  let lobbySuspensionValue = useLobbySuspensionValue()
-
+const LowBalanceAlertBox = () => {
+  //TODO: useTrans for defaultValue & subject?
   return (
-    <Box {...props}>
-      <Trans
-        zh={
-          <span css={boxBodyStyle}>
-            <Text>{"當使用比例 > "}</Text>
-            <FormattedNumberDecimalPercentage
-              value={lobbySuspensionValue}
-              placeholder="-"
-            />
-            <Text>{" 後寄送，每3小時寄送一次，直至再次充值為止。"}</Text>
-          </span>
-        }
-        en={
-          <span css={boxBodyStyle}>
-            <Text>{"When Usage P/T is greater than "}</Text>
-            <FormattedNumberDecimalPercentage
-              value={lobbySuspensionValue}
-              placeholder="-"
-            />
-            <Text>
-              {", the alert will be sent every 3 hours until top-up or reset."}
-            </Text>
-          </span>
-        }
-      />
-    </Box>
+    <AlertBox
+      name="lowBalanceAlertMessage"
+      subject={"[Licensee][Brand] 緊急加值通知 Warning: Balance too low"}
+      defaultValue={`敬愛的夥伴您好，您的平台目前剩餘額度嚴重不足，所有遊戲暫時不可進入；為避免影響平台正常運營，請立即聯繫貴司對應商務進行加值，謝謝您。
+Dear Partner,
+We wanted to inform you that your site currently has reached a higher balance usage, and the access to all games will be temporarily suspended. To maintain the stability of your site, we kindly recommend reaching out to your designated business contact for a top-up immediately. Thank you.
+`}
+    />
   )
 }
-*/
+
+const SuspensionAlertBox = () => {
+  //TODO: useTrans for defaultValue & subject?
+  return (
+    <AlertBox
+      name="suspensionAlertMessage"
+      subject={"[Licensee][Brand] 平台已停用，請立即加值 Notice of Suspension"}
+      defaultValue={`貴司您好，由於您的平台剩餘額度已低於限制，平台及所有遊戲暫時不可進入；請立即聯繫貴司對應商務進行加值，並由專人協助您恢復平台運行，謝謝您。
+Dear Partner,
+We wanted to inform you that your site has been temporarily suspended due to a balance usage that has exceeded the limit. To recover the full access of platform and all games, we kindly recommend reaching out to your designated business contact for a top-up immediately. Thank you.
+`}
+    />
+  )
+}
