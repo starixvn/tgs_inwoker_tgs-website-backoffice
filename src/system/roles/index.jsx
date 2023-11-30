@@ -92,7 +92,7 @@ const Body = ({}) => {
               })
               mutate()
             }}
-            isPending={isLoading}
+            isLoading={isLoading}
           />
           <AddButton onSubmitted={mutate} />
         </>

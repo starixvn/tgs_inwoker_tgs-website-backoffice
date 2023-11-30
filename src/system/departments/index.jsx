@@ -20,6 +20,9 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { ActionTrans } from "../../trans/Action"
+import { FormProvider, useForm } from "react-hook-form"
+import { InputField } from "../../input/Input"
+import SearchButton from "../../button/SearchButton"
 
 export { Code }
 
@@ -35,12 +38,13 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let { state, setState, setPageIndex, setSortOrder } = useTable()
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    name: ""
+  })
   let { pageIndex, pageSize } = state
 
   let { isLoading, data, error, mutate, deleteCache } = useDepartmentList({
-    ...toApiParams(state),
-    sortby: "name"
+    ...toApiParams(state)
   })
   let columns = useColumns({ mutate, items: data?.items })
 
@@ -48,9 +52,20 @@ const Body = () => {
     <PageContent
       title={<Trans zh="部门管理" en="Departments" />}
       actionBar={
-        <Box alignX="right">
+        <>
+          <SearchBar
+            name={state.name}
+            search={(data = {}) => {
+              setState({
+                pageIndex: 0,
+                ...data
+              })
+              mutate()
+            }}
+            isLoading={isLoading}
+          />
           <AddButton onSubmitted={mutate} />
-        </Box>
+        </>
       }
     >
       <Table
@@ -67,6 +82,33 @@ const Body = () => {
     </PageContent>
   )
 }
+
+const SearchBar = ({ name, search, isLoading }) => {
+  let formMethods = useForm({
+    defaultValues: { name }
+  })
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(search)}>
+        <Set>
+          <InputField
+            name="name"
+            showEmptyFieldValueAddonAfter
+            placeholder={useNamePlaceHolder()}
+          />
+          <SearchButton isLoading={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
+}
+
+const useNamePlaceHolder = () =>
+  useTrans({
+    zh: "部门名称",
+    en: "Name"
+  })
 
 const useColumns = ({ mutate, items = [] }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
