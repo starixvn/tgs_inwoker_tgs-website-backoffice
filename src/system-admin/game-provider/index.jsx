@@ -42,6 +42,7 @@ import AlertDialog from "../../dialog/Alert"
 import Backdrop from "../../dialog/Backdrop"
 import { useDropzone } from "react-dropzone"
 import { SubGameProviderListDisclosure } from "./SubGameProviderList"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -321,7 +322,7 @@ const useColumns = ({ items = [], mutate }) => {
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value }) => {
             return (
               <Set orientation="vertical" alignX="center">

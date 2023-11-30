@@ -33,6 +33,7 @@ import {
 } from "react-hook-form"
 import format from "../../date/format"
 import { ScheduleStatus, ScheduleStatusLabel } from "./ScheduleStatus"
+import { ActionTrans } from "../../trans/Action"
 
 export const EditPresetButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -181,7 +182,7 @@ const EditBody = ({
               <EndTimeLabel />
             </Table.HeadCell>
             <Table.HeadCell textAlign="center">
-              <Trans zh="操作" en="Actions" />
+              <ActionTrans />
             </Table.HeadCell>
           </Table.Row>
         </Table.Head>

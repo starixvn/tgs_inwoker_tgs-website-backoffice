@@ -35,6 +35,7 @@ import TransferType, {
   isDepositPlatformPayment
 } from "./BrandPaymentTransferType"
 import { NumberInputField } from "../../input/NumberInput"
+import { BankAccountTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
 
 const BankTransfer = "BankTransfer"
 const ThirdParty = "ThirdParty"
@@ -85,11 +86,11 @@ const CoinsphSetting = ({ brandId }) => {
   return (
     <>
       <Label required>
-        <Trans zh="电话号码" en="Phone" />
+        <PhoneTrans />
       </Label>
       <Input name="extendedData.phone" required />
       <Label required>
-        <Trans zh="真实姓名" en="Real Name" />
+        <RealNameTrans />
       </Label>
       <Input name="extendedData.name" required />
       <Label>
@@ -109,7 +110,7 @@ const PulsaSetting = ({ brandId }) => {
   return (
     <>
       <Label required>
-        <Trans zh="电话号码" en="Phone" />
+        <PhoneTrans />
       </Label>
       <Input name="extendedData.phone" required />
     </>
@@ -120,7 +121,7 @@ const EWalletSetting = ({ brandId }) => {
   return (
     <>
       <Label required>
-        <Trans zh="电话号码" en="Phone" />
+        <PhoneTrans />
       </Label>
       <Input name="extendedData.phone" required />
 
@@ -184,7 +185,7 @@ const FPSSetting = ({ brandId }) => {
   return (
     <>
       <Label>
-        <Trans zh="电话号码" en="Phone" />
+        <PhoneTrans />
       </Label>
       <Input name="extendedData.phone" />
 
@@ -228,7 +229,7 @@ const BankTransferSetting = ({ brandId, paymentCode, isDeposit }) => {
       {isManualPaymentCode && (
         <>
           <Label required={isDeposit}>
-            <Trans zh="银行卡号" en="Bank Account" />
+            <BankAccountTrans />
           </Label>
           <Input name="extendedData.bankAccount" required={isDeposit} />
         </>

@@ -48,6 +48,8 @@ import { useBrand } from "../../merchant/platforms/client"
 import { isValidDate } from "../../date/isValidDate"
 import { min, max, endOfToday } from "date-fns"
 import { Modal } from "../../dialog/Modal"
+import { PlayerCodeTrans } from "../../trans/Player"
+import { RemarkTrans } from "../../trans/Action"
 
 export const AddGameProviderRoundDialogDisclosure = ({
   id,
@@ -178,11 +180,7 @@ const FormBody = ({}) => {
   //TODO: minDate & maxDate validate on DateTimeInputField
   return (
     <FieldStack paddingLeft="1.5rem" paddingRight="1.5rem" paddingBottom="1rem">
-      <InputField
-        name="playerCode"
-        label={<Trans zh="玩家代碼" en="Player Code" />}
-        required
-      />
+      <InputField name="playerCode" label={<PlayerCodeTrans />} required />
       <FieldWrapper label={<Trans zh="游戏厂商" en="Game Provider" />}>
         <GameProviderSubGameProviderSelect
           gameProviderProps={{
@@ -293,7 +291,7 @@ const FormBody = ({}) => {
       />
       <TextareaField
         name="remark"
-        label={<Trans zh="备注" en="Remark" />}
+        label={<RemarkTrans />}
         transition="unset"
         css={css`
           textarea {

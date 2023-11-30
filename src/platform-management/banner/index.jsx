@@ -47,6 +47,7 @@ import {
 } from "./PlatformBanner"
 import { VerifyPlatformBannerDisclosure } from "./VerifyPlatformBanner"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -467,7 +468,7 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

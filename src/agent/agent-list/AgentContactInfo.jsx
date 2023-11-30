@@ -25,13 +25,14 @@ import { useUpdateAgent, useUpdateAgentContact } from "./client"
 import clone from "clone-deep"
 import { isDev } from "../../env"
 import { diff } from "../../object/diff"
+import { ContactInfoTrans } from "../../trans/User"
 
 const Key = "AgentContactInfo"
 
 export const AgentContactInfoTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="联系信息" en="Contact Info" />
+      <ContactInfoTrans />
     </_Tab>
   )
 }

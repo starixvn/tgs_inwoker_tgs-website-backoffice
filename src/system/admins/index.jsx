@@ -22,6 +22,7 @@ import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { isDev } from "../../env"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -235,7 +236,7 @@ const useColumns = ({ mutate, items = [] }) => {
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

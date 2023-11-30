@@ -37,6 +37,7 @@ import AlertDialog from "../../dialog/Alert"
 import BrandBar from "../../report/BrandBar"
 import { GameTypeLabel, AllGameTypeSelect } from "../GameType"
 import { NumberInput } from "../../input/NumberInput"
+import { ActionTrans } from "../../trans/Action.jsx"
 
 export { Code } from "./menu"
 
@@ -488,7 +489,7 @@ const useColumns = ({
       columns.push({
         id: "actions",
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

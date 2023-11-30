@@ -4,6 +4,7 @@ import { Group, Text } from "bumbag"
 import { useTrans, Trans, useLocale } from "../../i18n"
 import Select, { SelectField } from "../../select/Select"
 import Input, { InputField } from "../../input/Input"
+import { useBankAccountTrans, usePhoneTrans } from "../../trans/User"
 
 export const BankInfoTagTypeSelect = ({
   name = "bankInfoTagType",
@@ -12,23 +13,18 @@ export const BankInfoTagTypeSelect = ({
 }) => {
   let defaultPlaceholder = useTrans({
     zh: "银行卡栏位",
-    en: "Bank Card Field"
+    en: "Bank Card Field",
+    vi: "Tìm  kiếm thẻ ngân hàng"
   })
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useTrans({
-        zh: "银行卡号",
-        en: "Bank Account"
-      }),
+      label: useBankAccountTrans(),
       value: "BankAccount"
     },
     {
-      label: useTrans({
-        zh: "手机号码",
-        en: "Phone"
-      }),
+      label: usePhoneTrans(),
       value: "Phone"
     }
   ]

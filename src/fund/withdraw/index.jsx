@@ -71,6 +71,7 @@ import {
   PlatformPaymentProviderSelect,
   PlatformPaymentTransferType
 } from "../../payment/PlatformPaymentProviderSelect"
+import { ActionTrans, RemarkTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -621,7 +622,7 @@ const useColumns = ({
     columns.push(
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       })
@@ -633,7 +634,7 @@ const useColumns = ({
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value, status }) => {
             let { brandPaymentId } = value
             let underReview = isFundUnderReview(value?.status)

@@ -38,6 +38,27 @@ import { PlayerWithdrawFormDialogDisclosure } from "./PlayerWithdrawFormDialog"
 import { BankInfoFieldGroup } from "./BankInfoTag"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useEffectOnce } from "react-use"
+import { VipLevelTrans } from "../../trans/Vip"
+import {
+  PlayerCodeTrans,
+  PlayersTrans,
+  RegistrationDomainTrans,
+  usePlayerCodeTrans,
+  useRegistrationDomainTrans
+} from "../../trans/Player"
+import { StatusTrans } from "../../trans/Status"
+import {
+  UpperLevelAgentTrans,
+  useUpperLevelAgentTrans
+} from "../../trans/Agent"
+import {
+  RealNameTrans,
+  RegistrationTimeTrans,
+  UserNameTrans,
+  usePhoneTrans,
+  useRealNameTrans
+} from "../../trans/User"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -162,7 +183,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
 
   return (
     <PageContent
-      title={<Trans zh="玩家列表" en="Players" />}
+      title={<PlayersTrans />}
       actionBar={
         <SearchBar
           brandId={brandId}
@@ -226,33 +247,14 @@ const SearchBar = ({
   let isAdminUser = useIsAdminUser()
 
   let usernameInputPlaceholder = useSearchInputPlaceHolder()
-  let playerCodePlaceholder = useTrans({
-    zh: "玩家代碼",
-    en: "Player code"
-  })
-  let domainInputPlaceholder = useTrans({
-    zh: "注册域名",
-    en: "Registration Domain"
-  })
-  let phonePlaceholder = useTrans({
-    zh: "手机号码",
-    en: "Phone"
-  })
-  let realNamePlaceholder = useTrans({
-    zh: "真实姓名",
-    en: "Real name"
-  })
-  let agentNamePlaceholder = useTrans({
-    zh: "上级代理",
-    en: "Upper Level Agent"
-  })
+  let playerCodePlaceholder = usePlayerCodeTrans()
+  let domainInputPlaceholder = useRegistrationDomainTrans()
+  let phonePlaceholder = usePhoneTrans()
+  let realNamePlaceholder = useRealNameTrans()
+  let agentNamePlaceholder = useUpperLevelAgentTrans()
   let allAgentUpperLevelPlaceholder = useTrans({
     zh: "全民代理上級",
     en: "All Agent Upper Level"
-  })
-  let playerTagTypePlaceholder = useTrans({
-    zh: "注册来源",
-    en: "Register from"
   })
 
   let formMethods = useForm({
@@ -319,7 +321,7 @@ const SearchBar = ({
           <DateInputRangeField
             showDateDropdownMenu
             fakeTimeLabel
-            label={<Trans zh="注册时间" en="Registration Time" />}
+            label={<RegistrationTimeTrans />}
             startProps={{
               name: "beginRegisteredOn"
             }}
@@ -335,7 +337,11 @@ const SearchBar = ({
 }
 
 const useSearchInputPlaceHolder = () =>
-  useTrans({ zh: "用户名输入框", en: "Input user name" })
+  useTrans({
+    zh: "用户名输入框",
+    en: "Input user name",
+    vi: "Khung nhập tên tài khoản"
+  })
 
 const useColumns = ({
   mutate,
@@ -358,7 +364,7 @@ const useColumns = ({
     if (isAdminUser) {
       columns.push(
         textColumn({
-          Header: <Trans zh="玩家代码" en="Player Code" />,
+          Header: <PlayerCodeTrans />,
           accessor: "playerCode",
           disableSortBy: true
         })
@@ -368,39 +374,39 @@ const useColumns = ({
     columns = [
       ...columns,
       textColumn({
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         accessor: "username",
         disableSortBy: true
       }),
       textColumn({
         accessor: "realName",
-        Header: <Trans zh="真实姓名" en="Real Name" />,
+        Header: <RealNameTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "registeredTime",
-        Header: <Trans zh="注册时间" en="Registration Time" />,
+        Header: <RegistrationTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "registerHost",
-        Header: <Trans zh="注册域名" en="Registration Domain" />,
+        Header: <RegistrationDomainTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "agentName",
-        Header: <Trans zh="上级代理" en="Upper Level Agent" />,
+        Header: <UpperLevelAgentTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "vipLevel",
-        Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        Header: <VipLevelTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <VipLevelLabel value={value} placeholder="-" />
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PlayerStatusLabel value={value} />
       })
@@ -420,7 +426,7 @@ const useColumns = ({
       columns.push({
         id: "actions",
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

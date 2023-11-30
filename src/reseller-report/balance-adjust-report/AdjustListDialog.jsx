@@ -52,6 +52,7 @@ import { InputField } from "../../input/Input"
 import { AdjustTypeSelect, AdjustTypeLabel } from "./AdjustType"
 import DownloadButton from "../../button/DownloadButton"
 import { isSubtract } from "./operation"
+import { RemarkTrans } from "../../trans/Action"
 
 export const AdjustListDialogDisclosure = ({
   id,
@@ -271,7 +272,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true
       })
     ]

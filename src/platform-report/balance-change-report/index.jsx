@@ -33,6 +33,7 @@ import {
 } from "./TransactionTypeSelect"
 import dateTimeColumn from "../../table/column/dateTime"
 import { DateButtons } from "../../date/DateButtons"
+import { RemarkTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -240,7 +241,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       textColumn({
         accessor: "description",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true
       })
     ],

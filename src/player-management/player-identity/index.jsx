@@ -34,6 +34,8 @@ import PlayerIdentityState, {
 import { Descending } from "../../table/order"
 import { PlayerIdentityAttachment } from "./PlayerIdentityAttachment"
 import { ResetPlayerIdentityAuthDisclosure } from "./ResetPlayerIdentityAuth"
+import { ICNumberTrans, RealNameTrans } from "../../trans/User"
+import { ActionTrans, RemarkTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -217,12 +219,12 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
       }),
       textColumn({
         accessor: "realName",
-        Header: <Trans zh="真实姓名" en="Real name" />,
+        Header: <RealNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "idNumber",
-        Header: <Trans zh="身分证" en="IC Number" />,
+        Header: <ICNumberTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -257,7 +259,7 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
       }),
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true
       })
     ]
@@ -267,7 +269,7 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value: record }) => {
             let { playerCode, formId, status } = record

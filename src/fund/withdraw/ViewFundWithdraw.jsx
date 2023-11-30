@@ -55,6 +55,7 @@ import Input from "../../input/Input"
 import BrandPaymentStatus from "../../system/brandpayments/BrandPaymentStatus"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import Big from "big.js"
+import { PhoneTrans, RealNameTrans } from "../../trans/User"
 
 export const ViewFundWithdrawDisclosure = ({
   brandId,
@@ -234,7 +235,7 @@ const RealNameBox = ({ record = {} }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="真实姓名" en="Real name" />
+        <RealNameTrans />
       </NormalLabel>
       <Box alignY="center">{realName}</Box>
     </>
@@ -439,7 +440,7 @@ const PayeeInfo = ({ record }) => {
           <>
             <>
               <NormalLabel>
-                <Trans zh="电话号码" en="Phone" />
+                <PhoneTrans />
               </NormalLabel>
               <Box alignY="center">{record?.bankInfo?.detail?.phone}</Box>
             </>

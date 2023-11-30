@@ -53,6 +53,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useDropzone } from "react-dropzone"
+import { ActionTrans } from "../../trans/Action"
 
 export const GameProviderGameListDisclosure = ({
   gameProviderId,
@@ -246,7 +247,7 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value: record }) => {
             return (

@@ -36,6 +36,8 @@ import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { CreditAgentTypeLabel, CreditAgentTypeSelect } from "./CreditAgentType"
+import { UserNameTrans } from "../../trans/User"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -161,7 +163,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="User name" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -342,7 +344,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

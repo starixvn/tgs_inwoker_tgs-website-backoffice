@@ -1,5 +1,6 @@
 import React from "react"
 import { Locales, getTrans } from "../../i18n"
+import { View as ViewMsg } from "../../trans/Action"
 
 export const Code = "agentlist"
 

@@ -5,7 +5,7 @@ import { useTrans, Trans } from "../i18n"
 
 export const SearchButton = ({ type = "submit", children, ...props }) => (
   <Button type={type} {...props}>
-    {children ?? <Trans zh="搜索" en="Search" />}
+    {children ?? <Trans zh="搜索" en="Search" vi="Tìm kiếm" />}
   </Button>
 )
 

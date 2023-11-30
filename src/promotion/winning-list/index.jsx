@@ -21,6 +21,7 @@ import { startOfToday, subDays, endOfToday } from "date-fns"
 import dateTimeColumn from "../../table/column/dateTime"
 import { PromotionWinningDetailDialogDisclosure } from "./PromotionWinningDetailDialog"
 import { Descending } from "../../table/order"
+import { useUserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -131,10 +132,7 @@ const SearchBar = ({
     en: "Promotion name"
   })
 
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名",
-    en: "User name"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
 
   const onSubmit = (data) => search(data)
 

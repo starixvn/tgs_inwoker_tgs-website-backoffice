@@ -93,6 +93,13 @@ import { ClearProfitShareDialogDisclosure } from "./ClearProfitShareDialog"
 import { isEmpty, isNil } from "lodash-es"
 import { either } from "ramda"
 import { diff } from "../../object/diff"
+import { UpperLevelAgentTrans } from "../../trans/Agent"
+import {
+  BalanceTrans,
+  RealNameTrans,
+  RegistrationTimeTrans
+} from "../../trans/User"
+import { RemarkTrans } from "../../trans/Action"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -710,7 +717,7 @@ const UsernameBox = ({ value = "", children }) => {
   )
 }
 
-export const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
+export const RealNameLabel = () => <RealNameTrans />
 
 const RealNameBox = ({ value = "", children }) => {
   return (
@@ -742,7 +749,7 @@ const ParentAgentUsername = ({ value = "", children, display, ...props }) => {
   return (
     <>
       <Box alignY="center" display={display}>
-        <Trans zh="上级代理" en="Upper level agent" />
+        <UpperLevelAgentTrans />
       </Box>
 
       {children ? (
@@ -764,7 +771,7 @@ const ParentAgentUsername = ({ value = "", children, display, ...props }) => {
 const RegistrationBox = ({ value }) => {
   return (
     <>
-      <Trans zh="注册时间" en="Registration" />
+      <RegistrationTimeTrans />
       <Text>
         <FormattedDateTime value={value} />
       </Text>
@@ -775,7 +782,7 @@ const RegistrationBox = ({ value }) => {
 const BalanceBox = ({ value = "", ...props }) => {
   return (
     <>
-      <Trans zh="余额" en="Balance" />
+      <BalanceTrans />
       <Text>
         <FormattedNumberDecimal data-value={value} value={value} {...props} />
       </Text>
@@ -844,7 +851,7 @@ const AccumulatedProfitSharingBox = ({ value, children, ...props }) => {
   )
 }
 
-export const RemarkLabel = () => <Trans zh="备注" en="Remark" />
+export const RemarkLabel = () => <RemarkTrans />
 
 const RebateBox = ({ label, value, type, children }) => {
   let isCredit = isAgentTypeCredit(type)

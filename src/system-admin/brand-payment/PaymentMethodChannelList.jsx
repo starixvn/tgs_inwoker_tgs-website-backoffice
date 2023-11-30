@@ -50,6 +50,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { DeleteText } from "../../button/ActionButtons"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import { ActionTrans } from "../../trans/Action"
 
 export const PaymentMethodChannelListDialog = ({ dialog, onSubmitted }) => {
   let { isLoading, data, error, mutate, deleteCache } =
@@ -196,7 +197,7 @@ const useColumns = ({ items = [], mutate }) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="Actions" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value }) => (
             <DeleteDialogDisclosure record={value} onSubmitted={mutate} />

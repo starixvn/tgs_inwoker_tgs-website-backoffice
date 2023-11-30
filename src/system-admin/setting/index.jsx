@@ -25,6 +25,7 @@ import {
 } from "./edit"
 import equals from "fast-deep-equal"
 import { LocalizationDropdownMenu } from "./Localization"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -151,7 +152,7 @@ const useColumns = ({ items = [], mutate }) => {
       columns.push(
         textColumn({
           id: "actions",
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {

@@ -3,7 +3,9 @@ import { css } from "@emotion/react"
 import { Text } from "bumbag"
 import { Trans } from "../../i18n"
 
-export const SequenceHeader = () => <Trans zh="序" en="Sequence" />
+export const SequenceHeader = () => (
+  <Trans zh="序" en="Sequence" vi="Số thứ tự" />
+)
 
 const SequenceCell = ({
   state = {},

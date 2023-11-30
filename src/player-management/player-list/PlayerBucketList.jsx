@@ -38,6 +38,11 @@ import {
   usePlayerBucketItems,
   usePlayerCompletedWageringList
 } from "./client"
+import { RemarkTrans } from "../../trans/Action"
+import {
+  WageringRequirementsTrans,
+  useWageringRequirementsTrans
+} from "../../trans/Player"
 
 export const PlayerBucketListDialogDisclosure = ({
   playerCode,
@@ -51,7 +56,7 @@ export const PlayerBucketListDialogDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog} {...props}>
-        <Trans zh="流水需求" en="Wagering Requirements" />
+        <WageringRequirementsTrans />
       </Disclosure>
       {dialog.visible && (
         <PlayerBucketListDialog
@@ -65,10 +70,7 @@ export const PlayerBucketListDialogDisclosure = ({
 }
 
 const PlayerBucketListDialog = ({ playerCode, dialog, dialogId }) => {
-  let title = useTrans({
-    zh: "流水需求",
-    en: "Wagering Requirements"
-  })
+  let title = useWageringRequirementsTrans()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     playerCode
@@ -123,7 +125,7 @@ const usePlayerBucketListColumns = ({ playerCode, items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="流水需求" en="Wagering Requirements" />,
+        Header: <WageringRequirementsTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -286,7 +288,7 @@ const useBucketItemsColumns = ({ playerCode, items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "wageringRequirement",
-        Header: <Trans zh="流水需求" en="Wagering Requirement" />,
+        Header: <WageringRequirementsTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -456,7 +458,7 @@ const useCompletedWageringColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true
       }),
       textColumn({

@@ -4,20 +4,38 @@ import { Locales, Trans, useLocale, useTrans } from "../i18n"
 import { Select, SelectField } from "../select/Select"
 import { useGameTypeGroupList } from "./client"
 import { mapOmit } from "../list/map"
+import {
+  useGameTypeTrans,
+  LiveDealer as LiveDealerTrans,
+  Sportsbook as SportsbookTrans,
+  Sports as SportsTrans,
+  ESports as ESportsTrans,
+  VirtualSports as VirtualSportsTrans,
+  Slot as SlotTrans,
+  CardGame as CardGameTrans,
+  Lottery as LotteryTrans,
+  Fishing as FishingTrans,
+  Arcade as ArcadeTrans,
+  TableGame as TableGameTrans
+} from "../trans/Game"
 
 const Sportsbook = "Sportsbook"
 const SportsbookValue = 1
+/*
 const SportsbookTrans = {
   zh: "体育",
   en: "Sportsbook"
 }
+*/
 
 const VirtualSports = "VirtualSports"
 const VirtualSportsValue = 2
+/*
 const VirtualSportsTrans = {
   zh: "虚拟体育",
   en: "Virtual Sports"
 }
+*/
 
 const VirtualSportsLobby = "VirtualSportsLobby"
 const VirtualSportsLobbyValue = 3
@@ -28,17 +46,21 @@ const VirtualSportsLobbyTrans = {
 
 const ESports = "ESports"
 const ESportsValue = 4
+/*
 const ESportsTrans = {
   zh: "电竞",
   en: "E-sports"
 }
+*/
 
 const LiveDealer = "LiveDealer"
 const LiveDealerValue = 5
+/*
 const LiveDealerTrans = {
   zh: "真人",
   en: "Live Dealer"
 }
+*/
 
 const LiveDealerLobby = "LiveDealerLobby"
 const LiveDealerLobbyValue = 6
@@ -49,10 +71,12 @@ const LiveDealerLobbyTrans = {
 
 const CardGame = "CardGame"
 const CardGameValue = 7
+/*
 const CardGameTrans = {
   zh: "棋牌",
   en: "Card Game"
 }
+*/
 
 const CardGameLobby = "CardGameLobby"
 const CardGameLobbyValue = 8
@@ -63,10 +87,12 @@ const CardGameLobbyTrans = {
 
 const Fishing = "Fishing"
 const FishingValue = 9
+/*
 const FishingTrans = {
   zh: "捕鱼",
   en: "Fishing"
 }
+*/
 
 const FishingLobby = "FishingLobby"
 const FishingLobbyValue = 10
@@ -77,10 +103,12 @@ const FishingLobbyTrans = {
 
 const Arcade = "Arcade"
 const ArcadeValue = 11
+/*
 const ArcadeTrans = {
   zh: "街机",
   en: "Arcade Game"
 }
+*/
 
 const ArcadeLobby = "ArcadeLobby"
 const ArcadeLobbyValue = 12
@@ -91,17 +119,21 @@ const ArcadeLobbyTrans = {
 
 const Slot = "Slot"
 const SlotValue = 15
+/*
 const SlotTrans = {
   zh: "老虎机",
   en: "Slot Game"
 }
+*/
 
 const Lottery = "Lottery"
 const LotteryValue = 13
+/*
 const LotteryTrans = {
   zh: "彩票",
   en: "Lottery"
 }
+*/
 
 const LotteryLobby = "LotteryLobby"
 const LotteryLobbyValue = 14
@@ -112,10 +144,12 @@ const LotteryLobbyTrans = {
 
 const TableGame = "TableGame"
 const TableGameValue = 16
+/*
 const TableGameTrans = {
   zh: "桌面游戏",
   en: "Table Game"
 }
+*/
 
 export const toGameTypeString = (value) => {
   switch (value) {
@@ -235,35 +269,20 @@ export const isLobbyGameType = (value = "") => LobbyGameTypes.includes(value)
 
 export const notLobbyGameType = (value = "") => !isLobbyGameType(value)
 
-const LiveDealerGroupTrans = {
-  zh: "真人",
-  en: "Live Dealer"
-}
+const LiveDealerGroupTrans = LiveDealerTrans
 
-const SportsGroupTrans = {
-  zh: "体育",
-  en: "Sports"
-}
+const SportsGroupTrans = SportsTrans
 
 const EGameGroupTrans = {
   zh: "电子",
   en: "EGame"
 }
 
-const CardGameGroupTrans = {
-  zh: "棋牌",
-  en: "Card Game"
-}
+const CardGameGroupTrans = CardGameTrans
 
-const VirtualSportsGroupTrans = {
-  zh: "虚拟体育",
-  en: "Virtual Sports"
-}
+const VirtualSportsGroupTrans = VirtualSportsTrans
 
-const LotteryGroupTrans = {
-  zh: "彩票",
-  en: "Lottery"
-}
+const LotteryGroupTrans = LotteryTrans
 
 const AllTrans = [
   {
@@ -430,10 +449,7 @@ export const useGameTypeGroupValueOf = (gameType = "") => {
 }
 
 export const GameTypeGroupSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "游戏类型",
-    en: "Game Type"
-  })
+  let defaultPlaceholder = useGameTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()
@@ -464,10 +480,7 @@ export const GameTypeLabel = ({ value }) => {
 }
 
 export const GameTypeSelect = ({ placeholder, group, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "游戏类型",
-    en: "Game Type"
-  })
+  let defaultPlaceholder = useGameTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()
@@ -513,10 +526,7 @@ export const GameTypeSelectField = ({
   group,
   /*dropLobbyGame = false,*/ ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "游戏类型",
-    en: "Game Type"
-  })
+  let defaultPlaceholder = useGameTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()
@@ -555,10 +565,7 @@ export const GameTypeSelectField = ({
 
 // Game Type List include Lobby Type
 export const AllGameTypeSelect = ({ placeholder, group, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "游戏类型",
-    en: "Game Type"
-  })
+  let defaultPlaceholder = useGameTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()

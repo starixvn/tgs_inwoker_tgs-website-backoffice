@@ -23,6 +23,7 @@ import { usePlayerAutoClearBucketList } from "../../player-management/player-lis
 import dateTimeColumn from "../../table/column/dateTime"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import SequenceColumn from "../../table/column/sequence"
+import { BalanceTrans } from "../../trans/User"
 
 export const PlayerAutoClearBucketReport = ({
   playerCode,
@@ -118,7 +119,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           numberDecimalColumn({
             accessor: "reviewBalance",
-            Header: <Trans zh="钱包余额" en="Balance" />,
+            Header: <BalanceTrans />,
             disableSortBy: true,
             headCellProps: {
               whiteSpace: "nowrap"
@@ -143,7 +144,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           numberDecimalColumn({
             accessor: "cleaningBalance",
-            Header: <Trans zh="钱包余额" en="Balance" />,
+            Header: <BalanceTrans />,
             disableSortBy: true,
             headCellProps: {
               whiteSpace: "nowrap"

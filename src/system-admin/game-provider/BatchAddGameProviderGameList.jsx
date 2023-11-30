@@ -52,6 +52,7 @@ import { ConfirmText } from "../../button/ActionButtons"
 import sequenceColumn from "../../table/column/sequence"
 import { View, Update } from "./menu"
 import { isDev } from "../../env"
+import { ActionTrans } from "../../trans/Action.jsx"
 
 export const BatchAddGameProviderGameListDisclosure = ({
   gameProviderId,
@@ -215,7 +216,7 @@ const useColumns = ({ gameProviderId, items = [], formMethods }) => {
       textColumn({
         id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         disableSortBy: true,
         Cell: ({ value: record, row }) => {
           let index = row.index

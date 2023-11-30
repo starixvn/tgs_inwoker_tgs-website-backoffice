@@ -30,13 +30,14 @@ import { CancelText, SubmitText } from "../../button/ActionButtons"
 import Backdrop from "../../dialog/Backdrop"
 import FormDialog from "../../form/FormDialog"
 import Disclosure from "../../dialog/Disclosure"
+import { BankAccountTrans, RealNameTrans } from "../../trans/User"
 
 const Key = "AgentBankInfo"
 
 export const AgentBankInfoTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="银行卡信息" en="Agent Bank Info" />
+      <Trans zh="银行卡信息" en="Bank Info" />
     </_Tab>
   )
 }
@@ -102,13 +103,13 @@ const Bank = ({ record = {}, readOnly = false, onSubmitted }) => {
         </Set>
       )}
       <FieldValues>
-        <Trans zh="真实姓名" en="Real name" />
+        <RealNameTrans />
         <Text>{record?.realName ?? ""}</Text>
 
         <Trans zh="银行" en="Bank" />
         <Text>{record?.bankName ?? ""}</Text>
 
-        <Trans zh="银行卡号" en="Bank Account" />
+        <BankAccountTrans />
         <Text>{record?.bankAccount ?? ""}</Text>
       </FieldValues>
     </Card>
@@ -207,7 +208,7 @@ const EditDialog = ({ bank, onSubmitted, dialog }) => {
 const EditBody = ({}) => {
   return (
     <FieldValues>
-      <Trans zh="真实姓名" en="Real name" />
+      <RealNameTrans />
       <Box>
         <Input name="realName" />
       </Box>
@@ -217,7 +218,7 @@ const EditBody = ({}) => {
         <Input name="bankName" />
       </Box>
 
-      <Trans zh="银行卡号" en="Bank Account" />
+      <BankAccountTrans />
       <Box>
         <Input name="bankAccount" />
       </Box>

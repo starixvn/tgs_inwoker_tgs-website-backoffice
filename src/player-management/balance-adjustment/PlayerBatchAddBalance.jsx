@@ -72,6 +72,7 @@ import {
 import Backdrop from "../../dialog/Backdrop"
 import { connection } from "../../connection"
 import { useMount, useUnmount } from "react-use"
+import { RemarkTrans } from "../../trans/Action"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
@@ -569,7 +570,7 @@ const useColumns = ({ items, showResult }) => {
       }),
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true
       })
     ]

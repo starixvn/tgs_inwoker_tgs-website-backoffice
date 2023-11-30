@@ -72,6 +72,7 @@ import {
   PlatformPaymentProviderSelect,
   PlatformPaymentTransferType
 } from "../../payment/PlatformPaymentProviderSelect"
+import { ActionTrans, RemarkTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -699,7 +700,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
     columns.push(
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       }),
@@ -721,7 +722,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value }) => {
             let underReview =
               value?.status === FundDepositStatus.Review ||

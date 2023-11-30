@@ -14,6 +14,7 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { View } from "./menu"
 import { FieldValues } from "../../layout/Grid"
+import { BalanceTrans } from "../../trans/User"
 
 export const PlayerWageringRequirementDialogDisclosure = ({
   brandId,
@@ -31,7 +32,7 @@ export const PlayerWageringRequirementDialogDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="余额" en="Balance" />
+        <BalanceTrans />
       </Disclosure>
       {dialog.visible && (
         <WageringRequirementDialog
@@ -93,7 +94,7 @@ const WageringRequirementDialog = ({
         <Trans zh="用户名" en="Username" />
         <Box>{username}</Box>
 
-        <Trans zh="余额" en="Balance" />
+        <BalanceTrans />
         <Box>
           <FormattedNumberDecimal value={player?.balance} />
         </Box>

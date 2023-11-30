@@ -26,6 +26,7 @@ import { EditBrandBetLimitGameProviderBetLimit } from "./BrandBetLimitGameProvid
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { BrandLogoDialogDisclosure } from "./BrandLogoDialog"
+import { ActionTrans } from "../../trans/Action"
 // import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
 
 export { Code }
@@ -220,7 +221,7 @@ const useColumns = ({ items = [], mutate }) => {
         textColumn({
           id: "actions",
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           Cell: ({ value }) => {
             return (

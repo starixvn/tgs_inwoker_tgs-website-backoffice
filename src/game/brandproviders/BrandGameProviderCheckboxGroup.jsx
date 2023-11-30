@@ -21,6 +21,7 @@ import Input from "../../input/Input"
 import { isAllPropChecked } from "../../checkbox/isAllChecked"
 import { differenceWith } from "lodash-es"
 import clone from "clone-deep"
+import { GameProviderTrans } from "../../trans/Game"
 
 export const BrandGameProviderCheckboxGroupTable = ({
   brandId,
@@ -103,7 +104,7 @@ const Body = ({ name, gameProviders, items = [], disabled, ...props }) => {
             </Box>
           </Table.HeadCell>
           <Table.HeadCell textAlign="center" width="100%">
-            <Trans zh="游戏厂商" en="Game Provider" />
+            <GameProviderTrans />
           </Table.HeadCell>
         </Table.Row>
       </Table.Head>

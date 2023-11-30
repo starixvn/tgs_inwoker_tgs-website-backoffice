@@ -45,6 +45,7 @@ import clone from "clone-deep"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -415,7 +416,7 @@ const useColumns = ({
       columns.push(
         textColumn({
           id: "actions",
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {

@@ -36,6 +36,8 @@ import {
 import { InputField } from "../../input/Input"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
+import { ICNumberTrans, RealNameTrans } from "../../trans/User"
+import { RemarkTrans } from "../../trans/Action"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
@@ -189,7 +191,7 @@ const ReviewDialog = ({
     >
       <FieldStack>
         <FieldValues>
-          <Trans zh="真实姓名" en="Real name" />
+          <RealNameTrans />
           <Box>
             <InputField
               name="realName"
@@ -201,7 +203,7 @@ const ReviewDialog = ({
             />
           </Box>
 
-          <Trans zh="身分证" en="IC Number" />
+          <ICNumberTrans />
           <Set alignY="center">
             <InputField
               name="idNumber"
@@ -246,7 +248,7 @@ const ReviewDialog = ({
         <TextareaField
           name="remark"
           defaultValue={defaultValues.remark}
-          label={<Trans zh="备注" en="Remark" />}
+          label={<RemarkTrans />}
           readOnly={readOnly}
         />
       </FieldStack>

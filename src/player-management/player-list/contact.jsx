@@ -27,13 +27,19 @@ import { Contact } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { diff } from "../../object/diff"
 import { isDev } from "../../env"
+import {
+  ContactInfoTrans,
+  EmailTrans,
+  PhoneTrans,
+  TelegramTrans
+} from "../../trans/User"
 
 export const Key = "contact"
 
 export const Tab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="联系信息" en="Contact Info" />
+      <ContactInfoTrans />
     </_Tab>
   )
 }
@@ -228,15 +234,15 @@ const Body = ({ onClickClose }) => {
   )
 }
 
-export const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
+export const MobileLabel = () => <PhoneTrans />
 
-export const EmailLabel = () => <Trans zh="邮箱" en="Email" />
+export const EmailLabel = () => <EmailTrans />
 
 export const QQLabel = () => <Trans zh="QQ" en="QQ" />
 
 export const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
 
-export const TelegramLabel = () => <Trans zh="Telegram" en="Telegram" />
+export const TelegramLabel = () => <TelegramTrans />
 
 export const ViberLabel = () => <Trans zh="Viber" en="Viber" />
 

@@ -80,6 +80,12 @@ import {
   AgentVirtualSportsRebateText
 } from "../AgentVirtualSportsRebatePercentage"
 import clone from "clone-deep"
+import { UpperLevelAgentTrans } from "../../trans/Agent"
+import {
+  BalanceTrans,
+  RealNameTrans,
+  RegistrationTimeTrans
+} from "../../trans/User"
 
 export const ConfigCreditAgentDisclosure = ({
   brandId,
@@ -201,24 +207,24 @@ const FormBody = () => {
         <Box alignY="center">{record?.username}</Box>
 
         <NormalLabel>
-          <Trans zh="真实姓名" en="Real Name" />
+          <RealNameTrans />
         </NormalLabel>
         <Box alignY="center">{record?.realName}</Box>
 
         <Box alignY="center">
-          <Trans zh="上级代理" en="Upper level agent" />
+          <UpperLevelAgentTrans />
         </Box>
         <Box alignY="center">{record?.parentUsername}</Box>
 
         <NormalLabel>
-          <Trans zh="注册时间" en="Registration" />
+          <RegistrationTimeTrans />
         </NormalLabel>
         <Box alignY="center">
           <FormattedDateTime value={record?.registration} />
         </Box>
 
         <NormalLabel>
-          <Trans zh="余额" en="Balance" />
+          <BalanceTrans />
         </NormalLabel>
         <Box alignY="center">
           <FormattedNumberDecimal value={record?.balance} />

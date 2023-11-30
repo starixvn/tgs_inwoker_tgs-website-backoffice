@@ -19,6 +19,7 @@ import { Trans, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { Features, isDev, isFeatureEnabled } from "../../env"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -128,7 +129,7 @@ const useColumns = ({ mutate, items = [] }) => {
         id: "actions",
         disableSortBy: true,
         accessor: (row) => row,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

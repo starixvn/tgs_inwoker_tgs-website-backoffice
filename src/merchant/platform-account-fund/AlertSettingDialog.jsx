@@ -29,6 +29,7 @@ import { ManualAlertPanel, ManualAlertTab } from "./Setting.ManualAlert"
 export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
 
+  //TODO: readOnly view?
   let isDisplay = useIsDisplayMenuByRoute([View])
   let editable = useIsDisplayMenuByRoute([Update])
   if (!isDisplay) {
@@ -41,7 +42,11 @@ export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
         <Trans zh="催收設置" en="Alert Setting" />
       </Disclosure>
       {dialog.visible && (
-        <MainSettingDialog dialog={dialog} readOnly={!editable} />
+        <MainSettingDialog
+          brandId={brandId}
+          dialog={dialog}
+          readOnly={!editable}
+        />
       )}
     </>
   )
@@ -67,6 +72,7 @@ const toFetchApi = (tabId) => {
 }
 */
 
+//TODO: readOnly
 //TODO: how to do form update?
 const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let title = useTrans({

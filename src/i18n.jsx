@@ -17,10 +17,8 @@ const DefaultTimeFormat = "HH:mm:ss"
 
 export const Locales = {
   en: "en",
-  zh: "zh"
-  /*
+  zh: "zh",
   vi: "vi"
-  */
 }
 
 const defaultLocale = Locales.zh
@@ -59,6 +57,8 @@ export const getAcceptLangCulture = () => {
   switch (lang) {
     case Locales.zh:
       return "zh-CN"
+    case Locales.vi:
+      return "vi-VN"
     default:
       return "en-US"
   }
@@ -98,12 +98,10 @@ export const useChinese = () => {
   return () => setLocale(Locales.zh)
 }
 
-/*
 export const useVietnamese = () => {
   let { setLocale } = useContext(Store)
   return () => setLocale(Locales.vi)
 }
-*/
 
 export const useLangCode = () => {
   let enUS = "en-US"
@@ -114,8 +112,8 @@ export const useLangCode = () => {
       return enUS
     case Locales.zh:
       return "zh-CN"
-    // case Locales.vi:
-    //   return "vi-VN"
+    case Locales.vi:
+      return "vi-VN"
   }
   return Default
 }
@@ -131,8 +129,8 @@ export const Trans = ({ en = "", zh = "", vi = "", ...props }) => {
   switch (locale) {
     case Locales.en:
       return <span {...props}>{en || ""}</span>
-    // case Locales.vi:
-    //   return <span {...props}>{vi || en || ""}</span>
+    case Locales.vi:
+      return <span {...props}>{vi || en || ""}</span>
     default:
       return <span {...props}>{zh || en || ""}</span>
   }
@@ -231,7 +229,7 @@ export const LangDropdownMenu = ({ ...props }) => {
 
   let useEn = useEnglish()
   let useZh = useChinese()
-  // let useVi = useVietnamese()
+  let useVi = useVietnamese()
 
   return (
     <DropdownMenu
@@ -239,14 +237,14 @@ export const LangDropdownMenu = ({ ...props }) => {
         <>
           <DropdownMenu.Item onClick={useZh}>{chinese}</DropdownMenu.Item>
           <DropdownMenu.Item onClick={useEn}>{english}</DropdownMenu.Item>
-          {/* <DropdownMenu.Item onClick={useVi}>{vietnamese}</DropdownMenu.Item> */}
+          <DropdownMenu.Item onClick={useVi}>{vietnamese}</DropdownMenu.Item>
         </>
       }
     >
       <Button variant="ghost" iconAfter="chevron-down">
         {locale === Locales.zh && chinese}
         {locale === Locales.en && english}
-        {/* {locale === Locales.vi && vietnamese} */}
+        {locale === Locales.vi && vietnamese}
       </Button>
     </DropdownMenu>
   )

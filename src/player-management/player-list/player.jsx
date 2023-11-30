@@ -50,13 +50,26 @@ import { defaultFormatDate } from "../../date/format"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { PlayerBucketListDialogDisclosure } from "./PlayerBucketList"
 import { diff } from "../../object/diff"
+import { UpperLevelAgentTrans } from "../../trans/Agent"
+import {
+  BalanceTrans,
+  BirthdayTrans,
+  ICNumberTrans,
+  RealNameTrans,
+  RegistrationTimeTrans,
+  UserNameTrans
+} from "../../trans/User"
+import { PlayerCodeTrans, RegistrationDomainTrans } from "../../trans/Player"
+import { StatusTrans } from "../../trans/Status"
+import { VipLevelTrans } from "../../trans/Vip"
+import { RemarkTrans } from "../../trans/Action"
 
 export const Key = "player"
 
 export const Tab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="玩家信息" en="Player" />
+      <Trans zh="玩家信息" en="Player" vi="Thông tin người chơi" />
     </_Tab>
   )
 }
@@ -253,7 +266,7 @@ const EditForm = ({
       <FieldValues>
         {isAdmin && (
           <>
-            <Trans zh="玩家代码" en="Player Code" />
+            <PlayerCodeTrans />
             <Text>{player.playerCode}</Text>
           </>
         )}
@@ -377,7 +390,7 @@ export const Panel = ({
       <FieldValues spacing="major-2">
         {isAdmin && (
           <>
-            <Trans zh="玩家代码" en="Player Code" />
+            <PlayerCodeTrans />
             <Text>{player.playerCode}</Text>
           </>
         )}
@@ -465,54 +478,68 @@ export const Panel = ({
         <RegistrationDomainLabel />
         <Box>{player?.registerHost}</Box>
 
-        <Trans zh="总存款" en="Total　Deposit" />
+        <Trans zh="总存款" en="Total　Deposit" vi="Tổng nạp" />
         <FormattedNumberDecimal value={playerPayment?.totalDepositAmount} />
 
-        <Trans zh="总提款" en="Total　Withdraw" />
+        <Trans zh="总提款" en="Total　Withdraw" vi="Tổng rút" />
         <FormattedNumberDecimal value={playerPayment?.totalWithdrawAmount} />
       </FieldValues>
     </TabPanel>
   )
 }
 
-export const UserNameLabel = () => <Trans zh="用户名" en="User name" />
+export const UserNameLabel = () => <UserNameTrans />
 
-export const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
+export const RealNameLabel = () => <RealNameTrans />
 
-export const BirthdayLabel = () => <Trans zh="生日" en="Birthday" />
+export const BirthdayLabel = () => <BirthdayTrans />
 
-const IdentityCardNumberLabel = () => <Trans zh="身分证" en="IC Number" />
+const IdentityCardNumberLabel = () => <ICNumberTrans />
 
-export const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
+export const VIPLevelLabel = () => <VipLevelTrans />
 
-export const AgentUsernameLabel = () => (
-  <Trans zh="上级代理" en="Upper Level Agent" />
-)
+export const AgentUsernameLabel = () => <UpperLevelAgentTrans />
 
 const AllAgentUpperLevelLabel = () => (
   <Trans zh="全民代理上級" en="All Agent Upper Level" />
 )
 
-const BalanceLabel = () => <Trans zh="余额" en="Balance" />
+const BalanceLabel = () => <BalanceTrans />
 
 const WageringRequirementLabel = () => (
-  <Trans zh="需滿足提款金額" en="Wagering requirement" />
+  <Trans
+    zh="需滿足提款金額"
+    en="Wagering requirement"
+    vi="Cần đạt số tiền rút"
+  />
 )
 
-export const StatusLabel = () => <Trans zh="状态" en="Status" />
+export const StatusLabel = () => <StatusTrans />
 
-export const RemarkLabel = () => <Trans zh="备注" en="Remark" />
+export const RemarkLabel = () => <RemarkTrans />
 
-const RegisterIPLabel = () => <Trans zh="注册IP地址" en="Register IP" />
+const RegisterIPLabel = () => (
+  <Trans zh="注册IP地址" en="Register IP" vi="Địa chỉ IP đăng ký" />
+)
 
-const RegistrationLabel = () => <Trans zh="注册时间" en="Registered Time" />
+//TODO: rm
+const RegistrationLabel = () => <RegistrationTimeTrans />
 
 const LastLoginTimeLabel = () => (
-  <Trans zh="最后登录时间" en="Last Login Time" />
+  <Trans
+    zh="最后登录时间"
+    en="Last Login Time"
+    vi="Thời gian đăng nhập cuối cùng "
+  />
 )
 
-const LoginIPLabel = () => <Trans zh="最后登录IP地址" en="Last Login IP" />
-
-const RegistrationDomainLabel = () => (
-  <Trans zh="注册域名" en="Registration Domain" />
+const LoginIPLabel = () => (
+  <Trans
+    zh="最后登录IP地址"
+    en="Last Login IP"
+    vi="Địa chỉ IP đăng nhập cuối cùng"
+  />
 )
+
+//TODO: rm
+const RegistrationDomainLabel = () => <RegistrationDomainTrans />

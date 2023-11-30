@@ -49,6 +49,7 @@ import {
   faChevronDown
 } from "@fortawesome/free-solid-svg-icons"
 import BankType from "../../payment/BankType"
+import { PhoneTrans, RealNameTrans } from "../../trans/User"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -267,7 +268,7 @@ const PlayerBox = ({ player }) => {
       {playerRealname && (
         <>
           <NormalLabel>
-            <Trans zh="真实姓名" en="Real name" />
+            <RealNameTrans />
           </NormalLabel>
           <Box alignY="center">{playerRealname}</Box>
         </>
@@ -471,7 +472,7 @@ const PhoneApplyInfo = ({ value = "" }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="电话号码" en="Phone" />
+        <PhoneTrans />
       </NormalLabel>
       <Box alignY="center">{value}</Box>
     </>

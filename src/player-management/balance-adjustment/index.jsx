@@ -38,6 +38,7 @@ import { usePlayerList } from "../player-list/client"
 import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirement"
 import { PlayerBatchAddBalanceDisclosure } from "./PlayerBatchAddBalance"
 import { PlayerAdjustLockedAmountDialogDisclosure } from "./PlayerAdjustLockedAmountDialog"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -167,13 +168,6 @@ const useColumns = ({ brandId, items = [], mutate }) => {
         Header: <Trans zh="用户名" en="Username" />,
         disableSortBy: true
       })
-      /*
-      numberDecimalColumn({
-        accessor: "balance",
-        Header: <Trans zh="余额" en="Balance" />,
-        disableSortBy: true
-      })
-      */
     ]
 
     if (hasUpdateMenu) {
@@ -182,7 +176,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value }) => {
             let username = value?.username
             let playerCode = value?.playerCode

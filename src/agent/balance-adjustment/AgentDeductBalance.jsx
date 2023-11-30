@@ -52,6 +52,7 @@ import {
   AgentAdjustBalanceTypeSelect,
   isTransfer
 } from "./AgentAdjustBalanceType"
+import { RemarkTrans } from "../../trans/Action"
 
 export const AgentDeductBalanceDisclosure = ({
   brandId,
@@ -179,7 +180,7 @@ const FormBody = ({ brandId, username, agentId }) => {
         <NumberInput name="amount" min="0" step="0.01" required />
 
         <Text.Block alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Text.Block>
 
         <Input name="remark" />

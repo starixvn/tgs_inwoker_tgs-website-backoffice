@@ -31,6 +31,7 @@ import {
 import Checkbox from "../../checkbox"
 import { PlatformBucketSelect } from "../../platform-management/PlatformBucket"
 import { isDev } from "../../env"
+import { RemarkTrans } from "../../trans/Action"
 
 export const PlayerAddBalanceDisclosure = ({
   brandId,
@@ -202,7 +203,7 @@ const FormBody = ({}) => {
         <NumberInputField name="bucketAmount" min="0" step="0.01" />
 
         <Box alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Box>
         <Input name="remark" />
       </FieldValues>
@@ -292,7 +293,7 @@ const AddTurnoverRequirementFormBody = ({}) => {
         <NumberInputField name="amount" min="0" step="0.01" />
 
         <Box alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Box>
         <Input name="remark" />
       </FieldValues>

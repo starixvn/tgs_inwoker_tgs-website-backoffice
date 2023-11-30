@@ -45,6 +45,7 @@ import Input from "../../input/Input"
 import AdjustType from "./AdjustType"
 import { NumberInput } from "../../input/NumberInput"
 import { AgentAdjustBalanceTypeSelect } from "./AgentAdjustBalanceType"
+import { RemarkTrans } from "../../trans/Action"
 
 export const AgentAddBalanceDisclosure = ({
   brandId,
@@ -144,7 +145,7 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
         <NumberInput name="amount" min="0" step="0.01" required />
 
         <Text.Block alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Text.Block>
         <Input name="remark" />
       </FieldValues>

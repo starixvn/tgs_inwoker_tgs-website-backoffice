@@ -28,6 +28,7 @@ import {
   showIncludeInNetProfitSetting
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
+import { RemarkTrans } from "../../trans/Action"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -177,7 +178,7 @@ const FormBody = ({ brandId, username, playerCode }) => {
         <NumberInputField name="amount" min="0" step="0.01" required />
 
         <Box alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Box>
 
         <Input name="remark" />

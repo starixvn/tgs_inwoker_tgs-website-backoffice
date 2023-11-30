@@ -41,6 +41,7 @@ import Textarea from "../../textarea"
 import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import { Features, isDev, isFeatureEnabled } from "../../env"
+import { PlayersTrans } from "../../trans/Player"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -245,7 +246,7 @@ const EditBody = ({ readOnly = false } = {}) => {
                 palette="primary"
                 background="primary"
               >
-                <Trans zh="玩家列表" en="Players" />
+                <PlayersTrans />
               </Popover.Disclosure>
               <Popover hasArrow>
                 <List maxHeight="15em" overflow="auto">

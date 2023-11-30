@@ -3,29 +3,33 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
+import {
+  useInBlacklistTrans,
+  useStatusTrans,
+  InBlacklistTrans
+} from "../trans/Status"
 
 const Enabled = "Enabled"
 const EnabledTrans = {
   zh: "活跃",
-  en: "Enabled"
+  en: "Enabled",
+  vi: "Hoạt động"
 }
 
 const Disabled = "Disabled"
 const DisabledTrans = {
   zh: "封锁",
-  en: "Disabled"
+  en: "Disabled",
+  vi: "Bị khóa"
 }
 
 const InBlacklist = "InBlacklist"
-const InBlacklistTrans = {
-  zh: "黑名单",
-  en: "In Blacklist"
-}
 
 const RegisterUndone = "RegisterUndone"
 const RegisterUndoneTrans = {
   zh: "注册中",
-  en: "Under Registration"
+  en: "Under Registration",
+  vi: "Đang đăng ký"
 }
 
 export const PlayerStatus = {
@@ -36,10 +40,7 @@ export const PlayerStatus = {
 }
 
 export const PlayerStatusSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
@@ -56,7 +57,7 @@ export const PlayerStatusSelect = ({ placeholder, ...props }) => {
       value: Disabled
     },
     {
-      label: useTrans(InBlacklistTrans),
+      label: useInBlacklistTrans(),
       value: InBlacklist
     }
   ]
@@ -81,7 +82,7 @@ export const PlayerStatusLabel = ({ value = "" }) => {
     case InBlacklist:
       return (
         <Text>
-          <Trans {...InBlacklistTrans} />
+          <InBlacklistTrans />
         </Text>
       )
     case RegisterUndone:

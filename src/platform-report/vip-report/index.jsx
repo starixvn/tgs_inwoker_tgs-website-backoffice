@@ -30,6 +30,7 @@ import { PlayerRebatDialogDisclosure } from "./PlayerRebateReport"
 import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
+import { VipLevelTrans } from "../../trans/Vip"
 
 export { Code }
 
@@ -231,7 +232,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       }),
       textColumn({
         accessor: "level",
-        Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        Header: <VipLevelTrans />,
         TotalCell: () => null,
         Cell: ({ value }) => <Text.Block>VIP {value}</Text.Block>,
         Footer: () => <Box />,

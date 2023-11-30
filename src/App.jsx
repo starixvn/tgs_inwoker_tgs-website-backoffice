@@ -38,8 +38,8 @@ import {
   useLocale,
   Locales,
   useEnglish,
-  useChinese
-  // useVietnamese
+  useChinese,
+  useVietnamese
 } from "./i18n"
 import { AdminUserChangePasswordDialog } from "./system/admins/edit"
 import {
@@ -278,7 +278,7 @@ const LangItem = ({ ...props }) => {
 
   let useEn = useEnglish()
   let useZh = useChinese()
-  // let useVi = useVietnamese()
+  let useVi = useVietnamese()
   return (
     <TopNav.Item {...props}>
       <DropdownMenu
@@ -286,9 +286,7 @@ const LangItem = ({ ...props }) => {
           <>
             <DropdownMenu.Item onClick={useZh}>{chinese}</DropdownMenu.Item>
             <DropdownMenu.Item onClick={useEn}>{english}</DropdownMenu.Item>
-            {/* 
-            <DropdownMenu.Item onClick={useVi}>{vietnamese}</DropdownMenu.Item> 
-            */}
+            <DropdownMenu.Item onClick={useVi}>{vietnamese}</DropdownMenu.Item>
           </>
         }
       >
@@ -304,7 +302,7 @@ const LangItem = ({ ...props }) => {
           <Hide below={collapseBelow}>
             {locale === Locales.zh && chinese}
             {locale === Locales.en && english}
-            {/* {locale === Locales.vi && vietnamese} */}
+            {locale === Locales.vi && vietnamese}
           </Hide>
         </Button>
       </DropdownMenu>

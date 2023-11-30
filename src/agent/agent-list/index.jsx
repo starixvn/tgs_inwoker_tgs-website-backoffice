@@ -69,6 +69,8 @@ import { isDev } from "../../env"
 import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { isAgentProfitSharingOneLayer } from "../AgentProfitSharingType"
 import { useBrand } from "../../merchant/platforms/client"
+import { RealNameTrans } from "../../trans/User"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -262,7 +264,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "realName",
-        Header: <Trans zh="真实姓名" en="Real name" />,
+        Header: <RealNameTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -494,7 +496,7 @@ const useColumns = ({
       columns.push({
         id: "actions",
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

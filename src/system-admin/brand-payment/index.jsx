@@ -46,6 +46,7 @@ import { SortOrder } from "../../table/order"
 import { PaymentListDialog } from "./PaymentList"
 import { PaymentMethodListDialog } from "./PaymentMethodList"
 import { PaymentChannelListDialog } from "./PaymentChannelList"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -255,7 +256,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="Actions" en="Actions" />,
+        Header: <ActionTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (

@@ -18,6 +18,7 @@ import AlertDialog from "../../dialog/Alert"
 import Switch from "../../switch/Switch"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import Input from "../../input/Input"
+import { GameDetailTrans, useGameDetailTrans } from "../../trans/Game.jsx"
 
 export const PlatformGameDetailButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -32,7 +33,7 @@ export const PlatformGameDetailButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="游戏详情" en="Game Detail" />
+        <GameDetailTrans />
       </Disclosure>
       {dialog.visible && (
         <PlatformGameDetailDialog
@@ -79,10 +80,7 @@ const PlatformGameDetailDialog = ({
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "游戏详情",
-    en: "Game Detail"
-  })
+  let title = useGameDetailTrans()
 
   if (isLoadingBrandGame) {
     return <LoadingBackdrop {...dialog} />

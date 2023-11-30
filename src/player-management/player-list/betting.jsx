@@ -22,13 +22,20 @@ import { subDays } from "date-fns"
 import { useGameBetRecordList } from "../../game/round/client"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
+import {
+  BetAmountTrans,
+  GameDetailTrans,
+  ValidBetAmountTrans,
+  WinLossTrans
+} from "../../trans/Game"
+import { ActionTrans } from "../../trans/Action"
 
 export const Key = "betting"
 
 export const Tab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="投注记录" en="Betting records" />
+      <Trans zh="投注记录" en="Betting records" vi="Lịch sử đặt cược" />
     </_Tab>
   )
 }
@@ -162,7 +169,7 @@ const useColumns = ({ items = [], totals = [] }) => {
     () => [
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="投注时间" en="Created On" />,
+        Header: <Trans zh="投注时间" en="Created On" vi="Thời gian đặt cược" />,
         TotalCell: () => <Trans zh="总和" en="Total" />,
         Footer: () => <Trans zh="页总和" en="Page Total" />,
         footerCellProps: {
@@ -172,12 +179,12 @@ const useColumns = ({ items = [], totals = [] }) => {
       numberDecimalColumn({
         accessor: "betAmount",
         sumColumn: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />
+        Header: <BetAmountTrans />
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注金额" en="Valid Bet Amount" />
+        Header: <ValidBetAmountTrans />
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
@@ -186,7 +193,7 @@ const useColumns = ({ items = [], totals = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "winLoss",
-        Header: <Trans zh="输赢金额" en="Win Loss" />,
+        Header: <WinLossTrans />,
         sumColumn: "winLoss",
         TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
         Cell: ({ value }) => {
@@ -201,7 +208,7 @@ const useColumns = ({ items = [], totals = [] }) => {
       {
         id: "detail",
         accessor: (row) => row,
-        Header: <Trans zh="游戏详情" en="Game Detail" />,
+        Header: <GameDetailTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -224,7 +231,7 @@ const useColumns = ({ items = [], totals = [] }) => {
       {
         id: "actions",
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

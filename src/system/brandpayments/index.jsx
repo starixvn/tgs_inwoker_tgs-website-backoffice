@@ -52,6 +52,7 @@ import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import { NumberInput } from "../../input/NumberInput"
 import { BrandAutoWithdrawDialogDisclosure } from "./BrandAutoWithdraw"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -425,7 +426,7 @@ const useColumns = ({
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value }) => {
             return (
               <Set alignX="center">

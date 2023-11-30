@@ -51,6 +51,7 @@ import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import AnnouncementType, { AnnouncementTypeSelect } from "./AnnouncementType"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -522,7 +523,7 @@ const useColumns = ({
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

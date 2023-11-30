@@ -28,6 +28,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { subDays } from "date-fns"
 import { SettleGameRoundDialogDisclosure } from "../game-open-round/SettleGameRound"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -255,7 +256,7 @@ const useColumns = ({ items = [], mutate }) => {
       columns.push(
         textColumn({
           id: "actions",
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {

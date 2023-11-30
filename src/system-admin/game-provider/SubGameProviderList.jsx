@@ -51,6 +51,7 @@ import {
   EditSubGameProviderDisclosure
 } from "./SubGameProvider"
 import { useDropzone } from "react-dropzone"
+import { ActionTrans } from "../../trans/Action"
 
 export const SubGameProviderListDisclosure = ({ gameProviderId, ...props }) => {
   let dialog = useModalState()
@@ -310,7 +311,7 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value: record }) => {
             return (

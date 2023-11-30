@@ -16,6 +16,7 @@ import { endOfToday, subHours } from "date-fns"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { Select } from "../../select/Select"
 import AlertDialog from "../../dialog/Alert"
+import { BalanceTrans } from "../../trans/User"
 
 export const Key = "BalanceChange"
 
@@ -140,7 +141,7 @@ const useColumns = ({ items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "balance",
-        Header: <Trans zh="余额" en="Balance" />,
+        Header: <BalanceTrans />,
         disableSortBy: true
       })
     ],

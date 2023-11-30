@@ -116,6 +116,12 @@ import {
 import { useBrand } from "../../merchant/platforms/client"
 import { AgentHistoryListPanel, AgentHistoryListTab } from "./AgentHistoryList"
 import { diff } from "../../object/diff"
+import { UpperLevelAgentTrans } from "../../trans/Agent"
+import {
+  BalanceTrans,
+  RealNameTrans,
+  RegistrationTimeTrans
+} from "../../trans/User"
 
 export const AddAgentButton = ({
   brandId,
@@ -433,24 +439,24 @@ const ConfigFormBody = ({ record, agentProfitSharingType }) => {
           <Text.Block alignY="center">{record?.username}</Text.Block>
 
           <NormalLabel>
-            <Trans zh="真实姓名" en="Real Name" />
+            <RealNameTrans />
           </NormalLabel>
           <Text.Block alignY="center">{record?.realName}</Text.Block>
 
           <Box alignY="center">
-            <Trans zh="上级代理" en="Upper level agent" />
+            <UpperLevelAgentTrans />
           </Box>
           <Text.Block alignY="center">{record?.parentUsername}</Text.Block>
 
           <NormalLabel>
-            <Trans zh="注册时间" en="Registration" />
+            <RegistrationTimeTrans />
           </NormalLabel>
           <Text.Block alignY="center">
             <FormattedDateTime value={record?.registration} />
           </Text.Block>
 
           <NormalLabel>
-            <Trans zh="余额" en="Balance" />
+            <BalanceTrans />
           </NormalLabel>
           <Text.Block alignY="center">
             <FormattedNumberDecimal value={record?.balance} />

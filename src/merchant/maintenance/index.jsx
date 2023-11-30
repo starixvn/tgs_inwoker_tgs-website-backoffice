@@ -34,6 +34,7 @@ import { MerchantStatusMenu, MerchantStatus } from "../MerchantStatus"
 import { StartMaintenanceDialogDisclosure } from "./StartMaintenanceDialog"
 import { parseHourMinute, parseTimeOnly } from "../../date/parse"
 import { isValidDate } from "../../date/isValidDate"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -208,7 +209,7 @@ const useColumns = ({ items = [], mutate }) => {
         textColumn({
           id: "actions",
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           Cell: ({ value: record }) => {
             return (

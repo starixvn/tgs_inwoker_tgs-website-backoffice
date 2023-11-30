@@ -26,6 +26,8 @@ import PlayerAdjustBalanceType, {
   usePlayerAdjustBalanceTypeOptionList,
   PlayerAdjustBalanceTypeLabel
 } from "../balance-adjustment/PlayerAdjustBalanceType"
+import { BalanceTrans } from "../../trans/User"
+import { RemarkTrans } from "../../trans/Action"
 
 export const Key = "BalanceChange"
 
@@ -179,7 +181,7 @@ const useColumns = ({ items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "balance",
-        Header: <Trans zh="余额" en="Balance" />,
+        Header: <BalanceTrans />,
         TotalCell: () => null,
         disableSortBy: true
       }),
@@ -197,7 +199,7 @@ const useColumns = ({ items = [] }) =>
       }),
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         TotalCell: () => null,
         disableSortBy: true
       })

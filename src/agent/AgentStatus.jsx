@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
+import { useInBlacklistTrans, InBlacklistTrans } from "../trans/Status"
 
 const Enabled = "Enabled"
 const EnabledTrans = {
@@ -17,10 +18,6 @@ const DisabledTrans = {
 }
 
 const InBlacklist = "InBlacklist"
-const InBlacklistTrans = {
-  zh: "黑名单",
-  en: "In Blacklist"
-}
 
 export const AgentStatusSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTrans({
@@ -39,7 +36,7 @@ export const AgentStatusSelect = ({ placeholder, ...props }) => {
       value: Disabled
     },
     {
-      label: useTrans(InBlacklistTrans),
+      label: useInBlacklistTrans(),
       value: InBlacklist
     }
   ]
@@ -65,7 +62,7 @@ export const AgentStatusLabel = ({ value }) => {
     case InBlacklist:
       return (
         <Text>
-          <Trans {...InBlacklistTrans} />
+          <InBlacklistTrans />
         </Text>
       )
   }

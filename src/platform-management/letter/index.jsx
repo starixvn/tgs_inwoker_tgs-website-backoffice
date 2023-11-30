@@ -35,6 +35,7 @@ import { ReplyLetterDisclosure } from "./ReplyLetter"
 import { faReply } from "@fortawesome/free-solid-svg-icons"
 import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
 import { LetterTypeLabel } from "./LetterType"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -259,7 +260,7 @@ const useColumns = ({ brandId, items = [], boxType }) => {
       textColumn({
         id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

@@ -20,6 +20,7 @@ import equals from "fast-deep-equal"
 import { MerchantStatusMenu } from "../MerchantStatus"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -199,7 +200,7 @@ const useColumns = ({ items = [], mutate }) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value }) => {
             return (

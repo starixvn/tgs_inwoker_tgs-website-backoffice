@@ -20,6 +20,7 @@ import {
 } from "./player-identity/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { Players } from "../trans/Player"
 
 export const Name = ({}) => useTrans(nameMessages)
 
@@ -64,13 +65,7 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case PlayerListCode:
-      return getTrans(
-        {
-          zh: "玩家列表",
-          en: "Players"
-        },
-        locale
-      )
+      return getTrans(Players, locale)
     case PlayerIdentityCode:
       return getTrans(
         {

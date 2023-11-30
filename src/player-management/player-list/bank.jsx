@@ -43,13 +43,14 @@ import { useFormContext, useWatch } from "react-hook-form"
 import { useBrandPaymentList } from "../../system/brandpayments/client"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import clone from "clone-deep"
+import { BankAccountTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
 
 export const Key = "banks"
 
 export const Tab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="银行卡信息" en="Bank" />
+      <Trans zh="银行卡信息" en="Bank" vi="Thông tin thẻ ngân hàng" />
     </_Tab>
   )
 }
@@ -361,11 +362,11 @@ const BankBranchLabel = () => <Trans zh="银行分行" en="Bank Branch" />
 
 const AccountName = () => <Trans zh="帐号名称" en="Account Name" />
 
-const BankAccount = () => <Trans zh="银行卡号" en="Bank Account" />
+const BankAccount = () => <BankAccountTrans />
 
-const RealNameLabel = () => <Trans zh="真实姓名" en="Real Name" />
+const RealNameLabel = () => <RealNameTrans />
 
-const PhoneLabel = () => <Trans zh="手机号码" en="Phone" />
+const PhoneLabel = () => <PhoneTrans />
 
 const EWalletLabel = () => <Trans zh="E-money Name" en="E-money Name" />
 

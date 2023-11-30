@@ -58,6 +58,7 @@ import { BonusDialogDisclosure } from "../BonusDialog"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+import { VipLevelTrans } from "../../trans/Vip"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -316,7 +317,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "level",
-        Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        Header: <VipLevelTrans />,
         disableSortBy: true,
         TotalCell: () => null,
         Cell: ({ value }) => <VipLevelLabel value={value} />,

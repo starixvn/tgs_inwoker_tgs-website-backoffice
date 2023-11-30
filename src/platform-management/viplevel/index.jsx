@@ -18,6 +18,7 @@ import { Trans } from "../../i18n"
 import textColumn from "../../table/column/textColumn"
 import { useVipLevelList } from "../../vip-levels/client"
 import AlertDialog from "../../dialog/Alert"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -106,7 +107,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

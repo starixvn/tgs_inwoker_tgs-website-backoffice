@@ -49,6 +49,7 @@ import {
   showIncludeInNetProfitSetting
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
+import { RemarkTrans } from "../../trans/Action"
 
 export const PlayerAdjustLockedAmountDialogDisclosure = ({
   playerCode,
@@ -139,7 +140,7 @@ const FormBody = ({ username }) => {
       <NumberInputField name="lockAmount" step="0.01" required />
 
       <Box alignY="center">
-        <Trans zh="备注" en="Remark" />
+        <RemarkTrans />
       </Box>
 
       <Input name="remark" />

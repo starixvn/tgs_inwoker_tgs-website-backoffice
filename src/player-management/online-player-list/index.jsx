@@ -33,6 +33,7 @@ import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
+import { VipLevelTrans } from "../../trans/Vip"
 
 export { Code }
 
@@ -169,7 +170,7 @@ const useColumns = ({ items = [] } = {}) => {
       }),
       textColumn({
         accessor: "vipLevel",
-        Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        Header: <VipLevelTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <VipLevelLabel value={value} placeholder="-" />
       }),

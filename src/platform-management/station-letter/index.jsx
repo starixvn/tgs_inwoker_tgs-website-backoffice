@@ -33,6 +33,7 @@ import AlertDialog from "../../dialog/Alert"
 import { SortOrder } from "../../table/order"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { Input } from "../../input/Input"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -269,7 +270,7 @@ const useColumns = ({ mutate, statusName, items = [] }) => {
       columns.push({
         id: "actions",
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

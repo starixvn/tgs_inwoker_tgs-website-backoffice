@@ -50,13 +50,18 @@ import { isString } from "lodash-es"
 import { FieldValues } from "../../layout/Grid"
 import { VipLevelIdLabel } from "../../vip-levels/VipLevel"
 import { AgentIdUsername } from "../../agent/agent-list/AgentUsername"
+import {
+  ActionDateTimeTrans,
+  ActionTypeTrans,
+  EditingRecordsTrans
+} from "../../trans/Action"
 
 export const Key = "history"
 
 export const PlayerHistoryListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="操作记录" en="Editing Records" />
+      <EditingRecordsTrans />
     </_Tab>
   )
 }
@@ -159,19 +164,19 @@ const useColumns = ({ items = [], brandId }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Date&Time" />,
+        Header: <ActionDateTimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),
       textColumn({
         accessor: "action",
-        Header: <Trans zh="操作项" en="Type" />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true,
         Cell: ActionTypeLabel
       }),
       textColumn({
         accessor: "modifier",
-        Header: <Trans zh="操作者" en="Updated By" />,
+        Header: <Trans zh="操作者" en="Updated By" vi="Người thao tác" />,
         disableSortBy: true
       }),
       textColumn({

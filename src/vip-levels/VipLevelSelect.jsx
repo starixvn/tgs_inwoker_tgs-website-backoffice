@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { useVipLevelList } from "./client"
 import Select from "../select/Select"
 import { useTrans } from "../i18n"
+import { useVipLevelTrans } from "../trans/Vip"
 
 export const VipLevelSelect = ({
   placeholder,
@@ -10,10 +11,7 @@ export const VipLevelSelect = ({
   optionValue,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "VIP 等级",
-    en: "VIP Level"
-  })
+  let defaultPlaceholder = useVipLevelTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let { isLoading, data, error, mutate, deleteCache } = useVipLevelList({

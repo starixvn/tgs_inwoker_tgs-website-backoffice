@@ -40,6 +40,7 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { useMarketingRegisteredPlayerList } from "./client"
+import { RegistrationTimeTrans } from "../../trans/User"
 
 //TODO: remove data param
 export const RegisteredPlayerListDialogDisclosure = ({
@@ -153,7 +154,7 @@ const useColumns = ({ items = [] }) => {
       }),
       dateTimeColumn({
         accessor: "registeredOn",
-        Header: <Trans zh="注册时间" en="Registered Time" />,
+        Header: <RegistrationTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

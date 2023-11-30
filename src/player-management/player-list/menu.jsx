@@ -1,5 +1,9 @@
 import React from "react"
 import { Locales, getTrans } from "../../i18n"
+import {
+  DepositForm as DepositFormMsg,
+  WithdrawForm as WithdrawFormMsg
+} from "../../trans/User"
 
 export const Code = "playerlist"
 
@@ -55,21 +59,9 @@ export const label = (codes = [], locale = Locales.zh) => {
         locale
       )
     case DepositForm:
-      return getTrans(
-        {
-          zh: "存款单",
-          en: "Deposit Form"
-        },
-        locale
-      )
+      return getTrans(DepositFormMsg, locale)
     case WithdrawalForm:
-      return getTrans(
-        {
-          zh: "提款单",
-          en: "Withdrawal Form"
-        },
-        locale
-      )
+      return getTrans(WithdrawFormMsg, locale)
     default:
       return ""
   }
