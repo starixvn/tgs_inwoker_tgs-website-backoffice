@@ -89,7 +89,7 @@ const AgentAdjust = {
   en: "Agent Adjust",
   vi: "Đại lý điều chỉnh"
 }
-export const useAgentAdjustTrans = () => useTrans(AgentAdjustTrans)
+export const useAgentAdjustTrans = () => useTrans(AgentAdjust)
 export const AgentAdjustTrans = () => <Trans {...AgentAdjust} />
 
 export const SystemAdjust = {
