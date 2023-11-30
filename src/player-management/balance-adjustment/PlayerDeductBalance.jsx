@@ -28,7 +28,11 @@ import {
   showIncludeInNetProfitSetting
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
-import { RemarkTrans } from "../../trans/Action"
+import {
+  DeductBalanceTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -47,7 +51,7 @@ export const PlayerDeductBalanceDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="扣钱" en="Deduct Balance" />
+        <DeductBalanceTrans />
       </Disclosure>
       {dialog.visible && (
         <DeductDialog
@@ -138,7 +142,7 @@ const FormBody = ({ brandId, username, playerCode }) => {
         <Box alignY="center">{username}</Box>
 
         <Box alignY="center">
-          <Trans zh="交易类型" en="Transaction Type" />
+          <TransactionTypeTrans />
         </Box>
         <Set>
           <PlayerAdjustBalanceTypeSelect

@@ -16,14 +16,18 @@ import { endOfToday, subHours } from "date-fns"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { Select } from "../../select/Select"
 import AlertDialog from "../../dialog/Alert"
-import { BalanceTrans } from "../../trans/User"
+import { BalanceChangeRecordsTrans, BalanceTrans } from "../../trans/User"
+import {
+  TransactionTypeTrans,
+  useTransactionTypeTrans
+} from "../../trans/Action"
 
 export const Key = "BalanceChange"
 
 export const AgentBalanceChangeTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="账变记录" en="Balance Change Records" />
+      <BalanceChangeRecordsTrans />
     </_Tab>
   )
 }
@@ -130,7 +134,7 @@ const useColumns = ({ items = [] }) =>
       }),
       textColumn({
         accessor: "transactionType",
-        Header: <Trans zh="交易类型" en="Transaction Type" />,
+        Header: <TransactionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <AgentTransactionTypeLabel value={value} />
       }),
@@ -184,10 +188,7 @@ const DividendTrans = {
 }
 
 const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "交易类型",
-    en: "Transaction Type"
-  })
+  let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [

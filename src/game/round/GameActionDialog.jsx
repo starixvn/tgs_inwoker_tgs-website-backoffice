@@ -18,6 +18,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { TransactionTypeLabel } from "../../platform-report/balance-change-report/TransactionTypeSelect"
 import textColumn from "../../table/column/textColumn"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
+import { TransactionTypeTrans } from "../../trans/Action"
 
 export const GameActionDialogDisclosure = ({
   roundId,
@@ -117,7 +118,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "gameActionType",
-        Header: <Trans zh="帐变类型" en="Transaction Type" />,
+        Header: <TransactionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return <TransactionTypeLabel value={value} />

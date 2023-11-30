@@ -53,3 +53,49 @@ const Edit = {
 }
 export const useEditTrans = () => useTrans(Edit)
 export const EditTrans = () => <Trans {...Edit} />
+
+const TransactionType = {
+  zh: "交易类型",
+  en: "Transaction Type",
+  vi: "Loại giao dịch"
+}
+export const useTransactionTypeTrans = () => useTrans(TransactionType)
+export const TransactionTypeTrans = () => <Trans {...TransactionType} />
+
+const AddBalance = {
+  zh: "加钱",
+  en: "Add Balance",
+  vi: "Thêm tiền"
+}
+export const AddBalanceTrans = () => <Trans {...AddBalance} />
+
+const DeductBalance = {
+  zh: "扣钱",
+  en: "Deduct Balance",
+  vi: "Trừ tiền"
+}
+export const DeductBalanceTrans = () => <Trans {...DeductBalance} />
+
+const CompanyAdjust = {
+  zh: "公司调账",
+  en: "Company Adjust",
+  vi: "Công ty điều chỉnh"
+}
+export const useCompanyAdjustTrans = () => useTrans(CompanyAdjust)
+export const CompanyAdjustTrans = () => <Trans {...CompanyAdjust} />
+
+const AgentAdjust = {
+  zh: "代理调账",
+  en: "Agent Adjust",
+  vi: "Đại lý điều chỉnh"
+}
+export const useAgentAdjustTrans = () => useTrans(AgentAdjustTrans)
+export const AgentAdjustTrans = () => <Trans {...AgentAdjust} />
+
+export const SystemAdjust = {
+  zh: "系統调账",
+  en: "System Adjust",
+  vi: "Hệ thống điều chỉnh"
+}
+export const useSystemAdjustTrans = () => useTrans(SystemAdjust)
+export const SystemAdjustTrans = () => <Trans {...SystemAdjust} />

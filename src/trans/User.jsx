@@ -109,7 +109,11 @@ const ContactInfo = {
 export const useContactInfoTrans = () => useTrans(ContactInfo)
 export const ContactInfoTrans = () => <Trans {...ContactInfo} />
 
-
-const BankInfo = {
-  
+const BalanceChangeRecords = {
+  zh: "账变记录",
+  en: "Balance Change Records",
+  vi: "Lịch sử biến động giao dịch"
 }
+export const BalanceChangeRecordsTrans = () => (
+  <Trans {...BalanceChangeRecords} />
+)

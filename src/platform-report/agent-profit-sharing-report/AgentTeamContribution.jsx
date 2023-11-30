@@ -53,6 +53,7 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { NetProfitTrans } from "../../trans/Field"
 
 export const AgentTeamContributionDialogDisclosure = ({
   brandId,
@@ -325,7 +326,7 @@ const useColumns = ({ items = [] }) => {
 
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         sumColumn: "netProfit",
         disableSortBy: true
       }),

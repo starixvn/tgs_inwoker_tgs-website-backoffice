@@ -12,6 +12,7 @@ import {
 } from "bumbag"
 import { useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import { useTransactionTypeTrans } from "../../trans/Action"
 
 export const Bonus = "Bonus"
 const BonusTrans = {
@@ -44,10 +45,7 @@ const OtherTrans = {
 }
 
 export const AgentDeductBalanceTypeSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "交易类型",
-    en: "Transaction Type"
-  })
+  let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [

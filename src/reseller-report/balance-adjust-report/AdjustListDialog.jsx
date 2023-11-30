@@ -53,6 +53,7 @@ import { AdjustTypeSelect, AdjustTypeLabel } from "./AdjustType"
 import DownloadButton from "../../button/DownloadButton"
 import { isSubtract } from "./operation"
 import { RemarkTrans } from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
 
 export const AdjustListDialogDisclosure = ({
   id,
@@ -239,7 +240,7 @@ const useColumns = ({ items = [] }) => {
       sequenceColumn(),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({

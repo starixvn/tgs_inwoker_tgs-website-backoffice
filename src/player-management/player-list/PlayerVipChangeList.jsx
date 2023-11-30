@@ -13,13 +13,18 @@ import AlertDialog from "../../dialog/Alert"
 import { usePlayerVipChangeList } from "./client"
 import { subDays } from "date-fns"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import { TimeTrans } from "../../trans/Date"
 
 export const Key = "vip-change-list"
 
 export const PlayerVipChangeListTab = ({ ...props }) => {
   return (
     <Tab tabId={Key} {...props}>
-      <Trans zh="VIP升降級記錄" en="VIP History Record" />
+      <Trans
+        zh="VIP升降級記錄"
+        en="VIP History Record"
+        vi="Lịch sử thăng hạng VIP"
+      />
     </Tab>
   )
 }
@@ -120,18 +125,20 @@ const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),
       textColumn({
         accessor: "oldLevel",
-        Header: <Trans zh="结算前等級" en="Before" />,
+        Header: (
+          <Trans zh="结算前等級" en="Before" vi="Cấp VIP trước kết toán" />
+        ),
         disableSortBy: true
       }),
       textColumn({
         accessor: "newLevel",
-        Header: <Trans zh="结算后等級" en="After" />,
+        Header: <Trans zh="结算后等級" en="After" vi="Cấp VIP sau kết toán" />,
         disableSortBy: true
       })
     ],

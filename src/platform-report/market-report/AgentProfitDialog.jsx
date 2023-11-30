@@ -42,6 +42,7 @@ import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { Modal } from "../../dialog/Modal"
 import { zIndexOfModal } from "../../css/zIndex"
+import { NetProfitTrans } from "../../trans/Field"
 
 export const AgentProfitDialogDisclosure = ({
   brandId,
@@ -168,7 +169,7 @@ const useColumns = ({ items = [] }) => {
       }),
       {
         id: "profit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         headCell: {
           textAlign: "center"
         },

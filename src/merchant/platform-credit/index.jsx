@@ -22,6 +22,7 @@ import { EditPlatformCreditDialogDisclosure } from "./PlatformCreditDialog"
 import { PlatformCreditPaymentDialogDisclosure } from "./PlatformCreditPaymentDialog"
 import { PlatformCreditPaymentListDialogDisclosure } from "./PlatformCreditPaymentListDialog"
 import { ActionTrans } from "../../trans/Action"
+import { BalanceTrans } from "../../trans/User"
 
 export { Code }
 
@@ -156,7 +157,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "balance",
-        Header: <Trans zh="额度余额" en="Balance" />,
+        Header: <BalanceTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <FormattedNumberDecimal value={value} />
       })

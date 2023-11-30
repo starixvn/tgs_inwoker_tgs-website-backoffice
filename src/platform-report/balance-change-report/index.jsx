@@ -33,7 +33,7 @@ import {
 } from "./TransactionTypeSelect"
 import dateTimeColumn from "../../table/column/dateTime"
 import { DateButtons } from "../../date/DateButtons"
-import { RemarkTrans } from "../../trans/Action"
+import { RemarkTrans, TransactionTypeTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -208,7 +208,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       textColumn({
         accessor: "transactionType",
-        Header: <Trans zh="交易类型" en="Transaction Type" />,
+        Header: <TransactionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <TransactionTypeLabel value={value} />
       }),

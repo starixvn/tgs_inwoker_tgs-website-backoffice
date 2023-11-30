@@ -70,7 +70,8 @@ const label = ({ locale, code }) => {
       return getTrans(
         {
           zh: "玩家身分审核列表",
-          en: "Player Identity List"
+          en: "Player Identity List",
+          vi: "Danh sách xem xét danh tính người chơi"
         },
         locale
       )

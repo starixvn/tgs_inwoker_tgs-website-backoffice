@@ -45,7 +45,11 @@ import Input from "../../input/Input"
 import AdjustType from "./AdjustType"
 import { NumberInput } from "../../input/NumberInput"
 import { AgentAdjustBalanceTypeSelect } from "./AgentAdjustBalanceType"
-import { RemarkTrans } from "../../trans/Action"
+import {
+  AddBalanceTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
 
 export const AgentAddBalanceDisclosure = ({
   brandId,
@@ -64,7 +68,7 @@ export const AgentAddBalanceDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="加钱" en="Add Balance" />
+        <AddBalanceTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog
@@ -130,7 +134,7 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
         <Box alignY="center">{username}</Box>
 
         <Text.Block alignY="center">
-          <Trans zh="交易类型" en="Transaction Type" />
+          <TransactionTypeTrans />
         </Text.Block>
         <Set>
           <AddBalanceTypeSelect name="transactionType" required />

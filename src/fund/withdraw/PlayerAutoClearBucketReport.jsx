@@ -24,6 +24,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import SequenceColumn from "../../table/column/sequence"
 import { BalanceTrans } from "../../trans/User"
+import { TimeTrans } from "../../trans/Date"
 
 export const PlayerAutoClearBucketReport = ({
   playerCode,
@@ -95,7 +96,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           dateTimeColumn({
             accessor: "createdOn",
-            Header: <Trans zh="时间" en="Time" />,
+            Header: <TimeTrans />,
             disableSortBy: true
           }),
           textColumn({

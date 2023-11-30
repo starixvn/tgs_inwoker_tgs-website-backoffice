@@ -26,15 +26,20 @@ import PlayerAdjustBalanceType, {
   usePlayerAdjustBalanceTypeOptionList,
   PlayerAdjustBalanceTypeLabel
 } from "../balance-adjustment/PlayerAdjustBalanceType"
-import { BalanceTrans } from "../../trans/User"
-import { RemarkTrans } from "../../trans/Action"
+import { BalanceChangeRecordsTrans, BalanceTrans } from "../../trans/User"
+import {
+  RemarkTrans,
+  TransactionTypeTrans,
+  useTransactionTypeTrans
+} from "../../trans/Action"
+import { NetProfitTrans } from "../../trans/Field"
 
 export const Key = "BalanceChange"
 
 export const PlayerBalanceChangeTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="账变记录" en="Balance Change Records" />
+      <BalanceChangeRecordsTrans />
     </_Tab>
   )
 }
@@ -150,7 +155,9 @@ const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: (
+          <Trans zh="操作时间" en="Operation Time" vi="Thời gian thao tác" />
+        ),
         TotalCell: () => <Trans zh="总和" en="Total" />,
         accessor: "recordedOn",
         disableSortBy: true
@@ -158,7 +165,7 @@ const useColumns = ({ items = [] }) =>
       textColumn({
         id: "transactionType",
         accessor: (row) => row,
-        Header: <Trans zh="交易类型" en="Transaction Type" />,
+        Header: <TransactionTypeTrans />,
         disableSortBy: true,
         TotalCell: () => null,
         Cell: ({ value: record }) => {
@@ -171,12 +178,12 @@ const useColumns = ({ items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="交易金额" en="Amount" />,
+        Header: <Trans zh="交易金额" en="Amount" vi="Số tiền giao dịch" />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "externalTransactionId",
-        Header: <Trans zh="交易单号" en="Transaction ID" />,
+        Header: <Trans zh="交易单号" en="Transaction ID" vi="Mã giao dịch" />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -187,7 +194,7 @@ const useColumns = ({ items = [] }) =>
       }),
       textColumn({
         accessor: "includeInNetProfit",
-        Header: <Trans zh="淨盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         TotalCell: () => null,
         Cell: ({ value }) => {
           return (
@@ -339,10 +346,7 @@ const CancelWithdrawalTrans = {
 }
 
 export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "交易类型",
-    en: "Transaction Type"
-  })
+  let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let adjustPlayerBalanceTypeOptions = usePlayerAdjustBalanceTypeOptionList()

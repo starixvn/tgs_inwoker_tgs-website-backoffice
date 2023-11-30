@@ -72,7 +72,7 @@ import {
 import Backdrop from "../../dialog/Backdrop"
 import { connection } from "../../connection"
 import { useMount, useUnmount } from "react-use"
-import { RemarkTrans } from "../../trans/Action"
+import { RemarkTrans, TransactionTypeTrans } from "../../trans/Action"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
@@ -317,7 +317,7 @@ const FormBody = ({}) => {
     <>
       <FieldStack margin="1rem">
         <FieldStack orientation="horizontal">
-          <FieldWrapper label={<Trans zh="交易类型" en="Transaction Type" />}>
+          <FieldWrapper label={<TransactionTypeTrans />}>
             <Set>
               <PlayerAdjustBalanceTypeSelect
                 name={TransactionTypeField}

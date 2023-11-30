@@ -60,6 +60,7 @@ import { useMeasure } from "react-use"
 import { useResellerPageContentWidth } from "../../page/ResellerPageContent"
 import { AdjustListDialogDisclosure } from "./AdjustListDialog"
 import { UserType } from "./UserType"
+import { AgentAdjustTrans } from "../../trans/Action"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -262,7 +263,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
         columns: [
           numberColumn({
             accessor: "agentOther",
-            Header: <Trans zh="代理调帐" en="Agent Adjust" />,
+            Header: <AgentAdjustTrans />,
             disableSortBy: true
           })
         ]
@@ -295,7 +296,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
           numberDecimalColumn({
             id: "agentAdjustAmount",
             accessor: (row) => row,
-            Header: <Trans zh="代理调帐" en="Agent Adjust" />,
+            Header: <AgentAdjustTrans />,
             disableSortBy: true,
             Cell: ({ value: record }) => {
               return (

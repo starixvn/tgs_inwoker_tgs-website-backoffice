@@ -43,6 +43,7 @@ import {
   WageringRequirementsTrans,
   useWageringRequirementsTrans
 } from "../../trans/Player"
+import { TimeTrans } from "../../trans/Date"
 
 export const PlayerBucketListDialogDisclosure = ({
   playerCode,
@@ -275,7 +276,7 @@ const useBucketItemsColumns = ({ playerCode, items = [] }) =>
       sequenceColumn(),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true,
         dateFormat: "MM/dd",
         timeFormat: "HH:mm"
@@ -445,7 +446,7 @@ const useCompletedWageringColumns = ({ items = [] }) => {
       sequenceColumn(),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true,
         dateFormat: "MM/dd",
         timeFormat: "HH:mm"

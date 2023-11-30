@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import { useTransactionTypeTrans } from "../../trans/Action"
 
 export const Bonus = "Bonus"
 const BonusTrans = {
@@ -28,10 +29,7 @@ const OtherTrans = {
 }
 
 export const AddBalanceTypeSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "交易类型",
-    en: "Transaction Type"
-  })
+  let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [

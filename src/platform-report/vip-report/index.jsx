@@ -31,6 +31,7 @@ import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { VipLevelTrans } from "../../trans/Vip"
+import { NetProfitTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -318,7 +319,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         disableSortBy: true
       })
     ],

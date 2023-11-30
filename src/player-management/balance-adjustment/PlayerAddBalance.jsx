@@ -31,7 +31,11 @@ import {
 import Checkbox from "../../checkbox"
 import { PlatformBucketSelect } from "../../platform-management/PlatformBucket"
 import { isDev } from "../../env"
-import { RemarkTrans } from "../../trans/Action"
+import {
+  AddBalanceTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
 
 export const PlayerAddBalanceDisclosure = ({
   brandId,
@@ -53,7 +57,7 @@ export const PlayerAddBalanceDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="加钱" en="Add Balance" />
+        <AddBalanceTrans />
       </Disclosure>
       {dialog.visible && hasTransactionAmountAuth ? (
         <AddDialog
@@ -154,7 +158,7 @@ const FormBody = ({}) => {
         <Box alignY="center">{username}</Box>
 
         <Box alignY="center">
-          <Trans zh="交易类型" en="Transaction Type" />
+          <TransactionTypeTrans />
         </Box>
         <Set>
           <PlayerAdjustBalanceTypeSelect

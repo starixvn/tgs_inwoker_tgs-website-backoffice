@@ -39,6 +39,7 @@ import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequi
 import { PlayerBatchAddBalanceDisclosure } from "./PlayerBatchAddBalance"
 import { PlayerAdjustLockedAmountDialogDisclosure } from "./PlayerAdjustLockedAmountDialog"
 import { ActionTrans } from "../../trans/Action"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -98,7 +99,13 @@ const BodyContent = ({ brandId = "" }) => {
   let columns = useColumns({ mutate, items: data?.items, brandId })
   return (
     <PageContent
-      title={<Trans zh="玩家调账" en="Balance Adjustment" />}
+      title={
+        <Trans
+          zh="玩家调账"
+          en="Balance Adjustment"
+          vi="Điều chỉnh người chơi"
+        />
+      }
       actionBar={
         <Flex justifyContent="space-between">
           <SearchBar
@@ -134,10 +141,8 @@ const BodyContent = ({ brandId = "" }) => {
 }
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名",
-    en: "Username"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
+
   let formMethods = useForm()
 
   const onSubmit = (data) => search(data)
@@ -165,7 +170,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       })
     ]

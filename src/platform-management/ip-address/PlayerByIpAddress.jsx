@@ -34,6 +34,7 @@ import { SortOrder } from "../../table/order"
 import SearchButton from "../../button/SearchButton"
 import { InputField } from "../../input/Input"
 import { IpAddressTypeSelect } from "./IpAddressType"
+import { TimeTrans } from "../../trans/Date"
 
 export const PlayerByIpAddressTabId = "PlayerByIpAddress"
 
@@ -146,7 +147,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       })
     ],

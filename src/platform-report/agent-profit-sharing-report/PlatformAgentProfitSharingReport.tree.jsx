@@ -55,6 +55,7 @@ import {
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons"
 import AutoSizer from "react-virtualized-auto-sizer"
+import { NetProfitTrans } from "../../trans/Field"
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let [treePaths, setTreePaths] = useState([])
@@ -721,7 +722,7 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },

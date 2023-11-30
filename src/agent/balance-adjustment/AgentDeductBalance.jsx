@@ -52,7 +52,11 @@ import {
   AgentAdjustBalanceTypeSelect,
   isTransfer
 } from "./AgentAdjustBalanceType"
-import { RemarkTrans } from "../../trans/Action"
+import {
+  DeductBalanceTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
 
 export const AgentDeductBalanceDisclosure = ({
   brandId,
@@ -71,7 +75,7 @@ export const AgentDeductBalanceDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="扣钱" en="Deduct Balance" />
+        <DeductBalanceTrans />
       </Disclosure>
       {dialog.visible && (
         <DeductDialog
@@ -153,7 +157,7 @@ const FormBody = ({ brandId, username, agentId }) => {
         <Text.Block alignY="center">{username}</Text.Block>
 
         <Text.Block alignY="center">
-          <Trans zh="交易类型" en="Transaction Type" />
+          <TransactionTypeTrans />
         </Text.Block>
         <Set>
           {/* 

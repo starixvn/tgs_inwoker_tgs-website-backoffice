@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useState } from "react"
 import { Trans, useTrans } from "../i18n"
 
+const Time = {
+  zh: "时间",
+  en: "Time",
+  vi: "Thời gian"
+}
+export const TimeTrans = () => <Trans {...Time} />
+
 const Yesterday = {
   zh: "昨日",
   en: "Yesterday",

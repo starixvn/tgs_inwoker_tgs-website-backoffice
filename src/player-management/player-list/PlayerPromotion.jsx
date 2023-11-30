@@ -19,7 +19,7 @@ export const Key = "promotion"
 export const PlayerPromotionTab = ({ ...props }) => {
   return (
     <Tab tabId={Key} {...props}>
-      <Trans zh="活动记录" en="Promotions" />
+      <Trans zh="活动记录" en="Promotions" vi="Lịch sử hoạt động" />
     </Tab>
   )
 }
@@ -106,11 +106,17 @@ const useColumns = ({ items = [] }) =>
     () => [
       textColumn({
         accessor: "promotionName",
-        Header: <Trans zh="活动名称" en="Promotion" />,
+        Header: <Trans zh="活动名称" en="Promotion" vi="Tên hoạt động" />,
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="参加时间" en="Participation Time" />,
+        Header: (
+          <Trans
+            zh="参加时间"
+            en="Participation Time"
+            vi="Thời gian tham gia"
+          />
+        ),
         accessor: "createdOn",
         disableSortBy: true
       })

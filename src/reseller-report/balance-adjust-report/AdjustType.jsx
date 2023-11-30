@@ -17,12 +17,9 @@ import PlayerAdjustBalanceType, {
   usePlayerAdjustBalanceTypeOptionList
 } from "../../player-management/balance-adjustment/PlayerAdjustBalanceType"
 import { isPlayer } from "./UserType"
+import { AgentAdjustTrans } from "../../trans/Action"
 
 const AgentOther = "AgentOther"
-const AgentOtherTrans = {
-  zh: "代理调账",
-  en: "Agent Adjust"
-}
 
 export const AdjustTypeSelect = ({ name = "type", userType, ...props }) => {
   let playerOptions = usePlayerAdjustBalanceTypeOptionList()
@@ -52,7 +49,7 @@ export const AdjustTypeLabel = ({ value = "" }) => {
 
   switch (value) {
     case AgentOther:
-      return <Trans {...AgentOtherTrans} />
+      return <AgentAdjustTrans />
     default:
       return value
   }
