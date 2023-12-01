@@ -50,6 +50,12 @@ import { min, max, endOfToday } from "date-fns"
 import { Modal } from "../../dialog/Modal"
 import { PlayerCodeTrans } from "../../trans/Player"
 import { RemarkTrans } from "../../trans/Action"
+import {
+  BetAmountTrans,
+  GameSettleAmountTrans,
+  ValidBetAmountTrans,
+  WinLossTrans
+} from "../../trans/Game"
 
 export const AddGameProviderRoundDialogDisclosure = ({
   id,
@@ -237,20 +243,20 @@ const FormBody = ({}) => {
         <NumberInputField
           name="betAmount"
           min={0}
-          label={<Trans zh="投注金额" en="Bet Amount" />}
+          label={<BetAmountTrans />}
           required
         />
         <NumberInputField
           name="validBetAmount"
           min={0}
-          label={<Trans zh="有效投注金额" en="Valid Bet Amount" />}
+          label={<ValidBetAmountTrans />}
           required
         />
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
-          label={<Trans zh="结算金额" en="Settle Amount" />}
+          label={<GameSettleAmountTrans />}
           required
         />
         <NumberInputField
@@ -279,7 +285,7 @@ const FormBody = ({}) => {
       <NumberInputField
         name="companyWinLoss"
         required
-        label={<Trans zh="输赢金额" en="Win Loss" />}
+        label={<WinLossTrans />}
         hint={
           <Text fontWeight="bold" color="warning">
             <Trans

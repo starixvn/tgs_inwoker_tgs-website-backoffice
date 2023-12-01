@@ -23,6 +23,7 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { isDev } from "../../env"
 import { ActionTrans } from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -167,7 +168,7 @@ const useColumns = ({ mutate, items = [] }) => {
     let columns = [
       sequenceColumn(),
       textColumn({
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         accessor: "username",
         disableSortBy: true
       }),

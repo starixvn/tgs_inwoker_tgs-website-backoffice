@@ -48,6 +48,7 @@ import { isValid } from "date-fns"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
+import { BetAmountTrans } from "../../trans/Game"
 
 export const GameProviderCurrencyReportDisclosure = ({
   use = Link,
@@ -163,7 +164,7 @@ const useColumns = ({ items = [], month }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

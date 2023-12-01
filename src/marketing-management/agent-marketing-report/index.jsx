@@ -37,6 +37,7 @@ import numberColumn, {
 } from "../../table/column/numberColumn"
 import { useAgentMarketingReport } from "./client"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
 
 export { Code }
 
@@ -243,13 +244,13 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

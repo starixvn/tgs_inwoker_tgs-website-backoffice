@@ -44,6 +44,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays, parse } from "date-fns"
 import { upperFirst } from "lodash-es"
+import { UserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -248,7 +249,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       textColumn({
         accessor: "agentUserName",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       numberColumn({

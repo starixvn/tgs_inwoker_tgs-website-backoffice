@@ -34,3 +34,10 @@ export const useWageringRequirementsTrans = () => useTrans(WageringRequirement)
 export const WageringRequirementsTrans = () => (
   <Trans {...WageringRequirement} />
 )
+
+const PlayerSettleAmount = {
+  zh: "派彩",
+  en: "Settle Amount",
+  vi: "Thanh toán"
+}
+export const PlayerSettleAmountTrans = () => <Trans {...PlayerSettleAmount} />

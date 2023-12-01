@@ -49,7 +49,13 @@ import {
   faChevronDown
 } from "@fortawesome/free-solid-svg-icons"
 import BankType from "../../payment/BankType"
-import { PhoneTrans, RealNameTrans } from "../../trans/User"
+import { PhoneTrans, RealNameTrans, UserNameTrans } from "../../trans/User"
+import {
+  ChannelNameTrans,
+  DepositPaymentMethodTrans
+} from "../../trans/Payment"
+import { GmsIdTrans } from "../../trans/Platform"
+import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -143,14 +149,14 @@ export const FormBody = ({
       <FieldStack>
         <FieldValues marginLeft="1.5rem">
           <NormalLabel>
-            <Trans zh="用户名" en="Username" />
+            <UserNameTrans />
           </NormalLabel>
           <Box alignY="center">{record?.userName}</Box>
 
           <PlayerBox player={player} />
 
           <NormalLabel>
-            <Trans zh="GMS订单号" en="GMS Id" />
+            <GmsIdTrans />
           </NormalLabel>
           <Box alignY="center">{record?.orderNo}</Box>
 
@@ -165,14 +171,14 @@ export const FormBody = ({
           <Box alignY="center">{record?.thirdPartyOrderNo}</Box>
 
           <NormalLabel>
-            <Trans zh="存款类型 " en="Payment Method" />
+            <DepositPaymentMethodTrans />
           </NormalLabel>
           <Box alignY="center">
             <PaymentMethodLabel value={record?.paymentMethodId} />
           </Box>
 
           <NormalLabel>
-            <Trans zh="通道名称" en="Channel Name" />
+            <ChannelNameTrans />
           </NormalLabel>
           <Box alignY="center">{record?.channelName}</Box>
 
@@ -193,14 +199,14 @@ export const FormBody = ({
           <AmountReceivedBox record={record} brandPayment={brandPayment} />
 
           <NormalLabel>
-            <Trans zh="申请时间" en="Application Time" />
+            <ApplicationTimeTrans />
           </NormalLabel>
           <Box alignY="center">
             <FormattedDateTime value={record?.createdOn} />
           </Box>
 
           <NormalLabel>
-            <Trans zh="更新时间" en="Updated Time" />
+            <UpdatedTimeTrans />
           </NormalLabel>
           <Box alignY="center">
             <FormattedDateTime value={record?.updatedOn} placeholder="-" />

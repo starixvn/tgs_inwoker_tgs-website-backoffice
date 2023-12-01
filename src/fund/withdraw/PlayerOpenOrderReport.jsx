@@ -31,6 +31,8 @@ import PageContent from "../../page/Content"
 import dateTimeColumn from "../../table/column/dateTime"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { today } from "../../date/range"
+import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import { PlayerSettleAmountTrans } from "../../trans/Player"
 
 export const usePlayerOpenOrder = (brandId, playerCode, prefetchedData) => {
   let dateRange = today()
@@ -134,12 +136,12 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -149,7 +151,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <Trans zh="派彩" en="Settle Amount" />,
+        Header: <PlayerSettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

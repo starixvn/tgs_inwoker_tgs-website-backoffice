@@ -34,6 +34,7 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { VipLevelTrans } from "../../trans/Vip"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -133,10 +134,7 @@ const Summary = ({ onlineUsers }) => {
 }
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名输入框",
-    en: "User name"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
   let formMethods = useForm()
 
   const onSubmit = (data) => search(data)
@@ -165,7 +163,7 @@ const useColumns = ({ items = [] } = {}) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({

@@ -35,6 +35,11 @@ import { SettleGameRoundDialogDisclosure } from "./SettleGameRound"
 import copy from "clipboard-copy"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 import { ActionTrans } from "../../trans/Action"
+import {
+  BetAmountTrans,
+  GameSettleAmountTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
 
 export { Code }
 
@@ -215,17 +220,17 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注金额" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <Trans zh="结算金额" en="Settle Amount" />,
+        Header: <GameSettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

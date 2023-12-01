@@ -72,6 +72,16 @@ import {
   PlatformPaymentTransferType
 } from "../../payment/PlatformPaymentProviderSelect"
 import { ActionTrans, RemarkTrans } from "../../trans/Action"
+import { usePaymentProviderTrans } from "../../trans/Payment"
+import {
+  GmsIdTrans,
+  ThirdPartyIdTrans,
+  useGmsIdTrans,
+  useSystemIdTrans,
+  useThirdPartyIdTrans
+} from "../../trans/Platform"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -438,33 +448,17 @@ const SearchBar = ({
     brandPaymentIds
   ])
 
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名",
-    en: "Username"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
 
   let platformPaymentPlaceholder = useTrans({
     zh: "提款通道",
     en: "Withdrawal Channel"
   })
 
-  let paymentProviderPlaceholder = useTrans({
-    zh: "金流商",
-    en: "Payment Provider"
-  })
-
-  let externalIdPlaceholder = useTrans({
-    zh: "三方订单编号",
-    en: "3rd Party Id"
-  })
-  let orderIdPlaceholder = useTrans({
-    zh: "GMS订单号",
-    en: "GMS Id"
-  })
-  let idPlaceholder = useTrans({
-    zh: "系统订单编号",
-    en: "System Id"
-  })
+  let paymentProviderPlaceholder = usePaymentProviderTrans()
+  let externalIdPlaceholder = useThirdPartyIdTrans()
+  let orderIdPlaceholder = useGmsIdTrans()
+  let idPlaceholder = useSystemIdTrans()
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
@@ -507,7 +501,7 @@ const SearchBar = ({
           </Set>
           <Set orientation="horizontal">
             <DateInputRangeField
-              label={<Trans zh="申请时间" en="Application Time" />}
+              label={<ApplicationTimeTrans />}
               startProps={{
                 name: "beginCreateOn"
               }}
@@ -518,7 +512,7 @@ const SearchBar = ({
               maxRangeDays={maxRangeDays}
             />
             <DateInputRangeField
-              label={<Trans zh="更新时间" en="Updated Time" />}
+              label={<UpdatedTimeTrans />}
               startProps={{
                 name: "beginUpdateOn"
               }}
@@ -553,7 +547,7 @@ const useColumns = ({
       sequenceColumn(),
       textColumn({
         accessor: "userName",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -563,12 +557,12 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "orderNo",
-        Header: <Trans zh="GMS订单号" en="GMS Id" />,
+        Header: <GmsIdTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "thirdPartyOrderNo",
-        Header: <Trans zh="三方单号" en="3rd Party Id" />,
+        Header: <ThirdPartyIdTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -592,7 +586,7 @@ const useColumns = ({
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="申请时间" en="Application Time" />,
+        Header: <ApplicationTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

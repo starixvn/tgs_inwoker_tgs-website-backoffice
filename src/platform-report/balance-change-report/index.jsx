@@ -34,6 +34,7 @@ import {
 import dateTimeColumn from "../../table/column/dateTime"
 import { DateButtons } from "../../date/DateButtons"
 import { RemarkTrans, TransactionTypeTrans } from "../../trans/Action"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -161,10 +162,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "用户名",
-    en: "User name"
-  })
+  let usernamePlaceholder = useUserNameTrans()
 
   const onSubmit = (data) => search?.(data)
 
@@ -198,7 +196,7 @@ const useColumns = ({ brandId, items = [] }) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

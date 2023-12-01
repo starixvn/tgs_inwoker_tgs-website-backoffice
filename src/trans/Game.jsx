@@ -102,7 +102,7 @@ const BetAmount = {
 export const BetAmountTrans = () => <Trans {...BetAmount} />
 
 const ValidBetAmount = {
-  zh: "有效投注金额",
+  zh: "有效投注",
   en: "Valid Bet Amount",
   vi: "Số tiền cược hợp lệ"
 }
@@ -122,3 +122,10 @@ const GameDetail = {
 }
 export const useGameDetailTrans = () => useTrans(GameDetail)
 export const GameDetailTrans = () => <Trans {...GameDetail} />
+
+//TODO: vi trans
+const GameSettleAmount = {
+  zh: "结算金额",
+  en: "Settle Amount"
+}
+export const GameSettleAmountTrans = () => <Trans {...GameSettleAmount} />

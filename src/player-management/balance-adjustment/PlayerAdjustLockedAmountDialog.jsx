@@ -50,6 +50,7 @@ import {
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
 import { RemarkTrans } from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
 
 export const PlayerAdjustLockedAmountDialogDisclosure = ({
   playerCode,
@@ -130,7 +131,7 @@ const FormBody = ({ username }) => {
   return (
     <FieldValues margin="1rem">
       <Box alignY="center">
-        <Trans zh="用户名" en="Username" />
+        <UserNameTrans />
       </Box>
       <Box alignY="center">{username}</Box>
 

@@ -38,6 +38,7 @@ import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { startOfPreviousDay } from "../../date/startOfPreviousDay"
 import { formatYearMonthDay } from "../../date/format"
+import { UserNameTrans } from "../../trans/User"
 
 export const AgentWinLossDialogDisclosure = ({
   brandId,
@@ -171,7 +172,7 @@ const useAgentPlayerWinLossColumns = ({ items = [] }) => {
     () => [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         Footer: () => <Trans zh="总计" en="Total" />,
         footerCellProps: {
           textAlign: "center"

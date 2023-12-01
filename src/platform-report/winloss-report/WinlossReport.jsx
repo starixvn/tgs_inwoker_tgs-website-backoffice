@@ -68,6 +68,7 @@ import { isNil, isEmpty, either } from "ramda"
 import { isArray } from "lodash-es"
 import { useMeasure } from "react-use"
 import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
+import { UserNameTrans } from "../../trans/User"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -382,7 +383,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
           textColumn({
             id: "username",
             accessor: (row) => row,
-            Header: <Trans zh="用户名" en="Username" />,
+            Header: <UserNameTrans />,
             disableSortBy: true,
             Cell: ({ value: record }) => {
               return (

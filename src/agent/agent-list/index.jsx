@@ -69,7 +69,11 @@ import { isDev } from "../../env"
 import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { isAgentProfitSharingOneLayer } from "../AgentProfitSharingType"
 import { useBrand } from "../../merchant/platforms/client"
-import { RealNameTrans } from "../../trans/User"
+import {
+  RealNameTrans,
+  UserNameTrans,
+  useUserNameTrans
+} from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
 
 export { Code }
@@ -214,7 +218,7 @@ const BodyContent = ({ brandId = "", brand }) => {
 }
 
 const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useSearchInputPlaceHolder()
+  let usernameInputPlaceholder = useUserNameTrans()
   let formMethods = useForm({
     defaultValues: {
       status
@@ -242,9 +246,6 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
   )
 }
 
-const useSearchInputPlaceHolder = () =>
-  useTrans({ zh: "用户名输入框", en: "Input user name" })
-
 const useColumns = ({
   mutate,
   items = [],
@@ -259,7 +260,7 @@ const useColumns = ({
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="User name" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({

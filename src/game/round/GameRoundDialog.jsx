@@ -38,6 +38,11 @@ import { stringifyJSON } from "../../text/json"
 import { ConfigPaths } from "../../text/editor/MonacoEditor"
 import Disclosure from "../../dialog/Disclosure"
 import { Modal } from "../../dialog/Modal"
+import {
+  BetAmountTrans,
+  ValidBetAmountTrans,
+  WinLossTrans
+} from "../../trans/Game"
 
 loader.config({
   paths: ConfigPaths
@@ -186,7 +191,7 @@ export const GameRoundDialog = ({
               <Box alignY="center">{record.gameName}</Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="投注金额" en="Bet Amount" />
+                <BetAmountTrans />
               </NormalLabel>
               <Box alignY="center">
                 <FormattedNumberDecimal
@@ -196,7 +201,7 @@ export const GameRoundDialog = ({
               </Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="有效投注" en="Valid Bet Amount" />
+                <ValidBetAmountTrans />
               </NormalLabel>
               <Box alignY="center">
                 <FormattedNumberDecimal value={record.validBetAmount} />
@@ -219,7 +224,7 @@ export const GameRoundDialog = ({
               </Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="输赢金额" en="Win Loss" />
+                <WinLossTrans />
               </NormalLabel>
               <Box alignY="center">
                 <FormattedNumberDecimal value={record.winLoss} />
@@ -251,7 +256,7 @@ export const GameRoundDialog = ({
               <Box alignY="center">{record.id}</Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="有效投注" en="Valid Bet Amount" />
+                <ValidBetAmountTrans />
               </NormalLabel>
               <Box alignY="center">
                 <FormattedNumberDecimal value={record.validBetAmount} />

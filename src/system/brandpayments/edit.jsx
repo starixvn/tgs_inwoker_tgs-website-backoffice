@@ -81,6 +81,7 @@ import TransferType, {
 } from "./BrandPaymentTransferType"
 import { PaymentMethodSetting } from "./PaymentMethodSetting"
 import { PercentageNumberInputField } from "../../input/NumberInput"
+import { ChannelNameTrans, PaymentProviderTrans } from "../../trans/Payment"
 
 export const EditButton = ({
   brandId,
@@ -537,7 +538,7 @@ const EditBody = ({
             </Heading>
             <FieldValues>
               <Label>
-                <Trans zh="支付厂商" en="Payment Name" />
+                <PaymentProviderTrans />
               </Label>
               <Box alignY="center">
                 <Input type="hidden" name="paymentId" value={paymentId} />
@@ -599,7 +600,7 @@ const EditBody = ({
               </Box>
 
               <Label required>
-                <Trans zh="通道名称" en="Channel Name" />
+                <ChannelNameTrans />
               </Label>
               <Input name="channelName" size="small" required />
 

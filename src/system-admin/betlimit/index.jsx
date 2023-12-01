@@ -21,6 +21,7 @@ import { AddBetLimitDisclosure, EditBetLimitDisclosure } from "./edit"
 import equals from "fast-deep-equal"
 import { useBetLimitList } from "../../betlimit/client"
 import { ActionTrans } from "../../trans/Action"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -134,7 +135,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="更改时间" en="Updated Time" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       textColumn({

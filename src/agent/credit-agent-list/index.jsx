@@ -36,7 +36,7 @@ import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { CreditAgentTypeLabel, CreditAgentTypeSelect } from "./CreditAgentType"
-import { UserNameTrans } from "../../trans/User"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
 
 export { Code }
@@ -128,10 +128,7 @@ const BodyContent = ({ brandId = "" }) => {
 }
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名输入框",
-    en: "Input user name"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
 
   let formMethods = useForm()
 

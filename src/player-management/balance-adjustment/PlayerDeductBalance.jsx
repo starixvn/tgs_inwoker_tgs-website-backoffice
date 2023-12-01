@@ -33,6 +33,7 @@ import {
   RemarkTrans,
   TransactionTypeTrans
 } from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -137,7 +138,7 @@ const FormBody = ({ brandId, username, playerCode }) => {
       <Input type="hidden" name="playerCode" value={playerCode} />
       <FieldValues margin="1rem">
         <Box alignY="center">
-          <Trans zh="用户名" en="Username" />
+          <UserNameTrans />
         </Box>
         <Box alignY="center">{username}</Box>
 

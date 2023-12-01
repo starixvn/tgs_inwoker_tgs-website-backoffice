@@ -55,7 +55,9 @@ import Input from "../../input/Input"
 import BrandPaymentStatus from "../../system/brandpayments/BrandPaymentStatus"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import Big from "big.js"
-import { PhoneTrans, RealNameTrans } from "../../trans/User"
+import { PhoneTrans, RealNameTrans, UserNameTrans } from "../../trans/User"
+import { GmsIdTrans } from "../../trans/Platform"
+import { ApplicationTimeTrans } from "../../trans/Date"
 
 export const ViewFundWithdrawDisclosure = ({
   brandId,
@@ -136,14 +138,14 @@ export const FormBody = ({ brandId, record, readonly }) => {
       <FieldStack>
         <FieldValues marginLeft="1.5rem">
           <NormalLabel>
-            <Trans zh="用户名" en="Username" />
+            <UserNameTrans />
           </NormalLabel>
           <Box alignY="center">{record?.userName}</Box>
 
           <RealNameBox record={record} />
 
           <NormalLabel>
-            <Trans zh="GMS订单号" en="GMS Id" />
+            <GmsIdTrans />
           </NormalLabel>
           <Box alignY="center">{record?.orderNo}</Box>
 
@@ -172,7 +174,7 @@ export const FormBody = ({ brandId, record, readonly }) => {
           </Box>
 
           <NormalLabel>
-            <Trans zh="申请时间" en="Application Time" />
+            <ApplicationTimeTrans />
           </NormalLabel>
           <Box alignY="center">
             <FormattedDateTime value={record?.createdOn} />

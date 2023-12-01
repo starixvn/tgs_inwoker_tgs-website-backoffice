@@ -34,8 +34,14 @@ import PlayerIdentityState, {
 import { Descending } from "../../table/order"
 import { PlayerIdentityAttachment } from "./PlayerIdentityAttachment"
 import { ResetPlayerIdentityAuthDisclosure } from "./ResetPlayerIdentityAuth"
-import { ICNumberTrans, RealNameTrans } from "../../trans/User"
+import {
+  ICNumberTrans,
+  RealNameTrans,
+  UserNameTrans,
+  useUserNameTrans
+} from "../../trans/User"
 import { ActionTrans, RemarkTrans } from "../../trans/Action"
+import { ApplicationTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -155,10 +161,7 @@ const BodyContent = ({ brandId = "", brand }) => {
 }
 
 const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名输入框",
-    en: "Input user name"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
 
   let formMethods = useForm({ defaultValues: { status } })
 
@@ -177,7 +180,7 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
             autocomplete="off"
           />
           <DateInputRangeField
-            label={<Trans zh="申请时间" en="Application Time" />}
+            label={<ApplicationTimeTrans />}
             startProps={{
               name: "beginCreatedOn"
             }}
@@ -214,7 +217,7 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({

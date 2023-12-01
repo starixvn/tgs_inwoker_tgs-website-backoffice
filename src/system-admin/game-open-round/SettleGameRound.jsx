@@ -32,6 +32,12 @@ import DateTimeInput from "../../date/DateTimeInput"
 import Separator from "../../layout/Separator"
 import { usePlayerMainWallet } from "../../player-management/player-list/client"
 import Modal from "../../dialog/Modal"
+import {
+  BetAmountTrans,
+  GameSettleAmountTrans,
+  ValidBetAmountTrans,
+  WinLossTrans
+} from "../../trans/Game"
 
 export const SettleGameRoundDialogDisclosure = ({
   roundId,
@@ -189,14 +195,14 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="betAmount"
-          label={<Trans zh="投注金额" en="Bet Amount" />}
+          label={<BetAmountTrans />}
           required
           min="0"
           step="0.01"
         />
         <NumberInputField
           name="validBetAmount"
-          label={<Trans zh="有效投注金额" en="Valid Bet Amount" />}
+          label={<ValidBetAmountTrans />}
           min="0"
           step="0.01"
           required
@@ -205,7 +211,7 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
-          label={<Trans zh="结算金额" en="Settle Amount" />}
+          label={<GameSettleAmountTrans />}
           min="0"
           step="0.01"
           required
@@ -227,7 +233,7 @@ const FormBody = () => {
         />
         <NumberInputField
           name="winLoss"
-          label={<Trans zh="输赢金额" en="Win Loss" />}
+          label={<WinLossTrans />}
           hint={
             <Text fontWeight="bold" color="warning">
               <Trans

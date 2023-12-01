@@ -54,6 +54,8 @@ import { isDev } from "../../env"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 import { splitEvery, any } from "ramda"
 import { isValidDate } from "../../date/isValidDate"
+import { PlayerSettleAmountTrans } from "../../trans/Player"
+import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
 
 export { Code }
 
@@ -546,12 +548,12 @@ export const useColumns = ({ items = [], filter: predicate }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -561,7 +563,7 @@ export const useColumns = ({ items = [], filter: predicate }) => {
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <Trans zh="派彩" en="Settle Amount" />,
+        Header: <PlayerSettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

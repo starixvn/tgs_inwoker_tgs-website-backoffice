@@ -21,7 +21,7 @@ import { startOfToday, subDays, endOfToday } from "date-fns"
 import dateTimeColumn from "../../table/column/dateTime"
 import { PromotionWinningDetailDialogDisclosure } from "./PromotionWinningDetailDialog"
 import { Descending } from "../../table/order"
-import { useUserNameTrans } from "../../trans/User"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -202,7 +202,7 @@ const useColumns = ({ items = [], brandId }) => {
       }),
       textColumn({
         accessor: "userName",
-        Header: <Trans zh="玩家用戶名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({

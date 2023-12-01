@@ -3,13 +3,14 @@ import { Spinner, DropdownMenu, Button } from "bumbag"
 import { getTrans, Trans, useLocale, useTrans } from "../i18n"
 import Select from "../select/Select"
 import { usePaymentList } from "./client"
+import { PaymentProviderTrans } from "../trans/Payment"
 
 const defaultPredicate = () => true
 
 export const PaymentProviderDropdownMenu = ({
   filter: predicate = defaultPredicate,
   onChange,
-  children = <Trans zh="支付厂商" en="Payment Provider" />,
+  children = <PaymentProviderTrans />,
   ...props
 }) => {
   let { isLoading, data, error } = usePaymentList()

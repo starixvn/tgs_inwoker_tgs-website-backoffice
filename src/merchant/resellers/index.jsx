@@ -21,6 +21,7 @@ import { MerchantStatusMenu } from "../MerchantStatus"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { ActionTrans } from "../../trans/Action"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -189,7 +190,7 @@ const useColumns = ({ items = [], mutate }) => {
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="更改时间" en="Updated Time" />,
+        Header: <UpdatedTimeTrans />,
         accessor: "updatedOn",
         disableSortBy: true
       })

@@ -56,7 +56,8 @@ import {
   RegistrationTimeTrans,
   UserNameTrans,
   usePhoneTrans,
-  useRealNameTrans
+  useRealNameTrans,
+  useUserNameTrans
 } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
 
@@ -246,7 +247,7 @@ const SearchBar = ({
   let showAllAgent = allAgentSetting?.switch
   let isAdminUser = useIsAdminUser()
 
-  let usernameInputPlaceholder = useSearchInputPlaceHolder()
+  let usernameInputPlaceholder = useUserNameTrans()
   let playerCodePlaceholder = usePlayerCodeTrans()
   let domainInputPlaceholder = useRegistrationDomainTrans()
   let phonePlaceholder = usePhoneTrans()
@@ -335,13 +336,6 @@ const SearchBar = ({
     </FormProvider>
   )
 }
-
-const useSearchInputPlaceHolder = () =>
-  useTrans({
-    zh: "用户名输入框",
-    en: "Input user name",
-    vi: "Khung nhập tên tài khoản"
-  })
 
 const useColumns = ({
   mutate,

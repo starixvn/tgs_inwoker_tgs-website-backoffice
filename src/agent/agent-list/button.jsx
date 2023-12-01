@@ -120,7 +120,8 @@ import { UpperLevelAgentTrans } from "../../trans/Agent"
 import {
   BalanceTrans,
   RealNameTrans,
-  RegistrationTimeTrans
+  RegistrationTimeTrans,
+  UserNameTrans
 } from "../../trans/User"
 
 export const AddAgentButton = ({
@@ -243,7 +244,7 @@ const FormBody = ({ isAdd, agentProfitSharingType }) => {
       <Set orientation="vertical" marginLeft="1rem" marginRight="1rem" isFilled>
         <FieldValues>
           <NormalLabel required>
-            <Trans zh="代理用户名" en="Username" />
+            <UserNameTrans />
           </NormalLabel>
           <InputField
             name="username"
@@ -434,7 +435,7 @@ const ConfigFormBody = ({ record, agentProfitSharingType }) => {
       <Set orientation="vertical" marginLeft="1rem" marginRight="1rem" isFilled>
         <FieldValues>
           <NormalLabel>
-            <Trans zh="代理用户名" en="Username" />
+            <UserNameTrans />
           </NormalLabel>
           <Text.Block alignY="center">{record?.username}</Text.Block>
 

@@ -54,6 +54,7 @@ import {
   TimezoneSelectField,
   toZonedTime
 } from "../../date/TimeZone"
+import { BetAmountTrans } from "../../trans/Game"
 
 export { Code }
 
@@ -392,7 +393,7 @@ const useColumns = ({ items = [], month }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

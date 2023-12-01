@@ -54,6 +54,7 @@ import DownloadButton from "../../button/DownloadButton"
 import { isSubtract } from "./operation"
 import { RemarkTrans } from "../../trans/Action"
 import { TimeTrans } from "../../trans/Date"
+import { UserNameTrans } from "../../trans/User"
 
 export const AdjustListDialogDisclosure = ({
   id,
@@ -245,7 +246,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "userName",
-        Header: <Trans zh="用戶名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({

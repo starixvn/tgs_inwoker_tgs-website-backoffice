@@ -27,6 +27,7 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { BrandLogoDialogDisclosure } from "./BrandLogoDialog"
 import { ActionTrans } from "../../trans/Action"
+import { UpdatedTimeTrans } from "../../trans/Date"
 // import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
 
 export { Code }
@@ -210,7 +211,7 @@ const useColumns = ({ items = [], mutate }) => {
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="更改时间" en="Updated Time" />,
+        Header: <UpdatedTimeTrans />,
         accessor: "updatedOn",
         disableSortBy: true
       })

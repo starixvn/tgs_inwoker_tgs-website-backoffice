@@ -66,6 +66,7 @@ import {
 } from "../AgentVirtualSportsRebatePercentage"
 import clone from "clone-deep"
 import { CreditAgentTypeSelect, isAgentParentRequired } from "./CreditAgentType"
+import { UserNameTrans } from "../../trans/User"
 
 export const AddCreditAgentDialogDisclosure = ({
   brandId,
@@ -164,7 +165,7 @@ const FormBody = ({}) => {
       <Set orientation="vertical" marginLeft="1rem" marginRight="1rem" isFilled>
         <FieldValues>
           <NormalLabel required>
-            <Trans zh="代理用户名" en="Username" />
+            <UserNameTrans />
           </NormalLabel>
           <Input name="username" required autoComplete="off" />
 

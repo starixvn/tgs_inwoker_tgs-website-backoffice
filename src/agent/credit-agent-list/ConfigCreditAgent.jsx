@@ -84,7 +84,8 @@ import { UpperLevelAgentTrans } from "../../trans/Agent"
 import {
   BalanceTrans,
   RealNameTrans,
-  RegistrationTimeTrans
+  RegistrationTimeTrans,
+  UserNameTrans
 } from "../../trans/User"
 
 export const ConfigCreditAgentDisclosure = ({
@@ -202,7 +203,7 @@ const FormBody = () => {
     <Set orientation="vertical" marginLeft="1rem" marginRight="1rem" isFilled>
       <FieldValues>
         <NormalLabel>
-          <Trans zh="用户名" en="Username" />
+          <UserNameTrans />
         </NormalLabel>
         <Box alignY="center">{record?.username}</Box>
 

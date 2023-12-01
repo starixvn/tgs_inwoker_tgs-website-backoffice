@@ -40,6 +40,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { GameTypeSelect } from "../../game/GameType"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import DownloadButton from "../../button/DownloadButton"
+import { BetAmountTrans } from "../../trans/Game"
 
 export { Code }
 
@@ -254,7 +255,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

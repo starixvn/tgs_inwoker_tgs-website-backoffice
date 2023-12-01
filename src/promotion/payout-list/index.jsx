@@ -46,6 +46,7 @@ import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { ActionTrans } from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -354,7 +355,7 @@ const useColumns = ({
       ...columns,
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({

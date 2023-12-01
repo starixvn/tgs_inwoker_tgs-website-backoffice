@@ -38,6 +38,7 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
 import { ICNumberTrans, RealNameTrans } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
+import { ApplicationTimeTrans } from "../../trans/Date"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
@@ -230,7 +231,7 @@ const ReviewDialog = ({
             <PlayerIdentityStateLabel value={record.status} />
           </Box>
 
-          <Trans zh="申请时间" en="Application Time" />
+          <ApplicationTimeTrans />
           <Box>
             <FormattedDateTime value={record.createdOn} />
           </Box>

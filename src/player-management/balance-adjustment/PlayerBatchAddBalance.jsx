@@ -73,6 +73,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { connection } from "../../connection"
 import { useMount, useUnmount } from "react-use"
 import { RemarkTrans, TransactionTypeTrans } from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
@@ -552,7 +553,7 @@ const useColumns = ({ items, showResult }) => {
       }),
       textColumn({
         accessor: "userName",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         TotalCell: () => <Trans zh="总计" en="Total" />,
         disableSortBy: true
       }),

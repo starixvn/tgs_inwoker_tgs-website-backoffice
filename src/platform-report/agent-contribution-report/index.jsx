@@ -55,6 +55,8 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { NetProfitTrans } from "../../trans/Field"
+import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import { UserNameTrans } from "../../trans/User"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -357,7 +359,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       textColumn({
         id: "username",
         accessor: (row) => row,
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         TotalCell: () => <Trans zh="总计" en="Total" />,
         Cell: ({ value }) => {
           let { type } = value
@@ -475,12 +477,12 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       numberDecimalColumn({
         accessor: "betAmount",
         sumColumn: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />
+        Header: <BetAmountTrans />
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

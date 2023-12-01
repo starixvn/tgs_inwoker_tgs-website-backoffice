@@ -31,6 +31,7 @@ import {
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { useRole } from "../roles/client"
 import clone from "clone-deep"
+import { UserNameTrans } from "../../trans/User"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -390,7 +391,7 @@ const RoleSelectGroup = ({
 
 const UsernameLabel = ({ name = "username", required }) => (
   <Label name={name} required={required}>
-    <Trans zh="用户名" en="Username" />
+    <UserNameTrans />
   </Label>
 )
 

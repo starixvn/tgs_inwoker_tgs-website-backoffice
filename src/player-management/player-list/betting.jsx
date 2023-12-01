@@ -29,6 +29,7 @@ import {
   WinLossTrans
 } from "../../trans/Game"
 import { ActionTrans } from "../../trans/Action"
+import { PlayerSettleAmountTrans } from "../../trans/Player"
 
 export const Key = "betting"
 
@@ -189,7 +190,7 @@ const useColumns = ({ items = [], totals = [] }) => {
       numberDecimalColumn({
         accessor: "settleAmount",
         sumColumn: "settleAmount",
-        Header: <Trans zh="派彩" en="Settle Amount" />
+        Header: <PlayerSettleAmountTrans />
       }),
       numberDecimalColumn({
         accessor: "winLoss",

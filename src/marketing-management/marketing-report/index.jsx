@@ -47,6 +47,7 @@ import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays } from "date-fns"
+import { UserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -238,7 +239,7 @@ const useColumns = ({ brandId, items = [] }) => {
       textColumn({
         id: "AgentUsername",
         accessor: "agentUsername",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       numberColumn({

@@ -53,6 +53,11 @@ import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import { NumberInput } from "../../input/NumberInput"
 import { BrandAutoWithdrawDialogDisclosure } from "./BrandAutoWithdraw"
 import { ActionTrans } from "../../trans/Action"
+import {
+  ChannelNameTrans,
+  PaymentMethodTrans,
+  PaymentProviderTrans
+} from "../../trans/Payment"
 
 export { Code }
 
@@ -353,13 +358,13 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "paymentId",
-        Header: <Trans zh="支付厂商" en="Payment Name" />,
+        Header: <PaymentProviderTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentProviderLabel value={value} />
       }),
       textColumn({
         accessor: "paymentMethodId",
-        Header: <Trans zh="支付方式" en="Payment Method" />,
+        Header: <PaymentMethodTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentMethodLabel value={value} />
       }),
@@ -371,7 +376,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "channelName",
-        Header: <Trans zh="通道名称" en="Channel Name" />,
+        Header: <ChannelNameTrans />,
         disableSortBy: true
       }),
       textColumn({

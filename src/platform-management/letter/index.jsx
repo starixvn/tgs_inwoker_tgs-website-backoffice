@@ -36,6 +36,7 @@ import { faReply } from "@fortawesome/free-solid-svg-icons"
 import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
 import { LetterTypeLabel } from "./LetterType"
 import { ActionTrans } from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -205,7 +206,7 @@ const useColumns = ({ brandId, items = [], boxType }) => {
       columns.push(
         textColumn({
           accessor: "sender",
-          Header: <Trans zh="用户名" en="Username" />,
+          Header: <UserNameTrans />,
           disableSortBy: true
         })
       )

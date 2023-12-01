@@ -36,6 +36,7 @@ import {
   RemarkTrans,
   TransactionTypeTrans
 } from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
 
 export const PlayerAddBalanceDisclosure = ({
   brandId,
@@ -153,7 +154,7 @@ const FormBody = ({}) => {
     <>
       <FieldValues margin="1rem">
         <Box>
-          <Trans zh="用户名" en="Username" />
+          <UserNameTrans />
         </Box>
         <Box alignY="center">{username}</Box>
 
@@ -287,7 +288,7 @@ const AddTurnoverRequirementFormBody = ({}) => {
     <>
       <FieldValues margin="1rem">
         <Box>
-          <Trans zh="用户名" en="Username" />
+          <UserNameTrans />
         </Box>
         <Box alignY="center">{username}</Box>
 

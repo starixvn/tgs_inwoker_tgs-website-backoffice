@@ -14,7 +14,7 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { View } from "./menu"
 import { FieldValues } from "../../layout/Grid"
-import { BalanceTrans } from "../../trans/User"
+import { BalanceTrans, UserNameTrans } from "../../trans/User"
 
 export const PlayerWageringRequirementDialogDisclosure = ({
   brandId,
@@ -91,7 +91,7 @@ const WageringRequirementDialog = ({
       maxWidth="80vw"
     >
       <FieldValues marginLeft="1rem">
-        <Trans zh="用户名" en="Username" />
+        <UserNameTrans />
         <Box>{username}</Box>
 
         <BalanceTrans />

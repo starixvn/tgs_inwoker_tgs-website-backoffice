@@ -35,6 +35,7 @@ import SearchButton from "../../button/SearchButton"
 import { InputField } from "../../input/Input"
 import { IpAddressTypeSelect } from "./IpAddressType"
 import { TimeTrans } from "../../trans/Date"
+import { UserNameTrans } from "../../trans/User"
 
 export const PlayerByIpAddressTabId = "PlayerByIpAddress"
 
@@ -139,7 +140,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "username",
         accessor: (row) => row,
-        Header: <Trans zh="玩家" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return record.username

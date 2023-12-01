@@ -32,6 +32,8 @@ import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { VipLevelTrans } from "../../trans/Vip"
 import { NetProfitTrans } from "../../trans/Field"
+import { BetAmountTrans } from "../../trans/Game"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 
 export { Code }
 
@@ -181,10 +183,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "用户名输入框",
-    en: "Input user name"
-  })
+  let usernamePlaceholder = useUserNameTrans()
 
   const onSubmit = (data) => search?.(data)
 
@@ -222,7 +221,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
     () => [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         TotalCell: () => <Trans zh="总计" en="Total" />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
         Footer: () => <Trans zh="页总计" en="Page Total" />,
@@ -295,7 +294,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       numberDecimalColumn({
         accessor: "betAmount",
         sumColumn: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
