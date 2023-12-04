@@ -31,3 +31,45 @@ export const BalanceChangeReport = {
   vi: "Báo cáo biến động giao dịch"
 }
 export const BalanceChangeReportTrans = () => <Trans {...BalanceChangeReport} />
+
+export const PlatformManagement = {
+  zh: "平台管理",
+  en: "Platform",
+  vi: "Quản lý nền tảng"
+}
+export const PlatformManagementTrans = () => <Trans {...PlatformManagement} />
+
+export const CheckIP = {
+  zh: "檢核IP地址",
+  en: "Check IP",
+  vi: "Xét duyệt địa chỉ IP"
+}
+export const CheckIPTrans = () => <Trans {...CheckIP} />
+
+const SearchDuplicateIP = {
+  zh: "搜索重複IP地址",
+  en: "Search Duplicate IP",
+  vi: "Tìm kiếm địa chỉ IP trùng lặp"
+}
+export const SearchDuplicateIPTrans = () => <Trans {...SearchDuplicateIP} />
+
+const SearchIPByAccountID = {
+  zh: "按玩家帳號搜索IP",
+  en: "Search IP By Account ID",
+  vi: "Nhấn tài khoản người chơi tìm kiếm IP"
+}
+export const SearchIPByAccountIDTrans = () => <Trans {...SearchIPByAccountID} />
+
+const SearchMemberByIP = {
+  zh: "按IP 搜索玩家",
+  en: "Search Member By IP",
+  vi: "Nhấn IP tìm kiếm người chơi"
+}
+export const SearchMemberByIPTrans = () => <Trans {...SearchMemberByIP} />
+
+export const StationLetter = {
+  zh: "站内信",
+  en: "Station Letter",
+  vi: "Thư nội bộ"
+}
+export const StationLetterTrans = () => <Trans {...StationLetter} />

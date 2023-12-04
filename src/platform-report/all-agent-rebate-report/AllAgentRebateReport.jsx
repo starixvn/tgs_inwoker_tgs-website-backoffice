@@ -51,6 +51,7 @@ import { AllAgentRebateDialogDisclosure } from "./AllAgentRebateDialog"
 import { parseISO } from "date-fns"
 import { toDate } from "../../date/toDate"
 import { useAllAgentRebateList, useAllAgentRebateTotalAmount } from "./client"
+import { SentOnTrans } from "../../trans/Date"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -291,7 +292,7 @@ const useColumns = ({ items = [], brandId }) => {
       }),
       dateTimeColumn({
         accessor: "sentOn",
-        Header: <Trans zh="派发时间" en="Sent On" />,
+        Header: <SentOnTrans />,
         disableSortBy: true
       })
     ]

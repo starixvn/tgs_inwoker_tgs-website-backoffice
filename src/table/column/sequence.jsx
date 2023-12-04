@@ -2,10 +2,9 @@ import React from "react"
 import { css } from "@emotion/react"
 import { Text } from "bumbag"
 import { Trans } from "../../i18n"
+import { SequenceTrans } from "../../trans/Field"
 
-export const SequenceHeader = () => (
-  <Trans zh="序" en="Sequence" vi="Số thứ tự" />
-)
+export const SequenceHeader = () => <SequenceTrans />
 
 const SequenceCell = ({
   state = {},

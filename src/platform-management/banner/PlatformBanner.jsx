@@ -32,6 +32,7 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { clone } from "lodash"
 import { isValidDate } from "../../date/isValidDate"
+import { SubjectTrans } from "../../trans/Field"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,
@@ -291,7 +292,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
   return (
     <FieldValues {...props}>
       <Label name="subject" required={required}>
-        <Trans zh="主题" en="Subject" />
+        <SubjectTrans />
       </Label>
       <InputField
         name="title"

@@ -11,6 +11,7 @@ import Alert from "../../dialog/Alert"
 import { Table, useTable } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
 import { Detail } from "./condition"
+import { OperatorTrans } from "../../trans/Action"
 
 export const ViewButton = ({ record, ...props }) => {
   let dialog = useModalState()
@@ -77,7 +78,7 @@ const useColumns = ({ items = [] }) => {
     {
       id: "cdreatedByUsername",
       accessor: "createdByUsername",
-      Header: <Trans zh="操作人" en="Operator" />,
+      Header: <OperatorTrans />,
       disableSortBy: true,
       headCell: {
         textAlign: "center"

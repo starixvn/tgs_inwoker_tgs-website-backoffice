@@ -47,8 +47,9 @@ import {
 } from "./PlatformBanner"
 import { VerifyPlatformBannerDisclosure } from "./VerifyPlatformBanner"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { RejectedTrans, ReviewTrans, StatusTrans } from "../../trans/Status"
+import { SubjectTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -393,12 +394,12 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
           },
       textColumn({
         accessor: "title",
-        Header: <Trans zh="主题" en="Subject" />,
+        Header: <SubjectTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "modifier",
-        Header: <Trans zh="操作人" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

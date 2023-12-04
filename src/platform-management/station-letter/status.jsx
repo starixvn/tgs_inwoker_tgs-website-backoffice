@@ -1,16 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { Locales, Trans, useTrans } from "../../i18n"
-import { RejectedTrans, ReviewTrans } from "../../trans/Status"
+import { PublishedTrans, RejectedTrans, ReviewTrans } from "../../trans/Status"
 
 export const InVerify = 0
 export const InVerifyName = "InVerify"
 
 export const Published = 1
 export const PublishedName = "Published"
-const PublishedTrans = {
-  zh: "已发布",
-  en: "Published"
-}
 
 export const Rejected = 2
 export const RejectedName = "Rejected"
@@ -43,7 +39,7 @@ export const Label = ({ value }) => {
 
     case Published:
     case PublishedName:
-      return <Trans {...PublishedTrans} />
+      return <PublishedTrans />
 
     case Rejected:
     case RejectedName:

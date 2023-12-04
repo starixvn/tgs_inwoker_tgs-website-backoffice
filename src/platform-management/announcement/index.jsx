@@ -51,8 +51,9 @@ import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import AnnouncementType, { AnnouncementTypeSelect } from "./AnnouncementType"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import { SubjectTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -439,7 +440,7 @@ const useColumns = ({
           },
       {
         accessor: "subject",
-        Header: <Trans zh="主题" en="Subject" />,
+        Header: <SubjectTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -450,7 +451,7 @@ const useColumns = ({
       },
       {
         accessor: "createdByUsername",
-        Header: <Trans zh="操作人" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"

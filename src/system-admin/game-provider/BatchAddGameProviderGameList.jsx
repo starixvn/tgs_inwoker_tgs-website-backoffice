@@ -49,7 +49,7 @@ import { GamePlatformLabel } from "../../game/games/GamePlatform.jsx"
 import { useDropzone } from "react-dropzone"
 import { GameProviderGameFormBody } from "./GameProviderGame"
 import { ConfirmText } from "../../button/ActionButtons"
-import sequenceColumn from "../../table/column/sequence"
+import sequenceColumn, { SequenceColumn } from "../../table/column/sequence"
 import { View, Update } from "./menu"
 import { isDev } from "../../env"
 import { ActionTrans } from "../../trans/Action.jsx"
@@ -183,12 +183,7 @@ const BatchAddGameListDialog = ({ gameProviderId, onSubmitted, dialog }) => {
 const useColumns = ({ gameProviderId, items = [], formMethods }) => {
   return useMemo(() => {
     let columns = [
-      textColumn({
-        id: "index",
-        accessor: (row, rowIndex) => rowIndex + 1,
-        Header: <Trans zh="序" en="Sequence" />,
-        disableSortBy: true
-      }),
+      SequenceColumn(),
       textColumn({
         accessor: "externalId",
         Header: <Trans zh="External ID" en="External Id" />,

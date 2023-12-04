@@ -37,6 +37,8 @@ import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
 import { LetterTypeLabel } from "./LetterType"
 import { ActionTrans } from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
+import { StationLetterTrans } from "../../trans/Platform"
+import { SubjectTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -47,7 +49,7 @@ export const Content = () => {
   }
 
   return (
-    <PlatformPageContent title={<Trans zh="站内信" en="Station Letter" />}>
+    <PlatformPageContent title={<StationLetterTrans />}>
       <Body />
     </PlatformPageContent>
   )
@@ -225,7 +227,7 @@ const useColumns = ({ brandId, items = [], boxType }) => {
       textColumn({
         id: "subject",
         accessor: (row) => row,
-        Header: <Trans zh="主旨" en="Subject" />,
+        Header: <SubjectTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

@@ -5,6 +5,10 @@ import Select, { SelectField } from "../select/Select"
 import { usePromotionTypeList } from "./client"
 import { useFormContext } from "react-hook-form"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
+import {
+  usePromotionSubtypeTrans,
+  usePromotionTypeTrans
+} from "../trans/Promotion"
 
 const Deposit = "Deposit"
 
@@ -139,10 +143,7 @@ export const findPromotionGroupValue = (
 
 export const PromotionTypeGroupSelect = ({ placeholder, ...props }) => {
   let locale = useLocale()
-  let defaultPlaceholder = useTrans({
-    zh: "活动类型",
-    en: "Promotion Type"
-  })
+  let defaultPlaceholder = usePromotionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let { isLoading, data: groups, error } = usePromotionTypeList()
@@ -179,10 +180,7 @@ export const PromotionTypeLabel = ({ value }) => {
 }
 
 export const PromotionTypeSelect = ({ placeholder, group, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "活动子类型",
-    en: "Promotion SubType"
-  })
+  let defaultPlaceholder = usePromotionSubtypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()

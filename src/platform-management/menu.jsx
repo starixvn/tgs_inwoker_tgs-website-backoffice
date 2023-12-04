@@ -26,13 +26,13 @@ import {
 import { Code as LetterCode, codeLabelPair as letterPair } from "./letter/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUniversity } from "@fortawesome/free-solid-svg-icons"
+import {
+  CheckIP,
+  PlatformManagementTrans,
+  StationLetter
+} from "../trans/Platform"
 
-export const Name = () => useTrans(nameMessage)
-
-export const nameMessage = {
-  zh: "平台管理",
-  en: "Platform"
-}
+export const Name = () => <PlatformManagementTrans />
 
 export const Code = "platform"
 
@@ -86,13 +86,7 @@ const labelOf = ({ locale, code }) => {
         locale
       )
     case StationLetterCode:
-      return getTrans(
-        {
-          zh: "站内信",
-          en: "Station Letters"
-        },
-        locale
-      )
+      return getTrans(StationLetter, locale)
     case VipLevelCode:
       return getTrans(
         {
@@ -110,13 +104,7 @@ const labelOf = ({ locale, code }) => {
         locale
       )
     case IPAddressCode:
-      return getTrans(
-        {
-          zh: "檢核IP地址",
-          en: "Check IP"
-        },
-        locale
-      )
+      return getTrans(CheckIP, locale)
     case LetterCode:
       return getTrans(
         {

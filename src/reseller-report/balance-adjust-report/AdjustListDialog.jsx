@@ -54,7 +54,7 @@ import DownloadButton from "../../button/DownloadButton"
 import { isSubtract } from "./operation"
 import { RemarkTrans } from "../../trans/Action"
 import { TimeTrans } from "../../trans/Date"
-import { UserNameTrans } from "../../trans/User"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 
 export const AdjustListDialogDisclosure = ({
   id,
@@ -201,10 +201,7 @@ const SearchBar = ({ userType, search, isLoading }) => {
     }
   })
 
-  let userPlaceholder = useTrans({
-    zh: "用戶名",
-    en: "Username"
-  })
+  let userPlaceholder = useUserNameTrans()
 
   let operatorPlaceholder = useTrans({
     zh: "操作者",

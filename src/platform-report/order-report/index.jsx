@@ -269,11 +269,6 @@ const SearchBar = ({
   const ExternalClosedToField = "externalClosedTo"
   //TODO: useWatch value to set sort
 
-  let externalUsernamePlaceholder = useTrans({
-    zh: "三方用戶名",
-    en: "Player Code"
-  })
-
   let roundIdPlaceholder = useRoundIdTrans()
 
   let externalRoundIdPlaceholder = useExternalRoundIdTrans()

@@ -14,6 +14,7 @@ import { PercentageNumberInputField } from "../../input/NumberInput"
 import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
 import Input from "../../input/Input"
 import Textarea from "../../textarea"
+import { SubjectTrans } from "../../trans/Field"
 
 export const TabId = "autoAlert"
 
@@ -67,7 +68,7 @@ const TextareaStyle = css`
 const AlertBox = ({ name = "", subject = "", defaultValue = "" }) => {
   return (
     <Box css={BodyStyle}>
-      <Trans zh="主旨" en="Subject" />
+      <SubjectTrans />
       <Input value={subject} disabled size="small" />
 
       <Trans zh="內容" en="Message" />

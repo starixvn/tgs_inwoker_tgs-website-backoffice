@@ -32,6 +32,7 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import Textarea, { TextareaField } from "../../textarea"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { AnnouncementTypeSelect } from "./AnnouncementType"
+import { SubjectTrans } from "../../trans/Field"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -261,7 +262,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         <AnnouncementTypeSelect name="type" disabled={readOnly} />
 
         <Label name="subject" required={required}>
-          <Trans zh="主题" en="Subject" />
+          <SubjectTrans />
         </Label>
         <InputField
           name="subject"

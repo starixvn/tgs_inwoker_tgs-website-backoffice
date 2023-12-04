@@ -47,8 +47,17 @@ import { today } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { ActionTrans } from "../../trans/Action"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
-import { usePromotionNameTrans } from "../../trans/Promotion"
+import {
+  PromotionBatchPayoutTrans,
+  PromotionNameTrans,
+  PromotionPayoutTrans,
+  PromotionPayoutsTrans,
+  PromotionSubtypeTrans,
+  PromotionTypeTrans,
+  usePromotionNameTrans
+} from "../../trans/Promotion"
 import { StatusTrans } from "../../trans/Status"
+import { CreatedTimeTrans, SentOnTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -167,7 +176,7 @@ const BodyContent = ({ brandId }) => {
   })
   return (
     <PageContent
-      title={<Trans zh="活动派发列表" en="Promotion Payouts" />}
+      title={<PromotionPayoutsTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <SearchBar
@@ -216,7 +225,7 @@ const BodyContent = ({ brandId }) => {
                 setSubmit({ players })
               }}
             >
-              <Trans zh="批量派发" en="Batch Payout" />
+              <PromotionBatchPayoutTrans />
             </Button>
           </Dialog.Footer>
         )}
@@ -272,7 +281,7 @@ const SearchBar = ({
             placeholder={usernamePlaceholder}
           />
           <DateInputRangeField
-            label={<Trans zh="派发时间" en="Sent On" />}
+            label={<SentOnTrans />}
             startProps={{
               name: "start"
             }}
@@ -356,13 +365,13 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "promotionName",
-        Header: <Trans zh="活动名称" en="Promotion Name " />,
+        Header: <PromotionNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         id: "promotionTypeGroup",
         accessor: (row) => row,
-        Header: <Trans zh="活动类型" en="Promotion Type" />,
+        Header: <PromotionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let group = usePromotionGroupLabelOf(value?.promotionType) ?? ""
@@ -371,14 +380,14 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "promotionType",
-        Header: <Trans zh="活动子类型" en="Promotion Subtype" />,
+        Header: <PromotionSubtypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PromotionTypeLabel value={value} />
       }),
       textColumn({
         id: "createdOn",
         accessor: "createdOn",
-        Header: <Trans zh="生成时间" en="Created Time" />,
+        Header: <CreatedTimeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => (
           <FormatHourMinuteSecondDayMonthYear value={value} placeholder="-" />
@@ -386,7 +395,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "sentOn",
-        Header: <Trans zh="派发时间" en="Sent On" />,
+        Header: <SentOnTrans />,
         disableSortBy: true,
         Cell: ({ value }) => (
           <FormatHourMinuteSecondDayMonthYear value={value} placeholder="-" />
@@ -394,7 +403,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="领取金额" en="Payout" />,
+        Header: <PromotionPayoutTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <FormattedNumberDecimal value={value} />
       }),

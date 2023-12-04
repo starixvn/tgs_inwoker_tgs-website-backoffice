@@ -21,7 +21,7 @@ import { AddLangDisclosure, EditLangDisclosure } from "./edit"
 import { useLanguageList } from "../../language/client"
 import equals from "fast-deep-equal"
 import { ActionTrans } from "../../trans/Action"
-import { UpdatedTimeTrans } from "../../trans/Date"
+import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -141,7 +141,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="创建时间" en="Created Time" />,
+        Header: <CreatedTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

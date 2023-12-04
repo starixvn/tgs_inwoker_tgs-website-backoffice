@@ -27,7 +27,7 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { BrandLogoDialogDisclosure } from "./BrandLogoDialog"
 import { ActionTrans } from "../../trans/Action"
-import { UpdatedTimeTrans } from "../../trans/Date"
+import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 // import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
 
@@ -207,7 +207,7 @@ const useColumns = ({ items = [], mutate }) => {
         }
       }),
       dateTimeColumn({
-        Header: <Trans zh="创建时间" en="Created Time" />,
+        Header: <CreatedTimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),

@@ -33,8 +33,10 @@ import AlertDialog from "../../dialog/Alert"
 import { SortOrder } from "../../table/order"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { Input } from "../../input/Input"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import { StationLetterTrans } from "../../trans/Platform"
+import { SubjectTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -114,7 +116,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="站内信" en="Station Letter" />}
+      title={<StationLetterTrans />}
       actionBar={
         <Box alignX="right">
           <AddButton
@@ -214,7 +216,7 @@ const useColumns = ({ mutate, statusName, items = [] }) => {
       sequenceColumn(),
       {
         accessor: "subject",
-        Header: <Trans zh="主题" en="Subject" />,
+        Header: <SubjectTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -225,7 +227,7 @@ const useColumns = ({ mutate, statusName, items = [] }) => {
       },
       {
         accessor: "createdByUsername",
-        Header: <Trans zh="操作人" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"

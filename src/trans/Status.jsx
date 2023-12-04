@@ -49,4 +49,9 @@ const Invalid = {
 export const InvalidTrans = (props) => <Trans {...Invalid} {...props} />
 export const useInvalidTrans = () => useTrans(Invalid)
 
-
+const Published = {
+  zh: "已发布",
+  en: "Published",
+  vi: "Được phát hành"
+}
+export const PublishedTrans = () => <Trans {...Published} />

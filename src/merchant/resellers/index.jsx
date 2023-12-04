@@ -21,7 +21,7 @@ import { MerchantStatusMenu } from "../MerchantStatus"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { ActionTrans } from "../../trans/Action"
-import { UpdatedTimeTrans } from "../../trans/Date"
+import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -185,7 +185,7 @@ const useColumns = ({ items = [], mutate }) => {
         }
       }),
       dateTimeColumn({
-        Header: <Trans zh="创建时间" en="Created Time" />,
+        Header: <CreatedTimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),

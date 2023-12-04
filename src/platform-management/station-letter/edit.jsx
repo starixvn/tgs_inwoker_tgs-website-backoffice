@@ -42,6 +42,7 @@ import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { PlayersTrans } from "../../trans/Player"
+import { SubjectTrans } from "../../trans/Field"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -260,7 +261,7 @@ const EditBody = ({ readOnly = false } = {}) => {
       </Set>
 
       <Label name="subject" required={required}>
-        <Trans zh="主题" en="Subject" />
+        <SubjectTrans />
       </Label>
       <InputField
         name="subject"

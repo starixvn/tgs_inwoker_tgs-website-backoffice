@@ -23,7 +23,7 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { isDev } from "../../env"
 import { ActionTrans } from "../../trans/Action"
-import { UserNameTrans } from "../../trans/User"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import { StatusTrans } from "../../trans/Status"
 
 export { Code }
@@ -119,7 +119,7 @@ const SearchBar = ({
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
-            placeholder={useSearchInputPlaceHolder()}
+            placeholder={useUserNameTrans()}
           />
           {isDev() && (
             <>
@@ -153,12 +153,6 @@ const useDepartmentPlaceholder = () =>
   useTrans({
     zh: "部门",
     en: "Department"
-  })
-
-const useSearchInputPlaceHolder = () =>
-  useTrans({
-    zh: "用戶名",
-    en: "Username"
   })
 
 const useColumns = ({ mutate, items = [] }) => {

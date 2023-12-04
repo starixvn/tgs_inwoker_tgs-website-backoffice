@@ -27,6 +27,7 @@ import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { useFindPromotionType } from "../PromotionType"
 import { get } from "lodash-es"
 import Separator from "../../layout/Separator"
+import { useViewTrans } from "../../trans/Action"
 
 const FieldName = "content"
 export const ContentSetting = ({ readOnly }) => {
@@ -132,10 +133,7 @@ const HtmlEditorDisclosure = ({ brandId, name, readOnly }) => {
     zh: "编辑",
     en: "Edit"
   })
-  let viewTitle = useTrans({
-    zh: "查看",
-    en: "View"
-  })
+  let viewTitle = useViewTrans()
   let title = readOnly ? viewTitle : editTitle
   return (
     <>

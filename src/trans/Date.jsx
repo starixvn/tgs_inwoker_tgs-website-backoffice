@@ -63,9 +63,23 @@ const ApplicationTime = {
 }
 export const ApplicationTimeTrans = () => <Trans {...ApplicationTime} />
 
+const CreatedTime = {
+  zh: "创建时间",
+  en: "Created Time",
+  vi: "Thời gian lập"
+}
+export const CreatedTimeTrans = () => <Trans {...CreatedTime} />
+
 const UpdatedTime = {
   zh: "更新时间",
   en: "Updated Time",
   vi: "Thời gian cập nhật"
 }
 export const UpdatedTimeTrans = () => <Trans {...UpdatedTime} />
+
+const SentOn = {
+  zh: "派发时间",
+  en: "Sent On",
+  vi: "Thời gian phân phát"
+}
+export const SentOnTrans = () => <Trans {...SentOn} />

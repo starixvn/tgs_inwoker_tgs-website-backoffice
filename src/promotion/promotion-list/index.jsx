@@ -53,8 +53,14 @@ import { isAfter } from "../../date/isAfter"
 import { PromotionChangeLogListDialogDisclosure } from "./ChangeLogListDialog"
 import { CopyPromotionDisclosure } from "./CopyPromotion"
 import { formatDateOnly } from "../../date/format"
-import { PromotionNameTrans } from "../../trans/Promotion"
+import {
+  PromotionManagementTrans,
+  PromotionNameTrans,
+  PromotionSubtypeTrans,
+  PromotionTypeTrans
+} from "../../trans/Promotion"
 import { StatusTrans } from "../../trans/Status"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -111,7 +117,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="活动管理" en="Promotion" />}
+      title={<PromotionManagementTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <SearchBar
@@ -453,7 +459,7 @@ const useColumns = ({
       textColumn({
         id: "promotionTypeGroup",
         accessor: (row) => row,
-        Header: <Trans zh="活动类型" en="Promotion Type" />,
+        Header: <PromotionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let group = usePromotionGroupLabelOf(value?.promotionType) ?? ""
@@ -462,7 +468,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "promotionType",
-        Header: <Trans zh="活动子类型" en="Promotion SubType" />,
+        Header: <PromotionSubtypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PromotionTypeLabel value={value} />
       }),
@@ -536,7 +542,7 @@ const useColumns = ({
       columns.push(
         textColumn({
           id: "actions",
-          Header: <Trans zh="操作" en="Action" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {

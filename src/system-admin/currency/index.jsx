@@ -21,7 +21,7 @@ import { AddCurrencyDisclosure, EditCurrencyDisclosure } from "./edit"
 import { useCurrencyList } from "../../currency/client"
 import equals from "fast-deep-equal"
 import { ActionTrans } from "../../trans/Action"
-import { UpdatedTimeTrans } from "../../trans/Date"
+import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { CurrencyTrans } from "../../trans/Payment"
 
 export { Code }
@@ -137,7 +137,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="创建时间" en="Created Time" />,
+        Header: <CreatedTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

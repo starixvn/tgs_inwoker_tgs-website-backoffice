@@ -20,7 +20,13 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { UserNameTrans } from "../../trans/User"
-import { PromotionNameTrans } from "../../trans/Promotion"
+import {
+  PromotionNameTrans,
+  PromotionSubtypeTrans,
+  PromotionTypeTrans
+} from "../../trans/Promotion"
+import { CreatedTimeTrans, SentOnTrans } from "../../trans/Date"
+import { useViewTrans } from "../../trans/Action"
 
 export const PromotionManualPayoutDisclosure = ({
   brandId,
@@ -123,10 +129,7 @@ const ManualPayoutDialog = ({ brandId, record, onSubmitted, dialog }) => {
 }
 
 const ViewPayoutDialog = ({ brandId, record, dialog }) => {
-  let title = useTrans({
-    zh: "查看",
-    en: "View"
-  })
+  let title = useViewTrans()
 
   return (
     <FormDialog
@@ -152,20 +155,20 @@ const FormBody = ({ record }) => {
         <PromotionNameTrans />
         <Box alignY="center">{record?.promotionName}</Box>
 
-        <Trans zh="活动类型  " en="Promotion Type" />
+        <PromotionTypeTrans />
         <Box alignY="center">{promotionTypeGroup}</Box>
 
-        <Trans zh="活动子类型  " en="Promotion SubType" />
+        <PromotionSubtypeTrans />
         <Box alignY="center">
           <PromotionTypeLabel value={record?.promotionType} />
         </Box>
 
-        <Trans zh="生成时间" en="Created Time" />
+        <CreatedTimeTrans />
         <Box alignY="center">
           <FormattedDateTime value={record?.createdOn} placeholder="-" />
         </Box>
 
-        <Trans zh="派发时间" en="Sent On" />
+        <SentOnTrans />
         <Box alignY="center">
           <FormattedDateTime value={record?.sentOn} placeholder="-" />
         </Box>
