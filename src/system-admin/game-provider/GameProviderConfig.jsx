@@ -57,6 +57,7 @@ import { SelectField } from "../../select/Select"
 import { SwitchField } from "../../switch/Switch"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { JsonEditor } from "../../text/editor/JsonEditor"
+import { useStatusTrans } from "../../trans/Status.jsx"
 
 export const AddGameProviderConfigDisclosure = ({
   gameProviderId,
@@ -354,10 +355,7 @@ const ConfigurationStatusSelectField = ({
   readOnly,
   ...props
 }) => {
-  let label = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let label = useStatusTrans()
   let placeholder = useTrans({
     zh: "选择状态",
     en: "Select Status"

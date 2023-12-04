@@ -53,6 +53,8 @@ import { isAfter } from "../../date/isAfter"
 import { PromotionChangeLogListDialogDisclosure } from "./ChangeLogListDialog"
 import { CopyPromotionDisclosure } from "./CopyPromotion"
 import { formatDateOnly } from "../../date/format"
+import { PromotionNameTrans } from "../../trans/Promotion"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -445,7 +447,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "name",
-        Header: <Trans zh="活动名称" en="Promotion Name" />,
+        Header: <PromotionNameTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -515,7 +517,7 @@ const useColumns = ({
       columns.push(
         textColumn({
           id: "status",
-          Header: <Trans zh="状态" en="Status" />,
+          Header: <StatusTrans />,
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {

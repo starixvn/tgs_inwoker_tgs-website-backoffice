@@ -28,6 +28,7 @@ import textColumn from "../../table/column/textColumn"
 import { BrandLogoDialogDisclosure } from "./BrandLogoDialog"
 import { ActionTrans } from "../../trans/Action"
 import { UpdatedTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
 // import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
 
 export { Code }
@@ -189,7 +190,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (

@@ -38,6 +38,7 @@ import numberColumn, {
 import { useAgentMarketingReport } from "./client"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
 
 export { Code }
 
@@ -224,12 +225,12 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "deposit",
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "withdraw",
-        Header: <Trans zh="提款金额" en="Withdraw Amount" />,
+        Header: <WithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

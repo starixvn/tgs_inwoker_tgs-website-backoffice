@@ -33,7 +33,11 @@ import {
 } from "./TransactionTypeSelect"
 import dateTimeColumn from "../../table/column/dateTime"
 import { DateButtons } from "../../date/DateButtons"
-import { RemarkTrans, TransactionTypeTrans } from "../../trans/Action"
+import {
+  OperatorTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 
 export { Code }
@@ -234,7 +238,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       textColumn({
         accessor: "operator",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       textColumn({

@@ -56,6 +56,7 @@ import {
   ValidBetAmountTrans,
   WinLossTrans
 } from "../../trans/Game"
+import { StatusTrans } from "../../trans/Status"
 
 export const AddGameProviderRoundDialogDisclosure = ({
   id,
@@ -278,7 +279,7 @@ const FormBody = ({}) => {
           filter={({ value }) => {
             return value != GameRoundStatus.Open
           }}
-          label={<Trans zh="状态" en="Status" />}
+          label={<StatusTrans />}
           required
         />
       </FieldStack>

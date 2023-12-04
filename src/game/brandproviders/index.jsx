@@ -25,6 +25,7 @@ import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
 import BrandBar from "../../report/BrandBar"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -182,7 +183,7 @@ const useColumns = ({ items = [], mutate }) => {
       {
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"

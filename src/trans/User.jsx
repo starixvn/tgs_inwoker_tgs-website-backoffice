@@ -9,6 +9,14 @@ const UserName = {
 export const useUserNameTrans = () => useTrans(UserName)
 export const UserNameTrans = () => <Trans {...UserName} />
 
+const UserType = {
+  zh: "用户类型",
+  en: "User Type",
+  vi: "Loại người dùng"
+}
+export const UserTypeTrans = () => <Trans {...UserType} />
+export const useUserTypeTrans = () => useTrans(UserType)
+
 const Birthday = {
   zh: "生日",
   en: "Birthday",

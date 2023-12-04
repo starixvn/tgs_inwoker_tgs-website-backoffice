@@ -34,6 +34,7 @@ import { VipLevelTrans } from "../../trans/Vip"
 import { NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans } from "../../trans/Game"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import { DepositAmountTrans } from "../../trans/Payment"
 
 export { Code }
 
@@ -241,7 +242,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       numberDecimalColumn({
         accessor: "depositAmount",
         sumColumn: "depositAmount",
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

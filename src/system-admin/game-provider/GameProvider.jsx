@@ -50,6 +50,7 @@ import Checkbox from "../../checkbox"
 import { GameProviderCurrencyBetLimitFieldsBox } from "./GameProviderCurrencyBetLimitFieldsBox"
 import clone from "clone-deep"
 import { sortBy } from "lodash-es"
+import { StatusTrans } from "../../trans/Status"
 
 export const ViewGameProviderDisclosure = ({ gameProviderId }) => {
   let dialog = useModalState()
@@ -358,7 +359,7 @@ const FormBody = ({ readOnly, isAdd = false }) => {
         <Input name="description" readOnly={readOnly} />
 
         <NormalLabel>
-          <Trans zh="状态" en="Status" />
+          <StatusTrans />
         </NormalLabel>
         <GameProviderStatusSelect disabled={disabled} />
 

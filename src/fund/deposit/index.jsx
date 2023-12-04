@@ -72,10 +72,14 @@ import {
   PlatformPaymentProviderSelect,
   PlatformPaymentTransferType
 } from "../../payment/PlatformPaymentProviderSelect"
-import { ActionTrans, RemarkTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans, RemarkTrans } from "../../trans/Action"
 import {
+  ActualDepositAmountTrans,
+  DepositAmountTrans,
   DepositListTrans,
   DepositPaymentMethodTrans,
+  PaymentNameTrans,
+  TransferFeeTrans,
   useChannelNameTrans,
   useDepositPaymentMethodTrans,
   usePaymentProviderTrans
@@ -90,6 +94,7 @@ import {
 } from "../../trans/Platform"
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
+import { PromotionNameTrans } from "../../trans/Promotion"
 
 export { Code }
 
@@ -576,19 +581,19 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       }),
       textColumn({
         accessor: "channelName",
-        Header: <Trans zh="通道名称" en="Payment Name" />,
+        Header: <PaymentNameTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="存款金额" en="Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "actualAmount",
         accessor: (row) => row,
-        Header: <Trans zh="实际存款金额" en="Actual Amount" />,
+        Header: <ActualDepositAmountTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let { status, amount, actualAmount } = record
@@ -602,7 +607,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       numberDecimalColumn({
         id: "handlingFee",
         accessor: (row) => row,
-        Header: <Trans zh="手续费" en="Transfer Fee" />,
+        Header: <TransferFeeTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let approved = isFundDepositApproved(record?.status)
@@ -641,7 +646,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
     columns.push(
       textColumn({
         accessor: "reviewedUserName",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     )
@@ -655,12 +660,14 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       }),
       textColumn({
         accessor: "promotionName",
-        Header: <Trans zh="活动名称" en="Promotion Name" />,
+        Header: <PromotionNameTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonus",
-        Header: <Trans zh="优惠金额" en="Promotion Bonus" />,
+        Header: (
+          <Trans zh="优惠金额" en="Promotion Bonus" vi="Số tiền khuyến mãi" />
+        ),
         disableSortBy: true
       })
     )

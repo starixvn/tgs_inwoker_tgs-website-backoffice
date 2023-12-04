@@ -17,6 +17,7 @@ import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
 import { Descending } from "../../table/order"
 import { endOfDay } from "date-fns"
+import { OperatorTrans } from "../../trans/Action"
 
 const Key = "AgentOperationList"
 
@@ -126,8 +127,7 @@ const useColumns = ({ items = [] }) =>
       }),
       textColumn({
         accessor: "createdByUsername",
-        Header: <Trans zh="操作者" en="Operator" />,
-
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ],

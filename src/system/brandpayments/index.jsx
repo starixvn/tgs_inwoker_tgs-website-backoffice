@@ -58,6 +58,7 @@ import {
   PaymentMethodTrans,
   PaymentProviderTrans
 } from "../../trans/Payment"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -411,7 +412,7 @@ const useColumns = ({
       textColumn({
         id: "paymentStatus",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (

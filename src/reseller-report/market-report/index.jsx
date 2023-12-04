@@ -35,6 +35,7 @@ import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans } from "../../trans/Game"
+import { DepositAmountTrans } from "../../trans/Payment"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -254,7 +255,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         id: "depositAmount",
         accessor: (row) => row,
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true,
         toValue: ({ isTotal, depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)

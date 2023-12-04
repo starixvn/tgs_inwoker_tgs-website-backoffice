@@ -34,6 +34,7 @@ import {
 import format from "../../date/format"
 import { ScheduleStatus, ScheduleStatusLabel } from "./ScheduleStatus"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export const EditPresetButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -363,7 +364,7 @@ const ScheduleStatusDropdownMenu = ({
           >
             <Group>
               <Button isStatic={!!value}>
-                <Trans zh="状态" en="Status" />
+                <StatusTrans />
               </Button>
               {value && (
                 <Button>

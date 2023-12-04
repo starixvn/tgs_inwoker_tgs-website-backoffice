@@ -51,11 +51,15 @@ import {
 import BankType from "../../payment/BankType"
 import { PhoneTrans, RealNameTrans, UserNameTrans } from "../../trans/User"
 import {
+  ActualDepositAmountTrans,
   ChannelNameTrans,
-  DepositPaymentMethodTrans
+  DepositAmountTrans,
+  DepositPaymentMethodTrans,
+  TransferFeeTrans
 } from "../../trans/Payment"
-import { GmsIdTrans } from "../../trans/Platform"
+import { GmsIdTrans, ThirdPartyIdTrans } from "../../trans/Platform"
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -166,7 +170,7 @@ export const FormBody = ({
           <Box alignY="center">{record?.id}</Box>
 
           <NormalLabel>
-            <Trans zh="三方订单号" en="3rd Party Id" />
+            <ThirdPartyIdTrans />
           </NormalLabel>
           <Box alignY="center">{record?.thirdPartyOrderNo}</Box>
 
@@ -183,7 +187,7 @@ export const FormBody = ({
           <Box alignY="center">{record?.channelName}</Box>
 
           <NormalLabel>
-            <Trans zh="存款金额" en="Deposit Amount" />
+            <DepositAmountTrans />
           </NormalLabel>
           <Box alignY="center">
             <FormattedNumberDecimal value={record?.amount} />
@@ -213,7 +217,7 @@ export const FormBody = ({
           </Box>
 
           <NormalLabel>
-            <Trans zh="状态" en="Status" />
+            <StatusTrans />
           </NormalLabel>
           <Box alignY="center">
             <FundDepositStatusLabel value={record?.status} />
@@ -246,7 +250,7 @@ export const FormBody = ({
         />
         <NumberInputField
           name="actualAmount"
-          label={<Trans zh="实际存款金额" en="Actual Amount" />}
+          label={<ActualDepositAmountTrans />}
           value={readOnly ? record?.actualAmount ?? record?.amount : undefined}
           step="0.01"
           disabled={disabled}
@@ -353,7 +357,7 @@ const HandlingFeeBox = ({ record, brandPayment }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="手续费" en="Transfer Fee" />
+        <TransferFeeTrans />
       </NormalLabel>
       <Box alignY="center">
         <FormattedNumberDecimal value={handlingFee} />

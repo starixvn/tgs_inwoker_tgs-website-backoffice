@@ -49,6 +49,7 @@ import { useGameProviderConfigList } from "../../game/providers/configs/client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Switch } from "../../switch/Switch"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export const GameProviderConfigListDisclosure = ({ gameProviderId }) => {
   let dialog = useModalState()
@@ -196,7 +197,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value = "" }) => value
       }),

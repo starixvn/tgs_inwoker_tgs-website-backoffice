@@ -38,6 +38,7 @@ import {
   ValidBetAmountTrans,
   WinLossTrans
 } from "../../trans/Game"
+import { StatusTrans } from "../../trans/Status"
 
 export const SettleGameRoundDialogDisclosure = ({
   roundId,
@@ -250,7 +251,7 @@ const FormBody = () => {
       <GameRoundStatusSelectField
         name="clientRoundStatus"
         options={statusOptions}
-        label={<Trans zh="状态" en="Status" />}
+        label={<StatusTrans />}
         required
       />
       <Separator />

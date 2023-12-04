@@ -46,7 +46,9 @@ import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { ActionTrans } from "../../trans/Action"
-import { UserNameTrans } from "../../trans/User"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import { usePromotionNameTrans } from "../../trans/Promotion"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -248,14 +250,8 @@ const SearchBar = ({
   search,
   isLoading
 }) => {
-  let usernamePlaceholder = useTrans({
-    zh: "用户名",
-    en: "Player Username"
-  })
-  let namePlaceholder = useTrans({
-    zh: "活动名",
-    en: "Promotion Name"
-  })
+  let usernamePlaceholder = useUserNameTrans()
+  let namePlaceholder = usePromotionNameTrans()
   let formMethods = useForm({
     defaultValues: { promotionGroup, promotionName, username, start, end }
   })
@@ -405,7 +401,7 @@ const useColumns = ({
       textColumn({
         id: "status",
         accessor: (row) => row,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return <PayoutStatusLabel value={record?.sentOn} />

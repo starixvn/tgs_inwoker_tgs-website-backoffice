@@ -32,6 +32,7 @@ import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { useRole } from "../roles/client"
 import clone from "clone-deep"
 import { UserNameTrans } from "../../trans/User"
+import { StatusTrans } from "../../trans/Status"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -543,7 +544,7 @@ const EditBody = ({ user }) => {
         </Box>
 
         <Label htmlFor="status">
-          <Trans zh="状态" en="Status" />
+          <StatusTrans />
           <Text color="danger">*</Text>
         </Label>
         <Box>

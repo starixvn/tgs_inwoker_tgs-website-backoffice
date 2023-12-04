@@ -48,3 +48,56 @@ export const DepositPaymentMethodTrans = () => (
   <Trans {...DepositPaymentMethod} />
 )
 export const useDepositPaymentMethodTrans = () => useTrans(DepositPaymentMethod)
+
+const PaymentName = {
+  zh: "通道名称",
+  en: "Payment Name",
+  vi: "Tên kênh"
+}
+export const PaymentNameTrans = () => <Trans {...PaymentName} />
+
+const DepositAmount = {
+  zh: "存款金额",
+  en: "Deposit Amount",
+  vi: "Số tiền gửi"
+}
+export const DepositAmountTrans = () => <Trans {...DepositAmount} />
+export const useDepositAmountTrans = () => useTrans(DepositAmount)
+
+const ActualDepositAmount = {
+  zh: "实际存款金额",
+  en: "Actual Amount",
+  vi: "Số tiền gửi thực tế"
+}
+export const ActualDepositAmountTrans = () => <Trans {...ActualDepositAmount} />
+
+const TransferFee = {
+  zh: "手续费",
+  en: "Transfer Fee",
+  vi: "Phí xử lý"
+}
+export const TransferFeeTrans = () => <Trans {...TransferFee} />
+
+const WaitingPayment = {
+  zh: "待支付",
+  en: "Waiting Payment",
+  vi: "Đang chờ thanh toán"
+}
+export const WaitingPaymentTrans = (props) => (
+  <Trans {...WaitingPayment} {...props} />
+)
+export const useWaitingPaymentTrans = () => useTrans(WaitingPayment)
+
+const PaidTime = {
+  zh: "已支付时间",
+  en: "Paid Time",
+  vi: "Thời gian thanh toán"
+}
+export const PaidTimeTrans = () => <Trans {...PaidTime} />
+
+const WithdrawAmount = {
+  zh: "提款金额",
+  en: "Amount",
+  vi: "Số tiền rút"
+}
+export const WithdrawAmountTrans = () => <Trans {...WithdrawAmount} />

@@ -51,6 +51,7 @@ import { DeleteText } from "../../button/ActionButtons"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { ActionTrans } from "../../trans/Action"
+import { PaymentProviderTrans } from "../../trans/Payment"
 
 export const PaymentMethodChannelListDialog = ({ dialog, onSubmitted }) => {
   let { isLoading, data, error, mutate, deleteCache } =
@@ -174,7 +175,7 @@ const useColumns = ({ items = [], mutate }) => {
     let columns = [
       textColumn({
         accessor: "paymentId",
-        Header: <Trans zh="支付厂商" en="Payment Name" />,
+        Header: <PaymentProviderTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentProviderLabel value={value} />
       }),

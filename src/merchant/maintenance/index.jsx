@@ -35,6 +35,7 @@ import { StartMaintenanceDialogDisclosure } from "./StartMaintenanceDialog"
 import { parseHourMinute, parseTimeOnly } from "../../date/parse"
 import { isValidDate } from "../../date/isValidDate"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -169,7 +170,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "brandStatus",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

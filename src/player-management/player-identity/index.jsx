@@ -42,6 +42,7 @@ import {
 } from "../../trans/User"
 import { ActionTrans, RemarkTrans } from "../../trans/Action"
 import { ApplicationTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -256,7 +257,7 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PlayerIdentityStateLabel value={value} />
       }),

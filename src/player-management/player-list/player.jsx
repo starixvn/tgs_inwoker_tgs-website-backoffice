@@ -129,7 +129,8 @@ const UpdatePlayerInfoPanel = ({
   } = {}) => {
     //drop wageringRequirement & banks not updatable value
 
-    birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : birthdate
+    //TODO: able to set not valid birthday to null?
+    birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : null
 
     let formData = diff(
       {

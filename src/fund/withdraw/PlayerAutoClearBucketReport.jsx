@@ -25,6 +25,7 @@ import { numberDecimalColumn } from "../../table/column/numberColumn"
 import SequenceColumn from "../../table/column/sequence"
 import { BalanceTrans } from "../../trans/User"
 import { TimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
 
 export const PlayerAutoClearBucketReport = ({
   playerCode,
@@ -163,7 +164,7 @@ const useColumns = ({ items = [] }) => {
       },
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <ClearBucketStatusLabel value={value} />
       })

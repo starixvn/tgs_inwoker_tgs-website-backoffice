@@ -4,6 +4,7 @@ import { useForm, useFormContext, Controller } from "react-hook-form"
 import Alert, { AlertDialog } from "../dialog/Alert"
 import { useTrans, Trans } from "../i18n"
 import { Select, SelectField } from "../select/Select"
+import { useStatusTrans } from "../trans/Status"
 
 const Active = "Active"
 const ActiveTrans = {
@@ -73,10 +74,7 @@ const toPalette = (value) => {
 const defaultEnableMenuItem = (_) => true
 
 export const MerchantStatusSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [

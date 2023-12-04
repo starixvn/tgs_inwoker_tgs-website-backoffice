@@ -99,3 +99,10 @@ export const SystemAdjust = {
 }
 export const useSystemAdjustTrans = () => useTrans(SystemAdjust)
 export const SystemAdjustTrans = () => <Trans {...SystemAdjust} />
+
+const Operator = {
+  zh: "操作者",
+  en: "Operator",
+  vi: "Người thao thác"
+}
+export const OperatorTrans = () => <Trans {...Operator} />

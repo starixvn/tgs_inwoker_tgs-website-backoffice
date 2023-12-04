@@ -43,6 +43,7 @@ import Backdrop from "../../dialog/Backdrop"
 import { useDropzone } from "react-dropzone"
 import { SubGameProviderListDisclosure } from "./SubGameProviderList"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -298,7 +299,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "status",
         accessor: (row) => row,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => (
           <GameProviderStatusMenu record={value} onSubmitted={mutate} />

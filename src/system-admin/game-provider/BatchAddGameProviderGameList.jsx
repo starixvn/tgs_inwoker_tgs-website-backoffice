@@ -53,6 +53,7 @@ import sequenceColumn from "../../table/column/sequence"
 import { View, Update } from "./menu"
 import { isDev } from "../../env"
 import { ActionTrans } from "../../trans/Action.jsx"
+import { StatusTrans } from "../../trans/Status.jsx"
 
 export const BatchAddGameProviderGameListDisclosure = ({
   gameProviderId,
@@ -204,7 +205,7 @@ const useColumns = ({ gameProviderId, items = [], formMethods }) => {
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="Status" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true
       }),
       textColumn({

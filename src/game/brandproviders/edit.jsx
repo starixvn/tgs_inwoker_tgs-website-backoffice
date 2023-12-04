@@ -25,6 +25,7 @@ import { TimeSelectField } from "../../date/TimeSelect"
 import FormDialog from "../../form/FormDialog"
 import { parseISO } from "date-fns"
 import { MaintenanceStatusToggleButton } from "./ScheduleStatus"
+import { StatusTrans } from "../../trans/Status"
 
 export const EditButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -128,7 +129,7 @@ const EditBody = ({ record = {} }) => {
       </Heading>
       <FieldValues>
         <Label>
-          <Trans zh="状态" en="Status" />
+          <StatusTrans />
         </Label>
         <Box>
           <MaintenanceStatusToggleButton name="scheduleStatus" required />

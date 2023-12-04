@@ -56,8 +56,10 @@ import BrandPaymentStatus from "../../system/brandpayments/BrandPaymentStatus"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import Big from "big.js"
 import { PhoneTrans, RealNameTrans, UserNameTrans } from "../../trans/User"
-import { GmsIdTrans } from "../../trans/Platform"
+import { GmsIdTrans, ThirdPartyIdTrans } from "../../trans/Platform"
 import { ApplicationTimeTrans } from "../../trans/Date"
+import { PaidTimeTrans, WithdrawAmountTrans } from "../../trans/Payment"
+import { StatusTrans } from "../../trans/Status"
 
 export const ViewFundWithdrawDisclosure = ({
   brandId,
@@ -155,7 +157,7 @@ export const FormBody = ({ brandId, record, readonly }) => {
           <Box alignY="center">{record?.id}</Box>
 
           <NormalLabel>
-            <Trans zh="三方订单号" en="3rd Party Id" />
+            <ThirdPartyIdTrans />
           </NormalLabel>
           <Box alignY="center">{record?.thirdPartyOrderNo}</Box>
 
@@ -167,7 +169,7 @@ export const FormBody = ({ brandId, record, readonly }) => {
           </Box>
 
           <NormalLabel>
-            <Trans zh="提款金额" en="Withdraw Amount" />
+            <WithdrawAmountTrans />
           </NormalLabel>
           <Box alignY="center">
             <FormattedNumberDecimal value={record?.amount} />
@@ -188,14 +190,14 @@ export const FormBody = ({ brandId, record, readonly }) => {
           </Box>
 
           <NormalLabel>
-            <Trans zh="已支付时间" en="Paid Time" />
+            <PaidTimeTrans />
           </NormalLabel>
           <Box alignY="center">
             <FormattedDateTime value={record?.paidOn} placeholder="-" />
           </Box>
 
           <NormalLabel>
-            <Trans zh="状态" en="Status" />
+            <StatusTrans />
           </NormalLabel>
           <Box alignY="center">
             <FundWithdrawStatusLabel value={record?.status} />

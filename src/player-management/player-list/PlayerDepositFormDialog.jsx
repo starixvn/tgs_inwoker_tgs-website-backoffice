@@ -52,6 +52,7 @@ import {
   RealNameTrans,
   useDepositFormTrans
 } from "../../trans/User"
+import { useDepositAmountTrans } from "../../trans/Payment"
 
 export const PlayerDepositFormDialogDisclosure = ({
   brandId,
@@ -591,10 +592,7 @@ const BankNameDropdownMenu = ({ onClickBankCard }) => {
 }
 
 const AmountInputField = ({ ...props }) => {
-  let label = useTrans({
-    zh: "存款金额",
-    en: "Amount"
-  })
+  let label = useDepositAmountTrans()
   return <NumberInputField name="amount" label={label} {...props} />
 }
 

@@ -129,3 +129,10 @@ const GameSettleAmount = {
   en: "Settle Amount"
 }
 export const GameSettleAmountTrans = () => <Trans {...GameSettleAmount} />
+
+export const OrderTracking = {
+  zh: "订单查询",
+  en: "Order Tracking",
+  vi: "Tìm kiếm mã đơn"
+}
+export const OrderTrackingTrans = () => <Trans {...OrderTracking} />

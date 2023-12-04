@@ -57,6 +57,7 @@ import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
 import { UserNameTrans } from "../../trans/User"
+import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -402,7 +403,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         id: "depositAmount",
         accessor: (row) => row,
         sumColumn: "depositAmount",
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true,
         toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
@@ -421,7 +422,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       numberDecimalColumn({
         accessor: "withdrawalAmount",
         sumColumn: "withdrawalAmount",
-        Header: <Trans zh="提款金额" en="Withdrawal Amount" />,
+        Header: <WithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

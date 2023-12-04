@@ -29,6 +29,7 @@ import {
   WeChatLabel
 } from "./AgentContactInfo"
 import { AgentStatusLabel } from "../AgentStatus"
+import { OperatorTrans } from "../../trans/Action"
 
 const Key = "AgentHistoryList"
 
@@ -162,7 +163,7 @@ const useColumns = ({ items = [], brandId }) =>
       }),
       textColumn({
         accessor: "modifier",
-        Header: <Trans zh="操作者" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       textColumn({

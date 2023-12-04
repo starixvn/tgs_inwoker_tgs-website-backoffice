@@ -39,6 +39,7 @@ import { Update } from "./menu"
 import { ICNumberTrans, RealNameTrans } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
 import { ApplicationTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
@@ -226,7 +227,7 @@ const ReviewDialog = ({
             {!hasAttchment && "-"}
           </Box>
 
-          <Trans zh="状态" en="Status" />
+          <StatusTrans />
           <Box>
             <PlayerIdentityStateLabel value={record.status} />
           </Box>

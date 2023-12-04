@@ -71,8 +71,12 @@ import {
   PlatformPaymentProviderSelect,
   PlatformPaymentTransferType
 } from "../../payment/PlatformPaymentProviderSelect"
-import { ActionTrans, RemarkTrans } from "../../trans/Action"
-import { usePaymentProviderTrans } from "../../trans/Payment"
+import { ActionTrans, OperatorTrans, RemarkTrans } from "../../trans/Action"
+import {
+  PaidTimeTrans,
+  WithdrawAmountTrans,
+  usePaymentProviderTrans
+} from "../../trans/Payment"
 import {
   GmsIdTrans,
   ThirdPartyIdTrans,
@@ -80,8 +84,13 @@ import {
   useSystemIdTrans,
   useThirdPartyIdTrans
 } from "../../trans/Platform"
-import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import {
+  UserNameTrans,
+  UserTypeTrans,
+  useUserNameTrans
+} from "../../trans/User"
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -552,7 +561,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "userType",
-        Header: <Trans zh="用户类型" en="User Type" />,
+        Header: <UserTypeTrans />,
         Cell: ({ value }) => <UserTypeLabel value={value} />
       }),
       textColumn({
@@ -567,13 +576,19 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="提款金额" en="Amount" />,
+        Header: <WithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "actualAmount",
         accessor: (row) => row,
-        Header: <Trans zh="实际提款金额" en="Actual Amount" />,
+        Header: (
+          <Trans
+            zh="实际提款金额"
+            en="Actual Amount"
+            vi="Số tiền rút thực tế"
+          />
+        ),
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let { status, amount, actualAmount } = record
@@ -591,13 +606,13 @@ const useColumns = ({
       }),
       dateTimeColumn({
         accessor: "paidOn",
-        Header: <Trans zh="已支付时间" en="Paid Time" />,
+        Header: <PaidTimeTrans />,
         disableSortBy: true,
         placeholder: "-"
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => (
           <FundWithdrawStatusLabel value={value} data-status={value} />
@@ -608,7 +623,7 @@ const useColumns = ({
     columns.push(
       textColumn({
         accessor: "reviewedUserName",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     )

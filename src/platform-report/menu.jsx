@@ -48,6 +48,7 @@ import {
 } from "./all-agent-rebate-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
+import { OrderTracking } from "../trans/Game"
 
 export const Code = "report"
 
@@ -98,13 +99,7 @@ const label = ({ locale, code }) => {
         locale
       )
     case OrderReportCode:
-      return getTrans(
-        {
-          zh: "订单查询",
-          en: "Order Tracking"
-        },
-        locale
-      )
+      return getTrans(OrderTracking, locale)
 
     case OpenRoundCode:
       return getTrans(

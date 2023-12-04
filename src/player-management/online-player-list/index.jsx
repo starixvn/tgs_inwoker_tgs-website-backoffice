@@ -35,6 +35,7 @@ import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { VipLevelTrans } from "../../trans/Vip"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -174,7 +175,7 @@ const useColumns = ({ items = [] } = {}) => {
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PlayerStatusLabel value={value} />
       })

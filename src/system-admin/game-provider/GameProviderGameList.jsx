@@ -54,6 +54,7 @@ import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useDropzone } from "react-dropzone"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export const GameProviderGameListDisclosure = ({
   gameProviderId,
@@ -226,7 +227,7 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value = "" }) => value
       }),

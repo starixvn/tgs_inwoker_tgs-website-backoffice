@@ -34,6 +34,7 @@ import { SortOrder } from "../../table/order"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { Input } from "../../input/Input"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -241,7 +242,7 @@ const useColumns = ({ mutate, statusName, items = [] }) => {
       {
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"

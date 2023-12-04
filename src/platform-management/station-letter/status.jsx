@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { Locales, Trans, useTrans } from "../../i18n"
+import { RejectedTrans, ReviewTrans } from "../../trans/Status"
 
 export const InVerify = 0
 export const InVerifyName = "InVerify"
-const InVerifyTrans = {
-  zh: "审核中",
-  en: "Under review"
-}
 
 export const Published = 1
 export const PublishedName = "Published"
@@ -17,10 +14,6 @@ const PublishedTrans = {
 
 export const Rejected = 2
 export const RejectedName = "Rejected"
-const RejectedTrans = {
-  zh: "已拒绝",
-  en: "Rejected"
-}
 
 //string -> number
 export const from = (value) => {
@@ -46,7 +39,7 @@ export const Label = ({ value }) => {
   switch (value) {
     case InVerify:
     case InVerifyName:
-      return <Trans {...InVerifyTrans} />
+      return <ReviewTrans />
 
     case Published:
     case PublishedName:
@@ -54,7 +47,7 @@ export const Label = ({ value }) => {
 
     case Rejected:
     case RejectedName:
-      return <Trans {...RejectedTrans} />
+      return <RejectedTrans />
 
     default:
       return value

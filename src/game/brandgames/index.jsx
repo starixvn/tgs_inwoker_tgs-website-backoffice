@@ -38,6 +38,7 @@ import BrandBar from "../../report/BrandBar"
 import { GameTypeLabel, AllGameTypeSelect } from "../GameType"
 import { NumberInput } from "../../input/NumberInput"
 import { ActionTrans } from "../../trans/Action.jsx"
+import { StatusTrans } from "../../trans/Status.jsx"
 
 export { Code } from "./menu"
 
@@ -461,7 +462,7 @@ const useColumns = ({
       {
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center",

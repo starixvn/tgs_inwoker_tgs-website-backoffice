@@ -48,14 +48,11 @@ import {
 import { VerifyPlatformBannerDisclosure } from "./VerifyPlatformBanner"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { ActionTrans } from "../../trans/Action"
+import { RejectedTrans, ReviewTrans, StatusTrans } from "../../trans/Status"
 
 export { Code }
 
 const InVerify = "reviewing"
-const InVerifyTrans = {
-  zh: "审核中",
-  en: "Under review"
-}
 
 const Effective = "valid"
 const EffectiveTrans = {
@@ -70,10 +67,6 @@ const ExpiredTrans = {
 }
 
 const Rejected = "rejected"
-const RejectedTrans = {
-  zh: "拒绝",
-  en: "Rejected"
-}
 
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
@@ -160,7 +153,7 @@ const BodyContent = ({ brandId }) => {
         <TabList {...tab}>
           {hasVerifyAuth && (
             <Tab tabId={InVerify} onClick={activeTab(InVerify)} {...tab}>
-              <Trans {...InVerifyTrans} />
+              <ReviewTrans />
             </Tab>
           )}
 
@@ -171,7 +164,7 @@ const BodyContent = ({ brandId }) => {
             <Trans {...ExpiredTrans} />
           </Tab>
           <Tab tabId={Rejected} onClick={activeTab(Rejected)} {...tab}>
-            <Trans {...RejectedTrans} />
+            <RejectedTrans />
           </Tab>
         </TabList>
         {hasVerifyAuth && (
@@ -427,7 +420,7 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
       {
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"

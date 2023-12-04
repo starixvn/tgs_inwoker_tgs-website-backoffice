@@ -55,6 +55,7 @@ import Reward from "./reward/index"
 import { PromotionTypes as OfflinePromotionTypeList } from "./reward/OfflineRewardGroup"
 import { useIsPromotionStarted } from "./usePromotionFormData"
 import { PromotionTypeField } from "./field/PromotionTypeField"
+import { PromotionNameTrans } from "../../trans/Promotion"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -449,7 +450,7 @@ export const FormBody = ({ brandId, readOnly = false }) => {
     <FieldStack marginLeft="1rem" paddingBottom="1.5rem" width="max-content">
       <FieldValues>
         <NormalLabel>
-          <Trans zh="活动名称" en="Promotion Name" />
+          <PromotionNameTrans />
         </NormalLabel>
         <Box alignY="center">
           <InputField

@@ -4,18 +4,23 @@ import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
 import { MultiSelectBox } from "../../select/MultiSelectBox"
 import { isDev } from "../../env"
+import {
+  InvalidTrans,
+  RejectedTrans,
+  ReviewTrans,
+  useInvalidTrans,
+  useRejectedTrans,
+  useReviewTrans,
+  useStatusTrans
+} from "../../trans/Status"
+import {
+  WaitingPaymentTrans,
+  useWaitingPaymentTrans
+} from "../../trans/Payment"
 
 const Review = "Review"
-const ReviewTrans = {
-  zh: "审核中",
-  en: "Review"
-}
 
 const Approved = "Approved"
-const ApprovedTrans = {
-  zh: "待支付",
-  en: "Waiting Payment"
-}
 
 const Paid = "Paid"
 const PaidTrans = {
@@ -24,16 +29,8 @@ const PaidTrans = {
 }
 
 const Rejected = "Rejected"
-const RejectedTrans = {
-  zh: "已拒绝",
-  en: "Rejected"
-}
 
 const Invalid = "Invalid"
-const InvalidTrans = {
-  zh: "无效",
-  en: "Invalid"
-}
 
 export const UnprocessedStatus = [Review, Approved]
 
@@ -48,15 +45,15 @@ export const isFundInvalid = (value) => value === Invalid
 export const FundWithdrawStatusLabel = ({ value, ...props }) => {
   switch (value) {
     case Review:
-      return <Trans {...ReviewTrans} {...props} />
+      return <ReviewTrans />
     case Approved:
-      return <Trans {...ApprovedTrans} {...props} />
+      return <WaitingPaymentTrans {...props} />
     case Paid:
       return <Trans {...PaidTrans} {...props} />
     case Rejected:
-      return <Trans {...RejectedTrans} {...props} />
+      return <RejectedTrans {...props} />
     case Invalid:
-      return <Trans {...InvalidTrans} {...props} />
+      return <InvalidTrans {...props} />
     default:
       return value ?? ""
   }
@@ -67,19 +64,16 @@ export const FundWithdrawStatusSelect = ({
   isMulti = true,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useTrans(ReviewTrans),
+      label: useReviewTrans(),
       value: Review
     },
     {
-      label: useTrans(ApprovedTrans),
+      label: useWaitingPaymentTrans(),
       value: Approved
     },
     {
@@ -87,11 +81,11 @@ export const FundWithdrawStatusSelect = ({
       value: Paid
     },
     {
-      label: useTrans(RejectedTrans),
+      label: useRejectedTrans(),
       value: Rejected
     },
     {
-      label: useTrans(InvalidTrans),
+      label: useInvalidTrans(),
       value: Invalid
     }
   ]

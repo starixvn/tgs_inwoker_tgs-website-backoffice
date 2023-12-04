@@ -89,6 +89,7 @@ import {
   GameSettleAmountTrans,
   ValidBetAmountTrans
 } from "../../trans/Game"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -524,7 +525,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: GameRoundStatusLabel
       }),

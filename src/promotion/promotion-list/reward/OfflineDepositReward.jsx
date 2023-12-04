@@ -31,6 +31,7 @@ import { NumberInput, NumberInputField } from "../../../input/NumberInput"
 import { useMount } from "react-use"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { MainSetting } from "../MainSetting"
+import { DepositAmountTrans } from "../../../trans/Payment"
 
 const PromotionType = "OfflineDepositReward"
 
@@ -142,7 +143,7 @@ const RewardSetting = ({
     <Set orientation="horizontal" isFilled>
       <Group flex="1">
         <Button isStatic tabIndex="-1">
-          <Trans zh="存款金额" en="Deposit Amount" />
+          <DepositAmountTrans />
         </Button>
         <NumberInput
           data-type={conditionFieldName}

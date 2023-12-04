@@ -62,6 +62,7 @@ import { VipLevelTrans } from "../../trans/Vip"
 import { NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
 import { UserNameTrans } from "../../trans/User"
+import { DepositAmountTrans } from "../../trans/Payment"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -330,7 +331,7 @@ const useColumns = ({ items = [] }) => {
         id: "depositAmount",
         accessor: (row) => row,
         sumColumn: "depositAmount",
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true,
         toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)

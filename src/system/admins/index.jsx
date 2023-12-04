@@ -24,6 +24,7 @@ import textColumn from "../../table/column/textColumn"
 import { isDev } from "../../env"
 import { ActionTrans } from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -217,7 +218,7 @@ const useColumns = ({ mutate, items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         accessor: "status",
         disableSortBy: true,
         Cell: ({ value }) => (

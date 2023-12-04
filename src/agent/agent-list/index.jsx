@@ -75,6 +75,7 @@ import {
   useUserNameTrans
 } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -282,7 +283,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <AgentStatusLabel value={value} />
       }),

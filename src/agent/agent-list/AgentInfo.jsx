@@ -100,6 +100,7 @@ import {
   RegistrationTimeTrans
 } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -790,7 +791,8 @@ const BalanceBox = ({ value = "", ...props }) => {
   )
 }
 
-export const StatusLabel = () => <Trans zh="状态" en="Status" />
+//TODO: rm?
+export const StatusLabel = () => <StatusTrans />
 
 const AgentStatusBox = ({ value = "", children, ...props }) => {
   return (

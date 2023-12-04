@@ -55,7 +55,11 @@ import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 import { splitEvery, any } from "ramda"
 import { isValidDate } from "../../date/isValidDate"
 import { PlayerSettleAmountTrans } from "../../trans/Player"
-import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import {
+  BetAmountTrans,
+  OrderTrackingTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
 
 export { Code }
 
@@ -178,7 +182,7 @@ const ReportContent = ({ brandId }) => {
           }}
         />
       }
-      title={<Trans zh="订单查询" en="Order Tracking" />}
+      title={<OrderTrackingTrans />}
     >
       <Table
         columns={columns}
@@ -524,23 +528,6 @@ export const useColumns = ({ items = [], filter: predicate }) => {
         Header: <Trans zh="游戏名称" en="Game Name" />,
         disableSortBy: true
       }),
-      /*
-      TODO: rm status
-      {
-        accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
-        disableSortBy: true,
-        Cell: GameRoundStatusLabel,
-        headCell: {
-          textAlign: "center",
-          whiteSpace: "nowrap"
-        },
-        cell: {
-          textAlign: "center",
-          whiteSpace: "nowrap"
-        }
-      },
-      */
       textColumn({
         accessor: "currencyCode",
         Header: <Trans zh="币种" en="Currency" />,

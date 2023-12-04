@@ -22,6 +22,10 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { PromotionWinningDetailDialogDisclosure } from "./PromotionWinningDetailDialog"
 import { Descending } from "../../table/order"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import {
+  PromotionNameTrans,
+  usePromotionNameTrans
+} from "../../trans/Promotion"
 
 export { Code }
 
@@ -127,10 +131,7 @@ const SearchBar = ({
     defaultValues: { promotionName, userName, from, to }
   })
 
-  let nameInputPlaceholder = useTrans({
-    zh: "活动名",
-    en: "Promotion name"
-  })
+  let nameInputPlaceholder = usePromotionNameTrans()
 
   let usernameInputPlaceholder = useUserNameTrans()
 
@@ -207,7 +208,7 @@ const useColumns = ({ items = [], brandId }) => {
       }),
       textColumn({
         accessor: "promotionName",
-        Header: <Trans zh="活动名称" en="Promotion Name" />,
+        Header: <PromotionNameTrans />,
         disableSortBy: true
       }),
       textColumn({

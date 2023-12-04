@@ -20,6 +20,7 @@ import {
   ConfirmCancelFooter
 } from "../../form/ConfirmButtonFooter"
 import { UserNameTrans } from "../../trans/User"
+import { PromotionNameTrans } from "../../trans/Promotion"
 
 export const PromotionManualPayoutDisclosure = ({
   brandId,
@@ -148,7 +149,7 @@ const FormBody = ({ record }) => {
         <UserNameTrans />
         <Box alignY="center">{record?.username}</Box>
 
-        <Trans zh="活动名称 " en="Promotion Name" />
+        <PromotionNameTrans />
         <Box alignY="center">{record?.promotionName}</Box>
 
         <Trans zh="活动类型  " en="Promotion Type" />

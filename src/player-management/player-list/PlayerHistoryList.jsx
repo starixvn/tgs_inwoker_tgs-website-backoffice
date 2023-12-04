@@ -53,7 +53,8 @@ import { AgentIdUsername } from "../../agent/agent-list/AgentUsername"
 import {
   ActionDateTimeTrans,
   ActionTypeTrans,
-  EditingRecordsTrans
+  EditingRecordsTrans,
+  OperatorTrans
 } from "../../trans/Action"
 
 export const Key = "history"
@@ -176,7 +177,7 @@ const useColumns = ({ items = [], brandId }) =>
       }),
       textColumn({
         accessor: "modifier",
-        Header: <Trans zh="操作者" en="Updated By" vi="Người thao tác" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       textColumn({

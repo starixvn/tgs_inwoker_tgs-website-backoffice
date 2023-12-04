@@ -476,7 +476,7 @@ const useColumns = ({
       {
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"

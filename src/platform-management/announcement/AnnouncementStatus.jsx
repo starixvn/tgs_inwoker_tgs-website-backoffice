@@ -6,12 +6,9 @@ import AlertDialog from "../../dialog/Alert"
 import { useChangeAnnouncementStatus } from "./client"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
+import { InvalidTrans, RejectedTrans, ReviewTrans } from "../../trans/Status"
 
 export const InVerify = "InVerify"
-const InVerifyTrans = {
-  zh: "审核中",
-  en: "Under review"
-}
 
 export const Effective = "Effective"
 const EffectiveTrans = {
@@ -20,10 +17,6 @@ const EffectiveTrans = {
 }
 
 export const Invalid = "Invalid"
-const InvalidTrans = {
-  zh: "无效",
-  en: "Invalid"
-}
 
 export const Expired = "Expired"
 const ExpiredTrans = {
@@ -32,27 +25,23 @@ const ExpiredTrans = {
 }
 
 export const Rejected = "Rejected"
-const RejectedTrans = {
-  zh: "拒绝",
-  en: "Rejected"
-}
 
 export const AnnouncementStatusLabel = ({ value = "" }) => {
   switch (value) {
     case InVerify:
-      return <Trans {...InVerifyTrans} />
+      return <ReviewTrans />
 
     case Effective:
       return <Trans {...EffectiveTrans} />
 
     case Invalid:
-      return <Trans {...InvalidTrans} />
+      return <InvalidTrans />
 
     case Expired:
       return <Trans {...ExpiredTrans} />
 
     case Rejected:
-      return <Trans {...RejectedTrans} />
+      return <RejectedTrans />
 
     default:
       return value

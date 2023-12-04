@@ -38,6 +38,7 @@ import textColumn from "../../table/column/textColumn"
 import { CreditAgentTypeLabel, CreditAgentTypeSelect } from "./CreditAgentType"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -177,7 +178,7 @@ const useColumns = ({ mutate, items = [], brandId } = {}) => {
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <AgentStatusLabel value={value} />
       }),
