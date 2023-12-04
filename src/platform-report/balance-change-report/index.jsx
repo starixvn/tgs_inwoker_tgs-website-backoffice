@@ -38,7 +38,13 @@ import {
   RemarkTrans,
   TransactionTypeTrans
 } from "../../trans/Action"
-import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import {
+  BalanceAfterTrans,
+  BalanceBeforeTrans,
+  UserNameTrans,
+  useUserNameTrans
+} from "../../trans/User"
+import { BalanceChangeReportTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -127,7 +133,7 @@ const ReportContent = ({ brandId }) => {
           />
         </Level>
       }
-      title={<Trans zh="帳變報表" en="Balance Change Report" />}
+      title={<BalanceChangeReportTrans />}
     >
       <Table
         columns={columns}
@@ -219,21 +225,14 @@ const useColumns = ({ brandId, items = [] }) => {
         Header: <Trans zh="交易金额" en="amount" />,
         disableSortBy: true
       }),
-      /*
-      numberDecimalColumn({
-        accessor: "wageringRequirement",
-        Header: <Trans zh="流水" en="Wagering" />,
-        disableSortBy: true
-      }),
-      */
       numberDecimalColumn({
         accessor: "beforeBalance",
-        Header: <Trans zh="余额 (前)" en="Before" />,
+        Header: <BalanceBeforeTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "afterBalance",
-        Header: <Trans zh="余额 (后)" en="After" />,
+        Header: <BalanceAfterTrans />,
         disableSortBy: true
       }),
       textColumn({

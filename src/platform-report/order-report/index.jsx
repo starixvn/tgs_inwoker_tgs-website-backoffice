@@ -54,12 +54,25 @@ import { isDev } from "../../env"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 import { splitEvery, any } from "ramda"
 import { isValidDate } from "../../date/isValidDate"
-import { PlayerSettleAmountTrans } from "../../trans/Player"
+import { PlayerSettleAmountTrans, PlayerWinLossTrans } from "../../trans/Player"
 import {
   BetAmountTrans,
+  BetTimeTrans,
+  ExternalRoundIdTrans,
+  GameNameTrans,
+  GameProviderTrans,
   OrderTrackingTrans,
-  ValidBetAmountTrans
+  RoundIdTrans,
+  SettleTimeTrans,
+  SubGameProviderTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans,
+  useExternalRoundIdTrans,
+  useRoundIdTrans
 } from "../../trans/Game"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import { CurrencyTrans } from "../../trans/Payment"
+import { DetailTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -246,10 +259,7 @@ const SearchBar = ({
 
   const onSubmit = (data) => search?.(data)
 
-  let playerNamePlaceholder = useTrans({
-    zh: "用户名",
-    en: "Player Name"
-  })
+  let playerNamePlaceholder = useUserNameTrans()
 
   const ExternalFromField = "externalFrom"
   const ExternalToField = "externalTo"
@@ -264,15 +274,9 @@ const SearchBar = ({
     en: "Player Code"
   })
 
-  let roundIdPlaceholder = useTrans({
-    zh: "订单ID",
-    en: "Round ID"
-  })
+  let roundIdPlaceholder = useRoundIdTrans()
 
-  let externalRoundIdPlaceholder = useTrans({
-    zh: "三方订单ID",
-    en: "External ID"
-  })
+  let externalRoundIdPlaceholder = useExternalRoundIdTrans()
 
   //TODO: rename to from
   //TODO: apply maxDate={maxDate}
@@ -320,58 +324,8 @@ const SearchBar = ({
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <FieldStack orientation="vertical">
           <Set orientation="horizontal">
-            {/* 
             <DateInputRangeField
-              label={<Trans zh="三方投注时间" en="External Created On" />}
-              showDateDropdownMenu
-              minDate={minDate}
-              maxDate={maxDate}
-              maxRangeDays={maxRangeDays}
-              fakeTimeLabel
-              startProps={{
-                name: ExternalFromField
-              }}
-              endProps={{
-                name: ExternalToField
-              }}
-              validate={(range) =>
-                validateValidDateRanges(range, [
-                  ExternalClosedFromField,
-                  ExternalClosedToField,
-                  StartField,
-                  EndField,
-                  ClosedFromField,
-                  ClosedToField
-                ])
-              }
-            />
-            <DateInputRangeField
-              label={<Trans zh="三方结算时间" en="External Closed On" />}
-              showDateDropdownMenu
-              minDate={minDate}
-              maxDate={maxDate}
-              maxRangeDays={maxRangeDays}
-              fakeTimeLabel
-              startProps={{
-                name: ExternalClosedFromField
-              }}
-              endProps={{
-                name: ExternalClosedToField
-              }}
-              validate={(range) =>
-                validateValidDateRanges(range, [
-                  ExternalFromField,
-                  ExternalToField,
-                  StartField,
-                  EndField,
-                  ClosedFromField,
-                  ClosedToField
-                ])
-              }
-            /> 
-            */}
-            <DateInputRangeField
-              label={<Trans zh="投注时间" en="Created On" />}
+              label={<BetTimeTrans />}
               showDateDropdownMenu
               minDate={minDate}
               maxRangeDays={maxRangeDays}
@@ -399,7 +353,7 @@ const SearchBar = ({
               }}
             />
             <DateInputRangeField
-              label={<Trans zh="结算时间" en="Closed On" />}
+              label={<SettleTimeTrans />}
               showDateDropdownMenu
               minDate={minDate}
               maxRangeDays={maxRangeDays}
@@ -444,16 +398,6 @@ const SearchBar = ({
               showEmptyFieldValueAddonAfter
               placeholder={externalRoundIdPlaceholder}
             />
-
-            {/* 
-            TODO: rm status
-            <GameRoundStatusSelect
-              name="status"
-            filter={({value}) => {
-              return value != GameRoundStatus.Open
-            }}
-            /> 
-            */}
             <GameProviderSelect name="gameProviderId" />
             <SearchButton isLoading={isLoading} disabled={isLoading} />
           </Set>
@@ -468,69 +412,52 @@ export const useColumns = ({ items = [], filter: predicate }) => {
     let columns = [
       textColumn({
         accessor: "playerName",
-        Header: <Trans zh="用户名" en="Player Name" />,
+        Header: <UserNameTrans />,
         disableSortBy: true,
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
       }),
-      /*
-      textColumn({
-        accessor: "externalPlayerName",
-        Header: <Trans zh="三方用戶名" en="Player Code" />,
-        disableSortBy: true
-      }),
-      dateTimeColumn({
-        accessor: "externalCreatedOn",
-        Header: <Trans zh="三方投注时间" en="External Created On" />,
-        disableSortBy: true
-      }),
-      dateTimeColumn({
-        accessor: "externalClosedOn",
-        Header: <Trans zh="三方结算时间" en="External Closed On" />,
-        disableSortBy: true
-      }),
-      */
       ellipsisTextColumn({
         accessor: "externalRoundId",
-        Header: <Trans zh="三方订单ID" en="External Id" />,
+        Header: <ExternalRoundIdTrans />,
         disableSortBy: true,
         maxWidth: "8rem",
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
       }),
       ellipsisTextColumn({
         accessor: "id",
-        Header: <Trans zh="订单ID" en="Id" />,
+        Header: <RoundIdTrans />,
         disableSortBy: true,
         maxWidth: "8rem",
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="投注时间" en="Created On" />,
+        Header: <BetTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "closedOn",
-        Header: <Trans zh="结算时间" en="Closed On" />,
+        Header: <SettleTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "gameProviderName",
-        Header: <Trans zh="游戏厂商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "subGameProviderName",
-        Header: <Trans zh="子游戏厂商" en="Sub Game Provider" />,
+        Header: <SubGameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "gameName",
-        Header: <Trans zh="游戏名称" en="Game Name" />,
+        Header: <GameNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "currencyCode",
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -545,7 +472,7 @@ export const useColumns = ({ items = [], filter: predicate }) => {
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -555,13 +482,13 @@ export const useColumns = ({ items = [], filter: predicate }) => {
       }),
       numberDecimalColumn({
         accessor: "winLoss",
-        Header: <Trans zh="玩家输赢金额" en="Player Win Loss" />,
+        Header: <PlayerWinLossTrans />,
         disableSortBy: true
       }),
       {
         id: "detail",
         accessor: (record) => record,
-        Header: <Trans zh="详情" en="Detail" />,
+        Header: <DetailTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

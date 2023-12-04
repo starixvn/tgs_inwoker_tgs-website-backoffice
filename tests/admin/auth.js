@@ -334,7 +334,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Turnover",
-      Zh: "流水"
+      Zh: "流水",
+      vi: "Vòng cược"
     }
   },
   {

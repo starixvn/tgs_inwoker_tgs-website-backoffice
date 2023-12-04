@@ -55,6 +55,7 @@ import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useDropzone } from "react-dropzone"
 import { ActionTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import { GameNameTrans } from "../../trans/Game"
 
 export const GameProviderGameListDisclosure = ({
   gameProviderId,
@@ -222,7 +223,7 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
       }),
       textColumn({
         accessor: "name",
-        Header: <Trans zh="游戏名称" en="Name" />,
+        Header: <GameNameTrans />,
         disableSortBy: true
       }),
       textColumn({

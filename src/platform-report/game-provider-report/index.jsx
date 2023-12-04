@@ -40,7 +40,14 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { GameTypeSelect } from "../../game/GameType"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import DownloadButton from "../../button/DownloadButton"
-import { BetAmountTrans } from "../../trans/Game"
+import {
+  BetAmountTrans,
+  GameProviderReportTrans,
+  TransactionCountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
+import { CurrencyTrans } from "../../trans/Payment"
 
 export { Code }
 
@@ -130,7 +137,7 @@ const ReportContent = ({ brandId }) => {
           }}
         />
       }
-      title={<Trans zh="游戏商報表" en="Game Provider Report" />}
+      title={<GameProviderReportTrans />}
     >
       <Table
         columns={columns}
@@ -241,7 +248,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         id: "currencyCode",
         accessor: (row) => row,
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
           return currencyCode
@@ -250,7 +257,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberColumn({
         accessor: "transactionCount",
-        Header: <Trans zh="訂單筆數" en="Transactions" />,
+        Header: <TransactionCountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -260,12 +267,12 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "originalTurnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

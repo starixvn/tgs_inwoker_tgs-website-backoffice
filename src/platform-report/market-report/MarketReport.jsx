@@ -32,7 +32,11 @@ import Big from "big.js"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
-import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import {
+  BetAmountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
 import { DepositAmountTrans } from "../../trans/Payment"
 
 const MainTable = "main"
@@ -316,7 +320,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

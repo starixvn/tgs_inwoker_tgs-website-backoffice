@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef, forwardRef } from "react"
 import { Button, Modal, css, Icon } from "bumbag"
 import { Trans } from "../i18n"
 import { faCog, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
-import { EditTrans, ViewTrans } from "../trans/Action"
+import { DetailTrans, EditTrans, ViewTrans } from "../trans/Action"
 
 export const Disclosure = forwardRef(
   ({ use = Button, children, ...props }, ref) => (
@@ -54,7 +54,7 @@ export const DeleteDisclosure = forwardRef(
 
 export const DetailDisclosure = forwardRef((props, ref) => (
   <Disclosure ref={ref} {...props}>
-    <Trans zh="详情" en="Detail" />
+    <DetailTrans />
   </Disclosure>
 ))
 

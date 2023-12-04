@@ -34,8 +34,8 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { NetProfitTrans } from "../../trans/Field"
-import { BetAmountTrans } from "../../trans/Game"
-import { DepositAmountTrans } from "../../trans/Payment"
+import { BetAmountTrans, TurnoverTrans } from "../../trans/Game"
+import { CurrencyTrans, DepositAmountTrans } from "../../trans/Payment"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -245,7 +245,7 @@ const useColumns = ({ items = [] }) => {
       wrapTextColumn({
         id: "currencyCode",
         accessor: (row) => row,
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
           // return isTotal ? "" : currencyCode
@@ -291,7 +291,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

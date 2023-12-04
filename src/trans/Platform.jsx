@@ -24,3 +24,10 @@ const SystemId = {
 }
 export const SystemIdTrans = () => <Trans {...SystemId} />
 export const useSystemIdTrans = () => useTrans(SystemId)
+
+export const BalanceChangeReport = {
+  zh: "帳變報表",
+  en: "Balance Change Report",
+  vi: "Báo cáo biến động giao dịch"
+}
+export const BalanceChangeReportTrans = () => <Trans {...BalanceChangeReport} />

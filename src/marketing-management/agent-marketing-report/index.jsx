@@ -37,7 +37,11 @@ import numberColumn, {
 } from "../../table/column/numberColumn"
 import { useAgentMarketingReport } from "./client"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import {
+  BetAmountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
 import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
 
 export { Code }
@@ -257,7 +261,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

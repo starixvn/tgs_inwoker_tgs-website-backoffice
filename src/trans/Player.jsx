@@ -41,3 +41,11 @@ const PlayerSettleAmount = {
   vi: "Thanh toán"
 }
 export const PlayerSettleAmountTrans = () => <Trans {...PlayerSettleAmount} />
+
+const PlayerWinLoss = {
+  zh: "玩家输赢金额",
+  en: "Player Win Loss",
+  vi: "Thắng thua của người chơi"
+}
+export const PlayerWinLossTrans = () => <Trans {...PlayerWinLoss} />
+export const usePlayerWinLossTrans = () => useTrans(PlayerWinLoss)

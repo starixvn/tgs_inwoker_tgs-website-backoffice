@@ -106,3 +106,11 @@ const Operator = {
   vi: "Người thao thác"
 }
 export const OperatorTrans = () => <Trans {...Operator} />
+
+const Detail = {
+  zh: "详情",
+  en: "Detail",
+  vi: "Chi tiết"
+}
+export const DetailTrans = () => <Trans {...Detail} />
+export const useDetailTrans = () => useTrans(Detail)

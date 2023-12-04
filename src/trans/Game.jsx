@@ -9,6 +9,21 @@ const GameProvider = {
 export const useGameProviderTrans = () => useTrans(GameProvider)
 export const GameProviderTrans = () => <Trans {...GameProvider} />
 
+const SubGameProvider = {
+  zh: "子游戏厂商",
+  en: "Sub Game Provider",
+  vi: "Nhà sản xuất trò chơi phụ"
+}
+export const SubGameProviderTrans = () => <Trans {...SubGameProvider} />
+export const useSubGameProviderTrans = () => useTrans(SubGameProvider)
+
+const GameName = {
+  zh: "游戏名称",
+  en: "Game Name",
+  vi: "Tên trò chơi"
+}
+export const GameNameTrans = () => <Trans {...GameName} />
+
 const GameType = {
   zh: "游戏类型",
   en: "Game Type",
@@ -107,6 +122,14 @@ const ValidBetAmount = {
   vi: "Số tiền cược hợp lệ"
 }
 export const ValidBetAmountTrans = () => <Trans {...ValidBetAmount} />
+export const useValidBetAmountTrans = () => useTrans(ValidBetAmount)
+
+export const Turnover = {
+  zh: "流水",
+  en: "Turnover",
+  vi: "Vòng cược"
+}
+export const TurnoverTrans = () => <Trans {...Turnover} />
 
 const WinLoss = {
   zh: "输赢金额",
@@ -136,3 +159,61 @@ export const OrderTracking = {
   vi: "Tìm kiếm mã đơn"
 }
 export const OrderTrackingTrans = () => <Trans {...OrderTracking} />
+
+const BetTime = {
+  zh: "投注时间",
+  en: "Created On",
+  vi: "Thời gian đặt cược"
+}
+export const BetTimeTrans = () => <Trans {...BetTime} />
+
+const ExternalBetTime = {
+  zh: "三方投注时间",
+  en: "External Created On",
+  vi: "Thời gian đặt cược"
+}
+export const ExternalBetTimeTrans = () => <Trans {...ExternalBetTime} />
+
+const SettleTime = {
+  zh: "结算时间",
+  en: "Closed On",
+  vi: "Thời gian kết toán"
+}
+export const SettleTimeTrans = () => <Trans {...SettleTime} />
+
+const ExternalRoundId = {
+  zh: "三方订单ID",
+  en: "External ID",
+  vi: "Mã đơn ID bên thú ba"
+}
+export const ExternalRoundIdTrans = () => <Trans {...ExternalRoundId} />
+export const useExternalRoundIdTrans = () => useTrans(ExternalRoundId)
+
+const RoundId = {
+  zh: "订单ID",
+  en: "Id",
+  vi: "Mã đơn ID"
+}
+export const RoundIdTrans = () => <Trans {...RoundId} />
+export const useRoundIdTrans = () => useTrans(RoundId)
+
+const UnsettledBet = {
+  zh: "未结算订单查询",
+  en: "Unsettled Bet",
+  vi: "Truy vấn đơn hàng chưa kết toán"
+}
+export const UnsettledBetTrans = () => <Trans {...UnsettledBet} />
+
+export const GameProviderReport = {
+  zh: "游戏商報表",
+  en: "Game Provider Report",
+  vi: "Báo cáo nhà cung cấp trò chơi"
+}
+export const GameProviderReportTrans = () => <Trans {...GameProviderReport} />
+
+export const TransactionCount = {
+  zh: "訂單筆數",
+  en: "Transactions",
+  vi: "Số lượng đơn"
+}
+export const TransactionCountTrans = () => <Trans {...TransactionCount} />

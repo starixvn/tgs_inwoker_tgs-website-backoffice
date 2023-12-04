@@ -32,7 +32,11 @@ import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { VipLevelTrans } from "../../trans/Vip"
 import { NetProfitTrans } from "../../trans/Field"
-import { BetAmountTrans } from "../../trans/Game"
+import {
+  BetAmountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import { DepositAmountTrans } from "../../trans/Payment"
 
@@ -301,13 +305,13 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid bet" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

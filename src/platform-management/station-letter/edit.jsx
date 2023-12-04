@@ -21,7 +21,7 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
-import Disclosure from "../../dialog/Disclosure"
+import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans, useLocale, Locales } from "../../i18n"
 import {
   useAddStationLetter,
@@ -295,9 +295,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && <ViewDialog record={record} dialog={dialog} />}
     </>
   )

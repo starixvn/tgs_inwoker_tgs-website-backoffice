@@ -47,6 +47,7 @@ import {
 } from "./client"
 import { camelCase } from "lodash-es"
 import { isDev } from "../../env"
+import { ValidBetAmountTrans } from "../../trans/Game"
 
 export const AllAgentRebateDialogDisclosure = ({
   brandId,
@@ -268,7 +269,8 @@ const GameTypeTrans = {
   }
 }
 
-const ValidBetLabel = () => <Trans zh="有效投注" en="Valid Bet" />
+//TODO: rm ValidBetLabel?
+const ValidBetLabel = () => <ValidBetAmountTrans />
 const RebateLabel = () => <Trans zh="返水金额" en="Rebate" />
 
 const gameTypeColumn = (gameType, gameTypeDetails = []) => {

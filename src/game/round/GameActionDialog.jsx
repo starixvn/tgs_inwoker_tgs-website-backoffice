@@ -19,6 +19,7 @@ import { TransactionTypeLabel } from "../../platform-report/balance-change-repor
 import textColumn from "../../table/column/textColumn"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { TransactionTypeTrans } from "../../trans/Action"
+import { BalanceAfterTrans, BalanceBeforeTrans } from "../../trans/User"
 
 export const GameActionDialogDisclosure = ({
   roundId,
@@ -131,12 +132,12 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "beforeBalance",
-        Header: <Trans zh="余额 (前)" en="Before" />,
+        Header: <BalanceBeforeTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "afterBalance",
-        Header: <Trans zh="余额 (后)" en="After" />,
+        Header: <BalanceAfterTrans />,
         disableSortBy: true
       })
     ],

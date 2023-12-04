@@ -48,7 +48,14 @@ import { isValid } from "date-fns"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
-import { BetAmountTrans } from "../../trans/Game"
+import {
+  BetAmountTrans,
+  GameProviderTrans,
+  TransactionCountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
+import { CurrencyTrans } from "../../trans/Payment"
 
 export const GameProviderCurrencyReportDisclosure = ({
   use = Link,
@@ -142,7 +149,7 @@ const useColumns = ({ items = [], month }) => {
       textColumn({
         id: "gameProviderName",
         accessor: (row) => row,
-        Header: <Trans zh="游戏商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, gameProviderName } }) => {
           return isTotal ? <Trans zh="共计" en="Total" /> : gameProviderName
@@ -151,7 +158,7 @@ const useColumns = ({ items = [], month }) => {
       textColumn({
         id: "currencyCode",
         accessor: (row) => row,
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
           return currencyCode
@@ -159,7 +166,7 @@ const useColumns = ({ items = [], month }) => {
       }),
       numberColumn({
         accessor: "transactionCount",
-        Header: <Trans zh="訂單筆數" en="Transactions" />,
+        Header: <TransactionCountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -169,12 +176,12 @@ const useColumns = ({ items = [], month }) => {
       }),
       numberDecimalColumn({
         accessor: "originalTurnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

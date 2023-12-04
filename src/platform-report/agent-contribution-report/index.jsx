@@ -55,7 +55,11 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { NetProfitTrans } from "../../trans/Field"
-import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import {
+  BetAmountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
 import { UserNameTrans } from "../../trans/User"
 import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
 
@@ -489,7 +493,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />
+        Header: <TurnoverTrans />
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",

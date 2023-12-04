@@ -51,7 +51,7 @@ import { SubmitButton } from "../../button/SubmitButton"
 import { AllAgentProfitSharingSetting } from "./AllAgentSharingSetting"
 import { SettlementIntervalTypeSelect } from "../../date/SettlementIntervalType"
 import { isDev } from "../../env"
-import { WinLossTrans } from "../../trans/Game"
+import { ValidBetAmountTrans, WinLossTrans } from "../../trans/Game"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -484,7 +484,7 @@ const ValidBetSettingDialogDisclosure = ({
           useUpdate={useUpdateAllAgentValidBetCondition}
           dialog={dialog}
           title={label}
-          netProfitLabel={<Trans zh="有效投注" en="Valid Bet" />}
+          netProfitLabel={<ValidBetAmountTrans />}
           profitSharingPercentageLabel={<Trans zh="返佣比例" en="Rebate PT" />}
           maxProfitSharingPercentage={MaxProfitSharingPercentage}
         />
@@ -728,7 +728,7 @@ const GameTypeSettingFormCard = ({
               />
               <CheckboxField
                 name="hasValidBet"
-                label={<Trans zh="有效投注" en="Valid Bet" />}
+                label={<ValidBetAmountTrans />}
                 disabled={isLoading || readOnly}
               />
               {/* <CheckboxField

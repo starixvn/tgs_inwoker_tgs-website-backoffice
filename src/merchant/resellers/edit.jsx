@@ -10,7 +10,7 @@ import {
   FieldStack
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import Disclosure from "../../dialog/Disclosure"
+import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { Update as UpdateMenu, View as ViewMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
@@ -288,9 +288,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && <ViewDialog id={record.id} dialog={dialog} />}
     </>
   )

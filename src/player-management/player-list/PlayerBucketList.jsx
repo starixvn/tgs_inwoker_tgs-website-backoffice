@@ -322,9 +322,7 @@ const BucketHistoryDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure id={id} {...dialog} {...props}>
-        <Trans zh="查看" en="Details" />
-      </Disclosure>
+      <ViewDisclosure id={id} {...dialog} {...props} />
       {dialog.visible && (
         <BucketHistoryDialog
           playerBucketId={playerBucketId}

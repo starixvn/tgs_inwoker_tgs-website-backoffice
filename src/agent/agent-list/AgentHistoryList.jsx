@@ -29,7 +29,7 @@ import {
   WeChatLabel
 } from "./AgentContactInfo"
 import { AgentStatusLabel } from "../AgentStatus"
-import { OperatorTrans } from "../../trans/Action"
+import { DetailTrans, OperatorTrans } from "../../trans/Action"
 
 const Key = "AgentHistoryList"
 
@@ -169,7 +169,7 @@ const useColumns = ({ items = [], brandId }) =>
       textColumn({
         id: "detail",
         accessor: (row) => row,
-        Header: <Trans zh="详情" en="Detail" />,
+        Header: <DetailTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

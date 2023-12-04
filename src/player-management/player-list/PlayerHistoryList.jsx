@@ -53,6 +53,7 @@ import { AgentIdUsername } from "../../agent/agent-list/AgentUsername"
 import {
   ActionDateTimeTrans,
   ActionTypeTrans,
+  DetailTrans,
   EditingRecordsTrans,
   OperatorTrans
 } from "../../trans/Action"
@@ -183,7 +184,7 @@ const useColumns = ({ items = [], brandId }) =>
       textColumn({
         id: "detail",
         accessor: (row) => row,
-        Header: <Trans zh="详情" en="Detail" />,
+        Header: <DetailTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

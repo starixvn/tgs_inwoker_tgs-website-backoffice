@@ -18,7 +18,11 @@ import AlertDialog from "../../dialog/Alert"
 import Switch from "../../switch/Switch"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import Input from "../../input/Input"
-import { GameDetailTrans, useGameDetailTrans } from "../../trans/Game.jsx"
+import {
+  GameDetailTrans,
+  GameNameTrans,
+  useGameDetailTrans
+} from "../../trans/Game.jsx"
 
 export const PlatformGameDetailButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -152,7 +156,7 @@ const EditBody = ({ record = {}, readOnly }) => {
         <Stack orientation="horizontal" marginBottom="major-1">
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="游戏名称" en="Game Name" />
+              <GameNameTrans />
             </Label>
             <Box alignY="center">{gameName}</Box>
           </FieldValues>

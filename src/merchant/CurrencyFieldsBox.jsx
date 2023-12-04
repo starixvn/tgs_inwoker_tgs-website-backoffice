@@ -8,6 +8,7 @@ import {
   CurrencyCheckboxGroupTable,
   toCheckedFieldName
 } from "../currency/CurrencyCheckboxGroup"
+import { CurrencyTrans } from "../trans/Payment"
 
 const DefaultCurrencyFieldsName = "currencies"
 
@@ -32,7 +33,7 @@ export const CurrencyFieldsBox = ({
   return (
     <>
       <NormalLabel>
-        <Trans zh="币种" en="Currency" />
+        <CurrencyTrans />
       </NormalLabel>
       <CurrencyCheckboxGroupTable
         fieldArrayContext={fieldArrayContext}

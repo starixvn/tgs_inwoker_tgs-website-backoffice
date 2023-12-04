@@ -54,6 +54,7 @@ import { View, Update } from "./menu"
 import { isDev } from "../../env"
 import { ActionTrans } from "../../trans/Action.jsx"
 import { StatusTrans } from "../../trans/Status.jsx"
+import { GameNameTrans } from "../../trans/Game.jsx"
 
 export const BatchAddGameProviderGameListDisclosure = ({
   gameProviderId,
@@ -200,7 +201,7 @@ const useColumns = ({ gameProviderId, items = [], formMethods }) => {
       }),
       textColumn({
         accessor: "name",
-        Header: <Trans zh="游戏名称" en="Name" />,
+        Header: <GameNameTrans />,
         disableSortBy: true
       }),
       textColumn({

@@ -42,6 +42,8 @@ import { sortByNumberProp } from "../../list/sort"
 import { CloseText, ConfirmText } from "../../button/ActionButtons"
 import { GamePlatformLabel } from "../../game/games/GamePlatform.jsx"
 import { useGameProviderGameList } from "../../game/games/client"
+import { GameNameTrans } from "../../trans/Game.jsx"
+import { CurrencyTrans } from "../../trans/Payment.jsx"
 
 export const EditBrandBetLimitGameProviderBetLimit = ({
   record,
@@ -581,7 +583,7 @@ const BetLimitTable = ({
       <Table.Head>
         <Table.Row>
           <Table.HeadCell textAlign="center">
-            <Trans zh="币种" en="Currency" />
+            <CurrencyTrans />
           </Table.HeadCell>
           <Table.HeadCell textAlign="center">
             <Trans zh="最低投注" en="Min Bet" />
@@ -961,7 +963,7 @@ const GameProviderGameListDialogBody = ({ readonly = false }) => {
             <Trans zh="游戏ID" en="Game ID" />
           </Table.HeadCell>
           <Table.HeadCell>
-            <Trans zh="游戏名称" en="Game Name" />
+            <GameNameTrans />
           </Table.HeadCell>
           <Table.HeadCell>
             <Trans zh="支持设备" en="Platform" />

@@ -52,7 +52,10 @@ import { PlayerCodeTrans } from "../../trans/Player"
 import { RemarkTrans } from "../../trans/Action"
 import {
   BetAmountTrans,
+  ExternalBetTimeTrans,
+  GameProviderTrans,
   GameSettleAmountTrans,
+  TurnoverTrans,
   ValidBetAmountTrans,
   WinLossTrans
 } from "../../trans/Game"
@@ -188,7 +191,7 @@ const FormBody = ({}) => {
   return (
     <FieldStack paddingLeft="1.5rem" paddingRight="1.5rem" paddingBottom="1rem">
       <InputField name="playerCode" label={<PlayerCodeTrans />} required />
-      <FieldWrapper label={<Trans zh="游戏厂商" en="Game Provider" />}>
+      <FieldWrapper label={<GameProviderTrans />}>
         <GameProviderSubGameProviderSelect
           gameProviderProps={{
             name: "gameProviderId",
@@ -220,7 +223,7 @@ const FormBody = ({}) => {
       <FieldStack orientation="horizontal">
         <FieldWrapper
           id={ExternalCreatedOnField}
-          label={<Trans zh="三方投注时间" en="External Created On" />}
+          label={<ExternalBetTimeTrans />}
         >
           <DateTimeInput
             name={ExternalCreatedOnField}
@@ -270,7 +273,7 @@ const FormBody = ({}) => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="turnover"
-          label={<Trans zh="流水" en="CommiTurnoverssion" />}
+          label={<TurnoverTrans />}
           min={0}
           required
         />

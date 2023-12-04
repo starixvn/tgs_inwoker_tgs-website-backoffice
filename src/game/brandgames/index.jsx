@@ -39,6 +39,7 @@ import { GameTypeLabel, AllGameTypeSelect } from "../GameType"
 import { NumberInput } from "../../input/NumberInput"
 import { ActionTrans } from "../../trans/Action.jsx"
 import { StatusTrans } from "../../trans/Status.jsx"
+import { GameNameTrans } from "../../trans/Game.jsx"
 
 export { Code } from "./menu"
 
@@ -334,7 +335,7 @@ const useColumns = ({
       },
       {
         accessor: "gameName",
-        Header: <Trans zh="游戏名称" en="Game Name" />,
+        Header: <GameNameTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"

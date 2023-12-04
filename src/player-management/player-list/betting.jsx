@@ -24,11 +24,13 @@ import { numberDecimalColumn } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import {
   BetAmountTrans,
+  BetTimeTrans,
   GameDetailTrans,
   ValidBetAmountTrans,
-  WinLossTrans
+  WinLossTrans,
+  useRoundIdTrans
 } from "../../trans/Game"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, DetailTrans } from "../../trans/Action"
 import { PlayerSettleAmountTrans } from "../../trans/Player"
 
 export const Key = "betting"
@@ -158,10 +160,7 @@ const SearchBar = ({
 }
 
 const useColumns = ({ items = [], totals = [] }) => {
-  let roundIdTitle = useTrans({
-    zh: "订单ID",
-    en: "ID"
-  })
+  let roundIdTitle = useRoundIdTrans()
   let gameIdTitle = useTrans({
     zh: "游戏ID",
     en: "Game ID"
@@ -170,7 +169,7 @@ const useColumns = ({ items = [], totals = [] }) => {
     () => [
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="投注时间" en="Created On" vi="Thời gian đặt cược" />,
+        Header: <BetTimeTrans />,
         TotalCell: () => <Trans zh="总和" en="Total" />,
         Footer: () => <Trans zh="页总和" en="Page Total" />,
         footerCellProps: {
@@ -250,7 +249,7 @@ const useColumns = ({ items = [], totals = [] }) => {
               id="betting-detail-dialog-disclosure"
               dialogId="betting-detail-dialog"
             >
-              <Trans zh="详情" en="Detail" />
+              <DetailTrans />
             </BettingDetail>
           )
         }

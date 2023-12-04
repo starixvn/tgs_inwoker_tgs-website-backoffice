@@ -34,7 +34,9 @@ import { usePlayerMainWallet } from "../../player-management/player-list/client"
 import Modal from "../../dialog/Modal"
 import {
   BetAmountTrans,
+  ExternalRoundIdTrans,
   GameSettleAmountTrans,
+  TurnoverTrans,
   ValidBetAmountTrans,
   WinLossTrans
 } from "../../trans/Game"
@@ -184,7 +186,7 @@ const FormBody = () => {
   } = usePlayerMainWallet(playerCode)
   return (
     <FieldStack>
-      <FieldWrapper label={<Trans zh="三方订单ID" en="External Id" />}>
+      <FieldWrapper label={<ExternalRoundIdTrans />}>
         <Box fontWeight="bold">{externalRoundId}</Box>
       </FieldWrapper>
       <FieldWrapper
@@ -227,7 +229,7 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="turnover"
-          label={<Trans zh="流水" en="Turnover" />}
+          label={<TurnoverTrans />}
           min="0"
           step="0.01"
           required

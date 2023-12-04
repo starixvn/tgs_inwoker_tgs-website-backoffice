@@ -22,6 +22,7 @@ import { useCurrencyList } from "../../currency/client"
 import equals from "fast-deep-equal"
 import { ActionTrans } from "../../trans/Action"
 import { UpdatedTimeTrans } from "../../trans/Date"
+import { CurrencyTrans } from "../../trans/Payment"
 
 export { Code }
 
@@ -50,7 +51,7 @@ const Body = () => {
   let columns = useColumns({ mutate, items: data?.items })
   return (
     <PageContent
-      title={<Trans zh="币种" en="Currency" />}
+      title={<CurrencyTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <SearchBar

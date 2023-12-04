@@ -12,7 +12,10 @@ import {
   Group
 } from "bumbag"
 import { useIsDisplayMenuByRoute, useUserLicenseeId } from "../../user/context"
-import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
+import Disclosure, {
+  AddDisclosure,
+  ViewDisclosure
+} from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { Update as UpdateMenu, View as ViewMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
@@ -67,6 +70,7 @@ import {
 } from "../../agent/AgentProfitSharingType"
 import { PlatformTokenActionButtons } from "./PlatformTokenActionButtons"
 import { TimezoneSelect, SystemZoneOffset } from "../../date/TimeZone"
+import { GameProviderTrans } from "../../trans/Game"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -186,9 +190,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <ViewDialog
           brandId={record?.id}
@@ -761,7 +763,7 @@ const BrandGameProviderFieldsBox = ({ readonly }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="游戏厂商" en="Game Provider" />
+        <GameProviderTrans />
       </NormalLabel>
       <BrandGameProviderCheckboxGroupTable
         marginTop="major-1"

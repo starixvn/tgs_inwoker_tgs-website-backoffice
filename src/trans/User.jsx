@@ -125,3 +125,17 @@ const BalanceChangeRecords = {
 export const BalanceChangeRecordsTrans = () => (
   <Trans {...BalanceChangeRecords} />
 )
+
+const BalanceBefore = {
+  zh: "余额 (前)",
+  en: "Before",
+  vi: "Số dư (trước)"
+}
+export const BalanceBeforeTrans = () => <Trans {...BalanceBefore} />
+
+const BalanceAfter = {
+  zh: "余额 (后)",
+  en: "After",
+  vi: "Số dư (sau)"
+}
+export const BalanceAfterTrans = () => <Trans {...BalanceAfter} />

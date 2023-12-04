@@ -101,3 +101,10 @@ const WithdrawAmount = {
   vi: "Số tiền rút"
 }
 export const WithdrawAmountTrans = () => <Trans {...WithdrawAmount} />
+
+const Currency = {
+  zh: "币种",
+  en: "Currency",
+  vi: "Loại tiền"
+}
+export const CurrencyTrans = () => <Trans {...Currency} />

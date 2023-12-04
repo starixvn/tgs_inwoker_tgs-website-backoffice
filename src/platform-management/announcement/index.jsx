@@ -52,6 +52,7 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import AnnouncementType, { AnnouncementTypeSelect } from "./AnnouncementType"
 import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 

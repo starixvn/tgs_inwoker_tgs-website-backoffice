@@ -9,6 +9,7 @@ import Input from "../input/Input"
 import { isAllChecked, isAllPropChecked } from "../checkbox/isAllChecked"
 import { Switch } from "../switch/Switch"
 import get from "lodash-es/get"
+import { CurrencyTrans } from "../trans/Payment"
 
 export const CurrencyBetLimitFieldsBox = ({
   currencyFieldName = "currencies",
@@ -86,7 +87,7 @@ const Body = ({
                   <Box></Box>
                 </Table.HeadCell>
                 <Table.HeadCell colSpan={showBetLimitDefault ? "5" : "4"}>
-                  <Trans zh="币种" en="Currency" />
+                  <CurrencyTrans />
                 </Table.HeadCell>
               </Table.Row>
             </Table.Head>

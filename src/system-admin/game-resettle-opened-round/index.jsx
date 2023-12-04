@@ -31,9 +31,18 @@ import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 import { ActionTrans } from "../../trans/Action"
 import {
   BetAmountTrans,
+  BetTimeTrans,
+  ExternalBetTimeTrans,
+  ExternalRoundIdTrans,
+  GameNameTrans,
+  GameProviderTrans,
   GameSettleAmountTrans,
-  ValidBetAmountTrans
+  SubGameProviderTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans,
+  useExternalRoundIdTrans
 } from "../../trans/Game"
+import { CurrencyTrans } from "../../trans/Payment"
 
 export { Code }
 
@@ -140,10 +149,7 @@ const SearchBar = ({
 
   const onSubmit = (data) => search?.(data)
 
-  let externalRoundIdPlaceholder = useTrans({
-    zh: "三方订单ID",
-    en: "External ID"
-  })
+  let externalRoundIdPlaceholder = useExternalRoundIdTrans()
 
   return (
     <FormProvider {...formMethods}>
@@ -172,17 +178,17 @@ const useColumns = ({ items = [], mutate }) => {
     let columns = [
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="投注时间" en="Created On" />,
+        Header: <BetTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "externalCreatedOn",
-        Header: <Trans zh="三方投注时间" en="External Created On" />,
+        Header: <ExternalBetTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "externalRoundId",
-        Header: <Trans zh="三方订单ID" en="External Id" />,
+        Header: <ExternalRoundIdTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -222,7 +228,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -232,17 +238,17 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "gameProviderName",
-        Header: <Trans zh="游戏厂商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "subGameProviderName",
-        Header: <Trans zh="子游戏厂商" en="Sub Game Provider" />,
+        Header: <SubGameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "gameName",
-        Header: <Trans zh="游戏名称" en="Game Name" />,
+        Header: <GameNameTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -252,7 +258,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "currencyCode",
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true
       })
     ]

@@ -16,7 +16,7 @@ import {
 } from "../../user/context"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
-import Disclosure from "../../dialog/Disclosure"
+import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
 import {
   useAddAnnouncement,
   useEditAnnouncement,
@@ -139,9 +139,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && <ViewDialog record={record} dialog={dialog} />}
     </>
   )

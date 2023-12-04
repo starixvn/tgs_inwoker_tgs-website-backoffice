@@ -61,6 +61,7 @@ import { useResellerPageContentWidth } from "../../page/ResellerPageContent"
 import { AdjustListDialogDisclosure } from "./AdjustListDialog"
 import { UserType } from "./UserType"
 import { AgentAdjustTrans } from "../../trans/Action"
+import { CurrencyTrans } from "../../trans/Payment"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -215,7 +216,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
           }),
           textColumn({
             accessor: "currency",
-            Header: <Trans zh="币种" en="Currency" />,
+            Header: <CurrencyTrans />,
             disableSortBy: true
           })
         ]

@@ -40,9 +40,19 @@ import Disclosure from "../../dialog/Disclosure"
 import { Modal } from "../../dialog/Modal"
 import {
   BetAmountTrans,
+  BetTimeTrans,
+  ExternalBetTimeTrans,
+  ExternalRoundIdTrans,
+  GameNameTrans,
+  GameProviderTrans,
+  RoundIdTrans,
+  SettleTimeTrans,
+  SubGameProviderTrans,
+  TurnoverTrans,
   ValidBetAmountTrans,
   WinLossTrans
 } from "../../trans/Game"
+import { UserNameTrans } from "../../trans/User"
 
 loader.config({
   paths: ConfigPaths
@@ -118,24 +128,24 @@ export const GameRoundDialog = ({
           <Columns.Column>
             <FieldValues>
               <NormalLabel whiteSpace="normal">
-                <Trans zh="用户名" en="Player Name" use={Box} />
+                <UserNameTrans />
               </NormalLabel>
               <Box alignY="center">{record.playerName}</Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="订单ID" en="Order ID" />
+                <RoundIdTrans />
               </NormalLabel>
               <Box alignY="center">{record.id}</Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="投注时间" en="Created On" />
+                <BetTimeTrans />
               </NormalLabel>
               <Box alignY="center">
                 {defaultFormatDateTime(record.createdOn)}
               </Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="结算时间" en="Closed On" />
+                <SettleTimeTrans />
               </NormalLabel>
               <Box alignY="center">
                 {defaultFormatDateTime(record.closedOn)}
@@ -150,12 +160,12 @@ export const GameRoundDialog = ({
               <Box alignY="center">{record.playerCode}</Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="三方订单ID" en="External ID" />
+                <ExternalRoundIdTrans />
               </NormalLabel>
               <Box alignY="center">{record.externalRoundId}</Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="三方投注时间" en="External Created On" />
+                <ExternalBetTimeTrans />
               </NormalLabel>
               <Box alignY="center">
                 {defaultFormatDateTime(record.externalCreatedOn)}
@@ -181,12 +191,12 @@ export const GameRoundDialog = ({
           <Columns.Column>
             <FieldValues>
               <NormalLabel whiteSpace="normal">
-                <Trans zh="游戏厂商" en="Game Provider" />
+                <GameProviderTrans />
               </NormalLabel>
               <Box alignY="center">{record.gameProviderName}</Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="游戏名称" en="Game Name" />
+                <GameNameTrans />
               </NormalLabel>
               <Box alignY="center">{record.gameName}</Box>
 
@@ -208,7 +218,7 @@ export const GameRoundDialog = ({
               </Box>
 
               <NormalLabel whiteSpace="normal">
-                <Trans zh="流水" en="Turnover" />
+                <TurnoverTrans />
               </NormalLabel>
               <Box alignY="center">
                 <FormattedNumberDecimal value={record.originalTurnover} />
@@ -246,7 +256,7 @@ export const GameRoundDialog = ({
           <Columns.Column>
             <FieldValues>
               <NormalLabel whiteSpace="normal">
-                <Trans zh="子游戏厂商" en="Sub Game Provider" />
+                <SubGameProviderTrans />
               </NormalLabel>
               <Box alignY="center">{record.subGameProviderName}</Box>
 
