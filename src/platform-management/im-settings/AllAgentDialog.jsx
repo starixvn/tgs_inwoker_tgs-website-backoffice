@@ -324,7 +324,8 @@ const GameType = {
   Slot: "Slot"
 }
 
-const GameTypeTrans = {
+//TODO: from trans?
+const AllGameTypeMessages = {
   Sportsbook: {
     zh: "体育",
     en: "Sports"
@@ -413,7 +414,7 @@ const AllAgentGameTypeTabs = ({ brandId, readOnly, dialog }) => {
 }
 
 const GameTypeTab = ({ gameType, ...props }) => {
-  let trans = GameTypeTrans[gameType]
+  let trans = AllGameTypeMessages[gameType]
   return (
     <Tab tabId={gameType} {...props}>
       <Trans {...trans} />

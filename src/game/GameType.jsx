@@ -21,21 +21,9 @@ import {
 
 const Sportsbook = "Sportsbook"
 const SportsbookValue = 1
-/*
-const SportsbookTrans = {
-  zh: "体育",
-  en: "Sportsbook"
-}
-*/
 
 const VirtualSports = "VirtualSports"
 const VirtualSportsValue = 2
-/*
-const VirtualSportsTrans = {
-  zh: "虚拟体育",
-  en: "Virtual Sports"
-}
-*/
 
 const VirtualSportsLobby = "VirtualSportsLobby"
 const VirtualSportsLobbyValue = 3
@@ -46,21 +34,9 @@ const VirtualSportsLobbyTrans = {
 
 const ESports = "ESports"
 const ESportsValue = 4
-/*
-const ESportsTrans = {
-  zh: "电竞",
-  en: "E-sports"
-}
-*/
 
 const LiveDealer = "LiveDealer"
 const LiveDealerValue = 5
-/*
-const LiveDealerTrans = {
-  zh: "真人",
-  en: "Live Dealer"
-}
-*/
 
 const LiveDealerLobby = "LiveDealerLobby"
 const LiveDealerLobbyValue = 6
@@ -71,12 +47,6 @@ const LiveDealerLobbyTrans = {
 
 const CardGame = "CardGame"
 const CardGameValue = 7
-/*
-const CardGameTrans = {
-  zh: "棋牌",
-  en: "Card Game"
-}
-*/
 
 const CardGameLobby = "CardGameLobby"
 const CardGameLobbyValue = 8
@@ -87,12 +57,6 @@ const CardGameLobbyTrans = {
 
 const Fishing = "Fishing"
 const FishingValue = 9
-/*
-const FishingTrans = {
-  zh: "捕鱼",
-  en: "Fishing"
-}
-*/
 
 const FishingLobby = "FishingLobby"
 const FishingLobbyValue = 10
@@ -103,12 +67,6 @@ const FishingLobbyTrans = {
 
 const Arcade = "Arcade"
 const ArcadeValue = 11
-/*
-const ArcadeTrans = {
-  zh: "街机",
-  en: "Arcade Game"
-}
-*/
 
 const ArcadeLobby = "ArcadeLobby"
 const ArcadeLobbyValue = 12
@@ -119,21 +77,9 @@ const ArcadeLobbyTrans = {
 
 const Slot = "Slot"
 const SlotValue = 15
-/*
-const SlotTrans = {
-  zh: "老虎机",
-  en: "Slot Game"
-}
-*/
 
 const Lottery = "Lottery"
 const LotteryValue = 13
-/*
-const LotteryTrans = {
-  zh: "彩票",
-  en: "Lottery"
-}
-*/
 
 const LotteryLobby = "LotteryLobby"
 const LotteryLobbyValue = 14
@@ -144,12 +90,6 @@ const LotteryLobbyTrans = {
 
 const TableGame = "TableGame"
 const TableGameValue = 16
-/*
-const TableGameTrans = {
-  zh: "桌面游戏",
-  en: "Table Game"
-}
-*/
 
 export const toGameTypeString = (value) => {
   switch (value) {

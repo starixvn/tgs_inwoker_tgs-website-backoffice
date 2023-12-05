@@ -37,6 +37,7 @@ import {
   TransactionTypeTrans
 } from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
+import { GameTypeTrans } from "../../trans/Game"
 
 export const PlayerAddBalanceDisclosure = ({
   brandId,
@@ -177,7 +178,7 @@ const FormBody = ({}) => {
         {isDev() && (
           <>
             <Box alignY="center">
-              <Trans zh="游戏类型" en="Game Type" />
+              <GameTypeTrans />
             </Box>
             <Box>
               <PlatformBucketSelect

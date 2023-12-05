@@ -47,7 +47,7 @@ import {
 } from "./client"
 import { camelCase } from "lodash-es"
 import { isDev } from "../../env"
-import { ValidBetAmountTrans } from "../../trans/Game"
+import { GameTypeTrans, ValidBetAmountTrans } from "../../trans/Game"
 
 export const AllAgentRebateDialogDisclosure = ({
   brandId,
@@ -242,7 +242,8 @@ const GameType = {
   Slot: "Slot"
 }
 
-const GameTypeTrans = {
+//TODO: from trans
+const AllGameTypeMessages = {
   Sportsbook: {
     zh: "体育",
     en: "Sports"
@@ -269,8 +270,6 @@ const GameTypeTrans = {
   }
 }
 
-//TODO: rm ValidBetLabel?
-const ValidBetLabel = () => <ValidBetAmountTrans />
 const RebateLabel = () => <Trans zh="返水金额" en="Rebate" />
 
 const gameTypeColumn = (gameType, gameTypeDetails = []) => {
@@ -278,7 +277,7 @@ const gameTypeColumn = (gameType, gameTypeDetails = []) => {
     return null
   }
 
-  let trans = GameTypeTrans?.[gameType]
+  let trans = AllGameTypeMessages?.[gameType]
   if (!trans) {
     return null
   }
@@ -318,7 +317,7 @@ const gameTypeColumn = (gameType, gameTypeDetails = []) => {
               numberDecimalColumn({
                 accessor: `${gameTypeAccessor}ValidBet`,
                 sumColumn: `${gameTypeAccessor}ValidBet`,
-                Header: <ValidBetLabel />,
+                Header: <ValidBetAmountTrans />,
                 disableSortBy: true
               }),
               numberDecimalColumn({
@@ -340,7 +339,7 @@ const useColumns = ({ items = [], gameTypeDetails = [], brandId }) => {
     let columns = [
       {
         id: "gameType",
-        Header: <Trans zh="游戏类型" en="Game Type" />,
+        Header: <GameTypeTrans />,
         headCell: {
           textAlign: "center"
         },

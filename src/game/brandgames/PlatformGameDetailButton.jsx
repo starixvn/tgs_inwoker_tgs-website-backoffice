@@ -21,6 +21,7 @@ import Input from "../../input/Input"
 import {
   GameDetailTrans,
   GameNameTrans,
+  GameTypeTrans,
   useGameDetailTrans
 } from "../../trans/Game.jsx"
 
@@ -145,7 +146,7 @@ const EditBody = ({ record = {}, readOnly }) => {
 
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="游戏类型" en="Game Type" />
+              <GameTypeTrans />
             </Label>
             <Box alignY="center">
               <GameTypeLabel value={gameType} />

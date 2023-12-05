@@ -32,6 +32,7 @@ import { usePromotionBrandId } from "../usePromotionFormData"
 import { PaymentChannelSelect } from "../../../payment/channel/PaymentChannel"
 import { usePaymentMethodChannelList } from "../../../payment/client"
 import { PlatformBucketSelect } from "../../../platform-management/PlatformBucket"
+import { GameTypeTrans } from "../../../trans/Game"
 
 const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
@@ -257,7 +258,7 @@ const BonusLimitFieldBox = ({ percentage, disabled }) => {
 const BucketTypeLabel = () => {
   return (
     <NormalLabel>
-      <Trans zh="活动游戏类型" en="Game Type" />
+      <GameTypeTrans />
     </NormalLabel>
   )
 }

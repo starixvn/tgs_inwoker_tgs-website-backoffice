@@ -42,7 +42,7 @@ import { sortByNumberProp } from "../../list/sort"
 import { CloseText, ConfirmText } from "../../button/ActionButtons"
 import { GamePlatformLabel } from "../../game/games/GamePlatform.jsx"
 import { useGameProviderGameList } from "../../game/games/client"
-import { GameNameTrans } from "../../trans/Game.jsx"
+import { GameNameTrans, GameProviderTrans } from "../../trans/Game.jsx"
 import { CurrencyTrans } from "../../trans/Payment.jsx"
 
 export const EditBrandBetLimitGameProviderBetLimit = ({
@@ -1072,7 +1072,7 @@ const BetLimitDialog = ({
           <Table.Head>
             <Table.Row>
               <Table.HeadCell textAlign="center">
-                <Trans zh="游戏商" en="Game Provider" />
+                <GameProviderTrans />
               </Table.HeadCell>
               <Table.HeadCell textAlign="center">
                 <Trans zh="限红" en="Bet Limit" />

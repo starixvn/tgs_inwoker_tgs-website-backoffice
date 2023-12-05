@@ -6,8 +6,8 @@ const GameProvider = {
   en: "Game Provider",
   vi: "Sảnh trò chơi"
 }
-export const useGameProviderTrans = () => useTrans(GameProvider)
 export const GameProviderTrans = () => <Trans {...GameProvider} />
+export const useGameProviderTrans = () => useTrans(GameProvider)
 
 const SubGameProvider = {
   zh: "子游戏厂商",

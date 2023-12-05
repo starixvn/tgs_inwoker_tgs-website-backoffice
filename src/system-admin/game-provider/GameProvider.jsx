@@ -51,6 +51,7 @@ import { GameProviderCurrencyBetLimitFieldsBox } from "./GameProviderCurrencyBet
 import clone from "clone-deep"
 import { sortBy } from "lodash-es"
 import { StatusTrans } from "../../trans/Status"
+import { useGameProviderTrans } from "../../trans/Game"
 
 export const ViewGameProviderDisclosure = ({ gameProviderId }) => {
   let dialog = useModalState()
@@ -80,10 +81,7 @@ const ViewDialog = ({ gameProviderId, dialog }) => {
     deleteGameProviderCache
   } = useFormDataInit(gameProviderId)
 
-  let title = useTrans({
-    zh: "游戏商",
-    en: "Game Provider"
-  })
+  let title = useGameProviderTrans()
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />

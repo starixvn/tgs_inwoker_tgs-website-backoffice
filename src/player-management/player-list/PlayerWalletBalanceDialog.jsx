@@ -31,6 +31,7 @@ import Disclosure from "../../dialog/Disclosure"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { WalletBalanceTrans, useWalletBalanceTrans } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
+import { GameProviderTrans } from "../../trans/Game"
 
 export const PlayerWalletBalanceDialogDisclosure = ({
   playerCode,
@@ -255,7 +256,7 @@ const useColumns = ({ items = [], playerCode, onSubmitted }) => {
     let columns = [
       textColumn({
         accessor: "gameProviderName",
-        Header: <Trans zh="游戏商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

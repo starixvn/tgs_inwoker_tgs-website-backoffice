@@ -43,6 +43,7 @@ import DownloadButton from "../../button/DownloadButton"
 import {
   BetAmountTrans,
   GameProviderReportTrans,
+  GameProviderTrans,
   TransactionCountTrans,
   TurnoverTrans,
   ValidBetAmountTrans
@@ -239,7 +240,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         id: "gameProviderName",
         accessor: (row) => row,
-        Header: <Trans zh="游戏商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, gameProviderName } }) => {
           return isTotal ? <Trans zh="总计" en="Total" /> : gameProviderName
