@@ -425,7 +425,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
         columns: [
           numberDecimalColumn({
             accessor: "winLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header:  <Trans zh="输赢" en="Winloss" />,
             disableSortBy: true
           }),
           numberDecimalColumn({

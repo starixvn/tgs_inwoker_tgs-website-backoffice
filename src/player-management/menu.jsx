@@ -20,7 +20,12 @@ import {
 } from "./player-identity/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
-import { Players } from "../trans/Player"
+import {
+  OnlinePlayers,
+  PlayerBalanceAdjustment,
+  PlayerIdVerification,
+  Players
+} from "../trans/Player"
 
 export const Name = ({}) => useTrans(nameMessages)
 
@@ -67,30 +72,11 @@ const label = ({ locale, code }) => {
     case PlayerListCode:
       return getTrans(Players, locale)
     case PlayerIdentityCode:
-      return getTrans(
-        {
-          zh: "玩家身分审核列表",
-          en: "Player Identity List",
-          vi: "Danh sách xem xét danh tính người chơi"
-        },
-        locale
-      )
+      return getTrans(PlayerIdVerification, locale)
     case OnlinePlayerListCode:
-      return getTrans(
-        {
-          zh: "在线玩家列表",
-          en: "Online Players"
-        },
-        locale
-      )
+      return getTrans(OnlinePlayers, locale)
     case BalanceAdjustmentCode:
-      return getTrans(
-        {
-          zh: "玩家调账",
-          en: "Balance Adjustment"
-        },
-        locale
-      )
+      return getTrans(PlayerBalanceAdjustment, locale)
     default:
       return ""
   }

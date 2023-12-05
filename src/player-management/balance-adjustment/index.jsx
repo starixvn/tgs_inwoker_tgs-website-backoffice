@@ -40,6 +40,7 @@ import { PlayerBatchAddBalanceDisclosure } from "./PlayerBatchAddBalance"
 import { PlayerAdjustLockedAmountDialogDisclosure } from "./PlayerAdjustLockedAmountDialog"
 import { ActionTrans } from "../../trans/Action"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import { PlayerBalanceAdjustmentTrans } from "../../trans/Player"
 
 export { Code }
 
@@ -99,13 +100,7 @@ const BodyContent = ({ brandId = "" }) => {
   let columns = useColumns({ mutate, items: data?.items, brandId })
   return (
     <PageContent
-      title={
-        <Trans
-          zh="玩家调账"
-          en="Balance Adjustment"
-          vi="Điều chỉnh người chơi"
-        />
-      }
+      title={<PlayerBalanceAdjustmentTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <SearchBar

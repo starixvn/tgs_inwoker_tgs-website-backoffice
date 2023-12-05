@@ -14,6 +14,7 @@ import { usePlayerVipChangeList } from "./client"
 import { subDays } from "date-fns"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { TimeTrans } from "../../trans/Date"
+import { VipAfterTrans, VipBeforeTrans } from "../../trans/Vip"
 
 export const Key = "vip-change-list"
 
@@ -131,14 +132,12 @@ const useColumns = ({ items = [] }) =>
       }),
       textColumn({
         accessor: "oldLevel",
-        Header: (
-          <Trans zh="结算前等級" en="Before" vi="Cấp VIP trước kết toán" />
-        ),
+        Header: <VipBeforeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "newLevel",
-        Header: <Trans zh="结算后等級" en="After" vi="Cấp VIP sau kết toán" />,
+        Header: <VipAfterTrans />,
         disableSortBy: true
       })
     ],

@@ -9,6 +9,13 @@ const NetProfit = {
 export const useNetProfitTrans = () => useTrans(NetProfit)
 export const NetProfitTrans = (props) => <Trans {...NetProfit} {...props} />
 
+const SettleAmount = {
+  zh: "结算金额",
+  en: "Settle Amount",
+  vi: "Thanh toán"
+}
+export const SettleAmountTrans = () => <Trans {...SettleAmount} />
+
 const Sequence = {
   zh: "序",
   en: "Sequence",
@@ -22,4 +29,3 @@ const Subject = {
   vi: "Chủ đề"
 }
 export const SubjectTrans = () => <Trans {...Subject} />
-

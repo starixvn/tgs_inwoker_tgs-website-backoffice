@@ -488,10 +488,10 @@ export const Panel = ({
         <RegistrationDomainTrans />
         <Box>{player?.registerHost}</Box>
 
-        <Trans zh="总存款" en="Total　Deposit" vi="Tổng nạp" />
+        <Trans zh="总存款" en="Total Deposit" vi="Tổng nạp" />
         <FormattedNumberDecimal value={playerPayment?.totalDepositAmount} />
 
-        <Trans zh="总提款" en="Total　Withdraw" vi="Tổng rút" />
+        <Trans zh="总提款" en="Total Withdraw" vi="Tổng rút" />
         <FormattedNumberDecimal value={playerPayment?.totalWithdrawAmount} />
       </FieldValues>
     </TabPanel>

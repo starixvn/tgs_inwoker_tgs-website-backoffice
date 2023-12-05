@@ -36,6 +36,7 @@ import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { VipLevelTrans } from "../../trans/Vip"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import { StatusTrans } from "../../trans/Status"
+import { OnlinePlayersTrans } from "../../trans/Player"
 
 export { Code }
 
@@ -88,7 +89,7 @@ const BodyContent = ({ brandId = "" }) => {
 
   return (
     <PageContent
-      title={<Trans zh="在线玩家列表" en="Online Players" />}
+      title={<OnlinePlayersTrans />}
       actionBar={
         <SearchBar
           brandId={brandId}

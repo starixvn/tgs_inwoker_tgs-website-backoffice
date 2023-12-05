@@ -35,12 +35,12 @@ import Modal from "../../dialog/Modal"
 import {
   BetAmountTrans,
   ExternalRoundIdTrans,
-  GameSettleAmountTrans,
   TurnoverTrans,
   ValidBetAmountTrans,
   WinLossTrans
 } from "../../trans/Game"
 import { StatusTrans } from "../../trans/Status"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export const SettleGameRoundDialogDisclosure = ({
   roundId,
@@ -214,7 +214,7 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
-          label={<GameSettleAmountTrans />}
+          label={<SettleAmountTrans />}
           min="0"
           step="0.01"
           required

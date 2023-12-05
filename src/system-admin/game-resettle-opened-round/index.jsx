@@ -36,13 +36,13 @@ import {
   ExternalRoundIdTrans,
   GameNameTrans,
   GameProviderTrans,
-  GameSettleAmountTrans,
   SubGameProviderTrans,
   TurnoverTrans,
   ValidBetAmountTrans,
   useExternalRoundIdTrans
 } from "../../trans/Game"
 import { CurrencyTrans } from "../../trans/Payment"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -218,7 +218,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <GameSettleAmountTrans />,
+        Header: <SettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

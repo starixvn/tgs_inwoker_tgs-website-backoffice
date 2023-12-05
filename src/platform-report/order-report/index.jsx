@@ -54,7 +54,7 @@ import { isDev } from "../../env"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
 import { splitEvery, any } from "ramda"
 import { isValidDate } from "../../date/isValidDate"
-import { PlayerSettleAmountTrans, PlayerWinLossTrans } from "../../trans/Player"
+import { PlayerWinLossTrans } from "../../trans/Player"
 import {
   BetAmountTrans,
   BetTimeTrans,
@@ -73,6 +73,7 @@ import {
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import { CurrencyTrans } from "../../trans/Payment"
 import { DetailTrans } from "../../trans/Action"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -464,7 +465,7 @@ export const useColumns = ({ items = [], filter: predicate }) => {
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <PlayerSettleAmountTrans />,
+        Header: <SettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

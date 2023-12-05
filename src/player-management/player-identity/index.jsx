@@ -43,6 +43,7 @@ import {
 import { ActionTrans, RemarkTrans } from "../../trans/Action"
 import { ApplicationTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
+import { PlayerIdVerificationTrans } from "../../trans/Player"
 
 export { Code }
 
@@ -117,7 +118,7 @@ const BodyContent = ({ brandId = "", brand }) => {
 
   return (
     <PageContent
-      title={<Trans zh="玩家身分审核列表" en="Player ID Verification" />}
+      title={<PlayerIdVerificationTrans />}
       actionBar={
         <SearchBar
           brandId={brandId}

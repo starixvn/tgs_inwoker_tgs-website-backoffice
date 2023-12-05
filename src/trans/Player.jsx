@@ -6,8 +6,8 @@ export const Players = {
   en: "Players",
   vi: "Danh sách người chơi"
 }
-export const usePlayersTrans = () => useTrans(Players)
 export const PlayersTrans = () => <Trans {...Players} />
+export const usePlayersTrans = () => useTrans(Players)
 
 const PlayerCode = {
   zh: "玩家代碼",
@@ -33,13 +33,6 @@ const WageringRequirement = {
 export const WageringRequirementTrans = () => <Trans {...WageringRequirement} />
 export const useWageringRequirementTrans = () => useTrans(WageringRequirement)
 
-const PlayerSettleAmount = {
-  zh: "派彩",
-  en: "Settle Amount",
-  vi: "Thanh toán"
-}
-export const PlayerSettleAmountTrans = () => <Trans {...PlayerSettleAmount} />
-
 const PlayerWinLoss = {
   zh: "玩家输赢金额",
   en: "Player Win Loss",
@@ -47,3 +40,28 @@ const PlayerWinLoss = {
 }
 export const PlayerWinLossTrans = () => <Trans {...PlayerWinLoss} />
 export const usePlayerWinLossTrans = () => useTrans(PlayerWinLoss)
+
+export const PlayerIdVerification = {
+  zh: "玩家身分审核列表",
+  en: "Player ID Verification",
+  vi: "Danh sách xem xét danh tính người chơi"
+}
+export const PlayerIdVerificationTrans = () => (
+  <Trans {...PlayerIdVerification} />
+)
+
+export const OnlinePlayers = {
+  zh: "在线玩家列表",
+  en: "Online Players",
+  vi: "Danh sách người chơi trực tuyến"
+}
+export const OnlinePlayersTrans = () => <Trans {...OnlinePlayers} />
+
+export const PlayerBalanceAdjustment = {
+  zh: "玩家调账",
+  en: "Balance Adjustment",
+  vi: "Điều chỉnh người chơi"
+}
+export const PlayerBalanceAdjustmentTrans = () => (
+  <Trans {...PlayerBalanceAdjustment} />
+)

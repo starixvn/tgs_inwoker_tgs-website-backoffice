@@ -47,7 +47,7 @@ import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
-import { PlayerSettleAmountTrans, PlayerWinLossTrans } from "../../trans/Player"
+import { PlayerWinLossTrans } from "../../trans/Player"
 import {
   BetAmountTrans,
   BetTimeTrans,
@@ -65,6 +65,7 @@ import {
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import { CurrencyTrans } from "../../trans/Payment"
 import { DetailTrans } from "../../trans/Action"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -326,7 +327,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <PlayerSettleAmountTrans />,
+        Header: <SettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

@@ -46,12 +46,15 @@ export const Sportsbook = {
 }
 export const SportsbookTrans = () => <Trans {...Sportsbook} />
 
+//TODO: rm
+/*
 export const Sports = {
   zh: "体育",
   en: "Sports",
   vi: "Thể thao"
 }
 export const SportsTrans = () => <Trans {...Sports} />
+*/
 
 export const Slot = {
   zh: "老虎机",
@@ -146,13 +149,6 @@ const GameDetail = {
 export const useGameDetailTrans = () => useTrans(GameDetail)
 export const GameDetailTrans = () => <Trans {...GameDetail} />
 
-//TODO: vi trans
-const GameSettleAmount = {
-  zh: "结算金额",
-  en: "Settle Amount"
-}
-export const GameSettleAmountTrans = () => <Trans {...GameSettleAmount} />
-
 export const OrderTracking = {
   zh: "订单查询",
   en: "Order Tracking",
@@ -197,7 +193,7 @@ const RoundId = {
 export const RoundIdTrans = () => <Trans {...RoundId} />
 export const useRoundIdTrans = () => useTrans(RoundId)
 
-const UnsettledBet = {
+export const UnsettledBet = {
   zh: "未结算订单查询",
   en: "Unsettled Bet",
   vi: "Truy vấn đơn hàng chưa kết toán"

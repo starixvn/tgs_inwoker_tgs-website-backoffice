@@ -31,7 +31,7 @@ import {
   useRoundIdTrans
 } from "../../trans/Game"
 import { ActionTrans, DetailTrans } from "../../trans/Action"
-import { PlayerSettleAmountTrans } from "../../trans/Player"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export const Key = "betting"
 
@@ -189,7 +189,7 @@ const useColumns = ({ items = [], totals = [] }) => {
       numberDecimalColumn({
         accessor: "settleAmount",
         sumColumn: "settleAmount",
-        Header: <PlayerSettleAmountTrans />
+        Header: <SettleAmountTrans />
       }),
       numberDecimalColumn({
         accessor: "winLoss",

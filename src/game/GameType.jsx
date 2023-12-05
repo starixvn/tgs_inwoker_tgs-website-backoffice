@@ -8,7 +8,6 @@ import {
   useGameTypeTrans,
   LiveDealer as LiveDealerTrans,
   Sportsbook as SportsbookTrans,
-  Sports as SportsTrans,
   ESports as ESportsTrans,
   VirtualSports as VirtualSportsTrans,
   Slot as SlotTrans,
@@ -211,7 +210,7 @@ export const notLobbyGameType = (value = "") => !isLobbyGameType(value)
 
 const LiveDealerGroupTrans = LiveDealerTrans
 
-const SportsGroupTrans = SportsTrans
+const SportsGroupTrans = SportsbookTrans
 
 const EGameGroupTrans = {
   zh: "电子",

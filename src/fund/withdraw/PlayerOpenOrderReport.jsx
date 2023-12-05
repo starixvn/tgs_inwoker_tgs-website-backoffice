@@ -41,8 +41,9 @@ import {
   UnsettledBetTrans,
   ValidBetAmountTrans
 } from "../../trans/Game"
-import { PlayerSettleAmountTrans, PlayerWinLossTrans } from "../../trans/Player"
+import { PlayerWinLossTrans } from "../../trans/Player"
 import { DetailTrans } from "../../trans/Action"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export const usePlayerOpenOrder = (brandId, playerCode, prefetchedData) => {
   let dateRange = today()
@@ -158,7 +159,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <PlayerSettleAmountTrans />,
+        Header: <SettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

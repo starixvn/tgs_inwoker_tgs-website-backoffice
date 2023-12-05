@@ -40,7 +40,11 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { usePlayerTotalWinLossList } from "./client"
-import { GameProviderTrans, SubGameProviderTrans } from "../../trans/Game"
+import {
+  GameProviderTrans,
+  SubGameProviderTrans,
+  WinLossTrans
+} from "../../trans/Game"
 
 export const PlayerTotalWinLossDialogDisclosure = ({
   brandId,
@@ -143,7 +147,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
-        Header: <Trans zh="输赢金额" en="Win Loss Amount" />,
+        Header: <WinLossTrans />,
         disableSortBy: true
       })
     ]

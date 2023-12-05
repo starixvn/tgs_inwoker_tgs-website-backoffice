@@ -54,12 +54,12 @@ import {
   BetAmountTrans,
   ExternalBetTimeTrans,
   GameProviderTrans,
-  GameSettleAmountTrans,
   TurnoverTrans,
   ValidBetAmountTrans,
   WinLossTrans
 } from "../../trans/Game"
 import { StatusTrans } from "../../trans/Status"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export const AddGameProviderRoundDialogDisclosure = ({
   id,
@@ -260,7 +260,7 @@ const FormBody = ({}) => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
-          label={<GameSettleAmountTrans />}
+          label={<SettleAmountTrans />}
           required
         />
         <NumberInputField

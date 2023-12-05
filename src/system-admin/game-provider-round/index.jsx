@@ -90,7 +90,6 @@ import {
   ExternalRoundIdTrans,
   GameNameTrans,
   GameProviderTrans,
-  GameSettleAmountTrans,
   RoundIdTrans,
   SubGameProviderTrans,
   TurnoverTrans,
@@ -103,6 +102,7 @@ import { UserNameTrans } from "../../trans/User"
 import { CurrencyTrans } from "../../trans/Payment"
 import { PlayerWinLossTrans } from "../../trans/Player"
 import { DetailTrans, ViewTrans } from "../../trans/Action"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -558,7 +558,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <GameSettleAmountTrans />,
+        Header: <SettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

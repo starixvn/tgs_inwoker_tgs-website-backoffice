@@ -51,7 +51,15 @@ import { SubmitButton } from "../../button/SubmitButton"
 import { AllAgentProfitSharingSetting } from "./AllAgentSharingSetting"
 import { SettlementIntervalTypeSelect } from "../../date/SettlementIntervalType"
 import { isDev } from "../../env"
-import { ValidBetAmountTrans, WinLossTrans } from "../../trans/Game"
+import {
+  CardGame,
+  LiveDealer,
+  Lottery,
+  Sportsbook,
+  ValidBetAmountTrans,
+  VirtualSports,
+  WinLossTrans
+} from "../../trans/Game"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -324,28 +332,12 @@ const GameType = {
   Slot: "Slot"
 }
 
-//TODO: from trans?
 const AllGameTypeMessages = {
-  Sportsbook: {
-    zh: "体育",
-    en: "Sports"
-  },
-  VirtualSports: {
-    zh: "虚拟体育",
-    en: "Virtual Sports"
-  },
-  LiveDealer: {
-    zh: "真人",
-    en: "Live Dealer"
-  },
-  CardGame: {
-    zh: "棋牌",
-    en: "Card Game"
-  },
-  Lottery: {
-    zh: "彩票",
-    en: "Lottery"
-  },
+  Sportsbook: Sportsbook,
+  VirtualSports: VirtualSports,
+  LiveDealer: LiveDealer,
+  CardGame: CardGame,
+  Lottery: Lottery,
   Slot: {
     zh: "电子",
     en: "EGame"

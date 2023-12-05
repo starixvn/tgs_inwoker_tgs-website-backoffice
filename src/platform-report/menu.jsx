@@ -48,7 +48,7 @@ import {
 } from "./all-agent-rebate-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
-import { GameProviderReport, OrderTracking } from "../trans/Game"
+import { GameProviderReport, OrderTracking, UnsettledBet } from "../trans/Game"
 import { BalanceChangeReport } from "../trans/Platform"
 
 export const Code = "report"
@@ -103,13 +103,7 @@ const label = ({ locale, code }) => {
       return getTrans(OrderTracking, locale)
 
     case OpenRoundCode:
-      return getTrans(
-        {
-          zh: "未结算订单查询",
-          en: "Unsettled Bet"
-        },
-        locale
-      )
+      return getTrans(UnsettledBet, locale)
 
     case AgentContributionReportCode:
       return getTrans(
