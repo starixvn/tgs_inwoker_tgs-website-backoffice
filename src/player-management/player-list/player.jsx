@@ -70,6 +70,10 @@ import {
 import { StatusTrans } from "../../trans/Status"
 import { VipLevelTrans } from "../../trans/Vip"
 import { RemarkTrans } from "../../trans/Action"
+import {
+  TotalDepositAmountTrans,
+  TotalWithdrawAmountTrans
+} from "../../trans/Field"
 
 export const Key = "player"
 
@@ -488,10 +492,10 @@ export const Panel = ({
         <RegistrationDomainTrans />
         <Box>{player?.registerHost}</Box>
 
-        <Trans zh="总存款" en="Total Deposit" vi="Tổng nạp" />
+        <TotalDepositAmountTrans />
         <FormattedNumberDecimal value={playerPayment?.totalDepositAmount} />
 
-        <Trans zh="总提款" en="Total Withdraw" vi="Tổng rút" />
+        <TotalWithdrawAmountTrans />
         <FormattedNumberDecimal value={playerPayment?.totalWithdrawAmount} />
       </FieldValues>
     </TabPanel>

@@ -40,6 +40,7 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { RegisterIPTrans } from "../../trans/User"
+import { TotalDepositAmountTrans, TotalWithdrawAmountTrans } from "../../trans/Field"
 
 //TODO: remove date
 export const PlayerListDialogDisclosure = ({
@@ -179,12 +180,12 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "totalDepositAmount",
-        Header: <Trans zh="总存款" en="Total Deposit Amount" />,
+        Header: <TotalDepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "totalWithdrawAmount",
-        Header: <Trans zh="总提款" en="Total Withdraw Amount" />,
+        Header: <TotalWithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

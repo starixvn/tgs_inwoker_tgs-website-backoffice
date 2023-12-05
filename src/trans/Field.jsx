@@ -29,3 +29,20 @@ const Subject = {
   vi: "Chủ đề"
 }
 export const SubjectTrans = () => <Trans {...Subject} />
+
+const TotalDepositAmount = {
+  zh: "总存款",
+  en: "Total Deposit Amount",
+  vi: "Tổng nạp"
+}
+export const TotalDepositAmountTrans = () => <Trans {...TotalDepositAmount} />
+export const useTotalDepositAmountTrans = () => useTrans(TotalDepositAmount)
+
+//TODO: en withdrawal?
+const TotalWithdrawAmount = {
+  zh: "总提款",
+  en: "Total Withdraw Amount",
+  vi: "Tổng rút"
+}
+export const TotalWithdrawAmountTrans = () => <Trans {...TotalWithdrawAmount} />
+export const useTotalWithdrawAmountTrans = () => useTrans(TotalWithdrawAmount)

@@ -91,6 +91,7 @@ import {
 } from "../../trans/User"
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
+import { useTotalWithdrawAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -345,6 +346,7 @@ const BodyContent = ({ brandId }) => {
 }
 
 const Summary = ({ total }) => {
+  let totalWithdrawAmountLabel = useTotalWithdrawAmountTrans()
   if (!Number.isFinite(total)) {
     return null
   }
@@ -352,7 +354,7 @@ const Summary = ({ total }) => {
   return (
     <Blockquote borderColor="primary">
       <Heading use="h5">
-        <Trans zh="提款金额总计：" en="Total Withdraw Amount：" />
+        {`${totalWithdrawAmountLabel}：`}
         <FormattedNumberDecimal id="total-amount" value={total} />
       </Heading>
     </Blockquote>

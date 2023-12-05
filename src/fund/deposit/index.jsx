@@ -95,6 +95,7 @@ import {
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import { PromotionNameTrans } from "../../trans/Promotion"
+import { useTotalDepositAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -323,6 +324,7 @@ const BodyContent = ({ brandId }) => {
 }
 
 const Summary = ({ total, totalPromotion }) => {
+  let totalDepositAmountLabel = useTotalDepositAmountTrans()
   if (!Number.isFinite(total)) {
     return null
   }
@@ -332,7 +334,7 @@ const Summary = ({ total, totalPromotion }) => {
       <Set>
         <Box>
           <Heading use="h5">
-            <Trans zh="存款金额总计：" en="Total Deposit Amount：" />
+            {`${totalDepositAmountLabel}：`}
             <FormattedNumberDecimal
               id="total-amount"
               value={total}
