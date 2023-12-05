@@ -55,11 +55,18 @@ import {
   BalanceTrans,
   BirthdayTrans,
   ICNumberTrans,
+  LastLoginIPTrans,
+  LastLoginTimeTrans,
   RealNameTrans,
+  RegisterIPTrans,
   RegistrationTimeTrans,
   UserNameTrans
 } from "../../trans/User"
-import { PlayerCodeTrans, RegistrationDomainTrans } from "../../trans/Player"
+import {
+  PlayerCodeTrans,
+  RegistrationDomainTrans,
+  WageringRequirementTrans
+} from "../../trans/Player"
 import { StatusTrans } from "../../trans/Status"
 import { VipLevelTrans } from "../../trans/Vip"
 import { RemarkTrans } from "../../trans/Action"
@@ -271,20 +278,21 @@ const EditForm = ({
             <Text>{player.playerCode}</Text>
           </>
         )}
-        <UserNameLabel />
+
+        <UserNameTrans />
         <Text>{username}</Text>
 
-        <RealNameLabel />
+        <RealNameTrans />
         <Box>
           <Input name="realName" />
         </Box>
 
-        <BirthdayLabel />
+        <BirthdayTrans />
         <Box>
           <DateInput name="birthdate" />
         </Box>
 
-        <IdentityCardNumberLabel />
+        <ICNumberTrans />
         <Group>
           <Input
             name="idNumber"
@@ -299,7 +307,7 @@ const EditForm = ({
           )}
         </Group>
 
-        <VIPLevelLabel />
+        <VipLevelTrans />
         <Box>
           <VipLevelSelect
             name="vipId"
@@ -309,7 +317,7 @@ const EditForm = ({
           />
         </Box>
 
-        <AgentUsernameLabel />
+        <UpperLevelAgentTrans />
         <Box>
           <Input name="agentUsername" placeholder={agentUsernamePlaceholder} />
         </Box>
@@ -326,18 +334,18 @@ const EditForm = ({
           </>
         )}
 
-        <RegistrationLabel />
+        <RegistrationTimeTrans />
         <Box>
           <FormattedDateTime value={registeredOn} />
         </Box>
 
-        <BalanceLabel />
+        <BalanceTrans />
         <Box>
           <FormattedNumberDecimal value={balance} />
         </Box>
 
         <Box alignY="center">
-          <WageringRequirementLabel />
+          <WageringRequirementTrans />
         </Box>
         <Set>
           <FormattedNumberDecimal value={wageringRequirement} />
@@ -351,12 +359,12 @@ const EditForm = ({
           />
         </Set>
 
-        <StatusLabel />
+        <StatusTrans />
         <Box>
           <PlayerStatusSelect name="status" required placeholder={false} />
         </Box>
 
-        <RemarkLabel />
+        <RemarkTrans />
         <Box>
           <Textarea name="remark" />
         </Box>
@@ -395,22 +403,23 @@ export const Panel = ({
             <Text>{player.playerCode}</Text>
           </>
         )}
-        <UserNameLabel />
+
+        <UserNameTrans />
         <Text data-field="username">{username}</Text>
 
-        <RealNameLabel />
+        <RealNameTrans />
         <Box>
           <Text data-field="realName">{realName}</Text>
         </Box>
 
-        <BirthdayLabel />
+        <BirthdayTrans />
         <Box>
           <FormattedDate
             value={parse(player?.birthdate, "yyyy/MM/dd", new Date())}
           />
         </Box>
 
-        <IdentityCardNumberLabel />
+        <ICNumberTrans />
         <Set orientation="horizontal" alignY="center">
           <Text.Block>{player.idNumber}</Text.Block>
           {brand?.enablePlayerIdentity && player.idNumber && (
@@ -418,12 +427,12 @@ export const Panel = ({
           )}
         </Set>
 
-        <VIPLevelLabel />
+        <VipLevelTrans />
         <Box>
           <VipLevelLabel value={vipLevel} />
         </Box>
 
-        <AgentUsernameLabel />
+        <UpperLevelAgentTrans />
         <Box>
           <Text>{player?.agentUsername}</Text>
         </Box>
@@ -437,46 +446,46 @@ export const Panel = ({
           </>
         )}
 
-        <BalanceLabel />
+        <BalanceTrans />
         <Box>
           <FormattedNumberDecimal value={balance} />
         </Box>
 
         <Box alignY="center">
-          <WageringRequirementLabel />
+          <WageringRequirementTrans />
         </Box>
         <Set>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
           <PlayerBucketListDialogDisclosure playerCode={player.playerCode} />
         </Set>
 
-        <StatusLabel />
+        <StatusTrans />
         <Box>
           <PlayerStatusLabel value={status} />
         </Box>
 
-        <RemarkLabel />
+        <RemarkTrans />
         <Box>
           <Text>{player?.remark}</Text>
         </Box>
 
-        <RegisterIPLabel />
+        <RegisterIPTrans />
         <Box>{player?.registerIp}</Box>
 
-        <RegistrationLabel />
+        <RegistrationTimeTrans />
         <Box>
           <FormattedDateTime value={registeredOn} />
         </Box>
 
-        <LastLoginTimeLabel />
+        <LastLoginTimeTrans />
         <Box>
           <FormattedDateTime value={player?.lastLoginOn} />
         </Box>
 
-        <LoginIPLabel />
+        <LastLoginIPTrans />
         <Box>{player?.lastLoginIp}</Box>
 
-        <RegistrationDomainLabel />
+        <RegistrationDomainTrans />
         <Box>{player?.registerHost}</Box>
 
         <Trans zh="总存款" en="Total　Deposit" vi="Tổng nạp" />
@@ -489,58 +498,6 @@ export const Panel = ({
   )
 }
 
-export const UserNameLabel = () => <UserNameTrans />
-
-export const RealNameLabel = () => <RealNameTrans />
-
-export const BirthdayLabel = () => <BirthdayTrans />
-
-const IdentityCardNumberLabel = () => <ICNumberTrans />
-
-export const VIPLevelLabel = () => <VipLevelTrans />
-
-export const AgentUsernameLabel = () => <UpperLevelAgentTrans />
-
 const AllAgentUpperLevelLabel = () => (
   <Trans zh="全民代理上級" en="All Agent Upper Level" />
 )
-
-const BalanceLabel = () => <BalanceTrans />
-
-const WageringRequirementLabel = () => (
-  <Trans
-    zh="需滿足提款金額"
-    en="Wagering requirement"
-    vi="Cần đạt số tiền rút"
-  />
-)
-
-export const StatusLabel = () => <StatusTrans />
-
-export const RemarkLabel = () => <RemarkTrans />
-
-const RegisterIPLabel = () => (
-  <Trans zh="注册IP地址" en="Register IP" vi="Địa chỉ IP đăng ký" />
-)
-
-//TODO: rm
-const RegistrationLabel = () => <RegistrationTimeTrans />
-
-const LastLoginTimeLabel = () => (
-  <Trans
-    zh="最后登录时间"
-    en="Last Login Time"
-    vi="Thời gian đăng nhập cuối cùng "
-  />
-)
-
-const LoginIPLabel = () => (
-  <Trans
-    zh="最后登录IP地址"
-    en="Last Login IP"
-    vi="Địa chỉ IP đăng nhập cuối cùng"
-  />
-)
-
-//TODO: rm
-const RegistrationDomainLabel = () => <RegistrationDomainTrans />

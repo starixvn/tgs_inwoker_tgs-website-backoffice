@@ -48,8 +48,9 @@ import {
 import { useGameProviderConfigList } from "../../game/providers/configs/client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Switch } from "../../switch/Switch"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export const GameProviderConfigListDisclosure = ({ gameProviderId }) => {
   let dialog = useModalState()
@@ -203,12 +204,12 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最新更新" en="Updated On" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更改者" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]

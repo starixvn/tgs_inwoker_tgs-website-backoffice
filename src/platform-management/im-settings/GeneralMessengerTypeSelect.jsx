@@ -3,6 +3,12 @@ import { css, Global } from "@emotion/react"
 import { useTrans, Trans } from "../../i18n"
 import { useFormContext } from "react-hook-form"
 import { Select } from "../../select/Select"
+import {
+  TelegramTrans,
+  ZaloTrans,
+  useTelegramTrans,
+  useZaloTrans
+} from "../../trans/User"
 
 const WeChat = "WeChat"
 const WeChatTrans = {
@@ -17,10 +23,6 @@ const WhatsAppTrans = {
 }
 
 const Telegram = "Telegram"
-const TelegramTrans = {
-  zh: "Telegram",
-  en: "Telegram"
-}
 
 const KakaoTalk = "KakaoTalk"
 const KakaoTalkTrans = {
@@ -47,10 +49,6 @@ const ViberTrans = {
 }
 
 const Zalo = "Zalo"
-const ZaloTrans = {
-  zh: "Zalo",
-  en: "Zalo"
-}
 
 const GeneralMessengerList = [
   WeChat,
@@ -82,7 +80,7 @@ export const GeneralMessengerTypeSelect = ({ ...props }) => {
       value: WhatsApp
     },
     {
-      label: useTrans(TelegramTrans),
+      label: useTelegramTrans(),
       value: Telegram
     },
     {
@@ -102,7 +100,7 @@ export const GeneralMessengerTypeSelect = ({ ...props }) => {
       value: Viber
     },
     {
-      label: useTrans(ZaloTrans),
+      label: useZaloTrans(),
       value: Zalo
     }
   ]
@@ -117,7 +115,7 @@ export const GeneralMessengerTypeLabel = ({ value = "" }) => {
     case WhatsApp:
       return <Trans {...WhatsAppTrans} />
     case Telegram:
-      return <Trans {...TelegramTrans} />
+      return <TelegramTrans />
     case KakaoTalk:
       return <Trans {...KakaoTalkTrans} />
     case Line:
@@ -127,7 +125,7 @@ export const GeneralMessengerTypeLabel = ({ value = "" }) => {
     case Viber:
       return <Trans {...ViberTrans} />
     case Zalo:
-      return <Trans {...ZaloTrans} />
+      return <ZaloTrans />
     default:
       return value
   }

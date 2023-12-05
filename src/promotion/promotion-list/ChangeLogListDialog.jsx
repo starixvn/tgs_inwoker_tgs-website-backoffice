@@ -13,6 +13,7 @@ import { useChangeLogList, useChangeLogDetail } from "./client"
 import { Table } from "../../table"
 import textColumn from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
+import { useDetailTrans } from "../../trans/Action"
 
 export const PromotionChangeLogListDialogDisclosure = ({
   id,
@@ -140,10 +141,7 @@ const ChangeLogDetailDisclosure = ({
 const ChangeLogDetailDialog = ({ promotionId, eventId, dialog, dialogId }) => {
   let { isLoading, data, error } = useChangeLogDetail(promotionId, eventId)
 
-  let title = useTrans({
-    zh: "详情",
-    en: "Detail"
-  })
+  let title = useDetailTrans()
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }

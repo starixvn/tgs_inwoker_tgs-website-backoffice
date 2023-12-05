@@ -42,8 +42,9 @@ import AlertDialog from "../../dialog/Alert"
 import Backdrop from "../../dialog/Backdrop"
 import { useDropzone } from "react-dropzone"
 import { SubGameProviderListDisclosure } from "./SubGameProviderList"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -307,12 +308,12 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最新更新" en="Updated On" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更改者" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]

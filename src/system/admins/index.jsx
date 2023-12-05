@@ -23,8 +23,14 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { isDev } from "../../env"
 import { ActionTrans } from "../../trans/Action"
-import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import {
+  LastLoginIPTrans,
+  LastLoginTimeTrans,
+  UserNameTrans,
+  useUserNameTrans
+} from "../../trans/User"
 import { StatusTrans } from "../../trans/Status"
+import { CreatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -198,16 +204,16 @@ const useColumns = ({ mutate, items = [] }) => {
       },
       textColumn({
         accessor: "lastLoginIp",
-        Header: <Trans zh="最近登入IP" en="Last Login IP" />,
+        Header: <LastLoginIPTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="最近登入时间" en="Last Login Time" />,
+        Header: <LastLoginTimeTrans />,
         accessor: "lastLoginTime",
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="创建时间" en="Created On" />,
+        Header: <CreatedTimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),

@@ -20,7 +20,7 @@ import { Trans } from "../../i18n"
 import { AddCurrencyDisclosure, EditCurrencyDisclosure } from "./edit"
 import { useCurrencyList } from "../../currency/client"
 import equals from "fast-deep-equal"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { CurrencyTrans } from "../../trans/Payment"
 
@@ -152,7 +152,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更新人" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]

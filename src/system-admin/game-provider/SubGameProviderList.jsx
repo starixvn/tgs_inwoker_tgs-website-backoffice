@@ -51,7 +51,8 @@ import {
   EditSubGameProviderDisclosure
 } from "./SubGameProvider"
 import { useDropzone } from "react-dropzone"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export const SubGameProviderListDisclosure = ({ gameProviderId, ...props }) => {
   let dialog = useModalState()
@@ -296,12 +297,12 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最新更新" en="Updated On" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更改者" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]

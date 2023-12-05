@@ -39,6 +39,7 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { RegisterIPTrans } from "../../trans/User"
 
 //TODO: remove date
 export const PlayerListDialogDisclosure = ({
@@ -193,7 +194,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "ipAddress",
-        Header: <Trans zh="注册IP" en="Register IP" />,
+        Header: <RegisterIPTrans />,
         disableSortBy: true
       })
     ]

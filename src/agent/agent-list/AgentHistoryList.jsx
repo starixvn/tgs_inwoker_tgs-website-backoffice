@@ -21,19 +21,16 @@ import { equals, includes, pipe, prop } from "ramda"
 import Modal from "../../dialog/Modal"
 import { DetailDisclosure } from "../../dialog/Disclosure"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
-import { RealNameLabel, StatusLabel, RemarkLabel } from "./AgentInfo"
-import {
-  MobileLabel,
-  EmailLabel,
-  QqLabel,
-  WeChatLabel
-} from "./AgentContactInfo"
+import { QqLabel, WeChatLabel } from "./AgentContactInfo"
 import { AgentStatusLabel } from "../AgentStatus"
 import {
   DetailTrans,
   EditingRecordsTrans,
-  OperatorTrans
+  OperatorTrans,
+  RemarkTrans
 } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+import { EmailTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
 
 const Key = "AgentHistoryList"
 
@@ -296,12 +293,12 @@ const StringValue = ({ value = "" }) =>
 const getPath = prop("path")
 
 const LabelValueList = [
-  [pipe(getPath, equals("/RealName")), RealNameLabel],
-  [pipe(getPath, equals("/status")), StatusLabel, AgentStatusLabel],
-  [pipe(getPath, includes("/Remark")), RemarkLabel],
+  [pipe(getPath, equals("/RealName")), RealNameTrans],
+  [pipe(getPath, equals("/status")), StatusTrans, AgentStatusLabel],
+  [pipe(getPath, includes("/Remark")), RemarkTrans],
 
-  [pipe(getPath, equals("/Phone")), MobileLabel],
-  [pipe(getPath, equals("/Email")), EmailLabel],
+  [pipe(getPath, equals("/Phone")), PhoneTrans],
+  [pipe(getPath, equals("/Email")), EmailTrans],
   [pipe(getPath, equals("/Wechat")), WeChatLabel],
   [pipe(getPath, equals("/Qq")), QqLabel],
 

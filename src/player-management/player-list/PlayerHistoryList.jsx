@@ -25,21 +25,9 @@ import Modal from "../../dialog/Modal"
 import { PlayerStatusLabel } from "../PlayerStatus"
 import { equals, includes, pipe, prop } from "ramda"
 import {
-  UserNameLabel,
-  RealNameLabel,
-  VIPLevelLabel,
-  AgentUsernameLabel,
-  StatusLabel,
-  BirthdayLabel,
-  RemarkLabel
-} from "./player"
-import {
-  MobileLabel,
-  EmailLabel,
   QQLabel,
   LineLabel,
   MessengerLabel,
-  TelegramLabel,
   ViberLabel,
   WhatsappLabel,
   WeChatLabel
@@ -55,8 +43,20 @@ import {
   ActionTypeTrans,
   DetailTrans,
   EditingRecordsTrans,
-  OperatorTrans
+  OperatorTrans,
+  RemarkTrans
 } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+import {
+  BirthdayTrans,
+  EmailTrans,
+  PhoneTrans,
+  RealNameTrans,
+  TelegramTrans,
+  UserNameTrans
+} from "../../trans/User"
+import { VipLevelTrans } from "../../trans/Vip"
+import { UpperLevelAgentTrans } from "../../trans/Agent"
 
 export const Key = "history"
 
@@ -325,7 +325,7 @@ const Player = ({ value: player = {}, brandId }) => {
       {player.username && (
         <>
           <Box alignX="left">
-            <UserNameLabel />
+            <UserNameTrans />
           </Box>
           <Box alignY="center">{player.username}</Box>
         </>
@@ -333,7 +333,7 @@ const Player = ({ value: player = {}, brandId }) => {
       {player.vipId && (
         <>
           <Box alignX="left">
-            <VIPLevelLabel />
+            <VipLevelTrans />
           </Box>
 
           <Box alignX="left">
@@ -344,7 +344,7 @@ const Player = ({ value: player = {}, brandId }) => {
       {player.agentId && (
         <>
           <Box alignX="left">
-            <AgentUsernameLabel />
+            <UpperLevelAgentTrans />
           </Box>
           <Box alignX="left">
             <AgentIdUsername value={player.agentId} />
@@ -354,7 +354,7 @@ const Player = ({ value: player = {}, brandId }) => {
       {player.status && (
         <>
           <Box alignX="left">
-            <StatusLabel />
+            <StatusTrans />
           </Box>
           <Box alignX="left">
             <PlayerStatusLabel value={player.status} />
@@ -368,25 +368,25 @@ const Player = ({ value: player = {}, brandId }) => {
 const AreaCodeLabel = () => <Trans zh="区号" en="Area Code" />
 
 const LabelValueList = [
-  [pipe(getPath, includes("/RealName")), RealNameLabel],
-  [pipe(getPath, includes("/Birthdate")), BirthdayLabel],
-  [pipe(getPath, includes("/VipId")), VIPLevelLabel, VipLevelIdLabel],
-  [pipe(getPath, includes("/AgentId")), AgentUsernameLabel, AgentIdUsername],
-  [pipe(getPath, includes("/Remark")), RemarkLabel],
+  [pipe(getPath, includes("/RealName")), RealNameTrans],
+  [pipe(getPath, includes("/Birthdate")), BirthdayTrans],
+  [pipe(getPath, includes("/VipId")), VipLevelTrans, VipLevelIdLabel],
+  [pipe(getPath, includes("/AgentId")), UpperLevelAgentTrans, AgentIdUsername],
+  [pipe(getPath, includes("/Remark")), RemarkTrans],
   [
     pipe(getPath, equals("/identityAuthentication")),
     IdentityAuthenticationLabel,
     IdentityAuthenticationIcon
   ],
 
-  [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
+  [pipe(getPath, equals("/status")), StatusTrans, PlayerStatusLabel],
 
   [pipe(getPath, includes("/AreaCode")), AreaCodeLabel],
-  [pipe(getPath, equals("/Phone")), MobileLabel],
-  [pipe(getPath, includes("/Email")), EmailLabel],
+  [pipe(getPath, equals("/Phone")), PhoneTrans],
+  [pipe(getPath, includes("/Email")), EmailTrans],
   [pipe(getPath, equals("/properties/Qq")), QQLabel],
   [pipe(getPath, equals("/properties/Wechat")), WeChatLabel],
-  [pipe(getPath, equals("/properties/Telegram")), TelegramLabel],
+  [pipe(getPath, equals("/properties/Telegram")), TelegramTrans],
   [pipe(getPath, equals("/properties/Viber")), ViberLabel],
   [pipe(getPath, equals("/properties/FacebookMessenger")), MessengerLabel],
   [pipe(getPath, equals("/properties/Line")), LineLabel],

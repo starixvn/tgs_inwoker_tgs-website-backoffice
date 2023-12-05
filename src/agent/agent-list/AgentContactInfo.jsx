@@ -25,7 +25,7 @@ import { useUpdateAgent, useUpdateAgentContact } from "./client"
 import clone from "clone-deep"
 import { isDev } from "../../env"
 import { diff } from "../../object/diff"
-import { ContactInfoTrans } from "../../trans/User"
+import { ContactInfoTrans, EmailTrans, PhoneTrans } from "../../trans/User"
 
 const Key = "AgentContactInfo"
 
@@ -213,13 +213,11 @@ const ViewPanel = ({ record = {}, ...props }) => {
   )
 }
 
-export const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
-
 const MobileBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <MobileLabel />
+        <PhoneTrans />
       </Box>
 
       {children ? children : <Text data-field="phone">{value}</Text>}
@@ -227,13 +225,11 @@ const MobileBox = ({ value = "", children }) => {
   )
 }
 
-export const EmailLabel = () => <Trans zh="邮箱" en="Email" />
-
 const EmailBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <EmailLabel />
+        <EmailTrans />
       </Box>
 
       {children ? children : <Text data-field="email">{value}</Text>}

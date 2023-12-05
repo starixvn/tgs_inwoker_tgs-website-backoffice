@@ -25,7 +25,7 @@ import {
 } from "./edit"
 import equals from "fast-deep-equal"
 import { LocalizationDropdownMenu } from "./Localization"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
@@ -144,7 +144,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更新人" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]

@@ -37,6 +37,7 @@ import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import { StationLetterTrans } from "../../trans/Platform"
 import { SubjectTrans } from "../../trans/Field"
+import { CreatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -238,7 +239,7 @@ const useColumns = ({ mutate, statusName, items = [] }) => {
       },
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="创建时间" en="Created On" />,
+        Header: <CreatedTimeTrans />,
         disableSortBy: true
       }),
       {

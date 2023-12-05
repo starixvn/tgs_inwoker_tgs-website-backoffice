@@ -16,7 +16,8 @@ import AlertDialog from "../../dialog/Alert"
 import {
   ActionDateTimeTrans,
   ActionTypeTrans,
-  EditingRecordsTrans
+  EditingRecordsTrans,
+  OperatorTrans
 } from "../../trans/Action"
 
 export const Key = "operation"
@@ -117,7 +118,7 @@ const useColumns = ({ items = [] }) =>
       }),
       textColumn({
         accessor: "createdByUsername",
-        Header: <Trans zh="操作者" en="Operator" vi="Người thao tác" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ],

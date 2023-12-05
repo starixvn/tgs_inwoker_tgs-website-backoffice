@@ -20,7 +20,7 @@ import { Trans } from "../../i18n"
 import { AddLangDisclosure, EditLangDisclosure } from "./edit"
 import { useLanguageList } from "../../language/client"
 import equals from "fast-deep-equal"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
@@ -156,7 +156,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更新人" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]

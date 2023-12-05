@@ -35,8 +35,7 @@ export const PhoneTrans = () => <Trans {...Phone} />
 
 const Email = {
   zh: "邮箱",
-  en: "Email",
-  vi: "Email"
+  en: "Email"
 }
 export const EmailTrans = () => <Trans {...Email} />
 
@@ -44,6 +43,13 @@ const Telegram = {
   en: "Telegram"
 }
 export const TelegramTrans = () => <Trans {...Telegram} />
+export const useTelegramTrans = () => useTrans(Telegram)
+
+const Zalo = {
+  en: "Zalo"
+}
+export const ZaloTrans = () => <Trans {...Zalo} />
+export const useZaloTrans = () => useTrans(Zalo)
 
 const RealName = {
   zh: "真实姓名",
@@ -139,3 +145,25 @@ const BalanceAfter = {
   vi: "Số dư (sau)"
 }
 export const BalanceAfterTrans = () => <Trans {...BalanceAfter} />
+
+const RegisterIP = {
+  zh: "注册IP地址",
+  en: "Register IP",
+  vi: "Địa chỉ IP đăng ký"
+}
+export const RegisterIPTrans = () => <Trans {...RegisterIP} />
+export const useRegisterIPTrans = () => useTrans(RegisterIP)
+
+const LastLoginIP = {
+  zh: "最近登录IP地址",
+  en: "Last Login IP",
+  vi: "Địa chỉ IP đăng nhập cuối cùng"
+}
+export const LastLoginIPTrans = () => <Trans {...LastLoginIP} />
+
+const LastLoginTime = {
+  zh: "最近登录时间",
+  en: "Last Login Time",
+  vi: "Thời gian đăng nhập cuối cùng "
+}
+export const LastLoginTimeTrans = () => <Trans {...LastLoginTime} />

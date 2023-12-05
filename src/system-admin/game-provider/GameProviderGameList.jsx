@@ -53,9 +53,10 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useDropzone } from "react-dropzone"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import { GameNameTrans } from "../../trans/Game"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export const GameProviderGameListDisclosure = ({
   gameProviderId,
@@ -234,12 +235,12 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最新更新" en="Updated On" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更改者" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]

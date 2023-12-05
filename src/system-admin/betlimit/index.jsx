@@ -20,7 +20,7 @@ import { Trans } from "../../i18n"
 import { AddBetLimitDisclosure, EditBetLimitDisclosure } from "./edit"
 import equals from "fast-deep-equal"
 import { useBetLimitList } from "../../betlimit/client"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
@@ -145,7 +145,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更新人" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]

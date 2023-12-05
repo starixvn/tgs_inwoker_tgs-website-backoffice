@@ -30,10 +30,8 @@ const WageringRequirement = {
   en: "Wagering Requirement",
   vi: "vòng cược yêu cầu"
 }
-export const useWageringRequirementsTrans = () => useTrans(WageringRequirement)
-export const WageringRequirementsTrans = () => (
-  <Trans {...WageringRequirement} />
-)
+export const WageringRequirementTrans = () => <Trans {...WageringRequirement} />
+export const useWageringRequirementTrans = () => useTrans(WageringRequirement)
 
 const PlayerSettleAmount = {
   zh: "派彩",

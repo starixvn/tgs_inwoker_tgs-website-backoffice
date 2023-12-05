@@ -326,7 +326,7 @@ const UpdateAgentPanel = ({
                 </>
               )}
 
-              <RemarkLabel />
+              <RemarkTrans />
               <Textarea name="remarks" />
             </FieldValues>
             <Input
@@ -530,7 +530,7 @@ const CurrentAgentPanel = ({
               )}
 
               <>
-                <RemarkLabel />
+                <RemarkTrans />
                 <Textarea name="remarks" />
               </>
 
@@ -665,7 +665,7 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
           <FormattedNumber value={record?.playerNumber} />
         </Box>
 
-        <RemarkLabel />
+        <RemarkTrans />
         <Textarea value={record?.remarks} disabled />
         {/* <RebateBox
           label={<AgentLiveDealerRebateText />}
@@ -718,13 +718,11 @@ const UsernameBox = ({ value = "", children }) => {
   )
 }
 
-export const RealNameLabel = () => <RealNameTrans />
-
 const RealNameBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <RealNameLabel />
+        <RealNameTrans />
       </Box>
       {children ? children : <Text data-field="realName">{value}</Text>}
     </>
@@ -791,13 +789,10 @@ const BalanceBox = ({ value = "", ...props }) => {
   )
 }
 
-//TODO: rm?
-export const StatusLabel = () => <StatusTrans />
-
 const AgentStatusBox = ({ value = "", children, ...props }) => {
   return (
     <>
-      <StatusLabel />
+      <StatusTrans />
 
       {children ? (
         children
@@ -852,8 +847,6 @@ const AccumulatedProfitSharingBox = ({ value, children, ...props }) => {
     </>
   )
 }
-
-export const RemarkLabel = () => <RemarkTrans />
 
 const RebateBox = ({ label, value, type, children }) => {
   let isCredit = isAgentTypeCredit(type)

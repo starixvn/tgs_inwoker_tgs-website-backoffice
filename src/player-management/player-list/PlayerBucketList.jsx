@@ -40,8 +40,8 @@ import {
 } from "./client"
 import { RemarkTrans } from "../../trans/Action"
 import {
-  WageringRequirementsTrans,
-  useWageringRequirementsTrans
+  WageringRequirementTrans,
+  useWageringRequirementTrans
 } from "../../trans/Player"
 import { TimeTrans } from "../../trans/Date"
 
@@ -57,7 +57,7 @@ export const PlayerBucketListDialogDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog} {...props}>
-        <WageringRequirementsTrans />
+        <WageringRequirementTrans />
       </Disclosure>
       {dialog.visible && (
         <PlayerBucketListDialog
@@ -71,7 +71,7 @@ export const PlayerBucketListDialogDisclosure = ({
 }
 
 const PlayerBucketListDialog = ({ playerCode, dialog, dialogId }) => {
-  let title = useWageringRequirementsTrans()
+  let title = useWageringRequirementTrans()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     playerCode
@@ -126,7 +126,7 @@ const usePlayerBucketListColumns = ({ playerCode, items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <WageringRequirementsTrans />,
+        Header: <WageringRequirementTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -289,7 +289,7 @@ const useBucketItemsColumns = ({ playerCode, items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "wageringRequirement",
-        Header: <WageringRequirementsTrans />,
+        Header: <WageringRequirementTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

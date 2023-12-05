@@ -49,12 +49,12 @@ export const Panel = ({ player = {}, ...props }) => {
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues spacing="major-2">
-        <MobileLabel />
+        <PhoneTrans />
         <Text>
           {player.areaCode} <Text data-field="phone">{phone}</Text>
         </Text>
 
-        <EmailLabel />
+        <EmailTrans />
         <Text data-field="email">{email}</Text>
 
         <QQLabel />
@@ -63,7 +63,7 @@ export const Panel = ({ player = {}, ...props }) => {
         <WeChatLabel />
         <Text>{weChat}</Text>
 
-        <TelegramLabel />
+        <TelegramTrans />
         <Text>{player?.telegram}</Text>
 
         <ViberLabel />
@@ -182,12 +182,12 @@ const Body = ({ onClickClose }) => {
   return (
     <Stack spacing="major-1" margin="major-1">
       <FieldValues>
-        <MobileLabel />
+        <PhoneTrans />
         <Box>
           <AreaPhoneInputGruop name="phone" />
         </Box>
 
-        <EmailLabel />
+        <EmailTrans />
         <Box>
           <EmailInput name="email" />
         </Box>
@@ -202,7 +202,7 @@ const Body = ({ onClickClose }) => {
           <Input name="weChat" />
         </Box>
 
-        <TelegramLabel />
+        <TelegramTrans />
         <Box>
           <Input name="telegram" />
         </Box>
@@ -234,15 +234,9 @@ const Body = ({ onClickClose }) => {
   )
 }
 
-export const MobileLabel = () => <PhoneTrans />
-
-export const EmailLabel = () => <EmailTrans />
-
 export const QQLabel = () => <Trans zh="QQ" en="QQ" />
 
 export const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
-
-export const TelegramLabel = () => <TelegramTrans />
 
 export const ViberLabel = () => <Trans zh="Viber" en="Viber" />
 
