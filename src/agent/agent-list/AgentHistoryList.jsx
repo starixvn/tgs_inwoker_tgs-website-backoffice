@@ -29,14 +29,18 @@ import {
   WeChatLabel
 } from "./AgentContactInfo"
 import { AgentStatusLabel } from "../AgentStatus"
-import { DetailTrans, OperatorTrans } from "../../trans/Action"
+import {
+  DetailTrans,
+  EditingRecordsTrans,
+  OperatorTrans
+} from "../../trans/Action"
 
 const Key = "AgentHistoryList"
 
 export const AgentHistoryListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="操作记录" en="Editing Records" />
+      <EditingRecordsTrans />
     </_Tab>
   )
 }

@@ -261,14 +261,6 @@ const SearchBar = ({
 
   let playerNamePlaceholder = useUserNameTrans()
 
-  const ExternalFromField = "externalFrom"
-  const ExternalToField = "externalTo"
-  //TODO: useWatch value to set sort
-
-  const ExternalClosedFromField = "externalClosedFrom"
-  const ExternalClosedToField = "externalClosedTo"
-  //TODO: useWatch value to set sort
-
   let roundIdPlaceholder = useRoundIdTrans()
 
   let externalRoundIdPlaceholder = useExternalRoundIdTrans()
