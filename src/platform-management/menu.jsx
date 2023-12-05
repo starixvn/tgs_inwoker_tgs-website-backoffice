@@ -31,6 +31,7 @@ import {
   PlatformManagementTrans,
   StationLetter
 } from "../trans/Platform"
+import { VipLevel } from "../trans/Vip"
 
 export const Name = () => <PlatformManagementTrans />
 
@@ -88,13 +89,7 @@ const labelOf = ({ locale, code }) => {
     case StationLetterCode:
       return getTrans(StationLetter, locale)
     case VipLevelCode:
-      return getTrans(
-        {
-          zh: "VIP等级",
-          en: "VIP Levels"
-        },
-        locale
-      )
+      return getTrans(VipLevel, locale)
     case IMSettingsCode:
       return getTrans(
         {
@@ -106,13 +101,7 @@ const labelOf = ({ locale, code }) => {
     case IPAddressCode:
       return getTrans(CheckIP, locale)
     case LetterCode:
-      return getTrans(
-        {
-          zh: "站內信",
-          en: "Memo"
-        },
-        locale
-      )
+      return getTrans(StationLetter, locale)
     default:
       return ""
   }
