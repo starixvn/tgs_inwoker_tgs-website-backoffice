@@ -35,7 +35,8 @@ import TransferType, {
   isDepositPlatformPayment
 } from "./BrandPaymentTransferType"
 import { NumberInputField } from "../../input/NumberInput"
-import { BankAccountTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
+import { PhoneTrans, RealNameTrans } from "../../trans/User"
+import { BankAccountTrans } from "../../trans/Payment"
 
 const BankTransfer = "BankTransfer"
 const ThirdParty = "ThirdParty"

@@ -51,7 +51,9 @@ import {
 import BankType from "../../payment/BankType"
 import { PhoneTrans, RealNameTrans, UserNameTrans } from "../../trans/User"
 import {
+  BankAccountTrans,
   ActualDepositAmountTrans,
+  BankInfoTrans,
   ChannelNameTrans,
   DepositAmountTrans,
   DepositPaymentMethodTrans,
@@ -460,7 +462,7 @@ const BankApplyInfo = ({ accountName = "", account = "" }) => {
       </NormalLabel>
       <Box alignY="center">{accountName}</Box>
       <NormalLabel>
-        <Trans zh="银行卡帐号" en="Bank Card Account" />
+        <BankAccountTrans />
       </NormalLabel>
       <Box alignY="center">{account}</Box>
     </>
@@ -614,7 +616,7 @@ const ApplyInfoBox = ({ applyInfo, paymentMethod }) => {
   return (
     <>
       <Heading use="h6">
-        <Trans zh="銀行卡信息" en="Bank Card Info" />
+        <BankInfoTrans />
       </Heading>
       <Set orientation="horizontal" isFilled verticalBelow="tablet">
         <PlayerApplyInfoCard

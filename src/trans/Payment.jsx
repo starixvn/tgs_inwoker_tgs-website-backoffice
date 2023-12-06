@@ -108,3 +108,25 @@ const Currency = {
   vi: "Loại tiền"
 }
 export const CurrencyTrans = () => <Trans {...Currency} />
+
+const BankInfo = {
+  zh: "银行卡信息",
+  en: "Bank",
+  vi: "Thông tin thẻ ngân hàng"
+}
+export const BankInfoTrans = () => <Trans {...BankInfo} />
+
+const BankCardField = {
+  zh: "银行卡栏位",
+  en: "Bank Card Field",
+  vi: "Tìm  kiếm thẻ ngân hàng"
+}
+export const useBankCardFieldTrans = () => useTrans(BankCardField)
+
+const BankAccount = {
+  zh: "银行卡号",
+  en: "Bank Account",
+  vi: "Số thẻ ngân hàng"
+}
+export const useBankAccountTrans = () => useTrans(BankAccount)
+export const BankAccountTrans = () => <Trans {...BankAccount} />

@@ -67,14 +67,6 @@ const ICNumber = {
 export const useICNumberTrans = () => useTrans(ICNumber)
 export const ICNumberTrans = () => <Trans {...ICNumber} />
 
-const BankAccount = {
-  zh: "银行卡号",
-  en: "Bank Account",
-  vi: "Số thẻ ngân hàng"
-}
-export const useBankAccountTrans = () => useTrans(BankAccount)
-export const BankAccountTrans = () => <Trans {...BankAccount} />
-
 const RegistrationTime = {
   zh: "注册时间",
   en: "Registration Time",

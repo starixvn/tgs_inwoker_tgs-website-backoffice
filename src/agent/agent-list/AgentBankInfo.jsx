@@ -30,14 +30,15 @@ import { CancelText, SubmitText } from "../../button/ActionButtons"
 import Backdrop from "../../dialog/Backdrop"
 import FormDialog from "../../form/FormDialog"
 import Disclosure from "../../dialog/Disclosure"
-import { BankAccountTrans, RealNameTrans } from "../../trans/User"
+import { RealNameTrans } from "../../trans/User"
+import { BankInfoTrans, BankAccountTrans } from "../../trans/Payment"
 
 const Key = "AgentBankInfo"
 
 export const AgentBankInfoTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="银行卡信息" en="Bank Info" />
+      <BankInfoTrans />
     </_Tab>
   )
 }
