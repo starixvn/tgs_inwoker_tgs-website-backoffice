@@ -8,7 +8,8 @@ import {
   Button,
   Set,
   useModalState,
-  Blockquote
+  Blockquote,
+  FieldStack
 } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
@@ -104,17 +105,19 @@ const BodyContent = ({ brandId = "" }) => {
         />
       }
     >
-      <Summary onlineUsers={data?.onlineUsers} />
-      <Table
-        columns={columns}
-        data={data?.datas?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.datas?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-      />
+      <FieldStack>
+        <Summary onlineUsers={data?.onlineUsers} />
+        <Table
+          columns={columns}
+          data={data?.datas?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(state.pageSize, data?.datas?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+        />
+      </FieldStack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
