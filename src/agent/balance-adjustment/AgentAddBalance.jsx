@@ -133,9 +133,9 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
         <Trans zh="代理用户名" en="Agent Username" />
         <Box alignY="center">{username}</Box>
 
-        <Text.Block alignY="center">
+        <Box alignY="center">
           <TransactionTypeTrans />
-        </Text.Block>
+        </Box>
         <Set>
           <AddBalanceTypeSelect name="transactionType" required />
           {/* 
