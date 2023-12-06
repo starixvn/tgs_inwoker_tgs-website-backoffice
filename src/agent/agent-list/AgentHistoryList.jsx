@@ -24,6 +24,7 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { QqLabel, WeChatLabel } from "./AgentContactInfo"
 import { AgentStatusLabel } from "../AgentStatus"
 import {
+  ActionTypeTrans,
   DetailTrans,
   EditingRecordsTrans,
   OperatorTrans,
@@ -159,7 +160,7 @@ const useColumns = ({ items = [], brandId }) =>
       }),
       textColumn({
         accessor: "action",
-        Header: <Trans zh="操作项" en="Type" />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true,
         Cell: ActionTypeLabel
       }),

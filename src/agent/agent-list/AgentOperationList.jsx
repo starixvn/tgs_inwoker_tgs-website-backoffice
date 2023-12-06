@@ -17,7 +17,7 @@ import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
 import { Descending } from "../../table/order"
 import { endOfDay } from "date-fns"
-import { OperatorTrans } from "../../trans/Action"
+import { ActionTypeTrans, OperatorTrans } from "../../trans/Action"
 import { TimeTrans } from "../../trans/Date"
 
 const Key = "AgentOperationList"
@@ -120,7 +120,7 @@ const useColumns = ({ items = [] }) =>
       }),
       textColumn({
         accessor: "operation",
-        Header: <Trans zh="操作项" en="Operation Item" />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => (
           <AgentOperationLabel value={value} data-type={value} />
