@@ -274,6 +274,11 @@ const useColumns = ({ items = [] }) => {
       ellipsisTextColumn({
         accessor: "externalRoundId",
         Header: <ExternalRoundIdTrans />,
+        headCellProps: {
+          bodyProps: {
+            title: useExternalRoundIdTrans()
+          }
+        },
         disableSortBy: true,
         maxWidth: "8rem",
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
@@ -281,6 +286,11 @@ const useColumns = ({ items = [] }) => {
       ellipsisTextColumn({
         accessor: "id",
         Header: <RoundIdTrans />,
+        headCellProps: {
+          bodyProps: {
+            title: useRoundIdTrans()
+          }
+        },
         disableSortBy: true,
         maxWidth: "8rem",
         Cell: ({ value = "" }) => <CopyTextBox value={value} />

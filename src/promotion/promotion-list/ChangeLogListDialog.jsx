@@ -13,7 +13,8 @@ import { useChangeLogList, useChangeLogDetail } from "./client"
 import { Table } from "../../table"
 import textColumn from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
-import { useDetailTrans } from "../../trans/Action"
+import { OperatorTrans, useDetailTrans } from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
 
 export const PromotionChangeLogListDialogDisclosure = ({
   id,
@@ -80,12 +81,12 @@ const useColumns = ({ items = [], promotionId }) => {
     let columns = [
       textColumn({
         accessor: "modifier",
-        Header: <Trans zh="操作者" en="Modifier" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Date & Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({

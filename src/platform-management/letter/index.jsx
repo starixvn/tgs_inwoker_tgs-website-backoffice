@@ -39,6 +39,7 @@ import { ActionTrans } from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
 import { StationLetterTrans } from "../../trans/Platform"
 import { SubjectTrans } from "../../trans/Field"
+import { TimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -199,7 +200,7 @@ const useColumns = ({ brandId, items = [], boxType }) => {
     let columns = [
       dateTimeColumn({
         accessor: "sentOn",
-        Header: <Trans zh="时间" en="Date" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       })
     ]

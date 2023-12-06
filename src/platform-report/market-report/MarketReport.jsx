@@ -38,6 +38,7 @@ import {
   ValidBetAmountTrans
 } from "../../trans/Game"
 import { DepositAmountTrans } from "../../trans/Payment"
+import { NetProfitTrans } from "../../trans/Field"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -360,7 +361,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="NetProfit" />,
+        Header: <NetProfitTrans />,
         disableSortBy: true
       })
     ],

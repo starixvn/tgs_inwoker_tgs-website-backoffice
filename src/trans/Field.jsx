@@ -38,7 +38,6 @@ const TotalDepositAmount = {
 export const TotalDepositAmountTrans = () => <Trans {...TotalDepositAmount} />
 export const useTotalDepositAmountTrans = () => useTrans(TotalDepositAmount)
 
-//TODO: en withdrawal?
 const TotalWithdrawAmount = {
   zh: "总提款",
   en: "Total Withdraw Amount",

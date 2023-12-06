@@ -9,7 +9,7 @@ import {
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Code } from "./menu"
-import { ellipsisTextColumn, textColumn } from "../../table/column/textColumn"
+import { textColumn } from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useForm, FormProvider } from "react-hook-form"
 import { InputField } from "../../input/Input"

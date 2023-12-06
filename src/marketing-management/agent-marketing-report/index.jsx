@@ -43,6 +43,7 @@ import {
   ValidBetAmountTrans
 } from "../../trans/Game"
 import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
+import { NetProfitTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -277,7 +278,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
-        Header: <Trans zh="净盈利" en="NetProfit" />,
+        Header: <NetProfitTrans />,
         disableSortBy: true
       })
     ]

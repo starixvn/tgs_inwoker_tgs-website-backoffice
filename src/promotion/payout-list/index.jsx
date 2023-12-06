@@ -222,7 +222,9 @@ const BodyContent = ({ brandId }) => {
                     }
                   }
                 )
-                setSubmit({ players })
+                if (players.length > 0) {
+                  setSubmit({ players })
+                }
               }}
             >
               <PromotionBatchPayoutTrans />
