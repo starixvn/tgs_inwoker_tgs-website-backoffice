@@ -22,6 +22,7 @@ import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { ActionTrans } from "../../trans/Action"
 import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 

@@ -20,6 +20,7 @@ import textColumn from "../../table/column/textColumn"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { TransactionTypeTrans } from "../../trans/Action"
 import { BalanceAfterTrans, BalanceBeforeTrans } from "../../trans/User"
+import { TimeTrans } from "../../trans/Date"
 
 export const GameActionDialogDisclosure = ({
   roundId,
@@ -107,7 +108,7 @@ const useColumns = ({ items = [] }) => {
     () => [
       dateTimeColumn({
         accessor: "recordedOn",
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({

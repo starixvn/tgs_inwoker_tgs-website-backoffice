@@ -31,6 +31,7 @@ import {
 } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import { EmailTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
+import { TimeTrans } from "../../trans/Date"
 
 const Key = "AgentHistoryList"
 
@@ -153,7 +154,7 @@ const useColumns = ({ items = [], brandId }) =>
     () => [
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="操作时间" en="Date&Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({

@@ -14,11 +14,11 @@ import textColumn from "../../table/column/textColumn"
 import { Descending } from "../../table/order"
 import AlertDialog from "../../dialog/Alert"
 import {
-  ActionDateTimeTrans,
   ActionTypeTrans,
   EditingRecordsTrans,
   OperatorTrans
 } from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
 
 export const Key = "operation"
 
@@ -107,7 +107,7 @@ const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <ActionDateTimeTrans />,
+        Header: <TimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),

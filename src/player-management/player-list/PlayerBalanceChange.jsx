@@ -33,6 +33,7 @@ import {
   useTransactionTypeTrans
 } from "../../trans/Action"
 import { NetProfitTrans } from "../../trans/Field"
+import { TimeTrans } from "../../trans/Date"
 
 export const Key = "BalanceChange"
 
@@ -155,9 +156,7 @@ const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: (
-          <Trans zh="操作时间" en="Operation Time" vi="Thời gian thao tác" />
-        ),
+        Header: <TimeTrans />,
         TotalCell: () => <Trans zh="总和" en="Total" />,
         accessor: "recordedOn",
         disableSortBy: true

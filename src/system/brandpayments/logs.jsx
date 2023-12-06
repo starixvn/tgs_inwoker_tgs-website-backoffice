@@ -12,6 +12,7 @@ import { Table, useTable } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
 import { Detail } from "./condition"
 import { OperatorTrans } from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
 
 export const ViewButton = ({ record, ...props }) => {
   let dialog = useModalState()
@@ -89,7 +90,7 @@ const useColumns = ({ items = [] }) => {
     },
     dateTimeColumn({
       accessor: "createdOn",
-      Header: <Trans zh="操作时间" en="Operation Time" />,
+      Header: <TimeTrans />,
       disableSortBy: true
     }),
     {

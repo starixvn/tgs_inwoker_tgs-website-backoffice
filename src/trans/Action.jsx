@@ -16,13 +16,6 @@ const EditingRecords = {
 }
 export const EditingRecordsTrans = () => <Trans {...EditingRecords} />
 
-const ActionDateTime = {
-  zh: "操作时间",
-  en: "Date&Time",
-  vi: "Lịch sử thao tác"
-}
-export const ActionDateTimeTrans = () => <Trans {...ActionDateTime} />
-
 const ActionType = {
   zh: "操作项",
   en: "Type",

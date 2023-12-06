@@ -54,6 +54,7 @@ import AnnouncementType, { AnnouncementTypeSelect } from "./AnnouncementType"
 import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import { SubjectTrans } from "../../trans/Field"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -462,7 +463,7 @@ const useColumns = ({
       },
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最近更新时间" en="Last Update" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

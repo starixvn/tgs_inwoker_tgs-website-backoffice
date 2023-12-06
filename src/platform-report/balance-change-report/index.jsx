@@ -45,6 +45,7 @@ import {
   useUserNameTrans
 } from "../../trans/User"
 import { BalanceChangeReportTrans } from "../../trans/Platform"
+import { TimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -210,7 +211,7 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         accessor: "recordedOn",
         disableSortBy: true
       }),

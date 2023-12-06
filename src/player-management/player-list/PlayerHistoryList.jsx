@@ -39,7 +39,6 @@ import { FieldValues } from "../../layout/Grid"
 import { VipLevelIdLabel } from "../../vip-levels/VipLevel"
 import { AgentIdUsername } from "../../agent/agent-list/AgentUsername"
 import {
-  ActionDateTimeTrans,
   ActionTypeTrans,
   DetailTrans,
   EditingRecordsTrans,
@@ -57,6 +56,7 @@ import {
 } from "../../trans/User"
 import { VipLevelTrans } from "../../trans/Vip"
 import { UpperLevelAgentTrans } from "../../trans/Agent"
+import { TimeTrans } from "../../trans/Date"
 
 export const Key = "history"
 
@@ -166,7 +166,7 @@ const useColumns = ({ items = [], brandId }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <ActionDateTimeTrans />,
+        Header: <TimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),

@@ -18,6 +18,7 @@ import SearchButton from "../../button/SearchButton"
 import { Descending } from "../../table/order"
 import { endOfDay } from "date-fns"
 import { OperatorTrans } from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
 
 const Key = "AgentOperationList"
 
@@ -114,7 +115,7 @@ const useColumns = ({ items = [] }) =>
     () => [
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({

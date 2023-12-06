@@ -26,6 +26,7 @@ import {
   PromotionNameTrans,
   usePromotionNameTrans
 } from "../../trans/Promotion"
+import { TimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -198,7 +199,7 @@ const useColumns = ({ items = [], brandId }) => {
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="中奖时间" en="Date & Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({
