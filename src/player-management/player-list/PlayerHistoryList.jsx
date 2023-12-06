@@ -277,7 +277,7 @@ const usePlayerHistoryColumns = ({ items = [], brandId }) => {
     let columns = [
       textColumn({
         accessor: "op",
-        Header: <Trans zh="操作" en="Type" />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true,
         Cell: OperationLabel
       }),

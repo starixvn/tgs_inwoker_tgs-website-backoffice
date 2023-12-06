@@ -23,6 +23,13 @@ const ActionType = {
 }
 export const ActionTypeTrans = () => <Trans {...ActionType} />
 
+const Search = {
+  zh: "搜索",
+  en: "Search",
+  vi: "Tìm kiếm"
+}
+export const SearchTrans = () => <Trans {...Search} />
+
 const Remark = {
   zh: "备注",
   en: "Remark",

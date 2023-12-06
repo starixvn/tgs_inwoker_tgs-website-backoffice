@@ -52,7 +52,7 @@ import { InputField } from "../../input/Input"
 import { AdjustTypeSelect, AdjustTypeLabel } from "./AdjustType"
 import DownloadButton from "../../button/DownloadButton"
 import { isSubtract } from "./operation"
-import { RemarkTrans } from "../../trans/Action"
+import { OperatorTrans, RemarkTrans } from "../../trans/Action"
 import { TimeTrans } from "../../trans/Date"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 
@@ -266,7 +266,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "operator",
-        Header: <Trans zh="操作者" en="Adjust By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       textColumn({
