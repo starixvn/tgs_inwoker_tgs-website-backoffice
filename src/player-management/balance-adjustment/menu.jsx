@@ -71,7 +71,8 @@ export const label = (codes = [], locale = Locales.zh) => {
       return getTrans(
         {
           zh: "交易金額",
-          en: "Transaction Amount"
+          en: "Transaction Amount",
+          vi: "Số tiền giao dịch"
         },
         locale
       )

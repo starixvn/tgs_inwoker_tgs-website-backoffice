@@ -14,18 +14,18 @@ import { usePlayerVipChangeList } from "./client"
 import { subDays } from "date-fns"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { TimeTrans } from "../../trans/Date"
-import { VipAfterTrans, VipBeforeTrans } from "../../trans/Vip"
+import {
+  VipAfterTrans,
+  VipBeforeTrans,
+  VipHistoryRecordTrans
+} from "../../trans/Vip"
 
 export const Key = "vip-change-list"
 
 export const PlayerVipChangeListTab = ({ ...props }) => {
   return (
     <Tab tabId={Key} {...props}>
-      <Trans
-        zh="VIP升降級記錄"
-        en="VIP History Record"
-        vi="Lịch sử thăng hạng VIP"
-      />
+      <VipHistoryRecordTrans />
     </Tab>
   )
 }

@@ -16,6 +16,20 @@ const SettleAmount = {
 }
 export const SettleAmountTrans = () => <Trans {...SettleAmount} />
 
+export const TransactionAmount = {
+  zh: "交易金额",
+  en: "Amount",
+  vi: "Số tiền giao dịch"
+}
+export const TransactionAmountTrans = () => <Trans {...TransactionAmount} />
+
+const TransactionId = {
+  zh: "交易单号",
+  en: "Transaction ID",
+  vi: "Mã giao dịch"
+}
+export const TransactionIdTrans = () => <Trans {...TransactionId} />
+
 const Sequence = {
   zh: "序",
   en: "Sequence",

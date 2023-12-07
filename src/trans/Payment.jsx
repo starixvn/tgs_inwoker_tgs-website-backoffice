@@ -71,6 +71,15 @@ const ActualDepositAmount = {
 }
 export const ActualDepositAmountTrans = () => <Trans {...ActualDepositAmount} />
 
+const ActualWithdrawAmount = {
+  zh: "实际提款金额",
+  en: "Actual Amount",
+  vi: "Số tiền rút thực tế"
+}
+export const ActualWithdrawAmountTrans = () => (
+  <Trans {...ActualWithdrawAmount} />
+)
+
 const TransferFee = {
   zh: "手续费",
   en: "Transfer Fee",

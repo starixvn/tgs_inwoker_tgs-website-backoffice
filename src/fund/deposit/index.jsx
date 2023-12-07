@@ -94,7 +94,7 @@ import {
 } from "../../trans/Platform"
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
-import { PromotionNameTrans } from "../../trans/Promotion"
+import { PromotionAmountTrans, PromotionNameTrans } from "../../trans/Promotion"
 import { useTotalDepositAmountTrans } from "../../trans/Field"
 
 export { Code }
@@ -667,9 +667,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       }),
       numberDecimalColumn({
         accessor: "bonus",
-        Header: (
-          <Trans zh="优惠金额" en="Promotion Bonus" vi="Số tiền khuyến mãi" />
-        ),
+        Header: <PromotionAmountTrans />,
         disableSortBy: true
       })
     )

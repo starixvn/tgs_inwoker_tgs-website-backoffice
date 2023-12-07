@@ -22,3 +22,10 @@ const VipAfter = {
   vi: "Cấp VIP sau kết toán"
 }
 export const VipAfterTrans = () => <Trans {...VipAfter} />
+
+const VipHistoryRecord = {
+  zh: "VIP升降級記錄",
+  en: "VIP History Record",
+  vi: "Lịch sử thăng hạng VIP"
+}
+export const VipHistoryRecordTrans = () => <Trans {...VipHistoryRecord} />

@@ -32,7 +32,11 @@ import {
   TransactionTypeTrans,
   useTransactionTypeTrans
 } from "../../trans/Action"
-import { NetProfitTrans } from "../../trans/Field"
+import {
+  NetProfitTrans,
+  TransactionAmountTrans,
+  TransactionIdTrans
+} from "../../trans/Field"
 import { TimeTrans } from "../../trans/Date"
 
 export const Key = "BalanceChange"
@@ -177,12 +181,12 @@ const useColumns = ({ items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="交易金额" en="Amount" vi="Số tiền giao dịch" />,
+        Header: <TransactionAmountTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "externalTransactionId",
-        Header: <Trans zh="交易单号" en="Transaction ID" vi="Mã giao dịch" />,
+        Header: <TransactionIdTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

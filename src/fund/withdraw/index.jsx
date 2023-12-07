@@ -73,6 +73,7 @@ import {
 } from "../../payment/PlatformPaymentProviderSelect"
 import { ActionTrans, OperatorTrans, RemarkTrans } from "../../trans/Action"
 import {
+  ActualWithdrawAmountTrans,
   PaidTimeTrans,
   WithdrawAmountTrans,
   usePaymentProviderTrans
@@ -584,13 +585,7 @@ const useColumns = ({
       numberDecimalColumn({
         id: "actualAmount",
         accessor: (row) => row,
-        Header: (
-          <Trans
-            zh="实际提款金额"
-            en="Actual Amount"
-            vi="Số tiền rút thực tế"
-          />
-        ),
+        Header: <ActualWithdrawAmountTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let { status, amount, actualAmount } = record

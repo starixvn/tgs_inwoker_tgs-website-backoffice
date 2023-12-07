@@ -50,6 +50,7 @@ import {
   RemarkTrans,
   TransactionTypeTrans
 } from "../../trans/Action"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export const AgentAddBalanceDisclosure = ({
   brandId,
@@ -144,7 +145,7 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
         </Set>
 
         <Text.Block alignY="center">
-          <Trans zh="交易金额" en="Amount" />
+          <TransactionAmountTrans />
         </Text.Block>
         <NumberInput name="amount" min="0" step="0.01" required />
 

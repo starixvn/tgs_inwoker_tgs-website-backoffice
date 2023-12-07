@@ -34,6 +34,7 @@ import {
   TransactionTypeTrans
 } from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -178,7 +179,7 @@ const FormBody = ({ brandId, username, playerCode }) => {
         )}
 
         <Box alignY="center">
-          <Trans zh="交易金额" en="Amount" />
+          <TransactionAmountTrans />
         </Box>
         <NumberInputField name="amount" min="0" step="0.01" required />
 

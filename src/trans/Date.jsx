@@ -83,3 +83,10 @@ const SentOn = {
   vi: "Thời gian phân phát"
 }
 export const SentOnTrans = () => <Trans {...SentOn} />
+
+const ParticipationTime = {
+  zh: "参加时间",
+  en: "Participation Time",
+  vi: "Thời gian tham gia"
+}
+export const ParticipationTimeTrans = () => <Trans {...ParticipationTime} />

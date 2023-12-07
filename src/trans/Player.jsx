@@ -65,3 +65,10 @@ export const PlayerBalanceAdjustment = {
 export const PlayerBalanceAdjustmentTrans = () => (
   <Trans {...PlayerBalanceAdjustment} />
 )
+
+const PlayerInfo = {
+  zh: "玩家信息",
+  en: "Player",
+  vi: "Thông tin người chơi"
+}
+export const PlayerInfoTrans = () => <Trans {...PlayerInfo} />

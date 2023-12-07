@@ -64,6 +64,7 @@ import {
 } from "../../trans/User"
 import {
   PlayerCodeTrans,
+  PlayerInfoTrans,
   RegistrationDomainTrans,
   WageringRequirementTrans
 } from "../../trans/Player"
@@ -80,7 +81,7 @@ export const Key = "player"
 export const Tab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="玩家信息" en="Player" vi="Thông tin người chơi" />
+      <PlayerInfoTrans />
     </_Tab>
   )
 }

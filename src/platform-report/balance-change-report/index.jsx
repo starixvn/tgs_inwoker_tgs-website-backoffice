@@ -46,6 +46,7 @@ import {
 } from "../../trans/User"
 import { BalanceChangeReportTrans } from "../../trans/Platform"
 import { TimeTrans } from "../../trans/Date"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -223,7 +224,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="交易金额" en="amount" />,
+        Header: <TransactionAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

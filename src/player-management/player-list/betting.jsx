@@ -25,6 +25,7 @@ import AlertDialog from "../../dialog/Alert"
 import {
   BetAmountTrans,
   BetTimeTrans,
+  BettingRecordsTrans,
   GameDetailTrans,
   ValidBetAmountTrans,
   WinLossTrans,
@@ -38,7 +39,7 @@ export const Key = "betting"
 export const Tab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="投注记录" en="Betting records" vi="Lịch sử đặt cược" />
+      <BettingRecordsTrans />
     </_Tab>
   )
 }

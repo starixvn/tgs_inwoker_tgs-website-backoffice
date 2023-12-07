@@ -74,6 +74,7 @@ import { connection } from "../../connection"
 import { useMount, useUnmount } from "react-use"
 import { RemarkTrans, TransactionTypeTrans } from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
@@ -559,7 +560,7 @@ const useColumns = ({ items, showResult }) => {
       }),
       numberDecimalColumn({
         accessor: "adjustAmount",
-        Header: <Trans zh="交易金额" en="Amount" />,
+        Header: <TransactionAmountTrans />,
         sumColumn: "adjustAmount",
         disableSortBy: true
       }),

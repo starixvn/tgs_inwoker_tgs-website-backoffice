@@ -213,3 +213,10 @@ export const TransactionCount = {
   vi: "Số lượng đơn"
 }
 export const TransactionCountTrans = () => <Trans {...TransactionCount} />
+
+const BettingRecords = {
+  zh: "投注记录",
+  en: "Betting records",
+  vi: "Lịch sử đặt cược"
+}
+export const BettingRecordsTrans = () => <Trans {...BettingRecords} />

@@ -21,6 +21,7 @@ import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { TransactionTypeTrans } from "../../trans/Action"
 import { BalanceAfterTrans, BalanceBeforeTrans } from "../../trans/User"
 import { TimeTrans } from "../../trans/Date"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export const GameActionDialogDisclosure = ({
   roundId,
@@ -128,7 +129,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="交易金额" en="amount" />,
+        Header: <TransactionAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

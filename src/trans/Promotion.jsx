@@ -25,12 +25,19 @@ const PromotionSubtype = {
 export const PromotionSubtypeTrans = () => <Trans {...PromotionSubtype} />
 export const usePromotionSubtypeTrans = () => useTrans(PromotionSubtype)
 
-const PromotionBonus = {
+const Promotions = {
+  zh: "活动记录",
+  en: "Promotions",
+  vi: "Lịch sử hoạt động"
+}
+export const PromotionsTrans = () => <Trans {...Promotions} />
+
+const PromotionAmount = {
   zh: "优惠金额",
   en: "Promotion Bonus",
   vi: "Số tiền khuyến mãi"
 }
-export const PromotionBonusTrans = () => <Trans {...PromotionBonus} />
+export const PromotionAmountTrans = () => <Trans {...PromotionAmount} />
 
 export const PromotionManagement = {
   zh: "活动管理",
