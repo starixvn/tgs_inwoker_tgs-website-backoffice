@@ -41,7 +41,12 @@ export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
       <NormalLabel>
         <Trans zh="活动派发" en="Distribution Method" />
       </NormalLabel>
-      <Box>
+      <Box
+        alignY="center"
+        css={css`
+          width: max-content;
+        `}
+      >
         <AutoOrManualPayoutSwitch
           {...autoPayoutProps}
           readOnly={readOnly || autoPayoutProps.readOnly}
