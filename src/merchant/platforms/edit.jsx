@@ -656,8 +656,6 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           <TimezoneSelect
             name="timeSpanMinutes"
             defaultValue={isAdd ? SystemZoneOffset : undefined}
-            rangeStart={0}
-            rangeEnd={13}
             disabled={readonly || !isAdd}
           />
         </Box>
