@@ -44,8 +44,8 @@ export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
       <Box>
         <AutoOrManualPayoutSwitch
           {...autoPayoutProps}
-          readOnly={readOnly || autoPayoutProps.readOnly || autoPayout}
-          disabled={disabled || autoPayoutProps.disabled || autoPayout}
+          readOnly={readOnly || autoPayoutProps.readOnly}
+          disabled={disabled || autoPayoutProps.disabled}
         />
       </Box>
     </>
