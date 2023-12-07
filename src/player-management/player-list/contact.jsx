@@ -82,17 +82,12 @@ export const Panel = ({ player = {}, ...props }) => {
   )
 }
 
-//TODO:1.39 > rm isDev()
 export const EditPanel = (props) => {
-  return isDev() ? (
-    <UpdateContactPanel {...props} />
-  ) : (
-    <CurrentPlayerContactPanel {...props} />
-  )
+  return <UpdateContactPanel {...props} />
 }
 
-//TODO:1.40 rm CurrentPlayerContactPanel
-const CurrentPlayerContactPanel = ({
+//TODO:1.40 rm OldPlayerContactPanel
+const OldPlayerContactPanel = ({
   playerCode = "",
   player = {},
   onSubmitted,

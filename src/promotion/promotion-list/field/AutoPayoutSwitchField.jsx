@@ -30,7 +30,7 @@ export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
     if (isNotNil(autoPayoutProps?.checked)) {
       setValue(AutoPayoutFieldName, autoPayoutProps?.checked)
     }
-  }, [autoPayoutProps, autoPayout])
+  }, [autoPayoutProps?.checked, autoPayout])
 
   if (!promotionType) {
     return null

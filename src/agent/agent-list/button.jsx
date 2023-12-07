@@ -633,13 +633,8 @@ export const ConfigButton = ({
   )
 }
 
-//TODO:1.39 > rm isDev(), use UpdateConfigDialog
 const ConfigDialog = (props) => {
-  return isDev() ? (
-    <UpdateConfigDialog {...props} />
-  ) : (
-    <CurrentConfigDialog {...props} />
-  )
+  return <UpdateConfigDialog {...props} />
 }
 
 const UpdateConfigDialog = ({
@@ -735,8 +730,8 @@ const UpdateConfigDialog = ({
   )
 }
 
-//TODO:1.40 > rm CurrentConfigDialog
-const CurrentConfigDialog = ({
+//TODO:1.40 > rm OldConfigDialog
+const OldConfigDialog = ({
   brandId,
   agentId,
   agentProfitSharingType,
@@ -913,18 +908,14 @@ const TabsDialog = ({
   )
 }
 
-//TODO:1.39 > use AgentHistoryListTab instead of AgentOperationListTab
 const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
-  //TODO:1.39 rm  isDev()
-  let enableAgentHistory = isDev()
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
         <AgentInfoTab {...tab} />
         <AgentContactInfoTab {...tab} />
         {/* <AgentBankInfoTab {...tab} /> */}
-        {!enableAgentHistory && <AgentOperationListTab {...tab} />}
-        {enableAgentHistory && <AgentHistoryListTab {...tab} />}
+        <AgentHistoryListTab {...tab} />
         <AgentBalanceChangeTab {...tab} />
         <AgentDomainListTab {...tab} />
       </TabList>
@@ -937,21 +928,7 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         {...tab}
       />
       <AgentContactInfoPanel record={record} readonly {...tab} />
-      {/* <AgentBankInfoPanel record={record} readonly {...tab} /> */}
-      {!enableAgentHistory && (
-        <AgentOperationListPanel
-          agentId={record?.id}
-          brandId={brandId}
-          {...tab}
-        />
-      )}
-      {enableAgentHistory && (
-        <AgentHistoryListPanel
-          agentId={record?.id}
-          brandId={brandId}
-          {...tab}
-        />
-      )}
+      <AgentHistoryListPanel agentId={record?.id} brandId={brandId} {...tab} />
       <AgentBalanceChangePanel
         brandId={brandId}
         agentId={record?.id}

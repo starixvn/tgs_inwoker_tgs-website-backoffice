@@ -86,13 +86,8 @@ export const Tab = ({ ...props }) => {
   )
 }
 
-//TODO:1.39 > rm isDev(), use UpdatePlayerInfoPanel
 export const EditPanel = (props) => {
-  return isDev() ? (
-    <UpdatePlayerInfoPanel {...props} />
-  ) : (
-    <CurrentPlayerInfoPanel {...props} />
-  )
+  return <UpdatePlayerInfoPanel {...props} />
 }
 
 const UpdatePlayerInfoPanel = ({
@@ -141,7 +136,6 @@ const UpdatePlayerInfoPanel = ({
   } = {}) => {
     //drop wageringRequirement & banks not updatable value
 
-    //TODO: able to set not valid birthday to null?
     birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : null
 
     let formData = diff(
@@ -177,8 +171,8 @@ const UpdatePlayerInfoPanel = ({
   )
 }
 
-//TODO:1.40 > rm CurrentPlayerInfoPanel
-const CurrentPlayerInfoPanel = ({
+//TODO:1.40 > rm OldPlayerInfoPanel
+const OldPlayerInfoPanel = ({
   brandId,
   brand,
   playerCode = "",

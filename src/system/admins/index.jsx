@@ -104,7 +104,6 @@ const Body = () => {
   )
 }
 
-//TODO:1.39 rm isDev(), add department and role inputs
 const SearchBar = ({
   username = "",
   departmentName = "",
@@ -127,21 +126,17 @@ const SearchBar = ({
             showEmptyFieldValueAddonAfter
             placeholder={useUserNameTrans()}
           />
-          {isDev() && (
-            <>
-              <InputField
-                name="departmentName"
-                showEmptyFieldValueAddonAfter
-                placeholder={useDepartmentPlaceholder()}
-              />
-              <InputField
-                name="role"
-                showEmptyFieldValueAddonAfter
-                placeholder={useRolePlaceholder()}
-              />
-              <AdminStatusSelect name="status" />
-            </>
-          )}
+          <InputField
+            name="departmentName"
+            showEmptyFieldValueAddonAfter
+            placeholder={useDepartmentPlaceholder()}
+          />
+          <InputField
+            name="role"
+            showEmptyFieldValueAddonAfter
+            placeholder={useRolePlaceholder()}
+          />
+          <AdminStatusSelect name="status" />
           <SearchButton isLoading={isLoading} />
         </Set>
       </form>

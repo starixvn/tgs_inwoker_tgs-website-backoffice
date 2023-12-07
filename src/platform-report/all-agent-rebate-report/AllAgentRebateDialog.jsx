@@ -194,7 +194,6 @@ const ReportDialog = ({
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO:1.39 > rm isDev()
   return (
     <Modal
       title={title}
@@ -214,16 +213,12 @@ const ReportDialog = ({
             <FormattedDate value={settleDateTime} dateFormat="yyyy/MM/dd" />
           </Box>
 
-          {isDev() && (
-            <>
-              <Trans zh="全民代理上级" en="All Agent Username" />
-              <Set orientation="horizontal">
-                <FormattedDate value={from} dateFormat="yyyy/MM/dd" />
-                <Box>-</Box>
-                <FormattedDate value={to} dateFormat="yyyy/MM/dd" />
-              </Set>
-            </>
-          )}
+          <Trans zh="全民代理上级" en="All Agent Username" />
+          <Set orientation="horizontal">
+            <FormattedDate value={from} dateFormat="yyyy/MM/dd" />
+            <Box>-</Box>
+            <FormattedDate value={to} dateFormat="yyyy/MM/dd" />
+          </Set>
         </FieldValues>
         <Separator />
         <Table

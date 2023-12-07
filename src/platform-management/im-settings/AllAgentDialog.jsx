@@ -107,7 +107,6 @@ const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
   )
 }
 
-//TODO:1.39 > rm isDev()
 const DialogBody = ({ brandId, readOnly, dialog }) => {
   return (
     <FieldStack>
@@ -117,12 +116,10 @@ const DialogBody = ({ brandId, readOnly, dialog }) => {
           readOnly={readOnly}
           dialog={dialog}
         />
-        {isDev() && (
-          <SettlementCycleDialogDisclosure
-            brandId={brandId}
-            readOnly={readOnly}
-          />
-        )}
+        <SettlementCycleDialogDisclosure
+          brandId={brandId}
+          readOnly={readOnly}
+        />
       </Set>
 
       <AllAgentGameTypeTabs

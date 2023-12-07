@@ -40,17 +40,12 @@ export const AgentContactInfoTab = ({ ...props }) => {
 export const AgentContactInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
-//TODO:1.39 > rm isDev()
 const EditPanel = (props) => {
-  return isDev() ? (
-    <UpdateAgentContactPanel {...props} />
-  ) : (
-    <CurrentAgentContactPanel {...props} />
-  )
+  return <UpdateAgentContactPanel {...props} />
 }
 
-//TODO:1.40: rm CurrentAgentContactPanel
-const CurrentAgentContactPanel = ({
+//TODO:1.40: rm OldAgentContactPanel
+const OldAgentContactPanel = ({
   record,
   onSubmitted,
   onClickClose,

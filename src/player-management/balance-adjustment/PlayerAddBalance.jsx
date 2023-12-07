@@ -133,7 +133,6 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
   )
 }
 
-//TODO:1.39 rm isDev
 const FormBody = ({}) => {
   let { control, getValues, setValue } = useFormContext()
 
@@ -176,19 +175,12 @@ const FormBody = ({}) => {
           />
         </Set>
 
-        {isDev() && (
-          <>
-            <Box alignY="center">
-              <GameTypeTrans />
-            </Box>
-            <Box>
-              <PlatformBucketSelect
-                name="bucketTypes[0]"
-                platformId={brandId}
-              />
-            </Box>
-          </>
-        )}
+        <Box alignY="center">
+          <GameTypeTrans />
+        </Box>
+        <Box>
+          <PlatformBucketSelect name="bucketTypes[0]" platformId={brandId} />
+        </Box>
 
         {showIncludeInNetProfitSetting(transactionType) && (
           <>

@@ -41,13 +41,8 @@ export const Tab = (props = {}) => {
   )
 }
 
-//TODO:1.39: rm isDev(), use UpdatePasswordPanel
 export const Panel = (props) => {
-  return isDev() ? (
-    <UpdatePasswordPanel {...props} />
-  ) : (
-    <CurrentUpdatePasswordPanel {...props} />
-  )
+  return <UpdatePasswordPanel {...props} />
 }
 
 const UpdatePasswordPanel = ({
@@ -89,9 +84,7 @@ const UpdatePasswordPanel = ({
   )
 }
 
-//TODO:1.39 rename to OldUpdatePasswordPanel?
-//TODO:1.40 rm CurrentUpdatePasswordPanel
-const CurrentUpdatePasswordPanel = ({
+const OldUpdatePasswordPanel = ({
   playerCode = "",
   onSubmitted,
   onClickClose,

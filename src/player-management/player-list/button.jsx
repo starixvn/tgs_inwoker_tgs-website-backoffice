@@ -219,7 +219,6 @@ const TabsDialog = ({
   )
 }
 
-//TODO:1.39 > use PlayerHistoryListTab instead of PlayerOperationTab
 const ViewTabs = ({
   playerCode,
   brandId,
@@ -229,8 +228,6 @@ const ViewTabs = ({
   tab
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
-  //TODO:1.39 > isDev()
-  let enablePlayerHistory = isDev()
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -238,8 +235,7 @@ const ViewTabs = ({
         {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <BettingTab {...tab} />
-        {!enablePlayerHistory && <PlayerOperationTab {...tab} />}
-        {enablePlayerHistory && <PlayerHistoryListTab {...tab} />}
+        <PlayerHistoryListTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
         <PlayerVipChangeListTab {...tab} />
@@ -258,16 +254,11 @@ const ViewTabs = ({
         brandId={brandId}
         {...tab}
       />
-      {!enablePlayerHistory && (
-        <PlayerOperationPanel playerCode={playerCode} {...tab} />
-      )}
-      {enablePlayerHistory && (
-        <PlayerHistoryListPanel
-          playerCode={playerCode}
-          brandId={brandId}
-          {...tab}
-        />
-      )}
+      <PlayerHistoryListPanel
+        playerCode={playerCode}
+        brandId={brandId}
+        {...tab}
+      />
       <PlayerBalanceChangePanel
         playerCode={playerCode}
         brandId={brandId}
