@@ -8,12 +8,14 @@ import { NormalLabel } from "../../../form/Label"
 import { useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
 import { usePromotionType } from "./PromotionTypeField"
+import { useIsAddPromotion } from "../usePromotionFormData"
 
 const isNotNil = complement(isNil)
 
 const AutoPayoutFieldName = "autoSentPlayerBonus"
 
 export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
+  let isAdd = useIsAddPromotion()
   let promotionType = usePromotionType()
 
   let { setValue } = useFormContext()
@@ -22,15 +24,17 @@ export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
   let autoPayoutProps = promotion?.autoSentPlayerBonus ?? {}
 
   useEffect(() => {
-    if (autoPayout) {
-      setValue(AutoPayoutFieldName, autoPayout)
+    if (isAdd) {
+      if (autoPayout) {
+        setValue(AutoPayoutFieldName, autoPayout)
+      }
     }
 
     //TODO: rm
     if (isNotNil(autoPayoutProps?.checked)) {
       setValue(AutoPayoutFieldName, autoPayoutProps?.checked)
     }
-  }, [autoPayoutProps?.checked, autoPayout])
+  }, [isAdd, autoPayoutProps?.checked, autoPayout])
 
   if (!promotionType) {
     return null
