@@ -59,6 +59,7 @@ import {
   PaymentProviderTrans
 } from "../../trans/Payment"
 import { StatusTrans } from "../../trans/Status"
+import { OrderTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -328,7 +329,7 @@ const useColumns = ({
       textColumn({
         id: "displayOrder",
         accessor: (record) => record,
-        Header: <Trans zh="序" en="Order" />,
+        Header: <OrderTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           if (!hasUpdateAuth) {

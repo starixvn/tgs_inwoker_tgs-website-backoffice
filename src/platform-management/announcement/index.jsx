@@ -57,7 +57,7 @@ import {
   OperatorTrans
 } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
-import { SubjectTrans } from "../../trans/Field"
+import { OrderTrans, SubjectTrans } from "../../trans/Field"
 import { UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
@@ -409,7 +409,7 @@ const useColumns = ({
         : {
             id: "displayOrder",
             accessor: (record) => record,
-            Header: <Trans zh="序" en="Order" />,
+            Header: <OrderTrans />,
             disableSortBy: true,
             headCell: {
               textAlign: "center"

@@ -9,6 +9,14 @@ const GameProvider = {
 export const GameProviderTrans = () => <Trans {...GameProvider} />
 export const useGameProviderTrans = () => useTrans(GameProvider)
 
+const GameProviderName = {
+  zh: "厂商名称",
+  en: "Game Provider Name",
+  vi: "Tên nhà sản xuất"
+}
+export const GameProviderNameTrans = () => <Trans {...GameProviderName} />
+export const useGameProviderNameTrans = () => useTrans(GameProviderName)
+
 const SubGameProvider = {
   zh: "子游戏厂商",
   en: "Sub Game Provider",
@@ -23,6 +31,13 @@ const GameName = {
   vi: "Tên trò chơi"
 }
 export const GameNameTrans = () => <Trans {...GameName} />
+
+const GameId = {
+  zh: "游戏ID",
+  en: "ID",
+  vi: "ID trò chơi"
+}
+export const GameIdTrans = () => <Trans {...GameId} />
 
 const GameType = {
   zh: "游戏类型",
@@ -228,14 +243,6 @@ export const GameProviderList = {
 }
 export const GameProviderListTrans = () => <Trans {...GameProviderList} />
 
-const VenderName = {
-  zh: "厂商名称",
-  en: "Name",
-  vi: "Tên nhà sản xuất"
-}
-export const VenderNameTrans = () => <Trans {...VenderName} />
-export const useVenderNameTrans = () => useTrans(VenderName)
-
 export const GameList = {
   zh: "游戏列表",
   en: "Game List",
@@ -250,3 +257,24 @@ const PresetMaintenance = {
 }
 export const PresetMaintenanceTrans = () => <Trans {...PresetMaintenance} />
 export const usePresetMaintenanceTrans = () => useTrans(PresetMaintenance)
+
+const HotGame = {
+  zh: "热门游戏",
+  en: "Hot",
+  vi: "Game  phổ biến"
+}
+export const HotGameTrans = () => <Trans {...HotGame} />
+
+const NewGame = {
+  zh: "最新游戏",
+  en: "New",
+  vi: "Game mới"
+}
+export const NewGameTrans = () => <Trans {...NewGame} />
+
+const RecommendGame = {
+  zh: "推荐游戏",
+  en: "Recommend",
+  vi: "Game được đề xuất"
+}
+export const RecommendGameTrans = () => <Trans {...RecommendGame} />

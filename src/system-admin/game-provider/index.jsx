@@ -45,6 +45,7 @@ import { SubGameProviderListDisclosure } from "./SubGameProviderList"
 import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import { UpdatedTimeTrans } from "../../trans/Date"
+import { useGameProviderNameTrans } from "../../trans/Game"
 
 export { Code }
 
@@ -126,10 +127,7 @@ const SearchBar = ({
     en: "game provider code"
   })
 
-  let namePlaceHolder = useTrans({
-    zh: "游戏商名称",
-    en: "game provider name"
-  })
+  let namePlaceHolder = useGameProviderNameTrans()
   return (
     <Level>
       <FormProvider {...formMethods}>

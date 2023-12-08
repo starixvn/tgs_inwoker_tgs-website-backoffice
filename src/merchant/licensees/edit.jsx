@@ -47,6 +47,7 @@ import CurrencyBetLimitFieldsBox, {
 } from "../CurrencyBetLimitFieldsBox"
 import { sortBy } from "lodash-es"
 import { isDev } from "../../env"
+import { EditTrans } from "../../trans/Action"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -254,7 +255,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog

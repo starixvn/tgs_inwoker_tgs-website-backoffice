@@ -28,8 +28,8 @@ import { ActionTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import {
   GameProviderListTrans,
-  VenderNameTrans,
-  useVenderNameTrans
+  GameProviderNameTrans,
+  useGameProviderNameTrans
 } from "../../trans/Game"
 import { PeriodicMaintenanceTimeTrans } from "../../trans/Date"
 
@@ -113,7 +113,7 @@ const SearchBar = ({ name: keyword = "", search, isLoading, ...props }) => {
     }
   })
 
-  let searchPlaceHolder = useVenderNameTrans()
+  let searchPlaceHolder = useGameProviderNameTrans()
 
   const onSubmit = (data) => search(data)
 
@@ -152,7 +152,7 @@ const useColumns = ({ items = [], mutate }) => {
       },
       {
         accessor: "gameProviderName",
-        Header: <VenderNameTrans />,
+        Header: <GameProviderNameTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"

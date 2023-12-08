@@ -37,6 +37,13 @@ const Sequence = {
 }
 export const SequenceTrans = () => <Trans {...Sequence} />
 
+const Order = {
+  zh: "序",
+  en: "Order",
+  vi: "Thứ tự/Trình tự"
+}
+export const OrderTrans = () => <Trans {...Order} />
+
 const Subject = {
   zh: "主题",
   en: "Subject",
@@ -81,3 +88,10 @@ const Multipliers = {
   vi: "Lần/Bội số"
 }
 export const MultipliersTrans = () => <Trans {...Multipliers} />
+
+const SupportingDevice = {
+  zh: "支持设备",
+  en: "Platform",
+  vi: "Thiết bị hỗ trợ"
+}
+export const SupportingDeviceTrans = () => <Trans {...SupportingDevice} />

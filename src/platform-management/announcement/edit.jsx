@@ -33,6 +33,7 @@ import Textarea, { TextareaField } from "../../textarea"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { AnnouncementTypeSelect } from "./AnnouncementType"
 import { SubjectTrans } from "../../trans/Field"
+import { EditTrans } from "../../trans/Action"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -116,7 +117,7 @@ export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog

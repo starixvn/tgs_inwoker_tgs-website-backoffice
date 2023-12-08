@@ -65,6 +65,7 @@ import {
 } from "../../trans/Promotion"
 import { StatusTrans } from "../../trans/Status"
 import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action"
+import { OrderTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -424,7 +425,7 @@ const useColumns = ({
       textColumn({
         id: "displayOrder",
         accessor: (row) => row,
-        Header: <Trans zh="序" en="Order" />,
+        Header: <OrderTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           if (!hasUpdateAuth) {

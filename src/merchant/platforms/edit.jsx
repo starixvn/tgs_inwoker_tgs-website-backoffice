@@ -71,6 +71,7 @@ import {
 import { PlatformTokenActionButtons } from "./PlatformTokenActionButtons"
 import { TimezoneSelect, SystemZoneOffset } from "../../date/TimeZone"
 import { GameProviderTrans } from "../../trans/Game"
+import { EditTrans } from "../../trans/Action"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -277,7 +278,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure data-platform-id={record?.id} {...dialog} {...props}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog

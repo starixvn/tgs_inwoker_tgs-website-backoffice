@@ -40,10 +40,16 @@ import { NumberInput } from "../../input/NumberInput"
 import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action.jsx"
 import { StatusTrans } from "../../trans/Status.jsx"
 import {
+  GameIdTrans,
   GameListTrans,
   GameNameTrans,
-  GameTypeTrans
+  GameProviderNameTrans,
+  GameTypeTrans,
+  HotGameTrans,
+  NewGameTrans,
+  RecommendGameTrans
 } from "../../trans/Game.jsx"
+import { OrderTrans, SupportingDeviceTrans } from "../../trans/Field.jsx"
 
 export { Code } from "./menu"
 
@@ -275,7 +281,7 @@ const useColumns = ({
       {
         id: "displayOrder",
         accessor: (record) => record,
-        Header: <Trans zh="序" en="Order" />,
+        Header: <OrderTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center",
@@ -315,7 +321,7 @@ const useColumns = ({
       },
       {
         accessor: "gameId",
-        Header: <Trans zh="游戏ID" en="ID" />,
+        Header: <GameIdTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center",
@@ -327,7 +333,7 @@ const useColumns = ({
       },
       {
         accessor: "gameProviderName",
-        Header: <Trans zh="厂商名称" en="Game Provider Name" />,
+        Header: <GameProviderNameTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center",
@@ -369,7 +375,7 @@ const useColumns = ({
       },
       {
         accessor: "platform",
-        Header: <Trans zh="支持设备" en="Platform" />,
+        Header: <SupportingDeviceTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center",
@@ -389,7 +395,7 @@ const useColumns = ({
       {
         id: "isHot",
         accessor: (record) => record,
-        Header: <Trans zh="热门游戏" en="Hot" />,
+        Header: <HotGameTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center",
@@ -415,7 +421,7 @@ const useColumns = ({
       {
         id: "isNew",
         accessor: (record) => record,
-        Header: <Trans zh="最新游戏" en="New" />,
+        Header: <NewGameTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center",
@@ -441,7 +447,7 @@ const useColumns = ({
       {
         id: "isRecommend",
         accessor: (record) => record,
-        Header: <Trans zh="推荐游戏" en="Recommend" />,
+        Header: <RecommendGameTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center",
