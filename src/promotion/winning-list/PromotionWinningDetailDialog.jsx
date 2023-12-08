@@ -9,6 +9,7 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { JsonEditor } from "../../text/editor/JsonEditor"
 import { FieldValues } from "../../layout/Grid"
+import { useWinningContentTrans } from "../../trans/Promotion"
 
 export const PromotionWinningDetailDialogDisclosure = ({
   id,
@@ -36,10 +37,7 @@ export const PromotionWinningDetailDialogDisclosure = ({
 }
 
 const DetailDialog = ({ brandId, recordId, dialog, dialogId }) => {
-  let title = useTrans({
-    zh: "中奖内容",
-    en: "Winnings"
-  })
+  let title = useWinningContentTrans()
 
   let { isLoading, data, error } = usePromotionWinningDetail(brandId, recordId)
   if (isLoading) {

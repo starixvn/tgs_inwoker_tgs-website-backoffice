@@ -24,6 +24,9 @@ import { Descending } from "../../table/order"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import {
   PromotionNameTrans,
+  WinningContentTrans,
+  WinningListTrans,
+  WinningOrderIdTrans,
   usePromotionNameTrans
 } from "../../trans/Promotion"
 import { TimeTrans } from "../../trans/Date"
@@ -83,7 +86,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="中奖列表" en="Winning List" />}
+      title={<WinningListTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
@@ -194,7 +197,7 @@ const useColumns = ({ items = [], brandId }) => {
     let columns = [
       textColumn({
         accessor: "recordId",
-        Header: <Trans zh="中奖 ID" en="Order ID" />,
+        Header: <WinningOrderIdTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
@@ -215,7 +218,7 @@ const useColumns = ({ items = [], brandId }) => {
       textColumn({
         id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="中奖内容" en="Winnings" />,
+        Header: <WinningContentTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

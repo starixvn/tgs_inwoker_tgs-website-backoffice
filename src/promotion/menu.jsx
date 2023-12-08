@@ -19,7 +19,8 @@ import { faGift } from "@fortawesome/free-solid-svg-icons"
 import {
   PromotionManagement,
   PromotionManagementTrans,
-  PromotionPayouts
+  PromotionPayouts,
+  WinningList
 } from "../trans/Promotion"
 
 export const Code = "promotion"
@@ -64,13 +65,7 @@ const labelOf = ({ locale, code }) => {
     case PayoutListCode:
       return getTrans(PromotionPayouts, locale)
     case WinningListCode:
-      return getTrans(
-        {
-          zh: "中奖列表",
-          en: "Winning List"
-        },
-        locale
-      )
+      return getTrans(WinningList, locale)
     default:
       return ""
   }

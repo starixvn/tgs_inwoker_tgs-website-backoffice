@@ -97,3 +97,26 @@ const VerifyTime = {
   vi: "Thời gian kiểm tra/xem xét"
 }
 export const VerifyTimeTrans = () => <Trans {...VerifyTime} />
+
+const PeriodicMaintenanceTime = {
+  zh: "定期维护时间",
+  en: "Periodic Maintenance Time",
+  vi: "Thời gian bảo trì định kỳ"
+}
+export const PeriodicMaintenanceTimeTrans = () => (
+  <Trans {...PeriodicMaintenanceTime} />
+)
+
+const StartTime = {
+  zh: "开始时间",
+  en: "Start Time",
+  vi: "Thời gian bắt đầu"
+}
+export const StartTimeTrans = () => <Trans {...StartTime} />
+
+const EndTime = {
+  zh: "结束时间",
+  en: "End Time",
+  vi: "Thời gian kết thúc"
+}
+export const EndTimeTrans = () => <Trans {...EndTime} />

@@ -235,3 +235,25 @@ const PromotionBonusAmountLimitHint = {
 }
 export const usePromotionBonusAmountLimitHintTrans = () =>
   useTrans(PromotionBonusAmountLimitHint)
+
+export const WinningList = {
+  zh: "中奖列表",
+  en: "Winning List",
+  vi: "Bảng biểu trúng thưởng"
+}
+export const WinningListTrans = () => <Trans {...WinningList} />
+
+const WinningOrderId = {
+  zh: "中奖 ID",
+  en: "Order ID",
+  vi: "ID trúng thưởng"
+}
+export const WinningOrderIdTrans = () => <Trans {...WinningOrderId} />
+
+const WinningContent = {
+  zh: "中奖内容",
+  en: "Winnings",
+  vi: "Nội dung trúng thưởng"
+}
+export const WinningContentTrans = () => <Trans {...WinningContent} />
+export const useWinningContentTrans = () => useTrans(WinningContent)

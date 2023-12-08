@@ -35,6 +35,11 @@ import format from "../../date/format"
 import { ScheduleStatus, ScheduleStatusLabel } from "./ScheduleStatus"
 import { ActionTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import {
+  PresetMaintenanceTrans,
+  usePresetMaintenanceTrans
+} from "../../trans/Game"
+import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export const EditPresetButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -46,7 +51,7 @@ export const EditPresetButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="预设维护" en="Preset Maintenance" />
+        <PresetMaintenanceTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
@@ -106,10 +111,7 @@ const EditDialog = ({ record, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "预设维护",
-    en: "Preset Maintenance"
-  })
+  let title = usePresetMaintenanceTrans()
 
   if (isLoadingPresetMaintenance) {
     return <LoadingBackdrop {...dialog} />
@@ -157,8 +159,10 @@ const EditDialog = ({ record, dialog, ...props }) => {
   )
 }
 
-const StartTimeLabel = () => <Trans zh="开始时间" en="Start Time" />
-const EndTimeLabel = () => <Trans zh="结束时间" en="End Time" />
+//TODO: rm StartTimeLabel
+const StartTimeLabel = () => <StartTimeTrans />
+//TODO: rm EndTimeLabel
+const EndTimeLabel = () => <EndTimeTrans />
 
 const EditBody = ({
   items,

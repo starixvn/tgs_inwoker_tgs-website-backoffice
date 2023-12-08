@@ -39,7 +39,11 @@ import { GameTypeLabel, AllGameTypeSelect } from "../GameType"
 import { NumberInput } from "../../input/NumberInput"
 import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action.jsx"
 import { StatusTrans } from "../../trans/Status.jsx"
-import { GameNameTrans, GameTypeTrans } from "../../trans/Game.jsx"
+import {
+  GameListTrans,
+  GameNameTrans,
+  GameTypeTrans
+} from "../../trans/Game.jsx"
 
 export { Code } from "./menu"
 
@@ -85,7 +89,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="游戏列表" en="Game List" />}
+      title={<GameListTrans />}
       actionBar={
         <SearchBar
           brandId={brandId}

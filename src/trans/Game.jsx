@@ -220,3 +220,33 @@ const BettingRecords = {
   vi: "Lịch sử đặt cược"
 }
 export const BettingRecordsTrans = () => <Trans {...BettingRecords} />
+
+export const GameProviderList = {
+  zh: "厂商列表",
+  en: "Game Provider List",
+  vi: "Danh sách các nhà cung cấp"
+}
+export const GameProviderListTrans = () => <Trans {...GameProviderList} />
+
+const VenderName = {
+  zh: "厂商名称",
+  en: "Name",
+  vi: "Tên nhà sản xuất"
+}
+export const VenderNameTrans = () => <Trans {...VenderName} />
+export const useVenderNameTrans = () => useTrans(VenderName)
+
+export const GameList = {
+  zh: "游戏列表",
+  en: "Game List",
+  vi: "Báo biểu trò chơi"
+}
+export const GameListTrans = () => <Trans {...GameList} />
+
+const PresetMaintenance = {
+  zh: "预设维护",
+  en: "Preset Maintenance",
+  vi: "Bảo trì theo lịch trình"
+}
+export const PresetMaintenanceTrans = () => <Trans {...PresetMaintenance} />
+export const usePresetMaintenanceTrans = () => useTrans(PresetMaintenance)
