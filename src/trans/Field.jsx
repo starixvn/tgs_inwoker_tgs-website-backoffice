@@ -67,3 +67,17 @@ const Attachment = {
 }
 export const AttachmentTrans = () => <Trans {...Attachment} />
 
+const Unlimited = {
+  zh: "无限",
+  en: "Unlimited",
+  vi: "Không giới hạn"
+}
+export const UnlimitedTrans = () => <Trans {...Unlimited} />
+export const useUnlimitedTrans = () => useTrans(Unlimited)
+
+const Multipliers = {
+  zh: "倍",
+  en: "Multipliers",
+  vi: "Lần/Bội số"
+}
+export const MultipliersTrans = () => <Trans {...Multipliers} />

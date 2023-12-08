@@ -50,6 +50,7 @@ import { useTotalFunds } from "../field/TotalFundsField"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
+import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
 
 const PromotionType = "Register"
 
@@ -79,7 +80,7 @@ export const Rule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
+        <PromotionTurnoverRequirementTrans />
       </NormalLabel>
       <NumberInputField
         name="rule.turnoverMultiple"

@@ -3,7 +3,11 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
-import { useInBlacklistTrans, InBlacklistTrans } from "../trans/Status"
+import {
+  useInBlacklistTrans,
+  InBlacklistTrans,
+  useStatusTrans
+} from "../trans/Status"
 
 const Enabled = "Enabled"
 const EnabledTrans = {
@@ -20,10 +24,7 @@ const DisabledTrans = {
 const InBlacklist = "InBlacklist"
 
 export const AgentStatusSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [

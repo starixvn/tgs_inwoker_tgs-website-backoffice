@@ -40,6 +40,7 @@ import { ICNumberTrans, RealNameTrans } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
 import { ApplicationTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
+import { AttachmentTrans } from "../../trans/Field"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
@@ -217,7 +218,7 @@ const ReviewDialog = ({
             />
           </Set>
 
-          <Trans zh="附件" en="Attachment" />
+          <AttachmentTrans />
           <Box>
             {hasAttchment && (
               <Link href={attachmentUrl} target="_blank">

@@ -53,6 +53,15 @@ export const PromotionPayouts = {
 }
 export const PromotionPayoutsTrans = () => <Trans {...PromotionPayouts} />
 
+const PromotionDistributionMethod = {
+  zh: "活动派发",
+  en: "Distribution Method",
+  vi: "Phân phát hoạt động"
+}
+export const PromotionDistributionMethodTrans = () => (
+  <Trans {...PromotionDistributionMethod} />
+)
+
 const PromotionPayout = {
   zh: "领取金额",
   en: "Payout",
@@ -68,3 +77,161 @@ const PromotionBatchPayout = {
 export const PromotionBatchPayoutTrans = () => (
   <Trans {...PromotionBatchPayout} />
 )
+
+const PromotionStatusEnabled = {
+  zh: "开启",
+  en: "Enabled",
+  vi: "Mở / Bật"
+}
+export const PromotionStatusEnabledTrans = () => (
+  <Trans {...PromotionStatusEnabled} />
+)
+export const usePromotionStatusEnabledTrans = () =>
+  useTrans(PromotionStatusEnabled)
+
+const PromotionStatusDisabled = {
+  zh: "关闭",
+  en: "Disabled",
+  vi: "Mở / Bật"
+}
+export const PromotionStatusDisabledTrans = () => (
+  <Trans {...PromotionStatusDisabled} />
+)
+export const usePromotionStatusDisabledTrans = () =>
+  useTrans(PromotionStatusDisabled)
+
+const PromotionTime = {
+  zh: "活动时间",
+  en: "Promotion Period",
+  vi: "Thời gian hoạt động"
+}
+export const PromotionTimeTrans = () => <Trans {...PromotionTime} />
+
+const PromotionUserGroup = {
+  zh: "活动用户群",
+  en: "User Group",
+  vi: "Nhóm người dùng tham gia sự kiện/hoạt động"
+}
+export const PromotionUserGroupTrans = () => <Trans {...PromotionUserGroup} />
+export const usePromotionUserGroupTrans = () => useTrans(PromotionUserGroup)
+
+const PromotionFund = {
+  zh: "活动费用",
+  en: "Promotion Fund",
+  vi: "Chi phí hoạt động"
+}
+export const PromotionFundTrans = () => <Trans {...PromotionFund} />
+
+const ViewPromotion = {
+  zh: "查看活动",
+  en: "View Promotion",
+  vi: "Tìm kiếm hoạt động"
+}
+export const ViewPromotionTrans = () => <Trans {...ViewPromotion} />
+export const useViewPromotionTrans = () => useTrans(ViewPromotion)
+
+const PromotionTotalFunds = {
+  zh: "活动总费用",
+  en: "Promotion Funds",
+  vi: "Tổng phí dùng cho hoạt động"
+}
+export const PromotionTotalFundsTrans = () => <Trans {...PromotionTotalFunds} />
+
+const PromotionContent = {
+  zh: "活动内容",
+  en: "Promotion Content",
+  vi: "Nội dung hoạt động /sự kiện"
+}
+export const PromotionContentTrans = () => <Trans {...PromotionContent} />
+
+const PromotionSubTitle = {
+  zh: "活动子标题",
+  en: "Promotion SubTitle",
+  vi: "Tiêu đề phụ của sự kiện"
+}
+export const PromotionSubTitleTrans = () => <Trans {...PromotionSubTitle} />
+
+const PromotionBannerDesktop = {
+  zh: "活动 Banner (PC)",
+  en: "Promotion Banner (PC)",
+  vi: "Banner Sự kiện (PC)"
+}
+export const PromotionBannerDesktopTrans = () => (
+  <Trans {...PromotionBannerDesktop} />
+)
+
+const PromotionBannerDesktopRecommendedSize = {
+  zh: "建議尺寸:  1200 x 486px",
+  en: "Recommended size: 1200 x 486px",
+  vi: "Kích thước đề xuất: 1200 x 486px"
+}
+export const PromotionBannerDesktopRecommendedSizeTrans = () => (
+  <Trans {...PromotionBannerDesktopRecommendedSize} />
+)
+
+const PromotionBannerMobile = {
+  zh: "活动 Banner (Mobile)",
+  en: "Promotion Banner (Mobile)",
+  vi: "Banner Sự kiện (Di động)"
+}
+export const PromotionBannerMobileTrans = () => (
+  <Trans {...PromotionBannerMobile} />
+)
+
+const PromotionBannerMobileRecommendedSize = {
+  zh: "建議尺寸: 690 x 280px",
+  en: "Recommended size: 690 x 280px",
+  vi: "Kích thước đề xuất: 690 x 280px"
+}
+export const PromotionBannerMobileRecommendedSizeTrans = () => (
+  <Trans {...PromotionBannerMobileRecommendedSize} />
+)
+
+const PromotionRules = {
+  zh: "活动条款与条规",
+  en: "Promotion Rules",
+  vi: "Điều khoản hoạt động và quy tắc"
+}
+export const PromotionRulesTrans = () => <Trans {...PromotionRules} />
+
+const PromotionRuleSettings = {
+  zh: "規則設定",
+  en: "Rule Settings",
+  vi: "Thiết lập quy tắc"
+}
+export const PromotionRuleSettingsTrans = () => (
+  <Trans {...PromotionRuleSettings} />
+)
+
+const PromotionBonusPercentage = {
+  zh: "彩金百分比",
+  en: "Bonus Percentage",
+  vi: "Tỷ lệ phần thưởng tiền thưởng/Phần trăm tiên thưởng"
+}
+export const PromotionBonusPercentageTrans = () => (
+  <Trans {...PromotionBonusPercentage} />
+)
+
+const PromotionBonusLimit = {
+  zh: "彩金上限",
+  en: "Bonus Limit",
+  vi: "Giới hạn tiền thưởng/Hạn mức tiền thưởng"
+}
+export const PromotionBonusLimitTrans = () => <Trans {...PromotionBonusLimit} />
+
+const PromotionTurnoverRequirement = {
+  zh: "流水倍数",
+  en: "Turnover Requirement",
+  vi: "Hệ số doanh số /Bội số doanh thu"
+}
+export const PromotionTurnoverRequirementTrans = () => (
+  <Trans {...PromotionTurnoverRequirement} />
+)
+
+const PromotionBonusAmountLimitHint = {
+  zh: "彩金上限/彩金百分比",
+  en: "Bonus Limit/彩金百分比",
+  vi: "Giới hạn tiền thưởng/Tỷ lệ phần thưởng tiền thưởng"
+}
+export const usePromotionBonusAmountLimitHintTrans = () =>
+  useTrans(PromotionBonusAmountLimitHint)

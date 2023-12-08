@@ -28,6 +28,15 @@ import { useFindPromotionType } from "../PromotionType"
 import { get } from "lodash-es"
 import Separator from "../../layout/Separator"
 import { useViewTrans } from "../../trans/Action"
+import {
+  PromotionBannerDesktopRecommendedSizeTrans,
+  PromotionBannerDesktopTrans,
+  PromotionBannerMobileRecommendedSizeTrans,
+  PromotionBannerMobileTrans,
+  PromotionContentTrans,
+  PromotionRulesTrans,
+  PromotionSubTitleTrans
+} from "../../trans/Promotion"
 
 const FieldName = "content"
 export const ContentSetting = ({ readOnly }) => {
@@ -39,11 +48,11 @@ export const ContentSetting = ({ readOnly }) => {
       <Separator />
 
       <Heading use="h5">
-        <Trans zh="活动内容" en="Promotion Content" />
+        <PromotionContentTrans />
       </Heading>
       <FieldValues>
         <NormalLabel>
-          <Trans zh="活动子标题" en="Promotion SubTitle" />
+          <PromotionSubTitleTrans />
         </NormalLabel>
         <Box alignY="center">
           <InputField
@@ -57,7 +66,7 @@ export const ContentSetting = ({ readOnly }) => {
         </Box>
 
         <NormalLabel>
-          <Trans zh="活动 Banner (PC)" en="Promotion Banner (PC)" />
+          <PromotionBannerDesktopTrans />
         </NormalLabel>
         <Set orientation="vertical" alignY="center">
           <ImageLocalizationDialogDisclosure
@@ -70,15 +79,12 @@ export const ContentSetting = ({ readOnly }) => {
             required
           />
           <Text.Block color="warning" fontWeight="bold" fontSize="150">
-            <Trans
-              zh="建議尺寸:  1200 x 486px"
-              en="Recommended size: 1200 x 486px"
-            />
+            <PromotionBannerDesktopRecommendedSizeTrans />
           </Text.Block>
         </Set>
 
         <NormalLabel>
-          <Trans zh="活动 Banner (Mobile)" en="Promotion Banner (Mobile)" />
+          <PromotionBannerMobileTrans />
         </NormalLabel>
         <Set orientation="vertical" alignY="center">
           <ImageLocalizationDialogDisclosure
@@ -91,15 +97,12 @@ export const ContentSetting = ({ readOnly }) => {
             required
           />
           <Text.Block color="warning" fontWeight="bold" fontSize="150">
-            <Trans
-              zh="建議尺寸: 690 x 280px"
-              en="Recommended size: 690 x 280px"
-            />
+            <PromotionBannerMobileRecommendedSizeTrans />
           </Text.Block>
         </Set>
 
         <NormalLabel>
-          <Trans zh="活动内容" en="Promotion Content" />
+          <PromotionContentTrans />
         </NormalLabel>
         <Box alignY="center">
           <HtmlEditorDisclosure
@@ -111,7 +114,7 @@ export const ContentSetting = ({ readOnly }) => {
         </Box>
 
         <NormalLabel>
-          <Trans zh="活动条款与条规" en="Promotion Rules" />
+          <PromotionRulesTrans />
         </NormalLabel>
         <Box alignY="center">
           <HtmlEditorDisclosure

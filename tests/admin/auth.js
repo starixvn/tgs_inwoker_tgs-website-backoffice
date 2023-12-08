@@ -309,7 +309,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Deposit",
-      Zh: "充值送"
+      Zh: "充值送",
+      Vi: "Nạp tặng"
     }
   },
   {
@@ -368,7 +369,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "SOS",
-      Zh: "救援金"
+      Zh: "救援金",
+      Vi: "Quỹ cứu trợ"
     }
   },
   {
@@ -385,7 +387,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "New User",
-      Zh: "新用戶"
+      Zh: "新用戶",
+      Vi: "Người dùng mới"
     }
   },
   {
@@ -401,7 +404,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Lottery",
-      Zh: "抽獎"
+      Zh: "抽獎",
+      Vi: "Bốc thăm"
     }
   },
   {
@@ -417,7 +421,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Dummy",
-      Zh: "基本活動"
+      Zh: "基本活動",
+      Vi: "Hoạt động cơ bản"
     }
   },
   {
@@ -440,7 +445,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Offline",
-      Zh: "線下活動"
+      Zh: "線下活動",
+      Vi: "Hoạt động dưới tuyến"
     }
   }
 ])

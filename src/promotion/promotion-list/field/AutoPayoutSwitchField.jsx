@@ -9,6 +9,8 @@ import { useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
 import { usePromotionType } from "./PromotionTypeField"
 import { useIsAddPromotion } from "../usePromotionFormData"
+import { PromotionDistributionMethodTrans } from "../../../trans/Promotion"
+import { useAutomaticTrans, useManualTrans } from "../../../trans/Status"
 
 const isNotNil = complement(isNil)
 
@@ -43,7 +45,7 @@ export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="活动派发" en="Distribution Method" />
+        <PromotionDistributionMethodTrans />
       </NormalLabel>
       <Box
         alignY="center"
@@ -75,14 +77,8 @@ const AutoOrManualPayoutSwitch = ({
     defaultValue: props.checked ?? props?.defaultValue
   })
 
-  let autoPayoutLabel = useTrans({
-    zh: "自動",
-    en: "Automatic"
-  })
-  let manualPayoutLabel = useTrans({
-    zh: "手动",
-    en: "Manual"
-  })
+  let autoPayoutLabel = useAutomaticTrans()
+  let manualPayoutLabel = useManualTrans()
   let label = checked ? autoPayoutLabel : manualPayoutLabel
 
   if (readOnly || disabled) {

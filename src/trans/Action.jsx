@@ -165,3 +165,10 @@ const NextPage = {
 }
 export const NextPageTrans = () => <Trans {...NextPage} />
 export const useNextPageTrans = () => useTrans(NextPage)
+
+const ConfirmOrder = {
+  zh: "确认排序",
+  en: "Confirm Order",
+  vi: "Xác nhận sắp xếp/Xác nhận thứ tự"
+}
+export const ConfirmOrderTrans = () => <Trans {...ConfirmOrder} />

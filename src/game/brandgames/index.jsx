@@ -37,7 +37,7 @@ import AlertDialog from "../../dialog/Alert"
 import BrandBar from "../../report/BrandBar"
 import { GameTypeLabel, AllGameTypeSelect } from "../GameType"
 import { NumberInput } from "../../input/NumberInput"
-import { ActionTrans } from "../../trans/Action.jsx"
+import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action.jsx"
 import { StatusTrans } from "../../trans/Status.jsx"
 import { GameNameTrans, GameTypeTrans } from "../../trans/Game.jsx"
 
@@ -202,7 +202,7 @@ const DataTable = ({
           {editable && (
             <Dialog.Footer position="sticky" bottom="0">
               <Button isLoading={isChangingDisplayOrder} type="submit">
-                <Trans zh="确认排序" en="Confirm Order" />
+                <ConfirmOrderTrans />
               </Button>
             </Dialog.Footer>
           )}

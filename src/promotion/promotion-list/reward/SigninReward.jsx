@@ -50,6 +50,7 @@ import { get, set } from "lodash-es"
 import { isNil, isEmpty, either, complement, prop, all, compose } from "ramda"
 import { useTotalFunds } from "../field/TotalFundsField"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
+import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
 
 //TODO: rm
 export const SigninRewardRuleSetting = ({ ...props }) => {
@@ -208,7 +209,7 @@ const FormBody = ({ name = ListFieldName, readOnly }) => {
             <Trans zh="礼金" en="Bonus" />
           </Table.HeadCell>
           <Table.HeadCell>
-            <Trans zh="流水倍数" en="Turnover Requirement" />
+            <PromotionTurnoverRequirementTrans />
           </Table.HeadCell>
         </Table.Row>
       </Table.Head>

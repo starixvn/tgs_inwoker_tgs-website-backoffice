@@ -54,13 +54,17 @@ import { PromotionChangeLogListDialogDisclosure } from "./ChangeLogListDialog"
 import { CopyPromotionDisclosure } from "./CopyPromotion"
 import { formatDateOnly } from "../../date/format"
 import {
+  PromotionFundTrans,
   PromotionManagementTrans,
   PromotionNameTrans,
   PromotionSubtypeTrans,
-  PromotionTypeTrans
+  PromotionTimeTrans,
+  PromotionTypeTrans,
+  PromotionUserGroupTrans,
+  usePromotionUserGroupTrans
 } from "../../trans/Promotion"
 import { StatusTrans } from "../../trans/Status"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -248,7 +252,7 @@ const DataTable = ({
           {editable && (
             <Dialog.Footer position="sticky" bottom="0">
               <Button isLoading={isChangingDisplayOrder} type="submit">
-                <Trans zh="确认排序" en="Confirm Order" />
+                <ConfirmOrderTrans />
               </Button>
             </Dialog.Footer>
           )}
@@ -475,7 +479,7 @@ const useColumns = ({
       textColumn({
         id: "promotionTime",
         accessor: (row) => row,
-        Header: <Trans zh="活动时间" en="Promotion Period" />,
+        Header: <PromotionTimeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let from = formatDayMonthYear(value?.from)
@@ -485,13 +489,10 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "vipLevels",
-        Header: <Trans zh="活动用户群" en="User Group" />,
+        Header: <PromotionUserGroupTrans />,
         disableSortBy: true,
         Cell: ({ value: vipLevels }) => {
-          let dialogTitle = useTrans({
-            zh: "活动用户群",
-            en: "User Group"
-          })
+          let dialogTitle = usePromotionUserGroupTrans()
 
           if (!vipLevels || vipLevels?.length === 0) {
             return "-"
@@ -508,7 +509,7 @@ const useColumns = ({
       textColumn({
         id: "amounts",
         accessor: (row) => row,
-        Header: <Trans zh="活动费用" en="Promotion Fund" />,
+        Header: <PromotionFundTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let unlimited = value?.unlimited

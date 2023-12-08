@@ -55,7 +55,10 @@ import Reward from "./reward/index"
 import { PromotionTypes as OfflinePromotionTypeList } from "./reward/OfflineRewardGroup"
 import { useIsPromotionStarted } from "./usePromotionFormData"
 import { PromotionTypeField } from "./field/PromotionTypeField"
-import { PromotionNameTrans } from "../../trans/Promotion"
+import {
+  PromotionNameTrans,
+  useViewPromotionTrans
+} from "../../trans/Promotion"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -405,10 +408,7 @@ const ViewDialog = ({ brandId, promotionId, dialog, ...props }) => {
     promotionId
   )
 
-  let title = useTrans({
-    zh: "查看活动",
-    en: "View Promotion"
-  })
+  let title = useViewPromotionTrans()
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />

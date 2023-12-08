@@ -51,7 +51,11 @@ import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import AnnouncementType, { AnnouncementTypeSelect } from "./AnnouncementType"
-import { ActionTrans, OperatorTrans } from "../../trans/Action"
+import {
+  ActionTrans,
+  ConfirmOrderTrans,
+  OperatorTrans
+} from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import { SubjectTrans } from "../../trans/Field"
 import { UpdatedTimeTrans } from "../../trans/Date"
@@ -375,7 +379,7 @@ const EffectiveTable = ({
                 type="submit"
                 id="change-announcement-display-order-button"
               >
-                <Trans zh="确认排序" en="Confirm Order" />
+                <ConfirmOrderTrans />
               </Button>
             </Dialog.Footer>
           )}

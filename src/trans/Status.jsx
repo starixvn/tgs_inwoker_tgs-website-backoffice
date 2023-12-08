@@ -6,8 +6,8 @@ const Status = {
   en: "Status",
   vi: "Trạng thái"
 }
-export const useStatusTrans = () => useTrans(Status)
 export const StatusTrans = () => <Trans {...Status} />
+export const useStatusTrans = () => useTrans(Status)
 
 const InBlacklist = {
   zh: "黑名单",
@@ -62,3 +62,19 @@ const NoSearchResult = {
   vi: "Không tìm thấy dữ liệu/Không có thông tin"
 }
 export const NoSearchResultTrans = () => <Trans {...NoSearchResult} />
+
+const Automatic = {
+  zh: "自動",
+  en: "Automatic",
+  vi: "Thủ công"
+}
+export const AutomaticTrans = () => <Trans {...Automatic} />
+export const useAutomaticTrans = () => useTrans(Automatic)
+
+const Manual = {
+  zh: "手动",
+  en: "Manual",
+  vi: "Tự động"
+}
+export const ManualTrans = () => <Trans {...Manual} />
+export const useManualTrans = () => useTrans(Manual)

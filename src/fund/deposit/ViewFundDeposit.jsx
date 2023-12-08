@@ -62,6 +62,7 @@ import {
 import { GmsIdTrans, ThirdPartyIdTrans } from "../../trans/Platform"
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
+import { AttachmentTrans } from "../../trans/Field"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -228,7 +229,7 @@ export const FormBody = ({
           {hasAttachment && (
             <>
               <NormalLabel>
-                <Trans zh="附件" en="Attachment" />
+                <AttachmentTrans />
               </NormalLabel>
               <Box alignY="center">
                 <Link href={attachmentUrl} target="_blank">

@@ -10,6 +10,8 @@ import { NumberInput } from "../../../input/NumberInput"
 import { useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
 import { usePromotionType } from "./PromotionTypeField"
+import { PromotionTotalFundsTrans } from "../../../trans/Promotion"
+import { useUnlimitedTrans } from "../../../trans/Field"
 
 const isNotNil = complement(isNil)
 
@@ -49,10 +51,7 @@ export const TotalFundsField = ({ unlimited, disabled }) => {
   let promotionType = usePromotionType()
 
   let { setValue } = useFormContext()
-  let unlimiteTotalAmountLabel = useTrans({
-    zh: "无限",
-    en: "Unlimited"
-  })
+  let unlimiteTotalAmountLabel = useUnlimitedTrans()
 
   let isTotalFundsLimited = useIsTotalFundsLimited()
 
@@ -77,7 +76,7 @@ export const TotalFundsField = ({ unlimited, disabled }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="活动总费用" en="Promotion Funds" />
+        <PromotionTotalFundsTrans />
       </NormalLabel>
       <Set orientation="horizontal" alignY="center">
         {isTotalFundsLimited && (

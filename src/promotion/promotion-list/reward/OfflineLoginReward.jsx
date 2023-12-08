@@ -31,6 +31,7 @@ import { NumberInput, NumberInputField } from "../../../input/NumberInput"
 import { useMount } from "react-use"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { MainSetting } from "../MainSetting"
+import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
 
 const PromotionType = "OfflineLoginReward"
 
@@ -72,7 +73,7 @@ const Rule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
+        <PromotionTurnoverRequirementTrans />
       </NormalLabel>
       <NumberInputField
         name={TurnoverMultipleField}

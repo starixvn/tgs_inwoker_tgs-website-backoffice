@@ -52,7 +52,7 @@ import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import { NumberInput } from "../../input/NumberInput"
 import { BrandAutoWithdrawDialogDisclosure } from "./BrandAutoWithdraw"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action"
 import {
   ChannelNameTrans,
   PaymentMethodTrans,
@@ -276,7 +276,7 @@ const DataTable = ({
                 disabled={isLoading || isChangingDisplayOrder}
                 type="submit"
               >
-                <Trans zh="确认排序" en="Confirm Order" />
+                <ConfirmOrderTrans />
               </Button>
             </Dialog.Footer>
           )}

@@ -6,6 +6,7 @@ import { Trans, useTrans } from "../../../i18n"
 import { NormalLabel } from "../../../form/Label"
 import { VipLevelCheckboxGroup } from "../../../vip-levels/CheckboxGroup"
 import { usePromotionBrandId } from "../usePromotionFormData"
+import { PromotionUserGroupTrans } from "../../../trans/Promotion"
 
 const FieldName = "vipLevels"
 
@@ -16,7 +17,7 @@ export const VipLevelCheckboxGroupField = ({ readOnly }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="活动用户群" en="User Group" />
+        <PromotionUserGroupTrans />
       </NormalLabel>
       <Box alignY="center">
         <VipLevelCheckboxGroup
