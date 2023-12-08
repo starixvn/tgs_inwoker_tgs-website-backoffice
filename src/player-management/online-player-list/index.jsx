@@ -37,7 +37,7 @@ import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { VipLevelTrans } from "../../trans/Vip"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import { StatusTrans } from "../../trans/Status"
-import { OnlinePlayersTrans } from "../../trans/Player"
+import { OnlinePlayersTrans, TotalOnlinePlayersTrans } from "../../trans/Player"
 
 export { Code }
 
@@ -131,7 +131,7 @@ const Summary = ({ onlineUsers }) => {
   return (
     <Blockquote borderColor="primary">
       <Heading use="h5">
-        <Trans zh="在线玩家总数：" en="Total Online Players：" />
+        <TotalOnlinePlayersTrans />
         <FormattedNumber value={onlineUsers} />
       </Heading>
     </Blockquote>

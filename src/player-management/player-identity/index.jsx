@@ -41,9 +41,13 @@ import {
   useUserNameTrans
 } from "../../trans/User"
 import { ActionTrans, RemarkTrans } from "../../trans/Action"
-import { ApplicationTimeTrans } from "../../trans/Date"
+import { ApplicationTimeTrans, VerifyTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
-import { PlayerIdVerificationTrans } from "../../trans/Player"
+import {
+  PlayerIdVerificationInfoTrans,
+  PlayerIdVerificationTrans
+} from "../../trans/Player"
+import { AttachmentTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -138,10 +142,7 @@ const BodyContent = ({ brandId = "", brand }) => {
         <Alert variant="bordered" type="info" accent marginBottom="1rem">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
-              <Trans
-                zh="請注意，此頁面僅會顯示已上傳身分證資料之玩家。"
-                en="Please be aware that this page will show the players who have uploaded ID verification materials ONLY."
-              />
+              <PlayerIdVerificationInfoTrans />
             </List.Item>
           </List>
         </Alert>
@@ -192,7 +193,7 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
             maxRangeDays={maxRangeDays}
           />
           <DateInputRangeField
-            label={<Trans zh="审核时间" en="Verify Time" />}
+            label={<VerifyTimeTrans />}
             startProps={{
               name: "beginReviewedOn"
             }}
@@ -235,7 +236,7 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
       textColumn({
         id: "attachment",
         accessor: (row) => row,
-        Header: <Trans zh="附件" en="Attachment" />,
+        Header: <AttachmentTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let { playerCode, formId, status, attachmentId } = record

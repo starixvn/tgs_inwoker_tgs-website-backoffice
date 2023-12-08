@@ -59,3 +59,11 @@ const TotalWithdrawAmount = {
 }
 export const TotalWithdrawAmountTrans = () => <Trans {...TotalWithdrawAmount} />
 export const useTotalWithdrawAmountTrans = () => useTrans(TotalWithdrawAmount)
+
+const Attachment = {
+  zh: "附件",
+  en: "Attachment",
+  vi: "File đính kèm"
+}
+export const AttachmentTrans = () => <Trans {...Attachment} />
+

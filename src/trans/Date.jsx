@@ -90,3 +90,10 @@ const ParticipationTime = {
   vi: "Thời gian tham gia"
 }
 export const ParticipationTimeTrans = () => <Trans {...ParticipationTime} />
+
+const VerifyTime = {
+  zh: "审核时间",
+  en: "Verify Time",
+  vi: "Thời gian kiểm tra/xem xét"
+}
+export const VerifyTimeTrans = () => <Trans {...VerifyTime} />

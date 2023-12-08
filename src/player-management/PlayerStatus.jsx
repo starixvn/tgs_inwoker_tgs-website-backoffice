@@ -8,29 +8,22 @@ import {
   useStatusTrans,
   InBlacklistTrans
 } from "../trans/Status"
+import {
+  PlayerStatusDisabledTrans,
+  PlayerStatusEnabledTrans,
+  PlayerStatusRegisterUndoneTrans,
+  usePlayerStatusDisabledTrans,
+  usePlayerStatusEnabledTrans,
+  usePlayerStatusRegisterUndoneTrans
+} from "../trans/Player"
 
 const Enabled = "Enabled"
-const EnabledTrans = {
-  zh: "活跃",
-  en: "Enabled",
-  vi: "Hoạt động"
-}
 
 const Disabled = "Disabled"
-const DisabledTrans = {
-  zh: "封锁",
-  en: "Disabled",
-  vi: "Bị khóa"
-}
 
 const InBlacklist = "InBlacklist"
 
 const RegisterUndone = "RegisterUndone"
-const RegisterUndoneTrans = {
-  zh: "注册中",
-  en: "Under Registration",
-  vi: "Đang đăng ký"
-}
 
 export const PlayerStatus = {
   Enabled,
@@ -45,15 +38,15 @@ export const PlayerStatusSelect = ({ placeholder, ...props }) => {
 
   let options = [
     {
-      label: useTrans(EnabledTrans),
+      label: usePlayerStatusEnabledTrans(),
       value: Enabled
     },
     {
-      label: useTrans(RegisterUndoneTrans),
+      label: usePlayerStatusRegisterUndoneTrans(),
       value: RegisterUndone
     },
     {
-      label: useTrans(DisabledTrans),
+      label: usePlayerStatusDisabledTrans(),
       value: Disabled
     },
     {
@@ -70,13 +63,13 @@ export const PlayerStatusLabel = ({ value = "" }) => {
     case Enabled:
       return (
         <Text>
-          <Trans {...EnabledTrans} />
+          <PlayerStatusEnabledTrans />
         </Text>
       )
     case Disabled:
       return (
         <Text>
-          <Trans {...DisabledTrans} />
+          <PlayerStatusDisabledTrans />
         </Text>
       )
     case InBlacklist:
@@ -88,7 +81,7 @@ export const PlayerStatusLabel = ({ value = "" }) => {
     case RegisterUndone:
       return (
         <Text>
-          <Trans {...RegisterUndoneTrans} />
+          <PlayerStatusRegisterUndoneTrans />
         </Text>
       )
   }

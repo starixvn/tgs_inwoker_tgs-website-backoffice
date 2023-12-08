@@ -26,12 +26,12 @@ import {
   useDeleteAgentBank,
   useUpdateAgentBank
 } from "./client"
-import { CancelText, SubmitText } from "../../button/ActionButtons"
 import Backdrop from "../../dialog/Backdrop"
 import FormDialog from "../../form/FormDialog"
 import Disclosure from "../../dialog/Disclosure"
 import { RealNameTrans } from "../../trans/User"
 import { BankInfoTrans, BankAccountTrans } from "../../trans/Payment"
+import { CancelTrans, SubmitTrans } from "../../trans/Action"
 
 const Key = "AgentBankInfo"
 
@@ -251,8 +251,8 @@ const DeleteDialog = ({ bank, onSubmitted, dialog }) => {
         isLoading,
         onClickSubmit: () => setDeleteId(bank.id),
         onClickCancel: dialog.hide,
-        cancelText: <CancelText />,
-        submitText: <SubmitText />
+        cancelText: <CancelTrans />,
+        submitText: <SubmitTrans />
       }}
       {...dialog}
     >

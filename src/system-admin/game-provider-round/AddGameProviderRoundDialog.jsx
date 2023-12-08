@@ -20,36 +20,24 @@ import {
 import { AddDisclosure, Disclosure } from "../../dialog/Disclosure"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
-import LoadingBackdrop from "../../dialog/LoadingBackdrop"
-import { Table } from "../../table"
-import textColumn from "../../table/column/textColumn"
 import { Update } from "./menu"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { NumberInputField } from "../../input/NumberInput"
 import { TextareaField } from "../../textarea"
-import { FormDialog, WarningConfirmFormDialog } from "../../form/FormDialog"
-import clone from "clone-deep"
-import Backdrop from "../../dialog/Backdrop"
-import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
-import { MerchantIdSelect } from "../../merchant/MerchantSelect"
+import { FormDialog } from "../../form/FormDialog"
 import { Input, InputField } from "../../input/Input"
 import { GameProviderSubGameProviderSelect } from "../../game/providers/GameProviderSubGameProviderSelect"
-import { CurrencySelectField } from "../../currency/CurrencySelect"
 import DateTimeInput from "../../date/DateTimeInput"
-import { CancelText, ConfirmText, SubmitText } from "../../button/ActionButtons"
+import { ConfirmText } from "../../button/ActionButtons"
 import {
   GameRoundStatus,
   GameRoundStatusSelectField
 } from "../../game/round/GameRoundStatus"
 import { GameSelectField } from "../../game/games/GameSelect"
 import { useAddSystemGameRound } from "../../game/round/client"
-import DateTimeRangeInput from "../../date/DateTimeRangeInput"
-import { useBrand } from "../../merchant/platforms/client"
-import { isValidDate } from "../../date/isValidDate"
-import { min, max, endOfToday } from "date-fns"
 import { Modal } from "../../dialog/Modal"
 import { PlayerCodeTrans } from "../../trans/Player"
-import { RemarkTrans } from "../../trans/Action"
+import { CancelTrans, RemarkTrans, SubmitTrans } from "../../trans/Action"
 import {
   BetAmountTrans,
   ExternalBetTimeTrans,
@@ -142,8 +130,8 @@ const AddRoundDialog = ({ onSubmitted, dialog, dialogId, ...props }) => {
         <Modal
           id="confirm-dialog"
           actionButtonsProps={{
-            submitText: <SubmitText />,
-            cancelText: <CancelText />,
+            submitText: <SubmitTrans />,
+            cancelText: <CancelTrans />,
             onClickSubmit: () => {
               confirmSubmitDialog.hide()
               formRef.current.requestSubmit()

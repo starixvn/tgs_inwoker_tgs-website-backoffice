@@ -114,3 +114,54 @@ const Detail = {
 }
 export const DetailTrans = () => <Trans {...Detail} />
 export const useDetailTrans = () => useTrans(Detail)
+
+const Import = {
+  zh: "汇入",
+  en: "Import",
+  vi: "Chuyển vào"
+}
+export const ImportTrans = () => <Trans {...Import} />
+
+const DownloadFormatFile = {
+  zh: "下载文件格式",
+  en: "Download Format File",
+  vi: "Định dạng tệp tin tải về"
+}
+export const DownloadFormatFileTrans = () => <Trans {...DownloadFormatFile} />
+
+const UploadFile = {
+  zh: "上传文件",
+  en: "Upload file",
+  vi: "Tải lên tệp"
+}
+export const UploadFileTrans = () => <Trans {...UploadFile} />
+
+const Cancel = {
+  zh: "取消",
+  en: "Cancel",
+  vi: "Hủy bỏ"
+}
+export const CancelTrans = () => <Trans {...Cancel} />
+export const useCancelText = () => useTrans(Cancel)
+
+const Submit = {
+  zh: "提交",
+  en: "Submit",
+  vi: "Gửi/Đệ trình"
+}
+export const SubmitTrans = () => <Trans {...Submit} />
+
+const PreviousPage = {
+  zh: "前一页",
+  en: "Previous page",
+  vi: "Trang trước"
+}
+export const PreviousPageTrans = () => <Trans {...PreviousPage} />
+export const usePreviousPageTrans = () => useTrans(PreviousPage)
+
+const NextPage = {
+  zh: "下一页",
+  en: "Next page"
+}
+export const NextPageTrans = () => <Trans {...NextPage} />
+export const useNextPageTrans = () => useTrans(NextPage)

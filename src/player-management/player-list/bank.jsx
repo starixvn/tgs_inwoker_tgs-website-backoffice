@@ -31,7 +31,6 @@ import Backdrop from "../../dialog/Backdrop"
 import { Tab as _Tab, TabPanel } from "../../tab"
 import Disclosure from "../../dialog/Disclosure"
 import { Modal } from "../../dialog/Modal"
-import { CancelText, SubmitText } from "../../button/ActionButtons"
 import Input from "../../input/Input"
 import FormDialog from "../../form/FormDialog"
 import {
@@ -45,6 +44,7 @@ import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTra
 import clone from "clone-deep"
 import { PhoneTrans, RealNameTrans } from "../../trans/User"
 import { BankInfoTrans, BankAccountTrans } from "../../trans/Payment"
+import { CancelTrans, SubmitTrans } from "../../trans/Action"
 
 export const Key = "banks"
 
@@ -643,8 +643,8 @@ const DeleteDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
         isLoading,
         onClickSubmit: () => setDeleteId(bank.id),
         onClickCancel: dialog.hide,
-        cancelText: <CancelText />,
-        submitText: <SubmitText />
+        cancelText: <CancelTrans />,
+        submitText: <SubmitTrans />
       }}
       {...dialog}
     >
@@ -688,8 +688,8 @@ const SetDefaultDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
         isLoading,
         onClickSubmit: () => setId(bank.id),
         onClickCancel: dialog.hide,
-        cancelText: <CancelText />,
-        submitText: <SubmitText />
+        cancelText: <CancelTrans />,
+        submitText: <SubmitTrans />
       }}
       {...dialog}
     >

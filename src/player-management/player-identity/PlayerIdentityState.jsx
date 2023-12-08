@@ -17,6 +17,7 @@ import {
   useRejectedTrans,
   useReviewTrans
 } from "../../trans/Status"
+import { usePlayerIdVerificationStatusTrans } from "../../trans/Player"
 
 const WaitingVerify = "WaitingVerify"
 
@@ -35,10 +36,7 @@ export const isPlayerIdentityWaitingVerify = (value) => {
 }
 
 export const PlayerIdentitySelect = ({ ...props }) => {
-  let placeholder = useTrans({
-    zh: "实名认证状态",
-    en: "Review Identity Status"
-  })
+  let placeholder = usePlayerIdVerificationStatusTrans()
   let options = [
     {
       label: useReviewTrans(),

@@ -55,3 +55,10 @@ const Published = {
   vi: "Được phát hành"
 }
 export const PublishedTrans = () => <Trans {...Published} />
+
+const NoSearchResult = {
+  zh: "查无资料",
+  en: "No Search Result",
+  vi: "Không tìm thấy dữ liệu/Không có thông tin"
+}
+export const NoSearchResultTrans = () => <Trans {...NoSearchResult} />

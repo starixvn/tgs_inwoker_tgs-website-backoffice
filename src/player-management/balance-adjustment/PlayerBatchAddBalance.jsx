@@ -72,9 +72,20 @@ import {
 import Backdrop from "../../dialog/Backdrop"
 import { connection } from "../../connection"
 import { useMount, useUnmount } from "react-use"
-import { RemarkTrans, TransactionTypeTrans } from "../../trans/Action"
+import {
+  DownloadFormatFileTrans,
+  ImportTrans,
+  RemarkTrans,
+  TransactionTypeTrans,
+  UploadFileTrans
+} from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
 import { TransactionAmountTrans } from "../../trans/Field"
+import {
+  BatchAddBalanceAlertTrans,
+  BatchAddBalanceTrans,
+  useBatchAddBalanceTitleTrans
+} from "../../trans/Player"
 
 export const PlayerBatchAddBalanceDisclosure = ({
   brandId,
@@ -94,7 +105,7 @@ export const PlayerBatchAddBalanceDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog} {...props}>
-        <Trans zh="批量加钱" en="Batch Add Balance" />
+        <BatchAddBalanceTrans />
       </Disclosure>
       {dialog.visible && (
         <BatchAddDialog
@@ -177,10 +188,7 @@ const BatchAddDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
     isLoadingBatchEnded ||
     (isBatchStarted && !isBatchDone)
 
-  let title = useTrans({
-    zh: "批量余额加分",
-    en: "Batch Add Balance"
-  })
+  let title = useBatchAddBalanceTitleTrans()
 
   const onSubmit = ({ items, batchId, ...data } = {}) => {
     if (!isLoadingBatchStarted) {
@@ -462,19 +470,16 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
         label={
           <FieldStack>
             <Alert variant="bordered" type="info" accent>
-              <Trans
-                zh="請注意，若輸入小於0的流水金額，將視為0。"
-                en="Please note that any wagering requirement amount below 0 will be considered as 0."
-              />
+              <BatchAddBalanceAlertTrans />
             </Alert>
             <Text.Block>
-              <Trans zh="汇入" en="Import" />
+              <ImportTrans />
               <Link
                 href="/api/batch-adj-balance"
                 download="batch.xlsx"
                 marginLeft="1rem"
               >
-                <Trans zh="下载文件格式" en="Download Format File" />
+                <DownloadFormatFileTrans />
               </Link>
             </Text.Block>
           </FieldStack>
@@ -491,7 +496,7 @@ const ImportBatchAddDataButton = ({ name = "items", palette, variant }) => {
             isLoading={isLoading}
             disabled={isLoading}
           >
-            <Trans zh="上传文件" en="Upload file" />
+            <UploadFileTrans />
             <input {...getInputProps()} />
           </Button>
           <Input type="hidden" name={BatchIdField} value={batchId} />
