@@ -62,6 +62,7 @@ import {
 } from "../../trans/Game"
 import { UserNameTrans } from "../../trans/User"
 import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
+import { DepositAmountAfterDeductingTransferFeeTrans } from "../../trans/Platform"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -190,10 +191,7 @@ const ReportContent = ({ brandId }) => {
         <Alert variant="bordered" type="info" accent marginBottom="1rem">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
-              <Trans
-                zh="存款金额: 为已扣除手续费之金额。"
-                en="Deposit Amount: The amount after deducting the transfer fee."
-              />
+              <DepositAmountAfterDeductingTransferFeeTrans />
             </List.Item>
           </List>
         </Alert>

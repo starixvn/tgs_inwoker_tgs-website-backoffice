@@ -41,6 +41,12 @@ import {
 } from "../../trans/Game"
 import { DepositAmountTrans } from "../../trans/Payment"
 import { NetProfitTrans } from "../../trans/Field"
+import {
+  DepositAmountAfterDeductingTransferFeeTrans,
+  PlatformCoveredBonusAdjustInfoTrans,
+  PlatformCoveredBonusInfoTrans,
+  PlatformMarketReportNetProfitInfoTrans
+} from "../../trans/Platform"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -115,28 +121,16 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
       <Alert variant="bordered" type="info" accent marginBottom="1rem">
         <List listStyleType="disc" listStylePosition="inside">
           <List.Item>
-            <Trans
-              zh="存款金额: 为已扣除手续费之金额。"
-              en="Deposit Amount: The amount after deducting the transfer fee."
-            />
+            <DepositAmountAfterDeductingTransferFeeTrans />
           </List.Item>
           <List.Item>
-            <Trans
-              zh="平台承担红利 = 红利金额 * (100% - 总代分红比例)。"
-              en="Platform-Covered Bonus = Bonus Amount * (100% - Chief Agent Profit Sharing Percentage)."
-            />
+            <PlatformCoveredBonusInfoTrans />
           </List.Item>
           <List.Item>
-            <Trans
-              zh="平台承担优惠调帐 = 优惠调帐 * (100% - 总代分红比例)。"
-              en="Platform-Covered Bonus Adjust = Bonus Adjust * (100% - Chief Agent Profit Sharing Percentage)."
-            />
+            <PlatformCoveredBonusAdjustInfoTrans />
           </List.Item>
           <List.Item>
-            <Trans
-              zh="净盈利 = 公司输赢金额 - 平台承担红利 - 平台承担优惠调帐 - 公司调帐 - 代理总分红。"
-              en="Net Profit = CO. W/L - Platform-Covered Bonus - Platform-Covered Bonus Adjust - C.O Adjustment Amount - Agent Profit."
-            />
+            <PlatformMarketReportNetProfitInfoTrans />
           </List.Item>
         </List>
       </Alert>

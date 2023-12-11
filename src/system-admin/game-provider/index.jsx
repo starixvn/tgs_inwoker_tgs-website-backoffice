@@ -42,7 +42,7 @@ import AlertDialog from "../../dialog/Alert"
 import Backdrop from "../../dialog/Backdrop"
 import { useDropzone } from "react-dropzone"
 import { SubGameProviderListDisclosure } from "./SubGameProviderList"
-import { ActionTrans, OperatorTrans } from "../../trans/Action"
+import { ActionTrans, ExportTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import { UpdatedTimeTrans } from "../../trans/Date"
 import { useGameProviderNameTrans } from "../../trans/Game"
@@ -171,7 +171,7 @@ const LocalizationMenuButton = ({}) => {
               href={`/api/gameprovider/localization/export`}
               download={`game-provider-localization.xlsx`}
             >
-              <Trans zh="汇出" en="Export" />
+              <ExportTrans />
             </DropdownMenu.Item>
             {editable && (
               <DropdownMenu.Item

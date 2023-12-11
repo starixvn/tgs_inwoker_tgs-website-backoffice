@@ -51,7 +51,7 @@ import {
   EditSubGameProviderDisclosure
 } from "./SubGameProvider"
 import { useDropzone } from "react-dropzone"
-import { ActionTrans, OperatorTrans } from "../../trans/Action"
+import { ActionTrans, ExportTrans, OperatorTrans } from "../../trans/Action"
 import { UpdatedTimeTrans } from "../../trans/Date"
 
 export const SubGameProviderListDisclosure = ({ gameProviderId, ...props }) => {
@@ -180,7 +180,7 @@ const LocalizationMenuButton = ({}) => {
               href={`/api/SubGameProvider/localization/export`}
               download={`sub-game-provider-localization.xlsx`}
             >
-              <Trans zh="汇出" en="Export" />
+              <ExportTrans />
             </DropdownMenu.Item>
             <DropdownMenu.Item
               id="upload-sub-game-provider-localization-dialog-disclosure"

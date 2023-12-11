@@ -43,6 +43,7 @@ import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { PlayersTrans } from "../../trans/Player"
 import { SubjectTrans } from "../../trans/Field"
+import { DownloadFormatFileTrans, UploadFileTrans } from "../../trans/Action"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -222,7 +223,7 @@ const EditBody = ({ readOnly = false } = {}) => {
                   isLoading={isLoading}
                   disabled={isLoading}
                 >
-                  <Trans zh="上传文件" en="Upload file" />
+                  <UploadFileTrans />
                 </Button>
                 <Button
                   use="a"
@@ -231,7 +232,7 @@ const EditBody = ({ readOnly = false } = {}) => {
                   palette="primary"
                   size="small"
                 >
-                  <Trans zh="下载文件格式" en="Download Format File" />
+                  <DownloadFormatFileTrans />
                 </Button>
               </>
             )}

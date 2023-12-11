@@ -73,3 +73,71 @@ export const StationLetter = {
   vi: "Thư nội bộ"
 }
 export const StationLetterTrans = () => <Trans {...StationLetter} />
+
+export const PlatformReport = {
+  zh: "平台报表",
+  en: "Platform Report",
+  vi: "Báo biểu nền tảng"
+}
+export const PlatformReportTrans = () => <Trans {...PlatformReport} />
+
+export const MarketReport = {
+  zh: "市场报表",
+  en: "Market Report",
+  vi: "Báo biểu thị trường"
+}
+export const MarketReportTrans = () => <Trans {...MarketReport} />
+
+const DepositAmountAfterDeductingTransferFee = {
+  zh: "存款金额: 为已扣除手续费之金额。",
+  en: "Deposit Amount: The amount after deducting the transfer fee.",
+  vi: "Số tiền gửi: là số tiền sau khi đã trừ đi phí dịch vụ."
+}
+export const DepositAmountAfterDeductingTransferFeeTrans = (
+  <Trans {...DepositAmountAfterDeductingTransferFee} />
+)
+
+const PlatformCoveredBonus = {
+  zh: "平台承担红利",
+  en: "Platform-Covered Bonus",
+  vi: "Nền tảng chịu trách nhiệm cho khoản thưởng"
+}
+export const PlatformCoveredBonusTrans = () => (
+  <Trans {...PlatformCoveredBonus} />
+)
+
+const PlatformCoveredBonusInfo = {
+  zh: "平台承担红利 = 红利金额 * (100% - 总代分红比例)。",
+  en: "Platform-Covered Bonus = Bonus Amount * (100% - Chief Agent Profit Sharing Percentage).",
+  vi: "Nền tảng chịu trách nhiệm cho khoản thưởng = Số tiền thưởng * (100% - Tỷ lệ chia thưởng của đại lý chung)"
+}
+export const PlatformCoveredBonusInfoTrans = () => (
+  <Trans {...PlatformCoveredBonusInfo} />
+)
+
+const PlatformCoveredBonusAdjust = {
+  zh: "平台承担优惠调帐",
+  en: "Platform-Covered Bonus Adjust",
+  vi: "Nền tảng chịu trách nhiệm cho việc điều chỉnh ưu đãi"
+}
+export const PlatformCoveredBonusAdjustTrans = () => (
+  <Trans {...PlatformCoveredBonusAdjust} />
+)
+
+const PlatformCoveredBonusAdjustInfo = {
+  zh: "平台承担优惠调帐 = 优惠调帐 * (100% - 总代分红比例)。",
+  en: "Platform-Covered Bonus Adjust = Bonus Adjust * (100% - Chief Agent Profit Sharing Percentage).",
+  vi: "Nền tảng chịu trách nhiệm cho việc điều chỉnh ưu đãi = Số tiền điều chỉnh ưu đãi * (100% - Tỷ lệ chia thưởng của đại lý chung"
+}
+export const PlatformCoveredBonusAdjustInfoTrans = () => (
+  <Trans {...PlatformCoveredBonusAdjustInfo} />
+)
+
+const PlatformMarketReportNetProfitInfo = {
+  zh: "净盈利 = 公司输赢金额 - 平台承担红利 - 平台承担优惠调帐 - 公司调帐 - 代理总分红。",
+  en: "Net Profit = CO. W/L - Platform-Covered Bonus - Platform-Covered Bonus Adjust - C.O Adjustment Amount - Agent Profit.",
+  vi: "Lợi nhuận ròng = Số tiền thắng thua của công ty - Nền tảng chịu trách nhiệm cho khoản thưởng - Nền tảng chịu trách nhiệm cho việc điều chỉnh ưu đãi - Điều chỉnh tài khoản của công ty - Tổng lợi nhuận chia cho đại lý"
+}
+export const PlatformMarketReportNetProfitInfoTrans = () => (
+  <Trans {...PlatformMarketReportNetProfitInfo} />
+)

@@ -49,7 +49,11 @@ import {
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 import { GameProviderReport, OrderTracking, UnsettledBet } from "../trans/Game"
-import { BalanceChangeReport } from "../trans/Platform"
+import {
+  BalanceChangeReport,
+  MarketReport,
+  PlatformReportTrans
+} from "../trans/Platform"
 
 export const Code = "report"
 
@@ -57,10 +61,13 @@ export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
 
+//TODO: mv to ?
+/*
 export const nameMessages = {
   zh: "平台报表",
   en: "Platform Report"
 }
+*/
 
 export const Menu = ({
   title = (
@@ -72,7 +79,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Trans {...nameMessages} />
+      <PlatformReportTrans />
     </Flex>
   ),
   url = DefaultUrl,
@@ -92,13 +99,7 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case MarketReportCode:
-      return getTrans(
-        {
-          zh: "市场报表",
-          en: "Market Report"
-        },
-        locale
-      )
+      return getTrans(MarketReport, locale)
     case OrderReportCode:
       return getTrans(OrderTracking, locale)
 

@@ -161,7 +161,8 @@ export const usePreviousPageTrans = () => useTrans(PreviousPage)
 
 const NextPage = {
   zh: "下一页",
-  en: "Next page"
+  en: "Next page",
+  vi: "Trang sau"
 }
 export const NextPageTrans = () => <Trans {...NextPage} />
 export const useNextPageTrans = () => useTrans(NextPage)
@@ -179,3 +180,10 @@ const SpecialProcessing = {
   vi: "Xử lí đặc biệt"
 }
 export const SpecialProcessingTrans = () => <Trans {...SpecialProcessing} />
+
+export const Export = {
+  zh: "汇出",
+  en: "Export",
+  vi: "Chuyển ra"
+}
+export const ExportTrans = () => <Trans {...Export} />

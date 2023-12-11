@@ -101,7 +101,7 @@ import { StatusTrans } from "../../trans/Status"
 import { UserNameTrans } from "../../trans/User"
 import { CurrencyTrans } from "../../trans/Payment"
 import { PlayerWinLossTrans } from "../../trans/Player"
-import { DetailTrans, ViewTrans } from "../../trans/Action"
+import { DetailTrans, ExportTrans, ViewTrans } from "../../trans/Action"
 import { SettleAmountTrans } from "../../trans/Field"
 
 export { Code }
@@ -668,7 +668,7 @@ const DownloadReportButton = ({ url, dateTimeRanges = [], ...props }) => {
     )
   }
 
-  let exportLabel = <Trans zh="汇出" en="Export" />
+  let exportLabel = <ExportTrans />
   return (
     <>
       {!error && (

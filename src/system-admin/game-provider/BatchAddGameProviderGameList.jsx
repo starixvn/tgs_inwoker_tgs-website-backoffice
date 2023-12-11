@@ -52,7 +52,7 @@ import { ConfirmText } from "../../button/ActionButtons"
 import sequenceColumn, { SequenceColumn } from "../../table/column/sequence"
 import { View, Update } from "./menu"
 import { isDev } from "../../env"
-import { ActionTrans } from "../../trans/Action.jsx"
+import { ActionTrans, ExportTrans } from "../../trans/Action.jsx"
 import { StatusTrans } from "../../trans/Status.jsx"
 import { GameNameTrans } from "../../trans/Game.jsx"
 
@@ -80,7 +80,7 @@ export const BatchAddGameProviderGameListDisclosure = ({
               href={`/api/game/export/${gameProviderId}`}
               download={`${gameProviderCode}.xlsx`}
             >
-              <Trans zh="汇出" en="Export" />
+              <ExportTrans />
             </DropdownMenu.Item>
             {editable && (
               <DropdownMenu.Item

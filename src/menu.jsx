@@ -47,7 +47,6 @@ import {
 import { codeMenuContentPair as platformReportManagementPair } from "./platform-report"
 import {
   Code as PlatformReportManagementCode,
-  nameMessages as PlatformReportManagementNameMessages,
   codeLabelPair as platformReportManagementLabelPair
 } from "./platform-report/menu"
 import { codeMenuContentPair as licenseeReportManagementPair } from "./licensee-report"
@@ -101,7 +100,7 @@ import {
 import { useLocale, getTrans } from "./i18n"
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons"
 import { isDev, Features, isFeatureEnabled } from "./env"
-import { PlatformManagement } from "./trans/Platform"
+import { PlatformManagement, PlatformReport } from "./trans/Platform"
 import { PromotionManagement } from "./trans/Promotion"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
@@ -314,7 +313,7 @@ const moduleLabel = ({ code = "", locale }) => {
     case GameManagementCode:
       return getTrans(GameManagementNameMessages, locale)
     case PlatformReportManagementCode:
-      return getTrans(PlatformReportManagementNameMessages, locale)
+      return getTrans(PlatformReport, locale)
     case LicenseeReportManagementCode:
       return getTrans(LicenseeReportManagementNameMessages, locale)
     case ResellerReportCode:

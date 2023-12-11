@@ -1,5 +1,6 @@
 import React from "react"
 import { Locales, getTrans } from "../../i18n"
+import { Export as ExportMsg } from "../../trans/Action"
 
 export const Code = "gameproviderround"
 
@@ -33,13 +34,7 @@ export const label = (codes = [], locale = Locales.zh) => {
         locale
       )
     case Export:
-      return getTrans(
-        {
-          zh: "匯出",
-          en: "Export"
-        },
-        locale
-      )
+      return getTrans(ExportMsg, locale)
     default:
       return ""
   }

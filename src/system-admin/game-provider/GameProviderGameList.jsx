@@ -53,7 +53,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useDropzone } from "react-dropzone"
-import { ActionTrans, OperatorTrans } from "../../trans/Action"
+import { ActionTrans, ExportTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import {
   GameIdTrans,
@@ -292,7 +292,7 @@ const LocalizationMenuButton = ({ gameProviderCode }) => {
               href={`/api/game/localization/export?gameProviderCode=${gameProviderCode}`}
               download={`${gameProviderCode}.xlsx`}
             >
-              <Trans zh="汇出" en="Export" />
+              <ExportTrans />
             </DropdownMenu.Item>
             <DropdownMenu.Item
               id="upload-game-localization-dialog-disclosure"
