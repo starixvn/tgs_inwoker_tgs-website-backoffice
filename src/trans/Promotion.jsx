@@ -190,7 +190,7 @@ export const PromotionTurnoverRequirementTrans = () => (
 
 const PromotionBonusAmountLimitHint = {
   zh: "彩金上限/彩金百分比",
-  en: "Bonus Limit/彩金百分比",
+  en: "Bonus Limit/Bonus Percentage",
   vi: "Giới hạn tiền thưởng/Tỷ lệ phần thưởng tiền thưởng"
 }
 export const usePromotionBonusAmountLimitHintTrans = () =>
