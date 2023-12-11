@@ -3,50 +3,67 @@ import { css, Global } from "@emotion/react"
 import { Locales, Trans, useLocale, useTrans } from "../i18n"
 import { Select, SelectField } from "../select/Select"
 import { usePlatformBucketList } from "./client"
+import {
+  LiveDealer,
+  Sportsbook,
+  CardGame,
+  VirtualSports,
+  Lottery
+} from "../trans/Game"
 
 const MainTrans = {
   zh: "全部",
   en: "All"
 }
 
+/*
 const LiveDealerTrans = {
   zh: "真人",
   en: "Live Dealer"
 }
+*/
 
+/*
 const SportsTrans = {
   zh: "体育",
   en: "Sports"
 }
+*/
 
 const EGameTrans = {
   zh: "电子",
   en: "EGame"
 }
 
+/*
 const CardGameTrans = {
   zh: "棋牌",
   en: "Card Game"
 }
+*/
 
+/*
 const VirtualSportsTrans = {
   zh: "虚拟体育",
   en: "Virtual Sports"
 }
+*/
 
+/*
 const LotteryTrans = {
   zh: "彩票",
   en: "Lottery"
 }
+*/
 
 const AllTrans = [
   ["", MainTrans],
-  ["LiveDealer", LiveDealerTrans],
-  ["Sportsbook", SportsTrans],
+  ["LiveDealer", LiveDealer],
+  ["Sportsbook", Sportsbook],
   ["Slot", EGameTrans],
-  ["CardGame", CardGameTrans],
-  ["VirtualSports", VirtualSportsTrans],
-  ["Lottery", LotteryTrans]
+  ["CardGame", CardGame],
+  ["VirtualSports", VirtualSports],
+  ["Lottery", Lottery]
 ]
 
 const findTrans = (value = "") => {
@@ -62,7 +79,8 @@ const findTrans = (value = "") => {
 export const usePlatformBucketLabel = (type = "") => {
   let locale = useLocale()
   let trans = findTrans(type)
-  return trans?.[locale] ?? type
+  let DefaultLocale = Locales.en
+  return trans?.[locale] ?? trans?.[DefaultLocale] ?? type
 }
 
 export const PlatformBucketLabel = ({ value = "" }) => {
@@ -85,12 +103,13 @@ export const PlatformBucketSelect = ({
   let locale = useLocale()
   let { isLoading, data: items, error } = usePlatformBucketList(platformId)
 
+  let DefaultLocale = Locales.en
   let options = items
     ?.map((type) => {
       let trans = findTrans(type)
       return {
         value: type,
-        label: trans[locale] ?? type
+        label: trans[locale] ?? trans[DefaultLocale] ?? type
       }
     })
     .filter(predicate)
