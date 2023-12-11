@@ -19,6 +19,7 @@ import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { FormBody } from "./PlatformBanner"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { clone } from "lodash"
+import { RemarkTrans } from "../../trans/Action"
 
 export const VerifyPlatformBannerDisclosure = ({
   brandId,
@@ -201,7 +202,7 @@ const VerifyBody = ({ readOnly = false } = {}) => {
 
       <FieldValues paddingBottom="1rem">
         <Label name="remarks">
-          <Trans zh="备注" en="Remarks" />
+          <RemarkTrans />
         </Label>
         <Textarea name="remarks" disabled={readOnly} />
       </FieldValues>

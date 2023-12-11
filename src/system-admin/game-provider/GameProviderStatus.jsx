@@ -15,12 +15,6 @@ import { DisabledTrans, EnabledTrans } from "../../trans/Status"
 const Active = "Active"
 
 const Inactive = "Inactive"
-/*
-const InactiveTrans = {
-  zh: "关闭",
-  en: Inactive
-}
-*/
 
 const Maintenance = "Maintenance"
 const MaintenanceTrans = {

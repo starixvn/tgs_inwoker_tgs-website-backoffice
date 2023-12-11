@@ -50,7 +50,11 @@ import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { RejectedTrans, ReviewTrans, StatusTrans } from "../../trans/Status"
 import { OrderTrans, SubjectTrans } from "../../trans/Field"
-import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
+import {
+  EndTimeTrans,
+  StartTimeTrans,
+  UpdatedTimeTrans
+} from "../../trans/Date"
 
 export { Code }
 
@@ -405,7 +409,7 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最近更新时间" en="Last Update" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

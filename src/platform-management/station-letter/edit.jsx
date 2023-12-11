@@ -43,7 +43,11 @@ import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { PlayersTrans } from "../../trans/Player"
 import { SubjectTrans } from "../../trans/Field"
-import { DownloadFormatFileTrans, UploadFileTrans } from "../../trans/Action"
+import {
+  DownloadFormatFileTrans,
+  RemarkTrans,
+  UploadFileTrans
+} from "../../trans/Action"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -431,7 +435,7 @@ const VerifyBody = ({ readOnly = false, dialog }) => {
       <Box border="default" height="1px" width="100%"></Box>
       <FieldValues>
         <Label name="remarks">
-          <Trans zh="备注" en="Remarks" />
+          <RemarkTrans />
         </Label>
         <Textarea name="remarks" disabled={readOnly} />
       </FieldValues>
