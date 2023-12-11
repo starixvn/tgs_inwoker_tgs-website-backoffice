@@ -33,7 +33,7 @@ import Textarea, { TextareaField } from "../../textarea"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { AnnouncementTypeSelect } from "./AnnouncementType"
 import { SubjectTrans } from "../../trans/Field"
-import { EditTrans } from "../../trans/Action"
+import { EditTrans, RemarkTrans } from "../../trans/Action"
 import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
@@ -435,7 +435,7 @@ const VerifyBody = ({ readOnly = false } = {}) => {
 
       <FieldValues>
         <Label name="remarks">
-          <Trans zh="备注" en="Remarks" />
+          <RemarkTrans />
         </Label>
         <Textarea name="remarks" disabled={readOnly} />
       </FieldValues>

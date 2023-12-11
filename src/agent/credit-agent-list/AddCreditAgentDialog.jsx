@@ -67,6 +67,7 @@ import {
 import clone from "clone-deep"
 import { CreditAgentTypeSelect, isAgentParentRequired } from "./CreditAgentType"
 import { UserNameTrans } from "../../trans/User"
+import { RemarkTrans } from "../../trans/Action"
 
 export const AddCreditAgentDialogDisclosure = ({
   brandId,
@@ -250,7 +251,7 @@ const FormBody = ({}) => {
           </TwoColumns>
 
           <NormalLabel required>
-            <Trans zh="备注" en="Remarks" />
+            <RemarkTrans />
           </NormalLabel>
           <Textarea name="remarks" required />
         </FieldValues>

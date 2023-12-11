@@ -123,6 +123,7 @@ import {
   RegistrationTimeTrans,
   UserNameTrans
 } from "../../trans/User"
+import { RemarkTrans } from "../../trans/Action"
 
 export const AddAgentButton = ({
   brandId,
@@ -367,7 +368,7 @@ const FormBody = ({ isAdd, agentProfitSharingType }) => {
           )} */}
 
           <NormalLabel required>
-            <Trans zh="备注" en="Remarks" />
+            <RemarkTrans />
           </NormalLabel>
           <Textarea name="remarks" required />
         </FieldValues>
