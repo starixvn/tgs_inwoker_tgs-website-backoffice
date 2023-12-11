@@ -57,7 +57,11 @@ import { SelectField } from "../../select/Select"
 import { SwitchField } from "../../switch/Switch"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { JsonEditor } from "../../text/editor/JsonEditor"
-import { useStatusTrans } from "../../trans/Status.jsx"
+import {
+  useDisabledTrans,
+  useEnabledTrans,
+  useStatusTrans
+} from "../../trans/Status.jsx"
 
 export const AddGameProviderConfigDisclosure = ({
   gameProviderId,
@@ -333,16 +337,8 @@ const DefaultSwitchField = ({ name = "isDefault", disabled, readOnly }) => {
 }
 
 const Active = "Active"
-const ActiveTrans = {
-  zh: "开启",
-  en: "Active"
-}
 
 const Inactive = "Inactive"
-const InactiveTrans = {
-  zh: "关闭",
-  en: Inactive
-}
 
 const Maintenance = "Maintenance"
 const MaintenanceTrans = {
@@ -363,11 +359,11 @@ const ConfigurationStatusSelectField = ({
 
   let options = [
     {
-      label: useTrans(ActiveTrans),
+      label: useEnabledTrans(),
       value: Active
     },
     {
-      label: useTrans(InactiveTrans),
+      label: useDisabledTrans(),
       value: Inactive
     },
     {

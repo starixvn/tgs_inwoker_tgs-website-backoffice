@@ -10,18 +10,17 @@ import { useChangeGameProviderStatus } from "../../game/providers/client"
 import Alert from "../../dialog/Alert"
 import { useTrans, Trans } from "../../i18n"
 import { Update } from "./menu"
+import { DisabledTrans, EnabledTrans } from "../../trans/Status"
 
 const Active = "Active"
-const ActiveTrans = {
-  zh: "开启",
-  en: "Enabled"
-}
 
 const Inactive = "Inactive"
+/*
 const InactiveTrans = {
   zh: "关闭",
   en: Inactive
 }
+*/
 
 const Maintenance = "Maintenance"
 const MaintenanceTrans = {
@@ -38,10 +37,10 @@ export default {
 export const GameProviderStatusLabel = ({ value = "" }) => {
   switch (value) {
     case Active:
-      return <Trans {...ActiveTrans} />
+      return <EnabledTrans />
 
     case Inactive:
-      return <Trans {...InactiveTrans} />
+      return <DisabledTrans />
 
     case Maintenance:
       return <Trans {...MaintenanceTrans} />
