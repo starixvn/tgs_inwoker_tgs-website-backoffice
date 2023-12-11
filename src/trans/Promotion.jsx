@@ -138,15 +138,6 @@ export const PromotionBannerDesktopTrans = () => (
   <Trans {...PromotionBannerDesktop} />
 )
 
-const PromotionBannerDesktopRecommendedSize = {
-  zh: "建議尺寸:  1200 x 486px",
-  en: "Recommended size: 1200 x 486px",
-  vi: "Kích thước đề xuất: 1200 x 486px"
-}
-export const PromotionBannerDesktopRecommendedSizeTrans = () => (
-  <Trans {...PromotionBannerDesktopRecommendedSize} />
-)
-
 const PromotionBannerMobile = {
   zh: "活动 Banner (Mobile)",
   en: "Promotion Banner (Mobile)",
@@ -154,15 +145,6 @@ const PromotionBannerMobile = {
 }
 export const PromotionBannerMobileTrans = () => (
   <Trans {...PromotionBannerMobile} />
-)
-
-const PromotionBannerMobileRecommendedSize = {
-  zh: "建議尺寸: 690 x 280px",
-  en: "Recommended size: 690 x 280px",
-  vi: "Kích thước đề xuất: 690 x 280px"
-}
-export const PromotionBannerMobileRecommendedSizeTrans = () => (
-  <Trans {...PromotionBannerMobileRecommendedSize} />
 )
 
 const PromotionRules = {

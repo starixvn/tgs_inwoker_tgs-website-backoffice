@@ -32,7 +32,11 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { clone } from "lodash"
 import { isValidDate } from "../../date/isValidDate"
-import { SubjectTrans } from "../../trans/Field"
+import {
+  RecommendedSize1920X600Trans,
+  RecommendedSize750X310Trans,
+  SubjectTrans
+} from "../../trans/Field"
 import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export const AddPlatformBannerDisclosure = ({
@@ -348,10 +352,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
           readOnly={readOnly}
         />
         <Text.Block color="warning" fontWeight="bold" fontSize="150">
-          <Trans
-            zh="建議尺寸: 1920 x 600px"
-            en="Recommended size: 1920 x 600px"
-          />
+          <RecommendedSize1920X600Trans />
         </Text.Block>
       </Set>
 
@@ -367,10 +368,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
           readOnly={readOnly}
         />
         <Text.Block color="warning" fontWeight="bold" fontSize="150">
-          <Trans
-            zh="建議尺寸: 750 x 310px"
-            en="Recommended size: 750 x 310px"
-          />
+          <RecommendedSize750X310Trans />
         </Text.Block>
       </Set>
 

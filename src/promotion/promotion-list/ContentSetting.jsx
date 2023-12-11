@@ -29,14 +29,16 @@ import { get } from "lodash-es"
 import Separator from "../../layout/Separator"
 import { useViewTrans } from "../../trans/Action"
 import {
-  PromotionBannerDesktopRecommendedSizeTrans,
   PromotionBannerDesktopTrans,
-  PromotionBannerMobileRecommendedSizeTrans,
   PromotionBannerMobileTrans,
   PromotionContentTrans,
   PromotionRulesTrans,
   PromotionSubTitleTrans
 } from "../../trans/Promotion"
+import {
+  RecommendedSize1200X486Trans,
+  RecommendedSize690X280Trans
+} from "../../trans/Field"
 
 const FieldName = "content"
 export const ContentSetting = ({ readOnly }) => {
@@ -79,7 +81,7 @@ export const ContentSetting = ({ readOnly }) => {
             required
           />
           <Text.Block color="warning" fontWeight="bold" fontSize="150">
-            <PromotionBannerDesktopRecommendedSizeTrans />
+            <RecommendedSize1200X486Trans />
           </Text.Block>
         </Set>
 
@@ -97,7 +99,7 @@ export const ContentSetting = ({ readOnly }) => {
             required
           />
           <Text.Block color="warning" fontWeight="bold" fontSize="150">
-            <PromotionBannerMobileRecommendedSizeTrans />
+            <RecommendedSize690X280Trans />
           </Text.Block>
         </Set>
 

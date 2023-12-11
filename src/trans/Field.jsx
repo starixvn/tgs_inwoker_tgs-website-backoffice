@@ -137,3 +137,39 @@ const No = {
   en: "No"
 }
 export const NoTrans = () => <Trans {...No} />
+
+const RecommendedSize1200X486 = {
+  zh: "建議尺寸:  1200 x 486px",
+  en: "Recommended size: 1200 x 486px",
+  vi: "Kích thước đề xuất: 1200 x 486px"
+}
+export const RecommendedSize1200X486Trans = () => (
+  <Trans {...RecommendedSize1200X486} />
+)
+
+const RecommendedSize690X280 = {
+  zh: "建議尺寸: 690 x 280px",
+  en: "Recommended size: 690 x 280px",
+  vi: "Kích thước đề xuất: 690 x 280px"
+}
+export const RecommendedSize690X280Trans = () => (
+  <Trans {...RecommendedSize690X280} />
+)
+
+const RecommendedSize750X310 = {
+  zh: "建議尺寸: 750 x 310px",
+  en: "Recommended size: 750 x 310px",
+  vi: "Kích thước đề xuất: 750 x 310px"
+}
+export const RecommendedSize750X310Trans = () => (
+  <Trans {...RecommendedSize750X310} />
+)
+
+const RecommendedSize1920X600 = {
+  zh: "建議尺寸: 1920 x 600px",
+  en: "Recommended size: 1920 x 600px",
+  vi: "Kích thước đề xuất: 1920 x 600px"
+}
+export const RecommendedSize1920X600Trans = () => (
+  <Trans {...RecommendedSize1920X600} />
+)
