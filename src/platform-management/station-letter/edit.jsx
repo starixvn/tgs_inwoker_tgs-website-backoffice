@@ -238,7 +238,7 @@ const EditBody = ({ readOnly = false } = {}) => {
             )}
           />
         )}
-        {error && <Alert {...error} onClickClose={resetUploadFormData} />}
+        {error && <Alert {...error} onClickClose={resetFormData} />}
         {readOnly &&
           target === DesignatedPlayers &&
           playerUsernames.length > 0 && (

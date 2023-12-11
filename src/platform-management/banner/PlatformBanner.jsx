@@ -33,6 +33,7 @@ import AlertDialog from "../../dialog/Alert"
 import { clone } from "lodash"
 import { isValidDate } from "../../date/isValidDate"
 import { SubjectTrans } from "../../trans/Field"
+import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,
@@ -303,7 +304,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
       />
 
       <Label name="from" required={required}>
-        <Trans zh="开始时间" en="Start" />
+        <StartTimeTrans />
       </Label>
       <Box id="from-date-box">
         <DateTimeInput
@@ -316,7 +317,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
       </Box>
 
       <Label name="to" required={required}>
-        <Trans zh="结束时间" en="End" />
+        <EndTimeTrans />
       </Label>
       <Box id="to-date-box">
         <Set orientation="horizontal">

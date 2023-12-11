@@ -34,6 +34,7 @@ import { Features, isDev, isFeatureEnabled } from "../../env"
 import { AnnouncementTypeSelect } from "./AnnouncementType"
 import { SubjectTrans } from "../../trans/Field"
 import { EditTrans } from "../../trans/Action"
+import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -274,7 +275,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         />
 
         <Label name="from" required={required}>
-          <Trans zh="开始时间" en="Start" />
+          <StartTimeTrans />
         </Label>
         <Box id="from-date-box">
           <DateTimeInput
@@ -286,7 +287,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         </Box>
 
         <Label name="to" required={required}>
-          <Trans zh="结束时间" en="End" />
+          <EndTimeTrans />
         </Label>
         <Box id="to-date-box">
           <DateTimeInput

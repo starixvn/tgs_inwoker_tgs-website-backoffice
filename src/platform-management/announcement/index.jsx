@@ -58,7 +58,11 @@ import {
 } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import { OrderTrans, SubjectTrans } from "../../trans/Field"
-import { UpdatedTimeTrans } from "../../trans/Date"
+import {
+  EndTimeTrans,
+  StartTimeTrans,
+  UpdatedTimeTrans
+} from "../../trans/Date"
 
 export { Code }
 
@@ -472,12 +476,12 @@ const useColumns = ({
       }),
       dateTimeColumn({
         accessor: "from",
-        Header: <Trans zh="开始时间" en="Start" />,
+        Header: <StartTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "to",
-        Header: <Trans zh="结束时间" en="End" />,
+        Header: <EndTimeTrans />,
         disableSortBy: true
       }),
       {

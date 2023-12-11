@@ -49,7 +49,8 @@ import { VerifyPlatformBannerDisclosure } from "./VerifyPlatformBanner"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { RejectedTrans, ReviewTrans, StatusTrans } from "../../trans/Status"
-import { SubjectTrans } from "../../trans/Field"
+import { OrderTrans, SubjectTrans } from "../../trans/Field"
+import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -323,7 +324,7 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
         : {
             id: "displayOrder",
             accessor: (record) => record,
-            Header: <Trans zh="序" en="Order" />,
+            Header: <OrderTrans />,
             disableSortBy: true,
             headCell: {
               textAlign: "center"
@@ -409,12 +410,12 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
       }),
       dateTimeColumn({
         accessor: "beginTime",
-        Header: <Trans zh="开始时间" en="Start" />,
+        Header: <StartTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "endTime",
-        Header: <Trans zh="结束时间" en="End" />,
+        Header: <EndTimeTrans />,
         disableSortBy: true,
         placeholder: <Trans zh="永久" en="Permanent" />
       }),

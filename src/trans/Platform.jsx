@@ -93,7 +93,7 @@ const DepositAmountAfterDeductingTransferFee = {
   en: "Deposit Amount: The amount after deducting the transfer fee.",
   vi: "Số tiền gửi: là số tiền sau khi đã trừ đi phí dịch vụ."
 }
-export const DepositAmountAfterDeductingTransferFeeTrans = (
+export const DepositAmountAfterDeductingTransferFeeTrans = () => (
   <Trans {...DepositAmountAfterDeductingTransferFee} />
 )
 
