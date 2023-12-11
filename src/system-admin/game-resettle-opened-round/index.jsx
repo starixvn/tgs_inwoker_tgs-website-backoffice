@@ -42,7 +42,7 @@ import {
   useExternalRoundIdTrans
 } from "../../trans/Game"
 import { CurrencyTrans } from "../../trans/Payment"
-import { SettleAmountTrans } from "../../trans/Field"
+import { SettleAmountTrans, SupportingDeviceTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -253,7 +253,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "platformType",
-        Header: <Trans zh="支持设备" en="Supporting Device" />,
+        Header: <SupportingDeviceTrans />,
         disableSortBy: true
       }),
       textColumn({

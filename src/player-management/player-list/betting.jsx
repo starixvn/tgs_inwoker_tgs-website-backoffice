@@ -29,6 +29,7 @@ import {
   GameDetailTrans,
   ValidBetAmountTrans,
   WinLossTrans,
+  useGameIdTrans,
   useRoundIdTrans
 } from "../../trans/Game"
 import { ActionTrans, DetailTrans } from "../../trans/Action"
@@ -162,10 +163,7 @@ const SearchBar = ({
 
 const useColumns = ({ items = [], totals = [] }) => {
   let roundIdTitle = useRoundIdTrans()
-  let gameIdTitle = useTrans({
-    zh: "游戏ID",
-    en: "Game ID"
-  })
+  let gameIdTitle = useGameIdTrans()
   return useMemo(
     () => [
       dateTimeColumn({

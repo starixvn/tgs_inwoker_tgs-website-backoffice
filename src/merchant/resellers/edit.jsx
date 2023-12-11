@@ -47,6 +47,7 @@ import CurrencyBetLimitFieldsBox, {
 } from "../CurrencyBetLimitFieldsBox"
 import { isDev } from "../../env"
 import { EditTrans } from "../../trans/Action"
+import { BasicInformationTrans } from "../../trans/Field"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -440,7 +441,7 @@ const EditBody = ({ record = {}, readonly = false, isAdd = false }) => {
   return (
     <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
       <FieldValues>
         <NormalLabel>

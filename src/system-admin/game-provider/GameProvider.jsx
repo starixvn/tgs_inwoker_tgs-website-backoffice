@@ -52,6 +52,7 @@ import clone from "clone-deep"
 import { sortBy } from "lodash-es"
 import { StatusTrans } from "../../trans/Status"
 import { useGameProviderTrans } from "../../trans/Game"
+import { BasicInformationTrans } from "../../trans/Field"
 
 export const ViewGameProviderDisclosure = ({ gameProviderId }) => {
   let dialog = useModalState()
@@ -333,7 +334,7 @@ const FormBody = ({ readOnly, isAdd = false }) => {
   return (
     <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
 
       <FieldValues>

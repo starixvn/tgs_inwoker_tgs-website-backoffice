@@ -34,10 +34,11 @@ export const GameNameTrans = () => <Trans {...GameName} />
 
 const GameId = {
   zh: "游戏ID",
-  en: "ID",
+  en: "Game ID",
   vi: "ID trò chơi"
 }
 export const GameIdTrans = () => <Trans {...GameId} />
+export const useGameIdTrans = () => useTrans(GameId)
 
 const GameType = {
   zh: "游戏类型",
@@ -149,6 +150,20 @@ export const Turnover = {
 }
 export const TurnoverTrans = () => <Trans {...Turnover} />
 
+const TurnoverPercentage = {
+  zh: "流水比例",
+  en: "Turnover Percentage",
+  vi: "Tỷ lệ doanh số"
+}
+export const TurnoverPercentageTrans = () => <Trans {...TurnoverPercentage} />
+
+const CommissionRebate = {
+  zh: "是否发放返水",
+  en: "Commission Rebate",
+  vi: "Có phát hành hoàn trả không"
+}
+export const CommissionRebateTrans = () => <Trans {...CommissionRebate} />
+
 const WinLoss = {
   zh: "输赢金额",
   en: "Win Loss",
@@ -249,6 +264,7 @@ export const GameList = {
   vi: "Báo biểu trò chơi"
 }
 export const GameListTrans = () => <Trans {...GameList} />
+export const useGameListTrans = () => useTrans(GameList)
 
 const PresetMaintenance = {
   zh: "预设维护",

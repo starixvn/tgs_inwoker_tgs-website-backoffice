@@ -7,11 +7,11 @@ import { useChangePromotionStatus } from "./client"
 import { Update } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import AlertDialog from "../../dialog/Alert"
-import { useStatusTrans } from "../../trans/Status"
 import {
-  usePromotionStatusDisabledTrans,
-  usePromotionStatusEnabledTrans
-} from "../../trans/Promotion"
+  useDisabledTrans,
+  useEnabledTrans,
+  useStatusTrans
+} from "../../trans/Status"
 
 const Enabled = "Enabled"
 
@@ -27,11 +27,11 @@ export const PromotionStatusSelect = ({ placeholder, ...props }) => {
 
   let options = [
     {
-      label: usePromotionStatusEnabledTrans(),
+      label: useEnabledTrans(),
       value: Enabled
     },
     {
-      label: usePromotionStatusDisabledTrans(),
+      label: useDisabledTrans(),
       value: Disabled
     }
   ]

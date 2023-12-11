@@ -26,6 +26,13 @@ import FormDialog from "../../form/FormDialog"
 import { parseISO } from "date-fns"
 import { MaintenanceStatusToggleButton } from "./ScheduleStatus"
 import { StatusTrans } from "../../trans/Status"
+import { useEditTrans } from "../../trans/Action"
+import {
+  BasicInformationTrans,
+  PeriodicMaintenanceTrans,
+  VendorTrans
+} from "../../trans/Field"
+import { EndTimeTrans, StartTimeTrans, WeeklyTrans } from "../../trans/Date"
 
 export const EditButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -59,10 +66,7 @@ const EditDialog = ({ record, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "编辑",
-    en: "Edit"
-  })
+  let title = useEditTrans()
 
   let from = formatHourMinute(parseISO(record.from))
   let to = formatHourMinute(parseISO(record.to))
@@ -115,17 +119,17 @@ const EditBody = ({ record = {} }) => {
   return (
     <Stack orientation="vertical" width="500px">
       <Heading use="h5">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
       <FieldValues>
         <Label>
-          <Trans zh="厂商" en="Vendor" />
+          <VendorTrans />
         </Label>
         <ValueBlock>{gameProviderName}</ValueBlock>
       </FieldValues>
 
       <Heading use="h5">
-        <Trans zh="定期维护" en="Periodic Maintenance" />
+        <PeriodicMaintenanceTrans />
       </Heading>
       <FieldValues>
         <Label>
@@ -136,24 +140,25 @@ const EditBody = ({ record = {} }) => {
         </Box>
 
         <Label>
-          <Trans zh="每周" en="Weekly" />
+          <WeeklyTrans />
         </Label>
         <Box>
           <WeekDaySelect name="dayOfWeek" required />
         </Box>
 
         <Label>
-          <Trans zh="开始时间" en="Start Time" />
+          <StartTimeTrans />
         </Label>
-        <Flex alignY="top" justifyContent="space-between">
+        <Box>
           <TimeSelectField name={FromFieldName} required max={to} />
-          <Set orientation="horizontal">
-            <Label marginRight="major-2">
-              <Trans zh="结束时间" en="End Time" />
-            </Label>
-            <TimeSelectField name={ToFieldName} required min={from} />
-          </Set>
-        </Flex>
+        </Box>
+
+        <Label marginRight="major-2">
+          <EndTimeTrans />
+        </Label>
+        <Box>
+          <TimeSelectField name={ToFieldName} required min={from} />
+        </Box>
       </FieldValues>
     </Stack>
   )

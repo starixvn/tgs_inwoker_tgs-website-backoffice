@@ -43,11 +43,15 @@ import { CloseText, ConfirmText } from "../../button/ActionButtons"
 import { GamePlatformLabel } from "../../game/games/GamePlatform.jsx"
 import { useGameProviderGameList } from "../../game/games/client"
 import {
+  GameIdTrans,
+  GameListTrans,
   GameNameTrans,
   GameProviderNameTrans,
-  GameProviderTrans
+  GameProviderTrans,
+  useGameListTrans
 } from "../../trans/Game.jsx"
 import { CurrencyTrans } from "../../trans/Payment.jsx"
+import { SupportingDeviceTrans } from "../../trans/Field.jsx"
 
 export const EditBrandBetLimitGameProviderBetLimit = ({
   record,
@@ -507,7 +511,7 @@ const GroupCard = ({
           }) => (
             <>
               <Disclosure {...dialog}>
-                <Trans zh="游戏列表" en="Game List" />
+                <GameListTrans />
               </Disclosure>
               {dialog.visible && (
                 <GroupGameListDialog
@@ -685,10 +689,7 @@ const GroupGameListDialog = ({
   readonly = false,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "游戏列表",
-    en: "Game List"
-  })
+  let title = useGameListTrans()
 
   let isSports = getValues(isSportsFieldName)
 
@@ -836,7 +837,7 @@ const GameProviderRow = ({ gameProvider, readonly = false }) => {
             return (
               <>
                 <Disclosure {...dialog}>
-                  <Trans zh="游戏列表" en="Game List" />
+                  <GameListTrans />
                 </Disclosure>
                 {dialog.visible && (
                   <GameProviderGameListDialog
@@ -964,13 +965,13 @@ const GameProviderGameListDialogBody = ({ readonly = false }) => {
         <Table.Row>
           <Table.HeadCell></Table.HeadCell>
           <Table.HeadCell>
-            <Trans zh="游戏ID" en="Game ID" />
+            <GameIdTrans />
           </Table.HeadCell>
           <Table.HeadCell>
             <GameNameTrans />
           </Table.HeadCell>
           <Table.HeadCell>
-            <Trans zh="支持设备" en="Platform" />
+            <SupportingDeviceTrans />
           </Table.HeadCell>
         </Table.Row>
       </Table.Head>

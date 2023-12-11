@@ -72,6 +72,7 @@ import { PlatformTokenActionButtons } from "./PlatformTokenActionButtons"
 import { TimezoneSelect, SystemZoneOffset } from "../../date/TimeZone"
 import { GameProviderTrans } from "../../trans/Game"
 import { EditTrans } from "../../trans/Action"
+import { BasicInformationTrans } from "../../trans/Field"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -486,7 +487,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
   return (
     <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
 
       <FieldValues>

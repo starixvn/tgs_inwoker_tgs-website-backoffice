@@ -78,3 +78,27 @@ const Manual = {
 }
 export const ManualTrans = () => <Trans {...Manual} />
 export const useManualTrans = () => useTrans(Manual)
+
+const Enabled = {
+  zh: "开启",
+  en: "Enabled",
+  vi: "Mở / Bật"
+}
+export const EnabledTrans = (props) => <Trans {...Enabled} {...props} />
+export const useEnabledTrans = () => useTrans(Enabled)
+
+const Disabled = {
+  zh: "关闭",
+  en: "Disabled",
+  vi: "Đóng / Tắt"
+}
+export const DisabledTrans = (props) => <Trans {...Disabled} {...props} />
+export const useDisabledTrans = () => useTrans(Disabled)
+
+//TODO: only Disabled or Inactive?
+const Inactive = {
+  zh: "关闭",
+  en: "Inactive",
+  vi: "Đóng / Tắt"
+}
+export const InactiveTrans = () => <Trans {...Inactive} />

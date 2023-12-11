@@ -13,18 +13,11 @@ import { useForm, useFormContext, Controller } from "react-hook-form"
 import { useChangeBrandGameProviderScheduleStatus } from "./client"
 import Alert from "../../dialog/Alert"
 import { useTrans, Trans } from "../../i18n"
+import { DisabledTrans, EnabledTrans } from "../../trans/Status"
 
 const Enabled = "Enabled"
-const EnabledTrans = {
-  zh: "开启",
-  en: "Enabled"
-}
 
 const Disabled = "Disabled"
-const DisabledTrans = {
-  zh: "关闭",
-  en: Disabled
-}
 
 export const ScheduleStatus = {
   Enabled,
@@ -34,10 +27,10 @@ export const ScheduleStatus = {
 export const ScheduleStatusLabel = ({ value = "" }) => {
   switch (value) {
     case Enabled:
-      return <Trans {...EnabledTrans} />
+      return <EnabledTrans />
 
     case Disabled:
-      return <Trans {...DisabledTrans} />
+      return <DisabledTrans />
 
     default:
       return value

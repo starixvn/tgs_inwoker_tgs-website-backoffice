@@ -120,3 +120,10 @@ const EndTime = {
   vi: "Thời gian kết thúc"
 }
 export const EndTimeTrans = () => <Trans {...EndTime} />
+
+const Weekly = {
+  zh: "每周",
+  en: "Weekly",
+  vi: "Mỗi tuần"
+}
+export const WeeklyTrans = () => <Trans {...Weekly} />

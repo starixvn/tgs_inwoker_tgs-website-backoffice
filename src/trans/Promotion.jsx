@@ -78,28 +78,6 @@ export const PromotionBatchPayoutTrans = () => (
   <Trans {...PromotionBatchPayout} />
 )
 
-const PromotionStatusEnabled = {
-  zh: "开启",
-  en: "Enabled",
-  vi: "Mở / Bật"
-}
-export const PromotionStatusEnabledTrans = () => (
-  <Trans {...PromotionStatusEnabled} />
-)
-export const usePromotionStatusEnabledTrans = () =>
-  useTrans(PromotionStatusEnabled)
-
-const PromotionStatusDisabled = {
-  zh: "关闭",
-  en: "Disabled",
-  vi: "Mở / Bật"
-}
-export const PromotionStatusDisabledTrans = () => (
-  <Trans {...PromotionStatusDisabled} />
-)
-export const usePromotionStatusDisabledTrans = () =>
-  useTrans(PromotionStatusDisabled)
-
 const PromotionTime = {
   zh: "活动时间",
   en: "Promotion Period",

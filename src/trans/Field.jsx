@@ -89,9 +89,51 @@ const Multipliers = {
 }
 export const MultipliersTrans = () => <Trans {...Multipliers} />
 
+//en use "Supporting Device" instead of "Platform"?
 const SupportingDevice = {
   zh: "支持设备",
   en: "Platform",
   vi: "Thiết bị hỗ trợ"
 }
 export const SupportingDeviceTrans = () => <Trans {...SupportingDevice} />
+export const useSupportingDeviceTrans = () => useTrans(SupportingDevice)
+
+const BasicInformation = {
+  zh: "基本资料",
+  en: "Basic Information",
+  vi: "Dữ liệu cơ bản"
+}
+export const BasicInformationTrans = () => <Trans {...BasicInformation} />
+
+const Vendor = {
+  zh: "厂商",
+  en: "Vendor",
+  vi: "Nhà sản xuất"
+}
+export const VendorTrans = () => <Trans {...Vendor} />
+
+const PeriodicMaintenance = {
+  zh: "定期维护",
+  en: "Periodic Maintenance",
+  vi: "Thời gian bảo trì định kỳ"
+}
+export const PeriodicMaintenanceTrans = () => <Trans {...PeriodicMaintenance} />
+
+const SupportHtml5 = {
+  zh: "支持HTML5",
+  en: "HTML5",
+  vi: "Hỗ trợ HTML5"
+}
+export const SupportHtml5Trans = () => <Trans {...SupportHtml5} />
+
+const Yes = {
+  zh: "是",
+  en: "Yes"
+}
+export const YesTrans = () => <Trans {...Yes} />
+
+const No = {
+  zh: "不",
+  en: "No"
+}
+export const NoTrans = () => <Trans {...No} />

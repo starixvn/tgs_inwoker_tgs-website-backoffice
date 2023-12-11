@@ -51,8 +51,8 @@ const Edit = {
   en: "Edit",
   vi: "Đang chỉnh sửa"
 }
-export const useEditTrans = () => useTrans(Edit)
 export const EditTrans = () => <Trans {...Edit} />
+export const useEditTrans = () => useTrans(Edit)
 
 const TransactionType = {
   zh: "交易类型",
@@ -172,3 +172,10 @@ const ConfirmOrder = {
   vi: "Xác nhận sắp xếp/Xác nhận thứ tự"
 }
 export const ConfirmOrderTrans = () => <Trans {...ConfirmOrder} />
+
+const SpecialProcessing = {
+  zh: "特殊处理",
+  en: "Special Processing",
+  vi: "Xử lí đặc biệt"
+}
+export const SpecialProcessingTrans = () => <Trans {...SpecialProcessing} />

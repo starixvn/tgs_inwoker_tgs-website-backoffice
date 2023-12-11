@@ -23,6 +23,7 @@ import {
   NumberInput,
   PercentageNumberInputField
 } from "../../input/NumberInput"
+import { BasicInformationTrans } from "../../trans/Field"
 
 const HandlingFeeTrans = {
   zh: "手续费",
@@ -97,7 +98,7 @@ const EditBody = ({ record = {}, dialog, ...props }) => {
   return (
     <Stack orientation="vertical" spacing="minor-1">
       <Heading use="h5">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
       <FieldValues>
         <Label>

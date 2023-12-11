@@ -55,7 +55,12 @@ import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useDropzone } from "react-dropzone"
 import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
-import { GameNameTrans } from "../../trans/Game"
+import {
+  GameIdTrans,
+  GameListTrans,
+  GameNameTrans,
+  useGameListTrans
+} from "../../trans/Game"
 import { UpdatedTimeTrans } from "../../trans/Date"
 
 export const GameProviderGameListDisclosure = ({
@@ -73,7 +78,7 @@ export const GameProviderGameListDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="游戏列表" en="Game List" />
+        <GameListTrans />
       </Disclosure>
       {dialog.visible && (
         <GameListDialog
@@ -92,10 +97,7 @@ const GameListDialog = ({
   dialog,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "游戏列表",
-    en: "Game List"
-  })
+  let title = useGameListTrans()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     gameProviderId,
@@ -214,7 +216,7 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
     let columns = [
       textColumn({
         accessor: "id",
-        Header: <Trans zh="游戏ID" en="Game ID" />,
+        Header: <GameIdTrans />,
         disableSortBy: true
       }),
       textColumn({
