@@ -32,6 +32,7 @@ import { useMount } from "react-use"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { MainSetting } from "../MainSetting"
 import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
+import { MultipliersTrans } from "../../../trans/Field"
 
 const PromotionType = "OfflineLoginReward"
 
@@ -85,7 +86,7 @@ const Rule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />

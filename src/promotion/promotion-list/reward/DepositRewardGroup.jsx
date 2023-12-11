@@ -212,7 +212,7 @@ const DepositRewardRule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />
@@ -324,7 +324,7 @@ const DefaultRule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />

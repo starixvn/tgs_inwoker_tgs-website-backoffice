@@ -29,6 +29,7 @@ import { GameProviderSelectField } from "../field/GameProviderSelectField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
 import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
+import { MultipliersTrans } from "../../../trans/Field"
 
 const DailyTurnoverRebate = "TurnoverRebate"
 const WeeklyTurnoverRebate = "TurnoverRebateWeekly"
@@ -105,7 +106,7 @@ const DailyTurnoverRule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />
@@ -178,7 +179,7 @@ const Rule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />

@@ -51,6 +51,7 @@ import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
 import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
+import { MultipliersTrans } from "../../../trans/Field"
 
 const PromotionType = "Register"
 
@@ -89,7 +90,7 @@ export const Rule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
         registerOptions={{
