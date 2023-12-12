@@ -53,7 +53,6 @@ import {
   AgentWithdrawPasswordTab
 } from "./AgentWithdrawPassword"
 import FormDialog from "../../form/FormDialog"
-import { ConfirmCancelFooter } from "../../form/ConfirmButtonFooter"
 import { FieldValues, TwoColumns } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import Input, { InputField } from "../../input/Input"
@@ -190,8 +189,6 @@ const AddDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={<ConfirmCancelFooter dialog={dialog} isLoading={isLoading} />}
       maxWidth="100vw"
       minWidth="60vw"
       placement="top"
@@ -714,8 +711,6 @@ const UpdateConfigDialog = ({
       }}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={<ConfirmCancelFooter dialog={dialog} isLoading={isLoading} />}
       maxWidth="100vw"
       minWidth="60vw"
       placement="top"
@@ -808,8 +803,6 @@ const OldConfigDialog = ({
       }}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={<ConfirmCancelFooter dialog={dialog} isLoading={isLoading} />}
       maxWidth="100vw"
       minWidth="60vw"
       placement="top"
