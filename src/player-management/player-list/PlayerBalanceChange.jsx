@@ -38,6 +38,17 @@ import {
   TransactionIdTrans
 } from "../../trans/Field"
 import { TimeTrans } from "../../trans/Date"
+import {
+  TransferAndCanceledTrans,
+  TransferCanceledTrans,
+  WithdrawAndCanceledTrans,
+  WithdrawCanceledTrans,
+  WithdrawCompletedTrans,
+  useTransferAndCanceledTrans,
+  useTransferCanceled,
+  useWithdrawAndCanceledTrans,
+  useWithdrawCanceledTrans
+} from "../../trans/Payment"
 
 export const Key = "BalanceChange"
 
@@ -231,29 +242,12 @@ const DepositTrans = {
 
 const Withdrawal = "Withdrawal"
 const WithdrawLock = "WithdrawLock"
-//TODO: mv to Payment
-const WithdrawalTrans = {
-  zh: "提款(包含已取消提款)",
-  en: "Withdrawal/Canceled Withdrawal"
-}
 
 const WithdrawCommit = "WithdrawCommit"
-const WithdrawCommitTrans = {
-  zh: "提款完成",
-  en: "Complete Withdrawal"
-}
 
 const Transfer = "Transfer"
-const TransferTrans = {
-  zh: "转帐(含转帐取消)",
-  en: "Transfer (Includes Canceled Transfer)"
-}
 
 const TransferRollback = "TransferRollback"
-const TransferRollbackTrans = {
-  zh: "转帐取消",
-  en: "Transfer Canceled"
-}
 
 const isDepositOrWithdrawal = (value) =>
   value === Deposit || value === Withdrawal
@@ -344,10 +338,6 @@ const AdjustResettledBetManualTrans = {
 
 const CancelWithdrawal = "CancelWithdrawal"
 const WithdrawRollback = "WithdrawRollback"
-const CancelWithdrawalTrans = {
-  zh: "取消提款",
-  en: "Cancel Withdrawal"
-}
 
 export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTransactionTypeTrans()
@@ -361,19 +351,19 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       value: Deposit
     },
     {
-      label: useTrans(WithdrawalTrans),
+      label: useWithdrawAndCanceledTrans(),
       value: Withdrawal
     },
     {
-      label: useTrans(CancelWithdrawalTrans),
+      label: useWithdrawCanceledTrans(),
       value: CancelWithdrawal
     },
     {
-      label: useTrans(TransferTrans),
+      label: useTransferAndCanceledTrans(),
       value: Transfer
     },
     {
-      label: useTrans(TransferRollbackTrans),
+      label: useTransferCanceled(),
       value: TransferRollback
     },
     ...adjustPlayerBalanceTypeOptions,
@@ -446,13 +436,13 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...DepositTrans} />
     case Withdrawal:
     case WithdrawLock:
-      return <Trans {...WithdrawalTrans} />
+      return <WithdrawAndCanceledTrans />
     case WithdrawCommit:
-      return <Trans {...WithdrawCommitTrans} />
+      return <WithdrawCompletedTrans />
     case Transfer:
-      return <Trans {...TransferTrans} />
+      return <TransferAndCanceledTrans />
     case TransferRollback:
-      return <Trans {...TransferRollbackTrans} />
+      return <TransferCanceledTrans />
     case PlayerAdjustBalanceType.Company:
     case PlayerAdjustBalanceType.Agent:
     case PlayerAdjustBalanceType.System:
@@ -489,7 +479,7 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...AdjustResettledBetManualTrans} />
     case CancelWithdrawal:
     case WithdrawRollback:
-      return <Trans {...CancelWithdrawalTrans} />
+      return <WithdrawCanceledTrans />
     default:
       return value
   }

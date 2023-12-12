@@ -139,3 +139,37 @@ const BankAccount = {
 }
 export const useBankAccountTrans = () => useTrans(BankAccount)
 export const BankAccountTrans = () => <Trans {...BankAccount} />
+
+const WithdrawAndCanceled = {
+  zh: "提款(包含已取消提款)",
+  en: "Withdrawal/Canceled Withdrawal"
+}
+export const WithdrawAndCanceledTrans = () => <Trans {...WithdrawAndCanceled} />
+export const useWithdrawAndCanceledTrans = () => useTrans(WithdrawAndCanceled)
+
+const WithdrawCanceled = {
+  zh: "取消提款",
+  en: "Cancel Withdrawal"
+}
+export const WithdrawCanceledTrans = () => <Trans {...WithdrawCanceled} />
+export const useWithdrawCanceledTrans = () => useTrans(WithdrawCanceled)
+
+const WithdrawCompleted = {
+  zh: "提款完成",
+  en: "Complete Withdrawal"
+}
+export const WithdrawCompletedTrans = () => <Trans {...WithdrawCompleted} />
+
+const TransferAndCanceled = {
+  zh: "转帐(含转帐取消)",
+  en: "Transfer (Includes Canceled Transfer)"
+}
+export const TransferAndCanceledTrans = () => <Trans {...TransferAndCanceled} />
+export const useTransferAndCanceledTrans = () => useTrans(TransferAndCanceled)
+
+const TransferCanceled = {
+  zh: "转帐取消",
+  en: "Transfer Canceled"
+}
+export const TransferCanceledTrans = () => <Trans {...TransferCanceled} />
+export const useTransferCanceled = () => useTrans(TransferCanceled)
