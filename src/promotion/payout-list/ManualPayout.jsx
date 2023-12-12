@@ -27,6 +27,11 @@ import {
 } from "../../trans/Promotion"
 import { CreatedTimeTrans, SentOnTrans } from "../../trans/Date"
 import { useViewTrans } from "../../trans/Action"
+import {
+  ManualPayoutTrans,
+  PayoutAmountTrans,
+  useManualPayoutTrans
+} from "../../trans/Payment"
 
 export const PromotionManualPayoutDisclosure = ({
   brandId,
@@ -44,7 +49,7 @@ export const PromotionManualPayoutDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="手动派发" en="Manual Payout" />
+        <ManualPayoutTrans />
       </Disclosure>
       {dialog.visible && (
         <ManualPayoutDialog
@@ -81,10 +86,7 @@ export const ViewPromotionManualPayoutDisclosure = ({
 }
 
 const ManualPayoutDialog = ({ brandId, record, onSubmitted, dialog }) => {
-  let title = useTrans({
-    zh: "手动派发",
-    en: "Manual Payout"
-  })
+  let title = useManualPayoutTrans()
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
@@ -113,13 +115,7 @@ const ManualPayoutDialog = ({ brandId, record, onSubmitted, dialog }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          confirmText={<Trans zh="手动派发" en="Manual Payout" />}
-          dialog={dialog}
-        />
-      }
+      submitText={<ManualPayoutTrans />}
       title={title}
       dialog={dialog}
     >
@@ -173,7 +169,7 @@ const FormBody = ({ record }) => {
           <FormattedDateTime value={record?.sentOn} placeholder="-" />
         </Box>
 
-        <Trans zh="派发金额" en="Payout Amount" />
+        <PayoutAmountTrans />
         <Box alignY="center">
           <FormattedNumberDecimal value={record?.bonusAmount} />
         </Box>

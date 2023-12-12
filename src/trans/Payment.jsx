@@ -173,3 +173,16 @@ const TransferCanceled = {
 }
 export const TransferCanceledTrans = () => <Trans {...TransferCanceled} />
 export const useTransferCanceled = () => useTrans(TransferCanceled)
+
+const ManualPayout = {
+  zh: "手动派发",
+  en: "Manual Payout"
+}
+export const ManualPayoutTrans = () => <Trans {...ManualPayout} />
+export const useManualPayoutTrans = () => useTrans(ManualPayout)
+
+const PayoutAmount = {
+  zh: "派发金额",
+  en: "Payout Amount"
+}
+export const PayoutAmountTrans = () => <Trans {...PayoutAmount} />

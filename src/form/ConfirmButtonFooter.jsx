@@ -74,7 +74,7 @@ export const ConfirmCancelFooter = ({
 
 export const CloseButtonFooter = ({
   width = "100%",
-  alignX = "center",
+  alignX = "right",
   dialog,
   onClickClose,
   ...props
