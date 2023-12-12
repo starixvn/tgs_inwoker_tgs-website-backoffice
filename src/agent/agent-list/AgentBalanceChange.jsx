@@ -166,16 +166,20 @@ const DepositTrans = {
 }
 
 const Withdrawal = "Withdrawal"
+//TODO: use trans from Payment
 const WithdrawalTrans = {
   zh: "提款",
   en: "Withdrawal"
 }
 
 const CancelWithdrawal = "CancelWithdrawal"
+//TODO: use trans from Payment
 const CancelWithdrawalTrans = {
   zh: "取消提款",
   en: "Cancel Withdrawal"
 }
+
+//TODO: also Transfer & TransferRollback?
 
 const Adjust = "CompanyAdjust"
 const AdjustTrans = {
