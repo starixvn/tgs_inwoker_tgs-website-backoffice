@@ -24,10 +24,6 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"

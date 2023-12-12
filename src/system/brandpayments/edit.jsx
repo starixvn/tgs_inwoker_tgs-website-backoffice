@@ -26,7 +26,6 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
 import { AddDisclosure, EditDisclosure } from "../../dialog/Disclosure"
-import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel as Label } from "../../form/Label"
 import BrandPaymentStatus, {
@@ -198,17 +197,8 @@ const EditDialog = ({
         resetPlatformPayment()
         onSubmitted?.()
       }}
-      footer={
-        <ConfirmButtonFooter
-          alignX="center"
-          width="100%"
-          isLoading={isLoading}
-          disabled={isLoading}
-        />
-      }
       title={title}
       showCloseButton
-      showActionButtons={false}
       width="80vw"
       height="95vh"
       maxHeight="95vh"
@@ -400,17 +390,8 @@ const AddDialog = ({
       error={error}
       onCloseErrorAlert={reset}
       onSubmitted={onSubmitted}
-      footer={
-        <ConfirmButtonFooter
-          alignX="center"
-          width="100%"
-          isLoading={isLoading}
-          disabled={isLoading}
-        />
-      }
       title={title}
       showCloseButton
-      showActionButtons={false}
       width="80vw"
       height="95vh"
       maxHeight="95vh"

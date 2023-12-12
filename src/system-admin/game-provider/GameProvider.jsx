@@ -43,9 +43,7 @@ import {
   mapCheckedByCultureCode,
   mapMergeChecked
 } from "../../checkbox/mapChecked"
-import ConfirmButtonFooter, {
-  CloseButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import Checkbox from "../../checkbox"
 import { GameProviderCurrencyBetLimitFieldsBox } from "./GameProviderCurrencyBetLimitFieldsBox"
 import clone from "clone-deep"

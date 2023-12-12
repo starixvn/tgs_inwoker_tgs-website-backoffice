@@ -30,10 +30,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentTeamContributionList } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"

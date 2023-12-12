@@ -11,6 +11,7 @@ import { Dialog, Button, Box, Set } from "bumbag"
 import { CloseText, SubmitText } from "../button/ActionButtons"
 
 //TODO: able to rm?
+/*
 export const ConfirmButtonFooter = ({
   isLoading,
   disabled,
@@ -32,6 +33,7 @@ export const ConfirmButtonFooter = ({
     </Box>
   )
 }
+*/
 
 export const CloseButtonFooter = ({
   width = "100%",
@@ -56,5 +58,3 @@ export const CloseButtonFooter = ({
     </Box>
   )
 }
-
-export default ConfirmButtonFooter

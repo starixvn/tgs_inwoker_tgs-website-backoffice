@@ -21,10 +21,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"

@@ -13,7 +13,6 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
 import Disclosure from "../../dialog/Disclosure"
-import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useUpdateBrandPaymentHandingFee } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel as Label } from "../../form/Label"
@@ -78,15 +77,6 @@ const EditDialog = ({ record = {}, dialog, onSubmitted, ...props }) => {
       onSubmitted={onSubmitted}
       title={title}
       showCloseButton
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter
-          alignX="center"
-          width="100%"
-          isLoading={isLoading}
-          disabled={isLoading}
-        />
-      }
       dialog={dialog}
     >
       <EditBody record={record} dialog={dialog} />

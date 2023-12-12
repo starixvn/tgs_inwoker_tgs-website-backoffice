@@ -14,7 +14,6 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { Disclosure } from "../../dialog/Disclosure"
-import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Trans, useTrans } from "../../i18n"
 import {
   useUpdateBrandGameProviderPresetMaintenance,

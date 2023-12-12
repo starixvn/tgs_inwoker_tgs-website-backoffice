@@ -18,10 +18,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentWinLossList } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"

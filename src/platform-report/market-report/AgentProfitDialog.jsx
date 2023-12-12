@@ -21,10 +21,6 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useMarketReportAgentProfitList } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
