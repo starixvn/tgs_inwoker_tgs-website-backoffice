@@ -141,11 +141,7 @@ const EditDialog = ({ record, dialog, ...props }) => {
       }}
       title={title}
       showCloseButton
-      showActionButtons={false}
       dialog={dialog}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       placement="top"
       minWidth="60vw"
     >
@@ -158,11 +154,6 @@ const EditDialog = ({ record, dialog, ...props }) => {
     </FormDialog>
   )
 }
-
-//TODO: rm StartTimeLabel
-const StartTimeLabel = () => <StartTimeTrans />
-//TODO: rm EndTimeLabel
-const EndTimeLabel = () => <EndTimeTrans />
 
 const EditBody = ({
   items,
@@ -181,10 +172,10 @@ const EditBody = ({
         <Table.Head>
           <Table.Row>
             <Table.HeadCell textAlign="center">
-              <StartTimeLabel />
+              <StartTimeTrans />
             </Table.HeadCell>
             <Table.HeadCell textAlign="center">
-              <EndTimeLabel />
+              <EndTimeTrans />
             </Table.HeadCell>
             <Table.HeadCell textAlign="center">
               <ActionTrans />
@@ -250,14 +241,14 @@ const AddPresetMaintenance = ({ add }) => {
     <Set orientation="horizontal">
       <Group>
         <Button isStatic>
-          <StartTimeLabel />
+          <StartTimeTrans />
         </Button>
         <DateTimeInput name="from" maxDate={maxDate} />
       </Group>
 
       <Group>
         <Button isStatic>
-          <EndTimeLabel />
+          <EndTimeTrans />
         </Button>
         <DateTimeInput name="to" minDate={minDate} />
       </Group>

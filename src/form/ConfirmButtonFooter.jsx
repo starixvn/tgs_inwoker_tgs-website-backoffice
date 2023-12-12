@@ -10,11 +10,12 @@ import { css, Global } from "@emotion/react"
 import { Dialog, Button, Box, Set } from "bumbag"
 import { CloseText, SubmitText } from "../button/ActionButtons"
 
+//TODO: able to rm?
 export const ConfirmButtonFooter = ({
   isLoading,
   disabled,
   width = "100%",
-  alignX = "center",
+  alignX = "right",
   confirmText: ConfirmText = SubmitText,
   ...props
 }) => {

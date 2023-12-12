@@ -14,7 +14,6 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { EditDisclosure } from "../../dialog/Disclosure"
-import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useUpdateBrandGameProvider } from "./client"
 import { Trans, useTrans } from "../../i18n"
 import { FieldValues } from "../../layout/Grid"
@@ -89,11 +88,7 @@ const EditDialog = ({ record, dialog, ...props }) => {
       }}
       title={title}
       showCloseButton
-      showActionButtons={false}
       dialog={dialog}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
     >
       <EditBody record={record} />
     </FormDialog>
