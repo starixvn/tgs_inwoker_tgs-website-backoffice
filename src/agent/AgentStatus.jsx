@@ -8,18 +8,16 @@ import {
   InBlacklistTrans,
   useStatusTrans
 } from "../trans/Status"
+import {
+  UserStatusDisabledTrans,
+  UserStatusEnabledTrans,
+  useUserStatusDisabledTrans,
+  useUserStatusEnabledTrans
+} from "../trans/User"
 
 const Enabled = "Enabled"
-const EnabledTrans = {
-  zh: "正常",
-  en: "Enabled"
-}
 
 const Disabled = "Disabled"
-const DisabledTrans = {
-  zh: "封锁",
-  en: "Disabled"
-}
 
 const InBlacklist = "InBlacklist"
 
@@ -29,11 +27,11 @@ export const AgentStatusSelect = ({ placeholder, ...props }) => {
 
   let options = [
     {
-      label: useTrans(EnabledTrans),
+      label: useUserStatusEnabledTrans(),
       value: Enabled
     },
     {
-      label: useTrans(DisabledTrans),
+      label: useUserStatusDisabledTrans(),
       value: Disabled
     },
     {
@@ -51,13 +49,13 @@ export const AgentStatusLabel = ({ value }) => {
     case Enabled:
       return (
         <Text>
-          <Trans {...EnabledTrans} />
+          <UserStatusEnabledTrans />
         </Text>
       )
     case Disabled:
       return (
         <Text>
-          <Trans {...DisabledTrans} />
+          <UserStatusDisabledTrans />
         </Text>
       )
     case InBlacklist:

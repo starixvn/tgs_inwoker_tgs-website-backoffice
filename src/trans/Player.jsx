@@ -126,24 +126,6 @@ const TotalOnlinePlayers = {
 }
 export const TotalOnlinePlayersTrans = () => <Trans {...TotalOnlinePlayers} />
 
-const PlayerStatusEnabled = {
-  zh: "活跃",
-  en: "Enabled",
-  vi: "Hoạt động"
-}
-export const PlayerStatusEnabledTrans = () => <Trans {...PlayerStatusEnabled} />
-export const usePlayerStatusEnabledTrans = () => useTrans(PlayerStatusEnabled)
-
-const PlayerStatusDisabled = {
-  zh: "封锁",
-  en: "Disabled",
-  vi: "Bị khóa"
-}
-export const PlayerStatusDisabledTrans = () => (
-  <Trans {...PlayerStatusDisabled} />
-)
-export const usePlayerStatusDisabledTrans = () => useTrans(PlayerStatusDisabled)
-
 const PlayerStatusRegisterUndone = {
   zh: "注册中",
   en: "Under Registration",

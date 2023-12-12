@@ -159,3 +159,19 @@ const LastLoginTime = {
   vi: "Thời gian đăng nhập cuối cùng "
 }
 export const LastLoginTimeTrans = () => <Trans {...LastLoginTime} />
+
+const UserStatusEnabled = {
+  zh: "活跃",
+  en: "Enabled",
+  vi: "Hoạt động"
+}
+export const UserStatusEnabledTrans = () => <Trans {...UserStatusEnabled} />
+export const useUserStatusEnabledTrans = () => useTrans(UserStatusEnabled)
+
+const UserStatusDisabled = {
+  zh: "封锁",
+  en: "Disabled",
+  vi: "Bị khóa"
+}
+export const UserStatusDisabledTrans = () => <Trans {...UserStatusDisabled} />
+export const useUserStatusDisabledTrans = () => useTrans(UserStatusDisabled)

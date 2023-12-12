@@ -9,13 +9,15 @@ import {
   InBlacklistTrans
 } from "../trans/Status"
 import {
-  PlayerStatusDisabledTrans,
-  PlayerStatusEnabledTrans,
   PlayerStatusRegisterUndoneTrans,
-  usePlayerStatusDisabledTrans,
-  usePlayerStatusEnabledTrans,
   usePlayerStatusRegisterUndoneTrans
 } from "../trans/Player"
+import {
+  UserStatusDisabledTrans,
+  UserStatusEnabledTrans,
+  useUserStatusDisabledTrans,
+  useUserStatusEnabledTrans
+} from "../trans/User"
 
 const Enabled = "Enabled"
 
@@ -38,7 +40,7 @@ export const PlayerStatusSelect = ({ placeholder, ...props }) => {
 
   let options = [
     {
-      label: usePlayerStatusEnabledTrans(),
+      label: useUserStatusEnabledTrans(),
       value: Enabled
     },
     {
@@ -46,7 +48,7 @@ export const PlayerStatusSelect = ({ placeholder, ...props }) => {
       value: RegisterUndone
     },
     {
-      label: usePlayerStatusDisabledTrans(),
+      label: useUserStatusDisabledTrans(),
       value: Disabled
     },
     {
@@ -63,13 +65,13 @@ export const PlayerStatusLabel = ({ value = "" }) => {
     case Enabled:
       return (
         <Text>
-          <PlayerStatusEnabledTrans />
+          <UserStatusEnabledTrans />
         </Text>
       )
     case Disabled:
       return (
         <Text>
-          <PlayerStatusDisabledTrans />
+          <UserStatusDisabledTrans />
         </Text>
       )
     case InBlacklist:
