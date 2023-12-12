@@ -22,10 +22,7 @@ import { NormalLabel } from "../../form/Label"
 import { useAddLicensee, useLicensee, useUpdateLicensee } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import Input from "../../input/Input"
 import Textarea from "../../textarea"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
@@ -142,10 +139,6 @@ const AddDialog = ({ onSubmitted, dialog }) => {
         reset()
         onSubmitted?.()
       }}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       dialog={dialog}
       title={title}
       placement="top"
@@ -366,10 +359,6 @@ const EditDialog = ({ id, resellerId, onSubmitted, dialog, ...props }) => {
       }}
       onClickClose={reset}
       title={title}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       dialog={dialog}
       placement="top"
       minWidth="60vw"

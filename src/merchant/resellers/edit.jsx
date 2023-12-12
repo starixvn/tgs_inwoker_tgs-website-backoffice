@@ -14,10 +14,7 @@ import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { Update as UpdateMenu, View as ViewMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useAddReseller, useReseller, useUpdateReseller } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
@@ -158,10 +155,6 @@ const AddDialog = ({ onSubmitted, dialog }) => {
       title={title}
       dialog={dialog}
       onClickClose={reset}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       placement="top"
       minWidth="60vw"
       css={css`
@@ -263,10 +256,6 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
       onClickClose={reset}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       placement="top"
       minWidth="60vw"
       css={css`

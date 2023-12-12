@@ -21,10 +21,7 @@ import { Update as UpdateMenu, View as ViewMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Input, InputField } from "../../input/Input"
 import { MerchantIdSelect } from "../MerchantSelect"
 import { RoleTypes } from "../../system/roles/type"
@@ -163,10 +160,6 @@ const AddDialog = ({ onSubmitted, dialog }) => {
         reset()
         onSubmitted?.()
       }}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       title={title}
       dialog={dialog}
       placement="top"
@@ -394,10 +387,6 @@ const EditDialog = ({ brandId, licenseeId, onSubmitted, dialog, ...props }) => {
       }}
       onClickClose={reset}
       title={title}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       dialog={dialog}
       placement="top"
       minWidth="60vw"

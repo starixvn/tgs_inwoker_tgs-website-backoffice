@@ -18,9 +18,6 @@ import FormDialog from "../../form/FormDialog"
 import { Update as UpdateMenu } from "./menu"
 import { useSyncBrandGameList, useUpdateBrand } from "./client"
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
-import ConfirmButtonFooter, {
-  CloseButtonFooter
-} from "../../form/ConfirmButtonFooter"
 import { useFormContext, useFieldArray, Controller } from "react-hook-form"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
@@ -234,10 +231,6 @@ const EditDialog = ({
       }}
       onClickClose={reset}
       title={title}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       dialog={dialog}
       placement="top"
       minWidth="60vw"
