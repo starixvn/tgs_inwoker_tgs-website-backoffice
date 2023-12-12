@@ -19,11 +19,6 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentAdjustReduceBalance } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -126,14 +121,6 @@ const DeductDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
     >
       <FormBody brandId={brandId} username={username} agentId={agentId} />
     </FormDialog>

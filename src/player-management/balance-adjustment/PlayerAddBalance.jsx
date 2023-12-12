@@ -13,7 +13,6 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
-import { ConfirmCancelFooter } from "../../form/ConfirmButtonFooter"
 import {
   usePlayerAdjustIncreaseBalance,
   usePlayerAdjustIncreaseTurnoverRequirement
@@ -119,14 +118,6 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
     >
       <FormBody />
     </FormDialog>
@@ -255,14 +246,6 @@ const AddTurnoverRequirementDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
     >
       <AddTurnoverRequirementFormBody />
     </FormDialog>

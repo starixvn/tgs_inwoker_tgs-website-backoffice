@@ -13,7 +13,6 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
-import { ConfirmCancelFooter } from "../../form/ConfirmButtonFooter"
 import { usePlayerAdjustReduceBalance } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import { Update } from "./menu"
@@ -106,14 +105,6 @@ const DeductDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
     >
       <FormBody brandId={brandId} username={username} playerCode={playerCode} />
     </FormDialog>

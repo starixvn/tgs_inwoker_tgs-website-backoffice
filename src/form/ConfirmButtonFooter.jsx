@@ -34,6 +34,7 @@ export const ConfirmButtonFooter = ({
   )
 }
 
+//TODO: rm
 export const ConfirmCancelFooter = ({
   isLoading,
   disabled,

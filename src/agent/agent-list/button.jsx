@@ -53,10 +53,7 @@ import {
   AgentWithdrawPasswordTab
 } from "./AgentWithdrawPassword"
 import FormDialog from "../../form/FormDialog"
-import {
-  CloseButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
+import { ConfirmCancelFooter } from "../../form/ConfirmButtonFooter"
 import { FieldValues, TwoColumns } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import Input, { InputField } from "../../input/Input"

@@ -15,10 +15,7 @@ import clone from "clone-deep"
 import { FieldValues } from "../../layout/Grid"
 import { PromotionTypeLabel, usePromotionGroupLabelOf } from "../PromotionType"
 import { useSendPromotionPayout } from "./client"
-import {
-  CloseButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { UserNameTrans } from "../../trans/User"
 import {
   PromotionNameTrans,

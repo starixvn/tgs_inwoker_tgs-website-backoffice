@@ -43,10 +43,7 @@ import Input, { InputField } from "../../input/Input"
 import { useAddVipLevel, useUpdateVipLevel } from "../../vip-levels/client"
 import { NormalLabel } from "../../form/Label"
 import Checkbox from "../../checkbox"
-import {
-  CloseButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import {
   NumberInput,
   NumberInputField,

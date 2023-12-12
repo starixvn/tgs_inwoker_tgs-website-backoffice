@@ -32,10 +32,7 @@ import {
   PromotionTypeLabel,
   usePromotionGroupLabelOf
 } from "../../PromotionType"
-import {
-  CloseButtonFooter,
-  ConfirmCancelFooter
-} from "../../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../../form/ConfirmButtonFooter"
 import {
   MaxNumber,
   NumberInput,
