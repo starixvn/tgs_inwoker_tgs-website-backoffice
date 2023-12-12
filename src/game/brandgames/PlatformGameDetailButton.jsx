@@ -3,7 +3,6 @@ import { css, Stack, Heading, Box, Button, useModalState } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { ViewDetail, UpdateDetail } from "./menu"
 import Disclosure, { EditDisclosure } from "../../dialog/Disclosure"
-import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useUpdateBrandGame } from "./client"
 import { Trans, useTrans } from "../../i18n"
 import { FieldValues } from "../../layout/Grid"
@@ -123,13 +122,8 @@ const PlatformGameDetailDialog = ({
       }}
       title={title}
       showCloseButton
-      showActionButtons={false}
+      showActionButtons={readOnly ? false : true}
       dialog={dialog}
-      footer={
-        readOnly ? null : (
-          <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-        )
-      }
       minWidth="40vw"
     >
       <EditBody record={brandGame} readOnly={readOnly} />
