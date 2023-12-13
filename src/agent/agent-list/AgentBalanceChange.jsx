@@ -23,6 +23,15 @@ import {
 } from "../../trans/Action"
 import { TimeTrans } from "../../trans/Date"
 import { TransactionAmountTrans } from "../../trans/Field"
+import {
+  BalanceChangeTypeReceiveCommitTrans,
+  BalanceChangeTypeReceiveRollbackTrans,
+  BalanceChangeTypeTransferRollbackTrans,
+  BalanceChangeTypeTransferTrans,
+  useBalanceChangeTypeReceiveCommitTrans,
+  useBalanceChangeTypeTransferRollbackTrans,
+  useBalanceChangeTypeTransferTrans
+} from "../../trans/Payment"
 
 export const Key = "BalanceChange"
 
@@ -194,25 +203,12 @@ const DividendTrans = {
 }
 
 const Transfer = "Transfer"
-const TransferMsg = {
-  zh: "轉出",
-  en: "Transfer Out"
-}
+
 const TransferRollback = "TransferRollback"
-const TransferRollbackMsg = {
-  zh: "轉出失敗",
-  en: "Transfer Out Failed"
-}
+
 const ReceiveCommit = "ReceiveCommit"
-const ReceiveCommitMsg = {
-  zh: "轉入",
-  en: "Transfer In"
-}
+
 const ReceiveRollback = "ReceiveRollback"
-const ReceiveRollbackMsg = {
-  zh: "轉入失敗",
-  en: "Transfer In Failed"
-}
 
 const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTransactionTypeTrans()
@@ -242,19 +238,19 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
       value: Dividend
     },
     {
-      label: useTrans(TransferMsg),
+      label: useBalanceChangeTypeTransferTrans(),
       value: Transfer
     },
     {
-      label: useTrans(TransferRollbackMsg),
+      label: useBalanceChangeTypeTransferRollbackTrans(),
       value: TransferRollback
     },
     {
-      label: useTrans(ReceiveCommitMsg),
+      label: useBalanceChangeTypeReceiveCommitTrans(),
       value: ReceiveCommit
     },
     {
-      label: useTrans(ReceiveRollbackMsg),
+      label: useBalanceChangeTypeTransferRollbackTrans(),
       value: ReceiveRollback
     }
   ]
@@ -275,13 +271,13 @@ const AgentTransactionTypeLabel = ({ value = "" }) => {
     case CancelWithdrawal:
       return <Trans {...CancelWithdrawalTrans} />
     case Transfer:
-      return <Trans {...TransferMsg} />
+      return <BalanceChangeTypeTransferTrans />
     case TransferRollback:
-      return <Trans {...TransferRollbackMsg} />
+      return <BalanceChangeTypeTransferRollbackTrans />
     case ReceiveCommit:
-      return <Trans {...ReceiveCommitMsg} />
+      return <BalanceChangeTypeReceiveCommitTrans />
     case ReceiveRollback:
-      return <Trans {...ReceiveRollbackMsg} />
+      return <BalanceChangeTypeReceiveRollbackTrans />
     default:
       return value
   }

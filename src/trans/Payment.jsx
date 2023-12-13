@@ -186,3 +186,43 @@ const PayoutAmount = {
   en: "Payout Amount"
 }
 export const PayoutAmountTrans = () => <Trans {...PayoutAmount} />
+
+const BalanceChangeTypeTransfer = {
+  zh: "轉出",
+  en: "Transfer Out"
+}
+export const BalanceChangeTypeTransferTrans = () => (
+  <Trans {...BalanceChangeTypeTransfer} />
+)
+export const useBalanceChangeTypeTransferTrans = () =>
+  useTrans(BalanceChangeTypeTransfer)
+
+const BalanceChangeTypeTransferRollback = {
+  zh: "轉出失敗",
+  en: "Transfer Out Failed"
+}
+export const BalanceChangeTypeTransferRollbackTrans = () => (
+  <Trans {...BalanceChangeTypeTransferRollback} />
+)
+export const useBalanceChangeTypeTransferRollbackTrans = () =>
+  useTrans(BalanceChangeTypeTransferRollback)
+
+const BalanceChangeTypeReceiveCommit = {
+  zh: "轉入",
+  en: "Transfer In"
+}
+export const BalanceChangeTypeReceiveCommitTrans = () => (
+  <Trans {...BalanceChangeTypeReceiveCommit} />
+)
+export const useBalanceChangeTypeReceiveCommitTrans = () =>
+  useTrans(BalanceChangeTypeReceiveCommit)
+
+const BalanceChangeTypeReceiveRollback = {
+  zh: "轉入失敗",
+  en: "Transfer In Failed"
+}
+export const BalanceChangeTypeReceiveRollbackTrans = () => (
+  <Trans {...BalanceChangeTypeReceiveRollback} />
+)
+export const useBalanceChangeTypeReceiveRollbackTrans = () =>
+  useTrans(BalanceChangeTypeReceiveRollback)

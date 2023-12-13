@@ -39,11 +39,15 @@ import {
 } from "../../trans/Field"
 import { TimeTrans } from "../../trans/Date"
 import {
+  BalanceChangeTypeReceiveCommitTrans,
+  BalanceChangeTypeReceiveRollbackTrans,
   TransferAndCanceledTrans,
   TransferCanceledTrans,
   WithdrawAndCanceledTrans,
   WithdrawCanceledTrans,
   WithdrawCompletedTrans,
+  useBalanceChangeTypeReceiveCommitTrans,
+  useBalanceChangeTypeReceiveRollbackTrans,
   useTransferAndCanceledTrans,
   useTransferCanceled,
   useWithdrawAndCanceledTrans,
@@ -249,6 +253,10 @@ const Transfer = "Transfer"
 
 const TransferRollback = "TransferRollback"
 
+const ReceiveCommit = "ReceiveCommit"
+
+const ReceiveRollback = "ReceiveRollback"
+
 const isDepositOrWithdrawal = (value) =>
   value === Deposit || value === Withdrawal
 
@@ -366,6 +374,14 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTransferCanceled(),
       value: TransferRollback
     },
+    {
+      label: useBalanceChangeTypeReceiveCommitTrans(),
+      value: ReceiveCommit
+    },
+    {
+      label: useBalanceChangeTypeReceiveRollbackTrans(),
+      value: ReceiveRollback
+    },
     ...adjustPlayerBalanceTypeOptions,
     {
       label: useTrans(BonusTrans),
@@ -443,6 +459,10 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <TransferAndCanceledTrans />
     case TransferRollback:
       return <TransferCanceledTrans />
+    case ReceiveCommit:
+      return <BalanceChangeTypeReceiveCommitTrans />
+    case ReceiveRollback:
+      return <BalanceChangeTypeReceiveRollbackTrans />
     case PlayerAdjustBalanceType.Company:
     case PlayerAdjustBalanceType.Agent:
     case PlayerAdjustBalanceType.System:
