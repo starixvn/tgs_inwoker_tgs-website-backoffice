@@ -1,10 +1,27 @@
 kind: Module
-type: container
+type: helm
 name: nats
-image: nats
-services:
-  - name: nats
-    ports:
-      - name: nats
-        containerPort: 4222
-        servicePort: 4222
+chart: nats/nats
+values:
+  config:
+    jetstream:
+      enabled: true
+      fileStore:
+        enabled: false
+      memoryStore:
+        enabled: true
+# portForwards:
+#   - name: nats
+#     targetPort: 4222
+#     localPort: 4222
+
+# kind: Module
+# type: container
+# name: nats
+# image: nats
+# services:
+#   - name: nats
+#     ports:
+#       - name: nats
+#         containerPort: 4222
+#         servicePort: 4222

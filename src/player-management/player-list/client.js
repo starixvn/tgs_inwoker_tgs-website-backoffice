@@ -196,6 +196,18 @@ export const usePlayerBalanceChanges = (searchParams) => {
   return useGet(url)
 }
 
+const WalletApi = "/api/wallet"
+export const usePlayerBalanceChangeUnsaved = (playerCode, searchParams) => {
+  let url =
+    playerCode && searchParams
+      ? urlWith(
+          searchParams,
+          `${WalletApi}/account-changes/player/waiting/${playerCode}`
+        )
+      : ""
+  return useGet(url)
+}
+
 export const usePlayerBalanceChangeTotalAmount = (searchParams) => {
   let url = searchParams
     ? urlWith(searchParams, `${API}/accountChanges/totalAmount`)

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Spinner, Stack, Flex, Box, Card, Set, Checkbox } from "bumbag"
+import { Spinner, Stack, Flex, Box, Card, Set, Checkbox, Level } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -53,6 +53,7 @@ import {
   useWithdrawAndCanceledTrans,
   useWithdrawCanceledTrans
 } from "../../trans/Payment"
+import { BalanceChangeUnsavedDataDisclosure } from "./BalanceChangeUnsavedData"
 
 export const Key = "BalanceChange"
 
@@ -103,22 +104,25 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
   return (
     <TabPanel tabId={Key} {...props}>
       <Stack spacing="major-2">
-        <SearchBar
-          accountChangeType={accountChangeType}
-          start={from}
-          end={to}
-          search={({ accountChangeType, start, end }) => {
-            setState({
-              pageIndex: 0,
-              accountChangeType,
-              from: start,
-              to: end
-            })
-            mutate()
-            mutateTotal()
-          }}
-          isLoading={isLoading}
-        />
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            accountChangeType={accountChangeType}
+            start={from}
+            end={to}
+            search={({ accountChangeType, start, end }) => {
+              setState({
+                pageIndex: 0,
+                accountChangeType,
+                from: start,
+                to: end
+              })
+              mutate()
+              mutateTotal()
+            }}
+            isLoading={isLoading}
+          />
+          <BalanceChangeUnsavedDataDisclosure playerCode={playerCode} />
+        </Level>
         <Table
           id="balanceChange"
           columns={columns}
