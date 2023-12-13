@@ -193,6 +193,27 @@ const DividendTrans = {
   en: "Profit sharing"
 }
 
+const Transfer = "Transfer"
+const TransferMsg = {
+  zh: "轉出",
+  en: "Transfer Out"
+}
+const TransferRollback = "TransferRollback"
+const TransferRollbackMsg = {
+  zh: "轉出失敗",
+  en: "Transfer Out Failed"
+}
+const ReceiveCommit = "ReceiveCommit"
+const ReceiveCommitMsg = {
+  zh: "轉入",
+  en: "Transfer In"
+}
+const ReceiveRollback = "ReceiveRollback"
+const ReceiveRollbackMsg = {
+  zh: "轉入失敗",
+  en: "Transfer In Failed"
+}
+
 const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
@@ -219,6 +240,22 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
     {
       label: useTrans(DividendTrans),
       value: Dividend
+    },
+    {
+      label: useTrans(TransferMsg),
+      value: Transfer
+    },
+    {
+      label: useTrans(TransferRollbackMsg),
+      value: TransferRollback
+    },
+    {
+      label: useTrans(ReceiveCommitMsg),
+      value: ReceiveCommit
+    },
+    {
+      label: useTrans(ReceiveRollbackMsg),
+      value: ReceiveRollback
     }
   ]
 
@@ -237,6 +274,14 @@ const AgentTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...DividendTrans} />
     case CancelWithdrawal:
       return <Trans {...CancelWithdrawalTrans} />
+    case Transfer:
+      return <Trans {...TransferMsg} />
+    case TransferRollback:
+      return <Trans {...TransferRollbackMsg} />
+    case ReceiveCommit:
+      return <Trans {...ReceiveCommitMsg} />
+    case ReceiveRollback:
+      return <Trans {...ReceiveRollbackMsg} />
     default:
       return value
   }

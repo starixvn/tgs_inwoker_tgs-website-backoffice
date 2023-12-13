@@ -1,7 +1,9 @@
 kind: Module
 type: container
 name: cash-worker
-image: pgtgs/cashservice-worker:202311090215.99
+image: pgtgs/cashservice-worker:202311090215.99 # old working version, port 80
+# TODO: fix error: enable jetstream
+# image: pgtgs/cashservice-worker:202312081019.190 # use port 8080
 services:
   - name: cash-worker
     dependencies:
@@ -11,7 +13,7 @@ services:
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Nats: "nats://nats:4222"
-      ConnectionStrings__Redis: "redis"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
     ports:
       - name: http
         containerPort: 80

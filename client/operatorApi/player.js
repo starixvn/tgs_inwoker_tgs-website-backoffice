@@ -12,8 +12,24 @@ export const DefaultPassword = "TgsP@ssw0rd"
 
 export const DefaultCurrencyCode = "CNY"
 
-//TODO: add realName and phone?
-//TODO: log error 'User Name' is not in the correct format."
+//TODO: use /api/player/register instead?
+// payload: {"type":"CreatePlayer","input":{"username":"samchuang002","pwd":"asdf2440","upper":"","invitationcode":""}}
+// response:
+/*
+{
+    "data": {
+        "isCompleted": false,
+        "nextStepType": "InitPhone",
+        "stepResponse": {
+            "uid": "4ulqy5agzhtm",
+            "isnew": true
+        }
+    },
+    "err": 0,
+    "errmsg": "",
+    "errmsgid": null
+}
+*/
 export const create = async (
   platformToken,
   {
