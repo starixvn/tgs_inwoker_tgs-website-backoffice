@@ -27,6 +27,9 @@ import Input from "../../input/Input"
 import Textarea from "../../textarea"
 import Checkbox from "../../checkbox"
 import { RemarkTrans } from "../../trans/Action"
+import { Select } from "../../select/Select"
+import { NumberInput } from "../../input/NumberInput"
+import { useFormContext, useWatch } from "react-hook-form"
 
 const AddOrDeductFund = {
   zh: "上/下分",
@@ -48,12 +51,16 @@ export const AddOrDeductFundDialogDisclosure = ({ brandId }) => {
       <Disclosure {...dialog}>
         <AddOrDeductFundTrans />
       </Disclosure>
-      {dialog.visible && <TopUpDialog brandId={brandId} dialog={dialog} />}
+      {dialog.visible && (
+        <AddOrDeductFundDialog brandId={brandId} dialog={dialog} />
+      )}
     </>
   )
 }
 
-const TopUpDialog = ({ brandId, dialog }) => {
+//TODO: double confirm dialog -> submit
+//TODO: use brandId to get data?
+const AddOrDeductFundDialog = ({ brandId, dialog }) => {
   let title = useAddOrDeductFundTrans()
 
   //TODO: defaultValues
@@ -66,9 +73,97 @@ const TopUpDialog = ({ brandId, dialog }) => {
 
 //TODO
 const TypeField = "type"
-const TypeSelect = ({ name = TypeField }) => {}
+const AddFund = {
+  zh: "上分",
+  en: "Add Fund"
+}
+const AddFundTrans = () => <Trans {...AddFund} />
+const useAddFundTrans = () => useTrans(AddFund)
 
-const AmountField = "amount"
+const DeductFund = {
+  zh: "下分",
+  en: "Deduct Fund"
+}
+const DeductFundTrans = () => <Trans {...DeductFund} />
+const useDeductFundTrans = () => useTrans(DeductFund)
+
+const Type = {
+  AddFund: "AddFund",
+  DeductFund: "DeductFund"
+}
+
+const TypeSelect = ({
+  name = TypeField,
+  defaultValue = Type.AddFund,
+  required = true,
+  placeholder,
+  ...props
+}) => {
+  let defaultPlaceholder = useTrans({
+    zh: "类型",
+    en: "Type"
+  })
+  placeholder = placeholder ?? defaultPlaceholder
+
+  let options = [
+    {
+      label: useAddFundTrans(),
+      value: Type.AddFund
+    },
+    {
+      label: useDeductFundTrans(),
+      value: Type.DeductFund
+    }
+  ]
+
+  return (
+    <Select
+      name={name}
+      options={options}
+      defaultValue={defaultValue}
+      required={required}
+      placeholder={placeholder}
+      {...props}
+    />
+  )
+}
+
+//TODO: useWatchCreditAmount
+const CreditAmountField = "credit"
+const CreditAmountInput = ({
+  name = CreditAmountField,
+  registerOptions = {
+    valueAsNumber: true
+  },
+  min = "0.01",
+  step = "0.01",
+  required = true,
+  ...props
+}) => {
+  return (
+    <NumberInput
+      name={name}
+      registerOptions={registerOptions}
+      min={min}
+      step={step}
+      required={required}
+      {...props}
+    />
+  )
+}
+
+//TODO
+const useCreditAmount = (name = CreditAmountField) => {
+  let { control } = useFormContext()
+  let value = useWatch({
+    control,
+    name
+  })
+  return value
+}
+
+//TODO
+const useCalcUpdatedCredit = () => {}
 
 const FormBody = ({}) => {
   return (
@@ -80,45 +175,47 @@ const FormBody = ({}) => {
         <Box>TODO: Platform Code?</Box>
 
         <Box>
-          <Trans zh="剩餘額度" en="Remaining Credits" />
+          <Trans zh="平台額度" en="Platform Credits" />
         </Box>
-        <Box>TODO: fake remainingCredits</Box>
+        <Box>TODO: fake PlatformCredits</Box>
+
+        <Box alignY="center">
+          <Trans zh="操作類型" en="Type" />
+        </Box>
+        <TypeSelect width="100%" />
+
+        <Box alignY="center">
+          <Trans zh="額度" en="Credits" />
+        </Box>
+        <CreditAmountInput />
 
         <Box>
-          <Trans zh="平台額度" en="Total Credits" />
-          <Text color="danger">*</Text>
+          <Trans zh="平台額度(操作後)" en="Platform Credits (Updated)" />
         </Box>
-        <Box>TODO: fake totalCredits</Box>
+        <Box>TODO: calcPlatformCredit</Box>
 
         <Box>
-          <Trans zh="加值金額" en="Top-up Amount" />
+          <Trans zh="操作者" en="Operated By" />
         </Box>
-        <Input name={AmountField} />
-
-        <Box>
-          <Trans zh="加值後剩餘額度" en="Remaining Credits" />
-        </Box>
-        <Box>TODO: calcRemainingCredits</Box>
-
-        <Box>
-          <Trans zh="加值後已用額度%" en="Usage P/T" />
-        </Box>
-        <Box>TODO: calcRemainingCreditsPercentage</Box>
-
-        <Box>
-          <Trans zh="已用額度%必須至少低於" en="Usage P/T must be lower than" />
-        </Box>
-        <Box>TODO: percentage</Box>
-
-        <Box>
-          <Trans zh="操作者" en="Issued By" />
-        </Box>
-        <Box>TODO: username</Box>
+        <Box>TODO: current username</Box>
 
         <Box>
           <RemarkTrans />
         </Box>
         <Textarea name="reamrk" />
+
+        <Box>
+          <Trans zh="金額 (USD)" en="Amount (USD)" />
+        </Box>
+        <NumberInput
+          name="amount"
+          registerOptions={{
+            valueAsNumber: true
+          }}
+          min="0.01"
+          step="0.01"
+          required
+        />
       </FieldValues>
       <Box>
         <ConfirmCheckbox />
@@ -132,10 +229,11 @@ const ConfirmCheckbox = ({ name = "confirm" }) => {
   return (
     <Checkbox
       name={name}
+      required
       label={
         <Trans
-          zh="我確認有收到平台款項，將為平台添加額度。"
-          en="I confirm that I have received payments from the platform and will be adding credits to the platform."
+          zh="我確認有收到上述金額(USD)"
+          en="I have received the amount(USD) mentioned above."
         />
       }
     />

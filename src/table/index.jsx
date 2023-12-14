@@ -403,6 +403,10 @@ const Foot = ({ table }) => {
   let { Foot } = components
 
   let headFooterGroup = head(footerGroups)
+  if (!headFooterGroup) {
+    return null
+  }
+
   return (
     <Foot fontWeight="semibold" {...getTableFootProps()}>
       <_Table.Row {...headFooterGroup.getFooterGroupProps()}>
