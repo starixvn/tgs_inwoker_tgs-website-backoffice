@@ -254,7 +254,7 @@ const ReportContent = ({}) => {
       <FieldStack>
         <Text.Block>
           <Trans
-            zh={`筆數：${formattedTotalCount}`}
+            zh={`笔数：${formattedTotalCount}`}
             en={`Rows：${formattedTotalCount}`}
           />
         </Text.Block>

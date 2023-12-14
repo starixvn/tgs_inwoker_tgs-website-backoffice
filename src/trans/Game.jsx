@@ -238,7 +238,7 @@ export const GameProviderReport = {
 export const GameProviderReportTrans = () => <Trans {...GameProviderReport} />
 
 export const TransactionCount = {
-  zh: "訂單筆數",
+  zh: "訂單笔数",
   en: "Transactions",
   vi: "Số lượng đơn"
 }
