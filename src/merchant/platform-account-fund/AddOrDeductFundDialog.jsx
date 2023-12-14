@@ -28,7 +28,14 @@ import Textarea from "../../textarea"
 import Checkbox from "../../checkbox"
 import { RemarkTrans } from "../../trans/Action"
 
-export const TopUpDialogDisclosure = ({ brandId }) => {
+const AddOrDeductFund = {
+  zh: "上/下分",
+  en: "Add/Deduct Fund"
+}
+const AddOrDeductFundTrans = () => <Trans {...AddOrDeductFund} />
+const useAddOrDeductFundTrans = () => useTrans(AddOrDeductFund)
+
+export const AddOrDeductFundDialogDisclosure = ({ brandId }) => {
   let dialog = useModalState()
 
   let hasAuth = useIsDisplayMenuByRoute([Update])
@@ -39,7 +46,7 @@ export const TopUpDialogDisclosure = ({ brandId }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="加值" en="Top-up" />
+        <AddOrDeductFundTrans />
       </Disclosure>
       {dialog.visible && <TopUpDialog brandId={brandId} dialog={dialog} />}
     </>
@@ -47,10 +54,7 @@ export const TopUpDialogDisclosure = ({ brandId }) => {
 }
 
 const TopUpDialog = ({ brandId, dialog }) => {
-  let title = useTrans({
-    zh: "加值",
-    en: "Top-up"
-  })
+  let title = useAddOrDeductFundTrans()
 
   //TODO: defaultValues
   return (
@@ -60,22 +64,17 @@ const TopUpDialog = ({ brandId, dialog }) => {
   )
 }
 
+const TypeField = "type"
 const AmountField = "amount"
 
 const FormBody = ({}) => {
-  //TODO: top up amount validation
   return (
     <FieldStack marginLeft="1rem">
       <FieldValues>
         <Box>
-          <Trans zh="公司" en="Licensee" />
-        </Box>
-        <Box>TODO: Licensee</Box>
-
-        <Box>
           <Trans zh="平台" en="Platform" />
         </Box>
-        <Box>TODO: Platform</Box>
+        <Box>TODO: Platform Code?</Box>
 
         <Box>
           <Trans zh="剩餘額度" en="Remaining Credits" />

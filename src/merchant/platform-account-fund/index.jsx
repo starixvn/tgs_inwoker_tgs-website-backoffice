@@ -26,10 +26,11 @@ import { PlatformAccountFundTypeSelect } from "./PlatformAccountFundType"
 import SearchButton from "../../button/SearchButton"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
-import { usePlatformAccountFundList } from "./client"
+import { usePlatformAccountFund } from "./client"
 import { subDays } from "date-fns"
 import { AlertSettingDialogDisclosure } from "./AlertSettingDialog"
-import { TopUpDialogDisclosure } from "./TopUpDialog"
+import { AddOrDeductFundDialogDisclosure } from "./AddOrDeductFundDialog"
+import AutoSizer from "react-virtualized-auto-sizer"
 
 export { Code }
 
@@ -49,98 +50,27 @@ export const Content = () => {
 const Body = () => {
   let brandId = usePlatformId()
 
-  let todayRange = today()
-
-  let { state, setState, setPageIndex, setSortOrder } = useTable({
-    from: todayRange.start,
-    to: todayRange.end
-  })
-
-  //TODO: need?
-  /*
-  useEffect(() => {
-    setState({ pageIndex: 0, brandId })
-  }, [brandId])
-  */
-
+  //TODO: need brand code?
+  //TODO: auto update data every 5 mins?
   let { isLoading, data, error, mutate, deleteCache } =
-    usePlatformAccountFundList(toApiParams(state))
+    usePlatformAccountFund(brandId)
 
-  //TODO: how to get available height?
-  let [ref, measure] = useMeasure()
-  console.log("measure", measure)
-
+  let pageWidth = usePlatformPageContentWidth()
   return (
-    <Set ref={ref} orientation="vertical" isFilled height="100%">
-      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-        <SearchBar
-          from={state.from}
-          to={state.to}
-          isLoading={isLoading}
-          search={(data = {}) => {
-            setState({
-              pageIndex: 0,
-              ...data
-            })
-            mutate(null, true)
+    <Set orientation="vertical" isFilled height="100%">
+      <Set>
+        <AddOrDeductFundDialogDisclosure />
+        <AlertSettingDialogDisclosure />
+      </Set>
+      <Box flex="1 0 50%">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return "TODO: table"
+            // return <Table />
           }}
-        />
-        <Set>
-          <AlertSettingDialogDisclosure />
-          <TopUpDialogDisclosure />
-        </Set>
-      </Level>
-      <Box flex="1 0 50%">{JSON.stringify(data)}</Box>
+        </AutoSizer>
+      </Box>
     </Set>
-  )
-}
-
-//TODO: confirm api params
-const SearchBar = ({ type, from, to, search, isLoading, ...props }) => {
-  let formMethods = useForm({
-    defaultValues: {
-      type,
-      from,
-      to
-    }
-  })
-
-  const onSubmit = (data) => search?.(data)
-
-  let QueryMaxRangeDays = 31
-  let todayRange = today()
-  let DataRetentionDays = 365
-  let minDate = subDays(todayRange.start, DataRetentionDays)
-  let maxDate = todayRange.end
-
-  return (
-    <FormProvider {...formMethods}>
-      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-        <Set>
-          <PlatformAccountFundTypeSelect name="type" />
-          <DateInputRange
-            showDateDropdownMenu
-            maxRangeDays={QueryMaxRangeDays}
-            minDate={minDate}
-            maxDate={maxDate}
-            startProps={{
-              name: "from"
-            }}
-            endProps={{
-              name: "to"
-            }}
-            dateDropdownMenuProps={{
-              thisWeekProps: {
-                end: maxDate
-              },
-              thisMonthProps: {
-                end: maxDate
-              }
-            }}
-          />
-          <SearchButton isLoading={isLoading} disabled={isLoading} />
-        </Set>
-      </form>
-    </FormProvider>
   )
 }
