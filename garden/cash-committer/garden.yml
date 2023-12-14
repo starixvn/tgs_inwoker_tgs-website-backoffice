@@ -1,8 +1,6 @@
 kind: Module
 type: container
 name: cash-committer
-# TODO: enable jetstream, fix error
-disabled: true
 image: pgtgs/cashservice-committer:202312081019.190
 services:
   - name: cash-committer

@@ -7,9 +7,11 @@ services:
     dependencies:
       - postgres
       - player-api
+      - cash-service
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       AgentService__PlayerServiceBaseUrl: "http://player-api"
+      AgentService__CashBaseUrl: "http://cash-service"
     ports:
       - name: http
         containerPort: 80

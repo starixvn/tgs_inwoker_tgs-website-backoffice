@@ -6,10 +6,11 @@ values:
   config:
     jetstream:
       enabled: true
-      fileStore:
-        enabled: false
-      memoryStore:
-        enabled: true
+      # fileStore:
+      #   enabled: false
+      # memoryStore:
+      #   enabled: true
+
 # portForwards:
 #   - name: nats
 #     targetPort: 4222

@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202311290602.686
+image: pgtgs/backoffice-api:202312130855.715
 services:
   - name: backoffice-api
     dependencies:
@@ -71,6 +71,6 @@ services:
         port: http
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80
         localPort: 3001
