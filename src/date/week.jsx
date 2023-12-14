@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { setDay, format, isValid } from "date-fns"
-import { enUS, zhCN } from "date-fns/locale"
+import { enUS, zhCN, vi } from "date-fns/locale"
 import { useLocale, Locales } from "../i18n"
 import { Select, DropdownMenu, Button } from "bumbag"
 import { useForm, useFormContext } from "react-hook-form"
@@ -25,10 +25,12 @@ export const Day = {
 
 const toLocale = (code) => {
   switch (code) {
-    case Locales.en:
-      return enUS
-    default:
+    case Locales.zh:
       return zhCN
+    case Locales.vi:
+      return vi
+    default:
+      return enUS
   }
 }
 

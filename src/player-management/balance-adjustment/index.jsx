@@ -38,6 +38,9 @@ import { usePlayerList } from "../player-list/client"
 import { PlayerWageringRequirementDialogDisclosure } from "./PlayerWageringRequirement"
 import { PlayerBatchAddBalanceDisclosure } from "./PlayerBatchAddBalance"
 import { PlayerAdjustLockedAmountDialogDisclosure } from "./PlayerAdjustLockedAmountDialog"
+import { ActionTrans } from "../../trans/Action"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import { PlayerBalanceAdjustmentTrans } from "../../trans/Player"
 
 export { Code }
 
@@ -97,7 +100,7 @@ const BodyContent = ({ brandId = "" }) => {
   let columns = useColumns({ mutate, items: data?.items, brandId })
   return (
     <PageContent
-      title={<Trans zh="玩家调账" en="Balance Adjustment" />}
+      title={<PlayerBalanceAdjustmentTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <SearchBar
@@ -133,10 +136,8 @@ const BodyContent = ({ brandId = "" }) => {
 }
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名",
-    en: "Username"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
+
   let formMethods = useForm()
 
   const onSubmit = (data) => search(data)
@@ -164,16 +165,9 @@ const useColumns = ({ brandId, items = [], mutate }) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       })
-      /*
-      numberDecimalColumn({
-        accessor: "balance",
-        Header: <Trans zh="余额" en="Balance" />,
-        disableSortBy: true
-      })
-      */
     ]
 
     if (hasUpdateMenu) {
@@ -182,7 +176,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value }) => {
             let username = value?.username
             let playerCode = value?.playerCode

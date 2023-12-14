@@ -14,6 +14,14 @@ import {
   startOfMonth,
   endOfMonth
 } from "date-fns"
+import {
+  LastMonthTrans,
+  LastWeekTrans,
+  ThisMonthTrans,
+  ThisWeekTrans,
+  TodayTrans,
+  YesterdayTrans
+} from "../trans/Date"
 
 const Yesterday = "Yesterday"
 export const YesterdayButton = ({ onClick, ...props }) => {
@@ -30,7 +38,7 @@ export const YesterdayButton = ({ onClick, ...props }) => {
       }}
       {...props}
     >
-      <Trans zh="昨日" en="Yesterday" />
+      <YesterdayTrans />
     </Button>
   )
 }
@@ -50,7 +58,7 @@ export const TodayButton = ({ onClick, ...props }) => {
       }}
       {...props}
     >
-      <Trans zh="今日" en="Today" />
+      <TodayTrans />
     </Button>
   )
 }
@@ -78,7 +86,7 @@ export const LastWeekButton = ({ onClick, ...props }) => {
       }}
       {...props}
     >
-      <Trans zh="上周" en="Last Week" />
+      <LastWeekTrans />
     </Button>
   )
 }
@@ -103,7 +111,7 @@ export const ThisWeekButton = ({ onClick, ...props }) => {
       }}
       {...props}
     >
-      <Trans zh="本周" en="This Week" />
+      <ThisWeekTrans />
     </Button>
   )
 }
@@ -124,7 +132,7 @@ export const LastMonthButton = ({ onClick, ...props }) => {
       }}
       {...props}
     >
-      <Trans zh="上月" en="Last Month" />
+      <LastMonthTrans />
     </Button>
   )
 }
@@ -145,7 +153,7 @@ export const ThisMonthButton = ({ onClick, ...props }) => {
       }}
       {...props}
     >
-      <Trans zh="本月" en="This Month" />
+      <ThisMonthTrans />
     </Button>
   )
 }

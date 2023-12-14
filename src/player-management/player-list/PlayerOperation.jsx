@@ -13,13 +13,20 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import textColumn from "../../table/column/textColumn"
 import { Descending } from "../../table/order"
 import AlertDialog from "../../dialog/Alert"
+import {
+  ActionTypeTrans,
+  EditingRecordsTrans,
+  OperatorTrans
+} from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
 
 export const Key = "operation"
 
+//TODO: rm PlayerOperationTab after 1.39
 export const PlayerOperationTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="操作记录" en="Operating records" />
+      <EditingRecordsTrans />
     </_Tab>
   )
 }
@@ -100,18 +107,18 @@ const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),
       textColumn({
         accessor: "operation",
-        Header: <Trans zh="操作项" en="Operation Item" />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "createdByUsername",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ],

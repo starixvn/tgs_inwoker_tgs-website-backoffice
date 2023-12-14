@@ -22,8 +22,10 @@ export const addBalance = async (
   let result = await response.json()
   if (!result.valid) {
     throw Error(
-      `add balance failed, url: [${`${host}/${API}/${agentId}/adjust/increase`}], formData: `,
-      formData
+      `add balance failed, url: [${`${host}/${API}/${agentId}/adjust/increase`}], result.message ${
+        result.message
+      } 
+      formData: ${JSON.stringify(formData)}`
     )
   }
   return result

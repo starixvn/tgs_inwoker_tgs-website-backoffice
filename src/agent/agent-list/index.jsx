@@ -69,6 +69,13 @@ import { isDev } from "../../env"
 import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { isAgentProfitSharingOneLayer } from "../AgentProfitSharingType"
 import { useBrand } from "../../merchant/platforms/client"
+import {
+  RealNameTrans,
+  UserNameTrans,
+  useUserNameTrans
+} from "../../trans/User"
+import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -212,7 +219,7 @@ const BodyContent = ({ brandId = "", brand }) => {
 }
 
 const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useSearchInputPlaceHolder()
+  let usernameInputPlaceholder = useUserNameTrans()
   let formMethods = useForm({
     defaultValues: {
       status
@@ -240,9 +247,6 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
   )
 }
 
-const useSearchInputPlaceHolder = () =>
-  useTrans({ zh: "用户名输入框", en: "Input user name" })
-
 const useColumns = ({
   mutate,
   items = [],
@@ -257,12 +261,12 @@ const useColumns = ({
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="User name" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "realName",
-        Header: <Trans zh="真实姓名" en="Real name" />,
+        Header: <RealNameTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -279,7 +283,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <AgentStatusLabel value={value} />
       }),
@@ -494,7 +498,7 @@ const useColumns = ({
       columns.push({
         id: "actions",
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

@@ -76,7 +76,13 @@ export const HeadCell = ({
       {...props}
       {...columnProps}
     >
-      <Box>
+      <div
+        css={css`
+          overflow: hidden;
+          text-overflow: ellipsis;
+        `}
+        {...column?.headCell?.bodyProps}
+      >
         {column.render("Header")}
         {column.isSorted ? (
           column.isSortedDesc ? (
@@ -90,7 +96,7 @@ export const HeadCell = ({
             <Icon icon={faSort} type="font-awesome" opacity="0.4" />
           )
         )}
-      </Box>
+      </div>
     </Table.HeadCell>
   )
 }

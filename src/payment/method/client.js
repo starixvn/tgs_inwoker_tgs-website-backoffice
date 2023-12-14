@@ -5,6 +5,7 @@ import {
   usePutData,
   useDelete
 } from "../../client"
+import { Locales } from "../../i18n"
 
 let API = "/api/PaymentMethod"
 
@@ -72,6 +73,7 @@ export const paymentMethodCodeLabel = (locale, paymentMethodCode) => {
   let [code, trans] =
     CodeTranPairs.find(([code]) => code === paymentMethodCode) ?? []
 
-  let label = trans?.[locale] ?? code
+  let DefaultLocal = Locales.en
+  let label = trans?.[locale] ?? trans?.[DefaultLocal] ?? code
   return label
 }

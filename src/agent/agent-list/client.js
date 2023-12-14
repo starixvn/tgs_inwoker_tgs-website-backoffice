@@ -10,6 +10,10 @@ import {
 import { isEmpty, isNil } from "lodash-es"
 import { either } from "ramda"
 import { useApiMerge } from "../../client/useApiMerge."
+import {
+  isAgentProfitSharingMultipleLayer,
+  isAgentProfitSharingOneLayer
+} from "../AgentProfitSharingType"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -57,6 +61,46 @@ const UpdateAgentFormDataField = {
   MultipleLayer: "multipleLayer"
 }
 
+export const useAgentUpdateFormData = (data, agentProfitSharingType) => {
+  if (isNil(data)) {
+    return data
+  }
+
+  let {
+    type,
+    parentUsername,
+    dividendPercentage,
+    agentDividendConditions,
+    status,
+
+    realName,
+    remarks
+  } = data
+
+  let formData = {
+    info: { realName, remarks },
+    status: isNilOrEmpty(status) ? null : { status }
+  }
+
+  if (isAgentProfitSharingOneLayer(agentProfitSharingType)) {
+    Reflect.set(formData, UpdateAgentFormDataField.OneLayer, {
+      type,
+      parentUsername,
+      dividendPercentage
+    })
+  }
+
+  if (isAgentProfitSharingMultipleLayer(agentProfitSharingType)) {
+    Reflect.set(formData, UpdateAgentFormDataField.MultipleLayer, {
+      type,
+      parentUsername,
+      agentDividendConditions
+    })
+  }
+
+  return formData
+}
+
 export const useUpdateAgentV2 = (agentId, data) => {
   let items = [
     useUpdateAgentInfo(
@@ -77,62 +121,43 @@ export const useUpdateAgentV2 = (agentId, data) => {
     )
   ]
 
-  return useApiMerge(items, data ? true : false)
+  return useApiMerge(items)
 }
 
 export const useUpdateAgentInfo = (agentId, data) => {
   let url = agentId && data ? `${API}/info/${agentId}` : ""
 
-  let rest = usePatchData(url, data, {
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdateAgentStatus = (agentId, data) => {
   let url = agentId && data ? `${API}/status/${agentId}` : ""
-  let rest = usePatchData(url, data, {
+
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdateAgentOneLayer = (agentId, data) => {
   let url = agentId && data ? `${API}/one-layer/${agentId}` : ""
-  console.log("url", url)
 
-  let rest = usePatchData(url, data, {
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdateAgentMultipleLayer = (agentId, data) => {
   let url = agentId && data ? `${API}/multiple-layer/${agentId}` : ""
-  let rest = usePatchData(url, data, {
+
+  return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
-
-  return {
-    hasUrl: !isEmpty(url),
-    ...rest
-  }
 }
 
 export const useUpdateAgentContact = (agentId, data) => {

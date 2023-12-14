@@ -3,30 +3,29 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
+import {
+  useInBlacklistTrans,
+  useStatusTrans,
+  InBlacklistTrans
+} from "../trans/Status"
+import {
+  PlayerStatusRegisterUndoneTrans,
+  usePlayerStatusRegisterUndoneTrans
+} from "../trans/Player"
+import {
+  UserStatusDisabledTrans,
+  UserStatusEnabledTrans,
+  useUserStatusDisabledTrans,
+  useUserStatusEnabledTrans
+} from "../trans/User"
 
 const Enabled = "Enabled"
-const EnabledTrans = {
-  zh: "活跃",
-  en: "Enabled"
-}
 
 const Disabled = "Disabled"
-const DisabledTrans = {
-  zh: "封锁",
-  en: "Disabled"
-}
 
 const InBlacklist = "InBlacklist"
-const InBlacklistTrans = {
-  zh: "黑名单",
-  en: "In Blacklist"
-}
 
 const RegisterUndone = "RegisterUndone"
-const RegisterUndoneTrans = {
-  zh: "注册中",
-  en: "Under Registration"
-}
 
 export const PlayerStatus = {
   Enabled,
@@ -36,27 +35,24 @@ export const PlayerStatus = {
 }
 
 export const PlayerStatusSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useTrans(EnabledTrans),
+      label: useUserStatusEnabledTrans(),
       value: Enabled
     },
     {
-      label: useTrans(RegisterUndoneTrans),
+      label: usePlayerStatusRegisterUndoneTrans(),
       value: RegisterUndone
     },
     {
-      label: useTrans(DisabledTrans),
+      label: useUserStatusDisabledTrans(),
       value: Disabled
     },
     {
-      label: useTrans(InBlacklistTrans),
+      label: useInBlacklistTrans(),
       value: InBlacklist
     }
   ]
@@ -69,25 +65,25 @@ export const PlayerStatusLabel = ({ value = "" }) => {
     case Enabled:
       return (
         <Text>
-          <Trans {...EnabledTrans} />
+          <UserStatusEnabledTrans />
         </Text>
       )
     case Disabled:
       return (
         <Text>
-          <Trans {...DisabledTrans} />
+          <UserStatusDisabledTrans />
         </Text>
       )
     case InBlacklist:
       return (
         <Text>
-          <Trans {...InBlacklistTrans} />
+          <InBlacklistTrans />
         </Text>
       )
     case RegisterUndone:
       return (
         <Text>
-          <Trans {...RegisterUndoneTrans} />
+          <PlayerStatusRegisterUndoneTrans />
         </Text>
       )
   }

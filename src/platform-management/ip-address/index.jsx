@@ -36,6 +36,7 @@ import {
   PlayerByIpAddressTabPanel
 } from "./PlayerByIpAddress"
 import { Trans } from "../../i18n"
+import { CheckIPTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -93,7 +94,7 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   return (
-    <PageContent title={<Trans zh="檢核IP地址" en="Check IP" />}>
+    <PageContent title={<CheckIPTrans />}>
       <Tabs>
         <TabList {...tab}>
           <SamePlayerIpAddressTab {...tab} />

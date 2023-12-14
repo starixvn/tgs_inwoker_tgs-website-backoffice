@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-wagers-reset
-image: pgtgs/game-gamewagers-reset:202309230527.11
+image: pgtgs/game-gamewagers-reset:202311100733.18
 services:
   - name: game-wagers-reset
     dependencies:

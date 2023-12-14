@@ -46,6 +46,7 @@ import {
   isDesignatedPlayers
 } from "./LetterType"
 import { usePlayer } from "../../player-management/player-list/client"
+import { SubjectTrans } from "../../trans/Field"
 
 export const ViewLetterDisclosure = ({
   brandId,
@@ -151,7 +152,7 @@ const ViewDialog = ({ brandId, boxType, letterId, dialog, dialogId }) => {
           receiver={data?.receiver}
         />
         <Label>
-          <Trans zh="主旨" en="Subject" />
+          <SubjectTrans />
         </Label>
         <Input
           name="subject"

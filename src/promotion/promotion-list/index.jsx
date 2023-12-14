@@ -53,6 +53,19 @@ import { isAfter } from "../../date/isAfter"
 import { PromotionChangeLogListDialogDisclosure } from "./ChangeLogListDialog"
 import { CopyPromotionDisclosure } from "./CopyPromotion"
 import { formatDateOnly } from "../../date/format"
+import {
+  PromotionFundTrans,
+  PromotionManagementTrans,
+  PromotionNameTrans,
+  PromotionSubtypeTrans,
+  PromotionTimeTrans,
+  PromotionTypeTrans,
+  PromotionUserGroupTrans,
+  usePromotionUserGroupTrans
+} from "../../trans/Promotion"
+import { StatusTrans } from "../../trans/Status"
+import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action"
+import { OrderTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -109,7 +122,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="活动管理" en="Promotion" />}
+      title={<PromotionManagementTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <SearchBar
@@ -240,7 +253,7 @@ const DataTable = ({
           {editable && (
             <Dialog.Footer position="sticky" bottom="0">
               <Button isLoading={isChangingDisplayOrder} type="submit">
-                <Trans zh="确认排序" en="Confirm Order" />
+                <ConfirmOrderTrans />
               </Button>
             </Dialog.Footer>
           )}
@@ -412,7 +425,7 @@ const useColumns = ({
       textColumn({
         id: "displayOrder",
         accessor: (row) => row,
-        Header: <Trans zh="序" en="Order" />,
+        Header: <OrderTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           if (!hasUpdateAuth) {
@@ -445,13 +458,13 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "name",
-        Header: <Trans zh="活动名称" en="Promotion Name" />,
+        Header: <PromotionNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         id: "promotionTypeGroup",
         accessor: (row) => row,
-        Header: <Trans zh="活动类型" en="Promotion Type" />,
+        Header: <PromotionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let group = usePromotionGroupLabelOf(value?.promotionType) ?? ""
@@ -460,14 +473,14 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "promotionType",
-        Header: <Trans zh="活动子类型" en="Promotion SubType" />,
+        Header: <PromotionSubtypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PromotionTypeLabel value={value} />
       }),
       textColumn({
         id: "promotionTime",
         accessor: (row) => row,
-        Header: <Trans zh="活动时间" en="Promotion Period" />,
+        Header: <PromotionTimeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let from = formatDayMonthYear(value?.from)
@@ -477,13 +490,10 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "vipLevels",
-        Header: <Trans zh="活动用户群" en="User Group" />,
+        Header: <PromotionUserGroupTrans />,
         disableSortBy: true,
         Cell: ({ value: vipLevels }) => {
-          let dialogTitle = useTrans({
-            zh: "活动用户群",
-            en: "User Group"
-          })
+          let dialogTitle = usePromotionUserGroupTrans()
 
           if (!vipLevels || vipLevels?.length === 0) {
             return "-"
@@ -500,7 +510,7 @@ const useColumns = ({
       textColumn({
         id: "amounts",
         accessor: (row) => row,
-        Header: <Trans zh="活动费用" en="Promotion Fund" />,
+        Header: <PromotionFundTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let unlimited = value?.unlimited
@@ -515,7 +525,7 @@ const useColumns = ({
       columns.push(
         textColumn({
           id: "status",
-          Header: <Trans zh="状态" en="Status" />,
+          Header: <StatusTrans />,
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {
@@ -534,7 +544,7 @@ const useColumns = ({
       columns.push(
         textColumn({
           id: "actions",
-          Header: <Trans zh="操作" en="Action" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {

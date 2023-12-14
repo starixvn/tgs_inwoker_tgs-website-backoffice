@@ -52,6 +52,14 @@ import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import { NumberInput } from "../../input/NumberInput"
 import { BrandAutoWithdrawDialogDisclosure } from "./BrandAutoWithdraw"
+import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action"
+import {
+  ChannelNameTrans,
+  PaymentMethodTrans,
+  PaymentProviderTrans
+} from "../../trans/Payment"
+import { StatusTrans } from "../../trans/Status"
+import { OrderTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -269,7 +277,7 @@ const DataTable = ({
                 disabled={isLoading || isChangingDisplayOrder}
                 type="submit"
               >
-                <Trans zh="确认排序" en="Confirm Order" />
+                <ConfirmOrderTrans />
               </Button>
             </Dialog.Footer>
           )}
@@ -321,7 +329,7 @@ const useColumns = ({
       textColumn({
         id: "displayOrder",
         accessor: (record) => record,
-        Header: <Trans zh="序" en="Order" />,
+        Header: <OrderTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           if (!hasUpdateAuth) {
@@ -352,13 +360,13 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "paymentId",
-        Header: <Trans zh="支付厂商" en="Payment Name" />,
+        Header: <PaymentProviderTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentProviderLabel value={value} />
       }),
       textColumn({
         accessor: "paymentMethodId",
-        Header: <Trans zh="支付方式" en="Payment Method" />,
+        Header: <PaymentMethodTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentMethodLabel value={value} />
       }),
@@ -370,7 +378,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "channelName",
-        Header: <Trans zh="通道名称" en="Channel Name" />,
+        Header: <ChannelNameTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -405,7 +413,7 @@ const useColumns = ({
       textColumn({
         id: "paymentStatus",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (
@@ -425,7 +433,7 @@ const useColumns = ({
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value }) => {
             return (
               <Set alignX="center">

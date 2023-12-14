@@ -1,0 +1,18 @@
+kind: Module
+type: container
+name: brand-game-credit
+image: pgtgs/brand-gamecredits:202312130711.13
+services:
+  - name: brand-game-credit
+    dependencies:
+      - postgres
+      - nats
+      - redis
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+    ports:
+      - name: http
+        containerPort: 8080
+        servicePort: 80

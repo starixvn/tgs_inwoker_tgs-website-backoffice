@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
 import { Button } from "bumbag"
 import { useTrans, Trans } from "../i18n"
+import { ExportTrans } from "../trans/Action"
 
 export const DownloadButton = ({
   use = "a",
@@ -24,7 +25,7 @@ export const DownloadButton = ({
     // palette={palette}
     {...props}
   >
-    <Trans zh="汇出" en="Export" />
+    <ExportTrans />
   </Button>
 )
 

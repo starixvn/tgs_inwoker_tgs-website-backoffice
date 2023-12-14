@@ -21,10 +21,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -40,6 +37,11 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { usePlayerTotalWinLossList } from "./client"
+import {
+  GameProviderTrans,
+  SubGameProviderTrans,
+  WinLossTrans
+} from "../../trans/Game"
 
 export const PlayerTotalWinLossDialogDisclosure = ({
   brandId,
@@ -132,17 +134,17 @@ const useColumns = ({ items = [] }) => {
     let columns = [
       textColumn({
         accessor: "gameProviderName",
-        Header: <Trans zh="游戏厂商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "subGameProviderName",
-        Header: <Trans zh="子游戏厂商" en="Sub Game Provider" />,
+        Header: <SubGameProviderTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
-        Header: <Trans zh="输赢金额" en="Win Loss Amount" />,
+        Header: <WinLossTrans />,
         disableSortBy: true
       })
     ]

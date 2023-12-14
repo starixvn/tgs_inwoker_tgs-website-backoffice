@@ -26,7 +26,6 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
 import { AddDisclosure, EditDisclosure } from "../../dialog/Disclosure"
-import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel as Label } from "../../form/Label"
 import BrandPaymentStatus, {
@@ -81,6 +80,12 @@ import TransferType, {
 } from "./BrandPaymentTransferType"
 import { PaymentMethodSetting } from "./PaymentMethodSetting"
 import { PercentageNumberInputField } from "../../input/NumberInput"
+import {
+  ChannelNameTrans,
+  PaymentProviderTrans,
+  TransferFeeTrans
+} from "../../trans/Payment"
+import { StatusTrans } from "../../trans/Status"
 
 export const EditButton = ({
   brandId,
@@ -192,17 +197,8 @@ const EditDialog = ({
         resetPlatformPayment()
         onSubmitted?.()
       }}
-      footer={
-        <ConfirmButtonFooter
-          alignX="center"
-          width="100%"
-          isLoading={isLoading}
-          disabled={isLoading}
-        />
-      }
       title={title}
       showCloseButton
-      showActionButtons={false}
       width="80vw"
       height="95vh"
       maxHeight="95vh"
@@ -394,17 +390,8 @@ const AddDialog = ({
       error={error}
       onCloseErrorAlert={reset}
       onSubmitted={onSubmitted}
-      footer={
-        <ConfirmButtonFooter
-          alignX="center"
-          width="100%"
-          isLoading={isLoading}
-          disabled={isLoading}
-        />
-      }
       title={title}
       showCloseButton
-      showActionButtons={false}
       width="80vw"
       height="95vh"
       maxHeight="95vh"
@@ -537,7 +524,7 @@ const EditBody = ({
             </Heading>
             <FieldValues>
               <Label>
-                <Trans zh="支付厂商" en="Payment Name" />
+                <PaymentProviderTrans />
               </Label>
               <Box alignY="center">
                 <Input type="hidden" name="paymentId" value={paymentId} />
@@ -599,7 +586,7 @@ const EditBody = ({
               </Box>
 
               <Label required>
-                <Trans zh="通道名称" en="Channel Name" />
+                <ChannelNameTrans />
               </Label>
               <Input name="channelName" size="small" required />
 
@@ -610,7 +597,7 @@ const EditBody = ({
               />
 
               <Label>
-                <Trans zh="状态" en="Status" />
+                <StatusTrans />
               </Label>
               <Box>
                 <BrandPaymentStatusButton name="paymentStatus" />
@@ -630,7 +617,7 @@ const EditBody = ({
               {isDeposit && (
                 <>
                   <Label>
-                    <Trans zh="手续费" en="Transfer Fee" />
+                    <TransferFeeTrans />
                   </Label>
                   <Set orientation="horizontal">
                     <PercentageNumberInputField

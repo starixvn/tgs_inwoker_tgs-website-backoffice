@@ -35,6 +35,11 @@ import { ReplyLetterDisclosure } from "./ReplyLetter"
 import { faReply } from "@fortawesome/free-solid-svg-icons"
 import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
 import { LetterTypeLabel } from "./LetterType"
+import { ActionTrans } from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
+import { StationLetterTrans } from "../../trans/Platform"
+import { SubjectTrans } from "../../trans/Field"
+import { TimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -45,7 +50,7 @@ export const Content = () => {
   }
 
   return (
-    <PlatformPageContent title={<Trans zh="站内信" en="Station Letter" />}>
+    <PlatformPageContent title={<StationLetterTrans />}>
       <Body />
     </PlatformPageContent>
   )
@@ -195,7 +200,7 @@ const useColumns = ({ brandId, items = [], boxType }) => {
     let columns = [
       dateTimeColumn({
         accessor: "sentOn",
-        Header: <Trans zh="时间" en="Date" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       })
     ]
@@ -204,7 +209,7 @@ const useColumns = ({ brandId, items = [], boxType }) => {
       columns.push(
         textColumn({
           accessor: "sender",
-          Header: <Trans zh="用户名" en="Username" />,
+          Header: <UserNameTrans />,
           disableSortBy: true
         })
       )
@@ -223,7 +228,7 @@ const useColumns = ({ brandId, items = [], boxType }) => {
       textColumn({
         id: "subject",
         accessor: (row) => row,
-        Header: <Trans zh="主旨" en="Subject" />,
+        Header: <SubjectTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
@@ -259,7 +264,7 @@ const useColumns = ({ brandId, items = [], boxType }) => {
       textColumn({
         id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

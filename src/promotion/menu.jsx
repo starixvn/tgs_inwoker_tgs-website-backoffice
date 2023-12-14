@@ -16,6 +16,12 @@ import {
 } from "./winning-list/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faGift } from "@fortawesome/free-solid-svg-icons"
+import {
+  PromotionManagement,
+  PromotionManagementTrans,
+  PromotionPayouts,
+  WinningList
+} from "../trans/Promotion"
 
 export const Code = "promotion"
 
@@ -23,12 +29,7 @@ export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
 
-export const Name = ({}) => useTrans(nameMessages)
-
-export const nameMessages = {
-  zh: "活动管理",
-  en: "Promotion Management"
-}
+export const Name = ({}) => <PromotionManagementTrans />
 
 export const Menu = ({
   title = (
@@ -60,29 +61,11 @@ export const Menu = ({
 const labelOf = ({ locale, code }) => {
   switch (code) {
     case PromotionListCode:
-      return getTrans(
-        {
-          zh: "活动管理",
-          en: "Promotions"
-        },
-        locale
-      )
+      return getTrans(PromotionManagement, locale)
     case PayoutListCode:
-      return getTrans(
-        {
-          zh: "活动派发列表",
-          en: "Promotion Payouts"
-        },
-        locale
-      )
+      return getTrans(PromotionPayouts, locale)
     case WinningListCode:
-      return getTrans(
-        {
-          zh: "中奖列表",
-          en: "Winning List"
-        },
-        locale
-      )
+      return getTrans(WinningList, locale)
     default:
       return ""
   }

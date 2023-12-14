@@ -16,7 +16,7 @@ import {
 } from "../../user/context"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
-import Disclosure from "../../dialog/Disclosure"
+import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
 import {
   useAddAnnouncement,
   useEditAnnouncement,
@@ -32,6 +32,9 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import Textarea, { TextareaField } from "../../textarea"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { AnnouncementTypeSelect } from "./AnnouncementType"
+import { SubjectTrans } from "../../trans/Field"
+import { EditTrans, RemarkTrans } from "../../trans/Action"
+import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -115,7 +118,7 @@ export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog
@@ -139,9 +142,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && <ViewDialog record={record} dialog={dialog} />}
     </>
   )
@@ -263,7 +264,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         <AnnouncementTypeSelect name="type" disabled={readOnly} />
 
         <Label name="subject" required={required}>
-          <Trans zh="主题" en="Subject" />
+          <SubjectTrans />
         </Label>
         <InputField
           name="subject"
@@ -274,7 +275,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         />
 
         <Label name="from" required={required}>
-          <Trans zh="开始时间" en="Start" />
+          <StartTimeTrans />
         </Label>
         <Box id="from-date-box">
           <DateTimeInput
@@ -286,7 +287,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         </Box>
 
         <Label name="to" required={required}>
-          <Trans zh="结束时间" en="End" />
+          <EndTimeTrans />
         </Label>
         <Box id="to-date-box">
           <DateTimeInput
@@ -434,7 +435,7 @@ const VerifyBody = ({ readOnly = false } = {}) => {
 
       <FieldValues>
         <Label name="remarks">
-          <Trans zh="备注" en="Remarks" />
+          <RemarkTrans />
         </Label>
         <Textarea name="remarks" disabled={readOnly} />
       </FieldValues>

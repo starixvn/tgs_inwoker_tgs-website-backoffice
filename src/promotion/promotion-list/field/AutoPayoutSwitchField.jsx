@@ -8,12 +8,16 @@ import { NormalLabel } from "../../../form/Label"
 import { useFindPromotionType } from "../../PromotionType"
 import { isNil, complement } from "ramda"
 import { usePromotionType } from "./PromotionTypeField"
+import { useIsAddPromotion } from "../usePromotionFormData"
+import { PromotionDistributionMethodTrans } from "../../../trans/Promotion"
+import { useAutomaticTrans, useManualTrans } from "../../../trans/Status"
 
 const isNotNil = complement(isNil)
 
 const AutoPayoutFieldName = "autoSentPlayerBonus"
 
 export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
+  let isAdd = useIsAddPromotion()
   let promotionType = usePromotionType()
 
   let { setValue } = useFormContext()
@@ -22,15 +26,17 @@ export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
   let autoPayoutProps = promotion?.autoSentPlayerBonus ?? {}
 
   useEffect(() => {
-    if (autoPayout) {
-      setValue(AutoPayoutFieldName, autoPayout)
+    if (isAdd) {
+      if (autoPayout) {
+        setValue(AutoPayoutFieldName, autoPayout)
+      }
     }
 
     //TODO: rm
     if (isNotNil(autoPayoutProps?.checked)) {
       setValue(AutoPayoutFieldName, autoPayoutProps?.checked)
     }
-  }, [autoPayoutProps, autoPayout])
+  }, [isAdd, autoPayoutProps?.checked, autoPayout])
 
   if (!promotionType) {
     return null
@@ -39,13 +45,18 @@ export const AutoPayoutSwitchField = ({ autoPayout, readOnly, disabled }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="活动派发" en="Distribution Method" />
+        <PromotionDistributionMethodTrans />
       </NormalLabel>
-      <Box>
+      <Box
+        alignY="center"
+        css={css`
+          width: max-content;
+        `}
+      >
         <AutoOrManualPayoutSwitch
           {...autoPayoutProps}
-          readOnly={readOnly || autoPayoutProps.readOnly || autoPayout}
-          disabled={disabled || autoPayoutProps.disabled || autoPayout}
+          readOnly={readOnly || autoPayoutProps.readOnly}
+          disabled={disabled || autoPayoutProps.disabled}
         />
       </Box>
     </>
@@ -66,14 +77,8 @@ const AutoOrManualPayoutSwitch = ({
     defaultValue: props.checked ?? props?.defaultValue
   })
 
-  let autoPayoutLabel = useTrans({
-    zh: "自動",
-    en: "Automatic"
-  })
-  let manualPayoutLabel = useTrans({
-    zh: "手动",
-    en: "Manual"
-  })
+  let autoPayoutLabel = useAutomaticTrans()
+  let manualPayoutLabel = useManualTrans()
   let label = checked ? autoPayoutLabel : manualPayoutLabel
 
   if (readOnly || disabled) {

@@ -20,6 +20,14 @@ import {
 } from "date-fns"
 import { faCalendarAlt } from "@fortawesome/free-regular-svg-icons"
 import { isNil, isEmpty, either } from "ramda"
+import {
+  LastMonthTrans,
+  LastWeekTrans,
+  ThisMonthTrans,
+  ThisWeekTrans,
+  TodayTrans,
+  YesterdayTrans
+} from "../trans/Date"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -85,7 +93,7 @@ const YesterdayDropdownMenuItem = ({
 }) => {
   return (
     <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
-      <Trans zh="昨日" en="Yesterday" />
+      <YesterdayTrans />
     </DateRangeDropdownMenuItem>
   )
 }
@@ -99,7 +107,7 @@ export const TodayDropdownMenuItem = ({
 }) => {
   return (
     <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
-      <Trans zh="今日" en="Today" />
+      <TodayTrans />
     </DateRangeDropdownMenuItem>
   )
 }
@@ -131,7 +139,7 @@ export const LastWeekDropdownMenuItem = ({
 }) => {
   return (
     <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
-      <Trans zh="上周" en="Last Week" />
+      <LastWeekTrans />
     </DateRangeDropdownMenuItem>
   )
 }
@@ -159,7 +167,7 @@ export const ThisWeekDropdownMenuItem = ({
 }) => {
   return (
     <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
-      <Trans zh="本周" en="This Week" />
+      <ThisWeekTrans />
     </DateRangeDropdownMenuItem>
   )
 }
@@ -184,7 +192,7 @@ export const LastMonthDropdownMenuItem = ({
 }) => {
   return (
     <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
-      <Trans zh="上月" en="Last Month" />
+      <LastMonthTrans />
     </DateRangeDropdownMenuItem>
   )
 }
@@ -208,7 +216,7 @@ export const ThisMonthDropdownMenuItem = ({
 }) => {
   return (
     <DateRangeDropdownMenuItem type={type} start={start} end={end} {...props}>
-      <Trans zh="本月" en="This Month" />
+      <ThisMonthTrans />
     </DateRangeDropdownMenuItem>
   )
 }

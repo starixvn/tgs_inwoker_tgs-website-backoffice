@@ -21,10 +21,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -43,6 +40,8 @@ import { useMarketingGamePlayerList } from "./client"
 import { useForm, FormProvider } from "react-hook-form"
 import SearchButton from "../../button/SearchButton"
 import { InputField } from "../../input/Input"
+import { GameProviderTrans, SubGameProviderTrans } from "../../trans/Game"
+import { PlayerWinLossTrans } from "../../trans/Player"
 
 export const GamePlayerListDialogDisclosure = ({
   brandId,
@@ -195,17 +194,17 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "gameProviderName",
-        Header: <Trans zh="游戏厂商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "subGameProviderName",
-        Header: <Trans zh="子游戏厂商" en="Sub Game Provider" />,
+        Header: <SubGameProviderTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
-        Header: <Trans zh="玩家输赢金额" en="Player Win Loss Amount" />,
+        Header: <PlayerWinLossTrans />,
         disableSortBy: true
       })
     ]

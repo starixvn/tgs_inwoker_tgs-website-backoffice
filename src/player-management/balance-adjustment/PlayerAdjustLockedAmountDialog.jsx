@@ -18,11 +18,6 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { usePlayerAdjustLockedAmount } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -49,6 +44,8 @@ import {
   showIncludeInNetProfitSetting
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
+import { RemarkTrans } from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
 
 export const PlayerAdjustLockedAmountDialogDisclosure = ({
   playerCode,
@@ -129,7 +126,7 @@ const FormBody = ({ username }) => {
   return (
     <FieldValues margin="1rem">
       <Box alignY="center">
-        <Trans zh="用户名" en="Username" />
+        <UserNameTrans />
       </Box>
       <Box alignY="center">{username}</Box>
 
@@ -139,7 +136,7 @@ const FormBody = ({ username }) => {
       <NumberInputField name="lockAmount" step="0.01" required />
 
       <Box alignY="center">
-        <Trans zh="备注" en="Remark" />
+        <RemarkTrans />
       </Box>
 
       <Input name="remark" />

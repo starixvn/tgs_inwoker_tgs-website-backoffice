@@ -21,10 +21,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -40,6 +37,7 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { useMarketingRegisteredPlayerList } from "./client"
+import { RegistrationTimeTrans } from "../../trans/User"
 
 //TODO: remove data param
 export const RegisteredPlayerListDialogDisclosure = ({
@@ -153,7 +151,7 @@ const useColumns = ({ items = [] }) => {
       }),
       dateTimeColumn({
         accessor: "registeredOn",
-        Header: <Trans zh="注册时间" en="Registered Time" />,
+        Header: <RegistrationTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

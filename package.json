@@ -1,6 +1,6 @@
 {
   "name": "backoffice-site",
-  "version": "1.36.0",
+  "version": "1.39.0",
   "config": {
     "container": {
       "registry": "registry.gitlab.com/rayprosoft/turnkey-gaming-system"
@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "start": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) SNOWPACK_PUBLIC_IS_DEV=true snowpack dev --reload",
+    "start": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) SNOWPACK_PUBLIC_IS_DEV=true SNOWPACK_PUBLIC_IS_LOCAL=true snowpack dev --reload",
     "build": "cross-env-shell SNOWPACK_PUBLIC_BUILD_DATE=$(date +%F_%T) snowpack build",
     "build:docker": "cross-var docker build . -t $npm_package_config_container_registry/$npm_package_name:$npm_package_version",
     "push:docker": "cross-var docker push $npm_package_config_container_registry/$npm_package_name:$npm_package_version",
@@ -33,7 +33,7 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@ariakit/react": "0.3.5",
+    "@ariakit/react": "0.3.6",
     "@arrow-js/core": "^1.0.0-alpha.9",
     "@babel/preset-env": "7.22.5",
     "@babel/preset-react": "7.22.5",
@@ -51,7 +51,7 @@
     "@opentelemetry/instrumentation": "0.40.0",
     "@opentelemetry/instrumentation-fetch": "0.40.0",
     "@opentelemetry/sdk-trace-web": "1.14.0",
-    "@playwright/test": "1.38.1",
+    "@playwright/test": "1.39.0",
     "@react-spring/web": "^9.5.5",
     "@snowpack/plugin-babel": "^2.1.7",
     "@snowpack/plugin-dotenv": "^2.1.0",
@@ -82,11 +82,11 @@
     "monaco-editor": "^0.34.1",
     "npm-run-all": "^4.1.5",
     "numeral": "^2.0.6",
-    "playwright": "1.38.1",
+    "playwright": "1.39.0",
     "prettier": "^2.7.1",
     "react-datepicker": "3.8.0",
     "react-dropzone": "^11.4.2",
-    "react-hook-form": "7.45.4",
+    "react-hook-form": "7.48.2",
     "react-infinite-scroll-component": "^6.1.0",
     "react-intersection-observer": "^9.3.5",
     "react-router-dom": "^6.16.0",

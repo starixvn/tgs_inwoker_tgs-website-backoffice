@@ -139,7 +139,7 @@ export const Components = {
   MultiValueContainer
 }
 
-export const MultiSelect = ({
+export const MultiSelectBox = ({
   name,
   control,
   defaultValue,

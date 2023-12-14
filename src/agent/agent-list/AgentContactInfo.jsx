@@ -24,13 +24,15 @@ import Input from "../../input/Input"
 import { useUpdateAgent, useUpdateAgentContact } from "./client"
 import clone from "clone-deep"
 import { isDev } from "../../env"
+import { diff } from "../../object/diff"
+import { ContactInfoTrans, EmailTrans, PhoneTrans } from "../../trans/User"
 
 const Key = "AgentContactInfo"
 
 export const AgentContactInfoTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="联系信息" en="Contact Info" />
+      <ContactInfoTrans />
     </_Tab>
   )
 }
@@ -39,14 +41,11 @@ export const AgentContactInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
 const EditPanel = (props) => {
-  return isDev() ? (
-    <UpdateAgentContactPanel {...props} />
-  ) : (
-    <CurrentAgentContactPanel {...props} />
-  )
+  return <UpdateAgentContactPanel {...props} />
 }
 
-const CurrentAgentContactPanel = ({
+//TODO:1.40: rm OldAgentContactPanel
+const OldAgentContactPanel = ({
   record,
   onSubmitted,
   onClickClose,
@@ -125,7 +124,6 @@ const UpdateAgentContactPanel = ({
   onClickClose,
   ...props
 }) => {
-  //TODO: util fn to get props?
   let formMethods = useForm({
     defaultValues: {
       phone: record?.phone,
@@ -149,7 +147,7 @@ const UpdateAgentContactPanel = ({
   }, [result])
 
   const onSubmit = (data) => {
-    setSubmit(data)
+    setSubmit(diff(data, record))
   }
 
   const reset = () => {
@@ -210,13 +208,11 @@ const ViewPanel = ({ record = {}, ...props }) => {
   )
 }
 
-export const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
-
 const MobileBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <MobileLabel />
+        <PhoneTrans />
       </Box>
 
       {children ? children : <Text data-field="phone">{value}</Text>}
@@ -224,13 +220,11 @@ const MobileBox = ({ value = "", children }) => {
   )
 }
 
-export const EmailLabel = () => <Trans zh="邮箱" en="Email" />
-
 const EmailBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <EmailLabel />
+        <EmailTrans />
       </Box>
 
       {children ? children : <Text data-field="email">{value}</Text>}

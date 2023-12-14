@@ -1,0 +1,26 @@
+kind: Module
+type: container
+name: player-all-agent-api
+image: pgtgs/player-all-agent-service:202311080521.20
+services:
+  - name: player-all-agent-api
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - cash-service
+      - player-bucket-api
+      - player-api
+    env:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      PlayerAllAgentRebate__CashBaseUrl: "http://cash-service"
+      PlayerAllAgentRebate__PlayerBucketBaseUrl: "http://player-bucket-api"
+      PlayerAllAgentRebate__PlayerServiceBaseUrl: "http://player-api"
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80
+        # localPort: 3030 # http://localhost:3030/swagger/index.html

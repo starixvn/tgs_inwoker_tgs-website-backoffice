@@ -13,12 +13,9 @@ import {
 } from "bumbag"
 import { Select, SelectField } from "../../select/Select"
 import { Trans, useTrans } from "../../i18n"
+import { useRegisterIPTrans, RegisterIPTrans } from "../../trans/User"
 
 const RegisterIP = "RegisterIP"
-const RegisterIPTrans = {
-  zh: "註冊IP地址",
-  en: "Register IP"
-}
 
 const LoginIP = "LoginIP"
 const LoginIPTrans = {
@@ -51,7 +48,7 @@ export const IpAddressTypeSelect = ({
 
   let options = [
     {
-      label: useTrans(RegisterIPTrans),
+      label: useRegisterIPTrans(),
       value: RegisterIP
     },
     {
@@ -73,7 +70,7 @@ export const IpAddressTypeSelect = ({
 export const IpAddressTypeLabel = ({ value = "" }) => {
   switch (value) {
     case RegisterIP:
-      return <Trans {...RegisterIPTrans} />
+      return <RegisterIPTrans />
     case LoginIP:
       return <Trans {...LoginIPTrans} />
     default:

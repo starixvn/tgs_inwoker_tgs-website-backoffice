@@ -1,10 +1,14 @@
 import React from "react"
 import { Spinner, Group, Popover, Button } from "bumbag"
-import { getTrans, Trans, useLocale, useTrans } from "../i18n"
+import { getTrans, Trans, useLocale, useTrans, Locales } from "../i18n"
 import Select, { SelectField } from "../select/Select"
 import { usePromotionTypeList } from "./client"
 import { useFormContext } from "react-hook-form"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
+import {
+  usePromotionSubtypeTrans,
+  usePromotionTypeTrans
+} from "../trans/Promotion"
 
 const Deposit = "Deposit"
 
@@ -75,7 +79,10 @@ export const usePromotionGroupLabelOf = (promotionType) => {
     return type ? group : undefined
   }, undefined)
 
-  return group?.trans?.[locale] ?? group?.name ?? ""
+  let DefaultLocale = Locales.en
+  return (
+    group?.trans?.[locale] ?? group?.trans?.[DefaultLocale] ?? group?.name ?? ""
+  )
 }
 
 //TODO: use useFindPromotionTypeGroup
@@ -139,10 +146,7 @@ export const findPromotionGroupValue = (
 
 export const PromotionTypeGroupSelect = ({ placeholder, ...props }) => {
   let locale = useLocale()
-  let defaultPlaceholder = useTrans({
-    zh: "活动类型",
-    en: "Promotion Type"
-  })
+  let defaultPlaceholder = usePromotionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let { isLoading, data: groups, error } = usePromotionTypeList()
@@ -150,9 +154,10 @@ export const PromotionTypeGroupSelect = ({ placeholder, ...props }) => {
     return <Spinner />
   }
 
+  let DefaultLocale = Locales.en
   let options = groups?.map(({ name, trans }) => {
     return {
-      label: trans?.[locale] ?? name,
+      label: trans?.[locale] ?? trans?.[DefaultLocale] ?? name,
       value: name
     }
   })
@@ -175,14 +180,12 @@ export const PromotionTypeLabel = ({ value }) => {
     return group?.types?.find((type) => type.name === value)
   }, undefined)
 
-  return type?.trans?.[locale] ?? value
+  let DefaultLocale = Locales.en
+  return type?.trans?.[locale] ?? type?.trans?.[DefaultLocale] ?? value
 }
 
 export const PromotionTypeSelect = ({ placeholder, group, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "活动子类型",
-    en: "Promotion SubType"
-  })
+  let defaultPlaceholder = usePromotionSubtypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()
@@ -195,9 +198,10 @@ export const PromotionTypeSelect = ({ placeholder, group, ...props }) => {
       return true
     })
     .reduce((list, { types = [], ...group }) => {
+      let DefaultLocale = Locales.en
       let options = types.map(({ name, trans }) => {
         return {
-          label: trans?.[locale] ?? name,
+          label: trans?.[locale] ?? trans?.[DefaultLocale] ?? name,
           value: name
         }
       })

@@ -34,6 +34,7 @@ import { InputField } from "../../input/Input"
 import { TextareaField } from "../../textarea"
 import { PlayerSelect } from "../../player-management/player-list/PlayerSelect"
 import { DoubleConfirmDialogDisclosure } from "./DoubleConfirmDialog"
+import { SubjectTrans } from "../../trans/Field"
 
 export const SendLetterDialogDisclosure = ({
   brandId,
@@ -169,7 +170,7 @@ const FormBody = ({}) => {
     <FieldValues>
       <GroupFieldBox />
       <Label name="subject" required>
-        <Trans zh="主题" en="Subject" />
+        <SubjectTrans />
       </Label>
       <InputField name="subject" required />
       <Label name="content" required>

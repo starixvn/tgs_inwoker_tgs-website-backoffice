@@ -47,6 +47,25 @@ import { GameRoundButton } from "./button"
 import AlertDialog from "../../dialog/Alert"
 import { CopyTextBox } from "../../text/CopyTextBox"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
+import { PlayerWinLossTrans } from "../../trans/Player"
+import {
+  BetAmountTrans,
+  BetTimeTrans,
+  ExternalRoundIdTrans,
+  GameNameTrans,
+  GameProviderTrans,
+  RoundIdTrans,
+  SubGameProviderTrans,
+  TurnoverTrans,
+  UnsettledBetTrans,
+  ValidBetAmountTrans,
+  useExternalRoundIdTrans,
+  useRoundIdTrans
+} from "../../trans/Game"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import { CurrencyTrans } from "../../trans/Payment"
+import { DetailTrans } from "../../trans/Action"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -141,7 +160,7 @@ const ReportContent = ({ brandId }) => {
           }}
         />
       }
-      title={<Trans zh="未结算订单查询" en="Unsettled Bet" />}
+      title={<UnsettledBetTrans />}
     >
       <Table
         columns={columns}
@@ -187,20 +206,11 @@ const SearchBar = ({
 
   const onSubmit = (data) => search?.(data)
 
-  let playerNamePlaceholder = useTrans({
-    zh: "用户名",
-    en: "Player Name"
-  })
+  let playerNamePlaceholder = useUserNameTrans()
 
-  let roundIdPlaceholder = useTrans({
-    zh: "订单ID",
-    en: "Round ID"
-  })
+  let roundIdPlaceholder = useRoundIdTrans()
 
-  let externalRoundIdPlaceholder = useTrans({
-    zh: "三方订单ID",
-    en: "External ID"
-  })
+  let externalRoundIdPlaceholder = useExternalRoundIdTrans()
 
   const StartField = "from"
   const EndField = "to"
@@ -211,7 +221,7 @@ const SearchBar = ({
         <FieldStack orientation="vertical">
           <Set orientation="horizontal">
             <DateInputRangeField
-              label={<Trans zh="投注时间" en="Created On" />}
+              label={<BetTimeTrans />}
               showDateDropdownMenu
               minDate={minDate}
               maxDate={maxDate}
@@ -257,78 +267,88 @@ const useColumns = ({ items = [] }) => {
     () => [
       textColumn({
         accessor: "playerName",
-        Header: <Trans zh="用户名" en="Player Name" />,
+        Header: <UserNameTrans />,
         disableSortBy: true,
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
       }),
       ellipsisTextColumn({
         accessor: "externalRoundId",
-        Header: <Trans zh="三方订单ID" en="External Id" />,
+        Header: <ExternalRoundIdTrans />,
+        headCellProps: {
+          bodyProps: {
+            title: useExternalRoundIdTrans()
+          }
+        },
         disableSortBy: true,
         maxWidth: "8rem",
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
       }),
       ellipsisTextColumn({
         accessor: "id",
-        Header: <Trans zh="订单ID" en="Id" />,
+        Header: <RoundIdTrans />,
+        headCellProps: {
+          bodyProps: {
+            title: useRoundIdTrans()
+          }
+        },
         disableSortBy: true,
         maxWidth: "8rem",
         Cell: ({ value = "" }) => <CopyTextBox value={value} />
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="投注时间" en="Created On" />,
+        Header: <BetTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "gameProviderName",
-        Header: <Trans zh="游戏厂商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "subGameProviderName",
-        Header: <Trans zh="子游戏厂商" en="Sub Game Provider" />,
+        Header: <SubGameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "gameName",
-        Header: <Trans zh="游戏名称" en="Game Name" />,
+        Header: <GameNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "currencyCode",
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <Trans zh="派彩" en="Settle Amount" />,
+        Header: <SettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "winLoss",
-        Header: <Trans zh="玩家输赢金额" en="Player Win Loss" />,
+        Header: <PlayerWinLossTrans />,
         disableSortBy: true
       }),
       textColumn({
         id: "detail",
         accessor: (row) => row,
-        Header: <Trans zh="详情" en="Detail" />,
+        Header: <DetailTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let { id: roundId } = value

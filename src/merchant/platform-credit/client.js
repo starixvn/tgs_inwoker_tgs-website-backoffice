@@ -7,7 +7,6 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
-import { useBrandList, useBrand } from "../platforms/client"
 
 const API = "/api/PlatformCredit"
 

@@ -46,6 +46,13 @@ import { SortOrder } from "../../table/order"
 import { PaymentListDialog } from "./PaymentList"
 import { PaymentMethodListDialog } from "./PaymentMethodList"
 import { PaymentChannelListDialog } from "./PaymentChannelList"
+import { ActionTrans } from "../../trans/Action"
+import {
+  ChannelNameTrans,
+  PaymentMethodTrans,
+  PaymentProviderTrans
+} from "../../trans/Payment"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -213,13 +220,13 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "paymentId",
-        Header: <Trans zh="支付厂商" en="Payment Name" />,
+        Header: <PaymentProviderTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentProviderLabel value={value} showCode />
       }),
       textColumn({
         accessor: "paymentMethodId",
-        Header: <Trans zh="支付方式" en="Payment Method" />,
+        Header: <PaymentMethodTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentMethodLabel value={value} showCode />
       }),
@@ -231,13 +238,13 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "channelName",
-        Header: <Trans zh="通道名称" en="Channel Name" />,
+        Header: <ChannelNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         id: "paymentStatus",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           if (!hasUpdateAuth) {
@@ -255,7 +262,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="Actions" en="Actions" />,
+        Header: <ActionTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (

@@ -19,13 +19,11 @@ import {
 import { codeMenuContentPair as platformPair } from "./platform-management"
 import {
   Code as PlatformCode,
-  nameMessage as PlatformNameMessages,
   codeLabelPair as platformLabelPair
 } from "./platform-management/menu"
 import { codeMenuContentPair as promotionPair } from "./promotion"
 import {
   Code as PromotionCode,
-  nameMessages as PromotionNameMessages,
   codeLabelPair as promotionLabelPair
 } from "./promotion/menu"
 import { codeMenuContentPair as playerManagementPair } from "./player-management"
@@ -49,7 +47,6 @@ import {
 import { codeMenuContentPair as platformReportManagementPair } from "./platform-report"
 import {
   Code as PlatformReportManagementCode,
-  nameMessages as PlatformReportManagementNameMessages,
   codeLabelPair as platformReportManagementLabelPair
 } from "./platform-report/menu"
 import { codeMenuContentPair as licenseeReportManagementPair } from "./licensee-report"
@@ -103,6 +100,8 @@ import {
 import { useLocale, getTrans } from "./i18n"
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons"
 import { isDev, Features, isFeatureEnabled } from "./env"
+import { PlatformManagement, PlatformReport } from "./trans/Platform"
+import { PromotionManagement } from "./trans/Promotion"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   let { sidebar, isCollapsed } = usePage()
@@ -304,9 +303,9 @@ const moduleLabel = ({ code = "", locale }) => {
     case OvewviewCode:
       return getTrans(OverviewNameMessages, locale)
     case PlatformCode:
-      return getTrans(PlatformNameMessages, locale)
+      return getTrans(PlatformManagement, locale)
     case PromotionCode:
-      return getTrans(PromotionNameMessages, locale)
+      return getTrans(PromotionManagement, locale)
     case PlayerManagementCode:
       return getTrans(PlayerManagementNameMessages, locale)
     case AgentManagementCode:
@@ -314,7 +313,7 @@ const moduleLabel = ({ code = "", locale }) => {
     case GameManagementCode:
       return getTrans(GameManagementNameMessages, locale)
     case PlatformReportManagementCode:
-      return getTrans(PlatformReportManagementNameMessages, locale)
+      return getTrans(PlatformReport, locale)
     case LicenseeReportManagementCode:
       return getTrans(LicenseeReportManagementNameMessages, locale)
     case ResellerReportCode:

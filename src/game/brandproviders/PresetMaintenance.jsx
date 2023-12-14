@@ -14,7 +14,6 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { Disclosure } from "../../dialog/Disclosure"
-import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Trans, useTrans } from "../../i18n"
 import {
   useUpdateBrandGameProviderPresetMaintenance,
@@ -33,6 +32,13 @@ import {
 } from "react-hook-form"
 import format from "../../date/format"
 import { ScheduleStatus, ScheduleStatusLabel } from "./ScheduleStatus"
+import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+import {
+  PresetMaintenanceTrans,
+  usePresetMaintenanceTrans
+} from "../../trans/Game"
+import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export const EditPresetButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -44,7 +50,7 @@ export const EditPresetButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="预设维护" en="Preset Maintenance" />
+        <PresetMaintenanceTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
@@ -104,10 +110,7 @@ const EditDialog = ({ record, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "预设维护",
-    en: "Preset Maintenance"
-  })
+  let title = usePresetMaintenanceTrans()
 
   if (isLoadingPresetMaintenance) {
     return <LoadingBackdrop {...dialog} />
@@ -137,11 +140,7 @@ const EditDialog = ({ record, dialog, ...props }) => {
       }}
       title={title}
       showCloseButton
-      showActionButtons={false}
       dialog={dialog}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       placement="top"
       minWidth="60vw"
     >
@@ -154,9 +153,6 @@ const EditDialog = ({ record, dialog, ...props }) => {
     </FormDialog>
   )
 }
-
-const StartTimeLabel = () => <Trans zh="开始时间" en="Start Time" />
-const EndTimeLabel = () => <Trans zh="结束时间" en="End Time" />
 
 const EditBody = ({
   items,
@@ -175,13 +171,13 @@ const EditBody = ({
         <Table.Head>
           <Table.Row>
             <Table.HeadCell textAlign="center">
-              <StartTimeLabel />
+              <StartTimeTrans />
             </Table.HeadCell>
             <Table.HeadCell textAlign="center">
-              <EndTimeLabel />
+              <EndTimeTrans />
             </Table.HeadCell>
             <Table.HeadCell textAlign="center">
-              <Trans zh="操作" en="Actions" />
+              <ActionTrans />
             </Table.HeadCell>
           </Table.Row>
         </Table.Head>
@@ -244,14 +240,14 @@ const AddPresetMaintenance = ({ add }) => {
     <Set orientation="horizontal">
       <Group>
         <Button isStatic>
-          <StartTimeLabel />
+          <StartTimeTrans />
         </Button>
         <DateTimeInput name="from" maxDate={maxDate} />
       </Group>
 
       <Group>
         <Button isStatic>
-          <EndTimeLabel />
+          <EndTimeTrans />
         </Button>
         <DateTimeInput name="to" minDate={minDate} />
       </Group>
@@ -362,7 +358,7 @@ const ScheduleStatusDropdownMenu = ({
           >
             <Group>
               <Button isStatic={!!value}>
-                <Trans zh="状态" en="Status" />
+                <StatusTrans />
               </Button>
               {value && (
                 <Button>

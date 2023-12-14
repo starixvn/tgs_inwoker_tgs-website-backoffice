@@ -1,17 +1,18 @@
 kind: Module
 type: container
 name: cash-service
-image: pgtgs/cashservice-api:202311070704.88
+image: pgtgs/cashservice-api:202312081019.190
 services:
   - name: cash-service
     dependencies:
       - postgres
       - nats
+      - redis
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Nats: "nats://nats:4222"
-      ConnectionStrings__Redis: "redis"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80

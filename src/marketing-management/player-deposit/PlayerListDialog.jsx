@@ -21,10 +21,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -39,6 +36,11 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { RegisterIPTrans } from "../../trans/User"
+import {
+  TotalDepositAmountTrans,
+  TotalWithdrawAmountTrans
+} from "../../trans/Field"
 
 //TODO: remove date
 export const PlayerListDialogDisclosure = ({
@@ -178,12 +180,12 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "totalDepositAmount",
-        Header: <Trans zh="总存款" en="Total Deposit Amount" />,
+        Header: <TotalDepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "totalWithdrawAmount",
-        Header: <Trans zh="总提款" en="Total Withdraw Amount" />,
+        Header: <TotalWithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -193,7 +195,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "ipAddress",
-        Header: <Trans zh="注册IP" en="Register IP" />,
+        Header: <RegisterIPTrans />,
         disableSortBy: true
       })
     ]

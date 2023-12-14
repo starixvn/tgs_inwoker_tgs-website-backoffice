@@ -31,6 +31,9 @@ import {
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { useRole } from "../roles/client"
 import clone from "clone-deep"
+import { UserNameTrans } from "../../trans/User"
+import { StatusTrans } from "../../trans/Status"
+import { EditTrans } from "../../trans/Action"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -63,7 +66,7 @@ export const EditButton = ({ user, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog user={user} onSubmitted={onSubmitted} dialog={dialog} />
@@ -390,7 +393,7 @@ const RoleSelectGroup = ({
 
 const UsernameLabel = ({ name = "username", required }) => (
   <Label name={name} required={required}>
-    <Trans zh="用户名" en="Username" />
+    <UserNameTrans />
   </Label>
 )
 
@@ -542,7 +545,7 @@ const EditBody = ({ user }) => {
         </Box>
 
         <Label htmlFor="status">
-          <Trans zh="状态" en="Status" />
+          <StatusTrans />
           <Text color="danger">*</Text>
         </Label>
         <Box>

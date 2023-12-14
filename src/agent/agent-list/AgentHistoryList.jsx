@@ -21,19 +21,25 @@ import { equals, includes, pipe, prop } from "ramda"
 import Modal from "../../dialog/Modal"
 import { DetailDisclosure } from "../../dialog/Disclosure"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import { QqLabel, WeChatLabel } from "./AgentContactInfo"
+import { AgentStatusLabel } from "../AgentStatus"
 import {
-  MobileLabel,
-  EmailLabel,
-  QqLabel,
-  WeChatLabel
-} from "./AgentContactInfo"
+  ActionTypeTrans,
+  DetailTrans,
+  EditingRecordsTrans,
+  OperatorTrans,
+  RemarkTrans
+} from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+import { EmailTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
+import { TimeTrans } from "../../trans/Date"
 
 const Key = "AgentHistoryList"
 
 export const AgentHistoryListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="操作记录" en="Operating records" />
+      <EditingRecordsTrans />
     </_Tab>
   )
 }
@@ -149,24 +155,24 @@ const useColumns = ({ items = [], brandId }) =>
     () => [
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "action",
-        Header: <Trans zh="操作项" en="Operation Item" />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true,
         Cell: ActionTypeLabel
       }),
       textColumn({
         accessor: "modifier",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       textColumn({
         id: "detail",
         accessor: (row) => row,
-        Header: <Trans zh="详情" en="Detail" />,
+        Header: <DetailTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
@@ -255,7 +261,7 @@ const useAgentHistoryColumns = ({ items = [], brandId }) => {
     let columns = [
       textColumn({
         accessor: "op",
-        Header: <Trans zh="操作" en="Operation" />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true,
         Cell: OperationLabel
       }),
@@ -281,41 +287,25 @@ const useAgentHistoryColumns = ({ items = [], brandId }) => {
 }
 
 const PasswordLabel = () => <Trans zh="登入密码" en="Login Password" />
+const WithdrawPassword = () => <Trans zh="提款密码" en="Withdrawal Password" />
 
 const StringValue = ({ value = "" }) =>
   isString(value) ? value : JSON.stringify(value)
 
 const getPath = prop("path")
 
-//TODO: withdraw password?
-//TODO addAgent
 const LabelValueList = [
-  [pipe(getPath, equals("/Phone")), MobileLabel],
-  [pipe(getPath, equals("/Email")), EmailLabel],
+  [pipe(getPath, equals("/RealName")), RealNameTrans],
+  [pipe(getPath, equals("/status")), StatusTrans, AgentStatusLabel],
+  [pipe(getPath, includes("/Remark")), RemarkTrans],
+
+  [pipe(getPath, equals("/Phone")), PhoneTrans],
+  [pipe(getPath, equals("/Email")), EmailTrans],
   [pipe(getPath, equals("/Wechat")), WeChatLabel],
   [pipe(getPath, equals("/Qq")), QqLabel],
 
-  [pipe(getPath, equals("/password")), PasswordLabel]
-  /*
-  [pipe(getPath, equals("/properties/RealName")), RealNameLabel],
-  [pipe(getPath, equals("/properties/Birthdate")), BirthdayLabel],
-  [pipe(getPath, equals("/properties/VipId")), VIPLevelLabel, VipLevelIdLabel],
-  [
-    pipe(getPath, equals("/properties/AgentId")),
-    AgentUsernameLabel,
-    AgentIdUsername
-  ],
-  [pipe(getPath, includes("/Remark")), RemarkLabel],
-  [
-    pipe(getPath, equals("/identityAuthentication")),
-    IdentityAuthenticationLabel,
-    IdentityAuthenticationIcon
-  ],
-
-  [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
-
-  [isAddPlayer, StringValue, Player]
-  */
+  [pipe(getPath, equals("/password")), PasswordLabel],
+  [pipe(getPath, equals("/withdrawPassword")), WithdrawPassword]
 ]
 
 const toLabel = (value) => {

@@ -12,7 +12,7 @@ import {
   Code
 } from "bumbag"
 import { useIsDisplayMenuByRoute, useUserResellerId } from "../../user/context"
-import Disclosure from "../../dialog/Disclosure"
+import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { Update as UpdateMenu, View as ViewMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
@@ -22,10 +22,7 @@ import { NormalLabel } from "../../form/Label"
 import { useAddLicensee, useLicensee, useUpdateLicensee } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import Input from "../../input/Input"
 import Textarea from "../../textarea"
 import { toCheckedGameProviderIds } from "../../game/providers/GameProviderCheckboxGroup"
@@ -47,6 +44,8 @@ import CurrencyBetLimitFieldsBox, {
 } from "../CurrencyBetLimitFieldsBox"
 import { sortBy } from "lodash-es"
 import { isDev } from "../../env"
+import { EditTrans } from "../../trans/Action"
+import { BasicInformationTrans } from "../../trans/Field"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -140,10 +139,6 @@ const AddDialog = ({ onSubmitted, dialog }) => {
         reset()
         onSubmitted?.()
       }}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       dialog={dialog}
       title={title}
       placement="top"
@@ -169,9 +164,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <ViewDialog
           id={record?.id}
@@ -256,7 +249,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog
@@ -366,10 +359,6 @@ const EditDialog = ({ id, resellerId, onSubmitted, dialog, ...props }) => {
       }}
       onClickClose={reset}
       title={title}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       dialog={dialog}
       placement="top"
       minWidth="60vw"
@@ -400,7 +389,7 @@ const EditBody = ({
   return (
     <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
       <FieldValues>
         {!userResellerId && (

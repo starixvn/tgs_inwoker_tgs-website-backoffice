@@ -33,6 +33,7 @@ import { CloseText, ConfirmText } from "../../button/ActionButtons"
 import { GameProviderConfigSelect } from "../../game/providers/configs/GameProviderConfigSelect"
 import { GameProviderLanguageSelect } from "../../game/providers/GameProviderLanguageSelect"
 import { JsonEditor, JsonEditorFormDialog } from "../../text/editor/JsonEditor"
+import { GameProviderTrans } from "../../trans/Game"
 
 export const BrandGameProviderCheckboxGroupTable = ({
   name = "gameProviders",
@@ -57,7 +58,7 @@ export const BrandGameProviderCheckboxGroupTable = ({
               <Box></Box>
             </Table.HeadCell>
             <Table.HeadCell textAlign="center">
-              <Trans zh="游戏厂商" en="Game Provider" />
+              <GameProviderTrans />
             </Table.HeadCell>
             <Table.HeadCell textAlign="center">
               <Trans zh="设定" en="Configuration" />

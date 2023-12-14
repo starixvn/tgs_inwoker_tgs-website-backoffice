@@ -24,6 +24,14 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
 import BrandBar from "../../report/BrandBar"
+import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+import {
+  GameProviderListTrans,
+  GameProviderNameTrans,
+  useGameProviderNameTrans
+} from "../../trans/Game"
+import { PeriodicMaintenanceTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -71,7 +79,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="厂商管理" en="Vendor Management" />}
+      title={<GameProviderListTrans />}
       actionBar={
         <SearchBar
           keyword={keyword}
@@ -105,10 +113,7 @@ const SearchBar = ({ name: keyword = "", search, isLoading, ...props }) => {
     }
   })
 
-  let searchPlaceHolder = useTrans({
-    zh: "厂商输入框",
-    en: "Input vendor name"
-  })
+  let searchPlaceHolder = useGameProviderNameTrans()
 
   const onSubmit = (data) => search(data)
 
@@ -147,7 +152,7 @@ const useColumns = ({ items = [], mutate }) => {
       },
       {
         accessor: "gameProviderName",
-        Header: <Trans zh="厂商名称" en="Name" />,
+        Header: <GameProviderNameTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -159,7 +164,7 @@ const useColumns = ({ items = [], mutate }) => {
       {
         id: "maintenanceTime",
         accessor: (record) => record,
-        Header: <Trans zh="定期维护时间" en="Periodic Maintenance Time" />,
+        Header: <PeriodicMaintenanceTimeTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -181,7 +186,7 @@ const useColumns = ({ items = [], mutate }) => {
       {
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -204,7 +209,7 @@ const useColumns = ({ items = [], mutate }) => {
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

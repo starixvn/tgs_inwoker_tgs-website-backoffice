@@ -34,6 +34,8 @@ import textColumn from "../../table/column/textColumn"
 import AlertDialog from "../../dialog/Alert"
 import { SortOrder } from "../../table/order"
 import dateTimeColumn from "../../table/column/dateTime"
+import { BalanceTrans } from "../../trans/User"
+import { TimeTrans } from "../../trans/Date"
 
 export const PlatformCreditPaymentListDialogDisclosure = ({
   record,
@@ -113,7 +115,7 @@ const useColumns = ({ items = [] }) => {
     () => [
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="操作时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -124,7 +126,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "balance",
-        Header: <Trans zh="额度余额" en="Balance" />,
+        Header: <BalanceTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <FormattedNumberDecimal value={value} />
       })

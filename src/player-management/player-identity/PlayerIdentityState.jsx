@@ -9,24 +9,21 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import {
+  ApprovedTrans,
+  RejectedTrans,
+  ReviewTrans,
+  useApprovedTrans,
+  useRejectedTrans,
+  useReviewTrans
+} from "../../trans/Status"
+import { usePlayerIdVerificationStatusTrans } from "../../trans/Player"
 
 const WaitingVerify = "WaitingVerify"
-const WaitingVerifyTrans = {
-  zh: "审核中",
-  en: "Waiting Verify"
-}
 
 const Approve = "Approve"
-const ApproveTrans = {
-  zh: "已核准",
-  en: "Approved"
-}
 
 const Reject = "Reject"
-const RejectTrans = {
-  zh: "已拒绝",
-  en: "Rejected"
-}
 
 export const isApprove = (value) => value === Approve
 
@@ -39,21 +36,18 @@ export const isPlayerIdentityWaitingVerify = (value) => {
 }
 
 export const PlayerIdentitySelect = ({ ...props }) => {
-  let placeholder = useTrans({
-    zh: "实名认证状态",
-    en: "Review Identity Status"
-  })
+  let placeholder = usePlayerIdVerificationStatusTrans()
   let options = [
     {
-      label: useTrans(WaitingVerifyTrans),
+      label: useReviewTrans(),
       value: WaitingVerify
     },
     {
-      label: useTrans(ApproveTrans),
+      label: useApprovedTrans(),
       value: Approve
     },
     {
-      label: useTrans(RejectTrans),
+      label: useRejectedTrans(),
       value: Reject
     }
   ]
@@ -64,11 +58,11 @@ export const PlayerIdentitySelect = ({ ...props }) => {
 export const PlayerIdentityStateLabel = ({ value = "" }) => {
   switch (value) {
     case WaitingVerify:
-      return <Trans {...WaitingVerifyTrans} />
+      return <ReviewTrans />
     case Approve:
-      return <Trans {...ApproveTrans} />
+      return <ApprovedTrans />
     case Reject:
-      return <Trans {...RejectTrans} />
+      return <RejectedTrans />
     default:
       return value
   }

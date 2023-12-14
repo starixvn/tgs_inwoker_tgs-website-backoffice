@@ -36,6 +36,10 @@ import numberColumn, {
 import { usePlayerTotalAmountList } from "./client"
 import textColumn from "../../table/column/textColumn"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import {
+  TotalDepositAmountTrans,
+  TotalWithdrawAmountTrans
+} from "../../trans/Field"
 // import { PlayerTotalWinLossDialogDisclosure } from "./PlayerTotalWinLossDialog"
 
 export { Code }
@@ -225,12 +229,12 @@ const useColumns = ({ brandId, items = [], from, to }) => {
       }),
       numberDecimalColumn({
         accessor: "depositAmount",
-        Header: <Trans zh="总存款金额" en="Total Deposit Amount" />,
+        Header: <TotalDepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "withdrawalAmount",
-        Header: <Trans zh="总提款金额" en="Total Withdrawal Amount" />,
+        Header: <TotalWithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

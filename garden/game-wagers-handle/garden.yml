@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-wagers-handle
-image: pgtgs/game-gamewagers-handle:202310030039.16
+image: pgtgs/game-gamewagers-handle:202311130319.24
 services:
   - name: game-wagers-handle
     dependencies:

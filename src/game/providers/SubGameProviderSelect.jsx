@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { Select, SelectField } from "../../select/Select"
 import { Locales, Trans, useTrans } from "../../i18n"
 import { useSubGameProviderList } from "./client"
+import { useSubGameProviderTrans } from "../../trans/Game"
 
 export const SubGameProviderSelect = ({
   placeholder,
@@ -10,10 +11,7 @@ export const SubGameProviderSelect = ({
   valueField = "code",
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "子游戏厂商",
-    en: "Sub Game Provider"
-  })
+  let defaultPlaceholder = useSubGameProviderTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let { data, isLoading, error } = useSubGameProviderList({
@@ -42,10 +40,7 @@ export const SubGameProviderSelectField = ({
   valueField = "code",
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "子游戏厂商",
-    en: "Sub Game Provider"
-  })
+  let defaultPlaceholder = useSubGameProviderTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let { data, isLoading, error } = useSubGameProviderList({

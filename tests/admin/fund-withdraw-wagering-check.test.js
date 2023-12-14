@@ -21,7 +21,7 @@ test.skip("fund withdraw > audit clear bucket", async ({
   player,
   backofficeApi,
   customBankManualPaymentMethodChannel,
-  globalApi,
+  brandCertApi,
   operatorApi,
   sboGameProviderApi
 }) => {
@@ -36,7 +36,7 @@ test.skip("fund withdraw > audit clear bucket", async ({
       autoClearWageringRequirementBalance: AutoClearBucketAmount
     })
 
-    platformToken = await globalApi.platformToken(platform.code)
+    platformToken = await brandCertApi.platformToken(platform.code)
     player = await operatorApi.player.createAndLogin(platformToken)
 
     depositPayment = await backofficeApi.platform.payment.findOrCreate({

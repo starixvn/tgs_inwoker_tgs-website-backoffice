@@ -72,6 +72,30 @@ import {
   PlatformPaymentProviderSelect,
   PlatformPaymentTransferType
 } from "../../payment/PlatformPaymentProviderSelect"
+import { ActionTrans, OperatorTrans, RemarkTrans } from "../../trans/Action"
+import {
+  ActualDepositAmountTrans,
+  DepositAmountTrans,
+  DepositListTrans,
+  DepositPaymentMethodTrans,
+  PaymentNameTrans,
+  TransferFeeTrans,
+  useChannelNameTrans,
+  useDepositPaymentMethodTrans,
+  usePaymentProviderTrans
+} from "../../trans/Payment"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import {
+  GmsIdTrans,
+  ThirdPartyIdTrans,
+  useGmsIdTrans,
+  useSystemIdTrans,
+  useThirdPartyIdTrans
+} from "../../trans/Platform"
+import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
+import { PromotionAmountTrans, PromotionNameTrans } from "../../trans/Promotion"
+import { useTotalDepositAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -188,16 +212,6 @@ const BodyContent = ({ brandId }) => {
     }
   }, [location?.state?.fromNotify])
 
-  let newOrder = useTrans({
-    zh: "新订单",
-    en: "new order"
-  })
-  let multipleOrder = useTrans({
-    zh: "New orders",
-    en: "Multiple new orders"
-  })
-  let toasts = useToasts()
-
   let [items, setItems] = useState([])
   let [isUpdateAvailable, setUpdateAvailable] = useState(false)
   let [delayUpdate, setDelayUpdate] = useState(false)
@@ -245,7 +259,7 @@ const BodyContent = ({ brandId }) => {
   let columns = useColumns({ mutate, items, brandId, setDelayUpdate })
   return (
     <PageContent
-      title={<Trans zh="存款列表" en="Deposit List" />}
+      title={<DepositListTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
@@ -310,6 +324,7 @@ const BodyContent = ({ brandId }) => {
 }
 
 const Summary = ({ total, totalPromotion }) => {
+  let totalDepositAmountLabel = useTotalDepositAmountTrans()
   if (!Number.isFinite(total)) {
     return null
   }
@@ -319,7 +334,7 @@ const Summary = ({ total, totalPromotion }) => {
       <Set>
         <Box>
           <Heading use="h5">
-            <Trans zh="存款金额总计：" en="Total Deposit Amount：" />
+            {`${totalDepositAmountLabel}：`}
             <FormattedNumberDecimal
               id="total-amount"
               value={total}
@@ -343,45 +358,6 @@ const Summary = ({ total, totalPromotion }) => {
     </Blockquote>
   )
 }
-
-/*
-const ActionFooter = ({ brandId, items = [], mutate, setDelayUpdate }) => {
-  return null //POC
-
-  let editable = useIsDisplayMenuByRoute([Update])
-  if (!editable) {
-    return null
-  }
-
-  let record = nextVerifiable(items)
-  if (!record) {
-    return null
-  }
-
-  return (
-    <Dialog.Footer position="sticky" bottom="0" alignX="right">
-      <VerifyFundDepositDisclosure
-        brandId={brandId}
-        formId={record.id}
-        onSubmitted={mutate}
-        onVisibleChange={(visible) => {
-          let delayUpdate = visible
-          setDelayUpdate(delayUpdate)
-        }}
-      />
-    </Dialog.Footer>
-  )
-}
-
-const nextVerifiable = (items = []) => {
-  let verifiableItems = items.filter(
-    (item) => item.status === FundReviewStatus.Review
-  )
-  let sortedItems = sortBy(verifiableItems, ["updatedOn", "createdOn"])
-  let result = head(sortedItems)
-  return result ? clone(result) : undefined
-}
-*/
 
 const newApplicationsFromToday = (first = [], second = []) => {
   if (!second || second.length === 0) {
@@ -481,38 +457,19 @@ const SearchBar = ({
     endUpdateOn
   ])
 
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名",
-    en: "Username"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
 
-  let channelNameInputPlaceholder = useTrans({
-    zh: "通道名称",
-    en: "Channel Name"
-  })
+  let channelNameInputPlaceholder = useChannelNameTrans()
 
-  let paymentProviderPlaceholder = useTrans({
-    zh: "金流商",
-    en: "Payment Provider"
-  })
+  let paymentProviderPlaceholder = usePaymentProviderTrans()
 
-  let paymentMethodPlaceholder = useTrans({
-    zh: "存款类型",
-    en: "Deposit Method"
-  })
+  let paymentMethodPlaceholder = useDepositPaymentMethodTrans()
 
-  let externalIdPlaceholder = useTrans({
-    zh: "三方订单编号",
-    en: "3rd Party Id"
-  })
-  let orderIdPlaceholder = useTrans({
-    zh: "GMS订单号",
-    en: "GMS Id"
-  })
-  let idPlaceholder = useTrans({
-    zh: "系统订单编号",
-    en: "System Id"
-  })
+  let externalIdPlaceholder = useThirdPartyIdTrans()
+
+  let orderIdPlaceholder = useGmsIdTrans()
+
+  let idPlaceholder = useSystemIdTrans()
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
@@ -557,7 +514,7 @@ const SearchBar = ({
           </Set>
           <Set orientation="horizontal">
             <DateInputRangeField
-              label={<Trans zh="申请时间" en="Application Time" />}
+              label={<ApplicationTimeTrans />}
               startProps={{
                 name: "beginCreateOn"
               }}
@@ -568,7 +525,7 @@ const SearchBar = ({
               maxRangeDays={maxRangeDays}
             />
             <DateInputRangeField
-              label={<Trans zh="更新时间" en="Updated Time" />}
+              label={<UpdatedTimeTrans />}
               startProps={{
                 name: "beginUpdateOn"
               }}
@@ -598,23 +555,23 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       sequenceColumn(),
       textColumn({
         accessor: "userName",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "orderNo",
-        Header: <Trans zh="GMS订单号" en="GMS Id" />,
+        Header: <GmsIdTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "thirdPartyOrderNo",
-        Header: <Trans zh="三方单号" en="3rd Party Id" />,
+        Header: <ThirdPartyIdTrans />,
         disableSortBy: true
       }),
       textColumn({
         id: "paymentMethod",
         accessor: (row) => row,
-        Header: <Trans zh="存款类型" en="Payment Method" />,
+        Header: <DepositPaymentMethodTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (
@@ -626,19 +583,19 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       }),
       textColumn({
         accessor: "channelName",
-        Header: <Trans zh="通道名称" en="Payment Name" />,
+        Header: <PaymentNameTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="存款金额" en="Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "actualAmount",
         accessor: (row) => row,
-        Header: <Trans zh="实际存款金额" en="Actual Amount" />,
+        Header: <ActualDepositAmountTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let { status, amount, actualAmount } = record
@@ -652,7 +609,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       numberDecimalColumn({
         id: "handlingFee",
         accessor: (row) => row,
-        Header: <Trans zh="手续费" en="Transfer Fee" />,
+        Header: <TransferFeeTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let approved = isFundDepositApproved(record?.status)
@@ -669,18 +626,18 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="申请时间" en="Application Time" />,
+        Header: <ApplicationTimeTrans />,
         disableSortBy: true
       }),
 
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="更新时间" en="Update Time" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => (
           <FundDepositStatusLabel value={value} data-status={value} />
@@ -691,7 +648,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
     columns.push(
       textColumn({
         accessor: "reviewedUserName",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     )
@@ -699,18 +656,18 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
     columns.push(
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       }),
       textColumn({
         accessor: "promotionName",
-        Header: <Trans zh="活动名称" en="Promotion Name" />,
+        Header: <PromotionNameTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonus",
-        Header: <Trans zh="优惠金额" en="Promotion Bonus" />,
+        Header: <PromotionAmountTrans />,
         disableSortBy: true
       })
     )
@@ -721,7 +678,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value }) => {
             let underReview =
               value?.status === FundDepositStatus.Review ||

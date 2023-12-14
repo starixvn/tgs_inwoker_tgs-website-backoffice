@@ -13,6 +13,11 @@ import {
 import Disclosure from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import {
+  RejectedTrans,
+  useRejectedTrans,
+  useStatusTrans
+} from "../../trans/Status"
 
 const Create = "Create"
 const CreateTrans = {
@@ -27,10 +32,6 @@ const CompletedTrans = {
 }
 
 const Rejected = "Rejected"
-const RejectedTrans = {
-  zh: "已拒绝",
-  en: "Rejected"
-}
 
 export const ClearBucketStatus = {
   Create,
@@ -39,10 +40,7 @@ export const ClearBucketStatus = {
 }
 
 export const ClearBucketStatusSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
@@ -55,7 +53,7 @@ export const ClearBucketStatusSelect = ({ placeholder, ...props }) => {
       value: Completed
     },
     {
-      label: useTrans(RejectedTrans),
+      label: useRejectedTrans(),
       value: Rejected
     }
   ]
@@ -70,7 +68,7 @@ export const ClearBucketStatusLabel = ({ value = "" }) => {
     case Completed:
       return <Trans {...CompletedTrans} />
     case Rejected:
-      return <Trans {...RejectedTrans} />
+      return <RejectedTrans />
     default:
       return value
   }

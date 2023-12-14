@@ -49,6 +49,20 @@ import {
   faChevronDown
 } from "@fortawesome/free-solid-svg-icons"
 import BankType from "../../payment/BankType"
+import { PhoneTrans, RealNameTrans, UserNameTrans } from "../../trans/User"
+import {
+  BankAccountTrans,
+  ActualDepositAmountTrans,
+  BankInfoTrans,
+  ChannelNameTrans,
+  DepositAmountTrans,
+  DepositPaymentMethodTrans,
+  TransferFeeTrans
+} from "../../trans/Payment"
+import { GmsIdTrans, ThirdPartyIdTrans } from "../../trans/Platform"
+import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
+import { AttachmentTrans } from "../../trans/Field"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -142,14 +156,14 @@ export const FormBody = ({
       <FieldStack>
         <FieldValues marginLeft="1.5rem">
           <NormalLabel>
-            <Trans zh="用户名" en="Username" />
+            <UserNameTrans />
           </NormalLabel>
           <Box alignY="center">{record?.userName}</Box>
 
           <PlayerBox player={player} />
 
           <NormalLabel>
-            <Trans zh="GMS订单号" en="GMS Id" />
+            <GmsIdTrans />
           </NormalLabel>
           <Box alignY="center">{record?.orderNo}</Box>
 
@@ -159,24 +173,24 @@ export const FormBody = ({
           <Box alignY="center">{record?.id}</Box>
 
           <NormalLabel>
-            <Trans zh="三方订单号" en="3rd Party Id" />
+            <ThirdPartyIdTrans />
           </NormalLabel>
           <Box alignY="center">{record?.thirdPartyOrderNo}</Box>
 
           <NormalLabel>
-            <Trans zh="存款类型 " en="Payment Method" />
+            <DepositPaymentMethodTrans />
           </NormalLabel>
           <Box alignY="center">
             <PaymentMethodLabel value={record?.paymentMethodId} />
           </Box>
 
           <NormalLabel>
-            <Trans zh="通道名称" en="Channel Name" />
+            <ChannelNameTrans />
           </NormalLabel>
           <Box alignY="center">{record?.channelName}</Box>
 
           <NormalLabel>
-            <Trans zh="存款金额" en="Deposit Amount" />
+            <DepositAmountTrans />
           </NormalLabel>
           <Box alignY="center">
             <FormattedNumberDecimal value={record?.amount} />
@@ -192,21 +206,21 @@ export const FormBody = ({
           <AmountReceivedBox record={record} brandPayment={brandPayment} />
 
           <NormalLabel>
-            <Trans zh="申请时间" en="Application Time" />
+            <ApplicationTimeTrans />
           </NormalLabel>
           <Box alignY="center">
             <FormattedDateTime value={record?.createdOn} />
           </Box>
 
           <NormalLabel>
-            <Trans zh="更新时间" en="Updated Time" />
+            <UpdatedTimeTrans />
           </NormalLabel>
           <Box alignY="center">
             <FormattedDateTime value={record?.updatedOn} placeholder="-" />
           </Box>
 
           <NormalLabel>
-            <Trans zh="状态" en="Status" />
+            <StatusTrans />
           </NormalLabel>
           <Box alignY="center">
             <FundDepositStatusLabel value={record?.status} />
@@ -215,7 +229,7 @@ export const FormBody = ({
           {hasAttachment && (
             <>
               <NormalLabel>
-                <Trans zh="附件" en="Attachment" />
+                <AttachmentTrans />
               </NormalLabel>
               <Box alignY="center">
                 <Link href={attachmentUrl} target="_blank">
@@ -239,7 +253,7 @@ export const FormBody = ({
         />
         <NumberInputField
           name="actualAmount"
-          label={<Trans zh="实际存款金额" en="Actual Amount" />}
+          label={<ActualDepositAmountTrans />}
           value={readOnly ? record?.actualAmount ?? record?.amount : undefined}
           step="0.01"
           disabled={disabled}
@@ -267,7 +281,7 @@ const PlayerBox = ({ player }) => {
       {playerRealname && (
         <>
           <NormalLabel>
-            <Trans zh="真实姓名" en="Real name" />
+            <RealNameTrans />
           </NormalLabel>
           <Box alignY="center">{playerRealname}</Box>
         </>
@@ -346,7 +360,7 @@ const HandlingFeeBox = ({ record, brandPayment }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="手续费" en="Transfer Fee" />
+        <TransferFeeTrans />
       </NormalLabel>
       <Box alignY="center">
         <FormattedNumberDecimal value={handlingFee} />
@@ -449,7 +463,7 @@ const BankApplyInfo = ({ accountName = "", account = "" }) => {
       </NormalLabel>
       <Box alignY="center">{accountName}</Box>
       <NormalLabel>
-        <Trans zh="银行卡帐号" en="Bank Card Account" />
+        <BankAccountTrans />
       </NormalLabel>
       <Box alignY="center">{account}</Box>
     </>
@@ -471,7 +485,7 @@ const PhoneApplyInfo = ({ value = "" }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="电话号码" en="Phone" />
+        <PhoneTrans />
       </NormalLabel>
       <Box alignY="center">{value}</Box>
     </>
@@ -603,7 +617,7 @@ const ApplyInfoBox = ({ applyInfo, paymentMethod }) => {
   return (
     <>
       <Heading use="h6">
-        <Trans zh="銀行卡信息" en="Bank Card Info" />
+        <BankInfoTrans />
       </Heading>
       <Set orientation="horizontal" isFilled verticalBelow="tablet">
         <PlayerApplyInfoCard

@@ -20,34 +20,34 @@ import {
 import { AddDisclosure, Disclosure } from "../../dialog/Disclosure"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
-import LoadingBackdrop from "../../dialog/LoadingBackdrop"
-import { Table } from "../../table"
-import textColumn from "../../table/column/textColumn"
 import { Update } from "./menu"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { NumberInputField } from "../../input/NumberInput"
 import { TextareaField } from "../../textarea"
-import { FormDialog, WarningConfirmFormDialog } from "../../form/FormDialog"
-import clone from "clone-deep"
-import Backdrop from "../../dialog/Backdrop"
-import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
-import { MerchantIdSelect } from "../../merchant/MerchantSelect"
+import { FormDialog } from "../../form/FormDialog"
 import { Input, InputField } from "../../input/Input"
 import { GameProviderSubGameProviderSelect } from "../../game/providers/GameProviderSubGameProviderSelect"
-import { CurrencySelectField } from "../../currency/CurrencySelect"
 import DateTimeInput from "../../date/DateTimeInput"
-import { CancelText, ConfirmText, SubmitText } from "../../button/ActionButtons"
+import { ConfirmText } from "../../button/ActionButtons"
 import {
   GameRoundStatus,
   GameRoundStatusSelectField
 } from "../../game/round/GameRoundStatus"
 import { GameSelectField } from "../../game/games/GameSelect"
 import { useAddSystemGameRound } from "../../game/round/client"
-import DateTimeRangeInput from "../../date/DateTimeRangeInput"
-import { useBrand } from "../../merchant/platforms/client"
-import { isValidDate } from "../../date/isValidDate"
-import { min, max, endOfToday } from "date-fns"
 import { Modal } from "../../dialog/Modal"
+import { PlayerCodeTrans } from "../../trans/Player"
+import { CancelTrans, RemarkTrans, SubmitTrans } from "../../trans/Action"
+import {
+  BetAmountTrans,
+  ExternalBetTimeTrans,
+  GameProviderTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans,
+  WinLossTrans
+} from "../../trans/Game"
+import { StatusTrans } from "../../trans/Status"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export const AddGameProviderRoundDialogDisclosure = ({
   id,
@@ -130,8 +130,8 @@ const AddRoundDialog = ({ onSubmitted, dialog, dialogId, ...props }) => {
         <Modal
           id="confirm-dialog"
           actionButtonsProps={{
-            submitText: <SubmitText />,
-            cancelText: <CancelText />,
+            submitText: <SubmitTrans />,
+            cancelText: <CancelTrans />,
             onClickSubmit: () => {
               confirmSubmitDialog.hide()
               formRef.current.requestSubmit()
@@ -178,12 +178,8 @@ const FormBody = ({}) => {
   //TODO: minDate & maxDate validate on DateTimeInputField
   return (
     <FieldStack paddingLeft="1.5rem" paddingRight="1.5rem" paddingBottom="1rem">
-      <InputField
-        name="playerCode"
-        label={<Trans zh="玩家代碼" en="Player Code" />}
-        required
-      />
-      <FieldWrapper label={<Trans zh="游戏厂商" en="Game Provider" />}>
+      <InputField name="playerCode" label={<PlayerCodeTrans />} required />
+      <FieldWrapper label={<GameProviderTrans />}>
         <GameProviderSubGameProviderSelect
           gameProviderProps={{
             name: "gameProviderId",
@@ -215,7 +211,7 @@ const FormBody = ({}) => {
       <FieldStack orientation="horizontal">
         <FieldWrapper
           id={ExternalCreatedOnField}
-          label={<Trans zh="三方投注时间" en="External Created On" />}
+          label={<ExternalBetTimeTrans />}
         >
           <DateTimeInput
             name={ExternalCreatedOnField}
@@ -239,20 +235,20 @@ const FormBody = ({}) => {
         <NumberInputField
           name="betAmount"
           min={0}
-          label={<Trans zh="投注金额" en="Bet Amount" />}
+          label={<BetAmountTrans />}
           required
         />
         <NumberInputField
           name="validBetAmount"
           min={0}
-          label={<Trans zh="有效投注金额" en="Valid Bet Amount" />}
+          label={<ValidBetAmountTrans />}
           required
         />
       </FieldStack>
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
-          label={<Trans zh="结算金额" en="Settle Amount" />}
+          label={<SettleAmountTrans />}
           required
         />
         <NumberInputField
@@ -265,7 +261,7 @@ const FormBody = ({}) => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="turnover"
-          label={<Trans zh="流水" en="CommiTurnoverssion" />}
+          label={<TurnoverTrans />}
           min={0}
           required
         />
@@ -274,14 +270,14 @@ const FormBody = ({}) => {
           filter={({ value }) => {
             return value != GameRoundStatus.Open
           }}
-          label={<Trans zh="状态" en="Status" />}
+          label={<StatusTrans />}
           required
         />
       </FieldStack>
       <NumberInputField
         name="companyWinLoss"
         required
-        label={<Trans zh="输赢金额" en="Win Loss" />}
+        label={<WinLossTrans />}
         hint={
           <Text fontWeight="bold" color="warning">
             <Trans
@@ -293,7 +289,7 @@ const FormBody = ({}) => {
       />
       <TextareaField
         name="remark"
-        label={<Trans zh="备注" en="Remark" />}
+        label={<RemarkTrans />}
         transition="unset"
         css={css`
           textarea {

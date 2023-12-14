@@ -12,7 +12,7 @@ import {
 
 const test = base.extend(Fixture)
 
-test("edit and view agent info", async ({
+test("update agent info", async ({
   page,
   platformCode,
   agent,
@@ -34,7 +34,7 @@ const editAgent = async (page, agent) => {
   await Promise.all([
     page.waitForResponse((response) => {
       return (
-        response.url().includes(`/api/agent/${agent.id}`) &&
+        response.url().includes(`/api/agent/info/${agent.id}`) &&
         response.status() === 200
       )
     }),

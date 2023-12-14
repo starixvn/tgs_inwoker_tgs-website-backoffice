@@ -61,6 +61,7 @@ import { useBrandLabel } from "../../merchant/platforms"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
 import Checkbox from "../../checkbox/Checkbox"
 import Select from "../../select/Select"
+import { EditTrans } from "../../trans/Action"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -522,7 +523,7 @@ export const EditButton = ({ id, record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditRoleDialog

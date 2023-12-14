@@ -40,6 +40,8 @@ import { AgentTypeLabel, AgentTypeSelect } from "../AgentType"
 import { useAgentList } from "../agent-list/client"
 import { AgentAddBalanceDisclosure } from "./AgentAddBalance"
 import { AgentDeductBalanceDisclosure } from "./AgentDeductBalance"
+import { BalanceTrans } from "../../trans/User"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -184,7 +186,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
       }),
       numberDecimalColumn({
         accessor: "balance",
-        Header: <Trans zh="余额" en="Balance" />,
+        Header: <BalanceTrans />,
         disableSortBy: true
       })
     ]
@@ -195,7 +197,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value }) => {
             let username = value?.username
             return (

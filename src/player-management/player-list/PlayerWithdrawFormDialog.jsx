@@ -31,6 +31,11 @@ import { TextareaField } from "../../textarea"
 import { NumberInputField } from "../../input/NumberInput"
 import { useFormContext, useWatch } from "react-hook-form"
 import BankType from "../../payment/BankType"
+import {
+  RealNameTrans,
+  WithdrawFormTrans,
+  useWithdrawFormTrans
+} from "../../trans/User"
 
 export const PlayerWithdrawFormDialogDisclosure = ({
   brandId,
@@ -51,7 +56,7 @@ export const PlayerWithdrawFormDialogDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog} {...props}>
-        <Trans zh="提款单" en="Withdrawal Form" />
+        <WithdrawFormTrans />
       </Disclosure>
       {dialog.visible && (
         <WithdrawFormDialog
@@ -108,10 +113,7 @@ const WithdrawFormDialog = ({
   dialogId,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "提款单",
-    en: "Withdrawal Form"
-  })
+  let title = useWithdrawFormTrans()
 
   let {
     isLoading: isLoadingBankInfoList,
@@ -173,7 +175,7 @@ const FormBody = ({ bankInfoList = [] }) => {
   let player = getValues("player")
   return (
     <FieldStack marginLeft="1rem" marginRight="1rem">
-      <FieldWrapper label={<Trans zh="真实姓名" en="Real name" />}>
+      <FieldWrapper label={<RealNameTrans />}>
         <Box>{player.realName}</Box>
       </FieldWrapper>
       <BankInfoSelect bankInfoList={bankInfoList} required />

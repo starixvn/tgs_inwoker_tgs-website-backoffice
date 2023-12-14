@@ -30,6 +30,7 @@ import LicenseeIdSelect from "../../merchant/licensees/LicenseeIdSelect"
 import { useLicenseeLabel } from "../../merchant/licensees"
 import { useBrandLabel } from "../../merchant/platforms"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
+import { EditTrans } from "../../trans/Action"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -177,7 +178,7 @@ export const EditButton = ({ id = "", record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog

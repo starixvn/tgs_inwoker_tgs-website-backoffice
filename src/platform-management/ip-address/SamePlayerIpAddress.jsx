@@ -34,13 +34,14 @@ import { SortOrder } from "../../table/order"
 import SearchButton from "../../button/SearchButton"
 import { InputField } from "../../input/Input"
 import { IpAddressTypeSelect, IpAddressTypeLabel } from "./IpAddressType"
+import { SearchDuplicateIPTrans } from "../../trans/Platform"
 
 export const SamePlayerIpAddressTabId = "SamePlayerIpAddress"
 
 export const SamePlayerIpAddressTab = ({ ...props }) => {
   return (
     <Tab tabId={SamePlayerIpAddressTabId} {...props}>
-      <Trans zh="搜索重複IP地址" en="Search Duplicate IP" />
+      <SearchDuplicateIPTrans />
     </Tab>
   )
 }

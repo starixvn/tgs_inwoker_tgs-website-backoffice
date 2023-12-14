@@ -18,11 +18,6 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentAdjustIncreaseBalance } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -45,6 +40,12 @@ import Input from "../../input/Input"
 import AdjustType from "./AdjustType"
 import { NumberInput } from "../../input/NumberInput"
 import { AgentAdjustBalanceTypeSelect } from "./AgentAdjustBalanceType"
+import {
+  AddBalanceTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export const AgentAddBalanceDisclosure = ({
   brandId,
@@ -63,7 +64,7 @@ export const AgentAddBalanceDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="加钱" en="Add Balance" />
+        <AddBalanceTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog
@@ -112,14 +113,6 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
     >
       <Input type="hidden" name="brandId" value={brandId} />
       <Input type="hidden" name="username" value={username} />
@@ -128,9 +121,9 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
         <Trans zh="代理用户名" en="Agent Username" />
         <Box alignY="center">{username}</Box>
 
-        <Text.Block alignY="center">
-          <Trans zh="交易类型" en="Transaction Type" />
-        </Text.Block>
+        <Box alignY="center">
+          <TransactionTypeTrans />
+        </Box>
         <Set>
           <AddBalanceTypeSelect name="transactionType" required />
           {/* 
@@ -139,12 +132,12 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
         </Set>
 
         <Text.Block alignY="center">
-          <Trans zh="交易金额" en="Amount" />
+          <TransactionAmountTrans />
         </Text.Block>
         <NumberInput name="amount" min="0" step="0.01" required />
 
         <Text.Block alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Text.Block>
         <Input name="remark" />
       </FieldValues>

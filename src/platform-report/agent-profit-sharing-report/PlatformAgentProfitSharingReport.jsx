@@ -58,6 +58,8 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+import { NetProfitTrans } from "../../trans/Field"
+import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -693,14 +695,14 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }
@@ -743,7 +745,7 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }

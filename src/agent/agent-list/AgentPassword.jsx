@@ -37,11 +37,7 @@ export const AgentPasswordTab = ({ ...props }) => {
 }
 
 export const AgentPasswordPanel = (props) => {
-  return isDev() ? (
-    <UpdateAgentLoginPasswordPanel {...props} />
-  ) : (
-    <CurrentAgentLoginPasswordPanel {...props} />
-  )
+  return <UpdateAgentLoginPasswordPanel {...props} />
 }
 
 const UpdateAgentLoginPasswordPanel = ({
@@ -110,7 +106,8 @@ const UpdateAgentLoginPasswordPanel = ({
   )
 }
 
-const CurrentAgentLoginPasswordPanel = ({
+//TODO:1.40 > rm OldAgentLoginPasswordPanel
+const OldAgentLoginPasswordPanel = ({
   record,
   onSubmitted,
   onClickClose,

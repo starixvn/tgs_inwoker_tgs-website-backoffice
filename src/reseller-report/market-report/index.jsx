@@ -33,6 +33,9 @@ import Big from "big.js"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+import { NetProfitTrans } from "../../trans/Field"
+import { BetAmountTrans, TurnoverTrans } from "../../trans/Game"
+import { CurrencyTrans, DepositAmountTrans } from "../../trans/Payment"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -242,7 +245,7 @@ const useColumns = ({ items = [] }) => {
       wrapTextColumn({
         id: "currencyCode",
         accessor: (row) => row,
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
           // return isTotal ? "" : currencyCode
@@ -252,7 +255,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         id: "depositAmount",
         accessor: (row) => row,
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true,
         toValue: ({ isTotal, depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
@@ -283,12 +286,12 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -298,7 +301,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         disableSortBy: true
       })
     ],

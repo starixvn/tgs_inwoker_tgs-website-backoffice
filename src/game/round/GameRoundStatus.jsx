@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useTrans, Trans } from "../../i18n"
 import Select, { SelectField } from "../../select/Select"
+import { useStatusTrans } from "../../trans/Status"
 
 const Win = "Win"
 const WinTrans = {
@@ -98,10 +99,7 @@ export const GameRoundStatusSelect = ({
   options,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let defaultOptions = useGameRoundStatusOptions()
@@ -116,10 +114,7 @@ export const GameRoundStatusSelectField = ({
   filter: predicate = defaultFilter,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let defaultOptions = useGameRoundStatusOptions()

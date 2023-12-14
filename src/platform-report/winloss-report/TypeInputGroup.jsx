@@ -7,6 +7,7 @@ import { useTrans } from "../../i18n"
 import { useFormContext } from "react-hook-form"
 import { Type } from "./Type"
 import { useUnmount } from "react-use"
+import { useRoundIdTrans } from "../../trans/Game"
 
 export const TypeInputGroup = ({
   name = "memberType",
@@ -108,10 +109,7 @@ const RoundIdInputField = ({
     formMethods.setValue(name, "")
   })
 
-  let placeholder = useTrans({
-    zh: "订单ID",
-    en: "Round ID"
-  })
+  let placeholder = useRoundIdTrans()
 
   return (
     <InputField

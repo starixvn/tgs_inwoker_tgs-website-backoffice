@@ -1,15 +1,17 @@
 kind: Module
 type: container
 name: agent-service
-image: pgtgs/agent-service:202311070535.70
+image: pgtgs/agent-service:202312081109.112
 services:
   - name: agent-service
     dependencies:
       - postgres
       - player-api
+      - cash-service
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       AgentService__PlayerServiceBaseUrl: "http://player-api"
+      AgentService__CashBaseUrl: "http://cash-service"
     ports:
       - name: http
         containerPort: 80

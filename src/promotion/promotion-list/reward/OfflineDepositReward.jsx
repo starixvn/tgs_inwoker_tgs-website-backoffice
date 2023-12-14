@@ -31,6 +31,9 @@ import { NumberInput, NumberInputField } from "../../../input/NumberInput"
 import { useMount } from "react-use"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { MainSetting } from "../MainSetting"
+import { DepositAmountTrans } from "../../../trans/Payment"
+import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
+import { MultipliersTrans } from "../../../trans/Field"
 
 const PromotionType = "OfflineDepositReward"
 
@@ -56,7 +59,7 @@ const Rule = ({ readOnly }) => {
       {isCreate && <BatchUploadPlayerListField />}
 
       <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
+        <PromotionTurnoverRequirementTrans />
       </NormalLabel>
       <NumberInputField
         name={TurnoverMultipleField}
@@ -68,7 +71,7 @@ const Rule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />
@@ -142,7 +145,7 @@ const RewardSetting = ({
     <Set orientation="horizontal" isFilled>
       <Group flex="1">
         <Button isStatic tabIndex="-1">
-          <Trans zh="存款金额" en="Deposit Amount" />
+          <DepositAmountTrans />
         </Button>
         <NumberInput
           data-type={conditionFieldName}

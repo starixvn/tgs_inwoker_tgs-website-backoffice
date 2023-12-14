@@ -19,11 +19,6 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentAdjustReduceBalance } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -52,6 +47,12 @@ import {
   AgentAdjustBalanceTypeSelect,
   isTransfer
 } from "./AgentAdjustBalanceType"
+import {
+  DeductBalanceTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export const AgentDeductBalanceDisclosure = ({
   brandId,
@@ -70,7 +71,7 @@ export const AgentDeductBalanceDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="扣钱" en="Deduct Balance" />
+        <DeductBalanceTrans />
       </Disclosure>
       {dialog.visible && (
         <DeductDialog
@@ -120,14 +121,6 @@ const DeductDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
     >
       <FormBody brandId={brandId} username={username} agentId={agentId} />
     </FormDialog>
@@ -152,7 +145,7 @@ const FormBody = ({ brandId, username, agentId }) => {
         <Text.Block alignY="center">{username}</Text.Block>
 
         <Text.Block alignY="center">
-          <Trans zh="交易类型" en="Transaction Type" />
+          <TransactionTypeTrans />
         </Text.Block>
         <Set>
           {/* 
@@ -174,12 +167,12 @@ const FormBody = ({ brandId, username, agentId }) => {
         )}
 
         <Text.Block alignY="center">
-          <Trans zh="交易金额" en="Amount" />
+          <TransactionAmountTrans />
         </Text.Block>
         <NumberInput name="amount" min="0" step="0.01" required />
 
         <Text.Block alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Text.Block>
 
         <Input name="remark" />

@@ -26,6 +26,7 @@ import DummyReward from "./DummyReward"
 import OfflineLoginReward from "./OfflineLoginReward"
 import OfflineDepositReward from "./OfflineDepositReward"
 import { useIsPromotionStarted } from "../usePromotionFormData"
+import { PromotionRuleSettingsTrans } from "../../../trans/Promotion"
 
 const rewards = () => [
   ...DepositRewardGroup,
@@ -71,7 +72,7 @@ export const Rule = ({ readOnly, ...props }) => {
       <Separator />
 
       <Heading use="h5">
-        <Trans zh="規則設定" en="Rule Settings" />
+        <PromotionRuleSettingsTrans />
       </Heading>
 
       <Reward.Rule readOnly={readOnly} {...props} />

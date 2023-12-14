@@ -1,0 +1,125 @@
+import React, { useState, useEffect, useMemo, useRef } from "react"
+import { css, Global } from "@emotion/react"
+import { Box, Set, Flex, Text, Group, FieldStack } from "bumbag"
+import {
+  Trans,
+  useLocale,
+  useTrans,
+  Locales,
+  FormattedNumberDecimalPercentage
+} from "../../i18n"
+import { useForm, useFormContext, useWatch } from "react-hook-form"
+import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
+import { PercentageNumberInputField } from "../../input/NumberInput"
+import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
+import Input from "../../input/Input"
+import Textarea from "../../textarea"
+import { SubjectTrans } from "../../trans/Field"
+
+export const TabId = "autoAlert"
+
+export const AutoAlertTab = (props) => {
+  return (
+    <Tab tabId={TabId} {...props}>
+      <Trans zh="通知信-自動" en="Auto Alert" />
+    </Tab>
+  )
+}
+
+const BodyStyle = css`
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: auto 1fr;
+`
+
+export const AutoAlertPanel = ({ ...props }) => {
+  let { selectedId } = props
+  let isActive = selectedId === TabId
+  //TODO: return null if not active?
+
+  return (
+    <TabPanel tabId={TabId} {...props}>
+      <Box css={BodyStyle}>
+        <Box fontWeight="bold">
+          <Trans zh="加值通知" en="Balance Alert" />
+        </Box>
+        <BalanceAlertBox />
+
+        <Box fontWeight="bold">
+          <Trans zh="緊急加值通知" en="Balance Low Alert" />
+        </Box>
+        <LowBalanceAlertBox />
+
+        <Box fontWeight="bold">
+          <Trans zh="平台停用通知" en="Suspension Alert" />
+        </Box>
+        <SuspensionAlertBox />
+      </Box>
+    </TabPanel>
+  )
+}
+
+const TextareaStyle = css`
+  textarea {
+    min-height: 15vh;
+  }
+`
+
+const AlertBox = ({ name = "", subject = "", defaultValue = "" }) => {
+  return (
+    <Box css={BodyStyle}>
+      <SubjectTrans />
+      <Input value={subject} disabled size="small" />
+
+      <Trans zh="內容" en="Message" />
+      <Textarea
+        name={name}
+        defaultValue={defaultValue}
+        size="small"
+        css={TextareaStyle}
+      />
+    </Box>
+  )
+}
+
+const BalanceAlertBox = () => {
+  //TODO: useTrans for defaultValue & subject?
+  return (
+    <AlertBox
+      name="balanceAlertMessage"
+      subject={"[Licensee][Brand] 加值通知 Warning: Balance low"}
+      defaultValue={`敬愛的夥伴您好，您的平台目前剩餘額度不足，為避免影響會員遊戲體驗，請盡速聯繫貴司對應商務進行加值，謝謝您。
+Dear Partner,
+We wanted to inform you that your site currently has reached a high balance usage. To maintain the stability and quality of your gaming experience, we kindly recommend reaching out to your designated business contact for a top-up. Thank you.
+`}
+    />
+  )
+}
+
+const LowBalanceAlertBox = () => {
+  //TODO: useTrans for defaultValue & subject?
+  return (
+    <AlertBox
+      name="lowBalanceAlertMessage"
+      subject={"[Licensee][Brand] 緊急加值通知 Warning: Balance too low"}
+      defaultValue={`敬愛的夥伴您好，您的平台目前剩餘額度嚴重不足，所有遊戲暫時不可進入；為避免影響平台正常運營，請立即聯繫貴司對應商務進行加值，謝謝您。
+Dear Partner,
+We wanted to inform you that your site currently has reached a higher balance usage, and the access to all games will be temporarily suspended. To maintain the stability of your site, we kindly recommend reaching out to your designated business contact for a top-up immediately. Thank you.
+`}
+    />
+  )
+}
+
+const SuspensionAlertBox = () => {
+  //TODO: useTrans for defaultValue & subject?
+  return (
+    <AlertBox
+      name="suspensionAlertMessage"
+      subject={"[Licensee][Brand] 平台已停用，請立即加值 Notice of Suspension"}
+      defaultValue={`貴司您好，由於您的平台剩餘額度已低於限制，平台及所有遊戲暫時不可進入；請立即聯繫貴司對應商務進行加值，並由專人協助您恢復平台運行，謝謝您。
+Dear Partner,
+We wanted to inform you that your site has been temporarily suspended due to a balance usage that has exceeded the limit. To recover the full access of platform and all games, we kindly recommend reaching out to your designated business contact for a top-up immediately. Thank you.
+`}
+    />
+  )
+}

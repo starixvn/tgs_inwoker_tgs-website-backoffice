@@ -10,14 +10,11 @@ import {
   FieldStack
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import Disclosure from "../../dialog/Disclosure"
+import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { Update as UpdateMenu, View as ViewMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useAddReseller, useReseller, useUpdateReseller } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
@@ -46,6 +43,8 @@ import CurrencyBetLimitFieldsBox, {
   flatCheckedCurrencyBetLimitIds
 } from "../CurrencyBetLimitFieldsBox"
 import { isDev } from "../../env"
+import { EditTrans } from "../../trans/Action"
+import { BasicInformationTrans } from "../../trans/Field"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -156,10 +155,6 @@ const AddDialog = ({ onSubmitted, dialog }) => {
       title={title}
       dialog={dialog}
       onClickClose={reset}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       placement="top"
       minWidth="60vw"
       css={css`
@@ -184,7 +179,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
@@ -261,10 +256,6 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
       onClickClose={reset}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       placement="top"
       minWidth="60vw"
       css={css`
@@ -288,9 +279,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && <ViewDialog id={record.id} dialog={dialog} />}
     </>
   )
@@ -441,7 +430,7 @@ const EditBody = ({ record = {}, readonly = false, isAdd = false }) => {
   return (
     <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
       <FieldValues>
         <NormalLabel>

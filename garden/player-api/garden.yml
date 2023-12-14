@@ -1,16 +1,18 @@
 kind: Module
 type: container
 name: player-api
-image: pgtgs/player-api:202311030921.184
+image: pgtgs/player-api:202311141210.187
 services:
   - name: player-api
     dependencies:
       - postgres
       - marketing-api
+      - cash-service
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       PlayerService__MarketingReportBaseUrl: "http://marketing-api"
+      PlayerService__CashServiceBaseUrl: "http://cash-service"
     ports:
       - name: http
         containerPort: 80

@@ -21,7 +21,7 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
-import Disclosure from "../../dialog/Disclosure"
+import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans, useLocale, Locales } from "../../i18n"
 import {
   useAddStationLetter,
@@ -41,6 +41,13 @@ import Textarea from "../../textarea"
 import { toFileUploadPath } from "../../file/upload/FileUploadPath"
 import { HtmlEditor } from "../../text/editor/HtmlEditor"
 import { Features, isDev, isFeatureEnabled } from "../../env"
+import { PlayersTrans } from "../../trans/Player"
+import { SubjectTrans } from "../../trans/Field"
+import {
+  DownloadFormatFileTrans,
+  RemarkTrans,
+  UploadFileTrans
+} from "../../trans/Action"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -220,7 +227,7 @@ const EditBody = ({ readOnly = false } = {}) => {
                   isLoading={isLoading}
                   disabled={isLoading}
                 >
-                  <Trans zh="上传文件" en="Upload file" />
+                  <UploadFileTrans />
                 </Button>
                 <Button
                   use="a"
@@ -229,13 +236,13 @@ const EditBody = ({ readOnly = false } = {}) => {
                   palette="primary"
                   size="small"
                 >
-                  <Trans zh="下载文件格式" en="Download Format File" />
+                  <DownloadFormatFileTrans />
                 </Button>
               </>
             )}
           />
         )}
-        {error && <Alert {...error} onClickClose={resetUploadFormData} />}
+        {error && <Alert {...error} onClickClose={resetFormData} />}
         {readOnly &&
           target === DesignatedPlayers &&
           playerUsernames.length > 0 && (
@@ -245,7 +252,7 @@ const EditBody = ({ readOnly = false } = {}) => {
                 palette="primary"
                 background="primary"
               >
-                <Trans zh="玩家列表" en="Players" />
+                <PlayersTrans />
               </Popover.Disclosure>
               <Popover hasArrow>
                 <List maxHeight="15em" overflow="auto">
@@ -259,7 +266,7 @@ const EditBody = ({ readOnly = false } = {}) => {
       </Set>
 
       <Label name="subject" required={required}>
-        <Trans zh="主题" en="Subject" />
+        <SubjectTrans />
       </Label>
       <InputField
         name="subject"
@@ -294,9 +301,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && <ViewDialog record={record} dialog={dialog} />}
     </>
   )
@@ -430,7 +435,7 @@ const VerifyBody = ({ readOnly = false, dialog }) => {
       <Box border="default" height="1px" width="100%"></Box>
       <FieldValues>
         <Label name="remarks">
-          <Trans zh="备注" en="Remarks" />
+          <RemarkTrans />
         </Label>
         <Textarea name="remarks" disabled={readOnly} />
       </FieldValues>

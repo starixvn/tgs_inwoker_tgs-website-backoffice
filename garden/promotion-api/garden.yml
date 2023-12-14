@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-api
-image: pgtgs/promotion-api:202309260756.259
+image: pgtgs/promotion-api:202312130641.281
 services:
   - name: promotion-api
     dependencies:
@@ -10,20 +10,20 @@ services:
       - nats
       - payment-api
       - cash-service
-      - brand-cert-api
       - player-api
       - player-bucket-api
+      - viplevel-api
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
       ConnectionStrings__Nats: "nats://nats:4222"
       Promotion__PaymentServiceBaseUrl: "http://payment-api"
       Promotion__CashBaseUrl: "http://cash-service"
-      Promotion__BrandServiceBaseUrl: "http://brand-cert-api"
       Promotion__PlayerServiceBaseUrl: "http://player-api"
       Promotion__PlayerBucketBaseUrl: "http://player-bucket-api"
+      Promotion__VipLevelServiceBaseUrl: "http://viplevel-api"
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80
         localPort: 3050 # http://localhost:3050/swagger/index.html

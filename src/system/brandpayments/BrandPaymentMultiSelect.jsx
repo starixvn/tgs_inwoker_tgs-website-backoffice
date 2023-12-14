@@ -18,7 +18,7 @@ import {
   Group
 } from "bumbag"
 import { useBrandPaymentList } from "./client"
-import { MultiSelect } from "../../select/MultiSelect"
+import { MultiSelectBox } from "../../select/MultiSelectBox"
 import { useLocale, useTrans } from "../../i18n"
 import { usePaymentList } from "../../payment/client"
 import { groupBy } from "ramda"
@@ -123,7 +123,7 @@ export const BrandPaymentMultiSelect = ({
         >
           <Icon icon={faEllipsisV} type="font-awesome" />
         </PaymentProviderDropdownMenu>
-        <MultiSelect
+        <MultiSelectBox
           name={name}
           placeholder={placeholder}
           isLoading={isLoadingPaymentProviderList || isLoading}

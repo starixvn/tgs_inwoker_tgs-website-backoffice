@@ -34,13 +34,15 @@ import { SortOrder } from "../../table/order"
 import SearchButton from "../../button/SearchButton"
 import { InputField } from "../../input/Input"
 import IpAddressType, { setLoginIpType } from "./IpAddressType"
+import { TimeTrans } from "../../trans/Date"
+import { SearchIPByAccountIDTrans } from "../../trans/Platform"
 
 export const PlayerIPAddressByUsernameTabId = "PlayerIPAddressByUsername"
 
 export const PlayerIPAddressByUsernameTab = ({ ...props }) => {
   return (
     <Tab tabId={PlayerIPAddressByUsernameTabId} {...props}>
-      <Trans zh="按玩家帳號搜索IP" en="Search IP By Account ID" />
+      <SearchIPByAccountIDTrans />
     </Tab>
   )
 }
@@ -173,7 +175,7 @@ const useColumns = ({ items = [], mutate, onClickIpAddress }) => {
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       })
     ],

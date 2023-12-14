@@ -8,6 +8,7 @@ import PlayerAdjustBalanceType, {
   usePlayerAdjustBalanceTypeOptionList,
   PlayerAdjustBalanceTypeLabel
 } from "../../player-management/balance-adjustment/PlayerAdjustBalanceType"
+import { useTransactionTypeTrans } from "../../trans/Action"
 
 const GameProviderDeposit = "GameProviderDeposit"
 const GameProviderDepositTrans = {
@@ -112,10 +113,7 @@ const CancelWithdrawalTrans = {
 }
 
 export const TransactionTypeSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "交易类型",
-    en: "Transaction Type"
-  })
+  let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let playerAdjustOptions = usePlayerAdjustBalanceTypeOptionList()

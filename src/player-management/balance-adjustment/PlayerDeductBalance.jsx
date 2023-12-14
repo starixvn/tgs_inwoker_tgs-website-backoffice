@@ -13,7 +13,6 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
-import { ConfirmCancelFooter } from "../../form/ConfirmButtonFooter"
 import { usePlayerAdjustReduceBalance } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import { Update } from "./menu"
@@ -28,6 +27,13 @@ import {
   showIncludeInNetProfitSetting
 } from "./PlayerAdjustBalanceType"
 import Checkbox from "../../checkbox"
+import {
+  DeductBalanceTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -46,7 +52,7 @@ export const PlayerDeductBalanceDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="扣钱" en="Deduct Balance" />
+        <DeductBalanceTrans />
       </Disclosure>
       {dialog.visible && (
         <DeductDialog
@@ -99,14 +105,6 @@ const DeductDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
     >
       <FormBody brandId={brandId} username={username} playerCode={playerCode} />
     </FormDialog>
@@ -132,12 +130,12 @@ const FormBody = ({ brandId, username, playerCode }) => {
       <Input type="hidden" name="playerCode" value={playerCode} />
       <FieldValues margin="1rem">
         <Box alignY="center">
-          <Trans zh="用户名" en="Username" />
+          <UserNameTrans />
         </Box>
         <Box alignY="center">{username}</Box>
 
         <Box alignY="center">
-          <Trans zh="交易类型" en="Transaction Type" />
+          <TransactionTypeTrans />
         </Box>
         <Set>
           <PlayerAdjustBalanceTypeSelect
@@ -172,12 +170,12 @@ const FormBody = ({ brandId, username, playerCode }) => {
         )}
 
         <Box alignY="center">
-          <Trans zh="交易金额" en="Amount" />
+          <TransactionAmountTrans />
         </Box>
         <NumberInputField name="amount" min="0" step="0.01" required />
 
         <Box alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Box>
 
         <Input name="remark" />

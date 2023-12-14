@@ -37,6 +37,13 @@ import numberColumn, {
 } from "../../table/column/numberColumn"
 import { useAgentMarketingReport } from "./client"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import {
+  BetAmountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
+import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
+import { NetProfitTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -223,12 +230,12 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "deposit",
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "withdraw",
-        Header: <Trans zh="提款金额" en="Withdraw Amount" />,
+        Header: <WithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -243,19 +250,19 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -271,7 +278,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
-        Header: <Trans zh="净盈利" en="NetProfit" />,
+        Header: <NetProfitTrans />,
         disableSortBy: true
       })
     ]

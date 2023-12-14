@@ -41,13 +41,25 @@ import {
   useAllAgentValidBetCondition,
   useUpdateAllAgentValidBetCondition,
   useAllAgentWinLossCondition,
-  useUpdateAllAgentWinLossCondition
+  useUpdateAllAgentWinLossCondition,
+  useUpdateAllAgentSettlementCycle
 } from "../../agent/all-agent/client"
 import { Tabs, Tab, TabList, TabPanel, useTabState } from "../../tab"
 import { SwitchField } from "../../switch/Switch"
 import { CheckboxField } from "../../checkbox"
 import { SubmitButton } from "../../button/SubmitButton"
 import { AllAgentProfitSharingSetting } from "./AllAgentSharingSetting"
+import { SettlementIntervalTypeSelect } from "../../date/SettlementIntervalType"
+import { isDev } from "../../env"
+import {
+  CardGame,
+  LiveDealer,
+  Lottery,
+  Sportsbook,
+  ValidBetAmountTrans,
+  VirtualSports,
+  WinLossTrans
+} from "../../trans/Game"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -98,17 +110,117 @@ const AllAgentSettingDialog = ({ brandId, readOnly, dialog }) => {
 const DialogBody = ({ brandId, readOnly, dialog }) => {
   return (
     <FieldStack>
-      <AllAgentMainSwitchBox
-        brandId={brandId}
-        readOnly={readOnly}
-        dialog={dialog}
-      />
+      <Set orientation="horizontal">
+        <AllAgentMainSwitchBox
+          brandId={brandId}
+          readOnly={readOnly}
+          dialog={dialog}
+        />
+        <SettlementCycleDialogDisclosure
+          brandId={brandId}
+          readOnly={readOnly}
+        />
+      </Set>
+
       <AllAgentGameTypeTabs
         brandId={brandId}
         readOnly={readOnly}
         dialog={dialog}
       />
     </FieldStack>
+  )
+}
+
+const SettlementCycleDialogDisclosure = ({ brandId, readOnly }) => {
+  let dialog = useModalState()
+  let label = useTrans({
+    zh: "结算周期设置",
+    en: "Settlement Cycle Setup"
+  })
+
+  return (
+    <>
+      <Disclosure {...dialog}>{label}</Disclosure>
+      {dialog.visible && (
+        <SettlementCycleDialog
+          brandId={brandId}
+          readOnly={readOnly}
+          title={label}
+          dialog={dialog}
+        />
+      )}
+    </>
+  )
+}
+
+const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
+  let {
+    isLoading: isLoadingSettings,
+    data: settings,
+    error: settingsError,
+    mutate: mutateSettings
+  } = useAllAgentSetting(brandId)
+
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } =
+    useUpdateAllAgentSettlementCycle(formData)
+
+  if (isLoadingSettings) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (settingsError) {
+    return <AlertDialog {...settingsError} onClickClose={dialog.hide} />
+  }
+
+  const onSubmit = (data) => {
+    setSubmit(data)
+  }
+
+  const reset = () => {
+    setSubmit(null)
+
+    deleteCache()
+    mutate(null, false)
+  }
+
+  return (
+    <Backdrop {...dialog}>
+      <FormDialog
+        defaultValues={{
+          brandId,
+          settlementIntervalType: settings?.settlementIntervalType
+        }}
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        result={result}
+        error={error}
+        onCloseErrorAlert={reset}
+        onSubmitted={() => {
+          mutateSettings(
+            {
+              ...settings,
+              settlementIntervalType: formData.settlementIntervalType
+            },
+            true
+          )
+        }}
+        dialog={dialog}
+        showActionButtons={readOnly ? false : true}
+        {...props}
+      >
+        <FieldValues marginLeft="1rem">
+          <Box alignY="center">
+            <Trans zh="周期" en="Cycle" />
+          </Box>
+          <SettlementIntervalTypeSelect
+            name="settlementIntervalType"
+            required
+            disabled={readOnly}
+          />
+        </FieldValues>
+      </FormDialog>
+    </Backdrop>
   )
 }
 
@@ -217,27 +329,12 @@ const GameType = {
   Slot: "Slot"
 }
 
-const GameTypeTrans = {
-  Sportsbook: {
-    zh: "体育",
-    en: "Sports"
-  },
-  VirtualSports: {
-    zh: "虚拟体育",
-    en: "Virtual Sports"
-  },
-  LiveDealer: {
-    zh: "真人",
-    en: "Live Dealer"
-  },
-  CardGame: {
-    zh: "棋牌",
-    en: "Card Game"
-  },
-  Lottery: {
-    zh: "彩票",
-    en: "Lottery"
-  },
+const AllGameTypeMessages = {
+  Sportsbook: Sportsbook,
+  VirtualSports: VirtualSports,
+  LiveDealer: LiveDealer,
+  CardGame: CardGame,
+  Lottery: Lottery,
   Slot: {
     zh: "电子",
     en: "EGame"
@@ -306,7 +403,7 @@ const AllAgentGameTypeTabs = ({ brandId, readOnly, dialog }) => {
 }
 
 const GameTypeTab = ({ gameType, ...props }) => {
-  let trans = GameTypeTrans[gameType]
+  let trans = AllGameTypeMessages[gameType]
   return (
     <Tab tabId={gameType} {...props}>
       <Trans {...trans} />
@@ -377,7 +474,7 @@ const ValidBetSettingDialogDisclosure = ({
           useUpdate={useUpdateAllAgentValidBetCondition}
           dialog={dialog}
           title={label}
-          netProfitLabel={<Trans zh="有效投注" en="Valid Bet" />}
+          netProfitLabel={<ValidBetAmountTrans />}
           profitSharingPercentageLabel={<Trans zh="返佣比例" en="Rebate PT" />}
           maxProfitSharingPercentage={MaxProfitSharingPercentage}
         />
@@ -413,7 +510,7 @@ const WinLossSettingDialogDisclosure = ({
           useUpdate={useUpdateAllAgentWinLossCondition}
           dialog={dialog}
           title={label}
-          netProfitLabel={<Trans zh="输赢金额" en="Win Loss" />}
+          netProfitLabel={<WinLossTrans />}
           profitSharingPercentageLabel={<Trans zh="返佣比例" en="Rebate PT" />}
         />
       )}
@@ -621,12 +718,12 @@ const GameTypeSettingFormCard = ({
               />
               <CheckboxField
                 name="hasValidBet"
-                label={<Trans zh="有效投注" en="Valid Bet" />}
+                label={<ValidBetAmountTrans />}
                 disabled={isLoading || readOnly}
               />
               {/* <CheckboxField
                 name="hasWinLoss"
-                label={<Trans zh="输赢金额" en="Win Loss" />}
+                label={<WinLossTrans />}
                 disabled={isLoading || readOnly}
               /> */}
             </FieldStack>

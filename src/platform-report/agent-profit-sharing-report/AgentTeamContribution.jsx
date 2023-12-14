@@ -30,10 +30,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentTeamContributionList } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -53,6 +50,14 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { NetProfitTrans } from "../../trans/Field"
+import {
+  CardGameTrans,
+  LiveDealerTrans,
+  LotteryTrans,
+  SportsbookTrans,
+  VirtualSportsTrans
+} from "../../trans/Game"
 
 export const AgentTeamContributionDialogDisclosure = ({
   brandId,
@@ -265,14 +270,14 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "liveDealerWinLoss",
-        Header: <Trans zh="真人" en="Live Dealer" />,
+        Header: <LiveDealerTrans />,
         sumColumn: "liveDealerWinLoss",
         disableSortBy: true
       }),
 
       numberDecimalColumn({
         accessor: "sportsWinLoss",
-        Header: <Trans zh="体育" en="Sports" />,
+        Header: <SportsbookTrans />,
         sumColumn: "sportsWinLoss",
         disableSortBy: true
       }),
@@ -286,21 +291,21 @@ const useColumns = ({ items = [] }) => {
 
       numberDecimalColumn({
         accessor: "cardGameWinLoss",
-        Header: <Trans zh="棋牌" en="Card Game" />,
+        Header: <CardGameTrans />,
         sumColumn: "cardGameWinLoss",
         disableSortBy: true
       }),
 
       numberDecimalColumn({
         accessor: "virtualSportsWinLoss",
-        Header: <Trans zh="虚拟体育" en="Virtual Sports" />,
+        Header: <VirtualSportsTrans />,
         sumColumn: "virtualSportsWinLoss",
         disableSortBy: true
       }),
 
       numberDecimalColumn({
         accessor: "lotteryWinLoss",
-        Header: <Trans zh="彩票" en="Lottery" />,
+        Header: <LotteryTrans />,
         sumColumn: "lotteryWinLoss",
         disableSortBy: true
       }),
@@ -325,7 +330,7 @@ const useColumns = ({ items = [] }) => {
 
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         sumColumn: "netProfit",
         disableSortBy: true
       }),
