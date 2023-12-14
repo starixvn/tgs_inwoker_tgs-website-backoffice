@@ -37,7 +37,8 @@ import {
   PromotionBonusLimitTrans,
   PromotionBonusPercentageTrans,
   PromotionTurnoverRequirementTrans,
-  usePromotionBonusAmountLimitHintTrans
+  usePromotionBonusAmountLimitHintTrans,
+  usePromotionBucketTypeNotSpecifyTrans
 } from "../../../trans/Promotion"
 import { MultipliersTrans } from "../../../trans/Field"
 
@@ -77,6 +78,8 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
 
   let totalFunds = useTotalFunds()
 
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
+
   let disabled = readOnly
 
   return (
@@ -88,6 +91,7 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
         name="rule.bucketTypes[0]"
         platformId={brandId}
         disabled={disabled}
+        placeholder={bucketTypePlaceholder}
       />
 
       <NormalLabel>
@@ -160,6 +164,8 @@ const DepositRewardRule = ({ readOnly }) => {
     name: PercentageField
   })
 
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
+
   return (
     <FieldValues>
       <VipLevelCheckboxGroupField readOnly={readOnly} />
@@ -169,6 +175,7 @@ const DepositRewardRule = ({ readOnly }) => {
         name="rule.bucketTypes[0]"
         platformId={brandId}
         disabled={disabled}
+        placeholder={bucketTypePlaceholder}
       />
 
       <NormalLabel>
@@ -272,6 +279,8 @@ const DefaultRule = ({ readOnly }) => {
   let totalFunds = useTotalFunds()
   let brandId = usePromotionBrandId()
 
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
+
   let disabled = readOnly
   return (
     <FieldValues>
@@ -282,6 +291,7 @@ const DefaultRule = ({ readOnly }) => {
         name="rule.bucketTypes[0]"
         platformId={brandId}
         disabled={disabled}
+        placeholder={bucketTypePlaceholder}
       />
 
       <NormalLabel>

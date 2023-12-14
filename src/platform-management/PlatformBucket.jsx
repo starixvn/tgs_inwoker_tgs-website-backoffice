@@ -10,54 +10,15 @@ import {
   VirtualSports,
   Lottery
 } from "../trans/Game"
-
-const MainTrans = {
-  zh: "全部",
-  en: "All"
-}
-
-/*
-const LiveDealerTrans = {
-  zh: "真人",
-  en: "Live Dealer"
-}
-*/
-
-/*
-const SportsTrans = {
-  zh: "体育",
-  en: "Sports"
-}
-*/
+import { Default } from "../trans/Field"
 
 const EGameTrans = {
   zh: "电子",
   en: "EGame"
 }
 
-/*
-const CardGameTrans = {
-  zh: "棋牌",
-  en: "Card Game"
-}
-*/
-
-/*
-const VirtualSportsTrans = {
-  zh: "虚拟体育",
-  en: "Virtual Sports"
-}
-*/
-
-/*
-const LotteryTrans = {
-  zh: "彩票",
-  en: "Lottery"
-}
-*/
-
 const AllTrans = [
-  ["", MainTrans],
+  ["", Default],
   ["LiveDealer", LiveDealer],
   ["Sportsbook", Sportsbook],
   ["Slot", EGameTrans],
@@ -97,7 +58,7 @@ export const PlatformBucketSelect = ({
   filter: predicate = DefaultFilter,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans(MainTrans)
+  let defaultPlaceholder = useTrans(Default)
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()

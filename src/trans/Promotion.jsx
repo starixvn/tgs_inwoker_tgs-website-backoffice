@@ -217,3 +217,13 @@ const WinningContent = {
 }
 export const WinningContentTrans = () => <Trans {...WinningContent} />
 export const useWinningContentTrans = () => useTrans(WinningContent)
+
+const PromotionBucketTypeNotSpecify = {
+  zh: "不指定",
+  en: "Default"
+}
+export const PromotionBucketTypeNotSpecifyTrans = () => (
+  <Trans {...PromotionBucketTypeNotSpecify} />
+)
+export const usePromotionBucketTypeNotSpecifyTrans = () =>
+  useTrans(PromotionBucketTypeNotSpecify)

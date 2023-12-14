@@ -173,3 +173,10 @@ const RecommendedSize1920X600 = {
 export const RecommendedSize1920X600Trans = () => (
   <Trans {...RecommendedSize1920X600} />
 )
+
+export const Default = {
+  zh: "預設",
+  en: "Default"
+}
+export const DefaultTrans = () => <Trans {...Default} />
+export const useDefaultTrans = () => useTrans(Default)
