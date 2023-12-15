@@ -43,7 +43,6 @@ import {
 import { MultipliersTrans } from "../../../trans/Field"
 
 const FirstDeposit = "FirstDeposit" //Account First Deposit-Lifetime only
-//TODO: rm VipSelect
 const AccountFirstDeposit = "AccountFirstDeposit" //Account First Deposit-First deposit only
 
 const DailyFirstDeposit = "DailyFirstDeposit"
