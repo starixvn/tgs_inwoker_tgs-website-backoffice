@@ -14,6 +14,7 @@ import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 
 export const TabId = "manualAlert"
 
+//TODO: rm Manual alert tab?
 export const ManualAlertTab = (props) => (
   <Tab tabId={TabId} {...props}>
     <Trans zh="通知信-手動" en="Manual Alert" />

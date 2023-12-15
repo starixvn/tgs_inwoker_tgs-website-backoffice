@@ -42,15 +42,19 @@ import {
 } from "../../../trans/Promotion"
 import { MultipliersTrans } from "../../../trans/Field"
 
-const FirstDeposit = "FirstDeposit"
+const FirstDeposit = "FirstDeposit" //Account First Deposit-Lifetime only
+const AccountFirstDeposit = "AccountFirstDeposit" //Account First Deposit-First deposit only
+
 const DailyFirstDeposit = "DailyFirstDeposit"
 const DailySecondDeposit = "DailySecondDeposit"
 const DepositReward = "DepositReward"
 
 const DepositPaymentChannelReward = "PromoteDepositChannel"
 
+//TODO: able to rm PromotionTypes? used somewhere?
 export const PromotionTypes = [
   FirstDeposit,
+  AccountFirstDeposit,
   DailyFirstDeposit,
   DailySecondDeposit,
   DepositReward,
@@ -351,6 +355,12 @@ export const Rewards = [
   },
   {
     PromotionType: FirstDeposit,
+    Main,
+    Content,
+    Rule: DefaultRule
+  },
+  {
+    PromotionType: AccountFirstDeposit,
     Main,
     Content,
     Rule: DefaultRule

@@ -50,7 +50,6 @@ export const Content = () => {
 const Body = () => {
   let brandId = usePlatformId()
 
-  //TODO: need brand code?
   //TODO: auto update data every 5 mins?
   let { isLoading, data, error, mutate, deleteCache } =
     usePlatformAccountFund(brandId)
@@ -59,14 +58,14 @@ const Body = () => {
   return (
     <Set orientation="vertical" isFilled height="100%">
       <Set>
-        <AddOrDeductFundDialogDisclosure />
-        <AlertSettingDialogDisclosure />
+        <AddOrDeductFundDialogDisclosure brandId={brandId} />
+        <AlertSettingDialogDisclosure brandId={brandId} />
       </Set>
       <Box flex="1 0 50%">
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth
-            return "TODO: table"
+            return JSON.stringify(data)
             // return <Table />
           }}
         </AutoSizer>

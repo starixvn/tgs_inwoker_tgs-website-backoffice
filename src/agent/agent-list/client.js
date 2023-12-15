@@ -209,6 +209,7 @@ export const useAgentOperations = (agentId, searchParams) => {
   return useGet(url)
 }
 
+//TODO: 1.40 use new api?
 export const useAgentBalanceChanges = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/accountChanges`) : ""
   return useGet(url)

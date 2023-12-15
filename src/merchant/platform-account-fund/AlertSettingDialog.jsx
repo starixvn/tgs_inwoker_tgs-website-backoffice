@@ -124,11 +124,16 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
         <TabList {...tab}>
           <MainSettingTab {...tab} />
           <AutoAlertTab {...tab} />
-          <ManualAlertTab {...tab} />
+          {/* 
+          TODO: rm?
+          <ManualAlertTab {...tab} /> 
+          */}
         </TabList>
         <MainSettingPanel setDefaultValues={setDefaultValues} {...tab} />
         <AutoAlertPanel setDefaultValues={setDefaultValues} {...tab} />
-        <ManualAlertPanel setDefaultValues={setDefaultValues} {...tab} />
+        {/* 
+        <ManualAlertPanel setDefaultValues={setDefaultValues} {...tab} /> 
+        */}
       </Tabs>
     </FormDialog>
   )

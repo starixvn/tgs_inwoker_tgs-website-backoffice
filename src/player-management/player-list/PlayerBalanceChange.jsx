@@ -175,6 +175,7 @@ const SearchBar = ({
   )
 }
 
+//TODO:1.40 new balance change api has same columns?
 const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
@@ -351,6 +352,7 @@ const AdjustResettledBetManualTrans = {
 const CancelWithdrawal = "CancelWithdrawal"
 const WithdrawRollback = "WithdrawRollback"
 
+//TODO:1.40 able to rm some game related item?
 export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
@@ -449,6 +451,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   return <Select placeholder={placeholder} options={options} {...props} />
 }
 
+//TODO:1.40 able to rm game related item?
 export const PlayerTransactionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Deposit:

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: brand-game-credit-notification
-image: pgtgs/brand-gamecredits-notification:202312131034.6
+image: pgtgs/brand-gamecredits-notification:202312150345.7
 services:
   - name: brand-game-credit-notification
     dependencies:
