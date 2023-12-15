@@ -279,8 +279,15 @@ const PromotionSettingsString = JSON.stringify([
         Name: "FirstDeposit",
         SettlementIntervalType: "Instantly",
         Trans: {
-          En: "Account First Deposit",
-          Zh: "帳號首充"
+          En: "Account First Deposit-Lifetime only",
+          Zh: "帳號首充(可延用)"
+        }
+      },
+      {
+        Name: "AccountFirstDeposit",
+        Trans: {
+          En: "Account First Deposit-First deposit only",
+          Zh: "帳號首充(不可延用) "
         }
       },
       {

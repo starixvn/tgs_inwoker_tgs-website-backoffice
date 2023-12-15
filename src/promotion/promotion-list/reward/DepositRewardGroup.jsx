@@ -43,6 +43,7 @@ import {
 import { MultipliersTrans } from "../../../trans/Field"
 
 const FirstDeposit = "FirstDeposit" //Account First Deposit-Lifetime only
+//TODO: rm VipSelect
 const AccountFirstDeposit = "AccountFirstDeposit" //Account First Deposit-First deposit only
 
 const DailyFirstDeposit = "DailyFirstDeposit"
@@ -346,6 +347,72 @@ const DefaultRule = ({ readOnly }) => {
   )
 }
 
+const AccountFirstDepositRewardRule = ({ readOnly }) => {
+  let { control } = useFormContext()
+  let totalFunds = useTotalFunds()
+  let brandId = usePromotionBrandId()
+
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
+
+  let disabled = readOnly
+  return (
+    <FieldValues>
+      <BucketTypeLabel />
+      <PlatformBucketSelect
+        name="rule.bucketTypes[0]"
+        platformId={brandId}
+        disabled={disabled}
+        placeholder={bucketTypePlaceholder}
+      />
+
+      <NormalLabel>
+        <PromotionBonusPercentageTrans />
+      </NormalLabel>
+      <PercentageNumberInputField
+        name="rule.percentage"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        max="999"
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <PromotionBonusLimitTrans />
+      </NormalLabel>
+      <NumberInput
+        name="rule.bonusAmountLimit"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        max={totalFunds}
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <PromotionTurnoverRequirementTrans />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.turnoverMultiple"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        required
+        disabled={disabled}
+        addonAfter={
+          <Button isStatic tabIndex="-1">
+            <MultipliersTrans />
+          </Button>
+        }
+      />
+    </FieldValues>
+  )
+}
+
 export const Rewards = [
   {
     PromotionType: DepositReward,
@@ -363,7 +430,7 @@ export const Rewards = [
     PromotionType: AccountFirstDeposit,
     Main,
     Content,
-    Rule: DefaultRule
+    Rule: AccountFirstDepositRewardRule
   },
   {
     PromotionType: DailyFirstDeposit,
