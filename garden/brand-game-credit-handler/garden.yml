@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: brand-game-credit-handler
-image: pgtgs/brand-gamecredits-handler:202312180612.17
+image: pgtgs/brand-gamecredits-handler:202312180911.18
 services:
   - name: brand-game-credit-handler
     dependencies:

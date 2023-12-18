@@ -226,13 +226,11 @@ const TypeSelect = ({
     {
       label: useAddFundTrans(),
       value: TxType.Add
-    }
-    /*
+    },
     {
       label: useDeductFundTrans(),
       value: TxType.Deduct
     }
-    */
   ]
 
   return (
