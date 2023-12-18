@@ -346,6 +346,8 @@ const DefaultRule = ({ readOnly }) => {
   )
 }
 
+/*
+TODO: auto select all vip?
 const AccountFirstDepositRewardRule = ({ readOnly }) => {
   let { control } = useFormContext()
   let totalFunds = useTotalFunds()
@@ -411,6 +413,7 @@ const AccountFirstDepositRewardRule = ({ readOnly }) => {
     </FieldValues>
   )
 }
+*/
 
 export const Rewards = [
   {
@@ -429,7 +432,7 @@ export const Rewards = [
     PromotionType: AccountFirstDeposit,
     Main,
     Content,
-    Rule: AccountFirstDepositRewardRule
+    Rule: DefaultRule
   },
   {
     PromotionType: DailyFirstDeposit,
