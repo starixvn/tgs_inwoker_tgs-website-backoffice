@@ -103,7 +103,8 @@ const AddOrDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
     defaultValues: {
       brandCode: fundData?.brandCode,
       creditAvailable: fundData?.creditAvailable,
-      type: TxType.Add
+      type: TxType.Add,
+      expansions: {}
     }
   })
   let doubleConfirmDialog = useModalState()
