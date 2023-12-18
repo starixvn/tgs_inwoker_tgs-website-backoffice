@@ -18,6 +18,11 @@ export const usePlatformAccountFund = (brandId) => {
   return useGet(url)
 }
 
+export const usePlatformAccountFundHistory = () => {
+  let url = brandId ? `${API}/${brandId}/histories` : ""
+  return useGet(url)
+}
+
 export const FundType = {
   Add: "Add",
   Deduct: "Deduct"

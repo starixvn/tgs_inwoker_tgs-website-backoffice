@@ -30,13 +30,14 @@ import { subDays } from "date-fns"
 import { AlertSettingDialogDisclosure } from "./AlertSettingDialog"
 import { AddOrDeductFundDialogDisclosure } from "./AddOrDeductFundDialog"
 import AutoSizer from "react-virtualized-auto-sizer"
-import { usePlatformAccountFund } from "./client"
+import { usePlatformAccountFund } from "./fakeClient"
 import { TimeTrans } from "../../trans/Date"
 import { DateFormat } from "../../date/format"
 import {
   numberDecimalColumn,
   numberDecimalPercentageColumn
 } from "../../table/column/numberColumn"
+import { HistoryDialogDisclosure } from "./HistoryDialog"
 
 export { Code }
 
@@ -61,7 +62,7 @@ const Body = () => {
     usePlatformAccountFund(brandId)
 
   let items = data ? [data] : []
-  let columns = useColumns({
+  let columns = usePlatformAccountFundColumns({
     items
   })
 
@@ -71,6 +72,7 @@ const Body = () => {
       <Set>
         <AddOrDeductFundDialogDisclosure brandId={brandId} />
         <AlertSettingDialogDisclosure brandId={brandId} />
+        <HistoryDialogDisclosure brandId={brandId} />
       </Set>
       <Text.Block fontSize="400" paddingTop="1rem">
         <Trans zh="當月資金" en="Fund of the month" />
@@ -96,7 +98,7 @@ const Body = () => {
   )
 }
 
-const useColumns = ({ items = [] }) => {
+export const usePlatformAccountFundColumns = ({ items = [] }) => {
   return useMemo(
     () => [
       {
