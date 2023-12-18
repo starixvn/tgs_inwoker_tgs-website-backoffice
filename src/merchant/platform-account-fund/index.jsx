@@ -38,6 +38,7 @@ import {
   numberDecimalPercentageColumn
 } from "../../table/column/numberColumn"
 import { HistoryDialogDisclosure } from "./HistoryDialog"
+import { isObject } from "lodash-es"
 
 export { Code }
 
@@ -61,7 +62,7 @@ const Body = () => {
   let { isLoading, data, error, mutate, deleteCache } =
     usePlatformAccountFund(brandId)
 
-  let items = data ? [data] : []
+  let items = isObject(data) ? [data] : []
   let columns = usePlatformAccountFundColumns({
     items
   })
