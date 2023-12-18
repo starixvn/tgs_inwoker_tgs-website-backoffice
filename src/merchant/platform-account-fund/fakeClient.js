@@ -7,7 +7,6 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
-import { usePlatformCreditList } from "../platform-credit/client"
 import { faker } from "@faker-js/faker"
 import { isObject } from "lodash-es"
 
@@ -56,16 +55,15 @@ export const usePlatformAccountFundHistory = (brandId) => {
   }
 }
 
-export const FundType = {
+export const TxType = {
   Add: "Add",
   Deduct: "Deduct"
 }
 
-//TODO" need fake?
 export const useUpdatePlatformAccountFund = (brandId, fundType, formData) => {
-  if (fundType === FundType.Add) {
+  if (fundType === TxType.Add) {
     return useAddPlatformAccountFund(brandId, formData)
-  } else if (fundType === FundType.Deduct) {
+  } else if (fundType === TxType.Deduct) {
     return useDeductPlatformAccountFund(brandId, formData)
   }
 
@@ -78,12 +76,13 @@ export const useUpdatePlatformAccountFund = (brandId, fundType, formData) => {
   }
 }
 
+const TxApi = "/api/brandgamecredittxn"
 export const useAddPlatformAccountFund = (brandId, formData) => {
-  let url = brandId && formData ? `${API}/${brandId}/credit` : ""
+  let url = brandId && formData ? `${TxApi}/${brandId}/credit` : ""
   return usePostData(url, formData)
 }
 
 export const useDeductPlatformAccountFund = (brandId, formData) => {
-  let url = brandId && formData ? `${API}/${brandId}/debit` : ""
+  let url = brandId && formData ? `${TxApi}/${brandId}/debit` : ""
   return usePostData(url, formData)
 }

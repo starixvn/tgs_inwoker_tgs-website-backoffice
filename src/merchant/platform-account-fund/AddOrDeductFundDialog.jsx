@@ -32,8 +32,14 @@ import { NumberInput as _NumberInput } from "../../input/NumberInput"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import {
   usePlatformAccountFund,
-  useUpdatePlatformAccountFund
-} from "./fakeClient"
+  /*
+  TODO: why hook error
+  useUpdatePlatformAccountFund,
+  */
+  useAddPlatformAccountFund,
+  useDeductPlatformAccountFund,
+  TxType
+} from "./client"
 import Modal from "../../dialog/Modal"
 import { ConfirmText } from "../../button/ActionButtons"
 import AlertDialog from "../../dialog/Alert"
@@ -70,7 +76,7 @@ export const AddOrDeductFundDialogDisclosure = ({ brandId, onSubmitted }) => {
   )
 }
 
-const PlatformCreditField = "platformCredit"
+const PlatformCreditField = "creditAvailable"
 const usePlatformCredit = (name = PlatformCreditField) => {
   let { control } = useFormContext()
   let value = useWatch({
@@ -84,39 +90,49 @@ const AddOrDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
   let title = useAddOrDeductFundTrans()
 
   let formRef = useRef()
-
-  //TODO: fetch latest data from api
+  //TODO: reload fund data?
   let {
-    isLoading: isLoadingCreditData,
-    data: creditData,
-    error: creditDataError,
-    mutate: mutateCreditData,
-    deleteCache: deleteCreditDataCache
+    isLoading: isLoadingFundData,
+    data: fundData,
+    error: fundDataError,
+    mutate: mutateFundData,
+    deleteCache: deleteFundDataCache
   } = usePlatformAccountFund(brandId)
-  //TODO: rm fake platformCredit 100
+
   let formMethods = useForm({
     defaultValues: {
-      platformCredit: 100
+      brandCode: fundData?.brandCode,
+      creditAvailable: fundData?.creditAvailable,
+      type: TxType.Add
     }
   })
   let doubleConfirmDialog = useModalState()
 
-  let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
-    useUpdatePlatformAccountFund(brandId, formData)
+  let [type, setType] = useState(TxType.Add)
+  let useFetch = useAddPlatformAccountFund
+  if (type === TxType.Deduct) {
+    useFetch = useDeductPlatformAccountFund
+  }
 
-  if (isLoadingCreditData) {
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } = useFetch(
+    fundData?.brandId,
+    formData
+  )
+
+  if (isLoadingFundData) {
     return <LoadingBackdrop {...dialog} />
   }
-  if (creditDataError) {
-    return <AlertDialog {...creditDataError} onClickClose={dialog.hide} />
+  if (fundDataError) {
+    return <AlertDialog {...fundDataError} onClickClose={dialog.hide} />
   }
 
-  const onSubmit = (data) => {
-    console.log("onSubmit", data)
+  const onSubmit = ({ brandCode, creditAvailable, type, confirm, ...data }) => {
+    setType(type)
     setSubmit(data)
   }
 
+  //TODO: also reset txType?
   const reset = () => {
     deleteCache()
     mutate(null, false)
@@ -179,31 +195,23 @@ const AddOrDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
-//TODO
+//TODO: rm from onSubmit data
 const TypeField = "type"
 const AddFund = {
   zh: "上分",
   en: "Add Fund"
 }
-const AddFundTrans = () => <Trans {...AddFund} />
 const useAddFundTrans = () => useTrans(AddFund)
 
 const DeductFund = {
   zh: "下分",
   en: "Deduct Fund"
 }
-const DeductFundTrans = () => <Trans {...DeductFund} />
 const useDeductFundTrans = () => useTrans(DeductFund)
-
-//TODO: import from client
-const Type = {
-  AddFund: "AddFund",
-  DeductFund: "DeductFund"
-}
 
 const TypeSelect = ({
   name = TypeField,
-  defaultValue = Type.AddFund,
+  defaultValue = TxType.Add,
   required = true,
   placeholder,
   ...props
@@ -217,12 +225,14 @@ const TypeSelect = ({
   let options = [
     {
       label: useAddFundTrans(),
-      value: Type.AddFund
-    },
+      value: TxType.Add
+    }
+    /*
     {
       label: useDeductFundTrans(),
-      value: Type.DeductFund
+      value: TxType.Deduct
     }
+    */
   ]
 
   return (
@@ -262,7 +272,7 @@ const NumberInput = ({
   )
 }
 
-const CreditAmountField = "credit"
+const CreditAmountField = "amount"
 const CreditAmountInput = ({
   name = CreditAmountField,
   required = true,
@@ -288,15 +298,14 @@ const useEstimatedCredit = () => {
   return platformCredit + creditAmount
 }
 
-//TODO: confirm required = true?
-const PaymentAmountField = "paymentAmount"
-const PaymentAmountInput = ({
-  name = PaymentAmountField,
-  required = true,
-  ...props
-}) => <NumberInput name={name} required={required} {...props} />
+const AmountField = "money"
+const AmountInput = ({ name = AmountField, required = true, ...props }) => (
+  <NumberInput name={name} required={required} {...props} />
+)
 
 const FormBody = ({}) => {
+  let { getValues } = useFormContext()
+
   let platformCredit = usePlatformCredit()
   let operator = useUsername()
   let estimatedCredit = useEstimatedCredit()
@@ -306,7 +315,7 @@ const FormBody = ({}) => {
         <Box>
           <Trans zh="平台" en="Platform" />
         </Box>
-        <Box>TODO: Platform Code?</Box>
+        <Box>{getValues("brandCode")}</Box>
 
         <Box>
           <Trans zh="平台額度" en="Platform Credits" />
@@ -340,12 +349,12 @@ const FormBody = ({}) => {
         <Box>
           <RemarkTrans />
         </Box>
-        <Textarea name="reamrk" />
+        <Textarea name="remark" />
 
         <Box alignY="center">
           <Trans zh="金額 (USD)" en="Amount (USD)" />
         </Box>
-        <PaymentAmountInput />
+        <AmountInput />
       </FieldValues>
       <Box>
         <ConfirmCheckbox />
