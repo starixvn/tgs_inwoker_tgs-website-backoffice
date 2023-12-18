@@ -30,7 +30,10 @@ import { CancelTrans, RemarkTrans, SubmitTrans } from "../../trans/Action"
 import { Select } from "../../select/Select"
 import { NumberInput as _NumberInput } from "../../input/NumberInput"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
-import { usePlatformAccountFund, useUpdatePlatformAccountFund } from "./client"
+import {
+  usePlatformAccountFund,
+  useUpdatePlatformAccountFund
+} from "./fakeClient"
 import Modal from "../../dialog/Modal"
 import { ConfirmText } from "../../button/ActionButtons"
 import AlertDialog from "../../dialog/Alert"
@@ -192,6 +195,7 @@ const DeductFund = {
 const DeductFundTrans = () => <Trans {...DeductFund} />
 const useDeductFundTrans = () => useTrans(DeductFund)
 
+//TODO: import from client
 const Type = {
   AddFund: "AddFund",
   DeductFund: "DeductFund"

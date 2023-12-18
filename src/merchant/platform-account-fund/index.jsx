@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { Box, Flex, Set, Button, Text, Icon, Level } from "bumbag"
+import { Box, Flex, Set, Button, Text, Icon, Level, Heading } from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
@@ -26,11 +26,13 @@ import { PlatformAccountFundTypeSelect } from "./PlatformAccountFundType"
 import SearchButton from "../../button/SearchButton"
 import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
-import { usePlatformAccountFund } from "./client"
 import { subDays } from "date-fns"
 import { AlertSettingDialogDisclosure } from "./AlertSettingDialog"
 import { AddOrDeductFundDialogDisclosure } from "./AddOrDeductFundDialog"
 import AutoSizer from "react-virtualized-auto-sizer"
+import { usePlatformAccountFund } from "./client"
+import { TimeTrans } from "../../trans/Date"
+import { DateFormat } from "../../date/format"
 
 export { Code }
 
@@ -61,6 +63,9 @@ const Body = () => {
         <AddOrDeductFundDialogDisclosure brandId={brandId} />
         <AlertSettingDialogDisclosure brandId={brandId} />
       </Set>
+      <Text.Block fontWeight="bold" fontSize="400" paddingTop="1rem">
+        <Trans zh="當月資金" en="Fund of the month" />
+      </Text.Block>
       <Box flex="1 0 50%">
         <AutoSizer disableWidth={true}>
           {({ height }) => {
@@ -71,5 +76,27 @@ const Body = () => {
         </AutoSizer>
       </Box>
     </Set>
+  )
+}
+
+//TOOD: table
+const useColumns = ({ items = [] }) => {
+  return useMemo(
+    () => [
+      {
+        id: "time",
+        Header: "",
+        columns: [
+          dateTimeColumn({
+            accessor: "month",
+            Header: <TimeTrans />,
+            disableSortBy: true,
+            dateFormat: DateFormat.YearMonth,
+            timeFormat: ""
+          })
+        ]
+      }
+    ],
+    [JSON.stringify(items)]
   )
 }

@@ -33,8 +33,6 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { startOfPreviousDay } from "../../date/startOfPreviousDay"
-import { formatYearMonthDay } from "../../date/format"
 import { UserNameTrans } from "../../trans/User"
 
 export const AgentWinLossDialogDisclosure = ({
