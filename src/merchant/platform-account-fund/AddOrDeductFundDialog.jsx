@@ -210,6 +210,15 @@ const DeductFund = {
 }
 const useDeductFundTrans = () => useTrans(DeductFund)
 
+const useType = (name = TypeField) => {
+  let { control } = useFormContext()
+  let value = useWatch({
+    control,
+    name
+  })
+  return value
+}
+
 const TypeSelect = ({
   name = TypeField,
   defaultValue = TxType.Add,
@@ -289,12 +298,18 @@ const useCreditAmount = (name = CreditAmountField) => {
 
 const useEstimatedCredit = () => {
   let platformCredit = usePlatformCredit()
-  let creditAmount = useCreditAmount()
-  if (!Number.isFinite(creditAmount)) {
+  let type = useType()
+  let amount = useCreditAmount()
+  if (!Number.isFinite(amount)) {
     return null
   }
 
-  return platformCredit + creditAmount
+  if (type === TxType.Add) {
+    return platformCredit + amount
+  } else if (type === TxType.Deduct) {
+    return platformCredit - amount
+  }
+  return null
 }
 
 const AmountField = "money"
