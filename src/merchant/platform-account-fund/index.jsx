@@ -30,7 +30,7 @@ import { subDays } from "date-fns"
 import { AlertSettingDialogDisclosure } from "./AlertSettingDialog"
 import { AddOrDeductFundDialogDisclosure } from "./AddOrDeductFundDialog"
 import AutoSizer from "react-virtualized-auto-sizer"
-import { usePlatformAccountFund } from "./fakeClient"
+import { usePlatformAccountFund } from "./client"
 import { TimeTrans } from "../../trans/Date"
 import { DateFormat } from "../../date/format"
 import {
