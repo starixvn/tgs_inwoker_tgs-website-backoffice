@@ -12,7 +12,7 @@ import { Code } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import {
   PlatformPageContent,
   usePlatformId,
@@ -33,6 +33,10 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { usePlatformAccountFund } from "./client"
 import { TimeTrans } from "../../trans/Date"
 import { DateFormat } from "../../date/format"
+import {
+  numberDecimalColumn,
+  numberDecimalPercentageColumn
+} from "../../table/column/numberColumn"
 
 export { Code }
 
@@ -56,6 +60,11 @@ const Body = () => {
   let { isLoading, data, error, mutate, deleteCache } =
     usePlatformAccountFund(brandId)
 
+  let items = data ? [data] : []
+  let columns = useColumns({
+    items
+  })
+
   let pageWidth = usePlatformPageContentWidth()
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -63,15 +72,23 @@ const Body = () => {
         <AddOrDeductFundDialogDisclosure brandId={brandId} />
         <AlertSettingDialogDisclosure brandId={brandId} />
       </Set>
-      <Text.Block fontWeight="bold" fontSize="400" paddingTop="1rem">
+      <Text.Block fontSize="400" paddingTop="1rem">
         <Trans zh="當月資金" en="Fund of the month" />
       </Text.Block>
       <Box flex="1 0 50%">
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth
-            return JSON.stringify(data)
-            // return <Table />
+
+            return (
+              <Table
+                id="platform-fund"
+                columns={columns}
+                data={items}
+                maxSize={{ height, width }}
+                hasCellDividers
+              />
+            )
           }}
         </AutoSizer>
       </Box>
@@ -79,7 +96,6 @@ const Body = () => {
   )
 }
 
-//TOOD: table
 const useColumns = ({ items = [] }) => {
   return useMemo(
     () => [
@@ -93,6 +109,55 @@ const useColumns = ({ items = [] }) => {
             disableSortBy: true,
             dateFormat: DateFormat.YearMonth,
             timeFormat: ""
+          })
+        ]
+      },
+      {
+        id: "credit",
+        Header: <Trans zh="平台額度" en="Platform Credits" />,
+        headCell: {
+          textAlign: "center"
+        },
+        columns: [
+          numberDecimalColumn({
+            accessor: "initialAmount",
+            Header: <Trans zh="期初額度" en="Opening Balance" />,
+            disableSortBy: true
+          }),
+          numberDecimalColumn({
+            id: "addedAndDeducted",
+            accessor: (row) => row,
+            Header: <Trans zh="上/下分" en="Added/Deducted" />,
+            disableSortBy: true,
+            Cell: ({ value: record }) => {
+              return (
+                <FormattedNumberDecimal
+                  value={record?.creditAmount - record?.debitAmount}
+                />
+              )
+            }
+          })
+        ]
+      },
+      {
+        id: "used",
+        Header: "",
+        columns: [
+          numberDecimalColumn({
+            accessor: "creditUsed",
+            Header: <Trans zh="已使用額度" en="Used Credits" />,
+            disableSortBy: true
+          })
+        ]
+      },
+      {
+        id: "usedPercentage",
+        Header: "",
+        columns: [
+          numberDecimalPercentageColumn({
+            accessor: "creditUsedPer",
+            Header: <Trans zh="已使用額度比例" en="Used Credits P/T" />,
+            disableSortBy: true
           })
         ]
       }
