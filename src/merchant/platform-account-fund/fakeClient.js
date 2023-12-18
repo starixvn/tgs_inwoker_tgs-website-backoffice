@@ -9,6 +9,7 @@ import {
 } from "../../client"
 import { usePlatformCreditList } from "../platform-credit/client"
 import { faker } from "@faker-js/faker"
+import { isObject } from "lodash-es"
 
 const API = "/api/brandgamecredit"
 
@@ -40,6 +41,17 @@ export const usePlatformAccountFund = (brandId) => {
           createdOn: "2023-12-05T10:25:06.333385+00:00",
           updatedOn: "2023-12-15T09:25:10.592835+00:00"
         },
+    ...rest
+  }
+}
+
+export const usePlatformAccountFundHistory = (brandId) => {
+  let { data, ...rest } = usePlatformAccountFund()
+  if (isObject(data)) {
+    data = [data]
+  }
+  return {
+    data,
     ...rest
   }
 }

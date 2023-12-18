@@ -34,10 +34,10 @@ const usePlatformAccountFundHistoryTrans = () =>
     en: "Fund Performance"
   })
 
-export const HistoryDialogDisclosure = ({
+export const FundHistoryDialogDisclosure = ({
   brandId,
   id,
-  dialogId = "history"
+  dialogId = "fund-history"
 }) => {
   let dialog = useModalState()
 
@@ -62,16 +62,41 @@ export const HistoryDialogDisclosure = ({
 }
 
 const HistoryDialog = ({ brandId, dialog, dialogId, title }) => {
-  let { isLoading, data, error } = usePlatformAccountFundHistory(brandId)
+  let { isLoading, data: items, error } = usePlatformAccountFundHistory(brandId)
+
+  let { state, setPageIndex, setSortOrder } = useTable()
+
+  let columns = usePlatformAccountFundColumns({
+    items
+  })
+
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
+
   if (error) {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
+
   return (
-    <Modal id={dialogId} title={title} {...dialog}>
-      {JSON.stringify(data)}
+    <Modal
+      id={dialogId}
+      title={title}
+      {...dialog}
+      css={css`
+        min-width: 75vw;
+      `}
+    >
+      <Table
+        columns={columns}
+        data={items}
+        controlledState={state}
+        autoPaging={true}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+        hasCellDividers
+      />
     </Modal>
   )
 }

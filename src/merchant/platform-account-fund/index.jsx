@@ -37,7 +37,7 @@ import {
   numberDecimalColumn,
   numberDecimalPercentageColumn
 } from "../../table/column/numberColumn"
-import { HistoryDialogDisclosure } from "./HistoryDialog"
+import { FundHistoryDialogDisclosure } from "./FundHistoryDialog"
 import { isObject } from "lodash-es"
 
 export { Code }
@@ -73,7 +73,7 @@ const Body = () => {
       <Set>
         <AddOrDeductFundDialogDisclosure brandId={brandId} />
         <AlertSettingDialogDisclosure brandId={brandId} />
-        <HistoryDialogDisclosure brandId={brandId} />
+        <FundHistoryDialogDisclosure brandId={brandId} />
       </Set>
       <Text.Block fontSize="400" paddingTop="1rem">
         <Trans zh="當月資金" en="Fund of the month" />
