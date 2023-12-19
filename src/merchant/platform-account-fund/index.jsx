@@ -40,6 +40,7 @@ import {
 import { FundChangeHistoryDialogDisclosure } from "./FundChangeHistoryDialog"
 import { isObject } from "lodash-es"
 import { FundActionDetailDialogDisclosure } from "./FundActionDetailDialog"
+import { CreditUsedDialog } from "./CreditUsedDetailDialog"
 
 export { Code }
 
@@ -156,9 +157,19 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
         Header: "",
         columns: [
           numberDecimalColumn({
-            accessor: "creditUsed",
+            id: "creditUsed",
+            accessor: (row) => row,
             Header: <Trans zh="已使用額度" en="Used Credits" />,
-            disableSortBy: true
+            disableSortBy: true,
+            Cell: ({ value: record }) => {
+              return (
+                <CreditUsedDialog
+                  brandId={brandId}
+                  month={record?.month}
+                  value={record?.creditUsed}
+                />
+              )
+            }
           })
         ]
       },

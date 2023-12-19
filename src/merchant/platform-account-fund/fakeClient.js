@@ -244,3 +244,15 @@ export const usePlatformAccountFundActionDetail = (brandId, searchParams) => {
     ...rest
   }
 }
+
+const ProfitApi = "/api/brandgamecreditprofit"
+export const usePlatformAccountFundCreditUsedDetail = (
+  brandId,
+  searchParams
+) => {
+  let url =
+    brandId && searchParams
+      ? urlWith(searchParams, `${ProfitApi}/${brandId}/query`)
+      : ""
+  return useGet(url)
+}
