@@ -34,7 +34,7 @@ const AddOrDeductFund = {
 const AddOrDeductFundTrans = () => <Trans {...AddOrDeductFund} />
 const useAddOrDeductFundTrans = () => useTrans(AddOrDeductFund)
 
-export const AddDeductFundDialogDisclosure = ({
+export const FundActionDialogDisclosure = ({
   brandId,
   onSubmitted,
   id,

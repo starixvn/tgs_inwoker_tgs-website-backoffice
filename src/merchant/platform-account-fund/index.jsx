@@ -28,7 +28,7 @@ import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
 import { subDays } from "date-fns"
 import { AlertSettingDialogDisclosure } from "./AlertSettingDialog"
-import { AddDeductFundDialogDisclosure } from "./FundActionDialog"
+import { FundActionDialogDisclosure } from "./FundActionDialog"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { usePlatformAccountFund } from "./client"
 import { TimeTrans } from "../../trans/Date"
@@ -73,7 +73,7 @@ const Body = () => {
   return (
     <Set orientation="vertical" isFilled height="100%">
       <Set>
-        <AddDeductFundDialogDisclosure brandId={brandId} onSubmitted={mutate} />
+        <FundActionDialogDisclosure brandId={brandId} onSubmitted={mutate} />
         {/* 
         TODO
         <AlertSettingDialogDisclosure brandId={brandId} /> 
