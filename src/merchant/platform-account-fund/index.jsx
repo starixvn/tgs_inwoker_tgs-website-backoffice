@@ -28,7 +28,7 @@ import { DateInputRange } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
 import { subDays } from "date-fns"
 import { AlertSettingDialogDisclosure } from "./AlertSettingDialog"
-import { AddOrDeductFundDialogDisclosure } from "./AddOrDeductFundDialog"
+import { AddDeductFundDialogDisclosure } from "./FundActionDialog"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { usePlatformAccountFund } from "./client"
 import { TimeTrans } from "../../trans/Date"
@@ -37,7 +37,7 @@ import {
   numberDecimalColumn,
   numberDecimalPercentageColumn
 } from "../../table/column/numberColumn"
-import { FundHistoryDialogDisclosure } from "./FundHistoryDialog"
+import { FundChangeHistoryDialogDisclosure } from "./FundChangeHistoryDialog"
 import { isObject } from "lodash-es"
 
 export { Code }
@@ -71,9 +71,9 @@ const Body = () => {
   return (
     <Set orientation="vertical" isFilled height="100%">
       <Set>
-        <AddOrDeductFundDialogDisclosure brandId={brandId} />
+        <AddDeductFundDialogDisclosure brandId={brandId} />
         <AlertSettingDialogDisclosure brandId={brandId} />
-        <FundHistoryDialogDisclosure brandId={brandId} />
+        <FundChangeHistoryDialogDisclosure brandId={brandId} />
       </Set>
       <Text.Block fontSize="400" paddingTop="1rem">
         <Trans zh="當月資金" en="Fund of the month" />
@@ -89,12 +89,14 @@ const Body = () => {
                 columns={columns}
                 data={items}
                 maxSize={{ height, width }}
+                isLoading={isLoading}
                 hasCellDividers
               />
             )
           }}
         </AutoSizer>
       </Box>
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
   )
 }

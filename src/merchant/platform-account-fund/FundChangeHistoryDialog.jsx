@@ -34,7 +34,7 @@ const usePlatformAccountFundHistoryTrans = () =>
     en: "Fund Performance"
   })
 
-export const FundHistoryDialogDisclosure = ({
+export const FundChangeHistoryDialogDisclosure = ({
   brandId,
   id,
   dialogId = "fund-history"

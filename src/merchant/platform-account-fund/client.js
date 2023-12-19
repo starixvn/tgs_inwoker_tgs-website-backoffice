@@ -10,6 +10,7 @@ import {
 import { usePlatformCreditList } from "../platform-credit/client"
 import { faker } from "@faker-js/faker"
 import { useBrand } from "../platforms/client"
+import { FundAction } from "./FundActionSelect"
 
 const API = "/api/brandgamecredit"
 
@@ -23,29 +24,16 @@ export const usePlatformAccountFundHistory = (brandId) => {
   return useGet(url)
 }
 
-export const TxType = {
-  Add: "Add",
-  Deduct: "Deduct"
-}
-
-//TODO: cause hook err?
-/*
 export const useUpdatePlatformAccountFund = (brandId, fundType, formData) => {
-  if (fundType === TxType.Add) {
+  if (fundType === FundAction.Add) {
     return useAddPlatformAccountFund(brandId, formData)
-  } else if (fundType === TxType.Deduct) {
+  } else if (fundType === FundAction.Deduct) {
     return useDeductPlatformAccountFund(brandId, formData)
   }
 
-  // empty result
-  return {
-    isLoading: false,
-    result: false,
-    mutate: () => {},
-    deleteCache: () => {}
-  }
+  let url = "" //empty
+  return usePostData(url)
 }
-*/
 
 const TxApi = "/api/brandgamecredittxn"
 export const useAddPlatformAccountFund = (brandId, formData) => {

@@ -27,23 +27,19 @@ import Input from "../../input/Input"
 import Textarea from "../../textarea"
 import Checkbox from "../../checkbox"
 import { CancelTrans, RemarkTrans, SubmitTrans } from "../../trans/Action"
-import { Select } from "../../select/Select"
 import { NumberInput as _NumberInput } from "../../input/NumberInput"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
-import {
-  usePlatformAccountFund,
-  /*
-  TODO: why hook error
-  useUpdatePlatformAccountFund,
-  */
-  useAddPlatformAccountFund,
-  useDeductPlatformAccountFund,
-  TxType
-} from "./client"
+import { usePlatformAccountFund, useUpdatePlatformAccountFund } from "./client"
 import Modal from "../../dialog/Modal"
 import { ConfirmText } from "../../button/ActionButtons"
 import AlertDialog from "../../dialog/Alert"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import {
+  FundAction,
+  FundActionSelect,
+  isAddFund,
+  isDeductFund
+} from "./FundActionSelect"
 
 const AddOrDeductFund = {
   zh: "上/下分",
@@ -52,7 +48,7 @@ const AddOrDeductFund = {
 const AddOrDeductFundTrans = () => <Trans {...AddOrDeductFund} />
 const useAddOrDeductFundTrans = () => useTrans(AddOrDeductFund)
 
-export const AddOrDeductFundDialogDisclosure = ({ brandId, onSubmitted }) => {
+export const AddDeductFundDialogDisclosure = ({ brandId, onSubmitted }) => {
   let dialog = useModalState()
 
   let hasAuth = useIsDisplayMenuByRoute([Update])
@@ -66,7 +62,7 @@ export const AddOrDeductFundDialogDisclosure = ({ brandId, onSubmitted }) => {
         <AddOrDeductFundTrans />
       </Disclosure>
       {dialog.visible && (
-        <AddOrDeductFundDialog
+        <AddDeductFundDialog
           brandId={brandId}
           dialog={dialog}
           onSubmitted={onSubmitted}
@@ -86,7 +82,7 @@ const usePlatformCredit = (name = PlatformCreditField) => {
   return value
 }
 
-const AddOrDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
+const AddDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
   let title = useAddOrDeductFundTrans()
 
   let formRef = useRef()
@@ -103,23 +99,15 @@ const AddOrDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
     defaultValues: {
       brandCode: fundData?.brandCode,
       creditAvailable: fundData?.creditAvailable,
-      type: TxType.Add,
+      type: FundAction.Add,
       expansions: {}
     }
   })
   let doubleConfirmDialog = useModalState()
 
-  let [type, setType] = useState(TxType.Add)
-  let useFetch = useAddPlatformAccountFund
-  if (type === TxType.Deduct) {
-    useFetch = useDeductPlatformAccountFund
-  }
-
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } = useFetch(
-    fundData?.brandId,
-    formData
-  )
+  let { isLoading, result, error, mutate, deleteCache } =
+    useUpdatePlatformAccountFund(brandId, formData?.type, formData)
 
   if (isLoadingFundData) {
     return <LoadingBackdrop {...dialog} />
@@ -128,12 +116,9 @@ const AddOrDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
     return <AlertDialog {...fundDataError} onClickClose={dialog.hide} />
   }
 
-  const onSubmit = ({ brandCode, creditAvailable, type, confirm, ...data }) => {
-    setType(type)
+  const onSubmit = ({ brandCode, creditAvailable, confirm, ...data }) => {
     setSubmit(data)
   }
-
-  //TODO: also reset txType?
   const reset = () => {
     deleteCache()
     mutate(null, false)
@@ -196,65 +181,6 @@ const AddOrDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
   )
 }
 
-//TODO: rm from onSubmit data
-const TypeField = "type"
-const AddFund = {
-  zh: "上分",
-  en: "Add Fund"
-}
-const useAddFundTrans = () => useTrans(AddFund)
-
-const DeductFund = {
-  zh: "下分",
-  en: "Deduct Fund"
-}
-const useDeductFundTrans = () => useTrans(DeductFund)
-
-const useType = (name = TypeField) => {
-  let { control } = useFormContext()
-  let value = useWatch({
-    control,
-    name
-  })
-  return value
-}
-
-const TypeSelect = ({
-  name = TypeField,
-  defaultValue = TxType.Add,
-  required = true,
-  placeholder,
-  ...props
-}) => {
-  let defaultPlaceholder = useTrans({
-    zh: "类型",
-    en: "Type"
-  })
-  placeholder = placeholder ?? defaultPlaceholder
-
-  let options = [
-    {
-      label: useAddFundTrans(),
-      value: TxType.Add
-    },
-    {
-      label: useDeductFundTrans(),
-      value: TxType.Deduct
-    }
-  ]
-
-  return (
-    <Select
-      name={name}
-      options={options}
-      defaultValue={defaultValue}
-      required={required}
-      placeholder={placeholder}
-      {...props}
-    />
-  )
-}
-
 const NumberInputStyle = css`
   & input {
     text-align: right;
@@ -304,9 +230,9 @@ const useEstimatedCredit = () => {
     return null
   }
 
-  if (type === TxType.Add) {
+  if (isAddFund(type)) {
     return platformCredit + amount
-  } else if (type === TxType.Deduct) {
+  } else if (isDeductFund(type)) {
     return platformCredit - amount
   }
   return null
@@ -341,7 +267,7 @@ const FormBody = ({}) => {
         <Box alignY="center">
           <Trans zh="操作類型" en="Type" />
         </Box>
-        <TypeSelect width="100%" />
+        <FundActionSelect width="100%" />
 
         <Box alignY="center">
           <Trans zh="額度" en="Credits" />

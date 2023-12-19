@@ -55,11 +55,6 @@ export const usePlatformAccountFundHistory = (brandId) => {
   }
 }
 
-export const TxType = {
-  Add: "Add",
-  Deduct: "Deduct"
-}
-
 export const useUpdatePlatformAccountFund = (brandId, fundType, formData) => {
   if (fundType === TxType.Add) {
     return useAddPlatformAccountFund(brandId, formData)
@@ -67,13 +62,8 @@ export const useUpdatePlatformAccountFund = (brandId, fundType, formData) => {
     return useDeductPlatformAccountFund(brandId, formData)
   }
 
-  // empty result
-  return {
-    isLoading: false,
-    result: false,
-    mutate: () => {},
-    deleteCache: () => {}
-  }
+  let url = "" //empty
+  return usePostData(url)
 }
 
 const TxApi = "/api/brandgamecredittxn"
