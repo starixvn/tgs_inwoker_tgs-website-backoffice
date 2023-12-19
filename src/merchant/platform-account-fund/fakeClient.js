@@ -9,6 +9,7 @@ import {
 } from "../../client"
 import { isObject } from "lodash-es"
 import { isAddFund, isDeductFund } from "./FundAction"
+import { faker } from "@faker-js/faker"
 
 const API = "/api/brandgamecredit"
 
@@ -254,5 +255,26 @@ export const usePlatformAccountFundCreditUsedDetail = (
     brandId && searchParams
       ? urlWith(searchParams, `${ProfitApi}/${brandId}/query`)
       : ""
-  return useGet(url)
+  let { data, error, ...rest } = useGet(url)
+
+  //TODO: fake data
+  data = Array.from({ length: 100 }, () => ({
+    gameProviderCode: faker.string.alpha({
+      casing: "upper"
+    }),
+    profitAmount: faker.number.int({ min: -100, max: 100 })
+  }))
+
+  //TODO: process profitAmount here?
+  data = data?.map(({ profitAmount, ...item }) => ({
+    ...item,
+    profitAmount: profitAmount < 0 ? 0 : profitAmount
+  }))
+
+  console.log("data", data)
+  return {
+    data,
+    error: null,
+    ...rest
+  }
 }

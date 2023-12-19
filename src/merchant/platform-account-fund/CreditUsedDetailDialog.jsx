@@ -66,7 +66,7 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
           profitAmount: sum(items.map(({ profitAmount }) => profitAmount))
         }
       : null
-  console.log("total", total)
+
   let columns = useColumns({ items })
 
   if (isLoading) {
@@ -77,6 +77,9 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
+  //TODO: stack time range?
+  //default width?
+  //TODO max height?
   return (
     <Modal id={dialogId} title={title} {...dialog}>
       <Stack>
@@ -93,6 +96,8 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         accessor: "gameProviderCode",
         Header: <GameProviderTrans />,
+        TotalCell: () => <Trans zh="总计" en="Total" />,
+        textAlign: "left",
         disableSortBy: true
       }),
       numberDecimalColumn({
