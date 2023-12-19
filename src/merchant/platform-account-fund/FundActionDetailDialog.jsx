@@ -16,6 +16,7 @@ import { TimeTrans } from "../../trans/Date"
 import textColumn from "../../table/column/textColumn"
 import { OperatorTrans, RemarkTrans } from "../../trans/Action"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
+import { FundActionLabel } from "./FundAction"
 
 const AddedDeductedDetail = {
   zh: "上/下分詳情",
@@ -77,6 +78,7 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
+  //TODO: maxSize height
   return (
     <Modal id={dialogId} title={title} {...dialog}>
       <Table
@@ -89,13 +91,14 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
         isLoading={isLoading}
         stickyHead
         maxSize={{
-          height: "80vh"
+          height: "70vh"
         }}
       />
     </Modal>
   )
 }
 
+//TODO: ask hank to rm "Platform Fund (Updated)" ?
 const useColumns = ({ items = [] }) => {
   return useMemo(
     () => [
@@ -112,7 +115,8 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         accessor: "type",
         Header: <Trans zh="操作類型" en="Type" />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: FundActionLabel
       }),
       numberDecimalColumn({
         accessor: "amount",

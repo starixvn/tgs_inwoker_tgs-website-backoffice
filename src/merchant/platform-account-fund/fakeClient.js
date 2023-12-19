@@ -9,6 +9,7 @@ import {
 } from "../../client"
 import { faker } from "@faker-js/faker"
 import { isObject } from "lodash-es"
+import { isAddFund, isDeductFund } from "./FundAction"
 
 const API = "/api/brandgamecredit"
 
@@ -55,10 +56,10 @@ export const usePlatformAccountFundHistory = (brandId) => {
   }
 }
 
-export const useUpdatePlatformAccountFund = (brandId, fundType, formData) => {
-  if (fundType === TxType.Add) {
+export const useUpdatePlatformAccountFund = (brandId, type, formData) => {
+  if (isAddFund(type)) {
     return useAddPlatformAccountFund(brandId, formData)
-  } else if (fundType === TxType.Deduct) {
+  } else if (isDeductFund(type)) {
     return useDeductPlatformAccountFund(brandId, formData)
   }
 

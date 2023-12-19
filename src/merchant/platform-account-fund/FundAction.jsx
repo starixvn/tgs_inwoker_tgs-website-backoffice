@@ -3,27 +3,29 @@ import { css, Global } from "@emotion/react"
 import { Select } from "../../select/Select"
 import { Trans, useTrans } from "../../i18n"
 
-const Add = "Add"
-const Deduct = "Deduct"
+const Credit = "Credit"
+const Debit = "Deduct"
 
 export const FundAction = {
-  Add,
-  Deduct
+  Add: Credit,
+  Deduct: Debit
 }
 
-export const isAddFund = (v) => v === Add
-export const isDeductFund = (v) => v === Deduct
+export const isAddFund = (v) => v === Credit
+export const isDeductFund = (v) => v === Debit
 
 const AddFund = {
   zh: "上分",
   en: "Add Fund"
 }
+const AddFundTrans = () => <Trans {...AddFund} />
 const useAddFundTrans = () => useTrans(AddFund)
 
 const DeductFund = {
   zh: "下分",
   en: "Deduct Fund"
 }
+const DeductFundTrans = () => <Trans {...DeductFund} />
 const useDeductFundTrans = () => useTrans(DeductFund)
 
 const TypeActionField = "type"
@@ -39,7 +41,7 @@ export const useFundAction = (name = TypeActionField) => {
 
 export const FundActionSelect = ({
   name = TypeActionField,
-  defaultValue = TxType.Add,
+  defaultValue = Credit,
   required = true,
   placeholder,
   ...props
@@ -53,11 +55,11 @@ export const FundActionSelect = ({
   let options = [
     {
       label: useAddFundTrans(),
-      value: TxType.Add
+      value: Credit
     },
     {
       label: useDeductFundTrans(),
-      value: TxType.Deduct
+      value: Debit
     }
   ]
 
@@ -71,4 +73,15 @@ export const FundActionSelect = ({
       {...props}
     />
   )
+}
+
+export const FundActionLabel = ({ value = "" }) => {
+  switch (value) {
+    case Credit:
+      return <AddFundTrans />
+    case Debit:
+      return <DeductFundTrans />
+    default:
+      return value
+  }
 }

@@ -10,7 +10,7 @@ import {
 import { usePlatformCreditList } from "../platform-credit/client"
 import { faker } from "@faker-js/faker"
 import { useBrand } from "../platforms/client"
-import { FundAction } from "./FundAction"
+import { FundAction, isAddFund, isDeductFund } from "./FundAction"
 
 const API = "/api/brandgamecredit"
 
@@ -24,10 +24,10 @@ export const usePlatformAccountFundHistory = (brandId) => {
   return useGet(url)
 }
 
-export const useUpdatePlatformAccountFund = (brandId, fundType, formData) => {
-  if (fundType === FundAction.Add) {
+export const useUpdatePlatformAccountFund = (brandId, type, formData) => {
+  if (isAddFund(type)) {
     return useAddPlatformAccountFund(brandId, formData)
-  } else if (fundType === FundAction.Deduct) {
+  } else if (isDeductFund(type)) {
     return useDeductPlatformAccountFund(brandId, formData)
   }
 
