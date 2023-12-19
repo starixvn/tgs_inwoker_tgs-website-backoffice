@@ -67,6 +67,7 @@ const HistoryDialog = ({ brandId, dialog, dialogId, title }) => {
   let { state, setPageIndex, setSortOrder } = useTable()
 
   let columns = usePlatformAccountFundColumns({
+    brandId,
     items
   })
 

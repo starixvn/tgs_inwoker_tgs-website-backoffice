@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { useModalState } from "bumbag"
+import { useModalState, Link } from "bumbag"
 import Disclosure from "../../dialog/Disclosure"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
@@ -11,6 +11,11 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { toDate } from "../../date/toDate"
 import { startOfNextMonth } from "../../date/startOfNextMonth"
+import dateTimeColumn from "../../table/column/dateTime"
+import { TimeTrans } from "../../trans/Date"
+import textColumn from "../../table/column/textColumn"
+import { OperatorTrans, RemarkTrans } from "../../trans/Action"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
 
 const AddedDeductedDetail = {
   zh: "上/下分詳情",
@@ -22,7 +27,7 @@ const useFundActionDetailTrans = () => useTrans(AddedDeductedDetail)
 export const FundActionDetailDialogDisclosure = ({
   brandId,
   month,
-  onSubmitted,
+  value,
   id,
   dialogId = "fund-action-detail-dialog"
 }) => {
@@ -31,16 +36,11 @@ export const FundActionDetailDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
-        <FundActionDetailTrans />
+      <Disclosure id={id} use={Link} {...dialog}>
+        <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
-        <DetailDialog
-          brandId={brandId}
-          month={month}
-          dialog={dialog}
-          onSubmitted={onSubmitted}
-        />
+        <DetailDialog brandId={brandId} month={month} dialog={dialog} />
       )}
     </>
   )
@@ -68,17 +68,86 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
     toSearchParams(state)
   )
 
+  let items = data?.items ?? []
+  let columns = useColumns({
+    items
+  })
+
+  /*
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
+  */
 
+  //TODO: err here?
   if (error) {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
+  //TODO: max height, sticky head
   return (
     <Modal id={dialogId} title={title} {...dialog}>
-      {JSON.stringify(data)}
+      <Table
+        columns={columns}
+        data={items}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+      />
     </Modal>
+  )
+}
+
+const useColumns = ({ items = [] }) => {
+  return useMemo(
+    () => [
+      dateTimeColumn({
+        accessor: "createdOn",
+        Header: <TimeTrans />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "brandCode",
+        Header: <Trans zh="平台" en="Platform" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "type",
+        Header: <Trans zh="操作類型" en="Type" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "amount",
+        Header: <Trans zh="額度" en=" Credits" />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        id: "todo",
+        accessor: (row) => row,
+        Header: <Trans zh="平台額度(操作後)" en="Platform Fund (Updated)" />,
+        disableSortBy: true,
+        Cell: () => {
+          return "TODO"
+        }
+      }),
+      numberDecimalColumn({
+        accessor: "money",
+        Header: <Trans zh="金額 (USD)" en="Amount (USD)" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "createdUsername",
+        Header: <OperatorTrans />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "remark",
+        Header: <RemarkTrans />,
+        disableSortBy: true
+      })
+    ],
+    [JSON.stringify(items)]
   )
 }

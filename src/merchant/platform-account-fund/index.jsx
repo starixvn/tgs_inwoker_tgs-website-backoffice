@@ -65,6 +65,7 @@ const Body = () => {
 
   let items = isObject(data) ? [data] : []
   let columns = usePlatformAccountFundColumns({
+    brandId,
     items
   })
 
@@ -106,7 +107,7 @@ const Body = () => {
   )
 }
 
-export const usePlatformAccountFundColumns = ({ items = [] }) => {
+export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
   return useMemo(
     () => [
       {
@@ -141,7 +142,9 @@ export const usePlatformAccountFundColumns = ({ items = [] }) => {
             disableSortBy: true,
             Cell: ({ value: record }) => {
               return (
-                <FormattedNumberDecimal
+                <FundActionDetailDialogDisclosure
+                  brandId={brandId}
+                  month={record?.month}
                   value={record?.creditAmount - record?.debitAmount}
                 />
               )
