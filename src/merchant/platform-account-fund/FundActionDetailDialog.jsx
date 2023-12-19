@@ -78,7 +78,7 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO: maxSize height
+  //TODO: maxSize height?
   return (
     <Modal id={dialogId} title={title} {...dialog}>
       <Table
@@ -89,9 +89,10 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
-        stickyHead
-        maxSize={{
-          height: "70vh"
+        containerProps={{
+          maxHeight: "70vh",
+          minHeight: "max-content",
+          overflow: "auto"
         }}
       />
     </Modal>
