@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Select } from "../../select/Select"
 import { Trans, useTrans } from "../../i18n"
+import { useFormContext } from "react-hook-form"
 
 const Credit = "Credit"
 const Debit = "Deduct"

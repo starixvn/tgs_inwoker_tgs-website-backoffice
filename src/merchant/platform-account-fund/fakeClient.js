@@ -7,7 +7,6 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
-import { faker } from "@faker-js/faker"
 import { isObject } from "lodash-es"
 import { isAddFund, isDeductFund } from "./FundAction"
 

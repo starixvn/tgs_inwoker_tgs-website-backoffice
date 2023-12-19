@@ -7,10 +7,7 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
-import { usePlatformCreditList } from "../platform-credit/client"
-import { faker } from "@faker-js/faker"
-import { useBrand } from "../platforms/client"
-import { FundAction, isAddFund, isDeductFund } from "./FundAction"
+import { isAddFund, isDeductFund } from "./FundAction"
 
 const API = "/api/brandgamecredit"
 
