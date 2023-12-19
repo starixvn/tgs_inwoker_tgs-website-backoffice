@@ -71,7 +71,7 @@ const Body = () => {
   return (
     <Set orientation="vertical" isFilled height="100%">
       <Set>
-        <AddDeductFundDialogDisclosure brandId={brandId} />
+        <AddDeductFundDialogDisclosure brandId={brandId} onSubmitted={mutate} />
         <AlertSettingDialogDisclosure brandId={brandId} />
         <FundChangeHistoryDialogDisclosure brandId={brandId} />
       </Set>

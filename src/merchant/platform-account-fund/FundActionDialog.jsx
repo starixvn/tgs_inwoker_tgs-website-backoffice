@@ -48,7 +48,12 @@ const AddOrDeductFund = {
 const AddOrDeductFundTrans = () => <Trans {...AddOrDeductFund} />
 const useAddOrDeductFundTrans = () => useTrans(AddOrDeductFund)
 
-export const AddDeductFundDialogDisclosure = ({ brandId, onSubmitted }) => {
+export const AddDeductFundDialogDisclosure = ({
+  brandId,
+  onSubmitted,
+  id,
+  dialogId = "fund-action-dialog-dialog"
+}) => {
   let dialog = useModalState()
 
   let hasAuth = useIsDisplayMenuByRoute([Update])
@@ -56,6 +61,7 @@ export const AddDeductFundDialogDisclosure = ({ brandId, onSubmitted }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
       <Disclosure {...dialog}>
@@ -82,7 +88,7 @@ const usePlatformCredit = (name = PlatformCreditField) => {
   return value
 }
 
-const AddDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
+const AddDeductFundDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
   let title = useAddOrDeductFundTrans()
 
   let formRef = useRef()
@@ -127,6 +133,7 @@ const AddDeductFundDialog = ({ brandId, onSubmitted, dialog }) => {
 
   return (
     <FormDialog
+      id={dialogId}
       formRef={formRef}
       formMethods={formMethods}
       onSubmit={onSubmit}

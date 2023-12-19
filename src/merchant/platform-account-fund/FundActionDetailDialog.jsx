@@ -30,42 +30,71 @@ import { CancelTrans, RemarkTrans, SubmitTrans } from "../../trans/Action"
 import { Select } from "../../select/Select"
 import { NumberInput as _NumberInput } from "../../input/NumberInput"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
-import { usePlatformAccountFund } from "./client"
+import { usePlatformAccountFundActionDetail } from "./client"
 import Modal from "../../dialog/Modal"
 import { ConfirmText } from "../../button/ActionButtons"
 import AlertDialog from "../../dialog/Alert"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import { useTable, Table, pageCount, toApiParams } from "../../table"
 
 const AddedDeductedDetail = {
   zh: "上/下分詳情",
   en: "Added/Deducted Details"
 }
-const AddedDeductedDetailTrans = () => <Trans {...AddedDeductedDetail} />
-const useAddedDeductedDetailTrans = () => useTrans(AddedDeductedDetail)
+const FundActionDetailTrans = () => <Trans {...AddedDeductedDetail} />
+const useFundActionDetailTrans = () => useTrans(AddedDeductedDetail)
 
 export const AddedDeductedDetailDialogDisclosure = ({
   brandId,
-  onSubmitted
+  startOn,
+  endOn,
+  onSubmitted,
+  id,
+  dialogId = "fund-action-detail-dialog"
 }) => {
   let dialog = useModalState()
 
-  let hasAuth = useIsDisplayMenuByRoute([Update])
-  if (!hasAuth) {
-    return null
-  }
-
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
       <Disclosure {...dialog}>
-        <AddedDeductedDetailTrans />
+        <FundActionDetailTrans />
       </Disclosure>
-      {/* {dialog.visible && (
-        <FundDetailDialog
+      {dialog.visible && (
+        <DetailDialog
           brandId={brandId}
+          startOn={startOn}
+          endOn={endOn}
           dialog={dialog}
           onSubmitted={onSubmitted}
         />
-      )} */}
+      )}
     </>
+  )
+}
+
+const DetailDialog = ({ brandId, startOn, endOn, dialog, dialogId }) => {
+  let title = useFundActionDetailTrans()
+
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    startOn,
+    endOn
+  })
+  let { isLoading, data, error } = usePlatformAccountFundActionDetail(
+    toApiParams(state)
+  )
+
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
+
+  return (
+    <Modal id={dialogId} title={title} {...dialog}>
+      {JSON.stringify(data)}
+    </Modal>
   )
 }

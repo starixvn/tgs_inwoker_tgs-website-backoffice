@@ -45,3 +45,11 @@ export const useDeductPlatformAccountFund = (brandId, formData) => {
   let url = brandId && formData ? `${TxApi}/${brandId}/debit` : ""
   return usePostData(url, formData)
 }
+
+export const usePlatformAccountFundActionDetail = (brandId, searchParams) => {
+  let url =
+    brandId && searchParams
+      ? urlWith(searchParams, `${TxApi}/${brandId}/query`)
+      : ""
+  return useGet(url)
+}
