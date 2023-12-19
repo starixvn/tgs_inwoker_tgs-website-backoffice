@@ -5,7 +5,7 @@ import { Trans, useTrans } from "../../i18n"
 import { useFormContext, useWatch } from "react-hook-form"
 
 const Credit = "Credit"
-const Debit = "Deduct"
+const Debit = "Debit"
 
 export const FundAction = {
   Add: Credit,
