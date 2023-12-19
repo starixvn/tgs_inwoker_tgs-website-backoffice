@@ -198,14 +198,12 @@ const NumberInput = ({
   )
 }
 
-const CreditAmountField = "amount"
-const CreditAmountInput = ({
-  name = CreditAmountField,
-  required = true,
-  ...props
-}) => <NumberInput name={name} required={required} {...props} />
+const AmountField = "amount"
+const AmountInput = ({ name = AmountField, required = true, ...props }) => (
+  <NumberInput name={name} required={required} {...props} />
+)
 
-const useCreditAmount = (name = CreditAmountField) => {
+const useCreditAmount = (name = AmountField) => {
   let { control } = useFormContext()
   let value = useWatch({
     control,
@@ -230,8 +228,8 @@ const useEstimatedCredit = () => {
   return null
 }
 
-const AmountField = "money"
-const AmountInput = ({ name = AmountField, required = true, ...props }) => (
+const MoneyField = "money"
+const MoneyInput = ({ name = MoneyField, required = true, ...props }) => (
   <NumberInput name={name} required={required} {...props} />
 )
 
@@ -264,7 +262,7 @@ const FormBody = ({}) => {
         <Box alignY="center">
           <Trans zh="額度" en="Credits" />
         </Box>
-        <CreditAmountInput />
+        <AmountInput />
 
         <Box>
           <Trans zh="平台額度(操作後)" en="Platform Credits (Updated)" />
@@ -286,7 +284,7 @@ const FormBody = ({}) => {
         <Box alignY="center">
           <Trans zh="金額 (USD)" en="Amount (USD)" />
         </Box>
-        <AmountInput />
+        <MoneyInput />
       </FieldValues>
       <Box>
         <ConfirmCheckbox />

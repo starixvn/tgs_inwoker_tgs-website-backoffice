@@ -129,7 +129,7 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="平台額度(操作後)" en="Platform Fund (Updated)" />,
         disableSortBy: true,
         Cell: () => {
-          return "TODO"
+          return ""
         }
       }),
       numberDecimalColumn({
