@@ -34,6 +34,14 @@ export const FundActionDetailDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
+  /*
+  TODO: ?
+  let isEmpty = Number.isFinite(value) && value === 0
+  if (isEmpty) {
+    return <FormattedNumber value={value} />
+  }
+  */
+
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>

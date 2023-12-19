@@ -60,5 +60,16 @@ export const usePlatformAccountFundCreditUsedDetail = (
     brandId && searchParams
       ? urlWith(searchParams, `${ProfitApi}/${brandId}/query`)
       : ""
-  return useGet(url)
+  let { data, ...rest } = useGet(url)
+
+  //TODO: process profitAmount here?
+  data = data?.map(({ profitAmount, ...item }) => ({
+    ...item,
+    profitAmount: profitAmount < 0 ? 0 : profitAmount
+  }))
+
+  return {
+    data,
+    ...rest
+  }
 }
