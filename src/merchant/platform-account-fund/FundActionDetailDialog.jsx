@@ -73,18 +73,10 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
     items
   })
 
-  /*
-  if (isLoading) {
-    return <LoadingBackdrop {...dialog} />
-  }
-  */
-
-  //TODO: err here?
   if (error) {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO: max height, sticky head
   return (
     <Modal id={dialogId} title={title} {...dialog}>
       <Table
@@ -95,6 +87,10 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        stickyHead
+        maxSize={{
+          height: "80vh"
+        }}
       />
     </Modal>
   )
