@@ -74,12 +74,11 @@ const Body = () => {
     <Set orientation="vertical" isFilled height="100%">
       <Set>
         <AddDeductFundDialogDisclosure brandId={brandId} onSubmitted={mutate} />
-        <AlertSettingDialogDisclosure brandId={brandId} />
+        {/* 
+        TODO
+        <AlertSettingDialogDisclosure brandId={brandId} /> 
+        */}
         <FundChangeHistoryDialogDisclosure brandId={brandId} />
-        <FundActionDetailDialogDisclosure
-          brandId={brandId}
-          month="2023-12-01"
-        />
       </Set>
       <Text.Block fontSize="400" paddingTop="1rem">
         <Trans zh="當月資金" en="Fund of the month" />
