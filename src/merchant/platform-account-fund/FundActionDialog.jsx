@@ -23,7 +23,8 @@ import {
   FundAction,
   FundActionSelect,
   isAddFund,
-  isDeductFund
+  isDeductFund,
+  useFundAction
 } from "./FundAction"
 
 const AddOrDeductFund = {
@@ -214,7 +215,7 @@ const useCreditAmount = (name = AmountField) => {
 
 const useEstimatedCredit = () => {
   let platformCredit = usePlatformCredit()
-  let type = useType()
+  let type = useFundAction()
   let amount = useCreditAmount()
   if (!Number.isFinite(amount)) {
     return null
