@@ -1,21 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import {
-  useModalState,
-  Stack,
-  FieldStack,
-  Card,
-  Set,
-  Table,
-  Button,
-  DropdownMenu,
-  Icon,
-  Box,
-  Alert,
-  Group,
-  Text,
-  Link
-} from "bumbag"
+import { useModalState, Stack, FieldStack, Card, Set, Icon, Box } from "bumbag"
 import { useIsDisplayMenuByRoute, useUsername } from "../../user/context"
 import { Update, View } from "./menu"
 import Disclosure from "../../dialog/Disclosure"
@@ -39,7 +24,7 @@ import {
   FundActionSelect,
   isAddFund,
   isDeductFund
-} from "./FundActionSelect"
+} from "./FundAction"
 
 const AddOrDeductFund = {
   zh: "上/下分",

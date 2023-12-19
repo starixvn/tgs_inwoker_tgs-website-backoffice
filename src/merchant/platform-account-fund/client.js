@@ -10,7 +10,7 @@ import {
 import { usePlatformCreditList } from "../platform-credit/client"
 import { faker } from "@faker-js/faker"
 import { useBrand } from "../platforms/client"
-import { FundAction } from "./FundActionSelect"
+import { FundAction } from "./FundAction"
 
 const API = "/api/brandgamecredit"
 
