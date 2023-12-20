@@ -104,6 +104,7 @@ const AddDeductFundDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
   if (isLoadingFundData) {
     return <LoadingBackdrop {...dialog} />
   }
+
   if (fundDataError) {
     return <AlertDialog {...fundDataError} onClickClose={dialog.hide} />
   }

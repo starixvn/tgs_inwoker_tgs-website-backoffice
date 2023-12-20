@@ -8,10 +8,16 @@ services:
       - postgres
       - nats
       - redis
+      - brand-game-credit
+      - notification-contact
+      - notification-email
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Nats: "nats://nats:4222"
       ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      BrandGameCreditsSetting__BrandGameCreditsClientBaseUrl: "http://brand-game-credit"
+      BrandGameCreditsSetting__NotificationContactsClientBaseUrl: "http://notification-contact"
+      BrandGameCreditsSetting__NotificationEmailClientBaseUrl: "http://notification-email"
     ports:
       - name: http
         containerPort: 8080

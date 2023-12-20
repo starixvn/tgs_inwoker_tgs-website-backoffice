@@ -62,16 +62,14 @@ const TextareaStyle = css`
   }
 `
 
-//TODO: defaultSubject?
 const AlertBox = ({ name = "", subject = "", defaultContent = "" }) => {
   return (
     <Box css={BodyStyle}>
       <SubjectTrans />
       <Input
         name={`${name}.emailSubject`}
-        defaultValue={subject}
-        // value={subject}
-        // disabled
+        value={subject}
+        disabled
         size="small"
       />
 
@@ -88,6 +86,7 @@ const AlertBox = ({ name = "", subject = "", defaultContent = "" }) => {
 
 //TODO: other lang?
 const LowRiskAlertBox = () => {
+  //TODO: [Licensee][Brand] licensee code? brand code?
   //TODO: useTrans for defaultValue & subject?
   return (
     <AlertBox
@@ -103,6 +102,7 @@ We wanted to inform you that your site currently has reached a high balance usag
 
 //TODO: other lang?
 const MediumRiskAlertBox = () => {
+  //TODO: [Licensee][Brand] licensee code? brand code?
   return (
     <AlertBox
       name="moderateNotification"
@@ -117,6 +117,7 @@ We wanted to inform you that your site currently has reached a higher balance us
 
 //TODO: other lang?
 const HighRiskLobbySuspensionAlertBox = () => {
+  //TODO: [Licensee][Brand] licensee code? brand code?
   return (
     <AlertBox
       name="highNotification"
