@@ -97,6 +97,7 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        stickyHead
         containerProps={{
           maxHeight: "70vh",
           minHeight: "max-content",

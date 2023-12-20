@@ -15,7 +15,7 @@ const API = "/api/brandgamecredit"
 
 export const usePlatformAccountFund = (brandId) => {
   let url = brandId ? `${API}/${brandId}/current` : ""
-  let { isLoading, data, ...rest } = useGet(url)
+  let { isLoading, data, error, ...rest } = useGet(url)
   return {
     isLoading,
     data: isLoading
@@ -41,6 +41,7 @@ export const usePlatformAccountFund = (brandId) => {
           createdOn: "2023-12-05T10:25:06.333385+00:00",
           updatedOn: "2023-12-15T09:25:10.592835+00:00"
         },
+    error: null,
     ...rest
   }
 }
@@ -83,7 +84,7 @@ export const usePlatformAccountFundActionDetail = (brandId, searchParams) => {
     brandId && searchParams
       ? urlWith(searchParams, `${TxApi}/${brandId}/query`)
       : ""
-  let { data, ...rest } = useGet(url)
+  let { data, error, ...rest } = useGet(url)
   data = {
     items: [
       {
@@ -242,6 +243,7 @@ export const usePlatformAccountFundActionDetail = (brandId, searchParams) => {
   }
   return {
     data,
+    error: null,
     ...rest
   }
 }
@@ -265,13 +267,13 @@ export const usePlatformAccountFundCreditUsedDetail = (
     profitAmount: faker.number.int({ min: -100, max: 100 })
   }))
 
-  //TODO: process profitAmount here?
+  //TODO: need to process profitAmount?
+  /*
   data = data?.map(({ profitAmount, ...item }) => ({
     ...item,
     profitAmount: profitAmount < 0 ? 0 : profitAmount
   }))
-
-  console.log("data", data)
+  */
   return {
     data,
     error: null,

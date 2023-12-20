@@ -59,7 +59,6 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
     error
   } = usePlatformAccountFundCreditUsedDetail(brandId, toApiParams(state))
 
-  //TODO: items -> total
   let total =
     items?.length > 0
       ? {
@@ -84,7 +83,17 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
     <Modal id={dialogId} title={title} {...dialog}>
       <Stack>
         <Box></Box>
-        <Table columns={columns} data={items} total={total} />
+        <Table
+          columns={columns}
+          data={items}
+          total={total}
+          stickyHead
+          containerProps={{
+            maxHeight: "70vh",
+            minHeight: "max-content",
+            overflow: "auto"
+          }}
+        />
       </Stack>
     </Modal>
   )
