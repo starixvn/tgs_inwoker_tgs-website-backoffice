@@ -31,6 +31,7 @@ import {
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
+import { useBrand } from "../platforms/client"
 
 export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -58,6 +59,48 @@ export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   )
 }
 
+const useFundAlertSettingData = (brandId) => {
+  let {
+    isLoading: isLoadingBrand,
+    data: brand,
+    error: brandError,
+    mutate: mutateBrand,
+    deleteCache: deleteBrandCache
+  } = useBrand(brandId)
+  let {
+    isLoading: isLoadingAlertSetting,
+    data: alertSetting,
+    error: alertSettingError,
+    mutate: mutateAlertSetting,
+    deleteCache: deleteAlertSettingCache
+  } = usePlatformAccountFundAlertSetting(brandId)
+
+  let isLoading = isLoadingBrand || isLoadingAlertSetting
+  let error = brandError || alertSettingError
+  let data =
+    brand && alertSetting
+      ? {
+          brandName: brand.name,
+          licenseeName: brand.licenseeName,
+          ...clone(alertSetting)
+        }
+      : null
+  console.log("data", data)
+  return {
+    isLoading,
+    data,
+    error,
+    mutate: (_, shouldRevalidate) => {
+      mutateBrand(_, shouldRevalidate)
+      mutateAlertSetting(_, shouldRevalidate)
+    },
+    deleteCache: () => {
+      deleteBrandCache()
+      deleteAlertSettingCache()
+    }
+  }
+}
+
 //TODO: readOnly
 const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let title = useTrans({
@@ -75,7 +118,7 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
     error: alertSettingError,
     mutate: mutateAlertSetting,
     deleteCache: deleteAlertSettingCache
-  } = usePlatformAccountFundAlertSetting(brandId)
+  } = useFundAlertSettingData(brandId)
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
@@ -90,7 +133,6 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   }
 
   const onSubmit = (data) => {
-    console.log("onSubmit", data)
     setSubmit(data)
   }
 

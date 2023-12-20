@@ -84,14 +84,29 @@ const AlertBox = ({ name = "", subject = "", defaultContent = "" }) => {
   )
 }
 
+const getLicensee = () => {
+  let { getValues } = useFormContext()
+  let code = getValues("licenseeCode")
+  let name = getValues("licenseeName")
+  return name || code
+}
+
+const getBrand = () => {
+  let { getValues } = useFormContext()
+  let code = getValues("brandCode")
+  let name = getValues("brandName")
+  return name || code
+}
+
 //TODO: other lang?
 const LowRiskAlertBox = () => {
-  //TODO: [Licensee][Brand] licensee code? brand code?
-  //TODO: useTrans for defaultValue & subject?
+  let licensee = getLicensee()
+  let brand = getBrand()
+  let subjectPrefix = `[${licensee}][${brand}]`
   return (
     <AlertBox
       name="lowNotification"
-      subject={"[Licensee][Brand] 加值通知 Warning: Balance low"}
+      subject={`${subjectPrefix} 加值通知 Warning: Balance low`}
       defaultContent={`敬愛的夥伴您好，您的平台目前剩餘額度不足，為避免影響會員遊戲體驗，請盡速聯繫貴司對應商務進行加值，謝謝您。
 Dear Partner,
 We wanted to inform you that your site currently has reached a high balance usage. To maintain the stability and quality of your gaming experience, we kindly recommend reaching out to your designated business contact for a top-up. Thank you.
@@ -102,11 +117,13 @@ We wanted to inform you that your site currently has reached a high balance usag
 
 //TODO: other lang?
 const MediumRiskAlertBox = () => {
-  //TODO: [Licensee][Brand] licensee code? brand code?
+  let licensee = getLicensee()
+  let brand = getBrand()
+  let subjectPrefix = `[${licensee}][${brand}]`
   return (
     <AlertBox
       name="moderateNotification"
-      subject={"[Licensee][Brand] 緊急加值通知 Warning: Balance too low"}
+      subject={`${subjectPrefix} 緊急加值通知 Warning: Balance too low`}
       defaultContent={`敬愛的夥伴您好，您的平台目前剩餘額度嚴重不足，所有遊戲暫時不可進入；為避免影響平台正常運營，請立即聯繫貴司對應商務進行加值，謝謝您。
 Dear Partner,
 We wanted to inform you that your site currently has reached a higher balance usage, and the access to all games will be temporarily suspended. To maintain the stability of your site, we kindly recommend reaching out to your designated business contact for a top-up immediately. Thank you.
@@ -117,11 +134,13 @@ We wanted to inform you that your site currently has reached a higher balance us
 
 //TODO: other lang?
 const HighRiskLobbySuspensionAlertBox = () => {
-  //TODO: [Licensee][Brand] licensee code? brand code?
+  let licensee = getLicensee()
+  let brand = getBrand()
+  let subjectPrefix = `[${licensee}][${brand}]`
   return (
     <AlertBox
       name="highNotification"
-      subject={"[Licensee][Brand] 平台已停用，請立即加值 Notice of Suspension"}
+      subject={`${subjectPrefix} 平台已停用，請立即加值 Notice of Suspension`}
       defaultContent={`貴司您好，由於您的平台剩餘額度已低於限制，平台及所有遊戲暫時不可進入；請立即聯繫貴司對應商務進行加值，並由專人協助您恢復平台運行，謝謝您。
 Dear Partner,
 We wanted to inform you that your site has been temporarily suspended due to a balance usage that has exceeded the limit. To recover the full access of platform and all games, we kindly recommend reaching out to your designated business contact for a top-up immediately. Thank you.
