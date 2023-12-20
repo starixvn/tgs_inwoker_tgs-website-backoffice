@@ -24,6 +24,13 @@ import {
   MainSettingPanel
 } from "./AlertSetting.Main"
 import { AutoAlertPanel, AutoAlertTab } from "./AlertSetting.Auto"
+import {
+  usePlatformAccountFundAlertSetting,
+  useUpdatePlatformAccountFundAlertSetting
+} from "./client"
+import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import AlertDialog from "../../dialog/Alert"
+import clone from "clone-deep"
 
 export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -51,7 +58,6 @@ export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   )
 }
 
-//TODO: fetch data > form update
 //TODO: readOnly
 const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let title = useTrans({
@@ -63,34 +69,50 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
     selectedId: MainTabId
   })
 
-  //TODO: test
-  let [defaultValues, setDefaultValues] = useState({})
-  // let [formData, setFormData] = useState()
-  let [onSubmit, setOnSubmit] = useState((data) => {
-    console.log("submit", data)
-  })
-  let [fetchResult, setFetchResult] = useState()
+  let {
+    isLoading: isLoadingAlertSetting,
+    data: alertSetting,
+    error: alertSettingError,
+    mutate: mutateAlertSetting,
+    deleteCache: deleteAlertSettingCache
+  } = usePlatformAccountFundAlertSetting(brandId)
 
-  // let useFetch = toFetchApi(tab.selectedId)
-  // let { isLoading, result, error, mutate, deleteCache } = useFetch(formData)
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } =
+    useUpdatePlatformAccountFundAlertSetting(brandId, formData)
 
-  //TODO: reset fn?
-  let [reset, setReset] = useState()
-  /*
+  if (isLoadingAlertSetting) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (alertSettingError) {
+    return <AlertDialog {...alertSettingError} onClickClose={dialog.hide} />
+  }
+
+  const onSubmit = (data) => {
+    console.log("onSubmit", data)
+    setSubmit(data)
+  }
+
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
     setSubmit(undefined)
   }
-  */
 
   return (
     <FormDialog
-      defaultValues={defaultValues}
+      defaultValues={clone(alertSetting)}
       onSubmit={onSubmit}
-      isLoading={fetchResult?.isLoading}
-      result={fetchResult?.result}
-      error={fetchResult?.error}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onSubmitted={() => {
+        deleteAlertSettingCache()
+        mutateAlertSetting(undefined, false)
+
+        reset()
+      }}
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}
@@ -104,8 +126,8 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
           <MainSettingTab {...tab} />
           <AutoAlertTab {...tab} />
         </TabList>
-        <MainSettingPanel setDefaultValues={setDefaultValues} {...tab} />
-        <AutoAlertPanel setDefaultValues={setDefaultValues} {...tab} />
+        <MainSettingPanel {...tab} />
+        <AutoAlertPanel {...tab} />
       </Tabs>
     </FormDialog>
   )
