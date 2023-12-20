@@ -31,21 +31,11 @@ export const MainSettingTab = (props) => {
   )
 }
 
-//TODO: onSubmit?
-//TODO: how form update?
 export const MainSettingPanel = ({ setDefaultValues, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
 
-  //TODO: set form init values?
-  useEffect(() => {
-    if (isActive) {
-      console.log("TODO: nee to reset form default values")
-    }
-  }, [isActive])
-
   //TODO: return null if not active?
-
   return (
     <TabPanel tabId={TabId} {...props}>
       <Columns>
@@ -55,7 +45,10 @@ export const MainSettingPanel = ({ setDefaultValues, ...props }) => {
         <Columns.Column>
           <Stack>
             <AutoAlertSetting />
-            <AlertRecipientSetting />
+            {/* 
+            TODO: rm?
+            <AlertRecipientSetting /> 
+            */}
           </Stack>
         </Columns.Column>
       </Columns>
@@ -118,6 +111,7 @@ const AutoAlertSetting = ({}) => {
   )
 }
 
+//TODO: rm?
 const AlertRecipientSetting = ({}) => {
   return (
     <FieldStack>

@@ -10,11 +10,6 @@ import {
 } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
-import { PercentageNumberInputField } from "../../input/NumberInput"
-import {
-  useMediumRiskGameSuspensionValue,
-  useHighRiskLobbySuspensionValue
-} from "./Suspension"
 import Input from "../../input/Input"
 import Textarea from "../../textarea"
 import { SubjectTrans } from "../../trans/Field"
@@ -38,7 +33,6 @@ const BodyStyle = css`
 export const AutoAlertPanel = ({ ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
-  //TODO: return null if not active?
 
   return (
     <TabPanel tabId={TabId} {...props}>
@@ -46,17 +40,17 @@ export const AutoAlertPanel = ({ ...props }) => {
         <Box fontWeight="bold">
           <Trans zh="加值通知" en="Balance Alert" />
         </Box>
-        <BalanceAlertBox />
+        <LowRiskAlertBox />
 
         <Box fontWeight="bold">
           <Trans zh="緊急加值通知" en="Balance Low Alert" />
         </Box>
-        <LowBalanceAlertBox />
+        <MediumRiskAlertBox />
 
         <Box fontWeight="bold">
           <Trans zh="平台停用通知" en="Suspension Alert" />
         </Box>
-        <SuspensionAlertBox />
+        <HighRiskLobbySuspensionAlertBox />
       </Box>
     </TabPanel>
   )
@@ -68,15 +62,21 @@ const TextareaStyle = css`
   }
 `
 
+//TODO: defaultSubject? defaultValue rename to defaultContent?
 const AlertBox = ({ name = "", subject = "", defaultValue = "" }) => {
   return (
     <Box css={BodyStyle}>
       <SubjectTrans />
-      <Input value={subject} disabled size="small" />
+      <Input
+        name={`${name}.emailSubject`}
+        value={subject}
+        // disabled
+        size="small"
+      />
 
       <Trans zh="內容" en="Message" />
       <Textarea
-        name={name}
+        name={`${name}.emailContent`}
         defaultValue={defaultValue}
         size="small"
         css={TextareaStyle}
@@ -85,11 +85,12 @@ const AlertBox = ({ name = "", subject = "", defaultValue = "" }) => {
   )
 }
 
-const BalanceAlertBox = () => {
+//TODO: other lang?
+const LowRiskAlertBox = () => {
   //TODO: useTrans for defaultValue & subject?
   return (
     <AlertBox
-      name="balanceAlertMessage"
+      name="lowNotification"
       subject={"[Licensee][Brand] 加值通知 Warning: Balance low"}
       defaultValue={`敬愛的夥伴您好，您的平台目前剩餘額度不足，為避免影響會員遊戲體驗，請盡速聯繫貴司對應商務進行加值，謝謝您。
 Dear Partner,
@@ -99,11 +100,11 @@ We wanted to inform you that your site currently has reached a high balance usag
   )
 }
 
-const LowBalanceAlertBox = () => {
-  //TODO: useTrans for defaultValue & subject?
+//TODO: other lang?
+const MediumRiskAlertBox = () => {
   return (
     <AlertBox
-      name="lowBalanceAlertMessage"
+      name="moderateNotification"
       subject={"[Licensee][Brand] 緊急加值通知 Warning: Balance too low"}
       defaultValue={`敬愛的夥伴您好，您的平台目前剩餘額度嚴重不足，所有遊戲暫時不可進入；為避免影響平台正常運營，請立即聯繫貴司對應商務進行加值，謝謝您。
 Dear Partner,
@@ -113,11 +114,11 @@ We wanted to inform you that your site currently has reached a higher balance us
   )
 }
 
-const SuspensionAlertBox = () => {
-  //TODO: useTrans for defaultValue & subject?
+//TODO: other lang?
+const HighRiskLobbySuspensionAlertBox = () => {
   return (
     <AlertBox
-      name="suspensionAlertMessage"
+      name="highNotification"
       subject={"[Licensee][Brand] 平台已停用，請立即加值 Notice of Suspension"}
       defaultValue={`貴司您好，由於您的平台剩餘額度已低於限制，平台及所有遊戲暫時不可進入；請立即聯繫貴司對應商務進行加值，並由專人協助您恢復平台運行，謝謝您。
 Dear Partner,
