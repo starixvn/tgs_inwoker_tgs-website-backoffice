@@ -10,15 +10,15 @@ import {
 } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { PercentageNumberInputField } from "../../input/NumberInput"
-import { useBalanceAlertValue } from "./Setting.Main"
+import { useLowRiskAlertValue } from "./AlertSetting.Main"
 
-const GameSuspension = "gameSuspension"
+const MediumRiskGameSuspension = "moderateRisk"
 
-const LobbySuspension = "lobbySuspension"
+const HighRiskLobbySuspension = "highRisk"
 
 const Name = {
-  GameSuspension,
-  LobbySuspension
+  MediumRiskGameSuspension,
+  HighRiskLobbySuspension
 }
 
 const useSuspensionValue = (name) => {
@@ -27,8 +27,9 @@ const useSuspensionValue = (name) => {
   return watch(name)
 }
 
-export const useGameSuspensionValue = (name = Name.GameSuspension) =>
-  useSuspensionValue(name)
+export const useMediumRiskGameSuspensionValue = (
+  name = Name.MediumRiskGameSuspension
+) => useSuspensionValue(name)
 
 const inputFieldStyle = css`
   margin: 0 0.5rem;
@@ -38,7 +39,7 @@ const inputFieldStyle = css`
 `
 
 export const GameSuspensionInputField = ({
-  name = Name.GameSuspension,
+  name = Name.MediumRiskGameSuspension,
   defaultValue = 80,
   max = 90,
   registerOptions = {
@@ -47,7 +48,7 @@ export const GameSuspensionInputField = ({
   size = "small",
   ...props
 }) => {
-  let min = useBalanceAlertValue()
+  let min = useLowRiskAlertValue()
   return (
     <PercentageNumberInputField
       name={name}
@@ -94,11 +95,12 @@ export const GameSuspensionInputBox = ({
   )
 }
 
-export const useLobbySuspensionValue = (name = Name.LobbySuspension) =>
-  useSuspensionValue(name)
+export const useHighRiskLobbySuspensionValue = (
+  name = Name.HighRiskLobbySuspension
+) => useSuspensionValue(name)
 
-export const LobbySuspensionInputField = ({
-  name = Name.LobbySuspension,
+export const HighRiskLobbySuspensionInputField = ({
+  name = Name.HighRiskLobbySuspension,
   max = 95,
   registerOptions = {
     valueAsNumber: true
@@ -106,7 +108,7 @@ export const LobbySuspensionInputField = ({
   size = "small",
   ...props
 }) => {
-  let min = useGameSuspensionValue()
+  let min = useMediumRiskGameSuspensionValue()
   return (
     <PercentageNumberInputField
       name={name}
@@ -121,8 +123,8 @@ export const LobbySuspensionInputField = ({
   )
 }
 
-export const LobbySuspensionInputBox = ({
-  children = <LobbySuspensionInputField />,
+export const HighRiskLobbySuspensionInputBox = ({
+  children = <HighRiskLobbySuspensionInputField />,
   ...props
 }) => {
   return (

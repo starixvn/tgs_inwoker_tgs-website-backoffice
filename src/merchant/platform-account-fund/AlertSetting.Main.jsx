@@ -13,9 +13,9 @@ import { PercentageNumberInputField } from "../../input/NumberInput"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import {
   GameSuspensionInputBox,
-  LobbySuspensionInputBox,
-  useGameSuspensionValue,
-  useLobbySuspensionValue
+  HighRiskLobbySuspensionInputBox,
+  useMediumRiskGameSuspensionValue,
+  useHighRiskLobbySuspensionValue
 } from "./Suspension"
 import { AlertRecipientInputList } from "./AlertRecipient"
 
@@ -72,7 +72,7 @@ const AccessSuspensionSetting = ({ ...props }) => {
       </Text.Block>
       <FieldStack paddingLeft="1rem">
         <GameSuspensionInputBox />
-        <LobbySuspensionInputBox />
+        <HighRiskLobbySuspensionInputBox />
         <Set orientation="horizontal">
           <Icon icon="info-circle" color="info" />
           <Trans
@@ -106,7 +106,7 @@ const AutoAlertSetting = ({}) => {
           <Box css={LineHeightStyle}>
             <Trans zh="加值通知：" en="Balance Alert:" />
           </Box>
-          <BalanceAlertInputBox />
+          <LowRiskAlertInputBox />
 
           <Box css={LineHeightStyle}>
             <Trans zh="緊急加值通知：" en="Balance Low Alert:" />
@@ -149,11 +149,10 @@ const AlertRecipientSetting = ({}) => {
   )
 }
 
-const BalanceAlert = "balanceAlert"
-
-export const useBalanceAlertValue = (name = BalanceAlert) => {
+const LowRiskAlert = "lowRisk"
+//TODO: useWatvh issue?
+export const useLowRiskAlertValue = (name = LowRiskAlert) => {
   let { control, watch } = useFormContext()
-
   return watch(name)
 }
 
@@ -164,8 +163,8 @@ const inputFieldStyle = css`
   line-height: 1.5;
 `
 
-export const BalanceAlertInputField = ({
-  name = BalanceAlert,
+export const LowRiskAlertInputField = ({
+  name = LowRiskAlert,
   defaultValue = 60,
   max = 70,
   registerOptions = {
@@ -189,12 +188,12 @@ const boxBodyStyle = css`
   line-height: 38px;
 `
 
-export const BalanceAlertInputBox = ({
-  children = <BalanceAlertInputField />,
+export const LowRiskAlertInputBox = ({
+  children = <LowRiskAlertInputField />,
   ...props
 }) => {
-  let balanceAlertValue = useBalanceAlertValue()
-  let gameSuspensionValue = useGameSuspensionValue()
+  let balanceAlertValue = useLowRiskAlertValue()
+  let gameSuspensionValue = useMediumRiskGameSuspensionValue()
   return (
     <Box {...props}>
       <Trans
@@ -243,8 +242,8 @@ export const BalanceAlertInputBox = ({
 }
 
 export const LowBalanceAlertBox = ({ ...props }) => {
-  let gameSuspensionValue = useGameSuspensionValue()
-  let lobbySuspensionValue = useLobbySuspensionValue()
+  let gameSuspensionValue = useMediumRiskGameSuspensionValue()
+  let lobbySuspensionValue = useHighRiskLobbySuspensionValue()
 
   return (
     <Box {...props}>
@@ -291,7 +290,7 @@ export const LowBalanceAlertBox = ({ ...props }) => {
 }
 
 export const LobbySuspensionAlert = ({}) => {
-  let lobbySuspensionValue = useLobbySuspensionValue()
+  let lobbySuspensionValue = useHighRiskLobbySuspensionValue()
 
   return (
     <Box {...props}>

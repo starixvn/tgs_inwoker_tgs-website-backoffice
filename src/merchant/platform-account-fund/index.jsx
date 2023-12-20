@@ -40,7 +40,7 @@ import {
 import { FundChangeHistoryDialogDisclosure } from "./FundChangeHistoryDialog"
 import { isObject } from "lodash-es"
 import { FundActionDetailDialogDisclosure } from "./FundActionDetailDialog"
-import { CreditUsedDialog } from "./CreditUsedDetailDialog"
+import { UsedCreditDetailDialog } from "./UsedCreditDetailDialog"
 
 export { Code }
 
@@ -75,10 +75,7 @@ const Body = () => {
     <Set orientation="vertical" isFilled height="100%">
       <Set>
         <FundActionDialogDisclosure brandId={brandId} onSubmitted={mutate} />
-        {/* 
-        TODO
-        <AlertSettingDialogDisclosure brandId={brandId} /> 
-        */}
+        <AlertSettingDialogDisclosure brandId={brandId} />
         <FundChangeHistoryDialogDisclosure brandId={brandId} />
       </Set>
       <Text.Block fontSize="400" paddingTop="1rem">
@@ -163,7 +160,7 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
             disableSortBy: true,
             Cell: ({ value: record }) => {
               return (
-                <CreditUsedDialog
+                <UsedCreditDetailDialog
                   brandId={brandId}
                   month={record?.month}
                   value={record?.creditUsed}

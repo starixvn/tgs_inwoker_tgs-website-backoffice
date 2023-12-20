@@ -22,9 +22,8 @@ import {
   TabId as MainTabId,
   MainSettingTab,
   MainSettingPanel
-} from "./Setting.Main"
-import { AutoAlertPanel, AutoAlertTab } from "./Setting.AutoAlert"
-import { ManualAlertPanel, ManualAlertTab } from "./Setting.ManualAlert"
+} from "./AlertSetting.Main"
+import { AutoAlertPanel, AutoAlertTab } from "./AlertSetting.Auto"
 
 export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -52,28 +51,8 @@ export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   )
 }
 
-//TODO
-/*
-const toFetchApi = (tabId) => {
-  switch (tabId) {
-    case MainTabId:
-  }
-
-  const fakeFetchApi = (formData) => {
-    return {
-      isLoading: false,
-      result: formData ? true : false,
-      error: null,
-      mutate: () => {},
-      deleteCache: () => {}
-    }
-  }
-  return fakeFetchApi
-}
-*/
-
+//TODO: fetch data > form update
 //TODO: readOnly
-//TODO: how to do form update?
 const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let title = useTrans({
     zh: "催收設置",
@@ -124,16 +103,9 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
         <TabList {...tab}>
           <MainSettingTab {...tab} />
           <AutoAlertTab {...tab} />
-          {/* 
-          TODO: rm?
-          <ManualAlertTab {...tab} /> 
-          */}
         </TabList>
         <MainSettingPanel setDefaultValues={setDefaultValues} {...tab} />
         <AutoAlertPanel setDefaultValues={setDefaultValues} {...tab} />
-        {/* 
-        <ManualAlertPanel setDefaultValues={setDefaultValues} {...tab} /> 
-        */}
       </Tabs>
     </FormDialog>
   )

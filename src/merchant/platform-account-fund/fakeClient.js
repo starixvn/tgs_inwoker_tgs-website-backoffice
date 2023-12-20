@@ -280,3 +280,14 @@ export const usePlatformAccountFundCreditUsedDetail = (
     ...rest
   }
 }
+
+const AlertSettingApi = "/api/brandgamecreditsuspsetting"
+export const usePlatformAccountFundAlertSetting = (brandId) => {
+  let url = brandId ? `${AlertSettingApi}/${brandId}` : ""
+  return useGet(url)
+}
+
+export const useUpdatePlatformAccountFundAlertSetting = (brandId, formData) => {
+  let url = brandId ? `${AlertSettingApi}/${brandId}` : ""
+  return usePostData(url, formData)
+}

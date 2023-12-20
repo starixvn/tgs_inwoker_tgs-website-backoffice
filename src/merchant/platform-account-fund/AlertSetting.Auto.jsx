@@ -11,7 +11,10 @@ import {
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { PercentageNumberInputField } from "../../input/NumberInput"
-import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
+import {
+  useMediumRiskGameSuspensionValue,
+  useHighRiskLobbySuspensionValue
+} from "./Suspension"
 import Input from "../../input/Input"
 import Textarea from "../../textarea"
 import { SubjectTrans } from "../../trans/Field"

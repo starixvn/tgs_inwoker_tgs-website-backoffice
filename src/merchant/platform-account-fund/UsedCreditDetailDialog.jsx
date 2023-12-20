@@ -13,7 +13,7 @@ import { numberDecimalColumn } from "../../table/column/numberColumn"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { sum } from "lodash-es"
 
-export const CreditUsedDialog = ({
+export const UsedCreditDetailDialog = ({
   brandId,
   month,
   value,
@@ -23,7 +23,7 @@ export const CreditUsedDialog = ({
   let dialog = useModalState()
 
   /*
-  TODO: ?
+  TODO: seems able to rm
   let isEmpty = Number.isFinite(value) && value === 0
   if (isEmpty) {
     return <FormattedNumber value={value} />
