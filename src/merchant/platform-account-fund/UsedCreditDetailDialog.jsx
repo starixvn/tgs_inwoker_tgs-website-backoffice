@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { useModalState, Link, Stack, Box } from "bumbag"
+import { useModalState, Link, Stack, Box, FieldStack } from "bumbag"
 import Disclosure from "../../dialog/Disclosure"
-import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
+import {
+  FormattedDate,
+  FormattedNumberDecimal,
+  Trans,
+  useTrans
+} from "../../i18n"
 import Modal from "../../dialog/Modal"
 import AlertDialog from "../../dialog/Alert"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
@@ -13,13 +18,16 @@ import { numberDecimalColumn } from "../../table/column/numberColumn"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { sum } from "lodash-es"
 import { FieldValues } from "../../layout/Grid"
+import { DateFormat } from "../../date/format"
+import { TimeTrans } from "../../trans/Date"
 
 export const UsedCreditDetailDialog = ({
   brandId,
+  brandCode,
   month,
   value,
   id,
-  dialogId = "fund-used-amount-detail-dialog"
+  dialogId = "fund-credit-detail-dialog"
 }) => {
   let dialog = useModalState()
 
@@ -38,13 +46,18 @@ export const UsedCreditDetailDialog = ({
         <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
-        <DetailDialog brandId={brandId} month={month} dialog={dialog} />
+        <DetailDialog
+          brandId={brandId}
+          brandCode={brandCode}
+          month={month}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
+const DetailDialog = ({ brandId, brandCode, month, dialog, dialogId }) => {
   let title = useTrans({
     zh: "已使用額度詳情",
     en: "Used Credits Details"
@@ -79,10 +92,31 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
 
   //TODO: time range? hardcode?
   return (
-    <Modal id={dialogId} title={title} {...dialog}>
-      <Stack>
+    <Modal
+      id={dialogId}
+      title={title}
+      {...dialog}
+      css={css`
+        min-width: 40vw;
+      `}
+    >
+      <FieldStack>
         <Box>
-          <FieldValues></FieldValues>
+          <FieldValues>
+            <Box>
+              {/* <TimeTrans /> */}
+
+              <Trans zh="計算區間" en="Settled between" />
+            </Box>
+            <Box>
+              <FormattedDate format={DateFormat.YearMonth} value={month} />
+            </Box>
+
+            <Box>
+              <Trans zh="平台" en="Platform" />
+            </Box>
+            <Box>{brandCode}</Box>
+          </FieldValues>
         </Box>
         <Table
           columns={columns}
@@ -95,7 +129,7 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
             overflow: "auto"
           }}
         />
-      </Stack>
+      </FieldStack>
     </Modal>
   )
 }

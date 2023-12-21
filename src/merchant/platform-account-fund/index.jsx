@@ -161,6 +161,7 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
               return (
                 <UsedCreditDetailDialog
                   brandId={brandId}
+                  brandCode={record?.brandCode}
                   month={record?.month}
                   value={record?.creditUsed}
                 />
