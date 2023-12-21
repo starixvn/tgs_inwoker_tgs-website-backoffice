@@ -197,7 +197,10 @@ const AdjustTrans = {
   en: "Balance Adjustment"
 }
 
+//TODO:1.40 rm "Dividend"
 const Dividend = "Dividend"
+
+const AgentDividend = "AgentDividend"
 const DividendTrans = {
   zh: "分紅",
   en: "Profit sharing"
@@ -236,7 +239,7 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
     },
     {
       label: useTrans(DividendTrans),
-      value: Dividend
+      value: AgentDividend
     },
     {
       label: useBalanceChangeTypeTransferTrans(),
@@ -268,6 +271,7 @@ const AgentTransactionTypeLabel = ({ value = "" }) => {
     case Adjust:
       return <Trans {...AdjustTrans} />
     case Dividend:
+    case AgentDividend:
       return <Trans {...DividendTrans} />
     case CancelWithdrawal:
       return <Trans {...CancelWithdrawalTrans} />
