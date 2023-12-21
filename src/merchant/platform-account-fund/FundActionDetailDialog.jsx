@@ -133,6 +133,8 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="額度" en=" Credits" />,
         disableSortBy: true
       }),
+      /*
+      TODO: rm
       numberDecimalColumn({
         id: "todo",
         accessor: (row) => row,
@@ -142,6 +144,7 @@ const useColumns = ({ items = [] }) => {
           return ""
         }
       }),
+      */
       numberDecimalColumn({
         accessor: "money",
         Header: <Trans zh="金額 (USD)" en="Amount (USD)" />,

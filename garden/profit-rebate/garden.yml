@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: profit-rebate
-image: pgtgs/profit-rebate-service:202302090146-prod
+image: pgtgs/profit-rebate-service:202312210805-staging
 services:
   - name: profit-rebate
     dependencies:
@@ -10,6 +10,9 @@ services:
       # - mongodb
       - nats
       - rabbitmq
+      - cash-service
+      - player-bucket-api
+      - player-api
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
