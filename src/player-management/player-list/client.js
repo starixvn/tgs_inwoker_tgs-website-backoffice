@@ -191,6 +191,7 @@ export const useBettings = (playerCode, searchParams) => {
   return useGet(url)
 }
 
+//TODO:1.40 use new api?
 export const usePlayerBalanceChanges = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/accountChanges`) : ""
   return useGet(url)

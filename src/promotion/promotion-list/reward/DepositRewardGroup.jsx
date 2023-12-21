@@ -42,15 +42,19 @@ import {
 } from "../../../trans/Promotion"
 import { MultipliersTrans } from "../../../trans/Field"
 
-const FirstDeposit = "FirstDeposit"
+const FirstDeposit = "FirstDeposit" //Account First Deposit-Lifetime only
+const AccountFirstDeposit = "AccountFirstDeposit" //Account First Deposit-First deposit only
+
 const DailyFirstDeposit = "DailyFirstDeposit"
 const DailySecondDeposit = "DailySecondDeposit"
 const DepositReward = "DepositReward"
 
 const DepositPaymentChannelReward = "PromoteDepositChannel"
 
+//TODO: able to rm PromotionTypes? used somewhere?
 export const PromotionTypes = [
   FirstDeposit,
+  AccountFirstDeposit,
   DailyFirstDeposit,
   DailySecondDeposit,
   DepositReward,
@@ -342,6 +346,75 @@ const DefaultRule = ({ readOnly }) => {
   )
 }
 
+/*
+TODO: auto select all vip?
+const AccountFirstDepositRewardRule = ({ readOnly }) => {
+  let { control } = useFormContext()
+  let totalFunds = useTotalFunds()
+  let brandId = usePromotionBrandId()
+
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
+
+  let disabled = readOnly
+  return (
+    <FieldValues>
+      <BucketTypeLabel />
+      <PlatformBucketSelect
+        name="rule.bucketTypes[0]"
+        platformId={brandId}
+        disabled={disabled}
+        placeholder={bucketTypePlaceholder}
+      />
+
+      <NormalLabel>
+        <PromotionBonusPercentageTrans />
+      </NormalLabel>
+      <PercentageNumberInputField
+        name="rule.percentage"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        max="999"
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <PromotionBonusLimitTrans />
+      </NormalLabel>
+      <NumberInput
+        name="rule.bonusAmountLimit"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        max={totalFunds}
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <PromotionTurnoverRequirementTrans />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.turnoverMultiple"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        required
+        disabled={disabled}
+        addonAfter={
+          <Button isStatic tabIndex="-1">
+            <MultipliersTrans />
+          </Button>
+        }
+      />
+    </FieldValues>
+  )
+}
+*/
+
 export const Rewards = [
   {
     PromotionType: DepositReward,
@@ -351,6 +424,12 @@ export const Rewards = [
   },
   {
     PromotionType: FirstDeposit,
+    Main,
+    Content,
+    Rule: DefaultRule
+  },
+  {
+    PromotionType: AccountFirstDeposit,
     Main,
     Content,
     Rule: DefaultRule

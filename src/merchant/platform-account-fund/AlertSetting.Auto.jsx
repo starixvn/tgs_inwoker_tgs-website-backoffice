@@ -10,8 +10,6 @@ import {
 } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
-import { PercentageNumberInputField } from "../../input/NumberInput"
-import { useGameSuspensionValue, useLobbySuspensionValue } from "./Suspension"
 import Input from "../../input/Input"
 import Textarea from "../../textarea"
 import { SubjectTrans } from "../../trans/Field"
@@ -32,10 +30,9 @@ const BodyStyle = css`
   grid-template-columns: auto 1fr;
 `
 
-export const AutoAlertPanel = ({ ...props }) => {
+export const AutoAlertPanel = ({ readOnly, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
-  //TODO: return null if not active?
 
   return (
     <TabPanel tabId={TabId} {...props}>
@@ -43,17 +40,17 @@ export const AutoAlertPanel = ({ ...props }) => {
         <Box fontWeight="bold">
           <Trans zh="加值通知" en="Balance Alert" />
         </Box>
-        <BalanceAlertBox />
+        <LowRiskAlertBox readOnly={readOnly} />
 
         <Box fontWeight="bold">
           <Trans zh="緊急加值通知" en="Balance Low Alert" />
         </Box>
-        <LowBalanceAlertBox />
+        <MediumRiskAlertBox readOnly={readOnly} />
 
         <Box fontWeight="bold">
           <Trans zh="平台停用通知" en="Suspension Alert" />
         </Box>
-        <SuspensionAlertBox />
+        <HighRiskLobbySuspensionAlertBox readOnly={readOnly} />
       </Box>
     </TabPanel>
   )
@@ -65,16 +62,29 @@ const TextareaStyle = css`
   }
 `
 
-const AlertBox = ({ name = "", subject = "", defaultValue = "" }) => {
+const AlertBox = ({
+  name = "",
+  readOnly,
+  subject = "",
+  defaultContent = ""
+}) => {
   return (
     <Box css={BodyStyle}>
       <SubjectTrans />
-      <Input value={subject} disabled size="small" />
+      <Input
+        name={`${name}.emailSubject`}
+        value={subject}
+        disabled
+        readOnly={readOnly}
+        size="small"
+      />
 
       <Trans zh="內容" en="Message" />
       <Textarea
-        name={name}
-        defaultValue={defaultValue}
+        name={`${name}.emailContent`}
+        defaultValue={defaultContent}
+        readOnly={readOnly}
+        disabled={readOnly}
         size="small"
         css={TextareaStyle}
       />
@@ -82,13 +92,31 @@ const AlertBox = ({ name = "", subject = "", defaultValue = "" }) => {
   )
 }
 
-const BalanceAlertBox = () => {
-  //TODO: useTrans for defaultValue & subject?
+const getLicensee = () => {
+  let { getValues } = useFormContext()
+  let code = getValues("licenseeCode")
+  let name = getValues("licenseeName")
+  return name || code
+}
+
+const getBrand = () => {
+  let { getValues } = useFormContext()
+  let code = getValues("brandCode")
+  let name = getValues("brandName")
+  return name || code
+}
+
+//TODO: other lang?
+const LowRiskAlertBox = ({ readOnly }) => {
+  let licensee = getLicensee()
+  let brand = getBrand()
+  let subjectPrefix = `[${licensee}][${brand}]`
   return (
     <AlertBox
-      name="balanceAlertMessage"
-      subject={"[Licensee][Brand] 加值通知 Warning: Balance low"}
-      defaultValue={`敬愛的夥伴您好，您的平台目前剩餘額度不足，為避免影響會員遊戲體驗，請盡速聯繫貴司對應商務進行加值，謝謝您。
+      name="lowNotification"
+      readOnly={readOnly}
+      subject={`${subjectPrefix} 加值通知 Warning: Balance low`}
+      defaultContent={`敬愛的夥伴您好，您的平台目前剩餘額度不足，為避免影響會員遊戲體驗，請盡速聯繫貴司對應商務進行加值，謝謝您。
 Dear Partner,
 We wanted to inform you that your site currently has reached a high balance usage. To maintain the stability and quality of your gaming experience, we kindly recommend reaching out to your designated business contact for a top-up. Thank you.
 `}
@@ -96,13 +124,17 @@ We wanted to inform you that your site currently has reached a high balance usag
   )
 }
 
-const LowBalanceAlertBox = () => {
-  //TODO: useTrans for defaultValue & subject?
+//TODO: other lang?
+const MediumRiskAlertBox = ({ readOnly }) => {
+  let licensee = getLicensee()
+  let brand = getBrand()
+  let subjectPrefix = `[${licensee}][${brand}]`
   return (
     <AlertBox
-      name="lowBalanceAlertMessage"
-      subject={"[Licensee][Brand] 緊急加值通知 Warning: Balance too low"}
-      defaultValue={`敬愛的夥伴您好，您的平台目前剩餘額度嚴重不足，所有遊戲暫時不可進入；為避免影響平台正常運營，請立即聯繫貴司對應商務進行加值，謝謝您。
+      name="moderateNotification"
+      readOnly={readOnly}
+      subject={`${subjectPrefix} 緊急加值通知 Warning: Balance too low`}
+      defaultContent={`敬愛的夥伴您好，您的平台目前剩餘額度嚴重不足，所有遊戲暫時不可進入；為避免影響平台正常運營，請立即聯繫貴司對應商務進行加值，謝謝您。
 Dear Partner,
 We wanted to inform you that your site currently has reached a higher balance usage, and the access to all games will be temporarily suspended. To maintain the stability of your site, we kindly recommend reaching out to your designated business contact for a top-up immediately. Thank you.
 `}
@@ -110,13 +142,17 @@ We wanted to inform you that your site currently has reached a higher balance us
   )
 }
 
-const SuspensionAlertBox = () => {
-  //TODO: useTrans for defaultValue & subject?
+//TODO: other lang?
+const HighRiskLobbySuspensionAlertBox = ({ readOnly }) => {
+  let licensee = getLicensee()
+  let brand = getBrand()
+  let subjectPrefix = `[${licensee}][${brand}]`
   return (
     <AlertBox
-      name="suspensionAlertMessage"
-      subject={"[Licensee][Brand] 平台已停用，請立即加值 Notice of Suspension"}
-      defaultValue={`貴司您好，由於您的平台剩餘額度已低於限制，平台及所有遊戲暫時不可進入；請立即聯繫貴司對應商務進行加值，並由專人協助您恢復平台運行，謝謝您。
+      name="highNotification"
+      readOnly={readOnly}
+      subject={`${subjectPrefix} 平台已停用，請立即加值 Notice of Suspension`}
+      defaultContent={`貴司您好，由於您的平台剩餘額度已低於限制，平台及所有遊戲暫時不可進入；請立即聯繫貴司對應商務進行加值，並由專人協助您恢復平台運行，謝謝您。
 Dear Partner,
 We wanted to inform you that your site has been temporarily suspended due to a balance usage that has exceeded the limit. To recover the full access of platform and all games, we kindly recommend reaching out to your designated business contact for a top-up immediately. Thank you.
 `}

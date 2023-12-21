@@ -30,12 +30,7 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { formatDateTime, formatYearMonthDay } from "../../date/format"
-import { FieldValues } from "../../layout/Grid"
-import { formatNumberDecimal } from "../../number/format"
-import Separator from "../../layout/Separator"
-import { startOfNextDay } from "../../date/startOfNextDay"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { formatYearMonthDay } from "../../date/format"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportCompanyTotal } from "./client"
 

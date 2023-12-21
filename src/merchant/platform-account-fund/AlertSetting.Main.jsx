@@ -13,9 +13,9 @@ import { PercentageNumberInputField } from "../../input/NumberInput"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import {
   GameSuspensionInputBox,
-  LobbySuspensionInputBox,
-  useGameSuspensionValue,
-  useLobbySuspensionValue
+  HighRiskLobbySuspensionInputBox,
+  useMediumRiskGameSuspensionValue,
+  useHighRiskLobbySuspensionValue
 } from "./Suspension"
 import { AlertRecipientInputList } from "./AlertRecipient"
 
@@ -31,31 +31,24 @@ export const MainSettingTab = (props) => {
   )
 }
 
-//TODO: onSubmit?
-//TODO: how form update?
-export const MainSettingPanel = ({ setDefaultValues, ...props }) => {
+export const MainSettingPanel = ({ readOnly, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
 
-  //TODO: set form init values?
-  useEffect(() => {
-    if (isActive) {
-      console.log("TODO: nee to reset form default values")
-    }
-  }, [isActive])
-
   //TODO: return null if not active?
-
   return (
     <TabPanel tabId={TabId} {...props}>
       <Columns>
         <Columns.Column>
-          <AccessSuspensionSetting />
+          <AccessSuspensionSetting readOnly={readOnly} />
         </Columns.Column>
         <Columns.Column>
           <Stack>
-            <AutoAlertSetting />
-            <AlertRecipientSetting />
+            <AutoAlertSetting readOnly={readOnly} />
+            {/* 
+            TODO: rm?
+            <AlertRecipientSetting /> 
+            */}
           </Stack>
         </Columns.Column>
       </Columns>
@@ -64,15 +57,15 @@ export const MainSettingPanel = ({ setDefaultValues, ...props }) => {
 }
 
 //TODO: info layout for en or just use Alert instead
-const AccessSuspensionSetting = ({ ...props }) => {
+const AccessSuspensionSetting = ({ readOnly, ...props }) => {
   return (
     <FieldStack>
       <Text.Block fontWeight="bold">
         <Trans zh="停權設置" en="Access Suspension" />
       </Text.Block>
       <FieldStack paddingLeft="1rem">
-        <GameSuspensionInputBox />
-        <LobbySuspensionInputBox />
+        <GameSuspensionInputBox readOnly={readOnly} />
+        <HighRiskLobbySuspensionInputBox readOnly={readOnly} />
         <Set orientation="horizontal">
           <Icon icon="info-circle" color="info" />
           <Trans
@@ -95,7 +88,7 @@ const SettingBodyStyle = css`
   grid-template-columns: auto 1fr;
 `
 
-const AutoAlertSetting = ({}) => {
+const AutoAlertSetting = ({ readOnly }) => {
   return (
     <FieldStack>
       <Text.Block fontWeight="bold">
@@ -106,7 +99,7 @@ const AutoAlertSetting = ({}) => {
           <Box css={LineHeightStyle}>
             <Trans zh="加值通知：" en="Balance Alert:" />
           </Box>
-          <BalanceAlertInputBox />
+          <LowRiskAlertInputBox readOnly={readOnly} />
 
           <Box css={LineHeightStyle}>
             <Trans zh="緊急加值通知：" en="Balance Low Alert:" />
@@ -118,6 +111,7 @@ const AutoAlertSetting = ({}) => {
   )
 }
 
+//TODO: rm?
 const AlertRecipientSetting = ({}) => {
   return (
     <FieldStack>
@@ -149,11 +143,10 @@ const AlertRecipientSetting = ({}) => {
   )
 }
 
-const BalanceAlert = "balanceAlert"
-
-export const useBalanceAlertValue = (name = BalanceAlert) => {
+const LowRiskAlert = "lowRisk"
+//TODO: useWatvh issue?
+export const useLowRiskAlertValue = (name = LowRiskAlert) => {
   let { control, watch } = useFormContext()
-
   return watch(name)
 }
 
@@ -164,8 +157,8 @@ const inputFieldStyle = css`
   line-height: 1.5;
 `
 
-export const BalanceAlertInputField = ({
-  name = BalanceAlert,
+export const LowRiskAlertInputField = ({
+  name = LowRiskAlert,
   defaultValue = 60,
   max = 70,
   registerOptions = {
@@ -189,19 +182,17 @@ const boxBodyStyle = css`
   line-height: 38px;
 `
 
-export const BalanceAlertInputBox = ({
-  children = <BalanceAlertInputField />,
-  ...props
-}) => {
-  let balanceAlertValue = useBalanceAlertValue()
-  let gameSuspensionValue = useGameSuspensionValue()
+export const LowRiskAlertInputBox = ({ readOnly, ...props }) => {
+  let input = <LowRiskAlertInputField readOnly={readOnly} disabled={readOnly} />
+  let balanceAlertValue = useLowRiskAlertValue()
+  let gameSuspensionValue = useMediumRiskGameSuspensionValue()
   return (
     <Box {...props}>
       <Trans
         zh={
           <span css={boxBodyStyle}>
             <Text>{"當已用額度% > "}</Text>
-            {children}
+            {input}
             <Text>{"寄送，每3小時寄送一次"}</Text>
 
             <Text>{"，直至已用額度% ≤ "}</Text>
@@ -222,7 +213,7 @@ export const BalanceAlertInputBox = ({
         en={
           <span css={boxBodyStyle}>
             <Text>{"When Usage P/T is greater than "}</Text>
-            {children}
+            {input}
             <Text>{", the alert will be sent every 3 hours"}</Text>
 
             <Text>{" until the Usage P/T is ≤ "}</Text>
@@ -243,8 +234,8 @@ export const BalanceAlertInputBox = ({
 }
 
 export const LowBalanceAlertBox = ({ ...props }) => {
-  let gameSuspensionValue = useGameSuspensionValue()
-  let lobbySuspensionValue = useLobbySuspensionValue()
+  let gameSuspensionValue = useMediumRiskGameSuspensionValue()
+  let lobbySuspensionValue = useHighRiskLobbySuspensionValue()
 
   return (
     <Box {...props}>
@@ -291,7 +282,7 @@ export const LowBalanceAlertBox = ({ ...props }) => {
 }
 
 export const LobbySuspensionAlert = ({}) => {
-  let lobbySuspensionValue = useLobbySuspensionValue()
+  let lobbySuspensionValue = useHighRiskLobbySuspensionValue()
 
   return (
     <Box {...props}>

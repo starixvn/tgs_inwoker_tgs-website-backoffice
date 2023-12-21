@@ -10,15 +10,15 @@ import {
 } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { PercentageNumberInputField } from "../../input/NumberInput"
-import { useBalanceAlertValue } from "./Setting.Main"
+import { useLowRiskAlertValue } from "./AlertSetting.Main"
 
-const GameSuspension = "gameSuspension"
+const MediumRiskGameSuspension = "moderateRisk"
 
-const LobbySuspension = "lobbySuspension"
+const HighRiskLobbySuspension = "highRisk"
 
 const Name = {
-  GameSuspension,
-  LobbySuspension
+  MediumRiskGameSuspension,
+  HighRiskLobbySuspension
 }
 
 const useSuspensionValue = (name) => {
@@ -27,8 +27,9 @@ const useSuspensionValue = (name) => {
   return watch(name)
 }
 
-export const useGameSuspensionValue = (name = Name.GameSuspension) =>
-  useSuspensionValue(name)
+export const useMediumRiskGameSuspensionValue = (
+  name = Name.MediumRiskGameSuspension
+) => useSuspensionValue(name)
 
 const inputFieldStyle = css`
   margin: 0 0.5rem;
@@ -38,7 +39,7 @@ const inputFieldStyle = css`
 `
 
 export const GameSuspensionInputField = ({
-  name = Name.GameSuspension,
+  name = Name.MediumRiskGameSuspension,
   defaultValue = 80,
   max = 90,
   registerOptions = {
@@ -47,7 +48,7 @@ export const GameSuspensionInputField = ({
   size = "small",
   ...props
 }) => {
-  let min = useBalanceAlertValue()
+  let min = useLowRiskAlertValue()
   return (
     <PercentageNumberInputField
       name={name}
@@ -66,24 +67,24 @@ const boxBodyStyle = css`
   line-height: 38px;
 `
 
-export const GameSuspensionInputBox = ({
-  children = <GameSuspensionInputField />,
-  ...props
-}) => {
+export const GameSuspensionInputBox = ({ readOnly, ...props }) => {
+  let input = (
+    <GameSuspensionInputField readOnly={readOnly} disabled={readOnly} />
+  )
   return (
     <Box {...props}>
       <Trans
         zh={
           <span css={boxBodyStyle}>
             <Text>{"當已用額度%大於"}</Text>
-            {children}
+            {input}
             <Text>{"，系統將限制玩家進入所有遊戲。"}</Text>
           </span>
         }
         en={
           <span css={boxBodyStyle}>
             <Text>{"When Usage P/T exceeds "}</Text>
-            {children}
+            {input}
             <Text>
               {", the system will suspend the players’ access to all games."}
             </Text>
@@ -94,11 +95,12 @@ export const GameSuspensionInputBox = ({
   )
 }
 
-export const useLobbySuspensionValue = (name = Name.LobbySuspension) =>
-  useSuspensionValue(name)
+export const useHighRiskLobbySuspensionValue = (
+  name = Name.HighRiskLobbySuspension
+) => useSuspensionValue(name)
 
-export const LobbySuspensionInputField = ({
-  name = Name.LobbySuspension,
+export const HighRiskLobbySuspensionInputField = ({
+  name = Name.HighRiskLobbySuspension,
   max = 95,
   registerOptions = {
     valueAsNumber: true
@@ -106,7 +108,7 @@ export const LobbySuspensionInputField = ({
   size = "small",
   ...props
 }) => {
-  let min = useGameSuspensionValue()
+  let min = useMediumRiskGameSuspensionValue()
   return (
     <PercentageNumberInputField
       name={name}
@@ -121,24 +123,27 @@ export const LobbySuspensionInputField = ({
   )
 }
 
-export const LobbySuspensionInputBox = ({
-  children = <LobbySuspensionInputField />,
-  ...props
-}) => {
+export const HighRiskLobbySuspensionInputBox = ({ readOnly, ...props }) => {
+  let input = (
+    <HighRiskLobbySuspensionInputField
+      readOnly={readOnly}
+      disabled={readOnly}
+    />
+  )
   return (
     <Box {...props}>
       <Trans
         zh={
           <span css={boxBodyStyle}>
             <Text>{"當已用額度%大於"}</Text>
-            {children}
+            {input}
             <Text>{"，系統將限制玩家進入平台。"}</Text>
           </span>
         }
         en={
           <span css={boxBodyStyle}>
             <Text>{"When Usage P/T exceeds "}</Text>
-            {children}
+            {input}
             <Text>
               {", the system will suspend the players’ access to the platform."}
             </Text>

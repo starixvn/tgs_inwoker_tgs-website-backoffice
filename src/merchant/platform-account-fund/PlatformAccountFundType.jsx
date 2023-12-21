@@ -20,6 +20,7 @@ const ResetTrans = {
   en: "Reset"
 }
 
+//TODO: ?
 export const PlatformAccountFundTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTrans({
     zh: "类型",
