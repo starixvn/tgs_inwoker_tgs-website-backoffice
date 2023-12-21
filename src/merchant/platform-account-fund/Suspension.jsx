@@ -67,24 +67,24 @@ const boxBodyStyle = css`
   line-height: 38px;
 `
 
-export const GameSuspensionInputBox = ({
-  children = <GameSuspensionInputField />,
-  ...props
-}) => {
+export const GameSuspensionInputBox = ({ readOnly, ...props }) => {
+  let input = (
+    <GameSuspensionInputField readOnly={readOnly} disabled={readOnly} />
+  )
   return (
     <Box {...props}>
       <Trans
         zh={
           <span css={boxBodyStyle}>
             <Text>{"當已用額度%大於"}</Text>
-            {children}
+            {input}
             <Text>{"，系統將限制玩家進入所有遊戲。"}</Text>
           </span>
         }
         en={
           <span css={boxBodyStyle}>
             <Text>{"When Usage P/T exceeds "}</Text>
-            {children}
+            {input}
             <Text>
               {", the system will suspend the players’ access to all games."}
             </Text>
@@ -123,24 +123,27 @@ export const HighRiskLobbySuspensionInputField = ({
   )
 }
 
-export const HighRiskLobbySuspensionInputBox = ({
-  children = <HighRiskLobbySuspensionInputField />,
-  ...props
-}) => {
+export const HighRiskLobbySuspensionInputBox = ({ readOnly, ...props }) => {
+  let input = (
+    <HighRiskLobbySuspensionInputField
+      readOnly={readOnly}
+      disabled={readOnly}
+    />
+  )
   return (
     <Box {...props}>
       <Trans
         zh={
           <span css={boxBodyStyle}>
             <Text>{"當已用額度%大於"}</Text>
-            {children}
+            {input}
             <Text>{"，系統將限制玩家進入平台。"}</Text>
           </span>
         }
         en={
           <span css={boxBodyStyle}>
             <Text>{"When Usage P/T exceeds "}</Text>
-            {children}
+            {input}
             <Text>
               {", the system will suspend the players’ access to the platform."}
             </Text>

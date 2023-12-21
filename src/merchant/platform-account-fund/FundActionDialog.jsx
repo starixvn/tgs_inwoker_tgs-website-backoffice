@@ -38,7 +38,7 @@ export const FundActionDialogDisclosure = ({
   brandId,
   onSubmitted,
   id,
-  dialogId = "fund-action-dialog-dialog"
+  dialogId = "fund-action-dialog"
 }) => {
   let dialog = useModalState()
 
@@ -78,7 +78,7 @@ const AddDeductFundDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
   let title = useAddOrDeductFundTrans()
 
   let formRef = useRef()
-  //TODO: reload fund data?
+
   let {
     isLoading: isLoadingFundData,
     data: fundData,

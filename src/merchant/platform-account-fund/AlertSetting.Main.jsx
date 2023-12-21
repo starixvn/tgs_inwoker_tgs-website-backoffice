@@ -31,7 +31,7 @@ export const MainSettingTab = (props) => {
   )
 }
 
-export const MainSettingPanel = ({ setDefaultValues, ...props }) => {
+export const MainSettingPanel = ({ readOnly, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
 
@@ -40,11 +40,11 @@ export const MainSettingPanel = ({ setDefaultValues, ...props }) => {
     <TabPanel tabId={TabId} {...props}>
       <Columns>
         <Columns.Column>
-          <AccessSuspensionSetting />
+          <AccessSuspensionSetting readOnly={readOnly} />
         </Columns.Column>
         <Columns.Column>
           <Stack>
-            <AutoAlertSetting />
+            <AutoAlertSetting readOnly={readOnly} />
             {/* 
             TODO: rm?
             <AlertRecipientSetting /> 
@@ -57,15 +57,15 @@ export const MainSettingPanel = ({ setDefaultValues, ...props }) => {
 }
 
 //TODO: info layout for en or just use Alert instead
-const AccessSuspensionSetting = ({ ...props }) => {
+const AccessSuspensionSetting = ({ readOnly, ...props }) => {
   return (
     <FieldStack>
       <Text.Block fontWeight="bold">
         <Trans zh="停權設置" en="Access Suspension" />
       </Text.Block>
       <FieldStack paddingLeft="1rem">
-        <GameSuspensionInputBox />
-        <HighRiskLobbySuspensionInputBox />
+        <GameSuspensionInputBox readOnly={readOnly} />
+        <HighRiskLobbySuspensionInputBox readOnly={readOnly} />
         <Set orientation="horizontal">
           <Icon icon="info-circle" color="info" />
           <Trans
@@ -88,7 +88,7 @@ const SettingBodyStyle = css`
   grid-template-columns: auto 1fr;
 `
 
-const AutoAlertSetting = ({}) => {
+const AutoAlertSetting = ({ readOnly }) => {
   return (
     <FieldStack>
       <Text.Block fontWeight="bold">
@@ -99,7 +99,7 @@ const AutoAlertSetting = ({}) => {
           <Box css={LineHeightStyle}>
             <Trans zh="加值通知：" en="Balance Alert:" />
           </Box>
-          <LowRiskAlertInputBox />
+          <LowRiskAlertInputBox readOnly={readOnly} />
 
           <Box css={LineHeightStyle}>
             <Trans zh="緊急加值通知：" en="Balance Low Alert:" />
@@ -182,10 +182,8 @@ const boxBodyStyle = css`
   line-height: 38px;
 `
 
-export const LowRiskAlertInputBox = ({
-  children = <LowRiskAlertInputField />,
-  ...props
-}) => {
+export const LowRiskAlertInputBox = ({ readOnly, ...props }) => {
+  let input = <LowRiskAlertInputField readOnly={readOnly} disabled={readOnly} />
   let balanceAlertValue = useLowRiskAlertValue()
   let gameSuspensionValue = useMediumRiskGameSuspensionValue()
   return (
@@ -194,7 +192,7 @@ export const LowRiskAlertInputBox = ({
         zh={
           <span css={boxBodyStyle}>
             <Text>{"當已用額度% > "}</Text>
-            {children}
+            {input}
             <Text>{"寄送，每3小時寄送一次"}</Text>
 
             <Text>{"，直至已用額度% ≤ "}</Text>
@@ -215,7 +213,7 @@ export const LowRiskAlertInputBox = ({
         en={
           <span css={boxBodyStyle}>
             <Text>{"When Usage P/T is greater than "}</Text>
-            {children}
+            {input}
             <Text>{", the alert will be sent every 3 hours"}</Text>
 
             <Text>{" until the Usage P/T is ≤ "}</Text>

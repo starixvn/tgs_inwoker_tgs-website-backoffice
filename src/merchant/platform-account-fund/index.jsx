@@ -60,7 +60,6 @@ export const Content = () => {
 const Body = () => {
   let brandId = usePlatformId()
 
-  //TODO: auto update data every 5 mins?
   let { isLoading, data, error, mutate, deleteCache } =
     usePlatformAccountFund(brandId)
 

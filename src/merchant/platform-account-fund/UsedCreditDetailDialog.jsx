@@ -12,6 +12,7 @@ import { GameProviderTrans } from "../../trans/Game"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { sum } from "lodash-es"
+import { FieldValues } from "../../layout/Grid"
 
 export const UsedCreditDetailDialog = ({
   brandId,
@@ -76,13 +77,13 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO: stack time range?
-  //default width?
-  //TODO max height?
+  //TODO: time range? hardcode?
   return (
     <Modal id={dialogId} title={title} {...dialog}>
       <Stack>
-        <Box></Box>
+        <Box>
+          <FieldValues></FieldValues>
+        </Box>
         <Table
           columns={columns}
           data={items}

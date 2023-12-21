@@ -85,7 +85,7 @@ const useFundAlertSettingData = (brandId) => {
           ...clone(alertSetting)
         }
       : null
-  console.log("data", data)
+
   return {
     isLoading,
     data,
@@ -144,6 +144,7 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
 
   return (
     <FormDialog
+      showActionButtons={readOnly ? false : true}
       defaultValues={clone(alertSetting)}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -168,8 +169,8 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
           <MainSettingTab {...tab} />
           <AutoAlertTab {...tab} />
         </TabList>
-        <MainSettingPanel {...tab} />
-        <AutoAlertPanel {...tab} />
+        <MainSettingPanel readOnly={readOnly} {...tab} />
+        <AutoAlertPanel readOnly={readOnly} {...tab} />
       </Tabs>
     </FormDialog>
   )

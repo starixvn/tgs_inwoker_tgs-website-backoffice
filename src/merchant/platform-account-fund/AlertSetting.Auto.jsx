@@ -30,7 +30,7 @@ const BodyStyle = css`
   grid-template-columns: auto 1fr;
 `
 
-export const AutoAlertPanel = ({ ...props }) => {
+export const AutoAlertPanel = ({ readOnly, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === TabId
 
@@ -40,17 +40,17 @@ export const AutoAlertPanel = ({ ...props }) => {
         <Box fontWeight="bold">
           <Trans zh="加值通知" en="Balance Alert" />
         </Box>
-        <LowRiskAlertBox />
+        <LowRiskAlertBox readOnly={readOnly} />
 
         <Box fontWeight="bold">
           <Trans zh="緊急加值通知" en="Balance Low Alert" />
         </Box>
-        <MediumRiskAlertBox />
+        <MediumRiskAlertBox readOnly={readOnly} />
 
         <Box fontWeight="bold">
           <Trans zh="平台停用通知" en="Suspension Alert" />
         </Box>
-        <HighRiskLobbySuspensionAlertBox />
+        <HighRiskLobbySuspensionAlertBox readOnly={readOnly} />
       </Box>
     </TabPanel>
   )
@@ -62,7 +62,12 @@ const TextareaStyle = css`
   }
 `
 
-const AlertBox = ({ name = "", subject = "", defaultContent = "" }) => {
+const AlertBox = ({
+  name = "",
+  readOnly,
+  subject = "",
+  defaultContent = ""
+}) => {
   return (
     <Box css={BodyStyle}>
       <SubjectTrans />
@@ -70,6 +75,7 @@ const AlertBox = ({ name = "", subject = "", defaultContent = "" }) => {
         name={`${name}.emailSubject`}
         value={subject}
         disabled
+        readOnly={readOnly}
         size="small"
       />
 
@@ -77,6 +83,8 @@ const AlertBox = ({ name = "", subject = "", defaultContent = "" }) => {
       <Textarea
         name={`${name}.emailContent`}
         defaultValue={defaultContent}
+        readOnly={readOnly}
+        disabled={readOnly}
         size="small"
         css={TextareaStyle}
       />
@@ -99,13 +107,14 @@ const getBrand = () => {
 }
 
 //TODO: other lang?
-const LowRiskAlertBox = () => {
+const LowRiskAlertBox = ({ readOnly }) => {
   let licensee = getLicensee()
   let brand = getBrand()
   let subjectPrefix = `[${licensee}][${brand}]`
   return (
     <AlertBox
       name="lowNotification"
+      readOnly={readOnly}
       subject={`${subjectPrefix} 加值通知 Warning: Balance low`}
       defaultContent={`敬愛的夥伴您好，您的平台目前剩餘額度不足，為避免影響會員遊戲體驗，請盡速聯繫貴司對應商務進行加值，謝謝您。
 Dear Partner,
@@ -116,13 +125,14 @@ We wanted to inform you that your site currently has reached a high balance usag
 }
 
 //TODO: other lang?
-const MediumRiskAlertBox = () => {
+const MediumRiskAlertBox = ({ readOnly }) => {
   let licensee = getLicensee()
   let brand = getBrand()
   let subjectPrefix = `[${licensee}][${brand}]`
   return (
     <AlertBox
       name="moderateNotification"
+      readOnly={readOnly}
       subject={`${subjectPrefix} 緊急加值通知 Warning: Balance too low`}
       defaultContent={`敬愛的夥伴您好，您的平台目前剩餘額度嚴重不足，所有遊戲暫時不可進入；為避免影響平台正常運營，請立即聯繫貴司對應商務進行加值，謝謝您。
 Dear Partner,
@@ -133,13 +143,14 @@ We wanted to inform you that your site currently has reached a higher balance us
 }
 
 //TODO: other lang?
-const HighRiskLobbySuspensionAlertBox = () => {
+const HighRiskLobbySuspensionAlertBox = ({ readOnly }) => {
   let licensee = getLicensee()
   let brand = getBrand()
   let subjectPrefix = `[${licensee}][${brand}]`
   return (
     <AlertBox
       name="highNotification"
+      readOnly={readOnly}
       subject={`${subjectPrefix} 平台已停用，請立即加值 Notice of Suspension`}
       defaultContent={`貴司您好，由於您的平台剩餘額度已低於限制，平台及所有遊戲暫時不可進入；請立即聯繫貴司對應商務進行加值，並由專人協助您恢復平台運行，謝謝您。
 Dear Partner,
