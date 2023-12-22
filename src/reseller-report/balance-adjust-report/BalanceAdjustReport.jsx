@@ -62,6 +62,7 @@ import { AdjustListDialogDisclosure } from "./AdjustListDialog"
 import { UserType } from "./UserType"
 import { AgentAdjustTrans } from "../../trans/Action"
 import { CurrencyTrans } from "../../trans/Payment"
+import { PlatformTrans } from "../../trans/Platform"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -211,7 +212,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
           }),
           textColumn({
             accessor: "brand",
-            Header: <Trans zh="平台" en="Platform" />,
+            Header: <PlatformTrans />,
             disableSortBy: true
           }),
           textColumn({

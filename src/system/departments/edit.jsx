@@ -28,9 +28,9 @@ import ResellerIdSelect from "../../merchant/resellers/ResellerIdSelect"
 import { useResellerLabel } from "../../merchant/resellers"
 import LicenseeIdSelect from "../../merchant/licensees/LicenseeIdSelect"
 import { useLicenseeLabel } from "../../merchant/licensees"
-import { useBrandLabel } from "../../merchant/platforms"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
 import { EditTrans } from "../../trans/Action"
+import { PlatformTrans } from "../../trans/Platform"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -152,7 +152,9 @@ const EditBody = ({ record = {}, isAdd = false }) => {
         )}
         {!isAdd && record?.brandId && (
           <>
-            <Label>{useBrandLabel()}</Label>
+            <Label>
+              <PlatformTrans />
+            </Label>
             <BrandIdSelect value={record?.brandId} disabled />
           </>
         )}

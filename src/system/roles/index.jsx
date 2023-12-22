@@ -35,6 +35,7 @@ import Checkbox from "../../checkbox"
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { nextRoleType, useRoleTypeOptions } from "./type"
 import { ActionTrans } from "../../trans/Action"
+import { PlatformTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -222,7 +223,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "brandName",
-          Header: <Trans zh="平台" en="Platform" />,
+          Header: <PlatformTrans />,
           disableSortBy: true
         })
       )

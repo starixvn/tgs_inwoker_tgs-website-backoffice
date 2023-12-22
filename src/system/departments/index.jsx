@@ -23,6 +23,7 @@ import { ActionTrans } from "../../trans/Action"
 import { FormProvider, useForm } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
+import { PlatformTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -160,7 +161,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "brandName",
-          Header: <Trans zh="平台" en="Platform" />,
+          Header: <PlatformTrans />,
           disableSortBy: true
         })
       )

@@ -1,6 +1,14 @@
 import React, { createContext, useContext, useState } from "react"
 import { Trans, useTrans } from "../i18n"
 
+const Platform = {
+  zh: "平台",
+  en: "Platform",
+  vi: "Nền tảng"
+}
+export const PlatformTrans = () => <Trans {...Platform} />
+export const usePlatformTrans = () => useTrans(Platform)
+
 const ThirdPartyId = {
   zh: "三方单号",
   en: "3rd Party Id",

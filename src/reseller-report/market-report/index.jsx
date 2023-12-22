@@ -36,6 +36,7 @@ import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans, TurnoverTrans } from "../../trans/Game"
 import { CurrencyTrans, DepositAmountTrans } from "../../trans/Payment"
+import { PlatformTrans } from "../../trans/Platform"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -235,7 +236,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         id: "brandCode",
         accessor: (row) => row,
-        Header: <Trans zh="平台" en="Platform" />,
+        Header: <PlatformTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, brandCode = "" } }) => {
           return isTotal ? "" : brandCode

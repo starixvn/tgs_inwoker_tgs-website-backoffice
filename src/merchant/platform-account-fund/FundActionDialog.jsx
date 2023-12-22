@@ -26,6 +26,7 @@ import {
   isDeductFund,
   useFundAction
 } from "./FundAction"
+import { PlatformTrans } from "../../trans/Platform"
 
 const AddOrDeductFund = {
   zh: "上/下分",
@@ -245,7 +246,7 @@ const FormBody = ({}) => {
     <FieldStack marginLeft="1rem">
       <FieldValues>
         <Box>
-          <Trans zh="平台" en="Platform" />
+          <PlatformTrans />
         </Box>
         <Box>{getValues("brandCode")}</Box>
 

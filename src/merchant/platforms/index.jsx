@@ -35,13 +35,6 @@ export { Code }
 
 export const Brand = "Brand"
 
-export const BrandTrans = {
-  zh: "平台",
-  en: "Platform"
-}
-
-export const useBrandLabel = () => useTrans(BrandTrans)
-
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
   if (!isDisplay) {

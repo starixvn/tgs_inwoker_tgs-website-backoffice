@@ -45,7 +45,10 @@ import {
   DepositAmountTrans,
   WithdrawAmountTrans
 } from "../../trans/Payment"
-import { DepositAmountAfterDeductingTransferFeeTrans } from "../../trans/Platform"
+import {
+  DepositAmountAfterDeductingTransferFeeTrans,
+  PlatformTrans
+} from "../../trans/Platform"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -246,7 +249,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         id: "brandCode",
         accessor: (row) => row,
-        Header: <Trans zh="平台" en="Platform" />,
+        Header: <PlatformTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, brandCode = "" } }) => {
           return isTotal ? "" : brandCode

@@ -43,6 +43,7 @@ import {
 } from "../../trans/Game"
 import { CurrencyTrans } from "../../trans/Payment"
 import { SettleAmountTrans, SupportingDeviceTrans } from "../../trans/Field"
+import { PlatformTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -193,7 +194,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "brandCode",
-        Header: <Trans zh="平台" en="Platform" />,
+        Header: <PlatformTrans />,
         disableSortBy: true
       }),
       textColumn({
