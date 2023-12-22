@@ -55,6 +55,7 @@ import { BrandAutoWithdrawDialogDisclosure } from "./BrandAutoWithdraw"
 import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action"
 import {
   ChannelNameTrans,
+  PaymentManagementTrans,
   PaymentMethodTrans,
   PaymentProviderTrans
 } from "../../trans/Payment"
@@ -121,7 +122,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="金流管理" en="Payment Management" />}
+      title={<PaymentManagementTrans />}
       actionBar={
         <Level>
           <SearchBar

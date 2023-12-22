@@ -20,17 +20,13 @@ import {
 } from "./agent-marketing-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
+import { MarketingManagementTrans } from "../trans/Platform"
 
 export const Code = "marketing"
 
 export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
-
-export const nameMessages = {
-  zh: "市场管理",
-  en: "Marketing Management"
-}
 
 export const Menu = ({
   title = (
@@ -42,7 +38,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Trans {...nameMessages} />
+      <MarketingManagementTrans />
     </Flex>
   ),
   url = DefaultUrl,

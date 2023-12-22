@@ -56,3 +56,11 @@ export const AgentProfitSharingReport = {
 export const AgentProfitSharingReportTrans = () => (
   <Trans {...AgentProfitSharingReport} />
 )
+
+const AgentProfit = {
+  zh: "代理总分红",
+  en: "Agent Profit",
+  vi: "Tổng hoa hồng đại lý"
+}
+export const AgentProfitTrans = () => <Trans {...AgentProfit} />
+export const useAgentProfitTrans = () => useTrans(AgentProfit)

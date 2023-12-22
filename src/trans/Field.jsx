@@ -188,3 +188,11 @@ const CheckType = {
 }
 export const CheckTypeTrans = () => <Trans {...CheckType} />
 export const useCheckTypeTrans = () => useTrans(CheckType)
+
+const BonusAmount = {
+  zh: "红利金额",
+  en: "Bonus Amount",
+  vi: "Tiền thưởng"
+}
+export const BonusAmountTrans = (props) => <Trans {...BonusAmount} {...props} />
+export const useBonusAmountTrans = () => useTrans(BonusAmount)

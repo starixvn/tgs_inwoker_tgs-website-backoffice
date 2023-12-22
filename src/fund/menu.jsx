@@ -12,14 +12,11 @@ import {
 } from "./withdraw/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faWallet } from "@fortawesome/free-solid-svg-icons"
-import { DepositList, WithdrawList } from "../trans/Payment"
-
-export const Name = ({}) => useTrans(nameMessages)
-
-export const nameMessages = {
-  zh: "资金管理",
-  en: "Fund management"
-}
+import {
+  DepositList,
+  FundManagementTrans,
+  WithdrawList
+} from "../trans/Payment"
 
 export const Code = "fundmanagement"
 
@@ -37,7 +34,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Name />
+      <FundManagementTrans />
     </Flex>
   ),
   url = DefaultUrl,

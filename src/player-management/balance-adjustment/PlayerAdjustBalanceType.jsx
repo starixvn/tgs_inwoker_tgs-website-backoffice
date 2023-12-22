@@ -16,12 +16,11 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { SystemTransactionType, BonusAdjustTransactionType } from "./menu"
 import {
   AgentAdjustTrans,
-  CompanyAdjustTrans,
   SystemAdjustTrans,
   useAgentAdjustTrans,
-  useCompanyAdjustTrans,
   useSystemAdjustTrans
 } from "../../trans/Action"
+import { CompanyAdjustTrans, useCompanyAdjustTrans } from "../../trans/Platform"
 
 export const Bonus = "BonusAdjust"
 export const BonusTrans = {

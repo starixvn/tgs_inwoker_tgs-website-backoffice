@@ -31,7 +31,7 @@ import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { VipLevelTrans } from "../../trans/Vip"
-import { NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import {
   BetAmountTrans,
   TurnoverTrans,
@@ -39,6 +39,10 @@ import {
 } from "../../trans/Game"
 import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import { DepositAmountTrans } from "../../trans/Payment"
+import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans
+} from "../../trans/Platform"
 
 export { Code }
 
@@ -258,13 +262,13 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       numberDecimalColumn({
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
         sumColumn: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -317,7 +321,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

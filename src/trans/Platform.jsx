@@ -228,3 +228,68 @@ export const WinlossReport = {
   en: "Winloss Report"
 }
 export const WinlossReportTrans = () => <Trans {...WinlossReport} />
+
+export const LicenseeReport = {
+  zh: "公司报表",
+  en: "Licensee Report",
+  vi: "Báo cáo công ty"
+}
+export const LicenseeReportTrans = () => <Trans {...LicenseeReport} />
+
+const CompanyAdjust = {
+  zh: "公司调账",
+  en: "Company Adjust",
+  vi: "Công ty điều chỉnh"
+}
+export const useCompanyAdjustTrans = () => useTrans(CompanyAdjust)
+export const CompanyAdjustTrans = () => <Trans {...CompanyAdjust} />
+
+const CompanyAdjustmentAmount = {
+  zh: "公司调账",
+  en: "Co. Adjustment Amount",
+  vi: "Công ty điều chỉnh"
+}
+export const CompanyAdjustmentAmountTrans = () => (
+  <Trans {...CompanyAdjustmentAmount} />
+)
+
+const CompanyWinLoss = {
+  zh: "公司输赢金额",
+  en: "Co. W/L",
+  vi: "Lợi nhuận công ty thắng thua"
+}
+export const CompanyWinLossTrans = () => <Trans {...CompanyWinLoss} />
+
+export const MarketingManagement = {
+  zh: "市场管理",
+  en: "Marketing Management",
+  vi: "Quản lý thị trường"
+}
+export const MarketingManagementTrans = () => <Trans {...MarketingManagement} />
+
+export const SystemConfig = {
+  zh: "系统设置",
+  en: "System Config",
+  vi: "Cài đặt hệ thống"
+}
+export const SystemConfigTrans = () => <Trans {...SystemConfig} />
+
+export const Admins = {
+  zh: "管理员列表",
+  en: "Admins",
+  vi: "Danh sách quản trị viên"
+}
+export const AdminsTrans = () => <Trans {...Admins} />
+
+export const Roles = {
+  zh: "权限组管理",
+  en: "Roles",
+  vi: "Quản lý toàn quyền"
+}
+export const RolesTrans = () => <Trans {...Roles} />
+
+export const Departments = {
+  zh: "部门管理",
+  en: "Departments"
+}
+export const DepartmentsTrans = () => <Trans {...Departments} />

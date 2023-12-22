@@ -59,7 +59,7 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { VipLevelTrans } from "../../trans/Vip"
-import { NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import {
   BetAmountTrans,
   TurnoverTrans,
@@ -67,7 +67,11 @@ import {
 } from "../../trans/Game"
 import { UserNameTrans } from "../../trans/User"
 import { DepositAmountTrans } from "../../trans/Payment"
-import { DepositAmountAfterDeductingTransferFeeTrans } from "../../trans/Platform"
+import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans,
+  DepositAmountAfterDeductingTransferFeeTrans
+} from "../../trans/Platform"
 import { PlayerContributionReportTrans } from "../../trans/Player"
 
 const MainTable = "main"
@@ -364,7 +368,7 @@ const useColumns = ({ items = [] }) => {
         */
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
         /*
         TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
@@ -398,7 +402,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
         sumColumn: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -434,7 +438,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

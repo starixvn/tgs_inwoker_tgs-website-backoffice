@@ -40,13 +40,16 @@ import {
   ValidBetAmountTrans
 } from "../../trans/Game"
 import { DepositAmountTrans } from "../../trans/Payment"
-import { NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans,
   DepositAmountAfterDeductingTransferFeeTrans,
   PlatformCoveredBonusAdjustInfoTrans,
   PlatformCoveredBonusInfoTrans,
   PlatformMarketReportNetProfitInfoTrans
 } from "../../trans/Platform"
+import { AgentProfitTrans } from "../../trans/Agent"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -271,7 +274,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -288,7 +291,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -299,7 +302,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberDecimalColumn({
         id: "agentProfit",
         accessor: (row) => row,
-        Header: <Trans zh="代理总分红" en="Agent Profit" />,
+        Header: <AgentProfitTrans />,
         disableSortBy: true,
         TotalCell: ({ value }) => (
           <FormattedNumber value={value} format="0,0.00" digits={2} />
@@ -332,7 +335,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

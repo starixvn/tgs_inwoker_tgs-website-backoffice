@@ -31,7 +31,10 @@ import { NumberInput, NumberInputField } from "../../../input/NumberInput"
 import { useMount } from "react-use"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { MainSetting } from "../MainSetting"
-import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
+import {
+  PromotionBonusAmountTrans,
+  PromotionTurnoverRequirementTrans
+} from "../../../trans/Promotion"
 import { MultipliersTrans } from "../../../trans/Field"
 
 const PromotionType = "OfflineLoginReward"
@@ -61,7 +64,7 @@ const Rule = ({ readOnly }) => {
       {isCreate && <BatchUploadPlayerListField />}
 
       <NormalLabel>
-        <Trans zh="彩金金额" en="Bonus Amount" />
+        <PromotionBonusAmountTrans />
       </NormalLabel>
       <NumberInput
         name={BonusAmountField}

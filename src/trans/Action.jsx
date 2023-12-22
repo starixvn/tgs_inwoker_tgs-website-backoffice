@@ -76,14 +76,6 @@ const DeductBalance = {
 }
 export const DeductBalanceTrans = () => <Trans {...DeductBalance} />
 
-const CompanyAdjust = {
-  zh: "公司调账",
-  en: "Company Adjust",
-  vi: "Công ty điều chỉnh"
-}
-export const useCompanyAdjustTrans = () => useTrans(CompanyAdjust)
-export const CompanyAdjustTrans = () => <Trans {...CompanyAdjust} />
-
 const AgentAdjust = {
   zh: "代理调账",
   en: "Agent Adjust",

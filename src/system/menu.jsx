@@ -14,19 +14,19 @@ import {
 } from "./brandpayments/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faTools } from "@fortawesome/free-solid-svg-icons"
+import {
+  Admins,
+  Departments,
+  Roles,
+  SystemConfigTrans
+} from "../trans/Platform"
+import { PaymentManagement } from "../trans/Payment"
 
 export const Code = "system"
 
 export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
-
-export const Name = ({}) => useTrans(nameMessages)
-
-export const nameMessages = {
-  zh: "系统设置",
-  en: "System Config"
-}
 
 export const Menu = ({
   title = (
@@ -38,7 +38,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Name />
+      <SystemConfigTrans />
     </Flex>
   ),
   url = DefaultUrl,
@@ -58,37 +58,13 @@ export const Menu = ({
 const labelOf = ({ locale, code }) => {
   switch (code) {
     case AdminCode:
-      return getTrans(
-        {
-          zh: "管理员列表",
-          en: "Admins"
-        },
-        locale
-      )
+      return getTrans(Admins, locale)
     case GroupCode:
-      return getTrans(
-        {
-          zh: "权限组管理",
-          en: "Roles"
-        },
-        locale
-      )
+      return getTrans(Roles, locale)
     case DepartmentCode:
-      return getTrans(
-        {
-          zh: "部门管理",
-          en: "Departments"
-        },
-        locale
-      )
+      return getTrans(Departments, locale)
     case BrandPaymentCode:
-      return getTrans(
-        {
-          zh: "金流管理",
-          en: "Payments"
-        },
-        locale
-      )
+      return getTrans(PaymentManagement, locale)
     default:
       return ""
   }

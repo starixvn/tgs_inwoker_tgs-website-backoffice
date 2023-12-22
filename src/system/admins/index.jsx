@@ -31,6 +31,7 @@ import {
 } from "../../trans/User"
 import { StatusTrans } from "../../trans/Status"
 import { CreatedTimeTrans } from "../../trans/Date"
+import { AdminsTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -68,7 +69,7 @@ const Body = () => {
 
   return (
     <PageContent
-      title={<Trans zh="管理员列表" en="Admins" />}
+      title={<AdminsTrans />}
       actionBar={
         <>
           <SearchBar

@@ -227,3 +227,11 @@ export const PromotionBucketTypeNotSpecifyTrans = () => (
 )
 export const usePromotionBucketTypeNotSpecifyTrans = () =>
   useTrans(PromotionBucketTypeNotSpecify)
+
+const PromotionBonusAmount = {
+  zh: "彩金金额",
+  en: "Bonus Amount"
+}
+export const PromotionBonusAmountTrans = () => (
+  <Trans {...PromotionBonusAmount} />
+)

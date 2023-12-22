@@ -58,7 +58,7 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
-import { NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
 
 const MainTable = "main"
@@ -639,7 +639,7 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }

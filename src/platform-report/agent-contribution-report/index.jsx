@@ -54,7 +54,7 @@ import { BonusDialogDisclosure } from "../BonusDialog"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
-import { NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import {
   BetAmountTrans,
   TurnoverTrans,
@@ -62,7 +62,10 @@ import {
 } from "../../trans/Game"
 import { UserNameTrans } from "../../trans/User"
 import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
-import { DepositAmountAfterDeductingTransferFeeTrans } from "../../trans/Platform"
+import {
+  CompanyWinLossTrans,
+  DepositAmountAfterDeductingTransferFeeTrans
+} from "../../trans/Platform"
 import { AgentContributionReportTrans } from "../../trans/Agent"
 
 const MainTable = "main"
@@ -436,9 +439,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         */
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
-        Header: (
-          <Trans zh="红利金额" en="Bonus Amount" title={bonusAmountTooltip} />
-        )
+        Header: <BonusAmountTrans title={bonusAmountTooltip} />
         /*
         TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
         Cell: ({ value: record }) => {
@@ -497,7 +498,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />
+        Header: <CompanyWinLossTrans />
       }),
       numberDecimalColumn({
         accessor: "netProfit",

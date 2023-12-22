@@ -55,8 +55,9 @@ import {
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons"
 import AutoSizer from "react-virtualized-auto-sizer"
-import { NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import { CompanyWinLossTrans } from "../../trans/Platform"
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let [treePaths, setTreePaths] = useState([])
@@ -603,7 +604,7 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -686,7 +687,7 @@ const useColumns = ({
       numberDecimalColumn({
         id: "winLossAmount",
         accessor: (row) => row,
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },

@@ -8,10 +8,10 @@ export const DepositList = {
 }
 export const DepositListTrans = () => <Trans {...DepositList} />
 
-//TODO: vi trans
 export const WithdrawList = {
   zh: "提款列表",
-  en: "Withdraw List"
+  en: "Withdraw List",
+  vi: "Danh sách rút tiền"
 }
 export const WithdrawListTrans = () => <Trans {...WithdrawList} />
 
@@ -226,3 +226,17 @@ export const BalanceChangeTypeReceiveRollbackTrans = () => (
 )
 export const useBalanceChangeTypeReceiveRollbackTrans = () =>
   useTrans(BalanceChangeTypeReceiveRollback)
+
+export const FundManagement = {
+  zh: "资金管理",
+  en: "Fund management",
+  vi: "Quản lý  ngân sách"
+}
+export const FundManagementTrans = () => <Trans {...FundManagement} />
+
+export const PaymentManagement = {
+  zh: "金流管理",
+  en: "Payment Management",
+  vi: "Quản lý tài chính"
+}
+export const PaymentManagementTrans = () => <Trans {...PaymentManagement} />
