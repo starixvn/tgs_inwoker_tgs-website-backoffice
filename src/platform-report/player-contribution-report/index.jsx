@@ -68,6 +68,7 @@ import {
 import { UserNameTrans } from "../../trans/User"
 import { DepositAmountTrans } from "../../trans/Payment"
 import { DepositAmountAfterDeductingTransferFeeTrans } from "../../trans/Platform"
+import { PlayerContributionReportTrans } from "../../trans/Player"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -184,7 +185,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
           )}
         </Level>
       }
-      title={<Trans zh="玩家贡献报表" en="Player Contribution Report" />}
+      title={<PlayerContributionReportTrans />}
     >
       <Stack>
         <Alert variant="bordered" type="info" accent marginBottom="1rem">

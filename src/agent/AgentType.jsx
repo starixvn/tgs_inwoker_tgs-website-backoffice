@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
+import { useAgentTypeTrans } from "../trans/Agent"
 
 const Cash = "Cash"
 const CashTrans = {
@@ -26,10 +27,7 @@ export const isAgentTypeCash = (value) => value == Cash
 export const isAgentTypeCredit = (value) => value == Credit
 
 export const AgentTypeSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "代理类型",
-    en: "Agent Type"
-  })
+  let defaultPlaceholder = useAgentTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [

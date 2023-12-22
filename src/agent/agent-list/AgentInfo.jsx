@@ -93,7 +93,11 @@ import { ClearProfitShareDialogDisclosure } from "./ClearProfitShareDialog"
 import { isEmpty, isNil } from "lodash-es"
 import { either } from "ramda"
 import { diff } from "../../object/diff"
-import { UpperLevelAgentTrans } from "../../trans/Agent"
+import {
+  AgentLevelTrans,
+  AgentTypeTrans,
+  UpperLevelAgentTrans
+} from "../../trans/Agent"
 import {
   BalanceTrans,
   RealNameTrans,
@@ -728,7 +732,7 @@ const AgentLevelBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="代理种类" en="Level Type" />
+        <AgentLevelTrans />
       </Box>
       {children ? (
         children
@@ -803,7 +807,7 @@ const AgentStatusBox = ({ value = "", children, ...props }) => {
 const LevelTypeBox = ({ value = "", children, ...props }) => {
   return (
     <>
-      <Trans zh="代理种类" en="Level Type" />
+      <AgentLevelTrans />
 
       {children ? (
         children
@@ -819,7 +823,7 @@ const LevelTypeBox = ({ value = "", children, ...props }) => {
 const AgentTypeBox = ({ value, children, ...props }) => {
   return (
     <>
-      <Trans zh="代理类型" en="Agent Type" />
+      <AgentTypeTrans />
       {children ? (
         children
       ) : (

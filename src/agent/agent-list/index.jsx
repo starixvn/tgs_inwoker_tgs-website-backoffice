@@ -76,6 +76,7 @@ import {
 } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import { AgentLevelTrans, AgentTypeTrans, AgentsTrans } from "../../trans/Agent"
 
 export { Code }
 
@@ -160,7 +161,7 @@ const BodyContent = ({ brandId = "", brand }) => {
 
   return (
     <PageContent
-      title={<Trans zh="代理列表" en="Agents" />}
+      title={<AgentsTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <SearchBar
@@ -271,13 +272,13 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "type",
-        Header: <Trans zh="代理类型" en="Agent Type" />,
+        Header: <AgentTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <AgentTypeLabel value={value} />
       }),
       textColumn({
         accessor: "levelType",
-        Header: <Trans zh="代理种类" en="Level Type" />,
+        Header: <AgentLevelTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <AgentLevelLabel value={value} />
       }),

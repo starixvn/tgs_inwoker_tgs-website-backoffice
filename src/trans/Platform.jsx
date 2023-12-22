@@ -214,3 +214,9 @@ export const ThirdPartyLiveChatProviderTrans = () => (
 )
 export const useThirdPartyLiveChatProviderTrans = () =>
   useTrans(ThirdPartyLiveChatProvider)
+
+export const WinlossReport = {
+  zh: "输赢报表",
+  en: "Winloss Report"
+}
+export const WinlossReportTrans = () => <Trans {...WinlossReport} />

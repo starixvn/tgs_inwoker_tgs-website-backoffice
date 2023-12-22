@@ -24,6 +24,7 @@ import {
 } from "../../page/PlatformPageContent"
 import { Trans } from "../../i18n"
 import { WinlossReport } from "./WinlossReport"
+import { WinlossReportTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -43,7 +44,7 @@ const Report = () => {
     <PlatformPageContent
       title={
         <Set orientation="horizontal" alignY="center">
-          <Trans zh="输赢报表" en="Winloss Report" />
+          <WinlossReportTrans />
           <Popover.State placement="bottom">
             <Popover.Disclosure alignY="center">
               <Icon icon="info-circle" color="info" fontSize="1rem" />

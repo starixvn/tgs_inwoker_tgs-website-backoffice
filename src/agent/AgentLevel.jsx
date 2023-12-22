@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
+import { useAgentLevelTrans } from "../trans/Agent"
 
 const Chief = "Chief"
 const ChiefTrans = {
@@ -26,10 +27,7 @@ export const isAgentHead = (value) => value === Chief
 export const isAgentParentRequired = (value) => !isAgentHead(value)
 
 export const AgentLevelSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "代理种类",
-    en: "Level Type"
-  })
+  let defaultPlaceholder = useAgentLevelTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [

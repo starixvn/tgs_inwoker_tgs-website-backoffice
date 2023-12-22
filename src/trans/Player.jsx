@@ -143,3 +143,12 @@ export const PlayerStatusRegisterUndoneTrans = () => (
 )
 export const usePlayerStatusRegisterUndoneTrans = () =>
   useTrans(PlayerStatusRegisterUndone)
+
+export const PlayerContributionReport = {
+  zh: "玩家贡献报表",
+  en: "Player Contribution Report",
+  vi: "Hiệu suất người chơi "
+}
+export const PlayerContributionReportTrans = () => (
+  <Trans {...PlayerContributionReport} />
+)

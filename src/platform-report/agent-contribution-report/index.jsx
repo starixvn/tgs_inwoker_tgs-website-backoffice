@@ -63,6 +63,7 @@ import {
 import { UserNameTrans } from "../../trans/User"
 import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
 import { DepositAmountAfterDeductingTransferFeeTrans } from "../../trans/Platform"
+import { AgentContributionReportTrans } from "../../trans/Agent"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -185,7 +186,7 @@ const ReportContent = ({ brandId }) => {
           )}
         </Level>
       }
-      title={<Trans zh="代理贡献报表" en="Agent Contribution Report" />}
+      title={<AgentContributionReportTrans />}
     >
       <FieldStack>
         <Alert variant="bordered" type="info" accent marginBottom="1rem">
