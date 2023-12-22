@@ -59,7 +59,7 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { VipLevelTrans } from "../../trans/Vip"
-import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
   BetAmountTrans,
   TurnoverTrans,
@@ -305,7 +305,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         accessor: "username",
         Header: <UserNameTrans />,
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
         Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {

@@ -33,6 +33,7 @@ import textColumn from "../../table/column/textColumn"
 import { formatYearMonthDay } from "../../date/format"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportCompanyTotal } from "./client"
+import { TotalTrans } from "../../trans/Field"
 
 export const CompanyTotalDialogDisclosure = ({
   value,
@@ -109,7 +110,7 @@ const useColumns = ({ items = [] }) => {
           let end = formatYearMonthDay(record?.to)
           return <Text.Block>{`${start} - ${end}`}</Text.Block>
         },
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         }

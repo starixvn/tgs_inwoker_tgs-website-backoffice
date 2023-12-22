@@ -51,6 +51,7 @@ import {
   ValidBetAmountTrans,
   VirtualSports
 } from "../../trans/Game"
+import { TotalTrans } from "../../trans/Field"
 
 export const AllAgentRebateDialogDisclosure = ({
   brandId,
@@ -343,7 +344,7 @@ const useColumns = ({ items = [], gameTypeDetails = [], brandId }) => {
                   textColumn({
                     accessor: "username",
                     Header: <Trans zh="直属玩家" en="Players" />,
-                    Footer: () => <Trans zh="总计" en="Total" />,
+                    Footer: () => <TotalTrans />,
                     disableSortBy: true
                   }),
                   numberDecimalColumn({

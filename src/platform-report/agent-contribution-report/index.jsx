@@ -54,7 +54,7 @@ import { BonusDialogDisclosure } from "../BonusDialog"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
-import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
   BetAmountTrans,
   TurnoverTrans,
@@ -368,7 +368,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         id: "username",
         accessor: (row) => row,
         Header: <UserNameTrans />,
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         Cell: ({ value }) => {
           let { type } = value
           if (isAgent(type)) {

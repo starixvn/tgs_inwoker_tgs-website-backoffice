@@ -21,6 +21,7 @@ import { FieldValues } from "../../layout/Grid"
 import { DateFormat } from "../../date/format"
 import { TimeTrans } from "../../trans/Date"
 import { PlatformTrans } from "../../trans/Platform"
+import { TotalTrans } from "../../trans/Field"
 
 export const UsedCreditDetailDialog = ({
   brandId,
@@ -141,7 +142,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         accessor: "gameProviderCode",
         Header: <GameProviderTrans />,
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         textAlign: "left",
         disableSortBy: true
       }),

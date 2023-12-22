@@ -35,6 +35,7 @@ import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { AgentUsernameTrans } from "../../trans/Agent"
+import { TotalTrans } from "../../trans/Field"
 
 export const AgentProfitSharingDialogDisclosure = ({
   brandId,
@@ -185,7 +186,7 @@ const useAgentBonusColumns = ({ username = "", items = [] }) => {
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
         Header: <Trans zh="结算日期" en="Date" />,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         },

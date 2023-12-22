@@ -31,7 +31,7 @@ import { isDev } from "../../env"
 import { urlWith } from "../../client"
 import DownloadButton from "../../button/DownloadButton"
 import { VipLevelTrans } from "../../trans/Vip"
-import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
   BetAmountTrans,
   TurnoverTrans,
@@ -231,7 +231,7 @@ const useColumns = ({ brandId, start, end, items = [] }) => {
       textColumn({
         accessor: "username",
         Header: <UserNameTrans />,
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
         Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {

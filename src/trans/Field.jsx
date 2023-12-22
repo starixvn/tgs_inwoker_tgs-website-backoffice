@@ -196,3 +196,10 @@ const BonusAmount = {
 }
 export const BonusAmountTrans = (props) => <Trans {...BonusAmount} {...props} />
 export const useBonusAmountTrans = () => useTrans(BonusAmount)
+
+const Total = {
+  zh: "总计",
+  en: "Total",
+  vi: "Tổng"
+}
+export const TotalTrans = () => <Trans {...Total} />

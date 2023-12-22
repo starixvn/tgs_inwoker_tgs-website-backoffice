@@ -76,7 +76,7 @@ import {
   UploadFileTrans
 } from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
-import { TransactionAmountTrans } from "../../trans/Field"
+import { TotalTrans, TransactionAmountTrans } from "../../trans/Field"
 import {
   BatchAddBalanceAlertTrans,
   BatchAddBalanceTrans,
@@ -551,12 +551,12 @@ const useColumns = ({ items, showResult }) => {
   return useMemo(() => {
     let columns = [
       SequenceColumn({
-        Footer: () => <Trans zh="总计" en="Total" />
+        Footer: () => <TotalTrans />
       }),
       textColumn({
         accessor: "userName",
         Header: <UserNameTrans />,
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

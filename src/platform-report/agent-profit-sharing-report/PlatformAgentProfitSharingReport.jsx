@@ -58,7 +58,7 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
-import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
 import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
 import {
   AgentUsernameTrans,
@@ -606,7 +606,7 @@ const useColumns = ({
             //marginLeft={`${marginLeft}rem`}
             return (
               <Text.Block>
-                <Trans zh="总计" en="Total" />
+                <TotalTrans />
               </Text.Block>
             )
           }

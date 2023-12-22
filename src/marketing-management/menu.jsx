@@ -21,6 +21,7 @@ import {
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 import { MarketingManagementTrans } from "../trans/Platform"
+import { PlayerDepositReport } from "../trans/Player"
 
 export const Code = "marketing"
 
@@ -58,13 +59,7 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case PlayerDepositCode:
-      return getTrans(
-        {
-          zh: "玩家存款报表",
-          en: "Player Deposit Report"
-        },
-        locale
-      )
+      return getTrans(PlayerDepositReport, locale)
 
     case PlayerWinLossCode:
       return getTrans(

@@ -50,7 +50,7 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { NetProfitTrans } from "../../trans/Field"
+import { NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
   CardGameTrans,
   LiveDealerTrans,
@@ -246,7 +246,7 @@ const useColumns = ({ items = [] }) => {
         dateFormat: DayMonthYearFormat,
         timeFormat: false,
         Header: <Trans zh="结算日期" en="Settlement Date" />,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         },

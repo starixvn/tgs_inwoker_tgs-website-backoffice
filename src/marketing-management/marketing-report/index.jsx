@@ -49,6 +49,7 @@ import textColumn from "../../table/column/textColumn"
 import { subDays } from "date-fns"
 import { UserNameTrans } from "../../trans/User"
 import { useAgentUsernameTrans } from "../../trans/Agent"
+import { TotalTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -232,7 +233,7 @@ const useColumns = ({ brandId, items = [] }) => {
         dateFormat: "MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
-        TotalCell: () => <Trans zh="总计" en="Total" />
+        TotalCell: () => <TotalTrans />
       }),
       textColumn({
         id: "AgentUsername",

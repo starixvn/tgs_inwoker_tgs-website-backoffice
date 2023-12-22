@@ -40,6 +40,7 @@ import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportAgentTotal } from "./client"
 import { AgentTrans } from "../../trans/Agent"
+import { TotalTrans } from "../../trans/Field"
 
 export const AgentTotalDialogDisclosure = ({
   value,
@@ -116,7 +117,7 @@ const useColumns = ({ items = [] }) => {
           let end = formatYearMonthDay(record?.to)
           return <Text.Block>{`${start} - ${end}`}</Text.Block>
         },
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         }

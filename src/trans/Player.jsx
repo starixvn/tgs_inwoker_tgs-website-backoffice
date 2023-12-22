@@ -152,3 +152,10 @@ export const PlayerContributionReport = {
 export const PlayerContributionReportTrans = () => (
   <Trans {...PlayerContributionReport} />
 )
+
+export const PlayerDepositReport = {
+  zh: "玩家存款报表",
+  en: "Player Deposit Report",
+  vi: "Báo cáo nạp tiền của người chơi"
+}
+export const PlayerDepositReportTrans = () => <Trans {...PlayerDepositReport} />

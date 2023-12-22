@@ -52,6 +52,7 @@ import { parseISO } from "date-fns"
 import { toDate } from "../../date/toDate"
 import { useAllAgentRebateList, useAllAgentRebateTotalAmount } from "./client"
 import { SentOnTrans } from "../../trans/Date"
+import { TotalTrans } from "../../trans/Field"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -255,7 +256,7 @@ const useColumns = ({ items = [], brandId }) => {
         accessor: "username",
         Header: <Trans zh="全民代理上級" en="All Agent Username" />,
         disableSortBy: true,
-        TotalCell: () => <Trans zh="总计" en="Total" />
+        TotalCell: () => <TotalTrans />
       }),
       dateTimeColumn({
         id: "settleDateTime",

@@ -24,6 +24,7 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { TotalTrans } from "../../trans/Field"
 
 export const PlayerRebatDialogDisclosure = ({
   brandId,
@@ -125,7 +126,7 @@ const usePlayerVipRebateColumns = ({ items = [] }) => {
         dateFormat: "yyyy/MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         },

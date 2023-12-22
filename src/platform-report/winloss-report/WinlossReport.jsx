@@ -70,6 +70,7 @@ import { useMeasure } from "react-use"
 import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
 import { UserNameTrans } from "../../trans/User"
 import { AgentTrans } from "../../trans/Agent"
+import { TotalTrans } from "../../trans/Field"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -397,7 +398,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
                 </Link.Block>
               )
             },
-            TotalCell: () => <Trans zh="总计" en="Total" />
+            TotalCell: () => <TotalTrans />
           }),
           textColumn({
             accessor: "memberType",

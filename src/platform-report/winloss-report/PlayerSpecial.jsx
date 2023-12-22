@@ -38,6 +38,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportPlayerSpecial } from "./client"
+import { TotalTrans } from "../../trans/Field"
 
 /*
 export const PlayerSpecial = ({ value }) => {
@@ -182,7 +183,7 @@ const useColumns = ({ items = [] }) => {
         Header: <Trans zh="特别" en="Special" />,
         disableSortBy: true,
         Cell: TypeLabel,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         }

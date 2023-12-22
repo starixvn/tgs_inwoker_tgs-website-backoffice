@@ -46,6 +46,7 @@ import { subDays, parse } from "date-fns"
 import { upperFirst } from "lodash-es"
 import { UserNameTrans } from "../../trans/User"
 import { useAgentUsernameTrans } from "../../trans/Agent"
+import { PlayerDepositReportTrans } from "../../trans/Player"
 
 export { Code }
 
@@ -132,7 +133,7 @@ const BodyContent = ({ brandId }) => {
   })
   return (
     <PageContent
-      title={<Trans zh="玩家存款报表" en="Player Deposit Report" />}
+      title={<PlayerDepositReportTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar

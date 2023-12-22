@@ -40,7 +40,7 @@ import {
   ValidBetAmountTrans
 } from "../../trans/Game"
 import { DepositAmountTrans } from "../../trans/Payment"
-import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
   CompanyAdjustmentAmountTrans,
   CompanyWinLossTrans,
@@ -221,7 +221,7 @@ const useColumns = ({ brandId, items = [] }) => {
       dateTimeColumn({
         Header: <Trans zh="日期" en="Date" />,
         accessor: "reportDate",
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
         disableSortBy: true,
