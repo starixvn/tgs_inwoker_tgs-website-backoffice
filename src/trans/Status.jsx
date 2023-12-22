@@ -116,3 +116,11 @@ const Expired = {
   vi: "Quá hạn"
 }
 export const ExpiredTrans = () => <Trans {...Expired} />
+
+const ConfigStatus = {
+  zh: "配置状态",
+  en: "Config Status",
+  vi: "Trạng  thái thiết bị"
+}
+export const ConfigStatusTrans = () => <Trans {...ConfigStatus} />
+export const useConfigStatusTrans = () => useTrans(ConfigStatus)

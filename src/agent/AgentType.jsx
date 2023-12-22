@@ -4,12 +4,9 @@ import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
 import { useAgentTypeTrans } from "../trans/Agent"
+import { CashTrans, useCashTrans } from "../trans/Payment"
 
 const Cash = "Cash"
-const CashTrans = {
-  zh: "现金",
-  en: "Cash"
-}
 
 const Credit = "Credit"
 const CreditTrans = {
@@ -32,7 +29,7 @@ export const AgentTypeSelect = ({ placeholder, ...props }) => {
 
   let options = [
     {
-      label: useTrans(CashTrans),
+      label: useCashTrans(),
       value: Cash
     }
     /*
@@ -52,7 +49,7 @@ export const AgentTypeLabel = ({ value = "" }) => {
     case Cash:
       return (
         <Text>
-          <Trans {...CashTrans} />
+          <CashTrans />
         </Text>
       )
     case Credit:

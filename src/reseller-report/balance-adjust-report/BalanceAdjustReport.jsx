@@ -63,6 +63,7 @@ import { UserType } from "./UserType"
 import { AgentAdjustTrans } from "../../trans/Action"
 import { CurrencyTrans } from "../../trans/Payment"
 import { PlatformTrans } from "../../trans/Platform"
+import { AgentTrans } from "../../trans/Agent"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -236,7 +237,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
           }),
           numberColumn({
             accessor: "agent",
-            Header: <Trans zh="代理" en="Agent" />,
+            Header: <AgentTrans />,
             disableSortBy: true
           }),
           numberColumn({

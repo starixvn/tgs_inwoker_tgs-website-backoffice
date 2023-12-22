@@ -58,6 +58,11 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
 import { CompanyWinLossTrans } from "../../trans/Platform"
+import {
+  AgentUsernameTrans,
+  ProfitSharingPercentageTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let [treePaths, setTreePaths] = useState([])
@@ -479,10 +484,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent username"
-  })
+  let usernamePlaceholder = useAgentUsernameTrans()
 
   const onSubmit = (data) => search?.(data)
 
@@ -553,7 +555,7 @@ const useColumns = ({
       textColumn({
         id: "username",
         accessor: (row) => row,
-        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        Header: <AgentUsernameTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -595,7 +597,7 @@ const useColumns = ({
       }),
       numberDecimalPercentageColumn({
         accessor: "agentDividendPercentage",
-        Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
+        Header: <ProfitSharingPercentageTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },

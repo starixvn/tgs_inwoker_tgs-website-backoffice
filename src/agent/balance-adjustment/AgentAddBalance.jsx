@@ -44,6 +44,7 @@ import {
   TransactionTypeTrans
 } from "../../trans/Action"
 import { TransactionAmountTrans } from "../../trans/Field"
+import { AgentUsernameTrans } from "../../trans/Agent"
 
 export const AgentAddBalanceDisclosure = ({
   brandId,
@@ -116,7 +117,7 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
       <Input type="hidden" name="username" value={username} />
       <Input type="hidden" name="id" value={agentId} />
       <FieldValues margin="1rem">
-        <Trans zh="代理用户名" en="Agent Username" />
+        <AgentUsernameTrans />
         <Box alignY="center">{username}</Box>
 
         <Box alignY="center">

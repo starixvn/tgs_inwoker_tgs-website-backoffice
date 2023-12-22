@@ -45,6 +45,7 @@ import textColumn from "../../table/column/textColumn"
 import { subDays, parse } from "date-fns"
 import { upperFirst } from "lodash-es"
 import { UserNameTrans } from "../../trans/User"
+import { useAgentUsernameTrans } from "../../trans/Agent"
 
 export { Code }
 
@@ -185,10 +186,7 @@ const SearchBar = ({
 
   let minDate = subDays(todayRange.start, DataRetentionDays)
 
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   let formMethods = useForm({
     defaultValues: {

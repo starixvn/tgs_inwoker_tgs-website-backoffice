@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
+import { useConfigStatusTrans } from "../trans/Status"
 
 const Done = "DoneForConfigurePercentage"
 const DoneTrans = {
@@ -22,10 +23,7 @@ export const isAgentConfigRequired = (value) =>
   value === WaitForConfigurePercentage
 
 export const AgentConfigStatusSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "配置状态",
-    en: "Config Status"
-  })
+  let defaultPlaceholder = useConfigStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [

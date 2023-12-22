@@ -34,6 +34,7 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { AgentUsernameTrans } from "../../trans/Agent"
 
 export const AgentProfitSharingDialogDisclosure = ({
   brandId,
@@ -136,7 +137,7 @@ const ReportDialog = ({
     >
       <FieldStack>
         <FieldValues marginLeft="1rem">
-          <Trans zh="代理用户名" en="Agent Username" />
+          <AgentUsernameTrans />
           <Text.Block alignY="center">{username}</Text.Block>
 
           <Trans zh="分红金额" en="Profit Sharing Amount" />
@@ -176,7 +177,7 @@ const useAgentBonusColumns = ({ username = "", items = [] }) => {
     () => [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        Header: <AgentUsernameTrans />,
         Cell: ({ value }) => value ?? username
       }),
       dateTimeColumn({

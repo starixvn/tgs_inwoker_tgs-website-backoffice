@@ -96,7 +96,11 @@ import { diff } from "../../object/diff"
 import {
   AgentLevelTrans,
   AgentTypeTrans,
-  UpperLevelAgentTrans
+  AgentUsernameTrans,
+  DirectPlayersTrans,
+  ProfitSharingPercentageTrans,
+  UpperLevelAgentTrans,
+  useAgentUsernameTrans
 } from "../../trans/Agent"
 import {
   BalanceTrans,
@@ -154,10 +158,7 @@ const UpdateAgentPanel = ({
     }
   }, [result])
 
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   const ParentUsernameFieldName = "parentUsername"
   let currentParentUsername = record.parentUsername
@@ -304,7 +305,7 @@ const UpdateAgentPanel = ({
 
               {oneLayer && !willChangeParent && (
                 <>
-                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <ProfitSharingPercentageTrans />
                   <Box>
                     <AgentOneLayerDividendPercentageInputField
                       brandId={brandId}
@@ -315,7 +316,7 @@ const UpdateAgentPanel = ({
               )}
               {multipleLayer && (
                 <>
-                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <ProfitSharingPercentageTrans />
                   <Box>
                     <AgentMultipleLayerProfitSharingSettingDialogDisclosure
                       brandId={brandId}
@@ -375,10 +376,7 @@ const OldAgentPanel = ({
     }
   }, [result])
 
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   const ParentUsernameFieldName = "parentUsername"
   let currentParentUsername = record.parentUsername
@@ -507,7 +505,7 @@ const OldAgentPanel = ({
 
               {oneLayer && (
                 <>
-                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <ProfitSharingPercentageTrans />
                   <Box>
                     <AgentOneLayerDividendPercentageInputField
                       brandId={brandId}
@@ -518,7 +516,7 @@ const OldAgentPanel = ({
               )}
               {multipleLayer && (
                 <>
-                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <ProfitSharingPercentageTrans />
                   <Box>
                     <AgentMultipleLayerProfitSharingSettingDialogDisclosure
                       brandId={brandId}
@@ -632,7 +630,7 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
         {oneLayer && (
           <>
             <Box alignY="center">
-              <Trans zh="分红比例" en="Profit Sharing Percentage" />
+              <ProfitSharingPercentageTrans />
             </Box>
             <Box>
               <FormattedNumberDecimalPercentage
@@ -645,7 +643,7 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
         {multipleLayer && (
           <>
             <Box alignY="center">
-              <Trans zh="分红比例" en="Profit Sharing Percentage" />
+              <ProfitSharingPercentageTrans />
             </Box>
             <Box>
               <AgentProfitSharingSettingRecordDialogDisclosure
@@ -658,7 +656,7 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
         <AccumulatedProfitSharingBox value={record?.accumulatedProfitSharing} />
 
         <Box alignY="center">
-          <Trans zh="直属玩家人数" en="Direct Players" />
+          <DirectPlayersTrans />
         </Box>
         <Box>
           <FormattedNumber value={record?.playerNumber} />
@@ -710,7 +708,7 @@ const UsernameBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="代理用户名" en="Agent Username" />
+        <AgentUsernameTrans />
       </Box>
       <Text>{value}</Text>
     </>

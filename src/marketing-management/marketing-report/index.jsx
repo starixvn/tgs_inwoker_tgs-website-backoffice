@@ -48,6 +48,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays } from "date-fns"
 import { UserNameTrans } from "../../trans/User"
+import { useAgentUsernameTrans } from "../../trans/Agent"
 
 export { Code }
 
@@ -166,10 +167,7 @@ const SearchBar = ({
   let yesterdayRange = yesterday()
   let maxDate = todayRange.end
 
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   let formMethods = useForm({
     defaultValues: {

@@ -75,8 +75,15 @@ import {
   useUserNameTrans
 } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
-import { StatusTrans } from "../../trans/Status"
-import { AgentLevelTrans, AgentTypeTrans, AgentsTrans } from "../../trans/Agent"
+import { ConfigStatusTrans, StatusTrans } from "../../trans/Status"
+import {
+  AgentLevelTrans,
+  AgentTypeTrans,
+  AgentsTrans,
+  DirectPlayersTrans,
+  ProfitSharingPercentageTrans,
+  TeamNumberTrans
+} from "../../trans/Agent"
 
 export { Code }
 
@@ -291,7 +298,7 @@ const useColumns = ({
       textColumn({
         id: "profitSharing",
         accessor: (row) => row,
-        Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
+        Header: <ProfitSharingPercentageTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let isCash = isAgentTypeCash(value?.type)
@@ -470,7 +477,7 @@ const useColumns = ({
       */
       textColumn({
         accessor: "agentStatus",
-        Header: <Trans zh="配置状态" en="Config Status" />,
+        Header: <ConfigStatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let configRequired = isAgentConfigRequired(value)
@@ -485,12 +492,12 @@ const useColumns = ({
       }),
       numberColumn({
         accessor: "teamNumber",
-        Header: <Trans zh="团队人数" en="Team Number" />,
+        Header: <TeamNumberTrans />,
         disableSortBy: true
       }),
       numberColumn({
         accessor: "playerNumber",
-        Header: <Trans zh="直属玩家人数" en="Direct Players" />,
+        Header: <DirectPlayersTrans />,
         disableSortBy: true
       })
     ]

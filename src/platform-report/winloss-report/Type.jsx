@@ -3,12 +3,9 @@ import { css, Global } from "@emotion/react"
 import { DropdownMenu, Button } from "bumbag"
 import { useTrans, Trans } from "../../i18n"
 import { useFormContext } from "react-hook-form"
+import { AgentTrans } from "../../trans/Agent"
 
 export const Agent = "agent"
-const AgentTrans = {
-  zh: "代理",
-  en: "Agent"
-}
 
 export const Player = "player"
 const PlayerTrans = {
@@ -35,7 +32,7 @@ export const Type = {
 export const TypeLabel = ({ value = "" }) => {
   switch (value) {
     case Agent:
-      return <Trans {...AgentTrans} />
+      return <AgentTrans />
     case Player:
       return <Trans {...PlayerTrans} />
     case Round:

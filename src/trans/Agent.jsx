@@ -1,6 +1,36 @@
 import React, { createContext, useContext, useState } from "react"
 import { Trans, useTrans } from "../i18n"
 
+const Agent = {
+  zh: "代理",
+  en: "Agent",
+  vi: "Đại lý"
+}
+export const AgentTrans = () => <Trans {...Agent} />
+export const useAgentTrans = () => useTrans(Agent)
+
+const AgentUsername = {
+  zh: "代理用户名",
+  en: "Agent Username",
+  vi: "Tài khoản đại lý"
+}
+export const AgentUsernameTrans = () => <Trans {...AgentUsername} />
+export const useAgentUsernameTrans = () => useTrans(AgentUsername)
+
+const Chief = {
+  zh: "总代",
+  en: "Chief",
+  vi: "Tổng đại lý"
+}
+export const ChiefTrans = () => <Trans {...Chief} />
+export const useChiefTrans = () => useTrans(Chief)
+
+const MasterAgent = {
+  zh: "总代理",
+  en: "Master Agent"
+}
+export const MasterAgentTrans = () => <Trans {...MasterAgent} />
+
 export const AgentManagement = {
   zh: "代理管理",
   en: "Agent management",
@@ -64,3 +94,26 @@ const AgentProfit = {
 }
 export const AgentProfitTrans = () => <Trans {...AgentProfit} />
 export const useAgentProfitTrans = () => useTrans(AgentProfit)
+
+const ProfitSharingPercentage = {
+  zh: "分红比例",
+  en: "Profit Sharing Percentage",
+  vi: "Phần trăm hoa hồng"
+}
+export const ProfitSharingPercentageTrans = () => (
+  <Trans {...ProfitSharingPercentage} />
+)
+
+const TeamNumber = {
+  zh: "团队人数",
+  en: "Team Number",
+  vi: "Số  thành viên"
+}
+export const TeamNumberTrans = () => <Trans {...TeamNumber} />
+
+const DirectPlayers = {
+  zh: "直属玩家人数",
+  en: "Direct Players",
+  vi: "Số thành viên trực thuộc"
+}
+export const DirectPlayersTrans = () => <Trans {...DirectPlayers} />

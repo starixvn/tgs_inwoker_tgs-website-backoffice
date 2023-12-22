@@ -240,3 +240,11 @@ export const PaymentManagement = {
   vi: "Quản lý tài chính"
 }
 export const PaymentManagementTrans = () => <Trans {...PaymentManagement} />
+
+const Cash = {
+  zh: "现金",
+  en: "Cash",
+  vi: "Tiền mặt"
+}
+export const CashTrans = () => <Trans {...Cash} />
+export const useCashTrans = () => useTrans(Cash)

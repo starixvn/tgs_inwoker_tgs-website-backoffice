@@ -293,3 +293,17 @@ export const Departments = {
   en: "Departments"
 }
 export const DepartmentsTrans = () => <Trans {...Departments} />
+
+export const Overview = {
+  zh: "总览",
+  en: "Overview",
+  vi: "Tổng quan"
+}
+export const OverviewTrans = () => <Trans {...Overview} />
+
+export const PlatformOverview = {
+  zh: "平台总览",
+  en: "Overview",
+  vi: "Tổng quan nền tảng"
+}
+export const PlatformOverviewTrans = () => <Trans {...PlatformOverview} />

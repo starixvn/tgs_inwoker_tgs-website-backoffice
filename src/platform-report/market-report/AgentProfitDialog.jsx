@@ -39,7 +39,11 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { Modal } from "../../dialog/Modal"
 import { zIndexOfModal } from "../../css/zIndex"
 import { NetProfitTrans } from "../../trans/Field"
-import { AgentProfitTrans, useAgentProfitTrans } from "../../trans/Agent"
+import {
+  AgentProfitTrans,
+  MasterAgentTrans,
+  useAgentProfitTrans
+} from "../../trans/Agent"
 
 export const AgentProfitDialogDisclosure = ({
   brandId,
@@ -153,7 +157,7 @@ const useColumns = ({ items = [] }) => {
     let columns = [
       textColumn({
         accessor: "masterAgentName",
-        Header: <Trans zh="总代理" en="Master Agent" />,
+        Header: <MasterAgentTrans />,
         disableSortBy: true
       }),
       numberDecimalPercentageColumn({

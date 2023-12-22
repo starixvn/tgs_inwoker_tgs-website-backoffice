@@ -13,7 +13,6 @@ import memoize from "fast-memoize"
 import { codeMenuContentPair as overviewPair } from "./overview"
 import {
   Code as OvewviewCode,
-  nameMessages as OverviewNameMessages,
   codeLabelPair as overviewLabelPair
 } from "./overview/menu"
 import { codeMenuContentPair as platformPair } from "./platform-management"
@@ -93,6 +92,7 @@ import { isDev, Features, isFeatureEnabled } from "./env"
 import {
   LicenseeReport,
   MarketingManagement,
+  Overview,
   PlatformManagement,
   PlatformReport,
   SystemConfig
@@ -301,7 +301,7 @@ export const findlLabel = ({ locale, codes = [], label, subLabelPairs }) => {
 const moduleLabel = ({ code = "", locale }) => {
   switch (code) {
     case OvewviewCode:
-      return getTrans(OverviewNameMessages, locale)
+      return getTrans(Overview, locale)
     case PlatformCode:
       return getTrans(PlatformManagement, locale)
     case PromotionCode:

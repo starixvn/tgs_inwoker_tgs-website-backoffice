@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { Box, OptionButtons } from "bumbag"
 import { useTrans } from "../../i18n"
 import { InputField } from "../../input/Input"
+import { AgentTrans } from "../../trans/Agent"
 
 const Player = "Player"
 const PlayerTrans = {
@@ -11,10 +12,6 @@ const PlayerTrans = {
 }
 
 const Agent = "Agent"
-const AgentTrans = {
-  zh: "代理",
-  en: "Agent"
-}
 
 export const UserType = {
   Player,
@@ -28,7 +25,7 @@ const UserTypeLabel = ({ userType }) => {
     case Player:
       return <Trans {...PlayerTrans} />
     case Agent:
-      return <Trans {...AgentTrans} />
+      return <AgentTrans />
     default:
       return ""
   }

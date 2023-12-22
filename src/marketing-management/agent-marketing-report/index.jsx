@@ -48,6 +48,7 @@ import {
   CompanyAdjustmentAmountTrans,
   CompanyWinLossTrans
 } from "../../trans/Platform"
+import { useAgentUsernameTrans } from "../../trans/Agent"
 
 export { Code }
 
@@ -160,10 +161,7 @@ const SearchBar = ({
   ...props
 }) => {
   const QueryMaxRangeDays = 31
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   let formMethods = useForm({
     defaultValues: {

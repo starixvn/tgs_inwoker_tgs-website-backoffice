@@ -40,6 +40,7 @@ import {
   TotalDepositAmountTrans,
   TotalWithdrawAmountTrans
 } from "../../trans/Field"
+import { useAgentUsernameTrans } from "../../trans/Agent"
 // import { PlayerTotalWinLossDialogDisclosure } from "./PlayerTotalWinLossDialog"
 
 export { Code }
@@ -158,10 +159,7 @@ const SearchBar = ({
 }) => {
   let QueryMaxRangeDays = 31
 
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   let playerUsernamePlaceholder = useTrans({
     zh: "玩家用户名",

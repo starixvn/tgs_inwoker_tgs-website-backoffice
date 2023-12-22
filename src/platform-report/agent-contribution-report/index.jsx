@@ -66,7 +66,11 @@ import {
   CompanyWinLossTrans,
   DepositAmountAfterDeductingTransferFeeTrans
 } from "../../trans/Platform"
-import { AgentContributionReportTrans } from "../../trans/Agent"
+import {
+  AgentContributionReportTrans,
+  AgentTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -280,10 +284,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent username"
-  })
+  let usernamePlaceholder = useAgentUsernameTrans()
 
   let includeAgentCheckboxLabel = useTrans({
     zh: "包含代理资讯",
@@ -398,7 +399,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
             case "Player":
               return <Trans zh="玩家" en="Player" />
             case AgentType:
-              return <Trans zh="代理" en="Agent" />
+              return <AgentTrans />
             default:
               return value
           }

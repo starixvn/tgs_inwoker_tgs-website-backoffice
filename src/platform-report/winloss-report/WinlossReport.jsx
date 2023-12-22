@@ -69,6 +69,7 @@ import { isArray } from "lodash-es"
 import { useMeasure } from "react-use"
 import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
 import { UserNameTrans } from "../../trans/User"
+import { AgentTrans } from "../../trans/Agent"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -425,7 +426,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
         columns: [
           numberDecimalColumn({
             accessor: "winLoss",
-            Header:  <Trans zh="输赢" en="Winloss" />,
+            Header: <Trans zh="输赢" en="Winloss" />,
             disableSortBy: true
           }),
           numberDecimalColumn({
@@ -454,7 +455,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
       },
       {
         id: "agent",
-        Header: <Trans zh="代理" en="Agent" />,
+        Header: <AgentTrans />,
         headCell: {
           textAlign: "center"
         },

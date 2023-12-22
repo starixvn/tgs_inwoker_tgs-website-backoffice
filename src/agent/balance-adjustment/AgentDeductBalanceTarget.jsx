@@ -12,6 +12,7 @@ import {
 } from "bumbag"
 import { useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import { useAgentTrans } from "../../trans/Agent"
 
 export const Player = "Player"
 const PlayerTrans = {
@@ -20,10 +21,6 @@ const PlayerTrans = {
 }
 
 export const Agent = "Agent"
-const AgentTrans = {
-  zh: "代理",
-  en: "Agent"
-}
 
 export const DeductBalanceTargetSelect = ({ placeholder, ...props }) => {
   let options = [
@@ -32,7 +29,7 @@ export const DeductBalanceTargetSelect = ({ placeholder, ...props }) => {
       value: Player
     },
     {
-      label: useTrans(AgentTrans),
+      label: useAgentTrans(),
       value: Agent
     }
   ]

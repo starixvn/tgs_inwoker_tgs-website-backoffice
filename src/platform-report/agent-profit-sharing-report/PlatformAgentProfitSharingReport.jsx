@@ -60,6 +60,11 @@ import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import {
+  AgentUsernameTrans,
+  ProfitSharingPercentageTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -513,10 +518,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent username"
-  })
+  let usernamePlaceholder = useAgentUsernameTrans()
 
   const onSubmit = (data) => search?.(data)
 
@@ -587,7 +589,7 @@ const useColumns = ({
       textColumn({
         id: "username",
         accessor: (row) => row,
-        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        Header: <AgentUsernameTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -632,7 +634,7 @@ const useColumns = ({
       }),
       numberDecimalPercentageColumn({
         accessor: "agentDividendPercentage",
-        Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
+        Header: <ProfitSharingPercentageTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }

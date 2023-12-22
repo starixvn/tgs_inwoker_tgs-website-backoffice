@@ -39,6 +39,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportAgentTotal } from "./client"
+import { AgentTrans } from "../../trans/Agent"
 
 export const AgentTotalDialogDisclosure = ({
   value,
@@ -152,7 +153,7 @@ const useColumns = ({ items = [] }) => {
       },
       {
         id: "agent",
-        Header: <Trans zh="代理" en="Agent" />,
+        Header: <AgentTrans />,
         headCell: {
           textAlign: "center"
         },
