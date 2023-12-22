@@ -43,6 +43,10 @@ import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { ImageLinkButton } from "../../button/LinkButton"
 import { CommunicationType, CommunicationTypeField } from "./CommunicationType"
 import { PhoneTrans } from "../../trans/User"
+import {
+  InstantMessagingTrans,
+  useInstantMessagingTrans
+} from "../../trans/Platform"
 
 export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -55,7 +59,7 @@ export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="一般通訊軟體" en="Instant Messaging" />
+        <InstantMessagingTrans />
       </Disclosure>
       {dialog.visible && (
         <InstantMessagingDialog brandId={brandId} dialog={dialog} />
@@ -65,10 +69,7 @@ export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
 }
 
 const InstantMessagingDialog = ({ brandId, dialog }) => {
-  let title = useTrans({
-    zh: "一般通訊軟體",
-    en: "Instant Messaging"
-  })
+  let title = useInstantMessagingTrans()
 
   let { isLoading, data, error, mutate, deleteCache } =
     usePlatformMessengerList(brandId)

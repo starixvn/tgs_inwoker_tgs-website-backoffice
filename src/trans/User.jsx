@@ -146,6 +146,14 @@ const RegisterIP = {
 export const RegisterIPTrans = () => <Trans {...RegisterIP} />
 export const useRegisterIPTrans = () => useTrans(RegisterIP)
 
+const LoginIP = {
+  zh: "登錄IP地址",
+  en: "Login IP",
+  vi: "Địa chỉ IP đăng nhập"
+}
+export const LoginIPTrans = () => <Trans {...LoginIP} />
+export const useLoginIPTrans = () => useTrans(LoginIP)
+
 const LastLoginIP = {
   zh: "最近登录IP地址",
   en: "Last Login IP",

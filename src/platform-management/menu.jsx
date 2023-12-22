@@ -27,7 +27,10 @@ import { Code as LetterCode, codeLabelPair as letterPair } from "./letter/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUniversity } from "@fortawesome/free-solid-svg-icons"
 import {
+  Announcements,
+  Banners,
   CheckIP,
+  OperationSettings,
   PlatformManagementTrans,
   StationLetter
 } from "../trans/Platform"
@@ -71,33 +74,15 @@ export const Menu = ({
 const labelOf = ({ locale, code }) => {
   switch (code) {
     case BannerCode:
-      return getTrans(
-        {
-          zh: "Banner 管理",
-          en: "Banners"
-        },
-        locale
-      )
+      return getTrans(Banners, locale)
     case AnnouncementCode:
-      return getTrans(
-        {
-          zh: "公告管理",
-          en: "Announcements"
-        },
-        locale
-      )
+      return getTrans(Announcements, locale)
     case StationLetterCode:
       return getTrans(StationLetter, locale)
     case VipLevelCode:
       return getTrans(VipLevel, locale)
     case IMSettingsCode:
-      return getTrans(
-        {
-          zh: "营运设置",
-          en: "Operation Settings"
-        },
-        locale
-      )
+      return getTrans(OperationSettings, locale)
     case IPAddressCode:
       return getTrans(CheckIP, locale)
     case LetterCode:

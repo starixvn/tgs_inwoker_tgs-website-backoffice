@@ -36,6 +36,7 @@ import { InputField } from "../../input/Input"
 import IpAddressType, { setLoginIpType } from "./IpAddressType"
 import { TimeTrans } from "../../trans/Date"
 import { SearchIPByAccountIDTrans } from "../../trans/Platform"
+import { LoginIPTrans, useUserNameTrans } from "../../trans/User"
 
 export const PlayerIPAddressByUsernameTabId = "PlayerIPAddressByUsername"
 
@@ -128,10 +129,7 @@ const ActionBar = ({ userName, search, isLoading, ...props }) => {
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "用户名",
-    en: "Username"
-  })
+  let usernamePlaceholder = useUserNameTrans()
 
   return (
     <Level>
@@ -159,7 +157,7 @@ const useColumns = ({ items = [], mutate, onClickIpAddress }) => {
       sequenceColumn(),
       textColumn({
         accessor: "ipAddress",
-        Header: <Trans zh="登錄IP地址" en="Login IP" />,
+        Header: <LoginIPTrans />,
         disableSortBy: true,
         Cell: ({ value: ipAddress }) => {
           return (

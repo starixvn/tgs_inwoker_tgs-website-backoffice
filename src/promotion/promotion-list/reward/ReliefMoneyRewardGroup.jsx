@@ -14,21 +14,9 @@ import {
   FieldStack
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../../user/context"
-import Disclosure, {
-  AddDisclosure,
-  EditDisclosure,
-  NewDisclosure,
-  ViewDisclosure
-} from "../../../dialog/Disclosure"
 import FormDialog from "../../../form/FormDialog"
 import { Trans, useTrans } from "../../../i18n"
 import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
-import {
-  PromotionTypeGroup,
-  PromotionTypeGroupSelect,
-  PromotionTypeSelect,
-  usePromotionGroupValueOf
-} from "../../PromotionType"
 import { FieldValues } from "../../../layout/Grid"
 import { NormalLabel } from "../../../form/Label"
 import {

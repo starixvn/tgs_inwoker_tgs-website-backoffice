@@ -141,3 +141,76 @@ const PlatformMarketReportNetProfitInfo = {
 export const PlatformMarketReportNetProfitInfoTrans = () => (
   <Trans {...PlatformMarketReportNetProfitInfo} />
 )
+
+export const Banners = {
+  zh: "Banner 管理",
+  en: "Banners",
+  vi: "Quản lý Banners"
+}
+export const BannersTrans = () => <Trans {...Banners} />
+
+export const Announcements = {
+  zh: "公告管理",
+  en: "Announcements",
+  vi: "Quản lý thông báo"
+}
+export const AnnouncementsTrans = () => <Trans {...Announcements} />
+
+export const OperationSettings = {
+  zh: "营运设置",
+  en: "Operation Settings",
+  vi: "Cài đặt hoạt động"
+}
+export const OperationSettingsTrans = () => <Trans {...OperationSettings} />
+
+//TODO: vi with Banners?
+const AnnouncementMainMarquee = {
+  zh: "首页跑马灯",
+  en: "Main Marquee",
+  vi: "Banners chạy trên trang chủ"
+}
+export const AnnouncementMainMarqueeTrans = () => (
+  <Trans {...AnnouncementMainMarquee} />
+)
+export const useAnnouncementMainMarqueeTrans = () =>
+  useTrans(AnnouncementMainMarquee)
+
+const AnnouncementMainPopup = {
+  zh: "首页弹跳",
+  en: "Main Popup",
+  vi: "Cửa sổ mới"
+}
+export const AnnouncementMainPopupTrans = () => (
+  <Trans {...AnnouncementMainPopup} />
+)
+export const useAnnouncementMainPopupTrans = () =>
+  useTrans(AnnouncementMainPopup)
+
+const AnnouncementDepositPopup = {
+  zh: "存款弹跳",
+  en: "Deposit Popup",
+  vi: "Cửa sổ nạp"
+}
+export const AnnouncementDepositPopupTrans = () => (
+  <Trans {...AnnouncementDepositPopup} />
+)
+export const useAnnouncementDepositPopupTrans = () =>
+  useTrans(AnnouncementDepositPopup)
+
+const InstantMessaging = {
+  zh: "一般通訊軟體",
+  en: "Instant Messaging"
+}
+export const InstantMessagingTrans = () => <Trans {...InstantMessaging} />
+export const useInstantMessagingTrans = () => useTrans(InstantMessaging)
+
+const ThirdPartyLiveChatProvider = {
+  zh: "三方即時客服廠商",
+  en: "3rd Party Live Chat Provider",
+  vi: "dịch vụ CSKH bên thứ 3"
+}
+export const ThirdPartyLiveChatProviderTrans = () => (
+  <Trans {...ThirdPartyLiveChatProvider} />
+)
+export const useThirdPartyLiveChatProviderTrans = () =>
+  useTrans(ThirdPartyLiveChatProvider)

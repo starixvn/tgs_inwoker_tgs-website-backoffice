@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useState } from "react"
 import { Trans, useTrans } from "../i18n"
 
+export const PlayerManagement = {
+  zh: "玩家管理",
+  en: "Player management",
+  vi: "Quản lý người chơi"
+}
+export const PlayerManagementTrans = () => <Trans {...PlayerManagement} />
+
 export const Players = {
   zh: "玩家列表",
   en: "Players",

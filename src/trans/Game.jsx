@@ -258,10 +258,17 @@ export const GameProviderList = {
 }
 export const GameProviderListTrans = () => <Trans {...GameProviderList} />
 
+export const GameManagement = {
+  zh: "游戏管理",
+  en: "Game Management",
+  vi: "Quản lý trò chơi"
+}
+export const GameManagementTrans = () => <Trans {...GameManagement} />
+
 export const GameList = {
   zh: "游戏列表",
   en: "Game List",
-  vi: "Báo biểu trò chơi"
+  vi: "Danh sách trò chơi"
 }
 export const GameListTrans = () => <Trans {...GameList} />
 export const useGameListTrans = () => useTrans(GameList)

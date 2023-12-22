@@ -29,19 +29,16 @@ import {
 import { codeMenuContentPair as playerManagementPair } from "./player-management"
 import {
   Code as PlayerManagementCode,
-  nameMessages as PlayerManagementNameMessages,
   codeLabelPair as playerManagementLabelPair
 } from "./player-management/menu"
 import { codeMenuContentPair as agentManagementPair } from "./agent"
 import {
   Code as AgentManagementCode,
-  nameMessages as AgentManagementNameMessages,
   codeLabelPair as agentManagementLabelPair
 } from "./agent/menu"
 import { codeMenuContentPair as gameManagementPair } from "./game"
 import {
   Code as GameManagementCode,
-  nameMessages as GameManagementNameMessages,
   codeLabelPair as gameManagementLabelPair
 } from "./game/menu"
 import { codeMenuContentPair as platformReportManagementPair } from "./platform-report"
@@ -102,6 +99,9 @@ import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons"
 import { isDev, Features, isFeatureEnabled } from "./env"
 import { PlatformManagement, PlatformReport } from "./trans/Platform"
 import { PromotionManagement } from "./trans/Promotion"
+import { PlayerManagement } from "./trans/Player"
+import { GameManagement } from "./trans/Game"
+import { AgentManagement } from "./trans/Agent"
 
 export const Menu = ({ title, url, codes, codePaths, itemLabel }) => {
   let { sidebar, isCollapsed } = usePage()
@@ -307,11 +307,11 @@ const moduleLabel = ({ code = "", locale }) => {
     case PromotionCode:
       return getTrans(PromotionManagement, locale)
     case PlayerManagementCode:
-      return getTrans(PlayerManagementNameMessages, locale)
+      return getTrans(PlayerManagement, locale)
     case AgentManagementCode:
-      return getTrans(AgentManagementNameMessages, locale)
+      return getTrans(AgentManagement, locale)
     case GameManagementCode:
-      return getTrans(GameManagementNameMessages, locale)
+      return getTrans(GameManagement, locale)
     case PlatformReportManagementCode:
       return getTrans(PlatformReport, locale)
     case LicenseeReportManagementCode:

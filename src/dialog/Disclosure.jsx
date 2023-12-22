@@ -2,7 +2,14 @@ import React, { useState, useEffect, useMemo, useRef, forwardRef } from "react"
 import { Button, Modal, css, Icon } from "bumbag"
 import { Trans } from "../i18n"
 import { faCog, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
-import { DetailTrans, EditTrans, ViewTrans } from "../trans/Action"
+import {
+  AddTrans,
+  DeleteTrans,
+  DetailTrans,
+  EditTrans,
+  VerifyTrans,
+  ViewTrans
+} from "../trans/Action"
 
 export const Disclosure = forwardRef(
   ({ use = Button, children, ...props }, ref) => (
@@ -34,20 +41,14 @@ export const EditDisclosure = forwardRef((props, ref) => (
 
 export const AddDisclosure = forwardRef((props, ref) => (
   <Disclosure ref={ref} {...props}>
-    <Trans zh="新增" en="Add" />
-  </Disclosure>
-))
-
-export const NewDisclosure = forwardRef((props, ref) => (
-  <Disclosure ref={ref} {...props}>
-    <Trans zh="新增" en="New" />
+    <AddTrans />
   </Disclosure>
 ))
 
 export const DeleteDisclosure = forwardRef(
   ({ palette = "danger", variant = "outlined", ...props }, ref) => (
     <Disclosure ref={ref} palette={palette} variant={variant} {...props}>
-      <Trans zh="删除" en="Delete" />
+      <DeleteTrans />
     </Disclosure>
   )
 )
@@ -60,7 +61,7 @@ export const DetailDisclosure = forwardRef((props, ref) => (
 
 export const VerifyDisclosure = forwardRef((props, ref) => (
   <Disclosure ref={ref} {...props}>
-    <Trans zh="审核" en="Verify" />
+    <VerifyTrans />
   </Disclosure>
 ))
 

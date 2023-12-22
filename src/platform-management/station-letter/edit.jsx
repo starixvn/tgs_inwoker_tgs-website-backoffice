@@ -46,7 +46,8 @@ import { SubjectTrans } from "../../trans/Field"
 import {
   DownloadFormatFileTrans,
   RemarkTrans,
-  UploadFileTrans
+  UploadFileTrans,
+  VerifyTrans
 } from "../../trans/Action"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
@@ -349,7 +350,7 @@ export const VerifyButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="审核" en="Verify" />
+        <VerifyTrans />
       </Disclosure>
       {dialog.visible && (
         <VerifyDialog

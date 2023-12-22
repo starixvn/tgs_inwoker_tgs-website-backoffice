@@ -28,6 +28,7 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
 import { AllAgentDialogDisclosure } from "./AllAgentDialog"
+import { OperationSettingsTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -69,7 +70,7 @@ const BodyContent = ({ brandId, brand }) => {
   let agentProfitSharingType = brand?.agentDividendType
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
   return (
-    <PageContent title={<Trans en="Operation Settings" zh="营运设置" />}>
+    <PageContent title={<OperationSettingsTrans />}>
       <Set>
         <MessengerDialogDisclosure
           id="instant-messaging-dialog-disclosure"

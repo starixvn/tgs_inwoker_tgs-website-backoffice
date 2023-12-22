@@ -180,3 +180,11 @@ export const Default = {
 }
 export const DefaultTrans = () => <Trans {...Default} />
 export const useDefaultTrans = () => useTrans(Default)
+
+const CheckType = {
+  zh: "查核類型",
+  en: "Check Type",
+  vi: "Dạng kiểm tra"
+}
+export const CheckTypeTrans = () => <Trans {...CheckType} />
+export const useCheckTypeTrans = () => useTrans(CheckType)

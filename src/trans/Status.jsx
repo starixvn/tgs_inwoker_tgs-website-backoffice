@@ -102,3 +102,17 @@ const Inactive = {
   vi: "Đóng / Tắt"
 }
 export const InactiveTrans = () => <Trans {...Inactive} />
+
+const Effective = {
+  zh: "有效",
+  en: "Effective",
+  vi: "Có hiệu lực"
+}
+export const EffectiveTrans = () => <Trans {...Effective} />
+
+const Expired = {
+  zh: "过期",
+  en: "Expired",
+  vi: "Quá hạn"
+}
+export const ExpiredTrans = () => <Trans {...Expired} />

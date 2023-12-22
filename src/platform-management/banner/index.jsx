@@ -48,29 +48,28 @@ import {
 import { VerifyPlatformBannerDisclosure } from "./VerifyPlatformBanner"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { ActionTrans, OperatorTrans } from "../../trans/Action"
-import { RejectedTrans, ReviewTrans, StatusTrans } from "../../trans/Status"
+import {
+  EffectiveTrans,
+  ExpiredTrans,
+  RejectedTrans,
+  ReviewTrans,
+  StatusTrans
+} from "../../trans/Status"
 import { OrderTrans, SubjectTrans } from "../../trans/Field"
 import {
   EndTimeTrans,
   StartTimeTrans,
   UpdatedTimeTrans
 } from "../../trans/Date"
+import { BannersTrans } from "../../trans/Platform"
 
 export { Code }
 
 const InVerify = "reviewing"
 
 const Effective = "valid"
-const EffectiveTrans = {
-  zh: "有效",
-  en: "Effective"
-}
 
 const Expired = "expired"
-const ExpiredTrans = {
-  zh: "过期",
-  en: "Expired"
-}
 
 const Rejected = "rejected"
 
@@ -144,7 +143,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="Banner 管理 " en="Banner Management" />}
+      title={<BannersTrans />}
       actionBar={
         <Box alignX="right">
           <AddPlatformBannerDisclosure
@@ -164,10 +163,10 @@ const BodyContent = ({ brandId }) => {
           )}
 
           <Tab tabId={Effective} onClick={activeTab(Effective)} {...tab}>
-            <Trans {...EffectiveTrans} />
+            <EffectiveTrans />
           </Tab>
           <Tab tabId={Expired} onClick={activeTab(Expired)} {...tab}>
-            <Trans {...ExpiredTrans} />
+            <ExpiredTrans />
           </Tab>
           <Tab tabId={Rejected} onClick={activeTab(Rejected)} {...tab}>
             <RejectedTrans />

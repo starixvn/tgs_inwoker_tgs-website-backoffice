@@ -24,15 +24,9 @@ import {
   OnlinePlayers,
   PlayerBalanceAdjustment,
   PlayerIdVerification,
+  PlayerManagementTrans,
   Players
 } from "../trans/Player"
-
-export const Name = ({}) => useTrans(nameMessages)
-
-export const nameMessages = {
-  zh: "玩家管理",
-  en: "Player management"
-}
 
 export const Code = "playermanagement"
 
@@ -50,7 +44,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Name />
+      <PlayerManagementTrans />
     </Flex>
   ),
   url = DefaultUrl,
