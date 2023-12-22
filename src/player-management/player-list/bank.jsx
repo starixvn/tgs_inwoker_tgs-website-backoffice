@@ -43,7 +43,11 @@ import { useBrandPaymentList } from "../../system/brandpayments/client"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import clone from "clone-deep"
 import { PhoneTrans, RealNameTrans } from "../../trans/User"
-import { BankInfoTrans, BankAccountTrans } from "../../trans/Payment"
+import {
+  BankInfoTrans,
+  BankAccountTrans,
+  PaymentChannelTrans
+} from "../../trans/Payment"
 import { CancelTrans, SubmitTrans } from "../../trans/Action"
 
 export const Key = "banks"
@@ -354,8 +358,6 @@ const Card = ({ children, ...props }) => (
 )
 
 const PaymentBankTypeTrans = () => <Trans zh="支付类型" en="Payment Type" />
-
-const PaymentChannelTrans = () => <Trans zh="支付通道" en="Payment Channel" />
 
 const BankNameLabel = () => <Trans zh="银行" en="Bank" />
 

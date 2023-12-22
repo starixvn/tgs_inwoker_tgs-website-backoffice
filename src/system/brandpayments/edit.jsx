@@ -82,6 +82,9 @@ import { PaymentMethodSetting } from "./PaymentMethodSetting"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import {
   ChannelNameTrans,
+  PaymentChannelTrans,
+  PaymentLimitTrans,
+  PaymentMethodTrans,
   PaymentProviderTrans,
   TransferFeeTrans
 } from "../../trans/Payment"
@@ -532,7 +535,7 @@ const EditBody = ({
               </Box>
 
               <Label>
-                <Trans zh="支付方式" en="Payment Medthod" />
+                <PaymentMethodTrans />
               </Label>
               <Box alignY="center">
                 {isAdd && (
@@ -563,7 +566,7 @@ const EditBody = ({
               </Box>
 
               <Label>
-                <Trans zh="支付通道" en="Payment Channel" />
+                <PaymentChannelTrans />
               </Label>
               <Box alignY="center">
                 {isAdd && (
@@ -604,7 +607,7 @@ const EditBody = ({
               </Box>
 
               <Label required>
-                <Trans zh="单笔限额" en="Limit" />
+                <PaymentLimitTrans />
               </Label>
               <NumberRangeInputGroup
                 names={["transferLimitFrom", "transferLimitTo"]}

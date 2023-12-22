@@ -71,6 +71,7 @@ import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
 import { UserNameTrans } from "../../trans/User"
 import { AgentTrans } from "../../trans/Agent"
 import { TotalTrans } from "../../trans/Field"
+import { CompanyTrans } from "../../trans/Platform"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -497,7 +498,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
       },
       {
         id: "company",
-        Header: <Trans zh="公司" en="Company" />,
+        Header: <CompanyTrans />,
         headCell: {
           textAlign: "center"
         },

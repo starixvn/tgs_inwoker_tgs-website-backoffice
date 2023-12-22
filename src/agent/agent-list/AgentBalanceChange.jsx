@@ -28,9 +28,12 @@ import {
   BalanceChangeTypeReceiveRollbackTrans,
   BalanceChangeTypeTransferRollbackTrans,
   BalanceChangeTypeTransferTrans,
+  DepositTrans,
+  WithdrawTrans,
   useBalanceChangeTypeReceiveCommitTrans,
   useBalanceChangeTypeTransferRollbackTrans,
-  useBalanceChangeTypeTransferTrans
+  useBalanceChangeTypeTransferTrans,
+  useWithdrawTrans
 } from "../../trans/Payment"
 
 export const Key = "BalanceChange"
@@ -170,17 +173,8 @@ const newDateRange = () => ({
 })
 
 const Deposit = "Deposit"
-const DepositTrans = {
-  zh: "存款",
-  en: "Deposit"
-}
 
 const Withdrawal = "Withdrawal"
-//TODO: use trans from Payment
-const WithdrawalTrans = {
-  zh: "提款",
-  en: "Withdrawal"
-}
 
 const CancelWithdrawal = "CancelWithdrawal"
 //TODO: use trans from Payment
@@ -219,14 +213,8 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
-    /*
     {
-      label: useTrans(DepositTrans),
-      value: Deposit
-    },
-    */
-    {
-      label: useTrans(WithdrawalTrans),
+      label: useWithdrawTrans(),
       value: Withdrawal
     },
     {
@@ -265,9 +253,9 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
 const AgentTransactionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Deposit:
-      return <Trans {...DepositTrans} />
+      return <DepositTrans />
     case Withdrawal:
-      return <Trans {...WithdrawalTrans} />
+      return <WithdrawTrans />
     case Adjust:
       return <Trans {...AdjustTrans} />
     case Dividend:

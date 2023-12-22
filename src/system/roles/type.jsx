@@ -3,7 +3,12 @@ import { css, Global } from "@emotion/react"
 import { Trans, useTrans } from "../../i18n"
 import { useUserRoleType } from "../../user/context"
 import Select from "../../select/Select"
-import { PlatformTrans, usePlatformTrans } from "../../trans/Platform"
+import {
+  LicenseeTrans,
+  PlatformTrans,
+  useLicenseeTrans,
+  usePlatformTrans
+} from "../../trans/Platform"
 
 const Admin = "Admin"
 const AdminTrans = {
@@ -18,10 +23,6 @@ const ResellerTrans = {
 }
 
 const Licensee = "Licensee"
-const LicenseeTrans = {
-  zh: "公司",
-  en: "Licensee"
-}
 
 const Brand = "Brand"
 
@@ -39,7 +40,7 @@ export const RoleTypeLabel = ({ value }) => {
     case Reseller:
       return <Trans {...ResellerTrans} />
     case Licensee:
-      return <Trans {...LicenseeTrans} />
+      return <LicenseeTrans />
     case Brand:
       return <PlatformTrans />
   }
@@ -96,7 +97,7 @@ export const useRoleTypeOptions = () => {
       value: Reseller
     },
     Licensee: {
-      label: useTrans(LicenseeTrans),
+      label: useLicenseeTrans(),
       value: Licensee
     },
     Brand: {

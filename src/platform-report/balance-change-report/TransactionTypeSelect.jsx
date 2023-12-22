@@ -9,6 +9,7 @@ import PlayerAdjustBalanceType, {
   PlayerAdjustBalanceTypeLabel
 } from "../../player-management/balance-adjustment/PlayerAdjustBalanceType"
 import { useTransactionTypeTrans } from "../../trans/Action"
+import { DepositTrans, WithdrawTrans } from "../../trans/Payment"
 
 const GameProviderDeposit = "GameProviderDeposit"
 const GameProviderDepositTrans = {
@@ -77,16 +78,8 @@ const BonusTrans = {
 }
 
 const Deposit = "Deposit"
-const DepositTrans = {
-  zh: "存款",
-  en: "Deposit"
-}
 
 const Withdrawal = "Withdrawal"
-const WithdrawalTrans = {
-  zh: "提款",
-  en: "Withdrawal"
-}
 
 const Rebate = "Rebate"
 const RebateTrans = {
@@ -161,9 +154,9 @@ export const TransactionTypeLabel = ({ value = "" }) => {
     case AdjustResettledBetManual:
       return <Trans {...AdjustResettledBetManualTrans} />
     case Deposit:
-      return <Trans {...DepositTrans} />
+      return <DepositTrans />
     case Withdrawal:
-      return <Trans {...WithdrawalTrans} />
+      return <WithdrawTrans />
     case PlayerAdjustBalanceType.Company:
     case PlayerAdjustBalanceType.Agent:
     case PlayerAdjustBalanceType.System:

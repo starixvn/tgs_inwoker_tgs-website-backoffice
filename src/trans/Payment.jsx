@@ -31,10 +31,10 @@ const PaymentProvider = {
 export const PaymentProviderTrans = () => <Trans {...PaymentProvider} />
 export const usePaymentProviderTrans = () => useTrans(PaymentProvider)
 
-//TODO: vi trans
 const PaymentMethod = {
   zh: "支付方式",
-  en: "Payment Method"
+  en: "Payment Method",
+  vi: "Phương thức thanh toán"
 }
 export const PaymentMethodTrans = () => <Trans {...PaymentMethod} />
 export const usePaymentMethodTrans = () => useTrans(PaymentMethod)
@@ -271,3 +271,41 @@ const DepositPlayerCount = {
   vi: "Số lượng tiền gửi  người chơi trong ngày"
 }
 export const DepositPlayerCountTrans = () => <Trans {...DepositPlayerCount} />
+
+const PaymentChannel = {
+  zh: "支付通道",
+  en: "Payment Channel",
+  vi: "KKênhthanh toán"
+}
+export const PaymentChannelTrans = () => <Trans {...PaymentChannel} />
+export const usePaymentChannelTrans = () => useTrans(PaymentChannel)
+
+const PaymentLimit = {
+  zh: "单笔限额",
+  en: "Limit",
+  vi: "Giới hạn mỗi đơn"
+}
+export const PaymentLimitTrans = () => <Trans {...PaymentLimit} />
+
+const PaymentMinMaxLimit = {
+  zh: "单笔限额",
+  en: "Min - Max",
+  vi: "Giới hạn mỗi đơn"
+}
+export const PaymentMinMaxLimitTrans = () => <Trans {...PaymentMinMaxLimit} />
+
+const Deposit = {
+  zh: "存款",
+  en: "Deposit",
+  vi: "Nạp tiền"
+}
+export const DepositTrans = () => <Trans {...Deposit} />
+export const useDepositTrans = () => useTrans(Deposit)
+
+const Withdraw = {
+  zh: "提款",
+  en: "Withdraw",
+  vi: "Rút tiền"
+}
+export const WithdrawTrans = () => <Trans {...Withdraw} />
+export const useWithdrawTrans = () => useTrans(Withdraw)

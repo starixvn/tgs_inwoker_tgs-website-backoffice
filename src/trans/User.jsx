@@ -212,3 +212,11 @@ const ChangePassword = {
 }
 export const ChangePasswordTrans = () => <Trans {...ChangePassword} />
 export const useChangePasswordTrans = () => useTrans(ChangePassword)
+
+const DesignatedUsers = {
+  zh: "特定用户",
+  en: "Designated Users",
+  vi: "Người dùng cụ thể"
+}
+export const DesignatedUsersTrans = () => <Trans {...DesignatedUsers} />
+export const useDesignatedUsersTrans = () => useTrans(DesignatedUsers)

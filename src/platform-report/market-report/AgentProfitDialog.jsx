@@ -44,6 +44,7 @@ import {
   MasterAgentTrans,
   useAgentProfitTrans
 } from "../../trans/Agent"
+import { CompanyTrans } from "../../trans/Platform"
 
 export const AgentProfitDialogDisclosure = ({
   brandId,
@@ -191,7 +192,7 @@ const useColumns = ({ items = [] }) => {
       }),
       {
         id: "company",
-        Header: <Trans zh="公司" en="Company" />,
+        Header: <CompanyTrans />,
         headCell: {
           textAlign: "center"
         },

@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans, useLocale } from "../../i18n"
 import Select, { SelectField } from "../../select/Select"
+import { usePaymentChannelTrans } from "../../trans/Payment"
 
 export const PlayerPaymentChannelSelect = ({
   paymentMethod = "",
@@ -10,14 +11,8 @@ export const PlayerPaymentChannelSelect = ({
   paymentList = [],
   ...props
 }) => {
-  let label = useTrans({
-    zh: "支付通道",
-    en: "Payment Channel"
-  })
-  let defaultPlaceholder = useTrans({
-    zh: "支付通道",
-    en: "Payment Channel"
-  })
+  let label = usePaymentChannelTrans()
+  let defaultPlaceholder = usePaymentChannelTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = filterPaymentChannelOptions(paymentMethod, paymentList)

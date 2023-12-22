@@ -25,6 +25,7 @@ import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
 import {
   DepartmentNameTrans,
+  LicenseeTrans,
   PlatformTrans,
   useDepartmentNameTrans
 } from "../../trans/Platform"
@@ -149,7 +150,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "licenseeName",
-          Header: <Trans zh="公司" en="Licensee" />,
+          Header: <LicenseeTrans />,
           disableSortBy: true
         })
       )

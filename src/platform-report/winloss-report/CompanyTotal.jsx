@@ -34,6 +34,7 @@ import { formatYearMonthDay } from "../../date/format"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportCompanyTotal } from "./client"
 import { TotalTrans } from "../../trans/Field"
+import { CompanyTrans } from "../../trans/Platform"
 
 export const CompanyTotalDialogDisclosure = ({
   value,
@@ -147,7 +148,7 @@ const useColumns = ({ items = [] }) => {
       },
       {
         id: "company",
-        Header: <Trans zh="公司" en="Company" />,
+        Header: <CompanyTrans />,
         headCell: {
           textAlign: "center"
         },

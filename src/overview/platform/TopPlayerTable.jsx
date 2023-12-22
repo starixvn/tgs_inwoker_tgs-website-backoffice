@@ -25,6 +25,7 @@ import { SortableHead, SortDescendingOnlyHead } from "./TopTableHead"
 import { Code as PlayerMenuCode } from "../../player-management/menu"
 import { Code as PlayerListMenuCode } from "../../player-management/player-list/menu"
 import { useMeasure } from "react-use"
+import { DepositTrans, WithdrawTrans } from "../../trans/Payment"
 
 const Deposit = "deposit"
 const Withdraw = "withdraw"
@@ -210,7 +211,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
             setAscending={setAscending}
             textAlign="center"
           >
-            <Trans zh="存款" en="Deposit" />
+            <DepositTrans />
           </SortDescendingOnlyHead>
           <SortDescendingOnlyHead
             column={TopPlayerColumns.Withdraw}
@@ -220,7 +221,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
             setAscending={setAscending}
             textAlign="center"
           >
-            <Trans zh="提款" en="Withdraw" />
+            <WithdrawTrans />
           </SortDescendingOnlyHead>
           <SortDescendingOnlyHead
             column={TopPlayerColumns.Bet}
