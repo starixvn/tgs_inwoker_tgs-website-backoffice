@@ -39,16 +39,22 @@ import { useAgentMarketingReport } from "./client"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import {
   BetAmountTrans,
+  GamingCountTrans,
   TurnoverTrans,
   ValidBetAmountTrans
 } from "../../trans/Game"
-import { DepositAmountTrans, WithdrawAmountTrans } from "../../trans/Payment"
+import {
+  DepositAmountTrans,
+  FirstDepositCountTrans,
+  WithdrawAmountTrans
+} from "../../trans/Payment"
 import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import {
   CompanyAdjustmentAmountTrans,
   CompanyWinLossTrans
 } from "../../trans/Platform"
 import { useAgentUsernameTrans } from "../../trans/Agent"
+import { RegisteredCountTrans } from "../../trans/User"
 
 export { Code }
 
@@ -207,12 +213,12 @@ const useColumns = ({ brandId, items = [] }) => {
     let columns = [
       numberColumn({
         accessor: "registeredCount",
-        Header: <Trans zh="注册人数" en="Registered Count" />,
+        Header: <RegisteredCountTrans />,
         disableSortBy: true
       }),
       numberColumn({
         accessor: "firstFundInCount",
-        Header: <Trans zh="首存人数" en="First Deposit Count" />,
+        Header: <FirstDepositCountTrans />,
         disableSortBy: true
       }),
       numberColumn({
@@ -227,7 +233,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         accessor: "playGamePlayerCount",
-        Header: <Trans zh="游戏人数" en="Play Game Player Count" />,
+        Header: <GamingCountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

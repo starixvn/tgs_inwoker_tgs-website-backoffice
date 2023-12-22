@@ -55,13 +55,12 @@ import Input from "../../input/Input"
 import { Code as RoleMenuCode } from "./menu"
 import { useResellerLabel } from "../../merchant/resellers"
 import ResellerIdSelect from "../../merchant/resellers/ResellerIdSelect"
-import { useLicenseeLabel } from "../../merchant/licensees"
 import LicenseeIdSelect from "../../merchant/licensees/LicenseeIdSelect"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
 import Checkbox from "../../checkbox/Checkbox"
 import Select from "../../select/Select"
 import { EditTrans } from "../../trans/Action"
-import { PlatformTrans } from "../../trans/Platform"
+import { LicenseeTrans, PlatformTrans } from "../../trans/Platform"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -647,7 +646,9 @@ const EditDialog = ({
 
             {record?.licenseeId && (
               <>
-                <Label>{useLicenseeLabel()}</Label>
+                <Label>
+                  <LicenseeTrans />
+                </Label>
                 <LicenseeIdSelect value={record?.licenseeId} disabled />
               </>
             )}

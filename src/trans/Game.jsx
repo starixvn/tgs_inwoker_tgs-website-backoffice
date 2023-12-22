@@ -301,3 +301,10 @@ const RecommendGame = {
   vi: "Game được đề xuất"
 }
 export const RecommendGameTrans = () => <Trans {...RecommendGame} />
+
+const GamingCount = {
+  zh: "游戏人数",
+  en: "Gaming Count",
+  vi: "Số người chơi"
+}
+export const GamingCountTrans = () => <Trans {...GamingCount} />

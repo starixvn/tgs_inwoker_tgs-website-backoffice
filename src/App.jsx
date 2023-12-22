@@ -59,6 +59,7 @@ import FundDepositTopNavItem from "./fund/deposit/FundDepositTopNavItem"
 import FundWithdrawTopNavItem from "./fund/withdraw/FundWithdrawTopNavItem"
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
 import { init as initConnection } from "./connection"
+import { ChangePasswordTrans } from "./trans/User"
 
 //TODO: wait for PH's fix
 if (isDev()) {
@@ -232,7 +233,7 @@ const Header = () => {
                     id="change-password"
                     onClick={changePasswordDialog.show}
                   >
-                    <Trans zh="修改密码" en="Change Password" />
+                    <ChangePasswordTrans />
                   </DropdownMenu.Item>
                   <DropdownMenu.Item id="logout" onClick={logout}>
                     <Trans zh="登出" en="Logout" />

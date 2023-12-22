@@ -41,6 +41,7 @@ import {
 import { TrendIcon, Trend, trendOf } from "./TrendIcon"
 import { useMeasure, useEffectOnce } from "react-use"
 import Sync from "./sync"
+import { NewPlayersTrans } from "../../trans/User"
 
 const MinWidth = 230
 export const Overview = ({}) => {
@@ -150,7 +151,7 @@ const NewPlayerCountStat = () => {
   return (
     <Stat>
       <StatHeader
-        title={<Trans zh="注册人数" en="New Players" />}
+        title={<NewPlayersTrans />}
         icon={trend && <TrendIcon value={trend} />}
       />
 

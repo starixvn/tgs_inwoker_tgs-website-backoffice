@@ -307,3 +307,34 @@ export const PlatformOverview = {
   vi: "Tổng quan nền tảng"
 }
 export const PlatformOverviewTrans = () => <Trans {...PlatformOverview} />
+
+const Department = {
+  zh: "部门",
+  en: "Department",
+  vi: "Bộ phận "
+}
+export const DepartmentTrans = () => <Trans {...Department} />
+export const useDepartmentTrans = () => useTrans(Department)
+
+const DepartmentName = {
+  zh: "部门名称",
+  en: "Department Name",
+  vi: "Tên bộ phận"
+}
+export const DepartmentNameTrans = () => <Trans {...DepartmentName} />
+export const useDepartmentNameTrans = () => useTrans(DepartmentName)
+
+const Licensee = {
+  zh: "公司",
+  en: "Licensee",
+  vi: "Công ty"
+}
+export const LicenseeTrans = () => <Trans {...Licensee} />
+export const useLicenseeTrans = () => useTrans(Licensee)
+
+const Company = {
+  zh: "公司",
+  en: "Company",
+  vi: "Công ty"
+}
+export const CompanyTrans = () => <Trans {...Company} />

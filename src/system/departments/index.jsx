@@ -23,7 +23,11 @@ import { ActionTrans } from "../../trans/Action"
 import { FormProvider, useForm } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
-import { PlatformTrans } from "../../trans/Platform"
+import {
+  DepartmentNameTrans,
+  PlatformTrans,
+  useDepartmentNameTrans
+} from "../../trans/Platform"
 
 export { Code }
 
@@ -96,7 +100,7 @@ const SearchBar = ({ name, search, isLoading }) => {
           <InputField
             name="name"
             showEmptyFieldValueAddonAfter
-            placeholder={useNamePlaceHolder()}
+            placeholder={useDepartmentNameTrans()}
           />
           <SearchButton isLoading={isLoading} />
         </Set>
@@ -104,12 +108,6 @@ const SearchBar = ({ name, search, isLoading }) => {
     </FormProvider>
   )
 }
-
-const useNamePlaceHolder = () =>
-  useTrans({
-    zh: "部门名称",
-    en: "Name"
-  })
 
 const useColumns = ({ mutate, items = [] }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
@@ -124,7 +122,7 @@ const useColumns = ({ mutate, items = [] }) => {
     let columns = [
       sequenceColumn(),
       {
-        Header: <Trans zh="部门名称" en="Name" />,
+        Header: <DepartmentNameTrans />,
         id: "name",
         accessor: "name",
         disableSortBy: true,

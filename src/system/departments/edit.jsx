@@ -27,10 +27,13 @@ import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import ResellerIdSelect from "../../merchant/resellers/ResellerIdSelect"
 import { useResellerLabel } from "../../merchant/resellers"
 import LicenseeIdSelect from "../../merchant/licensees/LicenseeIdSelect"
-import { useLicenseeLabel } from "../../merchant/licensees"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
 import { EditTrans } from "../../trans/Action"
-import { PlatformTrans } from "../../trans/Platform"
+import {
+  DepartmentNameTrans,
+  LicenseeTrans,
+  PlatformTrans
+} from "../../trans/Platform"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -146,7 +149,9 @@ const EditBody = ({ record = {}, isAdd = false }) => {
         )}
         {!isAdd && record?.licenseeId && (
           <>
-            <Label>{useLicenseeLabel()}</Label>
+            <Label>
+              <LicenseeTrans />
+            </Label>
             <LicenseeIdSelect value={record?.licenseeId} disabled />
           </>
         )}
@@ -158,10 +163,7 @@ const EditBody = ({ record = {}, isAdd = false }) => {
             <BrandIdSelect value={record?.brandId} disabled />
           </>
         )}
-        <Label
-          name="name"
-          label={<Trans zh="部门名称" en="Department Name" />}
-        />
+        <Label name="name" label={<DepartmentNameTrans />} />
         <Box>
           <Input name="name" required />
         </Box>

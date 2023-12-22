@@ -248,3 +248,26 @@ const Cash = {
 }
 export const CashTrans = () => <Trans {...Cash} />
 export const useCashTrans = () => useTrans(Cash)
+
+const FirstDepositCount = {
+  zh: "首存人数",
+  en: "First Deposit Count",
+  vi: "Số người nạp lần đầu"
+}
+export const FirstDepositCountTrans = () => <Trans {...FirstDepositCount} />
+
+const NoSecondDepositPlayerCount = {
+  zh: "没进行第二次存款玩家人数",
+  en: "No Second Deposit Player Count",
+  vi: "Số người không nạp lại lần 2 "
+}
+export const NoSecondDepositPlayerCountTrans = () => (
+  <Trans {...NoSecondDepositPlayerCount} />
+)
+
+const DepositPlayerCount = {
+  zh: "当日玩家存款人数",
+  en: "Deposit Player Count",
+  vi: "Số lượng tiền gửi  người chơi trong ngày"
+}
+export const DepositPlayerCountTrans = () => <Trans {...DepositPlayerCount} />

@@ -39,7 +39,7 @@ import {
   TurnoverTrans,
   ValidBetAmountTrans
 } from "../../trans/Game"
-import { DepositAmountTrans } from "../../trans/Payment"
+import { DepositAmountTrans, FirstDepositCountTrans } from "../../trans/Payment"
 import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
   CompanyAdjustmentAmountTrans,
@@ -50,6 +50,7 @@ import {
   PlatformMarketReportNetProfitInfoTrans
 } from "../../trans/Platform"
 import { AgentProfitTrans } from "../../trans/Agent"
+import { RegisteredCountTrans } from "../../trans/User"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -231,7 +232,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         accessor: "registeredCount",
-        Header: <Trans zh="注册人数" en="Registered Count" />,
+        Header: <RegisteredCountTrans />,
         disableSortBy: true
       }),
       numberColumn({
@@ -251,7 +252,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         accessor: "firstFundInCount",
-        Header: <Trans zh="首存人数" en="First Fund In Count" />,
+        Header: <FirstDepositCountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

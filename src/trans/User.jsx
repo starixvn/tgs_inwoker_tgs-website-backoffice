@@ -9,6 +9,13 @@ const UserName = {
 export const useUserNameTrans = () => useTrans(UserName)
 export const UserNameTrans = () => <Trans {...UserName} />
 
+const Name = {
+  zh: "姓名",
+  en: "Name",
+  vi: "Tên"
+}
+export const NameTrans = () => <Trans {...Name} />
+
 const UserType = {
   zh: "用户类型",
   en: "User Type",
@@ -183,3 +190,25 @@ const UserStatusDisabled = {
 }
 export const UserStatusDisabledTrans = () => <Trans {...UserStatusDisabled} />
 export const useUserStatusDisabledTrans = () => useTrans(UserStatusDisabled)
+
+const RegisteredCount = {
+  zh: "注册人数",
+  en: "Registered Count",
+  vi: "Số người đăng ký "
+}
+export const RegisteredCountTrans = () => <Trans {...RegisteredCount} />
+
+const NewPlayers = {
+  zh: "注册人数",
+  en: "New Players",
+  vi: "Số người đăng ký "
+}
+export const NewPlayersTrans = () => <Trans {...NewPlayers} />
+
+const ChangePassword = {
+  zh: "修改密码",
+  en: "Change Password",
+  vi: "Đặt lại mật khẩu"
+}
+export const ChangePasswordTrans = () => <Trans {...ChangePassword} />
+export const useChangePasswordTrans = () => useTrans(ChangePassword)

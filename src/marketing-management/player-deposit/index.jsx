@@ -47,6 +47,11 @@ import { upperFirst } from "lodash-es"
 import { UserNameTrans } from "../../trans/User"
 import { useAgentUsernameTrans } from "../../trans/Agent"
 import { PlayerDepositReportTrans } from "../../trans/Player"
+import {
+  DepositPlayerCountTrans,
+  FirstDepositCountTrans,
+  NoSecondDepositPlayerCountTrans
+} from "../../trans/Payment"
 
 export { Code }
 
@@ -255,7 +260,7 @@ const useColumns = ({ brandId, items = [] }) => {
         id: "firstDepositCount",
         totalId: "firstDepositTotalCount",
         accessor: (row) => row,
-        Header: <Trans zh="首存人数" en="First Deposit Count" />,
+        Header: <FirstDepositCountTrans />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
@@ -276,12 +281,7 @@ const useColumns = ({ brandId, items = [] }) => {
         id: "noSecondDepositCount",
         totalId: "noSecondDepositTotalCount",
         accessor: (row) => row,
-        Header: (
-          <Trans
-            zh="没进行第二次存款玩家人数"
-            en="No Second Deposit Player Count"
-          />
-        ),
+        Header: <NoSecondDepositPlayerCountTrans />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
@@ -302,7 +302,7 @@ const useColumns = ({ brandId, items = [] }) => {
         id: "depositCount",
         totalId: "depositTotalCount",
         accessor: (row) => row,
-        Header: <Trans zh="当日玩家存款人数" en="Deposit Player Count" />,
+        Header: <DepositPlayerCountTrans />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
