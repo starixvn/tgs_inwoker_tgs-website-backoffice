@@ -38,7 +38,7 @@ import {
   SubjectTrans
 } from "../../trans/Field"
 import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
-import { useAddTrans, useEditTrans } from "../../trans/Action"
+import { useAddTrans, useEditTrans, useViewTrans } from "../../trans/Action"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,
@@ -218,7 +218,7 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
 
   let { isLoading, data: banner, error } = usePlatformBanner(brandId, bannerId)
 
-  let title = useEditTrans()
+  let title = useViewTrans()
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
