@@ -26,6 +26,9 @@ import { Code as PlayerMenuCode } from "../../player-management/menu"
 import { Code as PlayerListMenuCode } from "../../player-management/player-list/menu"
 import { useMeasure } from "react-use"
 import { DepositTrans, WithdrawTrans } from "../../trans/Payment"
+import { PlayerUsernameTrans, Top10PlayersTrans } from "../../trans/Player"
+import { BetTrans, GamePayoutTrans, WLTrans } from "../../trans/Game"
+import { NoSearchResultTrans } from "../../trans/Status"
 
 const Deposit = "deposit"
 const Withdraw = "withdraw"
@@ -55,7 +58,7 @@ export const TopPlayerTable = ({ brand, brandId, maxWidth }) => {
   return (
     <>
       <Card
-        title={<Trans zh="十大玩家" en="Top 10 Players" />}
+        title={<Top10PlayersTrans />}
         variant="bordered"
         css={css`
           padding: 0.75rem;
@@ -109,7 +112,7 @@ const EmptyRow = () => {
   return (
     <Table.Row>
       <Table.Cell colSpan={ColumnSize} textAlign="center">
-        <Trans zh="查无资料" en="No Search Result" />
+        <NoSearchResultTrans />
       </Table.Cell>
     </Table.Row>
   )
@@ -201,7 +204,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
       >
         <Table.Row>
           <Table.HeadCell textAlign="center">
-            <Trans zh="玩家用戶名" en="Player" />
+            <PlayerUsernameTrans />
           </Table.HeadCell>
           <SortDescendingOnlyHead
             column={TopPlayerColumns.Deposit}
@@ -231,7 +234,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
             setAscending={setAscending}
             textAlign="center"
           >
-            <Trans zh="投注" en="Bet" />
+            <BetTrans />
           </SortDescendingOnlyHead>
           <SortDescendingOnlyHead
             column={TopPlayerColumns.Settle}
@@ -241,7 +244,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
             setAscending={setAscending}
             textAlign="center"
           >
-            <Trans zh="派彩" en="Payout" />
+            <GamePayoutTrans />
           </SortDescendingOnlyHead>
           <SortableHead
             column={TopPlayerColumns.WinLoss}
@@ -256,7 +259,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
               right: 0;
             `}
           >
-            <Trans zh="输赢" en="W/L" />
+            <WLTrans />
           </SortableHead>
         </Table.Row>
       </Table.Head>

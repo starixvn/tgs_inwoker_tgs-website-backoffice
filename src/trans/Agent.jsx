@@ -45,6 +45,20 @@ export const Agents = {
 }
 export const AgentsTrans = () => <Trans {...Agents} />
 
+const AgentListStatusInfo = {
+  zh: "當進入此頁面時，預設顯示狀態為【正常】的代理清單，且所有狀態都會依照用戶名(A-Z)排序",
+  en: "When entering this table, the data with status: enable will show first, and all of status will be ordered by first letter (A-Z)",
+  vi: "Khi vào trang này, trạng thái hiển thị đặt trước là danh sách đại lý [Bình thường] và tất cả các trạng thái sẽ được sắp xếp theo tên người dùng (A-Z)"
+}
+export const AgentListStatusInfoTrans = () => <Trans {...AgentListStatusInfo} />
+
+const AgentListRemarkInfo = {
+  zh: "【備註】欄位會顯示在代理信息頁面中，此欄位能夠被修改，但只會儲存並顯示最新一次的修改內容",
+  en: "Remark will show in agent info page, and you can edit it. Please be aware that only the latest remark will be stored in our database.",
+  vi: "【Ghi chú】 khung sẽ xuất hiện trên trang thông tin đại lý.khung này có thể được sửa đổi, nhưng chỉ lưu và hiển thị nội dung sửa đổi mới nhất."
+}
+export const AgentListRemarkInfoTrans = () => <Trans {...AgentListRemarkInfo} />
+
 const UpperLevelAgent = {
   zh: "上级代理",
   en: "Upper Level Agent",

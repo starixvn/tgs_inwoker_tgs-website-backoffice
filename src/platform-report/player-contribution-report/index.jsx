@@ -72,7 +72,10 @@ import {
   CompanyWinLossTrans,
   DepositAmountAfterDeductingTransferFeeTrans
 } from "../../trans/Platform"
-import { PlayerContributionReportTrans } from "../../trans/Player"
+import {
+  PlayerContributionReportTrans,
+  usePlayerUsernameTrans
+} from "../../trans/Player"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -241,10 +244,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "玩家用户名",
-    en: "Player username"
-  })
+  let usernamePlaceholder = usePlayerUsernameTrans()
 
   const onSubmit = (data) => search?.(data)
 

@@ -78,6 +78,8 @@ import { ActionTrans } from "../../trans/Action"
 import { ConfigStatusTrans, StatusTrans } from "../../trans/Status"
 import {
   AgentLevelTrans,
+  AgentListRemarkInfoTrans,
+  AgentListStatusInfoTrans,
   AgentTypeTrans,
   AgentsTrans,
   DirectPlayersTrans,
@@ -196,16 +198,10 @@ const BodyContent = ({ brandId = "", brand }) => {
         <Alert variant="bordered" type="info" accent marginBottom="1rem">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
-              <Trans
-                zh="當進入此頁面時，預設顯示狀態為【正常】的代理清單，且所有狀態都會依照用戶名(A-Z)排序"
-                en="When entering this table, the data with status: enable will show first, and all of status will be ordered by first letter (A-Z)"
-              />
+              <AgentListStatusInfoTrans />
             </List.Item>
             <List.Item>
-              <Trans
-                zh="【備註】欄位會顯示在代理信息頁面中，此欄位能夠被修改，但只會儲存並顯示最新一次的修改內容"
-                en="Remark will show in agent info page, and you can edit it. Please be aware that only the latest remark will be stored in our database."
-              />
+              <AgentListRemarkInfoTrans />
             </List.Item>
           </List>
         </Alert>

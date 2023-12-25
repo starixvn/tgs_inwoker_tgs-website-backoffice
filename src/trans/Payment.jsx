@@ -309,3 +309,26 @@ const Withdraw = {
 }
 export const WithdrawTrans = () => <Trans {...Withdraw} />
 export const useWithdrawTrans = () => useTrans(Withdraw)
+
+const ReviewingWithdrawal = {
+  zh: "待處理提款",
+  en: "Reviewing Withdrawal",
+  vi: "Đang chờ xử lý rút tiền"
+}
+export const ReviewingWithdrawalTrans = () => <Trans {...ReviewingWithdrawal} />
+
+const OutstandingWithdrawal = {
+  zh: "待支付提款",
+  en: "Outstanding Withdrawal",
+  vi: "Đang chờ thanh toán"
+}
+export const OutstandingWithdrawalTrans = () => (
+  <Trans {...OutstandingWithdrawal} />
+)
+
+const DepositApprovalRate = {
+  zh: "存款成功率",
+  en: "Deposit Approval Rate",
+  vi: "Tỷ lệ nạp thành công"
+}
+export const DepositApprovalRateTrans = () => <Trans {...DepositApprovalRate} />

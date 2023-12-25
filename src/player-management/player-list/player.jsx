@@ -50,7 +50,7 @@ import { defaultFormatDate } from "../../date/format"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { PlayerBucketListDialogDisclosure } from "./PlayerBucketList"
 import { diff } from "../../object/diff"
-import { UpperLevelAgentTrans } from "../../trans/Agent"
+import { UpperLevelAgentTrans, useAgentUsernameTrans } from "../../trans/Agent"
 import {
   BalanceTrans,
   BirthdayTrans,
@@ -252,10 +252,8 @@ const EditForm = ({
 }) => {
   let { control, setValue } = useFormContext()
   let isAdmin = useIsAdminUser()
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
+
   let allAgentUpperLevelPlaceholder = useTrans({
     zh: "全民代理上級",
     en: "All Agent Upper Level"

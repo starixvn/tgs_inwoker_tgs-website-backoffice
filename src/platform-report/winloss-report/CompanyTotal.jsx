@@ -35,6 +35,7 @@ import Modal from "../../dialog/Modal"
 import { useWinlossReportCompanyTotal } from "./client"
 import { TotalTrans } from "../../trans/Field"
 import { CompanyTrans } from "../../trans/Platform"
+import { WinLossTrans } from "../../trans/Game"
 
 export const CompanyTotalDialogDisclosure = ({
   value,
@@ -134,7 +135,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           numberDecimalColumn({
             accessor: "playerWinLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true,
             sumColumn: "playerWinLoss"
           }),
@@ -156,7 +157,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           numberDecimalColumn({
             accessor: "companyWinLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true,
             sumColumn: "companyWinLoss"
           }),

@@ -16,6 +16,14 @@ export const Players = {
 export const PlayersTrans = () => <Trans {...Players} />
 export const usePlayersTrans = () => useTrans(Players)
 
+const PlayerUsername = {
+  zh: "玩家用户名",
+  en: "Player Username",
+  vi: "Tên người dùng"
+}
+export const PlayerUsernameTrans = () => <Trans {...PlayerUsername} />
+export const usePlayerUsernameTrans = () => useTrans(PlayerUsername)
+
 const PlayerCode = {
   zh: "玩家代碼",
   en: "Player Code",
@@ -159,3 +167,25 @@ export const PlayerDepositReport = {
   vi: "Báo cáo nạp tiền của người chơi"
 }
 export const PlayerDepositReportTrans = () => <Trans {...PlayerDepositReport} />
+
+const LoginPlayers = {
+  zh: "登入人數",
+  en: "Login Players",
+  vi: "Số người đăng nhập"
+}
+export const LoginPlayersTrans = () => <Trans {...LoginPlayers} />
+
+const OnlinePlayerCount = {
+  zh: "在線人數",
+  en: "Online Players",
+  vi: "Số người đang hoạt động "
+}
+export const OnlinePlayerCountTrans = () => <Trans {...OnlinePlayerCount} />
+
+//TODO
+const Top10Players = {
+  zh: "十大玩家",
+  en: "Top 10 Players",
+  vi: "10 người chơi hàng đầu"
+}
+export const Top10PlayersTrans = () => <Trans {...Top10Players} />

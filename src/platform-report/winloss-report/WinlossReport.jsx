@@ -72,6 +72,7 @@ import { UserNameTrans } from "../../trans/User"
 import { AgentTrans } from "../../trans/Agent"
 import { TotalTrans } from "../../trans/Field"
 import { CompanyTrans } from "../../trans/Platform"
+import { WinLossTrans } from "../../trans/Game"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -428,7 +429,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
         columns: [
           numberDecimalColumn({
             accessor: "winLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true
           }),
           numberDecimalColumn({
@@ -464,7 +465,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
         columns: [
           numberDecimalColumn({
             accessor: "agentWinLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true
           }),
           numberDecimalColumn({
@@ -505,7 +506,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
         columns: [
           numberDecimalColumn({
             accessor: "companyWinLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true
           }),
           numberDecimalColumn({

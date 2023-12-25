@@ -308,6 +308,13 @@ export const PlatformOverview = {
 }
 export const PlatformOverviewTrans = () => <Trans {...PlatformOverview} />
 
+const OperationOverview = {
+  zh: "运营概况",
+  en: "Overview",
+  vi: "Giới hạn mỗi đơn"
+}
+export const OperationOverviewTrans = () => <Trans {...OperationOverview} />
+
 const Department = {
   zh: "部门",
   en: "Department",
@@ -338,3 +345,17 @@ const Company = {
   vi: "Công ty"
 }
 export const CompanyTrans = () => <Trans {...Company} />
+
+const NetDeposits = {
+  zh: "存提差",
+  en: "Net Deposits",
+  vi: "Chênh lệch gửi và rút tiền"
+}
+export const NetDepositsTrans = () => <Trans {...NetDeposits} />
+
+const DepositWithdrawDiff = {
+  zh: "存提差",
+  en: "Deposit Withdraw Diff.",
+  vi: "Chênh lệch gửi và rút tiền"
+}
+export const DepositWithdrawDiffTrans = () => <Trans {...DepositWithdrawDiff} />

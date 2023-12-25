@@ -39,6 +39,7 @@ import {
   SubGameProviderTrans,
   TurnoverTrans,
   ValidBetAmountTrans,
+  WinLossTrans,
   useExternalRoundIdTrans
 } from "../../trans/Game"
 import { CurrencyTrans } from "../../trans/Payment"
@@ -234,7 +235,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       numberDecimalColumn({
         accessor: "winLoss",
-        Header: <Trans zh="输赢金额" en="WinLoss" />,
+        Header: <WinLossTrans />,
         disableSortBy: true
       }),
       textColumn({

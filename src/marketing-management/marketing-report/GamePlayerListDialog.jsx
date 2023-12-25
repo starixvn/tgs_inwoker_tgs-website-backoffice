@@ -40,7 +40,11 @@ import { useForm, FormProvider } from "react-hook-form"
 import SearchButton from "../../button/SearchButton"
 import { InputField } from "../../input/Input"
 import { GameProviderTrans, SubGameProviderTrans } from "../../trans/Game"
-import { PlayerWinLossTrans } from "../../trans/Player"
+import {
+  PlayerUsernameTrans,
+  PlayerWinLossTrans,
+  usePlayerUsernameTrans
+} from "../../trans/Player"
 
 export const GamePlayerListDialogDisclosure = ({
   brandId,
@@ -154,10 +158,7 @@ const PlayerListDialog = ({
 }
 
 const SearchBar = ({ playerUsername, search, isLoading, ...props }) => {
-  let playerUsernamePlaceholder = useTrans({
-    zh: "玩家用户名",
-    en: "Player Username"
-  })
+  let playerUsernamePlaceholder = usePlayerUsernameTrans()
 
   let formMethods = useForm({
     defaultValues: {
@@ -188,7 +189,7 @@ const useColumns = ({ items = [] }) => {
     let columns = [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="玩家用户名" en="Player Username" />,
+        Header: <PlayerUsernameTrans />,
         disableSortBy: true
       }),
       textColumn({

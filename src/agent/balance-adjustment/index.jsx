@@ -42,7 +42,11 @@ import { AgentAddBalanceDisclosure } from "./AgentAddBalance"
 import { AgentDeductBalanceDisclosure } from "./AgentDeductBalance"
 import { BalanceTrans } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
-import { AgentLevelTrans, AgentTypeTrans } from "../../trans/Agent"
+import {
+  AgentLevelTrans,
+  AgentTypeTrans,
+  AgentUsernameTrans
+} from "../../trans/Agent"
 
 export { Code }
 
@@ -170,7 +174,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="代里用户名" en="Agent Username" />,
+        Header: <AgentUsernameTrans />,
         disableSortBy: true
       }),
       textColumn({
