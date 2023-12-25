@@ -13,6 +13,7 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { Detail } from "./condition"
 import { OperatorTrans } from "../../trans/Action"
 import { TimeTrans } from "../../trans/Date"
+import { PaymentLimitTrans } from "../../trans/Payment"
 
 export const ViewButton = ({ record, ...props }) => {
   let dialog = useModalState()
@@ -116,7 +117,7 @@ const useColumns = ({ items = [] }) => {
     {
       id: "limit",
       accessor: (record) => record,
-      Header: <Trans zh="单笔限额" en="Limit" />,
+      Header: <PaymentLimitTrans />,
       disableSortBy: true,
       headCell: {
         textAlign: "center"

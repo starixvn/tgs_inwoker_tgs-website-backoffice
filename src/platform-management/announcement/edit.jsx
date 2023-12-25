@@ -33,7 +33,16 @@ import Textarea, { TextareaField } from "../../textarea"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { AnnouncementTypeSelect } from "./AnnouncementType"
 import { SubjectTrans } from "../../trans/Field"
-import { EditTrans, RemarkTrans } from "../../trans/Action"
+import {
+  AddTrans,
+  EditTrans,
+  RejectTrans,
+  RemarkTrans,
+  VerifyTrans,
+  useEditTrans,
+  useVerifyTrans,
+  useViewTrans
+} from "../../trans/Action"
 import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
@@ -47,7 +56,7 @@ export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog
@@ -152,10 +161,7 @@ const ViewDialog = ({ record, dialog, ...props }) => {
   let from = parseISO(record.from)
   let to = parseISO(record.to)
 
-  let title = useTrans({
-    zh: "查看公告",
-    en: "View Announcement"
-  })
+  let title = useViewTrans()
 
   return (
     <FormDialog
@@ -199,10 +205,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "修改公告",
-    en: "Edit Announcement"
-  })
+  let title = useEditTrans()
 
   return (
     <FormDialog
@@ -334,7 +337,7 @@ export const VerifyButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="审核" en="Verify" />
+        <VerifyTrans />
       </Disclosure>
       {dialog.visible && (
         <VerifyDialog
@@ -381,10 +384,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
     setSubmit(null)
   }
 
-  let title = useTrans({
-    zh: "审核公告",
-    en: "Verify Announcement"
-  })
+  let title = useVerifyTrans()
 
   return (
     <FormDialog
@@ -409,7 +409,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       isLoading={isLoading}

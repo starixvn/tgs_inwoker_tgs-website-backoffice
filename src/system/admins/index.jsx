@@ -26,11 +26,17 @@ import { ActionTrans } from "../../trans/Action"
 import {
   LastLoginIPTrans,
   LastLoginTimeTrans,
+  NameTrans,
   UserNameTrans,
   useUserNameTrans
 } from "../../trans/User"
 import { StatusTrans } from "../../trans/Status"
 import { CreatedTimeTrans } from "../../trans/Date"
+import {
+  AdminsTrans,
+  DepartmentTrans,
+  useDepartmentTrans
+} from "../../trans/Platform"
 
 export { Code }
 
@@ -68,7 +74,7 @@ const Body = () => {
 
   return (
     <PageContent
-      title={<Trans zh="管理员列表" en="Admins" />}
+      title={<AdminsTrans />}
       actionBar={
         <>
           <SearchBar
@@ -129,7 +135,7 @@ const SearchBar = ({
           <InputField
             name="departmentName"
             showEmptyFieldValueAddonAfter
-            placeholder={useDepartmentPlaceholder()}
+            placeholder={useDepartmentTrans()}
           />
           <InputField
             name="role"
@@ -150,12 +156,6 @@ const useRolePlaceholder = () =>
     en: "Role"
   })
 
-const useDepartmentPlaceholder = () =>
-  useTrans({
-    zh: "部门",
-    en: "Department"
-  })
-
 const useColumns = ({ mutate, items = [] }) => {
   let hasUpdate = useIsDisplayMenuByRoute([Update])
   let hasAnyMenu = hasUpdate
@@ -169,12 +169,12 @@ const useColumns = ({ mutate, items = [] }) => {
         disableSortBy: true
       }),
       textColumn({
-        Header: <Trans zh="姓名" en="Name" />,
+        Header: <NameTrans />,
         accessor: "name",
         disableSortBy: true
       }),
       {
-        Header: <Trans zh="部门" en="Department" />,
+        Header: <DepartmentTrans />,
         accessor: "departmentName",
         disableSortBy: true,
         headCell: {

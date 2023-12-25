@@ -37,6 +37,7 @@ import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { useMarketingRegisteredPlayerList } from "./client"
 import { RegistrationTimeTrans } from "../../trans/User"
+import { PlayerUsernameTrans } from "../../trans/Player"
 
 //TODO: remove data param
 export const RegisteredPlayerListDialogDisclosure = ({
@@ -145,7 +146,7 @@ const useColumns = ({ items = [] }) => {
     let columns = [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="玩家用户名" en="Player Username" />,
+        Header: <PlayerUsernameTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

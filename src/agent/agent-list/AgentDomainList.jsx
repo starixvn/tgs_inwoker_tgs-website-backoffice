@@ -36,6 +36,7 @@ import {
 import { UpdateIngress, UpdateDnsZone, UpdateDomain } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { LinkButton } from "../../button/LinkButton"
+import { NoSearchResultTrans } from "../../trans/Status"
 
 const Key = "AgentDomainList"
 
@@ -145,9 +146,7 @@ const DomainList = ({
           onSubmitted={onSubmitted}
         />
       ))}
-      {readOnly && items.length === 0 && (
-        <Trans zh="查无资料" en="No Search Result" />
-      )}
+      {readOnly && items.length === 0 && <NoSearchResultTrans />}
       {editDomain && !readOnly && showAddButton && (
         <Button
           id="add-domain-input"

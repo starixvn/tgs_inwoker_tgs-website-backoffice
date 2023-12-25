@@ -31,9 +31,20 @@ import {
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { useRole } from "../roles/client"
 import clone from "clone-deep"
-import { UserNameTrans } from "../../trans/User"
+import {
+  ChangePasswordTrans,
+  NameTrans,
+  UserNameTrans,
+  useChangePasswordTrans
+} from "../../trans/User"
 import { StatusTrans } from "../../trans/Status"
-import { EditTrans } from "../../trans/Action"
+import {
+  AddTrans,
+  EditTrans,
+  useAddTrans,
+  useEditTrans
+} from "../../trans/Action"
+import { DepartmentTrans } from "../../trans/Platform"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -46,7 +57,7 @@ export const AddButton = ({ onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
@@ -86,7 +97,7 @@ export const EditPasswordButton = ({ user, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="修改密码" en="Change Password" />
+        <ChangePasswordTrans />
       </Disclosure>
       {dialog.visible && (
         <AdminUserChangePasswordDialog
@@ -112,7 +123,7 @@ export const AdminUserChangePasswordDialog = ({
     setSubmit(null)
   }
 
-  let title = usePasswordTitle()
+  let title = useChangePasswordTrans()
   return (
     <FormDialog
       id="edit-user-password-dialog"
@@ -172,7 +183,7 @@ const AddDialog = ({ onSubmitted, dialog, finalFocusRef, ...props }) => {
     setSubmit(null)
   }
 
-  let title = useCreateTitle()
+  let title = useAddTrans()
   return (
     <FormDialog
       id="add-user-dialog"
@@ -399,7 +410,7 @@ const UsernameLabel = ({ name = "username", required }) => (
 
 const DepartmentLabel = ({ name = "departmentId", required }) => (
   <Label name={name} required={required}>
-    <Trans zh="部门" en="Department" />
+    <DepartmentTrans />
   </Label>
 )
 
@@ -411,7 +422,7 @@ const RoleLabel = ({ name = "roleId", required }) => (
 
 const NameLabel = ({ name = "name", required }) => (
   <Label name={name} required={required}>
-    <Trans zh="姓名" en="Name" />
+    <NameTrans />
   </Label>
 )
 
@@ -432,7 +443,7 @@ const EditDialog = ({ user = {}, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useUpdateTitle()
+  let title = useEditTrans()
 
   let userRoleType = useUserRoleType()
   let roleType = userRoleType
@@ -561,16 +572,4 @@ const useCreateTitle = () =>
   useTrans({
     zh: "新增管理员",
     en: "Add Admin"
-  })
-
-const useUpdateTitle = () =>
-  useTrans({
-    zh: "修改",
-    en: "Edit"
-  })
-
-const usePasswordTitle = () =>
-  useTrans({
-    zh: "修改密码",
-    en: "Change Password"
   })

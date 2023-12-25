@@ -17,12 +17,6 @@ import {
   Alert
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../../user/context"
-import Disclosure, {
-  AddDisclosure,
-  EditDisclosure,
-  NewDisclosure,
-  ViewDisclosure
-} from "../../../dialog/Disclosure"
 import FormDialog from "../../../form/FormDialog"
 import { Trans, useTrans } from "../../../i18n"
 import {
@@ -50,7 +44,10 @@ import { useTotalFunds } from "../field/TotalFundsField"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
-import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
+import {
+  PromotionBonusAmountTrans,
+  PromotionTurnoverRequirementTrans
+} from "../../../trans/Promotion"
 import { MultipliersTrans } from "../../../trans/Field"
 
 const PromotionType = "Register"
@@ -67,7 +64,7 @@ export const Rule = ({ readOnly }) => {
       <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <NormalLabel>
-        <Trans zh="彩金金额" en="Bonus Amount" />
+        <PromotionBonusAmountTrans />
       </NormalLabel>
       <NumberInput
         name="rule.bonusAmount"

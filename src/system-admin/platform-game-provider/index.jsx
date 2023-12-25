@@ -22,6 +22,7 @@ import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import equals from "fast-deep-equal"
 import { usePlatformGameProviderList } from "./client"
 import { faCheck } from "@fortawesome/free-solid-svg-icons"
+import { PlatformTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -112,7 +113,7 @@ const useColumns = ({ gameProviders = [], items = [] }) => {
       textColumn({
         id: "platform",
         accessor: (row) => row,
-        Header: <Trans zh="平台" en="Platform" />,
+        Header: <PlatformTrans />,
         disableSortBy: true,
         Cell: ({ value: platform }) => {
           let { brandName = "", brabdCode } = platform

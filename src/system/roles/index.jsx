@@ -35,6 +35,7 @@ import Checkbox from "../../checkbox"
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { nextRoleType, useRoleTypeOptions } from "./type"
 import { ActionTrans } from "../../trans/Action"
+import { LicenseeTrans, PlatformTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -212,7 +213,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "licenseeName",
-          Header: <Trans zh="公司" en="Licensee" />,
+          Header: <LicenseeTrans />,
           disableSortBy: true
         })
       )
@@ -222,7 +223,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "brandName",
-          Header: <Trans zh="平台" en="Platform" />,
+          Header: <PlatformTrans />,
           disableSortBy: true
         })
       )

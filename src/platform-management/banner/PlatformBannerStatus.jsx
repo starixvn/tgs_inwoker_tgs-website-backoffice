@@ -6,21 +6,19 @@ import AlertDialog from "../../dialog/Alert"
 import { useChangePlatformBannerStatus } from "./client"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
-import { InvalidTrans, RejectedTrans, ReviewTrans } from "../../trans/Status"
+import {
+  EffectiveTrans,
+  ExpiredTrans,
+  InvalidTrans,
+  RejectedTrans,
+  ReviewTrans
+} from "../../trans/Status"
 
 const InVerify = "WaitApproving"
 
 const Effective = "Approved"
-const EffectiveTrans = {
-  zh: "有效",
-  en: "Effective"
-}
 
 const Expired = "expired"
-const ExpiredTrans = {
-  zh: "过期",
-  en: "Expired"
-}
 
 const Rejected = "Rejected"
 
@@ -31,10 +29,10 @@ export const PlatformBannerStatusLabel = ({ value = "" }) => {
       return <ReviewTrans />
 
     case Effective:
-      return <Trans {...EffectiveTrans} />
+      return <EffectiveTrans />
 
     case Expired:
-      return <Trans {...ExpiredTrans} />
+      return <ExpiredTrans />
 
     case Rejected:
       return <RejectedTrans />
@@ -106,4 +104,4 @@ export const PlatformBannerStatusToggleButton = ({
 }
 
 const BannerLabel = ({ value, ...props }) =>
-  value ? <Trans {...EffectiveTrans} /> : <InvalidTrans />
+  value ? <EffectiveTrans /> : <InvalidTrans />

@@ -43,6 +43,7 @@ import { AlertDialog } from "../dialog/Alert"
 import LoadingBackdrop from "../dialog/LoadingBackdrop"
 import { Name } from "./AgentEgameRebatePercentage"
 import { NetProfitTrans } from "../trans/Field"
+import { ProfitSharingPercentageTrans } from "../trans/Agent"
 
 export const AgentMultipleLayerProfitSharingSettingDialogDisclosure = ({
   name = "agentDividendConditions",
@@ -267,9 +268,7 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
   maxProfitSharingPercentage,
   activeNumberLabel = <Trans zh="活跃人数" en="Active Player" />,
   netProfitLabel = <NetProfitTrans />,
-  profitSharingPercentageLabel = (
-    <Trans zh="分红比例" en="Profit Sharing Percentage" />
-  ),
+  profitSharingPercentageLabel = <ProfitSharingPercentageTrans />,
   readOnly
 }) => {
   let editable = !readOnly

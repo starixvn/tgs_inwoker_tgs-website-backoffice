@@ -17,6 +17,7 @@ import textColumn from "../../table/column/textColumn"
 import { OperatorTrans, RemarkTrans } from "../../trans/Action"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { FundActionLabel } from "./FundAction"
+import { PlatformTrans } from "../../trans/Platform"
 
 const AddedDeductedDetail = {
   zh: "上/下分詳情",
@@ -119,7 +120,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "brandCode",
-        Header: <Trans zh="平台" en="Platform" />,
+        Header: <PlatformTrans />,
         disableSortBy: true
       }),
       textColumn({

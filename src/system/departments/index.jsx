@@ -23,6 +23,13 @@ import { ActionTrans } from "../../trans/Action"
 import { FormProvider, useForm } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
+import {
+  DepartmentNameTrans,
+  DepartmentsTrans,
+  LicenseeTrans,
+  PlatformTrans,
+  useDepartmentNameTrans
+} from "../../trans/Platform"
 
 export { Code }
 
@@ -50,7 +57,7 @@ const Body = () => {
 
   return (
     <PageContent
-      title={<Trans zh="部门管理" en="Departments" />}
+      title={<DepartmentsTrans />}
       actionBar={
         <>
           <SearchBar
@@ -95,7 +102,7 @@ const SearchBar = ({ name, search, isLoading }) => {
           <InputField
             name="name"
             showEmptyFieldValueAddonAfter
-            placeholder={useNamePlaceHolder()}
+            placeholder={useDepartmentNameTrans()}
           />
           <SearchButton isLoading={isLoading} />
         </Set>
@@ -103,12 +110,6 @@ const SearchBar = ({ name, search, isLoading }) => {
     </FormProvider>
   )
 }
-
-const useNamePlaceHolder = () =>
-  useTrans({
-    zh: "部门名称",
-    en: "Name"
-  })
 
 const useColumns = ({ mutate, items = [] }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
@@ -123,7 +124,7 @@ const useColumns = ({ mutate, items = [] }) => {
     let columns = [
       sequenceColumn(),
       {
-        Header: <Trans zh="部门名称" en="Name" />,
+        Header: <DepartmentNameTrans />,
         id: "name",
         accessor: "name",
         disableSortBy: true,
@@ -150,7 +151,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "licenseeName",
-          Header: <Trans zh="公司" en="Licensee" />,
+          Header: <LicenseeTrans />,
           disableSortBy: true
         })
       )
@@ -160,7 +161,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "brandName",
-          Header: <Trans zh="平台" en="Platform" />,
+          Header: <PlatformTrans />,
           disableSortBy: true
         })
       )

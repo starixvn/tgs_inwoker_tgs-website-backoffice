@@ -49,6 +49,7 @@ import { PaymentChannelListDialog } from "./PaymentChannelList"
 import { ActionTrans } from "../../trans/Action"
 import {
   ChannelNameTrans,
+  PaymentChannelTrans,
   PaymentMethodTrans,
   PaymentProviderTrans
 } from "../../trans/Payment"
@@ -140,10 +141,10 @@ const PaymentListDropdownMenu = ({ onSubmitted }) => {
               <Trans zh="支付厂商" en="Payment Providers" />
             </DropdownMenu.Item>
             <DropdownMenu.Item onClick={paymentMethodListDialog.show}>
-              <Trans zh="支付方式" en="Payment Methods" />
+              <PaymentMethodTrans />
             </DropdownMenu.Item>
             <DropdownMenu.Item onClick={paymentChannelListDialog.show}>
-              <Trans zh="支付通道" en="Payment Channels" />
+              <PaymentChannelTrans />
             </DropdownMenu.Item>
             <DropdownMenu.Item
               onClick={paymentMethodChannelListDialogdialog.show}
@@ -232,7 +233,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "paymentChannelId",
-        Header: <Trans zh="支付通道" en="Payment Channel" />,
+        Header: <PaymentChannelTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentChannelLabel value={value} showCode />
       }),

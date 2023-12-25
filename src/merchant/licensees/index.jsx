@@ -28,13 +28,6 @@ export { Code }
 
 export const Licensee = "Licensee"
 
-export const LicenseeTrans = {
-  zh: "公司",
-  en: "Licensee"
-}
-
-export const useLicenseeLabel = () => useTrans(LicenseeTrans)
-
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
   if (!isDisplay) {

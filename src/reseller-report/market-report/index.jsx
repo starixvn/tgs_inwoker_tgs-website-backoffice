@@ -33,9 +33,15 @@ import Big from "big.js"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
-import { NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
 import { BetAmountTrans, TurnoverTrans } from "../../trans/Game"
 import { CurrencyTrans, DepositAmountTrans } from "../../trans/Payment"
+import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans,
+  PlatformTrans
+} from "../../trans/Platform"
+import { AgentProfitTrans } from "../../trans/Agent"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -235,7 +241,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         id: "brandCode",
         accessor: (row) => row,
-        Header: <Trans zh="平台" en="Platform" />,
+        Header: <PlatformTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, brandCode = "" } }) => {
           return isTotal ? "" : brandCode
@@ -271,17 +277,17 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "agentProfit",
-        Header: <Trans zh="代理总分红" en="Agent Profit" />,
+        Header: <AgentProfitTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -296,7 +302,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

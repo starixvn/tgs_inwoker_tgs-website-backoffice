@@ -44,9 +44,12 @@ import { Features, isDev, isFeatureEnabled } from "../../env"
 import { PlayersTrans } from "../../trans/Player"
 import { SubjectTrans } from "../../trans/Field"
 import {
+  AddTrans,
   DownloadFormatFileTrans,
+  RejectTrans,
   RemarkTrans,
-  UploadFileTrans
+  UploadFileTrans,
+  VerifyTrans
 } from "../../trans/Action"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
@@ -59,7 +62,7 @@ export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog
@@ -349,7 +352,7 @@ export const VerifyButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="审核" en="Verify" />
+        <VerifyTrans />
       </Disclosure>
       {dialog.visible && (
         <VerifyDialog
@@ -410,7 +413,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       isLoading={isLoading}

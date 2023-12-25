@@ -47,7 +47,14 @@ import { toDate } from "../../date/toDate"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays } from "date-fns"
-import { UserNameTrans } from "../../trans/User"
+import { RegisteredCountTrans, UserNameTrans } from "../../trans/User"
+import {
+  AgentMarketingReportTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
+import { TotalTrans } from "../../trans/Field"
+import { FirstDepositCountTrans } from "../../trans/Payment"
+import { GamingCountTrans } from "../../trans/Game"
 
 export { Code }
 
@@ -111,7 +118,7 @@ const BodyContent = ({ brandId }) => {
   })
   return (
     <PageContent
-      title={<Trans zh="代理市場報表" en="Agent Marketing Report" />}
+      title={<AgentMarketingReportTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
@@ -166,10 +173,7 @@ const SearchBar = ({
   let yesterdayRange = yesterday()
   let maxDate = todayRange.end
 
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   let formMethods = useForm({
     defaultValues: {
@@ -234,7 +238,7 @@ const useColumns = ({ brandId, items = [] }) => {
         dateFormat: "MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
-        TotalCell: () => <Trans zh="总计" en="Total" />
+        TotalCell: () => <TotalTrans />
       }),
       textColumn({
         id: "AgentUsername",
@@ -245,7 +249,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberColumn({
         id: "registerCount",
         accessor: (row) => row,
-        Header: <Trans zh="注册人数" en="Register Count" />,
+        Header: <RegisteredCountTrans />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
@@ -264,7 +268,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberColumn({
         id: "firstDepositCount",
         accessor: (row) => row,
-        Header: <Trans zh="首存人数" en="First Deposit Count" />,
+        Header: <FirstDepositCountTrans />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
@@ -284,7 +288,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberColumn({
         id: "gamingCount",
         accessor: (row) => row,
-        Header: <Trans zh="游戏人数" en="Gaming Count" />,
+        Header: <GamingCountTrans />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },

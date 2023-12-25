@@ -40,6 +40,7 @@ import {
   numberDecimalPercentageColumn
 } from "../table/column/numberColumn"
 import AlertDialog from "../dialog/Alert"
+import { useBonusAmountTrans } from "../trans/Field"
 
 export const BonusDialogDisclosure = ({
   brandId,
@@ -82,10 +83,7 @@ const BounsDialog = ({
   toFetchArguments = defaultFetchArguments,
   dialog
 }) => {
-  let title = useTrans({
-    zh: "红利金额",
-    en: "Bonus Amount"
-  })
+  let title = useBonusAmountTrans()
 
   let { state, setPageIndex, setSortOrder } = useTable()
   let { isLoading, data, error } = useFetch?.(...toFetchArguments(state))

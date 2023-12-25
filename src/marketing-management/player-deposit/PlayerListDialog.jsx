@@ -40,6 +40,8 @@ import {
   TotalDepositAmountTrans,
   TotalWithdrawAmountTrans
 } from "../../trans/Field"
+import { DepositWithdrawDiffTrans } from "../../trans/Platform"
+import { PlayerUsernameTrans } from "../../trans/Player"
 
 //TODO: remove date
 export const PlayerListDialogDisclosure = ({
@@ -164,7 +166,7 @@ const useColumns = ({ items = [] }) => {
     let columns = [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="玩家用户名" en="Player Username" />,
+        Header: <PlayerUsernameTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
@@ -189,7 +191,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "depositSubtractWithdraw",
-        Header: <Trans zh="存提差" en="Deposit Withdraw Diff." />,
+        Header: <DepositWithdrawDiffTrans />,
         disableSortBy: true
       }),
       textColumn({

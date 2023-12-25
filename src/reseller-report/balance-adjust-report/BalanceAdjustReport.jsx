@@ -62,6 +62,12 @@ import { AdjustListDialogDisclosure } from "./AdjustListDialog"
 import { UserType } from "./UserType"
 import { AgentAdjustTrans } from "../../trans/Action"
 import { CurrencyTrans } from "../../trans/Payment"
+import {
+  CompanyTrans,
+  LicenseeTrans,
+  PlatformTrans
+} from "../../trans/Platform"
+import { AgentTrans } from "../../trans/Agent"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -206,12 +212,12 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
         columns: [
           textColumn({
             accessor: "licensee",
-            Header: <Trans zh="公司" en="Licensee" />,
+            Header: <LicenseeTrans />,
             disableSortBy: true
           }),
           textColumn({
             accessor: "brand",
-            Header: <Trans zh="平台" en="Platform" />,
+            Header: <PlatformTrans />,
             disableSortBy: true
           }),
           textColumn({
@@ -230,12 +236,12 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
         columns: [
           numberColumn({
             accessor: "company",
-            Header: <Trans zh="公司" en="Company" />,
+            Header: <CompanyTrans />,
             disableSortBy: true
           }),
           numberColumn({
             accessor: "agent",
-            Header: <Trans zh="代理" en="Agent" />,
+            Header: <AgentTrans />,
             disableSortBy: true
           }),
           numberColumn({

@@ -56,6 +56,7 @@ import {
   ValidBetAmountTrans
 } from "../../trans/Game"
 import { CurrencyTrans } from "../../trans/Payment"
+import { CompanyWinLossTrans } from "../../trans/Platform"
 
 export const GameProviderCurrencyReportDisclosure = ({
   use = Link,
@@ -186,7 +187,7 @@ const useColumns = ({ items = [], month }) => {
       }),
       numberDecimalColumn({
         accessor: "companyWinLoss",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       })
     ],

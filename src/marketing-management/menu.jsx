@@ -20,17 +20,15 @@ import {
 } from "./agent-marketing-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
+import { MarketingManagementTrans } from "../trans/Platform"
+import { PlayerDepositReport } from "../trans/Player"
+import { AgentMarketingReport } from "../trans/Agent"
 
 export const Code = "marketing"
 
 export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
-
-export const nameMessages = {
-  zh: "市场管理",
-  en: "Marketing Management"
-}
 
 export const Menu = ({
   title = (
@@ -42,7 +40,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Trans {...nameMessages} />
+      <MarketingManagementTrans />
     </Flex>
   ),
   url = DefaultUrl,
@@ -62,13 +60,7 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case PlayerDepositCode:
-      return getTrans(
-        {
-          zh: "玩家存款报表",
-          en: "Player Deposit Report"
-        },
-        locale
-      )
+      return getTrans(PlayerDepositReport, locale)
 
     case PlayerWinLossCode:
       return getTrans(
@@ -80,13 +72,7 @@ const label = ({ locale, code }) => {
       )
 
     case MarketingReportCode:
-      return getTrans(
-        {
-          zh: "代理市場報表",
-          en: "Agent Marketing Report"
-        },
-        locale
-      )
+      return getTrans(AgentMarketingReport, locale)
 
     case AgentMarketingReportCode:
       return getTrans(

@@ -55,13 +55,17 @@ import Input from "../../input/Input"
 import { Code as RoleMenuCode } from "./menu"
 import { useResellerLabel } from "../../merchant/resellers"
 import ResellerIdSelect from "../../merchant/resellers/ResellerIdSelect"
-import { useLicenseeLabel } from "../../merchant/licensees"
 import LicenseeIdSelect from "../../merchant/licensees/LicenseeIdSelect"
-import { useBrandLabel } from "../../merchant/platforms"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
 import Checkbox from "../../checkbox/Checkbox"
 import Select from "../../select/Select"
-import { EditTrans } from "../../trans/Action"
+import {
+  AddTrans,
+  EditTrans,
+  useAddTrans,
+  useEditTrans
+} from "../../trans/Action"
+import { LicenseeTrans, PlatformTrans } from "../../trans/Platform"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -73,7 +77,7 @@ export const AddButton = ({ onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
@@ -139,10 +143,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
     setMenus(cloneDeep(sameRoleType || !isRoot ? dropRoleModule(menus) : menus))
   }, [JSON.stringify(menus), userRoleType, roleType, isRoot])
 
-  let title = useTrans({
-    zh: "新增权限组",
-    en: "Add Role"
-  })
+  let title = useAddTrans()
 
   const clearResult = () => {
     setSubmit(undefined)
@@ -591,10 +592,7 @@ const EditDialog = ({
     setMenus(cloneDeep(menus))
   }, [menus])
 
-  let title = useTrans({
-    zh: "修改权限组",
-    en: "Edit Role"
-  })
+  let title = useEditTrans()
 
   const clearResult = () => {
     setSubmit(null)
@@ -647,14 +645,18 @@ const EditDialog = ({
 
             {record?.licenseeId && (
               <>
-                <Label>{useLicenseeLabel()}</Label>
+                <Label>
+                  <LicenseeTrans />
+                </Label>
                 <LicenseeIdSelect value={record?.licenseeId} disabled />
               </>
             )}
 
             {record?.brandId && (
               <>
-                <Label>{useBrandLabel()}</Label>
+                <Label>
+                  <PlatformTrans />
+                </Label>
                 <BrandIdSelect value={record?.brandId} disabled />
               </>
             )}

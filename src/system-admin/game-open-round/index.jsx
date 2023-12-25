@@ -45,10 +45,12 @@ import {
   SubGameProviderTrans,
   TurnoverTrans,
   ValidBetAmountTrans,
+  WinLossTrans,
   useExternalRoundIdTrans
 } from "../../trans/Game"
 import { CurrencyTrans } from "../../trans/Payment"
 import { SettleAmountTrans, SupportingDeviceTrans } from "../../trans/Field"
+import { PlatformTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -200,13 +202,10 @@ const useColumns = ({ items = [], mutate }) => {
         accessor: "externalRoundId",
         Header: <ExternalRoundIdTrans />,
         disableSortBy: true
-        /* TODO: popup cause page scroll
-        Cell: ({ value = "" }) => <CopyTextBox value={value} />
-        */
       }),
       textColumn({
         accessor: "brandCode",
-        Header: <Trans zh="平台" en="Platform" />,
+        Header: <PlatformTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -246,7 +245,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       numberDecimalColumn({
         accessor: "winLoss",
-        Header: <Trans zh="输赢金额" en="WinLoss" />,
+        Header: <WinLossTrans />,
         disableSortBy: true
       }),
       textColumn({

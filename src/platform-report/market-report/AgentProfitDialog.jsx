@@ -39,6 +39,12 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { Modal } from "../../dialog/Modal"
 import { zIndexOfModal } from "../../css/zIndex"
 import { NetProfitTrans } from "../../trans/Field"
+import {
+  AgentProfitTrans,
+  MasterAgentTrans,
+  useAgentProfitTrans
+} from "../../trans/Agent"
+import { CompanyTrans } from "../../trans/Platform"
 
 export const AgentProfitDialogDisclosure = ({
   brandId,
@@ -76,10 +82,7 @@ const AgentProfitDialog = ({ brandId, date, dialog }) => {
     brandId ? toApiParams(state) : null
   )
 
-  let title = useTrans({
-    zh: "代理总分红",
-    en: "Agent Profit"
-  })
+  let title = useAgentProfitTrans()
 
   let columns = useColumns({ items: data?.items })
 
@@ -155,7 +158,7 @@ const useColumns = ({ items = [] }) => {
     let columns = [
       textColumn({
         accessor: "masterAgentName",
-        Header: <Trans zh="总代理" en="Master Agent" />,
+        Header: <MasterAgentTrans />,
         disableSortBy: true
       }),
       numberDecimalPercentageColumn({
@@ -184,12 +187,12 @@ const useColumns = ({ items = [] }) => {
       },
       numberDecimalColumn({
         accessor: "agentProfit",
-        Header: <Trans zh="代理总分红" en="Agent Profit" />,
+        Header: <AgentProfitTrans />,
         disableSortBy: true
       }),
       {
         id: "company",
-        Header: <Trans zh="公司" en="Company" />,
+        Header: <CompanyTrans />,
         headCell: {
           textAlign: "center"
         },

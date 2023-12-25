@@ -55,6 +55,7 @@ import NumberRangeInputGroup from "../../number/RangeInput"
 import { parseJSON, stringifyJSON } from "../../text/json"
 import { Update } from "./menu"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
+import { PaymentLimitTrans } from "../../trans/Payment"
 
 //TODO: rename to PlatformPaymentDisclosure?
 export const EditBrandPaymentDisclosure = ({
@@ -377,7 +378,7 @@ const TransferLimitRangeField = () => {
     name: TransferLimitToFieldName
   })
   return (
-    <FieldWrapper label={<Trans zh="单笔限额" en="Limit" />}>
+    <FieldWrapper label={<PaymentLimitTrans />}>
       <NumberRangeInputGroup
         names={[TransferLimitFromFieldName, TransferLimitToFieldName]}
         required

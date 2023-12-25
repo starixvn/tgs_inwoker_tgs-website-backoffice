@@ -18,7 +18,6 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, {
   AddDisclosure,
   EditDisclosure,
-  NewDisclosure,
   ViewDisclosure
 } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
@@ -70,7 +69,8 @@ export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
 
   return (
     <>
-      <NewDisclosure {...dialog} {...props} />
+      <AddDisclosure {...dialog} {...props} />
+
       {dialog.visible && (
         <AddDialog
           brandId={brandId}

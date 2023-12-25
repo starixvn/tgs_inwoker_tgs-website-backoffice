@@ -18,6 +18,7 @@ import {
   useHighRiskLobbySuspensionValue
 } from "./Suspension"
 import { AlertRecipientInputList } from "./AlertRecipient"
+import { LicenseeTrans, PlatformTrans } from "../../trans/Platform"
 
 export const TabId = "main"
 
@@ -127,13 +128,13 @@ const AlertRecipientSetting = ({}) => {
           <AlertRecipientInputList name="reseller" />
 
           <Box css={LineHeightStyle}>
-            <Trans zh="公司" en="Licensee" />
+            <LicenseeTrans />
             <Text color="danger">*</Text>
           </Box>
           <AlertRecipientInputList name="licensee" />
 
           <Box css={LineHeightStyle}>
-            <Trans zh="平台" en="Platform" />
+            <PlatformTrans />
             <Text color="danger">*</Text>
           </Box>
           <AlertRecipientInputList name="platform" />

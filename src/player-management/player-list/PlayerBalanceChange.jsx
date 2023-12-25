@@ -41,6 +41,7 @@ import { TimeTrans } from "../../trans/Date"
 import {
   BalanceChangeTypeReceiveCommitTrans,
   BalanceChangeTypeReceiveRollbackTrans,
+  DepositTrans,
   TransferAndCanceledTrans,
   TransferCanceledTrans,
   WithdrawAndCanceledTrans,
@@ -48,6 +49,7 @@ import {
   WithdrawCompletedTrans,
   useBalanceChangeTypeReceiveCommitTrans,
   useBalanceChangeTypeReceiveRollbackTrans,
+  useDepositTrans,
   useTransferAndCanceledTrans,
   useTransferCanceled,
   useWithdrawAndCanceledTrans,
@@ -244,10 +246,6 @@ const newDateRange = () => ({
 
 const Deposit = "Deposit"
 const Deposited = "Deposited"
-const DepositTrans = {
-  zh: "存款",
-  en: "Deposit"
-}
 
 const Withdrawal = "Withdrawal"
 const WithdrawLock = "WithdrawLock"
@@ -361,7 +359,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   let gameActionTypeOptions = useGameActionTypeOptionList()
   let options = [
     {
-      label: useTrans(DepositTrans),
+      label: useDepositTrans(),
       value: Deposit
     },
     {
@@ -456,7 +454,7 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Deposit:
     case Deposited:
-      return <Trans {...DepositTrans} />
+      return <DepositTrans />
     case Withdrawal:
     case WithdrawLock:
       return <WithdrawAndCanceledTrans />

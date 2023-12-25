@@ -112,7 +112,11 @@ import {
 import { useBrand } from "../../merchant/platforms/client"
 import { AgentHistoryListPanel, AgentHistoryListTab } from "./AgentHistoryList"
 import { diff } from "../../object/diff"
-import { UpperLevelAgentTrans } from "../../trans/Agent"
+import {
+  AgentLevelTrans,
+  AgentTypeTrans,
+  UpperLevelAgentTrans
+} from "../../trans/Agent"
 import {
   BalanceTrans,
   RealNameTrans,
@@ -267,14 +271,14 @@ const FormBody = ({ isAdd, agentProfitSharingType }) => {
           {!parentAgentRequired && (
             <>
               <NormalLabel>
-                <Trans zh="代理类型" en="Agent Type" />
+                <AgentTypeTrans />
               </NormalLabel>
               <AgentTypeSelect name={AgentTypeFieldName} required />
             </>
           )}
 
           <NormalLabel>
-            <Trans zh="代理种类" en="Level Type" />
+            <AgentLevelTrans />
           </NormalLabel>
           <AgentLevelSelect
             name={LevelTypeFieldName}
@@ -459,14 +463,14 @@ const ConfigFormBody = ({ record, agentProfitSharingType }) => {
           </Text.Block>
 
           <NormalLabel>
-            <Trans zh="代理类型" en="Agent Type" />
+            <AgentTypeTrans />
           </NormalLabel>
           <Text.Block alignY="center">
             <AgentTypeLabel value={record?.type} />
           </Text.Block>
 
           <NormalLabel>
-            <Trans zh="代理种类" en="Agent Level Type" />
+            <AgentLevelTrans />
           </NormalLabel>
           <Text.Block alignY="center">
             <AgentLevelLabel value={record?.levelType} />

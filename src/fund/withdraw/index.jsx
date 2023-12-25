@@ -76,6 +76,7 @@ import {
   ActualWithdrawAmountTrans,
   PaidTimeTrans,
   WithdrawAmountTrans,
+  WithdrawListTrans,
   usePaymentProviderTrans
 } from "../../trans/Payment"
 import {
@@ -282,7 +283,7 @@ const BodyContent = ({ brandId }) => {
   })
   return (
     <PageContent
-      title={<Trans zh="提款列表" en="Withdraw List" />}
+      title={<WithdrawListTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar

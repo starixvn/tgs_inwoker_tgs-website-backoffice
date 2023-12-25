@@ -12,8 +12,7 @@ import {
 } from "./balance-adjustment/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUserTie } from "@fortawesome/free-solid-svg-icons"
-
-export const Name = ({}) => useTrans(nameMessages)
+import { AgentManagementTrans, Agents } from "../trans/Agent"
 
 export const nameMessages = {
   zh: "代理管理",
@@ -36,7 +35,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Name />
+      <AgentManagementTrans />
     </Flex>
   ),
   url = DefaultUrl,
@@ -56,13 +55,7 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case AgentListCode:
-      return getTrans(
-        {
-          zh: "代理列表",
-          en: "Agents"
-        },
-        locale
-      )
+      return getTrans(Agents, locale)
 
     case BalanceAdjustmentCode:
       return getTrans(

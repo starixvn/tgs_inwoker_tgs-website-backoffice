@@ -52,22 +52,20 @@ import { GameProviderReport, OrderTracking, UnsettledBet } from "../trans/Game"
 import {
   BalanceChangeReport,
   MarketReport,
-  PlatformReportTrans
+  PlatformReportTrans,
+  WinlossReport
 } from "../trans/Platform"
+import {
+  AgentContributionReport,
+  AgentProfitSharingReport
+} from "../trans/Agent"
+import { PlayerContributionReport } from "../trans/Player"
 
 export const Code = "report"
 
 export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
-
-//TODO: mv to ?
-/*
-export const nameMessages = {
-  zh: "平台报表",
-  en: "Platform Report"
-}
-*/
 
 export const Menu = ({
   title = (
@@ -107,31 +105,13 @@ const label = ({ locale, code }) => {
       return getTrans(UnsettledBet, locale)
 
     case AgentContributionReportCode:
-      return getTrans(
-        {
-          zh: "代理贡献报表",
-          en: "Agent Contribution Report"
-        },
-        locale
-      )
+      return getTrans(AgentContributionReport, locale)
 
     case PlayerContributionReportCode:
-      return getTrans(
-        {
-          zh: "玩家贡献报表",
-          en: "Player Contribution Report"
-        },
-        locale
-      )
+      return getTrans(PlayerContributionReport, locale)
 
     case AgentBonusReportCode:
-      return getTrans(
-        {
-          zh: "代理分红报表",
-          en: "Agent Profit Sharing Report"
-        },
-        locale
-      )
+      return getTrans(AgentProfitSharingReport, locale)
 
     case TransferRecordsCode:
       return getTrans(
@@ -148,13 +128,7 @@ const label = ({ locale, code }) => {
     case GameProviderReportCode:
       return getTrans(GameProviderReport, locale)
     case WinlossReportCode:
-      return getTrans(
-        {
-          zh: "输赢报表",
-          en: "Winloss Report"
-        },
-        locale
-      )
+      return getTrans(WinlossReport, locale)
 
     case AllAgentRebateReportCode:
       return getTrans(

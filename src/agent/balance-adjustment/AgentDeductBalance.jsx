@@ -52,6 +52,7 @@ import {
   TransactionTypeTrans
 } from "../../trans/Action"
 import { TransactionAmountTrans } from "../../trans/Field"
+import { AgentUsernameTrans } from "../../trans/Agent"
 
 export const AgentDeductBalanceDisclosure = ({
   brandId,
@@ -139,7 +140,7 @@ const FormBody = ({ brandId, username, agentId }) => {
       <Input type="hidden" name="id" value={agentId} />
       <FieldValues margin="1rem">
         <Text.Block alignY="center">
-          <Trans zh="代理用户名" en="Agent Username" />
+          <AgentUsernameTrans />
         </Text.Block>
         <Text.Block alignY="center">{username}</Text.Block>
 

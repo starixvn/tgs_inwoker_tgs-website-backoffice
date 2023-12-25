@@ -1,6 +1,14 @@
 import React, { createContext, useContext, useState } from "react"
 import { Trans, useTrans } from "../i18n"
 
+const Platform = {
+  zh: "平台",
+  en: "Platform",
+  vi: "Nền tảng"
+}
+export const PlatformTrans = () => <Trans {...Platform} />
+export const usePlatformTrans = () => useTrans(Platform)
+
 const ThirdPartyId = {
   zh: "三方单号",
   en: "3rd Party Id",
@@ -141,3 +149,215 @@ const PlatformMarketReportNetProfitInfo = {
 export const PlatformMarketReportNetProfitInfoTrans = () => (
   <Trans {...PlatformMarketReportNetProfitInfo} />
 )
+
+export const Banners = {
+  zh: "Banner 管理",
+  en: "Banners",
+  vi: "Quản lý Banners"
+}
+export const BannersTrans = () => <Trans {...Banners} />
+
+export const Announcements = {
+  zh: "公告管理",
+  en: "Announcements",
+  vi: "Quản lý thông báo"
+}
+export const AnnouncementsTrans = () => <Trans {...Announcements} />
+
+export const OperationSettings = {
+  zh: "营运设置",
+  en: "Operation Settings",
+  vi: "Cài đặt hoạt động"
+}
+export const OperationSettingsTrans = () => <Trans {...OperationSettings} />
+
+//TODO: vi with Banners?
+const AnnouncementMainMarquee = {
+  zh: "首页跑马灯",
+  en: "Main Marquee",
+  vi: "Banners chạy trên trang chủ"
+}
+export const AnnouncementMainMarqueeTrans = () => (
+  <Trans {...AnnouncementMainMarquee} />
+)
+export const useAnnouncementMainMarqueeTrans = () =>
+  useTrans(AnnouncementMainMarquee)
+
+const AnnouncementMainPopup = {
+  zh: "首页弹跳",
+  en: "Main Popup",
+  vi: "Cửa sổ mới"
+}
+export const AnnouncementMainPopupTrans = () => (
+  <Trans {...AnnouncementMainPopup} />
+)
+export const useAnnouncementMainPopupTrans = () =>
+  useTrans(AnnouncementMainPopup)
+
+const AnnouncementDepositPopup = {
+  zh: "存款弹跳",
+  en: "Deposit Popup",
+  vi: "Cửa sổ nạp"
+}
+export const AnnouncementDepositPopupTrans = () => (
+  <Trans {...AnnouncementDepositPopup} />
+)
+export const useAnnouncementDepositPopupTrans = () =>
+  useTrans(AnnouncementDepositPopup)
+
+const InstantMessaging = {
+  zh: "一般通訊軟體",
+  en: "Instant Messaging",
+  vi: "Phần mềm truyền thông dụng"
+}
+export const InstantMessagingTrans = () => <Trans {...InstantMessaging} />
+export const useInstantMessagingTrans = () => useTrans(InstantMessaging)
+
+const ThirdPartyLiveChatProvider = {
+  zh: "三方即時客服廠商",
+  en: "3rd Party Live Chat Provider",
+  vi: "dịch vụ CSKH bên thứ 3"
+}
+export const ThirdPartyLiveChatProviderTrans = () => (
+  <Trans {...ThirdPartyLiveChatProvider} />
+)
+export const useThirdPartyLiveChatProviderTrans = () =>
+  useTrans(ThirdPartyLiveChatProvider)
+
+export const WinlossReport = {
+  zh: "输赢报表",
+  en: "Winloss Report"
+}
+export const WinlossReportTrans = () => <Trans {...WinlossReport} />
+
+export const LicenseeReport = {
+  zh: "公司报表",
+  en: "Licensee Report",
+  vi: "Báo cáo công ty"
+}
+export const LicenseeReportTrans = () => <Trans {...LicenseeReport} />
+
+const CompanyAdjust = {
+  zh: "公司调账",
+  en: "Company Adjust",
+  vi: "Công ty điều chỉnh"
+}
+export const useCompanyAdjustTrans = () => useTrans(CompanyAdjust)
+export const CompanyAdjustTrans = () => <Trans {...CompanyAdjust} />
+
+const CompanyAdjustmentAmount = {
+  zh: "公司调账",
+  en: "Co. Adjustment Amount",
+  vi: "Công ty điều chỉnh"
+}
+export const CompanyAdjustmentAmountTrans = () => (
+  <Trans {...CompanyAdjustmentAmount} />
+)
+
+const CompanyWinLoss = {
+  zh: "公司输赢金额",
+  en: "Co. W/L",
+  vi: "Lợi nhuận công ty thắng thua"
+}
+export const CompanyWinLossTrans = () => <Trans {...CompanyWinLoss} />
+
+export const MarketingManagement = {
+  zh: "市场管理",
+  en: "Marketing Management",
+  vi: "Quản lý thị trường"
+}
+export const MarketingManagementTrans = () => <Trans {...MarketingManagement} />
+
+export const SystemConfig = {
+  zh: "系统设置",
+  en: "System Config",
+  vi: "Cài đặt hệ thống"
+}
+export const SystemConfigTrans = () => <Trans {...SystemConfig} />
+
+export const Admins = {
+  zh: "管理员列表",
+  en: "Admins",
+  vi: "Danh sách quản trị viên"
+}
+export const AdminsTrans = () => <Trans {...Admins} />
+
+export const Roles = {
+  zh: "权限组管理",
+  en: "Roles",
+  vi: "Quản lý toàn quyền"
+}
+export const RolesTrans = () => <Trans {...Roles} />
+
+export const Departments = {
+  zh: "部门管理",
+  en: "Departments",
+  vi: "Quản lý bộ phận"
+}
+export const DepartmentsTrans = () => <Trans {...Departments} />
+
+export const Overview = {
+  zh: "总览",
+  en: "Overview",
+  vi: "Tổng quan"
+}
+export const OverviewTrans = () => <Trans {...Overview} />
+
+export const PlatformOverview = {
+  zh: "平台总览",
+  en: "Overview",
+  vi: "Tổng quan nền tảng"
+}
+export const PlatformOverviewTrans = () => <Trans {...PlatformOverview} />
+
+const OperationOverview = {
+  zh: "运营概况",
+  en: "Overview",
+  vi: "Giới hạn mỗi đơn"
+}
+export const OperationOverviewTrans = () => <Trans {...OperationOverview} />
+
+const Department = {
+  zh: "部门",
+  en: "Department",
+  vi: "Bộ phận "
+}
+export const DepartmentTrans = () => <Trans {...Department} />
+export const useDepartmentTrans = () => useTrans(Department)
+
+const DepartmentName = {
+  zh: "部门名称",
+  en: "Department Name",
+  vi: "Tên bộ phận"
+}
+export const DepartmentNameTrans = () => <Trans {...DepartmentName} />
+export const useDepartmentNameTrans = () => useTrans(DepartmentName)
+
+const Licensee = {
+  zh: "公司",
+  en: "Licensee",
+  vi: "Công ty"
+}
+export const LicenseeTrans = () => <Trans {...Licensee} />
+export const useLicenseeTrans = () => useTrans(Licensee)
+
+const Company = {
+  zh: "公司",
+  en: "Company",
+  vi: "Công ty"
+}
+export const CompanyTrans = () => <Trans {...Company} />
+
+const NetDeposits = {
+  zh: "存提差",
+  en: "Net Deposits",
+  vi: "Chênh lệch gửi và rút tiền"
+}
+export const NetDepositsTrans = () => <Trans {...NetDeposits} />
+
+const DepositWithdrawDiff = {
+  zh: "存提差",
+  en: "Deposit Withdraw Diff.",
+  vi: "Chênh lệch gửi và rút tiền"
+}
+export const DepositWithdrawDiffTrans = () => <Trans {...DepositWithdrawDiff} />

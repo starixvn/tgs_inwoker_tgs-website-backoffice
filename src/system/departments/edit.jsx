@@ -27,10 +27,18 @@ import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import ResellerIdSelect from "../../merchant/resellers/ResellerIdSelect"
 import { useResellerLabel } from "../../merchant/resellers"
 import LicenseeIdSelect from "../../merchant/licensees/LicenseeIdSelect"
-import { useLicenseeLabel } from "../../merchant/licensees"
-import { useBrandLabel } from "../../merchant/platforms"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
-import { EditTrans } from "../../trans/Action"
+import {
+  AddTrans,
+  EditTrans,
+  useAddTrans,
+  useEditTrans
+} from "../../trans/Action"
+import {
+  DepartmentNameTrans,
+  LicenseeTrans,
+  PlatformTrans
+} from "../../trans/Platform"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -42,7 +50,7 @@ export const AddButton = ({ onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
@@ -77,10 +85,7 @@ const AddDialog = ({ onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "新增部门",
-    en: "Add Department"
-  })
+  let title = useAddTrans()
 
   return (
     <FormDialog
@@ -146,20 +151,21 @@ const EditBody = ({ record = {}, isAdd = false }) => {
         )}
         {!isAdd && record?.licenseeId && (
           <>
-            <Label>{useLicenseeLabel()}</Label>
+            <Label>
+              <LicenseeTrans />
+            </Label>
             <LicenseeIdSelect value={record?.licenseeId} disabled />
           </>
         )}
         {!isAdd && record?.brandId && (
           <>
-            <Label>{useBrandLabel()}</Label>
+            <Label>
+              <PlatformTrans />
+            </Label>
             <BrandIdSelect value={record?.brandId} disabled />
           </>
         )}
-        <Label
-          name="name"
-          label={<Trans zh="部门名称" en="Department Name" />}
-        />
+        <Label name="name" label={<DepartmentNameTrans />} />
         <Box>
           <Input name="name" required />
         </Box>
@@ -220,10 +226,7 @@ const EditDialog = ({ id, record = {}, dialog, onSubmitted, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "修改部门",
-    en: "Edit Department"
-  })
+  let title = useEditTrans()
 
   return (
     <FormDialog

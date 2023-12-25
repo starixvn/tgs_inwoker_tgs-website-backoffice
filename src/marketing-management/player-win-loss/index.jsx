@@ -40,6 +40,8 @@ import {
   TotalDepositAmountTrans,
   TotalWithdrawAmountTrans
 } from "../../trans/Field"
+import { useAgentUsernameTrans } from "../../trans/Agent"
+import { PlayerUsernameTrans, usePlayerUsernameTrans } from "../../trans/Player"
 // import { PlayerTotalWinLossDialogDisclosure } from "./PlayerTotalWinLossDialog"
 
 export { Code }
@@ -158,15 +160,9 @@ const SearchBar = ({
 }) => {
   let QueryMaxRangeDays = 31
 
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
-  let playerUsernamePlaceholder = useTrans({
-    zh: "玩家用户名",
-    en: "Player Username"
-  })
+  let playerUsernamePlaceholder = usePlayerUsernameTrans()
 
   let formMethods = useForm({
     defaultValues: {
@@ -218,7 +214,7 @@ const useColumns = ({ brandId, items = [], from, to }) => {
     let columns = [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="玩家用户名" en="Player Username" />,
+        Header: <PlayerUsernameTrans />,
         disableSortBy: true
       }),
 

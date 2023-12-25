@@ -20,6 +20,8 @@ import { sum } from "lodash-es"
 import { FieldValues } from "../../layout/Grid"
 import { DateFormat } from "../../date/format"
 import { TimeTrans } from "../../trans/Date"
+import { PlatformTrans } from "../../trans/Platform"
+import { TotalTrans } from "../../trans/Field"
 
 export const UsedCreditDetailDialog = ({
   brandId,
@@ -113,7 +115,7 @@ const DetailDialog = ({ brandId, brandCode, month, dialog, dialogId }) => {
             </Box>
 
             <Box>
-              <Trans zh="平台" en="Platform" />
+              <PlatformTrans />
             </Box>
             <Box>{brandCode}</Box>
           </FieldValues>
@@ -140,7 +142,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         accessor: "gameProviderCode",
         Header: <GameProviderTrans />,
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         textAlign: "left",
         disableSortBy: true
       }),

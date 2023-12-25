@@ -37,7 +37,7 @@ import { InputField } from "../../input/Input"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
 import { ICNumberTrans, RealNameTrans } from "../../trans/User"
-import { RemarkTrans } from "../../trans/Action"
+import { RejectTrans, RemarkTrans } from "../../trans/Action"
 import { ApplicationTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import { AttachmentTrans } from "../../trans/Field"
@@ -179,7 +179,7 @@ const ReviewDialog = ({
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       isLoading={isLoading}

@@ -39,14 +39,18 @@ import {
   TurnoverTrans,
   ValidBetAmountTrans
 } from "../../trans/Game"
-import { DepositAmountTrans } from "../../trans/Payment"
-import { NetProfitTrans } from "../../trans/Field"
+import { DepositAmountTrans, FirstDepositCountTrans } from "../../trans/Payment"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans,
   DepositAmountAfterDeductingTransferFeeTrans,
   PlatformCoveredBonusAdjustInfoTrans,
   PlatformCoveredBonusInfoTrans,
   PlatformMarketReportNetProfitInfoTrans
 } from "../../trans/Platform"
+import { AgentProfitTrans } from "../../trans/Agent"
+import { RegisteredCountTrans } from "../../trans/User"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -218,7 +222,7 @@ const useColumns = ({ brandId, items = [] }) => {
       dateTimeColumn({
         Header: <Trans zh="日期" en="Date" />,
         accessor: "reportDate",
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
         disableSortBy: true,
@@ -228,7 +232,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         accessor: "registeredCount",
-        Header: <Trans zh="注册人数" en="Registered Count" />,
+        Header: <RegisteredCountTrans />,
         disableSortBy: true
       }),
       numberColumn({
@@ -248,7 +252,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         accessor: "firstFundInCount",
-        Header: <Trans zh="首存人数" en="First Fund In Count" />,
+        Header: <FirstDepositCountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -271,7 +275,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -288,7 +292,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -299,7 +303,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberDecimalColumn({
         id: "agentProfit",
         accessor: (row) => row,
-        Header: <Trans zh="代理总分红" en="Agent Profit" />,
+        Header: <AgentProfitTrans />,
         disableSortBy: true,
         TotalCell: ({ value }) => (
           <FormattedNumber value={value} format="0,0.00" digits={2} />
@@ -332,7 +336,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

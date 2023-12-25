@@ -38,6 +38,7 @@ import {
   PlatformPageContent,
   usePlatformId
 } from "../../page/PlatformPageContent"
+import { AgentProfitSharingReportTrans } from "../../trans/Agent"
 
 export { Code }
 
@@ -54,7 +55,7 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const Report = () => {
-  let title = <Trans zh="代理分红报表" en="Agent Profit Sharing Report" />
+  let title = <AgentProfitSharingReportTrans />
   return (
     <PlatformPageContent title={title}>
       <ReportBody />

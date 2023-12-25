@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { useTrans } from "../../i18n"
 import Select from "../../select/Select"
 import { useTransactionTypeTrans } from "../../trans/Action"
+import { useDepositTrans } from "../../trans/Payment"
 
 export const Bonus = "Bonus"
 const BonusTrans = {
@@ -11,10 +12,6 @@ const BonusTrans = {
 }
 
 export const Deposit = "Recharge"
-const DepositTrans = {
-  zh: "存款",
-  en: "Deposit"
-}
 
 export const Dividend = "Dividend"
 const DividendTrans = {
@@ -38,7 +35,7 @@ export const AddBalanceTypeSelect = ({ placeholder, ...props }) => {
       value: Bonus
     },
     {
-      label: useTrans(DepositTrans),
+      label: useDepositTrans(),
       value: Deposit
     },
     {

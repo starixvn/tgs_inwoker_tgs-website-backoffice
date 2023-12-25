@@ -165,11 +165,18 @@ const CommissionRebate = {
 export const CommissionRebateTrans = () => <Trans {...CommissionRebate} />
 
 const WinLoss = {
-  zh: "输赢金额",
+  zh: "输赢",
   en: "Win Loss",
   vi: "Số tiền thắng thua"
 }
 export const WinLossTrans = () => <Trans {...WinLoss} />
+
+const WL = {
+  zh: "输赢",
+  en: "W/L",
+  vi: "Thắng thua"
+}
+export const WLTrans = () => <Trans {...WL} />
 
 const GameDetail = {
   zh: "游戏详情",
@@ -258,10 +265,17 @@ export const GameProviderList = {
 }
 export const GameProviderListTrans = () => <Trans {...GameProviderList} />
 
+export const GameManagement = {
+  zh: "游戏管理",
+  en: "Game Management",
+  vi: "Quản lý trò chơi"
+}
+export const GameManagementTrans = () => <Trans {...GameManagement} />
+
 export const GameList = {
   zh: "游戏列表",
   en: "Game List",
-  vi: "Báo biểu trò chơi"
+  vi: "Danh sách trò chơi"
 }
 export const GameListTrans = () => <Trans {...GameList} />
 export const useGameListTrans = () => useTrans(GameList)
@@ -294,3 +308,48 @@ const RecommendGame = {
   vi: "Game được đề xuất"
 }
 export const RecommendGameTrans = () => <Trans {...RecommendGame} />
+
+const GamingCount = {
+  zh: "游戏人数",
+  en: "Gaming Count",
+  vi: "Số người chơi"
+}
+export const GamingCountTrans = () => <Trans {...GamingCount} />
+
+const Bet = {
+  zh: "投注",
+  en: "Bet",
+  vi: "Đặt cược"
+}
+export const BetTrans = () => <Trans {...Bet} />
+
+const PlaceBet = {
+  zh: "投注",
+  en: "Place Bet",
+  vi: "Đặt cược"
+}
+export const PlaceBetTrans = () => <Trans {...PlaceBet} />
+export const usePlaceBetTrans = () => useTrans(PlaceBet)
+
+const GamePayout = {
+  zh: "派彩",
+  en: "Payout",
+  vi: "Thanh toán"
+}
+export const GamePayoutTrans = () => <Trans {...GamePayout} />
+
+const Top10Games = {
+  zh: "十大游戏",
+  en: "Top 10 Games",
+  vi: "10 trò chơi hàng đầu"
+}
+export const Top10GamesTrans = () => <Trans {...Top10Games} />
+
+const GameProviderGameName = {
+  zh: "游戏厂商 / 游戏名称",
+  en: "Provider / Game Name",
+  vi: "Sảnh trò chơi / Tên trò chơi"
+}
+export const GameProviderGameNameTrans = () => (
+  <Trans {...GameProviderGameName} />
+)

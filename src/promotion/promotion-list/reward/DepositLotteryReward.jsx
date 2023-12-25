@@ -22,7 +22,6 @@ import { useIsDisplayMenuByRoute } from "../../../user/context"
 import Disclosure, {
   AddDisclosure,
   EditDisclosure,
-  NewDisclosure,
   ViewDisclosure
 } from "../../../dialog/Disclosure"
 import FormDialog from "../../../form/FormDialog"

@@ -59,7 +59,11 @@ import {
   DepositPaymentMethodTrans,
   TransferFeeTrans
 } from "../../trans/Payment"
-import { GmsIdTrans, ThirdPartyIdTrans } from "../../trans/Platform"
+import {
+  GmsIdTrans,
+  PlatformTrans,
+  ThirdPartyIdTrans
+} from "../../trans/Platform"
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import { AttachmentTrans } from "../../trans/Field"
@@ -581,7 +585,7 @@ const PlatformApplyInfoCard = ({ applyInfo, bankType }) => {
       variant="bordered"
       title={
         <Heading use="h5">
-          <Trans zh="平台" en="Platform" />
+          <PlatformTrans />
         </Heading>
       }
       css={css`

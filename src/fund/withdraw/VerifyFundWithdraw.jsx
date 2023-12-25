@@ -24,6 +24,7 @@ import { useFundWithdrawForm, useVerifyFundWithdrawForm } from "./client"
 import ReviewFund from "../ReviewFund"
 import { AuditAutoClearBucketDialogDisclosure } from "./AuditAutoClearBucketDialog"
 import { isDev } from "../../env"
+import { RejectTrans } from "../../trans/Action"
 
 export const FundWithdrawVerified = "FundWithdrawVerified"
 
@@ -164,7 +165,7 @@ const VerifyFundWithdrawDialog = ({
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       footer={

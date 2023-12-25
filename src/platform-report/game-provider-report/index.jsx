@@ -49,6 +49,8 @@ import {
   ValidBetAmountTrans
 } from "../../trans/Game"
 import { CurrencyTrans } from "../../trans/Payment"
+import { CompanyWinLossTrans } from "../../trans/Platform"
+import { TotalTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -243,7 +245,7 @@ const useColumns = ({ items = [] }) => {
         Header: <GameProviderTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, gameProviderName } }) => {
-          return isTotal ? <Trans zh="总计" en="Total" /> : gameProviderName
+          return isTotal ? <TotalTrans /> : gameProviderName
         }
       }),
       textColumn({
@@ -278,7 +280,7 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "companyWinLoss",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       })
     ],

@@ -82,10 +82,14 @@ import { PaymentMethodSetting } from "./PaymentMethodSetting"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import {
   ChannelNameTrans,
+  PaymentChannelTrans,
+  PaymentLimitTrans,
+  PaymentMethodTrans,
   PaymentProviderTrans,
   TransferFeeTrans
 } from "../../trans/Payment"
 import { StatusTrans } from "../../trans/Status"
+import { useAddTrans, useEditTrans } from "../../trans/Action"
 
 export const EditButton = ({
   brandId,
@@ -127,10 +131,7 @@ const EditDialog = ({
   dialogId,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "编辑",
-    en: "Edit"
-  })
+  let title = useEditTrans()
 
   let {
     isLoading: isLoadingPayment,
@@ -342,10 +343,7 @@ const AddDialog = ({
     error: loadingPaymentError
   } = usePlatformPayment()
 
-  let title = useTrans({
-    zh: "新增",
-    en: "Add"
-  })
+  let title = useAddTrans()
 
   let [formData, setSubmit] = useState()
   let { result, isLoading, error, mutate, deleteCache } = useFetch(formData)
@@ -532,7 +530,7 @@ const EditBody = ({
               </Box>
 
               <Label>
-                <Trans zh="支付方式" en="Payment Medthod" />
+                <PaymentMethodTrans />
               </Label>
               <Box alignY="center">
                 {isAdd && (
@@ -563,7 +561,7 @@ const EditBody = ({
               </Box>
 
               <Label>
-                <Trans zh="支付通道" en="Payment Channel" />
+                <PaymentChannelTrans />
               </Label>
               <Box alignY="center">
                 {isAdd && (
@@ -604,7 +602,7 @@ const EditBody = ({
               </Box>
 
               <Label required>
-                <Trans zh="单笔限额" en="Limit" />
+                <PaymentLimitTrans />
               </Label>
               <NumberRangeInputGroup
                 names={["transferLimitFrom", "transferLimitTo"]}

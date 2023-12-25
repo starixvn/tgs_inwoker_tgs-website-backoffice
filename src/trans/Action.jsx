@@ -43,8 +43,8 @@ export const View = {
   en: "View",
   vi: "Kiểm tra"
 }
-export const useViewTrans = () => useTrans(View)
 export const ViewTrans = () => <Trans {...View} />
+export const useViewTrans = () => useTrans(View)
 
 const Edit = {
   zh: "修改",
@@ -75,14 +75,6 @@ const DeductBalance = {
   vi: "Trừ tiền"
 }
 export const DeductBalanceTrans = () => <Trans {...DeductBalance} />
-
-const CompanyAdjust = {
-  zh: "公司调账",
-  en: "Company Adjust",
-  vi: "Công ty điều chỉnh"
-}
-export const useCompanyAdjustTrans = () => useTrans(CompanyAdjust)
-export const CompanyAdjustTrans = () => <Trans {...CompanyAdjust} />
 
 const AgentAdjust = {
   zh: "代理调账",
@@ -187,3 +179,32 @@ export const Export = {
   vi: "Chuyển ra"
 }
 export const ExportTrans = () => <Trans {...Export} />
+
+const Verify = {
+  zh: "审核",
+  en: "Verify",
+  vi: "Xét duyệt"
+}
+export const VerifyTrans = () => <Trans {...Verify} />
+export const useVerifyTrans = () => useTrans(Verify)
+
+const Add = {
+  zh: "新增",
+  en: "Add"
+}
+export const AddTrans = () => <Trans {...Add} />
+export const useAddTrans = () => useTrans(Add)
+
+const Delete = {
+  zh: "删除",
+  en: "Delete"
+}
+export const DeleteTrans = () => <Trans {...Delete} />
+export const useDeleteTrans = () => useTrans(Delete)
+
+const Reject = {
+  zh: "拒绝",
+  en: "Reject"
+}
+export const RejectTrans = () => <Trans {...Reject} />
+export const useRejectTrans = () => useTrans(Reject)

@@ -180,3 +180,26 @@ export const Default = {
 }
 export const DefaultTrans = () => <Trans {...Default} />
 export const useDefaultTrans = () => useTrans(Default)
+
+const CheckType = {
+  zh: "查核類型",
+  en: "Check Type",
+  vi: "Dạng kiểm tra"
+}
+export const CheckTypeTrans = () => <Trans {...CheckType} />
+export const useCheckTypeTrans = () => useTrans(CheckType)
+
+const BonusAmount = {
+  zh: "红利金额",
+  en: "Bonus Amount",
+  vi: "Tiền thưởng"
+}
+export const BonusAmountTrans = (props) => <Trans {...BonusAmount} {...props} />
+export const useBonusAmountTrans = () => useTrans(BonusAmount)
+
+const Total = {
+  zh: "总计",
+  en: "Total",
+  vi: "Tổng"
+}
+export const TotalTrans = () => <Trans {...Total} />

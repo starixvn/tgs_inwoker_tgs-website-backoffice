@@ -32,7 +32,7 @@ import {
 } from "react-hook-form"
 import format from "../../date/format"
 import { ScheduleStatus, ScheduleStatusLabel } from "./ScheduleStatus"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, AddTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
 import {
   PresetMaintenanceTrans,
@@ -268,7 +268,7 @@ const AddPresetMaintenance = ({ add }) => {
         }}
         disabled={!from || !to}
       >
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Button>
     </Set>
   )

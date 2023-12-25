@@ -59,7 +59,7 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { VipLevelTrans } from "../../trans/Vip"
-import { NetProfitTrans } from "../../trans/Field"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
   BetAmountTrans,
   TurnoverTrans,
@@ -67,7 +67,15 @@ import {
 } from "../../trans/Game"
 import { UserNameTrans } from "../../trans/User"
 import { DepositAmountTrans } from "../../trans/Payment"
-import { DepositAmountAfterDeductingTransferFeeTrans } from "../../trans/Platform"
+import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans,
+  DepositAmountAfterDeductingTransferFeeTrans
+} from "../../trans/Platform"
+import {
+  PlayerContributionReportTrans,
+  usePlayerUsernameTrans
+} from "../../trans/Player"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -184,7 +192,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
           )}
         </Level>
       }
-      title={<Trans zh="玩家贡献报表" en="Player Contribution Report" />}
+      title={<PlayerContributionReportTrans />}
     >
       <Stack>
         <Alert variant="bordered" type="info" accent marginBottom="1rem">
@@ -236,10 +244,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "玩家用户名",
-    en: "Player username"
-  })
+  let usernamePlaceholder = usePlayerUsernameTrans()
 
   const onSubmit = (data) => search?.(data)
 
@@ -300,7 +305,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         accessor: "username",
         Header: <UserNameTrans />,
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
         Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
@@ -363,7 +368,7 @@ const useColumns = ({ items = [] }) => {
         */
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
         /*
         TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
@@ -397,7 +402,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
         sumColumn: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -433,7 +438,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({

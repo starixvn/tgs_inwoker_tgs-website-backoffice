@@ -25,6 +25,7 @@ import { QqLabel, WeChatLabel } from "./AgentContactInfo"
 import { AgentStatusLabel } from "../AgentStatus"
 import {
   ActionTypeTrans,
+  AddTrans,
   DetailTrans,
   EditingRecordsTrans,
   OperatorTrans,
@@ -234,10 +235,6 @@ const AgentHistoryDialog = ({ action, eventId, brandId, dialog, ...props }) => {
 //TODO: move to?
 const Replace = "replace"
 const Add = "add"
-const AddTrans = {
-  zh: "新增",
-  en: "Add"
-}
 const Remove = "remove"
 const RemoveTrans = {
   zh: "移除",
@@ -248,7 +245,7 @@ const OperationLabel = ({ value = "" }) => {
     case Replace:
       return <Trans {...UpdateTrans} />
     case Add:
-      return <Trans {...AddTrans} />
+      return <AddTrans />
     case Remove:
       return <Trans {...RemoveTrans} />
     default:

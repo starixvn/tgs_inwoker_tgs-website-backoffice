@@ -21,6 +21,7 @@ import { useBrandPaymentDesignatedUsers } from "./client"
 import Disclosure from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
 import { CloseText } from "../../button/ActionButtons"
+import { useDesignatedUsersTrans } from "../../trans/User"
 
 export const DesignatedPlayersLink = ({ record = {}, ...props }) => {
   let dialog = useModalState()
@@ -41,10 +42,7 @@ export const DesignatedPlayersLink = ({ record = {}, ...props }) => {
 }
 
 const PlayersDialog = ({ id, dialog }) => {
-  let title = useTrans({
-    zh: "特定用户",
-    en: "Designated Users"
-  })
+  let title = useDesignatedUsersTrans()
   let { data, isLoading, error, mutate } = useBrandPaymentDesignatedUsers(
     dialog.visible && id
   )

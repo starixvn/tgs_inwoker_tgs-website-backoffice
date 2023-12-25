@@ -23,6 +23,7 @@ import {
   PercentageNumberInputField
 } from "../../input/NumberInput"
 import { BasicInformationTrans } from "../../trans/Field"
+import { PaymentChannelTrans, PaymentMethodTrans } from "../../trans/Payment"
 
 const HandlingFeeTrans = {
   zh: "手续费",
@@ -97,12 +98,12 @@ const EditBody = ({ record = {}, dialog, ...props }) => {
         <ValueBlock>{record?.paymentVendorName}</ValueBlock>
 
         <Label>
-          <Trans zh="支付方式" en="Payment Medthod" />
+          <PaymentMethodTrans />
         </Label>
         <ValueBlock>{record?.paymentMethodName}</ValueBlock>
 
         <Label>
-          <Trans zh="支付通道" en="Payment Channel" />
+          <PaymentChannelTrans />
         </Label>
         <ValueBlock>{record?.paymentChannelName}</ValueBlock>
 

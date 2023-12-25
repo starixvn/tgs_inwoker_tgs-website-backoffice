@@ -19,6 +19,13 @@ import AlertDialog from "../../dialog/Alert"
 import { useGameProviderCodeStylePairs } from "../client"
 import cloneDeep from "clone-deep"
 import { CopyTextBox } from "../../text/CopyTextBox"
+import {
+  BetTrans,
+  GameProviderGameNameTrans,
+  Top10GamesTrans,
+  WLTrans
+} from "../../trans/Game"
+import { NoSearchResultTrans } from "../../trans/Status"
 
 const Bet = "bet"
 const WinLoss = "winLoss"
@@ -43,7 +50,7 @@ export const TopGameTable = ({ brandId, gameProviderCodeStylePairs = [] }) => {
   return (
     <>
       <Card
-        title={<Trans zh="十大游戏" en="Top 10 Games" />}
+        title={<Top10GamesTrans />}
         variant="bordered"
         css={css`
           padding: 0.75rem;
@@ -102,7 +109,7 @@ const EmptyRow = () => {
   return (
     <Table.Row>
       <Table.Cell colSpan={ColumnSize} textAlign="center">
-        <Trans zh="查无资料" en="No Search Result" />
+        <NoSearchResultTrans />
       </Table.Cell>
     </Table.Row>
   )
@@ -212,7 +219,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
         <Table.Row>
           <Table.HeadCell></Table.HeadCell>
           <Table.HeadCell textAlign="center">
-            <Trans zh="游戏厂商 / 游戏名称" en="Provider / Game Name" />
+            <GameProviderGameNameTrans />
           </Table.HeadCell>
           <SortDescendingOnlyHead
             column={TopGameColumns.Bet}
@@ -222,7 +229,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
             setAscending={setAscending}
             textAlign="center"
           >
-            <Trans zh="投注" en="Bet" />
+            <BetTrans />
           </SortDescendingOnlyHead>
           <SortableHead
             column={TopGameColumns.WinLoss}
@@ -237,7 +244,7 @@ const Head = ({ sortType, setSortType, ascending = false, setAscending }) => {
               right: 0;
             `}
           >
-            <Trans zh="输赢" en="W/L" />
+            <WLTrans />
           </SortableHead>
         </Table.Row>
       </Table.Head>

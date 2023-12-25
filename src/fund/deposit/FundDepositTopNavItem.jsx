@@ -32,6 +32,7 @@ import { deposit } from "../../audio/deposit"
 import { FundDepositVerified } from "./VerifyFundDeposit"
 import FundDepositStatus from "./FundDepositStatus"
 import { isDev } from "../../env"
+import { useDepositTrans } from "../../trans/Payment"
 
 export const FundDepositTopNavItem = ({
   href = `${DefaultUrl}/${Code}`,
@@ -49,10 +50,7 @@ export const FundDepositTopNavItem = ({
 
 const Body = ({ brandId, ...props }) => {
   let playAlertSound = useIsDisplayMenuByCodes([ParentCode, Code, Update])
-  let label = useTrans({
-    zh: "存款",
-    en: "Deposit"
-  })
+  let label = useDepositTrans()
 
   return (
     <TopNavNotifyItem

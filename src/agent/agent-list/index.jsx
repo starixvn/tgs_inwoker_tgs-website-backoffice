@@ -75,7 +75,17 @@ import {
   useUserNameTrans
 } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
-import { StatusTrans } from "../../trans/Status"
+import { ConfigStatusTrans, StatusTrans } from "../../trans/Status"
+import {
+  AgentLevelTrans,
+  AgentListRemarkInfoTrans,
+  AgentListStatusInfoTrans,
+  AgentTypeTrans,
+  AgentsTrans,
+  DirectPlayersTrans,
+  ProfitSharingPercentageTrans,
+  TeamNumberTrans
+} from "../../trans/Agent"
 
 export { Code }
 
@@ -160,7 +170,7 @@ const BodyContent = ({ brandId = "", brand }) => {
 
   return (
     <PageContent
-      title={<Trans zh="代理列表" en="Agents" />}
+      title={<AgentsTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <SearchBar
@@ -188,16 +198,10 @@ const BodyContent = ({ brandId = "", brand }) => {
         <Alert variant="bordered" type="info" accent marginBottom="1rem">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
-              <Trans
-                zh="當進入此頁面時，預設顯示狀態為【正常】的代理清單，且所有狀態都會依照用戶名(A-Z)排序"
-                en="When entering this table, the data with status: enable will show first, and all of status will be ordered by first letter (A-Z)"
-              />
+              <AgentListStatusInfoTrans />
             </List.Item>
             <List.Item>
-              <Trans
-                zh="【備註】欄位會顯示在代理信息頁面中，此欄位能夠被修改，但只會儲存並顯示最新一次的修改內容"
-                en="Remark will show in agent info page, and you can edit it. Please be aware that only the latest remark will be stored in our database."
-              />
+              <AgentListRemarkInfoTrans />
             </List.Item>
           </List>
         </Alert>
@@ -271,13 +275,13 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "type",
-        Header: <Trans zh="代理类型" en="Agent Type" />,
+        Header: <AgentTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <AgentTypeLabel value={value} />
       }),
       textColumn({
         accessor: "levelType",
-        Header: <Trans zh="代理种类" en="Level Type" />,
+        Header: <AgentLevelTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <AgentLevelLabel value={value} />
       }),
@@ -290,7 +294,7 @@ const useColumns = ({
       textColumn({
         id: "profitSharing",
         accessor: (row) => row,
-        Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
+        Header: <ProfitSharingPercentageTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let isCash = isAgentTypeCash(value?.type)
@@ -469,7 +473,7 @@ const useColumns = ({
       */
       textColumn({
         accessor: "agentStatus",
-        Header: <Trans zh="配置状态" en="Config Status" />,
+        Header: <ConfigStatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let configRequired = isAgentConfigRequired(value)
@@ -484,12 +488,12 @@ const useColumns = ({
       }),
       numberColumn({
         accessor: "teamNumber",
-        Header: <Trans zh="团队人数" en="Team Number" />,
+        Header: <TeamNumberTrans />,
         disableSortBy: true
       }),
       numberColumn({
         accessor: "playerNumber",
-        Header: <Trans zh="直属玩家人数" en="Direct Players" />,
+        Header: <DirectPlayersTrans />,
         disableSortBy: true
       })
     ]

@@ -8,17 +8,13 @@ import {
 } from "./platform/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons"
+import { OverviewTrans, PlatformOverview } from "../trans/Platform"
 
 export const Code = "overview"
 
 export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
-
-export const nameMessages = {
-  zh: "总览",
-  en: "Overview"
-}
 
 export const Menu = ({
   title = (
@@ -30,7 +26,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Trans {...nameMessages} />
+      <OverviewTrans />
     </Flex>
   ),
   url = DefaultUrl,
@@ -50,13 +46,7 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case PlatformCode:
-      return getTrans(
-        {
-          zh: "平台总览",
-          en: "Overview"
-        },
-        locale
-      )
+      return getTrans(PlatformOverview, locale)
     default:
       return ""
   }

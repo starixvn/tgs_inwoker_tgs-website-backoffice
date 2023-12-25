@@ -55,11 +55,17 @@ import { BrandAutoWithdrawDialogDisclosure } from "./BrandAutoWithdraw"
 import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action"
 import {
   ChannelNameTrans,
+  DepositTrans,
+  PaymentChannelTrans,
+  PaymentLimitTrans,
+  PaymentManagementTrans,
   PaymentMethodTrans,
-  PaymentProviderTrans
+  PaymentProviderTrans,
+  WithdrawTrans
 } from "../../trans/Payment"
 import { StatusTrans } from "../../trans/Status"
 import { OrderTrans } from "../../trans/Field"
+import { DesignatedUsersTrans } from "../../trans/User"
 
 export { Code }
 
@@ -121,7 +127,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="金流管理" en="Payment Management" />}
+      title={<PaymentManagementTrans />}
       actionBar={
         <Level>
           <SearchBar
@@ -151,13 +157,13 @@ const BodyContent = ({ brandId }) => {
             tabId={TransferType.Deposit}
             onClick={activeTab(TransferType.Deposit)}
           >
-            <Trans zh="存款" en="Deposit" />
+            <DepositTrans />
           </Tabs.Tab>
           <Tabs.Tab
             tabId={TransferType.Withdrawal}
             onClick={activeTab(TransferType.Withdrawal)}
           >
-            <Trans zh="提款" en="Withdrawal" />
+            <WithdrawTrans />
           </Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel tabId={TransferType.Deposit} paddingTop="1rem">
@@ -372,7 +378,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "paymentChannelId",
-        Header: <Trans zh="支付通道" en="Payment Channel" />,
+        Header: <PaymentChannelTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentChannelLabel value={value} />
       }),
@@ -393,14 +399,14 @@ const useColumns = ({
       textColumn({
         id: "designatedUsers",
         accessor: (record) => record,
-        Header: <Trans zh="特定用户" en="Designated Users" />,
+        Header: <DesignatedUsersTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <DesignatedPlayersLink record={value} />
       }),
       textColumn({
         id: "limit",
         accessor: (record) => record,
-        Header: <Trans zh="单笔限额" en="Limit" />,
+        Header: <PaymentLimitTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let from = formatNumber(value.transferLimitFrom)

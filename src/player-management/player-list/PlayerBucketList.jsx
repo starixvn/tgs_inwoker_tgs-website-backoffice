@@ -44,6 +44,7 @@ import {
   useWageringRequirementTrans
 } from "../../trans/Player"
 import { TimeTrans } from "../../trans/Date"
+import { DepositTrans } from "../../trans/Payment"
 
 export const PlayerBucketListDialogDisclosure = ({
   playerCode,
@@ -238,10 +239,6 @@ const PromotionTrans = {
 }
 
 const Deposit = "Deposit"
-const DepositTrans = {
-  zh: "存款",
-  en: "Deposit"
-}
 
 const Adjustment = "Adjustment"
 const AdjustmentTrans = {
@@ -260,7 +257,7 @@ const TypeLabel = ({ value = "" }) => {
     case Promotion:
       return <Trans {...PromotionTrans} />
     case Deposit:
-      return <Trans {...DepositTrans} />
+      return <DepositTrans />
     case Adjustment:
       return <Trans {...AdjustmentTrans} />
     case VIP:

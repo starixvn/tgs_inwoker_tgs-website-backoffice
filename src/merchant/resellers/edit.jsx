@@ -43,7 +43,7 @@ import CurrencyBetLimitFieldsBox, {
   flatCheckedCurrencyBetLimitIds
 } from "../CurrencyBetLimitFieldsBox"
 import { isDev } from "../../env"
-import { EditTrans } from "../../trans/Action"
+import { AddTrans, EditTrans } from "../../trans/Action"
 import { BasicInformationTrans } from "../../trans/Field"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
@@ -57,7 +57,7 @@ export const AddButton = ({ onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog onSubmitted={onSubmitted} dialog={dialog} />

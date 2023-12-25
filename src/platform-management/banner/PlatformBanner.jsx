@@ -38,6 +38,7 @@ import {
   SubjectTrans
 } from "../../trans/Field"
 import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
+import { useAddTrans, useEditTrans, useViewTrans } from "../../trans/Action"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,
@@ -82,10 +83,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "新增 Banner",
-    en: "Add Banner"
-  })
+  let title = useAddTrans()
 
   return (
     <FormDialog
@@ -163,10 +161,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "修改 Banner",
-    en: "Edit Banner"
-  })
+  let title = useEditTrans()
 
   if (isLoadingBanner) {
     return <LoadingBackdrop {...dialog} />
@@ -223,10 +218,7 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
 
   let { isLoading, data: banner, error } = usePlatformBanner(brandId, bannerId)
 
-  let title = useTrans({
-    zh: "修改 Banner",
-    en: "Edit Banner"
-  })
+  let title = useViewTrans()
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
