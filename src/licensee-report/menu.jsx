@@ -8,6 +8,7 @@ import {
 } from "./market-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
+import { MarketReport } from "../trans/Platform"
 
 export const Code = "licenseereport"
 
@@ -50,13 +51,7 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case MarketReportCode:
-      return getTrans(
-        {
-          zh: "市场报表",
-          en: "Market Report"
-        },
-        locale
-      )
+      return getTrans(MarketReport, locale)
 
     default:
       return ""
