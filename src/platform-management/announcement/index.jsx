@@ -63,6 +63,7 @@ import {
   StartTimeTrans,
   UpdatedTimeTrans
 } from "../../trans/Date"
+import { AnnouncementsTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -150,7 +151,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="公告管理" en="Announcements" />}
+      title={<AnnouncementsTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <Box>
