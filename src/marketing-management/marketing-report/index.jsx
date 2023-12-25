@@ -48,7 +48,10 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays } from "date-fns"
 import { RegisteredCountTrans, UserNameTrans } from "../../trans/User"
-import { useAgentUsernameTrans } from "../../trans/Agent"
+import {
+  AgentMarketingReportTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
 import { TotalTrans } from "../../trans/Field"
 import { FirstDepositCountTrans } from "../../trans/Payment"
 import { GamingCountTrans } from "../../trans/Game"
@@ -115,7 +118,7 @@ const BodyContent = ({ brandId }) => {
   })
   return (
     <PageContent
-      title={<Trans zh="代理市場報表" en="Agent Marketing Report" />}
+      title={<AgentMarketingReportTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar

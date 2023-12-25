@@ -53,7 +53,10 @@ import {
   CompanyAdjustmentAmountTrans,
   CompanyWinLossTrans
 } from "../../trans/Platform"
-import { useAgentUsernameTrans } from "../../trans/Agent"
+import {
+  AgentMarketingReportTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
 import { RegisteredCountTrans } from "../../trans/User"
 
 export { Code }
@@ -119,7 +122,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="代理市場報表" en="Agent Marketing Report" />}
+      title={<AgentMarketingReportTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar

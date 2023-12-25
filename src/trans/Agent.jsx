@@ -131,3 +131,12 @@ const DirectPlayers = {
   vi: "Số thành viên trực thuộc"
 }
 export const DirectPlayersTrans = () => <Trans {...DirectPlayers} />
+
+export const AgentMarketingReport = {
+  zh: "代理市場報表",
+  en: "Agent Marketing Report",
+  vi: "Báo cáo thị trường đại lý"
+}
+export const AgentMarketingReportTrans = () => (
+  <Trans {...AgentMarketingReport} />
+)

@@ -22,6 +22,7 @@ import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 import { MarketingManagementTrans } from "../trans/Platform"
 import { PlayerDepositReport } from "../trans/Player"
+import { AgentMarketingReport } from "../trans/Agent"
 
 export const Code = "marketing"
 
@@ -71,13 +72,7 @@ const label = ({ locale, code }) => {
       )
 
     case MarketingReportCode:
-      return getTrans(
-        {
-          zh: "代理市場報表",
-          en: "Agent Marketing Report"
-        },
-        locale
-      )
+      return getTrans(AgentMarketingReport, locale)
 
     case AgentMarketingReportCode:
       return getTrans(
