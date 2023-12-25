@@ -35,6 +35,7 @@ import { AnnouncementTypeSelect } from "./AnnouncementType"
 import { SubjectTrans } from "../../trans/Field"
 import {
   EditTrans,
+  RejectTrans,
   RemarkTrans,
   VerifyTrans,
   useEditTrans,
@@ -407,7 +408,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       isLoading={isLoading}

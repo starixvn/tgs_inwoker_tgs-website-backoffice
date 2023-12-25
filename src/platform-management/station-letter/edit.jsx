@@ -45,6 +45,7 @@ import { PlayersTrans } from "../../trans/Player"
 import { SubjectTrans } from "../../trans/Field"
 import {
   DownloadFormatFileTrans,
+  RejectTrans,
   RemarkTrans,
   UploadFileTrans,
   VerifyTrans
@@ -411,7 +412,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       isLoading={isLoading}

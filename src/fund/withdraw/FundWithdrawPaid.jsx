@@ -21,6 +21,7 @@ import { useVerifyFundWithdrawForm } from "./client"
 import { isDev } from "../../env"
 import Input from "../../input/Input"
 import FundWithdrawStatus from "./FundWithdrawStatus"
+import { RejectTrans } from "../../trans/Action"
 
 export const FundWithdrawPaidDialogDisclosure = ({
   brandId,
@@ -119,7 +120,7 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       onSubmit={onSubmit}

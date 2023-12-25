@@ -207,3 +207,4 @@ const Reject = {
   en: "Reject"
 }
 export const RejectTrans = () => <Trans {...Reject} />
+export const useRejectTrans = () => useTrans(Reject)

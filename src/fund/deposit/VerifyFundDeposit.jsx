@@ -16,6 +16,7 @@ import { NormalLabel } from "../../form/Label"
 import { FormBody } from "./ViewFundDeposit"
 import ReviewFund from "../ReviewFund"
 import { useFundDepositFormData } from "./useFundDepositFormData"
+import { RejectTrans } from "../../trans/Action"
 
 export const FundDepositVerified = "FundDepositVerified"
 
@@ -157,7 +158,7 @@ const VerifyFundDepositDialog = ({
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       onSubmit={onSubmit}

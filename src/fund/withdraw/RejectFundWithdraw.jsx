@@ -14,6 +14,7 @@ import { NormalLabel } from "../../form/Label"
 import { FormBody } from "./ViewFundWithdraw"
 import { useFundWithdrawForm, useVerifyFundWithdrawForm } from "./client"
 import ReviewFund from "../ReviewFund"
+import { RejectTrans, useRejectTrans } from "../../trans/Action"
 
 export const FundWithdrawVerified = "FundWithdrawVerified"
 
@@ -43,7 +44,7 @@ export const RejectFundWithdrawDisclosure = ({
   return (
     <>
       <Disclosure palette="danger" variant="outlined" {...dialog} {...props}>
-        <Trans zh="拒绝" en="Reject" />
+        <RejectTrans />
       </Disclosure>
       {dialog.visible && (
         <RejectFundWithdrawDialog
@@ -64,15 +65,9 @@ const RejectFundWithdrawDialog = ({
   dialog,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "拒绝",
-    en: "Reject"
-  })
+  let title = useRejectTrans()
 
-  let rejectLabel = useTrans({
-    zh: "拒绝",
-    en: "Reject"
-  })
+  let rejectLabel = useRejectTrans()
 
   let formMethods = useForm()
   let { setValue, getValues } = formMethods
