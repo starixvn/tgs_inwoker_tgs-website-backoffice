@@ -207,7 +207,8 @@ export const useAnnouncementDepositPopupTrans = () =>
 
 const InstantMessaging = {
   zh: "一般通訊軟體",
-  en: "Instant Messaging"
+  en: "Instant Messaging",
+  vi: "Phần mềm truyền thông dụng"
 }
 export const InstantMessagingTrans = () => <Trans {...InstantMessaging} />
 export const useInstantMessagingTrans = () => useTrans(InstantMessaging)
