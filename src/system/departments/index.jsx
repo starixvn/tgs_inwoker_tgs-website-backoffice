@@ -25,6 +25,7 @@ import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
 import {
   DepartmentNameTrans,
+  DepartmentsTrans,
   LicenseeTrans,
   PlatformTrans,
   useDepartmentNameTrans
@@ -56,7 +57,7 @@ const Body = () => {
 
   return (
     <PageContent
-      title={<Trans zh="部门管理" en="Departments" />}
+      title={<DepartmentsTrans />}
       actionBar={
         <>
           <SearchBar

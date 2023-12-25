@@ -291,7 +291,8 @@ export const RolesTrans = () => <Trans {...Roles} />
 
 export const Departments = {
   zh: "部门管理",
-  en: "Departments"
+  en: "Departments",
+  vi: "Quản lý bộ phận"
 }
 export const DepartmentsTrans = () => <Trans {...Departments} />
 
