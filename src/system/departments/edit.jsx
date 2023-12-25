@@ -28,7 +28,12 @@ import ResellerIdSelect from "../../merchant/resellers/ResellerIdSelect"
 import { useResellerLabel } from "../../merchant/resellers"
 import LicenseeIdSelect from "../../merchant/licensees/LicenseeIdSelect"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
-import { EditTrans } from "../../trans/Action"
+import {
+  AddTrans,
+  EditTrans,
+  useAddTrans,
+  useEditTrans
+} from "../../trans/Action"
 import {
   DepartmentNameTrans,
   LicenseeTrans,
@@ -45,7 +50,7 @@ export const AddButton = ({ onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
@@ -80,10 +85,7 @@ const AddDialog = ({ onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "新增部门",
-    en: "Add Department"
-  })
+  let title = useAddTrans()
 
   return (
     <FormDialog
@@ -224,10 +226,7 @@ const EditDialog = ({ id, record = {}, dialog, onSubmitted, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "修改部门",
-    en: "Edit Department"
-  })
+  let title = useEditTrans()
 
   return (
     <FormDialog

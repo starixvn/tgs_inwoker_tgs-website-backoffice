@@ -89,6 +89,7 @@ import {
   TransferFeeTrans
 } from "../../trans/Payment"
 import { StatusTrans } from "../../trans/Status"
+import { useAddTrans, useEditTrans } from "../../trans/Action"
 
 export const EditButton = ({
   brandId,
@@ -130,10 +131,7 @@ const EditDialog = ({
   dialogId,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "编辑",
-    en: "Edit"
-  })
+  let title = useEditTrans()
 
   let {
     isLoading: isLoadingPayment,
@@ -345,10 +343,7 @@ const AddDialog = ({
     error: loadingPaymentError
   } = usePlatformPayment()
 
-  let title = useTrans({
-    zh: "新增",
-    en: "Add"
-  })
+  let title = useAddTrans()
 
   let [formData, setSubmit] = useState()
   let { result, isLoading, error, mutate, deleteCache } = useFetch(formData)

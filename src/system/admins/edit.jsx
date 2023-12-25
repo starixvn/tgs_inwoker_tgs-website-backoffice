@@ -38,7 +38,12 @@ import {
   useChangePasswordTrans
 } from "../../trans/User"
 import { StatusTrans } from "../../trans/Status"
-import { EditTrans } from "../../trans/Action"
+import {
+  AddTrans,
+  EditTrans,
+  useAddTrans,
+  useEditTrans
+} from "../../trans/Action"
 import { DepartmentTrans } from "../../trans/Platform"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
@@ -52,7 +57,7 @@ export const AddButton = ({ onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
@@ -178,7 +183,7 @@ const AddDialog = ({ onSubmitted, dialog, finalFocusRef, ...props }) => {
     setSubmit(null)
   }
 
-  let title = useCreateTitle()
+  let title = useAddTrans()
   return (
     <FormDialog
       id="add-user-dialog"
@@ -438,7 +443,7 @@ const EditDialog = ({ user = {}, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useUpdateTitle()
+  let title = useEditTrans()
 
   let userRoleType = useUserRoleType()
   let roleType = userRoleType
@@ -567,10 +572,4 @@ const useCreateTitle = () =>
   useTrans({
     zh: "新增管理员",
     en: "Add Admin"
-  })
-
-const useUpdateTitle = () =>
-  useTrans({
-    zh: "修改",
-    en: "Edit"
   })

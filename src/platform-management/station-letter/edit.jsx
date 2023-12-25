@@ -44,6 +44,7 @@ import { Features, isDev, isFeatureEnabled } from "../../env"
 import { PlayersTrans } from "../../trans/Player"
 import { SubjectTrans } from "../../trans/Field"
 import {
+  AddTrans,
   DownloadFormatFileTrans,
   RejectTrans,
   RemarkTrans,
@@ -61,7 +62,7 @@ export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog

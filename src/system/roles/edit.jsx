@@ -59,7 +59,12 @@ import LicenseeIdSelect from "../../merchant/licensees/LicenseeIdSelect"
 import BrandIdSelect from "../../merchant/platforms/BrandIdSelect"
 import Checkbox from "../../checkbox/Checkbox"
 import Select from "../../select/Select"
-import { EditTrans } from "../../trans/Action"
+import {
+  AddTrans,
+  EditTrans,
+  useAddTrans,
+  useEditTrans
+} from "../../trans/Action"
 import { LicenseeTrans, PlatformTrans } from "../../trans/Platform"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
@@ -72,7 +77,7 @@ export const AddButton = ({ onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
@@ -138,10 +143,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
     setMenus(cloneDeep(sameRoleType || !isRoot ? dropRoleModule(menus) : menus))
   }, [JSON.stringify(menus), userRoleType, roleType, isRoot])
 
-  let title = useTrans({
-    zh: "新增权限组",
-    en: "Add Role"
-  })
+  let title = useAddTrans()
 
   const clearResult = () => {
     setSubmit(undefined)
@@ -590,10 +592,7 @@ const EditDialog = ({
     setMenus(cloneDeep(menus))
   }, [menus])
 
-  let title = useTrans({
-    zh: "修改权限组",
-    en: "Edit Role"
-  })
+  let title = useEditTrans()
 
   const clearResult = () => {
     setSubmit(null)
