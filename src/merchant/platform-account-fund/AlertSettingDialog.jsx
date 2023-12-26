@@ -36,7 +36,6 @@ import { useBrand } from "../platforms/client"
 export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
 
-  //TODO: readOnly view?
   let isDisplay = useIsDisplayMenuByRoute([View])
   let editable = useIsDisplayMenuByRoute([Update])
   if (!isDisplay) {
@@ -101,7 +100,6 @@ const useFundAlertSettingData = (brandId) => {
   }
 }
 
-//TODO: readOnly
 const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let title = useTrans({
     zh: "催收設置",

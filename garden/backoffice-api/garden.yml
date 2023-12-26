@@ -18,7 +18,7 @@ build:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202312200720.730
+image: pgtgs/backoffice-api:202312250908.732
 services:
   - name: backoffice-api
     dependencies:
@@ -38,6 +38,7 @@ services:
       - game-wagers
       - player-all-agent-api
       - brand-game-credit
+      - notification-contact
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
@@ -60,6 +61,7 @@ services:
       BackOffice__GameWagersServiceBaseUrl: "http://game-wagers"
       BackOffice__PlayerAllAgentBaseUrl: "http://player-all-agent-api"
       BackOffice__BrandGameCreditsBaseUrl: "http://brand-game-credit"
+      BackOffice__NotificationContactsBaseUrl: "http://notification-contact"
       OTEL_SERVICE_NAME: "BackOffice-Api(local)"
       # OTEL_EXPORTER_OTLP_ENDPOINT: "http://jaeger-collector.default.svc.cluster.local:4317"
       # TODO: NODE_IP required?
