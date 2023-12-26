@@ -6,7 +6,7 @@ import { selectRandomOption } from "../page/select.js"
 
 const test = base.extend(Fixture)
 
-console.log("TODO: api disabled add admin user")
+console.warn("TODO: change to create platform user")
 test.skip("add, search and edit admin user", async ({ page }) => {
   await gotoAdminUserListPage(page)
 
@@ -46,9 +46,9 @@ const addUser = async (page, type = Type.Admin) => {
   let password = `${faker.internet.password({ length: 8 })}a1`
   let user = {
     type,
-    username: `${faker.internet.userName()}-${Date.now()}`,
+    username: `${faker.person.firstName()}-${Date.now()}`,
     password,
-    name: `${faker.person.firstName()} ${name.lastName()}`
+    name: `${faker.person.firstName()} ${faker.person.lastName()}`
   }
 
   await page.fill(`${DialogSelector} input[name="username"]`, user.username)
