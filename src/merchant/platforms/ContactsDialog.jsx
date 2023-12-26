@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { useModalState, Table } from "bumbag"
+import { useModalState, Table, Button, Icon } from "bumbag"
 import { Disclosure, ConfigIconDisclosure } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -22,6 +22,7 @@ import Input from "../../input/Input"
 import EmailInput from "../../input/EmailInput"
 import AlertDialog from "../../dialog/Alert"
 import { isEmpty } from "lodash-es"
+import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
 
 const Contacts = {
   zh: "聯絡資訊",
@@ -132,7 +133,11 @@ const FormBody = ({ name = ContactsField, readOnly }) => {
           <Table.HeadCell>
             <RemarkTrans />
           </Table.HeadCell>
-          <Table.HeadCell></Table.HeadCell>
+          <Table.HeadCell
+            css={css`
+              min-width: 4.25rem;
+            `}
+          ></Table.HeadCell>
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -147,6 +152,7 @@ const FormBody = ({ name = ContactsField, readOnly }) => {
             />
           )
         })}
+        {!readOnly && <AddRow fieldArray={fieldArray} />}
       </Table.Body>
     </Table>
   )
@@ -165,11 +171,49 @@ const ContactRow = ({ name = ContactsField, index, field, fieldArray }) => {
       <Table.Cell>
         <Input name={`${name}.${index}.remark`} />
       </Table.Cell>
-      <Table.Cell></Table.Cell>
+      <Table.Cell>
+        {index >= ContactsMin && (
+          <RemoveButton index={index} fieldArray={fieldArray} />
+        )}
+      </Table.Cell>
     </Table.Row>
   )
 }
 
 //TODO: readOnly
-const RemoveRow = () => {}
-const AddRow = () => {}
+const RemoveButton = ({ index, fieldArray }) =>
+  useMemo(
+    () => (
+      <Button
+        size="small"
+        palette="danger"
+        variant="ghost"
+        onClick={() => {
+          fieldArray.remove(index)
+        }}
+      >
+        <Icon icon={faMinus} type="font-awesome" />
+      </Button>
+    ),
+    [index, fieldArray]
+  )
+
+const AddRow = ({ fieldArray }) =>
+  useMemo(
+    () => (
+      <Table.Row>
+        <Table.Cell>
+          <Button
+            size="small"
+            variant="ghost"
+            onClick={() => {
+              fieldArray.append({})
+            }}
+          >
+            <Icon icon={faPlus} type="font-awesome" />
+          </Button>
+        </Table.Cell>
+      </Table.Row>
+    ),
+    [fieldArray]
+  )
