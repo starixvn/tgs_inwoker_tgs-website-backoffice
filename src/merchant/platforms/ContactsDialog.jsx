@@ -23,6 +23,7 @@ import EmailInput from "../../input/EmailInput"
 import AlertDialog from "../../dialog/Alert"
 import { isEmpty } from "lodash-es"
 import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { repeat } from "ramda"
 
 const Contacts = {
   zh: "聯絡資訊",
@@ -70,7 +71,7 @@ const ContactsDialog = ({ brandId, readOnly, dialog, ...props }) => {
 
   let {
     isLoading: isLoadingContacts,
-    data: contacts,
+    data: contacts = [],
     error: contactsError,
     mutate: mutateContacts,
     deleteCache: deleteContactsCache
@@ -92,12 +93,16 @@ const ContactsDialog = ({ brandId, readOnly, dialog, ...props }) => {
     setSubmit(contacts)
   }
 
-  //TODO: if contacts.length < 2?
-  contacts = isEmpty(contacts)
-    ? Array.from({ length: ContactsMin }, (x, index) => {
-        return {}
-      })
-    : contacts
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+
+  contacts =
+    contacts.length < ContactsMin
+      ? [...contacts, ...repeat({}, ContactsMin - contacts.length)]
+      : contacts
 
   let defaultValues = { contacts }
   return (
@@ -107,8 +112,16 @@ const ContactsDialog = ({ brandId, readOnly, dialog, ...props }) => {
       isLoading={isLoading}
       result={result}
       error={error}
+      onSubmitted={() => {
+        deleteContactsCache()
+        mutateContacts(undefined, false)
+
+        reset()
+      }}
+      onCloseErrorAlert={reset}
       title={title}
       dialog={dialog}
+      showActionButtons={readOnly ? false : true}
     >
       <FormBody readOnly={readOnly} />
     </FormDialog>
@@ -118,7 +131,6 @@ const ContactsDialog = ({ brandId, readOnly, dialog, ...props }) => {
 const FormBody = ({ name = ContactsField, readOnly }) => {
   let { control } = useFormContext()
 
-  //TODO:  required  2 rows validation
   let fieldArray = useFieldArray({ control, name, keyName: "_id" })
   return (
     <Table>
@@ -144,6 +156,7 @@ const FormBody = ({ name = ContactsField, readOnly }) => {
         {fieldArray.fields.map((field, index) => {
           return (
             <ContactRow
+              readOnly={readOnly}
               key={field._id}
               name={name}
               index={index}
@@ -158,21 +171,40 @@ const FormBody = ({ name = ContactsField, readOnly }) => {
   )
 }
 
-//TODO: readOnly
-const ContactRow = ({ name = ContactsField, index, field, fieldArray }) => {
+const ContactRow = ({
+  readOnly,
+  name = ContactsField,
+  index,
+  field,
+  fieldArray
+}) => {
   return (
     <Table.Row>
       <Table.Cell>
-        <Input name={`${name}.${index}.name`} required />
+        <Input
+          name={`${name}.${index}.name`}
+          required
+          readOnly={readOnly}
+          disabled={readOnly}
+        />
       </Table.Cell>
       <Table.Cell>
-        <EmailInput name={`${name}.${index}.email`} required />
+        <EmailInput
+          name={`${name}.${index}.email`}
+          required
+          readOnly={readOnly}
+          disabled={readOnly}
+        />
       </Table.Cell>
       <Table.Cell>
-        <Input name={`${name}.${index}.remark`} />
+        <Input
+          name={`${name}.${index}.remark`}
+          readOnly={readOnly}
+          disabled={readOnly}
+        />
       </Table.Cell>
       <Table.Cell>
-        {index >= ContactsMin && (
+        {index >= ContactsMin && !readOnly && (
           <RemoveButton index={index} fieldArray={fieldArray} />
         )}
       </Table.Cell>
@@ -180,7 +212,6 @@ const ContactRow = ({ name = ContactsField, index, field, fieldArray }) => {
   )
 }
 
-//TODO: readOnly
 const RemoveButton = ({ index, fieldArray }) =>
   useMemo(
     () => (
