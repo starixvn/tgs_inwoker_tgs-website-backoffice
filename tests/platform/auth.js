@@ -7,7 +7,8 @@ import backofficeApi from "../client/index.js"
 
 const Path = "./.playwright"
 const AuthPath = `${Path}/platform-auth.json`
-const PlatformUsername = "brand.enabled"
+export const PlatformUsername = "brand.enabled"
+export const PlatformPassword = "TgsP@ssw0rd"
 
 export const loginPlatformUser = async (browser) =>
   login({
