@@ -70,13 +70,10 @@ export const loginUser = async (page, username, password = "TgsP@ssw0rd") => {
   return response.userInfo
 }
 
-//TODO: rm
-export const login = async ({
-  browser,
-  storageStatePath,
-  username = "",
-  password = "TgsP@ssw0rd"
-}) => {
+export const login = async (
+  { browser, storageStatePath, username = "", password = "TgsP@ssw0rd" },
+  options = {}
+) => {
   let context = await browser.newContext()
   let page = await context.newPage()
   await page.goto(`${host()}/login`, {
@@ -111,6 +108,11 @@ export const login = async ({
   expect(response).to.have.property("userInfo")
 
   await context.storageState({ path: storageStatePath })
+
+  let afterLogin = options?.afterLogin
+  if (afterLogin) {
+    await afterLogin({ browser, context })
+  }
 
   if (!page.isClosed()) {
     await page.close()

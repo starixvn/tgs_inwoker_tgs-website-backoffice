@@ -4,12 +4,14 @@ import { host } from "../env.js"
 
 const Path = "./.playwright"
 const AuthPath = `${Path}/reseller-auth.json`
-const ResellerUsername = "reseller.enabled"
+
+export const ResellerUsername = "reseller.enabled"
+export const ResellerPassword = "TgsP@ssw0rd"
 
 export const loginResellerUser = async (browser) =>
   login({
     username: ResellerUsername,
-    password: "TgsP@ssw0rd",
+    password: ResellerPassword,
     browser,
     storageStatePath: AuthPath
   })

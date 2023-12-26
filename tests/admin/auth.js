@@ -13,13 +13,16 @@ const Path = "./.playwright"
 const AuthPath = `${Path}/admin-auth.json`
 const AdminUsername = "admin.enabled"
 
-export const loginAdminUser = async (browser) =>
-  login({
-    username: AdminUsername,
-    password: "TgsP@ssw0rd",
-    browser,
-    storageStatePath: AuthPath
-  })
+export const loginAdminUser = async (browser, options = {}) =>
+  login(
+    {
+      username: AdminUsername,
+      password: "TgsP@ssw0rd",
+      browser,
+      storageStatePath: AuthPath
+    },
+    options
+  )
 
 export const Fixture = {
   adminUsername: AdminUsername,
