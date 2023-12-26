@@ -82,3 +82,15 @@ export const useBrandToken = (id) => {
   let url = id ? `${API}/token/${id}` : ""
   return useGet(url)
 }
+
+const ContactApi = "/api/notecontbrand"
+export const useBrandContacts = (id) => {
+  let url = id ? `${ContactApi}/${id}/email` : ""
+  return useGet(url)
+}
+
+export const useUpdateBrandContacts = (id, formData) => {
+  let url = id && formData ? `${ContactApi}/${id}/email` : ""
+  console.log("formData", formData)
+  return usePostData(url, formData)
+}
