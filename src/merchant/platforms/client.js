@@ -91,6 +91,7 @@ export const useBrandContacts = (id) => {
 
 export const useUpdateBrandContacts = (id, formData) => {
   let url = id && formData ? `${ContactApi}/${id}/email` : ""
-  console.log("formData", formData)
-  return usePostData(url, formData)
+  return usePostData(url, formData, {
+    dropEmptyValuesDisabled: true
+  })
 }

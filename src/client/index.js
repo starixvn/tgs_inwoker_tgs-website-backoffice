@@ -3,7 +3,7 @@ import { toDataOrError } from "./response"
 import useSWR, { cache } from "swr"
 import { getAcceptLang, getAcceptLangCulture } from "../i18n"
 import { isValid } from "date-fns"
-import { isNil, isEmpty, either } from "ramda"
+import { isNil, isEmpty, either, empty } from "ramda"
 
 export const urlWith = (searchParams = {}, url) => {
   let urlSearchParams = Object.entries(searchParams).reduce(
@@ -120,6 +120,7 @@ const fetchApi = async (
     .then((response) => toDataOrError(response, options))
 }
 
+//TODO: support array, nested object or array?
 const dropEmptyValues = (record) => {
   if (record === null || typeof record != "object") {
     //Note. typeof null = "object"
@@ -133,7 +134,7 @@ const dropEmptyValues = (record) => {
 
     data[key] = value
     return data
-  }, {})
+  }, empty(record))
 }
 
 const DefaultUpdateOptions = {
