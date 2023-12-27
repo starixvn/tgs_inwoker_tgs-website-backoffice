@@ -49,6 +49,7 @@ import {
 } from "../../trans/Game.jsx"
 import { CurrencyTrans } from "../../trans/Payment.jsx"
 import { SupportingDeviceTrans } from "../../trans/Field.jsx"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter.jsx"
 
 export const EditBrandBetLimitGameProviderBetLimit = ({
   record,
