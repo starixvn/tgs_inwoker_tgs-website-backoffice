@@ -33,7 +33,12 @@ const ContactsTrans = () => <Trans {...Contacts} />
 const useContactsTrans = () => useTrans(Contacts)
 
 //TODO: id for test
-export const ContactsDialogDisclosure = ({ brandId, ...props }) => {
+export const ContactsDialogDisclosure = ({
+  brandId,
+  id,
+  dialogId = "contacts-dialog",
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([View])
@@ -47,15 +52,17 @@ export const ContactsDialogDisclosure = ({ brandId, ...props }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <ContactsTrans />
       </Disclosure>
       {dialog.visible && (
         <ContactsDialog
           brandId={brandId}
           dialog={dialog}
+          dialogId={dialogId}
           readOnly={!editable}
         />
       )}
@@ -65,8 +72,9 @@ export const ContactsDialogDisclosure = ({ brandId, ...props }) => {
 
 const ContactsField = "contacts"
 const ContactsMin = 2
+const ContactsMax = 10
 
-const ContactsDialog = ({ brandId, readOnly, dialog, ...props }) => {
+const ContactsDialog = ({ brandId, readOnly, dialog, dialogId, ...props }) => {
   let title = useContactsTrans()
 
   let {
@@ -107,6 +115,7 @@ const ContactsDialog = ({ brandId, readOnly, dialog, ...props }) => {
   let defaultValues = { contacts }
   return (
     <FormDialog
+      id={dialogId}
       defaultValues={defaultValues}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -165,7 +174,9 @@ const FormBody = ({ name = ContactsField, readOnly }) => {
             />
           )
         })}
-        {!readOnly && <AddRow fieldArray={fieldArray} />}
+        {!readOnly && fieldArray.fields.length < ContactsMax && (
+          <AddRow fieldArray={fieldArray} />
+        )}
       </Table.Body>
     </Table>
   )
