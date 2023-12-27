@@ -37,7 +37,7 @@ import {
   numberDecimalColumn,
   numberDecimalPercentageColumn
 } from "../../table/column/numberColumn"
-import { FundChangeHistoryDialogDisclosure } from "./FundChangeHistoryDialog"
+import { FundHistoryDialogDisclosure } from "./FundHistoryDialog"
 import { isObject } from "lodash-es"
 import { FundActionDetailDialogDisclosure } from "./FundActionDetailDialog"
 import { UsedCreditDetailDialog } from "./UsedCreditDetailDialog"
@@ -75,7 +75,7 @@ const Body = () => {
       <Set>
         <FundActionDialogDisclosure brandId={brandId} onSubmitted={mutate} />
         <AlertSettingDialogDisclosure brandId={brandId} />
-        <FundChangeHistoryDialogDisclosure brandId={brandId} />
+        <FundHistoryDialogDisclosure brandId={brandId} />
       </Set>
       <Text.Block fontSize="400" paddingTop="1rem">
         <Trans zh="當月資金" en="Fund of the month" />
@@ -87,7 +87,7 @@ const Body = () => {
 
             return (
               <Table
-                id="platform-fund"
+                id="current-fund"
                 columns={columns}
                 data={items}
                 maxSize={{ height, width }}

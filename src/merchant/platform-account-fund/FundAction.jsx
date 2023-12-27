@@ -19,14 +19,14 @@ const AddFund = {
   zh: "上分",
   en: "Add Fund"
 }
-const AddFundTrans = () => <Trans {...AddFund} />
+const AddFundTrans = (props) => <Trans {...AddFund} {...props} />
 const useAddFundTrans = () => useTrans(AddFund)
 
 const DeductFund = {
   zh: "下分",
   en: "Deduct Fund"
 }
-const DeductFundTrans = () => <Trans {...DeductFund} />
+const DeductFundTrans = (props) => <Trans {...DeductFund} {...props} />
 const useDeductFundTrans = () => useTrans(DeductFund)
 
 const TypeActionField = "type"
@@ -79,9 +79,9 @@ export const FundActionSelect = ({
 export const FundActionLabel = ({ value = "" }) => {
   switch (value) {
     case Credit:
-      return <AddFundTrans />
+      return <AddFundTrans data-type={Credit} />
     case Debit:
-      return <DeductFundTrans />
+      return <DeductFundTrans data-type={Debit} />
     default:
       return value
   }

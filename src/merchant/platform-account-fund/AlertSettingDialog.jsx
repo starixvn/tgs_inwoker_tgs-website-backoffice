@@ -33,7 +33,12 @@ import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
 import { useBrand } from "../platforms/client"
 
-export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
+export const AlertSettingDialogDisclosure = ({
+  brandId,
+  id,
+  dialogId = "alert-setting-dialog",
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([View])
@@ -42,15 +47,17 @@ export const AlertSettingDialogDisclosure = ({ brandId, ...props }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <Trans zh="催收設置" en="Alert Setting" />
       </Disclosure>
       {dialog.visible && (
         <MainSettingDialog
           brandId={brandId}
           dialog={dialog}
+          dialogId={dialogId}
           readOnly={!editable}
         />
       )}
@@ -100,7 +107,13 @@ const useFundAlertSettingData = (brandId) => {
   }
 }
 
-const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
+const MainSettingDialog = ({
+  brandId,
+  readOnly,
+  dialog,
+  dialogId,
+  ...props
+}) => {
   let title = useTrans({
     zh: "催收設置",
     en: "Alert Setting"
@@ -142,6 +155,7 @@ const MainSettingDialog = ({ brandId, readOnly, dialog, ...props }) => {
 
   return (
     <FormDialog
+      id={dialogId}
       showActionButtons={readOnly ? false : true}
       defaultValues={clone(alertSetting)}
       onSubmit={onSubmit}

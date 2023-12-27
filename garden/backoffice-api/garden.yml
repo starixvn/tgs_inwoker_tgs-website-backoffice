@@ -13,7 +13,18 @@ build:
       '--secret id=nuget,src="C:\Users\${local.username}\AppData\Roaming\NuGet\NuGet.Config"',
       .
     ]
-
+---
+# TODO: why failed?
+kind: Module
+type: exec
+name: backoffice-api-src
+disabled: true
+repositoryUrl: git@gitlab.com:rayprosoft/tgs-bo-api.git#main
+tasks:
+  - name: init-admin-user
+    dependencies:
+      - init-seeding
+    command: [cd, ./CreateAdminUser, && , dotnet, run]
 ---
 kind: Module
 type: container
@@ -30,7 +41,6 @@ services:
       - init-seeding
       - promotion-api
       - report-api
-      # - log-api
       - payment-api
       - station-letter
       - cash-query

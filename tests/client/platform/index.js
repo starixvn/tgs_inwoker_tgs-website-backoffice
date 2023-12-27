@@ -7,6 +7,7 @@ import liveChat from "./liveChat.js"
 import * as maintenance from "./maintenance.js"
 import payment from "./payment.js"
 import * as allAgent from "./allAgent.js"
+import * as accountFund from "./accountFund.js"
 
 export default {
   findPlatform,
@@ -17,5 +18,6 @@ export default {
   liveChat,
   maintenance,
   payment,
-  allAgent
+  allAgent,
+  accountFund
 }

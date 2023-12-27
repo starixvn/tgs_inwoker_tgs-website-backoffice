@@ -34,10 +34,10 @@ const usePlatformAccountFundHistoryTrans = () =>
     en: "Fund Performance"
   })
 
-export const FundChangeHistoryDialogDisclosure = ({
+export const FundHistoryDialogDisclosure = ({
   brandId,
   id,
-  dialogId = "fund-history"
+  dialogId = "fund-history-dialog"
 }) => {
   let dialog = useModalState()
 

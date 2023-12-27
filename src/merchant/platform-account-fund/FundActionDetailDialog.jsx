@@ -50,7 +50,12 @@ export const FundActionDetailDialogDisclosure = ({
         <FormattedNumberDecimal value={value} />
       </Disclosure>
       {dialog.visible && (
-        <DetailDialog brandId={brandId} month={month} dialog={dialog} />
+        <DetailDialog
+          brandId={brandId}
+          month={month}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
       )}
     </>
   )
@@ -87,10 +92,10 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  //TODO: maxSize height?
   return (
     <Modal id={dialogId} title={title} {...dialog}>
       <Table
+        id="fund-detail"
         columns={columns}
         data={items}
         controlledState={state}
