@@ -51,13 +51,14 @@ export const FundActionDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <AddOrDeductFundTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDeductFundDialog
           brandId={brandId}
           dialog={dialog}
+          dialogId={dialogId}
           onSubmitted={onSubmitted}
         />
       )}
@@ -135,6 +136,7 @@ const AddDeductFundDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
         submitText: <SubmitTrans />,
         submitProps: {
           type: "button",
+          "data-type": "submit",
           onClick: () => {
             formMethods.trigger().then((validated) => {
               if (validated) {
