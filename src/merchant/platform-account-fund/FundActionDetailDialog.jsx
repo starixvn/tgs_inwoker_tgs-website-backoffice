@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { useModalState, Link, FieldStack } from "bumbag"
+import { useModalState, Link } from "bumbag"
 import Disclosure from "../../dialog/Disclosure"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
@@ -94,29 +94,22 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
 
   return (
     <Modal id={dialogId} title={title} {...dialog}>
-      <FieldStack
-        css={css`
-          height: 70vh;
-          overflow: auto;
-        `}
-      >
-        <Table
-          id="fund-detail"
-          columns={columns}
-          data={items}
-          controlledState={state}
-          pageCount={pageCount(state.pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-          stickyHead
-          // containerProps={{
-          //   maxHeight: "70vh",
-          //   minHeight: "max-content",
-          //   overflow: "auto"
-          // }}
-        />
-      </FieldStack>
+      <Table
+        id="fund-detail"
+        columns={columns}
+        data={items}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+        stickyHead
+        containerProps={{
+          maxHeight: "70vh",
+          minHeight: "max-content",
+          overflow: "auto"
+        }}
+      />
     </Modal>
   )
 }
