@@ -209,7 +209,7 @@ const ReportDialog = ({
             <FormattedDate value={settleDateTime} dateFormat="yyyy/MM/dd" />
           </Box>
 
-          <Trans zh="全民代理上级" en="All Agent Username" />
+          <Trans zh="結算區間" en="Settlement Period" />
           <Set orientation="horizontal">
             <FormattedDate value={from} dateFormat="yyyy/MM/dd" />
             <Box>-</Box>
