@@ -114,7 +114,6 @@ const DetailDialog = ({ brandId, month, dialog, dialogId }) => {
   )
 }
 
-//TODO: ask hank to rm "Platform Fund (Updated)" ?
 const useColumns = ({ items = [] }) => {
   return useMemo(
     () => [
