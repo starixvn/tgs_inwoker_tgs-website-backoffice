@@ -28,7 +28,10 @@ import {
   useTrans,
   FormattedNumberDecimal
 } from "../../i18n"
-import Disclosure from "../../dialog/Disclosure"
+import Disclosure, {
+  ViewDisclosure,
+  EditDisclosure
+} from "../../dialog/Disclosure"
 import { Tabs, TabList, useTabState } from "../../tab"
 import {
   PlayerBalanceChangePanel,
@@ -62,9 +65,7 @@ export const ViewButton = ({
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <TabsDialog
           id="view-player-dialog"
@@ -96,9 +97,7 @@ export const EditButton = ({
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="修改" en="Edit" />
-      </Disclosure>
+      <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <TabsDialog
           id="edit-player-dialog"
@@ -132,7 +131,8 @@ const TabsDialog = ({
 
   let title = useTrans({
     zh: "玩家详情",
-    en: "Player info"
+    en: "Player info",
+    vi: "Chi tiết người chơi"
   })
 
   const {
@@ -228,8 +228,6 @@ const ViewTabs = ({
   tab
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
-  //TODO: remove after stg, prod released
-  let enablePlayerHistory = isDev()
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -237,8 +235,7 @@ const ViewTabs = ({
         {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <BettingTab {...tab} />
-        {!enablePlayerHistory && <PlayerOperationTab {...tab} />}
-        {enablePlayerHistory && <PlayerHistoryListTab {...tab} />}
+        <PlayerHistoryListTab {...tab} />
         <PlayerBalanceChangeTab {...tab} />
         <PlayerPromotionTab {...tab} />
         <PlayerVipChangeListTab {...tab} />
@@ -257,16 +254,11 @@ const ViewTabs = ({
         brandId={brandId}
         {...tab}
       />
-      {!enablePlayerHistory && (
-        <PlayerOperationPanel playerCode={playerCode} {...tab} />
-      )}
-      {enablePlayerHistory && (
-        <PlayerHistoryListPanel
-          playerCode={playerCode}
-          brandId={brandId}
-          {...tab}
-        />
-      )}
+      <PlayerHistoryListPanel
+        playerCode={playerCode}
+        brandId={brandId}
+        {...tab}
+      />
       <PlayerBalanceChangePanel
         playerCode={playerCode}
         brandId={brandId}

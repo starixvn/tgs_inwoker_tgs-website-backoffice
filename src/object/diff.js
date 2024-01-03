@@ -1,12 +1,19 @@
-import { isArray, isObject, isPlainObject, isNil } from "lodash-es"
-import { isEmpty, empty } from "ramda"
+import { isArray, isObject, isPlainObject, isNil, isUndefined } from "lodash-es"
+import { isEmpty, empty, all } from "ramda"
 
 const isArrayOrObject = (target) => isObject(target) || isArray(target)
 
 const isNilOrEmpty = (value) => isNil(value) || isEmpty(value)
 
-//TODO: check every item in array
-const isEmptyArray = (value) => isArray(value) && isEmpty(value)
+const isEmptyArray = (value, originArray) => {
+  let empty = isArray(value) && isEmpty(value)
+  if (empty) {
+    return empty
+  }
+
+  let isAllEmptyObject = isArray(value) && all(isNilOrEmpty, value)
+  return isAllEmptyObject && value.length === originArray?.length
+}
 
 const isEmptyObject = (value) => isPlainObject(value) && isEmpty(value)
 
@@ -23,9 +30,9 @@ export const diff = (target, origin) => {
 
       let diffs = isArrayOrObject(value)
         ? diff(value, originValue)
-        : diffOrNil(value, originValue)
+        : diffOrUndefined(value, originValue)
 
-      if (isNil(diffs) || isEmptyArray(diffs)) {
+      if (isUndefined(diffs) || isEmptyArray(diffs, originValue)) {
         return accum
       }
 
@@ -40,18 +47,16 @@ export const diff = (target, origin) => {
     return diffs
   } else {
     //not array or object
-
-    //TODO: use diffOrEmpty instead?
-    return diffOrNil(target, origin)
+    return diffOrUndefined(target, origin)
   }
 }
 
-//TODO: support nil as valid value?
-const diffOrNil = (target, origin) => {
+const diffOrUndefined = (target, origin) => {
+  const NoDiffs = undefined
   if (isNilOrEmpty(target) && isNilOrEmpty(origin)) {
-    return null
+    return NoDiffs
   }
 
   let isDiff = target !== origin
-  return isDiff ? target : null
+  return isDiff ? target : NoDiffs
 }

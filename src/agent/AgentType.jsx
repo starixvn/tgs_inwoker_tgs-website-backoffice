@@ -3,12 +3,10 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
+import { useAgentTypeTrans } from "../trans/Agent"
+import { CashTrans, useCashTrans } from "../trans/Payment"
 
 const Cash = "Cash"
-const CashTrans = {
-  zh: "现金",
-  en: "Cash"
-}
 
 const Credit = "Credit"
 const CreditTrans = {
@@ -26,15 +24,12 @@ export const isAgentTypeCash = (value) => value == Cash
 export const isAgentTypeCredit = (value) => value == Credit
 
 export const AgentTypeSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "代理类型",
-    en: "Agent Type"
-  })
+  let defaultPlaceholder = useAgentTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useTrans(CashTrans),
+      label: useCashTrans(),
       value: Cash
     }
     /*
@@ -54,7 +49,7 @@ export const AgentTypeLabel = ({ value = "" }) => {
     case Cash:
       return (
         <Text>
-          <Trans {...CashTrans} />
+          <CashTrans />
         </Text>
       )
     case Credit:

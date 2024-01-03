@@ -6,6 +6,9 @@ import * as withdrawPayment from "./withdrawPayment.js"
 import liveChat from "./liveChat.js"
 import * as maintenance from "./maintenance.js"
 import payment from "./payment.js"
+import * as allAgent from "./allAgent.js"
+import * as accountFund from "./accountFund.js"
+import * as contacts from "./contacts.js"
 
 export default {
   findPlatform,
@@ -15,5 +18,8 @@ export default {
   withdrawPayment,
   liveChat,
   maintenance,
-  payment
+  payment,
+  allAgent,
+  accountFund,
+  contacts
 }

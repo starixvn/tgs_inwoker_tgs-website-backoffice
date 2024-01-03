@@ -1,40 +1,35 @@
 import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { Select } from "../../select/Select"
-import { MultiSelect } from "../../select/MultiSelect"
+import { MultiSelectBox } from "../../select/MultiSelectBox"
 import { Trans, useTrans } from "../../i18n"
 import { useForm, useFormContext, Controller, useWatch } from "react-hook-form"
 import { isDev } from "../../env"
+import {
+  ApprovedTrans,
+  InvalidTrans,
+  RejectedTrans,
+  ReviewTrans,
+  useApprovedTrans,
+  useInvalidTrans,
+  useRejectedTrans,
+  useReviewTrans,
+  useStatusTrans
+} from "../../trans/Status"
+import {
+  WaitingPaymentTrans,
+  useWaitingPaymentTrans
+} from "../../trans/Payment"
 
 const WaitingPayment = "WaitingPayment"
-const WaitingPaymentTrans = {
-  zh: "等待付款",
-  en: "Waiting Payment"
-}
 
 const Review = "Review"
-const ReviewTrans = {
-  zh: "审核中",
-  en: "Review"
-}
 
 const Approved = "Approved"
-const ApprovedTrans = {
-  zh: "已通过",
-  en: "Approved"
-}
 
 const Rejected = "Rejected"
-const RejectedTrans = {
-  zh: "已拒绝",
-  en: "Rejected"
-}
 
 const Invalid = "Invalid"
-const InvalidTrans = {
-  zh: "无效",
-  en: "Invalid"
-}
 
 export const UnprocessedStatus = [Review, WaitingPayment]
 
@@ -45,15 +40,15 @@ export const isFundDepositApproved = (value) => value === Approved
 export const FundDepositStatusLabel = ({ value, ...props }) => {
   switch (value) {
     case WaitingPayment:
-      return <Trans {...WaitingPaymentTrans} {...props} />
+      return <WaitingPaymentTrans {...props} />
     case Review:
-      return <Trans {...ReviewTrans} {...props} />
+      return <ReviewTrans {...props} />
     case Approved:
-      return <Trans {...ApprovedTrans} {...props} />
+      return <ApprovedTrans {...props} />
     case Rejected:
-      return <Trans {...RejectedTrans} {...props} />
+      return <RejectedTrans {...props} />
     case Invalid:
-      return <Trans {...InvalidTrans} {...props} />
+      return <InvalidTrans {...props} />
     default:
       return value ?? ""
   }
@@ -65,37 +60,34 @@ export const FundDepositStatusSelect = ({
   isMulti = true,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useTrans(WaitingPaymentTrans),
+      label: useWaitingPaymentTrans(),
       value: WaitingPayment
     },
     {
-      label: useTrans(ReviewTrans),
+      label: useReviewTrans(),
       value: Review
     },
     {
-      label: useTrans(ApprovedTrans),
+      label: useApprovedTrans(),
       value: Approved
     },
     {
-      label: useTrans(RejectedTrans),
+      label: useRejectedTrans(),
       value: Rejected
     },
     {
-      label: useTrans(InvalidTrans),
+      label: useInvalidTrans(),
       value: Invalid
     }
   ]
 
   return (
-    <MultiSelect
+    <MultiSelectBox
       name={name}
       placeholder={placeholder}
       options={options}

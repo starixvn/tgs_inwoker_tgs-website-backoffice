@@ -68,6 +68,11 @@ import { isNil, isEmpty, either } from "ramda"
 import { isArray } from "lodash-es"
 import { useMeasure } from "react-use"
 import { usePlatformPageContentWidth } from "../../page/PlatformPageContent"
+import { UserNameTrans } from "../../trans/User"
+import { AgentTrans } from "../../trans/Agent"
+import { TotalTrans } from "../../trans/Field"
+import { CompanyTrans } from "../../trans/Platform"
+import { WinLossTrans } from "../../trans/Game"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -382,7 +387,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
           textColumn({
             id: "username",
             accessor: (row) => row,
-            Header: <Trans zh="用户名" en="Username" />,
+            Header: <UserNameTrans />,
             disableSortBy: true,
             Cell: ({ value: record }) => {
               return (
@@ -395,7 +400,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
                 </Link.Block>
               )
             },
-            TotalCell: () => <Trans zh="总计" en="Total" />
+            TotalCell: () => <TotalTrans />
           }),
           textColumn({
             accessor: "memberType",
@@ -424,7 +429,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
         columns: [
           numberDecimalColumn({
             accessor: "winLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true
           }),
           numberDecimalColumn({
@@ -453,14 +458,14 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
       },
       {
         id: "agent",
-        Header: <Trans zh="代理" en="Agent" />,
+        Header: <AgentTrans />,
         headCell: {
           textAlign: "center"
         },
         columns: [
           numberDecimalColumn({
             accessor: "agentWinLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true
           }),
           numberDecimalColumn({
@@ -494,14 +499,14 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
       },
       {
         id: "company",
-        Header: <Trans zh="公司" en="Company" />,
+        Header: <CompanyTrans />,
         headCell: {
           textAlign: "center"
         },
         columns: [
           numberDecimalColumn({
             accessor: "companyWinLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true
           }),
           numberDecimalColumn({

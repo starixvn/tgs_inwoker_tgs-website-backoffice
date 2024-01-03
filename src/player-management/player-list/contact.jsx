@@ -27,13 +27,19 @@ import { Contact } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { diff } from "../../object/diff"
 import { isDev } from "../../env"
+import {
+  ContactInfoTrans,
+  EmailTrans,
+  PhoneTrans,
+  TelegramTrans
+} from "../../trans/User"
 
 export const Key = "contact"
 
 export const Tab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="联系信息" en="Contact Info" />
+      <ContactInfoTrans />
     </_Tab>
   )
 }
@@ -43,12 +49,12 @@ export const Panel = ({ player = {}, ...props }) => {
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues spacing="major-2">
-        <MobileLabel />
+        <PhoneTrans />
         <Text>
           {player.areaCode} <Text data-field="phone">{phone}</Text>
         </Text>
 
-        <EmailLabel />
+        <EmailTrans />
         <Text data-field="email">{email}</Text>
 
         <QQLabel />
@@ -57,7 +63,7 @@ export const Panel = ({ player = {}, ...props }) => {
         <WeChatLabel />
         <Text>{weChat}</Text>
 
-        <TelegramLabel />
+        <TelegramTrans />
         <Text>{player?.telegram}</Text>
 
         <ViberLabel />
@@ -77,14 +83,11 @@ export const Panel = ({ player = {}, ...props }) => {
 }
 
 export const EditPanel = (props) => {
-  return isDev() ? (
-    <UpdateContactPanel {...props} />
-  ) : (
-    <CurrentPlayerContactPanel {...props} />
-  )
+  return <UpdateContactPanel {...props} />
 }
 
-const CurrentPlayerContactPanel = ({
+//TODO:1.40 rm OldPlayerContactPanel
+const OldPlayerContactPanel = ({
   playerCode = "",
   player = {},
   onSubmitted,
@@ -174,12 +177,12 @@ const Body = ({ onClickClose }) => {
   return (
     <Stack spacing="major-1" margin="major-1">
       <FieldValues>
-        <MobileLabel />
+        <PhoneTrans />
         <Box>
           <AreaPhoneInputGruop name="phone" />
         </Box>
 
-        <EmailLabel />
+        <EmailTrans />
         <Box>
           <EmailInput name="email" />
         </Box>
@@ -194,7 +197,7 @@ const Body = ({ onClickClose }) => {
           <Input name="weChat" />
         </Box>
 
-        <TelegramLabel />
+        <TelegramTrans />
         <Box>
           <Input name="telegram" />
         </Box>
@@ -226,15 +229,9 @@ const Body = ({ onClickClose }) => {
   )
 }
 
-export const MobileLabel = () => <Trans zh="手机号码" en="Mobile" />
-
-export const EmailLabel = () => <Trans zh="邮箱" en="Email" />
-
 export const QQLabel = () => <Trans zh="QQ" en="QQ" />
 
 export const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
-
-export const TelegramLabel = () => <Trans zh="Telegram" en="Telegram" />
 
 export const ViberLabel = () => <Trans zh="Viber" en="Viber" />
 

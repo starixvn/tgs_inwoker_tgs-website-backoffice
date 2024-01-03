@@ -129,7 +129,7 @@ export const TimezoneSelectField = ({
 export const TimezoneSelect = ({
   prefix = "GMT",
   rangeStart = -11,
-  rangeEnd = 15,
+  rangeEnd = 14,
   ...props
 } = {}) => {
   let ranges = timezoneRange(rangeStart, rangeEnd)

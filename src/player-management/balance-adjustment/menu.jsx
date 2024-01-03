@@ -1,5 +1,6 @@
 import React from "react"
 import { Locales, getTrans } from "../../i18n"
+import { SystemAdjust } from "../../trans/Action"
 
 export const Code = "balanceadjustment"
 
@@ -41,13 +42,7 @@ export const label = (codes = [], locale = Locales.zh) => {
         locale
       )
     case SystemTransactionType:
-      return getTrans(
-        {
-          zh: "系统调帐",
-          en: "System Adjust"
-        },
-        locale
-      )
+      return getTrans(SystemAdjust, locale)
     case BonusAdjustTransactionType:
       return getTrans(
         {
@@ -76,7 +71,8 @@ export const label = (codes = [], locale = Locales.zh) => {
       return getTrans(
         {
           zh: "交易金額",
-          en: "Transaction Amount"
+          en: "Transaction Amount",
+          vi: "Số tiền giao dịch"
         },
         locale
       )

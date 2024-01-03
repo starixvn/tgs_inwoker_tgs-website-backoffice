@@ -13,12 +13,23 @@ build:
       '--secret id=nuget,src="C:\Users\${local.username}\AppData\Roaming\NuGet\NuGet.Config"',
       .
     ]
-
+---
+# TODO: why failed?
+kind: Module
+type: exec
+name: backoffice-api-src
+disabled: true
+repositoryUrl: git@gitlab.com:rayprosoft/tgs-bo-api.git#main
+tasks:
+  - name: init-admin-user
+    dependencies:
+      - init-seeding
+    command: [cd, ./CreateAdminUser, && , dotnet, run]
 ---
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202310300516.604
+image: pgtgs/backoffice-api:202312250908.732
 services:
   - name: backoffice-api
     dependencies:
@@ -30,9 +41,14 @@ services:
       - init-seeding
       - promotion-api
       - report-api
-      # - log-api
       - payment-api
       - station-letter
+      - cash-query
+      - agent-service
+      - game-wagers
+      - player-all-agent-api
+      - brand-game-credit
+      - notification-contact
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
@@ -47,12 +63,15 @@ services:
       BackOffice__ReportAggregateUrl: "http://report-aggregate-api"
       BackOffice__PlayerServiceBaseUrl: "http://player-api"
       BackOffice__MarketingReportBaseUrl: "http://marketing-api"
-      BackOffice__PlayerBucketBaseUrl: "http://player-bucket-api"
       BackOffice__VipLevelServiceBaseUrl: "http://viplevel-api"
+      BackOffice__PlayerBucketBaseUrl: "http://player-bucket-api"
       BackOffice__StationLetterBaseUrl: "http://station-letter"
       BackOffice__CashQueryBaseUrl: "http://cash-query"
       BackOffice__AgentBaseUrl: "http://agent-service"
       BackOffice__GameWagersServiceBaseUrl: "http://game-wagers"
+      BackOffice__PlayerAllAgentBaseUrl: "http://player-all-agent-api"
+      BackOffice__BrandGameCreditsBaseUrl: "http://brand-game-credit"
+      BackOffice__NotificationContactsBaseUrl: "http://notification-contact"
       OTEL_SERVICE_NAME: "BackOffice-Api(local)"
       # OTEL_EXPORTER_OTLP_ENDPOINT: "http://jaeger-collector.default.svc.cluster.local:4317"
       # TODO: NODE_IP required?
@@ -66,6 +85,6 @@ services:
         port: http
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80
         localPort: 3001

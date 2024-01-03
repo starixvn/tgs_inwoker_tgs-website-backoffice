@@ -25,21 +25,9 @@ import Modal from "../../dialog/Modal"
 import { PlayerStatusLabel } from "../PlayerStatus"
 import { equals, includes, pipe, prop } from "ramda"
 import {
-  UserNameLabel,
-  RealNameLabel,
-  VIPLevelLabel,
-  AgentUsernameLabel,
-  StatusLabel,
-  BirthdayLabel,
-  RemarkLabel
-} from "./player"
-import {
-  MobileLabel,
-  EmailLabel,
   QQLabel,
   LineLabel,
   MessengerLabel,
-  TelegramLabel,
   ViberLabel,
   WhatsappLabel,
   WeChatLabel
@@ -50,13 +38,32 @@ import { isString } from "lodash-es"
 import { FieldValues } from "../../layout/Grid"
 import { VipLevelIdLabel } from "../../vip-levels/VipLevel"
 import { AgentIdUsername } from "../../agent/agent-list/AgentUsername"
+import {
+  ActionTypeTrans,
+  DetailTrans,
+  EditingRecordsTrans,
+  OperatorTrans,
+  RemarkTrans
+} from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+import {
+  BirthdayTrans,
+  EmailTrans,
+  PhoneTrans,
+  RealNameTrans,
+  TelegramTrans,
+  UserNameTrans
+} from "../../trans/User"
+import { VipLevelTrans } from "../../trans/Vip"
+import { UpperLevelAgentTrans } from "../../trans/Agent"
+import { TimeTrans } from "../../trans/Date"
 
 export const Key = "history"
 
 export const PlayerHistoryListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="操作记录" en="Operating records" />
+      <EditingRecordsTrans />
     </_Tab>
   )
 }
@@ -159,25 +166,25 @@ const useColumns = ({ items = [], brandId }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),
       textColumn({
         accessor: "action",
-        Header: <Trans zh="操作项" en="Operation Item" />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true,
         Cell: ActionTypeLabel
       }),
       textColumn({
         accessor: "modifier",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       textColumn({
         id: "detail",
         accessor: (row) => row,
-        Header: <Trans zh="详情" en="Detail" />,
+        Header: <DetailTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
@@ -242,10 +249,6 @@ const PlayerHistoryDialog = ({
   )
 }
 
-const OperationColumnLabel = () => <Trans zh="操作" en="Operation" />
-const FieldColumnLabel = () => <Trans zh="栏位" en="Field" />
-const ValueColumnKabel = () => <Trans zh="值" en="Value" />
-
 const Replace = "replace"
 const Add = "add"
 const AddTrans = {
@@ -274,21 +277,21 @@ const usePlayerHistoryColumns = ({ items = [], brandId }) => {
     let columns = [
       textColumn({
         accessor: "op",
-        Header: <OperationColumnLabel />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true,
         Cell: OperationLabel
       }),
       textColumn({
         id: "label",
         accessor: (row) => row,
-        Header: FieldColumnLabel,
+        Header: <Trans zh="栏位" en="Field" />,
         disableSortBy: true,
         Cell: ChangeSetLabel
       }),
       textColumn({
         id: "value",
         accessor: (row) => row,
-        Header: ValueColumnKabel,
+        Header: <Trans zh="值" en="Value" />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return <ChangeSetField value={value} brandId={brandId} />
@@ -311,7 +314,7 @@ const IdentityAuthenticationIcon = ({ value = "" }) => {
   return <PlayerIdentityStateIcon value={isAuth} />
 }
 
-const PasswordLabel = () => <Trans zh="密码" en="Password" />
+const PasswordLabel = () => <Trans zh="登入密碼" en="Login Password" />
 
 const isAddPlayer = pipe(prop("op"), equals(Add))
 const getPath = prop("path")
@@ -322,7 +325,7 @@ const Player = ({ value: player = {}, brandId }) => {
       {player.username && (
         <>
           <Box alignX="left">
-            <UserNameLabel />
+            <UserNameTrans />
           </Box>
           <Box alignY="center">{player.username}</Box>
         </>
@@ -330,7 +333,7 @@ const Player = ({ value: player = {}, brandId }) => {
       {player.vipId && (
         <>
           <Box alignX="left">
-            <VIPLevelLabel />
+            <VipLevelTrans />
           </Box>
 
           <Box alignX="left">
@@ -341,7 +344,7 @@ const Player = ({ value: player = {}, brandId }) => {
       {player.agentId && (
         <>
           <Box alignX="left">
-            <AgentUsernameLabel />
+            <UpperLevelAgentTrans />
           </Box>
           <Box alignX="left">
             <AgentIdUsername value={player.agentId} />
@@ -351,7 +354,7 @@ const Player = ({ value: player = {}, brandId }) => {
       {player.status && (
         <>
           <Box alignX="left">
-            <StatusLabel />
+            <StatusTrans />
           </Box>
           <Box alignX="left">
             <PlayerStatusLabel value={player.status} />
@@ -365,29 +368,25 @@ const Player = ({ value: player = {}, brandId }) => {
 const AreaCodeLabel = () => <Trans zh="区号" en="Area Code" />
 
 const LabelValueList = [
-  [pipe(getPath, equals("/properties/RealName")), RealNameLabel],
-  [pipe(getPath, equals("/properties/Birthdate")), BirthdayLabel],
-  [pipe(getPath, equals("/properties/VipId")), VIPLevelLabel, VipLevelIdLabel],
-  [
-    pipe(getPath, equals("/properties/AgentId")),
-    AgentUsernameLabel,
-    AgentIdUsername
-  ],
-  [pipe(getPath, includes("/Remark")), RemarkLabel],
+  [pipe(getPath, includes("/RealName")), RealNameTrans],
+  [pipe(getPath, includes("/Birthdate")), BirthdayTrans],
+  [pipe(getPath, includes("/VipId")), VipLevelTrans, VipLevelIdLabel],
+  [pipe(getPath, includes("/AgentId")), UpperLevelAgentTrans, AgentIdUsername],
+  [pipe(getPath, includes("/Remark")), RemarkTrans],
   [
     pipe(getPath, equals("/identityAuthentication")),
     IdentityAuthenticationLabel,
     IdentityAuthenticationIcon
   ],
 
-  [pipe(getPath, equals("/status")), StatusLabel, PlayerStatusLabel],
+  [pipe(getPath, equals("/status")), StatusTrans, PlayerStatusLabel],
 
-  [pipe(getPath, equals("/properties/AreaCode")), AreaCodeLabel],
-  [pipe(getPath, equals("/properties/Phone")), MobileLabel],
-  [pipe(getPath, equals("/properties/Email")), EmailLabel],
+  [pipe(getPath, includes("/AreaCode")), AreaCodeLabel],
+  [pipe(getPath, equals("/Phone")), PhoneTrans],
+  [pipe(getPath, includes("/Email")), EmailTrans],
   [pipe(getPath, equals("/properties/Qq")), QQLabel],
   [pipe(getPath, equals("/properties/Wechat")), WeChatLabel],
-  [pipe(getPath, equals("/properties/Telegram")), TelegramLabel],
+  [pipe(getPath, equals("/properties/Telegram")), TelegramTrans],
   [pipe(getPath, equals("/properties/Viber")), ViberLabel],
   [pipe(getPath, equals("/properties/FacebookMessenger")), MessengerLabel],
   [pipe(getPath, equals("/properties/Line")), LineLabel],

@@ -42,6 +42,10 @@ import AlertDialog from "../../dialog/Alert"
 import Backdrop from "../../dialog/Backdrop"
 import { useDropzone } from "react-dropzone"
 import { SubGameProviderListDisclosure } from "./SubGameProviderList"
+import { ActionTrans, ExportTrans, OperatorTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+import { UpdatedTimeTrans } from "../../trans/Date"
+import { useGameProviderNameTrans } from "../../trans/Game"
 
 export { Code }
 
@@ -123,10 +127,7 @@ const SearchBar = ({
     en: "game provider code"
   })
 
-  let namePlaceHolder = useTrans({
-    zh: "游戏商名称",
-    en: "game provider name"
-  })
+  let namePlaceHolder = useGameProviderNameTrans()
   return (
     <Level>
       <FormProvider {...formMethods}>
@@ -170,7 +171,7 @@ const LocalizationMenuButton = ({}) => {
               href={`/api/gameprovider/localization/export`}
               download={`game-provider-localization.xlsx`}
             >
-              <Trans zh="汇出" en="Export" />
+              <ExportTrans />
             </DropdownMenu.Item>
             {editable && (
               <DropdownMenu.Item
@@ -297,7 +298,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "status",
         accessor: (row) => row,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => (
           <GameProviderStatusMenu record={value} onSubmitted={mutate} />
@@ -305,12 +306,12 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最新更新" en="Updated On" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更改者" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]
@@ -321,7 +322,7 @@ const useColumns = ({ items = [], mutate }) => {
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value }) => {
             return (
               <Set orientation="vertical" alignX="center">

@@ -39,6 +39,10 @@ import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { JsonEditor } from "../../text/editor/JsonEditor"
 import { stringifyJSON } from "../../text/json"
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
+import {
+  ThirdPartyLiveChatProviderTrans,
+  useThirdPartyLiveChatProviderTrans
+} from "../../trans/Platform"
 
 export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
   let addDialog = useModalState()
@@ -69,21 +73,18 @@ export const CreateOrEditLiveChatDialogDisclosure = ({ brandId, ...props }) => {
         <>
           {!hasLiveChat && (
             <Disclosure {...addDialog} {...props}>
-              <Trans zh="三方即時客服廠商" en="3rd Party Live Chat Provider" />
+              <ThirdPartyLiveChatProviderTrans />
             </Disclosure>
           )}
           {hasLiveChat && !editable && (
             <Disclosure {...updateDialog} {...props}>
-              <Trans zh="三方即時客服廠商" en="3rd Party Live Chat Provider" />
+              <ThirdPartyLiveChatProviderTrans />
             </Disclosure>
           )}
           {hasLiveChat && editable && (
             <Group>
               <Disclosure {...updateDialog} {...props}>
-                <Trans
-                  zh="三方即時客服廠商"
-                  en="3rd Party Live Chat Provider"
-                />
+                <ThirdPartyLiveChatProviderTrans />
               </Disclosure>
               <Disclosure
                 id="delete-live-chat-dialog-disclosure"
@@ -180,10 +181,7 @@ const ConfirmDeleteFormBody = () => {
 const AddLiveChatDialog = ({ brandId, dialog, onSubmitted }) => {
   let readOnly = !useIsDisplayMenuByRoute([UpdateLiveChat])
 
-  let title = useTrans({
-    zh: "新增三方即時客服廠商",
-    en: "Add 3rd Party Live Chat Provider"
-  })
+  let title = useThirdPartyLiveChatProviderTrans()
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =
@@ -230,10 +228,7 @@ const AddLiveChatDialog = ({ brandId, dialog, onSubmitted }) => {
 const EditLiveChatDialog = ({ brandId, record, dialog, onSubmitted }) => {
   let readOnly = !useIsDisplayMenuByRoute([UpdateLiveChat])
 
-  let title = useTrans({
-    zh: "编辑三方即時客服廠商",
-    en: "Edit 3rd Party Live Chat Provider"
-  })
+  let title = useThirdPartyLiveChatProviderTrans()
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } =

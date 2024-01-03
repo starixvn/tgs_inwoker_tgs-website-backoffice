@@ -5,7 +5,7 @@ import PageContent from "../../page/Content"
 import { AddButton, EditButton, EditPasswordButton } from "./edit"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { AdminStatusLabel } from "./AdminStatus"
+import { AdminStatusLabel, AdminStatusSelect } from "./AdminStatus"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -20,6 +20,23 @@ import equals from "fast-deep-equal"
 import { FormProvider, useForm } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
+import textColumn from "../../table/column/textColumn"
+import { isDev } from "../../env"
+import { ActionTrans } from "../../trans/Action"
+import {
+  LastLoginIPTrans,
+  LastLoginTimeTrans,
+  NameTrans,
+  UserNameTrans,
+  useUserNameTrans
+} from "../../trans/User"
+import { StatusTrans } from "../../trans/Status"
+import { CreatedTimeTrans } from "../../trans/Date"
+import {
+  AdminsTrans,
+  DepartmentTrans,
+  useDepartmentTrans
+} from "../../trans/Platform"
 
 export { Code }
 
@@ -37,14 +54,16 @@ export const CodeContentPair = [Code, Content]
 const Body = () => {
   let userId = useUserId()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    username: ""
+    username: "",
+    departmentName: "",
+    role: "",
+    status: ""
   })
 
   let { pageIndex, pageSize, username = "" } = state
 
   let { isLoading, data, error, mutate, deleteCache } = useAdminList({
-    ...toApiParams(state),
-    sortby: "username"
+    ...toApiParams(state)
   })
 
   const filterOutCurrentUser = (items = []) =>
@@ -55,11 +74,14 @@ const Body = () => {
 
   return (
     <PageContent
-      title={<Trans zh="管理员列表" en="Admins" />}
+      title={<AdminsTrans />}
       actionBar={
         <>
           <SearchBar
             username={username}
+            departmentName={state.departmentName}
+            role={state.role}
+            status={state.status}
             search={(data = {}) => {
               setState({
                 pageIndex: 0,
@@ -67,7 +89,7 @@ const Body = () => {
               })
               mutate()
             }}
-            isPending={isLoading}
+            isLoading={isLoading}
           />
           <AddButton id="add-user-dialog-disclosure" onSubmitted={mutate} />
         </>
@@ -88,9 +110,17 @@ const Body = () => {
   )
 }
 
-const SearchBar = ({ username = "", search, isLoading, ...props }) => {
+const SearchBar = ({
+  username = "",
+  departmentName = "",
+  role = "",
+  status = "",
+  search,
+  isLoading,
+  ...props
+}) => {
   let formMethods = useForm({
-    defaultValues: { username }
+    defaultValues: { username, departmentName, role, status }
   })
 
   return (
@@ -100,8 +130,19 @@ const SearchBar = ({ username = "", search, isLoading, ...props }) => {
           <InputField
             name="username"
             showEmptyFieldValueAddonAfter
-            placeholder={useSearchInputPlaceHolder()}
+            placeholder={useUserNameTrans()}
           />
+          <InputField
+            name="departmentName"
+            showEmptyFieldValueAddonAfter
+            placeholder={useDepartmentTrans()}
+          />
+          <InputField
+            name="role"
+            showEmptyFieldValueAddonAfter
+            placeholder={useRolePlaceholder()}
+          />
+          <AdminStatusSelect name="status" />
           <SearchButton isLoading={isLoading} />
         </Set>
       </form>
@@ -109,10 +150,10 @@ const SearchBar = ({ username = "", search, isLoading, ...props }) => {
   )
 }
 
-const useSearchInputPlaceHolder = () =>
+const useRolePlaceholder = () =>
   useTrans({
-    zh: "管理员用户名输入框",
-    en: "Input admin user name"
+    zh: "权限组",
+    en: "Role"
   })
 
 const useColumns = ({ mutate, items = [] }) => {
@@ -122,30 +163,18 @@ const useColumns = ({ mutate, items = [] }) => {
   return useMemo(() => {
     let columns = [
       sequenceColumn(),
-      {
-        Header: <Trans zh="用户名" en="Username" />,
+      textColumn({
+        Header: <UserNameTrans />,
         accessor: "username",
-        disableSortBy: true,
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        }
-      },
-      {
-        Header: <Trans zh="姓名" en="Name" />,
+        disableSortBy: true
+      }),
+      textColumn({
+        Header: <NameTrans />,
         accessor: "name",
-        disableSortBy: true,
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        }
-      },
+        disableSortBy: true
+      }),
       {
-        Header: <Trans zh="部门" en="Department" />,
+        Header: <DepartmentTrans />,
         accessor: "departmentName",
         disableSortBy: true,
         headCell: {
@@ -168,37 +197,25 @@ const useColumns = ({ mutate, items = [] }) => {
           whiteSpace: "nowrap"
         }
       },
-      {
-        Header: <Trans zh="最近登入IP" en="Last Login IP" />,
+      textColumn({
         accessor: "lastLoginIp",
-        disableSortBy: true,
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        }
-      },
+        Header: <LastLoginIPTrans />,
+        disableSortBy: true
+      }),
       dateTimeColumn({
-        Header: <Trans zh="最近登入时间" en="Last Login Time" />,
+        Header: <LastLoginTimeTrans />,
         accessor: "lastLoginTime",
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="创建时间" en="Created On" />,
+        Header: <CreatedTimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),
-      {
-        disableSortBy: true,
-        Header: <Trans zh="状态" en="Status" />,
+      textColumn({
+        Header: <StatusTrans />,
         accessor: "status",
-        headCell: {
-          textAlign: "center"
-        },
-        cell: {
-          textAlign: "center"
-        },
+        disableSortBy: true,
         Cell: ({ value }) => (
           <Text.Block
             css={css`
@@ -208,7 +225,7 @@ const useColumns = ({ mutate, items = [] }) => {
             <AdminStatusLabel value={value} />
           </Text.Block>
         )
-      }
+      })
     ]
 
     if (hasAnyMenu) {
@@ -216,7 +233,7 @@ const useColumns = ({ mutate, items = [] }) => {
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

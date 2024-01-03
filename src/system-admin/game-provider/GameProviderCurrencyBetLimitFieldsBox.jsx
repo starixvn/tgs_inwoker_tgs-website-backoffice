@@ -28,6 +28,7 @@ import Disclosure, { ConfigIconDisclosure } from "../../dialog/Disclosure"
 import { CloseText, ConfirmText } from "../../button/ActionButtons"
 import Backdrop from "../../dialog/Backdrop"
 import FormDialog from "../../form/FormDialog"
+import { CurrencyTrans } from "../../trans/Payment"
 
 export const GameProviderCurrencyBetLimitFieldsBox = ({
   currencyFieldName = "currencies",
@@ -91,7 +92,7 @@ const Body = ({
               </Table.HeadCell>
               <Table.HeadCell colSpan="5">
                 <Box marginLeft="1rem">
-                  <Trans zh="币种" en="Currency" />
+                  <CurrencyTrans />
                 </Box>
               </Table.HeadCell>
             </Table.Row>

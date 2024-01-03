@@ -20,7 +20,13 @@ import {
 import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import { useAddAgent, useAgent, useUpdateAgent, useAgentList } from "./client"
+import {
+  useAddAgent,
+  useAgent,
+  useUpdateAgent,
+  useUpdateAgentV2,
+  useAgentUpdateFormData
+} from "./client"
 import {
   Trans,
   FormattedDateTime,
@@ -47,10 +53,6 @@ import {
   AgentWithdrawPasswordTab
 } from "./AgentWithdrawPassword"
 import FormDialog from "../../form/FormDialog"
-import {
-  CloseButtonFooter,
-  ConfirmCancelFooter
-} from "../../form/ConfirmButtonFooter"
 import { FieldValues, TwoColumns } from "../../layout/Grid"
 import { NormalLabel } from "../../form/Label"
 import Input, { InputField } from "../../input/Input"
@@ -108,6 +110,20 @@ import {
   isAgentProfitSharingMultipleLayer
 } from "../AgentProfitSharingType"
 import { useBrand } from "../../merchant/platforms/client"
+import { AgentHistoryListPanel, AgentHistoryListTab } from "./AgentHistoryList"
+import { diff } from "../../object/diff"
+import {
+  AgentLevelTrans,
+  AgentTypeTrans,
+  UpperLevelAgentTrans
+} from "../../trans/Agent"
+import {
+  BalanceTrans,
+  RealNameTrans,
+  RegistrationTimeTrans,
+  UserNameTrans
+} from "../../trans/User"
+import { RemarkTrans } from "../../trans/Action"
 
 export const AddAgentButton = ({
   brandId,
@@ -137,7 +153,12 @@ export const AddAgentButton = ({
   )
 }
 
-const AddDialog = ({ brandId, onSubmitted, dialog }) => {
+const AddDialog = ({
+  brandId,
+  agentProfitSharingType,
+  onSubmitted,
+  dialog
+}) => {
   let [formData, setSubmit] = useState()
   let { result, error, mutate, deleteCache, isLoading } = useAddAgent(formData)
 
@@ -172,13 +193,11 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={<ConfirmCancelFooter dialog={dialog} isLoading={isLoading} />}
       maxWidth="100vw"
       minWidth="60vw"
       placement="top"
     >
-      <FormBody isAdd />
+      <FormBody isAdd agentProfitSharingType={agentProfitSharingType} />
     </FormDialog>
   )
 }
@@ -187,7 +206,7 @@ const AlphabetNumberOnly = new RegExp("^[A-Za-z0-9]+$")
 
 const BrandIdField = "brandId"
 const ParentUsernameFieldName = "parentUsername"
-const FormBody = ({ isAdd }) => {
+const FormBody = ({ isAdd, agentProfitSharingType }) => {
   let { control, getValues } = useFormContext()
 
   const LevelTypeFieldName = "levelType"
@@ -224,7 +243,7 @@ const FormBody = ({ isAdd }) => {
       <Set orientation="vertical" marginLeft="1rem" marginRight="1rem" isFilled>
         <FieldValues>
           <NormalLabel required>
-            <Trans zh="代理用户名" en="Username" />
+            <UserNameTrans />
           </NormalLabel>
           <InputField
             name="username"
@@ -252,14 +271,14 @@ const FormBody = ({ isAdd }) => {
           {!parentAgentRequired && (
             <>
               <NormalLabel>
-                <Trans zh="代理类型" en="Agent Type" />
+                <AgentTypeTrans />
               </NormalLabel>
               <AgentTypeSelect name={AgentTypeFieldName} required />
             </>
           )}
 
           <NormalLabel>
-            <Trans zh="代理种类" en="Level Type" />
+            <AgentLevelTrans />
           </NormalLabel>
           <AgentLevelSelect
             name={LevelTypeFieldName}
@@ -276,7 +295,12 @@ const FormBody = ({ isAdd }) => {
             </>
           )}
 
-          {isCash && <ProfitSharingBox isAdd={isAdd} />}
+          {isCash && (
+            <ProfitSharingBox
+              isAdd={isAdd}
+              agentProfitSharingType={agentProfitSharingType}
+            />
+          )}
 
           {/* {isCredit && (
             <>
@@ -342,7 +366,7 @@ const FormBody = ({ isAdd }) => {
           )} */}
 
           <NormalLabel required>
-            <Trans zh="备注" en="Remarks" />
+            <RemarkTrans />
           </NormalLabel>
           <Textarea name="remarks" required />
         </FieldValues>
@@ -356,7 +380,7 @@ const FormBody = ({ isAdd }) => {
   )
 }
 
-const ProfitSharingBox = ({ isAdd = false }) => {
+const ProfitSharingBox = ({ isAdd = false, agentProfitSharingType }) => {
   let label = (
     <NormalLabel required>
       <Trans zh="代理分红" en="Profit Sharing" />
@@ -370,27 +394,8 @@ const ProfitSharingBox = ({ isAdd = false }) => {
   })
 
   let brandId = getValues(BrandIdField)
-  let { isLoading, data: brand, error } = useBrand(brandId)
-  if (isLoading) {
-    return null
-  }
 
-  //TODO: need to handle brandError?
-  /*
-  if (brandError) {
-    return (
-      <>
-        {label}
-        <Box>
-          <AlertDialog />
-        </Box>
-      </>
-    )
-  }
-  */
-
-  let oneLayer = isAgentProfitSharingOneLayer(brand?.agentDividendType)
-  if (oneLayer) {
+  if (isAgentProfitSharingOneLayer(agentProfitSharingType)) {
     return (
       <>
         {label}
@@ -409,6 +414,7 @@ const ProfitSharingBox = ({ isAdd = false }) => {
     return null
   }
 
+  //multipleLayer
   return (
     <>
       {label}
@@ -419,7 +425,7 @@ const ProfitSharingBox = ({ isAdd = false }) => {
   )
 }
 
-const ConfigFormBody = ({ record }) => {
+const ConfigFormBody = ({ record, agentProfitSharingType }) => {
   let isCash = isAgentTypeCash(record?.type)
   let isCredit = isAgentTypeCredit(record?.type)
 
@@ -428,49 +434,51 @@ const ConfigFormBody = ({ record }) => {
       <Set orientation="vertical" marginLeft="1rem" marginRight="1rem" isFilled>
         <FieldValues>
           <NormalLabel>
-            <Trans zh="代理用户名" en="Username" />
+            <UserNameTrans />
           </NormalLabel>
           <Text.Block alignY="center">{record?.username}</Text.Block>
 
           <NormalLabel>
-            <Trans zh="真实姓名" en="Real Name" />
+            <RealNameTrans />
           </NormalLabel>
           <Text.Block alignY="center">{record?.realName}</Text.Block>
 
           <Box alignY="center">
-            <Trans zh="上级代理" en="Upper level agent" />
+            <UpperLevelAgentTrans />
           </Box>
           <Text.Block alignY="center">{record?.parentUsername}</Text.Block>
 
           <NormalLabel>
-            <Trans zh="注册时间" en="Registration" />
+            <RegistrationTimeTrans />
           </NormalLabel>
           <Text.Block alignY="center">
             <FormattedDateTime value={record?.registration} />
           </Text.Block>
 
           <NormalLabel>
-            <Trans zh="余额" en="Balance" />
+            <BalanceTrans />
           </NormalLabel>
           <Text.Block alignY="center">
             <FormattedNumberDecimal value={record?.balance} />
           </Text.Block>
 
           <NormalLabel>
-            <Trans zh="代理类型" en="Agent Type" />
+            <AgentTypeTrans />
           </NormalLabel>
           <Text.Block alignY="center">
             <AgentTypeLabel value={record?.type} />
           </Text.Block>
 
           <NormalLabel>
-            <Trans zh="代理种类" en="Agent Level Type" />
+            <AgentLevelTrans />
           </NormalLabel>
           <Text.Block alignY="center">
             <AgentLevelLabel value={record?.levelType} />
           </Text.Block>
 
-          {isCash && <ProfitSharingBox />}
+          {isCash && (
+            <ProfitSharingBox agentProfitSharingType={agentProfitSharingType} />
+          )}
 
           {/* {isCredit && (
             <>
@@ -592,7 +600,13 @@ export const EditButton = ({
   )
 }
 
-export const ConfigButton = ({ brandId, agentId, onSubmitted, ...props }) => {
+export const ConfigButton = ({
+  brandId,
+  agentId,
+  agentProfitSharingType,
+  onSubmitted,
+  ...props
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -609,6 +623,7 @@ export const ConfigButton = ({ brandId, agentId, onSubmitted, ...props }) => {
         <ConfigDialog
           brandId={brandId}
           agentId={agentId}
+          agentProfitSharingType={agentProfitSharingType}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -617,7 +632,109 @@ export const ConfigButton = ({ brandId, agentId, onSubmitted, ...props }) => {
   )
 }
 
-const ConfigDialog = ({ brandId, agentId, onSubmitted, dialog }) => {
+const ConfigDialog = (props) => {
+  return <UpdateConfigDialog {...props} />
+}
+
+const UpdateConfigDialog = ({
+  brandId,
+  agentId,
+  agentProfitSharingType,
+  onSubmitted,
+  dialog
+}) => {
+  let {
+    isLoading: isLoadingAgent,
+    data: agent,
+    error: loadingAgentError,
+    mutate: mutateAgent,
+    deleteCache: deleteAgentCache
+  } = useAgent(agentId)
+
+  let [formData, setSubmit] = useState()
+  let { result, error, mutate, deleteCache, isLoading } = useUpdateAgentV2(
+    agentId,
+    formData
+  )
+
+  let title = useTrans({
+    zh: "比例配制",
+    en: "Config Agent"
+  })
+
+  if (isLoadingAgent) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (loadingAgentError) {
+    return <AlertDialog {...loadingAgentError} onClickClose={dialog.hide} />
+  }
+
+  const onSubmit = ({
+    type,
+    parentUsername,
+    dividendPercentage,
+    agentDividendConditions,
+    ...data
+  }) => {
+    let formData = useAgentUpdateFormData(
+      {
+        ...diff(data, agent),
+        type,
+        parentUsername,
+        dividendPercentage,
+        agentDividendConditions
+      },
+      agentProfitSharingType
+    )
+
+    setSubmit(formData)
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+
+  return (
+    <FormDialog
+      id="config-agent-dialog"
+      defaultValues={clone(agent)}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        deleteAgentCache()
+        mutateAgent(undefined, false)
+
+        reset()
+        onSubmitted?.()
+      }}
+      title={title}
+      dialog={dialog}
+      maxWidth="100vw"
+      minWidth="60vw"
+      placement="top"
+    >
+      <ConfigFormBody
+        record={agent}
+        agentProfitSharingType={agentProfitSharingType}
+      />
+    </FormDialog>
+  )
+}
+
+//TODO:1.40 > rm OldConfigDialog
+const OldConfigDialog = ({
+  brandId,
+  agentId,
+  agentProfitSharingType,
+  onSubmitted,
+  dialog
+}) => {
   let {
     isLoading: isLoadingAgent,
     data: agent,
@@ -644,6 +761,9 @@ const ConfigDialog = ({ brandId, agentId, onSubmitted, dialog }) => {
   if (loadingAgentError) {
     return <AlertDialog {...loadingAgentError} onClickClose={dialog.hide} />
   }
+
+  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
 
   const onSubmit = (data) => {
     setSubmit({
@@ -687,13 +807,15 @@ const ConfigDialog = ({ brandId, agentId, onSubmitted, dialog }) => {
       }}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={<ConfirmCancelFooter dialog={dialog} isLoading={isLoading} />}
       maxWidth="100vw"
       minWidth="60vw"
       placement="top"
     >
-      <ConfigFormBody record={agent} />
+      <ConfigFormBody
+        record={agent}
+        oneLayer={oneLayer}
+        multipleLayer={multipleLayer}
+      />
     </FormDialog>
   )
 }
@@ -788,7 +910,7 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         <AgentInfoTab {...tab} />
         <AgentContactInfoTab {...tab} />
         {/* <AgentBankInfoTab {...tab} /> */}
-        <AgentOperationListTab {...tab} />
+        <AgentHistoryListTab {...tab} />
         <AgentBalanceChangeTab {...tab} />
         <AgentDomainListTab {...tab} />
       </TabList>
@@ -801,12 +923,7 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         {...tab}
       />
       <AgentContactInfoPanel record={record} readonly {...tab} />
-      {/* <AgentBankInfoPanel record={record} readonly {...tab} /> */}
-      <AgentOperationListPanel
-        agentId={record?.id}
-        brandId={brandId}
-        {...tab}
-      />
+      <AgentHistoryListPanel agentId={record?.id} brandId={brandId} {...tab} />
       <AgentBalanceChangePanel
         brandId={brandId}
         agentId={record?.id}

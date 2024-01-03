@@ -2,35 +2,31 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Locales, Trans, useTrans } from "../../i18n"
 import { Select } from "../../select/Select"
+import {
+  AnnouncementDepositPopupTrans,
+  AnnouncementMainMarqueeTrans,
+  AnnouncementMainPopupTrans,
+  useAnnouncementDepositPopupTrans,
+  useAnnouncementMainMarqueeTrans,
+  useAnnouncementMainPopupTrans
+} from "../../trans/Platform"
 
 export const Marquee = "Marquee"
-const MarqueeTrans = {
-  zh: "首页跑马灯",
-  en: "Main Marquee"
-}
 
 export const Main = "Main"
-const MainTrans = {
-  zh: "首页弹跳",
-  en: "Main Popup"
-}
 
 export const Deposit = "Deposit"
-const DepositTrans = {
-  zh: "存款弹跳",
-  en: "Deposit Popup"
-}
 
 export const AnnouncementTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Marquee:
-      return <Trans {...MarqueeTrans} />
+      return <AnnouncementMainMarqueeTrans />
 
     case Main:
-      return <Trans {...MainTrans} />
+      return <AnnouncementMainPopupTrans />
 
     case Deposit:
-      return <Trans {...DepositTrans} />
+      return <AnnouncementDepositPopupTrans />
 
     default:
       return value
@@ -40,15 +36,15 @@ export const AnnouncementTypeLabel = ({ value = "" }) => {
 export const AnnouncementTypeSelect = ({ ...props }) => {
   let options = [
     {
-      label: useTrans(MarqueeTrans),
+      label: useAnnouncementMainMarqueeTrans(),
       value: Marquee
     },
     {
-      label: useTrans(MainTrans),
+      label: useAnnouncementMainPopupTrans(),
       value: Main
     },
     {
-      label: useTrans(DepositTrans),
+      label: useAnnouncementDepositPopupTrans(),
       value: Deposit
     }
   ]

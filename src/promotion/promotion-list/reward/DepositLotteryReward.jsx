@@ -22,7 +22,6 @@ import { useIsDisplayMenuByRoute } from "../../../user/context"
 import Disclosure, {
   AddDisclosure,
   EditDisclosure,
-  NewDisclosure,
   ViewDisclosure
 } from "../../../dialog/Disclosure"
 import FormDialog from "../../../form/FormDialog"
@@ -64,6 +63,7 @@ import { useIsPromotionStarted } from "../usePromotionFormData"
 import { VipLevelCheckboxGroupField } from "../field/VipLevelCheckboxGroupField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
+import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
 
 export const PromotionType = "DepositAccumulateRoulette"
 
@@ -644,7 +644,7 @@ const RouletteFormBody = ({
               <Trans zh="中奖机率 %" en="Winning Probability %" />
             </Table.HeadCell>
             <Table.HeadCell>
-              <Trans zh="流水倍数" en="Turnover Requirement" />
+              <PromotionTurnoverRequirementTrans />
             </Table.HeadCell>
           </Table.Row>
         </Table.Head>

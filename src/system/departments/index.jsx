@@ -19,6 +19,17 @@ import { Trans, useTrans } from "../../i18n"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { Features, isDev, isFeatureEnabled } from "../../env"
+import { ActionTrans } from "../../trans/Action"
+import { FormProvider, useForm } from "react-hook-form"
+import { InputField } from "../../input/Input"
+import SearchButton from "../../button/SearchButton"
+import {
+  DepartmentNameTrans,
+  DepartmentsTrans,
+  LicenseeTrans,
+  PlatformTrans,
+  useDepartmentNameTrans
+} from "../../trans/Platform"
 
 export { Code }
 
@@ -34,22 +45,34 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let { state, setState, setPageIndex, setSortOrder } = useTable()
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    name: ""
+  })
   let { pageIndex, pageSize } = state
 
   let { isLoading, data, error, mutate, deleteCache } = useDepartmentList({
-    ...toApiParams(state),
-    sortby: "name"
+    ...toApiParams(state)
   })
   let columns = useColumns({ mutate, items: data?.items })
 
   return (
     <PageContent
-      title={<Trans zh="部门管理" en="Departments" />}
+      title={<DepartmentsTrans />}
       actionBar={
-        <Box alignX="right">
+        <>
+          <SearchBar
+            name={state.name}
+            search={(data = {}) => {
+              setState({
+                pageIndex: 0,
+                ...data
+              })
+              mutate()
+            }}
+            isLoading={isLoading}
+          />
           <AddButton onSubmitted={mutate} />
-        </Box>
+        </>
       }
     >
       <Table
@@ -67,6 +90,27 @@ const Body = () => {
   )
 }
 
+const SearchBar = ({ name, search, isLoading }) => {
+  let formMethods = useForm({
+    defaultValues: { name }
+  })
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(search)}>
+        <Set>
+          <InputField
+            name="name"
+            showEmptyFieldValueAddonAfter
+            placeholder={useDepartmentNameTrans()}
+          />
+          <SearchButton isLoading={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
+}
+
 const useColumns = ({ mutate, items = [] }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   let hasDeleteAuth = useIsDisplayMenuByRoute([Delete])
@@ -80,7 +124,7 @@ const useColumns = ({ mutate, items = [] }) => {
     let columns = [
       sequenceColumn(),
       {
-        Header: <Trans zh="部门名称" en="Name" />,
+        Header: <DepartmentNameTrans />,
         id: "name",
         accessor: "name",
         disableSortBy: true,
@@ -107,7 +151,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "licenseeName",
-          Header: <Trans zh="公司" en="Licensee" />,
+          Header: <LicenseeTrans />,
           disableSortBy: true
         })
       )
@@ -117,7 +161,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "brandName",
-          Header: <Trans zh="平台" en="Platform" />,
+          Header: <PlatformTrans />,
           disableSortBy: true
         })
       )
@@ -128,7 +172,7 @@ const useColumns = ({ mutate, items = [] }) => {
         id: "actions",
         disableSortBy: true,
         accessor: (row) => row,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

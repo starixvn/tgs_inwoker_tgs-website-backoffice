@@ -13,6 +13,7 @@ const admin = async ({ browser }) =>
     storageStatePath: AdminAuthPath
   })
 
+//TODO: rm reseller?
 const ResellerAuthPath = `${Path}/reseller-auth.json`
 const ResellerUserName = "reseller.enabled"
 const reseller = async ({ browser }) =>
@@ -25,6 +26,7 @@ const reseller = async ({ browser }) =>
 
 const PlatformAuthPath = `${Path}/platform-auth.json`
 const PlatformUserName = "brand.enabled"
+//TODO: rm platform?
 const platform = async ({ browser }) =>
   login({
     username: PlatformUserName,
@@ -68,13 +70,10 @@ export const loginUser = async (page, username, password = "TgsP@ssw0rd") => {
   return response.userInfo
 }
 
-//TODO: rm
-export const login = async ({
-  browser,
-  storageStatePath,
-  username = "",
-  password = "TgsP@ssw0rd"
-}) => {
+export const login = async (
+  { browser, storageStatePath, username = "", password = "TgsP@ssw0rd" },
+  options = {}
+) => {
   let context = await browser.newContext()
   let page = await context.newPage()
   await page.goto(`${host()}/login`, {
@@ -110,17 +109,24 @@ export const login = async ({
 
   await context.storageState({ path: storageStatePath })
 
+  let afterLogin = options?.afterLogin
+  if (afterLogin) {
+    await afterLogin({ browser, context })
+  }
+
   if (!page.isClosed()) {
     await page.close()
   }
 }
 
+//TODO: rm Reseller & Platform?
 export const StorageState = {
   Admin: AdminAuthPath,
   Reseller: ResellerAuthPath,
   Platform: PlatformAuthPath
 }
 
+//TODO: rm Reseller & Platform? create on demand?
 export const UserName = {
   Admin: AdminUserName,
   Reseller: ResellerUserName,
@@ -131,8 +137,10 @@ export const PlatformCode = "TGS"
 
 export default {
   admin,
+  /*
   reseller,
   platform,
+  */
   StorageState,
   UserName,
   PlatformCode

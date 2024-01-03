@@ -11,6 +11,9 @@ import Alert from "../../dialog/Alert"
 import { Table, useTable } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
 import { Detail } from "./condition"
+import { OperatorTrans } from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
+import { PaymentLimitTrans } from "../../trans/Payment"
 
 export const ViewButton = ({ record, ...props }) => {
   let dialog = useModalState()
@@ -77,7 +80,7 @@ const useColumns = ({ items = [] }) => {
     {
       id: "cdreatedByUsername",
       accessor: "createdByUsername",
-      Header: <Trans zh="操作人" en="Operator" />,
+      Header: <OperatorTrans />,
       disableSortBy: true,
       headCell: {
         textAlign: "center"
@@ -88,7 +91,7 @@ const useColumns = ({ items = [] }) => {
     },
     dateTimeColumn({
       accessor: "createdOn",
-      Header: <Trans zh="操作时间" en="Operation Time" />,
+      Header: <TimeTrans />,
       disableSortBy: true
     }),
     {
@@ -114,7 +117,7 @@ const useColumns = ({ items = [] }) => {
     {
       id: "limit",
       accessor: (record) => record,
-      Header: <Trans zh="单笔限额" en="Limit" />,
+      Header: <PaymentLimitTrans />,
       disableSortBy: true,
       headCell: {
         textAlign: "center"

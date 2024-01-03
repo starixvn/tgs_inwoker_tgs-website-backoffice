@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: operator-api
-image: pgtgs/operator-api:202309140920.316
+image: pgtgs/operator-api:202312130835.341
 services:
   - name: operator-api
     dependencies:
@@ -11,6 +11,8 @@ services:
       - file-service
       - promotion-api
       - station-letter
+      - player-bucket-api
+      - viplevel-api
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
@@ -23,6 +25,7 @@ services:
       Operator__PlayerServiceBaseUrl: "http://player-api"
       Operator__StationLetterBaseUrl: "http://station-letter"
       Operator__PlayerBucketBaseUrl: "http://player-bucket-api"
+      Operator__VipLevelServiceBaseUrl: "http://viplevel-api"
       Promotion__Url: "http://promotion-api"
       ForwardedHeaders__ForwardedForHeaderName: "X-Forwarded-For"
     ingresses:

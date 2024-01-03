@@ -4,31 +4,24 @@ import { Group, Text } from "bumbag"
 import { useTrans, Trans, useLocale } from "../../i18n"
 import Select, { SelectField } from "../../select/Select"
 import Input, { InputField } from "../../input/Input"
+import { usePhoneTrans } from "../../trans/User"
+import { useBankCardFieldTrans, useBankAccountTrans } from "../../trans/Payment"
 
 export const BankInfoTagTypeSelect = ({
   name = "bankInfoTagType",
   placeholder,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "银行卡栏位",
-    en: "Bank Card Field"
-  })
+  let defaultPlaceholder = useBankCardFieldTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useTrans({
-        zh: "银行卡号",
-        en: "Bank Account"
-      }),
+      label: useBankAccountTrans(),
       value: "BankAccount"
     },
     {
-      label: useTrans({
-        zh: "手机号码",
-        en: "Phone"
-      }),
+      label: usePhoneTrans(),
       value: "Phone"
     }
   ]

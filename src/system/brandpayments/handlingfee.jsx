@@ -13,7 +13,6 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update as UpdateMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
 import Disclosure from "../../dialog/Disclosure"
-import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useUpdateBrandPaymentHandingFee } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import { NormalLabel as Label } from "../../form/Label"
@@ -23,6 +22,8 @@ import {
   NumberInput,
   PercentageNumberInputField
 } from "../../input/NumberInput"
+import { BasicInformationTrans } from "../../trans/Field"
+import { PaymentChannelTrans, PaymentMethodTrans } from "../../trans/Payment"
 
 const HandlingFeeTrans = {
   zh: "手续费",
@@ -77,15 +78,6 @@ const EditDialog = ({ record = {}, dialog, onSubmitted, ...props }) => {
       onSubmitted={onSubmitted}
       title={title}
       showCloseButton
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter
-          alignX="center"
-          width="100%"
-          isLoading={isLoading}
-          disabled={isLoading}
-        />
-      }
       dialog={dialog}
     >
       <EditBody record={record} dialog={dialog} />
@@ -97,7 +89,7 @@ const EditBody = ({ record = {}, dialog, ...props }) => {
   return (
     <Stack orientation="vertical" spacing="minor-1">
       <Heading use="h5">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
       <FieldValues>
         <Label>
@@ -106,12 +98,12 @@ const EditBody = ({ record = {}, dialog, ...props }) => {
         <ValueBlock>{record?.paymentVendorName}</ValueBlock>
 
         <Label>
-          <Trans zh="支付方式" en="Payment Medthod" />
+          <PaymentMethodTrans />
         </Label>
         <ValueBlock>{record?.paymentMethodName}</ValueBlock>
 
         <Label>
-          <Trans zh="支付通道" en="Payment Channel" />
+          <PaymentChannelTrans />
         </Label>
         <ValueBlock>{record?.paymentChannelName}</ValueBlock>
 

@@ -49,9 +49,12 @@ import { GamePlatformLabel } from "../../game/games/GamePlatform.jsx"
 import { useDropzone } from "react-dropzone"
 import { GameProviderGameFormBody } from "./GameProviderGame"
 import { ConfirmText } from "../../button/ActionButtons"
-import sequenceColumn from "../../table/column/sequence"
+import sequenceColumn, { SequenceColumn } from "../../table/column/sequence"
 import { View, Update } from "./menu"
 import { isDev } from "../../env"
+import { ActionTrans, ExportTrans } from "../../trans/Action.jsx"
+import { StatusTrans } from "../../trans/Status.jsx"
+import { GameNameTrans } from "../../trans/Game.jsx"
 
 export const BatchAddGameProviderGameListDisclosure = ({
   gameProviderId,
@@ -77,7 +80,7 @@ export const BatchAddGameProviderGameListDisclosure = ({
               href={`/api/game/export/${gameProviderId}`}
               download={`${gameProviderCode}.xlsx`}
             >
-              <Trans zh="汇出" en="Export" />
+              <ExportTrans />
             </DropdownMenu.Item>
             {editable && (
               <DropdownMenu.Item
@@ -180,12 +183,7 @@ const BatchAddGameListDialog = ({ gameProviderId, onSubmitted, dialog }) => {
 const useColumns = ({ gameProviderId, items = [], formMethods }) => {
   return useMemo(() => {
     let columns = [
-      textColumn({
-        id: "index",
-        accessor: (row, rowIndex) => rowIndex + 1,
-        Header: <Trans zh="序" en="Sequence" />,
-        disableSortBy: true
-      }),
+      SequenceColumn(),
       textColumn({
         accessor: "externalId",
         Header: <Trans zh="External ID" en="External Id" />,
@@ -198,12 +196,12 @@ const useColumns = ({ gameProviderId, items = [], formMethods }) => {
       }),
       textColumn({
         accessor: "name",
-        Header: <Trans zh="游戏名称" en="Name" />,
+        Header: <GameNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="Status" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -215,7 +213,7 @@ const useColumns = ({ gameProviderId, items = [], formMethods }) => {
       textColumn({
         id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         disableSortBy: true,
         Cell: ({ value: record, row }) => {
           let index = row.index

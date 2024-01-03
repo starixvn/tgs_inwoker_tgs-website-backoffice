@@ -60,6 +60,14 @@ import { useMeasure } from "react-use"
 import { useResellerPageContentWidth } from "../../page/ResellerPageContent"
 import { AdjustListDialogDisclosure } from "./AdjustListDialog"
 import { UserType } from "./UserType"
+import { AgentAdjustTrans } from "../../trans/Action"
+import { CurrencyTrans } from "../../trans/Payment"
+import {
+  CompanyTrans,
+  LicenseeTrans,
+  PlatformTrans
+} from "../../trans/Platform"
+import { AgentTrans } from "../../trans/Agent"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -204,17 +212,17 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
         columns: [
           textColumn({
             accessor: "licensee",
-            Header: <Trans zh="公司" en="Licensee" />,
+            Header: <LicenseeTrans />,
             disableSortBy: true
           }),
           textColumn({
             accessor: "brand",
-            Header: <Trans zh="平台" en="Platform" />,
+            Header: <PlatformTrans />,
             disableSortBy: true
           }),
           textColumn({
             accessor: "currency",
-            Header: <Trans zh="币种" en="Currency" />,
+            Header: <CurrencyTrans />,
             disableSortBy: true
           })
         ]
@@ -228,12 +236,12 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
         columns: [
           numberColumn({
             accessor: "company",
-            Header: <Trans zh="公司" en="Company" />,
+            Header: <CompanyTrans />,
             disableSortBy: true
           }),
           numberColumn({
             accessor: "agent",
-            Header: <Trans zh="代理" en="Agent" />,
+            Header: <AgentTrans />,
             disableSortBy: true
           }),
           numberColumn({
@@ -262,7 +270,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
         columns: [
           numberColumn({
             accessor: "agentOther",
-            Header: <Trans zh="代理调帐" en="Agent Adjust" />,
+            Header: <AgentAdjustTrans />,
             disableSortBy: true
           })
         ]
@@ -295,7 +303,7 @@ const useColumns = ({ items = [], resellerId, from, to }) => {
           numberDecimalColumn({
             id: "agentAdjustAmount",
             accessor: (row) => row,
-            Header: <Trans zh="代理调帐" en="Agent Adjust" />,
+            Header: <AgentAdjustTrans />,
             disableSortBy: true,
             Cell: ({ value: record }) => {
               return (

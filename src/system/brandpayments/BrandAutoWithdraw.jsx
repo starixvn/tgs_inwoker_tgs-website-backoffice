@@ -29,6 +29,10 @@ import { pluck, difference } from "ramda"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { clone, isObject } from "lodash-es"
+import {
+  PaymentChannelTrans,
+  PaymentMinMaxLimitTrans
+} from "../../trans/Payment"
 
 export const BrandAutoWithdrawDialogDisclosure = ({
   brandId,
@@ -424,7 +428,7 @@ const useColumns = ({
       }),
       textColumn({
         accessor: "paymentChannelId",
-        Header: <Trans zh="支付通道" en="Channel" />,
+        Header: <PaymentChannelTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentChannelLabel value={value} />
       }),
@@ -436,7 +440,7 @@ const useColumns = ({
       textColumn({
         id: "limit",
         accessor: (row) => row,
-        Header: <Trans zh="单笔限额" en="Min - Max" />,
+        Header: <PaymentMinMaxLimitTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           let from = formatNumber(value.transferLimitFrom)

@@ -34,13 +34,16 @@ import { SortOrder } from "../../table/order"
 import SearchButton from "../../button/SearchButton"
 import { InputField } from "../../input/Input"
 import { IpAddressTypeSelect } from "./IpAddressType"
+import { TimeTrans } from "../../trans/Date"
+import { UserNameTrans } from "../../trans/User"
+import { SearchMemberByIPTrans } from "../../trans/Platform"
 
 export const PlayerByIpAddressTabId = "PlayerByIpAddress"
 
 export const PlayerByIpAddressTab = ({ ...props }) => {
   return (
     <Tab tabId={PlayerByIpAddressTabId} {...props}>
-      <Trans zh="按IP 搜索玩家" en="Search Member By IP" />
+      <SearchMemberByIPTrans />
     </Tab>
   )
 }
@@ -138,18 +141,15 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "username",
         accessor: (row) => row,
-        Header: <Trans zh="玩家" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
-          //TODO: player info dialog
-          let { playerCode } = record
-
           return record.username
         }
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       })
     ],

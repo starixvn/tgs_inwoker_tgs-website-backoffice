@@ -15,6 +15,7 @@ import {
   usePlatformId
 } from "../../page/PlatformPageContent"
 import { Trans } from "../../i18n"
+import { MarketReportTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -46,7 +47,7 @@ export const CodeContentPair = [Code, Content]
 
 const Report = () => {
   return (
-    <PlatformPageContent title={<Trans zh="市场报表" en="Market Report" />}>
+    <PlatformPageContent title={<MarketReportTrans />}>
       <ReportBody />
     </PlatformPageContent>
   )

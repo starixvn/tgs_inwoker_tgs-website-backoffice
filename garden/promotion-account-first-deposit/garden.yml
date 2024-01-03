@@ -1,0 +1,22 @@
+kind: Module
+type: container
+name: promotion-account-first-deposit
+image: pgtgs/promotion-account-first-deposit:202312210349.8
+services:
+  - name: promotion-account-first-deposit
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - promotion-api
+      - payment-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      AccountFirstDeposit__PromotionServiceBaseUrl: "http://promotion-api"
+      AccountFirstDeposit__PaymentServiceBaseUrl: "http://payment-api"
+    ports:
+      - name: http
+        containerPort: 8080
+        servicePort: 80

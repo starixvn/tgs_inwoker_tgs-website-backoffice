@@ -1,19 +1,18 @@
 import React from "react"
 import { Spinner } from "bumbag"
-import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
+import { getTrans, Locales, Trans, useLocale, useTrans } from "../../i18n"
 import Select from "../../select/Select"
 import { usePaymentMethodList } from "./client"
+import { usePaymentMethodTrans } from "../../trans/Payment"
 
 export const PaymentMethodSelect = ({ range, placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "支付方式",
-    en: "Payment Method"
-  })
+  let defaultPlaceholder = usePaymentMethodTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()
   let { isLoading, data, error } = usePaymentMethodList()
 
+  let DefaultLocal = Locales.en
   let options = data
     ?.filter((item) => {
       if (range) {
@@ -22,7 +21,7 @@ export const PaymentMethodSelect = ({ range, placeholder, ...props }) => {
       return true
     })
     .map(({ trans, code, id }) => ({
-      label: trans?.[locale] ?? code,
+      label: trans?.[locale] ?? trans?.[DefaultLocal] ?? code,
       value: id
     }))
 

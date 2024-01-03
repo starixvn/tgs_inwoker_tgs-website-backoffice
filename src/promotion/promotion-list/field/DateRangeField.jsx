@@ -9,6 +9,7 @@ import { today } from "../../../date/range"
 import { isValidDate } from "../../../date/isValidDate"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { parseISO, isAfter, isBefore } from "date-fns"
+import { PromotionTimeTrans } from "../../../trans/Promotion"
 
 const FromFieldName = "from"
 export const usePromotionStart = () => {
@@ -59,7 +60,7 @@ export const PromotionDateRangeFieldBox = ({ readOnly }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="活动时间" en="Promotion Period" />
+        <PromotionTimeTrans />
       </NormalLabel>
       <Box id="promotion-period-box" alignY="center">
         <DateInputRange

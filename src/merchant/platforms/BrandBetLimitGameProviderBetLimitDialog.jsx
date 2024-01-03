@@ -18,9 +18,6 @@ import FormDialog from "../../form/FormDialog"
 import { Update as UpdateMenu } from "./menu"
 import { useSyncBrandGameList, useUpdateBrand } from "./client"
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
-import ConfirmButtonFooter, {
-  CloseButtonFooter
-} from "../../form/ConfirmButtonFooter"
 import { useFormContext, useFieldArray, Controller } from "react-hook-form"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
@@ -42,6 +39,17 @@ import { sortByNumberProp } from "../../list/sort"
 import { CloseText, ConfirmText } from "../../button/ActionButtons"
 import { GamePlatformLabel } from "../../game/games/GamePlatform.jsx"
 import { useGameProviderGameList } from "../../game/games/client"
+import {
+  GameIdTrans,
+  GameListTrans,
+  GameNameTrans,
+  GameProviderNameTrans,
+  GameProviderTrans,
+  useGameListTrans
+} from "../../trans/Game.jsx"
+import { CurrencyTrans } from "../../trans/Payment.jsx"
+import { SupportingDeviceTrans } from "../../trans/Field.jsx"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter.jsx"
 
 export const EditBrandBetLimitGameProviderBetLimit = ({
   record,
@@ -224,10 +232,6 @@ const EditDialog = ({
       }}
       onClickClose={reset}
       title={title}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       dialog={dialog}
       placement="top"
       minWidth="60vw"
@@ -501,7 +505,7 @@ const GroupCard = ({
           }) => (
             <>
               <Disclosure {...dialog}>
-                <Trans zh="游戏列表" en="Game List" />
+                <GameListTrans />
               </Disclosure>
               {dialog.visible && (
                 <GroupGameListDialog
@@ -581,7 +585,7 @@ const BetLimitTable = ({
       <Table.Head>
         <Table.Row>
           <Table.HeadCell textAlign="center">
-            <Trans zh="币种" en="Currency" />
+            <CurrencyTrans />
           </Table.HeadCell>
           <Table.HeadCell textAlign="center">
             <Trans zh="最低投注" en="Min Bet" />
@@ -679,10 +683,7 @@ const GroupGameListDialog = ({
   readonly = false,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "游戏列表",
-    en: "Game List"
-  })
+  let title = useGameListTrans()
 
   let isSports = getValues(isSportsFieldName)
 
@@ -740,7 +741,7 @@ const GroupGameListDialog = ({
           <Table.Head>
             <Table.Row>
               <Table.HeadCell textAlign="center">
-                <Trans zh="游戏商" en="Game Provider Name" />
+                <GameProviderNameTrans />
               </Table.HeadCell>
               <Table.HeadCell textAlign="center"></Table.HeadCell>
             </Table.Row>
@@ -830,7 +831,7 @@ const GameProviderRow = ({ gameProvider, readonly = false }) => {
             return (
               <>
                 <Disclosure {...dialog}>
-                  <Trans zh="游戏列表" en="Game List" />
+                  <GameListTrans />
                 </Disclosure>
                 {dialog.visible && (
                   <GameProviderGameListDialog
@@ -958,13 +959,13 @@ const GameProviderGameListDialogBody = ({ readonly = false }) => {
         <Table.Row>
           <Table.HeadCell></Table.HeadCell>
           <Table.HeadCell>
-            <Trans zh="游戏ID" en="Game ID" />
+            <GameIdTrans />
           </Table.HeadCell>
           <Table.HeadCell>
-            <Trans zh="游戏名称" en="Game Name" />
+            <GameNameTrans />
           </Table.HeadCell>
           <Table.HeadCell>
-            <Trans zh="支持设备" en="Platform" />
+            <SupportingDeviceTrans />
           </Table.HeadCell>
         </Table.Row>
       </Table.Head>
@@ -1070,7 +1071,7 @@ const BetLimitDialog = ({
           <Table.Head>
             <Table.Row>
               <Table.HeadCell textAlign="center">
-                <Trans zh="游戏商" en="Game Provider" />
+                <GameProviderTrans />
               </Table.HeadCell>
               <Table.HeadCell textAlign="center">
                 <Trans zh="限红" en="Bet Limit" />

@@ -17,9 +17,12 @@ import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
 import { Descending } from "../../table/order"
 import { endOfDay } from "date-fns"
+import { ActionTypeTrans, OperatorTrans } from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
 
 const Key = "AgentOperationList"
 
+//TODO:1.40 > rm AgentOperationListTab
 export const AgentOperationListTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
@@ -112,12 +115,12 @@ const useColumns = ({ items = [] }) =>
     () => [
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "operation",
-        Header: <Trans zh="操作项" en="Operation Item" />,
+        Header: <ActionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => (
           <AgentOperationLabel value={value} data-type={value} />
@@ -125,8 +128,7 @@ const useColumns = ({ items = [] }) =>
       }),
       textColumn({
         accessor: "createdByUsername",
-        Header: <Trans zh="操作者" en="Operator" />,
-
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ],

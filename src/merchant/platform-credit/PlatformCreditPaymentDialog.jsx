@@ -24,6 +24,7 @@ import { NormalLabel } from "../../form/Label"
 import { useFormContext } from "react-hook-form"
 import Input from "../../input/Input"
 import { NumberInput } from "../../input/NumberInput"
+import { BalanceTrans } from "../../trans/User"
 
 export const PlatformCreditPaymentDialogDisclosure = ({
   record,
@@ -117,7 +118,7 @@ const FormBody = () => {
       </Box>
 
       <NormalLabel>
-        <Trans zh="额度余额" en="Balance" />
+        <BalanceTrans />
       </NormalLabel>
       <Box alignY="center">
         <FormattedNumber value={balance} />

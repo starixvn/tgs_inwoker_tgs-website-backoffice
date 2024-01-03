@@ -34,6 +34,20 @@ import PlayerIdentityState, {
 import { Descending } from "../../table/order"
 import { PlayerIdentityAttachment } from "./PlayerIdentityAttachment"
 import { ResetPlayerIdentityAuthDisclosure } from "./ResetPlayerIdentityAuth"
+import {
+  ICNumberTrans,
+  RealNameTrans,
+  UserNameTrans,
+  useUserNameTrans
+} from "../../trans/User"
+import { ActionTrans, RemarkTrans } from "../../trans/Action"
+import { ApplicationTimeTrans, VerifyTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
+import {
+  PlayerIdVerificationInfoTrans,
+  PlayerIdVerificationTrans
+} from "../../trans/Player"
+import { AttachmentTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -108,7 +122,7 @@ const BodyContent = ({ brandId = "", brand }) => {
 
   return (
     <PageContent
-      title={<Trans zh="玩家身分审核列表" en="Player ID Verification" />}
+      title={<PlayerIdVerificationTrans />}
       actionBar={
         <SearchBar
           brandId={brandId}
@@ -128,10 +142,7 @@ const BodyContent = ({ brandId = "", brand }) => {
         <Alert variant="bordered" type="info" accent marginBottom="1rem">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
-              <Trans
-                zh="請注意，此頁面僅會顯示已上傳身分證資料之玩家。"
-                en="Please be aware that this page will show the players who have uploaded ID verification materials ONLY."
-              />
+              <PlayerIdVerificationInfoTrans />
             </List.Item>
           </List>
         </Alert>
@@ -153,10 +164,7 @@ const BodyContent = ({ brandId = "", brand }) => {
 }
 
 const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名输入框",
-    en: "Input user name"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
 
   let formMethods = useForm({ defaultValues: { status } })
 
@@ -175,7 +183,7 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
             autocomplete="off"
           />
           <DateInputRangeField
-            label={<Trans zh="申请时间" en="Application Time" />}
+            label={<ApplicationTimeTrans />}
             startProps={{
               name: "beginCreatedOn"
             }}
@@ -185,7 +193,7 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
             maxRangeDays={maxRangeDays}
           />
           <DateInputRangeField
-            label={<Trans zh="审核时间" en="Verify Time" />}
+            label={<VerifyTimeTrans />}
             startProps={{
               name: "beginReviewedOn"
             }}
@@ -212,23 +220,23 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "realName",
-        Header: <Trans zh="真实姓名" en="Real name" />,
+        Header: <RealNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "idNumber",
-        Header: <Trans zh="身分证" en="IC Number" />,
+        Header: <ICNumberTrans />,
         disableSortBy: true
       }),
       textColumn({
         id: "attachment",
         accessor: (row) => row,
-        Header: <Trans zh="附件" en="Attachment" />,
+        Header: <AttachmentTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let { playerCode, formId, status, attachmentId } = record
@@ -251,13 +259,13 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PlayerIdentityStateLabel value={value} />
       }),
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true
       })
     ]
@@ -267,7 +275,7 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value: record }) => {
             let { playerCode, formId, status } = record

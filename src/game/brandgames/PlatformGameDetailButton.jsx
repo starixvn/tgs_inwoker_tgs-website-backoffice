@@ -3,7 +3,6 @@ import { css, Stack, Heading, Box, Button, useModalState } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { ViewDetail, UpdateDetail } from "./menu"
 import Disclosure, { EditDisclosure } from "../../dialog/Disclosure"
-import { ConfirmButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useUpdateBrandGame } from "./client"
 import { Trans, useTrans } from "../../i18n"
 import { FieldValues } from "../../layout/Grid"
@@ -18,6 +17,24 @@ import AlertDialog from "../../dialog/Alert"
 import Switch from "../../switch/Switch"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import Input from "../../input/Input"
+import {
+  CommissionRebateTrans,
+  GameDetailTrans,
+  GameIdTrans,
+  GameNameTrans,
+  GameTypeTrans,
+  TurnoverPercentageTrans,
+  useGameDetailTrans
+} from "../../trans/Game.jsx"
+import {
+  BasicInformationTrans,
+  NoTrans,
+  SupportHtml5Trans,
+  SupportingDeviceTrans,
+  VendorTrans,
+  YesTrans
+} from "../../trans/Field.jsx"
+import { SpecialProcessingTrans } from "../../trans/Action.jsx"
 
 export const PlatformGameDetailButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -32,7 +49,7 @@ export const PlatformGameDetailButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="游戏详情" en="Game Detail" />
+        <GameDetailTrans />
       </Disclosure>
       {dialog.visible && (
         <PlatformGameDetailDialog
@@ -79,10 +96,7 @@ const PlatformGameDetailDialog = ({
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "游戏详情",
-    en: "Game Detail"
-  })
+  let title = useGameDetailTrans()
 
   if (isLoadingBrandGame) {
     return <LoadingBackdrop {...dialog} />
@@ -108,13 +122,8 @@ const PlatformGameDetailDialog = ({
       }}
       title={title}
       showCloseButton
-      showActionButtons={false}
+      showActionButtons={readOnly ? false : true}
       dialog={dialog}
-      footer={
-        readOnly ? null : (
-          <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-        )
-      }
       minWidth="40vw"
     >
       <EditBody record={brandGame} readOnly={readOnly} />
@@ -130,20 +139,20 @@ const EditBody = ({ record = {}, readOnly }) => {
   return (
     <Stack orientation="vertical" marginLeft="1rem">
       <Heading use="h5" marginBottom="major-1">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
       <Stack>
         <Stack orientation="horizontal" marginBottom="major-1">
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="厂商" en="Vendor" />
+              <VendorTrans />
             </Label>
             <Box alignY="center">{gameProviderName}</Box>
           </FieldValues>
 
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="游戏类型" en="Game Type" />
+              <GameTypeTrans />
             </Label>
             <Box alignY="center">
               <GameTypeLabel value={gameType} />
@@ -154,13 +163,13 @@ const EditBody = ({ record = {}, readOnly }) => {
         <Stack orientation="horizontal" marginBottom="major-1">
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="游戏名称" en="Game Name" />
+              <GameNameTrans />
             </Label>
             <Box alignY="center">{gameName}</Box>
           </FieldValues>
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="游戏 ID" en="Game ID" />
+              <GameIdTrans />
             </Label>
             <Box alignY="center">{gameId}</Box>
           </FieldValues>
@@ -168,7 +177,7 @@ const EditBody = ({ record = {}, readOnly }) => {
         <Stack orientation="horizontal" marginBottom="major-1">
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="支持设备" en="Platform" />
+              <SupportingDeviceTrans />
             </Label>
             <Box alignY="center">
               <GamePlatformLabel value={platform} />
@@ -177,14 +186,10 @@ const EditBody = ({ record = {}, readOnly }) => {
 
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="支持HTML5" en="HTML5" />
+              <SupportHtml5Trans />
             </Label>
             <Box alignY="center">
-              {supportHtml5 ? (
-                <Trans zh="是" en="Yes" />
-              ) : (
-                <Trans zh="不" en="No" />
-              )}
+              {supportHtml5 ? <YesTrans /> : <NoTrans />}
             </Box>
           </FieldValues>
         </Stack>
@@ -193,11 +198,11 @@ const EditBody = ({ record = {}, readOnly }) => {
       {notLobbyGame && (
         <>
           <Heading use="h5" marginBottom="major-1">
-            <Trans zh="特殊处理" en="Special Processing" />
+            <SpecialProcessingTrans />
           </Heading>
           <FieldValues>
             <Label fontWeight="normal">
-              <Trans zh="流水比例" en="Turnover Percentage" />
+              <TurnoverPercentageTrans />
             </Label>
             <Box alignY="center">
               <PercentageNumberInputField
@@ -208,7 +213,7 @@ const EditBody = ({ record = {}, readOnly }) => {
             </Box>
 
             <Label fontWeight="normal">
-              <Trans zh="是否发放返水" en="Commission Rebate" />
+              <CommissionRebateTrans />
             </Label>
             <Switch name="rebate" disabled={readOnly} />
           </FieldValues>

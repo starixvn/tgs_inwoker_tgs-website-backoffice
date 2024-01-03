@@ -32,6 +32,15 @@ import DateTimeInput from "../../date/DateTimeInput"
 import Separator from "../../layout/Separator"
 import { usePlayerMainWallet } from "../../player-management/player-list/client"
 import Modal from "../../dialog/Modal"
+import {
+  BetAmountTrans,
+  ExternalRoundIdTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans,
+  WinLossTrans
+} from "../../trans/Game"
+import { StatusTrans } from "../../trans/Status"
+import { SettleAmountTrans } from "../../trans/Field"
 
 export const SettleGameRoundDialogDisclosure = ({
   roundId,
@@ -177,7 +186,7 @@ const FormBody = () => {
   } = usePlayerMainWallet(playerCode)
   return (
     <FieldStack>
-      <FieldWrapper label={<Trans zh="三方订单ID" en="External Id" />}>
+      <FieldWrapper label={<ExternalRoundIdTrans />}>
         <Box fontWeight="bold">{externalRoundId}</Box>
       </FieldWrapper>
       <FieldWrapper
@@ -189,14 +198,14 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="betAmount"
-          label={<Trans zh="投注金额" en="Bet Amount" />}
+          label={<BetAmountTrans />}
           required
           min="0"
           step="0.01"
         />
         <NumberInputField
           name="validBetAmount"
-          label={<Trans zh="有效投注金额" en="Valid Bet Amount" />}
+          label={<ValidBetAmountTrans />}
           min="0"
           step="0.01"
           required
@@ -205,7 +214,7 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="settleAmount"
-          label={<Trans zh="结算金额" en="Settle Amount" />}
+          label={<SettleAmountTrans />}
           min="0"
           step="0.01"
           required
@@ -220,14 +229,14 @@ const FormBody = () => {
       <FieldStack orientation="horizontal">
         <NumberInputField
           name="turnover"
-          label={<Trans zh="流水" en="Turnover" />}
+          label={<TurnoverTrans />}
           min="0"
           step="0.01"
           required
         />
         <NumberInputField
           name="winLoss"
-          label={<Trans zh="输赢金额" en="Win Loss" />}
+          label={<WinLossTrans />}
           hint={
             <Text fontWeight="bold" color="warning">
               <Trans
@@ -244,7 +253,7 @@ const FormBody = () => {
       <GameRoundStatusSelectField
         name="clientRoundStatus"
         options={statusOptions}
-        label={<Trans zh="状态" en="Status" />}
+        label={<StatusTrans />}
         required
       />
       <Separator />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { Spinner, Stack, Flex, Box, Card, Set, Checkbox } from "bumbag"
+import { Spinner, Stack, Flex, Box, Card, Set, Checkbox, Level } from "bumbag"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
 import {
@@ -26,13 +26,43 @@ import PlayerAdjustBalanceType, {
   usePlayerAdjustBalanceTypeOptionList,
   PlayerAdjustBalanceTypeLabel
 } from "../balance-adjustment/PlayerAdjustBalanceType"
+import { BalanceChangeRecordsTrans, BalanceTrans } from "../../trans/User"
+import {
+  RemarkTrans,
+  TransactionTypeTrans,
+  useTransactionTypeTrans
+} from "../../trans/Action"
+import {
+  NetProfitTrans,
+  TransactionAmountTrans,
+  TransactionIdTrans
+} from "../../trans/Field"
+import { TimeTrans } from "../../trans/Date"
+import {
+  BalanceChangeTypeReceiveCommitTrans,
+  BalanceChangeTypeReceiveRollbackTrans,
+  DepositTrans,
+  TransferAndCanceledTrans,
+  TransferCanceledTrans,
+  WithdrawAndCanceledTrans,
+  WithdrawCanceledTrans,
+  WithdrawCompletedTrans,
+  useBalanceChangeTypeReceiveCommitTrans,
+  useBalanceChangeTypeReceiveRollbackTrans,
+  useDepositTrans,
+  useTransferAndCanceledTrans,
+  useTransferCanceled,
+  useWithdrawAndCanceledTrans,
+  useWithdrawCanceledTrans
+} from "../../trans/Payment"
+import { BalanceChangeUnsavedDataDisclosure } from "./BalanceChangeUnsavedData"
 
 export const Key = "BalanceChange"
 
 export const PlayerBalanceChangeTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="账变记录" en="Balance Change Records" />
+      <BalanceChangeRecordsTrans />
     </_Tab>
   )
 }
@@ -76,22 +106,25 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
   return (
     <TabPanel tabId={Key} {...props}>
       <Stack spacing="major-2">
-        <SearchBar
-          accountChangeType={accountChangeType}
-          start={from}
-          end={to}
-          search={({ accountChangeType, start, end }) => {
-            setState({
-              pageIndex: 0,
-              accountChangeType,
-              from: start,
-              to: end
-            })
-            mutate()
-            mutateTotal()
-          }}
-          isLoading={isLoading}
-        />
+        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+          <SearchBar
+            accountChangeType={accountChangeType}
+            start={from}
+            end={to}
+            search={({ accountChangeType, start, end }) => {
+              setState({
+                pageIndex: 0,
+                accountChangeType,
+                from: start,
+                to: end
+              })
+              mutate()
+              mutateTotal()
+            }}
+            isLoading={isLoading}
+          />
+          <BalanceChangeUnsavedDataDisclosure playerCode={playerCode} />
+        </Level>
         <Table
           id="balanceChange"
           columns={columns}
@@ -144,11 +177,12 @@ const SearchBar = ({
   )
 }
 
+//TODO:1.40 new balance change api has same columns?
 const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         TotalCell: () => <Trans zh="总和" en="Total" />,
         accessor: "recordedOn",
         disableSortBy: true
@@ -156,7 +190,7 @@ const useColumns = ({ items = [] }) =>
       textColumn({
         id: "transactionType",
         accessor: (row) => row,
-        Header: <Trans zh="交易类型" en="Transaction Type" />,
+        Header: <TransactionTypeTrans />,
         disableSortBy: true,
         TotalCell: () => null,
         Cell: ({ value: record }) => {
@@ -169,23 +203,23 @@ const useColumns = ({ items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="交易金额" en="Amount" />,
+        Header: <TransactionAmountTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "externalTransactionId",
-        Header: <Trans zh="交易单号" en="Transaction ID" />,
+        Header: <TransactionIdTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "balance",
-        Header: <Trans zh="余额" en="Balance" />,
+        Header: <BalanceTrans />,
         TotalCell: () => null,
         disableSortBy: true
       }),
       textColumn({
         accessor: "includeInNetProfit",
-        Header: <Trans zh="淨盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         TotalCell: () => null,
         Cell: ({ value }) => {
           return (
@@ -197,7 +231,7 @@ const useColumns = ({ items = [] }) =>
       }),
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         TotalCell: () => null,
         disableSortBy: true
       })
@@ -212,35 +246,19 @@ const newDateRange = () => ({
 
 const Deposit = "Deposit"
 const Deposited = "Deposited"
-const DepositTrans = {
-  zh: "存款",
-  en: "Deposit"
-}
 
 const Withdrawal = "Withdrawal"
 const WithdrawLock = "WithdrawLock"
-const WithdrawalTrans = {
-  zh: "提款(包含已取消提款)",
-  en: "Withdrawal/Canceled Withdrawal"
-}
 
 const WithdrawCommit = "WithdrawCommit"
-const WithdrawCommitTrans = {
-  zh: "提款完成",
-  en: "Complete Withdrawal"
-}
 
 const Transfer = "Transfer"
-const TransferTrans = {
-  zh: "转帐(含转帐取消)",
-  en: "Transfer (Includes Canceled Transfer)"
-}
 
 const TransferRollback = "TransferRollback"
-const TransferRollbackTrans = {
-  zh: "转帐取消",
-  en: "Transfer Canceled"
-}
+
+const ReceiveCommit = "ReceiveCommit"
+
+const ReceiveRollback = "ReceiveRollback"
 
 const isDepositOrWithdrawal = (value) =>
   value === Deposit || value === Withdrawal
@@ -331,40 +349,42 @@ const AdjustResettledBetManualTrans = {
 
 const CancelWithdrawal = "CancelWithdrawal"
 const WithdrawRollback = "WithdrawRollback"
-const CancelWithdrawalTrans = {
-  zh: "取消提款",
-  en: "Cancel Withdrawal"
-}
 
+//TODO:1.40 able to rm some game related item?
 export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "交易类型",
-    en: "Transaction Type"
-  })
+  let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let adjustPlayerBalanceTypeOptions = usePlayerAdjustBalanceTypeOptionList()
   let gameActionTypeOptions = useGameActionTypeOptionList()
   let options = [
     {
-      label: useTrans(DepositTrans),
+      label: useDepositTrans(),
       value: Deposit
     },
     {
-      label: useTrans(WithdrawalTrans),
+      label: useWithdrawAndCanceledTrans(),
       value: Withdrawal
     },
     {
-      label: useTrans(CancelWithdrawalTrans),
+      label: useWithdrawCanceledTrans(),
       value: CancelWithdrawal
     },
     {
-      label: useTrans(TransferTrans),
+      label: useTransferAndCanceledTrans(),
       value: Transfer
     },
     {
-      label: useTrans(TransferRollbackTrans),
+      label: useTransferCanceled(),
       value: TransferRollback
+    },
+    {
+      label: useBalanceChangeTypeReceiveCommitTrans(),
+      value: ReceiveCommit
+    },
+    {
+      label: useBalanceChangeTypeReceiveRollbackTrans(),
+      value: ReceiveRollback
     },
     ...adjustPlayerBalanceTypeOptions,
     {
@@ -429,20 +449,25 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   return <Select placeholder={placeholder} options={options} {...props} />
 }
 
+//TODO:1.40 able to rm game related item?
 export const PlayerTransactionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Deposit:
     case Deposited:
-      return <Trans {...DepositTrans} />
+      return <DepositTrans />
     case Withdrawal:
     case WithdrawLock:
-      return <Trans {...WithdrawalTrans} />
+      return <WithdrawAndCanceledTrans />
     case WithdrawCommit:
-      return <Trans {...WithdrawCommitTrans} />
+      return <WithdrawCompletedTrans />
     case Transfer:
-      return <Trans {...TransferTrans} />
+      return <TransferAndCanceledTrans />
     case TransferRollback:
-      return <Trans {...TransferRollbackTrans} />
+      return <TransferCanceledTrans />
+    case ReceiveCommit:
+      return <BalanceChangeTypeReceiveCommitTrans />
+    case ReceiveRollback:
+      return <BalanceChangeTypeReceiveRollbackTrans />
     case PlayerAdjustBalanceType.Company:
     case PlayerAdjustBalanceType.Agent:
     case PlayerAdjustBalanceType.System:
@@ -479,7 +504,7 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...AdjustResettledBetManualTrans} />
     case CancelWithdrawal:
     case WithdrawRollback:
-      return <Trans {...CancelWithdrawalTrans} />
+      return <WithdrawCanceledTrans />
     default:
       return value
   }

@@ -36,18 +36,13 @@ export const Key = "password"
 export const Tab = (props = {}) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="修改密码" en="Update Password" />
+      <Trans zh="修改登入密码" en="Change Login Password" />
     </_Tab>
   )
 }
 
-//TODO: replace CurrentUpdatePasswordPanel with UpdatePasswordPanel
 export const Panel = (props) => {
-  return isDev() ? (
-    <UpdatePasswordPanel {...props} />
-  ) : (
-    <CurrentUpdatePasswordPanel {...props} />
-  )
+  return <UpdatePasswordPanel {...props} />
 }
 
 const UpdatePasswordPanel = ({
@@ -89,7 +84,7 @@ const UpdatePasswordPanel = ({
   )
 }
 
-const CurrentUpdatePasswordPanel = ({
+const OldUpdatePasswordPanel = ({
   playerCode = "",
   onSubmitted,
   onClickClose,

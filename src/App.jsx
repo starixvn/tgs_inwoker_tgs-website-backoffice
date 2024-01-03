@@ -33,7 +33,14 @@ import { AllMenus } from "./menu"
 import { AllContents } from "./content"
 import { useUsername, useDeauth } from "./user/context"
 import { SWRConfig } from "swr"
-import { Trans, useLocale, Locales, useEnglish, useChinese } from "./i18n"
+import {
+  Trans,
+  useLocale,
+  Locales,
+  useEnglish,
+  useChinese,
+  useVietnamese
+} from "./i18n"
 import { AdminUserChangePasswordDialog } from "./system/admins/edit"
 import {
   getHeaderBackground,
@@ -52,6 +59,7 @@ import FundDepositTopNavItem from "./fund/deposit/FundDepositTopNavItem"
 import FundWithdrawTopNavItem from "./fund/withdraw/FundWithdrawTopNavItem"
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
 import { init as initConnection } from "./connection"
+import { ChangePasswordTrans } from "./trans/User"
 
 //TODO: wait for PH's fix
 if (isDev()) {
@@ -84,7 +92,6 @@ function App() {
 }
 
 const HeaderHeight = "60px"
-//TODO: fine tune width
 const sidebarWidth = 200
 const FooterHeight = "0px" //"30px"
 
@@ -226,7 +233,7 @@ const Header = () => {
                     id="change-password"
                     onClick={changePasswordDialog.show}
                   >
-                    <Trans zh="修改密码" en="Change Password" />
+                    <ChangePasswordTrans />
                   </DropdownMenu.Item>
                   <DropdownMenu.Item id="logout" onClick={logout}>
                     <Trans zh="登出" en="Logout" />
@@ -268,9 +275,11 @@ const LangItem = ({ ...props }) => {
   let locale = useLocale()
   let chinese = "中文"
   let english = "English"
+  let vietnamese = "Tiếng Việt"
 
   let useEn = useEnglish()
   let useZh = useChinese()
+  let useVi = useVietnamese()
   return (
     <TopNav.Item {...props}>
       <DropdownMenu
@@ -278,6 +287,7 @@ const LangItem = ({ ...props }) => {
           <>
             <DropdownMenu.Item onClick={useZh}>{chinese}</DropdownMenu.Item>
             <DropdownMenu.Item onClick={useEn}>{english}</DropdownMenu.Item>
+            <DropdownMenu.Item onClick={useVi}>{vietnamese}</DropdownMenu.Item>
           </>
         }
       >
@@ -293,6 +303,7 @@ const LangItem = ({ ...props }) => {
           <Hide below={collapseBelow}>
             {locale === Locales.zh && chinese}
             {locale === Locales.en && english}
+            {locale === Locales.vi && vietnamese}
           </Hide>
         </Button>
       </DropdownMenu>
@@ -304,7 +315,6 @@ const Sidebar = () => {
   let { pathname: selectedId } = useLocation()
   let { isCollapsed, sidebar } = usePage()
 
-  //TODO: report bug to bumbag?
   useEffect(() => {
     if (!isCollapsed) {
       sidebar.drawer.hide()

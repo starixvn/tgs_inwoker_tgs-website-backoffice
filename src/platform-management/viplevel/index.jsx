@@ -18,6 +18,8 @@ import { Trans } from "../../i18n"
 import textColumn from "../../table/column/textColumn"
 import { useVipLevelList } from "../../vip-levels/client"
 import AlertDialog from "../../dialog/Alert"
+import { ActionTrans } from "../../trans/Action"
+import { VipLevelTrans } from "../../trans/Vip"
 
 export { Code }
 
@@ -72,7 +74,7 @@ const BodyContent = ({ brandId }) => {
           />
         </Box>
       }
-      title={<Trans zh="VIP等级" en="VIP Level" />}
+      title={<VipLevelTrans />}
     >
       <Table
         columns={columns}
@@ -106,7 +108,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

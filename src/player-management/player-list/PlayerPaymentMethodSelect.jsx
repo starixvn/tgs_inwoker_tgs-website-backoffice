@@ -4,20 +4,15 @@ import { Text } from "bumbag"
 import { useTrans, Trans, useLocale } from "../../i18n"
 import Select, { SelectField } from "../../select/Select"
 import { paymentMethodCodeLabel } from "../../payment/method/client"
+import { usePaymentMethodTrans } from "../../trans/Payment"
 
 export const PlayerPaymentMethodSelect = ({
   placeholder,
   paymentList = [],
   ...props
 }) => {
-  let label = useTrans({
-    zh: "支付方式",
-    en: "Payment Method"
-  })
-  let defaultPlaceholder = useTrans({
-    zh: "支付方式",
-    en: "Payment Method"
-  })
+  let label = usePaymentMethodTrans()
+  let defaultPlaceholder = usePaymentMethodTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()

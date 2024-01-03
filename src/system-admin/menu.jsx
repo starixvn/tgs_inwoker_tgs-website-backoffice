@@ -48,6 +48,7 @@ import {
 } from "./game-provider-round/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faCogs } from "@fortawesome/free-solid-svg-icons"
+import { GameProviderReport } from "../trans/Game"
 
 export const Code = "systemadmin"
 
@@ -100,13 +101,7 @@ const labelOf = ({ locale, code }) => {
         locale
       )
     case GameProviderReportCode:
-      return getTrans(
-        {
-          zh: "游戏商报表",
-          en: "Game Provider Report"
-        },
-        locale
-      )
+      return getTrans(GameProviderReport, locale)
     case BrandPaymentsCode:
       return getTrans(
         {

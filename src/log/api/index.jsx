@@ -45,6 +45,7 @@ import { SortOrder } from "../../table/order"
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { parseJSON } from "../../text/json"
 import { parseISO } from "date-fns"
+import { ActionTrans } from "../../trans/Action"
 
 export { Code }
 
@@ -304,7 +305,7 @@ const useColumns = ({ items = [] } = {}) => {
       textColumn({
         id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="Actions" en="Actions" />,
+        Header: <ActionTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (

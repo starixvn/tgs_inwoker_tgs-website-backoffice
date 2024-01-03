@@ -12,19 +12,13 @@ import {
 } from "./brandgames/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faGamepad } from "@fortawesome/free-solid-svg-icons"
+import { GameList, GameManagementTrans, GameProviderList } from "../trans/Game"
 
 export const Code = "game"
 
 export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
-
-export const Name = ({}) => useTrans(nameMessages)
-
-export const nameMessages = {
-  zh: "游戏管理",
-  en: "Game Management"
-}
 
 export const Menu = ({
   title = (
@@ -36,7 +30,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Name />
+      <GameManagementTrans />
     </Flex>
   ),
   url = DefaultUrl,
@@ -56,21 +50,9 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case BrandGameProviderCode:
-      return getTrans(
-        {
-          zh: "厂商列表",
-          en: "Game Provider List"
-        },
-        locale
-      )
+      return getTrans(GameProviderList, locale)
     case BrandGameCode:
-      return getTrans(
-        {
-          zh: "游戏列表",
-          en: "Game List"
-        },
-        locale
-      )
+      return getTrans(GameList, locale)
     default:
       return ""
   }

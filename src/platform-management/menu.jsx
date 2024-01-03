@@ -26,13 +26,17 @@ import {
 import { Code as LetterCode, codeLabelPair as letterPair } from "./letter/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUniversity } from "@fortawesome/free-solid-svg-icons"
+import {
+  Announcements,
+  Banners,
+  CheckIP,
+  OperationSettings,
+  PlatformManagementTrans,
+  StationLetter
+} from "../trans/Platform"
+import { VipLevel } from "../trans/Vip"
 
-export const Name = () => useTrans(nameMessage)
-
-export const nameMessage = {
-  zh: "平台管理",
-  en: "Platform"
-}
+export const Name = () => <PlatformManagementTrans />
 
 export const Code = "platform"
 
@@ -70,61 +74,19 @@ export const Menu = ({
 const labelOf = ({ locale, code }) => {
   switch (code) {
     case BannerCode:
-      return getTrans(
-        {
-          zh: "Banner 管理",
-          en: "Banners"
-        },
-        locale
-      )
+      return getTrans(Banners, locale)
     case AnnouncementCode:
-      return getTrans(
-        {
-          zh: "公告管理",
-          en: "Announcements"
-        },
-        locale
-      )
+      return getTrans(Announcements, locale)
     case StationLetterCode:
-      return getTrans(
-        {
-          zh: "站内信",
-          en: "Station Letters"
-        },
-        locale
-      )
+      return getTrans(StationLetter, locale)
     case VipLevelCode:
-      return getTrans(
-        {
-          zh: "VIP等级",
-          en: "VIP Levels"
-        },
-        locale
-      )
+      return getTrans(VipLevel, locale)
     case IMSettingsCode:
-      return getTrans(
-        {
-          zh: "营运设置",
-          en: "Operation Settings"
-        },
-        locale
-      )
+      return getTrans(OperationSettings, locale)
     case IPAddressCode:
-      return getTrans(
-        {
-          zh: "檢核IP地址",
-          en: "Check IP"
-        },
-        locale
-      )
+      return getTrans(CheckIP, locale)
     case LetterCode:
-      return getTrans(
-        {
-          zh: "站內信",
-          en: "Memo"
-        },
-        locale
-      )
+      return getTrans(StationLetter, locale)
     default:
       return ""
   }

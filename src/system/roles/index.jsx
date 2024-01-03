@@ -34,6 +34,8 @@ import { Features, isDev, isFeatureEnabled } from "../../env"
 import Checkbox from "../../checkbox"
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { nextRoleType, useRoleTypeOptions } from "./type"
+import { ActionTrans } from "../../trans/Action"
+import { LicenseeTrans, PlatformTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -91,7 +93,7 @@ const Body = ({}) => {
               })
               mutate()
             }}
-            isPending={isLoading}
+            isLoading={isLoading}
           />
           <AddButton onSubmitted={mutate} />
         </>
@@ -211,7 +213,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "licenseeName",
-          Header: <Trans zh="公司" en="Licensee" />,
+          Header: <LicenseeTrans />,
           disableSortBy: true
         })
       )
@@ -221,7 +223,7 @@ const useColumns = ({ mutate, items = [] }) => {
       columns.push(
         textColumn({
           accessor: "brandName",
-          Header: <Trans zh="平台" en="Platform" />,
+          Header: <PlatformTrans />,
           disableSortBy: true
         })
       )
@@ -251,7 +253,7 @@ const useColumns = ({ mutate, items = [] }) => {
         id: "actions",
         disableSortBy: true,
         accessor: (row) => row,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

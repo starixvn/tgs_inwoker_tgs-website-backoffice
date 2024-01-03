@@ -1,0 +1,18 @@
+kind: Module
+type: container
+name: notification-email
+image: pgtgs/notification-email:202312130938.10
+services:
+  - name: notification-email
+    dependencies:
+      - postgres
+      - nats
+      - redis
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+    ports:
+      - name: http
+        containerPort: 8080
+        servicePort: 80

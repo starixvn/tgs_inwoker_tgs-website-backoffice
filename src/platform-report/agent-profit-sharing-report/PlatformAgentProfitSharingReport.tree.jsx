@@ -55,6 +55,14 @@ import {
   faChevronRight
 } from "@fortawesome/free-solid-svg-icons"
 import AutoSizer from "react-virtualized-auto-sizer"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
+import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import { CompanyWinLossTrans } from "../../trans/Platform"
+import {
+  AgentUsernameTrans,
+  ProfitSharingPercentageTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
 
 export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   let [treePaths, setTreePaths] = useState([])
@@ -476,10 +484,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent username"
-  })
+  let usernamePlaceholder = useAgentUsernameTrans()
 
   const onSubmit = (data) => search?.(data)
 
@@ -550,7 +555,7 @@ const useColumns = ({
       textColumn({
         id: "username",
         accessor: (row) => row,
-        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        Header: <AgentUsernameTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -592,7 +597,7 @@ const useColumns = ({
       }),
       numberDecimalPercentageColumn({
         accessor: "agentDividendPercentage",
-        Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
+        Header: <ProfitSharingPercentageTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -601,7 +606,7 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -665,7 +670,7 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -674,7 +679,7 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -684,7 +689,7 @@ const useColumns = ({
       numberDecimalColumn({
         id: "winLossAmount",
         accessor: (row) => row,
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -721,7 +726,7 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },

@@ -50,6 +50,12 @@ import Backdrop from "../../dialog/Backdrop"
 import { DeleteText } from "../../button/ActionButtons"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
+import { ActionTrans } from "../../trans/Action"
+import {
+  PaymentChannelTrans,
+  PaymentMethodTrans,
+  PaymentProviderTrans
+} from "../../trans/Payment"
 
 export const PaymentMethodChannelListDialog = ({ dialog, onSubmitted }) => {
   let { isLoading, data, error, mutate, deleteCache } =
@@ -173,19 +179,19 @@ const useColumns = ({ items = [], mutate }) => {
     let columns = [
       textColumn({
         accessor: "paymentId",
-        Header: <Trans zh="支付厂商" en="Payment Name" />,
+        Header: <PaymentProviderTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentProviderLabel value={value} />
       }),
       textColumn({
         accessor: "methodId",
-        Header: <Trans zh="支付方式" en="Payment Method" />,
+        Header: <PaymentMethodTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentMethodLabel value={value} />
       }),
       textColumn({
         accessor: "channelId",
-        Header: <Trans zh="支付通道" en="Payment Channel" />,
+        Header: <PaymentChannelTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PaymentChannelLabel value={value} />
       })
@@ -196,7 +202,7 @@ const useColumns = ({ items = [], mutate }) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="Actions" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value }) => (
             <DeleteDialogDisclosure record={value} onSubmitted={mutate} />

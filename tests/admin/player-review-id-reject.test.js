@@ -16,14 +16,14 @@ test("review player id", async ({
   licensee,
   backofficeApi,
   operatorApi,
-  globalApi
+  brandCertApi
 }) => {
   let platform = await backofficeApi.platform.addPlatform({
     licenseeId: licensee.id,
     enablePlayerIdentity: true
   })
   let platformCode = platform.code
-  let platformToken = await globalApi.platformToken(platform.code)
+  let platformToken = await brandCertApi.platformToken(platform.code)
 
   let player = await operatorApi.player.createAndLogin(platformToken)
   let [playerIdentity] = await Promise.all([

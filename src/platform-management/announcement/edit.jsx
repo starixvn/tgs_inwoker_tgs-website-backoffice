@@ -16,7 +16,7 @@ import {
 } from "../../user/context"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
-import Disclosure from "../../dialog/Disclosure"
+import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
 import {
   useAddAnnouncement,
   useEditAnnouncement,
@@ -32,6 +32,18 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import Textarea, { TextareaField } from "../../textarea"
 import { Features, isDev, isFeatureEnabled } from "../../env"
 import { AnnouncementTypeSelect } from "./AnnouncementType"
+import { SubjectTrans } from "../../trans/Field"
+import {
+  AddTrans,
+  EditTrans,
+  RejectTrans,
+  RemarkTrans,
+  VerifyTrans,
+  useEditTrans,
+  useVerifyTrans,
+  useViewTrans
+} from "../../trans/Action"
+import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = Modal.useState()
@@ -44,7 +56,7 @@ export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="新增" en="Add" />
+        <AddTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog
@@ -115,7 +127,7 @@ export const EditButton = ({ brandId, record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog
@@ -139,9 +151,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && <ViewDialog record={record} dialog={dialog} />}
     </>
   )
@@ -151,10 +161,7 @@ const ViewDialog = ({ record, dialog, ...props }) => {
   let from = parseISO(record.from)
   let to = parseISO(record.to)
 
-  let title = useTrans({
-    zh: "查看公告",
-    en: "View Announcement"
-  })
+  let title = useViewTrans()
 
   return (
     <FormDialog
@@ -198,10 +205,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "修改公告",
-    en: "Edit Announcement"
-  })
+  let title = useEditTrans()
 
   return (
     <FormDialog
@@ -263,7 +267,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         <AnnouncementTypeSelect name="type" disabled={readOnly} />
 
         <Label name="subject" required={required}>
-          <Trans zh="主题" en="Subject" />
+          <SubjectTrans />
         </Label>
         <InputField
           name="subject"
@@ -274,7 +278,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         />
 
         <Label name="from" required={required}>
-          <Trans zh="开始时间" en="Start" />
+          <StartTimeTrans />
         </Label>
         <Box id="from-date-box">
           <DateTimeInput
@@ -286,7 +290,7 @@ const EditBody = ({ readOnly = false } = {}) => {
         </Box>
 
         <Label name="to" required={required}>
-          <Trans zh="结束时间" en="End" />
+          <EndTimeTrans />
         </Label>
         <Box id="to-date-box">
           <DateTimeInput
@@ -333,7 +337,7 @@ export const VerifyButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="审核" en="Verify" />
+        <VerifyTrans />
       </Disclosure>
       {dialog.visible && (
         <VerifyDialog
@@ -380,10 +384,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
     setSubmit(null)
   }
 
-  let title = useTrans({
-    zh: "审核公告",
-    en: "Verify Announcement"
-  })
+  let title = useVerifyTrans()
 
   return (
     <FormDialog
@@ -408,7 +409,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       isLoading={isLoading}
@@ -434,7 +435,7 @@ const VerifyBody = ({ readOnly = false } = {}) => {
 
       <FieldValues>
         <Label name="remarks">
-          <Trans zh="备注" en="Remarks" />
+          <RemarkTrans />
         </Label>
         <Textarea name="remarks" disabled={readOnly} />
       </FieldValues>

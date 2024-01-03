@@ -7,48 +7,33 @@ import { useChangePromotionStatus } from "./client"
 import { Update } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import AlertDialog from "../../dialog/Alert"
+import {
+  useDisabledTrans,
+  useEnabledTrans,
+  useStatusTrans
+} from "../../trans/Status"
 
 const Enabled = "Enabled"
-const EnabledTrans = {
-  zh: "开启",
-  en: "Enabled"
-}
+
 const Disabled = "Disabled"
-const DisabledTrans = {
-  zh: "关闭",
-  en: "Disabled"
-}
 
 const Archived = "Archived"
-const ArchivedTrans = {
-  zh: "删除",
-  en: Archived
-}
 
 export const isPromotionStatusEnabled = (value) => value === Enabled
 
 export const PromotionStatusSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useTrans(EnabledTrans),
+      label: useEnabledTrans(),
       value: Enabled
     },
     {
-      label: useTrans(DisabledTrans),
+      label: useDisabledTrans(),
       value: Disabled
     }
-    /*
-    {
-      label: useTrans(ArchivedTrans),
-      value: Archived
-    }
-    */
   ]
 
   return <Select placeholder={placeholder} options={options} {...props} />

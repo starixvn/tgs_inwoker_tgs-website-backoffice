@@ -46,6 +46,13 @@ import { PlayerPromotionSelect } from "./PlayerPromotionSelect"
 import { TextareaField } from "../../textarea"
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import head from "../../list/head"
+import {
+  DepositFormTrans,
+  PhoneTrans,
+  RealNameTrans,
+  useDepositFormTrans
+} from "../../trans/User"
+import { useDepositAmountTrans } from "../../trans/Payment"
 
 export const PlayerDepositFormDialogDisclosure = ({
   brandId,
@@ -65,7 +72,7 @@ export const PlayerDepositFormDialogDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog} {...props}>
-        <Trans zh="存款单" en="Deposit Form" />
+        <DepositFormTrans />
       </Disclosure>
       {dialog.visible && (
         <DepositFormDialog
@@ -120,10 +127,7 @@ const DepositFormDialog = ({
   dialogId,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "存款单",
-    en: "Deposit Form"
-  })
+  let title = useDepositFormTrans()
   let {
     isLoading: isLoadingFormData,
     paymentList,
@@ -237,7 +241,7 @@ const FormBody = ({ paymentList = [], brandId, playerCode }) => {
   }, [paymentMethod, paymentChannel])
   return (
     <FieldStack marginLeft="1rem" marginRight="1rem">
-      <FieldWrapper label={<Trans zh="真实姓名" en="Real name" />}>
+      <FieldWrapper label={<RealNameTrans />}>
         <Box>{player.realName}</Box>
       </FieldWrapper>
       <Set orientation="horizontal" verticalBelow="tablet">
@@ -360,7 +364,7 @@ const PulsaInfo = () => {
     <>
       <InputField
         name="phone"
-        label={<Trans zh="电话号码" en="Phone Number" />}
+        label={<PhoneTrans />}
         addonBefore={<PhoneDropdownMenu />}
         required
       />
@@ -588,10 +592,7 @@ const BankNameDropdownMenu = ({ onClickBankCard }) => {
 }
 
 const AmountInputField = ({ ...props }) => {
-  let label = useTrans({
-    zh: "存款金额",
-    en: "Amount"
-  })
+  let label = useDepositAmountTrans()
   return <NumberInputField name="amount" label={label} {...props} />
 }
 

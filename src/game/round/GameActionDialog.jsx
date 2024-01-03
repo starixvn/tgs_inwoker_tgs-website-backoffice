@@ -18,6 +18,10 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { TransactionTypeLabel } from "../../platform-report/balance-change-report/TransactionTypeSelect"
 import textColumn from "../../table/column/textColumn"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
+import { TransactionTypeTrans } from "../../trans/Action"
+import { BalanceAfterTrans, BalanceBeforeTrans } from "../../trans/User"
+import { TimeTrans } from "../../trans/Date"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export const GameActionDialogDisclosure = ({
   roundId,
@@ -105,7 +109,7 @@ const useColumns = ({ items = [] }) => {
     () => [
       dateTimeColumn({
         accessor: "recordedOn",
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -117,7 +121,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "gameActionType",
-        Header: <Trans zh="帐变类型" en="Transaction Type" />,
+        Header: <TransactionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return <TransactionTypeLabel value={value} />
@@ -125,17 +129,17 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="交易金额" en="amount" />,
+        Header: <TransactionAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "beforeBalance",
-        Header: <Trans zh="余额 (前)" en="Before" />,
+        Header: <BalanceBeforeTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "afterBalance",
-        Header: <Trans zh="余额 (后)" en="After" />,
+        Header: <BalanceAfterTrans />,
         disableSortBy: true
       })
     ],

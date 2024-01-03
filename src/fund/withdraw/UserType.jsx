@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
+import { useUserTypeTrans } from "../../trans/User"
+import { AgentTrans, useAgentTrans } from "../../trans/Agent"
 
 const Player = "Player"
 const PlayerTrans = {
@@ -10,17 +12,13 @@ const PlayerTrans = {
 }
 
 const Agent = "Agent"
-const AgentTrans = {
-  zh: "代理",
-  en: "Agent"
-}
 
 export const UserTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Player:
       return <Trans {...PlayerTrans} />
     case Agent:
-      return <Trans {...AgentTrans} />
+      return <AgentTrans />
     default:
       return value
   }
@@ -31,10 +29,7 @@ export const UserTypeSelect = ({
   placeholder,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "用户类型",
-    en: "User Type"
-  })
+  let defaultPlaceholder = useUserTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
@@ -43,7 +38,7 @@ export const UserTypeSelect = ({
       value: Player
     },
     {
-      label: useTrans(AgentTrans),
+      label: useAgentTrans(),
       value: Agent
     }
   ]

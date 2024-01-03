@@ -13,6 +13,7 @@ import agent from "./agent/index.js"
 import fund from "./fund/index.js"
 import gameProvider from "./gameProvider/index.js"
 import system from "./system/index.js"
+import user from "./user/index.js"
 
 export default {
   init: (options = {}) => {
@@ -29,5 +30,6 @@ export default {
   fund,
   gameProvider,
   game,
-  system
+  system,
+  user
 }

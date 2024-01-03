@@ -16,13 +16,32 @@ import { endOfToday, subHours } from "date-fns"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { Select } from "../../select/Select"
 import AlertDialog from "../../dialog/Alert"
+import { BalanceChangeRecordsTrans, BalanceTrans } from "../../trans/User"
+import {
+  TransactionTypeTrans,
+  useTransactionTypeTrans
+} from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
+import { TransactionAmountTrans } from "../../trans/Field"
+import {
+  BalanceChangeTypeReceiveCommitTrans,
+  BalanceChangeTypeReceiveRollbackTrans,
+  BalanceChangeTypeTransferRollbackTrans,
+  BalanceChangeTypeTransferTrans,
+  DepositTrans,
+  WithdrawTrans,
+  useBalanceChangeTypeReceiveCommitTrans,
+  useBalanceChangeTypeTransferRollbackTrans,
+  useBalanceChangeTypeTransferTrans,
+  useWithdrawTrans
+} from "../../trans/Payment"
 
 export const Key = "BalanceChange"
 
 export const AgentBalanceChangeTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="账变记录" en="Balance Change Records" />
+      <BalanceChangeRecordsTrans />
     </_Tab>
   )
 }
@@ -119,28 +138,29 @@ const SearchBar = ({
   )
 }
 
+//TODO:1.40 new balance change api has same columns?
 const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         accessor: "recordedOn",
         disableSortBy: true
       }),
       textColumn({
         accessor: "transactionType",
-        Header: <Trans zh="交易类型" en="Transaction Type" />,
+        Header: <TransactionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <AgentTransactionTypeLabel value={value} />
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="交易金额" en="Amount" />,
+        Header: <TransactionAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "balance",
-        Header: <Trans zh="余额" en="Balance" />,
+        Header: <BalanceTrans />,
         disableSortBy: true
       })
     ],
@@ -153,22 +173,17 @@ const newDateRange = () => ({
 })
 
 const Deposit = "Deposit"
-const DepositTrans = {
-  zh: "存款",
-  en: "Deposit"
-}
 
 const Withdrawal = "Withdrawal"
-const WithdrawalTrans = {
-  zh: "提款",
-  en: "Withdrawal"
-}
 
 const CancelWithdrawal = "CancelWithdrawal"
+//TODO: use trans from Payment
 const CancelWithdrawalTrans = {
   zh: "取消提款",
   en: "Cancel Withdrawal"
 }
+
+//TODO: also Transfer & TransferRollback?
 
 const Adjust = "CompanyAdjust"
 const AdjustTrans = {
@@ -176,28 +191,30 @@ const AdjustTrans = {
   en: "Balance Adjustment"
 }
 
+//TODO:1.40 rm "Dividend"
 const Dividend = "Dividend"
+
+const AgentDividend = "AgentDividend"
 const DividendTrans = {
   zh: "分紅",
   en: "Profit sharing"
 }
 
+const Transfer = "Transfer"
+
+const TransferRollback = "TransferRollback"
+
+const ReceiveCommit = "ReceiveCommit"
+
+const ReceiveRollback = "ReceiveRollback"
+
 const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "交易类型",
-    en: "Transaction Type"
-  })
+  let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
-    /*
     {
-      label: useTrans(DepositTrans),
-      value: Deposit
-    },
-    */
-    {
-      label: useTrans(WithdrawalTrans),
+      label: useWithdrawTrans(),
       value: Withdrawal
     },
     {
@@ -210,7 +227,23 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
     },
     {
       label: useTrans(DividendTrans),
-      value: Dividend
+      value: AgentDividend
+    },
+    {
+      label: useBalanceChangeTypeTransferTrans(),
+      value: Transfer
+    },
+    {
+      label: useBalanceChangeTypeTransferRollbackTrans(),
+      value: TransferRollback
+    },
+    {
+      label: useBalanceChangeTypeReceiveCommitTrans(),
+      value: ReceiveCommit
+    },
+    {
+      label: useBalanceChangeTypeTransferRollbackTrans(),
+      value: ReceiveRollback
     }
   ]
 
@@ -220,15 +253,24 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
 const AgentTransactionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Deposit:
-      return <Trans {...DepositTrans} />
+      return <DepositTrans />
     case Withdrawal:
-      return <Trans {...WithdrawalTrans} />
+      return <WithdrawTrans />
     case Adjust:
       return <Trans {...AdjustTrans} />
     case Dividend:
+    case AgentDividend:
       return <Trans {...DividendTrans} />
     case CancelWithdrawal:
       return <Trans {...CancelWithdrawalTrans} />
+    case Transfer:
+      return <BalanceChangeTypeTransferTrans />
+    case TransferRollback:
+      return <BalanceChangeTypeTransferRollbackTrans />
+    case ReceiveCommit:
+      return <BalanceChangeTypeReceiveCommitTrans />
+    case ReceiveRollback:
+      return <BalanceChangeTypeReceiveRollbackTrans />
     default:
       return value
   }

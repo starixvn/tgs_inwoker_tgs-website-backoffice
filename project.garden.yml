@@ -1,3 +1,4 @@
+# apiVersion: garden.io/v1
 kind: Project
 name: backoffice-site
 environments:
@@ -9,6 +10,10 @@ providers:
   - name: local-kubernetes # The name of the provider plugin to use.
     environments: ["develop"]
     setupIngressController: false # "nginx"
+    imagePullSecrets:
+      # https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-by-providing-credentials-on-the-command-line
+      - name: regcred # docker auth
+        namespace: default
 
 ---
 kind: Module

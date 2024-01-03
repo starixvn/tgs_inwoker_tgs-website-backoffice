@@ -32,16 +32,29 @@ import { usePromotionBrandId } from "../usePromotionFormData"
 import { PaymentChannelSelect } from "../../../payment/channel/PaymentChannel"
 import { usePaymentMethodChannelList } from "../../../payment/client"
 import { PlatformBucketSelect } from "../../../platform-management/PlatformBucket"
+import { GameTypeTrans } from "../../../trans/Game"
+import {
+  PromotionBonusLimitTrans,
+  PromotionBonusPercentageTrans,
+  PromotionTurnoverRequirementTrans,
+  usePromotionBonusAmountLimitHintTrans,
+  usePromotionBucketTypeNotSpecifyTrans
+} from "../../../trans/Promotion"
+import { MultipliersTrans } from "../../../trans/Field"
 
-const FirstDeposit = "FirstDeposit"
+const FirstDeposit = "FirstDeposit" //Account First Deposit-Lifetime only
+const AccountFirstDeposit = "AccountFirstDeposit" //Account First Deposit-First deposit only
+
 const DailyFirstDeposit = "DailyFirstDeposit"
 const DailySecondDeposit = "DailySecondDeposit"
 const DepositReward = "DepositReward"
 
 const DepositPaymentChannelReward = "PromoteDepositChannel"
 
+//TODO: able to rm PromotionTypes? used somewhere?
 export const PromotionTypes = [
   FirstDeposit,
+  AccountFirstDeposit,
   DailyFirstDeposit,
   DailySecondDeposit,
   DepositReward,
@@ -69,6 +82,8 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
 
   let totalFunds = useTotalFunds()
 
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
+
   let disabled = readOnly
 
   return (
@@ -80,6 +95,7 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
         name="rule.bucketTypes[0]"
         platformId={brandId}
         disabled={disabled}
+        placeholder={bucketTypePlaceholder}
       />
 
       <NormalLabel>
@@ -93,7 +109,7 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="彩金百分比" en="Bonus Percentage" />
+        <PromotionBonusPercentageTrans />
       </NormalLabel>
       <PercentageNumberInputField
         name="rule.percentage"
@@ -106,7 +122,7 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="彩金上限" en="Bonus Limit" />
+        <PromotionBonusLimitTrans />
       </NormalLabel>
       <NumberInput
         name="rule.bonusAmountLimit"
@@ -120,7 +136,7 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
+        <PromotionTurnoverRequirementTrans />
       </NormalLabel>
       <NumberInputField
         name="rule.turnoverMultiple"
@@ -132,7 +148,7 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />
@@ -152,6 +168,8 @@ const DepositRewardRule = ({ readOnly }) => {
     name: PercentageField
   })
 
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
+
   return (
     <FieldValues>
       <VipLevelCheckboxGroupField readOnly={readOnly} />
@@ -161,6 +179,7 @@ const DepositRewardRule = ({ readOnly }) => {
         name="rule.bucketTypes[0]"
         platformId={brandId}
         disabled={disabled}
+        placeholder={bucketTypePlaceholder}
       />
 
       <NormalLabel>
@@ -177,7 +196,7 @@ const DepositRewardRule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="彩金百分比" en="Bonus Percentage" />
+        <PromotionBonusPercentageTrans />
       </NormalLabel>
       <PercentageNumberInputField
         name={PercentageField}
@@ -192,7 +211,7 @@ const DepositRewardRule = ({ readOnly }) => {
       <BonusLimitFieldBox percentage={percentage} disabled={disabled} />
 
       <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
+        <PromotionTurnoverRequirementTrans />
       </NormalLabel>
       <NumberInputField
         name="rule.turnoverMultiple"
@@ -204,7 +223,7 @@ const DepositRewardRule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />
@@ -222,15 +241,12 @@ const BonusLimitFieldBox = ({ percentage, disabled }) => {
     name: BonusAmountLimitField
   })
 
-  let bonusAmountLimitHintLabel = useTrans({
-    zh: "彩金上限/彩金百分比",
-    en: "Bonus Limit/彩金百分比"
-  })
+  let bonusAmountLimitHintLabel = usePromotionBonusAmountLimitHintTrans()
   let bonusAmountLimitHint = bonusAmountLimit / (percentage / 100)
   return (
     <>
       <NormalLabel>
-        <Trans zh="彩金上限" en="Bonus Limit" />
+        <PromotionBonusLimitTrans />
       </NormalLabel>
       <NumberInputField
         name={BonusAmountLimitField}
@@ -257,7 +273,7 @@ const BonusLimitFieldBox = ({ percentage, disabled }) => {
 const BucketTypeLabel = () => {
   return (
     <NormalLabel>
-      <Trans zh="活动游戏类型" en="Game Type" />
+      <GameTypeTrans />
     </NormalLabel>
   )
 }
@@ -266,6 +282,8 @@ const DefaultRule = ({ readOnly }) => {
   let { control } = useFormContext()
   let totalFunds = useTotalFunds()
   let brandId = usePromotionBrandId()
+
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
 
   let disabled = readOnly
   return (
@@ -277,10 +295,11 @@ const DefaultRule = ({ readOnly }) => {
         name="rule.bucketTypes[0]"
         platformId={brandId}
         disabled={disabled}
+        placeholder={bucketTypePlaceholder}
       />
 
       <NormalLabel>
-        <Trans zh="彩金百分比" en="Bonus Percentage" />
+        <PromotionBonusPercentageTrans />
       </NormalLabel>
       <PercentageNumberInputField
         name="rule.percentage"
@@ -293,7 +312,7 @@ const DefaultRule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="彩金上限" en="Bonus Limit" />
+        <PromotionBonusLimitTrans />
       </NormalLabel>
       <NumberInput
         name="rule.bonusAmountLimit"
@@ -307,7 +326,7 @@ const DefaultRule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
+        <PromotionTurnoverRequirementTrans />
       </NormalLabel>
       <NumberInputField
         name="rule.turnoverMultiple"
@@ -319,13 +338,82 @@ const DefaultRule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />
     </FieldValues>
   )
 }
+
+/*
+TODO: auto select all vip?
+const AccountFirstDepositRewardRule = ({ readOnly }) => {
+  let { control } = useFormContext()
+  let totalFunds = useTotalFunds()
+  let brandId = usePromotionBrandId()
+
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
+
+  let disabled = readOnly
+  return (
+    <FieldValues>
+      <BucketTypeLabel />
+      <PlatformBucketSelect
+        name="rule.bucketTypes[0]"
+        platformId={brandId}
+        disabled={disabled}
+        placeholder={bucketTypePlaceholder}
+      />
+
+      <NormalLabel>
+        <PromotionBonusPercentageTrans />
+      </NormalLabel>
+      <PercentageNumberInputField
+        name="rule.percentage"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        max="999"
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <PromotionBonusLimitTrans />
+      </NormalLabel>
+      <NumberInput
+        name="rule.bonusAmountLimit"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        max={totalFunds}
+        required
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <PromotionTurnoverRequirementTrans />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.turnoverMultiple"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="0"
+        required
+        disabled={disabled}
+        addonAfter={
+          <Button isStatic tabIndex="-1">
+            <MultipliersTrans />
+          </Button>
+        }
+      />
+    </FieldValues>
+  )
+}
+*/
 
 export const Rewards = [
   {
@@ -336,6 +424,12 @@ export const Rewards = [
   },
   {
     PromotionType: FirstDeposit,
+    Main,
+    Content,
+    Rule: DefaultRule
+  },
+  {
+    PromotionType: AccountFirstDeposit,
     Main,
     Content,
     Rule: DefaultRule

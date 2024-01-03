@@ -1,7 +1,7 @@
 import base from "@playwright/test"
 import { loginUser, login } from "../auth.js"
 import { host } from "../env.js"
-import globalApi from "../../client/globalApi/index.js"
+import brandCertApi from "../../client/brandCertApi/index.js"
 import operatorApi from "../../client/operatorApi/index.js"
 import sboGameProviderApi from "../../client/gameProviderApi/sbo/index.js"
 import backofficeApi from "../client/index.js"
@@ -13,13 +13,16 @@ const Path = "./.playwright"
 const AuthPath = `${Path}/admin-auth.json`
 const AdminUsername = "admin.enabled"
 
-export const loginAdminUser = async (browser) =>
-  login({
-    username: AdminUsername,
-    password: "TgsP@ssw0rd",
-    browser,
-    storageStatePath: AuthPath
-  })
+export const loginAdminUser = async (browser, options = {}) =>
+  login(
+    {
+      username: AdminUsername,
+      password: "TgsP@ssw0rd",
+      browser,
+      storageStatePath: AuthPath
+    },
+    options
+  )
 
 export const Fixture = {
   adminUsername: AdminUsername,
@@ -28,8 +31,7 @@ export const Fixture = {
   licenseeCode: "TGS",
   host: host(),
   platformToken: async ({ platformCode }, use) => {
-    //TODO: use brand-cert-api to get platform token
-    let platformToken = await globalApi.platformToken(platformCode)
+    let platformToken = await brandCertApi.platformToken(platformCode)
     use(platformToken)
   },
   player: async ({ platformToken }, use) => {
@@ -229,8 +231,8 @@ export const Fixture = {
   operatorApi: async ({}, use) => {
     use(operatorApi)
   },
-  globalApi: async ({}, use) => {
-    use(globalApi)
+  brandCertApi: async ({}, use) => {
+    use(brandCertApi)
   },
   sboGameProviderApi: ({}, use) => {
     use(sboGameProviderApi)
@@ -252,6 +254,7 @@ export const Fixture = {
     use(page)
   },
   adminUser: async ({ page, adminUsername }, use) => {
+    //TODO: able use login api without page?
     let adminUserInfo = await loginUser(page, adminUsername)
     use(adminUserInfo)
   },
@@ -279,8 +282,15 @@ const PromotionSettingsString = JSON.stringify([
         Name: "FirstDeposit",
         SettlementIntervalType: "Instantly",
         Trans: {
-          En: "Account First Deposit",
-          Zh: "帳號首充"
+          En: "Account First Deposit-Lifetime only",
+          Zh: "帳號首充(可延用)"
+        }
+      },
+      {
+        Name: "AccountFirstDeposit",
+        Trans: {
+          En: "Account First Deposit-First deposit only",
+          Zh: "帳號首充(不可延用) "
         }
       },
       {
@@ -309,7 +319,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Deposit",
-      Zh: "充值送"
+      Zh: "充值送",
+      Vi: "Nạp tặng"
     }
   },
   {
@@ -334,7 +345,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Turnover",
-      Zh: "流水"
+      Zh: "流水",
+      vi: "Vòng cược"
     }
   },
   {
@@ -367,7 +379,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "SOS",
-      Zh: "救援金"
+      Zh: "救援金",
+      Vi: "Quỹ cứu trợ"
     }
   },
   {
@@ -384,7 +397,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "New User",
-      Zh: "新用戶"
+      Zh: "新用戶",
+      Vi: "Người dùng mới"
     }
   },
   {
@@ -400,7 +414,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Lottery",
-      Zh: "抽獎"
+      Zh: "抽獎",
+      Vi: "Bốc thăm"
     }
   },
   {
@@ -416,7 +431,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Dummy",
-      Zh: "基本活動"
+      Zh: "基本活動",
+      Vi: "Hoạt động cơ bản"
     }
   },
   {
@@ -439,7 +455,8 @@ const PromotionSettingsString = JSON.stringify([
     ],
     Trans: {
       En: "Offline",
-      Zh: "線下活動"
+      Zh: "線下活動",
+      Vi: "Hoạt động dưới tuyến"
     }
   }
 ])

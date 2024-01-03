@@ -22,6 +22,10 @@ import {
 import { Trans, useTrans } from "../../../i18n"
 import { NormalLabel } from "../../../form/Label"
 import { useIsPromotionAdded } from "../usePromotionFormData"
+import {
+  PromotionSubtypeTrans,
+  PromotionTypeTrans
+} from "../../../trans/Promotion"
 
 const PromotionType = "promotionType"
 
@@ -63,7 +67,7 @@ export const PromotionTypeField = ({ readOnly }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="活动类型" en="Promotion Type" />
+        <PromotionTypeTrans />
       </NormalLabel>
       <Box alignY="center">
         <PromotionTypeGroupSelect
@@ -79,7 +83,7 @@ export const PromotionTypeField = ({ readOnly }) => {
       </Box>
 
       <NormalLabel>
-        <Trans zh="活动子类型" en="Promotion SubType" />
+        <PromotionSubtypeTrans />
       </NormalLabel>
       <Box alignY="center">
         <PromotionTypeSelect

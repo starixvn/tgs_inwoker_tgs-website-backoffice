@@ -30,10 +30,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentTeamContributionList } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -53,6 +50,15 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { NetProfitTrans, TotalTrans } from "../../trans/Field"
+import {
+  CardGameTrans,
+  LiveDealerTrans,
+  LotteryTrans,
+  SportsbookTrans,
+  VirtualSportsTrans
+} from "../../trans/Game"
+import { AgentUsernameTrans } from "../../trans/Agent"
 
 export const AgentTeamContributionDialogDisclosure = ({
   brandId,
@@ -148,7 +154,7 @@ const ReportDialog = ({
             >
               <FieldStack>
                 <FieldValues marginLeft="1rem">
-                  <Trans zh="代理用户名" en="Agent Username" />
+                  <AgentUsernameTrans />
                   <Text.Block alignY="center">{username}</Text.Block>
 
                   <Trans zh="上交分紅" en="Profit Sharing Amount" />
@@ -240,7 +246,7 @@ const useColumns = ({ items = [] }) => {
         dateFormat: DayMonthYearFormat,
         timeFormat: false,
         Header: <Trans zh="结算日期" en="Settlement Date" />,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         },
@@ -260,19 +266,19 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        Header: <AgentUsernameTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "liveDealerWinLoss",
-        Header: <Trans zh="真人" en="Live Dealer" />,
+        Header: <LiveDealerTrans />,
         sumColumn: "liveDealerWinLoss",
         disableSortBy: true
       }),
 
       numberDecimalColumn({
         accessor: "sportsWinLoss",
-        Header: <Trans zh="体育" en="Sports" />,
+        Header: <SportsbookTrans />,
         sumColumn: "sportsWinLoss",
         disableSortBy: true
       }),
@@ -286,21 +292,21 @@ const useColumns = ({ items = [] }) => {
 
       numberDecimalColumn({
         accessor: "cardGameWinLoss",
-        Header: <Trans zh="棋牌" en="Card Game" />,
+        Header: <CardGameTrans />,
         sumColumn: "cardGameWinLoss",
         disableSortBy: true
       }),
 
       numberDecimalColumn({
         accessor: "virtualSportsWinLoss",
-        Header: <Trans zh="虚拟体育" en="Virtual Sports" />,
+        Header: <VirtualSportsTrans />,
         sumColumn: "virtualSportsWinLoss",
         disableSortBy: true
       }),
 
       numberDecimalColumn({
         accessor: "lotteryWinLoss",
-        Header: <Trans zh="彩票" en="Lottery" />,
+        Header: <LotteryTrans />,
         sumColumn: "lotteryWinLoss",
         disableSortBy: true
       }),
@@ -325,7 +331,7 @@ const useColumns = ({ items = [] }) => {
 
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         sumColumn: "netProfit",
         disableSortBy: true
       }),
@@ -346,144 +352,3 @@ const useColumns = ({ items = [] }) => {
     return columns
   }, [JSON.stringify(items)])
 }
-
-//TODO: rm
-/*
-const HeadRow = ({ record }) => {
-  let payoutAmountTooltip = useTrans({
-    zh: "紅利金額(活動 + VIP返水) + 調帳",
-    en: "Bouns(Promotion + Rebate VIP) + Adjustment"
-  })
-
-  return (
-    <>
-      <Table.Row backgroundColor="white600">
-        <Table.HeadCell textAlign="center">
-          <Trans zh="结算日期" en="Settlement Date" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center">
-          <Trans zh="结算区间" en="Settlement Period" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans zh="代理用户名" en="Agent Username" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans zh="真人输赢总金额" en="Live Dealer Win Loss Amount" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans zh="体育输赢总金额" en="Sports Win Loss Amount" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans zh="电子输赢总金额" en="EGame Win Loss Amount" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans zh="棋牌输赢总金额" en="Card Game Win Loss Amount" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans zh="虚拟体育输赢总金额" en="Virtual Sports Win Loss Amount" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans zh="彩票输赢总金额" en="Lottery Win Loss Amount" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans zh="分红比例" en="Profit Sharing Percentaget" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans
-            zh="支出金额"
-            en="Expenditure Amount"
-            title={payoutAmountTooltip}
-          />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center" rowSpan="2">
-          <Trans zh="分红金额" en="Profit Sharing Amount" />
-        </Table.HeadCell>
-      </Table.Row>
-      <Table.Row backgroundColor="white600">
-        <Table.HeadCell textAlign="center">
-          <FormattedDate value={record.settlementDate} format="dd/MM/yyyy" />
-        </Table.HeadCell>
-        <Table.HeadCell textAlign="center">
-          {`${formatDayMonthYear(
-            record.settlementDateFrom
-          )}-${formatDayMonthYear(record.settlementDateTo)}`}
-        </Table.HeadCell>
-      </Table.Row>
-    </>
-  )
-}
-
-const RecordRow = ({ record }) => {
-  return (
-    <Table.Row>
-      <Table.Cell colSpan="2" textAlign="center"></Table.Cell>
-      <Table.Cell textAlign="center">{record?.username}</Table.Cell>
-      <Table.Cell textAlign="center" whiteSpace="nowrap">
-        <FormattedNumberDecimal value={record?.liveDealerWinLoss} />
-      </Table.Cell>
-      <Table.Cell textAlign="center" whiteSpace="nowrap">
-        <FormattedNumberDecimal value={record?.sportsWinLoss} />
-      </Table.Cell>
-      <Table.Cell textAlign="center" whiteSpace="nowrap">
-        <FormattedNumberDecimal value={record?.slotWinLoss} />
-      </Table.Cell>
-      <Table.Cell textAlign="center" whiteSpace="nowrap">
-        <FormattedNumberDecimal value={record?.cardGameWinLoss} />
-      </Table.Cell>
-      <Table.Cell textAlign="center" whiteSpace="nowrap">
-        <FormattedNumberDecimal value={record?.virtualSportsWinLoss} />
-      </Table.Cell>
-      <Table.Cell textAlign="center" whiteSpace="nowrap">
-        <FormattedNumberDecimal value={record?.lotteryWinLoss} />
-      </Table.Cell>
-      <Table.Cell textAlign="center" whiteSpace="nowrap">
-        <FormattedNumberDecimal value={record?.agentDividendPercentage} />
-      </Table.Cell>
-      <Table.Cell textAlign="center" whiteSpace="nowrap">
-        <FormattedNumberDecimal value={record?.expenditureAmount} />
-      </Table.Cell>
-      <Table.Cell textAlign="center" whiteSpace="nowrap">
-        <FormattedNumberDecimal value={record?.agentDividendAmount} />
-      </Table.Cell>
-    </Table.Row>
-  )
-}
-
-const FootRow = ({ record }) => {
-  return (
-    <Table.Row textAlign="center" fontWeight="bold" whiteSpace="nowrap">
-      <Table.Cell colSpan="2"></Table.Cell>
-      <Table.Cell>
-        <Trans zh="总计" en="Total" />
-      </Table.Cell>
-      <Table.Cell>
-        <FormattedNumberDecimal value={record?.liveDealerWinLoss} />
-      </Table.Cell>
-      <Table.Cell>
-        <FormattedNumberDecimal value={record?.sportsWinLoss} />
-      </Table.Cell>
-      <Table.Cell>
-        <FormattedNumberDecimal value={record?.slotWinLoss} />
-      </Table.Cell>
-      <Table.Cell>
-        <FormattedNumberDecimal value={record?.cardGameWinLoss} />
-      </Table.Cell>
-      <Table.Cell>
-        <FormattedNumberDecimal value={record?.virtualSportsWinLoss} />
-      </Table.Cell>
-      <Table.Cell>
-        <FormattedNumberDecimal value={record?.lotteryWinLoss} />
-      </Table.Cell>
-      <Table.Cell>
-        <FormattedNumberDecimal value={record?.agentDividendPercentage} />
-      </Table.Cell>
-      <Table.Cell>
-        <FormattedNumberDecimal value={record?.expenditureAmount} />
-      </Table.Cell>
-      <Table.Cell>
-        <FormattedNumberDecimal value={record?.agentDividendAmount} />
-      </Table.Cell>
-    </Table.Row>
-  )
-}
-*/

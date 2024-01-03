@@ -2,18 +2,12 @@ import React, { useState, useEffect, useMemo, useRef, Children } from "react"
 import { css, Global } from "@emotion/react"
 import { CheckboxGroup } from "../../checkbox/CheckboxGroup"
 import { useTrans } from "../../i18n"
+import { usePlayerWinLossTrans } from "../../trans/Player"
+import { useValidBetAmountTrans } from "../../trans/Game"
 
 const ValidBet = "ValidBet"
-const ValidBetTrans = {
-  zh: "有效投注",
-  en: "Valid Bet"
-}
 
 const WinLoss = "WinLoss"
-const WinLossTrans = {
-  zh: "玩家输赢",
-  en: "Player Win Loss"
-}
 
 const AllAgentRebate = {
   ValidBet,
@@ -24,9 +18,9 @@ const AllAgentRebateTypes = Object.values(AllAgentRebate)
 
 export const AllAgentRebateTypeCheckboxGroup = ({ ...props }) => {
   let options = [
-    { label: useTrans(ValidBetTrans), value: ValidBet },
+    { label: useValidBetAmountTrans(), value: ValidBet },
     {
-      label: useTrans(WinLossTrans),
+      label: usePlayerWinLossTrans(),
       value: WinLoss
     }
   ]

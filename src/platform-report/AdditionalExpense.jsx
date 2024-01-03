@@ -18,10 +18,7 @@ import {
   Trans,
   useTrans
 } from "../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../table"
 import LoadingBackdrop from "../dialog/LoadingBackdrop"
 import dateTimeColumn from "../table/column/dateTime"
@@ -31,11 +28,6 @@ import {
 } from "../table/column/numberColumn"
 import AlertDialog from "../dialog/Alert"
 import textColumn from "../table/column/textColumn"
-import { formatDateTime } from "../date/format"
-import { FieldValues } from "../layout/Grid"
-import { formatNumberDecimal } from "../number/format"
-import Separator from "../layout/Separator"
-import { startOfNextDay } from "../date/startOfNextDay"
 
 export const AdditionalExpenseDialogDisclosure = ({
   value,

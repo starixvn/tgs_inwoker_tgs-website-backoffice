@@ -50,23 +50,44 @@ import { defaultFormatDate } from "../../date/format"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { PlayerBucketListDialogDisclosure } from "./PlayerBucketList"
 import { diff } from "../../object/diff"
+import { UpperLevelAgentTrans, useAgentUsernameTrans } from "../../trans/Agent"
+import {
+  BalanceTrans,
+  BirthdayTrans,
+  ICNumberTrans,
+  LastLoginIPTrans,
+  LastLoginTimeTrans,
+  RealNameTrans,
+  RegisterIPTrans,
+  RegistrationTimeTrans,
+  UserNameTrans
+} from "../../trans/User"
+import {
+  PlayerCodeTrans,
+  PlayerInfoTrans,
+  RegistrationDomainTrans,
+  WageringRequirementTrans
+} from "../../trans/Player"
+import { StatusTrans } from "../../trans/Status"
+import { VipLevelTrans } from "../../trans/Vip"
+import { RemarkTrans } from "../../trans/Action"
+import {
+  TotalDepositAmountTrans,
+  TotalWithdrawAmountTrans
+} from "../../trans/Field"
 
 export const Key = "player"
 
 export const Tab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="玩家信息" en="Player" />
+      <PlayerInfoTrans />
     </_Tab>
   )
 }
 
 export const EditPanel = (props) => {
-  return isDev() ? (
-    <UpdatePlayerInfoPanel {...props} />
-  ) : (
-    <CurrentPlayerInfoPanel {...props} />
-  )
+  return <UpdatePlayerInfoPanel {...props} />
 }
 
 const UpdatePlayerInfoPanel = ({
@@ -107,11 +128,15 @@ const UpdatePlayerInfoPanel = ({
     }
   }, [result])
 
-  const onSubmit = ({ birthdate, wageringRequirement: _, ...data } = {}) => {
-    //drop wageringRequirement not updatable value
+  const onSubmit = ({
+    birthdate,
+    wageringRequirement: _,
+    banks,
+    ...data
+  } = {}) => {
+    //drop wageringRequirement & banks not updatable value
 
-    //TODO: reset birthdate to empty value?
-    birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : birthdate
+    birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : null
 
     let formData = diff(
       {
@@ -146,7 +171,8 @@ const UpdatePlayerInfoPanel = ({
   )
 }
 
-const CurrentPlayerInfoPanel = ({
+//TODO:1.40 > rm OldPlayerInfoPanel
+const OldPlayerInfoPanel = ({
   brandId,
   brand,
   playerCode = "",
@@ -226,10 +252,8 @@ const EditForm = ({
 }) => {
   let { control, setValue } = useFormContext()
   let isAdmin = useIsAdminUser()
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
+
   let allAgentUpperLevelPlaceholder = useTrans({
     zh: "全民代理上級",
     en: "All Agent Upper Level"
@@ -247,24 +271,25 @@ const EditForm = ({
       <FieldValues>
         {isAdmin && (
           <>
-            <Trans zh="玩家代码" en="Player Code" />
+            <PlayerCodeTrans />
             <Text>{player.playerCode}</Text>
           </>
         )}
-        <UserNameLabel />
+
+        <UserNameTrans />
         <Text>{username}</Text>
 
-        <RealNameLabel />
+        <RealNameTrans />
         <Box>
           <Input name="realName" />
         </Box>
 
-        <BirthdayLabel />
+        <BirthdayTrans />
         <Box>
           <DateInput name="birthdate" />
         </Box>
 
-        <IdentityCardNumberLabel />
+        <ICNumberTrans />
         <Group>
           <Input
             name="idNumber"
@@ -279,7 +304,7 @@ const EditForm = ({
           )}
         </Group>
 
-        <VIPLevelLabel />
+        <VipLevelTrans />
         <Box>
           <VipLevelSelect
             name="vipId"
@@ -289,7 +314,7 @@ const EditForm = ({
           />
         </Box>
 
-        <AgentUsernameLabel />
+        <UpperLevelAgentTrans />
         <Box>
           <Input name="agentUsername" placeholder={agentUsernamePlaceholder} />
         </Box>
@@ -306,18 +331,18 @@ const EditForm = ({
           </>
         )}
 
-        <RegistrationLabel />
+        <RegistrationTimeTrans />
         <Box>
           <FormattedDateTime value={registeredOn} />
         </Box>
 
-        <BalanceLabel />
+        <BalanceTrans />
         <Box>
           <FormattedNumberDecimal value={balance} />
         </Box>
 
         <Box alignY="center">
-          <WageringRequirementLabel />
+          <WageringRequirementTrans />
         </Box>
         <Set>
           <FormattedNumberDecimal value={wageringRequirement} />
@@ -331,12 +356,12 @@ const EditForm = ({
           />
         </Set>
 
-        <StatusLabel />
+        <StatusTrans />
         <Box>
           <PlayerStatusSelect name="status" required placeholder={false} />
         </Box>
 
-        <RemarkLabel />
+        <RemarkTrans />
         <Box>
           <Textarea name="remark" />
         </Box>
@@ -371,26 +396,27 @@ export const Panel = ({
       <FieldValues spacing="major-2">
         {isAdmin && (
           <>
-            <Trans zh="玩家代码" en="Player Code" />
+            <PlayerCodeTrans />
             <Text>{player.playerCode}</Text>
           </>
         )}
-        <UserNameLabel />
+
+        <UserNameTrans />
         <Text data-field="username">{username}</Text>
 
-        <RealNameLabel />
+        <RealNameTrans />
         <Box>
           <Text data-field="realName">{realName}</Text>
         </Box>
 
-        <BirthdayLabel />
+        <BirthdayTrans />
         <Box>
           <FormattedDate
             value={parse(player?.birthdate, "yyyy/MM/dd", new Date())}
           />
         </Box>
 
-        <IdentityCardNumberLabel />
+        <ICNumberTrans />
         <Set orientation="horizontal" alignY="center">
           <Text.Block>{player.idNumber}</Text.Block>
           {brand?.enablePlayerIdentity && player.idNumber && (
@@ -398,12 +424,12 @@ export const Panel = ({
           )}
         </Set>
 
-        <VIPLevelLabel />
+        <VipLevelTrans />
         <Box>
           <VipLevelLabel value={vipLevel} />
         </Box>
 
-        <AgentUsernameLabel />
+        <UpperLevelAgentTrans />
         <Box>
           <Text>{player?.agentUsername}</Text>
         </Box>
@@ -417,96 +443,58 @@ export const Panel = ({
           </>
         )}
 
-        <BalanceLabel />
+        <BalanceTrans />
         <Box>
           <FormattedNumberDecimal value={balance} />
         </Box>
 
         <Box alignY="center">
-          <WageringRequirementLabel />
+          <WageringRequirementTrans />
         </Box>
         <Set>
           <FormattedNumberDecimal value={player?.wageringRequirement} />
           <PlayerBucketListDialogDisclosure playerCode={player.playerCode} />
         </Set>
 
-        <StatusLabel />
+        <StatusTrans />
         <Box>
           <PlayerStatusLabel value={status} />
         </Box>
 
-        <RemarkLabel />
+        <RemarkTrans />
         <Box>
           <Text>{player?.remark}</Text>
         </Box>
 
-        <RegisterIPLabel />
+        <RegisterIPTrans />
         <Box>{player?.registerIp}</Box>
 
-        <RegistrationLabel />
+        <RegistrationTimeTrans />
         <Box>
           <FormattedDateTime value={registeredOn} />
         </Box>
 
-        <LastLoginTimeLabel />
+        <LastLoginTimeTrans />
         <Box>
           <FormattedDateTime value={player?.lastLoginOn} />
         </Box>
 
-        <LoginIPLabel />
+        <LastLoginIPTrans />
         <Box>{player?.lastLoginIp}</Box>
 
-        <RegistrationDomainLabel />
+        <RegistrationDomainTrans />
         <Box>{player?.registerHost}</Box>
 
-        <Trans zh="总存款" en="Total　Deposit" />
+        <TotalDepositAmountTrans />
         <FormattedNumberDecimal value={playerPayment?.totalDepositAmount} />
 
-        <Trans zh="总提款" en="Total　Withdraw" />
+        <TotalWithdrawAmountTrans />
         <FormattedNumberDecimal value={playerPayment?.totalWithdrawAmount} />
       </FieldValues>
     </TabPanel>
   )
 }
 
-export const UserNameLabel = () => <Trans zh="用户名" en="User name" />
-
-export const RealNameLabel = () => <Trans zh="真实姓名" en="Real name" />
-
-export const BirthdayLabel = () => <Trans zh="生日" en="Birthday" />
-
-const IdentityCardNumberLabel = () => <Trans zh="身分证" en="IC Number" />
-
-export const VIPLevelLabel = () => <Trans zh="VIP等级" en="VIP Level" />
-
-export const AgentUsernameLabel = () => (
-  <Trans zh="上级代理" en="Upper Level Agent" />
-)
-
 const AllAgentUpperLevelLabel = () => (
   <Trans zh="全民代理上級" en="All Agent Upper Level" />
-)
-
-const BalanceLabel = () => <Trans zh="余额" en="Balance" />
-
-const WageringRequirementLabel = () => (
-  <Trans zh="需滿足提款金額" en="Wagering requirement" />
-)
-
-export const StatusLabel = () => <Trans zh="状态" en="Status" />
-
-export const RemarkLabel = () => <Trans zh="备注" en="Remark" />
-
-const RegisterIPLabel = () => <Trans zh="注册IP地址" en="Register IP" />
-
-const RegistrationLabel = () => <Trans zh="注册时间" en="Registered Time" />
-
-const LastLoginTimeLabel = () => (
-  <Trans zh="最后登录时间" en="Last Login Time" />
-)
-
-const LoginIPLabel = () => <Trans zh="最后登录IP地址" en="Last Login IP" />
-
-const RegistrationDomainLabel = () => (
-  <Trans zh="注册域名" en="Registration Domain" />
 )

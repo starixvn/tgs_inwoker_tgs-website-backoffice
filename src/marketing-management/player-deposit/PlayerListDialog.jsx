@@ -21,10 +21,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -34,11 +31,17 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { formatDateTime, formatDayMonthYear } from "../../date/format"
 import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { RegisterIPTrans } from "../../trans/User"
+import {
+  TotalDepositAmountTrans,
+  TotalWithdrawAmountTrans
+} from "../../trans/Field"
+import { DepositWithdrawDiffTrans } from "../../trans/Platform"
+import { PlayerUsernameTrans } from "../../trans/Player"
 
 //TODO: remove date
 export const PlayerListDialogDisclosure = ({
@@ -163,7 +166,7 @@ const useColumns = ({ items = [] }) => {
     let columns = [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="玩家用户名" en="Player Username" />,
+        Header: <PlayerUsernameTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
@@ -178,22 +181,22 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "totalDepositAmount",
-        Header: <Trans zh="总存款" en="Total Deposit Amount" />,
+        Header: <TotalDepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "totalWithdrawAmount",
-        Header: <Trans zh="总提款" en="Total Withdraw Amount" />,
+        Header: <TotalWithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "depositSubtractWithdraw",
-        Header: <Trans zh="存提差" en="Deposit Withdraw Diff." />,
+        Header: <DepositWithdrawDiffTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "ipAddress",
-        Header: <Trans zh="注册IP" en="Register IP" />,
+        Header: <RegisterIPTrans />,
         disableSortBy: true
       })
     ]

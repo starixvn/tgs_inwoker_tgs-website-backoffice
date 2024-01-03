@@ -58,6 +58,24 @@ import { BonusDialogDisclosure } from "../BonusDialog"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+import { VipLevelTrans } from "../../trans/Vip"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
+import {
+  BetAmountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
+import { UserNameTrans } from "../../trans/User"
+import { DepositAmountTrans } from "../../trans/Payment"
+import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans,
+  DepositAmountAfterDeductingTransferFeeTrans
+} from "../../trans/Platform"
+import {
+  PlayerContributionReportTrans,
+  usePlayerUsernameTrans
+} from "../../trans/Player"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -174,16 +192,13 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
           )}
         </Level>
       }
-      title={<Trans zh="玩家贡献报表" en="Player Contribution Report" />}
+      title={<PlayerContributionReportTrans />}
     >
       <Stack>
         <Alert variant="bordered" type="info" accent marginBottom="1rem">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
-              <Trans
-                zh="存款金额: 为已扣除手续费之金额。"
-                en="Deposit Amount: The amount after deducting the transfer fee."
-              />
+              <DepositAmountAfterDeductingTransferFeeTrans />
             </List.Item>
           </List>
         </Alert>
@@ -229,10 +244,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "玩家用户名",
-    en: "Player username"
-  })
+  let usernamePlaceholder = usePlayerUsernameTrans()
 
   const onSubmit = (data) => search?.(data)
 
@@ -292,8 +304,8 @@ const useColumns = ({ items = [] }) => {
     () => [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        Header: <UserNameTrans />,
+        TotalCell: () => <TotalTrans />,
         Cell: ({ value }) => <Text.Block>{value}</Text.Block>,
         Footer: () => <Trans zh="页总计" en="Page Total" />,
         footerCellProps: {
@@ -316,7 +328,7 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "level",
-        Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        Header: <VipLevelTrans />,
         disableSortBy: true,
         TotalCell: () => null,
         Cell: ({ value }) => <VipLevelLabel value={value} />,
@@ -326,7 +338,7 @@ const useColumns = ({ items = [] }) => {
         id: "depositAmount",
         accessor: (row) => row,
         sumColumn: "depositAmount",
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true,
         toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
@@ -356,7 +368,7 @@ const useColumns = ({ items = [] }) => {
         */
         accessor: "bonusAmount",
         sumColumn: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
         /*
         TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />,
@@ -390,7 +402,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
         sumColumn: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -408,31 +420,31 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "betAmount",
         sumColumn: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
         sumColumn: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         disableSortBy: true
       })
     ],

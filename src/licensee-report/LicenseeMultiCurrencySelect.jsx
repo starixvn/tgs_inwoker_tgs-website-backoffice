@@ -6,7 +6,7 @@ import { useLicensee } from "../merchant/licensees/client"
 import { useFormContext, useWatch } from "react-hook-form"
 import { useTrans } from "../i18n"
 import { sortBy } from "lodash-es"
-import { MultiSelect } from "../select/MultiSelect"
+import { MultiSelectBox } from "../select/MultiSelectBox"
 
 export const LicenseeMultiCurrencySelect = ({
   placeholder,
@@ -30,7 +30,7 @@ export const LicenseeMultiCurrencySelect = ({
   options = sortBy(options, ["label"])
 
   return (
-    <MultiSelect
+    <MultiSelectBox
       placeholder={placeholder}
       isLoading={isLoading}
       options={options}

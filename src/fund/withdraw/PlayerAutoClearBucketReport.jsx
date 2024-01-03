@@ -23,6 +23,9 @@ import { usePlayerAutoClearBucketList } from "../../player-management/player-lis
 import dateTimeColumn from "../../table/column/dateTime"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import SequenceColumn from "../../table/column/sequence"
+import { BalanceTrans } from "../../trans/User"
+import { TimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
 
 export const PlayerAutoClearBucketReport = ({
   playerCode,
@@ -94,7 +97,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           dateTimeColumn({
             accessor: "createdOn",
-            Header: <Trans zh="时间" en="Time" />,
+            Header: <TimeTrans />,
             disableSortBy: true
           }),
           textColumn({
@@ -118,7 +121,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           numberDecimalColumn({
             accessor: "reviewBalance",
-            Header: <Trans zh="钱包余额" en="Balance" />,
+            Header: <BalanceTrans />,
             disableSortBy: true,
             headCellProps: {
               whiteSpace: "nowrap"
@@ -143,7 +146,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           numberDecimalColumn({
             accessor: "cleaningBalance",
-            Header: <Trans zh="钱包余额" en="Balance" />,
+            Header: <BalanceTrans />,
             disableSortBy: true,
             headCellProps: {
               whiteSpace: "nowrap"
@@ -161,7 +164,7 @@ const useColumns = ({ items = [] }) => {
       },
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <ClearBucketStatusLabel value={value} />
       })

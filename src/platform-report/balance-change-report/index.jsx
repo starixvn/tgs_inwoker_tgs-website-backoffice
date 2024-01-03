@@ -33,6 +33,20 @@ import {
 } from "./TransactionTypeSelect"
 import dateTimeColumn from "../../table/column/dateTime"
 import { DateButtons } from "../../date/DateButtons"
+import {
+  OperatorTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
+import {
+  BalanceAfterTrans,
+  BalanceBeforeTrans,
+  UserNameTrans,
+  useUserNameTrans
+} from "../../trans/User"
+import { BalanceChangeReportTrans } from "../../trans/Platform"
+import { TimeTrans } from "../../trans/Date"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -121,7 +135,7 @@ const ReportContent = ({ brandId }) => {
           />
         </Level>
       }
-      title={<Trans zh="帳變報表" en="Balance Change Report" />}
+      title={<BalanceChangeReportTrans />}
     >
       <Table
         columns={columns}
@@ -160,10 +174,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "用户名",
-    en: "User name"
-  })
+  let usernamePlaceholder = useUserNameTrans()
 
   const onSubmit = (data) => search?.(data)
 
@@ -197,50 +208,43 @@ const useColumns = ({ brandId, items = [] }) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="操作时间" en="Operation Time" />,
+        Header: <TimeTrans />,
         accessor: "recordedOn",
         disableSortBy: true
       }),
       textColumn({
         accessor: "transactionType",
-        Header: <Trans zh="交易类型" en="Transaction Type" />,
+        Header: <TransactionTypeTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <TransactionTypeLabel value={value} />
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="交易金额" en="amount" />,
+        Header: <TransactionAmountTrans />,
         disableSortBy: true
       }),
-      /*
-      numberDecimalColumn({
-        accessor: "wageringRequirement",
-        Header: <Trans zh="流水" en="Wagering" />,
-        disableSortBy: true
-      }),
-      */
       numberDecimalColumn({
         accessor: "beforeBalance",
-        Header: <Trans zh="余额 (前)" en="Before" />,
+        Header: <BalanceBeforeTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "afterBalance",
-        Header: <Trans zh="余额 (后)" en="After" />,
+        Header: <BalanceAfterTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "operator",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "description",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true
       })
     ],

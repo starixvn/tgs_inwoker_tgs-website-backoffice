@@ -6,18 +6,17 @@ import AlertDialog from "../../dialog/Alert"
 import { useChangeBrandPaymentStatus } from "./client"
 import { Select } from "../../select/Select"
 import { useFormContext, Controller, useWatch } from "react-hook-form"
+import {
+  DisabledTrans,
+  EnabledTrans,
+  useDisabledTrans,
+  useEnabledTrans,
+  useStatusTrans
+} from "../../trans/Status"
 
 const Enabled = "Enabled"
-const EnabledTrans = {
-  zh: "开启",
-  en: "Enabled"
-}
 
 const Disabled = "Disabled"
-const DisabledTrans = {
-  zh: "关闭",
-  en: Disabled
-}
 
 export default {
   Enabled,
@@ -27,10 +26,10 @@ export default {
 export const BrandPaymentStatusLabel = ({ value = "" }) => {
   switch (value) {
     case Disabled:
-      return <Trans {...DisabledTrans} />
+      return <DisabledTrans />
 
     case Enabled:
-      return <Trans {...EnabledTrans} />
+      return <EnabledTrans />
 
     default:
       return value
@@ -38,19 +37,16 @@ export const BrandPaymentStatusLabel = ({ value = "" }) => {
 }
 
 export const BrandPaymentStatusSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useTrans(EnabledTrans),
+      label: useEnabledTrans(),
       value: Enabled
     },
     {
-      label: useTrans(DisabledTrans),
+      label: useDisabledTrans(),
       value: Disabled
     }
   ]

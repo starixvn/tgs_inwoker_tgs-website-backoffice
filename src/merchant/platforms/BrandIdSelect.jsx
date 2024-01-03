@@ -3,10 +3,11 @@ import { css, Global } from "@emotion/react"
 import Select from "../../select/Select"
 import { useBrandList } from "./client"
 import { useTrans } from "../../i18n"
+import { usePlatformTrans } from "../../trans/Platform"
 
 //TODO: rename to BrandSelect and add valueField prop?
 export const BrandIdSelect = ({ placeholder, licenseeId, ...props }) => {
-  let defaultPlaceholder = useBrandPlaceholder()
+  let defaultPlaceholder = usePlatformTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let { isLoading, data, error } = useBrandList({
@@ -28,9 +29,4 @@ export const BrandIdSelect = ({ placeholder, licenseeId, ...props }) => {
   )
 }
 
-const useBrandPlaceholder = () =>
-  useTrans({
-    zh: "平台",
-    en: "Platform"
-  })
 export default BrandIdSelect

@@ -39,6 +39,7 @@ import { valueOf as cssSizeValueOf } from "../css/size"
 import Overflow from "../css/overflow"
 import head from "../list/head"
 import { Footer } from "./Footer"
+import { NoSearchResultTrans } from "../trans/Status"
 
 const DefaultState = {
   pageIndex: 0,
@@ -402,6 +403,10 @@ const Foot = ({ table }) => {
   let { Foot } = components
 
   let headFooterGroup = head(footerGroups)
+  if (!headFooterGroup) {
+    return null
+  }
+
   return (
     <Foot fontWeight="semibold" {...getTableFootProps()}>
       <_Table.Row {...headFooterGroup.getFooterGroupProps()}>
@@ -541,7 +546,7 @@ const Body = ({ table }) => {
       {!rows.length && (
         <Row>
           <_Table.Cell textAlign="center" colSpan={allColumns.length}>
-            <Trans zh="查无资料" en="No Search Result" />
+            <NoSearchResultTrans />
           </_Table.Cell>
         </Row>
       )}

@@ -14,21 +14,9 @@ import {
   FieldStack
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../../user/context"
-import Disclosure, {
-  AddDisclosure,
-  EditDisclosure,
-  NewDisclosure,
-  ViewDisclosure
-} from "../../../dialog/Disclosure"
 import FormDialog from "../../../form/FormDialog"
 import { Trans, useTrans } from "../../../i18n"
 import { useForm, useFormContext, useWatch, Controller } from "react-hook-form"
-import {
-  PromotionTypeGroup,
-  PromotionTypeGroupSelect,
-  PromotionTypeSelect,
-  usePromotionGroupValueOf
-} from "../../PromotionType"
 import { FieldValues } from "../../../layout/Grid"
 import { NormalLabel } from "../../../form/Label"
 import {
@@ -43,6 +31,12 @@ import { GameProviderSelectField } from "../field/GameProviderSelectField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
 import { useIsTotalFundsLimited, useTotalFunds } from "../field/TotalFundsField"
+import {
+  PromotionBonusLimitTrans,
+  PromotionBonusPercentageTrans,
+  PromotionTurnoverRequirementTrans
+} from "../../../trans/Promotion"
+import { MultipliersTrans } from "../../../trans/Field"
 
 const ReliefMoneyDaily = "ReliefMoneyDaily"
 const ReliefMoneyWeekly = "ReliefMoneyWeekly"
@@ -75,7 +69,7 @@ export const Rule = ({ readOnly }) => {
 
       <PlayerAutoJoinField readOnly={readOnly} disabled={disabled} />
       <NormalLabel>
-        <Trans zh="彩金百分比" en="Bonus Percentage" />
+        <PromotionBonusPercentageTrans />
       </NormalLabel>
       <PercentageNumberInputField
         name="rule.percentage"
@@ -89,7 +83,7 @@ export const Rule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="彩金上限" en="Bonus Limit" />
+        <PromotionBonusLimitTrans />
       </NormalLabel>
       <NumberInput
         name="rule.bonusAmountLimit"
@@ -107,7 +101,7 @@ export const Rule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
+        <PromotionTurnoverRequirementTrans />
       </NormalLabel>
       <NumberInputField
         name="rule.turnoverMultiple"
@@ -120,7 +114,7 @@ export const Rule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />

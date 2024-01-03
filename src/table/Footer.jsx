@@ -9,17 +9,12 @@ import { css, Global } from "@emotion/react"
 import { Pagination, Text, Set } from "bumbag"
 import { Trans, useTrans } from "../i18n"
 import { formatNumber } from "../number/format"
+import { useNextPageTrans, usePreviousPageTrans } from "../trans/Action"
 
 export const Footer = forwardRef(({ table, setPageIndex }, ref) => {
-  let previousText = useTrans({
-    zh: "前一页",
-    en: "Previous page"
-  })
+  let previousText = usePreviousPageTrans()
 
-  let nextText = useTrans({
-    zh: "下一页",
-    en: "Next page"
-  })
+  let nextText = useNextPageTrans()
 
   // TODO: how to measure height + margin?
   // let [paginationRef, paginationMeasure] = useMeasure()
@@ -67,7 +62,7 @@ export const Footer = forwardRef(({ table, setPageIndex }, ref) => {
       {Number.isFinite(totalCount) && (
         <Text>
           <Trans
-            zh={`筆數：${formattedTotalCount}`}
+            zh={`笔数：${formattedTotalCount}`}
             en={`Rows：${formattedTotalCount}`}
           />
         </Text>

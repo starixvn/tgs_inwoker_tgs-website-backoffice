@@ -44,6 +44,14 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import textColumn from "../../table/column/textColumn"
 import { subDays, parse } from "date-fns"
 import { upperFirst } from "lodash-es"
+import { UserNameTrans } from "../../trans/User"
+import { useAgentUsernameTrans } from "../../trans/Agent"
+import { PlayerDepositReportTrans } from "../../trans/Player"
+import {
+  DepositPlayerCountTrans,
+  FirstDepositCountTrans,
+  NoSecondDepositPlayerCountTrans
+} from "../../trans/Payment"
 
 export { Code }
 
@@ -130,7 +138,7 @@ const BodyContent = ({ brandId }) => {
   })
   return (
     <PageContent
-      title={<Trans zh="玩家存款报表" en="Player Deposit Report" />}
+      title={<PlayerDepositReportTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
@@ -184,10 +192,7 @@ const SearchBar = ({
 
   let minDate = subDays(todayRange.start, DataRetentionDays)
 
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   let formMethods = useForm({
     defaultValues: {
@@ -248,14 +253,14 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       textColumn({
         accessor: "agentUserName",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       numberColumn({
         id: "firstDepositCount",
         totalId: "firstDepositTotalCount",
         accessor: (row) => row,
-        Header: <Trans zh="首存人数" en="First Deposit Count" />,
+        Header: <FirstDepositCountTrans />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
@@ -276,12 +281,7 @@ const useColumns = ({ brandId, items = [] }) => {
         id: "noSecondDepositCount",
         totalId: "noSecondDepositTotalCount",
         accessor: (row) => row,
-        Header: (
-          <Trans
-            zh="没进行第二次存款玩家人数"
-            en="No Second Deposit Player Count"
-          />
-        ),
+        Header: <NoSecondDepositPlayerCountTrans />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },
@@ -302,7 +302,7 @@ const useColumns = ({ brandId, items = [] }) => {
         id: "depositCount",
         totalId: "depositTotalCount",
         accessor: (row) => row,
-        Header: <Trans zh="当日玩家存款人数" en="Deposit Player Count" />,
+        Header: <DepositPlayerCountTrans />,
         TotalCell: ({ value }) => {
           return <FormattedNumber value={value} />
         },

@@ -34,6 +34,23 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+import {
+  BetAmountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
+import { DepositAmountTrans, FirstDepositCountTrans } from "../../trans/Payment"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
+import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans,
+  DepositAmountAfterDeductingTransferFeeTrans,
+  PlatformCoveredBonusAdjustInfoTrans,
+  PlatformCoveredBonusInfoTrans,
+  PlatformMarketReportNetProfitInfoTrans
+} from "../../trans/Platform"
+import { AgentProfitTrans } from "../../trans/Agent"
+import { RegisteredCountTrans } from "../../trans/User"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -108,28 +125,16 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
       <Alert variant="bordered" type="info" accent marginBottom="1rem">
         <List listStyleType="disc" listStylePosition="inside">
           <List.Item>
-            <Trans
-              zh="存款金额: 为已扣除手续费之金额。"
-              en="Deposit Amount: The amount after deducting the transfer fee."
-            />
+            <DepositAmountAfterDeductingTransferFeeTrans />
           </List.Item>
           <List.Item>
-            <Trans
-              zh="平台承担红利 = 红利金额 * (100% - 总代分红比例)。"
-              en="Platform-Covered Bonus = Bonus Amount * (100% - Chief Agent Profit Sharing Percentage)."
-            />
+            <PlatformCoveredBonusInfoTrans />
           </List.Item>
           <List.Item>
-            <Trans
-              zh="平台承担优惠调帐 = 优惠调帐 * (100% - 总代分红比例)。"
-              en="Platform-Covered Bonus Adjust = Bonus Adjust * (100% - Chief Agent Profit Sharing Percentage)."
-            />
+            <PlatformCoveredBonusAdjustInfoTrans />
           </List.Item>
           <List.Item>
-            <Trans
-              zh="净盈利 = 公司输赢金额 - 平台承担红利 - 平台承担优惠调帐 - 公司调帐 - 代理总分红。"
-              en="Net Profit = CO. W/L - Platform-Covered Bonus - Platform-Covered Bonus Adjust - C.O Adjustment Amount - Agent Profit."
-            />
+            <PlatformMarketReportNetProfitInfoTrans />
           </List.Item>
         </List>
       </Alert>
@@ -217,7 +222,7 @@ const useColumns = ({ brandId, items = [] }) => {
       dateTimeColumn({
         Header: <Trans zh="日期" en="Date" />,
         accessor: "reportDate",
-        TotalCell: () => <Trans zh="总计" en="Total" />,
+        TotalCell: () => <TotalTrans />,
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
         disableSortBy: true,
@@ -227,7 +232,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         accessor: "registeredCount",
-        Header: <Trans zh="注册人数" en="Registered Count" />,
+        Header: <RegisteredCountTrans />,
         disableSortBy: true
       }),
       numberColumn({
@@ -247,13 +252,13 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         accessor: "firstFundInCount",
-        Header: <Trans zh="首存人数" en="First Fund In Count" />,
+        Header: <FirstDepositCountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "depositAmount",
         accessor: (row) => row,
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true,
         toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
@@ -270,7 +275,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -287,7 +292,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -298,7 +303,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberDecimalColumn({
         id: "agentProfit",
         accessor: (row) => row,
-        Header: <Trans zh="代理总分红" en="Agent Profit" />,
+        Header: <AgentProfitTrans />,
         disableSortBy: true,
         TotalCell: ({ value }) => (
           <FormattedNumber value={value} format="0,0.00" digits={2} />
@@ -316,22 +321,22 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -366,7 +371,7 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="NetProfit" />,
+        Header: <NetProfitTrans />,
         disableSortBy: true
       })
     ],

@@ -21,10 +21,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -34,12 +31,13 @@ import numberColumn, {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { formatDateTime, formatDayMonthYear } from "../../date/format"
 import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { useMarketingRegisteredPlayerList } from "./client"
+import { RegistrationTimeTrans } from "../../trans/User"
+import { PlayerUsernameTrans } from "../../trans/Player"
 
 //TODO: remove data param
 export const RegisteredPlayerListDialogDisclosure = ({
@@ -148,12 +146,12 @@ const useColumns = ({ items = [] }) => {
     let columns = [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="玩家用户名" en="Player Username" />,
+        Header: <PlayerUsernameTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "registeredOn",
-        Header: <Trans zh="注册时间" en="Registered Time" />,
+        Header: <RegistrationTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({

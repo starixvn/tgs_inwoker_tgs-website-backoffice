@@ -48,17 +48,24 @@ import {
 } from "./all-agent-rebate-report/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
+import { GameProviderReport, OrderTracking, UnsettledBet } from "../trans/Game"
+import {
+  BalanceChangeReport,
+  MarketReport,
+  PlatformReportTrans,
+  WinlossReport
+} from "../trans/Platform"
+import {
+  AgentContributionReport,
+  AgentProfitSharingReport
+} from "../trans/Agent"
+import { PlayerContributionReport } from "../trans/Player"
 
 export const Code = "report"
 
 export const DefaultUrl = `/${Code}`
 
 export const DefaultCodePath = [Code]
-
-export const nameMessages = {
-  zh: "平台报表",
-  en: "Platform Report"
-}
 
 export const Menu = ({
   title = (
@@ -70,7 +77,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Trans {...nameMessages} />
+      <PlatformReportTrans />
     </Flex>
   ),
   url = DefaultUrl,
@@ -90,57 +97,21 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case MarketReportCode:
-      return getTrans(
-        {
-          zh: "市场报表",
-          en: "Market Report"
-        },
-        locale
-      )
+      return getTrans(MarketReport, locale)
     case OrderReportCode:
-      return getTrans(
-        {
-          zh: "订单查询",
-          en: "Order Tracking"
-        },
-        locale
-      )
+      return getTrans(OrderTracking, locale)
 
     case OpenRoundCode:
-      return getTrans(
-        {
-          zh: "未结算订单查询",
-          en: "Unsettled Bet"
-        },
-        locale
-      )
+      return getTrans(UnsettledBet, locale)
 
     case AgentContributionReportCode:
-      return getTrans(
-        {
-          zh: "代理贡献报表",
-          en: "Agent Contribution Report"
-        },
-        locale
-      )
+      return getTrans(AgentContributionReport, locale)
 
     case PlayerContributionReportCode:
-      return getTrans(
-        {
-          zh: "玩家贡献报表",
-          en: "Player Contribution Report"
-        },
-        locale
-      )
+      return getTrans(PlayerContributionReport, locale)
 
     case AgentBonusReportCode:
-      return getTrans(
-        {
-          zh: "代理分红报表",
-          en: "Agent Profit Sharing Report"
-        },
-        locale
-      )
+      return getTrans(AgentProfitSharingReport, locale)
 
     case TransferRecordsCode:
       return getTrans(
@@ -152,30 +123,12 @@ const label = ({ locale, code }) => {
       )
 
     case BalanceChangeReportCode:
-      return getTrans(
-        {
-          zh: "帳變報表",
-          en: "Balance Change Report"
-        },
-        locale
-      )
+      return getTrans(BalanceChangeReport, locale)
 
     case GameProviderReportCode:
-      return getTrans(
-        {
-          zh: "游戏商報表",
-          en: "Game Provider Report"
-        },
-        locale
-      )
+      return getTrans(GameProviderReport, locale)
     case WinlossReportCode:
-      return getTrans(
-        {
-          zh: "输赢报表",
-          en: "Winloss Report"
-        },
-        locale
-      )
+      return getTrans(WinlossReport, locale)
 
     case AllAgentRebateReportCode:
       return getTrans(

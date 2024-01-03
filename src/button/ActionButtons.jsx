@@ -2,20 +2,11 @@ import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
 import { ActionButtons as _ActionButtons } from "bumbag"
 import { Trans, useTrans } from "../i18n"
-
-const Submit = {
-  zh: "提交",
-  en: "Submit"
-}
+import { CancelTrans, SubmitTrans } from "../trans/Action"
 
 const Confirm = {
   zh: "确定",
   en: "Submit"
-}
-
-const Cancel = {
-  zh: "取消",
-  en: "Cancel"
 }
 
 //TODO: move to CloseButton?
@@ -34,13 +25,11 @@ const Add = {
   en: "Add"
 }
 
-export const SubmitText = () => Trans(Submit)
+//TODO: use SubmitTrans instead
+export const SubmitText = () => <SubmitTrans />
 
-export const useSubmitText = () => useTrans(Submit)
-
-export const CancelText = () => Trans(Cancel)
-
-export const useCancelText = () => useTrans(Cancel)
+//TODO: use CancelTrans instead
+export const CancelText = () => <CancelTrans />
 
 export const ConfirmText = () => Trans(Confirm)
 
@@ -56,8 +45,8 @@ export const CloseText = () => useTrans(Close)
 export const SubmitCancel = ({ cancelText, submitText, ...props }) => {
   return (
     <_ActionButtons
-      cancelText={cancelText ?? <CancelText />}
-      submitText={submitText ?? <SubmitText />}
+      cancelText={cancelText ?? <CancelTrans />}
+      submitText={submitText ?? <SubmitTrans />}
       {...props}
     />
   )
@@ -66,7 +55,7 @@ export const SubmitCancel = ({ cancelText, submitText, ...props }) => {
 export const ConfirmCancel = ({ cancelText, submitText, ...props }) => {
   return (
     <_ActionButtons
-      cancelText={cancelText ?? <CancelText />}
+      cancelText={cancelText ?? <CancelTrans />}
       submitText={submitText ?? <ConfirmText />}
       {...props}
     />

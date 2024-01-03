@@ -51,6 +51,19 @@ import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import AnnouncementType, { AnnouncementTypeSelect } from "./AnnouncementType"
+import {
+  ActionTrans,
+  ConfirmOrderTrans,
+  OperatorTrans
+} from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+import { OrderTrans, SubjectTrans } from "../../trans/Field"
+import {
+  EndTimeTrans,
+  StartTimeTrans,
+  UpdatedTimeTrans
+} from "../../trans/Date"
+import { AnnouncementsTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -138,7 +151,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="公告管理" en="Announcements" />}
+      title={<AnnouncementsTrans />}
       actionBar={
         <Flex justifyContent="space-between">
           <Box>
@@ -371,7 +384,7 @@ const EffectiveTable = ({
                 type="submit"
                 id="change-announcement-display-order-button"
               >
-                <Trans zh="确认排序" en="Confirm Order" />
+                <ConfirmOrderTrans />
               </Button>
             </Dialog.Footer>
           )}
@@ -401,7 +414,7 @@ const useColumns = ({
         : {
             id: "displayOrder",
             accessor: (record) => record,
-            Header: <Trans zh="序" en="Order" />,
+            Header: <OrderTrans />,
             disableSortBy: true,
             headCell: {
               textAlign: "center"
@@ -437,7 +450,7 @@ const useColumns = ({
           },
       {
         accessor: "subject",
-        Header: <Trans zh="主题" en="Subject" />,
+        Header: <SubjectTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -448,7 +461,7 @@ const useColumns = ({
       },
       {
         accessor: "createdByUsername",
-        Header: <Trans zh="操作人" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -459,23 +472,23 @@ const useColumns = ({
       },
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最近更新时间" en="Last Update" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "from",
-        Header: <Trans zh="开始时间" en="Start" />,
+        Header: <StartTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "to",
-        Header: <Trans zh="结束时间" en="End" />,
+        Header: <EndTimeTrans />,
         disableSortBy: true
       }),
       {
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -522,7 +535,7 @@ const useColumns = ({
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },

@@ -20,13 +20,13 @@ import {
 } from "./player-identity/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
-
-export const Name = ({}) => useTrans(nameMessages)
-
-export const nameMessages = {
-  zh: "玩家管理",
-  en: "Player management"
-}
+import {
+  OnlinePlayers,
+  PlayerBalanceAdjustment,
+  PlayerIdVerification,
+  PlayerManagementTrans,
+  Players
+} from "../trans/Player"
 
 export const Code = "playermanagement"
 
@@ -44,7 +44,7 @@ export const Menu = ({
         fontSize="1.1rem"
         color="black200"
       />
-      <Name />
+      <PlayerManagementTrans />
     </Flex>
   ),
   url = DefaultUrl,
@@ -64,37 +64,13 @@ export const Menu = ({
 const label = ({ locale, code }) => {
   switch (code) {
     case PlayerListCode:
-      return getTrans(
-        {
-          zh: "玩家列表",
-          en: "Players"
-        },
-        locale
-      )
+      return getTrans(Players, locale)
     case PlayerIdentityCode:
-      return getTrans(
-        {
-          zh: "玩家身分审核列表",
-          en: "Player Identity List"
-        },
-        locale
-      )
+      return getTrans(PlayerIdVerification, locale)
     case OnlinePlayerListCode:
-      return getTrans(
-        {
-          zh: "在线玩家列表",
-          en: "Online Players"
-        },
-        locale
-      )
+      return getTrans(OnlinePlayers, locale)
     case BalanceAdjustmentCode:
-      return getTrans(
-        {
-          zh: "玩家调账",
-          en: "Balance Adjustment"
-        },
-        locale
-      )
+      return getTrans(PlayerBalanceAdjustment, locale)
     default:
       return ""
   }

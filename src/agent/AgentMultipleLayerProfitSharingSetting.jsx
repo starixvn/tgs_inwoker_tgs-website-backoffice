@@ -42,6 +42,8 @@ import { isMonthlySettlementInterval } from "../date/SettlementIntervalType"
 import { AlertDialog } from "../dialog/Alert"
 import LoadingBackdrop from "../dialog/LoadingBackdrop"
 import { Name } from "./AgentEgameRebatePercentage"
+import { NetProfitTrans } from "../trans/Field"
+import { ProfitSharingPercentageTrans } from "../trans/Agent"
 
 export const AgentMultipleLayerProfitSharingSettingDialogDisclosure = ({
   name = "agentDividendConditions",
@@ -197,7 +199,6 @@ const SettingDisclosure = ({
                 onChange={(data) => {
                   let editable = !readOnly
                   if (editable) {
-                    console.log("setValue", data)
                     setValue(name, data, { shouldValidate: true })
                   }
                 }}
@@ -266,10 +267,8 @@ export const AgentMultipleLayerProfitSharingSettingFormBody = ({
   profitSharingPercentageFieldName = "dividendPercentage",
   maxProfitSharingPercentage,
   activeNumberLabel = <Trans zh="活跃人数" en="Active Player" />,
-  netProfitLabel = <Trans zh="净盈利" en="Net Profit" />,
-  profitSharingPercentageLabel = (
-    <Trans zh="分红比例" en="Profit Sharing Percentage" />
-  ),
+  netProfitLabel = <NetProfitTrans />,
+  profitSharingPercentageLabel = <ProfitSharingPercentageTrans />,
   readOnly
 }) => {
   let editable = !readOnly

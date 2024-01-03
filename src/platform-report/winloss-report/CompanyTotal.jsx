@@ -21,10 +21,6 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -34,14 +30,12 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { formatDateTime, formatYearMonthDay } from "../../date/format"
-import { FieldValues } from "../../layout/Grid"
-import { formatNumberDecimal } from "../../number/format"
-import Separator from "../../layout/Separator"
-import { startOfNextDay } from "../../date/startOfNextDay"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { formatYearMonthDay } from "../../date/format"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportCompanyTotal } from "./client"
+import { TotalTrans } from "../../trans/Field"
+import { CompanyTrans } from "../../trans/Platform"
+import { WinLossTrans } from "../../trans/Game"
 
 export const CompanyTotalDialogDisclosure = ({
   value,
@@ -118,7 +112,7 @@ const useColumns = ({ items = [] }) => {
           let end = formatYearMonthDay(record?.to)
           return <Text.Block>{`${start} - ${end}`}</Text.Block>
         },
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         }
@@ -141,7 +135,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           numberDecimalColumn({
             accessor: "playerWinLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true,
             sumColumn: "playerWinLoss"
           }),
@@ -155,7 +149,7 @@ const useColumns = ({ items = [] }) => {
       },
       {
         id: "company",
-        Header: <Trans zh="公司" en="Company" />,
+        Header: <CompanyTrans />,
         headCell: {
           textAlign: "center"
         },
@@ -163,7 +157,7 @@ const useColumns = ({ items = [] }) => {
         columns: [
           numberDecimalColumn({
             accessor: "companyWinLoss",
-            Header: <Trans zh="输赢" en="Winloss" />,
+            Header: <WinLossTrans />,
             disableSortBy: true,
             sumColumn: "companyWinLoss"
           }),

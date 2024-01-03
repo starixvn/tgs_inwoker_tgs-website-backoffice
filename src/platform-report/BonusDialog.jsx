@@ -30,10 +30,7 @@ import {
   Trans,
   useTrans
 } from "../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../table"
 import { useAgentTeamContributionList } from "./agent-profit-sharing-report/client"
 import LoadingBackdrop from "../dialog/LoadingBackdrop"
@@ -43,16 +40,7 @@ import {
   numberDecimalPercentageColumn
 } from "../table/column/numberColumn"
 import AlertDialog from "../dialog/Alert"
-import textColumn from "../table/column/textColumn"
-import {
-  DayMonthYearFormat,
-  formatDateTime,
-  formatDayMonthYear
-} from "../date/format"
-import { FieldValues } from "../layout/Grid"
-import { formatNumberDecimal } from "../number/format"
-import Separator from "../layout/Separator"
-import { startOfNextDay } from "../date/startOfNextDay"
+import { useBonusAmountTrans } from "../trans/Field"
 
 export const BonusDialogDisclosure = ({
   brandId,
@@ -95,10 +83,7 @@ const BounsDialog = ({
   toFetchArguments = defaultFetchArguments,
   dialog
 }) => {
-  let title = useTrans({
-    zh: "红利金额",
-    en: "Bonus Amount"
-  })
+  let title = useBonusAmountTrans()
 
   let { state, setPageIndex, setSortOrder } = useTable()
   let { isLoading, data, error } = useFetch?.(...toFetchArguments(state))

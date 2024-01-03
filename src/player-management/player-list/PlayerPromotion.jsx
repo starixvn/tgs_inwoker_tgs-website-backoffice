@@ -13,13 +13,15 @@ import { Descending, SortOrder } from "../../table/order"
 import AlertDialog from "../../dialog/Alert"
 import { usePlayerPromotions } from "./client"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import { PromotionNameTrans, PromotionsTrans } from "../../trans/Promotion"
+import { ParticipationTimeTrans } from "../../trans/Date"
 
 export const Key = "promotion"
 
 export const PlayerPromotionTab = ({ ...props }) => {
   return (
     <Tab tabId={Key} {...props}>
-      <Trans zh="活动记录" en="Promotions" />
+      <PromotionsTrans />
     </Tab>
   )
 }
@@ -106,11 +108,11 @@ const useColumns = ({ items = [] }) =>
     () => [
       textColumn({
         accessor: "promotionName",
-        Header: <Trans zh="活动名称" en="Promotion" />,
+        Header: <PromotionNameTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="参加时间" en="Participation Time" />,
+        Header: <ParticipationTimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       })

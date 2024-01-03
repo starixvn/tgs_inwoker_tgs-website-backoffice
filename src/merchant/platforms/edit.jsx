@@ -12,16 +12,16 @@ import {
   Group
 } from "bumbag"
 import { useIsDisplayMenuByRoute, useUserLicenseeId } from "../../user/context"
-import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
+import Disclosure, {
+  AddDisclosure,
+  ViewDisclosure
+} from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { Update as UpdateMenu, View as ViewMenu } from "./menu"
 import { Trans, useTrans } from "../../i18n"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Input, InputField } from "../../input/Input"
 import { MerchantIdSelect } from "../MerchantSelect"
 import { RoleTypes } from "../../system/roles/type"
@@ -67,6 +67,9 @@ import {
 } from "../../agent/AgentProfitSharingType"
 import { PlatformTokenActionButtons } from "./PlatformTokenActionButtons"
 import { TimezoneSelect, SystemZoneOffset } from "../../date/TimeZone"
+import { GameProviderTrans } from "../../trans/Game"
+import { EditTrans } from "../../trans/Action"
+import { BasicInformationTrans } from "../../trans/Field"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -157,10 +160,6 @@ const AddDialog = ({ onSubmitted, dialog }) => {
         reset()
         onSubmitted?.()
       }}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       title={title}
       dialog={dialog}
       placement="top"
@@ -186,9 +185,7 @@ export const ViewButton = ({ record, ...props }) => {
 
   return (
     <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="查看" en="View" />
-      </Disclosure>
+      <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <ViewDialog
           brandId={record?.id}
@@ -275,7 +272,7 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
   return (
     <>
       <Disclosure data-platform-id={record?.id} {...dialog} {...props}>
-        <Trans zh="修改" en="Edit" />
+        <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditDialog
@@ -390,10 +387,6 @@ const EditDialog = ({ brandId, licenseeId, onSubmitted, dialog, ...props }) => {
       }}
       onClickClose={reset}
       title={title}
-      showActionButtons={false}
-      footer={
-        <ConfirmButtonFooter isLoading={isLoading} disabled={isLoading} />
-      }
       dialog={dialog}
       placement="top"
       minWidth="60vw"
@@ -483,7 +476,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
   return (
     <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
-        <Trans zh="基本资料" en="Basic Information" />
+        <BasicInformationTrans />
       </Heading>
 
       <FieldValues>
@@ -654,8 +647,6 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           <TimezoneSelect
             name="timeSpanMinutes"
             defaultValue={isAdd ? SystemZoneOffset : undefined}
-            rangeStart={0}
-            rangeEnd={13}
             disabled={readonly || !isAdd}
           />
         </Box>
@@ -761,7 +752,7 @@ const BrandGameProviderFieldsBox = ({ readonly }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="游戏厂商" en="Game Provider" />
+        <GameProviderTrans />
       </NormalLabel>
       <BrandGameProviderCheckboxGroupTable
         marginTop="major-1"

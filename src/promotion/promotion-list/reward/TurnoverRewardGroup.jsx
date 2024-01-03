@@ -28,6 +28,8 @@ import { GameTypeSelectField } from "../field/GameTypeSelectField"
 import { GameProviderSelectField } from "../field/GameProviderSelectField"
 import { MainSetting } from "../MainSetting"
 import { ContentSetting } from "../ContentSetting"
+import { PromotionTurnoverRequirementTrans } from "../../../trans/Promotion"
+import { MultipliersTrans } from "../../../trans/Field"
 
 const DailyTurnoverRebate = "TurnoverRebate"
 const WeeklyTurnoverRebate = "TurnoverRebateWeekly"
@@ -92,7 +94,7 @@ const DailyTurnoverRule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
+        <PromotionTurnoverRequirementTrans />
       </NormalLabel>
       <NumberInputField
         name="rule.turnoverMultiple"
@@ -104,7 +106,7 @@ const DailyTurnoverRule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />
@@ -165,7 +167,7 @@ const Rule = ({ readOnly }) => {
       />
 
       <NormalLabel>
-        <Trans zh="流水倍数" en="Turnover Requirement" />
+        <PromotionTurnoverRequirementTrans />
       </NormalLabel>
       <NumberInputField
         name="rule.turnoverMultiple"
@@ -177,7 +179,7 @@ const Rule = ({ readOnly }) => {
         disabled={disabled}
         addonAfter={
           <Button isStatic tabIndex="-1">
-            <Trans zh="倍" en="Multipliers" />
+            <MultipliersTrans />
           </Button>
         }
       />

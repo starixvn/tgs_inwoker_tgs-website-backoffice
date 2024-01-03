@@ -16,6 +16,8 @@ import Input from "../../../input/Input"
 import { connection } from "../../../connection"
 import { useMount, useUnmount } from "react-use"
 import AlertDialog from "../../../dialog/Alert"
+import { PromotionUserGroupTrans } from "../../../trans/Promotion"
+import { DownloadFormatFileTrans, UploadFileTrans } from "../../../trans/Action"
 
 const FieldName = "batchId"
 
@@ -24,7 +26,7 @@ export const BatchUploadPlayerListField = ({}) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="活动用户群" en="User Group" />
+        <PromotionUserGroupTrans />
       </NormalLabel>
       <Box alignY="center">
         <BatchUploadField />
@@ -182,7 +184,7 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
           palette={palette}
           variant={variant}
         >
-          {fileName ? fileName : <Trans zh="上传文件" en="Upload file" />}
+          {fileName ? fileName : <UploadFileTrans />}
           <input {...getInputProps()} />
         </Button>
       </Box>
@@ -192,7 +194,7 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
           download="batch.xlsx"
           marginLeft="1rem"
         >
-          <Trans zh="下载文件格式" en="Download Format File" />
+          <DownloadFormatFileTrans />
         </Link>
       </Text.Block>
       {batchStartedResultError && (

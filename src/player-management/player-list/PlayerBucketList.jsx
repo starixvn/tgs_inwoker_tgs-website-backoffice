@@ -38,6 +38,13 @@ import {
   usePlayerBucketItems,
   usePlayerCompletedWageringList
 } from "./client"
+import { RemarkTrans } from "../../trans/Action"
+import {
+  WageringRequirementTrans,
+  useWageringRequirementTrans
+} from "../../trans/Player"
+import { TimeTrans } from "../../trans/Date"
+import { DepositTrans } from "../../trans/Payment"
 
 export const PlayerBucketListDialogDisclosure = ({
   playerCode,
@@ -51,7 +58,7 @@ export const PlayerBucketListDialogDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog} {...props}>
-        <Trans zh="流水需求" en="Wagering Requirements" />
+        <WageringRequirementTrans />
       </Disclosure>
       {dialog.visible && (
         <PlayerBucketListDialog
@@ -65,10 +72,7 @@ export const PlayerBucketListDialogDisclosure = ({
 }
 
 const PlayerBucketListDialog = ({ playerCode, dialog, dialogId }) => {
-  let title = useTrans({
-    zh: "流水需求",
-    en: "Wagering Requirements"
-  })
+  let title = useWageringRequirementTrans()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     playerCode
@@ -123,7 +127,7 @@ const usePlayerBucketListColumns = ({ playerCode, items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="流水需求" en="Wagering Requirements" />,
+        Header: <WageringRequirementTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -235,10 +239,6 @@ const PromotionTrans = {
 }
 
 const Deposit = "Deposit"
-const DepositTrans = {
-  zh: "存款",
-  en: "Deposit"
-}
 
 const Adjustment = "Adjustment"
 const AdjustmentTrans = {
@@ -257,7 +257,7 @@ const TypeLabel = ({ value = "" }) => {
     case Promotion:
       return <Trans {...PromotionTrans} />
     case Deposit:
-      return <Trans {...DepositTrans} />
+      return <DepositTrans />
     case Adjustment:
       return <Trans {...AdjustmentTrans} />
     case VIP:
@@ -273,7 +273,7 @@ const useBucketItemsColumns = ({ playerCode, items = [] }) =>
       sequenceColumn(),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true,
         dateFormat: "MM/dd",
         timeFormat: "HH:mm"
@@ -286,7 +286,7 @@ const useBucketItemsColumns = ({ playerCode, items = [] }) =>
       }),
       numberDecimalColumn({
         accessor: "wageringRequirement",
-        Header: <Trans zh="流水需求" en="Wagering Requirement" />,
+        Header: <WageringRequirementTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -319,9 +319,7 @@ const BucketHistoryDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure id={id} {...dialog} {...props}>
-        <Trans zh="查看" en="Details" />
-      </Disclosure>
+      <ViewDisclosure id={id} {...dialog} {...props} />
       {dialog.visible && (
         <BucketHistoryDialog
           playerBucketId={playerBucketId}
@@ -443,7 +441,7 @@ const useCompletedWageringColumns = ({ items = [] }) => {
       sequenceColumn(),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true,
         dateFormat: "MM/dd",
         timeFormat: "HH:mm"
@@ -456,7 +454,7 @@ const useCompletedWageringColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true
       }),
       textColumn({

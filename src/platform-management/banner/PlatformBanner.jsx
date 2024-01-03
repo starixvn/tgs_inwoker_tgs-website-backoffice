@@ -32,6 +32,13 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import { clone } from "lodash"
 import { isValidDate } from "../../date/isValidDate"
+import {
+  RecommendedSize1920X600Trans,
+  RecommendedSize750X310Trans,
+  SubjectTrans
+} from "../../trans/Field"
+import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
+import { useAddTrans, useEditTrans, useViewTrans } from "../../trans/Action"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,
@@ -76,10 +83,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "新增 Banner",
-    en: "Add Banner"
-  })
+  let title = useAddTrans()
 
   return (
     <FormDialog
@@ -157,10 +161,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "修改 Banner",
-    en: "Edit Banner"
-  })
+  let title = useEditTrans()
 
   if (isLoadingBanner) {
     return <LoadingBackdrop {...dialog} />
@@ -217,10 +218,7 @@ const ViewDialog = ({ brandId, record, dialog, ...props }) => {
 
   let { isLoading, data: banner, error } = usePlatformBanner(brandId, bannerId)
 
-  let title = useTrans({
-    zh: "修改 Banner",
-    en: "Edit Banner"
-  })
+  let title = useViewTrans()
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -291,7 +289,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
   return (
     <FieldValues {...props}>
       <Label name="subject" required={required}>
-        <Trans zh="主题" en="Subject" />
+        <SubjectTrans />
       </Label>
       <InputField
         name="title"
@@ -302,7 +300,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
       />
 
       <Label name="from" required={required}>
-        <Trans zh="开始时间" en="Start" />
+        <StartTimeTrans />
       </Label>
       <Box id="from-date-box">
         <DateTimeInput
@@ -315,7 +313,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
       </Box>
 
       <Label name="to" required={required}>
-        <Trans zh="结束时间" en="End" />
+        <EndTimeTrans />
       </Label>
       <Box id="to-date-box">
         <Set orientation="horizontal">
@@ -346,10 +344,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
           readOnly={readOnly}
         />
         <Text.Block color="warning" fontWeight="bold" fontSize="150">
-          <Trans
-            zh="建議尺寸: 1920 x 600px"
-            en="Recommended size: 1920 x 600px"
-          />
+          <RecommendedSize1920X600Trans />
         </Text.Block>
       </Set>
 
@@ -365,10 +360,7 @@ export const FormBody = ({ readOnly = false, ...props } = {}) => {
           readOnly={readOnly}
         />
         <Text.Block color="warning" fontWeight="bold" fontSize="150">
-          <Trans
-            zh="建議尺寸: 750 x 310px"
-            en="Recommended size: 750 x 310px"
-          />
+          <RecommendedSize750X310Trans />
         </Text.Block>
       </Set>
 

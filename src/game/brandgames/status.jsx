@@ -12,18 +12,11 @@ import { useChangeBrandGameStatus } from "./client"
 import Alert from "../../dialog/Alert"
 import { useTrans, Trans } from "../../i18n"
 import { useFormContext } from "react-hook-form"
+import { DisabledTrans, EnabledTrans } from "../../trans/Status"
 
 const Enabled = "Enabled"
-const EnabledTrans = {
-  zh: "开启",
-  en: "Enabled"
-}
 
 const Disabled = "Disabled"
-const DisabledTrans = {
-  zh: "关闭",
-  en: "Disabled"
-}
 
 const Maintenance = "Maintenance"
 const MaintenanceTrans = {
@@ -34,10 +27,10 @@ const MaintenanceTrans = {
 export const Label = ({ value = "" }) => {
   switch (value) {
     case Enabled:
-      return <Trans {...EnabledTrans} />
+      return <EnabledTrans />
 
     case Disabled:
-      return <Trans {...DisabledTrans} />
+      return <DisabledTrans />
 
     case Maintenance:
       return <Trans {...MaintenanceTrans} />
@@ -63,13 +56,8 @@ const toPalette = (value) => {
 export const StatusMenu = ({ record = {}, ...props }) => {
   let { id, status } = record
   let [newState, setSubmit] = useState()
-  let {
-    result,
-    isLoading,
-    error,
-    deleteCache,
-    mutate
-  } = useChangeBrandGameStatus(id, newState)
+  let { result, isLoading, error, deleteCache, mutate } =
+    useChangeBrandGameStatus(id, newState)
 
   const reset = () => {
     deleteCache()

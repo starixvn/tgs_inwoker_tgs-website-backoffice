@@ -13,7 +13,6 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure, { AddDisclosure } from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
-import { ConfirmCancelFooter } from "../../form/ConfirmButtonFooter"
 import {
   usePlayerAdjustIncreaseBalance,
   usePlayerAdjustIncreaseTurnoverRequirement
@@ -31,6 +30,14 @@ import {
 import Checkbox from "../../checkbox"
 import { PlatformBucketSelect } from "../../platform-management/PlatformBucket"
 import { isDev } from "../../env"
+import {
+  AddBalanceTrans,
+  RemarkTrans,
+  TransactionTypeTrans
+} from "../../trans/Action"
+import { UserNameTrans } from "../../trans/User"
+import { GameTypeTrans } from "../../trans/Game"
+import { TransactionAmountTrans } from "../../trans/Field"
 
 export const PlayerAddBalanceDisclosure = ({
   brandId,
@@ -52,7 +59,7 @@ export const PlayerAddBalanceDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="加钱" en="Add Balance" />
+        <AddBalanceTrans />
       </Disclosure>
       {dialog.visible && hasTransactionAmountAuth ? (
         <AddDialog
@@ -111,14 +118,6 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
     >
       <FormBody />
     </FormDialog>
@@ -147,12 +146,12 @@ const FormBody = ({}) => {
     <>
       <FieldValues margin="1rem">
         <Box>
-          <Trans zh="用户名" en="Username" />
+          <UserNameTrans />
         </Box>
         <Box alignY="center">{username}</Box>
 
         <Box alignY="center">
-          <Trans zh="交易类型" en="Transaction Type" />
+          <TransactionTypeTrans />
         </Box>
         <Set>
           <PlayerAdjustBalanceTypeSelect
@@ -167,19 +166,12 @@ const FormBody = ({}) => {
           />
         </Set>
 
-        {isDev() && (
-          <>
-            <Box alignY="center">
-              <Trans zh="游戏类型" en="Game Type" />
-            </Box>
-            <Box>
-              <PlatformBucketSelect
-                name="bucketTypes[0]"
-                platformId={brandId}
-              />
-            </Box>
-          </>
-        )}
+        <Box alignY="center">
+          <GameTypeTrans />
+        </Box>
+        <Box>
+          <PlatformBucketSelect name="bucketTypes[0]" platformId={brandId} />
+        </Box>
 
         {showIncludeInNetProfitSetting(transactionType) && (
           <>
@@ -191,7 +183,7 @@ const FormBody = ({}) => {
         )}
 
         <Box alignY="center">
-          <Trans zh="交易金额" en="Amount" />
+          <TransactionAmountTrans />
         </Box>
         <NumberInputField name={TransactionAmountField} min="0" step="0.01" />
 
@@ -201,7 +193,7 @@ const FormBody = ({}) => {
         <NumberInputField name="bucketAmount" min="0" step="0.01" />
 
         <Box alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Box>
         <Input name="remark" />
       </FieldValues>
@@ -254,14 +246,6 @@ const AddTurnoverRequirementDialog = ({
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
-      showActionButtons={false}
-      footer={
-        <ConfirmCancelFooter
-          isLoading={isLoading}
-          disabled={isLoading}
-          dialog={dialog}
-        />
-      }
     >
       <AddTurnoverRequirementFormBody />
     </FormDialog>
@@ -281,7 +265,7 @@ const AddTurnoverRequirementFormBody = ({}) => {
     <>
       <FieldValues margin="1rem">
         <Box>
-          <Trans zh="用户名" en="Username" />
+          <UserNameTrans />
         </Box>
         <Box alignY="center">{username}</Box>
 
@@ -291,7 +275,7 @@ const AddTurnoverRequirementFormBody = ({}) => {
         <NumberInputField name="amount" min="0" step="0.01" />
 
         <Box alignY="center">
-          <Trans zh="备注" en="Remark" />
+          <RemarkTrans />
         </Box>
         <Input name="remark" />
       </FieldValues>

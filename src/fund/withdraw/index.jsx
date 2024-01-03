@@ -71,6 +71,29 @@ import {
   PlatformPaymentProviderSelect,
   PlatformPaymentTransferType
 } from "../../payment/PlatformPaymentProviderSelect"
+import { ActionTrans, OperatorTrans, RemarkTrans } from "../../trans/Action"
+import {
+  ActualWithdrawAmountTrans,
+  PaidTimeTrans,
+  WithdrawAmountTrans,
+  WithdrawListTrans,
+  usePaymentProviderTrans
+} from "../../trans/Payment"
+import {
+  GmsIdTrans,
+  ThirdPartyIdTrans,
+  useGmsIdTrans,
+  useSystemIdTrans,
+  useThirdPartyIdTrans
+} from "../../trans/Platform"
+import {
+  UserNameTrans,
+  UserTypeTrans,
+  useUserNameTrans
+} from "../../trans/User"
+import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
+import { useTotalWithdrawAmountTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -260,7 +283,7 @@ const BodyContent = ({ brandId }) => {
   })
   return (
     <PageContent
-      title={<Trans zh="提款列表" en="Withdraw List" />}
+      title={<WithdrawListTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
@@ -325,6 +348,7 @@ const BodyContent = ({ brandId }) => {
 }
 
 const Summary = ({ total }) => {
+  let totalWithdrawAmountLabel = useTotalWithdrawAmountTrans()
   if (!Number.isFinite(total)) {
     return null
   }
@@ -332,7 +356,7 @@ const Summary = ({ total }) => {
   return (
     <Blockquote borderColor="primary">
       <Heading use="h5">
-        <Trans zh="提款金额总计：" en="Total Withdraw Amount：" />
+        {`${totalWithdrawAmountLabel}：`}
         <FormattedNumberDecimal id="total-amount" value={total} />
       </Heading>
     </Blockquote>
@@ -437,33 +461,17 @@ const SearchBar = ({
     brandPaymentIds
   ])
 
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名",
-    en: "Username"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
 
   let platformPaymentPlaceholder = useTrans({
     zh: "提款通道",
     en: "Withdrawal Channel"
   })
 
-  let paymentProviderPlaceholder = useTrans({
-    zh: "金流商",
-    en: "Payment Provider"
-  })
-
-  let externalIdPlaceholder = useTrans({
-    zh: "三方订单编号",
-    en: "3rd Party Id"
-  })
-  let orderIdPlaceholder = useTrans({
-    zh: "GMS订单号",
-    en: "GMS Id"
-  })
-  let idPlaceholder = useTrans({
-    zh: "系统订单编号",
-    en: "System Id"
-  })
+  let paymentProviderPlaceholder = usePaymentProviderTrans()
+  let externalIdPlaceholder = useThirdPartyIdTrans()
+  let orderIdPlaceholder = useGmsIdTrans()
+  let idPlaceholder = useSystemIdTrans()
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
@@ -506,7 +514,7 @@ const SearchBar = ({
           </Set>
           <Set orientation="horizontal">
             <DateInputRangeField
-              label={<Trans zh="申请时间" en="Application Time" />}
+              label={<ApplicationTimeTrans />}
               startProps={{
                 name: "beginCreateOn"
               }}
@@ -517,7 +525,7 @@ const SearchBar = ({
               maxRangeDays={maxRangeDays}
             />
             <DateInputRangeField
-              label={<Trans zh="更新时间" en="Updated Time" />}
+              label={<UpdatedTimeTrans />}
               startProps={{
                 name: "beginUpdateOn"
               }}
@@ -552,33 +560,33 @@ const useColumns = ({
       sequenceColumn(),
       textColumn({
         accessor: "userName",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "userType",
-        Header: <Trans zh="用户类型" en="User Type" />,
+        Header: <UserTypeTrans />,
         Cell: ({ value }) => <UserTypeLabel value={value} />
       }),
       textColumn({
         accessor: "orderNo",
-        Header: <Trans zh="GMS订单号" en="GMS Id" />,
+        Header: <GmsIdTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "thirdPartyOrderNo",
-        Header: <Trans zh="三方单号" en="3rd Party Id" />,
+        Header: <ThirdPartyIdTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "amount",
-        Header: <Trans zh="提款金额" en="Amount" />,
+        Header: <WithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         id: "actualAmount",
         accessor: (row) => row,
-        Header: <Trans zh="实际提款金额" en="Actual Amount" />,
+        Header: <ActualWithdrawAmountTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           let { status, amount, actualAmount } = record
@@ -591,18 +599,18 @@ const useColumns = ({
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="申请时间" en="Application Time" />,
+        Header: <ApplicationTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "paidOn",
-        Header: <Trans zh="已支付时间" en="Paid Time" />,
+        Header: <PaidTimeTrans />,
         disableSortBy: true,
         placeholder: "-"
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => (
           <FundWithdrawStatusLabel value={value} data-status={value} />
@@ -613,7 +621,7 @@ const useColumns = ({
     columns.push(
       textColumn({
         accessor: "reviewedUserName",
-        Header: <Trans zh="操作者" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     )
@@ -621,7 +629,7 @@ const useColumns = ({
     columns.push(
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       })
@@ -633,7 +641,7 @@ const useColumns = ({
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           Cell: ({ value, status }) => {
             let { brandPaymentId } = value
             let underReview = isFundUnderReview(value?.status)

@@ -33,6 +33,15 @@ import Big from "big.js"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
+import { BetAmountTrans, TurnoverTrans } from "../../trans/Game"
+import { CurrencyTrans, DepositAmountTrans } from "../../trans/Payment"
+import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans,
+  PlatformTrans
+} from "../../trans/Platform"
+import { AgentProfitTrans } from "../../trans/Agent"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -232,7 +241,7 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         id: "brandCode",
         accessor: (row) => row,
-        Header: <Trans zh="平台" en="Platform" />,
+        Header: <PlatformTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, brandCode = "" } }) => {
           return isTotal ? "" : brandCode
@@ -242,7 +251,7 @@ const useColumns = ({ items = [] }) => {
       wrapTextColumn({
         id: "currencyCode",
         accessor: (row) => row,
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
           // return isTotal ? "" : currencyCode
@@ -252,7 +261,7 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         id: "depositAmount",
         accessor: (row) => row,
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true,
         toValue: ({ isTotal, depositAmount, depositHandlingFee = 0 } = {}) => {
           let value = Number.isFinite(depositAmount)
@@ -268,37 +277,37 @@ const useColumns = ({ items = [] }) => {
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "agentProfit",
-        Header: <Trans zh="代理总分红" en="Agent Profit" />,
+        Header: <AgentProfitTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "winLossAmount",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         disableSortBy: true
       })
     ],

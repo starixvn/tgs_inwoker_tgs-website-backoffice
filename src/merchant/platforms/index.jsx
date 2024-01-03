@@ -26,18 +26,16 @@ import { EditBrandBetLimitGameProviderBetLimit } from "./BrandBetLimitGameProvid
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { BrandLogoDialogDisclosure } from "./BrandLogoDialog"
+import { ActionTrans } from "../../trans/Action"
+import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
+import { isDev } from "../../env"
+import { ContactsDialogDisclosure } from "./ContactsDialog"
 // import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
 
 export { Code }
 
 export const Brand = "Brand"
-
-export const BrandTrans = {
-  zh: "平台",
-  en: "Platform"
-}
-
-export const useBrandLabel = () => useTrans(BrandTrans)
 
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
@@ -187,7 +185,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (
@@ -204,12 +202,12 @@ const useColumns = ({ items = [], mutate }) => {
         }
       }),
       dateTimeColumn({
-        Header: <Trans zh="创建时间" en="Created Time" />,
+        Header: <CreatedTimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="更改时间" en="Updated Time" />,
+        Header: <UpdatedTimeTrans />,
         accessor: "updatedOn",
         disableSortBy: true
       })
@@ -220,7 +218,7 @@ const useColumns = ({ items = [], mutate }) => {
         textColumn({
           id: "actions",
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           Cell: ({ value }) => {
             return (
@@ -247,6 +245,7 @@ const useColumns = ({ items = [], mutate }) => {
                   id="platform-logo-dialog-disclosure"
                   brandId={value.id}
                 />
+                <ContactsDialogDisclosure brandId={value.id} />
               </Set>
             )
           }

@@ -23,8 +23,6 @@ export const NumberInputField = ({
   ...props
 }) => <InputField type={type} max={max} {...props} />
 
-export const PercentageNumberInput = () => {}
-
 const DefaultPercentageAddon = ({ size }) => (
   <Button isStatic tabIndex="-1" size={size}>
     %

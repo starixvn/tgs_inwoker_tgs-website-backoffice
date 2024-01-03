@@ -17,7 +17,8 @@ const DefaultTimeFormat = "HH:mm:ss"
 
 export const Locales = {
   en: "en",
-  zh: "zh"
+  zh: "zh",
+  vi: "vi"
 }
 
 const defaultLocale = Locales.zh
@@ -56,6 +57,8 @@ export const getAcceptLangCulture = () => {
   switch (lang) {
     case Locales.zh:
       return "zh-CN"
+    case Locales.vi:
+      return "vi-VN"
     default:
       return "en-US"
   }
@@ -95,6 +98,11 @@ export const useChinese = () => {
   return () => setLocale(Locales.zh)
 }
 
+export const useVietnamese = () => {
+  let { setLocale } = useContext(Store)
+  return () => setLocale(Locales.vi)
+}
+
 export const useLangCode = () => {
   let enUS = "en-US"
   let Default = enUS
@@ -104,22 +112,27 @@ export const useLangCode = () => {
       return enUS
     case Locales.zh:
       return "zh-CN"
+    case Locales.vi:
+      return "vi-VN"
   }
   return Default
 }
 
 export const useTrans = (messages = {}) => {
+  let Default = Locales.en
   let locale = useLocale()
-  return messages[locale]
+  return messages[locale] ?? messages[Default] ?? ""
 }
 
-export const Trans = ({ en = "", zh = "", ...props }) => {
+export const Trans = ({ en = "", zh = "", vi = "", ...props }) => {
   let locale = useLocale()
   switch (locale) {
     case Locales.en:
-      return <span {...props}>{en}</span> ?? <span {...props}>{zh}</span>
+      return <span {...props}>{en || ""}</span>
+    case Locales.vi:
+      return <span {...props}>{vi || en || ""}</span>
     default:
-      return <span {...props}>{zh}</span> ?? <span {...props}>{en}</span>
+      return <span {...props}>{zh || en || ""}</span>
   }
 }
 
@@ -206,15 +219,17 @@ export const FormattedNumberDecimalPercentage = ({
 }) => <FormattedNumberDecimal postfix={postfix} {...props} />
 
 export const getTrans = (messages = {}, locale = Locales.zh) =>
-  Reflect.get(messages, locale) ?? ""
+  Reflect.get(messages, locale) ?? Reflect.get(messages, Locales.en) ?? ""
 
 export const LangDropdownMenu = ({ ...props }) => {
   let locale = useLocale()
   let chinese = "中文"
   let english = "English"
+  let vietnamese = "Tiếng Việt" //"Vietnamese"
 
   let useEn = useEnglish()
   let useZh = useChinese()
+  let useVi = useVietnamese()
 
   return (
     <DropdownMenu
@@ -222,12 +237,14 @@ export const LangDropdownMenu = ({ ...props }) => {
         <>
           <DropdownMenu.Item onClick={useZh}>{chinese}</DropdownMenu.Item>
           <DropdownMenu.Item onClick={useEn}>{english}</DropdownMenu.Item>
+          <DropdownMenu.Item onClick={useVi}>{vietnamese}</DropdownMenu.Item>
         </>
       }
     >
       <Button variant="ghost" iconAfter="chevron-down">
         {locale === Locales.zh && chinese}
         {locale === Locales.en && english}
+        {locale === Locales.vi && vietnamese}
       </Button>
     </DropdownMenu>
   )

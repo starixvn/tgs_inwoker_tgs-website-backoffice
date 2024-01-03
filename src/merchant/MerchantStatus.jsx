@@ -4,18 +4,17 @@ import { useForm, useFormContext, Controller } from "react-hook-form"
 import Alert, { AlertDialog } from "../dialog/Alert"
 import { useTrans, Trans } from "../i18n"
 import { Select, SelectField } from "../select/Select"
+import {
+  DisabledTrans,
+  EnabledTrans,
+  useDisabledTrans,
+  useEnabledTrans,
+  useStatusTrans
+} from "../trans/Status"
 
 const Active = "Active"
-const ActiveTrans = {
-  zh: "开启",
-  en: "Enabled"
-}
 
 const Inactive = "Inactive"
-const InactiveTrans = {
-  zh: "关闭",
-  en: Inactive
-}
 
 const Maintenance = "Maintenance"
 const MaintenanceTrans = {
@@ -39,10 +38,10 @@ export const MerchantStatus = {
 export const MerchantStatusLabel = ({ value = "" }) => {
   switch (value) {
     case Active:
-      return <Trans {...ActiveTrans} />
+      return <EnabledTrans />
 
     case Inactive:
-      return <Trans {...InactiveTrans} />
+      return <DisabledTrans />
 
     case Maintenance:
       return <Trans {...MaintenanceTrans} />
@@ -73,16 +72,13 @@ const toPalette = (value) => {
 const defaultEnableMenuItem = (_) => true
 
 export const MerchantStatusSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "状态",
-    en: "Status"
-  })
+  let defaultPlaceholder = useStatusTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
       value: Active,
-      label: useTrans(ActiveTrans)
+      label: useEnabledTrans()
     },
     {
       value: Maintenance,
@@ -90,7 +86,7 @@ export const MerchantStatusSelect = ({ placeholder, ...props }) => {
     },
     {
       value: Inactive,
-      label: useTrans(InactiveTrans)
+      label: useDisabledTrans()
     },
     {
       value: Archived,

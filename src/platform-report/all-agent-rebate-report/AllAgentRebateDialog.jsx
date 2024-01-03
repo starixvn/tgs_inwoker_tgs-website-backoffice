@@ -22,10 +22,6 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -35,7 +31,6 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { formatDateTime } from "../../date/format"
 import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
@@ -46,6 +41,17 @@ import {
   useAllAgentRebateGameTypeDetails
 } from "./client"
 import { camelCase } from "lodash-es"
+import { isDev } from "../../env"
+import {
+  CardGame,
+  GameTypeTrans,
+  LiveDealer,
+  Lottery,
+  Sportsbook,
+  ValidBetAmountTrans,
+  VirtualSports
+} from "../../trans/Game"
+import { TotalTrans } from "../../trans/Field"
 
 export const AllAgentRebateDialogDisclosure = ({
   brandId,
@@ -53,6 +59,8 @@ export const AllAgentRebateDialogDisclosure = ({
   username,
   playerCode,
   settleDateTime,
+  from,
+  to,
   ...props
 }) => {
   let dialog = useModalState()
@@ -72,6 +80,8 @@ export const AllAgentRebateDialogDisclosure = ({
           username={username}
           playerCode={playerCode}
           settleDateTime={settleDateTime}
+          from={from}
+          to={to}
           dialog={dialog}
         />
       )}
@@ -148,6 +158,8 @@ const ReportDialog = ({
   username,
   playerCode,
   settleDateTime,
+  from,
+  to,
   dialog
 }) => {
   let title = useTrans({
@@ -194,8 +206,15 @@ const ReportDialog = ({
 
           <Trans zh="结算日期" en="Settlement Date" />
           <Box alignY="center">
-            <FormattedDate value={settleDateTime} dateFormat="dd/MM/yyyy" />
+            <FormattedDate value={settleDateTime} dateFormat="yyyy/MM/dd" />
           </Box>
+
+          <Trans zh="結算區間" en="Settlement Period" />
+          <Set orientation="horizontal">
+            <FormattedDate value={from} dateFormat="yyyy/MM/dd" />
+            <Box>-</Box>
+            <FormattedDate value={to} dateFormat="yyyy/MM/dd" />
+          </Set>
         </FieldValues>
         <Separator />
         <Table
@@ -222,34 +241,18 @@ const GameType = {
   Slot: "Slot"
 }
 
-const GameTypeTrans = {
-  Sportsbook: {
-    zh: "体育",
-    en: "Sports"
-  },
-  VirtualSports: {
-    zh: "虚拟体育",
-    en: "Virtual Sports"
-  },
-  LiveDealer: {
-    zh: "真人",
-    en: "Live Dealer"
-  },
-  CardGame: {
-    zh: "棋牌",
-    en: "Card Game"
-  },
-  Lottery: {
-    zh: "彩票",
-    en: "Lottery"
-  },
+const AllGameTypeMessages = {
+  Sportsbook: Sportsbook,
+  VirtualSports: VirtualSports,
+  LiveDealer: LiveDealer,
+  CardGame: CardGame,
+  Lottery: Lottery,
   Slot: {
     zh: "电子",
     en: "EGame"
   }
 }
 
-const ValidBetLabel = () => <Trans zh="有效投注" en="Valid Bet" />
 const RebateLabel = () => <Trans zh="返水金额" en="Rebate" />
 
 const gameTypeColumn = (gameType, gameTypeDetails = []) => {
@@ -257,7 +260,7 @@ const gameTypeColumn = (gameType, gameTypeDetails = []) => {
     return null
   }
 
-  let trans = GameTypeTrans?.[gameType]
+  let trans = AllGameTypeMessages?.[gameType]
   if (!trans) {
     return null
   }
@@ -297,7 +300,7 @@ const gameTypeColumn = (gameType, gameTypeDetails = []) => {
               numberDecimalColumn({
                 accessor: `${gameTypeAccessor}ValidBet`,
                 sumColumn: `${gameTypeAccessor}ValidBet`,
-                Header: <ValidBetLabel />,
+                Header: <ValidBetAmountTrans />,
                 disableSortBy: true
               }),
               numberDecimalColumn({
@@ -319,7 +322,7 @@ const useColumns = ({ items = [], gameTypeDetails = [], brandId }) => {
     let columns = [
       {
         id: "gameType",
-        Header: <Trans zh="游戏类型" en="Game Type" />,
+        Header: <GameTypeTrans />,
         headCell: {
           textAlign: "center"
         },
@@ -341,7 +344,7 @@ const useColumns = ({ items = [], gameTypeDetails = [], brandId }) => {
                   textColumn({
                     accessor: "username",
                     Header: <Trans zh="直属玩家" en="Players" />,
-                    Footer: () => <Trans zh="总计" en="Total" />,
+                    Footer: () => <TotalTrans />,
                     disableSortBy: true
                   }),
                   numberDecimalColumn({

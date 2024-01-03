@@ -31,7 +31,6 @@ import Backdrop from "../../dialog/Backdrop"
 import { Tab as _Tab, TabPanel } from "../../tab"
 import Disclosure from "../../dialog/Disclosure"
 import { Modal } from "../../dialog/Modal"
-import { CancelText, SubmitText } from "../../button/ActionButtons"
 import Input from "../../input/Input"
 import FormDialog from "../../form/FormDialog"
 import {
@@ -43,13 +42,20 @@ import { useFormContext, useWatch } from "react-hook-form"
 import { useBrandPaymentList } from "../../system/brandpayments/client"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import clone from "clone-deep"
+import { PhoneTrans, RealNameTrans } from "../../trans/User"
+import {
+  BankInfoTrans,
+  BankAccountTrans,
+  PaymentChannelTrans
+} from "../../trans/Payment"
+import { CancelTrans, SubmitTrans } from "../../trans/Action"
 
 export const Key = "banks"
 
 export const Tab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="银行卡信息" en="Bank" />
+      <BankInfoTrans />
     </_Tab>
   )
 }
@@ -353,19 +359,17 @@ const Card = ({ children, ...props }) => (
 
 const PaymentBankTypeTrans = () => <Trans zh="支付类型" en="Payment Type" />
 
-const PaymentChannelTrans = () => <Trans zh="支付通道" en="Payment Channel" />
-
 const BankNameLabel = () => <Trans zh="银行" en="Bank" />
 
 const BankBranchLabel = () => <Trans zh="银行分行" en="Bank Branch" />
 
 const AccountName = () => <Trans zh="帐号名称" en="Account Name" />
 
-const BankAccount = () => <Trans zh="银行卡号" en="Bank Account" />
+const BankAccount = () => <BankAccountTrans />
 
-const RealNameLabel = () => <Trans zh="真实姓名" en="Real Name" />
+const RealNameLabel = () => <RealNameTrans />
 
-const PhoneLabel = () => <Trans zh="手机号码" en="Phone" />
+const PhoneLabel = () => <PhoneTrans />
 
 const EWalletLabel = () => <Trans zh="E-money Name" en="E-money Name" />
 
@@ -641,8 +645,8 @@ const DeleteDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
         isLoading,
         onClickSubmit: () => setDeleteId(bank.id),
         onClickCancel: dialog.hide,
-        cancelText: <CancelText />,
-        submitText: <SubmitText />
+        cancelText: <CancelTrans />,
+        submitText: <SubmitTrans />
       }}
       {...dialog}
     >
@@ -686,8 +690,8 @@ const SetDefaultDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
         isLoading,
         onClickSubmit: () => setId(bank.id),
         onClickCancel: dialog.hide,
-        cancelText: <CancelText />,
-        submitText: <SubmitText />
+        cancelText: <CancelTrans />,
+        submitText: <SubmitTrans />
       }}
       {...dialog}
     >

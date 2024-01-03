@@ -51,6 +51,8 @@ import {
   EditSubGameProviderDisclosure
 } from "./SubGameProvider"
 import { useDropzone } from "react-dropzone"
+import { ActionTrans, ExportTrans, OperatorTrans } from "../../trans/Action"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export const SubGameProviderListDisclosure = ({ gameProviderId, ...props }) => {
   let dialog = useModalState()
@@ -178,7 +180,7 @@ const LocalizationMenuButton = ({}) => {
               href={`/api/SubGameProvider/localization/export`}
               download={`sub-game-provider-localization.xlsx`}
             >
-              <Trans zh="汇出" en="Export" />
+              <ExportTrans />
             </DropdownMenu.Item>
             <DropdownMenu.Item
               id="upload-sub-game-provider-localization-dialog-disclosure"
@@ -295,12 +297,12 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最新更新" en="Updated On" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更改者" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]
@@ -310,7 +312,7 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value: record }) => {
             return (

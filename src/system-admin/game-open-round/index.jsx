@@ -9,7 +9,7 @@ import {
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Code, Update, ViewGameAction } from "./menu"
-import { ellipsisTextColumn, textColumn } from "../../table/column/textColumn"
+import { textColumn } from "../../table/column/textColumn"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useForm, FormProvider } from "react-hook-form"
 import { InputField } from "../../input/Input"
@@ -34,6 +34,23 @@ import { subDays } from "date-fns"
 import { SettleGameRoundDialogDisclosure } from "./SettleGameRound"
 import copy from "clipboard-copy"
 import { GameActionDialogDisclosure } from "../../game/round/GameActionDialog"
+import { ActionTrans } from "../../trans/Action"
+import {
+  BetAmountTrans,
+  BetTimeTrans,
+  ExternalBetTimeTrans,
+  ExternalRoundIdTrans,
+  GameNameTrans,
+  GameProviderTrans,
+  SubGameProviderTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans,
+  WinLossTrans,
+  useExternalRoundIdTrans
+} from "../../trans/Game"
+import { CurrencyTrans } from "../../trans/Payment"
+import { SettleAmountTrans, SupportingDeviceTrans } from "../../trans/Field"
+import { PlatformTrans } from "../../trans/Platform"
 
 export { Code }
 
@@ -139,15 +156,7 @@ const SearchBar = ({
 
   const onSubmit = (data) => search?.(data)
 
-  let roundIdPlaceholder = useTrans({
-    zh: "订单ID",
-    en: "Round ID"
-  })
-
-  let externalRoundIdPlaceholder = useTrans({
-    zh: "三方订单ID",
-    en: "External ID"
-  })
+  let externalRoundIdPlaceholder = useExternalRoundIdTrans()
 
   return (
     <FormProvider {...formMethods}>
@@ -181,25 +190,22 @@ const useColumns = ({ items = [], mutate }) => {
     let columns = [
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="投注时间" en="Created On" />,
+        Header: <BetTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "externalCreatedOn",
-        Header: <Trans zh="三方投注时间" en="External Created On" />,
+        Header: <ExternalBetTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "externalRoundId",
-        Header: <Trans zh="三方订单ID" en="External Id" />,
+        Header: <ExternalRoundIdTrans />,
         disableSortBy: true
-        /* TODO: popup cause page scroll
-        Cell: ({ value = "" }) => <CopyTextBox value={value} />
-        */
       }),
       textColumn({
         accessor: "brandCode",
-        Header: <Trans zh="平台" en="Platform" />,
+        Header: <PlatformTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -214,17 +220,17 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注金额" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "settleAmount",
-        Header: <Trans zh="结算金额" en="Settle Amount" />,
+        Header: <SettleAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -234,37 +240,37 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       numberDecimalColumn({
         accessor: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "winLoss",
-        Header: <Trans zh="输赢金额" en="WinLoss" />,
+        Header: <WinLossTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "gameProviderName",
-        Header: <Trans zh="游戏厂商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "subGameProviderName",
-        Header: <Trans zh="子游戏厂商" en="Sub Game Provider" />,
+        Header: <SubGameProviderTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "gameName",
-        Header: <Trans zh="游戏名称" en="Game Name" />,
+        Header: <GameNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "platformType",
-        Header: <Trans zh="支持设备" en="Supporting Device" />,
+        Header: <SupportingDeviceTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "currencyCode",
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true
       })
     ]
@@ -273,7 +279,7 @@ const useColumns = ({ items = [], mutate }) => {
       columns.push(
         textColumn({
           id: "actions",
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           disableSortBy: true,
           Cell: ({ value: record }) => {

@@ -21,6 +21,15 @@ import { startOfToday, subDays, endOfToday } from "date-fns"
 import dateTimeColumn from "../../table/column/dateTime"
 import { PromotionWinningDetailDialogDisclosure } from "./PromotionWinningDetailDialog"
 import { Descending } from "../../table/order"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import {
+  PromotionNameTrans,
+  WinningContentTrans,
+  WinningListTrans,
+  WinningOrderIdTrans,
+  usePromotionNameTrans
+} from "../../trans/Promotion"
+import { TimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -77,7 +86,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="中奖列表" en="Winning List" />}
+      title={<WinningListTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
@@ -126,15 +135,9 @@ const SearchBar = ({
     defaultValues: { promotionName, userName, from, to }
   })
 
-  let nameInputPlaceholder = useTrans({
-    zh: "活动名",
-    en: "Promotion name"
-  })
+  let nameInputPlaceholder = usePromotionNameTrans()
 
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名",
-    en: "User name"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
 
   const onSubmit = (data) => search(data)
 
@@ -194,28 +197,28 @@ const useColumns = ({ items = [], brandId }) => {
     let columns = [
       textColumn({
         accessor: "recordId",
-        Header: <Trans zh="中奖 ID" en="Order ID" />,
+        Header: <WinningOrderIdTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="中奖时间" en="Date & Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "userName",
-        Header: <Trans zh="玩家用戶名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "promotionName",
-        Header: <Trans zh="活动名称" en="Promotion Name" />,
+        Header: <PromotionNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         id: "actions",
         accessor: (row) => row,
-        Header: <Trans zh="中奖内容" en="Winnings" />,
+        Header: <WinningContentTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (

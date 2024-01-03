@@ -34,7 +34,12 @@ import {
   useWatch
 } from "react-hook-form"
 import { Input, InputField } from "../../input/Input"
-import { useAgent, useUpdateAgent } from "./client"
+import {
+  useAgent,
+  useUpdateAgent,
+  useUpdateAgentV2,
+  useAgentUpdateFormData
+} from "./client"
 import { AgentStatusLabel, AgentStatusSelect } from "../AgentStatus"
 import { AgentLevelLabel, AgentLevelSelect, isAgentHead } from "../AgentLevel"
 import {
@@ -85,6 +90,27 @@ import {
 } from "../AgentProfitSharingType"
 import Textarea from "../../textarea"
 import { ClearProfitShareDialogDisclosure } from "./ClearProfitShareDialog"
+import { isEmpty, isNil } from "lodash-es"
+import { either } from "ramda"
+import { diff } from "../../object/diff"
+import {
+  AgentLevelTrans,
+  AgentTypeTrans,
+  AgentUsernameTrans,
+  DirectPlayersTrans,
+  ProfitSharingPercentageTrans,
+  UpperLevelAgentTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
+import {
+  BalanceTrans,
+  RealNameTrans,
+  RegistrationTimeTrans
+} from "../../trans/User"
+import { RemarkTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+
+let isNilOrEmpty = either(isNil, isEmpty)
 
 const Key = "AgentInfo"
 
@@ -101,7 +127,229 @@ export const AgentInfoTab = ({ ...props }) => {
 export const AgentInfoPanel = ({ readonly = false, ...props }) =>
   readonly ? <ViewPanel {...props} /> : <EditPanel {...props} />
 
-const EditPanel = ({
+const EditPanel = (props) => {
+  return <UpdateAgentPanel {...props} />
+}
+
+const UpdateAgentPanel = ({
+  brandId,
+  agentProfitSharingType,
+  record,
+  onSubmitted,
+  onClickClose,
+  ...props
+}) => {
+  let formMethods = useForm({
+    defaultValues: clone(record)
+  })
+  let { control, setValue } = formMethods
+
+  let agentId = record?.id
+  let [formData, setSubmit] = useState()
+  let { isLoading, result, error, mutate, deleteCache } = useUpdateAgentV2(
+    agentId,
+    formData
+  )
+
+  useEffect(() => {
+    if (result && !error) {
+      reset()
+      onSubmitted && onSubmitted()
+    }
+  }, [result])
+
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
+
+  const ParentUsernameFieldName = "parentUsername"
+  let currentParentUsername = record.parentUsername
+  let parentUsername = useWatch({
+    control,
+    name: ParentUsernameFieldName
+  })
+
+  let willChangeParent =
+    currentParentUsername &&
+    parentUsername &&
+    currentParentUsername != parentUsername
+
+  const LevelTypeFieldName = "levelType"
+  let levelType = useWatch({
+    control,
+    name: LevelTypeFieldName
+  })
+
+  let isAgent = levelType == AgentLevel.Agent
+
+  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
+
+  const onSubmit = ({
+    type,
+    parentUsername,
+    dividendPercentage,
+    agentDividendConditions,
+    ...data
+  }) => {
+    if (willChangeParent) {
+      //change agent parent, reset dividendPercentage
+      dividendPercentage = 0
+    }
+
+    let formData = useAgentUpdateFormData(
+      {
+        ...diff(data, record),
+        type,
+        parentUsername,
+        dividendPercentage,
+        agentDividendConditions
+      },
+      agentProfitSharingType
+    )
+    setSubmit(formData)
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
+
+  let agentHead = isAgentHead(record?.levelType)
+
+  const AgentTypeField = "type"
+
+  const ProfitSharingField = "accumulatedProfitSharing"
+  let accumulatedProfitSharing = useWatch({
+    name: ProfitSharingField,
+    control
+  })
+
+  return (
+    <TabPanel tabId={Key} {...props}>
+      <FormProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <Stack>
+            <FieldValues>
+              <UsernameBox value={record?.username} />
+
+              <RealNameBox>
+                <Input name="realName" />
+              </RealNameBox>
+
+              <AgentTypeBox>
+                <Box alignY="center">
+                  {!agentHead && (
+                    <>
+                      <AgentTypeSelect
+                        name={AgentTypeField}
+                        value={record?.type}
+                        display="none"
+                      />
+                      <AgentTypeSelect value={record?.type} disabled />
+                    </>
+                  )}
+                  {agentHead && <AgentTypeSelect name={AgentTypeField} />}
+                </Box>
+              </AgentTypeBox>
+
+              <AgentLevelBox>
+                <AgentLevelSelect
+                  name={LevelTypeFieldName}
+                  disabled={agentHead}
+                  onChange={(event) => {
+                    let isChief = event.target.value === AgentLevel.Chief
+                    let isAgent = event.target.value === AgentLevel.Agent
+                    if (isChief) {
+                      setValue(ParentUsernameFieldName, "")
+                    } else if (isAgent) {
+                      setValue(
+                        ParentUsernameFieldName,
+                        record?.parentUsername ?? ""
+                      )
+                    }
+                  }}
+                />
+              </AgentLevelBox>
+
+              {isAgent && (
+                <>
+                  <ParentAgentUsername>
+                    <Set orientation="vertical" isFilled>
+                      <Input
+                        name={ParentUsernameFieldName}
+                        placeholder={agentUsernamePlaceholder}
+                        required
+                      />
+                      {willChangeParent && <ChangeParentWarning />}
+                    </Set>
+                  </ParentAgentUsername>
+                </>
+              )}
+
+              <RegistrationBox value={record?.registeredOn} />
+
+              <BalanceBox value={record?.balance} />
+
+              <AccumulatedProfitSharingBox value={accumulatedProfitSharing}>
+                <ClearProfitShareDialogDisclosure
+                  agentId={agentId}
+                  onSubmitted={() => {
+                    setValue(ProfitSharingField, 0)
+                  }}
+                />
+              </AccumulatedProfitSharingBox>
+
+              <AgentStatusBox>
+                <AgentStatusSelect name="status" placeholder={false} required />
+              </AgentStatusBox>
+
+              {oneLayer && !willChangeParent && (
+                <>
+                  <ProfitSharingPercentageTrans />
+                  <Box>
+                    <AgentOneLayerDividendPercentageInputField
+                      brandId={brandId}
+                      parentUsername={parentUsername}
+                    />
+                  </Box>
+                </>
+              )}
+              {multipleLayer && (
+                <>
+                  <ProfitSharingPercentageTrans />
+                  <Box>
+                    <AgentMultipleLayerProfitSharingSettingDialogDisclosure
+                      brandId={brandId}
+                      parentUsername={record.parentUsername}
+                    />
+                  </Box>
+                </>
+              )}
+
+              <RemarkTrans />
+              <Textarea name="remarks" />
+            </FieldValues>
+            <Input
+              type="hidden"
+              name="id"
+              value={formMethods.getValues("id")}
+            />
+            <Box alignX="right">
+              <SubmitCancel
+                isLoading={isLoading}
+                onClickCancel={onClickClose}
+              />
+            </Box>
+          </Stack>
+        </form>
+      </FormProvider>
+      {error && <AlertDialog {...error} onClickClose={reset} />}
+    </TabPanel>
+  )
+}
+
+//TODO:1.40 > rm OldAgentPanel
+const OldAgentPanel = ({
   brandId,
   agentProfitSharingType,
   record,
@@ -128,10 +376,7 @@ const EditPanel = ({
     }
   }, [result])
 
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   const ParentUsernameFieldName = "parentUsername"
   let currentParentUsername = record.parentUsername
@@ -260,7 +505,7 @@ const EditPanel = ({
 
               {oneLayer && (
                 <>
-                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <ProfitSharingPercentageTrans />
                   <Box>
                     <AgentOneLayerDividendPercentageInputField
                       brandId={brandId}
@@ -271,7 +516,7 @@ const EditPanel = ({
               )}
               {multipleLayer && (
                 <>
-                  <Trans zh="分红比例" en="Profit Sharing Percentage" />
+                  <ProfitSharingPercentageTrans />
                   <Box>
                     <AgentMultipleLayerProfitSharingSettingDialogDisclosure
                       brandId={brandId}
@@ -282,7 +527,7 @@ const EditPanel = ({
               )}
 
               <>
-                <RemarkLabel />
+                <RemarkTrans />
                 <Textarea name="remarks" />
               </>
 
@@ -385,7 +630,7 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
         {oneLayer && (
           <>
             <Box alignY="center">
-              <Trans zh="分红比例" en="Profit Sharing Percentage" />
+              <ProfitSharingPercentageTrans />
             </Box>
             <Box>
               <FormattedNumberDecimalPercentage
@@ -398,7 +643,7 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
         {multipleLayer && (
           <>
             <Box alignY="center">
-              <Trans zh="分红比例" en="Profit Sharing Percentage" />
+              <ProfitSharingPercentageTrans />
             </Box>
             <Box>
               <AgentProfitSharingSettingRecordDialogDisclosure
@@ -411,13 +656,13 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
         <AccumulatedProfitSharingBox value={record?.accumulatedProfitSharing} />
 
         <Box alignY="center">
-          <Trans zh="直属玩家人数" en="Direct Players" />
+          <DirectPlayersTrans />
         </Box>
         <Box>
           <FormattedNumber value={record?.playerNumber} />
         </Box>
 
-        <RemarkLabel />
+        <RemarkTrans />
         <Textarea value={record?.remarks} disabled />
         {/* <RebateBox
           label={<AgentLiveDealerRebateText />}
@@ -463,7 +708,7 @@ const UsernameBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="代理用户名" en="Agent Username" />
+        <AgentUsernameTrans />
       </Box>
       <Text>{value}</Text>
     </>
@@ -474,7 +719,7 @@ const RealNameBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="真实姓名" en="Real name" />
+        <RealNameTrans />
       </Box>
       {children ? children : <Text data-field="realName">{value}</Text>}
     </>
@@ -485,7 +730,7 @@ const AgentLevelBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <Trans zh="代理种类" en="Level Type" />
+        <AgentLevelTrans />
       </Box>
       {children ? (
         children
@@ -500,7 +745,7 @@ const ParentAgentUsername = ({ value = "", children, display, ...props }) => {
   return (
     <>
       <Box alignY="center" display={display}>
-        <Trans zh="上级代理" en="Upper level agent" />
+        <UpperLevelAgentTrans />
       </Box>
 
       {children ? (
@@ -522,7 +767,7 @@ const ParentAgentUsername = ({ value = "", children, display, ...props }) => {
 const RegistrationBox = ({ value }) => {
   return (
     <>
-      <Trans zh="注册时间" en="Registration" />
+      <RegistrationTimeTrans />
       <Text>
         <FormattedDateTime value={value} />
       </Text>
@@ -533,7 +778,7 @@ const RegistrationBox = ({ value }) => {
 const BalanceBox = ({ value = "", ...props }) => {
   return (
     <>
-      <Trans zh="余额" en="Balance" />
+      <BalanceTrans />
       <Text>
         <FormattedNumberDecimal data-value={value} value={value} {...props} />
       </Text>
@@ -544,7 +789,7 @@ const BalanceBox = ({ value = "", ...props }) => {
 const AgentStatusBox = ({ value = "", children, ...props }) => {
   return (
     <>
-      <Trans zh="状态" en="Status" />
+      <StatusTrans />
 
       {children ? (
         children
@@ -560,7 +805,7 @@ const AgentStatusBox = ({ value = "", children, ...props }) => {
 const LevelTypeBox = ({ value = "", children, ...props }) => {
   return (
     <>
-      <Trans zh="代理种类" en="Level Type" />
+      <AgentLevelTrans />
 
       {children ? (
         children
@@ -576,37 +821,12 @@ const LevelTypeBox = ({ value = "", children, ...props }) => {
 const AgentTypeBox = ({ value, children, ...props }) => {
   return (
     <>
-      <Trans zh="代理类型" en="Agent Type" />
+      <AgentTypeTrans />
       {children ? (
         children
       ) : (
         <Text>
           <AgentTypeLabel data-value={value} value={value} {...props} />
-        </Text>
-      )}
-    </>
-  )
-}
-
-const DividendBox = ({ value, type, children, ...props }) => {
-  let isCash = isAgentTypeCash(type)
-  if (!isCash) {
-    return null
-  }
-
-  return (
-    <>
-      <Trans zh="分红比例" en="Profit Sharing Percentage" />
-      {children ? (
-        children
-      ) : (
-        <Text>
-          <FormattedNumberDecimal
-            data-value={value}
-            value={value}
-            postfix="%"
-            {...props}
-          />
         </Text>
       )}
     </>
@@ -624,8 +844,6 @@ const AccumulatedProfitSharingBox = ({ value, children, ...props }) => {
     </>
   )
 }
-
-const RemarkLabel = () => <Trans zh="备注" en="Remark" />
 
 const RebateBox = ({ label, value, type, children }) => {
   let isCredit = isAgentTypeCredit(type)

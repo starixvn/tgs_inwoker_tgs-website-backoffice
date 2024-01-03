@@ -23,8 +23,6 @@ import equals from "fast-deep-equal"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { MaintenanceTimeRangeDialogDisclosure } from "./MaintenanceTimeRangeDialog"
-import { toDate } from "../../date/toDate"
-import { formatHourMinute } from "../../date/format"
 import {
   EditMaintenanceMessageDisclosure,
   ViewMaintenanceMessageDisclosure
@@ -32,8 +30,8 @@ import {
 import { useChangeBrandStatus } from "../platforms/client"
 import { MerchantStatusMenu, MerchantStatus } from "../MerchantStatus"
 import { StartMaintenanceDialogDisclosure } from "./StartMaintenanceDialog"
-import { parseHourMinute, parseTimeOnly } from "../../date/parse"
-import { isValidDate } from "../../date/isValidDate"
+import { ActionTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
@@ -168,7 +166,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "brandStatus",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
@@ -208,7 +206,7 @@ const useColumns = ({ items = [], mutate }) => {
         textColumn({
           id: "actions",
           disableSortBy: true,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           accessor: (row) => row,
           Cell: ({ value: record }) => {
             return (

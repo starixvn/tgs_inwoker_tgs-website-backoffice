@@ -9,8 +9,8 @@ import React, {
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { Dialog, Button, Box } from "bumbag"
-import { CancelText, ConfirmText, SubmitText } from "../button/ActionButtons"
 import AlertDialog from "../dialog/Alert"
+import { CancelTrans, SubmitTrans } from "../trans/Action"
 
 export const FormDialog = ({
   formRef,
@@ -28,8 +28,8 @@ export const FormDialog = ({
   hideOnClickOutside = false,
   showCloseButton = true,
   showActionButtons = true,
-  cancelText = <CancelText />,
-  submitText = <SubmitText />,
+  cancelText = <CancelTrans />,
+  submitText = <SubmitTrans />,
   addonButtons,
   actionButtonsProps = {},
   formMethods,
@@ -95,6 +95,7 @@ export const FormDialog = ({
         hideOnClickOutside={hideOnClickOutside}
         {...dialog}
         css={css`
+          min-width: 320px;
           width: max-content;
           max-width: 85vw;
 

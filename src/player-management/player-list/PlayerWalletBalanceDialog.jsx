@@ -29,6 +29,9 @@ import { sortBy } from "lodash-es"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Disclosure from "../../dialog/Disclosure"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
+import { WalletBalanceTrans, useWalletBalanceTrans } from "../../trans/User"
+import { ActionTrans } from "../../trans/Action"
+import { GameProviderTrans } from "../../trans/Game"
 
 export const PlayerWalletBalanceDialogDisclosure = ({
   playerCode,
@@ -44,7 +47,7 @@ export const PlayerWalletBalanceDialogDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="钱包余额" en="Wallet Balance" />
+        <WalletBalanceTrans />
       </Disclosure>
       {dialog.visible && (
         <PlayerWalletDialog playerCode={playerCode} dialog={dialog} />
@@ -86,10 +89,7 @@ const usePlayerWallets = (playerCode) => {
 }
 
 const PlayerWalletDialog = ({ playerCode, dialog, ...props }) => {
-  let title = useTrans({
-    zh: "钱包余额",
-    en: "Wallet Balance"
-  })
+  let title = useWalletBalanceTrans()
 
   let { isLoading, data, error, mutate, deleteCache } =
     usePlayerWallets(playerCode)
@@ -256,7 +256,7 @@ const useColumns = ({ items = [], playerCode, onSubmitted }) => {
     let columns = [
       textColumn({
         accessor: "gameProviderName",
-        Header: <Trans zh="游戏商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -284,7 +284,7 @@ const useColumns = ({ items = [], playerCode, onSubmitted }) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value: record }) => {
             return (

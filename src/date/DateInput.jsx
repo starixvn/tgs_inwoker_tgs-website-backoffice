@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { DateTimeInput } from "./DateTimeInput"
-import { Format } from "./format"
+import { DateFormat } from "./format"
 
 export const DateInput = ({
-  dateFormat = Format.Date,
+  dateFormat = DateFormat.Date,
   showTimeInput = false,
   ...props
 }) => {

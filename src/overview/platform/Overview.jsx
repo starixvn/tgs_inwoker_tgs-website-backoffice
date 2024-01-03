@@ -41,6 +41,14 @@ import {
 import { TrendIcon, Trend, trendOf } from "./TrendIcon"
 import { useMeasure, useEffectOnce } from "react-use"
 import Sync from "./sync"
+import { NewPlayersTrans } from "../../trans/User"
+import { NetDepositsTrans, OperationOverviewTrans } from "../../trans/Platform"
+import { LoginPlayersTrans, OnlinePlayerCountTrans } from "../../trans/Player"
+import {
+  DepositApprovalRateTrans,
+  OutstandingWithdrawalTrans,
+  ReviewingWithdrawalTrans
+} from "../../trans/Payment"
 
 const MinWidth = 230
 export const Overview = ({}) => {
@@ -48,7 +56,7 @@ export const Overview = ({}) => {
   return (
     <>
       <Card
-        title={<Trans zh="运营概况" en="Overview" />}
+        title={<OperationOverviewTrans />}
         variant="bordered"
         css={css`
           padding: 0.75rem;
@@ -150,7 +158,7 @@ const NewPlayerCountStat = () => {
   return (
     <Stat>
       <StatHeader
-        title={<Trans zh="注册人数" en="New Players" />}
+        title={<NewPlayersTrans />}
         icon={trend && <TrendIcon value={trend} />}
       />
 
@@ -171,7 +179,7 @@ const PlayerLoginCountStat = () => {
 
   return (
     <Stat>
-      <StatHeader title={<Trans zh="登入人數" en="Login Players" />} />
+      <StatHeader title={<LoginPlayersTrans />} />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={count} placeholder="-" />
@@ -189,7 +197,7 @@ const NetDepositStat = ({}) => {
   return (
     <Stat>
       <StatHeader
-        title={<Trans zh="存提差" en="Net Deposits" />}
+        title={<NetDepositsTrans />}
         icon={trend && <TrendIcon value={trend} />}
       />
 
@@ -224,7 +232,7 @@ const ReviewingWithdrawalStat = () => {
 
   return (
     <Stat>
-      <StatHeader title={<Trans zh="待處理提款" en="Reviewing Withdrawal" />} />
+      <StatHeader title={<ReviewingWithdrawalTrans />} />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={value} placeholder="-" />
@@ -240,9 +248,7 @@ const OutstandingWithdrawalStat = () => {
 
   return (
     <Stat>
-      <StatHeader
-        title={<Trans zh="待支付提款" en="Outstanding Withdrawal" />}
-      />
+      <StatHeader title={<OutstandingWithdrawalTrans />} />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={value} placeholder="-" />
@@ -258,7 +264,7 @@ const OnlinePlayerCountStat = () => {
 
   return (
     <Stat>
-      <StatHeader title={<Trans zh="在線人數" en="Online Players" />} />
+      <StatHeader title={<OnlinePlayerCountTrans />} />
 
       <StatBody isLoading={isLoading}>
         <FormattedNumber value={value} placeholder="-" />
@@ -276,7 +282,7 @@ export const DepositSuccessRateStat = ({}) => {
   return (
     <Stat>
       <StatHeader
-        title={<Trans zh="存款成功率" en="Deposit Approval Rate" />}
+        title={<DepositApprovalRateTrans />}
         icon={trend && <TrendIcon value={trend} />}
       />
 

@@ -29,6 +29,16 @@ export const isDev = () => {
   )
 }
 
+const isLocal = () => {
+  return boolean(import.meta.env.SNOWPACK_PUBLIC_IS_LOCAL)
+}
+
+export const isLocalDev = () => {
+  let dev = isDev()
+  let local = isLocal()
+  return dev && local
+}
+
 export const isProduction = () => window?.env?.mode === Production
 
 export const getLoginImageUrl = () => window?.env?.loginImageUrl || ""
@@ -75,19 +85,9 @@ export const getHeaderButtonColor = () =>
 export const getHeaderButtonBackground = () =>
   window?.env?.loginButtonBackground || "transparent"
 
-/* TODO: able to rm?
-const Sidebar = "Sidebar"
-*/
-
-//TODO: rm
-const MarketReportWithAgentProfit = "MarketReportWithAgentProfit"
-
 const OAuth = "OAuth" //public/env.html
 
 export const Features = {
-  /*
-  MarketReportWithAgentProfit,
-  */
   OAuth
 }
 
@@ -126,12 +126,6 @@ window.featureX = {
 export const isFeatureEnabled = (feature = "") => {
   return boolean(window?.env?.features?.[feature])
 }
-
-//TODO: rm
-/*
-export const isFeatureMarketReportWithAgentProfit = () =>
-  isFeatureEnabled(MarketReportWithAgentProfit)
-*/
 
 export const isFeatureOAuthEnabled = () => isFeatureEnabled(OAuth)
 

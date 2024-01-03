@@ -18,10 +18,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentDividendDetailList } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -37,6 +34,8 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { AgentUsernameTrans } from "../../trans/Agent"
+import { TotalTrans } from "../../trans/Field"
 
 export const AgentProfitSharingDialogDisclosure = ({
   brandId,
@@ -139,7 +138,7 @@ const ReportDialog = ({
     >
       <FieldStack>
         <FieldValues marginLeft="1rem">
-          <Trans zh="代理用户名" en="Agent Username" />
+          <AgentUsernameTrans />
           <Text.Block alignY="center">{username}</Text.Block>
 
           <Trans zh="分红金额" en="Profit Sharing Amount" />
@@ -179,7 +178,7 @@ const useAgentBonusColumns = ({ username = "", items = [] }) => {
     () => [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        Header: <AgentUsernameTrans />,
         Cell: ({ value }) => value ?? username
       }),
       dateTimeColumn({
@@ -187,7 +186,7 @@ const useAgentBonusColumns = ({ username = "", items = [] }) => {
         dateFormat: "dd/MM/yyyy",
         timeFormat: false,
         Header: <Trans zh="结算日期" en="Date" />,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         },

@@ -37,6 +37,27 @@ import numberColumn, {
 } from "../../table/column/numberColumn"
 import { useAgentMarketingReport } from "./client"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import {
+  BetAmountTrans,
+  GamingCountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
+import {
+  DepositAmountTrans,
+  FirstDepositCountTrans,
+  WithdrawAmountTrans
+} from "../../trans/Payment"
+import { BonusAmountTrans, NetProfitTrans } from "../../trans/Field"
+import {
+  CompanyAdjustmentAmountTrans,
+  CompanyWinLossTrans
+} from "../../trans/Platform"
+import {
+  AgentMarketingReportTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
+import { RegisteredCountTrans } from "../../trans/User"
 
 export { Code }
 
@@ -101,7 +122,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="代理市場報表" en="Agent Marketing Report" />}
+      title={<AgentMarketingReportTrans />}
       actionBar={
         <Level alignY="bottom" alignX="left" verticalBelow="mobile">
           <SearchBar
@@ -149,10 +170,7 @@ const SearchBar = ({
   ...props
 }) => {
   const QueryMaxRangeDays = 31
-  let agentUsernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent Username"
-  })
+  let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   let formMethods = useForm({
     defaultValues: {
@@ -198,12 +216,12 @@ const useColumns = ({ brandId, items = [] }) => {
     let columns = [
       numberColumn({
         accessor: "registeredCount",
-        Header: <Trans zh="注册人数" en="Registered Count" />,
+        Header: <RegisteredCountTrans />,
         disableSortBy: true
       }),
       numberColumn({
         accessor: "firstFundInCount",
-        Header: <Trans zh="首存人数" en="First Deposit Count" />,
+        Header: <FirstDepositCountTrans />,
         disableSortBy: true
       }),
       numberColumn({
@@ -218,49 +236,49 @@ const useColumns = ({ brandId, items = [] }) => {
       }),
       numberColumn({
         accessor: "playGamePlayerCount",
-        Header: <Trans zh="游戏人数" en="Play Game Player Count" />,
+        Header: <GamingCountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "deposit",
-        Header: <Trans zh="存款金额" en="Deposit Amount" />,
+        Header: <DepositAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "withdraw",
-        Header: <Trans zh="提款金额" en="Withdraw Amount" />,
+        Header: <WithdrawAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "companyAdjustAmount",
-        Header: <Trans zh="公司调账" en="Co. Adjustment Amount" />,
+        Header: <CompanyAdjustmentAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
         sumColumn: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "turnover",
         sumColumn: "turnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "companyWinLoss",
-        Header: <Trans zh="公司输赢金额" en="Co. Win Loss" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
@@ -271,7 +289,7 @@ const useColumns = ({ brandId, items = [] }) => {
       numberDecimalColumn({
         accessor: "netProfit",
         sumColumn: "netProfit",
-        Header: <Trans zh="净盈利" en="NetProfit" />,
+        Header: <NetProfitTrans />,
         disableSortBy: true
       })
     ]

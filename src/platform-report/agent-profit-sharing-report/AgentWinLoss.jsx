@@ -18,10 +18,7 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { useAgentWinLossList } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -36,8 +33,10 @@ import { FieldValues } from "../../layout/Grid"
 import { formatNumberDecimal } from "../../number/format"
 import Separator from "../../layout/Separator"
 import { startOfNextDay } from "../../date/startOfNextDay"
-import { startOfPreviousDay } from "../../date/startOfPreviousDay"
-import { formatYearMonthDay } from "../../date/format"
+import { UserNameTrans } from "../../trans/User"
+import { CompanyWinLossTrans } from "../../trans/Platform"
+import { AgentUsernameTrans } from "../../trans/Agent"
+import { TotalTrans } from "../../trans/Field"
 
 export const AgentWinLossDialogDisclosure = ({
   brandId,
@@ -141,10 +140,10 @@ const ReportDialog = ({
     >
       <FieldStack>
         <FieldValues marginLeft="1rem">
-          <Trans zh="代理用户名" en="Agent Username" />
+          <AgentUsernameTrans />
           <Text.Block alignY="center">{username}</Text.Block>
 
-          <Trans zh="公司输赢金额" en="Co. W/L" />
+          <CompanyWinLossTrans />
           <Text.Block alignY="center">
             {formatNumberDecimal(winLossAmount)}
           </Text.Block>
@@ -171,8 +170,8 @@ const useAgentPlayerWinLossColumns = ({ items = [] }) => {
     () => [
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Header: <UserNameTrans />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         },

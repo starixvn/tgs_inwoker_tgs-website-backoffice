@@ -20,6 +20,10 @@ import {
   codeLabelPair as platformCreditPair
 } from "./platform-credit/menu"
 import {
+  Code as PlatformAccountFundCode,
+  codeLabelPair as platformAccountFundPair
+} from "./platform-account-fund/menu"
+import {
   Code as MaintenanceCode,
   codeLabelPair as maintenancePair
 } from "./maintenance/menu"
@@ -101,6 +105,14 @@ const label = ({ locale, code }) => {
         },
         locale
       )
+    case PlatformAccountFundCode:
+      return getTrans(
+        {
+          zh: "平台資金",
+          en: "Account Funds"
+        },
+        locale
+      )
     case MaintenanceCode:
       return getTrans(
         {
@@ -127,6 +139,7 @@ export const codeLabelPair = [
         brandPair /* TODO: rm */,
         platformPair,
         platformCreditPair,
+        platformAccountFundPair,
         maintenancePair
       ]
     })

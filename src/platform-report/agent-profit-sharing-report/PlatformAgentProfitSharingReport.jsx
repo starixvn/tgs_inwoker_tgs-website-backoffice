@@ -58,6 +58,13 @@ import AutoSizer from "react-virtualized-auto-sizer"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
+import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
+import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import {
+  AgentUsernameTrans,
+  ProfitSharingPercentageTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -298,8 +305,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               </List.Item>
               <List.Item>
                 <Trans
-                  zh="净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐。"
-                  en="Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount."
+                  zh="净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐 - 平台费用。"
+                  en="Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount - Platform Fee."
                 />
               </List.Item>
               <List.Item>
@@ -511,10 +518,7 @@ const SearchBar = ({
     }
   })
 
-  let usernamePlaceholder = useTrans({
-    zh: "代理用户名",
-    en: "Agent username"
-  })
+  let usernamePlaceholder = useAgentUsernameTrans()
 
   const onSubmit = (data) => search?.(data)
 
@@ -585,7 +589,7 @@ const useColumns = ({
       textColumn({
         id: "username",
         accessor: (row) => row,
-        Header: <Trans zh="代理用户名" en="Agent Username" />,
+        Header: <AgentUsernameTrans />,
         headCell: {
           whiteSpace: "nowrap"
         },
@@ -602,7 +606,7 @@ const useColumns = ({
             //marginLeft={`${marginLeft}rem`}
             return (
               <Text.Block>
-                <Trans zh="总计" en="Total" />
+                <TotalTrans />
               </Text.Block>
             )
           }
@@ -630,14 +634,14 @@ const useColumns = ({
       }),
       numberDecimalPercentageColumn({
         accessor: "agentDividendPercentage",
-        Header: <Trans zh="分红比例" en="Profit Sharing Percentage" />,
+        Header: <ProfitSharingPercentageTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }
       }),
       numberDecimalColumn({
         accessor: "bonusAmount",
-        Header: <Trans zh="红利金额" en="Bonus Amount" />,
+        Header: <BonusAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }
@@ -693,14 +697,14 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet Amount" />,
+        Header: <ValidBetAmountTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }
@@ -743,7 +747,7 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         accessor: "netProfit",
-        Header: <Trans zh="净盈利" en="Net Profit" />,
+        Header: <NetProfitTrans />,
         headCell: {
           whiteSpace: "nowrap"
         }

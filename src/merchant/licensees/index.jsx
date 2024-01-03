@@ -20,17 +20,13 @@ import equals from "fast-deep-equal"
 import { MerchantStatusMenu } from "../MerchantStatus"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
+import { ActionTrans } from "../../trans/Action"
+import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
+import { StatusTrans } from "../../trans/Status"
 
 export { Code }
 
 export const Licensee = "Licensee"
-
-export const LicenseeTrans = {
-  zh: "公司",
-  en: "Licensee"
-}
-
-export const useLicenseeLabel = () => useTrans(LicenseeTrans)
 
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
@@ -166,7 +162,7 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => {
           return (
@@ -183,12 +179,12 @@ const useColumns = ({ items = [], mutate }) => {
         }
       }),
       dateTimeColumn({
-        Header: <Trans zh="创建时间" en="Created Time" />,
+        Header: <CreatedTimeTrans />,
         accessor: "createdOn",
         disableSortBy: true
       }),
       dateTimeColumn({
-        Header: <Trans zh="更改时间" en="Updated Time" />,
+        Header: <UpdatedTimeTrans />,
         accessor: "updatedOn",
         disableSortBy: true
       })
@@ -199,7 +195,7 @@ const useColumns = ({ items = [], mutate }) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value }) => {
             return (

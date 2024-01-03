@@ -53,6 +53,15 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { useDropzone } from "react-dropzone"
+import { ActionTrans, ExportTrans, OperatorTrans } from "../../trans/Action"
+import { StatusTrans } from "../../trans/Status"
+import {
+  GameIdTrans,
+  GameListTrans,
+  GameNameTrans,
+  useGameListTrans
+} from "../../trans/Game"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export const GameProviderGameListDisclosure = ({
   gameProviderId,
@@ -69,7 +78,7 @@ export const GameProviderGameListDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="游戏列表" en="Game List" />
+        <GameListTrans />
       </Disclosure>
       {dialog.visible && (
         <GameListDialog
@@ -88,10 +97,7 @@ const GameListDialog = ({
   dialog,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "游戏列表",
-    en: "Game List"
-  })
+  let title = useGameListTrans()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     gameProviderId,
@@ -210,7 +216,7 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
     let columns = [
       textColumn({
         accessor: "id",
-        Header: <Trans zh="游戏ID" en="Game ID" />,
+        Header: <GameIdTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -220,23 +226,23 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
       }),
       textColumn({
         accessor: "name",
-        Header: <Trans zh="游戏名称" en="Name" />,
+        Header: <GameNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value = "" }) => value
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最新更新" en="Updated On" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "updatedByUsername",
-        Header: <Trans zh="更改者" en="Updated By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ]
@@ -246,7 +252,7 @@ const useColumns = ({ gameProviderId, items = [], mutate }) => {
         textColumn({
           id: "actions",
           accessor: (row) => row,
-          Header: <Trans zh="操作" en="Actions" />,
+          Header: <ActionTrans />,
           disableSortBy: true,
           Cell: ({ value: record }) => {
             return (
@@ -286,7 +292,7 @@ const LocalizationMenuButton = ({ gameProviderCode }) => {
               href={`/api/game/localization/export?gameProviderCode=${gameProviderCode}`}
               download={`${gameProviderCode}.xlsx`}
             >
-              <Trans zh="汇出" en="Export" />
+              <ExportTrans />
             </DropdownMenu.Item>
             <DropdownMenu.Item
               id="upload-game-localization-dialog-disclosure"

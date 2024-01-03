@@ -40,6 +40,17 @@ import dateTimeColumn from "../../table/column/dateTime"
 import { GameTypeSelect } from "../../game/GameType"
 import GameProviderSelect from "../../game/providers/GameProviderSelect"
 import DownloadButton from "../../button/DownloadButton"
+import {
+  BetAmountTrans,
+  GameProviderReportTrans,
+  GameProviderTrans,
+  TransactionCountTrans,
+  TurnoverTrans,
+  ValidBetAmountTrans
+} from "../../trans/Game"
+import { CurrencyTrans } from "../../trans/Payment"
+import { CompanyWinLossTrans } from "../../trans/Platform"
+import { TotalTrans } from "../../trans/Field"
 
 export { Code }
 
@@ -129,7 +140,7 @@ const ReportContent = ({ brandId }) => {
           }}
         />
       }
-      title={<Trans zh="游戏商報表" en="Game Provider Report" />}
+      title={<GameProviderReportTrans />}
     >
       <Table
         columns={columns}
@@ -231,16 +242,16 @@ const useColumns = ({ items = [] }) => {
       textColumn({
         id: "gameProviderName",
         accessor: (row) => row,
-        Header: <Trans zh="游戏商" en="Game Provider" />,
+        Header: <GameProviderTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, gameProviderName } }) => {
-          return isTotal ? <Trans zh="总计" en="Total" /> : gameProviderName
+          return isTotal ? <TotalTrans /> : gameProviderName
         }
       }),
       textColumn({
         id: "currencyCode",
         accessor: (row) => row,
-        Header: <Trans zh="币种" en="Currency" />,
+        Header: <CurrencyTrans />,
         disableSortBy: true,
         Cell: ({ value: { isTotal, currencyCode = "" } }) => {
           return currencyCode
@@ -249,27 +260,27 @@ const useColumns = ({ items = [] }) => {
       }),
       numberColumn({
         accessor: "transactionCount",
-        Header: <Trans zh="訂單筆數" en="Transactions" />,
+        Header: <TransactionCountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "betAmount",
-        Header: <Trans zh="投注金额" en="Bet Amount" />,
+        Header: <BetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "originalTurnover",
-        Header: <Trans zh="流水" en="Turnover" />,
+        Header: <TurnoverTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "validBetAmount",
-        Header: <Trans zh="有效投注" en="Valid Bet" />,
+        Header: <ValidBetAmountTrans />,
         disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "companyWinLoss",
-        Header: <Trans zh="公司输赢金额" en="Co. W/L" />,
+        Header: <CompanyWinLossTrans />,
         disableSortBy: true
       })
     ],

@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Locales, Trans, useLocale, useTrans } from "../i18n"
+import { PlaceBetTrans, usePlaceBetTrans } from "../trans/Game"
 
 const GameBet = "GameBet"
-const GameBetTrans = {
-  zh: "投注",
-  en: "Place Bet"
-}
 
 const GameSettleWin = "GameSettleWin"
 const GameSettleWinTrans = {
@@ -89,7 +86,7 @@ const GameProviderFundRefundTrans = {
 export const useGameActionTypeOptionList = () => {
   let options = [
     {
-      label: useTrans(GameBetTrans),
+      label: usePlaceBetTrans(),
       value: GameBet
     },
     {
@@ -151,7 +148,7 @@ export const useGameActionTypeOptionList = () => {
 export const GameActionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case GameBet:
-      return <Trans {...GameBetTrans} />
+      return <PlaceBetTrans />
     case GameSettleWin:
       return <Trans {...GameSettleWinTrans} />
     case GameSettleLose:

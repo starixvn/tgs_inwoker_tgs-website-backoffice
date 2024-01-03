@@ -19,6 +19,12 @@ import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { FormBody } from "./PlatformBanner"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { clone } from "lodash"
+import {
+  RejectTrans,
+  RemarkTrans,
+  useVerifyTrans,
+  useViewTrans
+} from "../../trans/Action"
 
 export const VerifyPlatformBannerDisclosure = ({
   brandId,
@@ -90,10 +96,7 @@ const EditVerifyDialog = ({
   dialog,
   ...props
 }) => {
-  let title = useTrans({
-    zh: "审核 Banner",
-    en: "Verify Banner"
-  })
+  let title = useVerifyTrans()
 
   let formMethods = useForm({ defaultValues })
 
@@ -137,7 +140,7 @@ const EditVerifyDialog = ({
           palette="danger"
           variant="outlined"
         >
-          <Trans zh="拒绝" en="Reject" />
+          <RejectTrans />
         </Button>
       }
       isLoading={isLoading}
@@ -163,10 +166,7 @@ export const ViewVerifyPlatformBannerDisclosure = ({
   let beginTime = parseISO(record.beginTime)
   let endTime = parseISO(record.endTime)
 
-  let title = useTrans({
-    zh: "查看 Banner",
-    en: "View Banner"
-  })
+  let title = useViewTrans()
 
   return (
     <FormDialog
@@ -201,7 +201,7 @@ const VerifyBody = ({ readOnly = false } = {}) => {
 
       <FieldValues paddingBottom="1rem">
         <Label name="remarks">
-          <Trans zh="备注" en="Remarks" />
+          <RemarkTrans />
         </Label>
         <Textarea name="remarks" disabled={readOnly} />
       </FieldValues>

@@ -11,6 +11,7 @@ import {
   GameTypeSelect,
   useGameTypeGroupValueOf
 } from "../../../game/GameType"
+import { GameTypeTrans } from "../../../trans/Game"
 
 const GameTypeGroupFieldName = "gameTypeGroup"
 
@@ -54,7 +55,7 @@ export const GameTypeSelectField = ({ readOnly }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="活动游戏类型" en="Game Type" />
+        <GameTypeTrans />
       </NormalLabel>
       <Box>
         <GameTypeGroupSelect

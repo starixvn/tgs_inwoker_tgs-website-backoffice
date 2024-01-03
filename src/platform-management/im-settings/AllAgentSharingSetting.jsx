@@ -26,6 +26,7 @@ import {
   NumberInput,
   PercentageNumberInputField
 } from "../../input/NumberInput"
+import { NetProfitTrans } from "../../trans/Field"
 
 export const AllAgentProfitSharingSetting = ({
   name,
@@ -33,7 +34,7 @@ export const AllAgentProfitSharingSetting = ({
   profitSharingPercentageFieldName = "dividendPercentage",
   maxProfitSharingPercentage,
   activeNumberLabel = <Trans zh="活跃人数" en="Active Player" />,
-  netProfitLabel = <Trans zh="净盈利" en="Net Profit" />,
+  netProfitLabel = <NetProfitTrans />,
   profitSharingPercentageLabel = <Trans zh="返佣比例" en="Rebate PT" />,
   readOnly
 }) => {

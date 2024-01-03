@@ -14,24 +14,19 @@ import { useTrans } from "../../i18n"
 import Select from "../../select/Select"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { SystemTransactionType } from "./menu"
+import {
+  AgentAdjustTrans,
+  SystemAdjustTrans,
+  useAgentAdjustTrans,
+  useSystemAdjustTrans
+} from "../../trans/Action"
+import { CompanyAdjustTrans, useCompanyAdjustTrans } from "../../trans/Platform"
 
 export const Company = "CompanyAdjust"
-const CompanyTrans = {
-  zh: "公司调账",
-  en: "Company Adjust"
-}
 
 export const Agent = "AgentAdjust"
-const AgentTrans = {
-  zh: "代理调账",
-  en: "Agent Adjust"
-}
 
 export const System = "SystemAdjust"
-const SystemTrans = {
-  zh: "系統调账",
-  en: "System Adjust"
-}
 
 export const Transfer = "TransferAdjust"
 const TransferTrans = {
@@ -44,15 +39,15 @@ export const isTransfer = (type) => type === Transfer
 export const useAgentAdjustBalanceTypeOptionList = () => {
   let options = [
     {
-      label: useTrans(CompanyTrans),
+      label: useCompanyAdjustTrans(),
       value: Company
     },
     {
-      label: useTrans(AgentTrans),
+      label: useAgentAdjustTrans(),
       value: Agent
     },
     {
-      label: useTrans(SystemTrans),
+      label: useSystemAdjustTrans(),
       value: System
     },
     {
@@ -67,11 +62,11 @@ export const useAgentAdjustBalanceTypeOptionList = () => {
 export const AgentAdjustBalanceTypeLabel = ({ value }) => {
   switch (value) {
     case Company:
-      return <Trans {...CompanyTrans} />
+      return <CompanyAdjustTrans />
     case Agent:
-      return <Trans {...AgentTrans} />
+      return <AgentAdjustTrans />
     case System:
-      return <Trans {...SystemTrans} />
+      return <SystemAdjustTrans />
     case Transfer:
       return <Trans {...TransferTrans} />
     default:
@@ -94,18 +89,18 @@ export const AgentAdjustBalanceTypeSelect = ({
 
   let options = [
     {
-      label: useTrans(CompanyTrans),
+      label: useCompanyAdjustTrans(),
       value: Company
     },
     {
-      label: useTrans(AgentTrans),
+      label: useAgentAdjustTrans(),
       value: Agent
     }
   ]
 
   if (hasSystemType) {
     options.push({
-      label: useTrans(SystemTrans),
+      label: useSystemAdjustTrans(),
       value: System
     })
   }

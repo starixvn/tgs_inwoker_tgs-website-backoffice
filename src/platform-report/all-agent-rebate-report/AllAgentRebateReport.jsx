@@ -51,6 +51,8 @@ import { AllAgentRebateDialogDisclosure } from "./AllAgentRebateDialog"
 import { parseISO } from "date-fns"
 import { toDate } from "../../date/toDate"
 import { useAllAgentRebateList, useAllAgentRebateTotalAmount } from "./client"
+import { SentOnTrans } from "../../trans/Date"
+import { TotalTrans } from "../../trans/Field"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -77,7 +79,8 @@ const useAllAgentRebateData = (searchParams) => {
     rebateList && rebateTotalAmount
       ? {
           items: rebateList,
-          total: rebateTotalAmount
+          total: rebateTotalAmount,
+          totalCount: rebateTotalAmount.totalCount
         }
       : undefined
   return {
@@ -103,8 +106,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
     username: "",
     from: dateRange.start,
     to: dateRange.end,
-    sortBy: [{ id: "settleDateTime", desc: true }],
-    pageSize: 5
+    sortBy: [{ id: "settleDateTime", desc: true }]
   })
 
   useEffect(() => {
@@ -171,7 +173,6 @@ export const AllAgentRebateReport = ({ brandId }) => {
                 pageCount={pageCount(state.pageSize, data?.totalCount)}
                 setPageIndex={setPageIndex}
                 setSortOrder={setSortOrder}
-                autoPaging={true}
                 isLoading={isLoading}
                 maxSize={{ height, width }}
                 stickyHead
@@ -201,9 +202,9 @@ const SearchBar = ({ username, from, to, search, isLoading }) => {
 
   const onSubmit = (data) => search?.(data)
 
-  let QueryMaxRangeDays = 3
+  let QueryMaxRangeDays = 14
   let todayRange = today()
-  let DataRetentionDays = 30
+  let DataRetentionDays = 90
   let minDate = subDays(todayRange.start, DataRetentionDays)
   let maxDate = todayRange.end
 
@@ -255,7 +256,7 @@ const useColumns = ({ items = [], brandId }) => {
         accessor: "username",
         Header: <Trans zh="全民代理上級" en="All Agent Username" />,
         disableSortBy: true,
-        TotalCell: () => <Trans zh="总计" en="Total" />
+        TotalCell: () => <TotalTrans />
       }),
       dateTimeColumn({
         id: "settleDateTime",
@@ -276,6 +277,8 @@ const useColumns = ({ items = [], brandId }) => {
               username={record?.username}
               playerCode={record?.playerCode}
               settleDateTime={toDate(record?.settleDateTime)}
+              from={record?.from}
+              to={record?.to}
             />
           )
         }
@@ -290,7 +293,7 @@ const useColumns = ({ items = [], brandId }) => {
       }),
       dateTimeColumn({
         accessor: "sentOn",
-        Header: <Trans zh="派发时间" en="Sent On" />,
+        Header: <SentOnTrans />,
         disableSortBy: true
       })
     ]

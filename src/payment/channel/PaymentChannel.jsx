@@ -3,6 +3,7 @@ import { Spinner } from "bumbag"
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
 import Select from "../../select/Select"
 import { usePaymentChannelList } from "./client"
+import { usePaymentChannelTrans } from "../../trans/Payment"
 
 export const PaymentChannelSelect = ({
   placeholder,
@@ -10,10 +11,7 @@ export const PaymentChannelSelect = ({
   range,
   ...props
 }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "支付通道",
-    en: "Payment Channel"
-  })
+  let defaultPlaceholder = usePaymentChannelTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let locale = useLocale()

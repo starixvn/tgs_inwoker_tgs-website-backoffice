@@ -3,18 +3,17 @@ import { css, Global } from "@emotion/react"
 import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
+import {
+  AgentTrans,
+  ChiefTrans,
+  useAgentLevelTrans,
+  useAgentTrans,
+  useChiefTrans
+} from "../trans/Agent"
 
 const Chief = "Chief"
-const ChiefTrans = {
-  zh: "总代",
-  en: "Chief"
-}
 
 const Agent = "Agent"
-const AgentTrans = {
-  zh: "代理",
-  en: "Agent"
-}
 
 export default {
   Chief,
@@ -26,19 +25,16 @@ export const isAgentHead = (value) => value === Chief
 export const isAgentParentRequired = (value) => !isAgentHead(value)
 
 export const AgentLevelSelect = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "代理种类",
-    en: "Level Type"
-  })
+  let defaultPlaceholder = useAgentLevelTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useTrans(ChiefTrans),
+      label: useChiefTrans(),
       value: Chief
     },
     {
-      label: useTrans(AgentTrans),
+      label: useAgentTrans(),
       value: Agent
     }
   ]
@@ -52,13 +48,13 @@ export const AgentLevelLabel = ({ value = "" }) => {
     case Chief:
       return (
         <Text>
-          <Trans {...ChiefTrans} />
+          <ChiefTrans />
         </Text>
       )
     case Agent:
       return (
         <Text>
-          <Trans {...AgentTrans} />
+          <AgentTrans />
         </Text>
       )
     default:

@@ -24,10 +24,6 @@ import {
   Trans,
   useTrans
 } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import dateTimeColumn from "../../table/column/dateTime"
@@ -52,6 +48,9 @@ import { InputField } from "../../input/Input"
 import { AdjustTypeSelect, AdjustTypeLabel } from "./AdjustType"
 import DownloadButton from "../../button/DownloadButton"
 import { isSubtract } from "./operation"
+import { OperatorTrans, RemarkTrans } from "../../trans/Action"
+import { TimeTrans } from "../../trans/Date"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 
 export const AdjustListDialogDisclosure = ({
   id,
@@ -198,10 +197,7 @@ const SearchBar = ({ userType, search, isLoading }) => {
     }
   })
 
-  let userPlaceholder = useTrans({
-    zh: "用戶名",
-    en: "Username"
-  })
+  let userPlaceholder = useUserNameTrans()
 
   let operatorPlaceholder = useTrans({
     zh: "操作者",
@@ -238,12 +234,12 @@ const useColumns = ({ items = [] }) => {
       sequenceColumn(),
       dateTimeColumn({
         accessor: "createdOn",
-        Header: <Trans zh="时间" en="Time" />,
+        Header: <TimeTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "userName",
-        Header: <Trans zh="用戶名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -266,12 +262,12 @@ const useColumns = ({ items = [] }) => {
       }),
       textColumn({
         accessor: "operator",
-        Header: <Trans zh="操作者" en="Adjust By" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "remark",
-        Header: <Trans zh="备注" en="Remark" />,
+        Header: <RemarkTrans />,
         disableSortBy: true
       })
     ]

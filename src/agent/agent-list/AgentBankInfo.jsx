@@ -26,17 +26,19 @@ import {
   useDeleteAgentBank,
   useUpdateAgentBank
 } from "./client"
-import { CancelText, SubmitText } from "../../button/ActionButtons"
 import Backdrop from "../../dialog/Backdrop"
 import FormDialog from "../../form/FormDialog"
 import Disclosure from "../../dialog/Disclosure"
+import { RealNameTrans } from "../../trans/User"
+import { BankInfoTrans, BankAccountTrans } from "../../trans/Payment"
+import { CancelTrans, SubmitTrans } from "../../trans/Action"
 
 const Key = "AgentBankInfo"
 
 export const AgentBankInfoTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
-      <Trans zh="银行卡信息" en="Agent Bank Info" />
+      <BankInfoTrans />
     </_Tab>
   )
 }
@@ -102,13 +104,13 @@ const Bank = ({ record = {}, readOnly = false, onSubmitted }) => {
         </Set>
       )}
       <FieldValues>
-        <Trans zh="真实姓名" en="Real name" />
+        <RealNameTrans />
         <Text>{record?.realName ?? ""}</Text>
 
         <Trans zh="银行" en="Bank" />
         <Text>{record?.bankName ?? ""}</Text>
 
-        <Trans zh="银行卡号" en="Bank Account" />
+        <BankAccountTrans />
         <Text>{record?.bankAccount ?? ""}</Text>
       </FieldValues>
     </Card>
@@ -207,7 +209,7 @@ const EditDialog = ({ bank, onSubmitted, dialog }) => {
 const EditBody = ({}) => {
   return (
     <FieldValues>
-      <Trans zh="真实姓名" en="Real name" />
+      <RealNameTrans />
       <Box>
         <Input name="realName" />
       </Box>
@@ -217,7 +219,7 @@ const EditBody = ({}) => {
         <Input name="bankName" />
       </Box>
 
-      <Trans zh="银行卡号" en="Bank Account" />
+      <BankAccountTrans />
       <Box>
         <Input name="bankAccount" />
       </Box>
@@ -249,8 +251,8 @@ const DeleteDialog = ({ bank, onSubmitted, dialog }) => {
         isLoading,
         onClickSubmit: () => setDeleteId(bank.id),
         onClickCancel: dialog.hide,
-        cancelText: <CancelText />,
-        submitText: <SubmitText />
+        cancelText: <CancelTrans />,
+        submitText: <SubmitTrans />
       }}
       {...dialog}
     >

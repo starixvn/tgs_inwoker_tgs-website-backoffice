@@ -8,7 +8,8 @@ import {
   Button,
   Set,
   useModalState,
-  Blockquote
+  Blockquote,
+  FieldStack
 } from "bumbag"
 import PageContent from "../../page/Content"
 import sequenceColumn from "../../table/column/sequence"
@@ -33,6 +34,10 @@ import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
+import { VipLevelTrans } from "../../trans/Vip"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
+import { StatusTrans } from "../../trans/Status"
+import { OnlinePlayersTrans, TotalOnlinePlayersTrans } from "../../trans/Player"
 
 export { Code }
 
@@ -85,7 +90,7 @@ const BodyContent = ({ brandId = "" }) => {
 
   return (
     <PageContent
-      title={<Trans zh="在线玩家列表" en="Online Players" />}
+      title={<OnlinePlayersTrans />}
       actionBar={
         <SearchBar
           brandId={brandId}
@@ -100,17 +105,19 @@ const BodyContent = ({ brandId = "" }) => {
         />
       }
     >
-      <Summary onlineUsers={data?.onlineUsers} />
-      <Table
-        columns={columns}
-        data={data?.datas?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state.pageSize, data?.datas?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-      />
+      <FieldStack>
+        <Summary onlineUsers={data?.onlineUsers} />
+        <Table
+          columns={columns}
+          data={data?.datas?.items}
+          initialState={state}
+          controlledState={state}
+          pageCount={pageCount(state.pageSize, data?.datas?.totalCount)}
+          setPageIndex={setPageIndex}
+          setSortOrder={setSortOrder}
+          isLoading={isLoading}
+        />
+      </FieldStack>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </PageContent>
   )
@@ -124,7 +131,7 @@ const Summary = ({ onlineUsers }) => {
   return (
     <Blockquote borderColor="primary">
       <Heading use="h5">
-        <Trans zh="在线玩家总数：" en="Total Online Players：" />
+        <TotalOnlinePlayersTrans />
         <FormattedNumber value={onlineUsers} />
       </Heading>
     </Blockquote>
@@ -132,10 +139,7 @@ const Summary = ({ onlineUsers }) => {
 }
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名输入框",
-    en: "User name"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
   let formMethods = useForm()
 
   const onSubmit = (data) => search(data)
@@ -164,18 +168,18 @@ const useColumns = ({ items = [] } = {}) => {
       sequenceColumn(),
       textColumn({
         accessor: "username",
-        Header: <Trans zh="用户名" en="Username" />,
+        Header: <UserNameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "vipLevel",
-        Header: <Trans zh="VIP 等级" en="VIP Level" />,
+        Header: <VipLevelTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <VipLevelLabel value={value} placeholder="-" />
       }),
       textColumn({
         accessor: "status",
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <PlayerStatusLabel value={value} />
       })

@@ -13,10 +13,7 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import Disclosure from "../../dialog/Disclosure"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
-import {
-  CloseButtonFooter,
-  ConfirmButtonFooter
-} from "../../form/ConfirmButtonFooter"
+import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { Table, toApiParams, useTable, pageCount } from "../../table"
 import { usePlayerVipRebateList } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -27,6 +24,7 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import { startOfNextDay } from "../../date/startOfNextDay"
+import { TotalTrans } from "../../trans/Field"
 
 export const PlayerRebatDialogDisclosure = ({
   brandId,
@@ -128,7 +126,7 @@ const usePlayerVipRebateColumns = ({ items = [] }) => {
         dateFormat: "yyyy/MM/dd",
         timeFormat: false,
         Header: <Trans zh="日期" en="Date" />,
-        Footer: () => <Trans zh="总计" en="Total" />,
+        Footer: () => <TotalTrans />,
         footerCellProps: {
           textAlign: "center"
         },

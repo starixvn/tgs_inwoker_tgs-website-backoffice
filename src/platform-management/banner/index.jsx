@@ -47,32 +47,31 @@ import {
 } from "./PlatformBanner"
 import { VerifyPlatformBannerDisclosure } from "./VerifyPlatformBanner"
 import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
+import {
+  EffectiveTrans,
+  ExpiredTrans,
+  RejectedTrans,
+  ReviewTrans,
+  StatusTrans
+} from "../../trans/Status"
+import { OrderTrans, SubjectTrans } from "../../trans/Field"
+import {
+  EndTimeTrans,
+  StartTimeTrans,
+  UpdatedTimeTrans
+} from "../../trans/Date"
+import { BannersTrans } from "../../trans/Platform"
 
 export { Code }
 
 const InVerify = "reviewing"
-const InVerifyTrans = {
-  zh: "审核中",
-  en: "Under review"
-}
 
 const Effective = "valid"
-const EffectiveTrans = {
-  zh: "有效",
-  en: "Effective"
-}
 
 const Expired = "expired"
-const ExpiredTrans = {
-  zh: "过期",
-  en: "Expired"
-}
 
 const Rejected = "rejected"
-const RejectedTrans = {
-  zh: "拒绝",
-  en: "Rejected"
-}
 
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
@@ -144,7 +143,7 @@ const BodyContent = ({ brandId }) => {
 
   return (
     <PageContent
-      title={<Trans zh="Banner 管理 " en="Banner Management" />}
+      title={<BannersTrans />}
       actionBar={
         <Box alignX="right">
           <AddPlatformBannerDisclosure
@@ -159,18 +158,18 @@ const BodyContent = ({ brandId }) => {
         <TabList {...tab}>
           {hasVerifyAuth && (
             <Tab tabId={InVerify} onClick={activeTab(InVerify)} {...tab}>
-              <Trans {...InVerifyTrans} />
+              <ReviewTrans />
             </Tab>
           )}
 
           <Tab tabId={Effective} onClick={activeTab(Effective)} {...tab}>
-            <Trans {...EffectiveTrans} />
+            <EffectiveTrans />
           </Tab>
           <Tab tabId={Expired} onClick={activeTab(Expired)} {...tab}>
-            <Trans {...ExpiredTrans} />
+            <ExpiredTrans />
           </Tab>
           <Tab tabId={Rejected} onClick={activeTab(Rejected)} {...tab}>
-            <Trans {...RejectedTrans} />
+            <RejectedTrans />
           </Tab>
         </TabList>
         {hasVerifyAuth && (
@@ -328,7 +327,7 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
         : {
             id: "displayOrder",
             accessor: (record) => record,
-            Header: <Trans zh="序" en="Order" />,
+            Header: <OrderTrans />,
             disableSortBy: true,
             headCell: {
               textAlign: "center"
@@ -399,34 +398,34 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
           },
       textColumn({
         accessor: "title",
-        Header: <Trans zh="主题" en="Subject" />,
+        Header: <SubjectTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "modifier",
-        Header: <Trans zh="操作人" en="Operator" />,
+        Header: <OperatorTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "updatedOn",
-        Header: <Trans zh="最近更新时间" en="Last Update" />,
+        Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "beginTime",
-        Header: <Trans zh="开始时间" en="Start" />,
+        Header: <StartTimeTrans />,
         disableSortBy: true
       }),
       dateTimeColumn({
         accessor: "endTime",
-        Header: <Trans zh="结束时间" en="End" />,
+        Header: <EndTimeTrans />,
         disableSortBy: true,
         placeholder: <Trans zh="永久" en="Permanent" />
       }),
       {
         id: "status",
         accessor: (record) => record,
-        Header: <Trans zh="状态" en="Status" />,
+        Header: <StatusTrans />,
         disableSortBy: true,
         headCell: {
           textAlign: "center"
@@ -467,7 +466,7 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
         id: "actions",
         accessor: (row) => row,
         disableSortBy: true,
-        Header: <Trans zh="操作" en="Actions" />,
+        Header: <ActionTrans />,
         headCell: {
           textAlign: "center"
         },
