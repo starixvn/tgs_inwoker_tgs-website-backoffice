@@ -3,11 +3,12 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { faker } from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
+import { selectLicenseeById } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("add and edit platform, search platform", async ({ page }) => {
-  await gotoPlatformListPage(page)
+test("add and edit platform, search platform", async ({ page, platform }) => {
+  await gotoPlatformListPage(page, platform.licenseeId)
 
   let record = await editLogo(page)
   await editLogo(page, record)
@@ -63,6 +64,7 @@ const randomLogo = () => ({
   loading: faker.image.url()
 })
 
-const gotoPlatformListPage = async (page) => {
+const gotoPlatformListPage = async (page, licenseeId) => {
   await page.goto("/merchant/brands", { waitUntil: "networkidle" })
+  await selectLicenseeById(page, licenseeId)
 }

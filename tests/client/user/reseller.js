@@ -23,7 +23,7 @@ export const create = async (payload) => {
   let password = payload?.password ?? ResellerPassword
 
   //TODO: get first department id from fetch api
-  let departmentId = "ae4244af-c9a3-ee11-8e96-70b5e82b6cbe"
+  let departmentId = "2aa54c93-13aa-ee11-8e96-70b5e82b6cbe"
 
   //TODO: get first role id from fetch api
   let roleId = "7aa2e39b-9da9-4e2e-9bde-b74fdc5de44a"

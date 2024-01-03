@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { Box, Set, Button, Text, Switch, Stack } from "bumbag"
+import { Box, Set, Button, Text, Switch, Stack, Level } from "bumbag"
 import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute
+  useHasSubMenuByRoute,
+  useUserLicenseeId
 } from "../../user/context"
 import { Code, Update } from "./menu"
 import { Trans, useTrans } from "../../i18n"
@@ -31,6 +32,12 @@ import { CreatedTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import { isDev } from "../../env"
 import { ContactsDialogDisclosure } from "./ContactsDialog"
+import {
+  LicenseePageContent,
+  useLicenseeId,
+  useLicenseePageContentWidth
+} from "../../page/LicenseePageContent"
+import AutoSizer from "react-virtualized-auto-sizer"
 // import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
 
 export { Code }
@@ -43,11 +50,24 @@ export const Content = () => {
     return null
   }
 
+  //TODO:1.40 rm isDev()
+  if (isDev()) {
+    return <LicenseePageBody />
+  }
+
   return <Body />
 }
 
 export const CodeContentPair = [Code, Content]
 
+const Platforms = {
+  zh: "平台列表",
+  en: "Platforms"
+}
+const PlatformsTrans = () => <Trans {...Platforms} />
+const usePlatformsTrans = () => useTrans(Platforms)
+
+//TODO:1.40 rm Body use LicenseePageBody instead
 const Body = () => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     keyword: "",
@@ -55,20 +75,22 @@ const Body = () => {
   })
   let { pageSize, keyword } = state
 
-  let { isLoading, data, error, mutate, deleteCache } = useBrandList({
-    ...toApiParams(state),
-    sortby: "code",
-    hideArchieved: false
-  })
+  let { isLoading, data, error, mutate, deleteCache } = useBrandList(
+    {
+      ...toApiParams(state),
+      sortby: "code"
+    },
+    { hideArchieved: false }
+  )
 
   let columns = useColumns({ items: data?.items, mutate })
 
   return (
     <PageContent
-      title={<Trans zh="平台列表" en="Platforms" />}
+      title={<PlatformsTrans />}
       actionBar={
         <>
-          <SearchForm
+          <SearchBar
             search={(data = {}) => {
               setState({
                 pageIndex: 0,
@@ -103,7 +125,87 @@ const Body = () => {
   )
 }
 
-const SearchForm = ({ search, isLoading, ...props }) => {
+const LicenseePageBody = () => {
+  return (
+    <LicenseePageContent title={<PlatformsTrans />}>
+      <LicenseeBodyBox />
+    </LicenseePageContent>
+  )
+}
+
+const LicenseeBodyBox = () => {
+  let licenseeId = useLicenseeId()
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    licenseeId,
+    keyword: "",
+    status: ""
+  })
+
+  useEffect(() => {
+    setState({ pageIndex: 0, licenseeId })
+  }, [licenseeId])
+
+  let { pageSize } = state
+  let { isLoading, data, error, mutate, deleteCache } = useBrandList(
+    {
+      ...toApiParams(state),
+      sortby: "code"
+    },
+    { hideArchieved: false }
+  )
+
+  let columns = useColumns({ items: data?.items, mutate })
+
+  let pageWidth = useLicenseePageContentWidth()
+  return (
+    <Set orientation="vertical" isFilled height="100%" spacing="major-2">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+        <Set orientation="horizontal" alignX="right">
+          <AddButton
+            id="add-platform-dialog-disclosure"
+            licenseeId={licenseeId}
+            onSubmitted={mutate}
+          />
+        </Set>
+      </Level>
+      <Box flex="1 0 50%">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                columns={columns}
+                data={data?.items}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                stickyHead
+                getRowId={(row, index) => row.id ?? index}
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+    </Set>
+  )
+}
+
+const SearchBar = ({ search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {
       keyword: "",
