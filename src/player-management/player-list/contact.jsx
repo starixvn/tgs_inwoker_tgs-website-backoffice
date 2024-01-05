@@ -44,6 +44,8 @@ export const Tab = ({ ...props }) => {
   )
 }
 
+const ZaloTrans = () => <Trans zh="Zalo" en="Zalo" />
+
 export const Panel = ({ player = {}, ...props }) => {
   let { phone, email, qq, weChat } = player
   return (
@@ -77,6 +79,9 @@ export const Panel = ({ player = {}, ...props }) => {
 
         <WhatsappLabel />
         <Text>{player?.whatsApp}</Text>
+
+        <ZaloTrans />
+        <Text>{player?.properties?.zalo}</Text>
       </FieldValues>
     </TabPanel>
   )
@@ -153,7 +158,17 @@ const UpdateContactPanel = ({
   const onSubmit = (data) => {
     let formData = diff(data, player)
 
-    setSubmit(formData)
+    let { properties, ...restFormData } = formData
+
+    console.log("onSubmit", {
+      ...restFormData,
+      ...properties
+    })
+
+    setSubmit({
+      ...restFormData,
+      ...properties
+    })
   }
 
   const reset = () => {
@@ -220,6 +235,11 @@ const Body = ({ onClickClose }) => {
         <WhatsappLabel />
         <Box>
           <Input name="whatsApp" />
+        </Box>
+
+        <ZaloTrans />
+        <Box>
+          <Input name="properties.zalo" />
         </Box>
       </FieldValues>
       <Box alignX="right">
