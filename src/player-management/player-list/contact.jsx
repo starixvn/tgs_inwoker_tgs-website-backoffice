@@ -47,41 +47,42 @@ export const Tab = ({ ...props }) => {
 const ZaloTrans = () => <Trans zh="Zalo" en="Zalo" />
 
 export const Panel = ({ player = {}, ...props }) => {
-  let { phone, email, qq, weChat } = player
+  console.log("player?.properties?.Zalo", player?.properties?.Zalo)
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues spacing="major-2">
         <PhoneTrans />
         <Text>
-          {player.areaCode} <Text data-field="phone">{phone}</Text>
+          {player?.properties?.AreaCode}
+          <Text data-field="phone">{player?.properties?.Phone}</Text>
         </Text>
 
         <EmailTrans />
-        <Text data-field="email">{email}</Text>
+        <Text data-field="email">{player?.properties?.Email}</Text>
 
         <QQLabel />
-        <Text>{qq}</Text>
+        <Text>{player?.properties?.Qq}</Text>
 
         <WeChatLabel />
-        <Text>{weChat}</Text>
+        <Text>{player?.properties?.Wechat}</Text>
 
         <TelegramTrans />
-        <Text>{player?.telegram}</Text>
+        <Text>{player?.properties?.Telegram}</Text>
 
         <ViberLabel />
-        <Text>{player?.viber}</Text>
+        <Text>{player?.properties?.Viber}</Text>
 
         <MessengerLabel />
-        <Text>{player?.facebookMessenger}</Text>
+        <Text>{player?.properties?.FacebookMessenger}</Text>
 
         <LineLabel />
-        <Text>{player?.line}</Text>
+        <Text>{player?.properties?.Line}</Text>
 
         <WhatsappLabel />
-        <Text>{player?.whatsApp}</Text>
+        <Text>{player?.properties?.WhatsApp}</Text>
 
         <ZaloTrans />
-        <Text>{player?.properties?.zalo}</Text>
+        <Text>{player?.properties?.Zalo}</Text>
       </FieldValues>
     </TabPanel>
   )
@@ -160,11 +161,6 @@ const UpdateContactPanel = ({
 
     let { properties, ...restFormData } = formData
 
-    console.log("onSubmit", {
-      ...restFormData,
-      ...properties
-    })
-
     setSubmit({
       ...restFormData,
       ...properties
@@ -194,52 +190,52 @@ const Body = ({ onClickClose }) => {
       <FieldValues>
         <PhoneTrans />
         <Box>
-          <AreaPhoneInputGruop name="phone" />
+          <AreaPhoneInputGruop name="properties.Phone" />
         </Box>
 
         <EmailTrans />
         <Box>
-          <EmailInput name="email" />
+          <EmailInput name="properties.Email" />
         </Box>
 
         <QQLabel />
         <Box>
-          <Input name="qq" />
+          <Input name="properties.Qq" />
         </Box>
 
         <WeChatLabel />
         <Box>
-          <Input name="weChat" />
+          <Input name="properties.Wechat" />
         </Box>
 
         <TelegramTrans />
         <Box>
-          <Input name="telegram" />
+          <Input name="properties.Telegram" />
         </Box>
 
         <ViberLabel />
         <Box>
-          <Input name="viber" />
+          <Input name="properties.Viber" />
         </Box>
 
         <MessengerLabel />
         <Box>
-          <Input name="facebookMessenger" />
+          <Input name="properties.FacebookMessenger" />
         </Box>
 
         <LineLabel />
         <Box>
-          <Input name="line" />
+          <Input name="properties.Line" />
         </Box>
 
         <WhatsappLabel />
         <Box>
-          <Input name="whatsApp" />
+          <Input name="properties.WhatsApp" />
         </Box>
 
         <ZaloTrans />
         <Box>
-          <Input name="properties.zalo" />
+          <Input name="properties.Zalo" />
         </Box>
       </FieldValues>
       <Box alignX="right">

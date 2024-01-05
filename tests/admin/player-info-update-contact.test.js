@@ -26,10 +26,12 @@ test("update player contact", async ({
   let updated = await editPlayerContact(page, player)
   let playerRecord = await backofficeApi.player.getPlayer(player.code)
 
+  //TODO: change to
   expect(playerRecord.phone).to.equals(updated.phone)
   expect(playerRecord.email).to.equals(updated.email)
 })
 
+//TODO: change other fields
 const editPlayerContact = async (page, player) => {
   let dialogSelector = await openEditPlayerDialog(page)
   await page.click(`${dialogSelector} button#contact`)
@@ -39,8 +41,14 @@ const editPlayerContact = async (page, player) => {
     email: faker.internet.email()
   }
 
-  await page.fill(`${dialogSelector} input[name="phone"]`, contact.phone)
-  await page.fill(`${dialogSelector} input[name="email"]`, contact.email)
+  await page.fill(
+    `${dialogSelector} input[name="properties.Phone"]`,
+    contact.phone
+  )
+  await page.fill(
+    `${dialogSelector} input[name="properties.Email"]`,
+    contact.email
+  )
 
   await Promise.all([
     page.waitForResponse((response) => {
