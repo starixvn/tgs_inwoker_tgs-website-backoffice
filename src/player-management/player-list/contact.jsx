@@ -44,10 +44,9 @@ export const Tab = ({ ...props }) => {
   )
 }
 
-const ZaloTrans = () => <Trans zh="Zalo" en="Zalo" />
+export const ZaloTrans = () => <Trans zh="Zalo" en="Zalo" />
 
 export const Panel = ({ player = {}, ...props }) => {
-  console.log("player?.properties?.Zalo", player?.properties?.Zalo)
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues spacing="major-2">
