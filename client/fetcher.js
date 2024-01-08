@@ -1,8 +1,13 @@
 import got from "got"
 
+const DefaultTimeout = 1000
+const client = got.extend({
+  timeout: DefaultTimeout
+})
+
 export const fetcher = async (...args) => {
   try {
-    let response = await got(...args).catch(({ response, ...error }) => {
+    let response = await client(...args).catch(({ response, ...error }) => {
       return response
     })
     let result

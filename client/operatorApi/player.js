@@ -139,8 +139,6 @@ export const createAndLogin = async (
   return player
 }
 
-//TODO: able to cache result?
-let cache = new Map()
 export const bankInfoList = async (platformToken, playerToken) => {
   let url = `${api()}/bankinfo`
   let headers = {
@@ -150,8 +148,7 @@ export const bankInfoList = async (platformToken, playerToken) => {
   }
 
   let result = await fetcher(url, {
-    headers,
-    cache
+    headers
   })
   return (result && result.data) || []
 }

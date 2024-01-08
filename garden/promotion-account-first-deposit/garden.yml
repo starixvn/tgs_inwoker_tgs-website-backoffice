@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-account-first-deposit
-image: pgtgs/promotion-account-first-deposit:202312210349.8
+image: pgtgs/promotion-account-first-deposit:202401050915.10
 services:
   - name: promotion-account-first-deposit
     dependencies:

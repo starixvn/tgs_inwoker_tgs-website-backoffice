@@ -46,7 +46,10 @@ export const BrandPaymentSelect = ({
 
   let locale = useLocale()
 
-  let isLoading = isLoadingPaymentList || isLoadingBrandPaymentList || isLoadingPaymentChannelList
+  let isLoading =
+    isLoadingPaymentList ||
+    isLoadingBrandPaymentList ||
+    isLoadingPaymentChannelList
 
   let items = data?.items?.map((brandPayment) => {
     let paymentChannel = paymentChannelList?.find(
@@ -77,13 +80,16 @@ export const BrandPaymentSelect = ({
 
       return true
     })
-    ?.map((item) => { 
-      let payment = paymentList.find(({ code }) => code === item.paymentName) ?? ""
+    ?.map((item) => {
+      let payment =
+        paymentList.find(({ code }) => code === item.paymentName) ?? ""
       let paymentName = payment?.trans?.[locale] ?? payment?.code ?? ""
+      //TODO: use name on TGS-3984
+      let name = `${paymentName}_${item.channelName}`
       return {
-      label: `${paymentName}_${item.channelName}`,
-      value: item.id
-    }
+        label: item.channelName,
+        value: item.id
+      }
     })
   return <Select isLoading={isLoading} options={options} {...props} />
 }
