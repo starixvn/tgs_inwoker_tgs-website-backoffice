@@ -15,6 +15,8 @@ import { useBrandPaymentList } from "./client"
 import { Select, SelectField } from "../../select/Select"
 import equals from "fast-deep-equal"
 import { usePaymentChannelList } from "../../payment/channel/client"
+import { usePaymentList } from "../../payment/client"
+import { useLocale } from "../../i18n"
 
 export const BrandPaymentSelect = ({
   brandId,
@@ -24,6 +26,7 @@ export const BrandPaymentSelect = ({
   paymentChannelId,
   ...props
 }) => {
+  let { isLoading: isLoadingPaymentList, data: paymentList } = usePaymentList()
   let { isLoading: isLoadingPaymentChannelList, data: paymentChannelList } =
     usePaymentChannelList()
 
@@ -41,7 +44,9 @@ export const BrandPaymentSelect = ({
     showAll: true
   })
 
-  let isLoading = isLoadingBrandPaymentList || isLoadingPaymentChannelList
+  let locale = useLocale()
+
+  let isLoading = isLoadingPaymentList || isLoadingBrandPaymentList || isLoadingPaymentChannelList
 
   let items = data?.items?.map((brandPayment) => {
     let paymentChannel = paymentChannelList?.find(
@@ -72,9 +77,13 @@ export const BrandPaymentSelect = ({
 
       return true
     })
-    ?.map((item) => ({
-      label: item.channelName,
+    ?.map((item) => { 
+      let payment = paymentList.find(({ code }) => code === item.paymentName) ?? ""
+      let paymentName = payment?.trans?.[locale] ?? payment?.code ?? ""
+      return {
+      label: `${paymentName}_${item.channelName}`,
       value: item.id
-    }))
+    }
+    })
   return <Select isLoading={isLoading} options={options} {...props} />
 }

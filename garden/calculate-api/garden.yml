@@ -1,0 +1,14 @@
+kind: Module
+type: container
+name: calculate-api
+image: pgtgs/calculate-api:202401050358.6
+services:
+  - name: calculate-api
+    dependencies:
+      - nats
+    env:
+      ConnectionStrings__Nats: "nats://nats:4222"
+    ports:
+      - name: http
+        containerPort: 8080
+        servicePort: 80
