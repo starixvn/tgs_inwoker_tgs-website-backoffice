@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: profit-rebate
-image: pgtgs/profit-rebate-service:202401080539-staging
+image: pgtgs/profit-rebate-service:202401080727-prod
 services:
   - name: profit-rebate
     dependencies:
