@@ -29,11 +29,14 @@ import {
   BalanceChangeTypeTransferRollbackTrans,
   BalanceChangeTypeTransferTrans,
   DepositTrans,
-  WithdrawTrans,
+  WithdrawAndCanceledTrans,
+  WithdrawCanceledTrans,
+  WithdrawCompletedTrans,
   useBalanceChangeTypeReceiveCommitTrans,
   useBalanceChangeTypeTransferRollbackTrans,
   useBalanceChangeTypeTransferTrans,
-  useWithdrawTrans
+  useWithdrawAndCanceledTrans,
+  useWithdrawCanceledTrans
 } from "../../trans/Payment"
 
 export const Key = "BalanceChange"
@@ -173,15 +176,20 @@ const newDateRange = () => ({
 })
 
 const Deposit = "Deposit"
+const Deposited = "Deposited"
 
 const Withdrawal = "Withdrawal"
+const WithdrawLock = "WithdrawLock"
+const WithdrawCommit = "WithdrawCommit"
 
 const CancelWithdrawal = "CancelWithdrawal"
-//TODO: use trans from Payment
-const CancelWithdrawalTrans = {
-  zh: "取消提款",
-  en: "Cancel Withdrawal"
-}
+const WithdrawRollback = "WithdrawRollback"
+
+const Transfer = "Transfer"
+const TransferRollback = "TransferRollback"
+
+const ReceiveCommit = "ReceiveCommit"
+const ReceiveRollback = "ReceiveRollback"
 
 //TODO: also Transfer & TransferRollback?
 
@@ -200,25 +208,17 @@ const DividendTrans = {
   en: "Profit sharing"
 }
 
-const Transfer = "Transfer"
-
-const TransferRollback = "TransferRollback"
-
-const ReceiveCommit = "ReceiveCommit"
-
-const ReceiveRollback = "ReceiveRollback"
-
 const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = [
     {
-      label: useWithdrawTrans(),
+      label: useWithdrawAndCanceledTrans(),
       value: Withdrawal
     },
     {
-      label: useTrans(CancelWithdrawalTrans),
+      label: useWithdrawCanceledTrans(),
       value: CancelWithdrawal
     },
     {
@@ -253,16 +253,16 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
 const AgentTransactionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Deposit:
+    case Deposited:
       return <DepositTrans />
     case Withdrawal:
-      return <WithdrawTrans />
-    case Adjust:
-      return <Trans {...AdjustTrans} />
-    case Dividend:
-    case AgentDividend:
-      return <Trans {...DividendTrans} />
+    case WithdrawLock:
+      return <WithdrawAndCanceledTrans />
+    case WithdrawCommit:
+      return <WithdrawCompletedTrans />
     case CancelWithdrawal:
-      return <Trans {...CancelWithdrawalTrans} />
+    case WithdrawRollback:
+      return <WithdrawCanceledTrans />
     case Transfer:
       return <BalanceChangeTypeTransferTrans />
     case TransferRollback:
@@ -271,6 +271,11 @@ const AgentTransactionTypeLabel = ({ value = "" }) => {
       return <BalanceChangeTypeReceiveCommitTrans />
     case ReceiveRollback:
       return <BalanceChangeTypeReceiveRollbackTrans />
+    case Adjust:
+      return <Trans {...AdjustTrans} />
+    case Dividend:
+    case AgentDividend:
+      return <Trans {...DividendTrans} />
     default:
       return value
   }
