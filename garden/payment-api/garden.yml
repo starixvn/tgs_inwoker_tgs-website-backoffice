@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-api
-image: pgtgs/payment-api:202312180344.376
+image: pgtgs/payment-api:202401110339.393
 services:
   - name: payment-api
     dependencies:
@@ -13,6 +13,7 @@ services:
       - player-bucket-api
       - viplevel-api
       - brand-cert-api
+      - agent-service
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
@@ -23,8 +24,9 @@ services:
       Payment__PlayerBucketServiceBaseUrl: "http://player-bucket-api"
       Payment__VipLevelServiceBaseUrl: "http://viplevel-api"
       Payment__BrandCertificateBaseUrl: "http://brand-cert-api"
+      Payment__AgentServiceBaseUrl: "http://agent-service"
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80
         localPort: 3080 # http://localhost:3080/swagger/index.html

@@ -1,6 +1,6 @@
 import got from "got"
 
-const DefaultTimeout = 1000
+const DefaultTimeout = 5000
 const client = got.extend({
   timeout: DefaultTimeout
 })
@@ -8,13 +8,18 @@ const client = got.extend({
 export const fetcher = async (...args) => {
   try {
     let response = await client(...args).catch(({ response, ...error }) => {
+      if (error?.name) {
+        return Promise.reject(`${args[0]} ${error?.name}`)
+      }
+      console.log("error?", error)
       return response
     })
     let result
     try {
       //TODO: check header -> content-type: application/json; charset=utf-8 before parse?
-      result = JSON.parse(response.body)
-    } catch {
+      result = response.body && JSON.parse(response.body)
+    } catch (error) {
+      //TODO what cuase response = nil?
       result = response.body
     }
     if (response.statusCode >= 400) {

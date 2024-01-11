@@ -143,6 +143,8 @@ const LocalizationHtmlEditorField = ({ code, readOnly, ...props }) => {
   )
 }
 
+//TODO: upgrade tinymce version > 6.8.0 for vite to build
+//      refer to https://www.tiny.cloud/docs/tinymce/latest/vite-es6-npm/
 const Body = ({
   name,
   defaultValue,

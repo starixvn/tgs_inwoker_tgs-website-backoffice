@@ -1,8 +1,8 @@
 kind: Module
 type: container
 name: calculate-worker
-image: pgtgs/calculate-worker:202401050358.6
-# TODO: support config replicas = 1
+image: pgtgs/cashservice-worker:202312200134.212
+# TODO: support config replicas = 1?
 disabled: true
 services:
   - name: calculate-worker

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-account-first-deposit
-image: pgtgs/promotion-account-first-deposit:202401050915.10
+image: pgtgs/promotion-account-first-deposit:202401100916.12
 services:
   - name: promotion-account-first-deposit
     dependencies:
@@ -16,6 +16,7 @@ services:
       ConnectionStrings__Nats: "nats://nats:4222"
       AccountFirstDeposit__PromotionServiceBaseUrl: "http://promotion-api"
       AccountFirstDeposit__PaymentServiceBaseUrl: "http://payment-api"
+      AccountFirstDeposit__CalculateServiceBaseUrl: "http://calculate-api"
     ports:
       - name: http
         containerPort: 8080

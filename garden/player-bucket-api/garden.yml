@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: player-bucket-api
-image: pgtgs/bucket-service:202308300201.209
+image: pgtgs/bucket-service:202401101018.229
 services:
   - name: player-bucket-api
     dependencies:
@@ -13,6 +13,6 @@ services:
       PlayerBucket__ServiceBaseUrl: "http://player-bucket-api"
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80
         localPort: 3090 # http://localhost:3090/swagger/index.html

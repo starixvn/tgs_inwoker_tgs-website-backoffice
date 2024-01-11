@@ -50,7 +50,6 @@ export const create = async (payload) => {
     if (!departmentId) {
       throw Error("not able to find reseller department")
     }
-    console.log("departmentId", departmentId)
   }
 
   //TODO: get first role id from fetch api

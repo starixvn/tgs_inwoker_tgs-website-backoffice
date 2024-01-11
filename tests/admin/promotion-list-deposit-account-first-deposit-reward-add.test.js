@@ -17,7 +17,7 @@ import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-console.warn("TODO: seems api issue? wait for api update")
+console.log("TODO: calculate-api support")
 test.skip("add account first deposit reward promotion", async ({
   page,
   platform,

@@ -17,7 +17,7 @@ import clone from "clone-deep"
 
 const test = base.extend(Fixture)
 
-console.warn("TODO: seems api issue? wait for api update")
+console.log("TODO: calculate-api support")
 test.skip("update account first deposit reward promotion", async ({
   page,
   platform,
@@ -30,7 +30,7 @@ test.skip("update account first deposit reward promotion", async ({
     }),
     gotoPromotionPage(page, platform.code)
   ])
-  console.log("accountFirstDeposit promotion", promotion)
+
   //TODO: also update mainInfo & content
   let expectedRule = clone(promotion.rule)
   expectedRule.percentage = expectedRule.percentage + 1

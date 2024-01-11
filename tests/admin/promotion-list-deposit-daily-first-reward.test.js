@@ -17,7 +17,7 @@ import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-test("add and edit deposit reward promotion", async ({
+test("adily first deposit reward promotion", async ({
   page,
   promotionSetting
 }) => {
@@ -80,10 +80,13 @@ const toggleStatus = async (page, brandId, index = 0) => {
 
   await Promise.all([
     page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/${ExpectedStatus}`) &&
-        response.status() === 200
-      )
+      let url = response.url()
+      let isApi = url.endsWith(`/${ExpectedStatus}`)
+      if (isApi && !response.ok()) {
+        return Error(`${url} failed`)
+      }
+
+      return isApi
     }),
     page.waitForResponse((response) => {
       return (
@@ -165,9 +168,12 @@ const editPromotion = async (page, brandId, record) => {
 
   await Promise.all([
     page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/promotion") && response.status() === 200
-      )
+      let url = response.url()
+      let isApi = url.includes("/api/promotion")
+      if (isApi && !response.ok()) {
+        return Error(`${url} failed`)
+      }
+      return isApi
     }),
     page.click(`#edit-promotion-dialog button[type="submit"]`)
   ])

@@ -91,48 +91,6 @@ export const EditPanel = (props) => {
   return <UpdateContactPanel {...props} />
 }
 
-//TODO:1.40 rm OldPlayerContactPanel
-const OldPlayerContactPanel = ({
-  playerCode = "",
-  player = {},
-  onSubmitted,
-  onClickClose,
-  ...props
-}) => {
-  let formMethods = useForm({
-    defaultValues: clone(player)
-  })
-
-  let [submitData, setSubmit] = useState()
-  let { result, error, mutate, clearCache } = useEditPlayerContact(
-    playerCode,
-    submitData
-  )
-  useEffect(() => {
-    if (result && !error) {
-      onSubmitted && onSubmitted()
-    }
-  }, [result])
-
-  const onSubmit = setSubmit
-
-  const reset = () => {
-    clearCache()
-    setSubmit(null)
-  }
-
-  return (
-    <TabPanel tabId={Key} {...props}>
-      <FormProvider {...formMethods}>
-        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-          <Body onClickClose={onClickClose} />
-        </form>
-      </FormProvider>
-      {error && <AlertDialog {...error} onClickClose={reset} />}
-    </TabPanel>
-  )
-}
-
 const UpdateContactPanel = ({
   playerCode = "",
   player = {},

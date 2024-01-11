@@ -33,6 +33,7 @@ import {
   WithdrawCanceledTrans,
   WithdrawCompletedTrans,
   useBalanceChangeTypeReceiveCommitTrans,
+  useBalanceChangeTypeReceiveRollbackTrans,
   useBalanceChangeTypeTransferRollbackTrans,
   useBalanceChangeTypeTransferTrans,
   useWithdrawAndCanceledTrans,
@@ -242,7 +243,7 @@ const AgentTransactionTypeSelect = ({ placeholder, ...props }) => {
       value: ReceiveCommit
     },
     {
-      label: useBalanceChangeTypeTransferRollbackTrans(),
+      label: useBalanceChangeTypeReceiveRollbackTrans(),
       value: ReceiveRollback
     }
   ]
