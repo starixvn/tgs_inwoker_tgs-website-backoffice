@@ -101,10 +101,14 @@ export const reviewPaid = async (
   let PaidDialogSelector = `#review-paid-dialog`
   await openDialog(page, PaidDialogSelector)
 
-  let expectedUrl = `/api/withdraw/${formId}`
   let [approvePaidResonse] = await Promise.all([
     page.waitForResponse((response) => {
-      return response.url().includes(expectedUrl) && response.status() === 200
+      let url = response.url()
+      let isApi = url.includes(`/api/withdraw/${formId}`)
+      if (isApi && !response.ok()) {
+        return Error(`${url} failed`)
+      }
+      return isApi
     }),
     page.click(`${PaidDialogSelector} button[data-type="${type}"]`)
   ])

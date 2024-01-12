@@ -121,7 +121,7 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
 
       <BucketTypeLabel />
       <BucketTypeSelect
-        platformId={brandId}
+        brandId={brandId}
         disabled={disabled}
         placeholder={bucketTypePlaceholder}
       />
@@ -204,7 +204,7 @@ const DepositRewardRule = ({ readOnly }) => {
 
       <BucketTypeLabel />
       <BucketTypeSelect
-        platformId={brandId}
+        brandId={brandId}
         disabled={disabled}
         placeholder={bucketTypePlaceholder}
       />
@@ -319,7 +319,7 @@ const DefaultRule = ({ readOnly }) => {
 
       <BucketTypeLabel />
       <BucketTypeSelect
-        platformId={brandId}
+        brandId={brandId}
         disabled={disabled}
         placeholder={bucketTypePlaceholder}
       />

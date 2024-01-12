@@ -1,6 +1,6 @@
 import got from "got"
 
-const DefaultTimeout = 5000
+const DefaultTimeout = 10000
 const client = got.extend({
   timeout: DefaultTimeout
 })

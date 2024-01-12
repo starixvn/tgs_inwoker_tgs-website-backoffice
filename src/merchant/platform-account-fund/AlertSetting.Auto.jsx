@@ -73,8 +73,7 @@ const AlertBox = ({
       <SubjectTrans />
       <Input
         name={`${name}.emailSubject`}
-        value={subject}
-        disabled
+        defaultValue={subject}
         readOnly={readOnly}
         size="small"
       />
