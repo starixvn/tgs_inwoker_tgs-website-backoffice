@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: viplevel-api
-image: pgtgs/viplevel-api:202311200910.43
+image: pgtgs/viplevel-api:202401110857.46
 services:
   - name: viplevel-api
     dependencies:
@@ -10,5 +10,5 @@ services:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80
