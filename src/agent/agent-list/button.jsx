@@ -43,10 +43,6 @@ import { Tabs, TabList, useTabState } from "../../tab"
 import { AgentInfoKey, AgentInfoPanel, AgentInfoTab } from "./AgentInfo"
 import { AgentContactInfoPanel, AgentContactInfoTab } from "./AgentContactInfo"
 import { AgentBankInfoPanel, AgentBankInfoTab } from "./AgentBankInfo"
-import {
-  AgentOperationListPanel,
-  AgentOperationListTab
-} from "./AgentOperationList"
 import { AgentPasswordPanel, AgentPasswordTab } from "./AgentPassword"
 import {
   AgentWithdrawPasswordPanel,

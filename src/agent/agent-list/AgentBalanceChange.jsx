@@ -142,7 +142,7 @@ const SearchBar = ({
   )
 }
 
-//TODO:1.40 new balance change api has same columns?
+//TODO:1.41 new balance change api has same columns?
 const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
@@ -200,7 +200,7 @@ const AdjustTrans = {
   en: "Balance Adjustment"
 }
 
-//TODO:1.40 rm "Dividend"
+//TODO:1.41 rm "Dividend"?
 const Dividend = "Dividend"
 
 const AgentDividend = "AgentDividend"
