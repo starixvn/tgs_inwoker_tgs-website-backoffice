@@ -50,12 +50,7 @@ export const Content = () => {
     return null
   }
 
-  //TODO:1.40 rm isDev()
-  if (isDev()) {
-    return <LicenseePageBody />
-  }
-
-  return <Body />
+  return <LicenseePageBody />
 }
 
 export const CodeContentPair = [Code, Content]
@@ -66,64 +61,6 @@ const Platforms = {
 }
 const PlatformsTrans = () => <Trans {...Platforms} />
 const usePlatformsTrans = () => useTrans(Platforms)
-
-//TODO:1.40 rm Body use LicenseePageBody instead
-const Body = () => {
-  let { state, setState, setPageIndex, setSortOrder } = useTable({
-    keyword: "",
-    status: null
-  })
-  let { pageSize, keyword } = state
-
-  let { isLoading, data, error, mutate, deleteCache } = useBrandList(
-    {
-      ...toApiParams(state),
-      sortby: "code"
-    },
-    { hideArchieved: false }
-  )
-
-  let columns = useColumns({ items: data?.items, mutate })
-
-  return (
-    <PageContent
-      title={<PlatformsTrans />}
-      actionBar={
-        <>
-          <SearchBar
-            search={(data = {}) => {
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading}
-          />
-          <Set orientation="horizontal" alignX="right">
-            <AddButton
-              id="add-platform-dialog-disclosure"
-              onSubmitted={mutate}
-            />
-          </Set>
-        </>
-      }
-    >
-      <Table
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-        getRowId={(row, index) => row.id ?? index}
-      />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
-  )
-}
 
 const LicenseePageBody = () => {
   return (
