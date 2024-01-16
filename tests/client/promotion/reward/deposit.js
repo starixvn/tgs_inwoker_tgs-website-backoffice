@@ -13,6 +13,7 @@ import { findByName } from "../list.js"
 
 const API = "api/promotion"
 
+const AccountFirstDeposit = "AccountFirstDeposit"
 const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
 const DailySecondDeposit = "DailySecondDeposit"
@@ -76,6 +77,9 @@ const add =
 export const addFirstDeposit = add(FirstDeposit)
 
 export const PromotionType = {
+  accountFirstDeposit: {
+    add: add(AccountFirstDeposit)
+  },
   firstDeposit: {
     add: add(FirstDeposit)
   },

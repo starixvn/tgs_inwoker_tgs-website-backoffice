@@ -30,7 +30,8 @@ import {
   MessengerLabel,
   ViberLabel,
   WhatsappLabel,
-  WeChatLabel
+  WeChatLabel,
+  ZaloTrans
 } from "./contact"
 import { boolean } from "boolean"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
@@ -391,6 +392,7 @@ const LabelValueList = [
   [pipe(getPath, equals("/properties/FacebookMessenger")), MessengerLabel],
   [pipe(getPath, equals("/properties/Line")), LineLabel],
   [pipe(getPath, equals("/properties/WhatsApp")), WhatsappLabel],
+  [pipe(getPath, equals("/properties/Zalo")), ZaloTrans],
 
   [pipe(getPath, equals("/password")), PasswordLabel],
 

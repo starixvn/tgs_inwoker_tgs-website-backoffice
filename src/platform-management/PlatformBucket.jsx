@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Locales, Trans, useLocale, useTrans } from "../i18n"
-import { Select, SelectField } from "../select/Select"
+import { Select } from "../select/Select"
 import { usePlatformBucketList } from "./client"
 import {
   LiveDealer,
@@ -85,13 +85,31 @@ export const PlatformBucketSelect = ({
   )
 }
 
-export const PlatformBucketSelectField = (props) => (
-  <PlatformBucketSelect as={SelectField} {...props} />
-)
-
 /*
 TODO
 export const PlatformBucketMultiSelect = (props) => (
   <PlatformBucketSelect as={MultiSelect} isMulti={true} {...props} />
 )
+*/
+
+//TODO: test
+/*
+export const PlatformBucketMultiSelect = (props) => {
+  let options = [
+    {
+      label: "不指定",
+      value: ""
+    },
+    {
+      label: "真人",
+      value: "LiveDealer"
+    },
+    {
+      label: "老虎機",
+      value: "Slot"
+    }
+  ]
+
+  return <SelectField defaultValue="" options={options} {...props} />
+}
 */

@@ -138,7 +138,7 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
           </List.Item>
         </List>
       </Alert>
-      <AutoSizer>
+      <AutoSizer flex="1 0 50%">
         {({ height, width }) => {
           return (
             <Table

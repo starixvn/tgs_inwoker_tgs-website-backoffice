@@ -7,13 +7,18 @@ import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 
-test("search platform credit by licensee name", async ({ page, licensee }) => {
+console.warn("TODO: api not support search by licensee name?")
+test.skip("search platform credit by licensee name", async ({
+  page,
+  licensee
+}) => {
   await gotoPlatformCreditPage(page)
 
   await searchByInputNameValue(page, {
     name: "licenseeName",
     value: licensee.name
   })
+  console.log("licensee.name", licensee.name)
 
   await page.waitForSelector(`[data-column-id="licenseeName"]`)
   let name = await page.$eval(

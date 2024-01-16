@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: player-bucket-committer
-image: pgtgs/bucket-committer:202308300201.209
+image: pgtgs/bucket-committer:202401101018.229
 services:
   - name: player-bucket-committer
     dependencies:
@@ -16,5 +16,5 @@ services:
       ConnectionStrings__Nats: "nats://nats:4222"
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80

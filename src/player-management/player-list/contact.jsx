@@ -44,39 +44,44 @@ export const Tab = ({ ...props }) => {
   )
 }
 
+export const ZaloTrans = () => <Trans zh="Zalo" en="Zalo" />
+
 export const Panel = ({ player = {}, ...props }) => {
-  let { phone, email, qq, weChat } = player
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues spacing="major-2">
         <PhoneTrans />
         <Text>
-          {player.areaCode} <Text data-field="phone">{phone}</Text>
+          {player?.properties?.AreaCode}
+          <Text data-field="phone">{player?.properties?.Phone}</Text>
         </Text>
 
         <EmailTrans />
-        <Text data-field="email">{email}</Text>
+        <Text data-field="email">{player?.properties?.Email}</Text>
 
         <QQLabel />
-        <Text>{qq}</Text>
+        <Text>{player?.properties?.Qq}</Text>
 
         <WeChatLabel />
-        <Text>{weChat}</Text>
+        <Text>{player?.properties?.Wechat}</Text>
 
         <TelegramTrans />
-        <Text>{player?.telegram}</Text>
+        <Text>{player?.properties?.Telegram}</Text>
 
         <ViberLabel />
-        <Text>{player?.viber}</Text>
+        <Text>{player?.properties?.Viber}</Text>
 
         <MessengerLabel />
-        <Text>{player?.facebookMessenger}</Text>
+        <Text>{player?.properties?.FacebookMessenger}</Text>
 
         <LineLabel />
-        <Text>{player?.line}</Text>
+        <Text>{player?.properties?.Line}</Text>
 
         <WhatsappLabel />
-        <Text>{player?.whatsApp}</Text>
+        <Text>{player?.properties?.WhatsApp}</Text>
+
+        <ZaloTrans />
+        <Text>{player?.properties?.Zalo}</Text>
       </FieldValues>
     </TabPanel>
   )
@@ -84,48 +89,6 @@ export const Panel = ({ player = {}, ...props }) => {
 
 export const EditPanel = (props) => {
   return <UpdateContactPanel {...props} />
-}
-
-//TODO:1.40 rm OldPlayerContactPanel
-const OldPlayerContactPanel = ({
-  playerCode = "",
-  player = {},
-  onSubmitted,
-  onClickClose,
-  ...props
-}) => {
-  let formMethods = useForm({
-    defaultValues: clone(player)
-  })
-
-  let [submitData, setSubmit] = useState()
-  let { result, error, mutate, clearCache } = useEditPlayerContact(
-    playerCode,
-    submitData
-  )
-  useEffect(() => {
-    if (result && !error) {
-      onSubmitted && onSubmitted()
-    }
-  }, [result])
-
-  const onSubmit = setSubmit
-
-  const reset = () => {
-    clearCache()
-    setSubmit(null)
-  }
-
-  return (
-    <TabPanel tabId={Key} {...props}>
-      <FormProvider {...formMethods}>
-        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-          <Body onClickClose={onClickClose} />
-        </form>
-      </FormProvider>
-      {error && <AlertDialog {...error} onClickClose={reset} />}
-    </TabPanel>
-  )
 }
 
 const UpdateContactPanel = ({
@@ -153,7 +116,12 @@ const UpdateContactPanel = ({
   const onSubmit = (data) => {
     let formData = diff(data, player)
 
-    setSubmit(formData)
+    let { properties, ...restFormData } = formData
+
+    setSubmit({
+      ...restFormData,
+      ...properties
+    })
   }
 
   const reset = () => {
@@ -179,47 +147,52 @@ const Body = ({ onClickClose }) => {
       <FieldValues>
         <PhoneTrans />
         <Box>
-          <AreaPhoneInputGruop name="phone" />
+          <AreaPhoneInputGruop name="properties.Phone" />
         </Box>
 
         <EmailTrans />
         <Box>
-          <EmailInput name="email" />
+          <EmailInput name="properties.Email" />
         </Box>
 
         <QQLabel />
         <Box>
-          <Input name="qq" />
+          <Input name="properties.Qq" />
         </Box>
 
         <WeChatLabel />
         <Box>
-          <Input name="weChat" />
+          <Input name="properties.Wechat" />
         </Box>
 
         <TelegramTrans />
         <Box>
-          <Input name="telegram" />
+          <Input name="properties.Telegram" />
         </Box>
 
         <ViberLabel />
         <Box>
-          <Input name="viber" />
+          <Input name="properties.Viber" />
         </Box>
 
         <MessengerLabel />
         <Box>
-          <Input name="facebookMessenger" />
+          <Input name="properties.FacebookMessenger" />
         </Box>
 
         <LineLabel />
         <Box>
-          <Input name="line" />
+          <Input name="properties.Line" />
         </Box>
 
         <WhatsappLabel />
         <Box>
-          <Input name="whatsApp" />
+          <Input name="properties.WhatsApp" />
+        </Box>
+
+        <ZaloTrans />
+        <Box>
+          <Input name="properties.Zalo" />
         </Box>
       </FieldValues>
       <Box alignX="right">

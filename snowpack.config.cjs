@@ -15,7 +15,6 @@ const signalRHttpProxy = httpProxy.createServer({
 module.exports = {
   mount: {
     public: { url: "/", static: true },
-    static: { url: "/", static: true, resolve: false },
     src: { url: "/dist" }
   },
   plugins: [

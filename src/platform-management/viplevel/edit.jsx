@@ -12,7 +12,7 @@ import {
   Columns,
   Heading,
   Level,
-  Dialog
+  Group
 } from "bumbag"
 import {
   Create as CreateMenu,
@@ -51,6 +51,9 @@ import {
 } from "../../input/NumberInput"
 import clone from "clone-deep"
 import { useFormContext, useWatch } from "react-hook-form"
+import { capitalize } from "lodash-es"
+import Switch from "../../switch/Switch"
+import { useAddTrans, useEditTrans, useViewTrans } from "../../trans/Action"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -92,11 +95,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "新增等级",
-    en: "Add VIP Level"
-  })
-
+  let title = useAddTrans()
   return (
     <FormDialog
       id="add-vip-level-dialog"
@@ -150,10 +149,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
     formData
   )
 
-  let title = useTrans({
-    zh: "编辑等级",
-    en: "Edit VIP Level"
-  })
+  let title = useEditTrans()
 
   const onSubmit = (data) => {
     setSubmit({
@@ -192,6 +188,81 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
 const LevelKeepConditionField = "levelKeepCondition"
 const LevelKeepAccumulateBetAmountField = "levelKeepAccumulateBetAmount"
 const LevelKeepAccumulateDepositField = "levelKeepAccumulateDeposit"
+
+const WithdrawTransactionsPerDayField = "withdrawTransactionsPerDay"
+const WithdrawTransactionsPerDayInputGroup = ({
+  name = WithdrawTransactionsPerDayField,
+  ...props
+}) => <WithdrawLimitInputGroup name={name} {...props} />
+
+const WithdrawTotalAmountPerDayField = "withdrawTotalAmountPerDay"
+const WithdrawTotalAmountPerDayInputGroup = ({
+  name = WithdrawTotalAmountPerDayField,
+  ...props
+}) => <WithdrawLimitInputGroup name={name} {...props} />
+
+const WithdrawLimitInputGroup = ({
+  name,
+  valueForUnlimited = -1,
+  readOnly,
+  ...props
+}) => {
+  let { control, setValue } = useFormContext()
+  let EnableInputField = `enable-${name}`
+
+  let value = useWatch({
+    name,
+    control
+  })
+
+  let isDefaultEnabled = Number.isFinite(value) && value !== valueForUnlimited
+  let isEnable = useWatch({
+    name: EnableInputField,
+    control,
+    defaultValue: isDefaultEnabled
+  })
+  let inputDisabled = !isEnable
+
+  useEffect(() => {
+    if (!isEnable) {
+      setValue(name, null)
+    }
+  }, [isEnable])
+
+  if (readOnly) {
+    let isNumber = Number.isFinite(value)
+    if (!isNumber || value === valueForUnlimited) {
+      return <Box>-</Box>
+    }
+    return (
+      <Box alignY="center">
+        <FormattedNumber value={value} />
+      </Box>
+    )
+  }
+
+  return (
+    <Set>
+      <Switch name={EnableInputField} defaultChecked={isEnable} />
+      <NumberInputField
+        name={name}
+        value={value}
+        min="1"
+        required={isEnable}
+        disabled={inputDisabled}
+        addonBefore={
+          <Button isStatic tabIndex="-1">
+            ＜＝
+          </Button>
+        }
+        css={css`
+          flex: 1;
+        `}
+        {...props}
+      />
+    </Set>
+  )
+}
 
 const EditBody = ({ record, readonly = false, isAdd = false }) => {
   let { getValues, setValue, control } = useFormContext()
@@ -412,46 +483,15 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               <NormalLabel>
                 <Trans zh="單日次數：" en="Transactions per Day：" />
               </NormalLabel>
-              {editable && (
-                <Box>
-                  <NumberInputField
-                    name="withdrawTransactionsPerDay"
-                    min="1"
-                    addonBefore={
-                      <Button isStatic tabIndex="-1">
-                        ＜＝
-                      </Button>
-                    }
-                  />
-                </Box>
-              )}
-              {readonly && (
-                <Box alignY="center">
-                  <FormattedNumber value={record?.withdrawTransactionsPerDay} />
-                </Box>
-              )}
+              <WithdrawTransactionsPerDayInputGroup
+                // value={readonly && record?.withdrawTransactionsPerDay}
+                readOnly={readonly}
+              />
 
               <NormalLabel>
                 <Trans zh="單日總額：" en="Total Amount per Day：" />
               </NormalLabel>
-              {editable && (
-                <Box>
-                  <NumberInputField
-                    name="withdrawTotalAmountPerDay"
-                    min="1"
-                    addonBefore={
-                      <Button isStatic tabIndex="-1">
-                        ＜＝
-                      </Button>
-                    }
-                  />
-                </Box>
-              )}
-              {readonly && (
-                <Box alignY="center">
-                  <FormattedNumber value={record?.withdrawTotalAmountPerDay} />
-                </Box>
-              )}
+              <WithdrawTotalAmountPerDayInputGroup readOnly={readonly} />
             </FieldValues>
           </Set>
         </Set>
@@ -611,10 +651,7 @@ export const ViewButton = ({ record, ...props }) => {
 }
 
 const ViewDialog = ({ record, dialog }) => {
-  let title = useTrans({
-    zh: "查看等级",
-    en: "View VIP Level"
-  })
+  let title = useViewTrans()
   return (
     <FormDialog
       id="view-vip-level-dialog"

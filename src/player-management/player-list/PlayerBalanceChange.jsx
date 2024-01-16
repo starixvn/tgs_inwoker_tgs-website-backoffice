@@ -249,15 +249,12 @@ const Deposited = "Deposited"
 
 const Withdrawal = "Withdrawal"
 const WithdrawLock = "WithdrawLock"
-
 const WithdrawCommit = "WithdrawCommit"
 
 const Transfer = "Transfer"
-
 const TransferRollback = "TransferRollback"
 
 const ReceiveCommit = "ReceiveCommit"
-
 const ReceiveRollback = "ReceiveRollback"
 
 const isDepositOrWithdrawal = (value) =>
@@ -460,6 +457,9 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <WithdrawAndCanceledTrans />
     case WithdrawCommit:
       return <WithdrawCompletedTrans />
+    case CancelWithdrawal:
+    case WithdrawRollback:
+      return <WithdrawCanceledTrans />
     case Transfer:
       return <TransferAndCanceledTrans />
     case TransferRollback:
@@ -502,9 +502,6 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...DividendAllAgentRebateTrans} />
     case AdjustResettledBetManual:
       return <Trans {...AdjustResettledBetManualTrans} />
-    case CancelWithdrawal:
-    case WithdrawRollback:
-      return <WithdrawCanceledTrans />
     default:
       return value
   }

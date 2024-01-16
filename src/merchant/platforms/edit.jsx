@@ -39,7 +39,7 @@ import { BrandLanguageCheckboxGroupTable } from "./BrandLanguageCheckboxGroup"
 import { BrandGameProviderCheckboxGroupTable } from "./BrandGameProviderCheckboxGroup"
 import { BrandBetLimitCheckboxGroupTable } from "./BrandBetLimitCheckboxGroup"
 import useLicenseeBrand from "./useLicenseeBrand"
-import CurrencyFieldsBox, {
+import {
   mapCheckedCurrencyCodes,
   toCheckedCurrencyCodes
 } from "../CurrencyFieldsBox"
@@ -53,7 +53,6 @@ import SettlementIntervalType, {
   SettlementIntervalTypeSelect
 } from "../../date/SettlementIntervalType"
 import BusinessType from "../BusinessType"
-import Select from "../../select/Select"
 import {
   PercentageNumberInputField,
   NumberInputField
@@ -68,10 +67,16 @@ import {
 import { PlatformTokenActionButtons } from "./PlatformTokenActionButtons"
 import { TimezoneSelect, SystemZoneOffset } from "../../date/TimeZone"
 import { GameProviderTrans } from "../../trans/Game"
-import { EditTrans } from "../../trans/Action"
+import {
+  EditTrans,
+  useAddTrans,
+  useEditTrans,
+  useViewTrans
+} from "../../trans/Action"
 import { BasicInformationTrans } from "../../trans/Field"
+import copy from "clipboard-copy"
 
-export const AddButton = ({ onSubmitted, ...props }) => {
+export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -79,27 +84,22 @@ export const AddButton = ({ onSubmitted, ...props }) => {
     return null
   }
 
+  //TODO:1.41 rename AddDialogV2 to AddDialog?
   return (
     <>
       <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
+        <CurrentAddDialog
+          licenseeId={licenseeId}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+        />
       )}
     </>
   )
 }
 
-const AddDialog = ({ onSubmitted, dialog }) => {
-  let userLicenseeId = useUserLicenseeId()
-  let formMethods = useForm({
-    defaultValues: {
-      domains: [],
-      licenseeId: userLicenseeId
-    }
-  })
-  let { watch } = formMethods
-  let resellerId = watch("resellerId")
-  let licenseeId = watch("licenseeId")
+const CurrentAddDialog = ({ licenseeId, onSubmitted, dialog }) => {
   let {
     licensee,
     businessType,
@@ -111,29 +111,21 @@ const AddDialog = ({ onSubmitted, dialog }) => {
     error: licenseeError
   } = useLicenseeBrand({ licenseeId })
 
-  useEffect(() => {
-    if (licensee) {
-      formMethods.reset({
-        resellerId,
-        licenseeId,
-        languages,
-        currencies,
-        gameProviders,
-        betLimits
-      })
-    }
-  }, [licensee])
-
   let [formData, setSubmit] = useState()
   let { result, isLoading, error, mutate, deleteCache } = useAddBrand(formData)
 
+  let title = useAddTrans()
+
+  if (isLoadingLicensee) {
+    return <LoadingBackdrop {...dialog} />
+  }
+
+  if (licenseeError) {
+    return <AlertDialog {...licenseeError} onClickClose={dialog.hide} />
+  }
+
   const onSubmit = (data) => {
     let formData = normalizeFormData(data)
-
-    if (userLicenseeId) {
-      formData.licenseeId = userLicenseeId
-    }
-
     setSubmit(formData)
   }
 
@@ -143,14 +135,18 @@ const AddDialog = ({ onSubmitted, dialog }) => {
     setSubmit(undefined)
   }
 
-  let title = useTrans({
-    zh: "新增平台",
-    en: "Add Platform"
-  })
   return (
     <FormDialog
       id="add-platform-dialog"
-      formMethods={formMethods}
+      defaultValues={{
+        licenseeId,
+        licensee,
+        languages,
+        currencies,
+        gameProviders,
+        betLimits,
+        domains: []
+      }}
       onSubmit={onSubmit}
       result={result}
       isLoading={isLoading}
@@ -213,10 +209,7 @@ const ViewDialog = ({ brandId, licenseeId, dialog, ...props }) => {
     deleteBrandCache
   } = useLicenseeBrand({ brandId, licenseeId })
 
-  let title = useTrans({
-    zh: "查看平台",
-    en: "View Platform"
-  })
+  let title = useViewTrans()
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} onClickClose={dialog.hide} />
@@ -242,6 +235,7 @@ const ViewDialog = ({ brandId, licenseeId, dialog, ...props }) => {
   }
   return (
     <FormDialog
+      id="view-platform-dialog"
       defaultValues={record}
       onClickClose={reset}
       title={title}
@@ -308,10 +302,7 @@ const EditDialog = ({ brandId, licenseeId, onSubmitted, dialog, ...props }) => {
     formData
   )
 
-  let title = useTrans({
-    zh: "编辑平台",
-    en: "Edit Platform"
-  })
+  let title = useEditTrans()
 
   if (isLoadingBrand) {
     return <LoadingBackdrop {...dialog} />
@@ -456,8 +447,6 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
 
   let editable = !readonly
 
-  let apiKeyInputRef = useRef()
-
   let isB2C = businessType === BusinessType.B2C
   let isB2B = businessType === BusinessType.B2B
 
@@ -486,8 +475,8 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
               <Trans zh="所属公司" en="Licensee" />
             </NormalLabel>
             <Box alignY="center">
-              {isAdd && <MerchantIdSelect end={RoleTypes.Licensee} />}
-              {!isAdd && <Text.Block>{licensee?.name}</Text.Block>}
+              {!licensee?.name && <MerchantIdSelect end={RoleTypes.Licensee} />}
+              {licensee?.name && <Text.Block>{licensee?.name}</Text.Block>}
             </Box>
           </>
         )}
@@ -510,24 +499,18 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           <Input
             name="code"
             type={isAdd ? "input" : "hidden"}
-            /*
-            inputProps={
-              isDev()
-                ? {
-                    textTransform: "uppercase"
-                  }
-                : {}
-            }
-            registerOptions={
-              isDev()
-                ? {
-                    setValueAs: (value = "") => value?.toUpperCase?.()
-                  }
-                : {}
-            }
-             */
+            registerOptions={{
+              setValueAs: (value = "") => value?.trim?.()?.toUpperCase?.()
+            }}
+            css={css`
+              & input {
+                text-transform: uppercase;
+              }
+            `}
           />
-          {!isAdd && <Text.Block>{getValues("code")}</Text.Block>}
+          {!isAdd && (
+            <Text.Block data-type="code">{getValues("code")}</Text.Block>
+          )}
         </Box>
 
         <NormalLabel>
@@ -585,14 +568,11 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
               <Input type="hidden" name="apiKey" />
               <InputField
                 readonly
-                inputRef={apiKeyInputRef}
                 defaultValue={getValues("apiKey")}
                 addonAfter={
                   <Button
                     onClick={() => {
-                      let target = apiKeyInputRef.current
-                      target.select()
-                      document.execCommand("copy")
+                      copy(getValues("apiKey"))
                     }}
                   >
                     <Trans zh="复制" en="Copy" />

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: player-all-agent-api
-image: pgtgs/player-all-agent-service:202311080521.20
+image: pgtgs/player-all-agent-service:202401080224.25
 services:
   - name: player-all-agent-api
     dependencies:

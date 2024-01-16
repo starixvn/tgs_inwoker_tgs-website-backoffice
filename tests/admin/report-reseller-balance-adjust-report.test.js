@@ -84,5 +84,6 @@ const gotoResellerBalanceAdjustReportPage = async (page, platformCode) => {
   await page.goto("/resellerreport/balanceadjustreport", {
     waitUntil: "networkidle"
   })
+  console.warn("TODO: select reseller by id or code")
   await selectRandomOption(page, `#page-merchant-bar [name="resellerId"]`)
 }

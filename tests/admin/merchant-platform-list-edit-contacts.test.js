@@ -3,18 +3,18 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { faker } from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
+import { selectLicenseeById } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
 test("change platform contacts", async ({ page, platform, backofficeApi }) => {
-  await gotoPlatformListPage(page)
+  await gotoPlatformListPage(page, platform.licenseeId)
 
   await page.locator(`input[name="keyword"]`).fill(platform.code)
 
-  // /api/brand?keyword=GPI&page=1&rows=20&sortby=code
   await Promise.all([
     page.waitForResponse((response) => {
-      let Path = `/api/brand?keyword=${platform.code}`
+      let Path = `/api/brand?`
       let url = response.url()
       let isApi = url.includes(Path)
       if (isApi && !response.ok()) {
@@ -23,7 +23,6 @@ test("change platform contacts", async ({ page, platform, backofficeApi }) => {
 
       return isApi
     }),
-    ,
     page.locator(`button[type="submit"]`).click()
   ])
 
@@ -75,6 +74,7 @@ test("change platform contacts", async ({ page, platform, backofficeApi }) => {
   expect(platformContacts).deep.equals(contacts)
 })
 
-const gotoPlatformListPage = async (page) => {
+const gotoPlatformListPage = async (page, licenseeId) => {
   await page.goto("/merchant/brands", { waitUntil: "networkidle" })
+  await selectLicenseeById(page, licenseeId)
 }

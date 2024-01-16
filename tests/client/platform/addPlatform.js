@@ -9,7 +9,9 @@ const API = "api/brand"
 
 export const addPlatform = async ({
   licenseeId = "",
-  code = `${faker.string.alpha(1)}${faker.string.alphanumeric(5)}`,
+  code = `${faker.string.alpha(1)}${faker.string.alphanumeric(
+    5
+  )}`.toUpperCase(),
   name,
   operationalEmail = faker.internet.email(),
   settlementIntervalType = "Daily",

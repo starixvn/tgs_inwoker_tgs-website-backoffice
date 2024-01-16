@@ -16,14 +16,41 @@ export const find = async (username) => {
   return result?.items?.[0]
 }
 
+//http://localhost:3000/api/department?name=Turnkey%20Game%20System-%E5%B8%82%E5%A0%B4&page=1&rows=20
+const DepartmentApi = "api/department"
+
+const DefaultResellerId = "b5a2c708-ab70-4316-9f4d-5d2ad0e77460"
+const findResellerDepartmentIdBy = async (id = DefaultResellerId) => {
+  let url = `${host}/${DepartmentApi}?showAll=true`
+  let response = await fetcher.get(url, {
+    failOnStatusCode: true
+  })
+
+  let result = await response.json()
+  let department = result?.items?.find((department) => {
+    return (
+      department.resellerId === id &&
+      !department?.licenseeId &&
+      !department?.brandId
+    )
+  })
+
+  return department?.id ?? ""
+}
+
 export const create = async (payload) => {
   let username = payload?.username ?? ResellerUsername
   let name = payload?.name ?? ResellerUsername
 
   let password = payload?.password ?? ResellerPassword
 
-  //TODO: get first department id from fetch api
-  let departmentId = "ae4244af-c9a3-ee11-8e96-70b5e82b6cbe"
+  let departmentId = payload?.departmentId
+  if (!departmentId) {
+    departmentId = await findResellerDepartmentIdBy(DefaultResellerId)
+    if (!departmentId) {
+      throw Error("not able to find reseller department")
+    }
+  }
 
   //TODO: get first role id from fetch api
   let roleId = "7aa2e39b-9da9-4e2e-9bde-b74fdc5de44a"

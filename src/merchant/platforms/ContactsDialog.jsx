@@ -47,11 +47,6 @@ export const ContactsDialogDisclosure = ({
     return null
   }
 
-  //TODO:1.40 rm !isDev()
-  if (!isDev()) {
-    return null
-  }
-
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
