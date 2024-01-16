@@ -7,7 +7,7 @@ import { selectLicenseeById } from "../page/content.js"
 
 const test = base.extend(Fixture)
 
-test("add and edit platform, search platform", async ({ page, platform }) => {
+test("edit platform logo", async ({ page, platform }) => {
   await gotoPlatformListPage(page, platform.licenseeId)
 
   let record = await editLogo(page)

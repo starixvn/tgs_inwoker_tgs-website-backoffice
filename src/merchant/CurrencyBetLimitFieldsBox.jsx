@@ -235,15 +235,18 @@ const BetLimitRow = ({
     clearErrors,
     trigger
   } = useFormContext()
+  //TODO: pass isCurrencyChecked instead of currencyCheckedFieldName from parent?
   let currencyCheckedFieldName = toCurrencyCheckedFieldName(
     currencyFieldName,
     currencyFieldIndex
   )
+
   let betLimitCheckedFieldName = toBetLimitCheckedFieldName({
     currencyFieldName,
     currencyFieldIndex,
     betLimitFieldIndex
   })
+
   let {
     ref: betLimitCheckedRef,
     onChange: onBetLimitCheckedChange,
@@ -310,6 +313,7 @@ const BetLimitRow = ({
             {!disabled && (
               <Checkbox
                 id={`${currencyField.code}-bet-limit-checkbox`}
+                name={betLimitCheckedFieldName}
                 checkboxRef={betLimitCheckedRef}
                 state={checkedCheckboxState}
                 defaultChecked={betLimitField.checked}

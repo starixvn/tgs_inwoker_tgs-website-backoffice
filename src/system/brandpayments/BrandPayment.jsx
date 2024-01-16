@@ -84,10 +84,9 @@ export const BrandPaymentSelect = ({
       let payment =
         paymentList.find(({ code }) => code === item.paymentName) ?? ""
       let paymentName = payment?.trans?.[locale] ?? payment?.code ?? ""
-      //TODO: use name on TGS-3984
       let name = `${paymentName}_${item.channelName}`
       return {
-        label: item.channelName,
+        label: name,
         value: item.id
       }
     })

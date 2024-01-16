@@ -84,14 +84,12 @@ export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
     return null
   }
 
-  //TODO:1.40 rm isDev() & use AddDialogV2
-  let AddDialogImpl = isDev() ? AddDialogV2 : AddDialog
-
+  //TODO:1.41 rename AddDialogV2 to AddDialog?
   return (
     <>
       <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <AddDialogImpl
+        <CurrentAddDialog
           licenseeId={licenseeId}
           onSubmitted={onSubmitted}
           dialog={dialog}
@@ -101,7 +99,7 @@ export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
   )
 }
 
-const AddDialogV2 = ({ licenseeId, onSubmitted, dialog }) => {
+const CurrentAddDialog = ({ licenseeId, onSubmitted, dialog }) => {
   let {
     licensee,
     businessType,
@@ -149,90 +147,6 @@ const AddDialogV2 = ({ licenseeId, onSubmitted, dialog }) => {
         betLimits,
         domains: []
       }}
-      onSubmit={onSubmit}
-      result={result}
-      isLoading={isLoading}
-      error={error}
-      onCloseErrorAlert={reset}
-      onSubmitted={() => {
-        reset()
-        onSubmitted?.()
-      }}
-      title={title}
-      dialog={dialog}
-      placement="top"
-      minWidth="60vw"
-      css={css`
-        & .bb-DialogContent {
-          position: relative;
-        }
-      `}
-    >
-      <EditBody isAdd={true} businessType={businessType} />
-    </FormDialog>
-  )
-}
-
-//TODO:1.40 hide AddDialog
-const AddDialog = ({ onSubmitted, dialog }) => {
-  let userLicenseeId = useUserLicenseeId()
-  let formMethods = useForm({
-    defaultValues: {
-      domains: [],
-      licenseeId: userLicenseeId
-    }
-  })
-  let { watch } = formMethods
-  let resellerId = watch("resellerId")
-  let licenseeId = watch("licenseeId")
-  let {
-    licensee,
-    businessType,
-    languages,
-    currencies,
-    gameProviders,
-    betLimits,
-    isLoading: isLoadingLicensee,
-    error: licenseeError
-  } = useLicenseeBrand({ licenseeId })
-
-  useEffect(() => {
-    if (licensee) {
-      formMethods.reset({
-        resellerId,
-        licenseeId,
-        languages,
-        currencies,
-        gameProviders,
-        betLimits
-      })
-    }
-  }, [licensee])
-
-  let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } = useAddBrand(formData)
-
-  const onSubmit = (data) => {
-    let formData = normalizeFormData(data)
-
-    if (userLicenseeId) {
-      formData.licenseeId = userLicenseeId
-    }
-
-    setSubmit(formData)
-  }
-
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
-  }
-
-  let title = useAddTrans()
-  return (
-    <FormDialog
-      id="add-platform-dialog"
-      formMethods={formMethods}
       onSubmit={onSubmit}
       result={result}
       isLoading={isLoading}
@@ -321,6 +235,7 @@ const ViewDialog = ({ brandId, licenseeId, dialog, ...props }) => {
   }
   return (
     <FormDialog
+      id="view-platform-dialog"
       defaultValues={record}
       onClickClose={reset}
       title={title}
@@ -593,7 +508,9 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
               }
             `}
           />
-          {!isAdd && <Text.Block>{getValues("code")}</Text.Block>}
+          {!isAdd && (
+            <Text.Block data-type="code">{getValues("code")}</Text.Block>
+          )}
         </Box>
 
         <NormalLabel>
