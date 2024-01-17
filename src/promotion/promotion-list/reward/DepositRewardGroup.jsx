@@ -81,30 +81,10 @@ const BucketTypeSelect = ({
   disabled,
   bucketTypePlaceholder
 }) => {
-  let { control, setValue, getValues } = useFormContext()
-
-  /*
-  let list = useWatch({
-    name: "rule.bucketTypes",
-    control,
-    defaultValue: []
-  })
-  */
-
-  /*
-  let value = head(list)
-  useEffect(() => {
-    if (list?.length > 0 && isNilOrEmpty(value)) {
-      console.log("useEffect set empty list")
-      setValue(name, [])
-    }
-  }, [list?.length, value])
-  */
-  //TODO: need defaultValue=""?
   return (
     <PlatformBucketSelect
       name={name}
-      // defaultValue={disabled ? "" : undefined}
+      defaultValue=""
       platformId={brandId}
       disabled={disabled}
       placeholder={bucketTypePlaceholder}
