@@ -41,9 +41,8 @@ import {
   usePromotionBucketTypeNotSpecifyTrans
 } from "../../../trans/Promotion"
 import { MultipliersTrans } from "../../../trans/Field"
-import { head, isArray, isEmpty, isNil } from "lodash-es"
+import { isEmpty, isNil } from "lodash-es"
 import { either, complement } from "ramda"
-import { useMount } from "react-use"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 let notEmpty = complement(isNilOrEmpty)
