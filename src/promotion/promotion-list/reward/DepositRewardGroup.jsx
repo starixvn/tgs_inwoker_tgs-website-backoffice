@@ -88,10 +88,10 @@ const BucketTypeSelect = ({
   })
   let value = head(list)
   useEffect(() => {
-    if (list.length > 0 && isNilOrEmpty(value)) {
+    if (list?.length > 0 && isNilOrEmpty(value)) {
       setValue(name, [])
     }
-  }, [list.length, value])
+  }, [list?.length, value])
   //TODO: need defaultValue=""?
   return (
     <PlatformBucketSelect
