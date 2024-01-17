@@ -76,18 +76,20 @@ const DepositRewardMain = (props) => (
 const Content = ContentSetting
 
 const BucketTypeSelect = ({
-  name = "rule.bucketTypes",
+  name = "rule.bucketTypes[0]",
   brandId,
   disabled,
   bucketTypePlaceholder
 }) => {
   let { control, setValue, getValues } = useFormContext()
 
+  /*
   let list = useWatch({
-    name,
+    name: "rule.bucketTypes",
     control,
     defaultValue: []
   })
+  */
 
   /*
   let value = head(list)
@@ -101,7 +103,7 @@ const BucketTypeSelect = ({
   //TODO: need defaultValue=""?
   return (
     <PlatformBucketSelect
-      name={`${name}[0]`}
+      name={name}
       // defaultValue={disabled ? "" : undefined}
       platformId={brandId}
       disabled={disabled}
