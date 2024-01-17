@@ -17,7 +17,7 @@ import { faker } from "@faker-js/faker"
 
 const test = base.extend(Fixture)
 
-console.log("TODO: calculate-api support")
+console.log("TODO: add account first deposit reward")
 test.skip("add account first deposit reward promotion", async ({
   page,
   platform,

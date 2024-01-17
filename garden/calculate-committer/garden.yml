@@ -2,8 +2,6 @@ kind: Module
 type: container
 name: calculate-committer
 image: pgtgs/calculate-committer:202401120340.11
-# TODO: support config replicas = 1
-disabled: true
 services:
   - name: calculate-committer
     dependencies:

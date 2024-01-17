@@ -66,7 +66,6 @@ import AgentType, {
   isAgentTypeCredit
 } from "../AgentType"
 import Textarea from "../../textarea"
-import AgentUpdateType from "./AgentUpdateType"
 import { AgentOneLayerDividendPercentageInputField } from "../AgentOneLayerDividendPercentage"
 import {
   AgentLiveDealerRebatePercentageInputField,
@@ -97,7 +96,6 @@ import {
   AgentBalanceChangePanel,
   AgentBalanceChangeTab
 } from "./AgentBalanceChange"
-import { isAgentConfigRequired } from "../AgentConfigStatus"
 import { isDev } from "../../env"
 import { AgentMultipleLayerProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { AgentDomainListTab, AgentDomainListPanel } from "./AgentDomainList"
@@ -105,7 +103,6 @@ import {
   isAgentProfitSharingOneLayer,
   isAgentProfitSharingMultipleLayer
 } from "../AgentProfitSharingType"
-import { useBrand } from "../../merchant/platforms/client"
 import { AgentHistoryListPanel, AgentHistoryListTab } from "./AgentHistoryList"
 import { diff } from "../../object/diff"
 import {

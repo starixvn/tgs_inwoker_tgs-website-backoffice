@@ -184,6 +184,7 @@ const ContactRow = ({
   field,
   fieldArray
 }) => {
+  let contactSize = fieldArray.fields.length
   return (
     <Table.Row>
       <Table.Cell>
@@ -210,7 +211,7 @@ const ContactRow = ({
         />
       </Table.Cell>
       <Table.Cell>
-        {index >= ContactsMin && !readOnly && (
+        {contactSize > ContactsMin && !readOnly && (
           <RemoveButton index={index} fieldArray={fieldArray} />
         )}
       </Table.Cell>

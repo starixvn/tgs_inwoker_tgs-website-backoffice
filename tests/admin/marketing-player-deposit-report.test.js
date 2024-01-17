@@ -22,9 +22,7 @@ test("marketing > player deposit report", async ({
       playerCode: player.code,
       amount: DepositAmount
     }),
-    backofficeApi.player.updateInfo(player.code, {
-      agentUsername: agent.username
-    }),
+    backofficeApi.player.updatePlayerAgent(player.code, agent.username),
     gotoMarketingPlayerDepositListPage(page, platform.code)
   ])
 

@@ -41,7 +41,7 @@ import {
   usePromotionBucketTypeNotSpecifyTrans
 } from "../../../trans/Promotion"
 import { MultipliersTrans } from "../../../trans/Field"
-import { isArray, isEmpty, isNil } from "lodash-es"
+import { isEmpty, isNil } from "lodash-es"
 import { either, complement } from "ramda"
 
 let isNilOrEmpty = either(isNil, isEmpty)
@@ -75,7 +75,7 @@ const DepositRewardMain = (props) => (
 const Content = ContentSetting
 
 const BucketTypeSelect = ({
-  name = "rule.bucketTypes",
+  name = "rule.bucketTypes[0]",
   brandId,
   disabled,
   bucketTypePlaceholder
@@ -83,17 +83,10 @@ const BucketTypeSelect = ({
   return (
     <PlatformBucketSelect
       name={name}
+      defaultValue=""
       platformId={brandId}
       disabled={disabled}
       placeholder={bucketTypePlaceholder}
-      registerOptions={{
-        setValueAs: (value) => {
-          if (isArray(value)) {
-            return value.filter(notEmpty)
-          }
-          return []
-        }
-      }}
     />
   )
 }

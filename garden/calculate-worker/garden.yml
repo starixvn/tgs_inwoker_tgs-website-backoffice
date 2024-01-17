@@ -2,8 +2,6 @@ kind: Module
 type: container
 name: calculate-worker
 image: pgtgs/calculate-worker:202401120340.11
-# TODO: support config replicas = 1?
-disabled: true
 services:
   - name: calculate-worker
     dependencies:

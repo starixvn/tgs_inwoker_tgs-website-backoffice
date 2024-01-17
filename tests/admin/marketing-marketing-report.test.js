@@ -10,7 +10,6 @@ const test = base.extend(Fixture)
 test("marketing > player deposit report", async ({
   page,
   platform,
-  platformCode,
   agent,
   player,
   backofficeApi
@@ -28,9 +27,7 @@ test("marketing > player deposit report", async ({
       amount: DepositAmount
     }),
     */
-    backofficeApi.player.updateInfo(player.code, {
-      agentUsername: agent.username
-    }),
+    backofficeApi.player.updatePlayerAgent(player.code, agent.username),
     gotoMarketingPlayerDepositListPage(page, platform.code)
   ])
 

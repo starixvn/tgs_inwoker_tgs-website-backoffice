@@ -4,13 +4,14 @@ name: nats
 chart: nats/nats
 values:
   config:
+    cluster:
+      enabled: true
     jetstream:
       enabled: true
       # fileStore:
       #   enabled: false
       # memoryStore:
       #   enabled: true
-
 # portForwards:
 #   - name: nats
 #     targetPort: 4222
