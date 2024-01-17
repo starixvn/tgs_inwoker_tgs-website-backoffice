@@ -74,43 +74,25 @@ const DepositRewardMain = (props) => (
 
 const Content = ContentSetting
 
-//TODO: how to rm [""]?
 const BucketTypeSelect = ({
   name = "rule.bucketTypes",
   brandId,
   disabled,
   bucketTypePlaceholder
 }) => {
-  let { watch, setValue, control } = useFormContext()
-  let v = useWatch({
-    control,
-    name
-  })
-  console.log(`watch ${name}:`, watch("rule.bucketTypes"))
-  console.log(`useWatch ${name}:`, v)
+  let { setValue } = useFormContext()
+  console.log("select name", `${name}[0]`)
   return (
     <PlatformBucketSelect
-      name={name}
+      name={`${name}[0]`}
       defaultValue=""
       platformId={brandId}
       disabled={disabled}
       placeholder={bucketTypePlaceholder}
       onChange={(event) => {
         let value = event.target.value
-        console.log(
-          "onChange value",
-          value,
-          "isNilOrEmpty(value)",
-          isNilOrEmpty(value)
-        )
-      }}
-      registerOptions={{
-        setValueAs: (value) => {
-          console.log("setValueAs value", value)
-          if (isArray(value)) {
-            return value.filter(notEmpty)
-          }
-          return []
+        if (isNilOrEmpty(value)) {
+          setValue(name, [])
         }
       }}
     />
