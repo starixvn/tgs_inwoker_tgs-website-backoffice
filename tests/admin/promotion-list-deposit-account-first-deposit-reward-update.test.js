@@ -17,7 +17,7 @@ import clone from "clone-deep"
 
 const test = base.extend(Fixture)
 
-console.log("TODO: calculate-api support")
+console.log("TODO: update account first deposit reward")
 test.skip("update account first deposit reward promotion", async ({
   page,
   platform,

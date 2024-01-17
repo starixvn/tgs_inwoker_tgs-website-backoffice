@@ -74,8 +74,9 @@ const DepositRewardMain = (props) => (
 
 const Content = ContentSetting
 
+//TODO: how to rm [""]?
 const BucketTypeSelect = ({
-  name = "rule.bucketTypes",
+  name = "rule.bucketTypes[0]",
   brandId,
   disabled,
   bucketTypePlaceholder
@@ -86,6 +87,7 @@ const BucketTypeSelect = ({
       platformId={brandId}
       disabled={disabled}
       placeholder={bucketTypePlaceholder}
+      /*
       registerOptions={{
         setValueAs: (value) => {
           if (isArray(value)) {
@@ -94,6 +96,7 @@ const BucketTypeSelect = ({
           return []
         }
       }}
+      */
     />
   )
 }

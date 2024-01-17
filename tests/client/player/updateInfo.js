@@ -20,3 +20,11 @@ export const updateInfo = async (playerCode, formData) => {
   })
   return await response.json()
 }
+
+export const updatePlayerAgent = async (playerCode, agentUsername) => {
+  let response = await fetcher.put(`${host}/${API}/agent/${playerCode}`, {
+    data: { agentUsername },
+    failOnStatusCode: true
+  })
+  return await response.json()
+}

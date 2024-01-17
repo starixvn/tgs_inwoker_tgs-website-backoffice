@@ -1,9 +1,7 @@
 kind: Module
 type: container
 name: cash-committer
-image: pgtgs/cashservice-committer:202312081019.190
-# TODO: support config replicas = 1?
-# image: pgtgs/cashservice-committer:202312200134.212
+image: pgtgs/cashservice-committer:202312200134.212
 services:
   - name: cash-committer
     dependencies:
