@@ -103,16 +103,15 @@ const BucketTypeSelect = ({
           isNilOrEmpty(value)
         )
       }}
-      /*
       registerOptions={{
         setValueAs: (value) => {
+          console.log("setValueAs value", value)
           if (isArray(value)) {
             return value.filter(notEmpty)
           }
           return []
         }
       }}
-      */
     />
   )
 }
