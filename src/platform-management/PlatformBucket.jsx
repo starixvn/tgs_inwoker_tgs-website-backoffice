@@ -63,7 +63,7 @@ export const PlatformBucketSelect = ({
 
   let locale = useLocale()
   let { isLoading, data: items, error } = usePlatformBucketList(platformId)
-  console.log("PlatformBucketList items", items)
+
   let DefaultLocale = Locales.en
   let options = items
     ?.map((type) => {

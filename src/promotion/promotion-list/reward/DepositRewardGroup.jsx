@@ -91,7 +91,7 @@ const BucketTypeSelect = ({
       placeholder={bucketTypePlaceholder}
       onChange={(event) => {
         let value = event.target.value
-        console.loog("onChange value", value)
+        console.log("onChange value", value)
       }}
       /*
       registerOptions={{
