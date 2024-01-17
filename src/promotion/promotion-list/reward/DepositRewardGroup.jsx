@@ -92,6 +92,7 @@ const BucketTypeSelect = ({
   let value = head(list)
   useEffect(() => {
     if (list?.length > 0 && isNilOrEmpty(value)) {
+      console.log("useEffect set empty list")
       setValue(name, [])
     }
   }, [list?.length, value])
@@ -99,7 +100,7 @@ const BucketTypeSelect = ({
   return (
     <PlatformBucketSelect
       name={`${name}[0]`}
-      // defaultValue=""
+      defaultValue={disabled ? "" : undefined}
       platformId={brandId}
       disabled={disabled}
       placeholder={bucketTypePlaceholder}
