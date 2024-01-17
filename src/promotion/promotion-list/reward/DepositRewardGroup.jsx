@@ -99,26 +99,10 @@ const BucketTypeSelect = ({
   return (
     <PlatformBucketSelect
       name={`${name}[0]`}
-      defaultValue=""
+      // defaultValue=""
       platformId={brandId}
       disabled={disabled}
       placeholder={bucketTypePlaceholder}
-      // onChange={(event) => {
-      //   let value = event.target.value
-      //   if (isNilOrEmpty(value)) {
-      //     setValue(name, [])
-      //   }
-      // }}
-
-      // registerOptions={{
-      //   setValueAs: (value = "") => {
-      //     console.log("setValueAs value", value)
-      //     if (isNilOrEmpty(value)) {
-      //       return []
-      //     }
-      //     return [value]
-      //   }
-      // }}
     />
   )
 }
