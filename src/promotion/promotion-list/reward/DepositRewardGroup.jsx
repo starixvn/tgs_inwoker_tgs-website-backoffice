@@ -76,7 +76,7 @@ const Content = ContentSetting
 
 //TODO: how to rm [""]?
 const BucketTypeSelect = ({
-  name = "rule.bucketTypes[0]",
+  name = "rule.bucketTypes",
   brandId,
   disabled,
   bucketTypePlaceholder
@@ -86,11 +86,12 @@ const BucketTypeSelect = ({
     control,
     name
   })
-  console.log("watch rule.bucketTypes:", watch("rule.bucketTypes"))
+  console.log(`watch ${name}:`, watch("rule.bucketTypes"))
   console.log(`useWatch ${name}:`, v)
   return (
     <PlatformBucketSelect
       name={name}
+      defaultValue=""
       platformId={brandId}
       disabled={disabled}
       placeholder={bucketTypePlaceholder}
