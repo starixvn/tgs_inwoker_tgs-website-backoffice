@@ -84,8 +84,11 @@ const BucketTypeSelect = ({
 
   let list = useWatch({
     name,
-    control
+    control,
+    defaultValue: []
   })
+  console.log("useWatch list", list)
+
   let value = head(list)
   useEffect(() => {
     if (list?.length > 0 && isNilOrEmpty(value)) {
