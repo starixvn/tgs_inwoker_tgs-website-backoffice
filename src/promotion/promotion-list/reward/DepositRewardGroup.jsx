@@ -81,7 +81,7 @@ const BucketTypeSelect = ({
   bucketTypePlaceholder
 }) => {
   let { setValue } = useFormContext()
-  console.log("select name", `${name}[0]`)
+  //TODO: need defaultValue=""?
   return (
     <PlatformBucketSelect
       name={`${name}[0]`}
@@ -89,10 +89,19 @@ const BucketTypeSelect = ({
       platformId={brandId}
       disabled={disabled}
       placeholder={bucketTypePlaceholder}
-      onChange={(event) => {
-        let value = event.target.value
-        if (isNilOrEmpty(value)) {
-          setValue(name, [])
+      // onChange={(event) => {
+      //   let value = event.target.value
+      //   if (isNilOrEmpty(value)) {
+      //     setValue(name, [])
+      //   }
+      // }}
+      registerOptions={{
+        setValueAs: (value = "") => {
+          console.log("setValueAs value", value)
+          if (isNilOrEmpty(value)) {
+            return []
+          }
+          return [value]
         }
       }}
     />
