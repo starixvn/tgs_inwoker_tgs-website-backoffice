@@ -41,7 +41,7 @@ import {
   usePromotionBucketTypeNotSpecifyTrans
 } from "../../../trans/Promotion"
 import { MultipliersTrans } from "../../../trans/Field"
-import { isArray, isEmpty, isNil } from "lodash-es"
+import { head, isArray, isEmpty, isNil } from "lodash-es"
 import { either, complement } from "ramda"
 
 let isNilOrEmpty = either(isNil, isEmpty)
@@ -80,7 +80,19 @@ const BucketTypeSelect = ({
   disabled,
   bucketTypePlaceholder
 }) => {
-  let { setValue } = useFormContext()
+  let { control, setValue, getValues } = useFormContext()
+
+  let list = useWatch({
+    name,
+    control
+  })
+  let value = head(list)
+  useEffect(() => {
+    console.log("useEffect list", list)
+    if (value === "") {
+      setValue(name, [])
+    }
+  }, [value])
   //TODO: need defaultValue=""?
   return (
     <PlatformBucketSelect
@@ -95,15 +107,16 @@ const BucketTypeSelect = ({
       //     setValue(name, [])
       //   }
       // }}
-      registerOptions={{
-        setValueAs: (value = "") => {
-          console.log("setValueAs value", value)
-          if (isNilOrEmpty(value)) {
-            return []
-          }
-          return [value]
-        }
-      }}
+
+      // registerOptions={{
+      //   setValueAs: (value = "") => {
+      //     console.log("setValueAs value", value)
+      //     if (isNilOrEmpty(value)) {
+      //       return []
+      //     }
+      //     return [value]
+      //   }
+      // }}
     />
   )
 }
