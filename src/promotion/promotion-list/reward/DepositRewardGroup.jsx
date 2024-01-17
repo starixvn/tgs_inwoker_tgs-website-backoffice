@@ -81,8 +81,13 @@ const BucketTypeSelect = ({
   disabled,
   bucketTypePlaceholder
 }) => {
-  let { watch, setValue } = useFormContext()
-  console.log("watch rule.bucketTypes", watch("rule.bucketTypes"))
+  let { watch, setValue, control } = useFormContext()
+  let v = useWatch({
+    control,
+    name
+  })
+  console.log("watch rule.bucketTypes:", watch("rule.bucketTypes"))
+  console.log(`useWatch ${name}:`, v)
   return (
     <PlatformBucketSelect
       name={name}
@@ -91,7 +96,12 @@ const BucketTypeSelect = ({
       placeholder={bucketTypePlaceholder}
       onChange={(event) => {
         let value = event.target.value
-        console.log("onChange value", value)
+        console.log(
+          "onChange value",
+          value,
+          "isNilOrEmpty(value)",
+          isNilOrEmpty(value)
+        )
       }}
       /*
       registerOptions={{
