@@ -1,13 +1,17 @@
 kind: Module
 type: container
 name: viplevel-api
-image: pgtgs/viplevel-api:202401110857.46
+image: pgtgs/viplevel-api:202401170535.62
 services:
   - name: viplevel-api
     dependencies:
       - postgres
+      - nats
+      - redis
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
     ports:
       - name: http
         containerPort: 8080
