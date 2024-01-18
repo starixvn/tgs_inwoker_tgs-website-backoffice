@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: agent-dividend-service
-image: pgtgs/agent-dividend-service:202401150158.30
+image: pgtgs/agent-dividend-service:202401170956.34
 services:
   - name: agent-dividend-service
     dependencies:
