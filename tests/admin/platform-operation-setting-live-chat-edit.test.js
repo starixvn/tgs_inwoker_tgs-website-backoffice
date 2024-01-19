@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -40,12 +41,7 @@ test("edit platform live chat", async ({ page, licensee, backofficeApi }) => {
   await page.focus(submitButtonSelector)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/BrandLiveChat/${platform.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandLiveChat/${platform.id}`)),
     page.click(submitButtonSelector)
   ])
 

@@ -84,9 +84,7 @@ export const addAgent = async (page, agentDividendType, agents = []) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith("/api/agent") && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes("/api/agent")),
     page.click(`${AddAgentDialogSelector} button[type="submit"]`)
   ])
 

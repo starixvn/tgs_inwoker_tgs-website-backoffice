@@ -45,12 +45,7 @@ const viewMessage = async (page, expectedMessage) => {
 const searchBy = async (page, expectedPlatformCode) => {
   await page.fill(`input[name="brandCode"]`, expectedPlatformCode)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/BrandMaintenance`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandMaintenance`)),
     page.click(`button[type="submit"]`)
   ])
 

@@ -2,6 +2,7 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectRandomPlatform, selectPlatformByCode } from "../page/content.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -25,11 +26,8 @@ const deleteLiveChat = async (page) => {
   )
   expect(brandId).to.not.be.empty
 
-  let expectedUrl = `/api/BrandLiveChat/${brandId}`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandLiveChat/${brandId}`)),
     page.click(`${DeleteDialogSelector} button[type="submit"]`)
   ])
 }

@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { faker } from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
 import { selectLicenseeById } from "../page/content.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -47,11 +48,7 @@ const editLogo = async (page, record = {}) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/brand/logo`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brand/logo`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

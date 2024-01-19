@@ -22,9 +22,7 @@ export const approveDeposit = async (page, platformCode, formId) => {
   let VerifyDialogSelector = `#verify-deposit-dialog`
   await openDialog(page, VerifyDialogSelector)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(`/api/deposit/${formId}`)
-    }),
+    page.waitForResponse(urlIncludes(`/api/deposit/${formId}`)),
     page.click(`${VerifyDialogSelector} button[data-type="approve"]`)
   ])
 }

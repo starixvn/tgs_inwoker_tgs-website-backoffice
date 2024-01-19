@@ -5,6 +5,7 @@ import { random } from "lodash-es"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { searchPlayer } from "./player-list-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -29,12 +30,9 @@ const addBalance = async (page, player) => {
   await page.fill(`${Selector} input[name="bucketAmount"]`, `${bucketAmount}`)
 
   let [response] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/player/${player.code}/adjust/increase`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(
+      urlIncludes(`/api/player/${player.code}/adjust/increase`)
+    ),
     page.click(`${Selector} button[type="submit"]`)
   ])
 }

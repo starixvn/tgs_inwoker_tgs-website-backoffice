@@ -25,12 +25,7 @@ const updatePlatformMaintenanceTime = async (page, platform) => {
   await openDialog(page, dialogSelector)
   await selectRandomRange(page)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/time/${platform.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/time/${platform.id}`)),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
 }

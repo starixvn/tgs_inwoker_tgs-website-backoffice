@@ -6,6 +6,7 @@ import { fillDatePicker } from "../fill.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -24,12 +25,9 @@ const deleteBanner = async (page) => {
   await openDialog(page, Dialog)
 
   let id = await page.inputValue(`${Dialog} input[name="id"]`)
-  let ExpectedOrder = `/api/banner/archive/${id}`
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(ExpectedOrder) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/banner/archive/${id}`)),
     page.click(`${Dialog} button[type="submit"]`)
   ])
 }
@@ -104,12 +102,7 @@ const toggleStatus = async (page, brandId, index = 0) => {
   let [ExpectedStatus] = Status
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/${ExpectedStatus}/${brandId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/${ExpectedStatus}/${brandId}`)),
     page.click(`[data-row-index="${index}"] [data-column-id="status"] button`)
   ])
 
@@ -148,12 +141,7 @@ const verifyBanner = async (page, brandId, banner, type = "approve") => {
   expect(end).to.have.string(banner.endTime)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/banner/${brandId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/banner/${brandId}`)),
     page.click(`${VerifyBannerDialogSelector} button[data-type="${type}"]`)
   ])
 
@@ -190,12 +178,7 @@ const addBanner = async (page, brandId = "") => {
   })
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/banner/${brandId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/banner/${brandId}`)),
     page.click(`${AddBannerDialogSelector} button[type="submit"]`)
   ])
 
@@ -216,12 +199,7 @@ const toInVerifyTab = async (page) => {
 
 const toEffectiveTab = async (page) => {
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/banner/valid/`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/banner/valid/`)),
     page.click(`button#valid`)
   ])
   await page.waitForSelector(`#banner tbody`)

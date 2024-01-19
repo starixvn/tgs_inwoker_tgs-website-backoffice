@@ -40,12 +40,7 @@ const editPlatformPayment = async (page) => {
     "data-row-id"
   )
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/brandpayment/${platformPaymentId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brandpayment/${platformPaymentId}`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 }

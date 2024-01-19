@@ -9,6 +9,7 @@ import {
   openViewPlayerDialog
 } from "./player-list-page.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -38,12 +39,7 @@ const updatePlayerAgent = async (page, player, agentUsername) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/agent/${player.code}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/agent/${player.code}`)),
     page.click(
       `${dialogSelector} [aria-labelledby="player"] button[type="submit"]`
     )

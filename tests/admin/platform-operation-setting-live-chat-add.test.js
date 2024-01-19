@@ -2,6 +2,7 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -48,11 +49,8 @@ const addLiveChat = async (page) => {
   let submitButtonSelector = `${AddDialogSelector} button[type="submit"]`
   await page.focus(submitButtonSelector)
 
-  let expectedUrl = `/api/BrandLiveChat`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandLiveChat`)),
     page.click(submitButtonSelector)
   ])
 

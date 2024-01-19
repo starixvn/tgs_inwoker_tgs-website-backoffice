@@ -6,6 +6,7 @@ import { selectRandomPlatform } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { random } from "lodash-es"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -22,11 +23,7 @@ const updateSystemMaintenanceTime = async (page) => {
   await openDialog(page, dialogSelector)
   await selectRandomRange(page)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/updatealltime`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/updatealltime`)),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
 }

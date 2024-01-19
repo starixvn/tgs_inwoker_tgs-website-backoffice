@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -52,12 +53,7 @@ const verifyStationLetter = async (
   let content = await contentEditor.textContent()
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/stationletter") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/stationletter")),
     page.click(`${DialogSelector} button[data-type="${type}"]`)
   ])
 
@@ -100,12 +96,7 @@ const addStationLetter = async (page) => {
   await contentEditor.fill(letter.content)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith("/api/stationletter") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/stationletter")),
     page.click(`#add-station-letter-dialog button[type="submit"]`)
   ])
 

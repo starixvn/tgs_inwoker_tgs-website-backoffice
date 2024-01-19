@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { random } from "lodash-es"
 import numeral from "numeral"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -46,12 +47,7 @@ const gotoPlatformCreditPage = async (page) => {
 const searchByInputNameValue = async (page, { name = "", value = "" }) => {
   await Promise.all([
     page.fill(`input[name="${name}"]`, value),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/PlatformCredit?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/PlatformCredit?`)),
     page.click(`button[type="submit"]`)
   ])
 

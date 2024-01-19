@@ -11,6 +11,7 @@ import {
   openViewPlayerDialog
 } from "./player-list-page.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -51,9 +52,7 @@ const editPlayerContact = async (page, player) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().includes(`/contact`) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/contact`)),
     page.click(
       `${dialogSelector} [aria-labelledby="contact"] button[type="submit"]`
     )

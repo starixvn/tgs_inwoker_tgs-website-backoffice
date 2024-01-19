@@ -141,11 +141,8 @@ const edit = async (page) => {
 
   let gameId = await page.inputValue(`${DialogSelector} input[name="id"]`)
 
-  let expectedUrl = `/api/brandgame/${gameId}`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/brandgame/${gameId}`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

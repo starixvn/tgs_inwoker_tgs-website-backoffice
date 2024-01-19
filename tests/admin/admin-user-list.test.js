@@ -68,9 +68,7 @@ const addUser = async (page, type = Type.Admin) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith("/api/users") && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes("/api/users")),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

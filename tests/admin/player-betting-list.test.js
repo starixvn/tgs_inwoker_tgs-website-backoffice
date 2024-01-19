@@ -9,6 +9,7 @@ import {
   gotoPlayerListPage,
   searchPlayer
 } from "./player-list-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -28,12 +29,7 @@ test("view player betting list and betting detail", async ({
 
   let BettingTabSelector = `${ViewPlayerDialogSelector} button#betting`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/RoundReport/betRecords?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/RoundReport/betRecords?`)),
     page.click(BettingTabSelector)
   ])
 

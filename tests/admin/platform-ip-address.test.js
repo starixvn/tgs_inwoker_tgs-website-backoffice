@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { random } from "lodash-es"
 import { selectPlatformByCode } from "../page/content.js"
 import operatorApi from "../../client/operatorApi/index.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -35,11 +36,7 @@ const findPlayerBySamePlayer = async (page) => {
   await page.selectOption(SelectSelector, expectedIpType)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/PlayerIp?`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/PlayerIp?`)),
     page.click(`button[type="submit"]`)
   ])
 
@@ -49,12 +46,7 @@ const findPlayerBySamePlayer = async (page) => {
   expect(expectedIp).to.be.a("string")
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/PlayerIp/Ip?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/PlayerIp/Ip?`)),
     page.click(LinkSelector)
   ])
 

@@ -11,6 +11,7 @@ import {
   openViewPlayerDialog,
   searchPlayer
 } from "./player-list-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -43,12 +44,7 @@ const deleteBank = async (page, player) => {
   let id = await idLocator.getAttribute(`data-value`)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/${player.code}/bank/${id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/${player.code}/bank/${id}`)),
     page.click(`${deleteBankSelector} button[type="submit"]`)
   ])
 }

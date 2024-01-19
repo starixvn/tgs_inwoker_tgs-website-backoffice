@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { random } from "lodash-es"
 import numeral from "numeral"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -22,12 +23,7 @@ test("edit platform credit", async ({
 
   await page.fill(`input[name="keyword"]`, platform.code)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`keyword=${platform.code}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`keyword=${platform.code}`)),
     page.click(`button[type="submit"]`)
   ])
 
@@ -43,18 +39,12 @@ test("edit platform credit", async ({
   await page.fill(`${DialogSelector} input[name="credit"]`, `${expectedValue}`)
 
   let id = await page.inputValue(`${DialogSelector} input[name="id"]`)
-  let expectedUrl = `/api/PlatformCredit/${id}/${expectedValue}`
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/PlatformCredit?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(
+      urlIncludes(`/api/PlatformCredit/${id}/${expectedValue}`)
+    ),
+    page.waitForResponse(urlIncludes(`/api/PlatformCredit?`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 
