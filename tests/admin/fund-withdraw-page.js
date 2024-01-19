@@ -2,6 +2,7 @@ import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { selectByLabel } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 export const approveWithdraw = async (
   page,
@@ -25,18 +26,8 @@ export const approveWithdraw = async (
 
   let VerifyDialogSelector = `#verify-withdraw-dialog`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/PaymentChannel`) &&
-        response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/brandpayment?brandId=${brandId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/PaymentChannel`)),
+    page.waitForResponse(urlIncludes(`/api/brandpayment?brandId=${brandId}`)),
     openDialog(page, VerifyDialogSelector)
   ])
 
@@ -47,18 +38,8 @@ export const approveWithdraw = async (
   expect(platformPaymentOptionCount).gte(1)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/withdraw/${formId}`) &&
-        response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/withdraw/${brandId}?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/withdraw/${formId}`)),
+    page.waitForResponse(urlIncludes(`/api/withdraw/${brandId}?`)),
     page.click(`${VerifyDialogSelector} button[data-type="approve"]`)
   ])
 
@@ -78,11 +59,7 @@ export const approveWithdraw = async (
 export const findApplicationById = async (page, formId) => {
   await page.fill(`input[name="id"]`, formId)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`id=${formId}`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`id=${formId}`)),
     page.click(`button[type="submit"]`)
   ])
 }

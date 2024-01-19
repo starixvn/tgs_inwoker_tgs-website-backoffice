@@ -6,6 +6,7 @@ import { fillDatePicker } from "../fill.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -40,12 +41,9 @@ const deleteAnnouncement = async (page) => {
   let ExpectedOrder = `/api/announcement/${id}/status/archived`
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().toLowerCase().endsWith(ExpectedOrder) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(
+      urlIncludes(`/api/announcement/${id}/status/archived`)
+    ),
     page.click(`${Dialog} button[type="submit"]`)
   ])
 }
@@ -70,12 +68,7 @@ const toRejectedTab = async (page) => {
 
 const toEffectiveTab = async (page, brandId) => {
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`brandId=${brandId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`brandId=${brandId}`)),
     page.click(`button#Effective`)
   ])
   await page.waitForSelector(`#announcement tbody`)
@@ -108,18 +101,8 @@ const changeEffectiveAnnouncementDisplayOrder = async (
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith("/api/announcement/changeorders") &&
-        response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/announcement?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/announcement/changeorders")),
+    page.waitForResponse(urlIncludes(`/api/announcement?`)),
     page.click(`#change-announcement-display-order-button`)
   ])
 
@@ -155,18 +138,8 @@ const toggleChangeEffectiveAnnouncementStatus = async (
   let [ExpectedStatus] = Status
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/status/${ExpectedStatus}`) &&
-        response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/announcement?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/status/${ExpectedStatus}`)),
+    page.waitForResponse(urlIncludes(`/api/announcement?`)),
     page.click(
       `[data-row-id="${announcement.id}"] [data-column-id="status"] button`
     )
@@ -257,12 +230,7 @@ const verifyAnnouncement = async (page, announcement, type = "approve") => {
   expect(verifyContent).to.equal(announcement.content)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/announcement") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/announcement")),
     page.click(`${VerifyDialogSelector} button[data-type="${type}"]`)
   ])
 
@@ -305,12 +273,7 @@ const addAnnouncement = async (page) => {
 
   //TODO: is't possible to get announcement id from response?
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith("/api/announcement") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/announcement")),
     page.click(`${AddDialogSelector} button[type="submit"]`)
   ])
 

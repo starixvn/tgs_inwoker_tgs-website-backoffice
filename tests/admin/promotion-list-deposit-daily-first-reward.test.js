@@ -10,18 +10,20 @@ import {
   addWeeks
 } from "date-fns"
 import { fillDatePicker } from "../fill.js"
-import { selectRandomPlatform } from "../page/content.js"
+import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
 test("adily first deposit reward promotion", async ({
   page,
+  platform,
   promotionSetting
 }) => {
-  let brandId = await gotoPromotionPage(page)
+  let brandId = await gotoPromotionPage(page, platform.code)
   let promotion = await addDepositRewardPromotion(page)
 
   await searchPromotion(page, promotion)
@@ -36,11 +38,7 @@ test("adily first deposit reward promotion", async ({
 const searchPromotion = async (page, promotion) => {
   await page.fill(`input[name="name"]`, promotion.name)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/promotion?`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/promotion?`)),
     page.click(`button[type="submit"]`)
   ])
 }
@@ -49,16 +47,13 @@ const deletePromotion = async (page) => {
   let Dialog = `#delete-promotion-dialog`
   await openDialog(page, Dialog)
 
-  let id = await page.inputValue(`${Dialog} input[name="id"]`)
-  let ExpectedOrder = `/api/promotion/${id}/archived`
+  let id = await page.locator(`${Dialog} input[name="id"]`).inputValue()
+  if (!id) {
+    throw Error(`not able to find promotion id`)
+  }
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().toLowerCase().endsWith(ExpectedOrder) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/promotion/${id}/Archived`)),
     page.click(`${Dialog} button[type="submit"]`)
   ])
 }
@@ -79,20 +74,8 @@ const toggleStatus = async (page, brandId, index = 0) => {
   let [ExpectedStatus] = Status
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      let url = response.url()
-      let isApi = url.endsWith(`/${ExpectedStatus}`)
-      if (isApi && !response.ok()) {
-        return Error(`${url} failed`)
-      }
-
-      return isApi
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/promotion?`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/${ExpectedStatus}`)),
+    page.waitForResponse(urlIncludes(`/api/promotion?`)),
     page.click(
       `#promotion [data-row-index="${index}"] [data-column-id="status"] label .bb-SwitchIcon`
     )
@@ -167,14 +150,7 @@ const editPromotion = async (page, brandId, record) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      let url = response.url()
-      let isApi = url.includes("/api/promotion")
-      if (isApi && !response.ok()) {
-        return Error(`${url} failed`)
-      }
-      return isApi
-    }),
+    page.waitForResponse(urlIncludes("/api/promotion")),
     page.click(`#edit-promotion-dialog button[type="submit"]`)
   ])
   return promotion
@@ -272,11 +248,7 @@ const addDepositRewardPromotion = async (page) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith("/api/promotion") && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/promotion")),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 
@@ -308,9 +280,9 @@ const setGameType = async (
   return page.selectOption(selectSelector, option)
 }
 
-const gotoPromotionPage = async (page) => {
+const gotoPromotionPage = async (page, platformCode) => {
   await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })
-  return await selectRandomPlatform(page)
+  return await selectPlatformByCode(page, platformCode)
 }
 
 const PromotionTypeGroup = {

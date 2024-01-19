@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: calculate-api
-image: pgtgs/calculate-api:202401120340.11
+image: pgtgs/calculate-api:202401190151.12
 services:
   - name: calculate-api
     dependencies:

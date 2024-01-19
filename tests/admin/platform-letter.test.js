@@ -6,6 +6,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { fillLabel } from "../page/multi-select.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -37,12 +38,7 @@ const viewLetter = async ({ page, platform, player, letter }) => {
   await fillLabel(page, "#player-select", player.username)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/station-letter/${platform.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/station-letter/${platform.id}`)),
     page.click(`button[type="submit"]`)
   ])
 
@@ -77,12 +73,7 @@ const replyLetter = async ({ page, platform, player, letter }) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/station-letter/${platform.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/station-letter/${platform.id}`)),
     page.click(`${ReplyLetterDialogSelector} button[type="submit"]`)
   ])
 }

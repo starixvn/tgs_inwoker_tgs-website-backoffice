@@ -15,6 +15,7 @@ import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
 import { utils, write } from "xlsx"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -107,12 +108,7 @@ const addPromotion = async (page, platform, player) => {
   let buffer = toFileBuffer(player.username)
 
   let [response] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/offline/${platform.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/offline/${platform.id}`)),
     fileChooser.setFiles({ name: "batch.xlsx", buffer })
   ])
 
@@ -139,14 +135,7 @@ const addPromotion = async (page, platform, player) => {
   await page.waitForTimeout(WaitBatchUploadPlayerTime)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      let url = response.url()
-      let isApi = url.includes("/api/offline-deposit-reward")
-      if (isApi && !response.ok()) {
-        throw Error(`api /api/offline-deposit-reward error`)
-      }
-      return isApi
-    }),
+    page.waitForResponse(urlIncludes("/api/offline-deposit-reward")),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

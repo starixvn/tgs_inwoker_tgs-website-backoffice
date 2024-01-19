@@ -16,6 +16,7 @@ import {
   openProfitSharingSettingDialog,
   setPlatformProfitSharingSetting
 } from "./platform-setting-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -79,9 +80,7 @@ const configProfitSharing = async (page) => {
   await page.click(`${profitSharingDialogSelector} button[type="submit"]`)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().includes(`/api/agent/`) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/agent/`)),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
 }

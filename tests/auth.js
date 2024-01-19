@@ -1,5 +1,6 @@
 import { expect } from "chai"
 import { host } from "./env.js"
+import { urlIncludes } from "./page/response.js"
 
 const Path = "./.playwright"
 
@@ -57,9 +58,7 @@ export const loginUser = async (page, username, password = "TgsP@ssw0rd") => {
     page.waitForRequest((request) => {
       return request.url().endsWith("/api/auth") && request.method() === "POST"
     }),
-    page.waitForResponse((response) => {
-      return response.url().endsWith("/api/auth") && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes("/api/auth")),
     page.click(`form button[type="submit"]`)
   ])
 
@@ -97,9 +96,7 @@ export const login = async (
     page.waitForRequest((request) => {
       return request.url().endsWith("/api/auth") && request.method() === "POST"
     }),
-    page.waitForResponse((response) => {
-      return response.url().endsWith("/api/auth") && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes("/api/auth")),
     page.click(`form button[type="submit"]`)
   ])
 

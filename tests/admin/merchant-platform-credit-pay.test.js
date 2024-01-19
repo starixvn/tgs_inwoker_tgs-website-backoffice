@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { random } from "lodash-es"
 import numeral from "numeral"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -22,12 +23,7 @@ test("pay platform credit and list payment list", async ({
   await page.fill(`input[name="keyword"]`, platform.code)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`keyword=${platform.code}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`keyword=${platform.code}`)),
     page.click(`button[type="submit"]`)
   ])
 
@@ -38,11 +34,7 @@ test("pay platform credit and list payment list", async ({
   await page.fill(`${DialogSelector} input[name="amount"]`, `${amount}`)
 
   let [paymentResponse] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/pay/${amount}`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/pay/${amount}`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

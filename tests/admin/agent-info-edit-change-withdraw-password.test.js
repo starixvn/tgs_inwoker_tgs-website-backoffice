@@ -10,6 +10,7 @@ import {
   openViewAgentDialog
 } from "./agent-list-page.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -38,14 +39,7 @@ test("change agent withdraw password", async ({
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      let isApi = response.url().includes(`/api/agent/pay-password`)
-      if (isApi && !response.ok()) {
-        throw Error("/api/agent/pay-password error")
-      }
-
-      return isApi
-    }),
+    page.waitForResponse(urlIncludes(`/api/agent/pay-password`)),
     page.click(
       `${dialogSelector} ${PayPasswordTabSelector} button[type="submit"]`
     )
@@ -55,14 +49,7 @@ test("change agent withdraw password", async ({
   await openDialog(page, ViewAgentDialogSelector)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      let isApi = response.url().includes(`/api/agent/histories/${agent.id}`)
-      if (isApi && !response.ok()) {
-        throw Error(`/api/agent/histories/{agent.id} error`)
-      }
-
-      return isApi
-    }),
+    page.waitForResponse(urlIncludes(`/api/agent/histories/${agent.id}`)),
     page.click(`${ViewAgentDialogSelector} button[id="AgentHistoryList"]`)
   ])
 

@@ -3,6 +3,7 @@ import { Fixture } from "./auth.js"
 import { faker } from "@faker-js/faker"
 import { selectRandomOption, selectByValue } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -18,12 +19,7 @@ test("add, search, edit and view platform deposit payment", async ({
   ])
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`transferType=Withdrawal`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`transferType=Withdrawal`)),
     page.click("#Withdrawal")
   ])
 
@@ -81,12 +77,7 @@ const addWithdrawalPayment = async (page, bankTransferPaymentMethod) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith("/api/brandpayment/withdraw") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/brandpayment/withdraw")),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

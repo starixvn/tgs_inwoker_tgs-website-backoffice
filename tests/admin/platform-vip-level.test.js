@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { random } from "lodash-es"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -139,17 +140,8 @@ const editVipLevel = async (page) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/vipLevel/${id}`) &&
-        response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/vipLevel?`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/vipLevel/${id}`)),
+    page.waitForResponse(urlIncludes(`/api/vipLevel?`)),
     page.click(`#edit-vip-level-dialog button[type="submit"]`)
   ])
 

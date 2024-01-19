@@ -8,6 +8,7 @@ import { selectByValue } from "../page/select.js"
 import { searchPlayer } from "./player-list-page.js"
 import { utils, write } from "xlsx"
 import { boolean } from "boolean"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -52,12 +53,7 @@ test("batch add player balance", async ({
   })
 
   let [response] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/batch-adj-balance/${platform.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/batch-adj-balance/${platform.id}`)),
     fileChooser.setFiles({ name: "batch.xlsx", buffer })
   ])
 
@@ -91,12 +87,9 @@ test("batch add player balance", async ({
   expect(remark).equals(ExpectedRemark)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/batch-adj-balance/result/${batchId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(
+      urlIncludes(`/api/batch-adj-balance/result/${batchId}`)
+    ),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
 

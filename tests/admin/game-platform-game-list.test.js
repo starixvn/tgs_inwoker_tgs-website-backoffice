@@ -5,6 +5,7 @@ import { random, zip } from "lodash-es"
 import numeral from "numeral"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -71,11 +72,7 @@ const search = async (page, criteria) => {
   await page.fill(`input[name="keyword"]`, criteria.gameName)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/brandgame?`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brandgame?`)),
     page.click(`button[type="submit"]`)
   ])
 
@@ -111,11 +108,7 @@ const toggleField = async (page, field) => {
   let expected = !(await page.isChecked(CheckboxSelector))
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/brandgame?`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brandgame?`)),
     page.click(FieldSelector)
   ])
 
@@ -148,11 +141,8 @@ const edit = async (page) => {
 
   let gameId = await page.inputValue(`${DialogSelector} input[name="id"]`)
 
-  let expectedUrl = `/api/brandgame/${gameId}`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/brandgame/${gameId}`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

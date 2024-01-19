@@ -5,6 +5,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { random } from "lodash-es"
 import { openDialog } from "../page/dialog.js"
 import { searchAgent } from "./agent-list-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -32,12 +33,7 @@ test("deduct agent balance", async ({
   await page.fill(`${Selector} input[name="amount"]`, `${DeductAmount}`)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/Agent/${agent.id}/adjust/reduce`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/Agent/${agent.id}/adjust/reduce`)),
     page.click(`${Selector} button[type="submit"]`)
   ])
 

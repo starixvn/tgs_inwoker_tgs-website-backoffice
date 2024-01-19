@@ -9,6 +9,7 @@ import {
   searchAgent,
   openViewAgentDialog
 } from "./agent-list-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -29,12 +30,7 @@ test("view agent balance change list", async ({
   let dialogSelector = await openViewAgentDialog(page, agent)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/agent/accountChanges?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/agent/accountChanges?`)),
     page.click(`${dialogSelector} #BalanceChange`)
   ])
 

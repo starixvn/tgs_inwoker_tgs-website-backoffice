@@ -12,6 +12,7 @@ import {
   searchPlayer
 } from "./player-list-page.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -68,13 +69,7 @@ const editBank = async (page, bank, player) => {
   await page.fill(bankAccountSelector, detail.bankAccount)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      let isApi = response.url().includes(`/api/player/${player.code}/bank`)
-      if (isApi && !response.ok()) {
-        return Error(`api /api/player/${player.code}/bank failed`)
-      }
-      return isApi
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/${player.code}/bank`)),
     page.waitForSelector(editBankDialogSelector, { state: "detached" }),
     page.click(`${editBankDialogSelector} button[type="submit"]`)
   ])
