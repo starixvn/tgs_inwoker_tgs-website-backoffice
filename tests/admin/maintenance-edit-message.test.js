@@ -6,6 +6,7 @@ import { selectRandomPlatform } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -36,12 +37,7 @@ const updateMessage = async (page, message = faker.lorem.word()) => {
 
   await page.fill(`${dialogSelector} [name="content"]`, message)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/BrandMaintenance/content/`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandMaintenance/content/`)),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
 
@@ -51,12 +47,7 @@ const updateMessage = async (page, message = faker.lorem.word()) => {
 const searchBy = async (page, expectedPlatformCode) => {
   await page.fill(`input[name="brandCode"]`, expectedPlatformCode)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/BrandMaintenance`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandMaintenance`)),
     page.click(`button[type="submit"]`)
   ])
 

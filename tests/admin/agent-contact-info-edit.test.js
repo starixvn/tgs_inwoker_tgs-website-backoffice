@@ -11,6 +11,7 @@ import {
   openViewAgentDialog
 } from "./agent-list-page.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -35,12 +36,7 @@ test("edit and view agent contact", async ({
   await page.fill(`${editDialogSelector} input[name="email"]`, contact.email)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/agent/${agent.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/agent/${agent.id}`)),
     page.click(
       `${editDialogSelector} [aria-labelledby="AgentContactInfo"] button[type="submit"]`
     )

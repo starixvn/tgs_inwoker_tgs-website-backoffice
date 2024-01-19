@@ -14,11 +14,11 @@ import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-console.log("TODO: add account first deposit reward")
-test.skip("add account first deposit reward promotion", async ({
+test("add account first deposit reward promotion", async ({
   page,
   platform,
   backofficeApi,
@@ -122,11 +122,7 @@ const addPromotion = async (page) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith("/api/promotion") && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/promotion")),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

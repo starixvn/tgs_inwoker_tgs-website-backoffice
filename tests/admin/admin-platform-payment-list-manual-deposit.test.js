@@ -3,6 +3,7 @@ import { Fixture } from "./auth.js"
 import { faker } from "@faker-js/faker"
 import { selectRandomOption, selectByValue } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -52,12 +53,7 @@ const editPlatformPayment = async (page) => {
 const searchPlatformPaymentBy = async (page, name) => {
   await page.fill(`input[name="keyword"]`, name)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/brandpayment?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brandpayment?`)),
     page.click(`button[type="submit"]`)
   ])
 }
@@ -116,12 +112,7 @@ const addDepositBankTransferPayment = async (
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith("/api/brandpayment/deposit") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/brandpayment/deposit")),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

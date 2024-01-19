@@ -6,6 +6,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { selectByValue } from "../page/multi-select.js"
 import { gotoFundWithdraw, reviewPaid } from "./fund-withdraw-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -44,12 +45,7 @@ test("approve withdraw paid", async ({
   await selectByValue(page, `#status-select`, Paid)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/withdraw/${platform.id}?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/withdraw/${platform.id}?`)),
     page.click(`button[type="submit"]`)
   ])
 

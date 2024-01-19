@@ -3,6 +3,7 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -50,12 +51,7 @@ test("platform autowithdraw", async ({
   ])
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`transferType=Withdrawal`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`transferType=Withdrawal`)),
     page.click("#Withdrawal")
   ])
 

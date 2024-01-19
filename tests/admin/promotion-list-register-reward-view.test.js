@@ -14,6 +14,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import numeral from "numeral"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -66,11 +67,7 @@ test("view register reward promotion", async ({
 const searchByName = async (page, name) => {
   await page.fill(`input[name="name"]`, name)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`name=${name}`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`name=${name}`)),
     page.click(`button[type="submit"]`)
   ])
 }

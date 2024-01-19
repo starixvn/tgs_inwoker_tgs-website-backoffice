@@ -3,6 +3,7 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { faker } from "@faker-js/faker"
 import { selectRandomOption } from "../page/select.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -84,9 +85,7 @@ const search = async (page, user) => {
   await page.fill(`input[name="username"]`, user.username)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().includes("/api/users") && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes("/api/users")),
     page.click(`button[type="submit"]`)
   ])
 
@@ -108,15 +107,10 @@ const edit = async (page, user) => {
   await page.fill(`input[name="name"]`, user.name)
 
   let id = await page.inputValue(`input[name="id"]`)
-  let expectedUrl = `/api/users/${id}`
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
-    page.waitForResponse((response) => {
-      return response.url().includes(`/api/users?`) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/users/${id}`)),
+    page.waitForResponse(urlIncludes(`/api/users?`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 

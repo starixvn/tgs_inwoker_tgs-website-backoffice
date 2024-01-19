@@ -14,6 +14,8 @@ import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
+import { searchByName } from "./promotion-list-page.js"
 
 const test = base.extend(Fixture)
 
@@ -44,16 +46,9 @@ test("update dummy reward promotion", async ({
   )
 
   await Promise.all([
-    /*
-    TODO: wait for api result?
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith("/api/promotion") && response.status() === 200
-      )
-    }),
-    */
-    page.waitForTimeout(1000),
-    page.waitForSelector(DialogSelector, { state: "detached" }),
+    page.waitForResponse(urlIncludes(`/api/promotion/main/${promotion.id}`)),
+    page.waitForResponse(urlIncludes(`/api/promotion/content/${promotion.id}`)),
+    page.waitForResponse(urlIncludes(`/api/promotion/rule/${promotion.id}`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 
@@ -70,18 +65,6 @@ test("update dummy reward promotion", async ({
 
   expect(content.subSubject).equals(promotion.subSubject)
 })
-
-const searchByName = async (page, name) => {
-  await page.fill(`input[name="name"]`, name)
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`name=${name}`) && response.status() === 200
-      )
-    }),
-    page.click(`button[type="submit"]`)
-  ])
-}
 
 const gotoPromotionPage = async (page, platformCode) => {
   await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })

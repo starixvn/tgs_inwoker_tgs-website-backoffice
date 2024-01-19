@@ -6,6 +6,7 @@ import { selectRandomPlatform } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -33,12 +34,7 @@ test("platform maintenance edit message", async ({
 const viewMessage = async (page, expectedMessage) => {
   let dialogSelector = `#view-maintenance-message-dialog`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes("api/BrandMaintenance/") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("api/BrandMaintenance/")),
     openDialog(page, dialogSelector)
   ])
 
