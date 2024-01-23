@@ -3,6 +3,7 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { faker } from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -23,12 +24,7 @@ test("edit platform payment extended data", async ({
 
   await page.fill(`input[name="keyword"]`, platformPayment.channelName)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/brandpayment?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brandpayment?`)),
     page.click(`button[type="submit"]`)
   ])
 
@@ -59,12 +55,7 @@ test("edit platform payment extended data", async ({
   await page.focus(SubmitSelector)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/brandpayment/extendeddata/`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brandpayment/extendeddata/`)),
     page.click(SubmitSelector)
   ])
   await page.waitForSelector(DialogSelector, { state: "detached" })

@@ -2,6 +2,7 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -46,12 +47,7 @@ const searchPlayer = async (page, player) => {
     `${DateRangeSelector} #date-range-dropdown-menu [data-type="Today"]`
   )
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/PlayerReport/contribution?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/PlayerReport/contribution?`)),
     page.click(`button[type="submit"]`)
   ])
 }

@@ -15,6 +15,7 @@ import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import numeral from "numeral"
 import { urlIncludes } from "../page/response.js"
+import { searchPromotionByName } from "./promotion-list-page.js"
 
 const test = base.extend(Fixture)
 
@@ -31,7 +32,7 @@ test("view register reward promotion", async ({
     gotoPromotionPage(page, platform.code)
   ])
 
-  await searchByName(page, promotion.name)
+  await searchPromotionByName(page, promotion.name)
 
   let DialogSelector = `#view-promotion-dialog`
   await openDialog(page, DialogSelector)
@@ -63,14 +64,6 @@ test("view register reward promotion", async ({
   let turnoverMultiple = numeral(turnoverMultipleString).value()
   expect(turnoverMultiple).equals(promotion.rule.turnoverMultiple)
 })
-
-const searchByName = async (page, name) => {
-  await page.fill(`input[name="name"]`, name)
-  await Promise.all([
-    page.waitForResponse(urlIncludes(`name=${name}`)),
-    page.click(`button[type="submit"]`)
-  ])
-}
 
 const gotoPromotionPage = async (page, platformCode) => {
   await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })

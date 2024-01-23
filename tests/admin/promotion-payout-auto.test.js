@@ -6,6 +6,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { selectByValue } from "../page/select.js"
 import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -41,12 +42,7 @@ const checkAutoPayoutPromotion = async (page, platformCode, player) => {
 
   await page.fill(`input[name="username"]`, player.username)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`username=${player.username}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForRespose(urlIncludes(`username=${player.username}`)),
     page.click(`button[type="submit"]`)
   ])
 
