@@ -6,7 +6,7 @@ import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import clone from "clone-deep"
 import { urlIncludes } from "../page/response.js"
-import { searchByName } from "./promotion-list-page.js"
+import { searchPromotionByName } from "./promotion-list-page.js"
 
 const test = base.extend(Fixture)
 
@@ -29,7 +29,7 @@ test("update first deposit reward promotion", async ({
   expectedRule.bonusAmountLimit = expectedRule.bonusAmountLimit + 1
   expectedRule.turnoverMultiple = expectedRule.turnoverMultiple + 1
 
-  await searchByName(page, promotion.name)
+  await searchPromotionByName(page, promotion.name)
 
   let DialogSelector = `#edit-promotion-dialog`
   await openDialog(page, DialogSelector)

@@ -2,6 +2,7 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random } from "lodash-es"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -44,12 +45,7 @@ const searchGameProviderByInputNameValue = async (
 ) => {
   await page.fill(`input[name="${name}"]`, value)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/GameProvider?") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/GameProvider?")),
     page.click(`button[type="submit"]`)
   ])
 }

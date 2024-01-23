@@ -7,6 +7,7 @@ import numeral from "numeral"
 import { fillDatePicker } from "../fill.js"
 import { startOfDay, endOfTomorrow, format } from "date-fns"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -105,12 +106,7 @@ test("add game round", async ({ page, platform, player, backofficeApi }) => {
   await page.click(`${AddDialogSelector} button[data-type="confirm"]`)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/RoundReport/system/addround`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/RoundReport/system/addround`)),
     page.click(`#confirm-dialog button[type="submit"]`)
   ])
 

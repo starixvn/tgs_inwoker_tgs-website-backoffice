@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import numeral from "numeral"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -37,12 +38,7 @@ test("view platform order report", async ({
 const searchPlayer = async (page, player) => {
   await page.fill(`input[name="username"]`, player.username)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/RoundReport?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/RoundReport?`)),
     page.click(`button[type="submit"]`)
   ])
 }

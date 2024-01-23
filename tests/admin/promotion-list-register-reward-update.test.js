@@ -15,7 +15,7 @@ import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
 import { urlIncludes } from "../page/response.js"
-import { searchByName } from "./promotion-list-page.js"
+import { searchPromotionByName } from "./promotion-list-page.js"
 
 const test = base.extend(Fixture)
 
@@ -37,7 +37,7 @@ test("update register reward promotion", async ({
   promotion.rule.bonusAmount = promotion.rule.bonusAmount + 1
   promotion.rule.turnoverMultiple = promotion.rule.turnoverMultiple + 1
 
-  await searchByName(page, promotion.name)
+  await searchPromotionByName(page, promotion.name)
 
   let DialogSelector = `#edit-promotion-dialog`
   await openDialog(page, DialogSelector)

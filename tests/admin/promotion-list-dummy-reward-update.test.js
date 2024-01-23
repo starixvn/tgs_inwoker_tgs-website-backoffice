@@ -1,21 +1,11 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
-import { random } from "lodash-es"
-import {
-  startOfDay,
-  startOfTomorrow,
-  endOfTomorrow,
-  format,
-  addWeeks
-} from "date-fns"
-import { fillDatePicker } from "../fill.js"
 import { selectPlatformByCode } from "../page/content.js"
-import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
 import { urlIncludes } from "../page/response.js"
-import { searchByName } from "./promotion-list-page.js"
+import { searchPromotionByName } from "./promotion-list-page.js"
 
 const test = base.extend(Fixture)
 
@@ -35,7 +25,7 @@ test("update dummy reward promotion", async ({
   //TODO: change from, to
   promotion.subSubject = faker.lorem.word()
 
-  await searchByName(page, promotion.name)
+  await searchPromotionByName(page, promotion.name)
 
   let DialogSelector = `#edit-promotion-dialog`
   await openDialog(page, DialogSelector)

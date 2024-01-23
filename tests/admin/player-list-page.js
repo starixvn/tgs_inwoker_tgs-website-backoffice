@@ -1,5 +1,6 @@
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 export const ViewPlayerDialogSelector = `#view-player-dialog`
 
@@ -8,23 +9,14 @@ export const searchPlayer = async (page, player) => {
   await page.fill(usernameSelector, player.username)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player?`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player?`)),
     page.click(`button[type="submit"]`)
   ])
 }
 
 export const openViewPlayerDialog = async (page, player) => {
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/${player.code}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/${player.code}`)),
     openDialog(page, ViewPlayerDialogSelector)
   ])
   return ViewPlayerDialogSelector

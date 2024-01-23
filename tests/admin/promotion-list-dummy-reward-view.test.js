@@ -14,6 +14,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { urlIncludes } from "../page/response.js"
+import { searchPromotionByName } from "./promotion-list-page.js"
 
 const test = base.extend(Fixture)
 
@@ -30,7 +31,7 @@ test("view dummy reward promotion", async ({
     gotoPromotionPage(page, platform.code)
   ])
 
-  await searchByName(page, promotion.name)
+  await searchPromotionByName(page, promotion.name)
 
   let DialogSelector = `#view-promotion-dialog`
   await openDialog(page, DialogSelector)
@@ -50,14 +51,6 @@ test("view dummy reward promotion", async ({
     .inputValue()
   expect(subSubject).equals(promotion.subSubject)
 })
-
-const searchByName = async (page, name) => {
-  await page.fill(`input[name="name"]`, name)
-  await Promise.all([
-    page.waitForResponse(urlIncludes(`name=${name}`)),
-    page.click(`button[type="submit"]`)
-  ])
-}
 
 const gotoPromotionPage = async (page, platformCode) => {
   await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })

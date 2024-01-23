@@ -9,6 +9,7 @@ import {
   openViewPlayerDialog
 } from "./player-list-page.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -36,12 +37,7 @@ const editPlayerInfo = async (page, player) => {
   await page.fill(`${dialogSelector} input[name="realName"]`, info.realName)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/info/${player.code}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/info/${player.code}`)),
     page.click(
       `${dialogSelector} [aria-labelledby="player"] button[type="submit"]`
     )

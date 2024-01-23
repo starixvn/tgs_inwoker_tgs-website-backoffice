@@ -4,6 +4,7 @@ import { expect } from "chai"
 import numeral from "numeral"
 import { selectPlatformByCode } from "../page/content.js"
 import { subHours } from "date-fns"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -58,12 +59,7 @@ const searchToday = async (page) => {
     `${DateRangeSelector} #date-range-dropdown-menu [data-type="Today"]`
   )
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/GameProviderReport?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/GameProviderReport?`)),
     page.click(`button[type="submit"]`)
   ])
 }
