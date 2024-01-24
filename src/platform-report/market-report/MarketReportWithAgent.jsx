@@ -256,8 +256,7 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        id: "depositAmount",
-        accessor: (row) => row,
+        accessor: "depositAmount",
         Header: <DepositAmountTrans />,
         disableSortBy: true
       }),
