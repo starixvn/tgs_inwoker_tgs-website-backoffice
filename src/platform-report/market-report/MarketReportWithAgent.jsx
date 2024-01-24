@@ -256,17 +256,9 @@ const useColumns = ({ brandId, items = [] }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        id: "depositAmount",
-        accessor: (row) => row,
+        accessor: "depositAmount",
         Header: <DepositAmountTrans />,
-        disableSortBy: true,
-        toValue: ({ depositAmount, depositHandlingFee = 0 } = {}) => {
-          let value = Number.isFinite(depositAmount)
-            ? new Big(depositAmount).minus(depositHandlingFee).toNumber()
-            : depositAmount
-          return value
-        },
-        TotalCell: ({ value }) => <FormattedNumberDecimal value={value} />
+        disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "withdrawalAmount",
