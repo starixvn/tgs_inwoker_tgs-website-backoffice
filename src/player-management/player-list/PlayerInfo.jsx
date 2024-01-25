@@ -81,7 +81,7 @@ export const PlayerInfoKey = "player"
 
 export const PlayerInfoTab = ({ ...props }) => {
   return (
-    <_Tab tabId={Key} {...props}>
+    <_Tab tabId={PlayerInfoKey} {...props}>
       <PlayerInfoTrans />
     </_Tab>
   )
@@ -150,7 +150,7 @@ const UpdatePlayerInfoPanel = ({
   }
 
   return (
-    <TabPanel tabId={Key} {...props}>
+    <TabPanel tabId={PlayerInfoKey} {...props}>
       {error && <AlertDialog {...error} onClickClose={reset} />}
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -349,7 +349,7 @@ export const PlayerInfoPanel = ({
   } = player
 
   return (
-    <TabPanel tabId={Key} {...props}>
+    <TabPanel tabId={PlayerInfoKey} {...props}>
       <FieldValues spacing="major-2">
         {isAdmin && (
           <>
