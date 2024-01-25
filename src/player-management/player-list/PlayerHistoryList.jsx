@@ -50,6 +50,7 @@ import { StatusTrans } from "../../trans/Status"
 import {
   BirthdayTrans,
   EmailTrans,
+  ICNumberTrans,
   PhoneTrans,
   RealNameTrans,
   TelegramTrans,
@@ -372,6 +373,7 @@ const LabelValueList = [
   [pipe(getPath, includes("/RealName")), RealNameTrans],
   [pipe(getPath, includes("/Birthdate")), BirthdayTrans],
   [pipe(getPath, includes("/VipId")), VipLevelTrans, VipLevelIdLabel],
+  [pipe(getPath, includes("/IdNumber")), ICNumberTrans],
   [pipe(getPath, includes("/AgentId")), UpperLevelAgentTrans, AgentIdUsername],
   [pipe(getPath, includes("/Remark")), RemarkTrans],
   [
