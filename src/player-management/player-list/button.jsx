@@ -4,11 +4,6 @@ import { Box, Dialog, useModalState } from "bumbag"
 import { View as ViewMenu, Update as UpdateMenu, Contact } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import {
-  Tab as PlayerTab,
-  Panel as PlayerPanel,
-  EditPanel as PlayerEditTab
-} from "./player"
-import {
   PlayerInfoTab,
   PlayerInfoPanel,
   PlayerInfoEditPanel,
@@ -21,8 +16,6 @@ import {
 } from "./contact"
 import { Tab as BankTab, Panel as BankPanel } from "./bank"
 import { Tab as BettingTab, Panel as BettingPanel } from "./betting"
-//TODO:1.40 rm PlayerOperation.jsx
-// import { PlayerOperationTab, PlayerOperationPanel } from "./PlayerOperation"
 import { Tab as PasswordTab, Panel as PasswordPanel } from "./password"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
@@ -234,13 +227,10 @@ const ViewTabs = ({
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
 
-  //TODO:1.41 rm showPlayerInfoPanel, PlayerTab and use PlayerInfoTab, PlayerInfoPanel instead
-  let showPlayerInfoPanel = isDev()
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
-        {!showPlayerInfoPanel && <PlayerTab {...tab} />}
-        {showPlayerInfoPanel && <PlayerInfoTab {...tab} />}
+        <PlayerInfoTab {...tab} />
         {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <BettingTab {...tab} />
@@ -249,22 +239,12 @@ const ViewTabs = ({
         <PlayerPromotionTab {...tab} />
         <PlayerVipChangeListTab {...tab} />
       </TabList>
-      {!showPlayerInfoPanel && (
-        <PlayerPanel
-          player={player}
-          brand={brand}
-          showParentUsername={showParentUsername}
-          {...tab}
-        />
-      )}
-      {showPlayerInfoPanel && (
-        <PlayerInfoPanel
-          player={player}
-          brand={brand}
-          showParentUsername={showParentUsername}
-          {...tab}
-        />
-      )}
+      <PlayerInfoPanel
+        player={player}
+        brand={brand}
+        showParentUsername={showParentUsername}
+        {...tab}
+      />
       {contactAuth && <ContractPanel player={player} {...tab} />}
       <BankPanel banks={player.banks} {...tab} />
       <BettingPanel
@@ -310,41 +290,24 @@ const EditTabs = ({
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
 
-  //TODO:1.41 rm showPlayerInfoPanel, PlayerTab and use PlayerInfoTab, PlayerInfoPanel instead
-  let showPlayerInfoPanel = isDev()
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
-        {!showPlayerInfoPanel && <PlayerTab {...tab} />}
-        {showPlayerInfoPanel && <PlayerInfoTab {...tab} />}
+        <PlayerInfoTab {...tab} />
         {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <PasswordTab {...tab} />
       </TabList>
-      {!showPlayerInfoPanel && (
-        <PlayerEditTab
-          player={player}
-          showParentUsername={showParentUsername}
-          brandId={brandId}
-          brand={brand}
-          playerCode={playerCode}
-          onSubmitted={onSubmitted}
-          onClickClose={onClickClose}
-          {...tab}
-        />
-      )}
-      {showPlayerInfoPanel && (
-        <PlayerInfoEditPanel
-          player={player}
-          showParentUsername={showParentUsername}
-          brandId={brandId}
-          brand={brand}
-          playerCode={playerCode}
-          onSubmitted={onSubmitted}
-          onClickClose={onClickClose}
-          {...tab}
-        />
-      )}
+      <PlayerInfoEditPanel
+        player={player}
+        showParentUsername={showParentUsername}
+        brandId={brandId}
+        brand={brand}
+        playerCode={playerCode}
+        onSubmitted={onSubmitted}
+        onClickClose={onClickClose}
+        {...tab}
+      />
       {contactAuth && (
         <ContractEditPanel
           player={player}

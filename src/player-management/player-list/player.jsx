@@ -76,7 +76,7 @@ import {
   TotalWithdrawAmountTrans
 } from "../../trans/Field"
 
-//TODO: rm player.jsx
+//TODO:1.41 rm player.jsx
 export const Key = "player"
 
 export const Tab = ({ ...props }) => {

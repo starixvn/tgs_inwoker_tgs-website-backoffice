@@ -22,7 +22,7 @@ import { TimeTrans } from "../../trans/Date"
 
 export const Key = "operation"
 
-//TODO: rm PlayerOperationTab after 1.39
+//TODO:1.41 rm PlayerOperationTab
 export const PlayerOperationTab = ({ ...props }) => {
   return (
     <_Tab tabId={Key} {...props}>
