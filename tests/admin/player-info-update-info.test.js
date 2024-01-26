@@ -25,16 +25,19 @@ test("update player real name", async ({
   let updated = await editPlayerInfo(page, player)
   let playerRecord = await backofficeApi.player.getPlayer(player.code)
   expect(playerRecord.realName).to.equals(updated.realName)
+  expect(playerRecord.idNumber).to.equals(updated.idNumber)
 })
 
 const editPlayerInfo = async (page, player) => {
   let dialogSelector = await openEditPlayerDialog(page)
 
   let info = {
-    realName: faker.person.firstName()
+    realName: faker.person.firstName(),
+    idNumber: faker.string.alphanumeric(5)
   }
 
   await page.fill(`${dialogSelector} input[name="realName"]`, info.realName)
+  await page.fill(`${dialogSelector} input[name="idNumber"]`, info.idNumber)
 
   await Promise.all([
     page.waitForResponse(urlIncludes(`/api/player/info/${player.code}`)),

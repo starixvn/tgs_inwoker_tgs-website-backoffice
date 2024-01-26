@@ -42,7 +42,7 @@ const checkAutoPayoutPromotion = async (page, platformCode, player) => {
 
   await page.fill(`input[name="username"]`, player.username)
   await Promise.all([
-    page.waitForRespose(urlIncludes(`username=${player.username}`)),
+    page.waitForResponse(urlIncludes(`username=${player.username}`)),
     page.click(`button[type="submit"]`)
   ])
 
