@@ -182,33 +182,24 @@ const useColumns = ({ items = [], totals = [] }) => {
         footerCellProps: {
           textAlign: "center"
         }
-      })
-    ]
-
-    //TODO: confirm with PM
-    if (isDev()) {
-      columns = [
-        ...columns,
-        textColumn({
-          accessor: "gameProviderName",
-          Header: <GameProviderTrans />,
-          disableSortBy: true
-        }),
-        textColumn({
-          accessor: "subGameProviderName",
-          Header: <SubGameProviderTrans />,
-          disableSortBy: true
-        }),
-        textColumn({
-          accessor: "gameName",
-          Header: <GameNameTrans />,
-          disableSortBy: true
-        })
-      ]
-    }
-
-    columns = [
-      ...columns,
+      }),
+      textColumn({
+        accessor: "gameProviderName",
+        Header: <GameProviderTrans />,
+        disableSortBy: true
+      }),
+      /*
+      textColumn({
+        accessor: "subGameProviderName",
+        Header: <SubGameProviderTrans />,
+        disableSortBy: true
+      }),
+      */
+      textColumn({
+        accessor: "gameName",
+        Header: <GameNameTrans />,
+        disableSortBy: true
+      }),
       numberDecimalColumn({
         accessor: "betAmount",
         sumColumn: "betAmount",
