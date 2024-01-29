@@ -21,6 +21,8 @@ export const WithdrawalForm = "withdrawalform"
 
 export const BalanceChangeUnsaved = "balancechangeunsaved"
 
+export const EditIdNumber = "editidnumber"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {
@@ -69,6 +71,14 @@ export const label = (codes = [], locale = Locales.zh) => {
         {
           zh: "未寫入資料",
           en: "Unsaved Data"
+        },
+        locale
+      )
+    case EditIdNumber:
+      return getTrans(
+        {
+          zh: "修改身分证",
+          en: "Edit IC Number"
         },
         locale
       )

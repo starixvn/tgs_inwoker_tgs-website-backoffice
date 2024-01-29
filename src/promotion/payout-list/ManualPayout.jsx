@@ -34,6 +34,8 @@ export const PromotionManualPayoutDisclosure = ({
   brandId,
   record,
   onSubmitted,
+  id,
+  dialogId = "verify-payout-dialog",
   ...props
 }) => {
   let dialog = useModalState()
@@ -43,9 +45,10 @@ export const PromotionManualPayoutDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         <ManualPayoutTrans />
       </Disclosure>
       {dialog.visible && (
@@ -54,6 +57,7 @@ export const PromotionManualPayoutDisclosure = ({
           record={record}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -82,7 +86,13 @@ export const ViewPromotionManualPayoutDisclosure = ({
   )
 }
 
-const ManualPayoutDialog = ({ brandId, record, onSubmitted, dialog }) => {
+const ManualPayoutDialog = ({
+  brandId,
+  record,
+  onSubmitted,
+  dialog,
+  dialogId
+}) => {
   let title = useManualPayoutTrans()
 
   let [formData, setSubmit] = useState()
@@ -104,7 +114,7 @@ const ManualPayoutDialog = ({ brandId, record, onSubmitted, dialog }) => {
 
   return (
     <FormDialog
-      id="payout-promotion-dialog"
+      id={dialogId}
       defaultValues={clone(record)}
       onSubmit={onSubmit}
       onSubmitted={onSubmitted}

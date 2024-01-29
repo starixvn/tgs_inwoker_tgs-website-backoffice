@@ -5,7 +5,8 @@ import {
   Trans,
   FormattedNumber,
   useTrans,
-  FormattedNumberDecimal
+  FormattedNumberDecimal,
+  useLangCode
 } from "../../i18n"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { GameTypeSelect } from "../../game/GameType"
@@ -27,6 +28,9 @@ import {
   BetTimeTrans,
   BettingRecordsTrans,
   GameDetailTrans,
+  GameNameTrans,
+  GameProviderTrans,
+  SubGameProviderTrans,
   ValidBetAmountTrans,
   WinLossTrans,
   useGameIdTrans,
@@ -34,6 +38,8 @@ import {
 } from "../../trans/Game"
 import { ActionTrans, DetailTrans } from "../../trans/Action"
 import { SettleAmountTrans } from "../../trans/Field"
+import textColumn from "../../table/column/textColumn"
+import { isDev } from "../../env"
 
 export const Key = "betting"
 
@@ -60,6 +66,7 @@ export const Panel = ({ playerCode, brandId, player, ...props }) => {
 
   let { pageIndex, pageSize, from, to, gameType, gameProviderId } = state
 
+  let culture = useLangCode()
   let {
     isLoading,
     data = {},
@@ -70,7 +77,8 @@ export const Panel = ({ playerCode, brandId, player, ...props }) => {
     isActive
       ? {
           ...toApiParams(state),
-          brandId
+          brandId,
+          culture
         }
       : undefined
   )
@@ -164,8 +172,8 @@ const SearchBar = ({
 const useColumns = ({ items = [], totals = [] }) => {
   let roundIdTitle = useRoundIdTrans()
   let gameIdTitle = useGameIdTrans()
-  return useMemo(
-    () => [
+  return useMemo(() => {
+    let columns = [
       dateTimeColumn({
         accessor: "createdOn",
         Header: <BetTimeTrans />,
@@ -174,6 +182,23 @@ const useColumns = ({ items = [], totals = [] }) => {
         footerCellProps: {
           textAlign: "center"
         }
+      }),
+      textColumn({
+        accessor: "gameProviderName",
+        Header: <GameProviderTrans />,
+        disableSortBy: true
+      }),
+      /*
+      textColumn({
+        accessor: "subGameProviderName",
+        Header: <SubGameProviderTrans />,
+        disableSortBy: true
+      }),
+      */
+      textColumn({
+        accessor: "gameName",
+        Header: <GameNameTrans />,
+        disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "betAmount",
@@ -253,7 +278,8 @@ const useColumns = ({ items = [], totals = [] }) => {
           )
         }
       }
-    ],
-    [JSON.stringify(items), JSON.stringify(totals)]
-  )
+    ]
+
+    return columns
+  }, [JSON.stringify(items), JSON.stringify(totals)])
 }

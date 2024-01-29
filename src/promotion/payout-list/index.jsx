@@ -58,6 +58,9 @@ import {
 } from "../../trans/Promotion"
 import { StatusTrans } from "../../trans/Status"
 import { CreatedTimeTrans, SentOnTrans } from "../../trans/Date"
+import { isDev } from "../../env"
+import { VerifyPayoutDialogDisclosure } from "./VerifyPayoutDialog"
+import { ViewPayoutDialogDisclosure } from "./ViewPayoutDialog"
 
 export { Code }
 
@@ -429,21 +432,37 @@ const useColumns = ({
           disableSortBy: true,
           Cell: ({ value: record }) => {
             let paid = !!record?.sentOn
+
+            let devEnv = isDev()
             return (
               <Set orientation="horizontal" alignX="center">
-                {!paid && (
+                {!paid && !devEnv && (
                   <PromotionManualPayoutDisclosure
-                    id="payout-promotion-dialog-disclosure"
                     brandId={brandId}
                     record={record}
                     onSubmitted={mutate}
                   />
                 )}
-                <ViewPromotionManualPayoutDisclosure
-                  id="view-promotion-payout-dialog-disclosure"
-                  brandId={brandId}
-                  record={record}
-                />
+                {!paid && devEnv && (
+                  <VerifyPayoutDialogDisclosure
+                    brandId={brandId}
+                    record={record}
+                    onSubmitted={mutate}
+                  />
+                )}
+                {!devEnv && (
+                  <ViewPromotionManualPayoutDisclosure
+                    id="view-promotion-payout-dialog-disclosure"
+                    brandId={brandId}
+                    record={record}
+                  />
+                )}
+                {devEnv && (
+                  <ViewPayoutDialogDisclosure
+                    brandId={brandId}
+                    record={record}
+                  />
+                )}
               </Set>
             )
           }
