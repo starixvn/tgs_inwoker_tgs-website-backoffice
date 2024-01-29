@@ -7,6 +7,7 @@ import { selectByValue } from "../page/select.js"
 import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
 import { openDialog } from "../page/dialog.js"
 import { urlIncludes } from "../page/response.js"
+import { equals } from "ramda"
 
 const test = base.extend(Fixture)
 
@@ -36,31 +37,33 @@ test("promotion payout > manual approve", async ({
   })
 
   await gotoPromotionPayoutListPage(page, platform.code)
-  console.log("TODO: manual approve payout to player:", player.username)
-  //TODO: manual approve
-  // await checkAutoPayoutPromotion(page, platformCode, player)
-})
 
-/*
-const checkAutoPayoutPromotion = async (page, platformCode, player) => {
-  await gotoPromotionPayoutListPage(page, platformCode)
-
-  await page.fill(`input[name="username"]`, player.username)
+  await page.locator(`input[name="username"]`).fill(player.username)
   await Promise.all([
     page.waitForResponse(urlIncludes(`username=${player.username}`)),
-    page.click(`button[type="submit"]`)
+    page.locator(`button[type="submit"]`).click()
   ])
 
-  let DataStatusSelector = `[data-column-id="status"] span`
-  await page.waitForSelector(DataStatusSelector)
-  let statusString = await page.$eval(
-    DataStatusSelector,
-    ({ dataset }) => dataset.sent
-  )
+  let DialogSelector = `#verify-payout-dialog`
+  await openDialog(page, DialogSelector)
 
-  expect(statusString).to.equal("true")
-}
-*/
+  let DialogLocator = page.locator(DialogSelector)
+
+  let [response] = await Promise.all([
+    page.waitForResponse(urlIncludes("api/PromotionDispatch")),
+    page.waitForResponse(urlIncludes(`username=${player.username}`)),
+    DialogLocator.locator(`button[type="submit"]`).click()
+  ])
+
+  let result = await response.json()
+  expect(result.valid), equals(true)
+
+  let sent = await page
+    .locator(`[data-column-id="status"] span`)
+    .getAttribute("data-sent")
+
+  expect(sent).equals("true")
+})
 
 const gotoPromotionPayoutListPage = async (page, platformCode) => {
   await page.goto("/promotion/payoutlist", { waitUntil: "networkidle" })

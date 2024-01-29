@@ -46,14 +46,19 @@ const checkAutoPayoutPromotion = async (page, platformCode, player) => {
     page.click(`button[type="submit"]`)
   ])
 
-  let DataStatusSelector = `[data-column-id="status"] span`
-  await page.waitForSelector(DataStatusSelector)
-  let statusString = await page.$eval(
-    DataStatusSelector,
-    ({ dataset }) => dataset.sent
-  )
+  let sent = await page
+    .locator(`[data-column-id="status"] span`)
+    .getAttribute("data-sent")
 
-  expect(statusString).to.equal("true")
+  expect(sent).equals("true")
+
+  let ViewDialogSelector = "#view-payout-dialog"
+  await openDialog(page, ViewDialogSelector)
+
+  sent = await page
+    .locator(`${ViewDialogSelector} [data-sent]`)
+    .getAttribute("data-sent")
+  expect(sent).equals("true")
 }
 
 const gotoPromotionPayoutListPage = async (page, platformCode) => {

@@ -149,11 +149,12 @@ export const FormattedDateTime = ({
   dateFormat = DefaultDateFormat,
   timeFormat = DefaultTimeFormat,
   value,
-  placeholder = ""
+  placeholder = "",
+  ...props
 }) => {
   let format = `${dateFormat} ${timeFormat}`
   let formatted = formatDateTime(format, value)
-  return <Text>{formatted ? formatted : placeholder}</Text>
+  return <Text {...props}>{formatted ? formatted : placeholder}</Text>
 }
 
 export const FormatHourMinuteSecondDayMonthYear = ({
