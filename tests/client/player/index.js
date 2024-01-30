@@ -5,6 +5,7 @@ import { updateContact } from "./updateContact.js"
 import { applyBankManualDepositForm } from "./applyBankManualDepositForm.js"
 import bankCard from "./bankCard.js"
 import bucket from "./bucket.js"
+import * as balanceChange from "./balanceChange.js"
 
 export default {
   getPlayer,
@@ -16,5 +17,6 @@ export default {
   updateContact,
   applyBankManualDepositForm,
   bankCard,
-  bucket
+  bucket,
+  balanceChange
 }

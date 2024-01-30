@@ -28,6 +28,8 @@ test("approve player fund withdraw and paid", async ({
     })
   ])
 
+  console.log("player.username", player.username)
+  
   let withdrawAmount = depositAmount
   let formId = await approveWithdraw(
     page,
