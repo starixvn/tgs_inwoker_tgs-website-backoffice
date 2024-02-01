@@ -5,6 +5,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
 import numeral from "numeral"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -31,12 +32,7 @@ test("clear player wagering requirement", async ({
   await openDialog(page, ClearWageringRequirementDialogSelector)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/bucket/${player.code}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/bucket/${player.code}`)),
     page
       .locator(`${ClearWageringRequirementDialogSelector}[role="dialog"]`)
       .waitFor({ state: "detached" }),

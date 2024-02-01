@@ -9,6 +9,7 @@ import {
   searchPlayer,
   ViewPlayerDialogSelector
 } from "./player-list-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -33,12 +34,7 @@ test("view player balance change", async ({
 
   let BalanceChangeTabSelector = `${ViewPlayerDialogSelector} button#BalanceChange`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/accountChanges?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/accountChanges?`)),
     page.click(BalanceChangeTabSelector)
   ])
 

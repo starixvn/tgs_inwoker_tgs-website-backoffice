@@ -6,6 +6,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { selectByValue } from "../page/select.js"
 import { startOfDay, endOfTomorrow, format, addWeeks } from "date-fns"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -41,23 +42,23 @@ const checkAutoPayoutPromotion = async (page, platformCode, player) => {
 
   await page.fill(`input[name="username"]`, player.username)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`username=${player.username}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`username=${player.username}`)),
     page.click(`button[type="submit"]`)
   ])
 
-  let DataStatusSelector = `[data-column-id="status"] span`
-  await page.waitForSelector(DataStatusSelector)
-  let statusString = await page.$eval(
-    DataStatusSelector,
-    ({ dataset }) => dataset.sent
-  )
+  let sent = await page
+    .locator(`[data-column-id="status"] span`)
+    .getAttribute("data-sent")
 
-  expect(statusString).to.equal("true")
+  expect(sent).equals("true")
+
+  let ViewDialogSelector = "#view-payout-dialog"
+  await openDialog(page, ViewDialogSelector)
+
+  sent = await page
+    .locator(`${ViewDialogSelector} [data-sent]`)
+    .getAttribute("data-sent")
+  expect(sent).equals("true")
 }
 
 const gotoPromotionPayoutListPage = async (page, platformCode) => {

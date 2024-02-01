@@ -5,6 +5,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { selectByLabel, selectByValue } from "../page/select.js"
 import numeral from "numeral"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -29,12 +30,7 @@ const searchRound = async (page, player, gameProvider) => {
   await selectByValue(page, `select[name="gameProviderId"]`, gameProvider.id)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/RoundReport/system?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/RoundReport/system?`)),
     page.click(`button[type="submit"]`)
   ])
 

@@ -3,11 +3,13 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { faker } from "@faker-js/faker"
 import { openDialog } from "../page/dialog.js"
+import { selectLicenseeById } from "../page/content.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-test("add and edit platform, search platform", async ({ page }) => {
-  await gotoPlatformListPage(page)
+test("edit platform logo", async ({ page, platform }) => {
+  await gotoPlatformListPage(page, platform.licenseeId)
 
   let record = await editLogo(page)
   await editLogo(page, record)
@@ -46,11 +48,7 @@ const editLogo = async (page, record = {}) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/brand/logo`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brand/logo`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 
@@ -63,6 +61,7 @@ const randomLogo = () => ({
   loading: faker.image.url()
 })
 
-const gotoPlatformListPage = async (page) => {
+const gotoPlatformListPage = async (page, licenseeId) => {
   await page.goto("/merchant/brands", { waitUntil: "networkidle" })
+  await selectLicenseeById(page, licenseeId)
 }

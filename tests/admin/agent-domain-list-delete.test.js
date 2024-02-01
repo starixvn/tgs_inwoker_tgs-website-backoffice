@@ -11,6 +11,7 @@ import {
   openEditAgentDialog,
   openViewAgentDialog
 } from "./agent-list-page.js"
+import { urlIncludes } from "../page/response.js"
 const test = base.extend(Fixture)
 
 test("edit and view agent domain list", async ({
@@ -50,12 +51,7 @@ const deleteDomain = async (page, domain, platform, agent) => {
   let inputCount = await inputLocator.count()
   let expectedInputCount = inputCount - 1
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`?domain=${domain}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`?domain=${domain}`)),
     page.click(`${editDialogSelector} #delete-domain`)
   ])
 

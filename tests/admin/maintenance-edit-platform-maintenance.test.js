@@ -6,6 +6,7 @@ import { selectRandomPlatform } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { random } from "lodash-es"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -24,12 +25,7 @@ const updatePlatformMaintenanceTime = async (page, platform) => {
   await openDialog(page, dialogSelector)
   await selectRandomRange(page)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/time/${platform.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/time/${platform.id}`)),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
 }
@@ -37,12 +33,7 @@ const updatePlatformMaintenanceTime = async (page, platform) => {
 const searchBy = async (page, expectedPlatformCode) => {
   await page.fill(`input[name="brandCode"]`, expectedPlatformCode)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/BrandMaintenance`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandMaintenance`)),
     page.click(`button[type="submit"]`)
   ])
 

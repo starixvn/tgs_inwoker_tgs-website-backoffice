@@ -14,6 +14,8 @@ import { selectPlatformByCode } from "../page/content.js"
 import { optionValues } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
+import { searchPromotionByName } from "./promotion-list-page.js"
 
 const test = base.extend(Fixture)
 
@@ -35,7 +37,7 @@ test("update register reward promotion", async ({
   promotion.rule.bonusAmount = promotion.rule.bonusAmount + 1
   promotion.rule.turnoverMultiple = promotion.rule.turnoverMultiple + 1
 
-  await searchByName(page, promotion.name)
+  await searchPromotionByName(page, promotion.name)
 
   let DialogSelector = `#edit-promotion-dialog`
   await openDialog(page, DialogSelector)
@@ -56,16 +58,9 @@ test("update register reward promotion", async ({
   )
 
   await Promise.all([
-    /*
-    TODO: wait for api result?
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith("/api/promotion") && response.status() === 200
-      )
-    }),
-    */
-    page.waitForTimeout(1000),
-    page.waitForSelector(DialogSelector, { state: "detached" }),
+    page.waitForResponse(urlIncludes(`/api/promotion/main/${promotion.id}`)),
+    page.waitForResponse(urlIncludes(`/api/promotion/content/${promotion.id}`)),
+    page.waitForResponse(urlIncludes(`/api/promotion/rule/${promotion.id}`)),
     page.click(`${DialogSelector} button[type="submit"]`)
   ])
 
@@ -93,18 +88,6 @@ test("update register reward promotion", async ({
   expect(rule.bonusAmount).equals(promotion.rule.bonusAmount)
   expect(rule.turnoverMultiple).equals(promotion.rule.turnoverMultiple)
 })
-
-const searchByName = async (page, name) => {
-  await page.fill(`input[name="name"]`, name)
-  await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`name=${name}`) && response.status() === 200
-      )
-    }),
-    page.click(`button[type="submit"]`)
-  ])
-}
 
 const gotoPromotionPage = async (page, platformCode) => {
   await page.goto("/promotion/promotionlist", { waitUntil: "networkidle" })

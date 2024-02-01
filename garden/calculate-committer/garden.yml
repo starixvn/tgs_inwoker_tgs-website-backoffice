@@ -1,0 +1,18 @@
+kind: Module
+type: container
+name: calculate-committer
+image: pgtgs/calculate-committer:202401190151.12
+services:
+  - name: calculate-committer
+    dependencies:
+      - postgres
+      - redis
+      - nats
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+    ports:
+      - name: http
+        containerPort: 8080
+        servicePort: 80

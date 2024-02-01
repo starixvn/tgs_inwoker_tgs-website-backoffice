@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import numeral from "numeral"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -22,9 +23,7 @@ test("marketing > player deposit report", async ({
       playerCode: player.code,
       amount: DepositAmount
     }),
-    backofficeApi.player.updateInfo(player.code, {
-      agentUsername: agent.username
-    }),
+    backofficeApi.player.updatePlayerAgent(player.code, agent.username),
     gotoMarketingPlayerDepositListPage(page, platform.code)
   ])
 
@@ -98,12 +97,7 @@ const searchAgent = async (page, agent) => {
   await page.click(`#date-range #date-range-dropdown-menu [data-type="Today"]`)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/PlayerDepositReport?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/PlayerDepositReport?`)),
     page.click(`button[type="submit"]`)
   ])
 }

@@ -4,13 +4,13 @@ import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import numeral from "numeral"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
 test("marketing > player deposit report", async ({
   page,
   platform,
-  platformCode,
   agent,
   player,
   backofficeApi
@@ -28,9 +28,7 @@ test("marketing > player deposit report", async ({
       amount: DepositAmount
     }),
     */
-    backofficeApi.player.updateInfo(player.code, {
-      agentUsername: agent.username
-    }),
+    backofficeApi.player.updatePlayerAgent(player.code, agent.username),
     gotoMarketingPlayerDepositListPage(page, platform.code)
   ])
 
@@ -63,12 +61,7 @@ const registerDialog = async (page) => {
   */
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/MarketingReport/registerDetail?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/MarketingReport/registerDetail?`)),
     page.click(dialogSelector)
   ])
   await page.click("#close-dialog")
@@ -90,12 +83,9 @@ const firstDepositDialog = async (page) => {
   */
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/MarketingReport/firstDepositDetail?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(
+      urlIncludes(`/api/MarketingReport/firstDepositDetail?`)
+    ),
     page.click(dialogSelector)
   ])
   await page.click("#close-dialog")
@@ -105,12 +95,7 @@ const searchAgent = async (page, agent) => {
   await page.fill(`input[name="agentUsername"]`, agent.username)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/MarketingReport?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/MarketingReport?`)),
     page.click(`button[type="submit"]`)
   ])
 }

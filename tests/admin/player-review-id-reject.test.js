@@ -8,6 +8,7 @@ import {
   searchPlatform,
   updatePlatform
 } from "./platform-list-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -77,12 +78,7 @@ const searchPlayer = async (page, player) => {
   await page.fill(usernameSelector, player.username)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/playeridentity?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/playeridentity?`)),
     page.click(`button[type="submit"]`)
   ])
 }

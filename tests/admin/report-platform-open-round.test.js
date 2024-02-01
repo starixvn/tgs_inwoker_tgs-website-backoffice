@@ -6,6 +6,7 @@ import { fillDatePicker } from "../fill.js"
 import { selectByValue, selectByLabel } from "../page/select.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -43,12 +44,7 @@ const findOpenRound = async (page, externalRoundId, sboGameProvider) => {
   await page.fill(`input[name="externalRoundId"]`, externalRoundId)
   await selectByValue(page, `select[name="gameProviderId"]`, sboGameProvider.id)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`externalRoundId=${externalRoundId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`externalRoundId=${externalRoundId}`)),
     page.click(`button[type="submit"]`)
   ])
 }

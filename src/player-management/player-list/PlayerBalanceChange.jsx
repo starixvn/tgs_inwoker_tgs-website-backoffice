@@ -177,7 +177,7 @@ const SearchBar = ({
   )
 }
 
-//TODO:1.40 new balance change api has same columns?
+//TODO:1.41 new balance change api has same columns?
 const useColumns = ({ items = [] }) =>
   useMemo(
     () => [
@@ -249,15 +249,12 @@ const Deposited = "Deposited"
 
 const Withdrawal = "Withdrawal"
 const WithdrawLock = "WithdrawLock"
-
 const WithdrawCommit = "WithdrawCommit"
 
 const Transfer = "Transfer"
-
 const TransferRollback = "TransferRollback"
 
 const ReceiveCommit = "ReceiveCommit"
-
 const ReceiveRollback = "ReceiveRollback"
 
 const isDepositOrWithdrawal = (value) =>
@@ -350,7 +347,7 @@ const AdjustResettledBetManualTrans = {
 const CancelWithdrawal = "CancelWithdrawal"
 const WithdrawRollback = "WithdrawRollback"
 
-//TODO:1.40 able to rm some game related item?
+//TODO:1.41 able to rm some game related item?
 export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTransactionTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
@@ -449,7 +446,7 @@ export const PlayerTransactionTypeSelect = ({ placeholder, ...props }) => {
   return <Select placeholder={placeholder} options={options} {...props} />
 }
 
-//TODO:1.40 able to rm game related item?
+//TODO:1.41 able to rm game related item?
 export const PlayerTransactionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Deposit:
@@ -460,6 +457,9 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <WithdrawAndCanceledTrans />
     case WithdrawCommit:
       return <WithdrawCompletedTrans />
+    case CancelWithdrawal:
+    case WithdrawRollback:
+      return <WithdrawCanceledTrans />
     case Transfer:
       return <TransferAndCanceledTrans />
     case TransferRollback:
@@ -502,9 +502,6 @@ export const PlayerTransactionTypeLabel = ({ value = "" }) => {
       return <Trans {...DividendAllAgentRebateTrans} />
     case AdjustResettledBetManual:
       return <Trans {...AdjustResettledBetManualTrans} />
-    case CancelWithdrawal:
-    case WithdrawRollback:
-      return <WithdrawCanceledTrans />
     default:
       return value
   }

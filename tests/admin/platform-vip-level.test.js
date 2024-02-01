@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { random } from "lodash-es"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -111,28 +112,36 @@ const editVipLevel = async (page) => {
     `${vipLevel.lotteryRebate}`
   )
 
+  //TODO: check if enabled?
+  let enableWithdrawTransactionsPerDayLocator = page.locator(
+    `${EditVipDialogSelector} input[type="checkbox"][name="enable-withdrawTransactionsPerDay"]`
+  )
+  let isEnableWithdrawTransactionsPerDay =
+    await enableWithdrawTransactionsPerDayLocator.isChecked()
+  if (!isEnableWithdrawTransactionsPerDay) {
+    await enableWithdrawTransactionsPerDayLocator.check({ force: true })
+  }
   await page.fill(
     `${EditVipDialogSelector} input[name="withdrawTransactionsPerDay"]`,
     `${vipLevel.withdrawTransactionsPerDay}`
   )
 
+  let enableWithdrawTotalAmountPerDayLocator = page.locator(
+    `${EditVipDialogSelector} input[type="checkbox"][name="enable-withdrawTotalAmountPerDay"]`
+  )
+  let isEnableWithdrawTotalAmountPerDay =
+    await enableWithdrawTotalAmountPerDayLocator.isChecked()
+  if (!isEnableWithdrawTotalAmountPerDay) {
+    await enableWithdrawTotalAmountPerDayLocator.check({ force: true })
+  }
   await page.fill(
     `${EditVipDialogSelector} input[name="withdrawTotalAmountPerDay"]`,
     `${vipLevel.withdrawTotalAmountPerDay}`
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/vipLevel/${id}`) &&
-        response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/vipLevel?`) && response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/vipLevel/${id}`)),
+    page.waitForResponse(urlIncludes(`/api/vipLevel?`)),
     page.click(`#edit-vip-level-dialog button[type="submit"]`)
   ])
 

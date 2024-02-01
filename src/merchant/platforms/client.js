@@ -12,10 +12,9 @@ import { MerchantStatus } from "../MerchantStatus"
 
 const API = "/api/brand"
 
-export const useBrandList = ({
-  hideArchieved = true,
-  ...searchParams
-} = {}) => {
+export const useBrandList = (searchParams, options) => {
+  const DefaultHideArchieved = true
+  let hideArchieved = options?.hideArchieved ?? DefaultHideArchieved
   let url = searchParams ? urlWith(searchParams, API) : ""
 
   let { data, ...rest } = useGet(url)

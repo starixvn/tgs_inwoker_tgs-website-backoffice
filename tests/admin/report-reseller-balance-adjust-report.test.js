@@ -4,6 +4,7 @@ import { expect } from "chai"
 import numeral from "numeral"
 import { selectRandomOption } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -43,12 +44,9 @@ test("view reseller balance adjust report", async ({
   await page.fill(`${playerAdjustDialog} input[name="user"]`, player.username)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/adjust-wallet/player/${platform.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(
+      urlIncludes(`/api/adjust-wallet/player/${platform.id}`)
+    ),
     page.click(`${playerAdjustDialog} button[type="submit"]`)
   ])
 
@@ -65,12 +63,9 @@ test("view reseller balance adjust report", async ({
   await page.fill(`${agentAdjustDialog} input[name="user"]`, agent.username)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/adjust-wallet/agent/${platform.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(
+      urlIncludes(`/api/adjust-wallet/agent/${platform.id}`)
+    ),
     page.click(`${agentAdjustDialog} button[type="submit"]`)
   ])
 
@@ -84,5 +79,6 @@ const gotoResellerBalanceAdjustReportPage = async (page, platformCode) => {
   await page.goto("/resellerreport/balanceadjustreport", {
     waitUntil: "networkidle"
   })
+  console.warn("TODO: select reseller by id or code")
   await selectRandomOption(page, `#page-merchant-bar [name="resellerId"]`)
 }

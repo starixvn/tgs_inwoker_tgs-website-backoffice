@@ -76,6 +76,7 @@ import {
   TotalWithdrawAmountTrans
 } from "../../trans/Field"
 
+//TODO:1.41 rm player.jsx
 export const Key = "player"
 
 export const Tab = ({ ...props }) => {
@@ -146,75 +147,6 @@ const UpdatePlayerInfoPanel = ({
       player
     )
     setSubmit(toUpdatePlayerFormData(formData))
-  }
-
-  return (
-    <TabPanel tabId={Key} {...props}>
-      {error && <AlertDialog {...error} onClickClose={reset} />}
-      <FormProvider {...formMethods}>
-        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-          <EditForm
-            brandId={brandId}
-            brand={brand}
-            playerCode={playerCode}
-            player={player}
-            showParentUsername={showParentUsername}
-            isLoading={isLoading}
-            onClickClose={() => {
-              reset()
-              onClickClose?.()
-            }}
-          />
-        </form>
-      </FormProvider>
-    </TabPanel>
-  )
-}
-
-//TODO:1.40 > rm OldPlayerInfoPanel
-const OldPlayerInfoPanel = ({
-  brandId,
-  brand,
-  playerCode = "",
-  player: { birthdate = "", ...player },
-  showParentUsername,
-  onSubmitted,
-  onClickClose,
-  ...props
-}) => {
-  let formMethods = useForm({
-    defaultValues: clone({
-      birthdate: parse(birthdate, "yyyy/MM/dd", new Date()),
-      ...player
-    })
-  })
-
-  let [submitData, setSubmit] = useState()
-  let { isLoading, result, error, mutate } = useEditPlayerInfo(
-    playerCode,
-    submitData
-  )
-
-  const reset = () => {
-    mutate(null, false)
-    setSubmit(undefined)
-  }
-
-  useEffect(() => {
-    if (result && !error) {
-      reset()
-      onSubmitted?.()
-    }
-  }, [result])
-
-  const onSubmit = ({ birthdate, ...data } = {}) => {
-    if (isValid(birthdate)) {
-      birthdate = defaultFormatDate(birthdate)
-    }
-    setSubmit({
-      birthdate,
-      ...data
-    })
   }
 
   return (

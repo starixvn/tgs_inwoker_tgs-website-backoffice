@@ -41,6 +41,11 @@ import {
   usePromotionBucketTypeNotSpecifyTrans
 } from "../../../trans/Promotion"
 import { MultipliersTrans } from "../../../trans/Field"
+import { isEmpty, isNil } from "lodash-es"
+import { either, complement } from "ramda"
+
+let isNilOrEmpty = either(isNil, isEmpty)
+let notEmpty = complement(isNilOrEmpty)
 
 const FirstDeposit = "FirstDeposit" //Account First Deposit-Lifetime only
 const AccountFirstDeposit = "AccountFirstDeposit" //Account First Deposit-First deposit only
@@ -69,6 +74,23 @@ const DepositRewardMain = (props) => (
 
 const Content = ContentSetting
 
+const BucketTypeSelect = ({
+  name = "rule.bucketTypes[0]",
+  brandId,
+  disabled,
+  bucketTypePlaceholder
+}) => {
+  return (
+    <PlatformBucketSelect
+      name={name}
+      defaultValue=""
+      platformId={brandId}
+      disabled={disabled}
+      placeholder={bucketTypePlaceholder}
+    />
+  )
+}
+
 const DepositPaymentRewardRule = ({ readOnly }) => {
   let brandId = usePromotionBrandId()
   let {
@@ -91,9 +113,8 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
       <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <BucketTypeLabel />
-      <PlatformBucketSelect
-        name="rule.bucketTypes[0]"
-        platformId={brandId}
+      <BucketTypeSelect
+        brandId={brandId}
         disabled={disabled}
         placeholder={bucketTypePlaceholder}
       />
@@ -175,9 +196,8 @@ const DepositRewardRule = ({ readOnly }) => {
       <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <BucketTypeLabel />
-      <PlatformBucketSelect
-        name="rule.bucketTypes[0]"
-        platformId={brandId}
+      <BucketTypeSelect
+        brandId={brandId}
         disabled={disabled}
         placeholder={bucketTypePlaceholder}
       />
@@ -291,9 +311,8 @@ const DefaultRule = ({ readOnly }) => {
       <VipLevelCheckboxGroupField readOnly={readOnly} />
 
       <BucketTypeLabel />
-      <PlatformBucketSelect
-        name="rule.bucketTypes[0]"
-        platformId={brandId}
+      <BucketTypeSelect
+        brandId={brandId}
         disabled={disabled}
         placeholder={bucketTypePlaceholder}
       />
@@ -345,75 +364,6 @@ const DefaultRule = ({ readOnly }) => {
     </FieldValues>
   )
 }
-
-/*
-TODO: auto select all vip?
-const AccountFirstDepositRewardRule = ({ readOnly }) => {
-  let { control } = useFormContext()
-  let totalFunds = useTotalFunds()
-  let brandId = usePromotionBrandId()
-
-  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
-
-  let disabled = readOnly
-  return (
-    <FieldValues>
-      <BucketTypeLabel />
-      <PlatformBucketSelect
-        name="rule.bucketTypes[0]"
-        platformId={brandId}
-        disabled={disabled}
-        placeholder={bucketTypePlaceholder}
-      />
-
-      <NormalLabel>
-        <PromotionBonusPercentageTrans />
-      </NormalLabel>
-      <PercentageNumberInputField
-        name="rule.percentage"
-        registerOptions={{
-          valueAsNumber: true
-        }}
-        max="999"
-        required
-        disabled={disabled}
-      />
-
-      <NormalLabel>
-        <PromotionBonusLimitTrans />
-      </NormalLabel>
-      <NumberInput
-        name="rule.bonusAmountLimit"
-        registerOptions={{
-          valueAsNumber: true
-        }}
-        min="0"
-        max={totalFunds}
-        required
-        disabled={disabled}
-      />
-
-      <NormalLabel>
-        <PromotionTurnoverRequirementTrans />
-      </NormalLabel>
-      <NumberInputField
-        name="rule.turnoverMultiple"
-        registerOptions={{
-          valueAsNumber: true
-        }}
-        min="0"
-        required
-        disabled={disabled}
-        addonAfter={
-          <Button isStatic tabIndex="-1">
-            <MultipliersTrans />
-          </Button>
-        }
-      />
-    </FieldValues>
-  )
-}
-*/
 
 export const Rewards = [
   {

@@ -6,6 +6,7 @@ import { openDialog } from "../page/dialog.js"
 import { selectByValue, selectRandomOption } from "../page/select.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -47,12 +48,7 @@ test("player apply withdraw form", async ({
   await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
 
   let [applyFormResponse] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/Withdraw/player") &&
-        response.status() == 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/Withdraw/player")),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
 

@@ -9,6 +9,7 @@ import {
   searchPlayer
 } from "./player-list-page.js"
 import numeral from "numeral"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -72,12 +73,7 @@ test.skip("view player bucket list", async ({
 
   let BucketItemsDialogSelector = `#bucket-items-dialog`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/bucket/${player.code}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/bucket/${player.code}`)),
     openDialog(page, BucketItemsDialogSelector)
   ])
 
@@ -95,12 +91,7 @@ test.skip("view player bucket list", async ({
 
   let BucketHistoryDialogSelector = `#bucket-history-dialog`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/bucket/history/`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/bucket/history/`)),
     openDialog(page, BucketHistoryDialogSelector)
   ])
 

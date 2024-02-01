@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker"
 import { add, random, last } from "lodash-es"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
+import { urlIncludes } from "../page/response.js"
 
 export const AgentDividendType = {
   OneLayer: "OneLayer",
@@ -15,9 +16,7 @@ export const searchAgent = async (page, username) => {
   await page.fill(inputSelector, username)
 
   let [listResponse] = await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().includes(`/api/agent?`) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/agent?`)),
     page.click(`button[type="submit"]`)
   ])
 }
@@ -85,9 +84,7 @@ export const addAgent = async (page, agentDividendType, agents = []) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith("/api/agent") && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes("/api/agent")),
     page.click(`${AddAgentDialogSelector} button[type="submit"]`)
   ])
 
@@ -98,12 +95,7 @@ export const addAgent = async (page, agentDividendType, agents = []) => {
 export const openViewAgentDialog = async (page, agent) => {
   let dialogSelector = `#view-agent-dialog`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/agent/${agent.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/agent/${agent.id}`)),
     openDialog(page, dialogSelector)
   ])
   return dialogSelector

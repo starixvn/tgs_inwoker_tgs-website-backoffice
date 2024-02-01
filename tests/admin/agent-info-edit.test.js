@@ -9,6 +9,7 @@ import {
   openEditAgentDialog,
   openViewAgentDialog
 } from "./agent-list-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -32,12 +33,7 @@ const editAgent = async (page, agent) => {
 
   await page.fill(`${dialogSelector} input[name="realName"]`, realName)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/agent/info/${agent.id}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/agent/info/${agent.id}`)),
     page.click(
       `${dialogSelector} [aria-labelledby="AgentInfo"] button[type="submit"]`
     )

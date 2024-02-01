@@ -5,8 +5,6 @@ import { fileURLToPath } from "url"
 import fsExtra from "fs-extra"
 import { bankInfoList, findBankInfoIdByType } from "./player.js"
 
-let cache = new Map()
-//TODO: test if cache works?
 export const paymentOptions = async (platformToken, playerToken) => {
   let url = `${api()}/withdraw`
   let headers = {
@@ -14,7 +12,7 @@ export const paymentOptions = async (platformToken, playerToken) => {
     Token: playerToken
   }
 
-  let result = await fetcher(url, { headers, cache })
+  let result = await fetcher(url, { headers })
   return result && result.data
 }
 

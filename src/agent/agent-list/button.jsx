@@ -43,10 +43,6 @@ import { Tabs, TabList, useTabState } from "../../tab"
 import { AgentInfoKey, AgentInfoPanel, AgentInfoTab } from "./AgentInfo"
 import { AgentContactInfoPanel, AgentContactInfoTab } from "./AgentContactInfo"
 import { AgentBankInfoPanel, AgentBankInfoTab } from "./AgentBankInfo"
-import {
-  AgentOperationListPanel,
-  AgentOperationListTab
-} from "./AgentOperationList"
 import { AgentPasswordPanel, AgentPasswordTab } from "./AgentPassword"
 import {
   AgentWithdrawPasswordPanel,
@@ -70,7 +66,6 @@ import AgentType, {
   isAgentTypeCredit
 } from "../AgentType"
 import Textarea from "../../textarea"
-import AgentUpdateType from "./AgentUpdateType"
 import { AgentOneLayerDividendPercentageInputField } from "../AgentOneLayerDividendPercentage"
 import {
   AgentLiveDealerRebatePercentageInputField,
@@ -101,7 +96,6 @@ import {
   AgentBalanceChangePanel,
   AgentBalanceChangeTab
 } from "./AgentBalanceChange"
-import { isAgentConfigRequired } from "../AgentConfigStatus"
 import { isDev } from "../../env"
 import { AgentMultipleLayerProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { AgentDomainListTab, AgentDomainListPanel } from "./AgentDomainList"
@@ -109,7 +103,6 @@ import {
   isAgentProfitSharingOneLayer,
   isAgentProfitSharingMultipleLayer
 } from "../AgentProfitSharingType"
-import { useBrand } from "../../merchant/platforms/client"
 import { AgentHistoryListPanel, AgentHistoryListTab } from "./AgentHistoryList"
 import { diff } from "../../object/diff"
 import {
@@ -722,99 +715,6 @@ const UpdateConfigDialog = ({
       <ConfigFormBody
         record={agent}
         agentProfitSharingType={agentProfitSharingType}
-      />
-    </FormDialog>
-  )
-}
-
-//TODO:1.40 > rm OldConfigDialog
-const OldConfigDialog = ({
-  brandId,
-  agentId,
-  agentProfitSharingType,
-  onSubmitted,
-  dialog
-}) => {
-  let {
-    isLoading: isLoadingAgent,
-    data: agent,
-    error: loadingAgentError,
-    mutate: mutateAgent,
-    deleteCache: deleteAgentCache
-  } = useAgent(agentId)
-
-  let [formData, setSubmit] = useState()
-  let { result, error, mutate, deleteCache, isLoading } = useUpdateAgent(
-    agentId,
-    formData
-  )
-
-  let title = useTrans({
-    zh: "比例配制",
-    en: "Config Agent"
-  })
-
-  if (isLoadingAgent) {
-    return <LoadingBackdrop {...dialog} />
-  }
-
-  if (loadingAgentError) {
-    return <AlertDialog {...loadingAgentError} onClickClose={dialog.hide} />
-  }
-
-  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
-  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
-
-  const onSubmit = (data) => {
-    setSubmit({
-      updateType: AgentUpdateType.Info,
-      brandId,
-      ...agent,
-      ...data
-    })
-  }
-
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
-  }
-
-  return (
-    <FormDialog
-      id="config-agent-dialog"
-      defaultValues={{
-        ...clone(agent),
-        dividendPercentage: "",
-        liveDealerRebatePercentage: "",
-        slotRebatePercentage: "",
-        cardGameRebatePercentage: "",
-        lotteryRebatePercentage: "",
-        sportsRebatePercentage: "",
-        virtualSportsRebatePercentage: ""
-      }}
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      result={result}
-      error={error}
-      onCloseErrorAlert={reset}
-      onSubmitted={() => {
-        deleteAgentCache()
-        mutateAgent(undefined, false)
-
-        reset()
-        onSubmitted?.()
-      }}
-      title={title}
-      dialog={dialog}
-      maxWidth="100vw"
-      minWidth="60vw"
-      placement="top"
-    >
-      <ConfigFormBody
-        record={agent}
-        oneLayer={oneLayer}
-        multipleLayer={multipleLayer}
       />
     </FormDialog>
   )

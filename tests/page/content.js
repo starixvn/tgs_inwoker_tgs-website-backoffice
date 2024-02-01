@@ -1,4 +1,4 @@
-import { selectRandomOption, selectByLabel } from "./select.js"
+import { selectRandomOption, selectByLabel, selectByValue } from "./select.js"
 
 export const PlatformSelectSelector = `select[name="brandId"]`
 
@@ -16,4 +16,13 @@ export const selectPlatformByCode = async (
   selectSelector = PlatformSelectSelector
 ) => {
   return selectByLabel(page, selectSelector, code)
+}
+
+const LicenseeSelectSelector = `select[name="licenseeId"]`
+export const selectLicenseeById = async (
+  page,
+  id,
+  selectSelector = LicenseeSelectSelector
+) => {
+  return selectByValue(page, selectSelector, id)
 }

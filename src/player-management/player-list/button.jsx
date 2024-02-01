@@ -4,11 +4,11 @@ import { Box, Dialog, useModalState } from "bumbag"
 import { View as ViewMenu, Update as UpdateMenu, Contact } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import {
-  Tab as PlayerTab,
-  Panel as PlayerPanel,
-  EditPanel as PlayerEditTab,
-  Key as PlayerId
-} from "./player"
+  PlayerInfoTab,
+  PlayerInfoPanel,
+  PlayerInfoEditPanel,
+  PlayerInfoKey
+} from "./PlayerInfo.jsx"
 import {
   Tab as ContractTab,
   Panel as ContractPanel,
@@ -16,7 +16,6 @@ import {
 } from "./contact"
 import { Tab as BankTab, Panel as BankPanel } from "./bank"
 import { Tab as BettingTab, Panel as BettingPanel } from "./betting"
-import { PlayerOperationTab, PlayerOperationPanel } from "./PlayerOperation"
 import { Tab as PasswordTab, Panel as PasswordPanel } from "./password"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
@@ -38,8 +37,7 @@ import {
   PlayerBalanceChangeTab
 } from "./PlayerBalanceChange"
 import { PlayerPromotionPanel, PlayerPromotionTab } from "./PlayerPromotion.jsx"
-import { Features, isDev, isFeatureEnabled } from "../../env"
-import textColumn from "../../table/column/textColumn"
+import { isDev } from "../../env"
 import {
   PlayerVipChangeListPanel,
   PlayerVipChangeListTab
@@ -126,7 +124,7 @@ const TabsDialog = ({
 }) => {
   const readonly = !edit
   let tab = useTabState({
-    selectedId: PlayerId
+    selectedId: PlayerInfoKey
   })
 
   let title = useTrans({
@@ -228,10 +226,11 @@ const ViewTabs = ({
   tab
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
+
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
-        <PlayerTab {...tab} />
+        <PlayerInfoTab {...tab} />
         {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <BettingTab {...tab} />
@@ -240,7 +239,7 @@ const ViewTabs = ({
         <PlayerPromotionTab {...tab} />
         <PlayerVipChangeListTab {...tab} />
       </TabList>
-      <PlayerPanel
+      <PlayerInfoPanel
         player={player}
         brand={brand}
         showParentUsername={showParentUsername}
@@ -290,15 +289,16 @@ const EditTabs = ({
   onClickClose
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
+
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
-        <PlayerTab {...tab} />
+        <PlayerInfoTab {...tab} />
         {contactAuth && <ContractTab {...tab} />}
         <BankTab {...tab} />
         <PasswordTab {...tab} />
       </TabList>
-      <PlayerEditTab
+      <PlayerInfoEditPanel
         player={player}
         showParentUsername={showParentUsername}
         brandId={brandId}

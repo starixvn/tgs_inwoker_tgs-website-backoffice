@@ -6,9 +6,11 @@ const API = "api/brandpayment"
 
 export const depositPaymentList = async (brandId, playerCode) => {
   let url = `${host}/${API}/player?brandId=${brandId}&playerCode=${playerCode}`
-  let response = await fetcher.get(url)
+  let response = await fetcher.get(url, {
+    failOnStatusCode: true
+  })
   let result = await response.json()
-  return result
+  return result ?? []
 }
 
 export const firstBankDepositPayment = async (brandId, playerCode) => {

@@ -47,11 +47,6 @@ export const ContactsDialogDisclosure = ({
     return null
   }
 
-  //TODO:1.40 rm !isDev()
-  if (!isDev()) {
-    return null
-  }
-
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
@@ -189,6 +184,7 @@ const ContactRow = ({
   field,
   fieldArray
 }) => {
+  let contactSize = fieldArray.fields.length
   return (
     <Table.Row>
       <Table.Cell>
@@ -215,7 +211,7 @@ const ContactRow = ({
         />
       </Table.Cell>
       <Table.Cell>
-        {index >= ContactsMin && !readOnly && (
+        {contactSize > ContactsMin && !readOnly && (
           <RemoveButton index={index} fieldArray={fieldArray} />
         )}
       </Table.Cell>

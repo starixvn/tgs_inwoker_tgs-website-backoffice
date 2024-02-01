@@ -3,6 +3,7 @@ import { Fixture } from "./auth.js"
 import { selectRandomOption } from "../page/select.js"
 import { selectRandomPlatform } from "../page/content.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -42,12 +43,7 @@ const addInstantMessaging = async (page) => {
   )
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/api/BrandCommunication`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandCommunication`)),
     page.click(`${AddDialogSelector} button[type="submit"]`)
   ])
 }
@@ -78,12 +74,8 @@ const editInstantMessaging = async (page) => {
   )
 
   let id = await page.inputValue(`${EditDialogSelector} input[name="id"]`)
-  let expectedUrl = `/api/BrandCommunication/${id}`
-
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandCommunication/${id}`)),
     page.click(`${EditDialogSelector} button[type="submit"]`)
   ])
 }
@@ -94,12 +86,9 @@ const deleteInstantMessaging = async (page) => {
   await page.waitForSelector(DeleteDialogSelector)
 
   let id = await page.inputValue(`${DeleteDialogSelector} input[name="id"]`)
-  let expectedUrl = `/api/BrandCommunication/${id}`
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandCommunication/${id}`)),
     page.click(`${DeleteDialogSelector} button[type="submit"]`)
   ])
 }

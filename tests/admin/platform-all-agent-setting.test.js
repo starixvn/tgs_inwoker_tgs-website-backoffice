@@ -4,6 +4,7 @@ import clone from "clone-deep"
 import { selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { expect } from "chai"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -12,10 +13,7 @@ test("update all agent settings", async ({ page }) => {
 
   let DialogSelector = "#all-agent-setting-dialog"
   let [allAgentSettingsReponse] = await Promise.all([
-    page.waitForResponse((response) => {
-      let expectedUrl = `/api/BrandAllAgent/${brandId}`
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandAllAgent/${brandId}`)),
     openDialog(page, DialogSelector)
   ])
 
@@ -24,10 +22,7 @@ test("update all agent settings", async ({ page }) => {
   allAgentSetting.switch = !allAgentSetting.switch
   let MainSwitchSelector = `${DialogSelector} #main-switch input[type="checkbox"]`
   await Promise.all([
-    page.waitForResponse((response) => {
-      let expectedUrl = `/api/BrandAllAgent/${brandId}`
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandAllAgent/${brandId}`)),
     page.click(`${MainSwitchSelector} + div.bb-SwitchIcon`)
   ])
 
@@ -51,10 +46,7 @@ test("update all agent settings", async ({ page }) => {
   await page.click(`${HasValidBetSelector} + .bb-CheckboxIcon`)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      let expectedUrl = `/api/BrandAllAgent/${brandId}`
-      return response.url().endsWith(expectedUrl) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/BrandAllAgent/${brandId}`)),
     page.click(`${GameTypeFormSelector} button[type="submit"]`)
   ])
 

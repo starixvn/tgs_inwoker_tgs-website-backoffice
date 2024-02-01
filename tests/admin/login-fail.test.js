@@ -2,6 +2,7 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -19,9 +20,7 @@ test("login fail", async ({ page, adminUsername }) => {
   await page.type(passwordInputSelectot, `${faker.internet.password()}123`)
 
   let [loginResponse] = await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().endsWith("/api/auth") && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes("/api/auth")),
     page.click(`form button[type="submit"]`)
   ])
 

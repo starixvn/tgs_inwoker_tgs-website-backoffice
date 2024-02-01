@@ -16,20 +16,51 @@ export const DefaultCurrencyCode = "CNY"
 // payload: {"type":"CreatePlayer","input":{"username":"samchuang002","pwd":"asdf2440","upper":"","invitationcode":""}}
 // response:
 /*
+TODO: check isCompleted?, return ?
 {
-    "data": {
-        "isCompleted": false,
-        "nextStepType": "InitPhone",
-        "stepResponse": {
-            "uid": "4ulqy5agzhtm",
-            "isnew": true
-        }
-    },
-    "err": 0,
-    "errmsg": "",
-    "errmsgid": null
+  "data": {
+    "isCompleted": true,
+    "nextStepType": null,
+    "stepResponse": {
+      "uid": "4ulzut4rhrd0",
+      "isnew": true
+    }
+  },
+  "err": 0,
+  "errmsg": "",
+  "errmsgid": null
 }
 */
+export const register = async (
+  platformToken,
+  {
+    username = `${faker.person.firstName()}${new Date().getTime()}`,
+    pwd = DefaultPassword
+  }
+) => {
+  let url = `${api()}/player/register`
+  let headers = {
+    "Content-Type": "application/json",
+    "brand-token": platformToken
+  }
+
+  let payload = {
+    type: "CreatePlayer",
+    input: {
+      username,
+      pwd
+    }
+  }
+
+  let result = await fetcher(url, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers
+  })
+
+  return result
+}
+
 export const create = async (
   platformToken,
   {
@@ -41,6 +72,9 @@ export const create = async (
     testplayer = false
   } = {}
 ) => {
+  //TODO: use register instead?
+  // return register(platformToken, { username, pwd })
+
   let payload = {
     username,
     currency,
@@ -139,8 +173,6 @@ export const createAndLogin = async (
   return player
 }
 
-//TODO: able to cache result?
-let cache = new Map()
 export const bankInfoList = async (platformToken, playerToken) => {
   let url = `${api()}/bankinfo`
   let headers = {
@@ -150,8 +182,7 @@ export const bankInfoList = async (platformToken, playerToken) => {
   }
 
   let result = await fetcher(url, {
-    headers,
-    cache
+    headers
   })
   return (result && result.data) || []
 }

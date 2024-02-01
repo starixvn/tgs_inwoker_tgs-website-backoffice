@@ -1,0 +1,19 @@
+kind: Module
+type: container
+name: calculate-worker
+image: pgtgs/calculate-worker:202401190151.12
+services:
+  - name: calculate-worker
+    dependencies:
+      - postgres
+      - redis
+      - nats
+    env:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+    ports:
+      - name: http
+        containerPort: 8080
+        servicePort: 80

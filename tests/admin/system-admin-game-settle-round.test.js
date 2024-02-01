@@ -7,6 +7,7 @@ import { selectByValue, selectByLabel } from "../page/select.js"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -55,12 +56,7 @@ const settleGameRoundBy = async (
   // await selectByLabel(page, `select[name="gameProviderId"]`, "SBOBET")
   await selectByValue(page, `select[name="gameProviderId"]`, sboGameProvider.id)
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`externalRoundId=${externalRoundId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`externalRoundId=${externalRoundId}`)),
     page.click(`button[type="submit"]`)
   ])
 
@@ -127,12 +123,7 @@ const settleGameRoundBy = async (
     : "/adjustclosedround"
 
   let [settleResponse] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().toLowerCase().endsWith(expectedUrl) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(expectedUrl)),
     page.click(`#confirm-dialog button[type="submit"]`)
   ])
   let result = await settleResponse.json()

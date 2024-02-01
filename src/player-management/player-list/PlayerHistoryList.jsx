@@ -30,7 +30,8 @@ import {
   MessengerLabel,
   ViberLabel,
   WhatsappLabel,
-  WeChatLabel
+  WeChatLabel,
+  ZaloTrans
 } from "./contact"
 import { boolean } from "boolean"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
@@ -49,6 +50,7 @@ import { StatusTrans } from "../../trans/Status"
 import {
   BirthdayTrans,
   EmailTrans,
+  ICNumberTrans,
   PhoneTrans,
   RealNameTrans,
   TelegramTrans,
@@ -371,6 +373,7 @@ const LabelValueList = [
   [pipe(getPath, includes("/RealName")), RealNameTrans],
   [pipe(getPath, includes("/Birthdate")), BirthdayTrans],
   [pipe(getPath, includes("/VipId")), VipLevelTrans, VipLevelIdLabel],
+  [pipe(getPath, includes("/IdNumber")), ICNumberTrans],
   [pipe(getPath, includes("/AgentId")), UpperLevelAgentTrans, AgentIdUsername],
   [pipe(getPath, includes("/Remark")), RemarkTrans],
   [
@@ -391,6 +394,7 @@ const LabelValueList = [
   [pipe(getPath, equals("/properties/FacebookMessenger")), MessengerLabel],
   [pipe(getPath, equals("/properties/Line")), LineLabel],
   [pipe(getPath, equals("/properties/WhatsApp")), WhatsappLabel],
+  [pipe(getPath, equals("/properties/Zalo")), ZaloTrans],
 
   [pipe(getPath, equals("/password")), PasswordLabel],
 

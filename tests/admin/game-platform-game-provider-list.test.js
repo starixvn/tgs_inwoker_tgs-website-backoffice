@@ -4,6 +4,7 @@ import { expect } from "chai"
 import { random } from "lodash-es"
 import { selectRandomPlatform } from "../page/content.js"
 import { mapColumnCellTextContents } from "../page/table.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -34,12 +35,7 @@ const searchRandomGameProvider = async (page) => {
   await page.fill(inputSelector, expectedGameProviderName)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/brandgameprovider?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brandgameprovider?`)),
     page.click(`button[type="submit"]`)
   ])
 
@@ -73,18 +69,8 @@ const changeRandomStatus = async (page, list = Object.values(Status)) => {
   await page.waitForSelector(MenuItemSelector)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().endsWith(`/${expectedStatus}`) &&
-        response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/brandgameprovider?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/${expectedStatus}`)),
+    page.waitForResponse(urlIncludes(`/api/brandgameprovider?`)),
     page.click(MenuItemSelector)
   ])
 

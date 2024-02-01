@@ -3,6 +3,7 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import numeral from "numeral"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -33,12 +34,9 @@ const searchPlayer = async (page, player) => {
   await page.fill(usernameSelector, player.username)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/PlayerReport/playersAccountChanges?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(
+      urlIncludes(`/api/PlayerReport/playersAccountChanges?`)
+    ),
     page.click(`button[type="submit"]`)
   ])
 }

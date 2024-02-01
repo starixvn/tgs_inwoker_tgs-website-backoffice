@@ -7,7 +7,7 @@ tasks:
     dependencies:
       - postgres
       - init-migration
-    command: [dotnet, run, --project, ./TgsSeeding]
+    command: [dotnet, run, --project, ./TgsSeeding, -f, net8.0]
   - name: init-migration
     dependencies:
       - init-dotnet-ef

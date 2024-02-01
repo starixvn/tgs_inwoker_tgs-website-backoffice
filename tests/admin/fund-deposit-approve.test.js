@@ -5,6 +5,7 @@ import numeral from "numeral"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { searchByFormId } from "./fund-deposit-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -43,18 +44,8 @@ test("approve player deposit", async ({
   await openDialog(page, VerifyDepositDialogSelector)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/deposit/${formId}`) &&
-        response.status() === 200
-      )
-    }),
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/deposit/${platform.id}?`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/deposit/${formId}`)),
+    page.waitForResponse(urlIncludes(`/api/deposit/${platform.id}?`)),
     page.click(`${VerifyDepositDialogSelector} button[data-type="approve"]`)
   ])
 

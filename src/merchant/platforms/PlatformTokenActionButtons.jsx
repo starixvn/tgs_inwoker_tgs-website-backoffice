@@ -48,6 +48,7 @@ export const PlatformTokenActionButtons = ({ platformId }) => {
         Get Brand Token
       </Button>
       <Button
+        disabled={!data?.token}
         onClick={() => {
           if (data?.token) {
             copy(data?.token)

@@ -5,6 +5,7 @@ import { openDialog } from "../page/dialog.js"
 import { selectByValue } from "../page/select.js"
 import { gotoPlayerListPage, searchPlayer } from "./player-list-page.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -38,12 +39,7 @@ test("player deposit form > apply bank transfer", async ({
 
   let dialogSelector = `#apply-deposit-form-dialog`
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/brandpayment/player") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/brandpayment/player")),
     page.waitForResponse((response) => {
       let url = response.url()
 
@@ -85,12 +81,7 @@ test("player deposit form > apply bank transfer", async ({
   await page.fill(`${dialogSelector} textarea[name="note"]`, form.note)
 
   let [applyFormResponse] = await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes("/api/ManualDeposit/Pulsa") &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes("/api/ManualDeposit/Pulsa")),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
 

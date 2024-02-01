@@ -2,6 +2,7 @@ import { selectPlatformByCode } from "../page/content.js"
 import { selectByLabel, selectRandomOption } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 export const ViewPlayerDialogSelector = `#view-player-dialog`
 
@@ -11,9 +12,7 @@ export const searchPlatform = async (page, keyword) => {
   await page.fill(inputSelector, keyword)
 
   let [listResponse] = await Promise.all([
-    page.waitForResponse((response) => {
-      return response.url().includes(`/api/brand?`) && response.status() === 200
-    }),
+    page.waitForResponse(urlIncludes(`/api/brand?`)),
     page.click(`button[type="submit"]`)
   ])
   let listResult = await listResponse.json()
@@ -46,12 +45,7 @@ export const updatePlatform = async (
   }
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/brand/${platformId}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/brand/${platformId}`)),
     page.click(`${dialogSelector} button[type="submit"]`)
   ])
 }

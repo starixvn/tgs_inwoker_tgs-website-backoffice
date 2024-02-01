@@ -9,6 +9,7 @@ import {
   openViewPlayerDialog
 } from "./player-list-page.js"
 import { faker } from "@faker-js/faker"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -34,12 +35,7 @@ const updatePlayerStatus = async (page, player, status) => {
   await selectByValue(page, `${dialogSelector} select[name="status"]`, status)
 
   await Promise.all([
-    page.waitForResponse((response) => {
-      return (
-        response.url().includes(`/api/player/status/${player.code}`) &&
-        response.status() === 200
-      )
-    }),
+    page.waitForResponse(urlIncludes(`/api/player/status/${player.code}`)),
     page.click(
       `${dialogSelector} [aria-labelledby="player"] button[type="submit"]`
     )
