@@ -109,11 +109,18 @@ const VerifyFundWithdrawDialog = ({
     return <AlertDialog {...fundWithdrawFormError} {...dialog} />
   }
 
-  const onSubmit = ({ remark, reviewResponse, brandPaymentId, ...rest }) => {
+  const onSubmit = ({
+    remark,
+    playerRemark,
+    reviewResponse,
+    brandPaymentId,
+    ...rest
+  }) => {
     setSubmit({
       brandId,
       brandPaymentId,
       remark,
+      playerRemark,
       reviewResponse
     })
   }
@@ -158,6 +165,7 @@ const VerifyFundWithdrawDialog = ({
             let formData = {
               brandId,
               remark: getValues("remark"),
+              playerRemark: getValues("playerRemark"),
               reviewResponse: ReviewFund.Reject
             }
             setSubmit(formData)

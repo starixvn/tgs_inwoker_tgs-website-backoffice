@@ -140,3 +140,25 @@ export const AgentMarketingReport = {
 export const AgentMarketingReportTrans = () => (
   <Trans {...AgentMarketingReport} />
 )
+
+const AgentProfitSharingInterval = {
+  zh: "代理分红周期",
+  en: "Agent Profit Sharing Interval"
+}
+export const AgentProfitSharingIntervalTrans = () => (
+  <Trans {...AgentProfitSharingInterval} />
+)
+
+const AllAgentDividendSetting = {
+  zh: "全民代理分紅設置",
+  en: "All Agent Dividend setting"
+}
+export const AllAgentDividendSettingTrans = () => (
+  <Trans {...AllAgentDividendSetting} />
+)
+
+const AgentContractName = {
+  zh: "名稱",
+  en: "Contract name"
+}
+export const AgentContractNameTrans = () => <Trans {...AgentContractName} />

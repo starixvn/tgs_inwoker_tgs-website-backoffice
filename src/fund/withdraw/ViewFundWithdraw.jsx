@@ -225,6 +225,12 @@ export const FormBody = ({ brandId, record, readonly }) => {
           label={<Trans zh="客服备註" en="CS Note" />}
           disabled={disabled}
         />
+
+        <TextareaField
+          name="playerRemark"
+          label={<Trans zh="玩家备註" en="Player Note" />}
+          disabled={disabled}
+        />
       </FieldStack>
       <Input type="hidden" value={brandId} />
     </>

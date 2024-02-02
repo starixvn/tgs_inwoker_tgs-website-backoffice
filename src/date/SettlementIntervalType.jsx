@@ -16,6 +16,11 @@ const WeeklyTrans = {
   en: "Every Week"
 }
 
+const Biweekly = "Biweekly"
+const BiweeklyTrans = {
+  
+}
+
 const Monthly = "Monthly"
 const MonthlyTrans = {
   zh: "每月",

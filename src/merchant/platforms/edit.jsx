@@ -75,6 +75,7 @@ import {
 } from "../../trans/Action"
 import { BasicInformationTrans } from "../../trans/Field"
 import copy from "clipboard-copy"
+import { AgentProfitSharingIntervalTrans } from "../../trans/Agent"
 
 export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -600,7 +601,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
         )}
 
         <NormalLabel>
-          <Trans zh="代理分红周期" en="Agent Profit Sharing Interval" />
+          <AgentProfitSharingIntervalTrans />
         </NormalLabel>
         <Box alignY="center">
           <Set orientation="horizontal">
