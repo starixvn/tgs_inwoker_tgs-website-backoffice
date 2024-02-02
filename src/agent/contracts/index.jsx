@@ -85,7 +85,7 @@ const Body = () => {
           }}
         />
         <Box>
-          <AddContractDialogDisclosure onSubmitted={reset} />
+          <AddContractDialogDisclosure brandId={brandId} onSubmitted={reset} />
         </Box>
       </Level>
       <Box flex="1 0 50%">
