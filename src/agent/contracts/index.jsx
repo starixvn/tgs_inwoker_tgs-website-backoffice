@@ -23,6 +23,7 @@ import { useFormContext, useForm, FormProvider } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
 import textColumn from "../../table/column/textColumn"
+import { AddContractDialogDisclosure } from "./AddContractDialog"
 
 export { Code }
 
@@ -83,6 +84,9 @@ const Body = () => {
             mutate(null, true)
           }}
         />
+        <Box>
+          <AddContractDialogDisclosure onSubmitted={reset} />
+        </Box>
       </Level>
       <Box flex="1 0 50%">
         <AutoSizer disableWidth={true}>
