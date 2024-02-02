@@ -13,8 +13,16 @@ import {
   usePlatformId,
   usePlatformPageContentWidth
 } from "../../page/PlatformPageContent"
-import { AllAgentDividendSettingTrans } from "../../trans/Agent"
+import {
+  AgentContractNameTrans,
+  AllAgentDividendSettingTrans
+} from "../../trans/Agent"
 import { usePlatformContracts } from "./client"
+import AutoSizer from "react-virtualized-auto-sizer"
+import { useFormContext, useForm, FormProvider } from "react-hook-form"
+import { InputField } from "../../input/Input"
+import SearchButton from "../../button/SearchButton"
+import textColumn from "../../table/column/textColumn"
 
 export { Code }
 
@@ -37,10 +45,13 @@ const Body = () => {
   let brandId = usePlatformId()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable()
-  //TODO: required brandId?
-  let { isLoading, data, error, mutate, deleteCache } = usePlatformContracts({
-    brandId
-  })
+
+  let { isLoading, data, error, mutate, deleteCache } = usePlatformContracts(
+    toApiParams({
+      ...state,
+      brandId
+    })
+  )
 
   const reset = () => {
     mutate(null)
@@ -50,18 +61,47 @@ const Body = () => {
   useEffect(() => {
     reset()
     setState({ pageIndex: 0, brandId })
-  }, [brandId, brand])
+  }, [brandId, brandId])
   //TODO: fetch api
+
+  let items = data?.items
+  let columns = useColumns({
+    items
+  })
 
   let pageWidth = usePlatformPageContentWidth()
 
   return (
     <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate(null, true)
+          }}
+        />
+      </Level>
       <Box flex="1 0 50%">
         <AutoSizer disableWidth={true}>
           {({ height }) => {
             let width = pageWidth
-            return "TODO: contracts & contract table"
+            return (
+              <Table
+                columns={columns}
+                data={items}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(state?.pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                stickyHead
+              />
+            )
           }}
         </AutoSizer>
       </Box>
@@ -69,4 +109,38 @@ const Body = () => {
   )
 }
 
-const useColumns = ({ items = [] }) => {}
+//TODO: filters
+const SearchBar = ({ search, isLoading }) => {
+  let formMethods = useForm({
+    defaultValues: {}
+  })
+
+  const onSubmit = (data) => search?.(data)
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Set>
+          {/*
+          TODO: filters
+           <InputField name=""/> 
+           */}
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
+      </form>
+    </FormProvider>
+  )
+}
+
+const useColumns = ({ items = [] }) => {
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        accessor: "name",
+        Header: <AgentContractNameTrans />,
+        disableSortBy: true
+      })
+    ]
+    return columns
+  })
+}

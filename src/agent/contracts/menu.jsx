@@ -1,7 +1,7 @@
 import React from "react"
 import { Locales, getTrans } from "../../i18n"
 
-export const Code = "contacts"
+export const Code = "contracts"
 
 export const Update = "update"
 

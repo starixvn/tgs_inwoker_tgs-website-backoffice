@@ -149,9 +149,9 @@ export const AgentProfitSharingIntervalTrans = () => (
   <Trans {...AgentProfitSharingInterval} />
 )
 
-const AllAgentDividendSetting = {
+export const AllAgentDividendSetting = {
   zh: "全民代理分紅設置",
-  en: "All Agent Dividend setting"
+  en: "All Agent Dividend Setting"
 }
 export const AllAgentDividendSettingTrans = () => (
   <Trans {...AllAgentDividendSetting} />
