@@ -24,7 +24,7 @@ import { useFundWithdrawForm, useVerifyFundWithdrawForm } from "./client"
 import ReviewFund from "../ReviewFund"
 import { AuditAutoClearBucketDialogDisclosure } from "./AuditAutoClearBucketDialog"
 import { isDev } from "../../env"
-import { RejectTrans } from "../../trans/Action"
+import { RejectTrans, useApproveTrans } from "../../trans/Action"
 
 export const FundWithdrawVerified = "FundWithdrawVerified"
 
@@ -81,10 +81,7 @@ const VerifyFundWithdrawDialog = ({
     en: "Review Withdraw"
   })
 
-  let approveLabel = useTrans({
-    zh: "通过",
-    en: "Approve"
-  })
+  let approveLabel = useApproveTrans()
 
   let formMethods = useForm()
   let { setValue, getValues } = formMethods

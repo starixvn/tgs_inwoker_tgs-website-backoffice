@@ -182,10 +182,17 @@ const OnlinePlayerCount = {
 }
 export const OnlinePlayerCountTrans = () => <Trans {...OnlinePlayerCount} />
 
-//TODO
 const Top10Players = {
   zh: "十大玩家",
   en: "Top 10 Players",
   vi: "10 người chơi hàng đầu"
 }
 export const Top10PlayersTrans = () => <Trans {...Top10Players} />
+
+const PlayerNote = {
+  zh: "玩家备註",
+  en: "Player Note",
+  vi: "ghi chú khách hàng"
+}
+export const PlayerNoteTrans = () => <Trans {...PlayerNote} />
+export const usePlayerNoteTrans = () => useTrans(PlayerNote)

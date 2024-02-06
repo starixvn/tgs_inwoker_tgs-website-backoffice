@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react"
+import { css, Global } from "@emotion/react"
 import {
   Spinner,
   useModalState,
@@ -21,7 +22,12 @@ import { useVerifyFundWithdrawForm } from "./client"
 import { isDev } from "../../env"
 import Input from "../../input/Input"
 import FundWithdrawStatus from "./FundWithdrawStatus"
-import { RejectTrans } from "../../trans/Action"
+import { RejectTrans, useApproveTrans } from "../../trans/Action"
+import {
+  ConfirmPaidTrans,
+  ReviewWaitingPaymentTrans,
+  useReviewWaitingPaymentTrans
+} from "../../trans/Payment"
 
 export const FundWithdrawPaidDialogDisclosure = ({
   brandId,
@@ -44,7 +50,7 @@ export const FundWithdrawPaidDialogDisclosure = ({
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans zh="审核待支付" en="Review Waiting Payment" />
+        <ReviewWaitingPaymentTrans />
       </Disclosure>
       {dialog.visible && (
         <PaidDialog
@@ -59,15 +65,9 @@ export const FundWithdrawPaidDialogDisclosure = ({
 }
 
 const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
-  let title = useTrans({
-    zh: "审核待支付",
-    en: "Review Paid"
-  })
+  let title = useReviewWaitingPaymentTrans()
 
-  let approveLabel = useTrans({
-    zh: "通过",
-    en: "Approve"
-  })
+  let approveLabel = useApproveTrans()
 
   let formMethods = useForm({
     defaultValues: {
@@ -114,7 +114,6 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
           isLoading={isLoading}
           disabled={isLoading}
           onClick={() => {
-            //TODO: confirm reviewResponse
             setValue("reviewResponse", "Reject")
           }}
           palette="danger"
@@ -130,17 +129,16 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
       onCloseErrorAlert={reset}
       onSubmitted={() => {
         onSubmitted?.()
-        //TODO: need event?
-        //fireVerifiedEvent()
       }}
       title={title}
       dialog={dialog}
+      css={css`
+        & .bb-DialogHeader {
+          padding-right: 2rem;
+        }
+      `}
     >
-      <Alert
-        title={<Trans zh={`确认已支付？`} en={`Confirm paid？`} />}
-        type="warning"
-        variant=""
-      />
+      <Alert title={<ConfirmPaidTrans />} type="warning" variant="" />
       <Input type="hidden" name="brandId" />
       <Input type="hidden" name="formId" />
       {/* <Input type="hidden" name="reviewResponse" value="Paid" /> */}

@@ -332,3 +332,20 @@ const DepositApprovalRate = {
   vi: "Tỷ lệ nạp thành công"
 }
 export const DepositApprovalRateTrans = () => <Trans {...DepositApprovalRate} />
+
+const ReviewWaitingPayment = {
+  zh: "审核待支付",
+  en: "Review Waiting Payment",
+  vi: "khoản thanh toán đang chờ xử lý"
+}
+export const ReviewWaitingPaymentTrans = () => (
+  <Trans {...ReviewWaitingPayment} />
+)
+export const useReviewWaitingPaymentTrans = () => useTrans(ReviewWaitingPayment)
+
+const ConfirmPaid = {
+  zh: "确认已支付？",
+  en: "Confirm paid？",
+  vi: "xác nhận thanh toán ?"
+}
+export const ConfirmPaidTrans = () => <Trans {...ConfirmPaid} />

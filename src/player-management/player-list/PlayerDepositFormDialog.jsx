@@ -53,6 +53,7 @@ import {
   useDepositFormTrans
 } from "../../trans/User"
 import { useDepositAmountTrans } from "../../trans/Payment"
+import { usePlayerNoteTrans } from "../../trans/Player"
 
 export const PlayerDepositFormDialogDisclosure = ({
   brandId,
@@ -598,10 +599,7 @@ const AmountInputField = ({ ...props }) => {
 
 const noteUsedConfig = [BankType.Bank, BankType.EWallet, BankType.Pulsa]
 const NoteInputField = ({ bankType, ...props }) => {
-  let label = useTrans({
-    zh: "玩家备注",
-    en: "Player Note"
-  })
+  let label = usePlayerNoteTrans()
 
   if (!noteUsedConfig.includes(bankType)) {
     return null

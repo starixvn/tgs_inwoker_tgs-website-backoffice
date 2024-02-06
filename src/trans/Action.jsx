@@ -202,9 +202,18 @@ const Delete = {
 export const DeleteTrans = () => <Trans {...Delete} />
 export const useDeleteTrans = () => useTrans(Delete)
 
-const Reject = {
+const Approve = {
+  zh: "通过",
+  en: "Approve",
+  vi: "thông qua"
+}
+export const ApproveTrans = () => <Trans {...Approve} />
+export const useApproveTrans = () => useTrans(Approve)
+
+export const Reject = {
   zh: "拒绝",
-  en: "Reject"
+  en: "Reject",
+  vi: "từ chối"
 }
 export const RejectTrans = () => <Trans {...Reject} />
 export const useRejectTrans = () => useTrans(Reject)

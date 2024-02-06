@@ -203,3 +203,11 @@ const Total = {
   vi: "Tổng"
 }
 export const TotalTrans = () => <Trans {...Total} />
+
+const CSNote = {
+  zh: "客服备註",
+  en: "CS Note",
+  vi: "ghi chú nội bộ"
+}
+export const CSNoteTrans = () => <Trans {...CSNote} />
+export const useCSNoteTrans = () => useTrans(CSNote)

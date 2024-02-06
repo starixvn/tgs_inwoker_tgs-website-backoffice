@@ -16,7 +16,7 @@ import { NormalLabel } from "../../form/Label"
 import { FormBody } from "./ViewFundDeposit"
 import ReviewFund from "../ReviewFund"
 import { useFundDepositFormData } from "./useFundDepositFormData"
-import { RejectTrans } from "../../trans/Action"
+import { RejectTrans, useApproveTrans } from "../../trans/Action"
 
 export const FundDepositVerified = "FundDepositVerified"
 
@@ -73,10 +73,7 @@ const VerifyFundDepositDialog = ({
     en: "Review Deposit"
   })
 
-  let approveLabel = useTrans({
-    zh: "通过",
-    en: "Approve"
-  })
+  let approveLabel = useApproveTrans()
 
   let formMethods = useForm()
   let { setValue } = formMethods
