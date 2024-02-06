@@ -60,6 +60,7 @@ import {
   useUserNameTrans
 } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
+import { UpgradePlayerToAgentDialogDisclosure } from "./UpgradePlayerToAgentDialog"
 
 export { Code }
 
@@ -461,6 +462,12 @@ const useColumns = ({
                 player={player}
                 playerCode={playerCode}
                 dialogId="apply-withdraw-form-dialog"
+              />
+              <UpgradePlayerToAgentDialogDisclosure
+                brandId={brandId}
+                brand={brand}
+                playerCode={playerCode}
+                player={player}
               />
             </Set>
           )

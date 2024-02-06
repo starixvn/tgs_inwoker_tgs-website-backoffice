@@ -348,3 +348,14 @@ export const usePlayerPayment = (playerCode) => {
   let url = playerCode ? `${API}/payment/${playerCode}` : ""
   return useGet(url)
 }
+
+//TODO: integrate with api
+export const useUpgradePlayerToAgent = (playerCode) => {
+  //TODO: rm usePlayer fake api
+  let { isLoading, data, ...rest } = usePlayer(playerCode)
+  return {
+    isLoading,
+    result: !!data,
+    ...rest
+  }
+}
