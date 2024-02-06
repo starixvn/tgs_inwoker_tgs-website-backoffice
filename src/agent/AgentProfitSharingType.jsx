@@ -17,22 +17,10 @@ const MultipleLayerTrans = {
   en: "Tiered RevShare"
 }
 
-const OnePercentage = " OnePercentage"
-const OnePercentageTrans = {
-  zh: "全民代理(混合式)",
-  en: "All Agent-Hybrid"
-}
-
 export const isAgentProfitSharingOneLayer = (value) => value === OneLayer
 
 export const isAgentProfitSharingMultipleLayer = (value) =>
   value === MultipleLayer
-
-export const isAgentProfitSharingTypeGroup = (value) =>
-  isAgentProfitSharingOneLayer(value) ||
-  isAgentProfitSharingMultipleLayer(value)
-
-export const isAllAgentHybrid = (value) => value === OnePercentage
 
 export const AgentProfitSharingTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTrans({
@@ -49,10 +37,6 @@ export const AgentProfitSharingTypeSelect = ({ placeholder, ...props }) => {
     {
       label: useTrans(MultipleLayerTrans),
       value: MultipleLayer
-    },
-    {
-      label: useTrans(OnePercentageTrans),
-      value: OnePercentage
     }
   ]
 
@@ -65,8 +49,6 @@ export const AgentProfitSharingTypeLabel = ({ value = "" }) => {
       return <Trans {...OneLayerTrans} />
     case MultipleLayer:
       return <Trans {...MultipleLayerTrans} />
-    case OnePercentage:
-      return <Trans {...OnePercentageTrans} />
     default:
       return value
   }

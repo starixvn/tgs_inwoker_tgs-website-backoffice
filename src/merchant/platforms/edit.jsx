@@ -62,9 +62,7 @@ import Checkbox from "../../checkbox"
 import {
   AgentProfitSharingTypeLabel,
   AgentProfitSharingTypeSelect,
-  isAgentProfitSharingMultipleLayer,
-  isAgentProfitSharingTypeGroup,
-  isAllAgentHybrid
+  isAgentProfitSharingMultipleLayer
 } from "../../agent/AgentProfitSharingType"
 import { PlatformTokenActionButtons } from "./PlatformTokenActionButtons"
 import { TimezoneSelect, SystemZoneOffset } from "../../date/TimeZone"
@@ -129,11 +127,6 @@ const CurrentAddDialog = ({ licenseeId, onSubmitted, dialog }) => {
 
   const onSubmit = (data) => {
     let formData = normalizeFormData(data)
-
-    //TODO: rm when api fixed
-    if (isDev() && isAllAgentHybrid(data?.agentDividendType)) {
-      Reflect.set(formData, "settlementIntervalType", "Daily")
-    }
 
     setSubmit(formData)
   }
@@ -608,30 +601,26 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           </>
         )}
 
-        {isAgentProfitSharingTypeGroup(agentDividendType) && (
-          <>
-            <NormalLabel>
-              <AgentProfitSharingIntervalTrans />
-            </NormalLabel>
-            <Box alignY="center">
-              <Set orientation="horizontal">
-                <SettlementIntervalTypeSelect
-                  name={SettlementIntervalTypeFieldName}
-                  required
-                  disabled={readonly}
-                />
-                {isMonthly && <MonthlyDaySelect name="settlementDay" />}
-                {isAgentProfitSharingMultipleLayer(agentDividendType) && (
-                  <Checkbox
-                    name={CheckDividendActiveCountFieldName}
-                    label={checkDividendActiveCountLabel}
-                    disabled={readonly}
-                  />
-                )}
-              </Set>
-            </Box>
-          </>
-        )}
+        <NormalLabel>
+          <AgentProfitSharingIntervalTrans />
+        </NormalLabel>
+        <Box alignY="center">
+          <Set orientation="horizontal">
+            <SettlementIntervalTypeSelect
+              name={SettlementIntervalTypeFieldName}
+              required
+              disabled={readonly}
+            />
+            {isMonthly && <MonthlyDaySelect name="settlementDay" />}
+            {isAgentProfitSharingMultipleLayer(agentDividendType) && (
+              <Checkbox
+                name={CheckDividendActiveCountFieldName}
+                label={checkDividendActiveCountLabel}
+                disabled={readonly}
+              />
+            )}
+          </Set>
+        </Box>
 
         <NormalLabel>
           <Trans zh="时区" en="Time Zone" />
@@ -644,21 +633,17 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           />
         </Box>
 
-        {isAgentProfitSharingTypeGroup(agentDividendType) && (
-          <>
-            <NormalLabel>
-              <Trans zh="产品费用" en="Product Fee" />
-            </NormalLabel>
-            <Box>
-              <PercentageNumberInputField
-                name="platformCharge"
-                readOnly={readonly}
-                disabled={!editable}
-                width="fit-content"
-              />
-            </Box>
-          </>
-        )}
+        <NormalLabel>
+          <Trans zh="产品费用" en="Product Fee" />
+        </NormalLabel>
+        <Box>
+          <PercentageNumberInputField
+            name="platformCharge"
+            readOnly={readonly}
+            disabled={!editable}
+            width="fit-content"
+          />
+        </Box>
 
         <NormalLabel>
           <Trans zh="自动清除流水" en="Auto Clear Wagering Requirement" />
