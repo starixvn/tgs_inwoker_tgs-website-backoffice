@@ -16,29 +16,3 @@ export const UserType = {
 }
 
 export const isPlayer = (value) => value === Player
-
-//TODO: able to rm?
-const UserTypeLabel = ({ userType }) => {
-  switch (userType) {
-    case Player:
-      return <PlayerTrans />
-    case Agent:
-      return <AgentTrans />
-    default:
-      return ""
-  }
-}
-
-//TODO: able to rm?
-export const UsernameInputField = ({ userType, ...props }) => {
-  return (
-    <InputField
-      addonBefore={
-        <Button isStatic>
-          <UserTypeLabel userType={userType} />
-        </Button>
-      }
-      {...props}
-    />
-  )
-}
