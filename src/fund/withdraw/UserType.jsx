@@ -4,19 +4,16 @@ import { Trans, useTrans } from "../../i18n"
 import Select from "../../select/Select"
 import { useUserTypeTrans } from "../../trans/User"
 import { AgentTrans, useAgentTrans } from "../../trans/Agent"
+import { PlayerTrans, usePlayerTrans } from "../../trans/Player"
 
 const Player = "Player"
-const PlayerTrans = {
-  zh: "玩家",
-  en: "Player"
-}
 
 const Agent = "Agent"
 
 export const UserTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Player:
-      return <Trans {...PlayerTrans} />
+      return <PlayerTrans />
     case Agent:
       return <AgentTrans />
     default:
@@ -34,7 +31,7 @@ export const UserTypeSelect = ({
 
   let options = [
     {
-      label: useTrans(PlayerTrans),
+      label: usePlayerTrans(),
       value: Player
     },
     {

@@ -12,3 +12,13 @@ const PlayerAccountType = {
   Agent
 }
 
+export const PlayerAccountTypeLabel = ({ value = "" }) => {
+  switch (value) {
+    case Player:
+      return ""
+    case Agent:
+      return ""
+    default:
+      return value
+  }
+}

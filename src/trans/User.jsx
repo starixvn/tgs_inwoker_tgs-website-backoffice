@@ -220,10 +220,3 @@ const DesignatedUsers = {
 }
 export const DesignatedUsersTrans = () => <Trans {...DesignatedUsers} />
 export const useDesignatedUsersTrans = () => useTrans(DesignatedUsers)
-
-const AccountType = {
-  zh: "帐号种类",
-  en: "Account Type",
-  vi: "các loại tài khoản"
-}
-export const AccountTypeTrans = () => <Trans {...AccountType} />

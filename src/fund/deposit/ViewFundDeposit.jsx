@@ -67,7 +67,7 @@ import {
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import { AttachmentTrans, CSNoteTrans } from "../../trans/Field"
-import { PlayerNoteTrans } from "../../trans/Player"
+import { PlayerNoteTrans, PlayerTrans } from "../../trans/Player"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -541,7 +541,7 @@ const PlayerApplyInfoCard = ({ applyInfo, bankType }) => {
       variant="bordered"
       title={
         <Heading use="h5">
-          <Trans zh="玩家" en="Player" />
+          <PlayerTrans />
         </Heading>
       }
       css={css`

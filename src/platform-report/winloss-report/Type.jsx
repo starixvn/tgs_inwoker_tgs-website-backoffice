@@ -4,14 +4,11 @@ import { DropdownMenu, Button } from "bumbag"
 import { useTrans, Trans } from "../../i18n"
 import { useFormContext } from "react-hook-form"
 import { AgentTrans } from "../../trans/Agent"
+import { PlayerTrans } from "../../trans/Player"
 
 export const Agent = "agent"
 
 export const Player = "player"
-const PlayerTrans = {
-  zh: "玩家",
-  en: "Player"
-}
 
 export const Round = "round"
 const RoundTrans = {
@@ -34,7 +31,7 @@ export const TypeLabel = ({ value = "" }) => {
     case Agent:
       return <AgentTrans />
     case Player:
-      return <Trans {...PlayerTrans} />
+      return <PlayerTrans />
     case Round:
       return <Trans {...RoundTrans} />
     default:

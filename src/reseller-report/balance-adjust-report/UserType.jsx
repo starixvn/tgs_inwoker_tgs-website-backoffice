@@ -4,12 +4,9 @@ import { Box, OptionButtons } from "bumbag"
 import { useTrans } from "../../i18n"
 import { InputField } from "../../input/Input"
 import { AgentTrans } from "../../trans/Agent"
+import { PlayerTrans } from "../../trans/Player"
 
 const Player = "Player"
-const PlayerTrans = {
-  zh: "玩家",
-  en: "Player"
-}
 
 const Agent = "Agent"
 
@@ -20,10 +17,11 @@ export const UserType = {
 
 export const isPlayer = (value) => value === Player
 
+//TODO: able to rm?
 const UserTypeLabel = ({ userType }) => {
   switch (userType) {
     case Player:
-      return <Trans {...PlayerTrans} />
+      return <PlayerTrans />
     case Agent:
       return <AgentTrans />
     default:
@@ -31,6 +29,7 @@ const UserTypeLabel = ({ userType }) => {
   }
 }
 
+//TODO: able to rm?
 export const UsernameInputField = ({ userType, ...props }) => {
   return (
     <InputField

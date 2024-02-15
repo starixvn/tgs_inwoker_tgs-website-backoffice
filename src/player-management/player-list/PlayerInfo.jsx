@@ -64,6 +64,7 @@ import {
   UserNameTrans
 } from "../../trans/User"
 import {
+  AccountTypeTrans,
   PlayerCodeTrans,
   PlayerInfoTrans,
   RegistrationDomainTrans,
@@ -193,6 +194,21 @@ const PlayerIdNumberInputGroup = ({ player, showIdentityAuth }) => {
   )
 }
 
+//TODO: trans
+const AccountTypeBox = ({ player }) => {
+  //TODO: configm player account type field name
+  if (!player?.accountType) {
+    return null
+  }
+
+  return (
+    <>
+      <AccountTypeTrans />
+      
+    </>
+  )
+}
+
 const EditForm = ({
   brandId,
   brand,
@@ -247,19 +263,6 @@ const EditForm = ({
           player={player}
           showIdentityAuth={brand?.enablePlayerIdentity}
         />
-        {/* <Group>
-          <Input
-            name="idNumber"
-            defaultValue={player?.idNumber}
-            disabled
-            readOnly
-          />
-          {brand?.enablePlayerIdentity && player.idNumber && (
-            <Button disabled>
-              <PlayerIdentityStateIcon value={player.identityAuthentication} />
-            </Button>
-          )}
-        </Group> */}
 
         <VipLevelTrans />
         <Box>

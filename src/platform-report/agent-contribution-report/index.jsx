@@ -71,6 +71,7 @@ import {
   AgentTrans,
   useAgentUsernameTrans
 } from "../../trans/Agent"
+import { PlayerTrans } from "../../trans/Player"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -397,7 +398,7 @@ const useColumns = ({ usernames = [], setUsernames, items = [] }) => {
         Cell: ({ value = "" }) => {
           switch (value) {
             case "Player":
-              return <Trans zh="玩家" en="Player" />
+              return <PlayerTrans />
             case AgentType:
               return <AgentTrans />
             default:

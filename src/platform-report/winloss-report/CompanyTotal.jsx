@@ -36,6 +36,7 @@ import { useWinlossReportCompanyTotal } from "./client"
 import { TotalTrans } from "../../trans/Field"
 import { CompanyTrans } from "../../trans/Platform"
 import { WinLossTrans } from "../../trans/Game"
+import { PlayerTrans } from "../../trans/Player"
 
 export const CompanyTotalDialogDisclosure = ({
   value,
@@ -127,7 +128,7 @@ const useColumns = ({ items = [] }) => {
       }),
       {
         id: "player",
-        Header: <Trans zh="玩家" en="Player" />,
+        Header: <PlayerTrans />,
         headCell: {
           textAlign: "center"
         },

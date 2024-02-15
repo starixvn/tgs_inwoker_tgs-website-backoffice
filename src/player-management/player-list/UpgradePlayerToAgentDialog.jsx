@@ -13,6 +13,7 @@ import {
 } from "../../trans/Agent"
 import { ConfirmTrans } from "../../trans/Action"
 
+//TODO: test case
 export const UpgradePlayerToAgentDialogDisclosure = ({
   brandId,
   brand,
