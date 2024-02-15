@@ -9,4 +9,3 @@ import React, {
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { Dialog, Button, Box } from "bumbag"
-import { CancelText, ConfirmText, SubmitText } from "../button/ActionButtons"

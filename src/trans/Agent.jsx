@@ -162,3 +162,32 @@ const AgentContractName = {
   en: "Contract name"
 }
 export const AgentContractNameTrans = () => <Trans {...AgentContractName} />
+
+//TODO: confirm en trans
+const UpgradeToAgent = {
+  zh: "升级代理",
+  en: "Upgrade to agent",
+  vi: "thăng cấp dại lý"
+}
+export const UpgradeToAgentTrans = () => <Trans {...UpgradeToAgent} />
+export const useUpgradeToAgentTrans = () => useTrans(UpgradeToAgent)
+
+//TODO: confirm en trans
+const ConfirmUpgradeToAgent = {
+  zh: "确定升级为代理?",
+  en: "Are you sure you want to upgrade to an agent?",
+  vi: "xác định muốn thăng cấp thành đại lý?"
+}
+export const ConfirmUpgradeToAgentTrans = () => (
+  <Trans {...ConfirmUpgradeToAgent} />
+)
+
+//TODO: confirm en trans
+const ConfirmUpgradeToMasterAgent = {
+  zh: "确定升级为总代?",
+  en: "Are you sure to upgrade to master agent?",
+  vi: "xác định muốn thăng cấp thành tổng đại lý?"
+}
+export const ConfirmUpgradeToMasterAgentTrans = () => (
+  <Trans {...ConfirmUpgradeToMasterAgent} />
+)

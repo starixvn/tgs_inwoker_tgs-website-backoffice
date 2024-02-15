@@ -134,7 +134,7 @@ const Cancel = {
   vi: "Hủy bỏ"
 }
 export const CancelTrans = () => <Trans {...Cancel} />
-export const useCancelText = () => useTrans(Cancel)
+export const useCancelTrans = () => useTrans(Cancel)
 
 const Submit = {
   zh: "提交",
@@ -142,6 +142,14 @@ const Submit = {
   vi: "Gửi/Đệ trình"
 }
 export const SubmitTrans = () => <Trans {...Submit} />
+
+const Confirm = {
+  zh: "确定",
+  en: "Submit",
+  vi: "xác định"
+}
+export const ConfirmTrans = () => <Trans {...Confirm} />
+export const useConfirmTrans = () => useTrans(Confirm)
 
 const PreviousPage = {
   zh: "前一页",

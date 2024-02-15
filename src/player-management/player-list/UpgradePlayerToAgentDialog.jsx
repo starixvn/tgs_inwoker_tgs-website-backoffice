@@ -4,6 +4,14 @@ import { Stack, Box, Button, Set, Dialog, useModalState } from "bumbag"
 import Disclosure from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
 import { useUpgradePlayerToAgent } from "./client"
+import { isDev } from "../../env"
+import {
+  ConfirmUpgradeToAgentTrans,
+  ConfirmUpgradeToMasterAgentTrans,
+  UpgradeToAgentTrans,
+  useUpgradeToAgentTrans
+} from "../../trans/Agent"
+import { ConfirmTrans } from "../../trans/Action"
 
 export const UpgradePlayerToAgentDialogDisclosure = ({
   brandId,
@@ -16,6 +24,17 @@ export const UpgradePlayerToAgentDialogDisclosure = ({
   ...props
 }) => {
   let dialog = useModalState()
+
+  //TODO: rm isDev local dev code
+  /*
+  let devEnv = isDev()
+  if (devEnv) {
+    brand = {
+      ...brand,
+      upgradPlayerToAgent: true
+    }
+  }
+  */
 
   //TODO: confirm brand field name
   if (!brand?.upgradPlayerToAgent) {
@@ -31,7 +50,9 @@ export const UpgradePlayerToAgentDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure id={id} {...dialog} {...props}></Disclosure>
+      <Disclosure id={id} {...dialog} {...props}>
+        <UpgradeToAgentTrans />
+      </Disclosure>
       {dialog.visible && (
         <UpgradeDialog
           brandId={brandId}
@@ -46,7 +67,14 @@ export const UpgradePlayerToAgentDialogDisclosure = ({
   )
 }
 
-const UpgradeDialog = ({ playerCode, onSubmitted, dialog, dialogId }) => {
+const UpgradeDialog = ({
+  playerCode,
+  player,
+  onSubmitted,
+  dialog,
+  dialogId
+}) => {
+  let title = useUpgradeToAgentTrans()
   let [formData, setSubmit] = useState()
 
   let { isLoading, result, error, mutate, deleteCache } =
@@ -71,13 +99,25 @@ const UpgradeDialog = ({ playerCode, onSubmitted, dialog, dialogId }) => {
       error={error}
       onCloseErrorAlert={reset}
       dialog={dialog}
+      submitText={<ConfirmTrans />}
+      title={title}
       id={dialogId}
     >
-      <FormBody />
+      <FormBody player={player} />
     </FormDialog>
   )
 }
 
-const FormBody = () => {
-  return "TODO:"
+const FormBody = ({ player }) => {
+  let hasMasterAgent = !!player?.agentUsername
+
+  return (
+    <Stack paddingLeft="1rem">
+      {hasMasterAgent ? (
+        <ConfirmUpgradeToMasterAgentTrans />
+      ) : (
+        <ConfirmUpgradeToAgentTrans />
+      )}
+    </Stack>
+  )
 }
