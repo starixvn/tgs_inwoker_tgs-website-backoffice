@@ -7,7 +7,8 @@ import {
   Box,
   Text,
   Button,
-  Alert
+  Alert,
+  Divider
 } from "bumbag"
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -28,6 +29,9 @@ import {
   ReviewWaitingPaymentTrans,
   useReviewWaitingPaymentTrans
 } from "../../trans/Payment"
+import { TextareaField } from "../../textarea"
+import { PlayerNoteTrans } from "../../trans/Player"
+import { FieldValues } from "../../layout/Grid"
 
 export const FundWithdrawPaidDialogDisclosure = ({
   brandId,
@@ -139,9 +143,14 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
       `}
     >
       <Alert title={<ConfirmPaidTrans />} type="warning" variant="" />
+
+      <FieldValues marginTop="1rem">
+        <PlayerNoteTrans />
+        <TextareaField name="playerRemark" />
+      </FieldValues>
+
       <Input type="hidden" name="brandId" />
       <Input type="hidden" name="formId" />
-      {/* <Input type="hidden" name="reviewResponse" value="Paid" /> */}
     </FormDialog>
   )
 }
