@@ -49,34 +49,7 @@ import {
   isAgentTypeCredit
 } from "../AgentType"
 import clone from "clone-deep"
-import Select from "../../select/Select"
-import {
-  AgentOneLayerDividendPercentageInputField,
-} from "../AgentOneLayerDividendPercentage"
-import {
-  AgentLiveDealerRebatePercentageInputField,
-  AgentLiveDealerRebateText
-} from "../AgentLiveDealerRebatePercentage"
-import {
-  AgentEgameRebatePercentageInputField,
-  AgentEgameRebateText
-} from "../AgentEgameRebatePercentage"
-import {
-  AgentCardGameRebatePercentageInputField,
-  AgentCardGameRebateText
-} from "../AgentCardGameRebatePercentage"
-import {
-  AgentLotteryRebatePercentageInputField,
-  AgentLotteryRebateText
-} from "../AgentLotteryRebatePercentage"
-import {
-  AgentSportsRebatePercentageInputField,
-  AgentSportsRebateText
-} from "../AgentSportsRebatePercentage"
-import {
-  AgentVirtualSportsRebatePercentageInputField,
-  AgentVirtualSportsRebateText
-} from "../AgentVirtualSportsRebatePercentage"
+import { AgentOneLayerDividendPercentageInputField } from "../AgentOneLayerDividendPercentage"
 import AgentLevel from "../AgentLevel"
 import { isDev } from "../../env"
 import {
@@ -131,19 +104,20 @@ const EditPanel = (props) => {
 }
 
 const UpdateAgentPanel = ({
-  brandId,
-  agentProfitSharingType,
-  record,
+  brand,
+  agent,
   onSubmitted,
   onClickClose,
   ...props
 }) => {
+  let brandId = brand?.id
+  let agentDividendType = brand?.agentDividendType
   let formMethods = useForm({
-    defaultValues: clone(record)
+    defaultValues: clone(agent)
   })
   let { control, setValue } = formMethods
 
-  let agentId = record?.id
+  let agentId = agent?.id
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } = useUpdateAgentV2(
     agentId,
@@ -160,7 +134,7 @@ const UpdateAgentPanel = ({
   let agentUsernamePlaceholder = useAgentUsernameTrans()
 
   const ParentUsernameFieldName = "parentUsername"
-  let currentParentUsername = record.parentUsername
+  let currentParentUsername = agent.parentUsername
   let parentUsername = useWatch({
     control,
     name: ParentUsernameFieldName
@@ -179,8 +153,8 @@ const UpdateAgentPanel = ({
 
   let isAgent = levelType == AgentLevel.Agent
 
-  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
-  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
+  let oneLayer = isAgentProfitSharingOneLayer(agentDividendType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentDividendType)
 
   const onSubmit = ({
     type,
@@ -196,13 +170,13 @@ const UpdateAgentPanel = ({
 
     let formData = useAgentUpdateFormData(
       {
-        ...diff(data, record),
+        ...diff(data, agent),
         type,
         parentUsername,
         dividendPercentage,
         agentDividendConditions
       },
-      agentProfitSharingType
+      agentDividendType
     )
     setSubmit(formData)
   }
@@ -213,7 +187,7 @@ const UpdateAgentPanel = ({
     setSubmit(undefined)
   }
 
-  let agentHead = isAgentHead(record?.levelType)
+  let agentHead = isAgentHead(agent?.levelType)
 
   const AgentTypeField = "type"
 
@@ -229,7 +203,7 @@ const UpdateAgentPanel = ({
         <form onSubmit={formMethods.handleSubmit(onSubmit)}>
           <Stack>
             <FieldValues>
-              <UsernameBox value={record?.username} />
+              <UsernameBox value={agent?.username} />
 
               <RealNameBox>
                 <Input name="realName" />
@@ -241,10 +215,10 @@ const UpdateAgentPanel = ({
                     <>
                       <AgentTypeSelect
                         name={AgentTypeField}
-                        value={record?.type}
+                        value={agent?.type}
                         display="none"
                       />
-                      <AgentTypeSelect value={record?.type} disabled />
+                      <AgentTypeSelect value={agent?.type} disabled />
                     </>
                   )}
                   {agentHead && <AgentTypeSelect name={AgentTypeField} />}
@@ -263,7 +237,7 @@ const UpdateAgentPanel = ({
                     } else if (isAgent) {
                       setValue(
                         ParentUsernameFieldName,
-                        record?.parentUsername ?? ""
+                        agent?.parentUsername ?? ""
                       )
                     }
                   }}
@@ -285,9 +259,9 @@ const UpdateAgentPanel = ({
                 </>
               )}
 
-              <RegistrationBox value={record?.registeredOn} />
+              <RegistrationBox value={agent?.registeredOn} />
 
-              <BalanceBox value={record?.balance} />
+              <BalanceBox value={agent?.balance} />
 
               <AccumulatedProfitSharingBox value={accumulatedProfitSharing}>
                 <ClearProfitShareDialogDisclosure
@@ -319,7 +293,7 @@ const UpdateAgentPanel = ({
                   <Box>
                     <AgentMultipleLayerProfitSharingSettingDialogDisclosure
                       brandId={brandId}
-                      parentUsername={record.parentUsername}
+                      parentUsername={agent.parentUsername}
                     />
                   </Box>
                 </>
@@ -355,32 +329,33 @@ const ChangeParentWarning = () => {
   return <Alert variant="tint" title={warning} type="warning" />
 }
 
-const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
-  let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
-  let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
+const ViewPanel = ({ agent, brand, ...props }) => {
+  let agentDividendType = brand?.agentDividendType
+  let oneLayer = isAgentProfitSharingOneLayer(agentDividendType)
+  let multipleLayer = isAgentProfitSharingMultipleLayer(agentDividendType)
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues>
-        <UsernameBox value={record?.username} />
+        <UsernameBox value={agent?.username} />
 
         <Box alignY="center">
           <Trans zh="邀请码" en="Invitation Code" />
         </Box>
-        <Text>{record?.invitationCode}</Text>
+        <Text>{agent?.invitationCode}</Text>
 
-        <RealNameBox value={record?.realName} />
+        <RealNameBox value={agent?.realName} />
 
-        <ParentAgentUsername value={record?.parentUsername} />
+        <ParentAgentUsername value={agent?.parentUsername} />
 
-        <RegistrationBox value={record?.registeredOn} />
+        <RegistrationBox value={agent?.registeredOn} />
 
-        <BalanceBox value={record?.balance} />
+        <BalanceBox value={agent?.balance} />
 
-        <AgentStatusBox value={record?.status} />
+        <AgentStatusBox value={agent?.status} />
 
-        <AgentTypeBox value={record?.type} />
+        <AgentTypeBox value={agent?.type} />
 
-        <LevelTypeBox value={record?.levelType} />
+        <LevelTypeBox value={agent?.levelType} />
 
         {oneLayer && (
           <>
@@ -389,7 +364,7 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
             </Box>
             <Box>
               <FormattedNumberDecimalPercentage
-                value={record?.dividendPercentage}
+                value={agent?.dividendPercentage}
               />
             </Box>
           </>
@@ -402,58 +377,23 @@ const ViewPanel = ({ record, agentProfitSharingType, ...props }) => {
             </Box>
             <Box>
               <AgentProfitSharingSettingRecordDialogDisclosure
-                record={record?.agentDividendConditions}
+                record={agent?.agentDividendConditions}
               />
             </Box>
           </>
         )}
 
-        <AccumulatedProfitSharingBox value={record?.accumulatedProfitSharing} />
+        <AccumulatedProfitSharingBox value={agent?.accumulatedProfitSharing} />
 
         <Box alignY="center">
           <DirectPlayersTrans />
         </Box>
         <Box>
-          <FormattedNumber value={record?.playerNumber} />
+          <FormattedNumber value={agent?.playerNumber} />
         </Box>
 
         <RemarkTrans />
-        <Textarea value={record?.remarks} disabled />
-        {/* <RebateBox
-          label={<AgentLiveDealerRebateText />}
-          value={record?.liveDealerRebatePercentage}
-          type={record?.type}
-        />
-
-        <RebateBox
-          label={<AgentEgameRebateText />}
-          value={record?.slotRebatePercentage}
-          type={record?.type}
-        />
-
-        <RebateBox
-          label={<AgentCardGameRebateText />}
-          value={record?.cardGameRebatePercentage}
-          type={record?.type}
-        />
-
-        <RebateBox
-          label={<AgentLotteryRebateText />}
-          value={record?.lotteryRebatePercentage}
-          type={record?.type}
-        />
-
-        <RebateBox
-          label={<AgentSportsRebateText />}
-          value={record?.sportsRebatePercentage}
-          type={record?.type}
-        />
-
-        <RebateBox
-          label={<AgentVirtualSportsRebateText />}
-          value={record?.virtualSportsRebatePercentage}
-          type={record?.type}
-        /> */}
+        <Textarea value={agent?.remarks} disabled />
       </FieldValues>
     </TabPanel>
   )
@@ -596,26 +536,6 @@ const AccumulatedProfitSharingBox = ({ value, children, ...props }) => {
         <FormattedNumberDecimal data-value={value} value={value} {...props} />
         {children}
       </Set>
-    </>
-  )
-}
-
-const RebateBox = ({ label, value, type, children }) => {
-  let isCredit = isAgentTypeCredit(type)
-  if (!isCredit) {
-    return null
-  }
-
-  return (
-    <>
-      {label}
-      {children ? (
-        children
-      ) : (
-        <Text>
-          <FormattedNumberDecimal value={value} postfix="%" />
-        </Text>
-      )}
     </>
   )
 }

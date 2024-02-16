@@ -42,7 +42,8 @@ import Disclosure, {
 import { Tabs, TabList, useTabState } from "../../tab"
 import { AgentInfoKey, AgentInfoPanel, AgentInfoTab } from "./AgentInfo"
 import { AgentContactInfoPanel, AgentContactInfoTab } from "./AgentContactInfo"
-import { AgentBankInfoPanel, AgentBankInfoTab } from "./AgentBankInfo"
+//TODO
+// import { AgentBankInfoPanel, AgentBankInfoTab } from "./AgentBankInfo"
 import { AgentPasswordPanel, AgentPasswordTab } from "./AgentPassword"
 import {
   AgentWithdrawPasswordPanel,
@@ -67,39 +68,12 @@ import AgentType, {
 } from "../AgentType"
 import Textarea from "../../textarea"
 import { AgentOneLayerDividendPercentageInputField } from "../AgentOneLayerDividendPercentage"
-/*
-TODO: rm?
-import {
-  AgentLiveDealerRebatePercentageInputField,
-  AgentLiveDealerRebateText
-} from "../AgentLiveDealerRebatePercentage"
-import {
-  AgentEgameRebatePercentageInputField,
-  AgentEgameRebateText
-} from "../AgentEgameRebatePercentage"
-import {
-  AgentCardGameRebatePercentageInputField,
-  AgentCardGameRebateText
-} from "../AgentCardGameRebatePercentage"
-import {
-  AgentLotteryRebatePercentageInputField,
-  AgentLotteryRebateText
-} from "../AgentLotteryRebatePercentage"
-import {
-  AgentSportsRebatePercentageInputField,
-  AgentSportsRebateText
-} from "../AgentSportsRebatePercentage"
-import {
-  AgentVirtualSportsRebatePercentageInputField,
-  AgentVirtualSportsRebateText
-} from "../AgentVirtualSportsRebatePercentage"
-*/
 import clone from "clone-deep"
 import {
   AgentBalanceChangePanel,
   AgentBalanceChangeTab
 } from "./AgentBalanceChange"
-import { isDev } from "../../env"
+import { isDev, isLocalDev } from "../../env"
 import { AgentMultipleLayerProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { AgentDomainListTab, AgentDomainListPanel } from "./AgentDomainList"
 import {
@@ -121,12 +95,7 @@ import {
 } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
 
-export const AddAgentButton = ({
-  brandId,
-  agentProfitSharingType,
-  onSubmitted,
-  ...props
-}) => {
+export const AddAgentButton = ({ brand, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -134,27 +103,30 @@ export const AddAgentButton = ({
     return null
   }
 
+  //TODO: rm local
+  /*
+  let local = isLocalDev()
+  if (local) {
+    brand.upgradPlayerToAgent = true
+  }
+  //TODO: confirm brand field name
+  if (!!brand?.upgradPlayerToAgent) {
+    return null
+  }
+  */
+
   return (
     <>
       <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <AddDialog
-          brandId={brandId}
-          agentProfitSharingType={agentProfitSharingType}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <AddDialog brand={brand} onSubmitted={onSubmitted} dialog={dialog} />
       )}
     </>
   )
 }
 
-const AddDialog = ({
-  brandId,
-  agentProfitSharingType,
-  onSubmitted,
-  dialog
-}) => {
+const AddDialog = ({ brand, onSubmitted, dialog }) => {
+  let brandId = brand.id
   let [formData, setSubmit] = useState()
   let { result, error, mutate, deleteCache, isLoading } = useAddAgent(formData)
 
@@ -193,7 +165,7 @@ const AddDialog = ({
       minWidth="60vw"
       placement="top"
     >
-      <FormBody isAdd agentProfitSharingType={agentProfitSharingType} />
+      <FormBody isAdd brand={brand} />
     </FormDialog>
   )
 }
@@ -202,7 +174,8 @@ const AlphabetNumberOnly = new RegExp("^[A-Za-z0-9]+$")
 
 const BrandIdField = "brandId"
 const ParentUsernameFieldName = "parentUsername"
-const FormBody = ({ isAdd, agentProfitSharingType }) => {
+
+const FormBody = ({ isAdd, brand }) => {
   let { control, getValues } = useFormContext()
 
   const LevelTypeFieldName = "levelType"
@@ -224,7 +197,6 @@ const FormBody = ({ isAdd, agentProfitSharingType }) => {
     name: AgentTypeFieldName
   })
   let isCash = isAgentTypeCash(agentType)
-  let isCredit = isAgentTypeCredit(agentType)
 
   let alphabetOnlyMessage = useTrans({
     zh: "仅限字母和数字",
@@ -294,72 +266,9 @@ const FormBody = ({ isAdd, agentProfitSharingType }) => {
           {isCash && (
             <ProfitSharingBox
               isAdd={isAdd}
-              agentProfitSharingType={agentProfitSharingType}
+              agentDividendType={brand?.agentDividendType}
             />
           )}
-
-          {/* {isCredit && (
-            <>
-              <NormalLabel required>
-                <AgentLiveDealerRebateText />
-              </NormalLabel>
-              <TwoColumns columns={["0.7fr"]}>
-                <Flex flex="1 50%">
-                  <AgentLiveDealerRebatePercentageInputField width="100%" />
-                </Flex>
-
-                <FieldValues flex="1 50%">
-                  <NormalLabel required>
-                    <AgentLotteryRebateText />
-                  </NormalLabel>
-
-                  <AgentLotteryRebatePercentageInputField />
-                </FieldValues>
-              </TwoColumns>
-            </>
-          )}
-
-          {isCredit && (
-            <>
-              <NormalLabel required>
-                <AgentEgameRebateText />
-              </NormalLabel>
-              <TwoColumns columns={["0.7fr"]}>
-                <Flex flex="1 50%">
-                  <AgentEgameRebatePercentageInputField width="100%" />
-                </Flex>
-
-                <FieldValues>
-                  <NormalLabel required>
-                    <AgentSportsRebateText />
-                  </NormalLabel>
-
-                  <AgentSportsRebatePercentageInputField />
-                </FieldValues>
-              </TwoColumns>
-            </>
-          )}
-
-          {isCredit && (
-            <>
-              <NormalLabel required>
-                <AgentCardGameRebateText />
-              </NormalLabel>
-              <TwoColumns columns={["0.7fr"]}>
-                <Flex flex="1 50%">
-                  <AgentCardGameRebatePercentageInputField width="100%" />
-                </Flex>
-
-                <FieldValues>
-                  <NormalLabel required>
-                    <AgentVirtualSportsRebateText />
-                  </NormalLabel>
-
-                  <AgentVirtualSportsRebatePercentageInputField />
-                </FieldValues>
-              </TwoColumns>
-            </>
-          )} */}
 
           <NormalLabel required>
             <RemarkTrans />
@@ -376,7 +285,7 @@ const FormBody = ({ isAdd, agentProfitSharingType }) => {
   )
 }
 
-const ProfitSharingBox = ({ isAdd = false, agentProfitSharingType }) => {
+const ProfitSharingBox = ({ isAdd = false, agentDividendType }) => {
   let label = (
     <NormalLabel required>
       <Trans zh="代理分红" en="Profit Sharing" />
@@ -391,7 +300,7 @@ const ProfitSharingBox = ({ isAdd = false, agentProfitSharingType }) => {
 
   let brandId = getValues(BrandIdField)
 
-  if (isAgentProfitSharingOneLayer(agentProfitSharingType)) {
+  if (isAgentProfitSharingOneLayer(agentDividendType)) {
     return (
       <>
         {label}
@@ -421,9 +330,8 @@ const ProfitSharingBox = ({ isAdd = false, agentProfitSharingType }) => {
   )
 }
 
-const ConfigFormBody = ({ record, agentProfitSharingType }) => {
-  let isCash = isAgentTypeCash(record?.type)
-  let isCredit = isAgentTypeCredit(record?.type)
+const ConfigFormBody = ({ brand, agent }) => {
+  let isCash = isAgentTypeCash(agent?.type)
 
   return (
     <Set orientation="vertical" isFilled>
@@ -432,115 +340,56 @@ const ConfigFormBody = ({ record, agentProfitSharingType }) => {
           <NormalLabel>
             <UserNameTrans />
           </NormalLabel>
-          <Text.Block alignY="center">{record?.username}</Text.Block>
+          <Text.Block alignY="center">{agent?.username}</Text.Block>
 
           <NormalLabel>
             <RealNameTrans />
           </NormalLabel>
-          <Text.Block alignY="center">{record?.realName}</Text.Block>
+          <Text.Block alignY="center">{agent?.realName}</Text.Block>
 
           <Box alignY="center">
             <UpperLevelAgentTrans />
           </Box>
-          <Text.Block alignY="center">{record?.parentUsername}</Text.Block>
+          <Text.Block alignY="center">{agent?.parentUsername}</Text.Block>
 
           <NormalLabel>
             <RegistrationTimeTrans />
           </NormalLabel>
           <Text.Block alignY="center">
-            <FormattedDateTime value={record?.registration} />
+            <FormattedDateTime value={agent?.registration} />
           </Text.Block>
 
           <NormalLabel>
             <BalanceTrans />
           </NormalLabel>
           <Text.Block alignY="center">
-            <FormattedNumberDecimal value={record?.balance} />
+            <FormattedNumberDecimal value={agent?.balance} />
           </Text.Block>
 
           <NormalLabel>
             <AgentTypeTrans />
           </NormalLabel>
           <Text.Block alignY="center">
-            <AgentTypeLabel value={record?.type} />
+            <AgentTypeLabel value={agent?.type} />
           </Text.Block>
 
           <NormalLabel>
             <AgentLevelTrans />
           </NormalLabel>
           <Text.Block alignY="center">
-            <AgentLevelLabel value={record?.levelType} />
+            <AgentLevelLabel value={agent?.levelType} />
           </Text.Block>
 
           {isCash && (
-            <ProfitSharingBox agentProfitSharingType={agentProfitSharingType} />
+            <ProfitSharingBox agentDividendType={brand?.agentDividendType} />
           )}
-
-          {/* {isCredit && (
-            <>
-              <NormalLabel required>
-                <AgentLiveDealerRebateText />
-              </NormalLabel>
-              <AgentLiveDealerRebatePercentageInputField />
-            </>
-          )}
-
-          {isCredit && (
-            <>
-              <NormalLabel required>
-                <AgentEgameRebateText />
-              </NormalLabel>
-              <AgentEgameRebatePercentageInputField />
-            </>
-          )}
-
-          {isCredit && (
-            <>
-              <NormalLabel required>
-                <AgentCardGameRebateText />
-              </NormalLabel>
-              <AgentCardGameRebatePercentageInputField />
-            </>
-          )}
-
-          {isCredit && (
-            <>
-              <NormalLabel required>
-                <AgentLotteryRebateText />
-              </NormalLabel>
-              <AgentLotteryRebatePercentageInputField />
-            </>
-          )}
-
-          {isCredit && (
-            <>
-              <NormalLabel required>
-                <AgentSportsRebateText />
-              </NormalLabel>
-              <AgentSportsRebatePercentageInputField />
-            </>
-          )}
-
-          {isCredit && (
-            <>
-              <NormalLabel required>
-                <AgentVirtualSportsRebateText />
-              </NormalLabel>
-              <AgentVirtualSportsRebatePercentageInputField />
-            </>
-          )} */}
         </FieldValues>
       </Set>
     </Set>
   )
 }
 
-export const ViewButton = ({
-  record,
-  brandId,
-  agentProfitSharingType,
-  ...props
-}) => {
+export const ViewButton = ({ brand, agent, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([ViewMenu])
@@ -553,9 +402,8 @@ export const ViewButton = ({
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <TabsDialog
-          record={record}
-          brandId={brandId}
-          agentProfitSharingType={agentProfitSharingType}
+          brand={brand}
+          agent={agent}
           readonly
           dialog={dialog}
           dialogId="view-agent-dialog"
@@ -565,13 +413,7 @@ export const ViewButton = ({
   )
 }
 
-export const EditButton = ({
-  brandId,
-  agentProfitSharingType,
-  record,
-  onSubmitted,
-  ...props
-}) => {
+export const EditButton = ({ brand, agent, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -584,9 +426,8 @@ export const EditButton = ({
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <TabsDialog
-          brandId={brandId}
-          agentProfitSharingType={agentProfitSharingType}
-          record={record}
+          brand={brand}
+          agent={agent}
           onSubmitted={onSubmitted}
           dialog={dialog}
           dialogId="edit-agent-dialog"
@@ -596,13 +437,7 @@ export const EditButton = ({
   )
 }
 
-export const ConfigButton = ({
-  brandId,
-  agentId,
-  agentProfitSharingType,
-  onSubmitted,
-  ...props
-}) => {
+export const ConfigButton = ({ brand, agent, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -617,9 +452,8 @@ export const ConfigButton = ({
       </Disclosure>
       {dialog.visible && (
         <ConfigDialog
-          brandId={brandId}
-          agentId={agentId}
-          agentProfitSharingType={agentProfitSharingType}
+          brand={brand}
+          agentId={agent.id}
           onSubmitted={onSubmitted}
           dialog={dialog}
         />
@@ -632,13 +466,7 @@ const ConfigDialog = (props) => {
   return <UpdateConfigDialog {...props} />
 }
 
-const UpdateConfigDialog = ({
-  brandId,
-  agentId,
-  agentProfitSharingType,
-  onSubmitted,
-  dialog
-}) => {
+const UpdateConfigDialog = ({ brand, agentId, onSubmitted, dialog }) => {
   let {
     isLoading: isLoadingAgent,
     data: agent,
@@ -673,6 +501,7 @@ const UpdateConfigDialog = ({
     agentDividendConditions,
     ...data
   }) => {
+    let agentDividendType = brand?.agentDividendType
     let formData = useAgentUpdateFormData(
       {
         ...diff(data, agent),
@@ -681,7 +510,7 @@ const UpdateConfigDialog = ({
         dividendPercentage,
         agentDividendConditions
       },
-      agentProfitSharingType
+      agentDividendType
     )
 
     setSubmit(formData)
@@ -715,24 +544,20 @@ const UpdateConfigDialog = ({
       minWidth="60vw"
       placement="top"
     >
-      <ConfigFormBody
-        record={agent}
-        agentProfitSharingType={agentProfitSharingType}
-      />
+      <ConfigFormBody agent={agent} brand={brand} />
     </FormDialog>
   )
 }
 
 const TabsDialog = ({
-  record,
-  brandId,
-  agentProfitSharingType,
+  brand,
+  agent,
   readonly = false,
   dialog,
   dialogId,
   ...props
 }) => {
-  let agentId = record?.id
+  let agentId = agent?.id
   let tab = useTabState({
     selectedId: AgentInfoKey
   })
@@ -784,18 +609,16 @@ const TabsDialog = ({
       {readonly && (
         <ViewTabs
           agentId={agentId}
-          brandId={brandId}
-          agentProfitSharingType={agentProfitSharingType}
-          record={clone(data)}
+          brand={brand}
+          agent={clone(data)}
           tab={tab}
         />
       )}
       {editable && (
         <EditTabs
           agentId={agentId}
-          brandId={brandId}
-          agentProfitSharingType={agentProfitSharingType}
-          record={clone(data)}
+          brand={brand}
+          agent={clone(data)}
           tab={tab}
           onSubmitted={onSubmitted}
           onBankSubmitted={onBankSubmitted}
@@ -806,7 +629,8 @@ const TabsDialog = ({
   )
 }
 
-const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
+const ViewTabs = ({ brand, agent, tab }) => {
+  let brandId = brand?.id
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
@@ -818,23 +642,13 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
         <AgentDomainListTab {...tab} />
       </TabList>
 
-      <AgentInfoPanel
-        brandId={brandId}
-        agentProfitSharingType={agentProfitSharingType}
-        record={record}
-        readonly
-        {...tab}
-      />
-      <AgentContactInfoPanel record={record} readonly {...tab} />
-      <AgentHistoryListPanel agentId={record?.id} brandId={brandId} {...tab} />
-      <AgentBalanceChangePanel
-        brandId={brandId}
-        agentId={record?.id}
-        {...tab}
-      />
+      <AgentInfoPanel brand={brand} agent={agent} readonly {...tab} />
+      <AgentContactInfoPanel agent={agent} readonly {...tab} />
+      <AgentHistoryListPanel agentId={agent?.id} brandId={brandId} {...tab} />
+      <AgentBalanceChangePanel brandId={brandId} agentId={agent?.id} {...tab} />
       <AgentDomainListPanel
         brandId={brandId}
-        agentId={record?.id}
+        agentId={agent?.id}
         readOnly
         {...tab}
       />
@@ -843,15 +657,16 @@ const ViewTabs = ({ brandId, agentProfitSharingType, record, tab }) => {
 }
 
 const EditTabs = ({
-  brandId,
-  agentProfitSharingType,
-  agentId,
-  record,
+  brand,
+  agent,
   tab,
   onSubmitted,
   onBankSubmitted,
   onClickClose
 }) => {
+  let brandId = brand?.id
+  let agentId = agent?.id
+
   let hasChangeWithdrawPasswordAuth = useIsDisplayMenuByRoute([
     ChangeWithdrawalPassword
   ])
@@ -860,39 +675,25 @@ const EditTabs = ({
       <TabList use={TabList} {...tab}>
         <AgentInfoTab {...tab} />
         <AgentContactInfoTab {...tab} />
-        {/* <AgentBankInfoTab {...tab} /> */}
         <AgentPasswordTab {...tab} />
         {hasChangeWithdrawPasswordAuth && <AgentWithdrawPasswordTab {...tab} />}
         <AgentDomainListTab {...tab} />
       </TabList>
       <AgentInfoPanel
-        record={record}
-        brandId={brandId}
-        agentProfitSharingType={agentProfitSharingType}
-        agentId={agentId}
+        brand={brand}
+        agent={agent}
         onSubmitted={onSubmitted}
         onClickClose={onClickClose}
         {...tab}
       />
       <AgentContactInfoPanel
-        record={record}
-        brandId={brandId}
-        agentId={agentId}
+        agent={agent}
         onSubmitted={onSubmitted}
         onClickClose={onClickClose}
         {...tab}
       />
-      {/* <AgentBankInfoPanel
-        record={record}
-        brandId={brandId}
-        agentId={agentId}
-        onSubmitted={onBankSubmitted}
-        {...tab}
-      /> */}
       <AgentPasswordPanel
-        record={record}
-        brandId={brandId}
-        agentId={agentId}
+        agent={agent}
         onSubmitted={onSubmitted}
         onClickClose={onClickClose}
         {...tab}

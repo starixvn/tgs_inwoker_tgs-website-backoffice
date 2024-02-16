@@ -41,12 +41,12 @@ export const AgentPasswordPanel = (props) => {
 }
 
 const UpdateAgentLoginPasswordPanel = ({
-  record,
+  agent,
   onSubmitted,
   onClickClose,
   ...props
 }) => {
-  let agentId = record?.id
+  let agentId = agent?.id
   let formMethods = useForm({
     defaultValues: {}
   })

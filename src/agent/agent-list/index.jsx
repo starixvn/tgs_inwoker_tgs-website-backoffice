@@ -56,15 +56,6 @@ import {
   isAgentConfigRequired,
   isAgentConfigDone
 } from "../AgentConfigStatus"
-/*
-TODO: rm?
-import AgentLiveDealerRebatePercentage from "../AgentLiveDealerRebatePercentage"
-import AgentEgameRebatePercentage from "../AgentEgameRebatePercentage"
-import AgentCardGameRebatePercentage from "../AgentCardGameRebatePercentage"
-import AgentLotteryRebatePercentage from "../AgentLotteryRebatePercentage"
-import AgentSportsRebatePercentage from "../AgentSportsRebatePercentage"
-import AgentVirtualSportsRebatePercentage from "../AgentVirtualSportsRebatePercentage"
-*/
 import { isDev } from "../../env"
 import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { isAgentProfitSharingOneLayer } from "../AgentProfitSharingType"
@@ -132,7 +123,6 @@ const BodyContent = ({ brandId = "", brand }) => {
     username: ""
   })
 
-  let { pageIndex, pageSize, status, levelType, type, username } = state
   let {
     data = {},
     isLoading,
@@ -159,12 +149,11 @@ const BodyContent = ({ brandId = "", brand }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId, brand])
 
-  let agentProfitSharingType = brand?.agentDividendType
   let columns = useColumns({
     mutate,
     items: data?.items,
     brandId,
-    agentProfitSharingType
+    brand
   })
 
   let pageWidth = usePlatformPageContentWidth()
@@ -186,8 +175,7 @@ const BodyContent = ({ brandId = "", brand }) => {
         />
         <AddAgentButton
           id="add-agent-dialog-disclosure"
-          brandId={brandId}
-          agentProfitSharingType={agentProfitSharingType}
+          brand={brand}
           onSubmitted={mutate}
         />
       </Level>
@@ -214,7 +202,7 @@ const BodyContent = ({ brandId = "", brand }) => {
                 data={data?.items}
                 initialState={state}
                 controlledState={state}
-                pageCount={pageCount(pageSize, data?.totalCount)}
+                pageCount={pageCount(state?.pageSize, data?.totalCount)}
                 setPageIndex={setPageIndex}
                 setSortOrder={setSortOrder}
                 isLoading={isLoading}
@@ -259,12 +247,7 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
   )
 }
 
-const useColumns = ({
-  mutate,
-  items = [],
-  brandId,
-  agentProfitSharingType
-} = {}) => {
+const useColumns = ({ mutate, items = [], brand } = {}) => {
   let hasAnyMenu = useHasSubMenuByRoute()
   let viewable = useIsDisplayMenuByRoute([View])
 
@@ -315,7 +298,7 @@ const useColumns = ({
             return "-"
           }
 
-          let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+          let oneLayer = isAgentProfitSharingOneLayer(brand?.agentDividendType)
           if (oneLayer) {
             return (
               <FormattedNumberDecimalPercentage
@@ -530,15 +513,13 @@ const useColumns = ({
                 <>
                   <ViewButton
                     id="view-agent-dialog-disclosure"
-                    record={value}
-                    brandId={brandId}
-                    agentProfitSharingType={agentProfitSharingType}
+                    brand={brand}
+                    agent={value}
                   />
                   <EditButton
                     id="edit-agent-dialog-disclosure"
-                    brandId={brandId}
-                    agentProfitSharingType={agentProfitSharingType}
-                    record={value}
+                    brand={brand}
+                    agent={value}
                     onSubmitted={mutate}
                   />
                 </>
@@ -548,9 +529,8 @@ const useColumns = ({
                   id="config-agent-dialog-disclosure"
                   palette="warning"
                   variant="outlined"
-                  brandId={brandId}
-                  agentProfitSharingType={agentProfitSharingType}
-                  agentId={value?.id}
+                  brand={brand}
+                  agent={value}
                   onSubmitted={mutate}
                 />
               )}
