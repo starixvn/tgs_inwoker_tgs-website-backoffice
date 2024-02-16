@@ -2,14 +2,15 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { random } from "lodash-es"
-import { selectRandomPlatform } from "../page/content.js"
+import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-test("edit vip level", async ({ page }) => {
-  let brandId = await gotoVipLevelPage(page)
+//TODO: use vipLevelPlatform instead?
+test("edit vip level", async ({ page, platform }) => {
+  await gotoVipLevelPage(page, platform.code)
   let [id, vipLevel] = await editVipLevel(page)
 
   let EditVipDialogSelector = `#edit-vip-level-dialog`
@@ -148,7 +149,7 @@ const editVipLevel = async (page) => {
   return [id, vipLevel]
 }
 
-const gotoVipLevelPage = async (page) => {
+const gotoVipLevelPage = async (page, platformCode) => {
   await page.goto("/platform/viplevel", { waitUntil: "networkidle" })
-  return await selectRandomPlatform(page)
+  return await selectPlatformByCode(page, platformCode)
 }

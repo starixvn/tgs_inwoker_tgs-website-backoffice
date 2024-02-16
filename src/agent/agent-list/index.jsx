@@ -14,7 +14,12 @@ import {
   Alert,
   List
 } from "bumbag"
-import PageContent from "../../page/Content"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
+import AutoSizer from "react-virtualized-auto-sizer"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useAgentList } from "./client"
@@ -43,28 +48,23 @@ import { InputField } from "../../input/Input"
 import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import numberColumn, {
-  numberDecimalColumn,
-  numberDecimalPercentageColumn
-} from "../../table/column/numberColumn"
+import { numberColumn } from "../../table/column/numberColumn"
 import { AgentLevelLabel, AgentLevelSelect } from "../AgentLevel"
-import {
-  AgentTypeLabel,
-  AgentTypeSelect,
-  isAgentTypeCash,
-  isAgentTypeCredit
-} from "../AgentType"
+import { AgentTypeLabel, AgentTypeSelect, isAgentTypeCash } from "../AgentType"
 import {
   AgentConfigStatusLabel,
   isAgentConfigRequired,
   isAgentConfigDone
 } from "../AgentConfigStatus"
+/*
+TODO: rm?
 import AgentLiveDealerRebatePercentage from "../AgentLiveDealerRebatePercentage"
 import AgentEgameRebatePercentage from "../AgentEgameRebatePercentage"
 import AgentCardGameRebatePercentage from "../AgentCardGameRebatePercentage"
 import AgentLotteryRebatePercentage from "../AgentLotteryRebatePercentage"
 import AgentSportsRebatePercentage from "../AgentSportsRebatePercentage"
 import AgentVirtualSportsRebatePercentage from "../AgentVirtualSportsRebatePercentage"
+*/
 import { isDev } from "../../env"
 import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { isAgentProfitSharingOneLayer } from "../AgentProfitSharingType"
@@ -95,23 +95,22 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<AgentsTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
+  let brandId = usePlatformId()
+
   let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
 
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
+    <Set orientation="vertical" isFilled height="100%">
       {isLoading && (
         <Box alignY="center" alignX="center">
           <Spinner />
@@ -168,34 +167,32 @@ const BodyContent = ({ brandId = "", brand }) => {
     agentProfitSharingType
   })
 
+  let pageWidth = usePlatformPageContentWidth()
+
   return (
-    <PageContent
-      title={<AgentsTrans />}
-      actionBar={
-        <Flex justifyContent="space-between">
-          <SearchBar
-            brandId={brandId}
-            status={state.status}
-            search={(data = {}) => {
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading}
-          />
-          <AddAgentButton
-            id="add-agent-dialog-disclosure"
-            brandId={brandId}
-            agentProfitSharingType={agentProfitSharingType}
-            onSubmitted={mutate}
-          />
-        </Flex>
-      }
-    >
-      <Stack>
-        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          brandId={brandId}
+          status={state.status}
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+        <AddAgentButton
+          id="add-agent-dialog-disclosure"
+          brandId={brandId}
+          agentProfitSharingType={agentProfitSharingType}
+          onSubmitted={mutate}
+        />
+      </Level>
+      <Box>
+        <Alert variant="bordered" type="info" accent marginBottom="0.5rem">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
               <AgentListStatusInfoTrans />
@@ -205,20 +202,31 @@ const BodyContent = ({ brandId = "", brand }) => {
             </List.Item>
           </List>
         </Alert>
-        <Table
-          id="agent"
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-        />
-      </Stack>
+      </Box>
+      <Box flex="1 0 50%">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                id="agent"
+                columns={columns}
+                data={data?.items}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                stickyHead
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 

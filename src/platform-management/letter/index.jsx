@@ -10,7 +10,6 @@ import {
 } from "../../user/context"
 import { Code } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { Trans, useTrans } from "../../i18n"
 import {
@@ -21,8 +20,6 @@ import {
 import { View, Update } from "./menu"
 import { useFormContext, useForm, FormProvider } from "react-hook-form"
 import AlertDialog from "../../dialog/Alert"
-import { SortOrder } from "../../table/order"
-import { ConfirmDeleteDialogDisclosure } from "../../dialog/ConfirmDeleteDialog"
 import { Input, InputField } from "../../input/Input"
 import { useLetterList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
