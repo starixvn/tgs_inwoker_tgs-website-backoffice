@@ -3,7 +3,8 @@ import { Trans, useTrans } from "../i18n"
 
 const Player = {
   zh: "玩家",
-  en: "Player"
+  en: "Player",
+  vi: "người chơi"
 }
 export const PlayerTrans = () => <Trans {...Player} />
 export const usePlayerTrans = () => useTrans(Player)
