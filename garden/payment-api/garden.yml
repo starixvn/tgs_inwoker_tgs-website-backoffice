@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: payment-api
-image: pgtgs/payment-api:202402010912.407
+image: pgtgs/payment-api:202402170347.416
 services:
   - name: payment-api
     dependencies:

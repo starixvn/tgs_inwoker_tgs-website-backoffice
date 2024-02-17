@@ -1,24 +1,22 @@
 kind: Module
 type: container
 name: brand-cert-api
-image: pgtgs/brand-cert-api:202309280223.64
+image: pgtgs/brand-cert-api:202402160925.77
 services:
   - name: brand-cert-api
     dependencies:
       - postgres
-      - redis
       - nats
     env:
       ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Nats: "nats://nats:4222"
-      ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
     ingresses:
       # Note. add this hostname to your hosts file for local dev, for instance add `127.0.0.1 brand-cert-api.localhost` to host file
       - hostname: brand-cert-api.localhost
         port: http
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80
         localPort: 3040 # http://localhost:3040/swagger/index.html
