@@ -47,7 +47,11 @@ import { defaultFormatDate } from "../../date/format"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { PlayerBucketListDialogDisclosure } from "./PlayerBucketList"
 import { diff } from "../../object/diff"
-import { UpperLevelAgentTrans, useAgentUsernameTrans } from "../../trans/Agent"
+import {
+  AgentTrans,
+  UpperLevelAgentTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
 import {
   BalanceTrans,
   BirthdayTrans,
@@ -63,6 +67,7 @@ import {
   AccountTypeTrans,
   PlayerCodeTrans,
   PlayerInfoTrans,
+  PlayerTrans,
   RegistrationDomainTrans,
   WageringRequirementTrans
 } from "../../trans/Player"
@@ -198,14 +203,10 @@ const PlayerIdNumberInputGroup = ({ player, showIdentityAuth }) => {
 
 //TODO: trans
 const AccountTypeBox = ({ player }) => {
-  //TODO: configm player account type field name
-  if (!player?.accountType) {
-    return null
-  }
-
   return (
     <>
       <AccountTypeTrans />
+      {!!player?.upgradePlayerAgentId ? <AgentTrans /> : <PlayerTrans />}
     </>
   )
 }
@@ -410,6 +411,8 @@ export const PlayerInfoPanel = ({
             <Box>
               <VipLevelLabel value={vipLevel} />
             </Box>
+
+            <AccountTypeBox player={player} />
 
             <UpperLevelAgentTrans />
             <Box>
