@@ -165,8 +165,22 @@ export const LotteryCommissionRebateTrans = () => (
   <Trans {...LotteryCommissionRebate} />
 )
 
+//TODO: trans
 const VipUpgrade = {
   zh: "VIP 升级",
   en: "VIP Upgrade"
 }
-export const VipUpgradeTrans = () => <Trans {...VipUpgrade} />
+export const VipUpgradeTrans = (props) => <Trans {...VipUpgrade} {...props} />
+
+//TODO: trans
+const VipAccumulation = {
+  zh: "VIP累积",
+  en: "VIP Accumulation"
+}
+export const VipAccumulationTrans = () => <Trans {...VipAccumulation} />
+
+const CurrentVipLevel = {
+  zh: "当前VIP等级",
+  en: "Current VIP Level"
+}
+export const CurrentVipLevelTrans = () => <Trans {...CurrentVipLevel} />

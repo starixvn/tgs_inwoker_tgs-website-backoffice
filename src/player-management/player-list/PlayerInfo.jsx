@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
 import { useUpdatePlayer, toUpdatePlayerFormData } from "./client"
-import { Spinner, Stack, Columns, Box, Set, Button, Text, Group } from "bumbag"
+import {
+  Spinner,
+  Stack,
+  Columns,
+  Box,
+  Set,
+  Button,
+  Text,
+  Group,
+  Heading,
+  FieldStack
+} from "bumbag"
 import { FieldValues } from "../../layout/Grid"
 import {
   Trans,
@@ -56,7 +67,12 @@ import {
   WageringRequirementTrans
 } from "../../trans/Player"
 import { StatusTrans } from "../../trans/Status"
-import { VipLevelTrans, VipUpgradeTrans } from "../../trans/Vip"
+import {
+  CurrentVipLevelTrans,
+  VipAccumulationTrans,
+  VipLevelTrans,
+  VipUpgradeTrans
+} from "../../trans/Vip"
 import { RemarkTrans } from "../../trans/Action"
 import {
   TotalDepositAmountTrans,
@@ -195,7 +211,7 @@ const AccountTypeBox = ({ player }) => {
 }
 
 const VipUpgradeField = "vipLevelAutoState"
-const VipUpgradeBox = ({ name = VipUpgradeField, ...props }) => {
+const VipUpgradeBox = ({ name = VipUpgradeField, labelProps, ...props }) => {
   //TODO:1.41 rm isDev
   if (!isDev()) {
     return null
@@ -203,7 +219,7 @@ const VipUpgradeBox = ({ name = VipUpgradeField, ...props }) => {
 
   return (
     <>
-      <VipUpgradeTrans />
+      <VipUpgradeTrans {...labelProps} />
       <AutoOrManualSwitch name={name} {...props} />
     </>
   )
@@ -355,106 +371,127 @@ export const PlayerInfoPanel = ({
 
   return (
     <TabPanel tabId={PlayerInfoKey} {...props}>
-      <FieldValues spacing="major-2">
-        {isAdmin && (
-          <>
-            <PlayerCodeTrans />
-            <Text>{player.playerCode}</Text>
-          </>
-        )}
+      <Columns>
+        <Columns.Column>
+          <FieldValues spacing="major-2">
+            {isAdmin && (
+              <>
+                <PlayerCodeTrans />
+                <Text>{player.playerCode}</Text>
+              </>
+            )}
 
-        <UserNameTrans />
-        <Text data-field="username">{username}</Text>
+            <UserNameTrans />
+            <Text data-field="username">{username}</Text>
 
-        <RealNameTrans />
-        <Box>
-          <Text data-field="realName">{realName}</Text>
-        </Box>
-
-        <BirthdayTrans />
-        <Box>
-          <FormattedDate
-            value={parse(player?.birthdate, "yyyy/MM/dd", new Date())}
-          />
-        </Box>
-
-        <ICNumberTrans />
-        <Set orientation="horizontal" alignY="center">
-          <Text.Block>{player.idNumber}</Text.Block>
-          {brand?.enablePlayerIdentity && player.idNumber && (
-            <PlayerIdentityStateIcon value={player.identityAuthentication} />
-          )}
-        </Set>
-
-        <VipLevelTrans />
-        <Box>
-          <VipLevelLabel value={vipLevel} />
-        </Box>
-
-        <VipUpgradeBox checked={player.vipLevelAutoState} readOnly />
-
-        <UpperLevelAgentTrans />
-        <Box>
-          <Text>{player?.agentUsername}</Text>
-        </Box>
-
-        {showParentUsername && (
-          <>
-            <AllAgentUpperLevelLabel />
+            <RealNameTrans />
             <Box>
-              <Text>{player?.parentUsername}</Text>
+              <Text data-field="realName">{realName}</Text>
             </Box>
-          </>
+
+            <BirthdayTrans />
+            <Box>
+              <FormattedDate
+                value={parse(player?.birthdate, "yyyy/MM/dd", new Date())}
+              />
+            </Box>
+
+            <ICNumberTrans />
+            <Set orientation="horizontal" alignY="center">
+              <Text.Block>{player.idNumber}</Text.Block>
+              {brand?.enablePlayerIdentity && player.idNumber && (
+                <PlayerIdentityStateIcon
+                  value={player.identityAuthentication}
+                />
+              )}
+            </Set>
+
+            <VipLevelTrans />
+            <Box>
+              <VipLevelLabel value={vipLevel} />
+            </Box>
+
+            <UpperLevelAgentTrans />
+            <Box>
+              <Text>{player?.agentUsername}</Text>
+            </Box>
+
+            {showParentUsername && (
+              <>
+                <AllAgentUpperLevelLabel />
+                <Box>
+                  <Text>{player?.parentUsername}</Text>
+                </Box>
+              </>
+            )}
+
+            <BalanceTrans />
+            <Box>
+              <FormattedNumberDecimal value={balance} />
+            </Box>
+
+            <Box alignY="center">
+              <WageringRequirementTrans />
+            </Box>
+            <Set>
+              <FormattedNumberDecimal value={player?.wageringRequirement} />
+              <PlayerBucketListDialogDisclosure
+                playerCode={player.playerCode}
+              />
+            </Set>
+
+            <StatusTrans />
+            <Box>
+              <PlayerStatusLabel value={status} />
+            </Box>
+
+            <RemarkTrans />
+            <Box>
+              <Text>{player?.remark}</Text>
+            </Box>
+
+            <RegisterIPTrans />
+            <Box>{player?.registerIp}</Box>
+
+            <RegistrationTimeTrans />
+            <Box>
+              <FormattedDateTime value={registeredOn} />
+            </Box>
+
+            <LastLoginTimeTrans />
+            <Box>
+              <FormattedDateTime value={player?.lastLoginOn} />
+            </Box>
+
+            <LastLoginIPTrans />
+            <Box>{player?.lastLoginIp}</Box>
+
+            <RegistrationDomainTrans />
+            <Box>{player?.registerHost}</Box>
+
+            <TotalDepositAmountTrans />
+            <FormattedNumberDecimal value={playerPayment?.totalDepositAmount} />
+
+            <TotalWithdrawAmountTrans />
+            <FormattedNumberDecimal
+              value={playerPayment?.totalWithdrawAmount}
+            />
+          </FieldValues>
+        </Columns.Column>
+        {isDev() && (
+          <Columns.Column>
+            <Heading use="h5">
+              <VipAccumulationTrans />
+            </Heading>
+            <FieldValues>
+              <VipUpgradeBox checked={player.vipLevelAutoState} readOnly />
+
+              <CurrentVipLevelTrans />
+              <VipLevelLabel value={vipLevel} />
+            </FieldValues>
+          </Columns.Column>
         )}
-
-        <BalanceTrans />
-        <Box>
-          <FormattedNumberDecimal value={balance} />
-        </Box>
-
-        <Box alignY="center">
-          <WageringRequirementTrans />
-        </Box>
-        <Set>
-          <FormattedNumberDecimal value={player?.wageringRequirement} />
-          <PlayerBucketListDialogDisclosure playerCode={player.playerCode} />
-        </Set>
-
-        <StatusTrans />
-        <Box>
-          <PlayerStatusLabel value={status} />
-        </Box>
-
-        <RemarkTrans />
-        <Box>
-          <Text>{player?.remark}</Text>
-        </Box>
-
-        <RegisterIPTrans />
-        <Box>{player?.registerIp}</Box>
-
-        <RegistrationTimeTrans />
-        <Box>
-          <FormattedDateTime value={registeredOn} />
-        </Box>
-
-        <LastLoginTimeTrans />
-        <Box>
-          <FormattedDateTime value={player?.lastLoginOn} />
-        </Box>
-
-        <LastLoginIPTrans />
-        <Box>{player?.lastLoginIp}</Box>
-
-        <RegistrationDomainTrans />
-        <Box>{player?.registerHost}</Box>
-
-        <TotalDepositAmountTrans />
-        <FormattedNumberDecimal value={playerPayment?.totalDepositAmount} />
-
-        <TotalWithdrawAmountTrans />
-        <FormattedNumberDecimal value={playerPayment?.totalWithdrawAmount} />
-      </FieldValues>
+      </Columns>
     </TabPanel>
   )
 }
