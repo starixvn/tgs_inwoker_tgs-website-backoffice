@@ -262,6 +262,20 @@ export const Fixture = {
     let platform = await backofficeApi.platform.findPlatform(platformCode)
     use(platform)
   },
+  agentPlayerPlatform: async ({ licensee, backofficeApi }, use) => {
+    const AgentPlayerPlatformCode = "AGENT-PLAYER"
+    let platform = await backofficeApi.platform.findPlatform(
+      AgentPlayerPlatformCode
+    )
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: AgentPlayerPlatformCode,
+        enablePlayerAgent: true
+      })
+    }
+    use(platform)
+  },
   licensee: async ({ licenseeCode, backofficeApi }, use) => {
     let licensee = await backofficeApi.licensee.findLicensee(licenseeCode)
     use(licensee)

@@ -30,8 +30,7 @@ export const UpgradePlayerToAgentDialogDisclosure = ({
     return null
   }
 
-  //TODO: configm player account type field name
-  if (player?.accountType) {
+  if (player?.upgradePlayerAgentId) {
     //already upgrade to agent
     return null
   }

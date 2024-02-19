@@ -2,6 +2,7 @@ import {
   urlWith,
   useGet,
   usePostData,
+  usePost,
   usePut,
   usePutData,
   useDelete,
@@ -349,13 +350,7 @@ export const usePlayerPayment = (playerCode) => {
   return useGet(url)
 }
 
-//TODO: integrate with api
 export const useUpgradePlayerToAgent = (playerCode) => {
-  //TODO: rm usePlayer fake api
-  let { isLoading, data, ...rest } = usePlayer(playerCode)
-  return {
-    isLoading,
-    result: !!data,
-    ...rest
-  }
+  let url = playerCode ? `${API}/upgrade/${playerCode}/agent` : ""
+  return usePost(url)
 }

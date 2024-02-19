@@ -182,6 +182,29 @@ export const useGet = (url, options = DefaultUpdateOptions) => {
   }
 }
 
+export const usePost = (url, data, options = DefaultUpdateOptions) => {
+  let key = url ? [url, data] : null
+  let {
+    data: result,
+    error,
+    isValidating,
+    mutate
+  } = useSWR(key, (url, data) => post(url, { data }), options)
+
+  return {
+    key,
+    result,
+    isLoading: !error && !result && key,
+    isValidating,
+    error,
+    isError: error,
+    mutate,
+    deleteCache: () => deleteCacheBy(key),
+    deleteErrorCache: () => deleteErrorCacheBy(key),
+    clearCache: () => cache.clear()
+  }
+}
+
 export const usePostData = (url, data, options = DefaultUpdateOptions) => {
   let fetchData = !!url && data !== undefined
   let key = fetchData ? [url, data] : null
