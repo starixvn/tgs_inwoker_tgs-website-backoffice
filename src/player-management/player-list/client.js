@@ -1,3 +1,4 @@
+import { boolean } from "boolean"
 import {
   urlWith,
   useGet,
@@ -9,7 +10,7 @@ import {
   usePatchData
 } from "../../client"
 import { useApiMerge } from "../../client/useApiMerge."
-import { isEmpty, isNil } from "lodash-es"
+import { isEmpty, isNil, isBoolean } from "lodash-es"
 import { either } from "ramda"
 
 let isNilOrEmpty = either(isNil, isEmpty)
@@ -53,6 +54,11 @@ export const toUpdatePlayerFormData = (data) => {
     parentUsername: parentPlayerUsername,
     ...info
   } = data
+
+  //TODO: confirm with backend api
+  if (isBoolean(info.vipLevelAutoState)) {
+    info.vipLevelAutoState = info.vipLevelAutoState?.toString()
+  }
 
   return {
     info,
