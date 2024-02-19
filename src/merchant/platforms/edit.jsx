@@ -561,32 +561,28 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           )}
         </Box>
 
-        {isLocalDev() && (
-          <>
-            <NormalLabel>
-              <PlayerUpgradesToAgentTrans />
-            </NormalLabel>
-            <Box alignY="center">
-              <Switch
-                name={UpgradePlayerToAgentFieldName}
-                disabled={!isAdd}
-                css={css`
-                  width: max-content;
-                `}
-              />
-            </Box>
+        <NormalLabel>
+          <PlayerUpgradesToAgentTrans />
+        </NormalLabel>
+        <Box alignY="center">
+          <Switch
+            name={UpgradePlayerToAgentFieldName}
+            disabled={!isAdd}
+            css={css`
+              width: max-content;
+            `}
+          />
+        </Box>
 
-            <NormalLabel>
-              <DistributionTrans />
-            </NormalLabel>
-            <Box alignY="center">
-              <AutoOrManualSwitch
-                name={AutoSendAgentBonusFieldName}
-                disabled={!isAdd}
-              />
-            </Box>
-          </>
-        )}
+        <NormalLabel>
+          <DistributionTrans />
+        </NormalLabel>
+        <Box alignY="center">
+          <AutoOrManualSwitch
+            name={AutoSendAgentBonusFieldName}
+            disabled={!isAdd}
+          />
+        </Box>
 
         <NormalLabel>
           <Trans zh="平台域名" en="Brand Domain" />

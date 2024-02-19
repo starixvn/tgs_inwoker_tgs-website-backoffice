@@ -1,22 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
-import {
-  useEditPlayerInfo,
-  useUpdatePlayer,
-  toUpdatePlayerFormData
-} from "./client"
-import {
-  Spinner,
-  Stack,
-  Flex,
-  Box,
-  Card,
-  Set,
-  Button,
-  Text,
-  Dialog,
-  Group
-} from "bumbag"
+import { useUpdatePlayer, toUpdatePlayerFormData } from "./client"
+import { Spinner, Stack, Columns, Box, Set, Button, Text, Group } from "bumbag"
 import { FieldValues } from "../../layout/Grid"
 import {
   Trans,
@@ -211,6 +196,11 @@ const AccountTypeBox = ({ player }) => {
 
 const VipUpgradeField = "vipLevelAutoState"
 const VipUpgradeBox = ({ name = VipUpgradeField, ...props }) => {
+  //TODO:1.41 rm isDev
+  if (!isDev()) {
+    return null
+  }
+
   return (
     <>
       <VipUpgradeTrans />
