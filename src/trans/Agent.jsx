@@ -171,6 +171,15 @@ const UpgradeToAgent = {
 export const UpgradeToAgentTrans = () => <Trans {...UpgradeToAgent} />
 export const useUpgradeToAgentTrans = () => useTrans(UpgradeToAgent)
 
+const PlayerUpgradesToAgent = {
+  zh: "玩家升级成代理",
+  en: "Player upgrades to agent",
+  vi: "người chơi thăng cấp thành đại lý"
+}
+export const PlayerUpgradesToAgentTrans = () => (
+  <Trans {...PlayerUpgradesToAgent} />
+)
+
 const ConfirmUpgradeToAgent = {
   zh: "确定升级为代理?",
   en: "Are you sure to upgrade to agent?",

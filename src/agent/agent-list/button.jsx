@@ -103,17 +103,9 @@ export const AddAgentButton = ({ brand, onSubmitted, ...props }) => {
     return null
   }
 
-  //TODO: rm local
-  /*
-  let local = isLocalDev()
-  if (local) {
-    brand.upgradPlayerToAgent = true
-  }
-  //TODO: confirm brand field name
-  if (!!brand?.upgradPlayerToAgent) {
+  if (!!brand?.enablePlayerAgent) {
     return null
   }
-  */
 
   return (
     <>

@@ -164,3 +164,9 @@ const LotteryCommissionRebate = {
 export const LotteryCommissionRebateTrans = () => (
   <Trans {...LotteryCommissionRebate} />
 )
+
+const VipUpgrade = {
+  zh: "VIP 升级",
+  en: "VIP Upgrade"
+}
+export const VipUpgradeTrans = () => <Trans {...VipUpgrade} />

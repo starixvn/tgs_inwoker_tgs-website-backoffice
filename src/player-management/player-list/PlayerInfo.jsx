@@ -71,12 +71,13 @@ import {
   WageringRequirementTrans
 } from "../../trans/Player"
 import { StatusTrans } from "../../trans/Status"
-import { VipLevelTrans } from "../../trans/Vip"
+import { VipLevelTrans, VipUpgradeTrans } from "../../trans/Vip"
 import { RemarkTrans } from "../../trans/Action"
 import {
   TotalDepositAmountTrans,
   TotalWithdrawAmountTrans
 } from "../../trans/Field"
+import { AutoOrManualSwitch } from "../../switch/AutoOrManualSwitch"
 
 export const PlayerInfoKey = "player"
 
@@ -204,7 +205,16 @@ const AccountTypeBox = ({ player }) => {
   return (
     <>
       <AccountTypeTrans />
-      
+    </>
+  )
+}
+
+const VipUpgradeField = "vipLevelAutoState"
+const VipUpgradeBox = ({ name = VipUpgradeField, ...props }) => {
+  return (
+    <>
+      <VipUpgradeTrans />
+      <AutoOrManualSwitch name={name} {...props} />
     </>
   )
 }
@@ -273,6 +283,8 @@ const EditForm = ({
             brandId={brandId}
           />
         </Box>
+
+        <VipUpgradeBox />
 
         <UpperLevelAgentTrans />
         <Box>
@@ -388,6 +400,8 @@ export const PlayerInfoPanel = ({
         <Box>
           <VipLevelLabel value={vipLevel} />
         </Box>
+
+        <VipUpgradeBox checked={player.vipLevelAutoState} readOnly />
 
         <UpperLevelAgentTrans />
         <Box>

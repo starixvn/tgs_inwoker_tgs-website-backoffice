@@ -64,12 +64,12 @@ const NoSearchResult = {
 export const NoSearchResultTrans = () => <Trans {...NoSearchResult} />
 
 const Automatic = {
-  zh: "自動",
-  en: "Automatic",
+  zh: "自动",
+  en: "Auto",
   vi: "Thủ công"
 }
-export const AutomaticTrans = () => <Trans {...Automatic} />
-export const useAutomaticTrans = () => useTrans(Automatic)
+export const AutoTrans = () => <Trans {...Automatic} />
+export const useAutoTrans = () => useTrans(Automatic)
 
 const Manual = {
   zh: "手动",

@@ -48,6 +48,9 @@ export const formatHourMinuteSecondDayMonthYear = (value) =>
 export const HourMinute = "HH:mm"
 export const formatHourMinute = (value) => formatDateTime(HourMinute, value)
 
+export const formatHourMinuteSecond = (value) =>
+  formatDateTime(DateFormat.Time, value)
+
 //TODO: mv to DateFormat
 const DateOnlyFormat = "yyyy-MM-dd"
 export const formatDateOnly = (value) => formatDateTime(DateOnlyFormat, value)

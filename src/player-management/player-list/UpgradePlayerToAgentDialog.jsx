@@ -26,19 +26,7 @@ export const UpgradePlayerToAgentDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
-  //TODO: rm isDev local dev code
-  /*
-  let devEnv = isDev()
-  if (devEnv) {
-    brand = {
-      ...brand,
-      upgradPlayerToAgent: true
-    }
-  }
-  */
-
-  //TODO: confirm brand field name
-  if (!brand?.upgradPlayerToAgent) {
+  if (!brand?.enablePlayerAgent) {
     return null
   }
 

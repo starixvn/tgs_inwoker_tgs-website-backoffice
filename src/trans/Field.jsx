@@ -211,3 +211,10 @@ const CSNote = {
 }
 export const CSNoteTrans = () => <Trans {...CSNote} />
 export const useCSNoteTrans = () => useTrans(CSNote)
+
+const Distribution = {
+  zh: "派发机制",
+  en: "Distribution",
+  vi: "cơ chế phân phối"
+}
+export const DistributionTrans = () => <Trans {...Distribution} />

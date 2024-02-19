@@ -57,7 +57,7 @@ import {
   PercentageNumberInputField,
   NumberInputField
 } from "../../input/NumberInput"
-import { isDev } from "../../env"
+import { isDev, isLocalDev } from "../../env"
 import Checkbox from "../../checkbox"
 import {
   AgentProfitSharingTypeLabel,
@@ -73,9 +73,14 @@ import {
   useEditTrans,
   useViewTrans
 } from "../../trans/Action"
-import { BasicInformationTrans } from "../../trans/Field"
+import { BasicInformationTrans, DistributionTrans } from "../../trans/Field"
 import copy from "clipboard-copy"
-import { AgentProfitSharingIntervalTrans } from "../../trans/Agent"
+import {
+  AgentProfitSharingIntervalTrans,
+  PlayerUpgradesToAgentTrans
+} from "../../trans/Agent"
+import Switch from "../../switch/Switch"
+import { AutoOrManualSwitch } from "../../switch/AutoOrManualSwitch"
 
 export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -85,7 +90,6 @@ export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
     return null
   }
 
-  //TODO:1.41 rename AddDialogV2 to AddDialog?
   return (
     <>
       <AddDisclosure {...dialog} {...props} />
@@ -464,6 +468,9 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
     en: "Profit sharing affected by active player"
   })
 
+  let UpgradePlayerToAgentFieldName = "enablePlayerAgent"
+  let AutoSendAgentBonusFieldName = "autoSendAgentBonus"
+
   return (
     <Stack orientation="vertical" marginLeft="1rem" paddingBottom="1.5rem">
       <Heading use="h5" marginBottom="major-1">
@@ -553,6 +560,33 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
             <AgentProfitSharingTypeLabel value={record.agentDividendType} />
           )}
         </Box>
+
+        {isLocalDev() && (
+          <>
+            <NormalLabel>
+              <PlayerUpgradesToAgentTrans />
+            </NormalLabel>
+            <Box alignY="center">
+              <Switch
+                name={UpgradePlayerToAgentFieldName}
+                disabled={!isAdd}
+                css={css`
+                  width: max-content;
+                `}
+              />
+            </Box>
+
+            <NormalLabel>
+              <DistributionTrans />
+            </NormalLabel>
+            <Box alignY="center">
+              <AutoOrManualSwitch
+                name={AutoSendAgentBonusFieldName}
+                disabled={!isAdd}
+              />
+            </Box>
+          </>
+        )}
 
         <NormalLabel>
           <Trans zh="平台域名" en="Brand Domain" />
