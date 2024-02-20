@@ -70,6 +70,7 @@ export const toUpdatePlayerFormData = (data) => {
   }
 }
 
+//TODO: update vipLevelAutoState
 export const useUpdatePlayer = (playerCode, data) => {
   let items = [
     useUpdatePlayerInfo(

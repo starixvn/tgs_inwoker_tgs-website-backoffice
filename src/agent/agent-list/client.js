@@ -101,6 +101,7 @@ export const useAgentUpdateFormData = (data, agentProfitSharingType) => {
   return formData
 }
 
+//TODO: update negativeDividend
 export const useUpdateAgentV2 = (agentId, data) => {
   let items = [
     useUpdateAgentInfo(

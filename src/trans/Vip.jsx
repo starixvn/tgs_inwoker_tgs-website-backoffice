@@ -184,3 +184,12 @@ const CurrentVipLevel = {
   en: "Current VIP Level"
 }
 export const CurrentVipLevelTrans = () => <Trans {...CurrentVipLevel} />
+
+export const AgentDividendDistribution = {
+  zh: "代理分红派发",
+  en: "Agent dividend distribution",
+  vi: "phân phát hoa hồng đại lý"
+}
+export const AgentDividendDistributionTrans = () => (
+  <Trans {...AgentDividendDistribution} />
+)
