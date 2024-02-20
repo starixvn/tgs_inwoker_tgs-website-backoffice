@@ -9,9 +9,7 @@ export const AutoOrManualSwitch = ({ name, ...props }) => {
   let checked =
     formContext?.watch(name) ?? props.checked ?? props?.defaultChecked
 
-  let autoTrans = useAutoTrans()
-  let maunalTrans = useManualTrans()
-  let label = checked ? autoTrans : maunalTrans
+  let label = useAutoOrManualSwitchTrans(checked)
 
   return (
     <Switch
@@ -23,4 +21,10 @@ export const AutoOrManualSwitch = ({ name, ...props }) => {
       {...props}
     />
   )
+}
+
+export const useAutoOrManualSwitchTrans = (checked) => {
+  let autoTrans = useAutoTrans()
+  let maunalTrans = useManualTrans()
+  return checked ? autoTrans : maunalTrans
 }

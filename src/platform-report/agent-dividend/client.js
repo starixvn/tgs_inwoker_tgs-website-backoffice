@@ -15,7 +15,7 @@ export const useAgentDividendList = (searchParams) => {
   return useGet(url)
 }
 
-export const useSendAgentDividend = (formData) => {
-  let url = formData ? `${API}` : ""
+export const useVerifyAgentDividend = (formData) => {
+  let url = formData ? `${API}/send-agent-dividend` : ""
   return usePostData(url, formData)
 }

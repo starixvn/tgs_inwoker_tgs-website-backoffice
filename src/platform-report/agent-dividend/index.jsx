@@ -45,6 +45,7 @@ import { BalanceOfCurrentPeriodTrans, CSNoteTrans } from "../../trans/Field"
 import { StatusTrans } from "../../trans/Status"
 import { ActionTrans } from "../../trans/Action"
 import { AgentDividendStatusLabel } from "./AgentDividendStatus"
+import { VerifyAgentDividendDialogDisclosure } from "./VerifyAgentDividendDialog"
 
 export { Code }
 
@@ -80,7 +81,8 @@ const Body = ({}) => {
 
   let items = data?.items
   let columns = useColumns({
-    items
+    items,
+    mutate
   })
 
   let pageWidth = usePlatformPageContentWidth()
@@ -141,7 +143,7 @@ const SearchBar = ({ isLoading, ...props }) => {
   )
 }
 
-const useColumns = ({ items = [] }) => {
+const useColumns = ({ items = [], mutate }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
@@ -202,8 +204,12 @@ const useColumns = ({ items = [] }) => {
         accessor: (row) => row,
         disableSortBy: true,
         Header: <ActionTrans />,
-        Cell: () => {
-          return <Set alignX="center"></Set>
+        Cell: ({ value: record }) => {
+          return (
+            <Set alignX="center">
+              <VerifyAgentDividendDialogDisclosure onSubmitted={mutate} />
+            </Set>
+          )
         }
       })
     ]
