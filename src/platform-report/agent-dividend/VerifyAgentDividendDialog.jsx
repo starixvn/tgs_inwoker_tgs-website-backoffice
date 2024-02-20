@@ -16,9 +16,8 @@ import {
 } from "../../trans/Payment"
 import { CSNoteTrans } from "../../trans/Field"
 
-//TODO: agentDividendRecordId? rm hardcoded
 export const VerifyAgentDividendDialogDisclosure = ({
-  agentDividendRecordId = "787861eb-76cb-46a1-8a78-397d2994d57a",
+  recordId,
   onSubmitted,
   id,
   dialogId = "verify-agent-dividend-dialog",
@@ -37,7 +36,7 @@ export const VerifyAgentDividendDialogDisclosure = ({
       <VerifyDisclosure id={id} {...dialog} {...props} />
       {dialog.visible && (
         <VerifyDialog
-          agentDividendRecordId={agentDividendRecordId}
+          recordId={recordId}
           onSubmitted={onSubmitted}
           dialog={dialog}
           dialogId={dialogId}
@@ -48,7 +47,7 @@ export const VerifyAgentDividendDialogDisclosure = ({
 }
 
 const VerifyDialog = ({
-  agentDividendRecordId,
+  recordId,
   onSubmitted,
   dialog,
   dialogId,
@@ -66,7 +65,7 @@ const VerifyDialog = ({
     useVerifyAgentDividend(formData)
 
   const onSubmit = (data) => {
-    let agentDividendRecordIds = [agentDividendRecordId]
+    let agentDividendRecordIds = [recordId]
     setSubmit({
       ...data,
       agentDividendRecordIds

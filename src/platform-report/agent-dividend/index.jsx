@@ -46,6 +46,7 @@ import { StatusTrans } from "../../trans/Status"
 import { ActionTrans } from "../../trans/Action"
 import { AgentDividendStatusLabel } from "./AgentDividendStatus"
 import { VerifyAgentDividendDialogDisclosure } from "./VerifyAgentDividendDialog"
+import { LiableOrNotSwitchLabel } from "../../switch/LiableOrNotSwitch"
 
 export { Code }
 
@@ -127,7 +128,7 @@ const Body = ({}) => {
 }
 
 //TODO
-const SearchBar = ({ isLoading, ...props }) => {
+const SearchBar = ({ search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {}
   })
@@ -171,7 +172,8 @@ const useColumns = ({ items = [], mutate }) => {
       textColumn({
         accessor: "negativeAgentDividendCarryForward",
         Header: <NegativeDividendTrans />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: LiableOrNotSwitchLabel
       }),
       numberDecimalColumn({
         accessor: "negativeAgentDividendAmount",
@@ -207,7 +209,10 @@ const useColumns = ({ items = [], mutate }) => {
         Cell: ({ value: record }) => {
           return (
             <Set alignX="center">
-              <VerifyAgentDividendDialogDisclosure onSubmitted={mutate} />
+              <VerifyAgentDividendDialogDisclosure
+                recordId={record?.id}
+                onSubmitted={mutate}
+              />
             </Set>
           )
         }

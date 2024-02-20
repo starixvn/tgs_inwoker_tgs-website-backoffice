@@ -132,3 +132,19 @@ const ConfigStatus = {
 }
 export const ConfigStatusTrans = () => <Trans {...ConfigStatus} />
 export const useConfigStatusTrans = () => useTrans(ConfigStatus)
+
+const Liable = {
+  zh: "承担",
+  en: "Liable",
+  vi: "đảm nhận"
+}
+export const LiableTrans = () => <Trans {...Liable} />
+export const useLiableTrans = () => useTrans(Liable)
+
+const NotLiable = {
+  zh: "不承担",
+  en: "Not liable",
+  vi: "không đảm nhận"
+}
+export const NotLiableTrans = () => <Trans {...NotLiable} />
+export const useNotLiableTrans = () => useTrans(NotLiable)
