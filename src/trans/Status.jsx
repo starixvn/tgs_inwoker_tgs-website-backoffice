@@ -33,6 +33,14 @@ const Approved = {
 export const ApprovedTrans = (props) => <Trans {...Approved} {...props} />
 export const useApprovedTrans = () => useTrans(Approved)
 
+const Distributed = {
+  zh: "已派发",
+  en: "Distributed",
+  vi: "đã phân phát"
+}
+export const DistributedTrans = () => <Trans {...Distributed} />
+export const useDistributedTrans = () => useTrans(Distributed)
+
 const Rejected = {
   zh: "已拒绝",
   en: "Rejected",

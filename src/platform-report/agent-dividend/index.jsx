@@ -23,6 +23,8 @@ import {
   usePlatformId
 } from "../../page/PlatformPageContent"
 import { AgentDividendDistributionTrans } from "../../trans/Vip"
+import { useTable, Table, pageCount, toApiParams } from "../../table"
+import { useAgentDividendList } from "./client"
 
 export { Code }
 
@@ -32,19 +34,29 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
-}
-
-const Body = ({}) => {
   return (
-    <PlatformPageContent
-      title={<AgentDividendDistributionTrans />}
-    ></PlatformPageContent>
+    <PlatformPageContent title={<AgentDividendDistributionTrans />}>
+      <Body />
+    </PlatformPageContent>
   )
 }
 
-const AgentDividendDist = ({}) => {
+const Body = ({}) => {
   let brandId = usePlatformId()
+
+  let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId
+  })
+
+  useEffect(() => {
+    setState({ pageIndex: 0, brandId })
+  }, [brandId])
+
+  let { isLoading, data, error, mutate, deleteCache } = useAgentDividendList(
+    toApiParams(state)
+  )
+
+  return `${JSON.stringify(data)}`
 }
 
 export const CodeContentPair = [Code, Content]
