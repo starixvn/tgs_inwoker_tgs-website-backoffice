@@ -207,7 +207,7 @@ export const TotalTrans = () => <Trans {...Total} />
 const CSNote = {
   zh: "客服备註",
   en: "CS Note",
-  vi: "ghi chú nội bộ"
+  vi: "CSKH ghi chú"
 }
 export const CSNoteTrans = () => <Trans {...CSNote} />
 export const useCSNoteTrans = () => useTrans(CSNote)
@@ -218,3 +218,12 @@ const Distribution = {
   vi: "cơ chế phân phối"
 }
 export const DistributionTrans = () => <Trans {...Distribution} />
+
+const BalanceOfCurrentPeriod = {
+  zh: "本期结馀",
+  en: "Balance of current period",
+  vi: "số dư hiện tại"
+}
+export const BalanceOfCurrentPeriodTrans = () => (
+  <Trans {...BalanceOfCurrentPeriod} />
+)

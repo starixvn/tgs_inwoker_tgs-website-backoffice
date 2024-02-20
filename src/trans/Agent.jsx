@@ -143,7 +143,8 @@ export const AgentMarketingReportTrans = () => (
 
 const AgentProfitSharingInterval = {
   zh: "代理分红周期",
-  en: "Agent Profit Sharing Interval"
+  en: "Agent Profit Sharing Interval",
+  vi: "chu kỳ hoa hồng của đại lý"
 }
 export const AgentProfitSharingIntervalTrans = () => (
   <Trans {...AgentProfitSharingInterval} />
@@ -197,3 +198,26 @@ const ConfirmUpgradeToMasterAgent = {
 export const ConfirmUpgradeToMasterAgentTrans = () => (
   <Trans {...ConfirmUpgradeToMasterAgent} />
 )
+
+const NegativeDividend = {
+  zh: "负分红",
+  en: "Negative Dividend",
+  vi: "hoa hồng âm"
+}
+export const NegativeDividendTrans = () => <Trans {...NegativeDividend} />
+
+const CumulativeNegativeDividendAmount = {
+  zh: "累计负分红金额",
+  en: "Cumulative negative dividend amount",
+  vi: "số hoa hồng âm tích lũy"
+}
+export const CumulativeNegativeDividendAmountTrans = () => (
+  <Trans {...CumulativeNegativeDividendAmount} />
+)
+
+const DividendAmount = {
+  zh: "实际分红金额",
+  en: "Dividend amount",
+  vi: "số hoa hồng thực tế"
+}
+export const DividendAmountTrans = () => <Trans {...DividendAmount} />

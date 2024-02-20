@@ -17,5 +17,5 @@ test("upgrade player to agent", async ({
 }) => {
   let platformToken = await brandCertApi.platformToken(agentPlayerPlatform.code)
   let player = await operatorApi.player.createAndLogin(platformToken)
-  console.log("player", player)
+  console.warn("TODO: upgrade player to agent", player)
 })

@@ -8,9 +8,10 @@ import {
   Button,
   Set,
   useModalState,
-  Popover,
+  Text,
   Icon,
-  List
+  List,
+  Level
 } from "bumbag"
 import {
   useIsDisplayMenuByRoute,
@@ -20,11 +21,30 @@ import {
 import { Code } from "./menu"
 import {
   PlatformPageContent,
-  usePlatformId
+  usePlatformId,
+  usePlatformPageContentWidth
 } from "../../page/PlatformPageContent"
 import { AgentDividendDistributionTrans } from "../../trans/Vip"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { useAgentDividendList } from "./client"
+import AutoSizer from "react-virtualized-auto-sizer"
+import SearchButton from "../../button/SearchButton"
+import textColumn from "../../table/column/textColumn"
+import { UserNameTrans } from "../../trans/User"
+import {
+  AgentProfitSharingIntervalTrans,
+  CumulativeNegativeDividendAmountTrans,
+  DividendAmountTrans,
+  NegativeDividendTrans
+} from "../../trans/Agent"
+import { formatYearMonthDay } from "../../date/format"
+import dateTimeColumn from "../../table/column/dateTime"
+import { VerifiedTimeTrans } from "../../trans/Date"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
+import { BalanceOfCurrentPeriodTrans, CSNoteTrans } from "../../trans/Field"
+import { StatusTrans } from "../../trans/Status"
+import { ActionTrans } from "../../trans/Action"
+import { AgentDividendStatusLabel } from "./AgentDividendStatus"
 
 export { Code }
 
@@ -41,6 +61,8 @@ export const Content = () => {
   )
 }
 
+export const CodeContentPair = [Code, Content]
+
 const Body = ({}) => {
   let brandId = usePlatformId()
 
@@ -56,7 +78,135 @@ const Body = ({}) => {
     toApiParams(state)
   )
 
-  return `${JSON.stringify(data)}`
+  let items = data?.items
+  let columns = useColumns({
+    items
+  })
+
+  let pageWidth = usePlatformPageContentWidth()
+
+  return (
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          isLoading={isLoading}
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate(null, true)
+          }}
+        />
+      </Level>
+      <Box flex="1 0 50%">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                columns={columns}
+                data={items}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(state?.pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                stickyHead
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
+    </Set>
+  )
 }
 
-export const CodeContentPair = [Code, Content]
+//TODO
+const SearchBar = ({ isLoading, ...props }) => {
+  let formMethods = useForm({
+    defaultValues: {}
+  })
+
+  const onSubmit = (data) => search?.(data)
+
+  return (
+    <FormProvider {...formMethods}>
+      <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <SearchButton isLoading={isLoading} disabled={isLoading} />
+      </form>
+    </FormProvider>
+  )
+}
+
+const useColumns = ({ items = [] }) => {
+  return useMemo(() => {
+    let columns = [
+      textColumn({
+        accessor: "agentUsername",
+        Header: <UserNameTrans />,
+        disableSortBy: true
+      }),
+      textColumn({
+        id: "range",
+        accessor: (row) => row,
+        Header: <AgentProfitSharingIntervalTrans />,
+        disableSortBy: true,
+        Cell: ({ value: record }) => {
+          let from = formatYearMonthDay(record?.from) ?? ""
+          let to = formatYearMonthDay(record?.to)
+          return `${from} - ${to}`
+        }
+      }),
+      dateTimeColumn({
+        accessor: "approvedOn",
+        Header: <VerifiedTimeTrans />,
+        placeholder: "-",
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "negativeAgentDividendCarryForward",
+        Header: <NegativeDividendTrans />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "negativeAgentDividendAmount",
+        Header: <CumulativeNegativeDividendAmountTrans />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "agentDividendAmount",
+        Header: <BalanceOfCurrentPeriodTrans />,
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        accessor: "actualAgentDividendAmount",
+        Header: <DividendAmountTrans />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "status",
+        Header: <StatusTrans />,
+        disableSortBy: true,
+        Cell: AgentDividendStatusLabel
+      }),
+      textColumn({
+        accessor: "remark",
+        Header: <CSNoteTrans />,
+        disableSortBy: true
+      }),
+      textColumn({
+        id: "actions",
+        accessor: (row) => row,
+        disableSortBy: true,
+        Header: <ActionTrans />,
+        Cell: () => {
+          return <Set alignX="center"></Set>
+        }
+      })
+    ]
+    return columns
+  }, [JSON.stringify(items)])
+}
