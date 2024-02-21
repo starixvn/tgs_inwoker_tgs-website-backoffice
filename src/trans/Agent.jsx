@@ -149,6 +149,8 @@ const AgentProfitSharingInterval = {
 export const AgentProfitSharingIntervalTrans = () => (
   <Trans {...AgentProfitSharingInterval} />
 )
+export const useAgentProfitSharingIntervalTrans = () =>
+  useTrans(AgentProfitSharingInterval)
 
 export const AllAgentDividendSetting = {
   zh: "全民代理分紅設置",
@@ -205,6 +207,7 @@ const NegativeDividend = {
   vi: "hoa hồng âm"
 }
 export const NegativeDividendTrans = () => <Trans {...NegativeDividend} />
+export const useNegativeDividendTrans = () => useTrans(NegativeDividend)
 
 const CumulativeNegativeDividendAmount = {
   zh: "累计负分红金额",

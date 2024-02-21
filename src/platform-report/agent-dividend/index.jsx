@@ -30,23 +30,32 @@ import { useAgentDividendList } from "./client"
 import AutoSizer from "react-virtualized-auto-sizer"
 import SearchButton from "../../button/SearchButton"
 import textColumn from "../../table/column/textColumn"
-import { UserNameTrans } from "../../trans/User"
+import { UserNameTrans, useUserNameTrans } from "../../trans/User"
 import {
   AgentProfitSharingIntervalTrans,
   CumulativeNegativeDividendAmountTrans,
   DividendAmountTrans,
-  NegativeDividendTrans
+  NegativeDividendTrans,
+  useAgentProfitSharingIntervalTrans,
+  useNegativeDividendTrans
 } from "../../trans/Agent"
 import { formatYearMonthDay } from "../../date/format"
 import dateTimeColumn from "../../table/column/dateTime"
-import { VerifiedTimeTrans } from "../../trans/Date"
+import { VerifiedTimeTrans, useVerifiedTimeTrans } from "../../trans/Date"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { BalanceOfCurrentPeriodTrans, CSNoteTrans } from "../../trans/Field"
 import { StatusTrans } from "../../trans/Status"
 import { ActionTrans } from "../../trans/Action"
-import { AgentDividendStatusLabel } from "./AgentDividendStatus"
+import {
+  AgentDividendStatusLabel,
+  AgentDividendStatusSelect
+} from "./AgentDividendStatus"
 import { VerifyAgentDividendDialogDisclosure } from "./VerifyAgentDividendDialog"
 import { LiableOrNotSwitchLabel } from "../../switch/LiableOrNotSwitch"
+import { LiableOrNotSelect } from "../../select/LiableOrNotSelect"
+import { DateInputRangeField } from "../../date/DateTimeRangeInput"
+import { InputField } from "../../input/Input"
+import { startOfNextDay } from "../../date/startOfNextDay"
 
 export { Code }
 
@@ -65,6 +74,11 @@ export const Content = () => {
 
 export const CodeContentPair = [Code, Content]
 
+const FromField = "from"
+const ToField = "to"
+const ApprovedFromField = "approvedFrom"
+const ApprovedToField = "approvedTo"
+
 const Body = ({}) => {
   let brandId = usePlatformId()
 
@@ -76,9 +90,11 @@ const Body = ({}) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { isLoading, data, error, mutate, deleteCache } = useAgentDividendList(
-    toApiParams(state)
-  )
+  let { isLoading, data, error, mutate, deleteCache } = useAgentDividendList({
+    ...toApiParams(state),
+    to: startOfNextDay(state.to),
+    approvedTo: startOfNextDay(state.approvedTo)
+  })
 
   let items = data?.items
   let columns = useColumns({
@@ -127,18 +143,57 @@ const Body = ({}) => {
   )
 }
 
-//TODO
+//TODO: filters
 const SearchBar = ({ search, isLoading, ...props }) => {
   let formMethods = useForm({
-    defaultValues: {}
+    defaultValues: {
+      negativeAgentDividendCarryForward: ""
+    }
   })
+
+  let usenamePlaceholder = useUserNameTrans()
+  let timeRangePlaceholder = useAgentProfitSharingIntervalTrans()
+  let verifiedTimePlaceholder = useVerifiedTimeTrans()
+  let liableOrNotPlaceholder = useNegativeDividendTrans()
 
   const onSubmit = (data) => search?.(data)
 
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-        <SearchButton isLoading={isLoading} disabled={isLoading} />
+        <Set alignY="bottom">
+          <InputField
+            name="agentUsername"
+            showEmptyFieldValueAddonAfter
+            placeholder={usenamePlaceholder}
+          />
+          <DateInputRangeField
+            label={timeRangePlaceholder}
+            showDateDropdownMenu
+            startProps={{
+              name: FromField
+            }}
+            endProps={{
+              name: ToField
+            }}
+          />
+          <DateInputRangeField
+            label={verifiedTimePlaceholder}
+            showDateDropdownMenu
+            startProps={{
+              name: ApprovedFromField
+            }}
+            endProps={{
+              name: ApprovedToField
+            }}
+          />
+          <LiableOrNotSelect
+            name="negativeAgentDividendCarryForward"
+            placeholder={liableOrNotPlaceholder}
+          />
+          <AgentDividendStatusSelect name="status" />
+          <SearchButton isLoading={isLoading} disabled={isLoading} />
+        </Set>
       </form>
     </FormProvider>
   )
@@ -210,7 +265,7 @@ const useColumns = ({ items = [], mutate }) => {
           return (
             <Set alignX="center">
               <VerifyAgentDividendDialogDisclosure
-                recordId={record?.id}
+                record={record}
                 onSubmitted={mutate}
               />
             </Set>

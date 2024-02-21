@@ -97,6 +97,7 @@ const VerifiedTime = {
   vi: "Thời gian kiểm tra"
 }
 export const VerifiedTimeTrans = () => <Trans {...VerifiedTime} />
+export const useVerifiedTimeTrans = () => <Trans {...VerifiedTime} />
 
 const PeriodicMaintenanceTime = {
   zh: "定期维护时间",

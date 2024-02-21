@@ -9,15 +9,16 @@ import { VerifyDisclosure } from "../../dialog/Disclosure"
 import { useVerifyAgentDividend } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import { TextareaField } from "../../textarea"
-import { RejectTrans } from "../../trans/Action"
+import { ApproveTrans, RejectTrans } from "../../trans/Action"
 import {
   useReviewWaitingPaymentTrans,
   useWaitingPaymentTrans
 } from "../../trans/Payment"
 import { CSNoteTrans } from "../../trans/Field"
 
+//TODO: test case required
 export const VerifyAgentDividendDialogDisclosure = ({
-  recordId,
+  record,
   onSubmitted,
   id,
   dialogId = "verify-agent-dividend-dialog",
@@ -30,7 +31,12 @@ export const VerifyAgentDividendDialogDisclosure = ({
     return null
   }
 
+  if (!!record?.approvedOn) {
+    return null
+  }
+
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
+  let recordId = record?.id
   return (
     <>
       <VerifyDisclosure id={id} {...dialog} {...props} />
@@ -91,6 +97,7 @@ const VerifyDialog = ({
       onClickSubmit={(event) => {
         setValue("approve", true)
       }}
+      submitText={<ApproveTrans />}
       addonButtons={
         <Button
           type="submit"
