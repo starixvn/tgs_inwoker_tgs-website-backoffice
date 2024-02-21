@@ -23,7 +23,6 @@ export const LiableOrNotSwitch = ({ name, ...props }) => {
 }
 
 export const LiableOrNotSwitchLabel = ({ value }) => {
-  console.log("LiableOrNotSwitchLabel value", value)
   let label = useLiableOrNotSwitchTrans(value)
   return label
 }

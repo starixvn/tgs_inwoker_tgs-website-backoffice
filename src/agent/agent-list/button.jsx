@@ -623,19 +623,24 @@ const TabsDialog = ({
 
 const ViewTabs = ({ brand, agent, tab }) => {
   let brandId = brand?.id
+
+  let disabledAgentPlayer = !brand.enablePlayerAgent
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
         <AgentInfoTab {...tab} />
-        <AgentContactInfoTab {...tab} />
-        {/* <AgentBankInfoTab {...tab} /> */}
+        {disabledAgentPlayer && <AgentContactInfoTab {...tab} />}
         <AgentHistoryListTab {...tab} />
         <AgentBalanceChangeTab {...tab} />
         <AgentDomainListTab {...tab} />
       </TabList>
 
       <AgentInfoPanel brand={brand} agent={agent} readonly {...tab} />
-      <AgentContactInfoPanel agent={agent} readonly {...tab} />
+
+      {disabledAgentPlayer && (
+        <AgentContactInfoPanel agent={agent} readonly {...tab} />
+      )}
+
       <AgentHistoryListPanel agentId={agent?.id} brandId={brandId} {...tab} />
       <AgentBalanceChangePanel brandId={brandId} agentId={agent?.id} {...tab} />
       <AgentDomainListPanel
@@ -667,7 +672,7 @@ const EditTabs = ({
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
         <AgentInfoTab {...tab} />
-        <AgentContactInfoTab {...tab} />
+        {disabledAgentPlayer && <AgentContactInfoTab {...tab} />}
         {disabledAgentPlayer && <AgentPasswordTab {...tab} />}
         {disabledAgentPlayer && hasChangeWithdrawPasswordAuth && (
           <AgentWithdrawPasswordTab {...tab} />
@@ -681,12 +686,14 @@ const EditTabs = ({
         onClickClose={onClickClose}
         {...tab}
       />
-      <AgentContactInfoPanel
-        agent={agent}
-        onSubmitted={onSubmitted}
-        onClickClose={onClickClose}
-        {...tab}
-      />
+      {disabledAgentPlayer && (
+        <AgentContactInfoPanel
+          agent={agent}
+          onSubmitted={onSubmitted}
+          onClickClose={onClickClose}
+          {...tab}
+        />
+      )}
       {disabledAgentPlayer && (
         <AgentPasswordPanel
           agent={agent}

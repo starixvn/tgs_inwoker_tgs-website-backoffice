@@ -180,7 +180,7 @@ const BodyContent = ({ brandId = "", brand }) => {
         />
       </Level>
       <Box>
-        <Alert variant="bordered" type="info" accent marginBottom="0.5rem">
+        <Alert variant="bordered" type="info" accent marginBottom="0">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
               <AgentListStatusInfoTrans />

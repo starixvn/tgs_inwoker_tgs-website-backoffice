@@ -7,8 +7,8 @@ const API = "api/agent"
 export const updateContact = async (agentId, formData) => {
   let agent = await getAgent(agentId)
 
-  let response = await fetcher.put(`${host}/${API}/${agentId}`, {
-    data: { updateType: "contact", ...agent, ...formData },
+  let response = await fetcher.patch(`${host}/${API}/contact/${agentId}`, {
+    data: formData,
     failOnStatusCode: true
   })
   let result = await response.json()
