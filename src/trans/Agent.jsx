@@ -192,6 +192,8 @@ export const ConfirmUpgradeToAgentTrans = () => (
   <Trans {...ConfirmUpgradeToAgent} />
 )
 
+/*
+TODO: rm
 const ConfirmUpgradeToMasterAgent = {
   zh: "确定升级为总代?",
   en: "Are you sure to upgrade to master agent?",
@@ -200,6 +202,7 @@ const ConfirmUpgradeToMasterAgent = {
 export const ConfirmUpgradeToMasterAgentTrans = () => (
   <Trans {...ConfirmUpgradeToMasterAgent} />
 )
+*/
 
 const NegativeDividend = {
   zh: "负分红",

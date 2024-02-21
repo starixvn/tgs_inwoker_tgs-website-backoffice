@@ -10,7 +10,6 @@ import { useUpgradePlayerToAgent } from "./client"
 import { isDev } from "../../env"
 import {
   ConfirmUpgradeToAgentTrans,
-  ConfirmUpgradeToMasterAgentTrans,
   UpgradeToAgentTrans,
   useUpgradeToAgentTrans
 } from "../../trans/Agent"
@@ -110,16 +109,11 @@ const UpgradeDialog = ({
   )
 }
 
-//TODO: configm rm ConfirmUpgradeToMasterAgentTrans?
 const FormBody = ({ player }) => {
-  let hasMasterAgent = !!player?.agentUsername
+  // let hasMasterAgent = !!player?.agentUsername
   return (
     <Stack paddingLeft="1rem">
-      {hasMasterAgent ? (
-        <ConfirmUpgradeToMasterAgentTrans />
-      ) : (
-        <ConfirmUpgradeToAgentTrans />
-      )}
+      <ConfirmUpgradeToAgentTrans />
     </Stack>
   )
 }
