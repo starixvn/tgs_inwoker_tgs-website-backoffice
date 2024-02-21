@@ -70,6 +70,7 @@ import {
   AgentTypeTrans,
   AgentUsernameTrans,
   DirectPlayersTrans,
+  NegativeDividendTrans,
   ProfitSharingPercentageTrans,
   UpperLevelAgentTrans,
   useAgentUsernameTrans
@@ -81,6 +82,11 @@ import {
 } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import {
+  LiableOrNotSwitch,
+  LiableOrNotSwitchLabel
+} from "../../switch/LiableOrNotSwitch"
+import { LiableOrNotSelect } from "../../select/LiableOrNotSelect"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -110,6 +116,7 @@ const UpdateAgentPanel = ({
   onClickClose,
   ...props
 }) => {
+  let enableAgentPlayer = brand.enablePlayerAgent
   let brandId = brand?.id
   let agentDividendType = brand?.agentDividendType
   let formMethods = useForm({
@@ -206,7 +213,7 @@ const UpdateAgentPanel = ({
               <UsernameBox value={agent?.username} />
 
               <RealNameBox>
-                <Input name="realName" />
+                <Input name="realName" disabled={enableAgentPlayer} />
               </RealNameBox>
 
               <AgentTypeBox>
@@ -221,7 +228,12 @@ const UpdateAgentPanel = ({
                       <AgentTypeSelect value={agent?.type} disabled />
                     </>
                   )}
-                  {agentHead && <AgentTypeSelect name={AgentTypeField} />}
+                  {agentHead && (
+                    <AgentTypeSelect
+                      name={AgentTypeField}
+                      disabled={enableAgentPlayer}
+                    />
+                  )}
                 </Box>
               </AgentTypeBox>
 
@@ -273,8 +285,17 @@ const UpdateAgentPanel = ({
               </AccumulatedProfitSharingBox>
 
               <AgentStatusBox>
-                <AgentStatusSelect name="status" placeholder={false} required />
+                <AgentStatusSelect
+                  name="status"
+                  placeholder={false}
+                  required
+                  disabled={enableAgentPlayer}
+                />
               </AgentStatusBox>
+
+              <NegativeDividendBox>
+                <LiableOrNotSwitch name="negativeAgentDividendCarryForward" />
+              </NegativeDividendBox>
 
               {oneLayer && !willChangeParent && (
                 <>
@@ -352,6 +373,8 @@ const ViewPanel = ({ agent, brand, ...props }) => {
         <BalanceBox value={agent?.balance} />
 
         <AgentStatusBox value={agent?.status} />
+
+        <NegativeDividendBox value={agent?.negativeAgentDividendCarryForward} />
 
         <AgentTypeBox value={agent?.type} />
 
@@ -477,6 +500,21 @@ const BalanceBox = ({ value = "", ...props }) => {
       <Text>
         <FormattedNumberDecimal data-value={value} value={value} {...props} />
       </Text>
+    </>
+  )
+}
+
+const NegativeDividendBox = ({ value, children, ...props }) => {
+  return (
+    <>
+      <NegativeDividendTrans />
+      {children ? (
+        children
+      ) : (
+        <Text>
+          <LiableOrNotSwitchLabel value={value} />
+        </Text>
+      )}
     </>
   )
 }

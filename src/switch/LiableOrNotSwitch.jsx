@@ -4,7 +4,6 @@ import { Switch, SwitchField } from "./Switch"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { useLiableTrans, useNotLiableTrans } from "../trans/Status"
 
-//TODO: del?
 export const LiableOrNotSwitch = ({ name, ...props }) => {
   let formContext = useFormContext()
   let checked =
@@ -24,6 +23,7 @@ export const LiableOrNotSwitch = ({ name, ...props }) => {
 }
 
 export const LiableOrNotSwitchLabel = ({ value }) => {
+  console.log("LiableOrNotSwitchLabel value", value)
   let label = useLiableOrNotSwitchTrans(value)
   return label
 }

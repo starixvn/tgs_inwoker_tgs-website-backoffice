@@ -656,6 +656,7 @@ const EditTabs = ({
   onBankSubmitted,
   onClickClose
 }) => {
+  let disabledAgentPlayer = !brand.enablePlayerAgent
   let brandId = brand?.id
   let agentId = agent?.id
 
@@ -667,8 +668,10 @@ const EditTabs = ({
       <TabList use={TabList} {...tab}>
         <AgentInfoTab {...tab} />
         <AgentContactInfoTab {...tab} />
-        <AgentPasswordTab {...tab} />
-        {hasChangeWithdrawPasswordAuth && <AgentWithdrawPasswordTab {...tab} />}
+        {disabledAgentPlayer && <AgentPasswordTab {...tab} />}
+        {disabledAgentPlayer && hasChangeWithdrawPasswordAuth && (
+          <AgentWithdrawPasswordTab {...tab} />
+        )}
         <AgentDomainListTab {...tab} />
       </TabList>
       <AgentInfoPanel
@@ -684,13 +687,15 @@ const EditTabs = ({
         onClickClose={onClickClose}
         {...tab}
       />
-      <AgentPasswordPanel
-        agent={agent}
-        onSubmitted={onSubmitted}
-        onClickClose={onClickClose}
-        {...tab}
-      />
-      {hasChangeWithdrawPasswordAuth && (
+      {disabledAgentPlayer && (
+        <AgentPasswordPanel
+          agent={agent}
+          onSubmitted={onSubmitted}
+          onClickClose={onClickClose}
+          {...tab}
+        />
+      )}
+      {disabledAgentPlayer && hasChangeWithdrawPasswordAuth && (
         <AgentWithdrawPasswordPanel
           agentId={agentId}
           onSubmitted={onSubmitted}
