@@ -464,7 +464,6 @@ const useColumns = ({
                 dialogId="apply-withdraw-form-dialog"
               />
               <UpgradePlayerToAgentDialogDisclosure
-                brandId={brandId}
                 brand={brand}
                 playerCode={playerCode}
                 player={player}

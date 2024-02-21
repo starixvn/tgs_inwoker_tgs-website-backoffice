@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
+import { useNavigate } from "react-router-dom"
+import { Code as AgentMenuCode } from "../../agent/menu"
+import { Code as AgentListMenuCode } from "../../agent/agent-list/menu"
 import { Stack, Box, Button, Set, Dialog, useModalState } from "bumbag"
 import Disclosure from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
@@ -13,10 +16,8 @@ import {
 } from "../../trans/Agent"
 import { ConfirmTrans } from "../../trans/Action"
 
-//TODO: redirect to player page here?
 //TODO: test case
 export const UpgradePlayerToAgentDialogDisclosure = ({
-  brandId,
   brand,
   playerCode,
   player,
@@ -44,7 +45,7 @@ export const UpgradePlayerToAgentDialogDisclosure = ({
       </Disclosure>
       {dialog.visible && (
         <UpgradeDialog
-          brandId={brandId}
+          brand={brand}
           playerCode={playerCode}
           player={player}
           onSubmitted={onSubmitted}
@@ -57,12 +58,15 @@ export const UpgradePlayerToAgentDialogDisclosure = ({
 }
 
 const UpgradeDialog = ({
+  brand,
   playerCode,
   player,
   onSubmitted,
   dialog,
   dialogId
 }) => {
+  let navigate = useNavigate()
+
   let title = useUpgradeToAgentTrans()
   let [formData, setSubmit] = useState()
 
@@ -82,7 +86,16 @@ const UpgradeDialog = ({
   return (
     <FormDialog
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        onSubmitted?.()
+
+        let path = `/${AgentMenuCode}/${AgentListMenuCode}`
+        let state = {
+          brandId: brand.id,
+          username: player.username
+        }
+        navigate(path, { state })
+      }}
       isLoading={isLoading}
       result={result}
       error={error}
@@ -97,9 +110,9 @@ const UpgradeDialog = ({
   )
 }
 
+//TODO: configm rm ConfirmUpgradeToMasterAgentTrans?
 const FormBody = ({ player }) => {
   let hasMasterAgent = !!player?.agentUsername
-
   return (
     <Stack paddingLeft="1rem">
       {hasMasterAgent ? (

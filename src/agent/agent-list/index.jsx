@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
+import { useLocation, useNavigate } from "react-router-dom"
+import { useEffectOnce } from "react-use"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
   Heading,
@@ -116,12 +118,25 @@ const Body = () => {
 }
 
 const BodyContent = ({ brandId = "", brand }) => {
+  let location = useLocation()
+  let navigate = useNavigate()
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: AgentStatus.Enabled,
     levelType: "",
     type: "",
-    username: ""
+    username: location?.state?.username ?? ""
   })
+
+  useEffectOnce(() => {
+    if (location?.state?.username) {
+      let state = { ...location.state, username: "" }
+      navigate(location.pathname, {
+        state,
+        replace: true
+      })
+    }
+  }, [location?.state?.username])
 
   let {
     data = {},
@@ -164,6 +179,7 @@ const BodyContent = ({ brandId = "", brand }) => {
         <SearchBar
           brandId={brandId}
           status={state.status}
+          username={state.username}
           search={(data = {}) => {
             setState({
               pageIndex: 0,
@@ -218,11 +234,19 @@ const BodyContent = ({ brandId = "", brand }) => {
   )
 }
 
-const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
+const SearchBar = ({
+  brandId,
+  status,
+  username,
+  search,
+  isLoading,
+  ...props
+}) => {
   let usernameInputPlaceholder = useUserNameTrans()
   let formMethods = useForm({
     defaultValues: {
-      status
+      status,
+      username
     }
   })
 
