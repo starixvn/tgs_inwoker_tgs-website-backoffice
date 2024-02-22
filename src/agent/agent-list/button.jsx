@@ -332,45 +332,45 @@ const ConfigFormBody = ({ brand, agent }) => {
           <NormalLabel>
             <UserNameTrans />
           </NormalLabel>
-          <Text.Block alignY="center">{agent?.username}</Text.Block>
+          <Box alignY="center">{agent?.username}</Box>
 
           <NormalLabel>
             <RealNameTrans />
           </NormalLabel>
-          <Text.Block alignY="center">{agent?.realName}</Text.Block>
+          <Box alignY="center">{agent?.realName}</Box>
 
           <Box alignY="center">
             <UpperLevelAgentTrans />
           </Box>
-          <Text.Block alignY="center">{agent?.parentUsername}</Text.Block>
+          <Box alignY="center">{agent?.parentUsername}</Box>
 
           <NormalLabel>
             <RegistrationTimeTrans />
           </NormalLabel>
-          <Text.Block alignY="center">
+          <Box alignY="center">
             <FormattedDateTime value={agent?.registration} />
-          </Text.Block>
+          </Box>
 
           <NormalLabel>
             <BalanceTrans />
           </NormalLabel>
-          <Text.Block alignY="center">
+          <Box alignY="center">
             <FormattedNumberDecimal value={agent?.balance} />
-          </Text.Block>
+          </Box>
 
           <NormalLabel>
             <AgentTypeTrans />
           </NormalLabel>
-          <Text.Block alignY="center">
+          <Box alignY="center">
             <AgentTypeLabel value={agent?.type} />
-          </Text.Block>
+          </Box>
 
           <NormalLabel>
             <AgentLevelTrans />
           </NormalLabel>
-          <Text.Block alignY="center">
+          <Box alignY="center">
             <AgentLevelLabel value={agent?.levelType} />
-          </Text.Block>
+          </Box>
 
           {isCash && (
             <ProfitSharingBox agentDividendType={brand?.agentDividendType} />
