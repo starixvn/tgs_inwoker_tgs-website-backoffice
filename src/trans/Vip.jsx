@@ -165,10 +165,10 @@ export const LotteryCommissionRebateTrans = () => (
   <Trans {...LotteryCommissionRebate} />
 )
 
-//TODO: trans
+//TODO: vi trans
 const VipUpgrade = {
-  zh: "VIP 升级",
-  en: "VIP Upgrade"
+  zh: "VIP升级方式",
+  en: "VIP Upgrade Method"
 }
 export const VipUpgradeTrans = (props) => <Trans {...VipUpgrade} {...props} />
 

@@ -51,8 +51,10 @@ import {
   AgentDividendStatusSelect
 } from "./AgentDividendStatus"
 import { VerifyAgentDividendDialogDisclosure } from "./VerifyAgentDividendDialog"
-import { LiableOrNotSwitchLabel } from "../../switch/LiableOrNotSwitch"
-import { LiableOrNotSelect } from "../../select/LiableOrNotSelect"
+import {
+  LiableOrNotSwitchLabel,
+  LiableOrNotSwitchSelect
+} from "../../switch/LiableOrNotSwitch"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { InputField } from "../../input/Input"
 import { startOfNextDay } from "../../date/startOfNextDay"
@@ -143,7 +145,6 @@ const Body = ({}) => {
   )
 }
 
-//TODO: filters
 const SearchBar = ({ search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {
@@ -187,7 +188,7 @@ const SearchBar = ({ search, isLoading, ...props }) => {
               name: ApprovedToField
             }}
           />
-          <LiableOrNotSelect
+          <LiableOrNotSwitchSelect
             name="negativeAgentDividendCarryForward"
             placeholder={liableOrNotPlaceholder}
           />

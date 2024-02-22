@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
-import { useEditPlayerContact, useUpdatePlayerContact } from "./client"
+import { useUpdatePlayerContact } from "./client"
 import { FormProvider, useForm } from "react-hook-form"
 import {
   Spinner,

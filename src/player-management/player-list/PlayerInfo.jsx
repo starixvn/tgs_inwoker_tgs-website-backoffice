@@ -83,7 +83,10 @@ import {
   TotalDepositAmountTrans,
   TotalWithdrawAmountTrans
 } from "../../trans/Field"
-import { AutoOrManualSwitch } from "../../switch/AutoOrManualSwitch"
+import {
+  AutoOrManualSwitch,
+  AutoOrManualSwitchLabel
+} from "../../switch/AutoOrManualSwitch"
 
 export const PlayerInfoKey = "player"
 
@@ -201,27 +204,11 @@ const PlayerIdNumberInputGroup = ({ player, showIdentityAuth }) => {
   )
 }
 
-//TODO: trans
 const AccountTypeBox = ({ player }) => {
   return (
     <>
       <AccountTypeTrans />
       {!!player?.upgradePlayerAgentId ? <AgentTrans /> : <PlayerTrans />}
-    </>
-  )
-}
-
-const VipUpgradeField = "vipLevelAutoState"
-const VipUpgradeBox = ({ name = VipUpgradeField, labelProps, ...props }) => {
-  //TODO:1.41 rm isDev
-  if (!isDev()) {
-    return null
-  }
-
-  return (
-    <>
-      <VipUpgradeTrans {...labelProps} />
-      <AutoOrManualSwitch name={name} {...props} />
     </>
   )
 }
@@ -250,6 +237,9 @@ const EditForm = ({
     control,
     name: WageringRequirementFieldName
   })
+
+  const VipUpgradeField = "vipLevelAutoState"
+
   let { username = "", registeredOn, balance } = player
 
   return (
@@ -291,7 +281,8 @@ const EditForm = ({
           />
         </Box>
 
-        <VipUpgradeBox />
+        <VipUpgradeTrans />
+        <AutoOrManualSwitch name={VipUpgradeField} {...props} />
 
         <UpperLevelAgentTrans />
         <Box>
@@ -487,7 +478,8 @@ export const PlayerInfoPanel = ({
               <VipAccumulationTrans />
             </Heading>
             <FieldValues>
-              <VipUpgradeBox checked={player.vipLevelAutoState} readOnly />
+              <VipUpgradeTrans />
+              <AutoOrManualSwitchLabel value={player.vipLevelAutoState} />
 
               <CurrentVipLevelTrans />
               <VipLevelLabel value={vipLevel} />

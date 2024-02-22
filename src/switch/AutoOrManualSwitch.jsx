@@ -11,20 +11,16 @@ export const AutoOrManualSwitch = ({ name, ...props }) => {
 
   let label = useAutoOrManualSwitchTrans(checked)
 
-  return (
-    <Switch
-      name={name}
-      label={label}
-      css={css`
-        width: max-content;
-      `}
-      {...props}
-    />
-  )
+  return <Switch name={name} label={label} {...props} />
 }
 
 export const useAutoOrManualSwitchTrans = (checked) => {
   let autoTrans = useAutoTrans()
   let maunalTrans = useManualTrans()
   return checked ? autoTrans : maunalTrans
+}
+
+export const AutoOrManualSwitchLabel = ({ value }) => {
+  let label = useAutoOrManualSwitchTrans(value)
+  return label
 }

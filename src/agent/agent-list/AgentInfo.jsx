@@ -86,7 +86,6 @@ import {
   LiableOrNotSwitch,
   LiableOrNotSwitchLabel
 } from "../../switch/LiableOrNotSwitch"
-import { LiableOrNotSelect } from "../../select/LiableOrNotSelect"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 

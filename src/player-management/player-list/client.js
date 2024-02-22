@@ -55,7 +55,6 @@ export const toUpdatePlayerFormData = (data) => {
     ...info
   } = data
 
-  //TODO: confirm with backend api
   if (isBoolean(info.vipLevelAutoState)) {
     info.vipLevelAutoState = info.vipLevelAutoState?.toString()
   }
@@ -70,7 +69,6 @@ export const toUpdatePlayerFormData = (data) => {
   }
 }
 
-//TODO: update vipLevelAutoState
 export const useUpdatePlayer = (playerCode, data) => {
   let items = [
     useUpdatePlayerInfo(
@@ -127,12 +125,6 @@ export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {
   })
 }
 
-//TODO: rm? or use original
-export const useEditPlayerContact = (playerCode, data) => {
-  let url = playerCode ? `${API}/${playerCode}/contact` : ""
-  return usePutData(url, data)
-}
-
 export const useUpdatePlayerContact = (playerCode, data) => {
   let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
   return usePatchData(url, data, {
@@ -159,12 +151,6 @@ export const useDeletePlayerBank = (playerCode, id) => {
 export const useSetDefaultPlayerBank = (playerCode, id) => {
   let url = playerCode && id ? `${API}/${playerCode}/bank/${id}/default` : ""
   return usePut(url)
-}
-
-//TODO: rm
-export const useEditPlayerPassword = (playerCode, data) => {
-  let url = playerCode ? `${API}/${playerCode}/password` : ""
-  return usePutData(url, data)
 }
 
 export const useUpdatePlayerPassword = (playerCode, password) => {
