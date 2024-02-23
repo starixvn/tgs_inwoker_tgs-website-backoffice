@@ -29,10 +29,9 @@ test("upgrade player to agent", async ({
 
   await Promise.all([
     urlIncludes(`/api/player/upgrade/${player.code}/agent`),
+    page.waitForURL("**/agentlist"),
     page.locator(`${DialogSelector} button[type="submit"]`).click()
   ])
-
-  //TODO: test redirect to agent page?
 
   let agent = await backofficeApi.agent.findAgent(
     agentPlayerPlatform.id,

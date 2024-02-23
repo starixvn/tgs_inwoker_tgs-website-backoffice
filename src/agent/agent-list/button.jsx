@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
+import { useLocation, useNavigate } from "react-router-dom"
+import { useEffectOnce } from "react-use"
 import {
   Box,
   Dialog,
@@ -430,7 +432,23 @@ export const EditButton = ({ brand, agent, onSubmitted, ...props }) => {
 }
 
 export const ConfigButton = ({ brand, agent, onSubmitted, ...props }) => {
+  let location = useLocation()
+  let navigate = useNavigate()
+  let visible = location?.state?.config === agent.username
+
+  // TODO: need to open dialog automatically?
+  // let dialog = useModalState({ visible })
   let dialog = useModalState()
+
+  useEffectOnce(() => {
+    if (visible) {
+      let state = { ...location.state, config: "" }
+      navigate(location.pathname, {
+        state,
+        replace: true
+      })
+    }
+  }, [visible])
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
   if (!isDisplay) {

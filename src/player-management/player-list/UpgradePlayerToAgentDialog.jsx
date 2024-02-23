@@ -91,7 +91,8 @@ const UpgradeDialog = ({
         let path = `/${AgentMenuCode}/${AgentListMenuCode}`
         let state = {
           brandId: brand.id,
-          username: player.username
+          username: player.username,
+          config: player.username
         }
         navigate(path, { state })
       }}
