@@ -7,6 +7,7 @@ import {
   DeleteTrans,
   DetailTrans,
   EditTrans,
+  ReviewTrans,
   VerifyTrans,
   ViewTrans
 } from "../trans/Action"
@@ -59,9 +60,16 @@ export const DetailDisclosure = forwardRef((props, ref) => (
   </Disclosure>
 ))
 
+//TODO: rm VerifyDisclosure and use ReviewDisclosure only?
 export const VerifyDisclosure = forwardRef((props, ref) => (
   <Disclosure ref={ref} {...props}>
     <VerifyTrans />
+  </Disclosure>
+))
+
+export const ReviewDisclosure = forwardRef((props, ref) => (
+  <Disclosure ref={ref} {...props}>
+    <ReviewTrans />
   </Disclosure>
 ))
 

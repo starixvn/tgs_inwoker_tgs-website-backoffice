@@ -5,7 +5,7 @@ import { Update } from "./menu"
 import { Box, Button, Set, Text, useModalState, FieldStack } from "bumbag"
 import FormDialog from "../../form/FormDialog"
 import { useForm, useFormContext } from "react-hook-form"
-import { VerifyDisclosure } from "../../dialog/Disclosure"
+import { ReviewDisclosure } from "../../dialog/Disclosure"
 import { useVerifyAgentDividend } from "./client"
 import { FieldValues } from "../../layout/Grid"
 import { TextareaField } from "../../textarea"
@@ -39,7 +39,7 @@ export const VerifyAgentDividendDialogDisclosure = ({
   let recordId = record?.id
   return (
     <>
-      <VerifyDisclosure id={id} {...dialog} {...props} />
+      <ReviewDisclosure id={id} {...dialog} {...props} />
       {dialog.visible && (
         <VerifyDialog
           recordId={recordId}

@@ -1,16 +1,18 @@
 kind: Module
 type: container
 name: game-wagers-stats
-image: pgtgs/game-gamewagers-stats:202311130323.21
+image: pgtgs/game-gamewagers-stats:202402220349.33
 services:
   - name: game-wagers-stats
     dependencies:
+      - postgres
       - nats
       - mongodb
     env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Nats: "nats://nats:4222"
       ConnectionStrings__Mongo: "mongodb://root:1qaz2wsx!%40@mongodb/filedb?retryWrites=true&w=majority&authSource=admin"
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80

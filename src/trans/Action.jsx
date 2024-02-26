@@ -196,6 +196,13 @@ const Verify = {
 export const VerifyTrans = () => <Trans {...Verify} />
 export const useVerifyTrans = () => useTrans(Verify)
 
+const Review = {
+  zh: "审核",
+  en: "Review",
+  vi: "xem duyệt"
+}
+export const ReviewTrans = () => <Trans {...Review} />
+
 const Add = {
   zh: "新增",
   en: "Add"

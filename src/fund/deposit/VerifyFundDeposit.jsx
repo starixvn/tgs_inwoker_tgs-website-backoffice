@@ -4,7 +4,11 @@ import { Spinner, useModalState, FieldStack, Box, Text, Button } from "bumbag"
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
-import { Disclosure, VerifyDisclosure } from "../../dialog/Disclosure"
+import {
+  Disclosure,
+  ReviewDisclosure,
+  VerifyDisclosure
+} from "../../dialog/Disclosure"
 import { FormDialog } from "../../form/FormDialog"
 import { useFundDepositForm, useVerifyFundDepositForm } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -46,7 +50,7 @@ export const VerifyFundDepositDisclosure = ({
 
   return (
     <>
-      <VerifyDisclosure {...dialog} {...props} />
+      <ReviewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <VerifyFundDepositDialog
           brandId={brandId}

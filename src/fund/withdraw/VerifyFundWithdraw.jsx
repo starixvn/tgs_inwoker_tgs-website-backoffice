@@ -11,7 +11,11 @@ import {
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
-import { Disclosure, VerifyDisclosure } from "../../dialog/Disclosure"
+import {
+  Disclosure,
+  ReviewDisclosure,
+  VerifyDisclosure
+} from "../../dialog/Disclosure"
 import { FormDialog } from "../../form/FormDialog"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
@@ -54,7 +58,7 @@ export const VerifyFundWithdrawDisclosure = ({
 
   return (
     <>
-      <VerifyDisclosure {...dialog} {...props} />
+      <ReviewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <VerifyFundWithdrawDialog
           brandId={brandId}

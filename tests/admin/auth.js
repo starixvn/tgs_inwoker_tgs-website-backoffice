@@ -276,7 +276,7 @@ export const Fixture = {
     use(platform)
   },
   agentMultipleLayerPlatform: async ({ licensee, backofficeApi }, use) => {
-    const PlatformCode = "AGENT-MULTIPLE-LAYER"
+    const PlatformCode = "AGENT-M-LAYER"
     let platform = await backofficeApi.platform.findPlatform(PlatformCode)
     if (!platform) {
       platform = await backofficeApi.platform.addPlatform({
@@ -297,6 +297,18 @@ export const Fixture = {
         licenseeId: licensee.id,
         code: AgentPlayerPlatformCode,
         enablePlayerAgent: true
+      })
+    }
+    use(platform)
+  },
+  reviewPlayerIdPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "REVIEW-PLAYER-ID"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        enablePlayerIdentity: true
       })
     }
     use(platform)

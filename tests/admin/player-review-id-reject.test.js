@@ -3,26 +3,17 @@ import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import { selectPlatformByCode } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
-import {
-  gotoPlatformListPage,
-  searchPlatform,
-  updatePlatform
-} from "./platform-list-page.js"
 import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-test("review player id", async ({
+test("reject player id", async ({
   page,
-  licensee,
-  backofficeApi,
+  reviewPlayerIdPlatform,
   operatorApi,
   brandCertApi
 }) => {
-  let platform = await backofficeApi.platform.addPlatform({
-    licenseeId: licensee.id,
-    enablePlayerIdentity: true
-  })
+  let platform = reviewPlayerIdPlatform
   let platformCode = platform.code
   let platformToken = await brandCertApi.platformToken(platform.code)
 

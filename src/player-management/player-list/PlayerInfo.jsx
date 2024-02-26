@@ -74,8 +74,10 @@ import {
 import { StatusTrans } from "../../trans/Status"
 import {
   CurrentVipLevelTrans,
-  VipAccumulationTrans,
+  VipAccumulationStatusTrans,
   VipLevelTrans,
+  VipTotalDepositTrans,
+  VipTotalValidBetTrans,
   VipUpgradeTrans
 } from "../../trans/Vip"
 import { RemarkTrans } from "../../trans/Action"
@@ -475,7 +477,7 @@ export const PlayerInfoPanel = ({
         {isDev() && (
           <Columns.Column>
             <Heading use="h5">
-              <VipAccumulationTrans />
+              <VipAccumulationStatusTrans />
             </Heading>
             <FieldValues>
               <VipUpgradeTrans />
@@ -483,6 +485,20 @@ export const PlayerInfoPanel = ({
 
               <CurrentVipLevelTrans />
               <VipLevelLabel value={vipLevel} />
+
+              <VipTotalValidBetTrans />
+              <Set>
+                <FormattedNumber value={player.accumTurnover} />
+                /
+                <FormattedNumber value={player.levelUpAccumulateBetAmount} />
+              </Set>
+
+              <VipTotalDepositTrans />
+              <Set>
+                <FormattedNumber value={player.accumDeposit} />
+                /
+                <FormattedNumber value={player.levelUpAccumulateDeposit} />
+              </Set>
             </FieldValues>
           </Columns.Column>
         )}
