@@ -20,28 +20,27 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-test("add multiple layer agents", async ({ page, licensee, backofficeApi }) => {
-  let platform = await backofficeApi.platform.addPlatform({
-    licenseeId: licensee.id,
-    agentDividendType: AgentDividendType.MultipleLayer
-  })
-
-  await gotoAgentListPage(page, platform.code)
+test("add multiple layer agents", async ({
+  page,
+  agentMultipleLayerPlatform,
+  backofficeApi
+}) => {
+  await gotoAgentListPage(page, agentMultipleLayerPlatform.code)
 
   let agents = await addAgent(page, AgentDividendType.MultipleLayer)
   await configProfitSharing(page)
 
-  await gotoPlatformSettingPage(page, platform.code)
+  await gotoPlatformSettingPage(page, agentMultipleLayerPlatform.code)
   let expectedProfitSharingSettings = await setPlatformProfitSharingSetting(
     page
   )
 
-  await gotoAgentListPage(page, platform.code)
+  await gotoAgentListPage(page, agentMultipleLayerPlatform.code)
 
   agents = await addAgent(page, AgentDividendType.MultipleLayer, agents)
   let [parent, agent] = agents
   let findAgentResult = await backofficeApi.agent.findAgent(
-    platform.id,
+    agentMultipleLayerPlatform.id,
     agent.username
   )
   let agentRecord = await backofficeApi.agent.getAgent(findAgentResult?.id)
