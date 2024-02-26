@@ -36,7 +36,7 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { Code, View } from "./menu"
-import { ViewButton, EditButton, ConfigButton, AddAgentButton } from "./button"
+import { ViewButton, EditButton, AddAgentButton } from "./button"
 import {
   FormattedNumber,
   FormattedNumberDecimal,
@@ -79,6 +79,7 @@ import {
   ProfitSharingPercentageTrans,
   TeamNumberTrans
 } from "../../trans/Agent"
+import { ConfigAgentProfitSharingDialogDisclosure } from "./ConfigAgentProfitSharingDialog"
 
 export { Code }
 
@@ -549,7 +550,7 @@ const useColumns = ({ mutate, items = [], brand } = {}) => {
                 </>
               )}
               {configRequired && (
-                <ConfigButton
+                <ConfigAgentProfitSharingDialogDisclosure
                   id="config-agent-dialog-disclosure"
                   palette="warning"
                   variant="outlined"

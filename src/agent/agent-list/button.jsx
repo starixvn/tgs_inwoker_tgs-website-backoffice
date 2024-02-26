@@ -279,7 +279,7 @@ const FormBody = ({ isAdd, brand }) => {
   )
 }
 
-const ProfitSharingBox = ({ isAdd = false, agentDividendType }) => {
+export const ProfitSharingBox = ({ isAdd = false, agentDividendType }) => {
   let label = (
     <NormalLabel required>
       <Trans zh="代理分红" en="Profit Sharing" />
@@ -321,65 +321,6 @@ const ProfitSharingBox = ({ isAdd = false, agentDividendType }) => {
         <AgentMultipleLayerProfitSharingSettingDialogDisclosure />
       </Box>
     </>
-  )
-}
-
-const ConfigFormBody = ({ brand, agent }) => {
-  let isCash = isAgentTypeCash(agent?.type)
-
-  return (
-    <Set orientation="vertical" isFilled>
-      <Set orientation="vertical" marginLeft="1rem" marginRight="1rem" isFilled>
-        <FieldValues>
-          <NormalLabel>
-            <UserNameTrans />
-          </NormalLabel>
-          <Box alignY="center">{agent?.username}</Box>
-
-          <NormalLabel>
-            <RealNameTrans />
-          </NormalLabel>
-          <Box alignY="center">{agent?.realName}</Box>
-
-          <Box alignY="center">
-            <UpperLevelAgentTrans />
-          </Box>
-          <Box alignY="center">{agent?.parentUsername}</Box>
-
-          <NormalLabel>
-            <RegistrationTimeTrans />
-          </NormalLabel>
-          <Box alignY="center">
-            <FormattedDateTime value={agent?.registration} />
-          </Box>
-
-          <NormalLabel>
-            <BalanceTrans />
-          </NormalLabel>
-          <Box alignY="center">
-            <FormattedNumberDecimal value={agent?.balance} />
-          </Box>
-
-          <NormalLabel>
-            <AgentTypeTrans />
-          </NormalLabel>
-          <Box alignY="center">
-            <AgentTypeLabel value={agent?.type} />
-          </Box>
-
-          <NormalLabel>
-            <AgentLevelTrans />
-          </NormalLabel>
-          <Box alignY="center">
-            <AgentLevelLabel value={agent?.levelType} />
-          </Box>
-
-          {isCash && (
-            <ProfitSharingBox agentDividendType={brand?.agentDividendType} />
-          )}
-        </FieldValues>
-      </Set>
-    </Set>
   )
 }
 
@@ -428,134 +369,6 @@ export const EditButton = ({ brand, agent, onSubmitted, ...props }) => {
         />
       )}
     </>
-  )
-}
-
-export const ConfigButton = ({ brand, agent, onSubmitted, ...props }) => {
-  let location = useLocation()
-  let navigate = useNavigate()
-  let visible = location?.state?.config === agent.username
-
-  // TODO: need to open dialog automatically?
-  // let dialog = useModalState({ visible })
-  let dialog = useModalState()
-
-  useEffectOnce(() => {
-    if (visible) {
-      let state = { ...location.state, config: "" }
-      navigate(location.pathname, {
-        state,
-        replace: true
-      })
-    }
-  }, [visible])
-
-  let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
-  if (!isDisplay) {
-    return null
-  }
-
-  return (
-    <>
-      <Disclosure {...dialog} {...props}>
-        <Trans zh="配置" en="Config" />
-      </Disclosure>
-      {dialog.visible && (
-        <ConfigDialog
-          brand={brand}
-          agentId={agent.id}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
-      )}
-    </>
-  )
-}
-
-const ConfigDialog = (props) => {
-  return <UpdateConfigDialog {...props} />
-}
-
-const UpdateConfigDialog = ({ brand, agentId, onSubmitted, dialog }) => {
-  let {
-    isLoading: isLoadingAgent,
-    data: agent,
-    error: loadingAgentError,
-    mutate: mutateAgent,
-    deleteCache: deleteAgentCache
-  } = useAgent(agentId)
-
-  let [formData, setSubmit] = useState()
-  let { result, error, mutate, deleteCache, isLoading } = useUpdateAgentV2(
-    agentId,
-    formData
-  )
-
-  let title = useTrans({
-    zh: "比例配制",
-    en: "Config Agent"
-  })
-
-  if (isLoadingAgent) {
-    return <LoadingBackdrop {...dialog} />
-  }
-
-  if (loadingAgentError) {
-    return <AlertDialog {...loadingAgentError} onClickClose={dialog.hide} />
-  }
-
-  const onSubmit = ({
-    type,
-    parentUsername,
-    dividendPercentage,
-    agentDividendConditions,
-    ...data
-  }) => {
-    let agentDividendType = brand?.agentDividendType
-    let formData = useAgentUpdateFormData(
-      {
-        ...diff(data, agent),
-        type,
-        parentUsername,
-        dividendPercentage,
-        agentDividendConditions
-      },
-      agentDividendType
-    )
-
-    setSubmit(formData)
-  }
-
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
-  }
-
-  return (
-    <FormDialog
-      id="config-agent-dialog"
-      defaultValues={clone(agent)}
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      result={result}
-      error={error}
-      onCloseErrorAlert={reset}
-      onSubmitted={() => {
-        deleteAgentCache()
-        mutateAgent(undefined, false)
-
-        reset()
-        onSubmitted?.()
-      }}
-      title={title}
-      dialog={dialog}
-      maxWidth="100vw"
-      minWidth="60vw"
-      placement="top"
-    >
-      <ConfigFormBody agent={agent} brand={brand} />
-    </FormDialog>
   )
 }
 
