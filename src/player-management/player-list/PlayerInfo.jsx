@@ -474,34 +474,34 @@ export const PlayerInfoPanel = ({
             />
           </FieldValues>
         </Columns.Column>
-        {isDev() && (
-          <Columns.Column>
-            <Heading use="h5">
-              <VipAccumulationStatusTrans />
-            </Heading>
-            <FieldValues>
-              <VipUpgradeTrans />
-              <AutoOrManualSwitchLabel value={player.vipLevelAutoState} />
+        <Columns.Column>
+          <Heading use="h5">
+            <VipAccumulationStatusTrans />
+          </Heading>
+          <FieldValues>
+            <VipUpgradeTrans />
+            <AutoOrManualSwitchLabel value={player.vipLevelAutoState} />
 
-              <CurrentVipLevelTrans />
-              <VipLevelLabel value={vipLevel} />
+            <CurrentVipLevelTrans />
+            <VipLevelLabel value={vipLevel} />
 
-              <VipTotalValidBetTrans />
-              <Set>
-                <FormattedNumber value={player.accumTurnover} />
-                /
-                <FormattedNumber value={player.levelUpAccumulateBetAmount} />
-              </Set>
+            <VipTotalValidBetTrans />
+            <Set orientation="horizontal" alignY="center">
+              <FormattedNumberDecimal value={player.accumTurnover} />
+              <Box>/</Box>
+              <FormattedNumberDecimal
+                value={player.levelUpAccumulateBetAmount}
+              />
+            </Set>
 
-              <VipTotalDepositTrans />
-              <Set>
-                <FormattedNumber value={player.accumDeposit} />
-                /
-                <FormattedNumber value={player.levelUpAccumulateDeposit} />
-              </Set>
-            </FieldValues>
-          </Columns.Column>
-        )}
+            <VipTotalDepositTrans />
+            <Set orientation="horizontal" alignY="center">
+              <FormattedNumberDecimal value={player.accumDeposit} />
+              <Box>/</Box>
+              <FormattedNumberDecimal value={player.levelUpAccumulateDeposit} />
+            </Set>
+          </FieldValues>
+        </Columns.Column>
       </Columns>
     </TabPanel>
   )
