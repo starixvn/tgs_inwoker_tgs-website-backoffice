@@ -264,7 +264,7 @@ export const Fixture = {
     use(platform)
   },
   agentOneLayerPlatform: async ({ licensee, backofficeApi }, use) => {
-    const PlatformCode = "AGENT-ONE-LAYER"
+    const PlatformCode = "AG-ONE-LAYER"
     let platform = await backofficeApi.platform.findPlatform(PlatformCode)
     if (!platform) {
       platform = await backofficeApi.platform.addPlatform({
@@ -276,7 +276,7 @@ export const Fixture = {
     use(platform)
   },
   agentMultipleLayerPlatform: async ({ licensee, backofficeApi }, use) => {
-    const PlatformCode = "AGENT-M-LAYER"
+    const PlatformCode = "AG-MULTI-LAYER"
     let platform = await backofficeApi.platform.findPlatform(PlatformCode)
     if (!platform) {
       platform = await backofficeApi.platform.addPlatform({
@@ -288,7 +288,7 @@ export const Fixture = {
     use(platform)
   },
   agentPlayerPlatform: async ({ licensee, backofficeApi }, use) => {
-    const AgentPlayerPlatformCode = "AGENT-PLAYER"
+    const AgentPlayerPlatformCode = "AG-PLAYER"
     let platform = await backofficeApi.platform.findPlatform(
       AgentPlayerPlatformCode
     )

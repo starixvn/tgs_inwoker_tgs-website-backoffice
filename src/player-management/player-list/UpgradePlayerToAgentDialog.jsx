@@ -14,8 +14,9 @@ import {
   useUpgradeToAgentTrans
 } from "../../trans/Agent"
 import { ConfirmTrans } from "../../trans/Action"
+import { UpgradePlayerToAgent } from "./menu"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 
-//TODO: test case
 export const UpgradePlayerToAgentDialogDisclosure = ({
   brand,
   playerCode,
@@ -26,6 +27,11 @@ export const UpgradePlayerToAgentDialogDisclosure = ({
   ...props
 }) => {
   let dialog = useModalState()
+
+  let auth = useIsDisplayMenuByRoute([UpgradePlayerToAgent])
+  if (!auth) {
+    return null
+  }
 
   if (!brand?.enablePlayerAgent) {
     return null

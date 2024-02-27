@@ -166,7 +166,7 @@ const AgentContractName = {
 }
 export const AgentContractNameTrans = () => <Trans {...AgentContractName} />
 
-const UpgradeToAgent = {
+export const UpgradeToAgent = {
   zh: "升级代理",
   en: "Upgrade to agent",
   vi: "thăng cấp dại lý"

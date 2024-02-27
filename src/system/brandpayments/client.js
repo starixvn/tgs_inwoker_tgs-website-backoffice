@@ -16,6 +16,11 @@ export const useBrandPaymentList = (searchParams, options) => {
   return useGet(url, options)
 }
 
+export const useBrandPaymentBalanceList = (id) => {
+  let url = id ? `${API}/balance/${id}` : ""
+  return useGet(url)
+}
+
 export const useBrandPayment = (id) => {
   let url = id ? `${API}/info/${id}` : ""
   return useGet(url)

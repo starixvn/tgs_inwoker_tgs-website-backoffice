@@ -35,7 +35,11 @@ import {
 import TransferType, {
   isWithdrawalPlatformPayment
 } from "./BrandPaymentTransferType"
-import { useChangeBrandPaymentOrders, useBrandPaymentList } from "./client"
+import {
+  useChangeBrandPaymentOrders,
+  useBrandPaymentList,
+  useBrandPaymentBalanceList
+} from "./client"
 import { View as ViewMenu, Update as UpdateMenu } from "./menu"
 import { Detail as ConditionDetail } from "./condition"
 import { AddBrandPaymentButton, EditButton } from "./edit"
@@ -108,6 +112,9 @@ const BodyContent = ({ brandId }) => {
     transferType,
     sortby: "number"
   })
+
+  //TODO: pass to useColumns
+  // let brandPaymentBalanceListFetcherState = useBrandPaymentBalanceList(brandId)
 
   useEffect(() => {
     setState({
