@@ -74,6 +74,7 @@ import { DesignatedUsersTrans } from "../../trans/User"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons"
 import { faSort, faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -326,7 +327,7 @@ const SearchBar = ({ search, isLoading, ...props }) => {
   )
 }
 
-//TODO: lazy load fetch
+//TODO: find hook for lazy load fetch
 const BrandPaymentBalance = ({ brandId, brandPaymentId }) => {
   let {
     isLoading,
@@ -477,20 +478,28 @@ const useColumns = ({
             />
           )
         }
-      }),
-      numberDecimalColumn({
-        id: "merchantBalance",
-        accessor: (row) => row,
-        Header: <MerchantBalanceTrans />,
-        disableSortBy: true,
-        Cell: ({ value: record }) =>
-          isManualPaymentProvider(record.paymentName) ? (
-            "-"
-          ) : (
-            <BrandPaymentBalance brandId={brandId} brandPaymentId={record.id} />
-          )
       })
     ]
+
+    if (isDev()) {
+      columns.push(
+        numberDecimalColumn({
+          id: "merchantBalance",
+          accessor: (row) => row,
+          Header: <MerchantBalanceTrans />,
+          disableSortBy: true,
+          Cell: ({ value: record }) =>
+            isManualPaymentProvider(record.paymentName) ? (
+              ""
+            ) : (
+              <BrandPaymentBalance
+                brandId={brandId}
+                brandPaymentId={record.id}
+              />
+            )
+        })
+      )
+    }
 
     if (hasViewAuth || hasEditAuth) {
       columns.push(
