@@ -517,13 +517,6 @@ const useColumns = ({
                   onSubmitted={mutate}
                   dialogId="edit-platform-payment-dialog"
                 />
-                {/* 
-                <FeeEditButton
-                  brandId={brandId}
-                  record={value}
-                  onSubmitted={mutate}
-                /> 
-                */}
                 <LogsButton brandId={brandId} record={value} />
               </Set>
             )
