@@ -48,7 +48,10 @@ import { InputField } from "../../input/Input"
 import { formatNumber } from "../../number/format"
 import BrandBar from "../../report/BrandBar"
 import textColumn from "../../table/column/textColumn"
-import { PaymentProviderLabel } from "../../payment/PaymentProvider"
+import {
+  PaymentProviderLabel,
+  isManualPaymentProvider
+} from "../../payment/PaymentProvider"
 import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import { NumberInput } from "../../input/NumberInput"
@@ -113,8 +116,6 @@ const BodyContent = ({ brandId }) => {
     transferType,
     sortby: "number"
   })
-
-  let brandPaymentBalanceListFetcherState = useBrandPaymentBalanceList(brandId)
 
   useEffect(() => {
     setState({
@@ -184,9 +185,6 @@ const BodyContent = ({ brandId }) => {
             mutate={mutate}
             isLoading={isLoading}
             brandId={brandId}
-            brandPaymentBalanceListFetcherState={
-              brandPaymentBalanceListFetcherState
-            }
           />
         </Tabs.Panel>
         <Tabs.Panel tabId={TransferType.Withdrawal} paddingTop="1rem">
@@ -199,9 +197,6 @@ const BodyContent = ({ brandId }) => {
             mutate={mutate}
             isLoading={isLoading}
             brandId={brandId}
-            brandPaymentBalanceListFetcherState={
-              brandPaymentBalanceListFetcherState
-            }
           />
         </Tabs.Panel>
       </Tabs>
@@ -220,8 +215,7 @@ const DataTable = ({
   transferType,
   mutate,
   isLoading,
-  brandId,
-  brandPaymentBalanceListFetcherState
+  brandId
 }) => {
   let editable = useIsDisplayMenuByRoute([UpdateMenu])
 
@@ -274,8 +268,7 @@ const DataTable = ({
     displayOrders,
     setDisplayOrder,
     items: data?.items ?? [],
-    brandId,
-    brandPaymentBalanceListFetcherState
+    brandId
   })
   return (
     <FormProvider {...formMethods}>
@@ -334,14 +327,23 @@ const SearchBar = ({ search, isLoading, ...props }) => {
   )
 }
 
-const BrandPaymentBalance = ({
-  brandPaymentId,
-  brandPaymentBalanceListFetcherState
-}) => {
-  let { isLoading, data: items, mutate } = brandPaymentBalanceListFetcherState
+//TODO: lazy load fetch
+const BrandPaymentBalance = ({ brandId, brandPaymentId }) => {
+  let {
+    isLoading,
+    data: items,
+    mutate,
+    deleteCache
+  } = useBrandPaymentBalanceList(brandId, { id: [brandPaymentId] })
   let record = items?.find((item) => item.brandPaymentId === brandPaymentId)
   return (
-    <Set alignX="right" alignY="center">
+    <Set
+      alignX="right"
+      alignY="center"
+      css={css`
+        width: max-content;
+      `}
+    >
       <Box alignX="right">
         <FormattedNumberDecimal value={record?.balance} placeholder="-" />
       </Box>
@@ -353,7 +355,8 @@ const BrandPaymentBalance = ({
         disabled={isLoading}
         onClick={() => {
           if (!isLoading) {
-            mutate()
+            deleteCache()
+            mutate(null)
           }
         }}
       >
@@ -369,8 +372,7 @@ const useColumns = ({
   setDisplayOrder,
   mutate,
   brandId,
-  items = [],
-  brandPaymentBalanceListFetcherState
+  items = []
 }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([UpdateMenu])
   let hasViewAuth = useIsDisplayMenuByRoute([ViewMenu])
@@ -479,29 +481,15 @@ const useColumns = ({
       }),
       numberDecimalColumn({
         id: "merchantBalance",
-        accessor: (row) => row.id,
-        Header: (
-          <Set
-            orientation="horizontal"
-            css={css`
-              width: max-content;
-            `}
-          >
-            <MerchantBalanceTrans />
-            {/* <Button palette="gray" variant="ghost" size="small">
-              <Icon icon={faRotateLeft} type="font-awesome" />
-            </Button> */}
-          </Set>
-        ),
+        accessor: (row) => row,
+        Header: <MerchantBalanceTrans />,
         disableSortBy: true,
-        Cell: ({ value: brandPaymentId }) => (
-          <BrandPaymentBalance
-            brandPaymentId={brandPaymentId}
-            brandPaymentBalanceListFetcherState={
-              brandPaymentBalanceListFetcherState
-            }
-          />
-        )
+        Cell: ({ value: record }) =>
+          isManualPaymentProvider(record.paymentName) ? (
+            "-"
+          ) : (
+            <BrandPaymentBalance brandId={brandId} brandPaymentId={record.id} />
+          )
       })
     ]
 
@@ -536,12 +524,7 @@ const useColumns = ({
       )
     }
     return columns
-  }, [
-    transferType,
-    JSON.stringify(items),
-    JSON.stringify(brandPaymentBalanceListFetcherState.data),
-    brandPaymentBalanceListFetcherState.isLoading
-  ])
+  }, [transferType, JSON.stringify(items)])
 }
 
 const useSearchInputPlaceHolder = () =>
