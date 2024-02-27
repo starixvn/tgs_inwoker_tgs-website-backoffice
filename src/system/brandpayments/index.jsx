@@ -2,16 +2,13 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
-  Heading,
   Stack,
   Button,
   Set,
   Text,
-  Input,
-  Link,
+  Box,
   Dialog,
-  Card,
-  List,
+  Icon,
   Level,
   Tabs
 } from "bumbag"
@@ -72,6 +69,8 @@ import { StatusTrans } from "../../trans/Status"
 import { OrderTrans } from "../../trans/Field"
 import { DesignatedUsersTrans } from "../../trans/User"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
+import { faRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import { faSort, faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons"
 
 export { Code }
 
@@ -115,7 +114,6 @@ const BodyContent = ({ brandId }) => {
     sortby: "number"
   })
 
-  //TODO: pass to useColumns
   let brandPaymentBalanceListFetcherState = useBrandPaymentBalanceList(brandId)
 
   useEffect(() => {
@@ -336,7 +334,6 @@ const SearchBar = ({ search, isLoading, ...props }) => {
   )
 }
 
-//TODO: icon & loading spinner?
 const BrandPaymentBalance = ({
   brandPaymentId,
   brandPaymentBalanceListFetcherState
@@ -344,8 +341,24 @@ const BrandPaymentBalance = ({
   let { isLoading, data: items, mutate } = brandPaymentBalanceListFetcherState
   let record = items?.find((item) => item.brandPaymentId === brandPaymentId)
   return (
-    <Set alignX="right">
-      <FormattedNumberDecimal value={record?.balance} placeholder="-" />
+    <Set alignX="right" alignY="center">
+      <Box alignX="right">
+        <FormattedNumberDecimal value={record?.balance} placeholder="-" />
+      </Box>
+      <Button
+        palette="gray"
+        variant="ghost"
+        size="small"
+        isLoading={isLoading}
+        disabled={isLoading}
+        onClick={() => {
+          if (!isLoading) {
+            mutate()
+          }
+        }}
+      >
+        <Icon icon={faRotateLeft} type="font-awesome" />
+      </Button>
     </Set>
   )
 }
@@ -467,7 +480,19 @@ const useColumns = ({
       numberDecimalColumn({
         id: "merchantBalance",
         accessor: (row) => row.id,
-        Header: <MerchantBalanceTrans />,
+        Header: (
+          <Set
+            orientation="horizontal"
+            css={css`
+              width: max-content;
+            `}
+          >
+            <MerchantBalanceTrans />
+            {/* <Button palette="gray" variant="ghost" size="small">
+              <Icon icon={faRotateLeft} type="font-awesome" />
+            </Button> */}
+          </Set>
+        ),
         disableSortBy: true,
         Cell: ({ value: brandPaymentId }) => (
           <BrandPaymentBalance
@@ -514,7 +539,8 @@ const useColumns = ({
   }, [
     transferType,
     JSON.stringify(items),
-    JSON.stringify(brandPaymentBalanceListFetcherState.data)
+    JSON.stringify(brandPaymentBalanceListFetcherState.data),
+    brandPaymentBalanceListFetcherState.isLoading
   ])
 }
 
