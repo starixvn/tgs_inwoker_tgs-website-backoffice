@@ -349,3 +349,10 @@ const ConfirmPaid = {
   vi: "xác nhận thanh toán ?"
 }
 export const ConfirmPaidTrans = () => <Trans {...ConfirmPaid} />
+
+const MerchantBalance = {
+  zh: "商户余额",
+  en: "Merchant Balance",
+  vi: "Số dư Tài khoản Công ty"
+}
+export const MerchantBalanceTrans = () => <Trans {...MerchantBalance} />

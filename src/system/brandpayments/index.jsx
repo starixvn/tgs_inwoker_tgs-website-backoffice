@@ -25,7 +25,7 @@ import {
 } from "../../user/context"
 import { Code } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import {
@@ -60,6 +60,7 @@ import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action"
 import {
   ChannelNameTrans,
   DepositTrans,
+  MerchantBalanceTrans,
   PaymentChannelTrans,
   PaymentLimitTrans,
   PaymentManagementTrans,
@@ -70,6 +71,7 @@ import {
 import { StatusTrans } from "../../trans/Status"
 import { OrderTrans } from "../../trans/Field"
 import { DesignatedUsersTrans } from "../../trans/User"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
 
 export { Code }
 
@@ -114,7 +116,7 @@ const BodyContent = ({ brandId }) => {
   })
 
   //TODO: pass to useColumns
-  // let brandPaymentBalanceListFetcherState = useBrandPaymentBalanceList(brandId)
+  let brandPaymentBalanceListFetcherState = useBrandPaymentBalanceList(brandId)
 
   useEffect(() => {
     setState({
@@ -141,6 +143,7 @@ const BodyContent = ({ brandId }) => {
             search={(newState) => {
               setState({ pageIndex: 0, ...newState })
               mutate()
+              brandPaymentBalanceListFetcherState.mutate()
             }}
             isLoading={isLoading}
           />
@@ -183,6 +186,9 @@ const BodyContent = ({ brandId }) => {
             mutate={mutate}
             isLoading={isLoading}
             brandId={brandId}
+            brandPaymentBalanceListFetcherState={
+              brandPaymentBalanceListFetcherState
+            }
           />
         </Tabs.Panel>
         <Tabs.Panel tabId={TransferType.Withdrawal} paddingTop="1rem">
@@ -195,6 +201,9 @@ const BodyContent = ({ brandId }) => {
             mutate={mutate}
             isLoading={isLoading}
             brandId={brandId}
+            brandPaymentBalanceListFetcherState={
+              brandPaymentBalanceListFetcherState
+            }
           />
         </Tabs.Panel>
       </Tabs>
@@ -213,7 +222,8 @@ const DataTable = ({
   transferType,
   mutate,
   isLoading,
-  brandId
+  brandId,
+  brandPaymentBalanceListFetcherState
 }) => {
   let editable = useIsDisplayMenuByRoute([UpdateMenu])
 
@@ -266,7 +276,8 @@ const DataTable = ({
     displayOrders,
     setDisplayOrder,
     items: data?.items ?? [],
-    brandId
+    brandId,
+    brandPaymentBalanceListFetcherState
   })
   return (
     <FormProvider {...formMethods}>
@@ -325,13 +336,28 @@ const SearchBar = ({ search, isLoading, ...props }) => {
   )
 }
 
+//TODO: icon & loading spinner?
+const BrandPaymentBalance = ({
+  brandPaymentId,
+  brandPaymentBalanceListFetcherState
+}) => {
+  let { isLoading, data: items, mutate } = brandPaymentBalanceListFetcherState
+  let record = items?.find((item) => item.brandPaymentId === brandPaymentId)
+  return (
+    <Set alignX="right">
+      <FormattedNumberDecimal value={record?.balance} placeholder="-" />
+    </Set>
+  )
+}
+
 const useColumns = ({
   transferType,
   displayOrders,
   setDisplayOrder,
   mutate,
   brandId,
-  items = []
+  items = [],
+  brandPaymentBalanceListFetcherState
 }) => {
   let hasUpdateAuth = useIsDisplayMenuByRoute([UpdateMenu])
   let hasViewAuth = useIsDisplayMenuByRoute([ViewMenu])
@@ -437,6 +463,20 @@ const useColumns = ({
             />
           )
         }
+      }),
+      numberDecimalColumn({
+        id: "merchantBalance",
+        accessor: (row) => row.id,
+        Header: <MerchantBalanceTrans />,
+        disableSortBy: true,
+        Cell: ({ value: brandPaymentId }) => (
+          <BrandPaymentBalance
+            brandPaymentId={brandPaymentId}
+            brandPaymentBalanceListFetcherState={
+              brandPaymentBalanceListFetcherState
+            }
+          />
+        )
       })
     ]
 
@@ -471,7 +511,11 @@ const useColumns = ({
       )
     }
     return columns
-  }, [transferType, JSON.stringify(items)])
+  }, [
+    transferType,
+    JSON.stringify(items),
+    JSON.stringify(brandPaymentBalanceListFetcherState.data)
+  ])
 }
 
 const useSearchInputPlaceHolder = () =>
