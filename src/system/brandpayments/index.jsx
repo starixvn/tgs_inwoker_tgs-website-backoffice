@@ -142,7 +142,6 @@ const BodyContent = ({ brandId }) => {
             search={(newState) => {
               setState({ pageIndex: 0, ...newState })
               mutate()
-              brandPaymentBalanceListFetcherState.mutate()
             }}
             isLoading={isLoading}
           />
