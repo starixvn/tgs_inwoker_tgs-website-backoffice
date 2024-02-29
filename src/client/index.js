@@ -3,7 +3,10 @@ import { toDataOrError } from "./response"
 import useSWR, { cache } from "swr"
 import { getAcceptLang, getAcceptLangCulture } from "../i18n"
 import { isValid } from "date-fns"
-import { isNil, isEmpty, either, empty } from "ramda"
+import { isNil, isEmpty, either, empty, complement } from "ramda"
+import { isObject } from "lodash-es"
+
+const notNil = complement(isNil)
 
 export const urlWith = (searchParams = {}, url) => {
   let urlSearchParams = Object.entries(searchParams).reduce(
@@ -98,7 +101,7 @@ const fetchApi = async (
     headers["Accept-Language"] = getAcceptLangCulture()
   }
 
-  headers = data
+  headers = notNil(data)
     ? {
         "Content-Type": "application/json",
         ...headers

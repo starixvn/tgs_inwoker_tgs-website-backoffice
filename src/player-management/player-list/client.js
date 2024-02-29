@@ -11,7 +11,7 @@ import {
 } from "../../client"
 import { useApiMerge } from "../../client/useApiMerge."
 import { isEmpty, isNil, isBoolean } from "lodash-es"
-import { either } from "ramda"
+import { either, pick } from "ramda"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -59,8 +59,19 @@ export const toUpdatePlayerFormData = (data) => {
     info.vipLevelAutoState = info.vipLevelAutoState?.toString()
   }
 
+  //TODO: test cases for update info fields
   return {
-    info,
+    info: pick(
+      [
+        "realName",
+        "birthdate",
+        "idNumber",
+        "vipId",
+        "vipLevelAutoState",
+        "remark"
+      ],
+      info
+    ),
     status: isNilOrEmpty(status) ? null : { status },
     agent: isNil(agentUsername) ? null : { agentUsername },
     allAgentPlayer: isNilOrEmpty(parentPlayerUsername)
