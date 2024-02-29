@@ -169,10 +169,12 @@ const UpdateAgentPanel = ({
     agentDividendConditions,
     ...data
   }) => {
+    /*
     if (willChangeParent) {
       //change agent parent, reset dividendPercentage
       dividendPercentage = 0
     }
+    */
 
     let formData = useAgentUpdateFormData(
       {
