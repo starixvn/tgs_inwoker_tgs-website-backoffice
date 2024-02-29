@@ -146,9 +146,12 @@ const UpdatePlayerInfoPanel = ({
     birthdate,
     wageringRequirement: _,
     banks,
+    fullLevel,
+    nextVipLevel,
+    nextVipLevelId,
     ...data
   } = {}) => {
-    //drop wageringRequirement & banks not updatable value
+    //drop wageringRequirement, banks, fullLevel, nextVipLevel, nextVipLevelId  not updatable value
 
     birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : null
 
