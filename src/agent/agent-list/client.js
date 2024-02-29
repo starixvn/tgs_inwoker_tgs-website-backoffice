@@ -62,7 +62,6 @@ const UpdateAgentFormDataField = {
   MultipleLayer: "multipleLayer"
 }
 
-//TODO: negativeAgentDividendCarryForward
 export const useAgentUpdateFormData = (data, agentProfitSharingType) => {
   if (isNil(data)) {
     return data
@@ -106,8 +105,6 @@ export const useAgentUpdateFormData = (data, agentProfitSharingType) => {
       agentDividendConditions
     })
   }
-
-  console.log("formData", formData)
 
   return formData
 }
