@@ -10,6 +10,9 @@ import {
   usePatchData
 } from "../../client"
 import { MerchantStatus } from "../MerchantStatus"
+import { isNil, complement } from "ramda"
+
+const notNil = complement(isNil)
 
 const API = "/api/brand"
 
@@ -102,6 +105,6 @@ export const usePlatformAccountFundSetting = (id) => {
 }
 
 export const useUpdatePlatformAccountFundSetting = (id, formData) => {
-  let url = id && formData ? `${API}/platform-account-fund/${id}` : ""
+  let url = id && notNil(formData) ? `${API}/platform-account-fund/${id}` : ""
   return usePatchData(url, formData)
 }
