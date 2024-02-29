@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
@@ -73,6 +73,7 @@ import { OrderTrans } from "../../trans/Field"
 import { DesignatedUsersTrans } from "../../trans/User"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import { useIsVisible } from "react-is-visible"
 import { faSort, faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons"
 import { isDev } from "../../env"
 
@@ -327,17 +328,28 @@ const SearchBar = ({ search, isLoading, ...props }) => {
   )
 }
 
-//TODO: find hook for lazy load fetch
 const BrandPaymentBalance = ({ brandId, brandPaymentId }) => {
+  let ref = useRef()
+  let isVisible = useIsVisible(ref, { once: true })
+
+  let [params, setParams] = useState()
+
+  useEffect(() => {
+    if (isVisible) {
+      setParams({ id: [brandPaymentId] })
+    }
+  }, [isVisible])
+
   let {
     isLoading,
     data: items,
     mutate,
     deleteCache
-  } = useBrandPaymentBalanceList(brandId, { id: [brandPaymentId] })
+  } = useBrandPaymentBalanceList(brandId, params)
   let record = items?.find((item) => item.brandPaymentId === brandPaymentId)
   return (
     <Set
+      ref={ref}
       alignX="right"
       alignY="center"
       css={css`
