@@ -400,11 +400,6 @@ export const PlayerInfoPanel = ({
               )}
             </Set>
 
-            <VipLevelTrans />
-            <Box>
-              <VipLevelLabel value={vipLevel} />
-            </Box>
-
             <AccountTypeBox player={player} />
 
             <UpperLevelAgentTrans />

@@ -94,7 +94,7 @@ export const ParticipationTimeTrans = () => <Trans {...ParticipationTime} />
 const VerifiedTime = {
   zh: "审核时间",
   en: "Verified",
-  vi: "Thời gian kiểm tra"
+  vi: "Thời gian xem xét"
 }
 export const VerifiedTimeTrans = () => <Trans {...VerifiedTime} />
 export const useVerifiedTimeTrans = () => <Trans {...VerifiedTime} />

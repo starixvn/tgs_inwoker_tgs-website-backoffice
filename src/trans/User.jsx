@@ -4,7 +4,7 @@ import { Trans, useTrans } from "../i18n"
 const UserName = {
   zh: "用戶名",
   en: "Username",
-  vi: "Tên tài khoản"
+  vi: "dùng tài khoản"
 }
 export const useUserNameTrans = () => useTrans(UserName)
 export const UserNameTrans = () => <Trans {...UserName} />
