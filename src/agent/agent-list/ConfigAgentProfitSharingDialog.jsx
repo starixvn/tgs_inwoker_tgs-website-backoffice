@@ -215,7 +215,7 @@ const FormBody = ({ brand, agent }) => {
             <RegistrationTimeTrans />
           </NormalLabel>
           <Box alignY="center">
-            <FormattedDateTime value={agent?.registration} />
+            <FormattedDateTime value={agent?.registeredOn} />
           </Box>
 
           <NormalLabel>
