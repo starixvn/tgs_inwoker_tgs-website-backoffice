@@ -13,7 +13,8 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-test("update player real name", async ({
+//TODO: total 5 fields
+test("update player real name, ", async ({
   page,
   platformCode,
   player,
