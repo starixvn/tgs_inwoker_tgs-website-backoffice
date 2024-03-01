@@ -313,6 +313,17 @@ export const Fixture = {
     }
     use(platform)
   },
+  vipPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "VIP"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+    }
+    use(platform)
+  },
   licensee: async ({ licenseeCode, backofficeApi }, use) => {
     let licensee = await backofficeApi.licensee.findLicensee(licenseeCode)
     use(licensee)

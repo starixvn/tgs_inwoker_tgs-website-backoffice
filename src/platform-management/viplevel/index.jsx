@@ -62,6 +62,7 @@ const BodyContent = ({}) => {
   return (
     <Set orientation="vertical" isFilled height="100%">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <Box></Box>
         <Box alignX="right">
           {data?.items?.length < FrontendLobbyVipLimit && (
             <AddButton
