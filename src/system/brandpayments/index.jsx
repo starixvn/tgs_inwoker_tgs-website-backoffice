@@ -338,7 +338,7 @@ const BrandPaymentBalance = ({ brandId, brandPaymentId }) => {
     if (isVisible) {
       setParams({ id: [brandPaymentId] })
     }
-  }, [isVisible])
+  }, [isVisible, brandPaymentId])
 
   let {
     isLoading,
@@ -490,28 +490,20 @@ const useColumns = ({
             />
           )
         }
+      }),
+      numberDecimalColumn({
+        id: "merchantBalance",
+        accessor: (row) => row,
+        Header: <MerchantBalanceTrans />,
+        disableSortBy: true,
+        Cell: ({ value: record }) =>
+          isManualPaymentProvider(record.paymentName) ? (
+            ""
+          ) : (
+            <BrandPaymentBalance brandId={brandId} brandPaymentId={record.id} />
+          )
       })
     ]
-
-    if (isDev()) {
-      columns.push(
-        numberDecimalColumn({
-          id: "merchantBalance",
-          accessor: (row) => row,
-          Header: <MerchantBalanceTrans />,
-          disableSortBy: true,
-          Cell: ({ value: record }) =>
-            isManualPaymentProvider(record.paymentName) ? (
-              ""
-            ) : (
-              <BrandPaymentBalance
-                brandId={brandId}
-                brandPaymentId={record.id}
-              />
-            )
-        })
-      )
-    }
 
     if (hasViewAuth || hasEditAuth) {
       columns.push(
