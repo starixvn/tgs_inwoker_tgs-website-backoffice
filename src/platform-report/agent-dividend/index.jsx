@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import {
-  Heading,
-  Stack,
-  Box,
-  Button,
-  Set,
-  useModalState,
-  Text,
-  Icon,
-  List,
-  Level
-} from "bumbag"
+import { Heading, Stack, Box, Button, Set, useModalState, Level } from "bumbag"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
