@@ -321,6 +321,8 @@ export const Fixture = {
         licenseeId: licensee.id,
         code: PlatformCode
       })
+
+      //TODO: add vip api, add Vip 2
     }
     use(platform)
   },
