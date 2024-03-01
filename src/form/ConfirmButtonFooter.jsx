@@ -8,7 +8,7 @@ import React, {
 } from "react"
 import { css, Global } from "@emotion/react"
 import { Dialog, Button, Box, Set } from "bumbag"
-import { CloseText, SubmitText } from "../button/ActionButtons"
+import { CloseText } from "../button/ActionButtons"
 
 //TODO: able to rm?
 /*

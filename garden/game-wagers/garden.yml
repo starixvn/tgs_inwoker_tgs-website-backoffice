@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-wagers
-image: pgtgs/game-gamewagers:202311010927.23
+image: pgtgs/game-gamewagers:202402230239.8
 services:
   - name: game-wagers
     dependencies:
@@ -13,6 +13,6 @@ services:
       ConnectionStrings__Mongo: "mongodb://root:1qaz2wsx!%40@mongodb/filedb?retryWrites=true&w=majority&authSource=admin"
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80
         localPort: 3100 # http://localhost:3100/swagger/index.html

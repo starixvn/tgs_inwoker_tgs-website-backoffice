@@ -2,12 +2,13 @@ import React, { useRef, useEffect } from "react"
 import { css } from "@emotion/react"
 import { CodeContentPair as AgentListPair } from "./agent-list"
 import { CodeContentPair as AdjustmentListPair } from "./balance-adjustment"
+import { CodeContentPair as ContractsListPair } from "./contracts"
 import { Routes } from "../content"
 import { Code, DefaultCodePath, Menu } from "./menu"
 
 export { Code } from "./menu"
 
-const pairs = () => [AgentListPair, AdjustmentListPair]
+const pairs = () => [AgentListPair, AdjustmentListPair, ContractsListPair]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => (
   <Routes path={path} pairs={pairs()} />

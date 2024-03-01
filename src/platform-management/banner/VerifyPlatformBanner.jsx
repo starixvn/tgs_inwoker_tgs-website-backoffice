@@ -5,7 +5,11 @@ import { Verify } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
-import { Disclosure, VerifyDisclosure } from "../../dialog/Disclosure"
+import {
+  Disclosure,
+  ReviewDisclosure,
+  VerifyDisclosure
+} from "../../dialog/Disclosure"
 import { useVerifyPlatformBanner, usePlatformBanner } from "./client"
 import { Trans, useTrans } from "../../i18n"
 import { parseISO } from "date-fns"
@@ -41,7 +45,7 @@ export const VerifyPlatformBannerDisclosure = ({
 
   return (
     <>
-      <VerifyDisclosure {...dialog} {...props} />
+      <ReviewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <VerifyDialog
           brandId={brandId}

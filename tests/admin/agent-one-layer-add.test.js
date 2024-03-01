@@ -11,20 +11,19 @@ import { openDialog } from "../page/dialog.js"
 
 const test = base.extend(Fixture)
 
-test("add one layer agents", async ({ page, licensee, backofficeApi }) => {
-  let platform = await backofficeApi.platform.addPlatform({
-    licenseeId: licensee.id,
-    agentDividendType: AgentDividendType.OneLayer
-  })
-
-  await gotoAgentListPage(page, platform.code)
+test("add one layer agents", async ({
+  page,
+  agentOneLayerPlatform,
+  backofficeApi
+}) => {
+  await gotoAgentListPage(page, agentOneLayerPlatform.code)
 
   let agents = await addAgent(page, AgentDividendType.OneLayer)
   agents = await addAgent(page, AgentDividendType.OneLayer, agents)
 
   let [parent, agent] = agents
   let findAgentResult = await backofficeApi.agent.findAgent(
-    platform.id,
+    agentOneLayerPlatform.id,
     agent.username
   )
   let agentRecord = await backofficeApi.agent.getAgent(findAgentResult?.id)

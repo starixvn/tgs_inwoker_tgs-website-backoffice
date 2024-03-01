@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: cash-committer
-image: pgtgs/cashservice-committer:202312200134.212
+image: pgtgs/cashservice-committer:202402010519.218
 services:
   - name: cash-committer
     dependencies:

@@ -46,6 +46,10 @@ import {
   Code as AllAgentRebateReportCode,
   codeLabelPair as allAgentRebateReportPair
 } from "./all-agent-rebate-report/menu"
+import {
+  Code as AgentDividendCode,
+  codeLabelPair as agentDividendPair
+} from "./agent-dividend/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
 import { GameProviderReport, OrderTracking, UnsettledBet } from "../trans/Game"
@@ -60,6 +64,7 @@ import {
   AgentProfitSharingReport
 } from "../trans/Agent"
 import { PlayerContributionReport } from "../trans/Player"
+import { AgentDividendDistribution } from "../trans/Vip"
 
 export const Code = "report"
 
@@ -139,6 +144,9 @@ const label = ({ locale, code }) => {
         locale
       )
 
+    case AgentDividendCode:
+      return getTrans(AgentDividendDistribution, locale)
+
     default:
       return ""
   }
@@ -162,7 +170,8 @@ export const codeLabelPair = [
         gameProviderReportPair,
         transferRecordsPair,
         winlossReportPair,
-        allAgentRebateReportPair
+        allAgentRebateReportPair,
+        agentDividendPair
       ]
     })
 ]

@@ -36,6 +36,7 @@ import {
   WithdrawFormTrans,
   useWithdrawFormTrans
 } from "../../trans/User"
+import { usePlayerNoteTrans } from "../../trans/Player"
 
 export const PlayerWithdrawFormDialogDisclosure = ({
   brandId,
@@ -186,10 +187,7 @@ const FormBody = ({ bankInfoList = [] }) => {
 }
 
 const NoteInputField = ({ ...props }) => {
-  let label = useTrans({
-    zh: "玩家备注",
-    en: "Player Note"
-  })
+  let label = usePlayerNoteTrans()
 
   return <TextareaField name="note" label={label} {...props} />
 }

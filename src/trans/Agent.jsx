@@ -140,3 +140,90 @@ export const AgentMarketingReport = {
 export const AgentMarketingReportTrans = () => (
   <Trans {...AgentMarketingReport} />
 )
+
+const AgentProfitSharingInterval = {
+  zh: "代理分红周期",
+  en: "Agent Profit Sharing Interval",
+  vi: "chu kỳ hoa hồng của đại lý"
+}
+export const AgentProfitSharingIntervalTrans = () => (
+  <Trans {...AgentProfitSharingInterval} />
+)
+export const useAgentProfitSharingIntervalTrans = () =>
+  useTrans(AgentProfitSharingInterval)
+
+export const AllAgentDividendSetting = {
+  zh: "全民代理分紅設置",
+  en: "All Agent Dividend Setting"
+}
+export const AllAgentDividendSettingTrans = () => (
+  <Trans {...AllAgentDividendSetting} />
+)
+
+const AgentContractName = {
+  zh: "名稱",
+  en: "Contract name"
+}
+export const AgentContractNameTrans = () => <Trans {...AgentContractName} />
+
+export const UpgradeToAgent = {
+  zh: "升级代理",
+  en: "Upgrade to agent",
+  vi: "thăng cấp dại lý"
+}
+export const UpgradeToAgentTrans = () => <Trans {...UpgradeToAgent} />
+export const useUpgradeToAgentTrans = () => useTrans(UpgradeToAgent)
+
+const PlayerUpgradesToAgent = {
+  zh: "玩家升级成代理",
+  en: "Player upgrades to agent",
+  vi: "người chơi thăng cấp thành đại lý"
+}
+export const PlayerUpgradesToAgentTrans = () => (
+  <Trans {...PlayerUpgradesToAgent} />
+)
+
+const ConfirmUpgradeToAgent = {
+  zh: "确定升级为代理?",
+  en: "Are you sure to upgrade to agent?",
+  vi: "xác định muốn thăng cấp thành đại lý?"
+}
+export const ConfirmUpgradeToAgentTrans = () => (
+  <Trans {...ConfirmUpgradeToAgent} />
+)
+
+/*
+TODO: rm
+const ConfirmUpgradeToMasterAgent = {
+  zh: "确定升级为总代?",
+  en: "Are you sure to upgrade to master agent?",
+  vi: "xác định muốn thăng cấp thành tổng đại lý?"
+}
+export const ConfirmUpgradeToMasterAgentTrans = () => (
+  <Trans {...ConfirmUpgradeToMasterAgent} />
+)
+*/
+
+const NegativeDividend = {
+  zh: "负分红",
+  en: "Negative Dividend",
+  vi: "hoa hồng âm"
+}
+export const NegativeDividendTrans = () => <Trans {...NegativeDividend} />
+export const useNegativeDividendTrans = () => useTrans(NegativeDividend)
+
+const CumulativeNegativeDividendAmount = {
+  zh: "累计负分红金额",
+  en: "Cumulative negative dividend amount",
+  vi: "số hoa hồng âm tích lũy"
+}
+export const CumulativeNegativeDividendAmountTrans = () => (
+  <Trans {...CumulativeNegativeDividendAmount} />
+)
+
+const DividendAmount = {
+  zh: "实际分红金额",
+  en: "Dividend amount",
+  vi: "số hoa hồng thực tế"
+}
+export const DividendAmountTrans = () => <Trans {...DividendAmount} />

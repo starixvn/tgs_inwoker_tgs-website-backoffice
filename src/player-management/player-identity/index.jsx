@@ -41,7 +41,7 @@ import {
   useUserNameTrans
 } from "../../trans/User"
 import { ActionTrans, RemarkTrans } from "../../trans/Action"
-import { ApplicationTimeTrans, VerifyTimeTrans } from "../../trans/Date"
+import { ApplicationTimeTrans, VerifiedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import {
   PlayerIdVerificationInfoTrans,
@@ -193,7 +193,7 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
             maxRangeDays={maxRangeDays}
           />
           <DateInputRangeField
-            label={<VerifyTimeTrans />}
+            label={<VerifiedTimeTrans />}
             startProps={{
               name: "beginReviewedOn"
             }}

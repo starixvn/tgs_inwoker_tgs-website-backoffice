@@ -1,9 +1,7 @@
 kind: Module
 type: container
 name: agent-service
-image: pgtgs/agent-service:202312081109.112
-# TODO: use bo api to create brand contract
-# image: pgtgs/agent-service:202401080845.119
+image: pgtgs/agent-service:202402200213.128
 services:
   - name: agent-service
     dependencies:
@@ -18,7 +16,5 @@ services:
       AgentService__AgentDividendServiceBaseUrl: "http://agent-dividend-service"
     ports:
       - name: http
-        containerPort: 80
-        # Note. new agent-service:202401080845.119 use 8080 port instead
-        # containerPort: 8080
+        containerPort: 8080
         servicePort: 80

@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: agent-dividend-service
-image: pgtgs/agent-dividend-service:202401190542.49
+image: pgtgs/agent-dividend-service:202402290820.68
 services:
   - name: agent-dividend-service
     dependencies:
@@ -10,6 +10,7 @@ services:
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       AgentDividend__CashBaseUrl: "http://cash-service"
+      AgentDividend__AgentBaseUrl: "http://agent-service"
     ports:
       - name: http
         containerPort: 8080

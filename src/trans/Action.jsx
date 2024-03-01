@@ -134,7 +134,7 @@ const Cancel = {
   vi: "Hủy bỏ"
 }
 export const CancelTrans = () => <Trans {...Cancel} />
-export const useCancelText = () => useTrans(Cancel)
+export const useCancelTrans = () => useTrans(Cancel)
 
 const Submit = {
   zh: "提交",
@@ -142,6 +142,14 @@ const Submit = {
   vi: "Gửi/Đệ trình"
 }
 export const SubmitTrans = () => <Trans {...Submit} />
+
+const Confirm = {
+  zh: "确定",
+  en: "Submit",
+  vi: "xác định"
+}
+export const ConfirmTrans = () => <Trans {...Confirm} />
+export const useConfirmTrans = () => useTrans(Confirm)
 
 const PreviousPage = {
   zh: "前一页",
@@ -188,6 +196,13 @@ const Verify = {
 export const VerifyTrans = () => <Trans {...Verify} />
 export const useVerifyTrans = () => useTrans(Verify)
 
+const Review = {
+  zh: "审核",
+  en: "Review",
+  vi: "xem duyệt"
+}
+export const ReviewTrans = () => <Trans {...Review} />
+
 const Add = {
   zh: "新增",
   en: "Add"
@@ -202,9 +217,18 @@ const Delete = {
 export const DeleteTrans = () => <Trans {...Delete} />
 export const useDeleteTrans = () => useTrans(Delete)
 
-const Reject = {
+const Approve = {
+  zh: "通过",
+  en: "Approve",
+  vi: "thông qua"
+}
+export const ApproveTrans = () => <Trans {...Approve} />
+export const useApproveTrans = () => useTrans(Approve)
+
+export const Reject = {
   zh: "拒绝",
-  en: "Reject"
+  en: "Reject",
+  vi: "từ chối"
 }
 export const RejectTrans = () => <Trans {...Reject} />
 export const useRejectTrans = () => useTrans(Reject)

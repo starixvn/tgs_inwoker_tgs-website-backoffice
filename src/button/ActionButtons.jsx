@@ -2,12 +2,7 @@ import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
 import { ActionButtons as _ActionButtons } from "bumbag"
 import { Trans, useTrans } from "../i18n"
-import { CancelTrans, SubmitTrans } from "../trans/Action"
-
-const Confirm = {
-  zh: "确定",
-  en: "Submit"
-}
+import { CancelTrans, ConfirmTrans, SubmitTrans } from "../trans/Action"
 
 //TODO: move to CloseButton?
 const Close = {
@@ -25,15 +20,11 @@ const Add = {
   en: "Add"
 }
 
-//TODO: use SubmitTrans instead
-export const SubmitText = () => <SubmitTrans />
-
 //TODO: use CancelTrans instead
 export const CancelText = () => <CancelTrans />
 
-export const ConfirmText = () => Trans(Confirm)
-
-export const useConfirmText = () => useTrans(Confirm)
+//TODO: rm
+export const ConfirmText = () => <ConfirmTrans />
 
 export const DeleteText = () => <Trans {...Delete} />
 
@@ -56,7 +47,7 @@ export const ConfirmCancel = ({ cancelText, submitText, ...props }) => {
   return (
     <_ActionButtons
       cancelText={cancelText ?? <CancelTrans />}
-      submitText={submitText ?? <ConfirmText />}
+      submitText={submitText ?? <ConfirmTrans />}
       {...props}
     />
   )

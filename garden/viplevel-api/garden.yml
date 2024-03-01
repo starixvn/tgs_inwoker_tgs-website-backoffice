@@ -1,17 +1,24 @@
 kind: Module
 type: container
 name: viplevel-api
-image: pgtgs/viplevel-api:202401170535.62
+image: pgtgs/viplevel-api:202402230357.91
 services:
   - name: viplevel-api
     dependencies:
       - postgres
       - nats
       - redis
+      - cash-service
+      - player-bucket-api
+      - game-wagers
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Nats: "nats://nats:4222"
       ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      VipLevelConnectionStrings__CashServiceClientBaseUrl: "http://cash-service"
+      VipLevelConnectionStrings__PlayerBucketClientBaseUrl: "http://player-bucket-api"
+      VipLevelConnectionStrings__PaymentServiceClientBaseUrl: "http://payment-api"
+      VipLevelConnectionStrings__GameWagersClientBaseUrl: "http://game-wagers"
     ports:
       - name: http
         containerPort: 8080

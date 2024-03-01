@@ -33,6 +33,14 @@ const Approved = {
 export const ApprovedTrans = (props) => <Trans {...Approved} {...props} />
 export const useApprovedTrans = () => useTrans(Approved)
 
+const Distributed = {
+  zh: "已派发",
+  en: "Distributed",
+  vi: "đã phân phát"
+}
+export const DistributedTrans = () => <Trans {...Distributed} />
+export const useDistributedTrans = () => useTrans(Distributed)
+
 const Rejected = {
   zh: "已拒绝",
   en: "Rejected",
@@ -64,12 +72,12 @@ const NoSearchResult = {
 export const NoSearchResultTrans = () => <Trans {...NoSearchResult} />
 
 const Automatic = {
-  zh: "自動",
-  en: "Automatic",
+  zh: "自动",
+  en: "Auto",
   vi: "Thủ công"
 }
-export const AutomaticTrans = () => <Trans {...Automatic} />
-export const useAutomaticTrans = () => useTrans(Automatic)
+export const AutoTrans = () => <Trans {...Automatic} />
+export const useAutoTrans = () => useTrans(Automatic)
 
 const Manual = {
   zh: "手动",
@@ -124,3 +132,19 @@ const ConfigStatus = {
 }
 export const ConfigStatusTrans = () => <Trans {...ConfigStatus} />
 export const useConfigStatusTrans = () => useTrans(ConfigStatus)
+
+const Liable = {
+  zh: "承担",
+  en: "Liable",
+  vi: "đảm nhận"
+}
+export const LiableTrans = () => <Trans {...Liable} />
+export const useLiableTrans = () => useTrans(Liable)
+
+const NotLiable = {
+  zh: "不承担",
+  en: "Not liable",
+  vi: "không đảm nhận"
+}
+export const NotLiableTrans = () => <Trans {...NotLiable} />
+export const useNotLiableTrans = () => useTrans(NotLiable)

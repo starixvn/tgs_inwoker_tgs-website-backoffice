@@ -32,7 +32,6 @@ const Contacts = {
 const ContactsTrans = () => <Trans {...Contacts} />
 const useContactsTrans = () => useTrans(Contacts)
 
-//TODO: id for test
 export const ContactsDialogDisclosure = ({
   brandId,
   id,
@@ -135,7 +134,11 @@ const ContactsDialog = ({ brandId, readOnly, dialog, dialogId, ...props }) => {
 const FormBody = ({ name = ContactsField, readOnly }) => {
   let { control } = useFormContext()
 
-  let fieldArray = useFieldArray({ control, name, keyName: "_id" })
+  let fieldArray = useFieldArray({
+    control,
+    name,
+    keyName: "_id"
+  })
   return (
     <Table>
       <Table.Head>
@@ -245,7 +248,7 @@ const AddRow = ({ fieldArray }) =>
             size="small"
             variant="ghost"
             onClick={() => {
-              fieldArray.append({})
+              fieldArray.append({ name: "", email: "", remark: "" })
             }}
           >
             <Icon icon={faPlus} type="font-awesome" />

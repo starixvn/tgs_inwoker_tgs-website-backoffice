@@ -10,7 +10,7 @@ import { isNil, complement } from "ramda"
 import { usePromotionType } from "./PromotionTypeField"
 import { useIsAddPromotion } from "../usePromotionFormData"
 import { PromotionDistributionMethodTrans } from "../../../trans/Promotion"
-import { useAutomaticTrans, useManualTrans } from "../../../trans/Status"
+import { useAutoTrans, useManualTrans } from "../../../trans/Status"
 
 const isNotNil = complement(isNil)
 
@@ -77,7 +77,7 @@ const AutoOrManualPayoutSwitch = ({
     defaultValue: props.checked ?? props?.defaultValue
   })
 
-  let autoPayoutLabel = useAutomaticTrans()
+  let autoPayoutLabel = useAutoTrans()
   let manualPayoutLabel = useManualTrans()
   let label = checked ? autoPayoutLabel : manualPayoutLabel
 

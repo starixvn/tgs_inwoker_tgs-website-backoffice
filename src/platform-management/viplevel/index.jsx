@@ -1,20 +1,22 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
-import { Box, Flex, Set, Button, Text, Stack } from "bumbag"
-import PageContent from "../../page/Content"
+import { Box, Set, Level, Stack } from "bumbag"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
+import AutoSizer from "react-virtualized-auto-sizer"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
   useUserBrandId,
   useUserRoleType
 } from "../../user/context"
-import { View as ViewMenu } from "./menu"
-import { useFormContext, useForm, FormProvider } from "react-hook-form"
+import { View } from "./menu"
 import { Code } from "./menu"
-import BrandBar from "../../report/BrandBar"
 import { toApiParams, useTable, Table, pageCount } from "../../table"
 import { ViewButton, EditButton, AddButton } from "./edit"
-import { Trans } from "../../i18n"
 import textColumn from "../../table/column/textColumn"
 import { useVipLevelList } from "../../vip-levels/client"
 import AlertDialog from "../../dialog/Alert"
@@ -29,26 +31,18 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
-}
-
-const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
+    <PlatformPageContent title={<VipLevelTrans />}>
+      <BodyContent />
+    </PlatformPageContent>
   )
 }
 
-const BodyContent = ({ brandId }) => {
+const FrontendLobbyVipLimit = 10
+
+const BodyContent = ({}) => {
+  let brandId = usePlatformId()
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     brandId
   })
@@ -63,31 +57,44 @@ const BodyContent = ({ brandId }) => {
   })
 
   let columns = useColumns({ brandId, items: data?.items, mutate })
+
+  let pageWidth = usePlatformPageContentWidth()
   return (
-    <PageContent
-      actionBar={
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <Box alignX="right">
-          <AddButton
-            id="add-vip-level-dialog-disclosure"
-            brandId={brandId}
-            onSubmitted={mutate}
-          />
+          {data?.items?.length < FrontendLobbyVipLimit && (
+            <AddButton
+              id="add-vip-level-dialog-disclosure"
+              brandId={brandId}
+              onSubmitted={mutate}
+            />
+          )}
         </Box>
-      }
-      title={<VipLevelTrans />}
-    >
-      <Table
-        columns={columns}
-        data={data?.items}
-        initialState={state}
-        controlledState={state}
-        pageCount={pageCount(state?.pageSize, data?.totalCount)}
-        setPageIndex={setPageIndex}
-        setSortOrder={setSortOrder}
-        isLoading={isLoading}
-      />
+      </Level>
+      <Box flex="1 0 50%">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                columns={columns}
+                data={data?.items}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(state?.pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                stickyHead
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
@@ -98,7 +105,7 @@ const useColumns = ({ brandId, items = [], mutate }) => {
     let columns = [
       textColumn({
         accessor: "name",
-        Header: <Trans zh="等级名称" en="VIP Level" />,
+        Header: <VipLevelTrans />,
         disableSortBy: true
       })
     ]

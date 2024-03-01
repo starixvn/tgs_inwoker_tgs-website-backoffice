@@ -4,7 +4,11 @@ import { Spinner, useModalState, FieldStack, Box, Text, Button } from "bumbag"
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
-import { Disclosure, VerifyDisclosure } from "../../dialog/Disclosure"
+import {
+  Disclosure,
+  ReviewDisclosure,
+  VerifyDisclosure
+} from "../../dialog/Disclosure"
 import { FormDialog } from "../../form/FormDialog"
 import { useFundDepositForm, useVerifyFundDepositForm } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
@@ -16,7 +20,7 @@ import { NormalLabel } from "../../form/Label"
 import { FormBody } from "./ViewFundDeposit"
 import ReviewFund from "../ReviewFund"
 import { useFundDepositFormData } from "./useFundDepositFormData"
-import { RejectTrans } from "../../trans/Action"
+import { RejectTrans, useApproveTrans } from "../../trans/Action"
 
 export const FundDepositVerified = "FundDepositVerified"
 
@@ -46,7 +50,7 @@ export const VerifyFundDepositDisclosure = ({
 
   return (
     <>
-      <VerifyDisclosure {...dialog} {...props} />
+      <ReviewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <VerifyFundDepositDialog
           brandId={brandId}
@@ -73,10 +77,7 @@ const VerifyFundDepositDialog = ({
     en: "Review Deposit"
   })
 
-  let approveLabel = useTrans({
-    zh: "通过",
-    en: "Approve"
-  })
+  let approveLabel = useApproveTrans()
 
   let formMethods = useForm()
   let { setValue } = formMethods

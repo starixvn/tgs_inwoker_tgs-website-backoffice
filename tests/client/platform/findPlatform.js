@@ -7,7 +7,7 @@ export const findPlatform = async (value = "") => {
   let url = `${host}/${API}?keyword=${value}&showAll=true`
   let response = await fetcher.get(url)
   let result = await response.json()
-  let filtered = result.items.find(({ code }) => code === value)
+  let filtered = result.items?.find(({ code }) => code === value)
 
   let platformId = filtered?.id
   if (!platformId) {

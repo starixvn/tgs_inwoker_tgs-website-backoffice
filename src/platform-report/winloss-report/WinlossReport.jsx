@@ -73,6 +73,7 @@ import { AgentTrans } from "../../trans/Agent"
 import { TotalTrans } from "../../trans/Field"
 import { CompanyTrans } from "../../trans/Platform"
 import { WinLossTrans } from "../../trans/Game"
+import { PlayerTrans } from "../../trans/Player"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -422,7 +423,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
       },
       {
         id: "player",
-        Header: <Trans zh="玩家" en="Player" />,
+        Header: <PlayerTrans />,
         headCell: {
           textAlign: "center"
         },

@@ -1,21 +1,17 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
-import {
-  useEditPlayerInfo,
-  useUpdatePlayer,
-  toUpdatePlayerFormData
-} from "./client"
+import { useUpdatePlayer, toUpdatePlayerFormData } from "./client"
 import {
   Spinner,
   Stack,
-  Flex,
+  Columns,
   Box,
-  Card,
   Set,
   Button,
   Text,
-  Dialog,
-  Group
+  Group,
+  Heading,
+  FieldStack
 } from "bumbag"
 import { FieldValues } from "../../layout/Grid"
 import {
@@ -51,7 +47,11 @@ import { defaultFormatDate } from "../../date/format"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { PlayerBucketListDialogDisclosure } from "./PlayerBucketList"
 import { diff } from "../../object/diff"
-import { UpperLevelAgentTrans, useAgentUsernameTrans } from "../../trans/Agent"
+import {
+  AgentTrans,
+  UpperLevelAgentTrans,
+  useAgentUsernameTrans
+} from "../../trans/Agent"
 import {
   BalanceTrans,
   BirthdayTrans,
@@ -64,18 +64,31 @@ import {
   UserNameTrans
 } from "../../trans/User"
 import {
+  AccountTypeTrans,
   PlayerCodeTrans,
   PlayerInfoTrans,
+  PlayerTrans,
   RegistrationDomainTrans,
   WageringRequirementTrans
 } from "../../trans/Player"
 import { StatusTrans } from "../../trans/Status"
-import { VipLevelTrans } from "../../trans/Vip"
+import {
+  CurrentVipLevelTrans,
+  VipAccumulationStatusTrans,
+  VipLevelTrans,
+  VipTotalDepositTrans,
+  VipTotalValidBetTrans,
+  VipUpgradeTrans
+} from "../../trans/Vip"
 import { RemarkTrans } from "../../trans/Action"
 import {
   TotalDepositAmountTrans,
   TotalWithdrawAmountTrans
 } from "../../trans/Field"
+import {
+  AutoOrManualSwitch,
+  AutoOrManualSwitchLabel
+} from "../../switch/AutoOrManualSwitch"
 
 export const PlayerInfoKey = "player"
 
@@ -133,9 +146,12 @@ const UpdatePlayerInfoPanel = ({
     birthdate,
     wageringRequirement: _,
     banks,
+    fullLevel,
+    nextVipLevel,
+    nextVipLevelId,
     ...data
   } = {}) => {
-    //drop wageringRequirement & banks not updatable value
+    //drop wageringRequirement, banks, fullLevel, nextVipLevel, nextVipLevelId  not updatable value
 
     birthdate = isValid(birthdate) ? defaultFormatDate(birthdate) : null
 
@@ -193,6 +209,15 @@ const PlayerIdNumberInputGroup = ({ player, showIdentityAuth }) => {
   )
 }
 
+const AccountTypeBox = ({ player }) => {
+  return (
+    <>
+      <AccountTypeTrans />
+      {!!player?.upgradePlayerAgentId ? <AgentTrans /> : <PlayerTrans />}
+    </>
+  )
+}
+
 const EditForm = ({
   brandId,
   brand,
@@ -217,6 +242,9 @@ const EditForm = ({
     control,
     name: WageringRequirementFieldName
   })
+
+  const VipUpgradeField = "vipLevelAutoState"
+
   let { username = "", registeredOn, balance } = player
 
   return (
@@ -247,19 +275,6 @@ const EditForm = ({
           player={player}
           showIdentityAuth={brand?.enablePlayerIdentity}
         />
-        {/* <Group>
-          <Input
-            name="idNumber"
-            defaultValue={player?.idNumber}
-            disabled
-            readOnly
-          />
-          {brand?.enablePlayerIdentity && player.idNumber && (
-            <Button disabled>
-              <PlayerIdentityStateIcon value={player.identityAuthentication} />
-            </Button>
-          )}
-        </Group> */}
 
         <VipLevelTrans />
         <Box>
@@ -270,6 +285,9 @@ const EditForm = ({
             brandId={brandId}
           />
         </Box>
+
+        <VipUpgradeTrans />
+        <AutoOrManualSwitch name={VipUpgradeField} {...props} />
 
         <UpperLevelAgentTrans />
         <Box>
@@ -350,104 +368,139 @@ export const PlayerInfoPanel = ({
 
   return (
     <TabPanel tabId={PlayerInfoKey} {...props}>
-      <FieldValues spacing="major-2">
-        {isAdmin && (
-          <>
-            <PlayerCodeTrans />
-            <Text>{player.playerCode}</Text>
-          </>
-        )}
+      <Columns>
+        <Columns.Column>
+          <FieldValues spacing="major-2">
+            {isAdmin && (
+              <>
+                <PlayerCodeTrans />
+                <Text>{player.playerCode}</Text>
+              </>
+            )}
 
-        <UserNameTrans />
-        <Text data-field="username">{username}</Text>
+            <UserNameTrans />
+            <Text data-field="username">{username}</Text>
 
-        <RealNameTrans />
-        <Box>
-          <Text data-field="realName">{realName}</Text>
-        </Box>
-
-        <BirthdayTrans />
-        <Box>
-          <FormattedDate
-            value={parse(player?.birthdate, "yyyy/MM/dd", new Date())}
-          />
-        </Box>
-
-        <ICNumberTrans />
-        <Set orientation="horizontal" alignY="center">
-          <Text.Block>{player.idNumber}</Text.Block>
-          {brand?.enablePlayerIdentity && player.idNumber && (
-            <PlayerIdentityStateIcon value={player.identityAuthentication} />
-          )}
-        </Set>
-
-        <VipLevelTrans />
-        <Box>
-          <VipLevelLabel value={vipLevel} />
-        </Box>
-
-        <UpperLevelAgentTrans />
-        <Box>
-          <Text>{player?.agentUsername}</Text>
-        </Box>
-
-        {showParentUsername && (
-          <>
-            <AllAgentUpperLevelLabel />
+            <RealNameTrans />
             <Box>
-              <Text>{player?.parentUsername}</Text>
+              <Text data-field="realName">{realName}</Text>
             </Box>
-          </>
-        )}
 
-        <BalanceTrans />
-        <Box>
-          <FormattedNumberDecimal value={balance} />
-        </Box>
+            <BirthdayTrans />
+            <Box>
+              <FormattedDate
+                value={parse(player?.birthdate, "yyyy/MM/dd", new Date())}
+              />
+            </Box>
 
-        <Box alignY="center">
-          <WageringRequirementTrans />
-        </Box>
-        <Set>
-          <FormattedNumberDecimal value={player?.wageringRequirement} />
-          <PlayerBucketListDialogDisclosure playerCode={player.playerCode} />
-        </Set>
+            <ICNumberTrans />
+            <Set orientation="horizontal" alignY="center">
+              <Text.Block>{player.idNumber}</Text.Block>
+              {brand?.enablePlayerIdentity && player.idNumber && (
+                <PlayerIdentityStateIcon
+                  value={player.identityAuthentication}
+                />
+              )}
+            </Set>
 
-        <StatusTrans />
-        <Box>
-          <PlayerStatusLabel value={status} />
-        </Box>
+            <AccountTypeBox player={player} />
 
-        <RemarkTrans />
-        <Box>
-          <Text>{player?.remark}</Text>
-        </Box>
+            <UpperLevelAgentTrans />
+            <Box>
+              <Text>{player?.agentUsername}</Text>
+            </Box>
 
-        <RegisterIPTrans />
-        <Box>{player?.registerIp}</Box>
+            {showParentUsername && (
+              <>
+                <AllAgentUpperLevelLabel />
+                <Box>
+                  <Text>{player?.parentUsername}</Text>
+                </Box>
+              </>
+            )}
 
-        <RegistrationTimeTrans />
-        <Box>
-          <FormattedDateTime value={registeredOn} />
-        </Box>
+            <BalanceTrans />
+            <Box>
+              <FormattedNumberDecimal value={balance} />
+            </Box>
 
-        <LastLoginTimeTrans />
-        <Box>
-          <FormattedDateTime value={player?.lastLoginOn} />
-        </Box>
+            <Box alignY="center">
+              <WageringRequirementTrans />
+            </Box>
+            <Set>
+              <FormattedNumberDecimal value={player?.wageringRequirement} />
+              <PlayerBucketListDialogDisclosure
+                playerCode={player.playerCode}
+              />
+            </Set>
 
-        <LastLoginIPTrans />
-        <Box>{player?.lastLoginIp}</Box>
+            <StatusTrans />
+            <Box>
+              <PlayerStatusLabel value={status} />
+            </Box>
 
-        <RegistrationDomainTrans />
-        <Box>{player?.registerHost}</Box>
+            <RemarkTrans />
+            <Box>
+              <Text>{player?.remark}</Text>
+            </Box>
 
-        <TotalDepositAmountTrans />
-        <FormattedNumberDecimal value={playerPayment?.totalDepositAmount} />
+            <RegisterIPTrans />
+            <Box>{player?.registerIp}</Box>
 
-        <TotalWithdrawAmountTrans />
-        <FormattedNumberDecimal value={playerPayment?.totalWithdrawAmount} />
-      </FieldValues>
+            <RegistrationTimeTrans />
+            <Box>
+              <FormattedDateTime value={registeredOn} />
+            </Box>
+
+            <LastLoginTimeTrans />
+            <Box>
+              <FormattedDateTime value={player?.lastLoginOn} />
+            </Box>
+
+            <LastLoginIPTrans />
+            <Box>{player?.lastLoginIp}</Box>
+
+            <RegistrationDomainTrans />
+            <Box>{player?.registerHost}</Box>
+
+            <TotalDepositAmountTrans />
+            <FormattedNumberDecimal value={playerPayment?.totalDepositAmount} />
+
+            <TotalWithdrawAmountTrans />
+            <FormattedNumberDecimal
+              value={playerPayment?.totalWithdrawAmount}
+            />
+          </FieldValues>
+        </Columns.Column>
+        <Columns.Column>
+          <Heading use="h5">
+            <VipAccumulationStatusTrans />
+          </Heading>
+          <FieldValues>
+            <VipUpgradeTrans />
+            <AutoOrManualSwitchLabel value={player.vipLevelAutoState} />
+
+            <CurrentVipLevelTrans />
+            <VipLevelLabel value={vipLevel} />
+
+            <VipTotalValidBetTrans />
+            <Set orientation="horizontal" alignY="center">
+              <FormattedNumberDecimal value={player.accumTurnover} />
+              <Box>/</Box>
+              <FormattedNumberDecimal
+                value={player.levelUpAccumulateBetAmount}
+              />
+            </Set>
+
+            <VipTotalDepositTrans />
+            <Set orientation="horizontal" alignY="center">
+              <FormattedNumberDecimal value={player.accumDeposit} />
+              <Box>/</Box>
+              <FormattedNumberDecimal value={player.levelUpAccumulateDeposit} />
+            </Set>
+          </FieldValues>
+        </Columns.Column>
+      </Columns>
     </TabPanel>
   )
 }

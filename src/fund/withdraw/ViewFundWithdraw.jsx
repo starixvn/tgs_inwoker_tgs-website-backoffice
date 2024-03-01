@@ -60,6 +60,8 @@ import { GmsIdTrans, ThirdPartyIdTrans } from "../../trans/Platform"
 import { ApplicationTimeTrans } from "../../trans/Date"
 import { PaidTimeTrans, WithdrawAmountTrans } from "../../trans/Payment"
 import { StatusTrans } from "../../trans/Status"
+import { CSNoteTrans } from "../../trans/Field"
+import { PlayerNoteTrans } from "../../trans/Player"
 
 export const ViewFundWithdrawDisclosure = ({
   brandId,
@@ -222,7 +224,13 @@ export const FormBody = ({ brandId, record, readonly }) => {
 
         <TextareaField
           name="remark"
-          label={<Trans zh="客服备註" en="CS Note" />}
+          label={<CSNoteTrans />}
+          disabled={disabled}
+        />
+
+        <TextareaField
+          name="playerRemark"
+          label={<PlayerNoteTrans />}
           disabled={disabled}
         />
       </FieldStack>
@@ -470,7 +478,7 @@ const PayeeInfo = ({ record }) => {
         {hasNote && (
           <>
             <NormalLabel>
-              <Trans zh="玩家备註" en="Player Note" />
+              <PlayerNoteTrans />
             </NormalLabel>
             <Box alignY="center">{record?.note}</Box>
           </>

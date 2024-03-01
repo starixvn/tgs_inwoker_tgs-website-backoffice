@@ -7,6 +7,7 @@ import sboGameProviderApi from "../../client/gameProviderApi/sbo/index.js"
 import backofficeApi from "../client/index.js"
 import reportApi from "../../client/reportApi/index.js"
 import reportAggregateApi from "../../client/reportAggregateApi/index.js"
+import { AgentDividendType } from "../admin/agent-list-page.js"
 import { use } from "chai"
 
 const Path = "./.playwright"
@@ -260,6 +261,56 @@ export const Fixture = {
   },
   platform: async ({ platformCode, backofficeApi }, use) => {
     let platform = await backofficeApi.platform.findPlatform(platformCode)
+    use(platform)
+  },
+  agentOneLayerPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "AG-ONE-LAYER"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        agentDividendType: AgentDividendType.OneLayer
+      })
+    }
+    use(platform)
+  },
+  agentMultipleLayerPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "AG-MULTI-LAYER"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        agentDividendType: AgentDividendType.MultipleLayer
+      })
+    }
+    use(platform)
+  },
+  agentPlayerPlatform: async ({ licensee, backofficeApi }, use) => {
+    const AgentPlayerPlatformCode = "AG-PLAYER"
+    let platform = await backofficeApi.platform.findPlatform(
+      AgentPlayerPlatformCode
+    )
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: AgentPlayerPlatformCode,
+        enablePlayerAgent: true
+      })
+    }
+    use(platform)
+  },
+  reviewPlayerIdPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "REVIEW-PLAYER-ID"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        enablePlayerIdentity: true
+      })
+    }
     use(platform)
   },
   licensee: async ({ licenseeCode, backofficeApi }, use) => {

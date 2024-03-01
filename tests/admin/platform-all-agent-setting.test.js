@@ -8,6 +8,7 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
+console.log("TODO: use the same brand/platform")
 test("update all agent settings", async ({ page }) => {
   let brandId = await gotoPlatformOperationSettingPage(page)
 

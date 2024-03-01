@@ -14,15 +14,11 @@ const test = base.extend(Fixture)
 
 test("review player id", async ({
   page,
-  licensee,
-  backofficeApi,
+  reviewPlayerIdPlatform,
   operatorApi,
   brandCertApi
 }) => {
-  let platform = await backofficeApi.platform.addPlatform({
-    licenseeId: licensee.id,
-    enablePlayerIdentity: true
-  })
+  let platform = reviewPlayerIdPlatform
   let platformCode = platform.code
   let platformToken = await brandCertApi.platformToken(platform.code)
 

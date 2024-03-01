@@ -7,7 +7,7 @@ import {
   useDelete,
   usePatchData
 } from "../../client"
-import { isEmpty, isNil } from "lodash-es"
+import { isEmpty, isNil, isBoolean } from "lodash-es"
 import { either } from "ramda"
 import { useApiMerge } from "../../client/useApiMerge."
 import {
@@ -57,6 +57,7 @@ export const useUpdateAgent = (agentId, data) => {
 const UpdateAgentFormDataField = {
   Info: "info",
   Status: "status",
+  NegativeDividend: "negativeAgentDividendCarryForward",
   OneLayer: "oneLayer",
   MultipleLayer: "multipleLayer"
 }
@@ -73,13 +74,20 @@ export const useAgentUpdateFormData = (data, agentProfitSharingType) => {
     agentDividendConditions,
     status,
 
+    negativeAgentDividendCarryForward,
+
     realName,
     remarks
   } = data
 
   let formData = {
     info: { realName, remarks },
-    status: isNilOrEmpty(status) ? null : { status }
+    status: isNilOrEmpty(status) ? null : { status },
+    negativeAgentDividendCarryForward: isBoolean(
+      negativeAgentDividendCarryForward
+    )
+      ? { negativeAgentDividendCarryForward }
+      : null
   }
 
   if (isAgentProfitSharingOneLayer(agentProfitSharingType)) {
@@ -111,6 +119,10 @@ export const useUpdateAgentV2 = (agentId, data) => {
       agentId,
       data && Reflect.get(data, UpdateAgentFormDataField.Status)
     ),
+    useUpdateAgentNegativeDividend(
+      agentId,
+      data && Reflect.get(data, UpdateAgentFormDataField.NegativeDividend)
+    ),
     useUpdateAgentOneLayer(
       agentId,
       data && Reflect.get(data, UpdateAgentFormDataField.OneLayer)
@@ -135,6 +147,18 @@ export const useUpdateAgentInfo = (agentId, data) => {
 
 export const useUpdateAgentStatus = (agentId, data) => {
   let url = agentId && data ? `${API}/status/${agentId}` : ""
+
+  return usePatchData(url, data, {
+    dropEmptyValuesDisabled: true,
+    dedupingInterval: 100
+  })
+}
+
+export const useUpdateAgentNegativeDividend = (agentId, data) => {
+  let url =
+    agentId && data
+      ? `${API}/negative-agent-dividend-carry-forward/${agentId}`
+      : ""
 
   return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
