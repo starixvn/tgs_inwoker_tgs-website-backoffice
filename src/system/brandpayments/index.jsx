@@ -30,7 +30,8 @@ import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import {
   BrandPaymentStatusSelect,
-  BrandPaymentStatusToggleButton
+  BrandPaymentStatusToggleButton,
+  isBrandPaymentDisabled
 } from "./BrandPaymentStatus"
 import TransferType, {
   isWithdrawalPlatformPayment
@@ -487,7 +488,8 @@ const useColumns = ({
         Header: <MerchantBalanceTrans />,
         disableSortBy: true,
         Cell: ({ value: record }) =>
-          isManualPaymentProvider(record.paymentName) ? (
+          isManualPaymentProvider(record.paymentName) ||
+          isBrandPaymentDisabled(record.paymentStatus) ? (
             ""
           ) : (
             <BrandPaymentBalance brandId={brandId} brandPaymentId={record.id} />

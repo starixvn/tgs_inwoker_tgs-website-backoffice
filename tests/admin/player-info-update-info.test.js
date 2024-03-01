@@ -13,7 +13,7 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-//TODO: total 5 fields
+//TODO: total 5 fields: realName, birthdate, idNumber, vipId, vipLevelAutoState, remark
 test("update player real name, ", async ({
   page,
   platformCode,
