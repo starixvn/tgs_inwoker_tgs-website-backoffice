@@ -12,9 +12,12 @@ import {
   Level,
   Tabs
 } from "bumbag"
-import PageContent from "../../page/Content"
-import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
+import AutoSizer from "react-virtualized-auto-sizer"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -46,7 +49,6 @@ import { AlertDialog } from "../../dialog/Alert"
 import { DesignatedPlayersLink } from "./DesignatedPlayersLink"
 import { InputField } from "../../input/Input"
 import { formatNumber } from "../../number/format"
-import BrandBar from "../../report/BrandBar"
 import textColumn from "../../table/column/textColumn"
 import {
   PaymentProviderLabel,
@@ -74,7 +76,6 @@ import { DesignatedUsersTrans } from "../../trans/User"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons"
 import { useIsVisible } from "react-is-visible"
-import { faSort, faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons"
 import { isDev } from "../../env"
 
 export { Code }
@@ -85,26 +86,16 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
-}
-
-const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
+    <PlatformPageContent title={<PaymentManagementTrans />}>
+      <Body />
+    </PlatformPageContent>
   )
 }
 
-const BodyContent = ({ brandId }) => {
+const Body = ({}) => {
+  let brandId = usePlatformId()
+
   const DefaultTransferType = TransferType.Deposit
   const [transferType, setTransferType] = React.useState(DefaultTransferType)
   let { state, setState, setPageIndex, setSortOrder } = useTable({
@@ -136,31 +127,27 @@ const BodyContent = ({ brandId }) => {
   }
 
   return (
-    <PageContent
-      title={<PaymentManagementTrans />}
-      actionBar={
-        <Level>
-          <SearchBar
-            search={(newState) => {
-              setState({ pageIndex: 0, ...newState })
-              mutate()
-            }}
-            isLoading={isLoading}
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          search={(newState) => {
+            setState({ pageIndex: 0, ...newState })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+        <Set>
+          {isWithdrawalPlatformPayment(transferType) && (
+            <BrandAutoWithdrawDialogDisclosure brandId={brandId} />
+          )}
+          <AddBrandPaymentButton
+            id="add-payment-dialog-disclosure"
+            transferType={transferType}
+            brandId={brandId}
+            onSubmitted={mutate}
           />
-          <Set>
-            {isWithdrawalPlatformPayment(transferType) && (
-              <BrandAutoWithdrawDialogDisclosure brandId={brandId} />
-            )}
-            <AddBrandPaymentButton
-              id="add-payment-dialog-disclosure"
-              transferType={transferType}
-              brandId={brandId}
-              onSubmitted={mutate}
-            />
-          </Set>
-        </Level>
-      }
-    >
+        </Set>
+      </Level>
       <Tabs selectedId={transferType}>
         <Tabs.List>
           <Tabs.Tab
@@ -202,7 +189,7 @@ const BodyContent = ({ brandId }) => {
         </Tabs.Panel>
       </Tabs>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
@@ -347,6 +334,7 @@ const BrandPaymentBalance = ({ brandId, brandPaymentId }) => {
     deleteCache
   } = useBrandPaymentBalanceList(brandId, params)
   let record = items?.find((item) => item.brandPaymentId === brandPaymentId)
+
   return (
     <Set
       ref={ref}
@@ -356,9 +344,11 @@ const BrandPaymentBalance = ({ brandId, brandPaymentId }) => {
         width: max-content;
       `}
     >
-      <Box alignX="right">
-        <FormattedNumberDecimal value={record?.balance} placeholder="-" />
-      </Box>
+      {!isLoading && (
+        <Box alignX="right">
+          <FormattedNumberDecimal value={record?.balance} placeholder="-" />
+        </Box>
+      )}
       <Button
         palette="gray"
         variant="ghost"
