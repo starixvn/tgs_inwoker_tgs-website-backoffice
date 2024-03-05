@@ -9,6 +9,7 @@ import payment from "./payment.js"
 import * as allAgent from "./allAgent.js"
 import * as accountFund from "./accountFund.js"
 import * as contacts from "./contacts.js"
+import * as vip from "./vip.js"
 
 export default {
   findPlatform,
@@ -21,5 +22,6 @@ export default {
   payment,
   allAgent,
   accountFund,
-  contacts
+  contacts,
+  vip
 }

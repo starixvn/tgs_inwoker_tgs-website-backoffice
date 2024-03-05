@@ -284,20 +284,20 @@ export const Fixture = {
         code: PlatformCode,
         agentDividendType: AgentDividendType.MultipleLayer
       })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
     }
     use(platform)
   },
   agentPlayerPlatform: async ({ licensee, backofficeApi }, use) => {
-    const AgentPlayerPlatformCode = "AG-PLAYER"
-    let platform = await backofficeApi.platform.findPlatform(
-      AgentPlayerPlatformCode
-    )
+    const PlatformCode = "AG-PLAYER"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
     if (!platform) {
       platform = await backofficeApi.platform.addPlatform({
         licenseeId: licensee.id,
-        code: AgentPlayerPlatformCode,
+        code: PlatformCode,
         enablePlayerAgent: true
       })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
     }
     use(platform)
   },
@@ -310,20 +310,44 @@ export const Fixture = {
         code: PlatformCode,
         enablePlayerIdentity: true
       })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
     }
     use(platform)
   },
   vipPlatform: async ({ licensee, backofficeApi }, use) => {
     const PlatformCode = "VIP"
     let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
     if (!platform) {
       platform = await backofficeApi.platform.addPlatform({
         licenseeId: licensee.id,
         code: PlatformCode
       })
-
-      //TODO: add vip api, add Vip 2
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
     }
+
+    let vipList = await backofficeApi.platform.vip.list(platform.id)
+    if (vipList.length === 1) {
+      let value = 10
+      let result = await backofficeApi.platform.vip.add({
+        brandId: platform.id,
+
+        levelUpAccumulateBetAmount: value,
+        levelUpAccumulateDeposit: value,
+
+        birthBenefit: value,
+        promotionBenefit: value,
+        quarterlyBenefit: value,
+
+        liveDealerRebate: value,
+        slotRebate: value,
+        cardGameRebate: value,
+        sportsRebate: value,
+        virtualSportsRebate: value,
+        lotteryRebate: value
+      })
+    }
+
     use(platform)
   },
   licensee: async ({ licenseeCode, backofficeApi }, use) => {
