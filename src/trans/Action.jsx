@@ -207,7 +207,7 @@ const Add = {
   zh: "新增",
   en: "Add"
 }
-export const AddTrans = () => <Trans {...Add} />
+export const AddTrans = (props) => <Trans {...Add} {...props} />
 export const useAddTrans = () => useTrans(Add)
 
 const Delete = {
