@@ -15,12 +15,7 @@ import { head } from "lodash-es"
 
 const test = base.extend(Fixture)
 
-test("change agent login password", async ({
-  page,
-  platform,
-  adminUsername,
-  agent
-}) => {
+test("change agent login password", async ({ page, platform, agent }) => {
   await gotoAgentListPage(page, platform.code)
   await searchAgent(page, agent.username)
 
