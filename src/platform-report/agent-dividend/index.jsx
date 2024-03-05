@@ -74,7 +74,9 @@ const Body = ({}) => {
   let brandId = usePlatformId()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
-    brandId
+    brandId,
+    status: "ReadyToApprove",
+    sortBy: [{ id: ToField, desc: true }]
   })
 
   useEffect(() => {
@@ -99,6 +101,7 @@ const Body = ({}) => {
     <Set orientation="vertical" isFilled height="100%">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
+          status={state.status}
           isLoading={isLoading}
           search={(data = {}) => {
             setState({
@@ -134,10 +137,11 @@ const Body = ({}) => {
   )
 }
 
-const SearchBar = ({ search, isLoading, ...props }) => {
+const SearchBar = ({ status, search, isLoading, ...props }) => {
   let formMethods = useForm({
     defaultValues: {
-      negativeAgentDividendCarryForward: ""
+      negativeAgentDividendCarryForward: "",
+      status
     }
   })
 
@@ -152,6 +156,7 @@ const SearchBar = ({ search, isLoading, ...props }) => {
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
+          <AgentDividendStatusSelect name="status" />
           <InputField
             name="agentUsername"
             showEmptyFieldValueAddonAfter
@@ -181,7 +186,7 @@ const SearchBar = ({ search, isLoading, ...props }) => {
             name="negativeAgentDividendCarryForward"
             placeholder={liableOrNotPlaceholder}
           />
-          <AgentDividendStatusSelect name="status" />
+
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>
