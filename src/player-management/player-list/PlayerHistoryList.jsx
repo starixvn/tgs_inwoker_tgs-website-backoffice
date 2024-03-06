@@ -9,7 +9,7 @@ import {
 } from "../../table"
 import dateTimeColumn from "../../table/column/dateTime"
 import { usePlayerHistoryList, usePlayerHistory } from "./client"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedDateTime, Trans, useTrans } from "../../i18n"
 import { pastWeek } from "../../date/range"
 import DateTimeRangeInput from "../../date/DateTimeRangeInput"
 import SearchButton from "../../button/SearchButton"
@@ -59,6 +59,7 @@ import {
 import { VipLevelTrans } from "../../trans/Vip"
 import { UpperLevelAgentTrans } from "../../trans/Agent"
 import { TimeTrans } from "../../trans/Date"
+import { formatDateTime } from "../../date/format"
 
 export const Key = "history"
 
@@ -369,6 +370,9 @@ const Player = ({ value: player = {}, brandId }) => {
 
 const AreaCodeLabel = () => <Trans zh="区号" en="Area Code" />
 
+//TODO: use trans
+const FirstDepositLabel = () => "First Deposit"
+
 const LabelValueList = [
   [pipe(getPath, includes("/RealName")), RealNameTrans],
   [pipe(getPath, includes("/Birthdate")), BirthdayTrans],
@@ -397,6 +401,11 @@ const LabelValueList = [
   [pipe(getPath, equals("/properties/Zalo")), ZaloTrans],
 
   [pipe(getPath, equals("/password")), PasswordLabel],
+  [
+    pipe(getPath, equals("/FirstDepositOn")),
+    FirstDepositLabel,
+    FormattedDateTime
+  ],
 
   [isAddPlayer, StringValue, Player]
 ]

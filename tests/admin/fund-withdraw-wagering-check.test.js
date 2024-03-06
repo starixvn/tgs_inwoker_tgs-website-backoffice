@@ -12,6 +12,8 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
+//TODO: a brand for auto clear wagering
+//TODO: why test failed?
 //Note. PlayerAutoClearBucketReport only enable on "DEV" env currently
 test.skip("fund withdraw > audit clear bucket", async ({
   page,
