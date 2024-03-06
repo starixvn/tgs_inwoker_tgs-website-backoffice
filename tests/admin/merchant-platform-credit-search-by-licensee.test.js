@@ -8,7 +8,7 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-console.warn("TODO: api not support search by licensee name?")
+//TODO: required? able to rm?
 test.skip("search platform credit by licensee name", async ({
   page,
   licensee
@@ -19,7 +19,6 @@ test.skip("search platform credit by licensee name", async ({
     name: "licenseeName",
     value: licensee.name
   })
-  console.log("licensee.name", licensee.name)
 
   await page.waitForSelector(`[data-column-id="licenseeName"]`)
   let name = await page.$eval(

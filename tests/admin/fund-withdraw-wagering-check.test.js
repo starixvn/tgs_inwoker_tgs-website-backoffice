@@ -12,7 +12,7 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
-console.warn("TODO: fix auto clear bucket")
+//Note. PlayerAutoClearBucketReport only enable on "DEV" env currently
 test.skip("fund withdraw > audit clear bucket", async ({
   page,
   licensee,
@@ -121,6 +121,7 @@ test.skip("fund withdraw > audit clear bucket", async ({
       amount: withdrawAmount
     }
   )
+  console.log("WithdrawFormId", WithdrawFormId)
 
   await searchByFormId(page, WithdrawFormId)
   let VerifyDialogSelector = `#verify-withdraw-dialog`

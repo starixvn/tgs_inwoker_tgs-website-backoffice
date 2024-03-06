@@ -11,16 +11,12 @@ import {
 } from "./agent-list-page.js"
 import { openDialog } from "../page/dialog.js"
 import { urlIncludes } from "../page/response.js"
+import { head } from "lodash-es"
 
 const test = base.extend(Fixture)
 
-test("change agent login password", async ({
-  page,
-  platformCode,
-  agent,
-  backofficeApi
-}) => {
-  await gotoAgentListPage(page, platformCode)
+test("change agent login password", async ({ page, platform, agent }) => {
+  await gotoAgentListPage(page, platform.code)
   await searchAgent(page, agent.username)
 
   let dialogSelector = await openEditAgentDialog(page)
@@ -48,19 +44,41 @@ test("change agent login password", async ({
   let ViewAgentDialogSelector = `#view-agent-dialog`
   await openDialog(page, ViewAgentDialogSelector)
 
-  await Promise.all([
+  let [response] = await Promise.all([
     page.waitForResponse(urlIncludes(`/api/agent/histories/${agent.id}`)),
     page.click(`${ViewAgentDialogSelector} button[id="AgentHistoryList"]`)
   ])
 
-  console.warn("TODO: click detail and check type = ?")
-  /*
-  const OperationListTabSelector = `[aria-labelledby="AgentHistoryList"]`
-  let type = await page
+  let [type, historyListResult] = await Promise.all([
+    page
+      .locator(
+        `${ViewAgentDialogSelector} [aria-labelledby="AgentHistoryList"] td[data-column-id="action"] span`
+      )
+      .getAttribute("data-type"),
+    response.json()
+  ])
+
+  let history = head(historyListResult?.items)
+  expect(type).equals(history.action)
+  let modifier = await page
     .locator(
-      `${ViewAgentDialogSelector} ${OperationListTabSelector} td[data-column-id="operation"] span`
+      `${ViewAgentDialogSelector} [aria-labelledby="AgentHistoryList"] td[data-column-id="modifier"]`
     )
+    .textContent()
+  expect(modifier).equals(history.modifier)
+
+  let HistoryDialogSelector = `#agent-history-dialog`
+  let [eventResponse] = await Promise.all([
+    page.waitForResponse(urlIncludes(`/api/agent/history/${history.eventId}`)),
+    openDialog(page, `${HistoryDialogSelector}`),
+    `${ViewAgentDialogSelector} [aria-labelledby="AgentHistoryList"] #agent-history-dialog-disclosure`
+  ])
+
+  let evnet = await eventResponse.json()
+  let changeSet = head(evnet.changeSets)
+
+  let op = await page
+    .locator(`${HistoryDialogSelector} td[data-column-id="op"] span`)
     .getAttribute("data-type")
-  expect(type, "Password")
-  */
+  expect(op).equals(changeSet.op)
 })
