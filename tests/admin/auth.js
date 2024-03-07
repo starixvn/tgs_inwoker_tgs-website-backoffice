@@ -354,6 +354,10 @@ export const Fixture = {
     let licensee = await backofficeApi.licensee.findLicensee(licenseeCode)
     use(licensee)
   },
+  reseller: async ({ resellerCode, backofficeApi }, use) => {
+    let reseller = await backofficeApi.reseller.find(resellerCode)
+    use(reseller)
+  },
   agent: async ({ platform }, use) => {
     let { id: brandId } = platform
 

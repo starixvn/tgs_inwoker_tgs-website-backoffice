@@ -14,6 +14,7 @@ import fund from "./fund/index.js"
 import gameProvider from "./gameProvider/index.js"
 import system from "./system/index.js"
 import user from "./user/index.js"
+import * as reseller from "./reseller/index.js"
 
 export default {
   init: (options = {}) => {
@@ -26,6 +27,7 @@ export default {
   promotion,
   platform,
   licensee,
+  reseller,
   agent,
   fund,
   gameProvider,
