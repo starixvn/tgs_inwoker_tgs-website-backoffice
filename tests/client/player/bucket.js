@@ -52,11 +52,8 @@ export const clear = async (playerCode) => {
     return null
   }
 
-  let url = `${host}/api/player/${playerCode}/clear`
-  let response = await fetcher.put(url)
-  let result = await response.json()
-
-  return result
+  let url = `${host}/api/player/bucket/${playerCode}`
+  let response = await fetcher.delete(url)
 }
 
 export default {

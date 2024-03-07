@@ -13,7 +13,6 @@ import numeral from "numeral"
 const test = base.extend(Fixture)
 
 //TODO: a brand for auto clear wagering
-//TODO: why test failed?
 //Note. PlayerAutoClearBucketReport only enable on "DEV" env currently
 test.skip("fund withdraw > audit clear bucket", async ({
   page,
@@ -80,6 +79,8 @@ test.skip("fund withdraw > audit clear bucket", async ({
     brandId: platform.id
   })
 
+  /*
+  TODO: able to rm?
   let betAmount = DepositAmount
   let [{ externalRoundId, ...betResult }] = await Promise.all([
     sboGameProviderApi.placeBet({
@@ -91,27 +92,43 @@ test.skip("fund withdraw > audit clear bucket", async ({
     }),
     backofficeApi.player.bucket.clear(player.code)
   ])
+  */
 
   //Note. wait for uncompleteWagering change to 0 by `backofficeApi.player.bucket.clear(player.code)`
   let WaitSecond = 1000
-  let playerBucketList
-  let MaxRetry = 10
+  let playerBucketList = []
+  let playerBucket
+  let MaxRetry = 20
   let retryCount = 0
   let wageringRequirement
   let uncompleteWagering
   while (
     !(
       Number.isFinite(wageringRequirement) &&
-      wageringRequirement < BucketAmount &&
       Number.isFinite(uncompleteWagering) &&
       uncompleteWagering === 0
     ) &&
     retryCount++ < MaxRetry
   ) {
     playerBucketList = await backofficeApi.player.bucket.list(player.code)
-    // console.log(`${retryCount}. playerBucketList`, playerBucketList)
-    wageringRequirement = playerBucketList?.[0]?.wageringRequirement
-    uncompleteWagering = playerBucketList?.[0]?.uncompleteWagering
+
+    console.log(`${retryCount}. playerBucketList`, playerBucketList)
+    playerBucket = playerBucketList.find(
+      (item) => item.wageringRequirement === BucketAmount
+    )
+    wageringRequirement = playerBucket?.wageringRequirement
+
+    uncompleteWagering = playerBucketList.reduce(
+      (uncompleteWagering, bucket) => {
+        return uncompleteWagering + bucket.uncompleteWagering
+      },
+      0
+    )
+
+    if (playerBucket?.uncompleteWagering === 0 && uncompleteWagering > 0) {
+      await backofficeApi.player.bucket.clear(player.code)
+    }
+
     await page.waitForTimeout(WaitSecond)
   }
 
@@ -123,7 +140,6 @@ test.skip("fund withdraw > audit clear bucket", async ({
       amount: withdrawAmount
     }
   )
-  console.log("WithdrawFormId", WithdrawFormId)
 
   await searchByFormId(page, WithdrawFormId)
   let VerifyDialogSelector = `#verify-withdraw-dialog`
