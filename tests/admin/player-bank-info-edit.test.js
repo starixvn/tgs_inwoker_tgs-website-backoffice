@@ -56,17 +56,21 @@ const editBank = async (page, bank, player) => {
     bankAccount: faker.finance.accountNumber()
   }
 
-  let bankNameSelector = `${editBankDialogSelector} input[name="detail.bankName"]`
-  await page.fill(bankNameSelector, detail.bankName)
+  await page
+    .locator(`${editBankDialogSelector} input[name="detail.bankName"]`)
+    .fill(detail.bankName)
 
-  let bankBranchSelector = `${editBankDialogSelector} input[name="detail.bankBranch"]`
-  await page.fill(bankBranchSelector, detail.bankBranch)
+  await page
+    .locator(`${editBankDialogSelector} input[name="detail.bankBranch"]`)
+    .fill(detail.bankBranch)
 
-  let nameSelector = `${editBankDialogSelector} input[name="detail.name"]`
-  await page.fill(nameSelector, detail.name)
+  await page
+    .locator(`${editBankDialogSelector} input[name="detail.name"]`)
+    .fill(detail.name)
 
-  let bankAccountSelector = `${editBankDialogSelector} input[name="detail.bankAccount"]`
-  await page.fill(bankAccountSelector, detail.bankAccount)
+  await page
+    .locator(`${editBankDialogSelector} input[name="detail.bankAccount"]`)
+    .fill(detail.bankAccount)
 
   await Promise.all([
     page.waitForResponse(urlIncludes(`/api/player/${player.code}/bank`)),

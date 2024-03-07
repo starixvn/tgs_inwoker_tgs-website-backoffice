@@ -59,7 +59,7 @@ test("add brand admin user", async ({
 
   await page.locator(`${DialogSelector} input[name="name"]`).fill(username)
 
-  let Password = faker.internet.password({ length: 8 })
+  let Password = `${faker.internet.password({ length: 8 })}a1`
   await page.locator(`${DialogSelector} input[name="password"]`).fill(Password)
   await page
     .locator(`${DialogSelector} input[name="confirmPassword"]`)

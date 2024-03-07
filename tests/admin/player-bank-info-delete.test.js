@@ -40,8 +40,9 @@ const deleteBank = async (page, player) => {
   let deleteBankSelector = `#delete-bank-dialog`
   await openDialog(page, deleteBankSelector)
 
-  let idLocator = page.locator(`${deleteBankSelector} [data-field="bank-id"]`)
-  let id = await idLocator.getAttribute(`data-value`)
+  let id = await page
+    .locator(`${deleteBankSelector} [data-field="bank-id"]`)
+    .getAttribute(`data-value`)
 
   await Promise.all([
     page.waitForResponse(urlIncludes(`/api/player/${player.code}/bank/${id}`)),

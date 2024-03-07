@@ -13,7 +13,6 @@ const test = base.extend(Fixture)
 
 test("fund withdraw > open order", async ({
   page,
-  licensee,
   platform,
   platformToken,
   player,
@@ -22,8 +21,6 @@ test("fund withdraw > open order", async ({
   operatorApi,
   sboGameProviderApi
 }) => {
-  let gpiPlatform = platform
-
   const DepositAmount = 10
   await Promise.all([
     gotoFundWithdraw(page, platform.code),
