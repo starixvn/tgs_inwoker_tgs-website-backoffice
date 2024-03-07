@@ -28,7 +28,7 @@ export const addBalance = async (playerCode, { ...formData } = {}) => {
   )
   let result = await response.json()
   if (!result.valid) {
-    console.error(`addBalance ${playerCode} >`, result)
+    console.error(`player[code="${playerCode}"] addBalance:`, result)
     throw `addBalance ${playerCode} > ${result?.message}`
   }
 
