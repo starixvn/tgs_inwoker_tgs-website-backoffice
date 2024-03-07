@@ -31,25 +31,23 @@ const viewBank = async (page, bank, player) => {
   let dialogSelector = await openViewPlayerDialog(page, player)
   await page.click(`${dialogSelector} #banks`)
 
-  let bankNameLocator = page.locator(
-    `${dialogSelector} [data-field="bankName"]`
-  )
-  let bankName = await bankNameLocator.textContent()
-  expect(bankName).to.equals(bank.detail.bankName)
+  let bankName = await page
+    .locator(`${dialogSelector} [data-field="bankName"]`)
+    .textContent()
+  expect(bankName).equals(bank.detail.bankName)
 
-  let bankBranchLocator = page.locator(
-    `${dialogSelector} [data-field="bankBranch"]`
-  )
-  let bankBranch = await bankBranchLocator.textContent()
-  expect(bankBranch).to.equals(bank.detail.bankBranch)
+  let bankBranch = await page
+    .locator(`${dialogSelector} [data-field="bankBranch"]`)
+    .textContent()
+  expect(bankBranch).equals(bank.detail.bankBranch)
 
-  let accountNameLocator = page.locator(`${dialogSelector} [data-field="name"]`)
-  let accountName = await accountNameLocator.textContent()
+  let accountName = await page
+    .locator(`${dialogSelector} [data-field="name"]`)
+    .textContent()
   expect(accountName).to.equals(bank.detail.name)
 
-  let bankAccountLocator = page.locator(
-    `${dialogSelector} [data-field="bankAccount"]`
-  )
-  let bankAccount = await bankAccountLocator.textContent()
+  let bankAccount = await page
+    .locator(`${dialogSelector} [data-field="bankAccount"]`)
+    .textContent()
   expect(bankAccount).to.equals(bank.detail.bankAccount)
 }

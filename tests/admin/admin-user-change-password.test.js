@@ -27,7 +27,7 @@ test("change brand admin user password", async ({ page, backofficeApi }) => {
   let DialogSelector = `#edit-user-password-dialog`
   await openDialog(page, DialogSelector)
 
-  let Password = faker.internet.password({ length: 8 })
+  let Password = `${faker.internet.password({ length: 8 })}a1`
   await page.locator(`${DialogSelector} input[name="password"]`).fill(Password)
   await page
     .locator(`${DialogSelector} input[name="confirmPassword"]`)
