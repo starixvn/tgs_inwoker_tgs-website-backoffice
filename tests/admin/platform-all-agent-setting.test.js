@@ -62,8 +62,6 @@ test("update all agent settings", async ({ page, allAgentPlatform }) => {
 
   let hasValidBet = await page.locator(HasValidBetSelector).isChecked()
   expect(hasValidBet).equals(expectedGameTypeSettings.hasValidBet)
-
-  console.log("TODO: test valid bet rebate setting")
 })
 
 const gotoPlatformOperationSettingPage = async (page, platformCode) => {
