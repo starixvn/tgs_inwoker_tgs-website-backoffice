@@ -9,6 +9,7 @@ import reportApi from "../../client/reportApi/index.js"
 import reportAggregateApi from "../../client/reportAggregateApi/index.js"
 import { AgentDividendType } from "../admin/agent-list-page.js"
 import { use } from "chai"
+import { faker } from "@faker-js/faker"
 
 const Path = "./.playwright"
 const AuthPath = `${Path}/admin-auth.json`
@@ -349,6 +350,68 @@ export const Fixture = {
     }
 
     use(platform)
+  },
+  autoClearWageringRequirementPlatform: async (
+    {
+      licensee,
+      backofficeApi,
+      brandCertApi,
+      customBankManualPaymentMethodChannel
+    },
+    use
+  ) => {
+    const PlatformCode = "AUTO_CLEAR"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      let AutoClearBucketAmount = 10
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        autoClearWageringRequirement: true,
+        autoClearWageringRequirementBalance: AutoClearBucketAmount
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    //TODO: move to other fns?
+    let [depositPayment, withdrawPayment] = await Promise.all([
+      backofficeApi.platform.payment.findOrCreate({
+        brandId: platform.id,
+        transferType: backofficeApi.platform.payment.TransferType.Deposit,
+        paymentMethodChannelId: customBankManualPaymentMethodChannel.id,
+        extendedData: {
+          name: faker.finance.accountName(),
+          bankAccount: faker.finance.accountNumber()
+        }
+      }),
+      backofficeApi.platform.payment.findOrCreate({
+        brandId: platform.id,
+        transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
+        paymentMethodChannelId: customBankManualPaymentMethodChannel.id
+      })
+    ])
+
+    use(platform)
+  },
+  autoClearWageringRequirementPlatformDepositPayment: async (
+    {
+      autoClearWageringRequirementPlatform: platform,
+      backofficeApi,
+      customBankManualPaymentMethodChannel
+    },
+    use
+  ) => {
+    let depositPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId: platform.id,
+      transferType: backofficeApi.platform.payment.TransferType.Deposit,
+      paymentMethodChannelId: customBankManualPaymentMethodChannel.id,
+      extendedData: {
+        name: faker.finance.accountName(),
+        bankAccount: faker.finance.accountNumber()
+      }
+    })
+    use(depositPayment)
   },
   licensee: async ({ licenseeCode, backofficeApi }, use) => {
     let licensee = await backofficeApi.licensee.findLicensee(licenseeCode)
