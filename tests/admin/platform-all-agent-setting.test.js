@@ -1,20 +1,21 @@
 import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import clone from "clone-deep"
-import { selectRandomPlatform } from "../page/content.js"
+import { selectPlatformByCode, selectRandomPlatform } from "../page/content.js"
 import { openDialog } from "../page/dialog.js"
 import { expect } from "chai"
 import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-console.log("TODO: use the same brand/platform")
-test("update all agent settings", async ({ page }) => {
-  let brandId = await gotoPlatformOperationSettingPage(page)
+test("update all agent settings", async ({ page, allAgentPlatform }) => {
+  await gotoPlatformOperationSettingPage(page, allAgentPlatform.code)
 
   let DialogSelector = "#all-agent-setting-dialog"
   let [allAgentSettingsReponse] = await Promise.all([
-    page.waitForResponse(urlIncludes(`/api/BrandAllAgent/${brandId}`)),
+    page.waitForResponse(
+      urlIncludes(`/api/BrandAllAgent/${allAgentPlatform.id}`)
+    ),
     openDialog(page, DialogSelector)
   ])
 
@@ -23,7 +24,9 @@ test("update all agent settings", async ({ page }) => {
   allAgentSetting.switch = !allAgentSetting.switch
   let MainSwitchSelector = `${DialogSelector} #main-switch input[type="checkbox"]`
   await Promise.all([
-    page.waitForResponse(urlIncludes(`/api/BrandAllAgent/${brandId}`)),
+    page.waitForResponse(
+      urlIncludes(`/api/BrandAllAgent/${allAgentPlatform.id}`)
+    ),
     page.click(`${MainSwitchSelector} + div.bb-SwitchIcon`)
   ])
 
@@ -32,7 +35,6 @@ test("update all agent settings", async ({ page }) => {
 
   const GameType = "LiveDealer"
   let gameTypeSettings = Reflect.get(allAgentSetting, GameType)
-  console.log("gameTypeSettings", gameTypeSettings)
 
   let expectedGameTypeSettings = {
     switch: !gameTypeSettings.switch,
@@ -41,13 +43,15 @@ test("update all agent settings", async ({ page }) => {
 
   let GameTypeFormSelector = `${DialogSelector} form#${GameType}`
   let GameTypeSwitchSelector = `${GameTypeFormSelector} .bb-Switch input[type="checkbox"]`
-  await page.click(`${GameTypeSwitchSelector} + div.bb-SwitchIcon`)
+  await page.locator(`${GameTypeSwitchSelector} + div.bb-SwitchIcon`).click()
 
   let HasValidBetSelector = `${GameTypeFormSelector} input[name="hasValidBet"]`
-  await page.click(`${HasValidBetSelector} + .bb-CheckboxIcon`)
+  await page.locator(`${HasValidBetSelector} + .bb-CheckboxIcon`).click()
 
   await Promise.all([
-    page.waitForResponse(urlIncludes(`/api/BrandAllAgent/${brandId}`)),
+    page.waitForResponse(
+      urlIncludes(`/api/BrandAllAgent/${allAgentPlatform.id}`)
+    ),
     page.click(`${GameTypeFormSelector} button[type="submit"]`)
   ])
 
@@ -62,10 +66,9 @@ test("update all agent settings", async ({ page }) => {
   console.log("TODO: test valid bet rebate setting")
 })
 
-const gotoPlatformOperationSettingPage = async (page) => {
+const gotoPlatformOperationSettingPage = async (page, platformCode) => {
   await page.goto("/platform/imsettings", { waitUntil: "networkidle" })
-  let brandId = await selectRandomPlatform(page)
-  return brandId
+  await selectPlatformByCode(page, platformCode)
 }
 
 const toAllAgentSettings = async (allAgentResponse) => {
