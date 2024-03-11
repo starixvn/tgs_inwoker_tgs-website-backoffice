@@ -8,22 +8,12 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-console.warn("use LIVE_CHAT_EDIT platform to test")
 test("edit platform live chat", async ({
   page,
-  platform,
-  licensee,
+  liveChatEditPlatform: platform,
   backofficeApi
 }) => {
-  let [liveChat] = await Promise.all([
-    backofficeApi.platform.liveChat.get(platform.id),
-    gotoPlatformCustomerServicePage(page, platform.code)
-  ])
-  if (liveChat) {
-    await backofficeApi.platform.liveChat.deleteByPlatformId(platform.id)
-  }
-
-  await backofficeApi.platform.liveChat.add({ brandId: platform.id })
+  await gotoPlatformCustomerServicePage(page, platform.code)
 
   let EditDialogSelector = `#edit-live-chat-dialog`
   await openDialog(page, EditDialogSelector, `#live-chat-dialog-disclosure`)
@@ -31,7 +21,7 @@ test("edit platform live chat", async ({
   let expected = {
     string: `${faker.lorem.word()}-${Date.now()}`
   }
-  liveChat = {
+  let liveChat = {
     name: faker.lorem.word(),
     setting: JSON.stringify(expected)
   }
