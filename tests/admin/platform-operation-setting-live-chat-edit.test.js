@@ -8,11 +8,11 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-test("edit platform live chat", async ({ page, licensee, backofficeApi }) => {
-  let platform = await backofficeApi.platform.addPlatform({
-    licenseeId: licensee.id
-  })
-  await backofficeApi.platform.liveChat.add({ brandId: platform.id })
+test("edit platform live chat", async ({
+  page,
+  liveChatEditPlatform: platform,
+  backofficeApi
+}) => {
   await gotoPlatformCustomerServicePage(page, platform.code)
 
   let EditDialogSelector = `#edit-live-chat-dialog`
@@ -45,9 +45,9 @@ test("edit platform live chat", async ({ page, licensee, backofficeApi }) => {
     page.click(submitButtonSelector)
   ])
 
-  let liveChatSetting = await backofficeApi.platform.liveChat.get(platform.id)
-  expect(liveChatSetting.name).to.equals(liveChat.name)
-  expect(liveChatSetting.setting.string).to.equals(expected.string)
+  let setting = await backofficeApi.platform.liveChat.get(platform.id)
+  expect(setting.name).to.equals(liveChat.name)
+  expect(setting.setting.string).to.equals(expected.string)
 })
 
 const gotoPlatformCustomerServicePage = async (page, code) => {

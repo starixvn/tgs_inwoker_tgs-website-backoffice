@@ -312,6 +312,7 @@ export const Fixture = {
       })
       platform = await backofficeApi.platform.findPlatform(PlatformCode)
     }
+    await backofficeApi.platform.allAgent.enable(platform.id)
     use(platform)
   },
   reviewPlayerIdPlatform: async ({ licensee, backofficeApi }, use) => {
@@ -359,6 +360,63 @@ export const Fixture = {
         virtualSportsRebate: value,
         lotteryRebate: value
       })
+    }
+
+    use(platform)
+  },
+  liveChatAddPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "LIVE_CHAT_ADD"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let liveChat = await backofficeApi.platform.liveChat.get(platform.id)
+    if (liveChat) {
+      await backofficeApi.platform.liveChat.delete(platform.id)
+    }
+
+    use(platform)
+  },
+  liveChatEditPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "LIVE_CHAT_EDIT"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let liveChat = await backofficeApi.platform.liveChat.get(platform.id)
+    if (!liveChat) {
+      await backofficeApi.platform.liveChat.add({ brandId: platform.id })
+    }
+
+    use(platform)
+  },
+  liveChatDeletePlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "LIVE_CHAT_DEL"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let liveChat = await backofficeApi.platform.liveChat.get(platform.id)
+    if (!liveChat) {
+      await backofficeApi.platform.liveChat.add({ brandId: platform.id })
     }
 
     use(platform)
