@@ -67,6 +67,7 @@ export const useAgentUpdateFormData = (data, agentProfitSharingType) => {
     return data
   }
 
+  //TODO: rm negativeAgentDividendCarryForward
   let {
     type,
     parentUsername,
@@ -119,10 +120,13 @@ export const useUpdateAgentV2 = (agentId, data) => {
       agentId,
       data && Reflect.get(data, UpdateAgentFormDataField.Status)
     ),
+    /*
+    TODO: rm
     useUpdateAgentNegativeDividend(
       agentId,
       data && Reflect.get(data, UpdateAgentFormDataField.NegativeDividend)
     ),
+    */
     useUpdateAgentOneLayer(
       agentId,
       data && Reflect.get(data, UpdateAgentFormDataField.OneLayer)

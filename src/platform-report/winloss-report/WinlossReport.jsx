@@ -520,7 +520,6 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             accessor: (row) => row,
             Header: <Trans zh="总和" en="Total" />,
             disableSortBy: true,
-            disableSortBy: true,
             Cell: ({ value: record }) => {
               if (isPlayer(record?.memberType)) {
                 return <FormattedNumberDecimal value={record?.companyTotal} />

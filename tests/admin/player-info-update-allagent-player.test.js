@@ -13,6 +13,7 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
+console.warn("TODO: use same brand to test")
 test("update player all agent player", async ({
   page,
   licensee,

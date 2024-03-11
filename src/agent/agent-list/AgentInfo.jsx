@@ -287,9 +287,12 @@ const UpdateAgentPanel = ({
                 />
               </AgentStatusBox>
 
+              {/* 
+              TODO: rm
               <NegativeDividendBox>
                 <LiableOrNotSwitch name="negativeAgentDividendCarryForward" />
-              </NegativeDividendBox>
+              </NegativeDividendBox> 
+              */}
 
               {oneLayer && !willChangeParent && (
                 <>

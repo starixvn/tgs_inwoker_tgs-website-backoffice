@@ -80,6 +80,7 @@ import {
   TeamNumberTrans
 } from "../../trans/Agent"
 import { ConfigAgentProfitSharingDialogDisclosure } from "./ConfigAgentProfitSharingDialog"
+import { NegativeDividendDialogDisclosure } from "./NegativeDividendDialog"
 
 export { Code }
 
@@ -547,6 +548,7 @@ const useColumns = ({ mutate, items = [], brand } = {}) => {
                     agent={value}
                     onSubmitted={mutate}
                   />
+                  <NegativeDividendDialogDisclosure agentId={value.id} />
                 </>
               )}
               {configRequired && (
