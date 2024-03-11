@@ -8,12 +8,22 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-test("edit platform live chat", async ({ page, licensee, backofficeApi }) => {
-  let platform = await backofficeApi.platform.addPlatform({
-    licenseeId: licensee.id
-  })
+console.warn("use LIVE_CHAT_EDIT platform to test")
+test("edit platform live chat", async ({
+  page,
+  platform,
+  licensee,
+  backofficeApi
+}) => {
+  let [liveChat] = await Promise.all([
+    backofficeApi.platform.liveChat.get(platform.id),
+    gotoPlatformCustomerServicePage(page, platform.code)
+  ])
+  if (liveChat) {
+    await backofficeApi.platform.liveChat.deleteByPlatformId(platform.id)
+  }
+
   await backofficeApi.platform.liveChat.add({ brandId: platform.id })
-  await gotoPlatformCustomerServicePage(page, platform.code)
 
   let EditDialogSelector = `#edit-live-chat-dialog`
   await openDialog(page, EditDialogSelector, `#live-chat-dialog-disclosure`)
@@ -21,7 +31,7 @@ test("edit platform live chat", async ({ page, licensee, backofficeApi }) => {
   let expected = {
     string: `${faker.lorem.word()}-${Date.now()}`
   }
-  let liveChat = {
+  liveChat = {
     name: faker.lorem.word(),
     setting: JSON.stringify(expected)
   }
@@ -45,9 +55,9 @@ test("edit platform live chat", async ({ page, licensee, backofficeApi }) => {
     page.click(submitButtonSelector)
   ])
 
-  let liveChatSetting = await backofficeApi.platform.liveChat.get(platform.id)
-  expect(liveChatSetting.name).to.equals(liveChat.name)
-  expect(liveChatSetting.setting.string).to.equals(expected.string)
+  let setting = await backofficeApi.platform.liveChat.get(platform.id)
+  expect(setting.name).to.equals(liveChat.name)
+  expect(setting.setting.string).to.equals(expected.string)
 })
 
 const gotoPlatformCustomerServicePage = async (page, code) => {

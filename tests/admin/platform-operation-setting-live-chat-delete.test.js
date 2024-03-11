@@ -6,6 +6,7 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
+console.warn("use LIVE_CHAT_DEL platform to test")
 test("remove live chat", async ({ page, licensee, backofficeApi }) => {
   let platform = await backofficeApi.platform.addPlatform({
     licenseeId: licensee.id
