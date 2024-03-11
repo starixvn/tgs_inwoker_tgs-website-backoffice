@@ -566,7 +566,9 @@ const AgentTypeBox = ({ value, children, ...props }) => {
 const AccumulatedProfitSharingBox = ({ value, children, ...props }) => {
   return (
     <>
-      <Trans zh="累计结算分红金额" en="Accumulated Profit Sharing" />
+      <Box alignY="center">
+        <Trans zh="累计结算分红金额" en="Accumulated Profit Sharing" />
+      </Box>
       <Set>
         <FormattedNumberDecimal data-value={value} value={value} {...props} />
         {children}
