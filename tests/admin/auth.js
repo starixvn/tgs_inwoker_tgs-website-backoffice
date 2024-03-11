@@ -312,6 +312,7 @@ export const Fixture = {
       })
       platform = await backofficeApi.platform.findPlatform(PlatformCode)
     }
+    await backofficeApi.platform.allAgent.enable(platform.id)
     use(platform)
   },
   reviewPlayerIdPlatform: async ({ licensee, backofficeApi }, use) => {
