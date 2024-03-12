@@ -101,7 +101,7 @@ const DailyTurnoverRule = ({ readOnly }) => {
         registerOptions={{
           valueAsNumber: true
         }}
-        min="0"
+        min="1"
         required
         disabled={disabled}
         addonAfter={
@@ -174,7 +174,7 @@ const Rule = ({ readOnly }) => {
         registerOptions={{
           valueAsNumber: true
         }}
-        min="0"
+        min="1"
         required
         disabled={disabled}
         addonAfter={

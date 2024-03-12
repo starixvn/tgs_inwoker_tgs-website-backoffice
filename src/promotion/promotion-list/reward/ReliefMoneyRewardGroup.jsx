@@ -109,7 +109,7 @@ export const Rule = ({ readOnly }) => {
           valueAsNumber: true,
           shouldUnregister: true
         }}
-        min="0"
+        min="1"
         required
         disabled={disabled}
         addonAfter={
