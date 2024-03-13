@@ -15,18 +15,13 @@ const test = base.extend(Fixture)
 
 test("update player all agent player", async ({
   page,
-  licensee,
+  allAgentPlatform: platform,
   brandCertApi,
   backofficeApi,
   operatorApi
 }) => {
-  let platform = await backofficeApi.platform.addPlatform({
-    licenseeId: licensee.id
-  })
-
   let [platformToken] = await Promise.all([
     brandCertApi.platformToken(platform.code),
-    backofficeApi.platform.allAgent.enable(platform.id),
     gotoPlayerListPage(page, platform.code)
   ])
 

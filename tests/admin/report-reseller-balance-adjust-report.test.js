@@ -2,7 +2,7 @@ import base from "@playwright/test"
 import { Fixture } from "./auth.js"
 import { expect } from "chai"
 import numeral from "numeral"
-import { selectRandomOption } from "../page/select.js"
+import { selectRandomOption, selectByLabel } from "../page/select.js"
 import { openDialog } from "../page/dialog.js"
 import { urlIncludes } from "../page/response.js"
 
@@ -10,6 +10,7 @@ const test = base.extend(Fixture)
 
 test("view reseller balance adjust report", async ({
   page,
+  resellerCode,
   platform,
   player,
   agent,
@@ -20,7 +21,7 @@ test("view reseller balance adjust report", async ({
     backofficeApi.player.addBalance(player.code, { amount: AdjustAmount }),
     backofficeApi.agent.addBalance(agent.id, { amount: AdjustAmount })
   ])
-  await gotoResellerBalanceAdjustReportPage(page, platform.code)
+  await gotoResellerBalanceAdjustReportPage(page, resellerCode)
 
   let [downloadAdjustList] = await Promise.all([
     page.waitForEvent("download"),
@@ -75,10 +76,14 @@ test("view reseller balance adjust report", async ({
   expect(agentUsername).equals(agent.username)
 })
 
-const gotoResellerBalanceAdjustReportPage = async (page, platformCode) => {
+const gotoResellerBalanceAdjustReportPage = async (page, resellerCode) => {
   await page.goto("/resellerreport/balanceadjustreport", {
     waitUntil: "networkidle"
   })
-  console.warn("TODO: select reseller by id or code")
-  await selectRandomOption(page, `#page-merchant-bar [name="resellerId"]`)
+
+  await selectByLabel(
+    page,
+    `#page-merchant-bar [name="resellerId"]`,
+    resellerCode
+  )
 }

@@ -12,26 +12,16 @@ import {
   Columns,
   Heading,
   Level,
-  Group
+  Group,
+  Divider
 } from "bumbag"
 import {
   Create as CreateMenu,
   Update as UpdateMenu,
   View as ViewMenu
 } from "./menu"
-import {
-  useIsDisplayMenuByRoute,
-  useUserBrandId,
-  useUserLicenseeId,
-  useUserResellerId,
-  useUserRoleType
-} from "../../user/context"
-import {
-  FormattedNumber,
-  FormattedNumberDecimal,
-  Trans,
-  useTrans
-} from "../../i18n"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { FormattedNumber, FormattedNumberDecimal, Trans } from "../../i18n"
 import {
   AddDisclosure,
   EditDisclosure,
@@ -42,7 +32,6 @@ import { FieldValues } from "../../layout/Grid"
 import Input, { InputField } from "../../input/Input"
 import { useAddVipLevel, useUpdateVipLevel } from "../../vip-levels/client"
 import { NormalLabel } from "../../form/Label"
-import Checkbox from "../../checkbox"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import {
   NumberInput,
@@ -51,9 +40,27 @@ import {
 } from "../../input/NumberInput"
 import clone from "clone-deep"
 import { useFormContext, useWatch } from "react-hook-form"
-import { capitalize } from "lodash-es"
 import Switch from "../../switch/Switch"
 import { useAddTrans, useEditTrans, useViewTrans } from "../../trans/Action"
+import {
+  BirthdayBonusTrans,
+  CardGameCommissionRebateTrans,
+  EGameCommissionRebateTrans,
+  LiveDealerCommissionRebateTrans,
+  LotteryCommissionRebateTrans,
+  PromotionBonusTrans,
+  QuarterlyBonusTrans,
+  RequiredBetAmountToLevelUpTrans,
+  RequiredDepositAmountToLevelUpTrans,
+  SportsbookCommissionRebateTrans,
+  TotalAmountPerDayTrans,
+  TransactionsPerDayTrans,
+  UpgradeConditionsTrans,
+  VipBenefitsTrans,
+  VipCommissionRebateTrans,
+  VirtualSportsCommissionRebateTrans,
+  WithdrawalPolicyTrans
+} from "../../trans/Vip"
 
 export const AddButton = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -185,10 +192,6 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   )
 }
 
-const LevelKeepConditionField = "levelKeepCondition"
-const LevelKeepAccumulateBetAmountField = "levelKeepAccumulateBetAmount"
-const LevelKeepAccumulateDepositField = "levelKeepAccumulateDeposit"
-
 const WithdrawTransactionsPerDayField = "withdrawTransactionsPerDay"
 const WithdrawTransactionsPerDayInputGroup = ({
   name = WithdrawTransactionsPerDayField,
@@ -269,24 +272,12 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
   let editable = !readonly
   let id = getValues("id")
 
-  let levelKeepCondition = useWatch({
-    name: LevelKeepConditionField,
-    control
-  })
-
-  useEffect(() => {
-    if (editable && levelKeepCondition) {
-      setValue(LevelKeepAccumulateBetAmountField, 0)
-      setValue(LevelKeepAccumulateDepositField, 0)
-    }
-  }, [editable, levelKeepCondition])
-
   return (
     <FieldStack orientation="vertical" paddingBottom="1.5rem">
-      <Level width="100%">
+      <Level width="100%" paddingLeft="1rem" paddingRight="1rem">
         <Set orientation="vertical" isFilled flex="1">
           <Heading use="h5">
-            <Trans zh="升级条件" en="Upgrade conditions" />
+            <UpgradeConditionsTrans />
           </Heading>
           <Set
             orientation="vertical"
@@ -296,10 +287,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
           >
             <FieldValues>
               <NormalLabel>
-                <Trans
-                  zh="累积投注金额 （当日）："
-                  en="Required Daily bet amount to up level："
-                />
+                <RequiredBetAmountToLevelUpTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -313,10 +301,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans
-                  zh="累积存款金额 （当日）："
-                  en="Required Daily deposit amount to up level："
-                />
+                <RequiredDepositAmountToLevelUpTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -330,95 +315,11 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
             </FieldValues>
           </Set>
-        </Set>
-        <Set orientation="vertical" isFilled flex="1">
-          <Heading use="h5">
-            <Trans zh="等级维持条件" en="Level maintenance conditions" />
-          </Heading>
-          <Set
-            orientation="vertical"
-            isFilled
-            marginLeft="1rem"
-            marginRight="1rem"
-          >
-            <FieldValues>
-              <NormalLabel>
-                <Trans
-                  zh="累积投注金额 （每季）："
-                  en="Required Quarterly bet amount to maintain level："
-                />
-              </NormalLabel>
-              {editable && (
-                <Box>
-                  <NumberInput
-                    name={LevelKeepAccumulateBetAmountField}
-                    min="0"
-                    disabled={levelKeepCondition}
-                  />
-                </Box>
-              )}
-              {readonly && (
-                <Box alignY="center">
-                  <FormattedNumber
-                    value={record?.levelKeepAccumulateBetAmount}
-                  />
-                </Box>
-              )}
 
-              <NormalLabel>
-                <Trans
-                  zh="累积存款金额 （每季）："
-                  en="Required Quarterly deposit amount to maintain level："
-                />
-              </NormalLabel>
-              {editable && (
-                <Box>
-                  <NumberInput
-                    name={LevelKeepAccumulateDepositField}
-                    min="0"
-                    disabled={levelKeepCondition}
-                  />
-                </Box>
-              )}
-              {readonly && (
-                <Box alignY="center">
-                  <FormattedNumber value={record?.levelKeepAccumulateDeposit} />
-                </Box>
-              )}
-            </FieldValues>
-            {editable && (
-              <Checkbox
-                name={LevelKeepConditionField}
-                label={
-                  <Trans
-                    zh="无需等级维持条件"
-                    en="Disable maintenance conditions"
-                  />
-                }
-              />
-            )}
-            {readonly && (
-              <Checkbox
-                checked={record?.levelKeepCondition}
-                disabled
-                label={
-                  <Trans
-                    zh="无需等级维持条件"
-                    en="Disable maintenance conditions"
-                  />
-                }
-              />
-            )}
-          </Set>
-        </Set>
-      </Level>
+          <Divider marginTop="1rem" marginRight="1rem" />
 
-      <Box border="default" height="1px" width="100%" borderBottom="none"></Box>
-
-      <Level width="100%">
-        <Set orientation="vertical" isFilled flex="1">
-          <Heading use="h5">
-            <Trans zh="VIP福利" en="VIP benefits" />
+          <Heading use="h5" marginTop="1rem">
+            <VipBenefitsTrans />
           </Heading>
           <Set
             orientation="vertical"
@@ -428,7 +329,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
           >
             <FieldValues>
               <NormalLabel>
-                <Trans zh="生日福利：" en="Birthday Bonus：" />
+                <BirthdayBonusTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -442,7 +343,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans zh="晋升福利：" en="Promotion Bonus：" />
+                <PromotionBonusTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -456,7 +357,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans zh="季度福利：" en="Quarterly Bonus：" />
+                <QuarterlyBonusTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -470,8 +371,11 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
             </FieldValues>
           </Set>
+
+          <Divider marginTop="1rem" marginRight="1rem" />
+
           <Heading use="h5" marginTop="1rem">
-            <Trans zh="提款限制" en="Withdrawal Policy" />
+            <WithdrawalPolicyTrans />
           </Heading>
           <Set
             orientation="vertical"
@@ -481,7 +385,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
           >
             <FieldValues>
               <NormalLabel>
-                <Trans zh="單日次數：" en="Transactions per Day：" />
+                <TransactionsPerDayTrans />
               </NormalLabel>
               <WithdrawTransactionsPerDayInputGroup
                 // value={readonly && record?.withdrawTransactionsPerDay}
@@ -489,7 +393,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               />
 
               <NormalLabel>
-                <Trans zh="單日總額：" en="Total Amount per Day：" />
+                <TotalAmountPerDayTrans />
               </NormalLabel>
               <WithdrawTotalAmountPerDayInputGroup readOnly={readonly} />
             </FieldValues>
@@ -497,7 +401,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
         </Set>
         <Set orientation="vertical" isFilled flex="1">
           <Heading use="h5">
-            <Trans zh="VIP返水比例" en="VIP Commission Rebate（%）" />
+            <VipCommissionRebateTrans />
           </Heading>
           <Set
             orientation="vertical"
@@ -507,10 +411,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
           >
             <FieldValues>
               <NormalLabel>
-                <Trans
-                  zh="真人返水比例（%）："
-                  en="Live Dealer Commission Rebate（%）："
-                />
+                <LiveDealerCommissionRebateTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -527,10 +428,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans
-                  zh="电子返水比例（%）："
-                  en="EGame Commission Rebate（%）："
-                />
+                <EGameCommissionRebateTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -547,10 +445,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans
-                  zh="棋牌返水比例（%）："
-                  en="Card Game Commission Rebate（%）："
-                />
+                <CardGameCommissionRebateTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -567,10 +462,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans
-                  zh="体育返水比例（%）："
-                  en="Sportsbook Commission Rebate（%）："
-                />
+                <SportsbookCommissionRebateTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -587,10 +479,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans
-                  zh="虚拟体育返水比例（%）："
-                  en="VirtualSports Commission Rebate（%）："
-                />
+                <VirtualSportsCommissionRebateTrans />
               </NormalLabel>
               {editable && (
                 <Box>
@@ -607,10 +496,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               )}
 
               <NormalLabel>
-                <Trans
-                  zh="彩票返水比例（%）："
-                  en="Lottery Commission Rebate（%）："
-                />
+                <LotteryCommissionRebateTrans />
               </NormalLabel>
               {editable && (
                 <Box>

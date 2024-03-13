@@ -11,7 +11,11 @@ import {
 import { getTrans, Trans, useLocale, useTrans } from "../../i18n"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update } from "./menu"
-import { Disclosure, VerifyDisclosure } from "../../dialog/Disclosure"
+import {
+  Disclosure,
+  ReviewDisclosure,
+  VerifyDisclosure
+} from "../../dialog/Disclosure"
 import { FormDialog } from "../../form/FormDialog"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
@@ -24,7 +28,7 @@ import { useFundWithdrawForm, useVerifyFundWithdrawForm } from "./client"
 import ReviewFund from "../ReviewFund"
 import { AuditAutoClearBucketDialogDisclosure } from "./AuditAutoClearBucketDialog"
 import { isDev } from "../../env"
-import { RejectTrans } from "../../trans/Action"
+import { RejectTrans, useApproveTrans } from "../../trans/Action"
 
 export const FundWithdrawVerified = "FundWithdrawVerified"
 
@@ -54,7 +58,7 @@ export const VerifyFundWithdrawDisclosure = ({
 
   return (
     <>
-      <VerifyDisclosure {...dialog} {...props} />
+      <ReviewDisclosure {...dialog} {...props} />
       {dialog.visible && (
         <VerifyFundWithdrawDialog
           brandId={brandId}
@@ -81,10 +85,7 @@ const VerifyFundWithdrawDialog = ({
     en: "Review Withdraw"
   })
 
-  let approveLabel = useTrans({
-    zh: "通过",
-    en: "Approve"
-  })
+  let approveLabel = useApproveTrans()
 
   let formMethods = useForm()
   let { setValue, getValues } = formMethods
@@ -109,11 +110,18 @@ const VerifyFundWithdrawDialog = ({
     return <AlertDialog {...fundWithdrawFormError} {...dialog} />
   }
 
-  const onSubmit = ({ remark, reviewResponse, brandPaymentId, ...rest }) => {
+  const onSubmit = ({
+    remark,
+    playerRemark,
+    reviewResponse,
+    brandPaymentId,
+    ...rest
+  }) => {
     setSubmit({
       brandId,
       brandPaymentId,
       remark,
+      playerRemark,
       reviewResponse
     })
   }
@@ -158,6 +166,7 @@ const VerifyFundWithdrawDialog = ({
             let formData = {
               brandId,
               remark: getValues("remark"),
+              playerRemark: getValues("playerRemark"),
               reviewResponse: ReviewFund.Reject
             }
             setSubmit(formData)

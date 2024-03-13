@@ -24,7 +24,7 @@ import {
 import { FieldValues } from "../../layout/Grid"
 import AlertDialog from "../../dialog/Alert"
 import { Trans, FormattedDateTime, FormattedNumber } from "../../i18n"
-import { useEditPlayerPassword, useUpdatePlayerPassword } from "./client"
+import { useUpdatePlayerPassword } from "./client"
 import { SubmitCancel } from "../../button/ActionButtons"
 import { Tab as _Tab, TabPanel } from "../../tab"
 import { PasswordInputField } from "../../input/PasswordInput"
@@ -65,47 +65,6 @@ const UpdatePasswordPanel = ({
 
   const onSubmit = (data) => {
     setSubmit(data?.password)
-  }
-
-  const reset = () => {
-    deleteCache()
-    setSubmit(undefined)
-  }
-
-  return (
-    <TabPanel tabId={Key} {...props}>
-      {error && <AlertDialog {...error} onClickClose={reset} />}
-      <FormProvider {...formMethods}>
-        <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-          <Body isLoading={isLoading} onClickClose={onClickClose} />
-        </form>
-      </FormProvider>
-    </TabPanel>
-  )
-}
-
-const OldUpdatePasswordPanel = ({
-  playerCode = "",
-  onSubmitted,
-  onClickClose,
-  ...props
-}) => {
-  let formMethods = useForm()
-
-  let [submitData, setSubmit] = useState()
-
-  let { result, error, isLoading, mutate, deleteCache } = useEditPlayerPassword(
-    playerCode,
-    submitData
-  )
-  useEffect(() => {
-    if (result) {
-      onSubmitted?.()
-    }
-  }, [result])
-
-  const onSubmit = (data) => {
-    setSubmit(data)
   }
 
   const reset = () => {

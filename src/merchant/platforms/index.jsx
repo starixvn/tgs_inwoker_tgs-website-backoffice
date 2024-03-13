@@ -38,6 +38,7 @@ import {
   useLicenseePageContentWidth
 } from "../../page/LicenseePageContent"
 import AutoSizer from "react-virtualized-auto-sizer"
+import { AccountFundSettingDialogDisclosure } from "./AccountFundSettingDialog"
 // import { PlatformDomainDialogDisclosure } from "./PlatformDomain"
 
 export { Code }
@@ -285,6 +286,7 @@ const useColumns = ({ items = [], mutate }) => {
                   brandId={value.id}
                 />
                 <ContactsDialogDisclosure brandId={value.id} />
+                <AccountFundSettingDialogDisclosure brandId={value.id} />
               </Set>
             )
           }

@@ -42,6 +42,7 @@ import { useWinlossReportAgentTotal } from "./client"
 import { AgentTrans } from "../../trans/Agent"
 import { TotalTrans } from "../../trans/Field"
 import { WinLossTrans } from "../../trans/Game"
+import { PlayerTrans } from "../../trans/Player"
 
 export const AgentTotalDialogDisclosure = ({
   value,
@@ -133,7 +134,7 @@ const useColumns = ({ items = [] }) => {
       }),
       {
         id: "player",
-        Header: <Trans zh="玩家" en="Player" />,
+        Header: <PlayerTrans />,
         headCell: {
           textAlign: "center"
         },

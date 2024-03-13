@@ -10,9 +10,17 @@ import {
   Code as BalanceAdjustmentCode,
   codeLabelPair as balanceAdjustmentListPair
 } from "./balance-adjustment/menu"
+import {
+  Code as ContractsCode,
+  codeLabelPair as contractsPair
+} from "./contracts/menu"
 import { getTrans, useTrans } from "../i18n"
 import { faUserTie } from "@fortawesome/free-solid-svg-icons"
-import { AgentManagementTrans, Agents } from "../trans/Agent"
+import {
+  AgentManagementTrans,
+  Agents,
+  AllAgentDividendSetting
+} from "../trans/Agent"
 
 export const nameMessages = {
   zh: "代理管理",
@@ -65,6 +73,8 @@ const label = ({ locale, code }) => {
         },
         locale
       )
+    case ContractsCode:
+      return getTrans(AllAgentDividendSetting, locale)
     default:
       return ""
   }
@@ -77,6 +87,6 @@ export const codeLabelPair = [
       locale,
       codes,
       label,
-      subLabelPairs: [agentListPair, balanceAdjustmentListPair]
+      subLabelPairs: [agentListPair, balanceAdjustmentListPair, contractsPair]
     })
 ]

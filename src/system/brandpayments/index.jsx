@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
-  Heading,
   Stack,
   Button,
   Set,
   Text,
-  Input,
-  Link,
+  Box,
   Dialog,
-  Card,
-  List,
+  Icon,
   Level,
   Tabs
 } from "bumbag"
-import PageContent from "../../page/Content"
-import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
+import AutoSizer from "react-virtualized-auto-sizer"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -25,17 +25,22 @@ import {
 } from "../../user/context"
 import { Code } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { Trans, useTrans } from "../../i18n"
+import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import {
   BrandPaymentStatusSelect,
-  BrandPaymentStatusToggleButton
+  BrandPaymentStatusToggleButton,
+  isBrandPaymentDisabled
 } from "./BrandPaymentStatus"
 import TransferType, {
   isWithdrawalPlatformPayment
 } from "./BrandPaymentTransferType"
-import { useChangeBrandPaymentOrders, useBrandPaymentList } from "./client"
+import {
+  useChangeBrandPaymentOrders,
+  useBrandPaymentList,
+  useBrandPaymentBalanceList
+} from "./client"
 import { View as ViewMenu, Update as UpdateMenu } from "./menu"
 import { Detail as ConditionDetail } from "./condition"
 import { AddBrandPaymentButton, EditButton } from "./edit"
@@ -45,9 +50,11 @@ import { AlertDialog } from "../../dialog/Alert"
 import { DesignatedPlayersLink } from "./DesignatedPlayersLink"
 import { InputField } from "../../input/Input"
 import { formatNumber } from "../../number/format"
-import BrandBar from "../../report/BrandBar"
 import textColumn from "../../table/column/textColumn"
-import { PaymentProviderLabel } from "../../payment/PaymentProvider"
+import {
+  PaymentProviderLabel,
+  isManualPaymentProvider
+} from "../../payment/PaymentProvider"
 import { PaymentMethodLabel } from "../../payment/method/PaymentMethod"
 import { PaymentChannelLabel } from "../../payment/channel/PaymentChannel"
 import { NumberInput } from "../../input/NumberInput"
@@ -56,6 +63,7 @@ import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action"
 import {
   ChannelNameTrans,
   DepositTrans,
+  MerchantBalanceTrans,
   PaymentChannelTrans,
   PaymentLimitTrans,
   PaymentManagementTrans,
@@ -66,6 +74,10 @@ import {
 import { StatusTrans } from "../../trans/Status"
 import { OrderTrans } from "../../trans/Field"
 import { DesignatedUsersTrans } from "../../trans/User"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
+import { faRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import { useIsVisible } from "react-is-visible"
+import { isDev } from "../../env"
 
 export { Code }
 
@@ -75,26 +87,16 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
-}
-
-const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
+    <PlatformPageContent title={<PaymentManagementTrans />}>
+      <Body />
+    </PlatformPageContent>
   )
 }
 
-const BodyContent = ({ brandId }) => {
+const Body = ({}) => {
+  let brandId = usePlatformId()
+
   const DefaultTransferType = TransferType.Deposit
   const [transferType, setTransferType] = React.useState(DefaultTransferType)
   let { state, setState, setPageIndex, setSortOrder } = useTable({
@@ -126,31 +128,27 @@ const BodyContent = ({ brandId }) => {
   }
 
   return (
-    <PageContent
-      title={<PaymentManagementTrans />}
-      actionBar={
-        <Level>
-          <SearchBar
-            search={(newState) => {
-              setState({ pageIndex: 0, ...newState })
-              mutate()
-            }}
-            isLoading={isLoading}
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          search={(newState) => {
+            setState({ pageIndex: 0, ...newState })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+        <Set>
+          {isWithdrawalPlatformPayment(transferType) && (
+            <BrandAutoWithdrawDialogDisclosure brandId={brandId} />
+          )}
+          <AddBrandPaymentButton
+            id="add-payment-dialog-disclosure"
+            transferType={transferType}
+            brandId={brandId}
+            onSubmitted={mutate}
           />
-          <Set>
-            {isWithdrawalPlatformPayment(transferType) && (
-              <BrandAutoWithdrawDialogDisclosure brandId={brandId} />
-            )}
-            <AddBrandPaymentButton
-              id="add-payment-dialog-disclosure"
-              transferType={transferType}
-              brandId={brandId}
-              onSubmitted={mutate}
-            />
-          </Set>
-        </Level>
-      }
-    >
+        </Set>
+      </Level>
       <Tabs selectedId={transferType}>
         <Tabs.List>
           <Tabs.Tab
@@ -192,7 +190,7 @@ const BodyContent = ({ brandId }) => {
         </Tabs.Panel>
       </Tabs>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
@@ -318,6 +316,59 @@ const SearchBar = ({ search, isLoading, ...props }) => {
   )
 }
 
+const BrandPaymentBalance = ({ brandId, brandPaymentId }) => {
+  let ref = useRef()
+  let isVisible = useIsVisible(ref, { once: true })
+
+  let [params, setParams] = useState()
+
+  useEffect(() => {
+    if (isVisible) {
+      setParams({ id: [brandPaymentId] })
+    }
+  }, [isVisible, brandPaymentId])
+
+  let {
+    isLoading,
+    data: items,
+    mutate,
+    deleteCache
+  } = useBrandPaymentBalanceList(brandId, params)
+  let record = items?.find((item) => item.brandPaymentId === brandPaymentId)
+
+  return (
+    <Set
+      ref={ref}
+      alignX="right"
+      alignY="center"
+      css={css`
+        width: max-content;
+      `}
+    >
+      {!isLoading && (
+        <Box alignX="right">
+          <FormattedNumberDecimal value={record?.balance} placeholder="-" />
+        </Box>
+      )}
+      <Button
+        palette="gray"
+        variant="ghost"
+        size="small"
+        isLoading={isLoading}
+        disabled={isLoading}
+        onClick={() => {
+          if (!isLoading) {
+            deleteCache()
+            mutate(null)
+          }
+        }}
+      >
+        <Icon icon={faRotateLeft} type="font-awesome" />
+      </Button>
+    </Set>
+  )
+}
+
 const useColumns = ({
   transferType,
   displayOrders,
@@ -430,6 +481,19 @@ const useColumns = ({
             />
           )
         }
+      }),
+      numberDecimalColumn({
+        id: "merchantBalance",
+        accessor: (row) => row,
+        Header: <MerchantBalanceTrans />,
+        disableSortBy: true,
+        Cell: ({ value: record }) =>
+          isManualPaymentProvider(record.paymentName) ||
+          isBrandPaymentDisabled(record.paymentStatus) ? (
+            ""
+          ) : (
+            <BrandPaymentBalance brandId={brandId} brandPaymentId={record.id} />
+          )
       })
     ]
 
@@ -449,13 +513,6 @@ const useColumns = ({
                   onSubmitted={mutate}
                   dialogId="edit-platform-payment-dialog"
                 />
-                {/* 
-                <FeeEditButton
-                  brandId={brandId}
-                  record={value}
-                  onSubmitted={mutate}
-                /> 
-                */}
                 <LogsButton brandId={brandId} record={value} />
               </Set>
             )

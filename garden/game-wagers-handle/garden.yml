@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: game-wagers-handle
-image: pgtgs/game-gamewagers-handle:202311130319.24
+image: pgtgs/game-gamewagers-handle:202401290652.38
 services:
   - name: game-wagers-handle
     dependencies:
@@ -14,5 +14,5 @@ services:
       ConnectionStrings__Nats: "nats://nats:4222"
     ports:
       - name: http
-        containerPort: 80
+        containerPort: 8080
         servicePort: 80

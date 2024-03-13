@@ -82,7 +82,7 @@ export const Rule = ({ readOnly }) => {
       </NormalLabel>
       <NumberInputField
         name="rule.turnoverMultiple"
-        min="0"
+        min="1"
         required
         disabled={disabled}
         addonAfter={

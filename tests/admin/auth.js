@@ -7,7 +7,9 @@ import sboGameProviderApi from "../../client/gameProviderApi/sbo/index.js"
 import backofficeApi from "../client/index.js"
 import reportApi from "../../client/reportApi/index.js"
 import reportAggregateApi from "../../client/reportAggregateApi/index.js"
+import { AgentDividendType } from "../admin/agent-list-page.js"
 import { use } from "chai"
+import { faker } from "@faker-js/faker"
 
 const Path = "./.playwright"
 const AuthPath = `${Path}/admin-auth.json`
@@ -262,9 +264,232 @@ export const Fixture = {
     let platform = await backofficeApi.platform.findPlatform(platformCode)
     use(platform)
   },
+  agentOneLayerPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "AG-ONE-LAYER"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        agentDividendType: AgentDividendType.OneLayer
+      })
+    }
+    use(platform)
+  },
+  agentMultipleLayerPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "AG-MULTI-LAYER"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        agentDividendType: AgentDividendType.MultipleLayer
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+    use(platform)
+  },
+  agentPlayerPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "AG-PLAYER"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        enablePlayerAgent: true
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+    use(platform)
+  },
+  allAgentPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "ALL-AGENT"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+    await backofficeApi.platform.allAgent.enable(platform.id)
+    use(platform)
+  },
+  reviewPlayerIdPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "REVIEW-PLAYER-ID"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        enablePlayerIdentity: true
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+    use(platform)
+  },
+  vipPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "VIP"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let vipList = await backofficeApi.platform.vip.list(platform.id)
+    if (vipList.length === 1) {
+      let value = 10
+      let result = await backofficeApi.platform.vip.add({
+        brandId: platform.id,
+
+        levelUpAccumulateBetAmount: value,
+        levelUpAccumulateDeposit: value,
+
+        birthBenefit: value,
+        promotionBenefit: value,
+        quarterlyBenefit: value,
+
+        liveDealerRebate: value,
+        slotRebate: value,
+        cardGameRebate: value,
+        sportsRebate: value,
+        virtualSportsRebate: value,
+        lotteryRebate: value
+      })
+    }
+
+    use(platform)
+  },
+  liveChatAddPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "LIVE_CHAT_ADD"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let liveChat = await backofficeApi.platform.liveChat.get(platform.id)
+    if (liveChat) {
+      await backofficeApi.platform.liveChat.delete(platform.id)
+    }
+
+    use(platform)
+  },
+  liveChatEditPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "LIVE_CHAT_EDIT"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let liveChat = await backofficeApi.platform.liveChat.get(platform.id)
+    if (!liveChat) {
+      await backofficeApi.platform.liveChat.add({ brandId: platform.id })
+    }
+
+    use(platform)
+  },
+  liveChatDeletePlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "LIVE_CHAT_DEL"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let liveChat = await backofficeApi.platform.liveChat.get(platform.id)
+    if (!liveChat) {
+      await backofficeApi.platform.liveChat.add({ brandId: platform.id })
+    }
+
+    use(platform)
+  },
+  autoClearWageringRequirementPlatform: async (
+    {
+      licensee,
+      backofficeApi,
+      brandCertApi,
+      customBankManualPaymentMethodChannel
+    },
+    use
+  ) => {
+    const PlatformCode = "AUTO_CLEAR"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      let AutoClearBucketAmount = 10
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode,
+        autoClearWageringRequirement: true,
+        autoClearWageringRequirementBalance: AutoClearBucketAmount
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    //TODO: move to other fns?
+    let [depositPayment, withdrawPayment] = await Promise.all([
+      backofficeApi.platform.payment.findOrCreate({
+        brandId: platform.id,
+        transferType: backofficeApi.platform.payment.TransferType.Deposit,
+        paymentMethodChannelId: customBankManualPaymentMethodChannel.id,
+        extendedData: {
+          name: faker.finance.accountName(),
+          bankAccount: faker.finance.accountNumber()
+        }
+      }),
+      backofficeApi.platform.payment.findOrCreate({
+        brandId: platform.id,
+        transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
+        paymentMethodChannelId: customBankManualPaymentMethodChannel.id
+      })
+    ])
+
+    use(platform)
+  },
+  autoClearWageringRequirementPlatformDepositPayment: async (
+    {
+      autoClearWageringRequirementPlatform: platform,
+      backofficeApi,
+      customBankManualPaymentMethodChannel
+    },
+    use
+  ) => {
+    let depositPayment = await backofficeApi.platform.payment.findOrCreate({
+      brandId: platform.id,
+      transferType: backofficeApi.platform.payment.TransferType.Deposit,
+      paymentMethodChannelId: customBankManualPaymentMethodChannel.id,
+      extendedData: {
+        name: faker.finance.accountName(),
+        bankAccount: faker.finance.accountNumber()
+      }
+    })
+    use(depositPayment)
+  },
   licensee: async ({ licenseeCode, backofficeApi }, use) => {
     let licensee = await backofficeApi.licensee.findLicensee(licenseeCode)
     use(licensee)
+  },
+  reseller: async ({ resellerCode, backofficeApi }, use) => {
+    let reseller = await backofficeApi.reseller.find(resellerCode)
+    use(reseller)
   },
   agent: async ({ platform }, use) => {
     let { id: brandId } = platform

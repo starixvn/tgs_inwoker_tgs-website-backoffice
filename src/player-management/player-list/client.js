@@ -1,15 +1,17 @@
+import { boolean } from "boolean"
 import {
   urlWith,
   useGet,
   usePostData,
+  usePost,
   usePut,
   usePutData,
   useDelete,
   usePatchData
 } from "../../client"
 import { useApiMerge } from "../../client/useApiMerge."
-import { isEmpty, isNil } from "lodash-es"
-import { either } from "ramda"
+import { isEmpty, isNil, isBoolean } from "lodash-es"
+import { either, pick } from "ramda"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -53,8 +55,23 @@ export const toUpdatePlayerFormData = (data) => {
     ...info
   } = data
 
+  if (isBoolean(info.vipLevelAutoState)) {
+    info.vipLevelAutoState = info.vipLevelAutoState?.toString()
+  }
+
+  //TODO: test cases for update info fields
   return {
-    info,
+    info: pick(
+      [
+        "realName",
+        "birthdate",
+        "idNumber",
+        "vipId",
+        "vipLevelAutoState",
+        "remark"
+      ],
+      info
+    ),
     status: isNilOrEmpty(status) ? null : { status },
     agent: isNil(agentUsername) ? null : { agentUsername },
     allAgentPlayer: isNilOrEmpty(parentPlayerUsername)
@@ -119,12 +136,6 @@ export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {
   })
 }
 
-//TODO: rm? or use original
-export const useEditPlayerContact = (playerCode, data) => {
-  let url = playerCode ? `${API}/${playerCode}/contact` : ""
-  return usePutData(url, data)
-}
-
 export const useUpdatePlayerContact = (playerCode, data) => {
   let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
   return usePatchData(url, data, {
@@ -151,12 +162,6 @@ export const useDeletePlayerBank = (playerCode, id) => {
 export const useSetDefaultPlayerBank = (playerCode, id) => {
   let url = playerCode && id ? `${API}/${playerCode}/bank/${id}/default` : ""
   return usePut(url)
-}
-
-//TODO: rm
-export const useEditPlayerPassword = (playerCode, data) => {
-  let url = playerCode ? `${API}/${playerCode}/password` : ""
-  return usePutData(url, data)
 }
 
 export const useUpdatePlayerPassword = (playerCode, password) => {
@@ -347,4 +352,9 @@ export const usePlayerVipChangeList = (playerCode, searchParams) => {
 export const usePlayerPayment = (playerCode) => {
   let url = playerCode ? `${API}/payment/${playerCode}` : ""
   return useGet(url)
+}
+
+export const useUpgradePlayerToAgent = (playerCode) => {
+  let url = playerCode ? `${API}/upgrade/${playerCode}/agent` : ""
+  return usePost(url)
 }

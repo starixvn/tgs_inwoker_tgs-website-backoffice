@@ -12,7 +12,7 @@ import {
 
 const test = base.extend(Fixture)
 
-test("edit and view agent info", async ({
+test("view agent info", async ({
   page,
   platformCode,
   agent,

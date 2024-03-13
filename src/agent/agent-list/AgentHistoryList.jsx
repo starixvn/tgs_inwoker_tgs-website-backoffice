@@ -143,9 +143,9 @@ const UpdateTrans = {
 const ActionTypeLabel = ({ value = "" }) => {
   switch (value) {
     case Create:
-      return <Trans {...CreateTrans} />
+      return <Trans data-type={Create} {...CreateTrans} />
     case Update:
-      return <Trans {...UpdateTrans} />
+      return <Trans data-type={Update} {...UpdateTrans} />
     default:
       return value
   }
@@ -191,25 +191,40 @@ const useColumns = ({ items = [], brandId }) =>
     [JSON.stringify(items)]
   )
 
-const AgentHistoryDialogDisclosure = ({ action, eventId, brandId }) => {
+const AgentHistoryDialogDisclosure = ({
+  action,
+  eventId,
+  brandId,
+  id,
+  dialogId = "agent-history-dialog"
+}) => {
   let dialog = useModalState()
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <DetailDisclosure {...dialog} />
+      <DetailDisclosure id={id} {...dialog} />
       {dialog.visible && (
         <AgentHistoryDialog
           action={action}
           eventId={eventId}
           brandId={brandId}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
   )
 }
 
-const AgentHistoryDialog = ({ action, eventId, brandId, dialog, ...props }) => {
+const AgentHistoryDialog = ({
+  action,
+  eventId,
+  brandId,
+  dialog,
+  dialogId,
+  ...props
+}) => {
   let { isLoading, data: detail, error } = useAgentHistory(eventId)
 
   let items = detail?.changeSets
@@ -226,7 +241,7 @@ const AgentHistoryDialog = ({ action, eventId, brandId, dialog, ...props }) => {
   }
 
   return (
-    <Modal title={<Box padding="1ch"></Box>} {...dialog}>
+    <Modal id={dialogId} title={<Box padding="1ch"></Box>} {...dialog}>
       <Table columns={columns} data={items} />
     </Modal>
   )
@@ -243,11 +258,11 @@ const RemoveTrans = {
 const OperationLabel = ({ value = "" }) => {
   switch (value) {
     case Replace:
-      return <Trans {...UpdateTrans} />
+      return <Trans data-type={Replace} {...UpdateTrans} />
     case Add:
-      return <AddTrans />
+      return <AddTrans data-type={Add} />
     case Remove:
-      return <Trans {...RemoveTrans} />
+      return <Trans data-type={Remove} {...RemoveTrans} />
     default:
       return value
   }

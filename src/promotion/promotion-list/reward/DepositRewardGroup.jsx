@@ -164,7 +164,7 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
         registerOptions={{
           valueAsNumber: true
         }}
-        min="0"
+        min="1"
         required
         disabled={disabled}
         addonAfter={
@@ -238,7 +238,7 @@ const DepositRewardRule = ({ readOnly }) => {
         registerOptions={{
           valueAsNumber: true
         }}
-        min="0"
+        min="1"
         required
         disabled={disabled}
         addonAfter={
@@ -352,7 +352,7 @@ const DefaultRule = ({ readOnly }) => {
         registerOptions={{
           valueAsNumber: true
         }}
-        min="0"
+        min="1"
         required
         disabled={disabled}
         addonAfter={

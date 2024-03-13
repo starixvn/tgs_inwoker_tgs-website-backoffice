@@ -11,10 +11,8 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
-console.warn("TODO: fix audit clear bucket report")
-test("fund withdraw > audit clear bucket", async ({
+test("fund withdraw > open order", async ({
   page,
-  licensee,
   platform,
   platformToken,
   player,
@@ -23,8 +21,6 @@ test("fund withdraw > audit clear bucket", async ({
   operatorApi,
   sboGameProviderApi
 }) => {
-  let gpiPlatform = platform
-
   const DepositAmount = 10
   await Promise.all([
     gotoFundWithdraw(page, platform.code),

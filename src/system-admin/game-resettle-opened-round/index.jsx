@@ -45,6 +45,7 @@ import {
 import { CurrencyTrans } from "../../trans/Payment"
 import { SettleAmountTrans, SupportingDeviceTrans } from "../../trans/Field"
 import { PlatformTrans } from "../../trans/Platform"
+import { PlayerTrans } from "../../trans/Player"
 
 export { Code }
 
@@ -200,7 +201,7 @@ const useColumns = ({ items = [], mutate }) => {
       }),
       textColumn({
         accessor: "playerName",
-        Header: <Trans zh="玩家" en="Player" />,
+        Header: <PlayerTrans />,
         disableSortBy: true
       }),
       textColumn({

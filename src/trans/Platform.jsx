@@ -361,3 +361,10 @@ const DepositWithdrawDiff = {
   vi: "Chênh lệch gửi và rút tiền"
 }
 export const DepositWithdrawDiffTrans = () => <Trans {...DepositWithdrawDiff} />
+
+export const AccountFunds = {
+  zh: "平台資金",
+  en: "Account Funds"
+}
+export const AccountFundsTrans = () => <Trans {...AccountFunds} />
+export const useAccountFundsTrans = () => useTrans(AccountFunds)

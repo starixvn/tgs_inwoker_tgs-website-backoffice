@@ -22,20 +22,24 @@ export const approveWithdraw = async (
       amount: withdrawAmount
     }
   )
+
   await findApplicationById(page, formId)
 
   let VerifyDialogSelector = `#verify-withdraw-dialog`
-  await Promise.all([
-    page.waitForResponse(urlIncludes(`/api/PaymentChannel`)),
+  let [brandPaymentResponse] = await Promise.all([
     page.waitForResponse(urlIncludes(`/api/brandpayment?brandId=${brandId}`)),
+    page.waitForResponse(urlIncludes(`/api/PaymentChannel`)),
     openDialog(page, VerifyDialogSelector)
   ])
-
-  let platformPaymentOptionSelector = `${VerifyDialogSelector} select[name="brandPaymentId"] option`
-  let platformPaymentOptionCount = await page
-    .locator(platformPaymentOptionSelector)
-    .count()
-  expect(platformPaymentOptionCount).gte(1)
+  let brandPaymentList = await brandPaymentResponse.json()
+  let brandPayment = brandPaymentList?.items?.find(
+    ({ bankType, paymentName }) =>
+      bankType === "Bank" && paymentName === "Manual"
+  )
+  expect(brandPayment?.id).not.empty
+  await page
+    .locator(`${VerifyDialogSelector} select[name="brandPaymentId"]`)
+    .selectOption(brandPayment.id)
 
   await Promise.all([
     page.waitForResponse(urlIncludes(`/api/withdraw/${formId}`)),

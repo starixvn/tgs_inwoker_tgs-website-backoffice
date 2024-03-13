@@ -6,14 +6,10 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-test("add live chat", async ({ page, licensee, backofficeApi }) => {
-  let platform = await backofficeApi.platform.addPlatform({
-    licenseeId: licensee.id
-  })
+test("add live chat", async ({ page, liveChatAddPlatform: platform }) => {
   await gotoPlatformCustomerServicePage(page, platform.code)
 
   await addLiveChat(page)
-  await backofficeApi.platform.liveChat.deleteByPlatformId(platform.id)
 })
 
 const SettingType = {

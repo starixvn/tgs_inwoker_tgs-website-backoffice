@@ -14,6 +14,7 @@ import {
 } from "bumbag"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import Disclosure, {
+  ReviewDisclosure,
   VerifyDisclosure,
   ViewDisclosure
 } from "../../dialog/Disclosure"
@@ -58,7 +59,7 @@ export const ReviewPlayerIdDialogDisclosure = ({
   return (
     <>
       {waitingVerify && hasUpdateAuth ? (
-        <VerifyDisclosure {...dialog} {...props} />
+        <ReviewDisclosure {...dialog} {...props} />
       ) : (
         <ViewDisclosure {...dialog} {...props} />
       )}

@@ -12,49 +12,18 @@ import numeral from "numeral"
 
 const test = base.extend(Fixture)
 
-console.warn("TODO: fix auto clear bucket")
-test.skip("fund withdraw > audit clear bucket", async ({
+test("fund withdraw > audit clear bucket", async ({
   page,
-  licensee,
-  platform,
-  platformToken,
-  player,
+  autoClearWageringRequirementPlatform: platform,
+  autoClearWageringRequirementPlatformDepositPayment: depositPayment,
   backofficeApi,
-  customBankManualPaymentMethodChannel,
   brandCertApi,
   operatorApi,
   sboGameProviderApi
 }) => {
-  let gpiPlatform = platform
-  let AutoClearBucketAmount = 10
-  let depositPayment
-  let withdrawPayment
-  if (!platform.autoClearWageringRequirement) {
-    platform = await backofficeApi.platform.addPlatform({
-      licenseeId: licensee.id,
-      autoClearWageringRequirement: true,
-      autoClearWageringRequirementBalance: AutoClearBucketAmount
-    })
-
-    platformToken = await brandCertApi.platformToken(platform.code)
-    player = await operatorApi.player.createAndLogin(platformToken)
-
-    depositPayment = await backofficeApi.platform.payment.findOrCreate({
-      brandId: platform.id,
-      transferType: backofficeApi.platform.payment.TransferType.Deposit,
-      paymentMethodChannelId: customBankManualPaymentMethodChannel.id,
-      extendedData: {
-        name: faker.finance.accountName(),
-        bankAccount: faker.finance.accountNumber()
-      }
-    })
-
-    withdrawPayment = await backofficeApi.platform.payment.findOrCreate({
-      brandId: platform.id,
-      transferType: backofficeApi.platform.payment.TransferType.Withdrawal,
-      paymentMethodChannelId: customBankManualPaymentMethodChannel.id
-    })
-  }
+  let AutoClearBucketAmount = platform.autoClearWageringRequirementBalance
+  let platformToken = await brandCertApi.platformToken(platform.code)
+  let player = await operatorApi.player.createAndLogin(platformToken)
 
   let BucketAmount = 10000
   await Promise.all([
@@ -78,38 +47,41 @@ test.skip("fund withdraw > audit clear bucket", async ({
     brandId: platform.id
   })
 
-  let betAmount = DepositAmount
-  let [{ externalRoundId, ...betResult }] = await Promise.all([
-    sboGameProviderApi.placeBet({
-      amount: betAmount,
-      playerCode: player.code
-    }),
-    backofficeApi.player.addBalance(player.code, {
-      amount: DepositAmount
-    }),
-    backofficeApi.player.bucket.clear(player.code)
-  ])
-
   //Note. wait for uncompleteWagering change to 0 by `backofficeApi.player.bucket.clear(player.code)`
   let WaitSecond = 1000
-  let playerBucketList
-  let MaxRetry = 10
+  let playerBucketList = []
+  let playerBucket
+  let MaxRetry = 20
   let retryCount = 0
   let wageringRequirement
   let uncompleteWagering
   while (
     !(
       Number.isFinite(wageringRequirement) &&
-      wageringRequirement < BucketAmount &&
       Number.isFinite(uncompleteWagering) &&
       uncompleteWagering === 0
     ) &&
     retryCount++ < MaxRetry
   ) {
     playerBucketList = await backofficeApi.player.bucket.list(player.code)
+
     // console.log(`${retryCount}. playerBucketList`, playerBucketList)
-    wageringRequirement = playerBucketList?.[0]?.wageringRequirement
-    uncompleteWagering = playerBucketList?.[0]?.uncompleteWagering
+    playerBucket = playerBucketList.find(
+      (item) => item.wageringRequirement === BucketAmount
+    )
+    wageringRequirement = playerBucket?.wageringRequirement
+
+    uncompleteWagering = playerBucketList.reduce(
+      (uncompleteWagering, bucket) => {
+        return uncompleteWagering + bucket.uncompleteWagering
+      },
+      0
+    )
+
+    if (playerBucket?.uncompleteWagering === 0 && uncompleteWagering > 0) {
+      await backofficeApi.player.bucket.clear(player.code)
+    }
+
     await page.waitForTimeout(WaitSecond)
   }
 
@@ -129,21 +101,9 @@ test.skip("fund withdraw > audit clear bucket", async ({
   let AuditReportDialogSelector = `#audit-auto-clear-bucket-dialog`
   await openDialog(page, AuditReportDialogSelector)
 
-  //TODO: test open order condition based on betResult instead of compare platform code
-  if (gpiPlatform.code == platform.code) {
-    let OpenOrderTableSelector = `${AuditReportDialogSelector} table#open-order`
-    let openOrderBetAmountString = await page
-      .locator(`${OpenOrderTableSelector} td[data-column-id="betAmount"]`)
-      .textContent()
-    let openOrderBetAmount = numeral(openOrderBetAmountString).value()
-    expect(openOrderBetAmount).equals(betAmount)
-  }
-
-  /*
   let AutoClearBucketTableSelector = `${AuditReportDialogSelector} table#auto-clear-bucket`
   let autoClearBucketId = await page
     .locator(`${AutoClearBucketTableSelector} td[data-column-id="id"]`)
     .textContent()
   expect(autoClearBucketId).not.empty
-  */
 })

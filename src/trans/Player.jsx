@@ -1,6 +1,14 @@
 import React, { createContext, useContext, useState } from "react"
 import { Trans, useTrans } from "../i18n"
 
+const Player = {
+  zh: "玩家",
+  en: "Player",
+  vi: "người chơi"
+}
+export const PlayerTrans = () => <Trans {...Player} />
+export const usePlayerTrans = () => useTrans(Player)
+
 export const PlayerManagement = {
   zh: "玩家管理",
   en: "Player management",
@@ -31,6 +39,13 @@ const PlayerCode = {
 }
 export const usePlayerCodeTrans = () => useTrans(PlayerCode)
 export const PlayerCodeTrans = () => <Trans {...PlayerCode} />
+
+const AccountType = {
+  zh: "帐号种类",
+  en: "Account Type",
+  vi: "các loại tài khoản"
+}
+export const AccountTypeTrans = () => <Trans {...AccountType} />
 
 const RegistrationDomain = {
   zh: "注册域名",
@@ -182,10 +197,17 @@ const OnlinePlayerCount = {
 }
 export const OnlinePlayerCountTrans = () => <Trans {...OnlinePlayerCount} />
 
-//TODO
 const Top10Players = {
   zh: "十大玩家",
   en: "Top 10 Players",
   vi: "10 người chơi hàng đầu"
 }
 export const Top10PlayersTrans = () => <Trans {...Top10Players} />
+
+const PlayerNote = {
+  zh: "玩家备註",
+  en: "Player Note",
+  vi: "ghi chú khách hàng"
+}
+export const PlayerNoteTrans = () => <Trans {...PlayerNote} />
+export const usePlayerNoteTrans = () => useTrans(PlayerNote)

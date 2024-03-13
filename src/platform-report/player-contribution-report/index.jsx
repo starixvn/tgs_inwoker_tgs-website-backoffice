@@ -74,6 +74,7 @@ import {
 } from "../../trans/Platform"
 import {
   PlayerContributionReportTrans,
+  PlayerTrans,
   usePlayerUsernameTrans
 } from "../../trans/Player"
 
@@ -320,7 +321,7 @@ const useColumns = ({ items = [] }) => {
         TotalCell: () => null,
         Cell: ({ value }) => (
           <Text.Block>
-            <Trans zh="玩家" en="Player" />
+            <PlayerTrans />
           </Text.Block>
         ),
         Footer: () => <Box />,

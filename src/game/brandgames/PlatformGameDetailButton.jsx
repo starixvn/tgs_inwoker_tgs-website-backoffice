@@ -18,11 +18,11 @@ import Switch from "../../switch/Switch"
 import { PercentageNumberInputField } from "../../input/NumberInput"
 import Input from "../../input/Input"
 import {
-  CommissionRebateTrans,
   GameDetailTrans,
   GameIdTrans,
   GameNameTrans,
   GameTypeTrans,
+  GameVipCommissionRebateTrans,
   TurnoverPercentageTrans,
   useGameDetailTrans
 } from "../../trans/Game.jsx"
@@ -35,6 +35,7 @@ import {
   YesTrans
 } from "../../trans/Field.jsx"
 import { SpecialProcessingTrans } from "../../trans/Action.jsx"
+import { VipCommissionRebateTrans } from "../../trans/Vip.jsx"
 
 export const PlatformGameDetailButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -213,7 +214,7 @@ const EditBody = ({ record = {}, readOnly }) => {
             </Box>
 
             <Label fontWeight="normal">
-              <CommissionRebateTrans />
+              <GameVipCommissionRebateTrans />
             </Label>
             <Switch name="rebate" disabled={readOnly} />
           </FieldValues>

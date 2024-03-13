@@ -59,9 +59,9 @@ export const create = async (payload) => {
 
 export const findOrCreate = async (payload) => {
   let username = payload?.username ?? ResellerUsername
-  let reseller = await find(username)
-  if (!reseller) {
+  let user = await find(username)
+  if (!user) {
     return await create(payload)
   }
-  return reseller
+  return user
 }

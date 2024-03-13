@@ -15,7 +15,7 @@ const test = base.extend(Fixture)
 
 test("view player balance change", async ({
   page,
-  platformCode,
+  platform,
   player,
   backofficeApi
 }) => {
@@ -26,7 +26,7 @@ test("view player balance change", async ({
     backofficeApi.player.addBalance(player.code, {
       amount: AddAmount
     }),
-    gotoPlayerListPage(page, platformCode)
+    gotoPlayerListPage(page, platform.code)
   ])
 
   await searchPlayer(page, player)

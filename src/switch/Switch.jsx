@@ -36,6 +36,9 @@ export const Switch = ({
       name={name}
       switchRef={switchRef}
       state={state}
+      css={css`
+        width: max-content;
+      `}
       {...formProps}
       {...props}
       onChange={(event) => {

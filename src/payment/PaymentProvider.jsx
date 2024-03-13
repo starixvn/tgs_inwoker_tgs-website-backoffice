@@ -5,6 +5,10 @@ import Select from "../select/Select"
 import { usePaymentList } from "./client"
 import { PaymentProviderTrans } from "../trans/Payment"
 
+const Manual = "Manual"
+
+export const isManualPaymentProvider = (v) => v === Manual
+
 const defaultPredicate = () => true
 
 export const PaymentProviderDropdownMenu = ({

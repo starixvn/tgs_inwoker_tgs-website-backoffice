@@ -73,6 +73,7 @@ import { AgentTrans } from "../../trans/Agent"
 import { TotalTrans } from "../../trans/Field"
 import { CompanyTrans } from "../../trans/Platform"
 import { WinLossTrans } from "../../trans/Game"
+import { PlayerTrans } from "../../trans/Player"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -422,7 +423,7 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
       },
       {
         id: "player",
-        Header: <Trans zh="玩家" en="Player" />,
+        Header: <PlayerTrans />,
         headCell: {
           textAlign: "center"
         },
@@ -518,7 +519,6 @@ const useUserColumns = ({ items = [], brandId, from, to, appendPath }) => {
             id: "companyTotal",
             accessor: (row) => row,
             Header: <Trans zh="总和" en="Total" />,
-            disableSortBy: true,
             disableSortBy: true,
             Cell: ({ value: record }) => {
               if (isPlayer(record?.memberType)) {

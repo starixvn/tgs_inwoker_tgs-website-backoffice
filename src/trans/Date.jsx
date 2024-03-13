@@ -91,12 +91,13 @@ const ParticipationTime = {
 }
 export const ParticipationTimeTrans = () => <Trans {...ParticipationTime} />
 
-const VerifyTime = {
+const VerifiedTime = {
   zh: "审核时间",
-  en: "Verify Time",
-  vi: "Thời gian kiểm tra/xem xét"
+  en: "Verified",
+  vi: "Thời gian xem xét"
 }
-export const VerifyTimeTrans = () => <Trans {...VerifyTime} />
+export const VerifiedTimeTrans = () => <Trans {...VerifiedTime} />
+export const useVerifiedTimeTrans = () => <Trans {...VerifiedTime} />
 
 const PeriodicMaintenanceTime = {
   zh: "定期维护时间",

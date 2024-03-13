@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
+import { useLocation, useNavigate } from "react-router-dom"
+import { useEffectOnce } from "react-use"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import {
   Heading,
@@ -14,7 +16,12 @@ import {
   Alert,
   List
 } from "bumbag"
-import PageContent from "../../page/Content"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
+import AutoSizer from "react-virtualized-auto-sizer"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useAgentList } from "./client"
@@ -29,7 +36,7 @@ import {
   useUserBrandId
 } from "../../user/context"
 import { Code, View } from "./menu"
-import { ViewButton, EditButton, ConfigButton, AddAgentButton } from "./button"
+import { ViewButton, EditButton, AddAgentButton } from "./button"
 import {
   FormattedNumber,
   FormattedNumberDecimal,
@@ -43,28 +50,14 @@ import { InputField } from "../../input/Input"
 import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import numberColumn, {
-  numberDecimalColumn,
-  numberDecimalPercentageColumn
-} from "../../table/column/numberColumn"
+import { numberColumn } from "../../table/column/numberColumn"
 import { AgentLevelLabel, AgentLevelSelect } from "../AgentLevel"
-import {
-  AgentTypeLabel,
-  AgentTypeSelect,
-  isAgentTypeCash,
-  isAgentTypeCredit
-} from "../AgentType"
+import { AgentTypeLabel, AgentTypeSelect, isAgentTypeCash } from "../AgentType"
 import {
   AgentConfigStatusLabel,
   isAgentConfigRequired,
   isAgentConfigDone
 } from "../AgentConfigStatus"
-import AgentLiveDealerRebatePercentage from "../AgentLiveDealerRebatePercentage"
-import AgentEgameRebatePercentage from "../AgentEgameRebatePercentage"
-import AgentCardGameRebatePercentage from "../AgentCardGameRebatePercentage"
-import AgentLotteryRebatePercentage from "../AgentLotteryRebatePercentage"
-import AgentSportsRebatePercentage from "../AgentSportsRebatePercentage"
-import AgentVirtualSportsRebatePercentage from "../AgentVirtualSportsRebatePercentage"
 import { isDev } from "../../env"
 import { ViewAgentProfitSharingSettingDialogDisclosure } from "../AgentMultipleLayerProfitSharingSetting"
 import { isAgentProfitSharingOneLayer } from "../AgentProfitSharingType"
@@ -86,6 +79,8 @@ import {
   ProfitSharingPercentageTrans,
   TeamNumberTrans
 } from "../../trans/Agent"
+import { ConfigAgentProfitSharingDialogDisclosure } from "./ConfigAgentProfitSharingDialog"
+import { NegativeDividendDialogDisclosure } from "./NegativeDividendDialog"
 
 export { Code }
 
@@ -95,23 +90,22 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<AgentsTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
+  let brandId = usePlatformId()
+
   let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
 
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
+    <Set orientation="vertical" isFilled height="100%">
       {isLoading && (
         <Box alignY="center" alignX="center">
           <Spinner />
@@ -126,14 +120,26 @@ const Body = () => {
 }
 
 const BodyContent = ({ brandId = "", brand }) => {
+  let location = useLocation()
+  let navigate = useNavigate()
+
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: AgentStatus.Enabled,
     levelType: "",
     type: "",
-    username: ""
+    username: location?.state?.username ?? ""
   })
 
-  let { pageIndex, pageSize, status, levelType, type, username } = state
+  useEffectOnce(() => {
+    if (location?.state?.username) {
+      let state = { ...location.state, username: "" }
+      navigate(location.pathname, {
+        state,
+        replace: true
+      })
+    }
+  }, [location?.state?.username])
+
   let {
     data = {},
     isLoading,
@@ -160,42 +166,39 @@ const BodyContent = ({ brandId = "", brand }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId, brand])
 
-  let agentProfitSharingType = brand?.agentDividendType
   let columns = useColumns({
     mutate,
     items: data?.items,
     brandId,
-    agentProfitSharingType
+    brand
   })
 
+  let pageWidth = usePlatformPageContentWidth()
+
   return (
-    <PageContent
-      title={<AgentsTrans />}
-      actionBar={
-        <Flex justifyContent="space-between">
-          <SearchBar
-            brandId={brandId}
-            status={state.status}
-            search={(data = {}) => {
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading}
-          />
-          <AddAgentButton
-            id="add-agent-dialog-disclosure"
-            brandId={brandId}
-            agentProfitSharingType={agentProfitSharingType}
-            onSubmitted={mutate}
-          />
-        </Flex>
-      }
-    >
-      <Stack>
-        <Alert variant="bordered" type="info" accent marginBottom="1rem">
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          brandId={brandId}
+          status={state.status}
+          username={state.username}
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+        <AddAgentButton
+          id="add-agent-dialog-disclosure"
+          brand={brand}
+          onSubmitted={mutate}
+        />
+      </Level>
+      <Box>
+        <Alert variant="bordered" type="info" accent marginBottom="0">
           <List listStyleType="disc" listStylePosition="inside">
             <List.Item>
               <AgentListStatusInfoTrans />
@@ -205,28 +208,47 @@ const BodyContent = ({ brandId = "", brand }) => {
             </List.Item>
           </List>
         </Alert>
-        <Table
-          id="agent"
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-        />
-      </Stack>
+      </Box>
+      <Box flex="1 0 50%">
+        <AutoSizer disableWidth={true}>
+          {({ height }) => {
+            let width = pageWidth
+            return (
+              <Table
+                id="agent"
+                columns={columns}
+                data={data?.items}
+                initialState={state}
+                controlledState={state}
+                pageCount={pageCount(state?.pageSize, data?.totalCount)}
+                setPageIndex={setPageIndex}
+                setSortOrder={setSortOrder}
+                isLoading={isLoading}
+                maxSize={{ height, width }}
+                stickyHead
+              />
+            )
+          }}
+        </AutoSizer>
+      </Box>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
-const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
+const SearchBar = ({
+  brandId,
+  status,
+  username,
+  search,
+  isLoading,
+  ...props
+}) => {
   let usernameInputPlaceholder = useUserNameTrans()
   let formMethods = useForm({
     defaultValues: {
-      status
+      status,
+      username
     }
   })
 
@@ -251,12 +273,7 @@ const SearchBar = ({ brandId, status, search, isLoading, ...props }) => {
   )
 }
 
-const useColumns = ({
-  mutate,
-  items = [],
-  brandId,
-  agentProfitSharingType
-} = {}) => {
+const useColumns = ({ mutate, items = [], brand } = {}) => {
   let hasAnyMenu = useHasSubMenuByRoute()
   let viewable = useIsDisplayMenuByRoute([View])
 
@@ -307,7 +324,7 @@ const useColumns = ({
             return "-"
           }
 
-          let oneLayer = isAgentProfitSharingOneLayer(agentProfitSharingType)
+          let oneLayer = isAgentProfitSharingOneLayer(brand?.agentDividendType)
           if (oneLayer) {
             return (
               <FormattedNumberDecimalPercentage
@@ -522,27 +539,25 @@ const useColumns = ({
                 <>
                   <ViewButton
                     id="view-agent-dialog-disclosure"
-                    record={value}
-                    brandId={brandId}
-                    agentProfitSharingType={agentProfitSharingType}
+                    brand={brand}
+                    agent={value}
                   />
                   <EditButton
                     id="edit-agent-dialog-disclosure"
-                    brandId={brandId}
-                    agentProfitSharingType={agentProfitSharingType}
-                    record={value}
+                    brand={brand}
+                    agent={value}
                     onSubmitted={mutate}
                   />
+                  <NegativeDividendDialogDisclosure agentId={value.id} />
                 </>
               )}
               {configRequired && (
-                <ConfigButton
+                <ConfigAgentProfitSharingDialogDisclosure
                   id="config-agent-dialog-disclosure"
                   palette="warning"
                   variant="outlined"
-                  brandId={brandId}
-                  agentProfitSharingType={agentProfitSharingType}
-                  agentId={value?.id}
+                  brand={brand}
+                  agent={value}
                   onSubmitted={mutate}
                 />
               )}

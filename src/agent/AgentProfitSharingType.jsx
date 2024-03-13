@@ -4,17 +4,23 @@ import { Text } from "bumbag"
 import { useTrans, Trans } from "../i18n"
 import Select from "../select/Select"
 
+//TODO: move to trans/ ?
 const OneLayer = "OneLayer"
 const OneLayerTrans = {
   zh: "單一分紅制",
-  en: "Sharing"
+  en: "Fixed period Revshare"
 }
 
 const MultipleLayer = "MultipleLayer"
 const MultipleLayerTrans = {
   zh: "階梯式分紅制",
-  en: "Tier based profit rebate"
+  en: "Tiered RevShare"
 }
+
+export const isAgentProfitSharingOneLayer = (value) => value === OneLayer
+
+export const isAgentProfitSharingMultipleLayer = (value) =>
+  value === MultipleLayer
 
 export const AgentProfitSharingTypeSelect = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useTrans({
@@ -47,8 +53,3 @@ export const AgentProfitSharingTypeLabel = ({ value = "" }) => {
       return value
   }
 }
-
-export const isAgentProfitSharingOneLayer = (value) => value === OneLayer
-
-export const isAgentProfitSharingMultipleLayer = (value) =>
-  value === MultipleLayer

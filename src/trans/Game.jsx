@@ -157,12 +157,14 @@ const TurnoverPercentage = {
 }
 export const TurnoverPercentageTrans = () => <Trans {...TurnoverPercentage} />
 
-const CommissionRebate = {
-  zh: "是否发放返水",
-  en: "Commission Rebate",
-  vi: "Có phát hành hoàn trả không"
+const GameVipCommissionRebate = {
+  zh: "VIP是否发放返水",
+  en: "VIP Commission Rebate",
+  vi: "VIP có phải là được phát hoàn trả không"
 }
-export const CommissionRebateTrans = () => <Trans {...CommissionRebate} />
+export const GameVipCommissionRebateTrans = () => (
+  <Trans {...GameVipCommissionRebate} />
+)
 
 const WinLoss = {
   zh: "输赢",

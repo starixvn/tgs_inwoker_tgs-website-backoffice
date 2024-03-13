@@ -6,9 +6,13 @@ import {
   usePut,
   usePutData,
   usePostFormData,
-  useDelete
+  useDelete,
+  usePatchData
 } from "../../client"
 import { MerchantStatus } from "../MerchantStatus"
+import { isNil, complement } from "ramda"
+
+const notNil = complement(isNil)
 
 const API = "/api/brand"
 
@@ -93,4 +97,14 @@ export const useUpdateBrandContacts = (id, formData) => {
   return usePostData(url, formData, {
     dropEmptyValuesDisabled: true
   })
+}
+
+export const usePlatformAccountFundSetting = (id) => {
+  let url = id ? `${API}/platform-account-fund/${id}` : ""
+  return useGet(url)
+}
+
+export const useUpdatePlatformAccountFundSetting = (id, formData) => {
+  let url = id && notNil(formData) ? `${API}/platform-account-fund/${id}` : ""
+  return usePatchData(url, formData)
 }

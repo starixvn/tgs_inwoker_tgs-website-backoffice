@@ -45,21 +45,21 @@ const EditPanel = (props) => {
 }
 
 const UpdateAgentContactPanel = ({
-  record,
+  agent,
   onSubmitted,
   onClickClose,
   ...props
 }) => {
   let formMethods = useForm({
     defaultValues: {
-      phone: record?.phone,
-      email: record?.email,
-      qq: record?.qq,
-      wechat: record?.wechat
+      phone: agent?.phone,
+      email: agent?.email,
+      qq: agent?.qq,
+      wechat: agent?.wechat
     }
   })
 
-  let agentId = record?.id
+  let agentId = agent?.id
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate, deleteCache } = useUpdateAgentContact(
     agentId,
@@ -73,7 +73,7 @@ const UpdateAgentContactPanel = ({
   }, [result])
 
   const onSubmit = (data) => {
-    setSubmit(diff(data, record))
+    setSubmit(diff(data, agent))
   }
 
   const reset = () => {
@@ -118,17 +118,17 @@ const UpdateAgentContactPanel = ({
   )
 }
 
-const ViewPanel = ({ record = {}, ...props }) => {
+const ViewPanel = ({ agent = {}, ...props }) => {
   return (
     <TabPanel tabId={Key} {...props}>
       <FieldValues spacing="major-2">
-        <MobileBox value={record?.phone} />
+        <MobileBox value={agent?.phone} />
 
-        <EmailBox value={record?.email} />
+        <EmailBox value={agent?.email} />
 
-        <QqBox value={record?.qq} />
+        <QqBox value={agent?.qq} />
 
-        <WeChatBox value={record?.wechat} />
+        <WeChatBox value={agent?.wechat} />
       </FieldValues>
     </TabPanel>
   )

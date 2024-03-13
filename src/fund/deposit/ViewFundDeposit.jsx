@@ -66,7 +66,8 @@ import {
 } from "../../trans/Platform"
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
-import { AttachmentTrans } from "../../trans/Field"
+import { AttachmentTrans, CSNoteTrans } from "../../trans/Field"
+import { PlayerNoteTrans, PlayerTrans } from "../../trans/Player"
 
 export const ViewFundDepositDisclosure = ({
   brandId,
@@ -264,7 +265,7 @@ export const FormBody = ({
         />
         <TextareaField
           name="remark"
-          label={<Trans zh="客服备註" en="CS Note" />}
+          label={<CSNoteTrans />}
           value={record?.remark}
           disabled={disabled}
         />
@@ -418,7 +419,7 @@ const SendNoteApplyInfoBox = ({ record }) => {
   return (
     <>
       <NormalLabel>
-        <Trans zh="玩家备註" en="Player Note" />
+        <PlayerNoteTrans />
       </NormalLabel>
       <Box alignY="center">{sendNote}</Box>
     </>
@@ -540,7 +541,7 @@ const PlayerApplyInfoCard = ({ applyInfo, bankType }) => {
       variant="bordered"
       title={
         <Heading use="h5">
-          <Trans zh="玩家" en="Player" />
+          <PlayerTrans />
         </Heading>
       }
       css={css`

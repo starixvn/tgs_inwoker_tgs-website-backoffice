@@ -3,6 +3,7 @@ import { css, Global } from "@emotion/react"
 import { useTrans, Trans } from "../i18n"
 import { PercentageNumberInputField } from "../input/NumberInput"
 
+//TODO: rm AgentSportsRebatePercentage.jsx?
 export const Name = "sportsRebatePercentage"
 
 const AgentSportsRebateMessages = {

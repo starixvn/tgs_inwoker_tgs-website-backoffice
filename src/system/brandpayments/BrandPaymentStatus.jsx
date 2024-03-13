@@ -18,6 +18,8 @@ const Enabled = "Enabled"
 
 const Disabled = "Disabled"
 
+export const isBrandPaymentDisabled = (v) => v === Disabled
+
 export default {
   Enabled,
   Disabled

@@ -13,19 +13,16 @@ import {
 import { useTrans } from "../../i18n"
 import Select from "../../select/Select"
 import { useAgentTrans } from "../../trans/Agent"
+import { usePlayerTrans } from "../../trans/Player"
 
 export const Player = "Player"
-const PlayerTrans = {
-  zh: "玩家",
-  en: "Player"
-}
 
 export const Agent = "Agent"
 
 export const DeductBalanceTargetSelect = ({ placeholder, ...props }) => {
   let options = [
     {
-      label: useTrans(PlayerTrans),
+      label: usePlayerTrans(),
       value: Player
     },
     {

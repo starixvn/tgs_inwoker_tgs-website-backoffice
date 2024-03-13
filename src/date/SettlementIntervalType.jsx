@@ -4,6 +4,7 @@ import { Select } from "../select/Select"
 import { useTrans } from "../i18n"
 import { range } from "lodash"
 
+//TODO: move to trans/Date.jsx
 const Daily = "Daily"
 const DailyTrans = {
   zh: "每日",
@@ -14,6 +15,12 @@ const Weekly = "Weekly"
 const WeeklyTrans = {
   zh: "每周",
   en: "Every Week"
+}
+
+const Biweekly = "DoubleWeekly"
+const BiweeklyTrans = {
+  zh: "双周",
+  en: "Bi-Weekly"
 }
 
 const Monthly = "Monthly"
@@ -47,6 +54,10 @@ export const SettlementIntervalTypeSelect = ({
       value: Weekly
     },
     {
+      label: useTrans(BiweeklyTrans),
+      value: Biweekly
+    },
+    {
       label: useTrans(MonthlyTrans),
       value: Monthly
     }
@@ -76,6 +87,7 @@ export const MonthlyDaySelect = ({ ...props }) => {
 export default {
   Daily,
   Weekly,
+  Biweekly,
   Monthly,
   Instantly
 }

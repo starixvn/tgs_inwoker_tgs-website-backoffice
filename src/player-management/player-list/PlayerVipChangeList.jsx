@@ -17,8 +17,11 @@ import { TimeTrans } from "../../trans/Date"
 import {
   VipAfterTrans,
   VipBeforeTrans,
-  VipHistoryRecordTrans
+  VipHistoryRecordTrans,
+  VipUpgradeTrans
 } from "../../trans/Vip"
+import { AutoOrManualSwitchLabel } from "../../switch/AutoOrManualSwitch"
+import { OperatorTrans } from "../../trans/Action"
 
 export const Key = "vip-change-list"
 
@@ -138,6 +141,20 @@ const useColumns = ({ items = [] }) =>
       textColumn({
         accessor: "newLevel",
         Header: <VipAfterTrans />,
+        disableSortBy: true
+      }),
+      textColumn({
+        accessor: "newAutoState",
+        Header: <VipUpgradeTrans />,
+        disableSortBy: true,
+        Cell: ({ value }) => {
+          let isAuto = value === "Enable"
+          return <AutoOrManualSwitchLabel value={isAuto} />
+        }
+      }),
+      textColumn({
+        accessor: "createdUsername",
+        Header: <OperatorTrans />,
         disableSortBy: true
       })
     ],
