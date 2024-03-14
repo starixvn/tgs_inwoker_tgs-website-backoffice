@@ -4,7 +4,6 @@ import { Box } from "bumbag"
 import { matchSorter } from "match-sorter"
 import { head } from "lodash"
 
-//TODO: Paid style
 const paris = [
   [
     "WaitingPayment",
