@@ -37,6 +37,9 @@ export const Footer = forwardRef(({ table, setPageIndex }, ref) => {
       orientation="horizontal"
       verticalBelow="mobile"
       alignY="center"
+      css={css`
+        margin-bottom: 0.75rem;
+      `}
     >
       {pageCount > 0 && (
         <Pagination

@@ -202,7 +202,10 @@ export const FormBody = ({ brandId, record, readonly }) => {
             <StatusTrans />
           </NormalLabel>
           <Box alignY="center">
-            <FundWithdrawStatusLabel value={record?.status} />
+            <FundWithdrawStatusLabel
+              value={record?.status}
+              data-status={record?.status}
+            />
           </Box>
         </FieldValues>
         <Separator />
