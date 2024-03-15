@@ -19,6 +19,7 @@ export const API = "/api/BrandGameProviderReport"
 export const useGameProviderReportList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, API) : ""
   let { data, ...rest } = useGet(url)
+  /*
   if (data) {
     data = {
       items: [
@@ -116,7 +117,7 @@ export const useGameProviderReportList = (searchParams) => {
       ]
     }
   }
-
+  */
   return {
     data,
     ...rest

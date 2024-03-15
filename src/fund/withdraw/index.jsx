@@ -533,12 +533,7 @@ const SearchBar = ({
 }
 
 const StatusCell = ({ value }) => {
-  //TODO:1.42 rm isDev, FundWithdrawStatusLabel use FundWithdrawStatusBox instead
-  if (isDev()) {
-    return <FundWithdrawStatusBox value={value} data-status={value} />
-  }
-
-  return <FundWithdrawStatusLabel value={value} data-status={value} />
+  return <FundWithdrawStatusBox value={value} data-status={value} />
 }
 
 const useColumns = ({

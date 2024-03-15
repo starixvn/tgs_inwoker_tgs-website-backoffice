@@ -533,10 +533,7 @@ const SearchBar = ({
 }
 
 const StatusCell = ({ value }) => {
-  if (isDev()) {
-    return <FundDepositStatusBox value={value} data-status={value} />
-  }
-  return <FundDepositStatusLabel value={value} data-status={value} />
+  return <FundDepositStatusBox value={value} data-status={value} />
 }
 
 const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
