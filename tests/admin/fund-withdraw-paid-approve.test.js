@@ -10,7 +10,7 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-test("reject withdraw paid", async ({
+test("approve withdraw paid", async ({
   page,
   platform,
   platformCode,
@@ -38,11 +38,11 @@ test("reject withdraw paid", async ({
   )
   await backofficeApi.fund.withdraw.approve(formId, { brandId: platform.id })
 
-  let Reject = "Reject"
-  await reviewPaid(page, platformCode, formId, Reject)
+  let Approve = "Approve"
+  await reviewPaid(page, platformCode, formId, Approve)
 
-  let Rejected = "Rejected"
-  await selectByValue(page, `#status-select`, Rejected)
+  let Paid = "Paid"
+  await selectByValue(page, `#status-select`, Paid)
 
   await Promise.all([
     page.waitForResponse(urlIncludes(`/api/withdraw/${platform.id}?`)),
@@ -51,8 +51,8 @@ test("reject withdraw paid", async ({
 
   let TableSelector = `#withdraw`
   let statusLocator = page.locator(
-    `${TableSelector} [data-column-id="status"] span`
+    `${TableSelector} [data-column-id="status"] [data-status]`
   )
   let status = await statusLocator.getAttribute("data-status")
-  expect(status).to.equals(Rejected)
+  expect(status).to.equals(Paid)
 })

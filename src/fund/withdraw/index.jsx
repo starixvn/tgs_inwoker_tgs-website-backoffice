@@ -13,7 +13,12 @@ import {
   FieldStack,
   Blockquote
 } from "bumbag"
-import PageContent from "../../page/Content"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
+import AutoSizer from "react-virtualized-auto-sizer"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
@@ -32,15 +37,12 @@ import {
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
-import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import numberColumn, {
-  numberDecimalColumn,
-  numberDecimalPercentageColumn
-} from "../../table/column/numberColumn"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { today } from "../../date/range"
 import FundWithdrawStatus, {
+  FundWithdrawStatusBox,
   FundWithdrawStatusLabel,
   FundWithdrawStatusSelect,
   isFundApproved,
@@ -55,7 +57,6 @@ import { SortOrder } from "../../table/order"
 import { Update } from "./menu"
 import { ViewFundWithdrawDisclosure } from "./ViewFundWithdraw"
 import { VerifyFundWithdrawDisclosure } from "./VerifyFundWithdraw"
-import { PaymentMethodSelect } from "../../payment/method/PaymentMethod"
 import { UserTypeLabel, UserTypeSelect } from "./UserType"
 import clone from "clone-deep"
 import { isDev } from "../../env"
@@ -103,31 +104,20 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<WithdrawListTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
-const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
-  )
-}
-
 const SecondInMilliseconds = 1000
 const MinuteInMilliseconds = 60000
 
-const BodyContent = ({ brandId }) => {
+const Body = ({}) => {
+  let brandId = usePlatformId()
   let location = useLocation()
 
   let todayRange = today()
@@ -281,69 +271,64 @@ const BodyContent = ({ brandId }) => {
     setDelayUpdate,
     manualBrandPaymentIdList
   })
+
   return (
-    <PageContent
-      title={<WithdrawListTrans />}
-      actionBar={
-        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-          <SearchBar
-            brandId={brandId}
-            username={username}
-            channelName={channelName}
-            payment={state.payment}
-            status={status}
-            thirdOrderNo={state.thirdOrderNo}
-            orderNo={state.orderNo}
-            id={state.id}
-            beginCreateOn={beginCreateOn}
-            endCreateOn={endCreateOn}
-            beginUpdateOn={beginUpdateOn}
-            endUpdateOn={endUpdateOn}
-            brandPaymentIds={state.brandPaymentIds}
-            minDate={minDate}
-            maxRangeDays={QueryMaxRangeDays}
-            search={(data = {}) => {
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading || autoLoading}
-          />
-          {data?.items?.length > 0 && (
-            <Box>
-              <DownloadButton
-                id="export-report"
-                isLoading={isLoading}
-                href={urlWith(
-                  toSearchParams(),
-                  `${API}/exportWithdraw/${brandId}`
-                )}
-                download="Withdraw.xlsx"
-              />
-            </Box>
-          )}
-        </Level>
-      }
-    >
-      <FieldStack>
-        <Summary total={data?.sum} />
-        <Table
-          id="withdraw"
-          columns={columns}
-          data={items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          brandId={brandId}
+          username={username}
+          channelName={channelName}
+          payment={state.payment}
+          status={status}
+          thirdOrderNo={state.thirdOrderNo}
+          orderNo={state.orderNo}
+          id={state.id}
+          beginCreateOn={beginCreateOn}
+          endCreateOn={endCreateOn}
+          beginUpdateOn={beginUpdateOn}
+          endUpdateOn={endUpdateOn}
+          brandPaymentIds={state.brandPaymentIds}
+          minDate={minDate}
+          maxRangeDays={QueryMaxRangeDays}
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
           isLoading={isLoading || autoLoading}
-          getRowId={(row) => row.id}
         />
-      </FieldStack>
+        {data?.items?.length > 0 && (
+          <Box>
+            <DownloadButton
+              id="export-report"
+              isLoading={isLoading}
+              href={urlWith(
+                toSearchParams(),
+                `${API}/exportWithdraw/${brandId}`
+              )}
+              download="Withdraw.xlsx"
+            />
+          </Box>
+        )}
+      </Level>
+      <Summary total={data?.sum} />
+      <Table
+        id="withdraw"
+        columns={columns}
+        data={items}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading || autoLoading}
+        getRowId={(row) => row.id}
+      />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
@@ -547,6 +532,10 @@ const SearchBar = ({
   )
 }
 
+const StatusCell = ({ value }) => {
+  return <FundWithdrawStatusBox value={value} data-status={value} />
+}
+
 const useColumns = ({
   brandId,
   items = [],
@@ -612,9 +601,7 @@ const useColumns = ({
         accessor: "status",
         Header: <StatusTrans />,
         disableSortBy: true,
-        Cell: ({ value }) => (
-          <FundWithdrawStatusLabel value={value} data-status={value} />
-        )
+        Cell: StatusCell
       })
     ]
 

@@ -17,6 +17,8 @@ import {
   WaitingPaymentTrans,
   useWaitingPaymentTrans
 } from "../../trans/Payment"
+import { LabelColorBox } from "../../box/LabelColorBox"
+import { last } from "lodash-es"
 
 const Review = "Review"
 
@@ -45,7 +47,7 @@ export const isFundInvalid = (value) => value === Invalid
 export const FundWithdrawStatusLabel = ({ value, ...props }) => {
   switch (value) {
     case Review:
-      return <ReviewTrans />
+      return <ReviewTrans {...props} />
     case Approved:
       return <WaitingPaymentTrans {...props} />
     case Paid:
@@ -57,6 +59,22 @@ export const FundWithdrawStatusLabel = ({ value, ...props }) => {
     default:
       return value ?? ""
   }
+}
+
+const toPreferredAlias = (value) => {
+  const WaitingPayment = "WaitingPayment"
+  const PreferredAlias = [[Approved, WaitingPayment]]
+  let pair = PreferredAlias.find(([key]) => key == value)
+  return last(pair)
+}
+export const FundWithdrawStatusBox = ({ value, ...props }) => {
+  let alias = toPreferredAlias(value)
+
+  return (
+    <LabelColorBox value={alias ?? value} {...props}>
+      <FundWithdrawStatusLabel value={value} />
+    </LabelColorBox>
+  )
 }
 
 export const FundWithdrawStatusSelect = ({
