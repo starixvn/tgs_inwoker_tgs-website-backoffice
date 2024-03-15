@@ -30,16 +30,16 @@ const VipHistoryRecord = {
 }
 export const VipHistoryRecordTrans = () => <Trans {...VipHistoryRecord} />
 
-const UpgradeConditions = {
-  zh: "升级条件",
-  en: "Upgrade conditions",
-  vi: "điều kiện thăng cấp"
+const Requirements = {
+  zh: "需满足条件",
+  en: "Requirements",
+  vi: "Điều kiện nhận thưởng"
 }
-export const UpgradeConditionsTrans = () => <Trans {...UpgradeConditions} />
+export const RequirementsTrans = () => <Trans {...Requirements} />
 
 const RequiredBetAmountToLevelUp = {
   zh: "累积投注金额(即时)",
-  en: "Required bet amount to level up(Real-time)",
+  en: "Bet Amount (Real-time)",
   vi: "số tiền đặt cược tích lũy( thời giac thực )"
 }
 export const RequiredBetAmountToLevelUpTrans = () => (
@@ -48,7 +48,7 @@ export const RequiredBetAmountToLevelUpTrans = () => (
 
 const RequiredDepositAmountToLevelUp = {
   zh: "累积存款金额(即时)",
-  en: "Required deposit amount to level up(Real-time)",
+  en: "Deposit Amount (Real-time)",
   vi: "số tiền nạp tích lũy ( thời giac thực )"
 }
 export const RequiredDepositAmountToLevelUpTrans = () => (
@@ -71,7 +71,7 @@ export const BirthdayBonusTrans = () => <Trans {...BirthdayBonus} />
 
 const PromotionBonus = {
   zh: "晋升福利",
-  en: "Promotion Bonus",
+  en: "Level Up Bonus",
   vi: "phúc lợi thăng cấp"
 }
 export const PromotionBonusTrans = () => <Trans {...PromotionBonus} />

@@ -52,10 +52,10 @@ import {
   QuarterlyBonusTrans,
   RequiredBetAmountToLevelUpTrans,
   RequiredDepositAmountToLevelUpTrans,
+  RequirementsTrans,
   SportsbookCommissionRebateTrans,
   TotalAmountPerDayTrans,
   TransactionsPerDayTrans,
-  UpgradeConditionsTrans,
   VipBenefitsTrans,
   VipCommissionRebateTrans,
   VirtualSportsCommissionRebateTrans,
@@ -278,7 +278,7 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
       <Level width="100%" paddingLeft="1rem" paddingRight="1rem">
         <Set orientation="vertical" isFilled flex="1">
           <Heading use="h5">
-            <UpgradeConditionsTrans />
+            <RequirementsTrans />
           </Heading>
           <Set
             orientation="vertical"
