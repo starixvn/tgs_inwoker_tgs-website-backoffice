@@ -15,14 +15,11 @@ import { Trans, useTrans } from "../../i18n"
 import { parseISO } from "date-fns"
 import { CancelText } from "../../button/ActionButtons"
 import FormDialog from "../../form/FormDialog"
-import Input, { InputField } from "../../input/Input"
-import DateTimeInput from "../../date/DateTimeInput"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import Textarea, { TextareaField } from "../../textarea"
-import ImageUploadButton from "../../file/upload/ImageUploadButton"
 import { FormBody } from "./PlatformBanner"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
-import { clone } from "lodash"
+import { clone } from "lodash-es"
 import {
   RejectTrans,
   RemarkTrans,

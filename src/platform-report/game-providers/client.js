@@ -7,9 +7,6 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
-import { sortBy, groupBy } from "lodash"
-import { groupWith, eqProps, propEq } from "ramda"
-import clone from "clone-deep"
 import { isDev } from "../../env"
 
 //TODO: use new api instead
