@@ -16,14 +16,11 @@ export const useGameProviderReportList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/v2`) : ""
   let { data, ...rest } = useGet(url)
 
-  let currencyCode = head(data?.datas?.items)?.currencyCode
-  let total = data?.totals?.find((total) => total.currencyCode === currencyCode)
-
   return {
     data: data?.datas
       ? {
           ...data?.datas,
-          total
+          total: data.total
         }
       : undefined,
     ...rest
