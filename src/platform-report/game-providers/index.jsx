@@ -95,7 +95,6 @@ const Body = ({}) => {
     items: data?.items
   })
 
-  //TODO: need to use AutoSizer?
   let pageWidth = usePlatformPageContentWidth()
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -123,7 +122,7 @@ const Body = ({}) => {
               <Table
                 columns={columns}
                 data={data?.items}
-                total={data?.items?.length > 0 && data?.totals}
+                total={data?.items?.length > 0 && data?.total}
                 initialState={state}
                 controlledState={state}
                 pageCount={pageCount(state.pageSize, data?.totalCount)}

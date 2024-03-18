@@ -75,17 +75,15 @@ export const Panel = ({
   let { selectedId } = props
   let isActive = selectedId === Key
 
-  //TODO: isLoading effect
-  //TODO: alert error
   //TODO: rm isDev when ready to stg
-
   let { isLoading, data, error, mutate, deleteCache } = usePlayerBankList(
     isDev() && isActive && playerCode
   )
   /*
   TODO: fix test case for dev env
-  banks = isDev() ? data?.items : banks
   */
+  banks = isDev() ? data?.items : banks
+
   return (
     <TabPanel tabId={Key} {...props}>
       {isDev() && isLoading && (
@@ -94,7 +92,7 @@ export const Panel = ({
         </Box>
       )}
       <TwoColumns>
-        {banks.map((bank, index) => (
+        {banks?.map((bank, index) => (
           <Bank
             key={index}
             brandId={brandId}
@@ -118,6 +116,7 @@ export const Panel = ({
           }}
         />
       )}
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </TabPanel>
   )
 }
