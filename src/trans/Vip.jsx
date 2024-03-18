@@ -39,7 +39,7 @@ export const RequirementsTrans = () => <Trans {...Requirements} />
 
 const RequiredBetAmountToLevelUp = {
   zh: "累积投注金额(即时)",
-  en: "Bet Amount (Real-time)",
+  en: "Total Bet Amount (Real-time)",
   vi: "số tiền đặt cược tích lũy( thời giac thực )"
 }
 export const RequiredBetAmountToLevelUpTrans = () => (
@@ -48,7 +48,7 @@ export const RequiredBetAmountToLevelUpTrans = () => (
 
 const RequiredDepositAmountToLevelUp = {
   zh: "累积存款金额(即时)",
-  en: "Deposit Amount (Real-time)",
+  en: "Total Deposit Amount (Real-time)",
   vi: "số tiền nạp tích lũy ( thời giac thực )"
 }
 export const RequiredDepositAmountToLevelUpTrans = () => (

@@ -83,11 +83,16 @@ export const Panel = ({
     isDev() && isActive && playerCode
   )
   /*
-  TODO
+  TODO: fix test case for dev env
   banks = isDev() ? data?.items : banks
   */
   return (
     <TabPanel tabId={Key} {...props}>
+      {isDev() && isLoading && (
+        <Box alignY="center" alignX="center">
+          <Spinner />
+        </Box>
+      )}
       <TwoColumns>
         {banks.map((bank, index) => (
           <Bank
