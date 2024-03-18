@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Select } from "../select/Select"
 import { useTrans } from "../i18n"
-import { range } from "lodash"
+import { range } from "lodash-es"
 
 //TODO: move to trans/Date.jsx
 const Daily = "Daily"

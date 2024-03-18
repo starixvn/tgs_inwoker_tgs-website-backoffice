@@ -35,7 +35,10 @@ test("edit and view player bank", async ({
 
 const deleteBank = async (page, player) => {
   let dialogSelector = await openEditPlayerDialog(page)
-  await page.click(`${dialogSelector} #banks`)
+  await Promise.all([
+    page.waitForResponse(urlIncludes(`/api/player/${player.code}/bank`)),
+    page.click(`${dialogSelector} #banks`)
+  ])
 
   let deleteBankSelector = `#delete-bank-dialog`
   await openDialog(page, deleteBankSelector)

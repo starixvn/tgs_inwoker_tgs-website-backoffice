@@ -59,7 +59,6 @@ export const toUpdatePlayerFormData = (data) => {
     info.vipLevelAutoState = info.vipLevelAutoState?.toString()
   }
 
-  //TODO: test cases for update info fields
   return {
     info: pick(
       [
@@ -142,6 +141,11 @@ export const useUpdatePlayerContact = (playerCode, data) => {
     dropEmptyValuesDisabled: true,
     dedupingInterval: 100
   })
+}
+
+export const usePlayerBankList = (playerCode) => {
+  let url = playerCode ? `${API}/${playerCode}/bank` : ""
+  return useGet(url)
 }
 
 export const useAddPlayerBank = (playerCode, data) => {

@@ -368,3 +368,11 @@ export const AccountFunds = {
 }
 export const AccountFundsTrans = () => <Trans {...AccountFunds} />
 export const useAccountFundsTrans = () => useTrans(AccountFunds)
+
+const PlatformSettlementTime = {
+  zh: "平台结算时间",
+  en: "Platform Settlement Time"
+}
+export const PlatformSettlementTimeTrans = () => (
+  <Trans {...PlatformSettlementTime} />
+)

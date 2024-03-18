@@ -6,6 +6,7 @@ import {
   openViewPlayerDialog,
   searchPlayer
 } from "./player-list-page.js"
+import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
@@ -29,7 +30,11 @@ test("view player bank card", async ({
 
 const viewBank = async (page, bank, player) => {
   let dialogSelector = await openViewPlayerDialog(page, player)
-  await page.click(`${dialogSelector} #banks`)
+
+  await Promise.all([
+    page.waitForResponse(urlIncludes(`/api/player/${player.code}/bank`)),
+    page.click(`${dialogSelector} #banks`)
+  ])
 
   let bankName = await page
     .locator(`${dialogSelector} [data-field="bankName"]`)

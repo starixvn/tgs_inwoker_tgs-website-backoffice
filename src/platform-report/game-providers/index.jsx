@@ -34,12 +34,16 @@ import {
   BetAmountTrans,
   GameProviderReportTrans,
   GameProviderTrans,
+  GamingCountTrans,
   TransactionCountTrans,
   TurnoverTrans,
   ValidBetAmountTrans
 } from "../../trans/Game"
 import { CurrencyTrans } from "../../trans/Payment"
-import { CompanyWinLossTrans } from "../../trans/Platform"
+import {
+  CompanyWinLossTrans,
+  PlatformSettlementTimeTrans
+} from "../../trans/Platform"
 import { TotalTrans } from "../../trans/Field"
 
 export { Code }
@@ -91,7 +95,6 @@ const Body = ({}) => {
     items: data?.items
   })
 
-  //TODO: need to use AutoSizer?
   let pageWidth = usePlatformPageContentWidth()
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -119,7 +122,7 @@ const Body = ({}) => {
               <Table
                 columns={columns}
                 data={data?.items}
-                total={data?.items?.length > 0 && data?.totals}
+                total={data?.items?.length > 0 && data?.total}
                 initialState={state}
                 controlledState={state}
                 pageCount={pageCount(state.pageSize, data?.totalCount)}
@@ -166,13 +169,12 @@ const SearchBar = ({
 
   let QueryMaxRangeDays = 31
 
-  //TODO: move to trans
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set alignY="bottom">
           <DateInputRangeField
-            label={<Trans zh="平台结算时间" en="Platform Settlement Time" />}
+            label={<PlatformSettlementTimeTrans />}
             id="date-range"
             showDateDropdownMenu
             minDate={minDate}
@@ -212,9 +214,6 @@ const useColumns = ({ items = [] }) => {
         Header: <GameProviderTrans />,
         disableSortBy: true,
         TotalCell: () => <TotalTrans />
-        // Cell: ({ value: { isTotal, gameProviderName } }) => {
-        //   return isTotal ? <TotalTrans /> : gameProviderName
-        // }
       }),
       textColumn({
         accessor: "currencyCode",
@@ -238,6 +237,11 @@ const useColumns = ({ items = [] }) => {
       numberDecimalColumn({
         accessor: "validBetAmount",
         Header: <ValidBetAmountTrans />
+      }),
+      numberColumn({
+        accessor: "playerCount",
+        Header: <GamingCountTrans />,
+        disableSortBy: true
       }),
       numberDecimalColumn({
         accessor: "companyWinLoss",

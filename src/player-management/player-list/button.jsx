@@ -246,7 +246,7 @@ const ViewTabs = ({
         {...tab}
       />
       {contactAuth && <ContractPanel player={player} {...tab} />}
-      <BankPanel banks={player.banks} {...tab} />
+      <BankPanel playerCode={playerCode} banks={player.banks} {...tab} />
       <BettingPanel
         playerCode={playerCode}
         player={player}
@@ -277,6 +277,7 @@ const ViewTabs = ({
   )
 }
 
+//TODO: rm onBankSubmitted
 const EditTabs = ({
   brandId,
   brand,
@@ -289,7 +290,6 @@ const EditTabs = ({
   onClickClose
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
-
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>

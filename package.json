@@ -52,7 +52,6 @@
     "@opentelemetry/instrumentation-fetch": "0.40.0",
     "@opentelemetry/sdk-trace-web": "1.14.0",
     "@playwright/test": "1.42.1",
-    "@react-spring/web": "^9.5.5",
     "@snowpack/plugin-babel": "^2.1.7",
     "@snowpack/plugin-dotenv": "^2.1.0",
     "@snowpack/plugin-react-refresh": "^2.5.0",
@@ -103,7 +102,7 @@
     "super-expressive": "^1.4.0",
     "swr": "^0.5.6",
     "tinymce": "5.5.1",
-    "vite": "^5.1.5",
+    "vite": "5.1.5",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.12/xlsx-0.18.12.tgz",
     "xml-formatter": "^2.4.0"
   }
