@@ -4,8 +4,6 @@ WORKDIR /dest
 
 # Copy package.json and package-lock.json
 COPY ./package* .
-# Copy snowpack env file
-# COPY ./snowpack.env ./.env
 
 # Copy env file
 COPY ./.env .
