@@ -133,6 +133,7 @@ const Body = ({}) => {
           }}
         </AutoSizer>
       </Box>
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
   )
 }

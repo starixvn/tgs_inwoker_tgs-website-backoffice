@@ -228,7 +228,10 @@ export const FormBody = ({
             <StatusTrans />
           </NormalLabel>
           <Box alignY="center">
-            <FundDepositStatusLabel value={record?.status} />
+            <FundDepositStatusLabel
+              value={record?.status}
+              data-status={record?.status}
+            />
           </Box>
 
           {hasAttachment && (

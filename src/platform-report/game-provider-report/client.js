@@ -7,7 +7,7 @@ import {
   usePutData,
   usePostFormData
 } from "../../client"
-import { sortBy, groupBy } from "lodash"
+import { sortBy } from "lodash-es"
 import { groupWith, eqProps, propEq } from "ramda"
 import clone from "clone-deep"
 import { isDev } from "../../env"

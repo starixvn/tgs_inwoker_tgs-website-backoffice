@@ -52,10 +52,10 @@ import {
   QuarterlyBonusTrans,
   RequiredBetAmountToLevelUpTrans,
   RequiredDepositAmountToLevelUpTrans,
+  RequirementsTrans,
   SportsbookCommissionRebateTrans,
   TotalAmountPerDayTrans,
   TransactionsPerDayTrans,
-  UpgradeConditionsTrans,
   VipBenefitsTrans,
   VipCommissionRebateTrans,
   VirtualSportsCommissionRebateTrans,
@@ -187,7 +187,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       minWidth="85vw"
       placement="top"
     >
-      <EditBody />
+      <EditBody record={record} />
     </FormDialog>
   )
 }
@@ -268,16 +268,17 @@ const WithdrawLimitInputGroup = ({
 }
 
 const EditBody = ({ record, readonly = false, isAdd = false }) => {
-  let { getValues, setValue, control } = useFormContext()
+  let { getValues } = useFormContext()
   let editable = !readonly
   let id = getValues("id")
 
+  let isLevel1 = record?.level === 1
   return (
     <FieldStack orientation="vertical" paddingBottom="1.5rem">
       <Level width="100%" paddingLeft="1rem" paddingRight="1rem">
         <Set orientation="vertical" isFilled flex="1">
           <Heading use="h5">
-            <UpgradeConditionsTrans />
+            <RequirementsTrans />
           </Heading>
           <Set
             orientation="vertical"
@@ -291,7 +292,11 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               </NormalLabel>
               {editable && (
                 <Box>
-                  <NumberInput name="levelUpAccumulateBetAmount" min="0" />
+                  <NumberInput
+                    name="levelUpAccumulateBetAmount"
+                    min="0"
+                    disabled={isLevel1}
+                  />
                 </Box>
               )}
               {readonly && (
@@ -305,7 +310,11 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               </NormalLabel>
               {editable && (
                 <Box>
-                  <NumberInput name="levelUpAccumulateDeposit" min="0" />
+                  <NumberInput
+                    name="levelUpAccumulateDeposit"
+                    min="0"
+                    disabled={isLevel1}
+                  />
                 </Box>
               )}
               {readonly && (
@@ -347,7 +356,11 @@ const EditBody = ({ record, readonly = false, isAdd = false }) => {
               </NormalLabel>
               {editable && (
                 <Box>
-                  <NumberInput name="promotionBenefit" min="0" />
+                  <NumberInput
+                    name="promotionBenefit"
+                    min="0"
+                    disabled={isLevel1}
+                  />
                 </Box>
               )}
               {readonly && (

@@ -20,6 +20,7 @@ import {
   WaitingPaymentTrans,
   useWaitingPaymentTrans
 } from "../../trans/Payment"
+import { LabelColorBox } from "../../box/LabelColorBox"
 
 const WaitingPayment = "WaitingPayment"
 
@@ -52,6 +53,14 @@ export const FundDepositStatusLabel = ({ value, ...props }) => {
     default:
       return value ?? ""
   }
+}
+
+export const FundDepositStatusBox = ({ value, ...props }) => {
+  return (
+    <LabelColorBox value={value} {...props}>
+      <FundDepositStatusLabel value={value} />
+    </LabelColorBox>
+  )
 }
 
 export const FundDepositStatusSelect = ({

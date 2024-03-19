@@ -44,7 +44,10 @@ test("edit player bank card", async ({
 
 const editBank = async (page, bank, player) => {
   let dialogSelector = await openEditPlayerDialog(page)
-  await page.click(`${dialogSelector} #banks`)
+  await Promise.all([
+    page.waitForResponse(urlIncludes(`/api/player/${player.code}/bank`)),
+    page.click(`${dialogSelector} #banks`)
+  ])
 
   let editBankDialogSelector = `#edit-bank-dialog`
   await openDialog(page, editBankDialogSelector)

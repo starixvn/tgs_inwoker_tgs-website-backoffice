@@ -22,15 +22,12 @@ import FormDialog from "../../form/FormDialog"
 import Input, { InputField } from "../../input/Input"
 import DateTimeInput from "../../date/DateTimeInput"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
-import Textarea, { TextareaField } from "../../textarea"
-import ImageUploadButton, {
-  ImageLocalizationDialogDisclosure
-} from "../../file/upload/ImageUploadButton"
+import { ImageLocalizationDialogDisclosure } from "../../file/upload/ImageUploadButton"
 import Checkbox from "../../checkbox"
 import { LocalizationDialogDisclosure } from "../../dialog/LocalizationDialog"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import { clone } from "lodash"
+import { clone } from "lodash-es"
 import { isValidDate } from "../../date/isValidDate"
 import {
   RecommendedSize1920X600Trans,

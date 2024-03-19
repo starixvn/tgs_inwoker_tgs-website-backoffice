@@ -30,10 +30,15 @@ import {
   Code as BalanceChangeReportCode,
   codeLabelPair as balanceChangeReportPair
 } from "./balance-change-report/menu"
+//TODO: rm game-provider-report when game-providers is ready
 import {
   Code as GameProviderReportCode,
   codeLabelPair as gameProviderReportPair
 } from "./game-provider-report/menu"
+import {
+  Code as GameProvidersCode,
+  codeLabelPair as gameProvidersPair
+} from "./game-providers/menu"
 import {
   Code as TransferRecordsCode,
   codeLabelPair as transferRecordsPair
@@ -130,8 +135,10 @@ const label = ({ locale, code }) => {
     case BalanceChangeReportCode:
       return getTrans(BalanceChangeReport, locale)
 
+    case GameProvidersCode:
     case GameProviderReportCode:
       return getTrans(GameProviderReport, locale)
+
     case WinlossReportCode:
       return getTrans(WinlossReport, locale)
 
@@ -167,6 +174,7 @@ export const codeLabelPair = [
         playerContributionReportPair,
         agentBonusReportPair,
         balanceChangeReportPair,
+        gameProvidersPair,
         gameProviderReportPair,
         transferRecordsPair,
         winlossReportPair,

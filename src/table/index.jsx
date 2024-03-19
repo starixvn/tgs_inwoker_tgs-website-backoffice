@@ -258,6 +258,7 @@ export const Table = ({
   const PaginationHeight = footerMeasure?.height > 0 ? 60 : 0 //TODO: measure footer height + margin?
 
   const RowHeight = 50
+  //TODO: min height = header height + 2 row heigh?
   if (data?.length >= 5 && !Number.isFinite(minHeight)) {
     minHeight = RowHeight * 5
   }

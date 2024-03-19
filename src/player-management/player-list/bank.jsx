@@ -24,7 +24,8 @@ import {
   useEditPlayerBank,
   useDeletePlayerBank,
   useAddPlayerBank,
-  useSetDefaultPlayerBank
+  useSetDefaultPlayerBank,
+  usePlayerBankList
 } from "./client"
 import AlertDialog from "../../dialog/Alert"
 import Backdrop from "../../dialog/Backdrop"
@@ -49,6 +50,7 @@ import {
   PaymentChannelTrans
 } from "../../trans/Payment"
 import { CancelTrans, SubmitTrans } from "../../trans/Action"
+import { isDev } from "../../env"
 
 export const Key = "banks"
 
@@ -60,6 +62,8 @@ export const Tab = ({ ...props }) => {
   )
 }
 
+//TODO: rm onSubmitted from parent?
+//TODO: rm banks param from parent
 export const Panel = ({
   brandId,
   playerCode,
@@ -68,16 +72,36 @@ export const Panel = ({
   onSubmitted,
   ...props
 }) => {
+  let { selectedId } = props
+  let isActive = selectedId === Key
+
+  //TODO: rm isDev when ready to stg
+  let { isLoading, data, error, mutate, deleteCache } = usePlayerBankList(
+    isDev() && isActive && playerCode
+  )
+  /*
+  TODO: fix test case for dev env
+  */
+  banks = isDev() ? data?.items : banks
+
   return (
     <TabPanel tabId={Key} {...props}>
+      {isDev() && isLoading && (
+        <Box alignY="center" alignX="center">
+          <Spinner />
+        </Box>
+      )}
       <TwoColumns>
-        {banks.map((bank, index) => (
+        {banks?.map((bank, index) => (
           <Bank
             key={index}
             brandId={brandId}
             playerCode={playerCode}
             record={bank}
-            onSubmitted={onSubmitted}
+            onSubmitted={() => {
+              mutate()
+              onSubmitted?.()
+            }}
             edit={edit}
           />
         ))}
@@ -86,9 +110,13 @@ export const Panel = ({
         <AddBank
           brandId={brandId}
           playerCode={playerCode}
-          onSubmitted={onSubmitted}
+          onSubmitted={() => {
+            mutate()
+            onSubmitted?.()
+          }}
         />
       )}
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </TabPanel>
   )
 }
