@@ -9,7 +9,8 @@ defaultEnvironment: develop
 providers:
   - name: local-kubernetes # The name of the provider plugin to use.
     environments: ["develop"]
-    setupIngressController: false # "nginx"
+    setupIngressController: false
+    # setupIngressController: "nginx"
     imagePullSecrets:
       # https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-by-providing-credentials-on-the-command-line
       - name: regcred # docker auth

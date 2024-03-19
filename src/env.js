@@ -25,21 +25,28 @@ const Production = "production"
 export const isDev = () => {
   return (
     window?.env?.mode?.toLowerCase?.() === Development ||
-    boolean(import.meta.env.SNOWPACK_PUBLIC_IS_DEV)
+    boolean(import.meta.env.SNOWPACK_PUBLIC_IS_DEV) ||
+    import.meta.env.DEV
   )
 }
+console.log("isDev()", isDev())
 
 const isLocal = () => {
-  return boolean(import.meta.env.SNOWPACK_PUBLIC_IS_LOCAL)
+  let value =
+    import.meta.env.SNOWPACK_PUBLIC_IS_LOCAL ?? import.meta.env.VITA_IS_LOCAL
+  return boolean(value)
 }
+console.log("isLocal()", isLocal())
 
 export const isLocalDev = () => {
   let dev = isDev()
   let local = isLocal()
   return dev && local
 }
+console.log("isLocalDev()", isLocalDev())
 
 export const isProduction = () => window?.env?.mode === Production
+console.log("isProduction()", isProduction())
 
 export const getLoginImageUrl = () => window?.env?.loginImageUrl || ""
 

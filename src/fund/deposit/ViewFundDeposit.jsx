@@ -154,7 +154,7 @@ export const FormBody = ({
 }) => {
   let hasAttachment = !!record?.paymentReturn?.manualReceiptFileId
   let attachmentUrl = `/api/fs/${record?.paymentReturn?.manualReceiptFileId}`
-  console.log("FormBody paymentMethod", paymentMethod)
+
   let disabled = readOnly
   return (
     <>
