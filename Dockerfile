@@ -14,8 +14,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# TODO: RUN npm run test
-RUN npm run build
+# RUN npm run build
+RUN npm run build:vite
 
 # Copy build to caddy server
 FROM caddy:2.4.6-alpine
