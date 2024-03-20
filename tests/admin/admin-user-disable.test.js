@@ -12,17 +12,16 @@ import { selectByValue } from "../page/select.js"
 
 const test = base.extend(Fixture)
 
-console.warn("TODO: use brandId, licenseeId, or resellerId for non admin user")
-test.skip("disable brand admin user", async ({ page, backofficeApi }) => {
+test("disable brand admin user", async ({ page, platform, backofficeApi }) => {
   let username = `${faker.person.firstName()}${new Date().getTime()}`
   let [user] = await Promise.all([
     backofficeApi.user.platformUser.findOrCreate({
       username,
-      name: username
+      name: username,
+      brandId: platform.id
     }),
     gotoAdminUserListPage(page)
   ])
-
   await searchAdminUser(page, username)
 
   let DialogSelector = `#edit-user-dialog`
