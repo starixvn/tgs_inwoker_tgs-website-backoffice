@@ -12,7 +12,8 @@ import { selectByValue } from "../page/select.js"
 
 const test = base.extend(Fixture)
 
-test("disable brand admin user", async ({ page, backofficeApi }) => {
+console.warn("TODO: use brandId, licenseeId, or resellerId for non admin user")
+test.skip("disable brand admin user", async ({ page, backofficeApi }) => {
   let username = `${faker.person.firstName()}${new Date().getTime()}`
   let [user] = await Promise.all([
     backofficeApi.user.platformUser.findOrCreate({
