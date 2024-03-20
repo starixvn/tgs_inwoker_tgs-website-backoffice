@@ -18,7 +18,6 @@ export const find = async (username) => {
   return result?.items?.[0]
 }
 
-//TODO if no departmentId, use platform.department.find api to get department
 export const create = async (payload) => {
   let username = payload?.username ?? PlatformUsername
   let name = payload?.name ?? PlatformUsername
