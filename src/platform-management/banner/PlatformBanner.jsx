@@ -5,7 +5,7 @@ import { Create as CreateMenu, Update as UpdateMenu, View } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { FieldValues } from "../../layout/Grid"
 import Label from "../../form/Label"
-import Disclosure, {
+import {
   AddDisclosure,
   EditDisclosure,
   ViewDisclosure
@@ -19,7 +19,7 @@ import { Trans, useTrans } from "../../i18n"
 import { parseISO } from "date-fns"
 import { CancelText } from "../../button/ActionButtons"
 import FormDialog from "../../form/FormDialog"
-import Input, { InputField } from "../../input/Input"
+import { InputField } from "../../input/Input"
 import DateTimeInput from "../../date/DateTimeInput"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { ImageLocalizationDialogDisclosure } from "../../file/upload/ImageUploadButton"
