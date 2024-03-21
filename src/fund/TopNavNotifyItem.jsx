@@ -88,7 +88,7 @@ export const TopNavNotifyItem = ({
         })
       }
       setUnprocessed(total)
-      mutate(null, false) //reset total > null > play alarm next effect
+      mutate(undefined, false) //reset total > null > play alarm next effect
     }
   }, [total])
 

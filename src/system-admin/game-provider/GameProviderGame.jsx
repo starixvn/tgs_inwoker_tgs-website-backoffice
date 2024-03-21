@@ -171,7 +171,7 @@ const AddGameDialog = ({ gameProviderId, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(false, undefined)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
   return (
@@ -217,7 +217,7 @@ const EditGameDialog = ({ gameProviderId, record, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(false, undefined)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
   return (

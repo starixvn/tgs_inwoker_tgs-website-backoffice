@@ -27,21 +27,16 @@ test("edit and view agent domain list", async ({
   ])
 
   await searchAgent(page, agent.username)
+  console.log("TODO: agent.username", agent.username)
   await deleteDomain(page, domain, platform, agent)
 })
 
 const deleteDomain = async (page, domain, platform, agent) => {
   let editDialogSelector = await openEditAgentDialog(page)
   await Promise.all([
-    page.waitForResponse((response) => {
-      let url = response.url()
-      let isApi = url.includes(`/api/agent/domain/${platform.id}/${agent.id}`)
-      if (isApi && !response.ok()) {
-        return Error(`api /api/agent/domain/{platform.id}/{agent.id} failed`)
-      }
-
-      return isApi
-    }),
+    page.waitForResponse(
+      urlIncludes(`/api/agent/domain/${platform.id}/${agent.id}`)
+    ),
     page.click(`${editDialogSelector} #AgentDomainList`)
   ])
 

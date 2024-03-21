@@ -420,7 +420,7 @@ const ViewDialog = ({ brandId, promotionId, dialog, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (

@@ -503,7 +503,7 @@ const useColumns = ({
               <StatusToggleButton
                 record={value}
                 onSubmitted={() => {
-                  mutate(null)
+                  mutate(undefined)
                 }}
                 disabled={!hasUpdateAuth}
               />

@@ -568,8 +568,8 @@ const EditRoleDialog = ({ id, record, dialog, onSubmitted }) => {
       record={record}
       dialog={dialog}
       onSubmitted={(data) => {
-        mutate(false, undefined)
-        onSubmitted && onSubmitted()
+        mutate(undefined, false)
+        onSubmitted?.()
       }}
     />
   )

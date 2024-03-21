@@ -268,7 +268,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               ...data
             })
             deleteCache()
-            mutate(null)
+            mutate(undefined)
           }}
         />
         {agentData?.mainItems?.length > 0 && (

@@ -1,5 +1,4 @@
-import useSWR, { cache } from "swr"
-import client, {
+import {
   urlWith,
   get,
   put,

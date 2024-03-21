@@ -97,7 +97,7 @@ const AddRoundDialog = ({ onSubmitted, dialog, dialogId, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 

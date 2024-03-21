@@ -142,7 +142,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
               ...data
             })
             deleteCache()
-            mutate(null)
+            mutate(undefined)
           }}
         />
       </Level>

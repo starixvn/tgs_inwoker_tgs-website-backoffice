@@ -41,7 +41,7 @@ export const PlatformTokenActionButtons = ({ platformId }) => {
           if (!id) {
             setId(platformId)
           } else {
-            mutate(null)
+            mutate(undefined)
           }
         }}
       >
@@ -61,7 +61,7 @@ export const PlatformTokenActionButtons = ({ platformId }) => {
         <AlertDialog
           {...error}
           onClickClose={() => {
-            mutate(null, false)
+            mutate(undefined, false)
           }}
         />
       )}

@@ -116,7 +116,7 @@ const AddDeductFundDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
   }
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 

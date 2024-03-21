@@ -96,7 +96,7 @@ const PlayerWalletDialog = ({ playerCode, dialog, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   if (isLoading) {
@@ -182,7 +182,7 @@ const TransferAllToMainWalletButton = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 
@@ -220,7 +220,7 @@ const TransferToMainWalletButton = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 

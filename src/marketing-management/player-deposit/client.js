@@ -1,4 +1,3 @@
-import useSWR, { cache } from "swr"
 import {
   urlWith,
   useGet,
@@ -29,7 +28,7 @@ export const useNoSecondDepositPlayerList = (searchParams) => {
   return useGet(url)
 }
 
-export const useDailyDepositPlayerList =  (searchParams) => {
+export const useDailyDepositPlayerList = (searchParams) => {
   let url = searchParams
     ? urlWith(searchParams, `${API}/playerDailyDepositDetails`)
     : ""

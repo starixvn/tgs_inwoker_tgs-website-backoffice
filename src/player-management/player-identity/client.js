@@ -23,7 +23,7 @@ export const usePlayerIdentity = (playerCode) => {
 }
 
 export const useVerifyPlayerID = (formId, data) => {
-  let url = formId ? `${API}/${formId}` : ""
+  let url = formId && data ? `${API}/${formId}` : ""
   return usePostData(url, data)
 }
 

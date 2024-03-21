@@ -208,12 +208,12 @@ export const useUpdateAgentWithdrawPassword = (data) => {
 }
 
 export const useAddAgentBank = (agentId, data) => {
-  let url = agentId ? `${API}/${agentId}/bank` : ""
+  let url = agentId && data ? `${API}/${agentId}/bank` : ""
   return usePostData(url, data)
 }
 
 export const useUpdateAgentBank = (id, data) => {
-  let url = id ? `${API}/bank/${id}` : ""
+  let url = id && data ? `${API}/bank/${id}` : ""
   return usePutData(url, data)
 }
 
