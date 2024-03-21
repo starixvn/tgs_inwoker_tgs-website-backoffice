@@ -158,14 +158,6 @@ const deleteCacheBy = (source = "") => {
   }
 }
 
-const deleteErrorCacheBy = (source = "") => {
-  let [key, args, errorKey, isValidatingKey] = cache.serializeKey(source)
-
-  if (errorKey) {
-    cache.delete(errorKey)
-  }
-}
-
 export const useGet = (url, options = DefaultUpdateOptions) => {
   let fetchData = !!url
   let key = fetchData ? url : null
@@ -177,10 +169,8 @@ export const useGet = (url, options = DefaultUpdateOptions) => {
     isLoading: !error && isNil(data) && fetchData,
     isValidating,
     error,
-    isError: error,
     mutate,
     deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
     clearCache: () => cache.clear()
   }
 }
@@ -200,11 +190,8 @@ export const usePost = (url, data, options = DefaultUpdateOptions) => {
     isLoading: !error && !result && key,
     isValidating,
     error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    deleteCache: () => deleteCacheBy(key)
   }
 }
 
@@ -224,11 +211,8 @@ export const usePostData = (url, data, options = DefaultUpdateOptions) => {
     isLoading: !error && !result && fetchData,
     isValidating,
     error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    deleteCache: () => deleteCacheBy(key)
   }
 }
 
@@ -259,11 +243,8 @@ export const usePostFormData = (
     isLoading: !error && !result && fetchData,
     isValidating,
     error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    deleteCache: () => deleteCacheBy(key)
   }
 }
 
@@ -283,11 +264,8 @@ export const usePutData = (url, data, options = DefaultUpdateOptions) => {
     isLoading: !error && !result && fetchData,
     isValidating,
     error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    deleteCache: () => deleteCacheBy(key)
   }
 }
 
@@ -301,11 +279,8 @@ export const usePut = (url, settings, options = DefaultUpdateOptions) => {
     isLoading: key && !error && !result,
     isValidating,
     error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    deleteCache: () => deleteCacheBy(key)
   }
 }
 
@@ -336,11 +311,8 @@ export const usePatchData = (
     isLoading: !error && !result && key,
     isValidating,
     error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    deleteCache: () => deleteCacheBy(key)
   }
 }
 
@@ -360,11 +332,8 @@ export const useDelete = (url, settings) => {
     isLoading: !error && !result && fetchData,
     isValidating,
     error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    deleteCache: () => deleteCacheBy(key)
   }
 }
 
@@ -383,11 +352,8 @@ export const useDeleteData = (url, data, options = DefaultUpdateOptions) => {
     isLoading: !error && !result && key,
     isValidating,
     error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    deleteCache: () => deleteCacheBy(key)
   }
 }
 
@@ -407,11 +373,8 @@ export const useHead = (url, settings) => {
     isLoading: !error && !result && fetchData,
     isValidating,
     error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    deleteCache: () => deleteCacheBy(key)
   }
 }
 
