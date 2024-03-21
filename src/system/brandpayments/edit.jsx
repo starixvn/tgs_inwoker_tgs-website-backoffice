@@ -770,7 +770,7 @@ const UploadListColumn = ({ name = "", title, fileName = "" }) => {
 
   let uploadFileInputRef = useRef()
   let [formData, setFormData] = useState()
-  let { result, isLoading, error, clearCache, deleteCache } =
+  let { result, isLoading, error, deleteCache } =
     useBrandPaymentUpload(formData)
 
   const resetFormData = () => {

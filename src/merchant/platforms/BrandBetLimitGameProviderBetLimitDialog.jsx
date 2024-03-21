@@ -27,7 +27,6 @@ import useLicenseeBrand from "./useLicenseeBrand"
 import Backdrop from "../../dialog/Backdrop"
 import { useGameProviderBetLimitList } from "../../game/providers/betlimits/client"
 import { Select } from "../../select/Select"
-import { useGameProvider } from "../../game/providers/client"
 import { Checkbox } from "../../checkbox"
 import clone from "clone-deep"
 import { SportsSwitch } from "./SportsSwitch"
@@ -176,8 +175,7 @@ const EditDialog = ({
     isLoading: isLoadingBrand,
     error: brandError,
     mutateBrand,
-    deleteBrandCache,
-    clearCache
+    deleteBrandCache
   } = useLicenseeBrand({ brandId, licenseeId })
 
   let [formData, setSubmit] = useState()

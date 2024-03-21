@@ -441,7 +441,6 @@ const useColumns = ({ mutate, brandId, status: tabStatusName, items = [] }) => {
                 brandId={brandId}
                 record={value}
                 onSubmitted={() => {
-                  //clearCache()
                   mutate(undefined)
                 }}
                 disabled={!hasUpdateAuth}

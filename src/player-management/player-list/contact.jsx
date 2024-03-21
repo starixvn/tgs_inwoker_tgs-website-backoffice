@@ -103,7 +103,7 @@ const UpdateContactPanel = ({
   })
 
   let [submitData, setSubmit] = useState()
-  let { result, error, mutate, clearCache } = useUpdatePlayerContact(
+  let { result, error, mutate, deleteCache } = useUpdatePlayerContact(
     playerCode,
     submitData
   )
@@ -125,7 +125,8 @@ const UpdateContactPanel = ({
   }
 
   const reset = () => {
-    clearCache()
+    deleteCache()
+    mutate(null, false)
     setSubmit(null)
   }
 
