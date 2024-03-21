@@ -126,7 +126,7 @@ const UpdateContactPanel = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(null)
   }
 

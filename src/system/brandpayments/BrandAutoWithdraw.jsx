@@ -178,7 +178,7 @@ const AutoWithdrawDialog = ({ brandId, dialog, dialogId, ...props }) => {
         {...error}
         onClickClose={() => {
           deleteCache()
-          mutate(null, false)
+          mutate(undefined, false)
           dialog.hide()
         }}
       />
@@ -187,7 +187,7 @@ const AutoWithdrawDialog = ({ brandId, dialog, dialogId, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (

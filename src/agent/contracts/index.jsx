@@ -55,7 +55,7 @@ const Body = () => {
   )
 
   const reset = () => {
-    mutate(null)
+    mutate(undefined)
     deleteCache()
   }
 
@@ -81,7 +81,7 @@ const Body = () => {
               pageIndex: 0,
               ...data
             })
-            mutate(null, true)
+            mutate(undefined, true)
           }}
         />
         <Box>

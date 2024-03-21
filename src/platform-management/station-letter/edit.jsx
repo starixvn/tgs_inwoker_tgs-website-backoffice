@@ -83,7 +83,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     setSubmit(null)
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   let title = useTrans({
@@ -169,7 +169,7 @@ const EditBody = ({ readOnly = false } = {}) => {
 
     setFormData(undefined)
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   useEffect(() => {

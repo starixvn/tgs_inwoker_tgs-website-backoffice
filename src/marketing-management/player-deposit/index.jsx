@@ -110,7 +110,7 @@ const BodyContent = ({ brandId }) => {
   })
 
   const reset = () => {
-    mutate(null)
+    mutate(undefined)
     deleteCache()
   }
 

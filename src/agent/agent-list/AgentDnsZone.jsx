@@ -9,8 +9,8 @@ export const AgentDnsZoneCreateButton = ({ agentId, ...props }) => {
   let { isLoading, result, error, mutate } = useCreateAgentDnsZone(formData)
 
   const reset = () => {
-    setSubmit(undefined)
-    mutate(null, false)
+    setSubmit(null)
+    mutate(undefined, false)
   }
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const AgentDnsZoneDeleteButton = ({ agentId, ...props }) => {
 
   const reset = () => {
     setSubmit(undefined)
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   useEffect(() => {

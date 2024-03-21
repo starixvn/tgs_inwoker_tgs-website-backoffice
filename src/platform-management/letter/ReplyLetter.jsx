@@ -143,7 +143,7 @@ const ReplyLetterFormDialog = ({
   const reset = () => {
     setSubmit(null)
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   let title = useTrans({

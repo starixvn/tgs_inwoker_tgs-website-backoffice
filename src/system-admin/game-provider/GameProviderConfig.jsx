@@ -107,7 +107,7 @@ const AddConfigDialog = ({ gameProviderId, onSubmitted, dialog, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(false, undefined)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 
@@ -241,7 +241,7 @@ const EditConfigDialog = ({ id, onSubmitted, dialog, ...props }) => {
     mutateGameProviderConfig(undefined, false)
 
     deleteCache()
-    mutate(false, undefined)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 

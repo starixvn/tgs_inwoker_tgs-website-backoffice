@@ -661,7 +661,7 @@ const DeleteDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setDeleteId(undefined)
   }
 
@@ -698,7 +698,7 @@ const SetDefaultDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setId(undefined)
   }
 

@@ -80,6 +80,7 @@ const Body = ({ brandId, agentId, readOnly, ...props }) => {
     deleteCache
   } = useAgentDomainList(brandId, agentId)
 
+  console.log("domain list", urls)
   if (isLoading) {
     return (
       <TabPanel tabId={Key} {...props}>
@@ -114,7 +115,7 @@ const Body = ({ brandId, agentId, readOnly, ...props }) => {
           readOnly={readOnly}
           onSubmitted={() => {
             deleteCache()
-            mutate(null)
+            mutate(undefined)
           }}
         />
       </FieldStack>
@@ -195,7 +196,7 @@ const AddDomainInputField = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (
@@ -254,7 +255,7 @@ const DeleteDomainInputField = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (

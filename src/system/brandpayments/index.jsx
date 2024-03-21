@@ -124,7 +124,7 @@ const Body = ({}) => {
       pageIndex: 0
     })
     deleteCache()
-    mutate(null)
+    mutate(undefined)
   }
 
   return (
@@ -359,7 +359,7 @@ const BrandPaymentBalance = ({ brandId, brandPaymentId }) => {
         onClick={() => {
           if (!isLoading) {
             deleteCache()
-            mutate(null)
+            mutate(undefined)
           }
         }}
       >

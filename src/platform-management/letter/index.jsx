@@ -94,7 +94,7 @@ const Body = () => {
               pageIndex: 0,
               ...data
             })
-            mutate(null, true)
+            mutate(undefined, true)
           }}
         />
         <Box>
@@ -116,7 +116,7 @@ const Body = () => {
           })
 
           deleteCache()
-          mutate(null, true)
+          mutate(undefined, true)
 
           setBoxType(value)
         }}

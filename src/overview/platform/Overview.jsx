@@ -149,7 +149,7 @@ const NewPlayerCountStat = () => {
   /*
   TODO: need refresh fn?
   function refresh() {
-    mutate(null, true)
+    mutate(undefined, true)
   }
 
   useEffectOnce(() => Sync.on(refresh))

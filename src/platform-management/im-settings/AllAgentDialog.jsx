@@ -181,7 +181,7 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
     setSubmit(null)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (
@@ -276,7 +276,7 @@ const AllAgentMainSwitchField = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   useEffect(() => {
@@ -551,7 +551,7 @@ const MultileLayerSettingDialog = ({
       useUpdate={useUpdate}
       onSubmitted={() => {
         deleteCache()
-        mutate(null, false)
+        mutate(undefined, false)
       }}
       dialog={dialog}
       title={title}
@@ -579,7 +579,7 @@ const MultileLayerSettingFormDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 
@@ -683,7 +683,7 @@ const GameTypeSettingFormCard = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   useEffect(() => {

@@ -251,7 +251,7 @@ const useColumns = ({ mutate, items = [], brandId, brand } = {}) => {
               status={status}
               enablePlayerIdentity={enablePlayerIdentity}
               onUploaded={() => {
-                mutate(null)
+                mutate(undefined)
               }}
             />
           )

@@ -143,7 +143,7 @@ const PlatformMultipleLayerProfitSharingSettingDialog = ({
       record={data?.items}
       onSubmitted={() => {
         deleteCache()
-        mutate(null, false)
+        mutate(undefined, false)
       }}
       dialog={dialog}
       {...props}
@@ -169,7 +169,7 @@ const ProfitSharingSettingFormDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 
