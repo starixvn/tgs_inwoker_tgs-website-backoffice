@@ -230,7 +230,7 @@ const useColumns = ({ items = [] }) => {
         Header: <BetAmountTrans />
       }),
       numberDecimalColumn({
-        accessor: "originalTurnover",
+        accessor: "turnover",
         Header: <TurnoverTrans />,
         disableSortBy: true
       }),
