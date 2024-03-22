@@ -17,7 +17,6 @@ export const Grid = ({ areas = "", children, ...props }) => {
   )
 }
 
-//TODO: rm styled(Box)
 export const FieldValues = styled(Box)`
   display: grid;
   align-content: start;

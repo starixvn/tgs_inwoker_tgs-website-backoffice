@@ -2,6 +2,8 @@ import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
 import { faker } from "@faker-js/faker"
 import { PlatformUsername, PlatformPassword } from "../../platform/auth.js"
+import * as department from "../platform/department.js"
+import { head } from "lodash-es"
 
 const API = "api/users"
 
@@ -22,8 +24,13 @@ export const create = async (payload) => {
 
   let password = payload?.password ?? PlatformPassword
 
-  //TODO: get first department id from fetch api
-  let departmentId = "5cbedcf4-9be7-4c1f-8627-cf2a0746c7da"
+  let departmentId = payload?.departmentId
+  if (!departmentId) {
+    let departmentList = await department.find({
+      brandId: payload.brandId
+    })
+    departmentId = head(departmentList).id
+  }
 
   //TODO: get first role id from fetch api
   let roleId = "7aa2e39b-9da9-4e2e-9bde-b74fdc5de46b"
