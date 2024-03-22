@@ -144,8 +144,7 @@ export const useUpdateAgentInfo = (agentId, data) => {
   let url = agentId && data ? `${API}/info/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
@@ -153,8 +152,7 @@ export const useUpdateAgentStatus = (agentId, data) => {
   let url = agentId && data ? `${API}/status/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
@@ -165,8 +163,7 @@ export const useUpdateAgentNegativeDividend = (agentId, data) => {
       : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
@@ -174,8 +171,7 @@ export const useUpdateAgentOneLayer = (agentId, data) => {
   let url = agentId && data ? `${API}/one-layer/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
@@ -183,8 +179,7 @@ export const useUpdateAgentMultipleLayer = (agentId, data) => {
   let url = agentId && data ? `${API}/multiple-layer/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
@@ -192,8 +187,7 @@ export const useUpdateAgentContact = (agentId, data) => {
   let url = agentId && data ? `${API}/contact/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 

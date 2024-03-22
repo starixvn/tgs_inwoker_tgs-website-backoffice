@@ -139,36 +139,30 @@ const dropEmptyValues = (record) => {
   }, empty(record))
 }
 
-//TODO: use default setting?
-const DefaultUpdateOptions = {
-  dedupingInterval: 100
-}
-
-console.log("TODO: rm deleteCache after update lib")
-export const useGet = (url, options = DefaultUpdateOptions) => {
+export const useGet = (url, options) => {
   let key = url ? [url, "GET"] : null
-  const response = useSWR(key, ([url]) => get(url), options)
+  const { mutate, ...rest } = useSWR(key, ([url]) => get(url), options)
 
   return {
-    key,
-    ...response,
-    deleteCache: () => {}
+    mutate,
+    ...rest,
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
-export const usePost = (url, data, options = DefaultUpdateOptions) => {
+export const usePost = (url, data, options) => {
   let key = url ? [url, data, "POST"] : null
-  let { data: result, ...rest } = useSWR(
-    key,
-    ([url, data]) => post(url, { data }),
-    options
-  )
+  let {
+    data: result,
+    mutate,
+    ...rest
+  } = useSWR(key, ([url, data]) => post(url, { data }), options)
 
   return {
-    key,
     result,
+    mutate,
     ...rest,
-    deleteCache: () => {}
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
@@ -177,14 +171,14 @@ export const usePostData = (url, data) => {
   return usePost(url, data)
 }
 
-export const usePostFormData = (
-  url,
-  formData,
-  options = DefaultUpdateOptions
-) => {
+export const usePostFormData = (url, formData, options) => {
   let fetchData = !!url && !!formData
   let key = fetchData ? [url, formData, "POST"] : null
-  let { data: result, ...rest } = useSWR(
+  let {
+    data: result,
+    mutate,
+    ...rest
+  } = useSWR(
     key,
     ([url, formData]) =>
       post(url, {
@@ -194,26 +188,26 @@ export const usePostFormData = (
   )
 
   return {
-    key,
     result,
+    mutate,
     ...rest,
-    deleteCache: () => {}
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
-export const usePut = (url, data, options = DefaultUpdateOptions) => {
+export const usePut = (url, data, options) => {
   let key = url ? [url, data, "PUT"] : null
-  let { data: result, ...rest } = useSWR(
-    key,
-    ([url, data]) => put(url, { data }),
-    options
-  )
+  let {
+    data: result,
+    mutate,
+    ...rest
+  } = useSWR(key, ([url, data]) => put(url, { data }), options)
 
   return {
-    key,
     result,
+    mutate,
     ...rest,
-    deleteCache: () => {}
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
@@ -222,43 +216,40 @@ export const usePutData = (url, data) => {
   return usePut(url, data)
 }
 
-export const usePatchData = (
-  url,
-  data,
-  { dropEmptyValuesDisabled = false, ...options } = DefaultUpdateOptions
-) => {
+export const usePatchData = (url, data, options) => {
   let key = url ? [url, data, "PATCH"] : null
-  let { data: result, ...rest } = useSWR(
-    key,
-    ([url, data]) =>
-      patch(url, {
-        data,
-        dropEmptyValuesDisabled
-      }),
-    options
+  let {
+    data: result,
+    mutate,
+    ...rest
+  } = useSWR(key, ([url, data]) =>
+    patch(url, {
+      data,
+      ...options
+    })
   )
 
   return {
-    key,
     result,
+    mutate,
     ...rest,
-    deleteCache: () => {}
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
-export const useDelete = (url, data, options = DefaultUpdateOptions) => {
+export const useDelete = (url, data, options) => {
   let key = url ? [url, data, "DELETE"] : null
-  let { data: result, ...rest } = useSWR(
-    key,
-    ([url, data]) => fetchDelete(url, { data }),
-    options
-  )
+  let {
+    data: result,
+    mutate,
+    ...rest
+  } = useSWR(key, ([url, data]) => fetchDelete(url, { data }), options)
 
   return {
-    key,
     result,
+    mutate,
     ...rest,
-    deleteCache: () => {}
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
@@ -269,17 +260,17 @@ export const useDeleteData = (url, data) => {
 
 export const useHead = (url, options) => {
   let key = url ? [url, "HEAD"] : null
-  const { data: result, ...rest } = useSWR(
-    key,
-    ([url]) => fetchApi("HEAD", url, options),
-    options
-  )
+  const {
+    data: result,
+    mutate,
+    ...rest
+  } = useSWR(key, ([url]) => fetchApi("HEAD", url, options), options)
 
   return {
-    key,
     result,
+    mutate,
     ...rest,
-    deleteCache: () => {}
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
@@ -288,6 +279,7 @@ const isEmptyString = (value) => typeof value == "string" && value === ""
 const isNilOrUndefined = (value) =>
   typeof value === "undefined" || value === null
 
+//TODO: rm default?
 export default {
   get,
   put,
