@@ -8,6 +8,7 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
+console.warn("FIXME: test case failed")
 test("edit platform logo", async ({ page, platform }) => {
   await gotoPlatformListPage(page, platform.licenseeId)
 
@@ -17,8 +18,10 @@ test("edit platform logo", async ({ page, platform }) => {
 
 const editLogo = async (page, record = {}) => {
   let DialogSelector = `#platform-logo-dialog`
-  await page.click(`${DialogSelector}-disclosure`)
-  await page.waitForSelector(DialogSelector)
+  await Promise.all([
+    page.waitForResponse(urlIncludes(`/api/brand/logo`)),
+    openDialog(page, DialogSelector)
+  ])
 
   if (record.mobile) {
     let url = await page.inputValue(`${DialogSelector} input[name="mobile"]`)

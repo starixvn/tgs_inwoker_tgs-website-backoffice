@@ -9,6 +9,7 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
+console.warn("FIXME: edit game failed")
 test("search, edit game and toggle tags, status", async ({ page }) => {
   let brandId = await gotoPlatformGameListPage(page)
   let criteria = await randomGame(page)
@@ -120,7 +121,11 @@ const toggleField = async (page, field) => {
 
 const openEditDialog = async (page) => {
   let DialogSelector = `#edit-game-dialog`
-  await openDialog(page, DialogSelector)
+  console.log("FIXME: not able to wait for the response second time?")
+  await Promise.all([
+    page.waitForResponse(urlIncludes(`/api/brandgame`)),
+    openDialog(page, DialogSelector)
+  ])
   return DialogSelector
 }
 
@@ -135,6 +140,7 @@ const edit = async (page) => {
     `${effectiveBettingPercentage}`
   )
 
+  console.log("effectiveBettingPercentage", effectiveBettingPercentage)
   let RebateCheckboxSelector = `${DialogSelector} input[name="rebate"]`
   let rebate = !(await page.isChecked(RebateCheckboxSelector))
   await page.click(`${RebateCheckboxSelector} + div.bb-SwitchIcon`)
