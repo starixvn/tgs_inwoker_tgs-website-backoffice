@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: game-interface-jili
 image: pgtgs/game-gameinterface-jili-service:202207180525-dev # game/gameproviders
+disabled: true
 services:
   - name: game-interface-jili
     dependencies:

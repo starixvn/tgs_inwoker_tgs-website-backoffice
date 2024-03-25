@@ -57,7 +57,7 @@ const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
     error,
     mutate,
     deleteCache
-  } = useBrandLogo(brandId)
+  } = useBrandLogo(brandId, { dedupingInterval: 0 })
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />

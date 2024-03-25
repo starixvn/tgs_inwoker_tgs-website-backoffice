@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: game-interface-wmcasino
 image: pgtgs/game-gameinterface-wmcasino-service:202207070727-dev # game/gameproviders
+disabled: true
 services:
   - name: game-interface-wmcasino
     dependencies:

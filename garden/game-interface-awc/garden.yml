@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: game-interface-awc
 image: pgtgs/game-gameinterface-awc-service:202207150433-dev # game/gameproviders
+disabled: true
 services:
   - name: game-interface-awc
     dependencies:
