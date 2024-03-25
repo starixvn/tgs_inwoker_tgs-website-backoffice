@@ -61,9 +61,9 @@ export const useSyncBrandGameList = (id) => {
   return useGet(url)
 }
 
-export const useBrandLogo = (id) => {
+export const useBrandLogo = (id, options) => {
   let url = id ? `${API}/logo/${id}` : ""
-  let { data, ...rest } = useGet(url)
+  let { data, ...rest } = useGet(url, options)
   return {
     data: data?.data,
     ...rest
