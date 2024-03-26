@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: game-wagers-stat-worker
 image: pgtgs/game-gamewagers-stat-worker:202402220922.9
+disabled: true
 services:
   - name: game-wagers-stat-worker
     dependencies:
