@@ -133,7 +133,7 @@ export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {
 
 export const useUpdatePlayerContact = (playerCode, data) => {
   let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
-  return usePatchData(url, pick(["properties"], data), {
+  return usePatchData(url, data ? pick(["properties"], data) : data, {
     dropEmptyValuesDisabled: true
   })
 }
