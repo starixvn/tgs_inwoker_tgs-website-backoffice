@@ -32,8 +32,8 @@ import {
 } from "../../table/column/numberColumn"
 import {
   BetAmountTrans,
-  GameProviderReportTrans,
   GameProviderTrans,
+  GameProviderUpdatedReportTrans,
   GamingCountTrans,
   TransactionCountTrans,
   TurnoverTrans,
@@ -55,7 +55,7 @@ export const Content = () => {
   }
 
   return (
-    <PlatformPageContent title={<GameProviderReportTrans />}>
+    <PlatformPageContent title={<GameProviderUpdatedReportTrans />}>
       <Body />
     </PlatformPageContent>
   )
