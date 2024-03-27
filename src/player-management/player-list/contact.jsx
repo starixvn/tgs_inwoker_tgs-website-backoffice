@@ -147,7 +147,10 @@ const Body = ({ onClickClose }) => {
       <FieldValues>
         <PhoneTrans />
         <Box>
-          <AreaPhoneInputGruop name="properties.Phone" />
+          <AreaPhoneInputGruop
+            name="properties.Phone"
+            area={{ name: "properties.AreaCode" }}
+          />
         </Box>
 
         <EmailTrans />
