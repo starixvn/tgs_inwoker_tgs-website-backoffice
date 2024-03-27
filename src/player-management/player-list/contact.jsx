@@ -116,10 +116,9 @@ const UpdateContactPanel = ({
   const onSubmit = (data) => {
     let formData = diff(data, player)
 
-    let { properties, ...restFormData } = formData
+    let { properties } = formData
 
     setSubmit({
-      ...restFormData,
       ...properties
     })
   }
