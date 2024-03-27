@@ -144,6 +144,7 @@ export const useGet = (url, options) => {
   const { mutate, ...rest } = useSWR(key, ([url]) => get(url), options)
 
   return {
+    key,
     mutate,
     ...rest,
     deleteCache: () => mutate(undefined, false)
@@ -159,6 +160,7 @@ export const usePost = (url, data, options) => {
   } = useSWR(key, ([url, data]) => post(url, { data }), options)
 
   return {
+    key,
     result,
     mutate,
     ...rest,
@@ -188,6 +190,7 @@ export const usePostFormData = (url, formData, options) => {
   )
 
   return {
+    key,
     result,
     mutate,
     ...rest,
@@ -204,6 +207,7 @@ export const usePut = (url, data, options) => {
   } = useSWR(key, ([url, data]) => put(url, { data }), options)
 
   return {
+    key,
     result,
     mutate,
     ...rest,
@@ -230,6 +234,7 @@ export const usePatchData = (url, data, options) => {
   )
 
   return {
+    key,
     result,
     mutate,
     ...rest,
@@ -246,6 +251,7 @@ export const useDelete = (url, data, options) => {
   } = useSWR(key, ([url, data]) => fetchDelete(url, { data }), options)
 
   return {
+    key,
     result,
     mutate,
     ...rest,
@@ -267,6 +273,7 @@ export const useHead = (url, options) => {
   } = useSWR(key, ([url]) => fetchApi("HEAD", url, options), options)
 
   return {
+    key,
     result,
     mutate,
     ...rest,
