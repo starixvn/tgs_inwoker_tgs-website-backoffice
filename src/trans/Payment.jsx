@@ -118,6 +118,13 @@ const Currency = {
 }
 export const CurrencyTrans = () => <Trans {...Currency} />
 
+const Bank = {
+  zh: "银行卡",
+  en: "Bank"
+}
+export const BankTrans = () => <Trans {...Bank} />
+export const useBankTrans = () => useTrans(Bank)
+
 const BankInfo = {
   zh: "银行卡信息",
   en: "Bank",
