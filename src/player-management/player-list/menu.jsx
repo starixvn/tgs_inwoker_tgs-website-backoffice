@@ -26,6 +26,8 @@ export const EditIdNumber = "editidnumber"
 
 export const UpgradePlayerToAgent = "upgradetoagent"
 
+const Bank = "bank"
+
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
 export const label = (codes = [], locale = Locales.zh) => {

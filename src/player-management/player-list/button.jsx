@@ -157,10 +157,6 @@ const TabsDialog = ({
   let error = playerError || wageringRequirementError || playerPaymentError
   let player = { ...data, wageringRequirement, playerPayment }
 
-  const onBankSubmitted = () => {
-    mutate()
-  }
-
   const onClickClose = dialog.hide
 
   return (
@@ -207,7 +203,6 @@ const TabsDialog = ({
                 dialog.hide()
                 mutate()
               }}
-              onBankSubmitted={onBankSubmitted}
               onClickClose={onClickClose}
             />
           )}
@@ -277,7 +272,6 @@ const ViewTabs = ({
   )
 }
 
-//TODO: rm onBankSubmitted
 const EditTabs = ({
   brandId,
   brand,
@@ -286,7 +280,6 @@ const EditTabs = ({
   showParentUsername,
   tab,
   onSubmitted,
-  onBankSubmitted,
   onClickClose
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
@@ -322,7 +315,6 @@ const EditTabs = ({
         playerCode={playerCode}
         banks={player.banks}
         edit={true}
-        onSubmitted={onBankSubmitted}
         {...tab}
       />
       <PasswordPanel
