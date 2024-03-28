@@ -246,6 +246,15 @@ export const GameProviderReport = {
 }
 export const GameProviderReportTrans = () => <Trans {...GameProviderReport} />
 
+export const GameProviderUpdatedReport = {
+  zh: "游戏商報表(即时)",
+  en: "Game Provider Report(Updated)",
+  vi: "Báo cáo nhà cung cấp trò chơi"
+}
+export const GameProviderUpdatedReportTrans = () => (
+  <Trans {...GameProviderUpdatedReport} />
+)
+
 export const TransactionCount = {
   zh: "訂單笔数",
   en: "Transactions",
