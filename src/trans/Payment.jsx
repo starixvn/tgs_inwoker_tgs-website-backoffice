@@ -118,7 +118,7 @@ const Currency = {
 }
 export const CurrencyTrans = () => <Trans {...Currency} />
 
-const Bank = {
+export const Bank = {
   zh: "银行卡",
   en: "Bank"
 }
