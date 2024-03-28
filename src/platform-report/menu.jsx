@@ -57,7 +57,12 @@ import {
 } from "./agent-dividend/menu"
 import { getTrans, useTrans, Trans } from "../i18n"
 import { faTable } from "@fortawesome/free-solid-svg-icons"
-import { GameProviderReport, OrderTracking, UnsettledBet } from "../trans/Game"
+import {
+  GameProviderReport,
+  GameProviderUpdatedReport,
+  OrderTracking,
+  UnsettledBet
+} from "../trans/Game"
 import {
   BalanceChangeReport,
   MarketReport,
@@ -136,6 +141,9 @@ const label = ({ locale, code }) => {
       return getTrans(BalanceChangeReport, locale)
 
     case GameProvidersCode:
+      return getTrans(GameProviderUpdatedReport, locale)
+
+    //TODO: rm GameProviderReport
     case GameProviderReportCode:
       return getTrans(GameProviderReport, locale)
 

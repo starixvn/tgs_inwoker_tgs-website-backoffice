@@ -103,7 +103,7 @@ const UpdateContactPanel = ({
   })
 
   let [submitData, setSubmit] = useState()
-  let { result, error, mutate, clearCache } = useUpdatePlayerContact(
+  let { result, error, mutate, deleteCache } = useUpdatePlayerContact(
     playerCode,
     submitData
   )
@@ -116,16 +116,16 @@ const UpdateContactPanel = ({
   const onSubmit = (data) => {
     let formData = diff(data, player)
 
-    let { properties, ...restFormData } = formData
+    let { properties } = formData
 
     setSubmit({
-      ...restFormData,
       ...properties
     })
   }
 
   const reset = () => {
-    clearCache()
+    deleteCache()
+    mutate(undefined, false)
     setSubmit(null)
   }
 
@@ -147,7 +147,10 @@ const Body = ({ onClickClose }) => {
       <FieldValues>
         <PhoneTrans />
         <Box>
-          <AreaPhoneInputGruop name="properties.Phone" />
+          <AreaPhoneInputGruop
+            name="properties.Phone"
+            area={{ name: "properties.AreaCode" }}
+          />
         </Box>
 
         <EmailTrans />
