@@ -37,6 +37,7 @@ import {
   useWithdrawFormTrans
 } from "../../trans/User"
 import { usePlayerNoteTrans } from "../../trans/Player"
+import { useBankTrans } from "../../trans/Payment"
 
 export const PlayerWithdrawFormDialogDisclosure = ({
   brandId,
@@ -207,10 +208,7 @@ const BankInfoSelect = ({
   bankInfoList = [],
   ...props
 }) => {
-  let label = useTrans({
-    zh: "银行卡",
-    en: "Bank"
-  })
+  let label = useBankTrans()
 
   let options = bankInfoList.map((bankInfo) => {
     return {
