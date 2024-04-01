@@ -15,7 +15,6 @@ import {
 import { useAgent, useUpdateAgentNegativeDividend } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { LiableOrNotSwitch } from "../../switch/LiableOrNotSwitch"
-import { isUndefined } from "lodash-es"
 
 export const NegativeDividendDialogDisclosure = ({
   agentId,

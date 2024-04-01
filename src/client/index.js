@@ -141,7 +141,7 @@ const dropEmptyValues = (record) => {
 
 export const useGet = (url, options) => {
   let key = url ? [url, "GET"] : null
-  const { mutate, isLoading, data, ...rest } = useSWR(
+  const { mutate, isLoading, data, error, ...rest } = useSWR(
     key,
     ([url]) => get(url),
     options
@@ -149,7 +149,7 @@ export const useGet = (url, options) => {
 
   return {
     key,
-    isLoading: (key && isNil(data)) || isLoading,
+    isLoading: (key && !error && isNil(data)) || isLoading,
     data,
     mutate,
     ...rest,
