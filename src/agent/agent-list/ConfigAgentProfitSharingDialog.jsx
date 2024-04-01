@@ -159,7 +159,7 @@ const ConfigDialog = ({ brand, agentId, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (

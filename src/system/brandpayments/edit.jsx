@@ -160,8 +160,14 @@ const EditDialog = ({
   }
 
   const resetPlatformPayment = () => {
-    mutatePlatformPayment(null, false)
+    mutatePlatformPayment(undefined, false)
     deletePlatformPaymentCache()
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   return (
@@ -189,13 +195,10 @@ const EditDialog = ({
       result={result}
       isLoading={isLoading}
       error={error}
-      onCloseErrorAlert={() => {
-        deleteCache()
-        mutate(undefined, false)
-        setSubmit(undefined)
-      }}
+      onCloseErrorAlert={reset}
       onSubmitted={() => {
         resetPlatformPayment()
+        reset()
         onSubmitted?.()
       }}
       title={title}
@@ -363,7 +366,7 @@ const AddDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -387,7 +390,10 @@ const AddDialog = ({
       isLoading={isLoading}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       showCloseButton
       width="80vw"

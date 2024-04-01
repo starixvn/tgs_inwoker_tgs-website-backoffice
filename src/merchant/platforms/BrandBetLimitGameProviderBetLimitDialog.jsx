@@ -201,7 +201,7 @@ const EditDialog = ({
     deleteBrandCache()
     mutateBrand(undefined, false)
 
-    setSubmit(undefined)
+    setSubmit(null)
     mutate(undefined, false)
   }
 

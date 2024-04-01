@@ -149,7 +149,7 @@ const AddDialog = ({ agentId, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -165,7 +165,10 @@ const AddDialog = ({ agentId, onSubmitted, dialog }) => {
         result={result}
         error={error}
         onCloseErrorAlert={reset}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         dialog={dialog}
       >
         <EditBody />
@@ -185,7 +188,7 @@ const EditDialog = ({ bank, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -197,7 +200,10 @@ const EditDialog = ({ bank, onSubmitted, dialog }) => {
         result={result}
         error={error}
         onCloseErrorAlert={reset}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         dialog={dialog}
       >
         <EditBody />

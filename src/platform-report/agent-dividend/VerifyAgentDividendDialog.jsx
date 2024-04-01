@@ -81,7 +81,7 @@ const VerifyDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -93,7 +93,10 @@ const VerifyDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       onClickSubmit={(event) => {
         setValue("approve", true)
       }}

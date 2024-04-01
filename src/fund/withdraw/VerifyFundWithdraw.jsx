@@ -129,7 +129,7 @@ const VerifyFundWithdrawDialog = ({
   const resetVerifyFundWithdrawForm = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   const reset = () => {

@@ -49,7 +49,7 @@ export const ConfirmDeleteDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -66,9 +66,8 @@ export const ConfirmDeleteDialog = ({
       error={error}
       onCloseErrorAlert={reset}
       onSubmitted={() => {
-        onSubmitted?.()
-
         reset()
+        onSubmitted?.()
       }}
       dialog={dialog}
       {...props}

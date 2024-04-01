@@ -85,7 +85,7 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -102,7 +102,10 @@ const SendDialog = ({ brandId, dialog, onSubmitted }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       actionButtonsProps={{

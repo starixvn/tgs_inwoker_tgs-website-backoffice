@@ -107,7 +107,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
     menus,
     isLoading: isLoadingMenus,
     error: roleMenusError,
-    mutate
+    deleteCache: deleteRoleMenusCache
   } = useMenus(formData)
 
   let userResellerId = useUserResellerId()
@@ -122,7 +122,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
   let roleTypeOptions = useRoleTypeOptions()
   let [menusState, setMenus] = useState()
   let [submitData, setSubmit] = useState()
-  let { result, error, isLoading } = useAddRole(submitData)
+  let { result, error, isLoading, deleteCache } = useAddRole(submitData)
 
   useEffect(() => {
     let roleId = sameRoleType ? userRoleId : templateId
@@ -145,8 +145,9 @@ const AddDialog = ({ dialog, onSubmitted }) => {
 
   let title = useAddTrans()
 
-  const clearResult = () => {
-    setSubmit(undefined)
+  const reset = () => {
+    deleteCache()
+    setSubmit(null)
   }
 
   //Note.
@@ -199,8 +200,13 @@ const AddDialog = ({ dialog, onSubmitted }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
-      onSubmitted={onSubmitted}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        deleteRoleMenusCache()
+
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       placement="top"
@@ -539,8 +545,7 @@ export const EditButton = ({ id, record, onSubmitted, ...props }) => {
 }
 
 const EditRoleDialog = ({ id, record, dialog, onSubmitted }) => {
-  let { role, isLoading, isValidating, error, mutate, deleteCache } =
-    useRole(id)
+  let { role, isLoading, error, deleteCache } = useRole(id)
   let userRoleType = useUserRoleType()
   let [menus, setMenus] = useState()
 
@@ -568,7 +573,7 @@ const EditRoleDialog = ({ id, record, dialog, onSubmitted }) => {
       record={record}
       dialog={dialog}
       onSubmitted={(data) => {
-        mutate(undefined, false)
+        deleteCache()
         onSubmitted?.()
       }}
     />
@@ -586,7 +591,7 @@ const EditDialog = ({
 }) => {
   let [menusState, setMenus] = useState(cloneDeep(menus))
   let [submitData, setSubmit] = useState()
-  let { result, error, isLoading } = useEditRole(id, submitData)
+  let { result, error, isLoading, deleteCache } = useEditRole(id, submitData)
 
   useEffect(() => {
     setMenus(cloneDeep(menus))
@@ -594,7 +599,8 @@ const EditDialog = ({
 
   let title = useEditTrans()
 
-  const clearResult = () => {
+  const reset = () => {
+    deleteCache()
     setSubmit(null)
   }
 
@@ -611,9 +617,10 @@ const EditDialog = ({
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
+      onCloseErrorAlert={reset}
       onSubmitted={() => {
-        onSubmitted && onSubmitted(submitData)
+        reset()
+        onSubmitted?.()
       }}
       title={title}
       dialog={dialog}

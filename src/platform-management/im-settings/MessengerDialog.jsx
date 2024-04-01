@@ -146,7 +146,7 @@ const AddDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -161,7 +161,10 @@ const AddDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
         isLoading={isLoading}
         result={result}
         error={error}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         onCloseErrorAlert={reset}
         dialog={dialog}
         hideBackdrop={true}
@@ -236,7 +239,7 @@ const DeleteDialog = ({ id, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -315,7 +318,7 @@ const EditDialog = ({ brandId, record, dialog, onSubmitted, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let defaultValues = {
@@ -334,7 +337,10 @@ const EditDialog = ({ brandId, record, dialog, onSubmitted, ...props }) => {
         isLoading={isLoading}
         result={result}
         error={error}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         onCloseErrorAlert={reset}
         dialog={dialog}
         hideBackdrop={true}

@@ -119,7 +119,7 @@ const AddDialog = ({ onSubmitted, dialog }) => {
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useTrans({
@@ -219,7 +219,7 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useTrans({

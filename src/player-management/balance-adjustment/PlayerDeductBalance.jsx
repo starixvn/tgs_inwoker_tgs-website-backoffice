@@ -74,14 +74,14 @@ const DeductDialog = ({
   onSubmitted,
   dialog
 }) => {
-  let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } =
-    usePlayerAdjustReduceBalance(playerCode, formData)
-
   let title = useTrans({
     zh: "余额扣分",
     en: "Deduct Balance"
   })
+
+  let [formData, setSubmit] = useState()
+  let { result, isLoading, error, mutate, deleteCache } =
+    usePlayerAdjustReduceBalance(playerCode, formData)
 
   const onSubmit = (data) => {
     setSubmit(data)
@@ -90,7 +90,7 @@ const DeductDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -102,7 +102,10 @@ const DeductDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
     >

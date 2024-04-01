@@ -162,7 +162,10 @@ const ReplyLetterFormDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       actionButtonsProps={{

@@ -108,7 +108,7 @@ const AddConfigDialog = ({ gameProviderId, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -116,7 +116,10 @@ const AddConfigDialog = ({ gameProviderId, onSubmitted, dialog, ...props }) => {
       <FormDialog
         defaultValues={{ status: Active }}
         onSubmit={onSubmit}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         result={result}
         isLoading={isLoading}
         error={error}
@@ -242,7 +245,7 @@ const EditConfigDialog = ({ id, onSubmitted, dialog, ...props }) => {
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (

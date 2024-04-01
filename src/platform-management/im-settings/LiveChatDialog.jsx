@@ -138,7 +138,7 @@ const DeleteDialog = ({ brandId, dialog, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -194,7 +194,7 @@ const AddLiveChatDialog = ({ brandId, dialog, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit()
   }
 
   return (
@@ -241,7 +241,7 @@ const EditLiveChatDialog = ({ brandId, record, dialog, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (

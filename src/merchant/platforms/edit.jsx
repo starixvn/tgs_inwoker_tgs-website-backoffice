@@ -138,7 +138,7 @@ const CurrentAddDialog = ({ licenseeId, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -355,7 +355,7 @@ const EditDialog = ({ brandId, licenseeId, onSubmitted, dialog, ...props }) => {
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let record = {

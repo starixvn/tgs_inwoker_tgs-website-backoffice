@@ -138,7 +138,7 @@ const CopyDialog = ({ brandId, promotionId, dialog, onSubmitted }) => {
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -150,7 +150,10 @@ const CopyDialog = ({ brandId, promotionId, dialog, onSubmitted }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="85vw"

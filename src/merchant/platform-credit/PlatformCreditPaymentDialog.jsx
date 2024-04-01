@@ -67,7 +67,7 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -79,7 +79,10 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       dialog={dialog}
       title={title}
     >

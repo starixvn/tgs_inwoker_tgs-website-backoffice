@@ -46,7 +46,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -57,7 +57,10 @@ const AddDialog = ({ dialog, onSubmitted }) => {
         isLoading={isLoading}
         result={result}
         error={error}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         onCloseErrorAlert={reset}
         title={title}
         dialog={dialog}
