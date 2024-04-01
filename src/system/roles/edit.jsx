@@ -106,8 +106,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
   let {
     menus,
     isLoading: isLoadingMenus,
-    error: roleMenusError,
-    deleteCache: deleteRoleMenusCache
+    error: roleMenusError
   } = useMenus(formData)
 
   let userResellerId = useUserResellerId()
@@ -202,8 +201,6 @@ const AddDialog = ({ dialog, onSubmitted }) => {
       error={error}
       onCloseErrorAlert={reset}
       onSubmitted={() => {
-        deleteRoleMenusCache()
-
         reset()
         onSubmitted?.()
       }}

@@ -15,6 +15,7 @@ import {
 import { useAgent, useUpdateAgentNegativeDividend } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { LiableOrNotSwitch } from "../../switch/LiableOrNotSwitch"
+import { isUndefined } from "lodash-es"
 
 export const NegativeDividendDialogDisclosure = ({
   agentId,
@@ -52,12 +53,11 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
     isLoading: isLoadingAgent,
     data: agent,
     error: agentError,
-    mutate: mutateAgent,
     deleteCache: deleteAgentCache
   } = useAgent(agentId)
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
+  let { isLoading, result, error, deleteCache } =
     useUpdateAgentNegativeDividend(agentId, formData)
 
   if (isLoadingAgent) {
@@ -74,7 +74,6 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(undefined, false)
     setSubmit(null)
   }
 
@@ -92,7 +91,6 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
       id={dialogId}
       onSubmitted={() => {
         deleteAgentCache()
-        mutateAgent(null, false)
         reset()
       }}
       dialog={dialog}

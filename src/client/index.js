@@ -141,10 +141,16 @@ const dropEmptyValues = (record) => {
 
 export const useGet = (url, options) => {
   let key = url ? [url, "GET"] : null
-  const { mutate, ...rest } = useSWR(key, ([url]) => get(url), options)
+  const { mutate, isLoading, data, ...rest } = useSWR(
+    key,
+    ([url]) => get(url),
+    options
+  )
 
   return {
     key,
+    isLoading: (key && isNil(data)) || isLoading,
+    data,
     mutate,
     ...rest,
     deleteCache: () => mutate(undefined, false)
