@@ -118,7 +118,7 @@ const VerifyFundDepositDialog = ({
   const resetVerifyFundDepositForm = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   const reset = () => {

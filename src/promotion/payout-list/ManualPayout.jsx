@@ -109,7 +109,7 @@ const ManualPayoutDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -117,7 +117,10 @@ const ManualPayoutDialog = ({
       id={dialogId}
       defaultValues={clone(record)}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}

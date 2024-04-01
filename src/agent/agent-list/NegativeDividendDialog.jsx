@@ -75,7 +75,7 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (

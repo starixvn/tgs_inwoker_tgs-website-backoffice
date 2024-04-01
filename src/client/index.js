@@ -168,9 +168,9 @@ export const usePost = (url, data, options) => {
   }
 }
 
-export const usePostData = (url, data) => {
+export const usePostData = (url, data, options) => {
   url = url && data ? url : ""
-  return usePost(url, data)
+  return usePost(url, data, options)
 }
 
 export const usePostFormData = (url, formData, options) => {
@@ -215,9 +215,9 @@ export const usePut = (url, data, options) => {
   }
 }
 
-export const usePutData = (url, data) => {
+export const usePutData = (url, data, options) => {
   url = url && data ? url : ""
-  return usePut(url, data)
+  return usePut(url, data, options)
 }
 
 export const usePatchData = (url, data, options) => {
@@ -259,9 +259,9 @@ export const useDelete = (url, data, options) => {
   }
 }
 
-export const useDeleteData = (url, data) => {
+export const useDeleteData = (url, data, options) => {
   url = url && data ? url : ""
-  return useDelete(url, data)
+  return useDelete(url, data, options)
 }
 
 export const useHead = (url, options) => {

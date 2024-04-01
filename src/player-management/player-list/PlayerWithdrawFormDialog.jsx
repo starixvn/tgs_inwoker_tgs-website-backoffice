@@ -155,6 +155,7 @@ const WithdrawFormDialog = ({
         bankInfoId: defaultBankInfo?.id
       }}
       onSubmit={onSubmit}
+      onSubmitted={reset}
       isLoading={isLoading}
       result={result}
       error={error}

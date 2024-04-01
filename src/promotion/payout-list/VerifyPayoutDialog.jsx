@@ -89,7 +89,7 @@ const VerifyPayoutDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -97,7 +97,10 @@ const VerifyPayoutDialog = ({
       id={dialogId}
       defaultValues={clone(record)}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}

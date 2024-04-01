@@ -76,6 +76,11 @@ export const AddButton = ({ brandId, onSubmitted, ...props }) => {
 }
 
 const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
+  let title = useTrans({
+    zh: "新增站内信",
+    en: "Add Station Letter"
+  })
+
   let [data, setSubmit] = useState()
   let { result, isLoading, error, mutate, deleteCache } =
     useAddStationLetter(data)
@@ -85,11 +90,6 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
     deleteCache()
     mutate(undefined, false)
   }
-
-  let title = useTrans({
-    zh: "新增站内信",
-    en: "Add Station Letter"
-  })
 
   return (
     <FormDialog
@@ -114,7 +114,10 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       placement="top"
@@ -366,6 +369,11 @@ export const VerifyButton = ({ record, onSubmitted, ...props }) => {
 }
 
 const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
+  let title = useTrans({
+    zh: "审核站内信",
+    en: "Verify Station Letter"
+  })
+
   let defaultValues = {
     ...record,
     target: record.assignedAllPlayers ? AllPlayers : DesignatedPlayers,
@@ -375,20 +383,16 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
   let [type, setType] = useState()
   let [data, setSubmit] = useState()
-  let { result, error, mutate, isLoading } = useVerifyStationLetter({
+  let { result, error, isLoading, deleteCache } = useVerifyStationLetter({
     id: record?.id,
     type,
     data
   })
 
-  const clearResult = () => {
-    setSubmit(undefined)
+  const reset = () => {
+    deleteCache()
+    setSubmit(null)
   }
-
-  let title = useTrans({
-    zh: "审核站内信",
-    en: "Verify Station Letter"
-  })
 
   return (
     <FormDialog
@@ -419,8 +423,11 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
-      onSubmitted={onSubmitted}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       placement="top"
       css={DialogCss}

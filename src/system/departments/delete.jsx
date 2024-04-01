@@ -43,19 +43,20 @@ const DeleteDialog = ({
   finalFocusRef,
   ...props
 }) => {
-  let [deleteId, setDelete] = useState()
-  let { result, error, isLoading } = useDeleteDepartment(deleteId)
-
-  const submit = () => setDelete(id)
-
-  const clearResult = () => {
-    setDelete(null)
-  }
-
   let title = useTrans({
     zh: "删除部门",
     en: "Delete Department"
   })
+
+  let [deleteId, setDelete] = useState()
+  let { result, error, isLoading, deleteCache } = useDeleteDepartment(deleteId)
+
+  const submit = () => setDelete(id)
+
+  const reset = () => {
+    deleteCache()
+    setDelete(null)
+  }
 
   return (
     <FormDialog
@@ -63,8 +64,11 @@ const DeleteDialog = ({
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
-      onSubmitted={onSubmitted}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
     >

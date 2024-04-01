@@ -145,7 +145,7 @@ const BatchAddGameListDialog = ({ gameProviderId, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let uploadRequired = fields.length == 0
@@ -159,7 +159,10 @@ const BatchAddGameListDialog = ({ gameProviderId, onSubmitted, dialog }) => {
         result={result}
         error={error}
         onCloseErrorAlert={reset}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         dialog={dialog}
         hideBackdrop
         width="80vw"

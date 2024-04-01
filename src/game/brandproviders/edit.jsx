@@ -62,7 +62,7 @@ const EditDialog = ({ record, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useEditTrans()

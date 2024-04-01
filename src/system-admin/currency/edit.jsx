@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import {
-    Box,
-    Button,
-    Set,
-    Icon,
-    useModalState,
-    Dialog,
-    Card,
-    Flex,
-    Heading,
-    FieldStack
+  Box,
+  Button,
+  Set,
+  Icon,
+  useModalState,
+  Dialog,
+  Card,
+  Flex,
+  Heading,
+  FieldStack
 } from "bumbag"
 import { Update as UpdateMenu } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
@@ -23,151 +23,149 @@ import clone from "clone-deep"
 import { useAddCurrency, useUpdateCurrency } from "../../currency/client"
 
 export const EditCurrencyDisclosure = ({ record, onSubmitted }) => {
-    let dialog = useModalState()
+  let dialog = useModalState()
 
-    let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
+  if (!isDisplay) {
+    return null
+  }
 
-    return (
-        <>
-            <EditDisclosure {...dialog} />
-            {dialog.visible && (
-                <EditDialog
-                    record={record}
-                    onSubmitted={onSubmitted}
-                    dialog={dialog}
-                />
-            )}
-        </>
-    )
+  return (
+    <>
+      <EditDisclosure {...dialog} />
+      {dialog.visible && (
+        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+      )}
+    </>
+  )
 }
 
 const EditDialog = ({ record = {}, onSubmitted, dialog, ...props }) => {
-    let [formData, setSubmit] = useState()
+  let [formData, setSubmit] = useState()
 
-    let { result, isLoading, error, mutate, deleteCache } = useUpdateCurrency(
-        record?.code,
-        formData
-    )
+  let { result, isLoading, error, mutate, deleteCache } = useUpdateCurrency(
+    record?.code,
+    formData
+  )
 
-    let title = useTrans({
-        zh: "编辑币种",
-        en: "Edit Currency"
-    })
+  let title = useTrans({
+    zh: "编辑币种",
+    en: "Edit Currency"
+  })
 
-    const onSubmit = (data) => {
-        let formData = { ...data, code: record?.code }
-        setSubmit(formData)
-    }
+  const onSubmit = (data) => {
+    let formData = { ...data, code: record?.code }
+    setSubmit(formData)
+  }
 
-    const reset = () => {
-        deleteCache()
-        mutate(undefined, false)
-        setSubmit(undefined)
-    }
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(undefined)
+  }
 
-    return (
-        <FormDialog
-            defaultValues={clone(record)}
-            onSubmit={onSubmit}
-            isLoading={isLoading}
-            result={result}
-            error={error}
-            onCloseErrorAlert={reset}
-            onSubmitted={onSubmitted}
-            title={title}
-            dialog={dialog}
-        >
-            <FormBody />
-        </FormDialog>
-    )
+  return (
+    <FormDialog
+      defaultValues={clone(record)}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      onSubmitted={onSubmitted}
+      title={title}
+      dialog={dialog}
+    >
+      <FormBody />
+    </FormDialog>
+  )
 }
 
 export const AddCurrencyDisclosure = ({ onSubmitted }) => {
-    let dialog = useModalState()
+  let dialog = useModalState()
 
-    let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
-    if (!isDisplay) {
-        return null
-    }
+  let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
+  if (!isDisplay) {
+    return null
+  }
 
-    return (
-        <>
-            <AddDisclosure {...dialog} />
-            {dialog.visible && (
-                <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
-            )}
-        </>
-    )
+  return (
+    <>
+      <AddDisclosure {...dialog} />
+      {dialog.visible && (
+        <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
+      )}
+    </>
+  )
 }
 
 const AddDialog = ({ onSubmitted, dialog, ...props }) => {
-    let [formData, setSubmit] = useState()
+  let [formData, setSubmit] = useState()
 
-    let { result, isLoading, error, mutate, deleteCache } = useAddCurrency(
-        formData
-    )
+  let { result, isLoading, error, mutate, deleteCache } =
+    useAddCurrency(formData)
 
-    let title = useTrans({
-        zh: "新增币种",
-        en: "Create Currency"
-    })
+  let title = useTrans({
+    zh: "新增币种",
+    en: "Create Currency"
+  })
 
-    const reset = () => {
-        deleteCache()
-        mutate(undefined, false)
-        setSubmit(undefined)
-    }
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(null)
+  }
 
-    return (
-        <FormDialog
-            defaultValues={{}}
-            onSubmit={setSubmit}
-            isLoading={isLoading}
-            result={result}
-            error={error}
-            onCloseErrorAlert={reset}
-            onSubmitted={onSubmitted}
-            title={title}
-            dialog={dialog}
-        >
-            <FormBody isAdd />
-        </FormDialog>
-    )
+  return (
+    <FormDialog
+      defaultValues={{}}
+      onSubmit={setSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
+      title={title}
+      dialog={dialog}
+    >
+      <FormBody isAdd />
+    </FormDialog>
+  )
 }
 
 const FormBody = ({ isAdd = false }) => {
-    let codeLabel = useTrans({
-        zh: "代码",
-        en: "Code"
-    })
+  let codeLabel = useTrans({
+    zh: "代码",
+    en: "Code"
+  })
 
-    let nameLabel = useTrans({
-        zh: "名称",
-        en: "Name"
-    })
+  let nameLabel = useTrans({
+    zh: "名称",
+    en: "Name"
+  })
 
-    let nativeNameLabel = useTrans({
-        zh: "本地名称",
-        en: "Native Name"
-    })
+  let nativeNameLabel = useTrans({
+    zh: "本地名称",
+    en: "Native Name"
+  })
 
-    let symbolLabel = useTrans({
-        zh: "符号",
-        en: "Symbol"
-    })
+  let symbolLabel = useTrans({
+    zh: "符号",
+    en: "Symbol"
+  })
 
-    let isEdit = !isAdd
-    return (
-        <>
-            <FieldStack>
-                <InputField name="code" label={codeLabel} disabled={isEdit} />
-                <InputField name="name" label={nameLabel} />
-                <InputField name="nativeName" label={nativeNameLabel} />
-                <InputField name="symbol" label={symbolLabel} />
-            </FieldStack>
-        </>
-    )
+  let isEdit = !isAdd
+  return (
+    <>
+      <FieldStack>
+        <InputField name="code" label={codeLabel} disabled={isEdit} />
+        <InputField name="name" label={nameLabel} />
+        <InputField name="nativeName" label={nativeNameLabel} />
+        <InputField name="symbol" label={symbolLabel} />
+      </FieldStack>
+    </>
+  )
 }

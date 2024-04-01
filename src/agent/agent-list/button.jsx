@@ -131,7 +131,7 @@ const AddDialog = ({ brand, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useTrans({
@@ -152,7 +152,10 @@ const AddDialog = ({ brand, onSubmitted, dialog }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="100vw"

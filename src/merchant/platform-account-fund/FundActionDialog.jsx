@@ -117,7 +117,7 @@ const AddDeductFundDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -128,7 +128,10 @@ const AddDeductFundDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
       onSubmit={onSubmit}
       isLoading={isLoading}
       result={result}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       error={error}
       onCloseErrorAlert={reset}
       dialog={dialog}

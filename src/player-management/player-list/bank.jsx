@@ -418,7 +418,7 @@ const AddDialog = ({ brandId, playerCode, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -433,7 +433,10 @@ const AddDialog = ({ brandId, playerCode, onSubmitted, dialog }) => {
         result={result}
         error={error}
         onCloseErrorAlert={reset}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         dialog={dialog}
       >
         <EditBody brandId={brandId} />
@@ -462,7 +465,7 @@ const EditDialog = ({ brandId, playerCode, record, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -475,7 +478,10 @@ const EditDialog = ({ brandId, playerCode, record, onSubmitted, dialog }) => {
         result={result}
         error={error}
         onCloseErrorAlert={reset}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         dialog={dialog}
       >
         <EditBody brandId={brandId} />

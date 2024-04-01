@@ -109,7 +109,7 @@ const ViewOrEditDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -121,7 +121,10 @@ const ViewOrEditDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       dialog={dialog}
       title={title}
       showActionButtons={readOnly ? false : true}
@@ -179,46 +182,3 @@ const FormBody = ({ readOnly }) => {
     </FieldStack>
   )
 }
-
-/*
-const DeleteDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
-  let [formData, setSubmit] = useState()
-
-  let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateBrandLogo(formData)
-
-  const onSubmit = () => {
-    reset()
-
-    setSubmit({ brandId })
-  }
-
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
-  }
-
-  return (
-    <FormDialog
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      result={result}
-      error={error}
-      onCloseErrorAlert={reset}
-      onSubmitted={() => {
-        onSubmitted?.(undefined)
-
-        reset()
-      }}
-      dialog={dialog}
-    >
-      <Alert
-        title={<Trans zh={`确认删除`} en={`Confirm delete？`} />}
-        type="warning"
-        variant=""
-      ></Alert>
-    </FormDialog>
-  )
-}
-*/

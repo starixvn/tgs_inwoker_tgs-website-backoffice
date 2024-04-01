@@ -83,7 +83,7 @@ export const DomainListDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -112,7 +112,10 @@ export const DomainListDialog = ({
 }
 
 const DomainFieldArrayName = "domains"
-export const DomainListFormBody = ({ name = DomainFieldArrayName, readOnly = false }) => {
+export const DomainListFormBody = ({
+  name = DomainFieldArrayName,
+  readOnly = false
+}) => {
   let editable = !readOnly
 
   let { control, watch, getValues, setValue } = useFormContext()

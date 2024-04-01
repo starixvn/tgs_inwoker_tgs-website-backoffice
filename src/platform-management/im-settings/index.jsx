@@ -44,7 +44,7 @@ export const Content = () => {
 const Body = () => {
   let userBrandId = useUserBrandId()
   let [brandId, setBrandId] = useState(userBrandId)
-  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
+  let { isLoading, data: brand, error, deleteCache } = useBrand(brandId)
 
   return (
     <Set orientation="vertical" isFilled>
@@ -170,7 +170,7 @@ const ProfitSharingSettingFormDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   const onSubmit = (formData) => {
@@ -187,7 +187,10 @@ const ProfitSharingSettingFormDialog = ({
         brandAgentDividendConditions: clone(record)
       }}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}

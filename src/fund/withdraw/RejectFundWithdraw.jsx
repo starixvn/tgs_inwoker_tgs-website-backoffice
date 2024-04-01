@@ -107,7 +107,7 @@ const RejectFundWithdrawDialog = ({
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (

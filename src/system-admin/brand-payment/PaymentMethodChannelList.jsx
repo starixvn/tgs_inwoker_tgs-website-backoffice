@@ -135,7 +135,7 @@ export const AddPaymentMethodChannelDialog = ({ onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -145,7 +145,10 @@ export const AddPaymentMethodChannelDialog = ({ onSubmitted, dialog }) => {
         isLoading={isLoading}
         result={result}
         error={error}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         onCloseErrorAlert={reset}
         title={title}
         dialog={dialog}
@@ -247,7 +250,7 @@ const DeleteDialog = ({ record, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -257,7 +260,10 @@ const DeleteDialog = ({ record, onSubmitted, dialog }) => {
         isLoading={isLoading}
         result={result}
         error={error}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         onCloseErrorAlert={reset}
         type="danger"
         title="Confirm Delete?"

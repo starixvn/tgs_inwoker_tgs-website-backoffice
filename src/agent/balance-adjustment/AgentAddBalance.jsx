@@ -98,7 +98,7 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
   return (
     <FormDialog
@@ -109,7 +109,10 @@ const AddDialog = ({ brandId, agentId, username, onSubmitted, dialog }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
     >

@@ -85,13 +85,14 @@ const UpgradeDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
     <FormDialog
       onSubmit={onSubmit}
       onSubmitted={() => {
+        reset()
         onSubmitted?.()
 
         let path = `/${AgentMenuCode}/${AgentListMenuCode}`

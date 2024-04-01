@@ -78,5 +78,8 @@ const editPlayerInfo = async (page, player) => {
     )
   ])
 
+  let dialogHidden = await page.locator(dialogSelector).isHidden()
+  expect(dialogHidden).to.be.true
+
   return info
 }

@@ -69,7 +69,7 @@ const ResetDialog = ({ agentId, onSubmitted, dialog, dialogId }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (

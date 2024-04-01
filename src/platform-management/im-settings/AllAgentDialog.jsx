@@ -204,6 +204,8 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
             },
             true
           )
+
+          reset()
         }}
         dialog={dialog}
         showActionButtons={readOnly ? false : true}
@@ -580,7 +582,7 @@ const MultileLayerSettingFormDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   const onSubmit = (data = {}) => {
@@ -600,7 +602,10 @@ const MultileLayerSettingFormDialog = ({
         }}
         onSubmit={onSubmit}
         isLoading={isLoading}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         result={result}
         error={error}
         onCloseErrorAlert={reset}

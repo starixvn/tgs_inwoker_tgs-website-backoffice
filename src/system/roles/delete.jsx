@@ -35,9 +35,8 @@ export const DeleteButton = ({ id, name, onSubmitted, ...props }) => {
 
 const DeleteDialog = ({ id, name = "", dialog, onSubmitted, ...props }) => {
   let [deleteId, setDelete] = useState()
-  let { result, error, isLoading, mutate, deleteCache } = useDeleteRole(
-    deleteId
-  )
+  let { result, error, isLoading, mutate, deleteCache } =
+    useDeleteRole(deleteId)
 
   const submit = () => {
     setDelete(id)
@@ -46,7 +45,7 @@ const DeleteDialog = ({ id, name = "", dialog, onSubmitted, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setDelete(undefined)
+    setDelete(null)
   }
 
   let title = useTrans({
