@@ -24,9 +24,9 @@ export const useAgentList = (searchParams) => {
   return useGet(url)
 }
 
-export const useAgent = (id) => {
+export const useAgent = (id, options) => {
   let url = id ? `${API}/${id}` : ""
-  let { data, ...rest } = useGet(url)
+  let { data, ...rest } = useGet(url, options)
   return {
     data: data?.agent,
     ...rest
@@ -156,14 +156,15 @@ export const useUpdateAgentStatus = (agentId, data) => {
   })
 }
 
-export const useUpdateAgentNegativeDividend = (agentId, data) => {
+export const useUpdateAgentNegativeDividend = (agentId, data, options) => {
   let url =
     agentId && data
       ? `${API}/negative-agent-dividend-carry-forward/${agentId}`
       : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true
+    dropEmptyValuesDisabled: true,
+    ...options
   })
 }
 
