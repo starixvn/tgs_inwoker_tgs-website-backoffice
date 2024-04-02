@@ -1,9 +1,10 @@
 // import "./tracing"
 import { toDataOrError } from "./response"
-import useSWR from "swr"
+import useSWR, { useSWRConfig } from "swr"
 import { getAcceptLang, getAcceptLangCulture } from "../i18n"
 import { isValid } from "date-fns"
 import { isNil, isEmpty, either, empty, complement } from "ramda"
+import { useEffectOnce } from "react-use"
 
 const notNil = complement(isNil)
 
@@ -147,13 +148,25 @@ export const useGet = (url, options) => {
     options
   )
 
+  /*
+  TODO: need the following workaround?
+  useEffectOnce(() => {
+    //workaround to trigger mutate after call deleteCache() prev
+    if (!isLoading && key && !error && isNil(data)) {
+      mutate()
+    }
+  })
+  */
+
   return {
     key,
     isLoading: (key && !error && isNil(data)) || isLoading,
     data,
     mutate,
     ...rest,
-    deleteCache: () => mutate(undefined, false)
+    deleteCache: () => {
+      mutate(undefined, false)
+    }
   }
 }
 
