@@ -180,8 +180,7 @@ export const usePostData = (url, data, options) => {
 }
 
 export const usePostFormData = (url, formData, options) => {
-  let fetchData = !!url && !!formData
-  let key = fetchData ? [url, formData, "POST"] : null
+  let key = !!url && !!formData ? [url, formData, "POST"] : null
   let {
     data: result,
     mutate,
