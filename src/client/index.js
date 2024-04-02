@@ -149,7 +149,7 @@ export const useGet = (url, options) => {
   )
 
   /*
-  TODO: need the following workaround?
+  NOTE: use options = { dedupingInterval: 0 } instead of the following workaround
   useEffectOnce(() => {
     //workaround to trigger mutate after call deleteCache() prev
     if (!isLoading && key && !error && isNil(data)) {
@@ -244,11 +244,14 @@ export const usePatchData = (url, data, options) => {
     data: result,
     mutate,
     ...rest
-  } = useSWR(key, ([url, data]) =>
-    patch(url, {
-      data,
-      ...options
-    })
+  } = useSWR(
+    key,
+    ([url, data]) =>
+      patch(url, {
+        data,
+        ...options
+      }),
+    options
   )
 
   return {
