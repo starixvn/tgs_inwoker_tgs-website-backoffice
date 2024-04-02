@@ -77,7 +77,7 @@ const PlatformGameDetailDialog = ({
     error: brandGameError,
     mutate: mutatebrandGame,
     deleteCache: deleteBrandGameCache
-  } = useBrandGame(id, { dedupingInterval: 0 })
+  } = useBrandGame(id)
 
   let [submitData, setSubmit] = useState()
   let { result, isLoading, error, mutate, deleteCache } = useUpdateBrandGame(

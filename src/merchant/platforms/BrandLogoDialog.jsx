@@ -51,13 +51,7 @@ export const BrandLogoDialogDisclosure = ({ brandId, ...props }) => {
 }
 
 const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
-  let {
-    isLoading,
-    data: record,
-    error,
-    mutate,
-    deleteCache
-  } = useBrandLogo(brandId, { dedupingInterval: 0 })
+  let { isLoading, data: record, error, deleteCache } = useBrandLogo(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -67,16 +61,11 @@ const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
     return <AlertDialog {...error} onClickClose={deleteCache} />
   }
 
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-  }
-
   return (
     <ViewOrEditDialog
       brandId={brandId}
       record={record}
-      onSubmitted={reset}
+      onSubmitted={deleteCache}
       dialog={dialog}
       {...props}
     />
@@ -99,8 +88,7 @@ const ViewOrEditDialog = ({
   })
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateBrandLogo(formData)
+  let { isLoading, result, error, deleteCache } = useUpdateBrandLogo(formData)
 
   const onSubmit = (data) => {
     setSubmit(data)
@@ -108,7 +96,6 @@ const ViewOrEditDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(undefined, false)
     setSubmit(null)
   }
 
