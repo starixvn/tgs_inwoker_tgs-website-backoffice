@@ -516,7 +516,7 @@ const autoDisplayParentMenu = (path = [], menus) => {
   }
 }
 
-export const EditButton = ({ id, record, ...props }) => {
+export const EditButton = ({ id, record, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -530,13 +530,18 @@ export const EditButton = ({ id, record, ...props }) => {
         <EditTrans />
       </Disclosure>
       {dialog.visible && (
-        <EditRoleDialog id={id} record={record} dialog={dialog} />
+        <EditRoleDialog
+          id={id}
+          record={record}
+          dialog={dialog}
+          onSubmitted={onSubmitted}
+        />
       )}
     </>
   )
 }
 
-const EditRoleDialog = ({ id, record, dialog }) => {
+const EditRoleDialog = ({ id, record, dialog, onSubmitted }) => {
   let { role, isLoading, error, deleteCache } = useRole(id)
   let userRoleType = useUserRoleType()
   let [menus, setMenus] = useState()
@@ -564,7 +569,10 @@ const EditRoleDialog = ({ id, record, dialog }) => {
       menus={menus}
       record={record}
       dialog={dialog}
-      onSubmitted={deleteCache}
+      onSubmitted={() => {
+        deleteCache()
+        onSubmitted?.()
+      }}
     />
   )
 }

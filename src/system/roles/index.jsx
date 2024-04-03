@@ -282,7 +282,7 @@ const useColumns = ({ mutate, items = [] }) => {
           let { id, name, isRoot } = value
           return (
             <Set alignX="center">
-              <EditButton id={id} record={value} />
+              <EditButton id={id} record={value} onSubmitted={mutate} />
               <CopyButton
                 id={id}
                 name={name}
