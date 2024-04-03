@@ -256,7 +256,7 @@ const WithdrawLimitInputGroup = ({
       <NumberInputField
         name={name}
         value={value}
-        min="1"
+        min="0"
         required={isEnable}
         disabled={inputDisabled}
         addonBefore={
