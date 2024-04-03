@@ -100,6 +100,7 @@ const fetchApi = async (
   if (!headers["Accept-Language"]) {
     headers["Accept-Language"] = getAcceptLangCulture()
   }
+  console.log("url[", url, "], method[", method, "], data", data)
 
   headers = notNil(data)
     ? {
