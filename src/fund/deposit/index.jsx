@@ -45,7 +45,7 @@ import equals from "fast-deep-equal"
 import clone from "clone-deep"
 import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
-import textColumn from "../../table/column/textColumn"
+import textColumn, { noWrapTextColumn } from "../../table/column/textColumn"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { today } from "../../date/range"
@@ -98,6 +98,11 @@ import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import { PromotionAmountTrans, PromotionNameTrans } from "../../trans/Promotion"
 import { useTotalDepositAmountTrans } from "../../trans/Field"
+import { Code as PageCode } from "./menu"
+import { Code as ModuleCode } from "../menu"
+
+const MainTable = "main"
+const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export { Code }
 
@@ -315,7 +320,7 @@ const Summary = ({ total, totalPromotion }) => {
   }
 
   return (
-    <Blockquote borderColor="primary">
+    <Blockquote borderColor="primary" padding="0.75rem">
       <Set>
         <Box>
           <Heading use="h5">
@@ -458,7 +463,7 @@ const SearchBar = ({
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
-        <FieldStack orientation="vertical">
+        <FieldStack id="field-stack" orientation="vertical" spacing="minor-2">
           <Set orientation="horizontal">
             <InputField
               name="username"
@@ -542,22 +547,22 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
   return useMemo(() => {
     let columns = [
       sequenceColumn(),
-      textColumn({
+      noWrapTextColumn({
         accessor: "userName",
         Header: <UserNameTrans />,
         disableSortBy: true
       }),
-      textColumn({
+      noWrapTextColumn({
         accessor: "orderNo",
         Header: <GmsIdTrans />,
         disableSortBy: true
       }),
-      textColumn({
+      noWrapTextColumn({
         accessor: "thirdPartyOrderNo",
         Header: <ThirdPartyIdTrans />,
         disableSortBy: true
       }),
-      textColumn({
+      noWrapTextColumn({
         id: "paymentMethod",
         accessor: (row) => row,
         Header: <DepositPaymentMethodTrans />,
@@ -570,7 +575,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
           )
         }
       }),
-      textColumn({
+      noWrapTextColumn({
         accessor: "channelName",
         Header: <PaymentNameTrans />,
         disableSortBy: true,
@@ -629,25 +634,19 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <StatusTrans />,
         disableSortBy: true,
         Cell: StatusCell
-      })
-    ]
-
-    columns.push(
-      textColumn({
+      }),
+      noWrapTextColumn({
         accessor: "reviewedUserName",
         Header: <OperatorTrans />,
         disableSortBy: true
-      })
-    )
-
-    columns.push(
-      textColumn({
+      }),
+      noWrapTextColumn({
         accessor: "remark",
         Header: <RemarkTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       }),
-      textColumn({
+      noWrapTextColumn({
         accessor: "promotionName",
         Header: <PromotionNameTrans />,
         disableSortBy: true
@@ -657,11 +656,11 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <PromotionAmountTrans />,
         disableSortBy: true
       })
-    )
+    ]
 
     if (hasUpdateMenu) {
       columns.push(
-        textColumn({
+        noWrapTextColumn({
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
@@ -671,7 +670,13 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
               value?.status === FundDepositStatus.Review ||
               value?.status === FundDepositStatus.WaitingPayment
             return (
-              <Set alignX="center">
+              <Set
+                alignX="center"
+                orientation="horizontal"
+                css={css`
+                  width: max-content;
+                `}
+              >
                 {underReview && (
                   <VerifyFundDepositDisclosure
                     id="verify-deposit-dialog-disclosure"

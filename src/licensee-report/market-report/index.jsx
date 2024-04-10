@@ -80,6 +80,8 @@ export const Body = () => {
         onLicenseeChange={(value) => {
           setLicenseeId(value)
         }}
+        paddingTop="0.5rem"
+        paddingLeft="0.5rem"
       />
       {licenseeId && <ReportContent licenseeId={licenseeId} />}
     </Set>

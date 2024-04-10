@@ -65,7 +65,12 @@ export const Body = () => {
 
   return (
     <Set orientation="vertical" isFilled>
-      <BrandBar end={Reseller} onResellerChange={setResellerId} />
+      <BrandBar
+        end={Reseller}
+        onResellerChange={setResellerId}
+        paddingTop="0.5rem"
+        paddingLeft="0.5rem"
+      />
       {resellerId && <ReportContent resellerId={resellerId} />}
     </Set>
   )

@@ -11,6 +11,7 @@ const DefaultTimeFormat = "HH:mm:ss"
 export const dateTimeColumn = ({
   dateFormat = DefaultDateFormat,
   timeFormat = DefaultTimeFormat,
+  whiteSpace = "nowrap",
   placeholder = "",
   toValue,
   ...props
@@ -21,7 +22,7 @@ export const dateTimeColumn = ({
       let formattedDate = dateFormat ? formatDateTime(dateFormat, value) : ""
       let formattedTime = timeFormat ? formatDateTime(timeFormat, value) : ""
       return (
-        <Set orientation="vertical" alignX="center">
+        <Set orientation="vertical" alignX="center" spacing="minor-1">
           {formattedDate && (
             <Text.Block data-type="date" fontSize={{ default: "14px" }}>
               {formattedDate}
@@ -36,6 +37,7 @@ export const dateTimeColumn = ({
         </Set>
       )
     },
+    whiteSpace,
     ...props
   })
 

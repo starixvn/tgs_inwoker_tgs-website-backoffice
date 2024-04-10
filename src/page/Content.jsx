@@ -40,7 +40,13 @@ export const PageContent = ({
         }}
         {...props}
       >
-        <Set orientation="vertical" spacing="major-2" height="100%" isFilled>
+        <Set
+          orientation="vertical"
+          padding="0.5rem 0 0 0"
+          spacing="major-1"
+          height="100%"
+          isFilled
+        >
           <Box>
             {title && (
               <Box marginBottom="major-3">
