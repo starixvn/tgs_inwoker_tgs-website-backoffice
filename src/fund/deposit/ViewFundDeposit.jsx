@@ -489,6 +489,17 @@ const EMoneyNameApplyInfo = ({ value = "" }) => {
   )
 }
 
+const CoinsphNameApplyInfo = ({ value = "" }) => {
+  return (
+    <>
+      <NormalLabel>
+        <RealNameTrans />
+      </NormalLabel>
+      <Box alignY="center">{value}</Box>
+    </>
+  )
+}
+
 const PhoneApplyInfo = ({ value = "" }) => {
   return (
     <>
@@ -530,6 +541,13 @@ const PlayerApplyInfoCardBody = ({ applyInfo, bankType }) => {
     case BankType.Pulsa: //refer to ManualDeposit/ManualDepositPulsaApplyInfo.cs
       return (
         <>
+          <PhoneApplyInfo value={applyInfo?.sendPhone} />
+        </>
+      )
+    case BankType.Coinsph:
+      return (
+        <>
+          <CoinsphNameApplyInfo value={applyInfo?.sendName} />
           <PhoneApplyInfo value={applyInfo?.sendPhone} />
         </>
       )
