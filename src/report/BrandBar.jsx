@@ -103,8 +103,6 @@ export const BrandBar = ({
             }))
           }
         }}
-        paddingTop="1em"
-        paddingLeft="1em"
         {...props}
       />
     </FormProvider>

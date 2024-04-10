@@ -21,7 +21,6 @@ import {
   List,
   useBreakpoint
 } from "bumbag"
-import Content from "./Content"
 import BrandBar from "../report/BrandBar"
 import { useUserBrandId, useUserLicenseeId } from "../user/context"
 import { useMeasure } from "react-use"
@@ -34,7 +33,6 @@ export const LicenseePageContent = ({
   addonAfterTitle,
   height = "100%",
   children,
-  padding = "1rem",
   ...props
 }) => {
   let userLicenseeId = useUserLicenseeId()
@@ -62,14 +60,11 @@ export const LicenseePageContent = ({
         wrapperProps={{
           height
         }}
-        padding={padding}
         {...props}
       >
         <Set orientation="vertical" isFilled height="100%">
-          <Set orientation="horizontal" padding="0.5rem 0" alignY="center">
+          <Set orientation="horizontal" alignY="center">
             <BrandBar
-              paddingLeft="0"
-              paddingTop="0"
               end={Licensee}
               onLicenseeChange={(value) => {
                 setLicenseeId(value)

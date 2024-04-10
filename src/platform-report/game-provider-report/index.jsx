@@ -75,6 +75,8 @@ export const Body = () => {
         onBrandChange={(value) => {
           setBrandId(value)
         }}
+        paddingTop="0.5rem"
+        paddingLeft="0.5rem"
       />
       {brandId && <ReportContent brandId={brandId} />}
     </Set>

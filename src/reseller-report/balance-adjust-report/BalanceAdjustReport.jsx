@@ -101,7 +101,7 @@ export const BalanceAdjustReport = ({ resellerId }) => {
 
   let pageWidth = useResellerPageContentWidth()
   return (
-    <Set orientation="vertical" isFilled height="100%" spacing="major-2">
+    <Set orientation="vertical" isFilled height="100%">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           from={state?.from}
