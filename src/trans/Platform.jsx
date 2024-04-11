@@ -376,3 +376,15 @@ const PlatformSettlementTime = {
 export const PlatformSettlementTimeTrans = () => (
   <Trans {...PlatformSettlementTime} />
 )
+
+const ProductFee = {
+  zh: "产品费用",
+  en: "Product Fee"
+}
+export const ProductFeeTrans = () => <Trans {...ProductFee} />
+
+const PlatformFee = {
+  zh: "平台费用",
+  en: "Platform Fee"
+}
+export const PlatformFeeTrans = () => <Trans {...PlatformFee} />
