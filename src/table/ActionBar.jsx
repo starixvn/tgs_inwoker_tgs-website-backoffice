@@ -69,9 +69,9 @@ export const ActionBar = ({ table }) => {
     return null
   }
 
-  //TODO: defalut null impl?
-  // let { menuAddonBefore: MenuAddonBefore, menuAddonAfter: MenuAddonAfter } =
-  //   table
+  let { menuAddonBefore: MenuAddonBefore, menuAddonAfter: MenuAddonAfter } =
+    table
+  console.log("MenuAddonBefore", MenuAddonBefore)
   return (
     <Set
       orientation="horizontal"
@@ -80,8 +80,10 @@ export const ActionBar = ({ table }) => {
         width: max-content;
       `}
     >
+      {MenuAddonBefore && <MenuAddonBefore table={table} />}
       <ToggleHiddenDropdownMenu table={table} />
       <ColumnOrderPopover table={table} />
+      {MenuAddonAfter && <MenuAddonAfter table={table} />}
     </Set>
   )
 }
