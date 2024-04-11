@@ -43,7 +43,9 @@ const notEmpty = complement(isEmpty)
 
 const Action = {
   ToggleColumnHidden: "toggleColumnHidden",
-  ColumnOrder: "columnOrder"
+  ColumnOrder: "columnOrder",
+  MenuAddonBefore: "menuAddonBefore",
+  MenuAddonAfter: "menuAddonAfter"
 }
 
 export const useTableColumnHiddenLocalStorage = (
@@ -67,6 +69,9 @@ export const ActionBar = ({ table }) => {
     return null
   }
 
+  //TODO: defalut null impl?
+  // let { menuAddonBefore: MenuAddonBefore, menuAddonAfter: MenuAddonAfter } =
+  //   table
   return (
     <Set
       orientation="horizontal"
