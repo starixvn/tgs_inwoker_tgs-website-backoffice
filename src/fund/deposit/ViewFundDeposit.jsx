@@ -625,7 +625,8 @@ let applyInfoSupportedBankType = [
   BankType.Bank,
   BankType.FPS,
   BankType.EWallet,
-  BankType.Pulsa
+  BankType.Pulsa,
+  BankType.Coinsph
 ]
 const ApplyInfoBox = ({ applyInfo, paymentMethod }) => {
   let bankType = paymentMethod?.bankType
@@ -636,10 +637,6 @@ const ApplyInfoBox = ({ applyInfo, paymentMethod }) => {
     return null
   }
 
-  //TODO: use memo?
-  //TODO: able to rm
-  // let hasBankAddress = !!applyInfo?.receiveBankAccountAddress
-  // let hasMemo = !!applyInfo?.memo
   return (
     <>
       <Heading use="h6">
@@ -663,29 +660,6 @@ const ApplyInfoBox = ({ applyInfo, paymentMethod }) => {
           flex="1"
         />
       </Set>
-      {/* 
-      TODO: able to rm?
-      <FieldValues marginLeft="1.5rem">
-        {hasBankAddress && (
-          <>
-            <NormalLabel>
-              <Trans zh="开户地址" en="Account Address" />
-            </NormalLabel>
-            <Box alignY="center">
-              {applyInfo?.receiveBankAccountAddress}
-            </Box>
-          </>
-        )}
-
-        {hasMemo && (
-          <>
-            <NormalLabel>
-              <Trans zh="附言" en="Memo" />
-            </NormalLabel>
-            <Box alignY="center">{applyInfo?.memo}</Box>
-          </>
-        )}
-      </FieldValues> */}
     </>
   )
 }
