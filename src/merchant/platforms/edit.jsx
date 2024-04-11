@@ -81,6 +81,7 @@ import {
 } from "../../trans/Agent"
 import Switch from "../../switch/Switch"
 import { AutoOrManualSwitch } from "../../switch/AutoOrManualSwitch"
+import { PlatformFeeTrans } from "../../trans/Platform"
 
 export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -664,7 +665,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
         </Box>
 
         <NormalLabel>
-          <Trans zh="产品费用" en="Product Fee" />
+          <PlatformFeeTrans />
         </NormalLabel>
         <Box>
           <PercentageNumberInputField

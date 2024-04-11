@@ -246,11 +246,6 @@ export const FormBody = ({
               </Box>
             </>
           )}
-          {/* 
-          TODO: rm
-          <PhoneApplyInfoBox record={record} />
-          <EMoneyNameApplyInfoBox record={record} /> 
-          */}
           <CryptoApplyInfoBox record={record} />
           <SendNoteApplyInfoBox record={record} />
         </FieldValues>
@@ -376,42 +371,6 @@ const HandlingFeeBox = ({ record, brandPayment }) => {
     </>
   )
 }
-
-/*
-TODO: rm
-const PhoneApplyInfoBox = ({ record }) => {
-  let phone = record?.applyInfo?.phone
-  if (!phone) {
-    return null
-  }
-
-  return (
-    <>
-      <NormalLabel>
-        <Trans zh="电话号码" en="Phone" />
-      </NormalLabel>
-      <Box alignY="center">{phone}</Box>
-    </>
-  )
-}
-
-//TODO: rm
-const EMoneyNameApplyInfoBox = ({ record }) => {
-  let eMoneyName = record?.applyInfo?.sendEMoneyName
-  if (!eMoneyName) {
-    return null
-  }
-
-  return (
-    <>
-      <NormalLabel>
-        <Trans zh="E-money name" en="E-money name" />
-      </NormalLabel>
-      <Box alignY="center">{eMoneyName}</Box>
-    </>
-  )
-}
-*/
 
 const SendNoteApplyInfoBox = ({ record }) => {
   let sendNote = record?.applyInfo?.sendNote
@@ -596,6 +555,13 @@ const PlatformApplyInfoCardBody = ({ applyInfo, bankType }) => {
       )
     case BankType.Pulsa:
       return <PhoneApplyInfo value={applyInfo?.phone} />
+    case BankType.Coinsph:
+      return (
+        <>
+          <CoinsphNameApplyInfo value={applyInfo?.name} />
+          <PhoneApplyInfo value={applyInfo?.phone} />
+        </>
+      )
     default:
       return null
   }
