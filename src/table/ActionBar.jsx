@@ -44,6 +44,7 @@ const notEmpty = complement(isEmpty)
 const Action = {
   ToggleColumnHidden: "toggleColumnHidden",
   ColumnOrder: "columnOrder",
+  MenuBar: "menuBar",
   MenuAddonBefore: "menuAddonBefore",
   MenuAddonAfter: "menuAddonAfter"
 }
@@ -59,6 +60,21 @@ export const useTableColumnHiddenLocalStorage = (
 
 const ActionFields = Object.values(Action)
 
+const MenubarBox = ({ children }) => {
+  return (
+    <Set
+      orientation="horizontal"
+      verticalBelow="tablet"
+      css={css`
+        min-width: max-content;
+        width: 100%;
+      `}
+    >
+      {children}
+    </Set>
+  )
+}
+
 export const ActionBar = ({ table }) => {
   let showActionBar = !!ActionFields.find((actionField) => {
     let showAction = get(table, actionField)
@@ -69,22 +85,20 @@ export const ActionBar = ({ table }) => {
     return null
   }
 
-  let { menuAddonBefore: MenuAddonBefore, menuAddonAfter: MenuAddonAfter } =
-    table
-  console.log("MenuAddonBefore", MenuAddonBefore)
+  let { menubar: Menubar = MenubarBox, menuAddonBefore, menuAddonAfter } = table
+
   return (
-    <Set
-      orientation="horizontal"
-      verticalBelow="tablet"
+    <Menubar
       css={css`
-        width: max-content;
+        min-width: max-content;
+        width: 100%;
       `}
     >
-      {MenuAddonBefore && <MenuAddonBefore table={table} />}
+      {menuAddonBefore}
       <ToggleHiddenDropdownMenu table={table} />
       <ColumnOrderPopover table={table} />
-      {MenuAddonAfter && <MenuAddonAfter table={table} />}
-    </Set>
+      {menuAddonAfter}
+    </Menubar>
   )
 }
 
