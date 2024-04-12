@@ -152,6 +152,13 @@ const ToggleHiddenDropdownMenu = ({ table }) => {
           & .bb-PopoverFooter > .bb-Box {
             width: 100%;
           }
+
+          ${!popover.visible &&
+          css`
+            & .bb-PopoverFooter {
+              display: none;
+            }
+          `}
         `}
       >
         <Set orientation="vertical">
