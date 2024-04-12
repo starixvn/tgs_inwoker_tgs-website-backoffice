@@ -632,7 +632,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <UpdatedTimeTrans />,
         disableSortBy: true
       }),
-      textColumn({
+      noWrapTextColumn({
         accessor: "status",
         Header: <StatusTrans />,
         disableSortBy: true,
