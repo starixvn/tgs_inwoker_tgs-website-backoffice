@@ -319,7 +319,6 @@ const Body = ({}) => {
           </Box>
         )}
       </Level>
-      <Summary total={data?.sum} />
       <Table
         id="withdraw"
         columns={columns}
@@ -331,6 +330,10 @@ const Body = ({}) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading || autoLoading}
         getRowId={(row) => row.id}
+        localStorageKey={TableLocalStorageKey}
+        toggleColumnHidden={true}
+        menubar={Level}
+        menuAddonBefore={<Summary key="summary" total={data?.sum} />}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
