@@ -144,6 +144,7 @@ const ToggleHiddenDropdownMenu = ({ table }) => {
         css={css`
           overflow: hidden;
           & .bb-PopoverContent {
+            position: relative;
             max-height: 40vh;
             max-width: 85vw;
             overflow: auto;
