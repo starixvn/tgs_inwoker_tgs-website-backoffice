@@ -126,6 +126,7 @@ const BodyContent = ({ brandId = "", brand }) => {
   let navigate = useNavigate()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     status: AgentStatus.Enabled,
     levelType: "",
     type: "",
@@ -148,24 +149,20 @@ const BodyContent = ({ brandId = "", brand }) => {
     mutate,
     error,
     deleteCache
-  } = useAgentList(
-    brandId
-      ? {
-          ...toApiParams(state),
-          sortby: "username",
-          brandId
-        }
-      : undefined
-  )
+  } = useAgentList({
+    ...toApiParams(state),
+    sortby: "username"
+  })
 
   const reset = () => {
     mutate(undefined)
-    deleteCache()
   }
 
   useEffect(() => {
-    reset()
-    setState({ pageIndex: 0, brandId })
+    if (state.brandId != brandId) {
+      reset()
+      setState({ pageIndex: 0, brandId })
+    }
   }, [brandId, brand])
 
   let columns = useColumns({
