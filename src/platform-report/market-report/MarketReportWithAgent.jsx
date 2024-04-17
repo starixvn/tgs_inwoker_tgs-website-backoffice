@@ -159,6 +159,7 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
           )
         }}
       </AutoSizer>
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
   )
 }
