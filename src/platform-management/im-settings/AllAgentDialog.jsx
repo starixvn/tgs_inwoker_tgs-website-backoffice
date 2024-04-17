@@ -53,6 +53,7 @@ import { SettlementIntervalTypeSelect } from "../../date/SettlementIntervalType"
 import { isDev } from "../../env"
 import {
   CardGame,
+  EGame,
   LiveDealer,
   Lottery,
   Sportsbook,
@@ -337,10 +338,7 @@ const AllGameTypeMessages = {
   LiveDealer: LiveDealer,
   CardGame: CardGame,
   Lottery: Lottery,
-  Slot: {
-    zh: "电子",
-    en: "EGame"
-  }
+  Slot: EGame
 }
 
 const AllAgentGameTypeTabs = ({ brandId, readOnly, dialog }) => {

@@ -53,6 +53,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
   CardGameTrans,
+  EGameTrans,
   LiveDealerTrans,
   LotteryTrans,
   SportsbookTrans,
@@ -285,7 +286,7 @@ const useColumns = ({ items = [] }) => {
 
       numberDecimalColumn({
         accessor: "slotWinLoss",
-        Header: <Trans zh="电子" en="EGame" />,
+        Header: <EGameTrans />,
         sumColumn: "slotWinLoss",
         disableSortBy: true
       }),

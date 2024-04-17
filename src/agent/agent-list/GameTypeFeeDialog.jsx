@@ -11,11 +11,21 @@ import {
   usePlatformGameTypeFeeSetting,
   useUpdatePlatformGameTypeFeeSetting
 } from "../../merchant/platforms/client"
+import { FieldValues } from "../../layout/Grid"
+import {
+  CardGameTrans,
+  EGameTrans,
+  LiveDealerTrans,
+  LotteryTrans,
+  SportsbookTrans,
+  VirtualSportsTrans
+} from "../../trans/Game"
+import { PercentageNumberInputField } from "../../input/NumberInput"
 
-export const DefaultGameTypeFeeDialog = ({
+export const GameTypeFeeDialog = ({
   brandId,
   id,
-  dialogId = "platform-game-type-fee-dialog"
+  dialogId = "game-type-fee-dialog"
 }) => {
   let dialog = useModalState()
 
@@ -25,9 +35,10 @@ export const DefaultGameTypeFeeDialog = ({
   }
 
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
+  //TODO: trans on platform?
   return (
     <>
-      <Disclosure></Disclosure>
+      <Disclosure>Default Game Type Fee</Disclosure>
       {dialog.visible && (
         <FetchDialog brandId={brandId} dialog={dialog} dialogId={dialogId} />
       )}
@@ -58,5 +69,34 @@ const EditDialog = ({ brandId, record, dialog, dialogId, onSubmitted }) => {
   let { isLoading, result, error, deleteCache } =
     useUpdatePlatformGameTypeFeeSetting(brandId, formData)
 
-  return <FormDialog dialog={dialog} id={dialogId}></FormDialog>
+  //TODO: clone record for defaultValues
+  return (
+    <FormDialog defaultValues={{}} dialog={dialog} id={dialogId}>
+      <GameTypeFreeFormBody />
+    </FormDialog>
+  )
+}
+
+export const GameTypeFreeFormBody = ({}) => {
+  return (
+    <FieldValues>
+      <LiveDealerTrans />
+      <PercentageNumberInputField name="liveDealer" step="1" />
+
+      <SportsbookTrans />
+      <PercentageNumberInputField name="sports" step="1" />
+
+      <EGameTrans />
+      <PercentageNumberInputField name="eGame" step="1" />
+
+      <CardGameTrans />
+      <PercentageNumberInputField name="cardGame" step="1" />
+
+      <LotteryTrans />
+      <PercentageNumberInputField name="lottery" step="1" />
+
+      <VirtualSportsTrans />
+      <PercentageNumberInputField name="virtualSports" step="1" />
+    </FieldValues>
+  )
 }
