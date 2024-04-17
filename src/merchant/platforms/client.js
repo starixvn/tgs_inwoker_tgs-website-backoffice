@@ -109,7 +109,7 @@ export const useUpdatePlatformAccountFundSetting = (id, formData) => {
 }
 
 //TODO: api integration
-export const usePlatformGameTypeFeeSetting = (id) => {
+export const usePlatformAgentGameTypeFees = (id) => {
   //TODO: rm fake data
   let { data, ...rest } = useBrandLogo(id)
   if (data) {
@@ -129,7 +129,7 @@ export const usePlatformGameTypeFeeSetting = (id) => {
 }
 
 //TODO: api integration
-export const useUpdatePlatformGameTypeFeeSetting = (id, formData) => {
+export const useUpdatePlatformAgentGameTypeFees = (id, formData) => {
   let { data: result, ...rest } = useBrandLogo(id)
   if (formData) {
     sessionStorage.setItem("fee", JSON.stringify(formData))

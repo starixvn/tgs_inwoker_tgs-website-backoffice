@@ -288,3 +288,35 @@ export const useDeleteAgentDnsZone = (agentId) => {
   let url = agentId ? `${DomainSettingApi}/dns-zone/${agentId}` : ""
   return useDelete(url)
 }
+
+//TODO: api integration
+export const useAgentGameTypeFees = (agentId) => {
+  //TODO: rm fake data
+  let { data, ...rest } = useAgent(agentId)
+  if (data) {
+    let setting = sessionStorage.getItem("agent-game-type-fee")
+    data = setting
+      ? JSON.parse(setting)
+      : {
+          liveDealer: 1,
+          sports: 2,
+          eGame: 3,
+          cardGame: 4,
+          lottery: 5,
+          virtualSports: 6
+        }
+  }
+  return { data, ...rest }
+}
+
+//TODO: api integration
+export const useUpdateAgentGameTypeFees = (id, formData) => {
+  let { data: result, ...rest } = useAgent(id)
+  if (formData) {
+    sessionStorage.setItem("agent-game-type-fee", JSON.stringify(formData))
+  }
+  return {
+    result: formData ? true : undefined,
+    ...rest
+  }
+}

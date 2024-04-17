@@ -8,8 +8,8 @@ import { GameTypeFee } from "./menu"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import FormDialog from "../../form/FormDialog"
 import {
-  usePlatformGameTypeFeeSetting,
-  useUpdatePlatformGameTypeFeeSetting
+  usePlatformAgentGameTypeFees,
+  useUpdatePlatformAgentGameTypeFees
 } from "../../merchant/platforms/client"
 import { FieldValues } from "../../layout/Grid"
 import {
@@ -21,8 +21,10 @@ import {
   VirtualSportsTrans
 } from "../../trans/Game"
 import { PercentageNumberInputField } from "../../input/NumberInput"
+import clone from "clone-deep"
+import Label from "../../form/Label"
 
-export const GameTypeFeeDialog = ({
+export const GameTypeFeeDialogDisclosure = ({
   brandId,
   id,
   dialogId = "game-type-fee-dialog"
@@ -35,10 +37,10 @@ export const GameTypeFeeDialog = ({
   }
 
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
-  //TODO: trans on platform?
+  //TODO: trans
   return (
     <>
-      <Disclosure>Default Game Type Fee</Disclosure>
+      <Disclosure {...dialog}>Default Game Type Fee</Disclosure>
       {dialog.visible && (
         <FetchDialog brandId={brandId} dialog={dialog} dialogId={dialogId} />
       )}
@@ -48,7 +50,7 @@ export const GameTypeFeeDialog = ({
 
 const FetchDialog = ({ brandId, dialog }) => {
   let { isLoading, data, error, deleteCache } =
-    usePlatformGameTypeFeeSetting(brandId)
+    usePlatformAgentGameTypeFees(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -59,44 +61,86 @@ const FetchDialog = ({ brandId, dialog }) => {
   }
 
   return (
-    <EditDialog brandId={brandId} record={data} onSubmitted={deleteCache} />
+    <EditDialog
+      brandId={brandId}
+      record={data}
+      dialog={dialog}
+      onSubmitted={deleteCache}
+    />
   )
 }
 
 const EditDialog = ({ brandId, record, dialog, dialogId, onSubmitted }) => {
-  //TODO: if record change, able to reset form default values?
+  //TODO: trans
+  let title = "Game Type Fee"
+
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, deleteCache } =
-    useUpdatePlatformGameTypeFeeSetting(brandId, formData)
+    useUpdatePlatformAgentGameTypeFees(brandId, formData)
+
+  //TODO: form submit
+  const onSubmit = (data) => {
+    setSubmit(data)
+  }
+
+  const reset = () => {
+    deleteCache()
+    setSubmit(null)
+  }
 
   //TODO: clone record for defaultValues
   return (
-    <FormDialog defaultValues={{}} dialog={dialog} id={dialogId}>
+    <FormDialog
+      defaultValues={clone(record)}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onSubmitted={onSubmitted}
+      onCloseErrorAlert={reset}
+      dialog={dialog}
+      title={title}
+      id={dialogId}
+    >
       <GameTypeFreeFormBody />
     </FormDialog>
   )
 }
 
-export const GameTypeFreeFormBody = ({}) => {
+export const GameTypeFreeFormBody = ({ addonBefore, ...props }) => {
   return (
-    <FieldValues>
-      <LiveDealerTrans />
-      <PercentageNumberInputField name="liveDealer" step="1" />
+    <FieldValues {...props}>
+      {addonBefore}
 
-      <SportsbookTrans />
-      <PercentageNumberInputField name="sports" step="1" />
+      <Label required>
+        <LiveDealerTrans />
+      </Label>
+      <PercentageNumberInputField name="liveDealer" required step="1" />
 
-      <EGameTrans />
-      <PercentageNumberInputField name="eGame" step="1" />
+      <Label required>
+        <SportsbookTrans />
+      </Label>
+      <PercentageNumberInputField name="sports" required step="1" />
 
-      <CardGameTrans />
-      <PercentageNumberInputField name="cardGame" step="1" />
+      <Label required>
+        <EGameTrans />
+      </Label>
+      <PercentageNumberInputField name="eGame" required step="1" />
 
-      <LotteryTrans />
-      <PercentageNumberInputField name="lottery" step="1" />
+      <Label required>
+        <CardGameTrans />
+      </Label>
+      <PercentageNumberInputField name="cardGame" required step="1" />
 
-      <VirtualSportsTrans />
-      <PercentageNumberInputField name="virtualSports" step="1" />
+      <Label required>
+        <LotteryTrans />
+      </Label>
+      <PercentageNumberInputField name="lottery" required step="1" />
+
+      <Label required>
+        <VirtualSportsTrans />
+      </Label>
+      <PercentageNumberInputField name="virtualSports" required step="1" />
     </FieldValues>
   )
 }
