@@ -11,11 +11,12 @@ import {
   Flex,
   Level
 } from "bumbag"
-import PageContent from "../../page/Content"
-import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { AgentStatusLabel } from "../AgentStatus"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -23,24 +24,20 @@ import {
 } from "../../user/context"
 import { Code, Update } from "./menu"
 import { AgentStatusSelect } from "../AgentStatus"
-import { VipLevelSelect } from "../../vip-levels/VipLevelSelect"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
-import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
+import sequenceColumn from "../../table/column/sequence"
 import textColumn from "../../table/column/textColumn"
-import numberColumn, {
-  numberDecimalColumn,
-  numberDecimalPercentageColumn
-} from "../../table/column/numberColumn"
+import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { AgentLevelLabel, AgentLevelSelect } from "../AgentLevel"
 import { AgentTypeLabel, AgentTypeSelect } from "../AgentType"
 import { useAgentList } from "../agent-list/client"
 import { AgentAddBalanceDisclosure } from "./AgentAddBalance"
 import { AgentDeductBalanceDisclosure } from "./AgentDeductBalance"
-import { BalanceTrans } from "../../trans/User"
+import { BalanceTrans, useUserNameTrans } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
 import {
   AgentLevelTrans,
@@ -56,31 +53,21 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent
+      title={<Trans zh="代理调账" en="Agent Balance Adjustment" />}
+    >
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
-const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-        paddingTop="0.5rem"
-        paddingLeft="0.5rem"
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
-  )
-}
-
-const BodyContent = ({ brandId = "" }) => {
+const Body = ({}) => {
+  let brandId = usePlatformId()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     status: "",
     levelType: "",
     type: "",
@@ -100,32 +87,26 @@ const BodyContent = ({ brandId = "" }) => {
     deleteCache
   } = useAgentList({
     ...toApiParams(state),
-    sortby: "username",
-    brandId
+    sortby: "username"
   })
 
   let columns = useColumns({ mutate, items: data?.items, brandId })
 
   return (
-    <PageContent
-      title={<Trans zh="代理调账" en="Agent Balance Adjustment" />}
-      actionBar={
-        <Flex justifyContent="space-between">
-          <SearchBar
-            brandId={brandId}
-            search={(data) => {
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading}
-          />
-          <Box></Box>
-        </Flex>
-      }
-    >
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          brandId={brandId}
+          search={(data) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+      </Level>
       <Table
         columns={columns}
         data={data?.items}
@@ -137,15 +118,12 @@ const BodyContent = ({ brandId = "" }) => {
         isLoading={isLoading}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
 const SearchBar = ({ brandId, search, isLoading, ...props }) => {
-  let usernameInputPlaceholder = useTrans({
-    zh: "用户名输入框",
-    en: "Input username"
-  })
+  let usernameInputPlaceholder = useUserNameTrans()
   let formMethods = useForm()
 
   const onSubmit = (data) => search(data)
