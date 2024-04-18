@@ -1,16 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import {
-  Heading,
-  Stack,
-  Box,
-  Button,
-  Set,
-  useModalState,
-  Flex,
-  Level
-} from "bumbag"
+import { Heading, Box, Button, Set, Level } from "bumbag"
 import {
   PlatformPageContent,
   usePlatformId,
@@ -24,9 +15,7 @@ import {
 } from "../../user/context"
 import { Code, Update } from "./menu"
 import { AgentStatusSelect } from "../AgentStatus"
-import { FormattedNumberDecimal, Trans, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
-import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
 import sequenceColumn from "../../table/column/sequence"
@@ -40,6 +29,7 @@ import { AgentDeductBalanceDisclosure } from "./AgentDeductBalance"
 import { BalanceTrans, useUserNameTrans } from "../../trans/User"
 import { ActionTrans } from "../../trans/Action"
 import {
+  AgentBalanceAdjustmentTrans,
   AgentLevelTrans,
   AgentTypeTrans,
   AgentUsernameTrans
@@ -54,9 +44,7 @@ export const Content = () => {
   }
 
   return (
-    <PlatformPageContent
-      title={<Trans zh="代理调账" en="Agent Balance Adjustment" />}
-    >
+    <PlatformPageContent title={<AgentBalanceAdjustmentTrans />}>
       <Body />
     </PlatformPageContent>
   )
@@ -78,7 +66,6 @@ const Body = ({}) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { pageIndex, pageSize, status, levelType, type, username } = state
   let {
     data = {},
     isLoading,
@@ -112,7 +99,7 @@ const Body = ({}) => {
         data={data?.items}
         initialState={state}
         controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
