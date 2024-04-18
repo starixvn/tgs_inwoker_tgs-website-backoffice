@@ -9,8 +9,6 @@ import {
   Box,
   Button,
   Set,
-  useModalState,
-  Flex,
   Level,
   Spinner,
   Alert,
@@ -23,7 +21,6 @@ import {
 } from "../../page/PlatformPageContent"
 import AutoSizer from "react-virtualized-auto-sizer"
 import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
 import { useAgentList } from "./client"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import AgentStatus, {
@@ -47,7 +44,6 @@ import {
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
-import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { numberColumn } from "../../table/column/numberColumn"
@@ -104,7 +100,7 @@ export const CodeContentPair = [Code, Content]
 const Body = () => {
   let brandId = usePlatformId()
 
-  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
+  let { isLoading, data: brand, error, deleteCache } = useBrand(brandId)
 
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -571,5 +567,5 @@ const useColumns = ({ mutate, items = [], brand } = {}) => {
     }
 
     return columns
-  }, [JSON.stringify(items)])
+  }, [JSON.stringify(items), brand])
 }
