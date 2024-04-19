@@ -29,18 +29,11 @@ import AgentStatus, {
 } from "../AgentStatus"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId
+  useHasSubMenuByRoute
 } from "../../user/context"
 import { Code, View } from "./menu"
 import { ViewButton, EditButton, AddAgentButton } from "./button"
-import {
-  FormattedNumber,
-  FormattedNumberDecimal,
-  FormattedNumberDecimalPercentage,
-  Trans,
-  useTrans
-} from "../../i18n"
+import { FormattedNumberDecimalPercentage } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
