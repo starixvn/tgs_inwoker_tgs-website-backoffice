@@ -93,7 +93,6 @@ const Body = () => {
     brandId,
     status: "",
     name: "",
-    brandId,
     from: undefined,
     to: undefined
   })
