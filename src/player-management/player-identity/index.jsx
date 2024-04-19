@@ -1,27 +1,25 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, Alert, List, Spinner } from "bumbag"
-import PageContent from "../../page/Content"
+import { Stack, Box, Level, Set, Alert, List, Spinner } from "bumbag"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
 import { usePlayerIdentityList } from "./client"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId,
-  useIsAdminUser
+  useHasSubMenuByRoute
 } from "../../user/context"
 import { Code, View, Update } from "./menu"
-import { Trans, useTrans } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
-import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { VipLevelLabel } from "../../vip-levels/VipLevel"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
 import { startOfNextDay } from "../../date/startOfNextDay"
 import { ReviewPlayerIdDialogDisclosure } from "./ReviewPlayerIdDialog"
@@ -31,7 +29,6 @@ import PlayerIdentityState, {
   PlayerIdentitySelect,
   PlayerIdentityStateLabel
 } from "./PlayerIdentityState"
-import { Descending } from "../../table/order"
 import { PlayerIdentityAttachment } from "./PlayerIdentityAttachment"
 import { ResetPlayerIdentityAuthDisclosure } from "./ResetPlayerIdentityAuth"
 import {
@@ -57,25 +54,21 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<PlayerIdVerificationTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
+  let brandId = usePlatformId()
+  let { isLoading, data: brand, error, deleteCache } = useBrand(brandId)
 
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-        paddingTop="0.5rem"
-        paddingLeft="0.5rem"
-      />
+    <Set orientation="vertical" isFilled height="100%">
       {isLoading && (
         <Box alignY="center" alignX="center">
           <Spinner />
@@ -84,12 +77,14 @@ const Body = () => {
       {!isLoading && brandId && brand && (
         <BodyContent brandId={brandId} brand={brand} />
       )}
+      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
   )
 }
 
 const BodyContent = ({ brandId = "", brand }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     status: PlayerIdentityState.WaitingVerify,
     username: ""
   })
@@ -110,7 +105,6 @@ const BodyContent = ({ brandId = "", brand }) => {
     sortby: "createdOn",
     orderby: Descending,
     */
-    brandId,
     endCreatedOn: startOfNextDay(state.endCreatedOn),
     endReviewedOn: startOfNextDay(state.endReviewedOn)
   })
@@ -123,9 +117,8 @@ const BodyContent = ({ brandId = "", brand }) => {
   })
 
   return (
-    <PageContent
-      title={<PlayerIdVerificationTrans />}
-      actionBar={
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           brandId={brandId}
           status={state.status}
@@ -138,8 +131,7 @@ const BodyContent = ({ brandId = "", brand }) => {
           }}
           isLoading={isLoading}
         />
-      }
-    >
+      </Level>
       <Stack>
         <Alert variant="bordered" type="info" accent marginBottom="1rem">
           <List listStyleType="disc" listStylePosition="inside">
@@ -161,7 +153,7 @@ const BodyContent = ({ brandId = "", brand }) => {
         getRowId={(row) => row.playerCode}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 

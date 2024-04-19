@@ -1,36 +1,26 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
+import { Heading, Level, Box, Set, Blockquote } from "bumbag"
 import {
-  Heading,
-  Stack,
-  Box,
-  Button,
-  Set,
-  useModalState,
-  Blockquote,
-  FieldStack
-} from "bumbag"
-import PageContent from "../../page/Content"
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
 import { useOnlinePlayerList } from "./client"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { PlayerStatusLabel } from "../PlayerStatus"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId,
-  useIsAdminUser
+  useHasSubMenuByRoute
 } from "../../user/context"
-import { Code, View } from "./menu"
+import { Code } from "./menu"
 import { PlayerStatusSelect } from "../PlayerStatus"
 import { VipLevelSelect } from "../../vip-levels/VipLevelSelect"
-import { Trans, useTrans, FormattedNumber } from "../../i18n"
+import { FormattedNumber } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
-import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
-import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { VipLevelLabel } from "../../vip-levels/VipLevel"
@@ -47,30 +37,17 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<OnlinePlayersTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-        paddingTop="0.5rem"
-        paddingLeft="0.5rem"
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
-  )
-}
-
-const BodyContent = ({ brandId = "" }) => {
+  let brandId = usePlatformId()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
     status: "",
     vipId: "",
@@ -91,9 +68,8 @@ const BodyContent = ({ brandId = "" }) => {
   let columns = useColumns({ mutate, items: data?.datas?.items, brandId })
 
   return (
-    <PageContent
-      title={<OnlinePlayersTrans />}
-      actionBar={
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           brandId={brandId}
           search={(data = {}) => {
@@ -105,23 +81,20 @@ const BodyContent = ({ brandId = "" }) => {
           }}
           isLoading={isLoading}
         />
-      }
-    >
-      <FieldStack>
-        <Summary onlineUsers={data?.onlineUsers} />
-        <Table
-          columns={columns}
-          data={data?.datas?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(state.pageSize, data?.datas?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
-          isLoading={isLoading}
-        />
-      </FieldStack>
+      </Level>
+      <Summary onlineUsers={data?.onlineUsers} />
+      <Table
+        columns={columns}
+        data={data?.datas?.items}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(state.pageSize, data?.datas?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+      />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
