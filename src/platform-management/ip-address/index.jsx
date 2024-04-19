@@ -1,24 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
+import { Box, Set, Level } from "bumbag"
 import {
-  Box,
-  Set,
-  Flex,
-  Button,
-  Text,
-  Switch,
-  Input,
-  Stack,
-  Dialog
-} from "bumbag"
-import PageContent from "../../page/Content"
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId
+  useHasSubMenuByRoute
 } from "../../user/context"
 import { View, Code } from "./menu"
-import BrandBar from "../../report/BrandBar"
 import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { pageCount, Table, toApiParams, useTable } from "../../table"
 import {
@@ -35,7 +27,6 @@ import {
   PlayerByIpAddressTab,
   PlayerByIpAddressTabPanel
 } from "./PlayerByIpAddress"
-import { Trans } from "../../i18n"
 import { CheckIPTrans } from "../../trans/Platform"
 
 export { Code }
@@ -46,29 +37,15 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
-}
-
-const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        id="page-merchant-bar"
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-        paddingTop="0.5rem"
-        paddingLeft="0.5rem"
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
+    <PlatformPageContent title={<CheckIPTrans />}>
+      <Body />
+    </PlatformPageContent>
   )
 }
 
-const BodyContent = ({ brandId }) => {
+const Body = () => {
+  let brandId = usePlatformId()
   let DefaultTab = SamePlayerIpAddressTabId
   let tab = useTabState({
     selectedId: DefaultTab
@@ -96,39 +73,37 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   return (
-    <PageContent title={<CheckIPTrans />}>
-      <Tabs>
-        <TabList {...tab}>
-          <SamePlayerIpAddressTab {...tab} />
-          <PlayerIPAddressByUsernameTab {...tab} />
-          <PlayerByIpAddressTab {...tab} />
-        </TabList>
-        <SamePlayerIpAddressTabPanel
-          table={table}
-          brandId={brandId}
-          onClickIpAddress={(ipAddress) => {
-            setState({
-              ipAddress,
-              pageIndex: 0
-            })
-            activePlayerIPAddressByUsernameTab()
-          }}
-          {...tab}
-        />
-        <PlayerIPAddressByUsernameTabPanel
-          table={table}
-          brandId={brandId}
-          onClickIpAddress={(ipAddress) => {
-            setState({
-              ipAddress,
-              pageIndex: 0
-            })
-            activePlayerIPAddressByUsernameTab()
-          }}
-          {...tab}
-        />
-        <PlayerByIpAddressTabPanel table={table} brandId={brandId} {...tab} />
-      </Tabs>
-    </PageContent>
+    <Tabs>
+      <TabList {...tab}>
+        <SamePlayerIpAddressTab {...tab} />
+        <PlayerIPAddressByUsernameTab {...tab} />
+        <PlayerByIpAddressTab {...tab} />
+      </TabList>
+      <SamePlayerIpAddressTabPanel
+        table={table}
+        brandId={brandId}
+        onClickIpAddress={(ipAddress) => {
+          setState({
+            ipAddress,
+            pageIndex: 0
+          })
+          activePlayerIPAddressByUsernameTab()
+        }}
+        {...tab}
+      />
+      <PlayerIPAddressByUsernameTabPanel
+        table={table}
+        brandId={brandId}
+        onClickIpAddress={(ipAddress) => {
+          setState({
+            ipAddress,
+            pageIndex: 0
+          })
+          activePlayerIPAddressByUsernameTab()
+        }}
+        {...tab}
+      />
+      <PlayerByIpAddressTabPanel table={table} brandId={brandId} {...tab} />
+    </Tabs>
   )
 }
