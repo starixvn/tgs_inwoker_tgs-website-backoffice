@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-deposit
-image: pgtgs/promotion-deposit-service:202312200628.58
+image: pgtgs/promotion-deposit-service:202404020546.71
 services:
   - name: promotion-deposit
     dependencies:
@@ -9,17 +9,15 @@ services:
       - redis
       - nats
       - promotion-api
-      - cash-service
       - payment-api
-      - player-bucket-api
+      - calculate-api
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
       ConnectionStrings__Nats: "nats://nats:4222"
-      Promotion__Url: "http://promotion-api"
-      Promotion__CashBaseUrl: "http://cash-service"
-      Promotion__PaymentServiceUrl: "http://payment-api"
-      Promotion__PlayerBucketBaseUrl: "http://player-bucket-api"
+      DepositReward__PromotionServiceBaseUrl: "http://promotion-api"
+      DepositReward__PaymentServiceBaseUrl: "http://payment-api"
+      DepositReward__CalculateServiceBaseUrl: "http://calculate-api"
     ports:
       - name: http
         containerPort: 8080
