@@ -19,7 +19,7 @@ export const useSendPromotionPayout = (formData) => {
 }
 
 //TODO: Approve & Reject apis or field?
-export const useVerifyPromotionPayout = (formData) => {
-  //TODO: use other api instead?
+export const useReviewPromotionPayout = (formData) => {
+  //TODO: wait for api for reject action
   return useSendPromotionPayout(formData)
 }

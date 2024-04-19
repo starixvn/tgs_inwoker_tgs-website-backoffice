@@ -28,10 +28,6 @@ import {
   usePromotionGroupLabelOf
 } from "../PromotionType"
 import { Checkbox } from "../../checkbox/Checkbox"
-import {
-  PromotionManualPayoutDisclosure,
-  ViewPromotionManualPayoutDisclosure
-} from "./ManualPayout"
 import { PayoutStatusLabel } from "./PayoutStatus"
 import clone from "clone-deep"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
@@ -51,7 +47,7 @@ import {
 import { StatusTrans } from "../../trans/Status"
 import { CreatedTimeTrans, SentOnTrans } from "../../trans/Date"
 import { isDev } from "../../env"
-import { VerifyPayoutDialogDisclosure } from "./VerifyPayoutDialog"
+import { ReviewPayoutDialogDisclosure } from "./ReviewPayoutDialog"
 import { ViewPayoutDialogDisclosure } from "./ViewPayoutDialog"
 
 export { Code }
@@ -404,36 +400,15 @@ const useColumns = ({
           Cell: ({ value: record }) => {
             let paid = !!record?.sentOn
 
-            let devEnv = isDev()
             return (
               <Set orientation="horizontal" alignX="center">
-                {!paid && !devEnv && (
-                  <PromotionManualPayoutDisclosure
-                    brandId={brandId}
+                {!paid && (
+                  <ReviewPayoutDialogDisclosure
                     record={record}
                     onSubmitted={mutate}
                   />
                 )}
-                {!paid && devEnv && (
-                  <VerifyPayoutDialogDisclosure
-                    brandId={brandId}
-                    record={record}
-                    onSubmitted={mutate}
-                  />
-                )}
-                {!devEnv && (
-                  <ViewPromotionManualPayoutDisclosure
-                    id="view-promotion-payout-dialog-disclosure"
-                    brandId={brandId}
-                    record={record}
-                  />
-                )}
-                {devEnv && (
-                  <ViewPayoutDialogDisclosure
-                    brandId={brandId}
-                    record={record}
-                  />
-                )}
+                <ViewPayoutDialogDisclosure record={record} />
               </Set>
             )
           }

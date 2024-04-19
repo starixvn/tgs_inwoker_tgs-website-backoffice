@@ -44,7 +44,7 @@ test("promotion payout > manual approve", async ({
     page.locator(`button[type="submit"]`).click()
   ])
 
-  let DialogSelector = `#verify-payout-dialog`
+  let DialogSelector = `#review-promotion-payout-dialog`
   await openDialog(page, DialogSelector)
 
   let DialogLocator = page.locator(DialogSelector)
