@@ -1,0 +1,24 @@
+kind: Module
+type: container
+name: promotion-daily-second-deposit
+image: pgtgs/promotion-daily-second-deposit-service:202404020554.5
+services:
+  - name: promotion-daily-second-deposit
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - promotion-api
+      - payment-api
+      - calculate-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      DailySecondDeposit__PromotionServiceBaseUrl: "http://promotion-api"
+      DailySecondDeposit__PaymentServiceBaseUrl: "http://payment-api"
+      DailySecondDeposit__CalculateServiceBaseUrl: "http://calculate-api"
+    ports:
+      - name: http
+        containerPort: 8080
+        servicePort: 80
