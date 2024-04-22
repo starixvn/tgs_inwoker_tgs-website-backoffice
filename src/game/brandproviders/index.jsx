@@ -6,12 +6,9 @@ import {
   usePlatformId,
   usePlatformPageContentWidth
 } from "../../page/PlatformPageContent"
-import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId
+  useHasSubMenuByRoute
 } from "../../user/context"
 import { Code, Update } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
