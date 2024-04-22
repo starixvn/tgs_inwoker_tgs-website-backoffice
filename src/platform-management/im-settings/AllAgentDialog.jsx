@@ -49,7 +49,10 @@ import { SwitchField } from "../../switch/Switch"
 import { CheckboxField } from "../../checkbox"
 import { SubmitButton } from "../../button/SubmitButton"
 import { AllAgentProfitSharingSetting } from "./AllAgentSharingSetting"
-import { SettlementIntervalTypeSelect } from "../../date/SettlementIntervalType"
+import {
+  SettlementIntervalTypeSelect,
+  Type as SettlementIntervalType
+} from "../../date/SettlementIntervalType"
 import { isDev } from "../../env"
 import {
   CardGame,
@@ -218,6 +221,7 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
           </Box>
           <SettlementIntervalTypeSelect
             name="settlementIntervalType"
+            filter={({ value }) => value != SettlementIntervalType.Biweekly}
             required
             disabled={readOnly}
           />
