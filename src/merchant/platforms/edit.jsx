@@ -47,7 +47,7 @@ import { toCheckedFieldName } from "../../currency/CurrencyCheckboxGroup"
 import CurrencyBetLimitFieldsBox, {
   flatCheckedCurrencyBetLimits
 } from "../CurrencyBetLimitFieldsBox"
-import SettlementIntervalType, {
+import {
   isMonthlySettlementInterval,
   MonthlyDaySelect,
   SettlementIntervalTypeSelect

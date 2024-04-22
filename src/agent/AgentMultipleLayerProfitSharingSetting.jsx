@@ -37,8 +37,6 @@ import {
   PercentageNumberInputField
 } from "../input/NumberInput"
 import { useAgentList, useAgent } from "./agent-list/client"
-import { isNil } from "lodash-es"
-import { isMonthlySettlementInterval } from "../date/SettlementIntervalType"
 import { AlertDialog } from "../dialog/Alert"
 import LoadingBackdrop from "../dialog/LoadingBackdrop"
 import { Name } from "./AgentEgameRebatePercentage"
