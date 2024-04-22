@@ -1,23 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
+import { Box, Set, Button, Text, Level, Input, Stack, Dialog } from "bumbag"
 import {
-  Box,
-  Set,
-  Flex,
-  Button,
-  Text,
-  Switch,
-  Input,
-  Stack,
-  Dialog
-} from "bumbag"
-import PageContent from "../../page/Content"
-import {
-  useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId,
-  useUserRoleType
-} from "../../user/context"
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 import {
   useChangeAnnouncementOrders,
   useAnnouncementList,
@@ -28,7 +17,6 @@ import { useTabState, Tabs, TabList, Tab, TabPanel } from "../../tab"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
-import { Trans } from "../../i18n"
 import {
   AnnouncementStatusLabel,
   InVerify,
@@ -45,7 +33,6 @@ import {
 } from "./menu"
 import AlertDialog from "../../dialog/Alert"
 import { AnnouncementStatusToggleButton as StatusToggleButton } from "./AnnouncementStatus"
-import BrandBar from "../../report/BrandBar"
 import { SortOrder } from "../../table/order"
 import { NumberInput } from "../../input/NumberInput"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
@@ -73,29 +60,15 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
-}
-
-const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        id="page-merchant-bar"
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-        paddingTop="0.5rem"
-        paddingLeft="0.5rem"
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
+    <PlatformPageContent title={<AnnouncementsTrans />}>
+      <Body />
+    </PlatformPageContent>
   )
 }
 
-const BodyContent = ({ brandId }) => {
+const Body = () => {
+  let brandId = usePlatformId()
   let hasVerifyAuth = useIsDisplayMenuByRoute([VerifyMenu])
   let hasViewAuth = useIsDisplayMenuByRoute([ViewMenu])
 
@@ -152,29 +125,25 @@ const BodyContent = ({ brandId }) => {
   }
 
   return (
-    <PageContent
-      title={<AnnouncementsTrans />}
-      actionBar={
-        <Flex justifyContent="space-between">
-          <Box>
-            <AnnouncementTypeSelect
-              value={type}
-              onChange={(event) => {
-                let value = event.target.value
-                setType(value)
-              }}
-            />
-          </Box>
-          <Box alignX="right">
-            <AddButton
-              id="add-announcement-dialog-disclosure"
-              brandId={brandId}
-              onSubmitted={mutate}
-            />
-          </Box>
-        </Flex>
-      }
-    >
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <Box>
+          <AnnouncementTypeSelect
+            value={type}
+            onChange={(event) => {
+              let value = event.target.value
+              setType(value)
+            }}
+          />
+        </Box>
+        <Box alignX="right">
+          <AddButton
+            id="add-announcement-dialog-disclosure"
+            brandId={brandId}
+            onSubmitted={mutate}
+          />
+        </Box>
+      </Level>
       <Tabs>
         <TabList {...tab}>
           {hasVerifyAuth && (
@@ -258,7 +227,7 @@ const BodyContent = ({ brandId }) => {
         </TabPanel>
       </Tabs>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 

@@ -1,23 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
+import { Box, Set, Input, Stack } from "bumbag"
 import {
-  Box,
-  Set,
-  Flex,
-  Button,
-  Text,
-  Switch,
-  Input,
-  Stack,
-  Dialog
-} from "bumbag"
-import PageContent from "../../page/Content"
-import {
-  useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId,
-  useUserRoleType
-} from "../../user/context"
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 import {
   useChangePlatformBannerOrders,
   usePlatformBannerList,
@@ -35,7 +24,6 @@ import {
 } from "./PlatformBannerStatus"
 import { Verify, View, Update } from "./menu"
 import AlertDialog from "../../dialog/Alert"
-import BrandBar from "../../report/BrandBar"
 import { SortOrder } from "../../table/order"
 import { NumberInput } from "../../input/NumberInput"
 import textColumn from "../../table/column/textColumn"
@@ -79,29 +67,15 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
-}
-
-const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        id="page-merchant-bar"
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-        paddingTop="0.5rem"
-        paddingLeft="0.5rem"
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
+    <PlatformPageContent title={<BannersTrans />}>
+      <Body />
+    </PlatformPageContent>
   )
 }
 
-const BodyContent = ({ brandId }) => {
+const Body = () => {
+  let brandId = usePlatformId()
   let hasVerifyAuth = useIsDisplayMenuByRoute([Verify])
   let hasViewAuth = useIsDisplayMenuByRoute([View])
 
@@ -144,18 +118,14 @@ const BodyContent = ({ brandId }) => {
   }
 
   return (
-    <PageContent
-      title={<BannersTrans />}
-      actionBar={
-        <Box alignX="right">
-          <AddPlatformBannerDisclosure
-            id="add-banner-dialog-disclosure"
-            brandId={brandId}
-            onSubmitted={mutate}
-          />
-        </Box>
-      }
-    >
+    <Set orientation="vertical" isFilled height="100%">
+      <Box alignX="right">
+        <AddPlatformBannerDisclosure
+          id="add-banner-dialog-disclosure"
+          brandId={brandId}
+          onSubmitted={mutate}
+        />
+      </Box>
       <Tabs>
         <TabList {...tab}>
           {hasVerifyAuth && (
@@ -238,7 +208,7 @@ const BodyContent = ({ brandId }) => {
         </TabPanel>
       </Tabs>
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 
