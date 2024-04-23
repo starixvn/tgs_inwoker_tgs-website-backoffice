@@ -207,7 +207,7 @@ const Body = ({ onClickClose }) => {
 
 export const QQLabel = () => <Trans zh="QQ" en="QQ" />
 
-export const WeChatLabel = () => <Trans zh="微信 en="WeChat" />
+export const WeChatLabel = () => <Trans zh="微信" en="WeChat" />
 
 export const ViberLabel = () => <Trans zh="Viber" en="Viber" />
 
