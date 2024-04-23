@@ -93,11 +93,3 @@ export const MonthlyDaySelect = ({ ...props }) => {
     />
   )
 }
-
-export default {
-  Daily,
-  Weekly,
-  Biweekly,
-  Monthly,
-  Instantly
-}
