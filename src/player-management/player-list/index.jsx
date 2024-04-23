@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
-import { Heading, Stack, Box, Button, Set, Spinner } from "bumbag"
+import { Box, Level, Set, Spinner } from "bumbag"
 import PageContent from "../../page/Content"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import sequenceColumn from "../../table/column/sequence"
 import dateTimeColumn from "../../table/column/dateTime"
 import { usePlayerList } from "./client"
@@ -70,22 +75,21 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let location = useLocation()
-  let navigate = useNavigate()
-
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId ?? location?.state?.brandId)
+  let brandId = usePlatformId()
   let {
     isLoading: isLoadingBrand,
     data: brand,
     error: brandError,
-    mutate,
     deleteCache
   } = useBrand(brandId)
   let {
@@ -97,12 +101,7 @@ const Body = () => {
 
   let isLoading = isLoadingBrand || isLoadingAllAgent
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
+    <Set orientation="vertical" isFilled height="100%">
       {isLoading && (
         <Box alignY="center" alignX="center">
           <Spinner />
@@ -131,6 +130,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
   let navigate = useNavigate()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     status: PlayerStatus.Enabled,
     vipId: "",
     username: location?.state?.playerUsername ?? "",
@@ -153,14 +153,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let {
-    pageIndex,
-    pageSize,
-    status,
-    vipId,
-    beginRegisteredOn,
-    endRegisteredOn
-  } = state
+  let { endRegisteredOn } = state
   let {
     data = {},
     isLoading,
@@ -171,7 +164,6 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
     ...toApiParams(state),
     sortby: "registeredTime",
     orderby: SortOrder.Descending,
-    brandId,
     endRegisteredOn: startOfNextDay(endRegisteredOn)
   })
 
@@ -184,30 +176,15 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
   })
 
   return (
-    <PageContent
-      title={<PlayersTrans />}
-      actionBar={
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           brandId={brandId}
           brand={brand}
           username={state.username}
-          status={status}
+          status={state.status}
           allAgentSetting={allAgentSetting}
           search={(data = {}) => {
-            /*
-            TODO: rm
-            if (
-              location?.state?.playerUsername &&
-              location.state.playerUsername != data.username
-            ) {
-              let state = { ...location.state, playerUsername: "" }
-              navigate(location.pathname, {
-                state,
-                replace: true
-              })
-            }
-            */
-
             setState({
               pageIndex: 0,
               ...data
@@ -216,21 +193,20 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
           }}
           isLoading={isLoading}
         />
-      }
-    >
+      </Level>
       <Table
         columns={columns}
         data={data?.items}
         initialState={state}
         controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
         getRowId={(row) => row.playerCode}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 

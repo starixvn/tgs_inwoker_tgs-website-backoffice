@@ -38,7 +38,7 @@ import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
 import AlertDialog from "../../dialog/Alert"
-import textColumn from "../../table/column/textColumn"
+import textColumn, { noWrapTextColumn } from "../../table/column/textColumn"
 import { numberDecimalColumn } from "../../table/column/numberColumn"
 import { today } from "../../date/range"
 import FundWithdrawStatus, {
@@ -95,6 +95,11 @@ import {
 import { ApplicationTimeTrans, UpdatedTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import { useTotalWithdrawAmountTrans } from "../../trans/Field"
+import { Code as PageCode } from "./menu"
+import { Code as ModuleCode } from "../menu"
+
+const MainTable = "main"
+const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
 
 export { Code }
 
@@ -314,7 +319,6 @@ const Body = ({}) => {
           </Box>
         )}
       </Level>
-      <Summary total={data?.sum} />
       <Table
         id="withdraw"
         columns={columns}
@@ -326,6 +330,10 @@ const Body = ({}) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading || autoLoading}
         getRowId={(row) => row.id}
+        localStorageKey={TableLocalStorageKey}
+        toggleColumnHidden={true}
+        menubar={Level}
+        menuAddonBefore={<Summary key="summary" total={data?.sum} />}
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </Set>
@@ -339,7 +347,7 @@ const Summary = ({ total }) => {
   }
 
   return (
-    <Blockquote borderColor="primary">
+    <Blockquote borderColor="primary" padding="0.75rem">
       <Heading use="h5">
         {`${totalWithdrawAmountLabel}：`}
         <FormattedNumberDecimal id="total-amount" value={total} />
@@ -460,7 +468,7 @@ const SearchBar = ({
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(search)}>
-        <FieldStack orientation="vertical">
+        <FieldStack orientation="vertical" spacing="minor-2">
           <Set orientation="horizontal" alignY="bottom">
             <InputField
               name="username"
@@ -547,22 +555,22 @@ const useColumns = ({
   return useMemo(() => {
     let columns = [
       sequenceColumn(),
-      textColumn({
+      noWrapTextColumn({
         accessor: "userName",
         Header: <UserNameTrans />,
         disableSortBy: true
       }),
-      textColumn({
+      noWrapTextColumn({
         accessor: "userType",
         Header: <UserTypeTrans />,
         Cell: ({ value }) => <UserTypeLabel value={value} />
       }),
-      textColumn({
+      noWrapTextColumn({
         accessor: "orderNo",
         Header: <GmsIdTrans />,
         disableSortBy: true
       }),
-      textColumn({
+      noWrapTextColumn({
         accessor: "thirdPartyOrderNo",
         Header: <ThirdPartyIdTrans />,
         disableSortBy: true
@@ -597,34 +605,28 @@ const useColumns = ({
         disableSortBy: true,
         placeholder: "-"
       }),
-      textColumn({
+      noWrapTextColumn({
         accessor: "status",
         Header: <StatusTrans />,
         disableSortBy: true,
         Cell: StatusCell
-      })
-    ]
-
-    columns.push(
-      textColumn({
+      }),
+      noWrapTextColumn({
         accessor: "reviewedUserName",
         Header: <OperatorTrans />,
         disableSortBy: true
-      })
-    )
-
-    columns.push(
-      textColumn({
+      }),
+      noWrapTextColumn({
         accessor: "remark",
         Header: <RemarkTrans />,
         disableSortBy: true,
         Cell: ({ value }) => <Box>{value}</Box>
       })
-    )
+    ]
 
     if (hasUpdateMenu) {
       columns.push(
-        textColumn({
+        noWrapTextColumn({
           id: "actions",
           accessor: (row) => row,
           disableSortBy: true,
@@ -641,7 +643,13 @@ const useColumns = ({
 
             let isPlayer = value?.userType === "Player"
             return (
-              <Set alignX="center">
+              <Set
+                alignX="center"
+                orientation="horizontal"
+                css={css`
+                  width: max-content;
+                `}
+              >
                 {underReview && (
                   <VerifyFundWithdrawDisclosure
                     id="verify-withdraw-dialog-disclosure"

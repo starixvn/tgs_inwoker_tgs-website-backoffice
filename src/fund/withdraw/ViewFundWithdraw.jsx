@@ -115,7 +115,7 @@ const ViewFundWithdrawDialog = ({ brandId, formId, dialog, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (

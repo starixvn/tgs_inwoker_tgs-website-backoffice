@@ -15,7 +15,8 @@ import {
   Lottery as LotteryTrans,
   Fishing as FishingTrans,
   Arcade as ArcadeTrans,
-  TableGame as TableGameTrans
+  TableGame as TableGameTrans,
+  EGameTrans
 } from "../trans/Game"
 
 const Sportsbook = "Sportsbook"
@@ -212,10 +213,7 @@ const LiveDealerGroupTrans = LiveDealerTrans
 
 const SportsGroupTrans = SportsbookTrans
 
-const EGameGroupTrans = {
-  zh: "电子",
-  en: "EGame"
-}
+const EGameGroupTrans = EGameTrans
 
 const CardGameGroupTrans = CardGameTrans
 

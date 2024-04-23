@@ -1,17 +1,23 @@
 kind: Module
 type: container
-name: game-wagers-stat-worker
-image: pgtgs/game-gamewagers-stat-worker:202402220922.9
+name: promotion-first-deposit
+image: pgtgs/promotion-first-deposit-service:202404010715.8
 services:
-  - name: game-wagers-stat-worker
+  - name: promotion-first-deposit
     dependencies:
       - postgres
       - redis
       - nats
+      - promotion-api
+      - payment-api
+      - calculate-api
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
       ConnectionStrings__Nats: "nats://nats:4222"
+      FirstDeposit__PromotionServiceBaseUrl: "http://promotion-api"
+      FirstDeposit__PaymentServiceBaseUrl: "http://payment-api"
+      FirstDeposit__CalculateServiceBaseUrl: "http://calculate-api"
     ports:
       - name: http
         containerPort: 8080

@@ -108,7 +108,7 @@ const Body = ({}) => {
               pageIndex: 0,
               ...data
             })
-            mutate(null, true)
+            mutate(undefined, true)
           }}
         />
       </Level>

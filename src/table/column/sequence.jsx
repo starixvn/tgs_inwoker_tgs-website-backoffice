@@ -1,6 +1,6 @@
 import React from "react"
 import { css } from "@emotion/react"
-import { Text } from "bumbag"
+import { Box, Text } from "bumbag"
 import { Trans } from "../../i18n"
 import { SequenceTrans } from "../../trans/Field"
 
@@ -29,7 +29,15 @@ export const SequenceColumn = ({ ...props } = {}) => {
   return {
     id: "sequence",
     accessor: (row) => row,
-    Header: <SequenceHeader />,
+    Header: (
+      <Box
+        css={css`
+          white-space: nowrap;
+        `}
+      >
+        <SequenceHeader />
+      </Box>
+    ),
     disableSortBy: true,
     Cell: SequenceCell,
     ...props

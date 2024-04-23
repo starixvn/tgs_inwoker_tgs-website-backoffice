@@ -128,13 +128,13 @@ const VerifyFundWithdrawDialog = ({
 
   const resetVerifyFundWithdrawForm = () => {
     deleteCache()
-    mutate(null, false)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   const reset = () => {
     deleteFundWithdrawFormCache()
-    mutateFundWithdrawForm(null, false)
+    mutateFundWithdrawForm(undefined, false)
 
     resetVerifyFundWithdrawForm()
   }

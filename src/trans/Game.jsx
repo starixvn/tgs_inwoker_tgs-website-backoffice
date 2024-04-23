@@ -72,6 +72,13 @@ export const Sports = {
 export const SportsTrans = () => <Trans {...Sports} />
 */
 
+//TODO: vi
+export const EGame = {
+  zh: "电子",
+  en: "EGame"
+}
+export const EGameTrans = () => <Trans {...EGame} />
+
 export const Slot = {
   zh: "老虎机",
   en: "Slot Game",

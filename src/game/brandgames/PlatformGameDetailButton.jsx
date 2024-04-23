@@ -90,11 +90,11 @@ const PlatformGameDetailDialog = ({
   }
 
   const reset = () => {
-    mutatebrandGame(undefined, false)
     deleteBrandGameCache()
+    mutatebrandGame(undefined, false)
 
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useGameDetailTrans()

@@ -178,7 +178,7 @@ const AutoWithdrawDialog = ({ brandId, dialog, dialogId, ...props }) => {
         {...error}
         onClickClose={() => {
           deleteCache()
-          mutate(null, false)
+          mutate(undefined, false)
           dialog.hide()
         }}
       />
@@ -187,7 +187,7 @@ const AutoWithdrawDialog = ({ brandId, dialog, dialogId, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (
@@ -227,14 +227,17 @@ const AutoWithdrawFormDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
     <FormDialog
       defaultValues={clone(brandAutoWithdraw)}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       result={result}
       isLoading={isLoading}
       error={error}

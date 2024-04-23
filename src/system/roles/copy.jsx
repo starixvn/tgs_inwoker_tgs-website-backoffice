@@ -52,18 +52,18 @@ export const CopyButton = ({ id, name, onSubmitted, disabled, ...props }) => {
 }
 
 const CopyDialog = ({ id, name = "", onSubmitted, dialog, ...props }) => {
-  let [submitData, setSubmit] = useState()
-  let { result, error, mutate, isLoading } = useCopyRole(id, submitData)
-
-  const reset = () => {
-    setSubmit(undefined)
-    //mutate()
-  }
-
   let title = useTrans({
     zh: "复制权限组",
     en: "Copy Role"
   })
+
+  let [submitData, setSubmit] = useState()
+  let { result, error, isLoading, deleteCache } = useCopyRole(id, submitData)
+
+  const reset = () => {
+    deleteCache()
+    setSubmit(null)
+  }
 
   return (
     <FormDialog
@@ -75,7 +75,10 @@ const CopyDialog = ({ id, name = "", onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
     >

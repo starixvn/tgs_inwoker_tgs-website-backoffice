@@ -27,6 +27,7 @@ import { AddContractDialogDisclosure } from "./AddContractDialog"
 
 export { Code }
 
+//TODO:rm
 export const Content = () => {
   let isDisplay = useIsDisplayMenuByRoute()
   if (!isDisplay) {
@@ -55,15 +56,12 @@ const Body = () => {
   )
 
   const reset = () => {
-    mutate(null)
-    deleteCache()
+    mutate(undefined)
   }
 
   useEffect(() => {
-    reset()
     setState({ pageIndex: 0, brandId })
   }, [brandId, brandId])
-  //TODO: fetch api
 
   let items = data?.items
   let columns = useColumns({
@@ -81,7 +79,7 @@ const Body = () => {
               pageIndex: 0,
               ...data
             })
-            mutate(null, true)
+            mutate(undefined, true)
           }}
         />
         <Box>

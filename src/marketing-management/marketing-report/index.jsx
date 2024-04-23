@@ -12,7 +12,10 @@ import {
   Dialog,
   Level
 } from "bumbag"
-import PageContent from "../../page/Content"
+import {
+  PlatformPageContent,
+  usePlatformId
+} from "../../page/PlatformPageContent"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -64,31 +67,20 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<AgentMarketingReportTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set orientation="vertical" isFilled height="100%">
-      <BrandBar
-        id="page-merchant-bar"
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
-  )
-}
-
-const BodyContent = ({ brandId }) => {
+  let brandId = usePlatformId()
   let dateRange = yesterday()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     agentUsername: "",
     from: dateRange.start,
     to: dateRange.end,
@@ -96,13 +88,14 @@ const BodyContent = ({ brandId }) => {
   })
 
   const reset = () => {
-    mutate(null)
-    deleteCache()
+    mutate(undefined)
   }
 
   useEffect(() => {
-    reset()
-    setState({ pageIndex: 0, brandId })
+    if (state.brandId != brandId) {
+      reset()
+      setState({ pageIndex: 0, brandId })
+    }
   }, [brandId])
 
   let { agentUsername, from, to } = state
@@ -116,28 +109,25 @@ const BodyContent = ({ brandId }) => {
     items: data?.items,
     brandId
   })
+
   return (
-    <PageContent
-      title={<AgentMarketingReportTrans />}
-      actionBar={
-        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-          <SearchBar
-            brandId={brandId}
-            agentUsername={agentUsername}
-            from={state?.from}
-            to={state?.to}
-            search={(data) => {
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading}
-          />
-        </Level>
-      }
-    >
+    <Set orientation="vertical" isFilled height="100%" spacing="major-2">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          brandId={brandId}
+          agentUsername={agentUsername}
+          from={state?.from}
+          to={state?.to}
+          search={(data) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+      </Level>
       <Table
         columns={columns}
         data={data?.items}
@@ -151,7 +141,7 @@ const BodyContent = ({ brandId }) => {
         stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 

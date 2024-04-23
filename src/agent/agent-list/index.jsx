@@ -9,8 +9,6 @@ import {
   Box,
   Button,
   Set,
-  useModalState,
-  Flex,
   Level,
   Spinner,
   Alert,
@@ -23,7 +21,6 @@ import {
 } from "../../page/PlatformPageContent"
 import AutoSizer from "react-virtualized-auto-sizer"
 import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
 import { useAgentList } from "./client"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import AgentStatus, {
@@ -32,22 +29,14 @@ import AgentStatus, {
 } from "../AgentStatus"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId
+  useHasSubMenuByRoute
 } from "../../user/context"
 import { Code, View } from "./menu"
 import { ViewButton, EditButton, AddAgentButton } from "./button"
-import {
-  FormattedNumber,
-  FormattedNumberDecimal,
-  FormattedNumberDecimalPercentage,
-  Trans,
-  useTrans
-} from "../../i18n"
+import { FormattedNumberDecimalPercentage } from "../../i18n"
 import SearchButton from "../../button/SearchButton"
 import equals from "fast-deep-equal"
 import { InputField } from "../../input/Input"
-import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { numberColumn } from "../../table/column/numberColumn"
@@ -81,6 +70,8 @@ import {
 } from "../../trans/Agent"
 import { ConfigAgentProfitSharingDialogDisclosure } from "./ConfigAgentProfitSharingDialog"
 import { NegativeDividendDialogDisclosure } from "./NegativeDividendDialog"
+import { GameTypeFeeDialogDisclosure } from "./GameTypeFeeDialog"
+import { AgentGameTypeFeeDialogDisclosure } from "./AgentGameTypeFeeDialog"
 
 export { Code }
 
@@ -102,7 +93,7 @@ export const CodeContentPair = [Code, Content]
 const Body = () => {
   let brandId = usePlatformId()
 
-  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
+  let { isLoading, data: brand, error, deleteCache } = useBrand(brandId)
 
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -124,6 +115,7 @@ const BodyContent = ({ brandId = "", brand }) => {
   let navigate = useNavigate()
 
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     status: AgentStatus.Enabled,
     levelType: "",
     type: "",
@@ -146,24 +138,20 @@ const BodyContent = ({ brandId = "", brand }) => {
     mutate,
     error,
     deleteCache
-  } = useAgentList(
-    brandId
-      ? {
-          ...toApiParams(state),
-          sortby: "username",
-          brandId
-        }
-      : undefined
-  )
+  } = useAgentList({
+    ...toApiParams(state),
+    sortby: "username"
+  })
 
   const reset = () => {
-    mutate(null)
-    deleteCache()
+    mutate(undefined)
   }
 
   useEffect(() => {
-    reset()
-    setState({ pageIndex: 0, brandId })
+    if (state.brandId != brandId) {
+      reset()
+      setState({ pageIndex: 0, brandId })
+    }
   }, [brandId, brand])
 
   let columns = useColumns({
@@ -191,11 +179,14 @@ const BodyContent = ({ brandId = "", brand }) => {
           }}
           isLoading={isLoading}
         />
-        <AddAgentButton
-          id="add-agent-dialog-disclosure"
-          brand={brand}
-          onSubmitted={mutate}
-        />
+        <Set>
+          <GameTypeFeeDialogDisclosure brandId={brand.id} />
+          <AddAgentButton
+            id="add-agent-dialog-disclosure"
+            brand={brand}
+            onSubmitted={mutate}
+          />
+        </Set>
       </Level>
       <Box>
         <Alert variant="bordered" type="info" accent marginBottom="0">
@@ -561,6 +552,7 @@ const useColumns = ({ mutate, items = [], brand } = {}) => {
                   onSubmitted={mutate}
                 />
               )}
+              <AgentGameTypeFeeDialogDisclosure agent={value} />
             </Set>
           )
         }
@@ -568,5 +560,5 @@ const useColumns = ({ mutate, items = [], brand } = {}) => {
     }
 
     return columns
-  }, [JSON.stringify(items)])
+  }, [JSON.stringify(items), brand])
 }

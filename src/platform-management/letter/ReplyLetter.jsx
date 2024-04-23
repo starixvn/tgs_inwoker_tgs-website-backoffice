@@ -143,7 +143,7 @@ const ReplyLetterFormDialog = ({
   const reset = () => {
     setSubmit(null)
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   let title = useTrans({
@@ -162,7 +162,10 @@ const ReplyLetterFormDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       actionButtonsProps={{

@@ -161,6 +161,8 @@ export const Table = ({
   hasCellDividers,
   autoResetHiddenColumns = false,
   localStorageKey,
+  menubar,
+  menuAddonBefore,
   ...props
 }) => {
   components = {
@@ -238,7 +240,9 @@ export const Table = ({
       columnOrder,
       hasCellDividers,
       autoResetHiddenColumns,
-      localStorageKey
+      localStorageKey,
+      menubar,
+      menuAddonBefore
     },
     useFilters,
     useSortBy,

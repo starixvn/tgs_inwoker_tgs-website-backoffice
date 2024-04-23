@@ -2,28 +2,11 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box, Button, Set, Text, useModalState, FieldStack } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import { Update, View } from "./menu"
+import { Update } from "./menu"
 import Disclosure, { ViewDisclosure } from "../../dialog/Disclosure"
-import {
-  FormattedDateTime,
-  FormattedNumberDecimal,
-  Trans,
-  useTrans
-} from "../../i18n"
 import FormDialog from "../../form/FormDialog"
 import clone from "clone-deep"
-import { FieldValues } from "../../layout/Grid"
-import { PromotionTypeLabel, usePromotionGroupLabelOf } from "../PromotionType"
-import { useSendPromotionPayout, useVerifyPromotionPayout } from "./client"
-import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
-import { UserNameTrans } from "../../trans/User"
-import {
-  PromotionNameTrans,
-  PromotionSubtypeTrans,
-  PromotionTypeTrans
-} from "../../trans/Promotion"
-import { CreatedTimeTrans, SentOnTrans } from "../../trans/Date"
-import { useViewTrans } from "../../trans/Action"
+import { useReviewPromotionPayout } from "./client"
 import {
   ManualPayoutTrans,
   PayoutAmountTrans,
@@ -31,12 +14,11 @@ import {
 } from "../../trans/Payment"
 import { ViewPayoutFormBody } from "./ViewPayoutDialog"
 
-export const VerifyPayoutDialogDisclosure = ({
-  brandId,
+export const ReviewPayoutDialogDisclosure = ({
   record,
   onSubmitted,
   id,
-  dialogId = "verify-payout-dialog",
+  dialogId = "review-promotion-payout-dialog",
   ...props
 }) => {
   let dialog = useModalState()
@@ -53,8 +35,7 @@ export const VerifyPayoutDialogDisclosure = ({
         <ManualPayoutTrans />
       </Disclosure>
       {dialog.visible && (
-        <VerifyPayoutDialog
-          brandId={brandId}
+        <ReviewPayoutDialog
           record={record}
           onSubmitted={onSubmitted}
           dialog={dialog}
@@ -65,8 +46,7 @@ export const VerifyPayoutDialogDisclosure = ({
   )
 }
 
-const VerifyPayoutDialog = ({
-  brandId,
+const ReviewPayoutDialog = ({
   record,
   onSubmitted,
   dialog,
@@ -76,8 +56,8 @@ const VerifyPayoutDialog = ({
   let title = useManualPayoutTrans()
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
-    useVerifyPromotionPayout(formData)
+  let { isLoading, result, error, deleteCache } =
+    useReviewPromotionPayout(formData)
 
   const onSubmit = () => {
     let players = [record]
@@ -88,8 +68,7 @@ const VerifyPayoutDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -97,7 +76,10 @@ const VerifyPayoutDialog = ({
       id={dialogId}
       defaultValues={clone(record)}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}

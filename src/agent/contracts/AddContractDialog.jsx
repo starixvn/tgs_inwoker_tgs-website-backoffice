@@ -94,7 +94,7 @@ const AddDialog = ({ brandId, dialog, dialogId, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -105,7 +105,10 @@ const AddDialog = ({ brandId, dialog, dialogId, onSubmitted }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       dialog={dialog}
       dialogId={dialogId}
       title={title}

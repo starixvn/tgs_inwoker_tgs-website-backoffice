@@ -62,7 +62,11 @@ const Body = () => {
 
   return (
     <PageContent
-      title={<Trans zh="总公司列表" en="Resellers" />}
+      title={
+        <Box id="page-title">
+          <Trans zh="总公司列表" en="Resellers" />
+        </Box>
+      }
       actionBar={
         <>
           <SearchForm

@@ -92,7 +92,7 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -132,6 +132,7 @@ const PaidDialog = ({ brandId, formId, onSubmitted, dialog, ...props }) => {
       error={error}
       onCloseErrorAlert={reset}
       onSubmitted={() => {
+        reset()
         onSubmitted?.()
       }}
       title={title}

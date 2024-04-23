@@ -171,15 +171,18 @@ const AddGameDialog = ({ gameProviderId, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(false, undefined)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
   return (
     <Backdrop {...dialog}>
       <FormDialog
         defaultValues={{ gameProviderId, status: GameStatus.Active }}
         onSubmit={onSubmit}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         result={result}
         isLoading={isLoading}
         error={error}
@@ -217,15 +220,18 @@ const EditGameDialog = ({ gameProviderId, record, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(false, undefined)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
   return (
     <Backdrop {...dialog}>
       <FormDialog
         defaultValues={{ gameProviderId, ...clone(record) }}
         onSubmit={onSubmit}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         result={result}
         isLoading={isLoading}
         error={error}

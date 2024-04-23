@@ -60,6 +60,8 @@ export const AddButton = ({ onSubmitted, ...props }) => {
 }
 
 const AddDialog = ({ onSubmitted, dialog, ...props }) => {
+  let title = useAddTrans()
+
   let userResellerId = useUserResellerId()
   let userLicenseeId = useUserLicenseeId()
   let userBrandId = useUserBrandId()
@@ -82,10 +84,8 @@ const AddDialog = ({ onSubmitted, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
-
-  let title = useAddTrans()
 
   return (
     <FormDialog
@@ -97,7 +97,10 @@ const AddDialog = ({ onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       minWidth="50vw"
@@ -199,6 +202,8 @@ export const EditButton = ({ id = "", record, onSubmitted, ...props }) => {
 }
 
 const EditDialog = ({ id, record = {}, dialog, onSubmitted, ...props }) => {
+  let title = useEditTrans()
+
   let [submitData, setSubmit] = useState()
   let { result, error, isLoading, mutate, deleteCache } = useEditDepartment(
     id,
@@ -223,10 +228,8 @@ const EditDialog = ({ id, record = {}, dialog, onSubmitted, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
-
-  let title = useEditTrans()
 
   return (
     <FormDialog
@@ -236,7 +239,10 @@ const EditDialog = ({ id, record = {}, dialog, onSubmitted, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
     >

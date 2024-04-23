@@ -1,4 +1,4 @@
-import { defineConfig } from "vite"
+import { defineConfig, splitVendorChunkPlugin } from "vite"
 import react from "@vitejs/plugin-react"
 
 export default defineConfig({
@@ -7,6 +7,7 @@ export default defineConfig({
   },
   publicDir: "public",
   plugins: [
+    splitVendorChunkPlugin(),
     react({
       jsxImportSource: "@emotion/react",
       babel: {
@@ -26,6 +27,11 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: "build"
+    target: ["es2020"],
+    modulePreload: {
+      polyfill: false
+    },
+    outDir: "build",
+    sourcemap: "inline"
   }
 })

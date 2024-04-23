@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
-import { Box, Button, Set, Text, Flex, Stack, Level } from "bumbag"
+import { Box, Set, Level } from "bumbag"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Code, View } from "./menu"
 import { useForm, FormProvider } from "react-hook-form"
 import { usePromotionWinningList } from "./client"
 import SearchButton from "../../button/SearchButton"
-import { PageContent } from "../../page/Content"
 import AlertDialog from "../../dialog/Alert"
-import { Trans, useTrans } from "../../i18n"
 import DateTimeRangeInput, {
   DateInputRange
 } from "../../date/DateTimeRangeInput"
@@ -39,29 +42,19 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<WinningListTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
-  )
-}
-
-const BodyContent = ({ brandId }) => {
+  let brandId = usePlatformId()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     promotionName: "",
     userName: "",
     from: subDays(startOfToday(new Date()), 3),
@@ -73,10 +66,7 @@ const BodyContent = ({ brandId }) => {
   }, [brandId])
 
   let { isLoading, data, error, mutate, deleteCache } = usePromotionWinningList(
-    brandId,
-    brandId
-      ? { ...toApiParams(state), sortby: "CreatedOn", orderby: Descending }
-      : undefined
+    { ...toApiParams(state), sortby: "CreatedOn", orderby: Descending }
   )
 
   let columns = useColumns({
@@ -85,27 +75,23 @@ const BodyContent = ({ brandId }) => {
   })
 
   return (
-    <PageContent
-      title={<WinningListTrans />}
-      actionBar={
-        <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-          <SearchBar
-            promotionName={state.promotionName}
-            userName={state.userName}
-            from={state.from}
-            to={state.to}
-            search={({ ...data } = {}) => {
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading}
-          />
-        </Level>
-      }
-    >
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          promotionName={state.promotionName}
+          userName={state.userName}
+          from={state.from}
+          to={state.to}
+          search={({ ...data } = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+      </Level>
       <Table
         id="winning-list"
         columns={columns}
@@ -119,7 +105,7 @@ const BodyContent = ({ brandId }) => {
         stickyHead
       />
       {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+    </Set>
   )
 }
 

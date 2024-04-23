@@ -117,9 +117,13 @@ export const AdminUserChangePasswordDialog = ({
   ...props
 }) => {
   let [submitData, setSubmit] = useState()
-  let { result, error, mutate, isLoading } = useEditPassword(userId, submitData)
+  let { result, error, isLoading, deleteCache } = useEditPassword(
+    userId,
+    submitData
+  )
 
-  const clearResult = () => {
+  const reset = () => {
+    deleteCache()
     setSubmit(null)
   }
 
@@ -136,8 +140,11 @@ export const AdminUserChangePasswordDialog = ({
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
-      onSubmitted={onSubmitted}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
     >
@@ -176,14 +183,16 @@ const PasswordBody = ({ dialog }) => {
 }
 
 const AddDialog = ({ onSubmitted, dialog, finalFocusRef, ...props }) => {
-  let [submitData, setSubmit] = useState()
-  let { result, error, mutate, isLoading } = useAddAdmin(submitData)
+  let title = useAddTrans()
 
-  const clearResult = () => {
+  let [submitData, setSubmit] = useState()
+  let { result, error, isLoading, deleteCache } = useAddAdmin(submitData)
+
+  const reset = () => {
+    deleteCache()
     setSubmit(null)
   }
 
-  let title = useAddTrans()
   return (
     <FormDialog
       id="add-user-dialog"
@@ -199,8 +208,11 @@ const AddDialog = ({ onSubmitted, dialog, finalFocusRef, ...props }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
-      onSubmitted={onSubmitted}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       finalFocusRef={finalFocusRef}
@@ -427,6 +439,8 @@ const NameLabel = ({ name = "name", required }) => (
 )
 
 const EditDialog = ({ user = {}, onSubmitted, dialog, ...props }) => {
+  let title = useEditTrans()
+
   let [submitData, setSubmit] = useState()
   let { result, error, mutate, isLoading, deleteCache } = useEditAdmin(
     user?.id,
@@ -440,10 +454,8 @@ const EditDialog = ({ user = {}, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
-
-  let title = useEditTrans()
 
   let userRoleType = useUserRoleType()
   let roleType = userRoleType
@@ -466,7 +478,10 @@ const EditDialog = ({ user = {}, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="80vw"

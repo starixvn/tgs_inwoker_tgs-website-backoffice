@@ -31,11 +31,21 @@ const MonthlyTrans = {
 
 const Instantly = "Instantly"
 
+export const Type = {
+  Daily,
+  Weekly,
+  Biweekly,
+  Monthly
+}
+
 export const isMonthlySettlementInterval = (value) => value == Monthly
+
+const defaultFilter = () => true
 
 export const SettlementIntervalTypeSelect = ({
   placeholder,
   placeholderDisabled = false,
+  filter: predicate = defaultFilter,
   ...props
 }) => {
   let defaultPlaceholder = useTrans({
@@ -61,7 +71,7 @@ export const SettlementIntervalTypeSelect = ({
       label: useTrans(MonthlyTrans),
       value: Monthly
     }
-  ]
+  ].filter(predicate)
 
   return <Select placeholder={placeholder} options={options} {...props} />
 }
@@ -82,12 +92,4 @@ export const MonthlyDaySelect = ({ ...props }) => {
       {...props}
     />
   )
-}
-
-export default {
-  Daily,
-  Weekly,
-  Biweekly,
-  Monthly,
-  Instantly
 }

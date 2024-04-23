@@ -47,7 +47,7 @@ import { toCheckedFieldName } from "../../currency/CurrencyCheckboxGroup"
 import CurrencyBetLimitFieldsBox, {
   flatCheckedCurrencyBetLimits
 } from "../CurrencyBetLimitFieldsBox"
-import SettlementIntervalType, {
+import {
   isMonthlySettlementInterval,
   MonthlyDaySelect,
   SettlementIntervalTypeSelect
@@ -81,6 +81,7 @@ import {
 } from "../../trans/Agent"
 import Switch from "../../switch/Switch"
 import { AutoOrManualSwitch } from "../../switch/AutoOrManualSwitch"
+import { PlatformFeeTrans } from "../../trans/Platform"
 
 export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -138,7 +139,7 @@ const CurrentAddDialog = ({ licenseeId, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -355,7 +356,7 @@ const EditDialog = ({ brandId, licenseeId, onSubmitted, dialog, ...props }) => {
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let record = {
@@ -664,7 +665,7 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
         </Box>
 
         <NormalLabel>
-          <Trans zh="产品费用" en="Product Fee" />
+          <PlatformFeeTrans />
         </NormalLabel>
         <Box>
           <PercentageNumberInputField

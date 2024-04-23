@@ -70,6 +70,7 @@ function App() {
   return (
     <SWRConfig
       value={{
+        dedupingInterval: 200,
         revalidateOnFocus: false,
         shouldRetryOnError: false
       }}

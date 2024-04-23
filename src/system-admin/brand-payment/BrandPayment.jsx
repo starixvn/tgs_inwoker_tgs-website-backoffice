@@ -182,7 +182,7 @@ const EditDialog = ({
 
   const resetPlatformPayment = () => {
     deletePlatformCache()
-    mutatePlatformPayment(null, false)
+    mutatePlatformPayment(undefined, false)
   }
 
   if (platformPaymentError) {
@@ -200,7 +200,7 @@ const EditDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let editable = !readOnly
@@ -213,6 +213,7 @@ const EditDialog = ({
       onSubmit={onSubmit}
       onSubmitted={() => {
         resetPlatformPayment()
+        reset()
         onSubmitted?.()
       }}
       isLoading={isLoading}
@@ -250,7 +251,7 @@ const AddDepositDialog = ({ title, brandId, dialog, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -266,7 +267,10 @@ const AddDepositDialog = ({ title, brandId, dialog, onSubmitted }) => {
         extendedData: JSON.stringify({})
       }}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}
@@ -297,7 +301,7 @@ const AddWithdrawDialog = ({ title, brandId, dialog, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -313,7 +317,10 @@ const AddWithdrawDialog = ({ title, brandId, dialog, onSubmitted }) => {
         extendedData: JSON.stringify({})
       }}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}

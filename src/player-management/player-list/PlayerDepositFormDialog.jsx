@@ -152,7 +152,7 @@ const DepositFormDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(null)
   }
 
@@ -169,6 +169,7 @@ const DepositFormDialog = ({
         playerCode
       }}
       onSubmit={onSubmit}
+      onSubmitted={reset}
       isLoading={isLoading}
       result={result}
       error={error}

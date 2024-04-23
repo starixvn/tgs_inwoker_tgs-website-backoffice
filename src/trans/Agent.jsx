@@ -227,3 +227,11 @@ const DividendAmount = {
   vi: "số hoa hồng thực tế"
 }
 export const DividendAmountTrans = () => <Trans {...DividendAmount} />
+
+const AgentBalanceAdjustment = {
+  zh: "代理调账",
+  en: "Agent Balance Adjustment"
+}
+export const AgentBalanceAdjustmentTrans = () => (
+  <Trans {...AgentBalanceAdjustment} />
+)

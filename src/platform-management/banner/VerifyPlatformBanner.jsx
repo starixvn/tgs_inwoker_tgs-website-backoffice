@@ -103,8 +103,11 @@ const EditVerifyDialog = ({
 
   let [formData, setSubmit] = useState()
 
-  let { isLoading, result, error, mutate, deleteCache } =
-    useVerifyPlatformBanner(brandId, record?.id, formData)
+  let { isLoading, result, error, deleteCache } = useVerifyPlatformBanner(
+    brandId,
+    record?.id,
+    formData
+  )
 
   const onSubmit = ({ remarks, reviewState }) => {
     let data = {
@@ -115,6 +118,7 @@ const EditVerifyDialog = ({
   }
 
   const reset = () => {
+    deleteCache()
     setSubmit(null)
   }
 
@@ -148,7 +152,10 @@ const EditVerifyDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       placement="top"
       dialog={dialog}

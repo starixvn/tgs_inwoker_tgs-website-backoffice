@@ -43,7 +43,10 @@ const notEmpty = complement(isEmpty)
 
 const Action = {
   ToggleColumnHidden: "toggleColumnHidden",
-  ColumnOrder: "columnOrder"
+  ColumnOrder: "columnOrder",
+  MenuBar: "menuBar",
+  MenuAddonBefore: "menuAddonBefore",
+  MenuAddonAfter: "menuAddonAfter"
 }
 
 export const useTableColumnHiddenLocalStorage = (
@@ -57,6 +60,21 @@ export const useTableColumnHiddenLocalStorage = (
 
 const ActionFields = Object.values(Action)
 
+const MenubarBox = ({ children }) => {
+  return (
+    <Set
+      orientation="horizontal"
+      verticalBelow="tablet"
+      css={css`
+        min-width: max-content;
+        width: 100%;
+      `}
+    >
+      {children}
+    </Set>
+  )
+}
+
 export const ActionBar = ({ table }) => {
   let showActionBar = !!ActionFields.find((actionField) => {
     let showAction = get(table, actionField)
@@ -67,17 +85,20 @@ export const ActionBar = ({ table }) => {
     return null
   }
 
+  let { menubar: Menubar = MenubarBox, menuAddonBefore, menuAddonAfter } = table
+
   return (
-    <Set
-      orientation="horizontal"
-      verticalBelow="tablet"
+    <Menubar
       css={css`
-        width: max-content;
+        min-width: max-content;
+        width: 100%;
       `}
     >
+      {menuAddonBefore}
       <ToggleHiddenDropdownMenu table={table} />
       <ColumnOrderPopover table={table} />
-    </Set>
+      {menuAddonAfter}
+    </Menubar>
   )
 }
 
@@ -123,6 +144,7 @@ const ToggleHiddenDropdownMenu = ({ table }) => {
         css={css`
           overflow: hidden;
           & .bb-PopoverContent {
+            position: relative;
             max-height: 40vh;
             max-width: 85vw;
             overflow: auto;
@@ -131,6 +153,13 @@ const ToggleHiddenDropdownMenu = ({ table }) => {
           & .bb-PopoverFooter > .bb-Box {
             width: 100%;
           }
+
+          ${!popover.visible &&
+          css`
+            & .bb-PopoverFooter {
+              display: none;
+            }
+          `}
         `}
       >
         <Set orientation="vertical">

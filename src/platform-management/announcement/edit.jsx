@@ -71,7 +71,7 @@ export const AddButton = ({ brandId, onSubmitted, ...props }) => {
 
 const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   let [data, setSubmit] = useState()
-  let { result, error, mutate, isLoading } = useAddAnnouncement(data)
+  let { result, error, isLoading, deleteCache } = useAddAnnouncement(data)
 
   const onSubmit = (formData) => {
     setSubmit({
@@ -81,7 +81,8 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   }
 
   const reset = () => {
-    setSubmit(undefined)
+    deleteCache()
+    setSubmit(null)
   }
 
   let title = useTrans({
@@ -105,7 +106,10 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       placement="top"
@@ -192,7 +196,10 @@ const ViewDialog = ({ record, dialog, ...props }) => {
 const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   let { id } = record
   let [formData, setSubmit] = useState()
-  let { result, error, mutate, isLoading } = useEditAnnouncement(id, formData)
+  let { result, error, isLoading, deleteCache } = useEditAnnouncement(
+    id,
+    formData
+  )
 
   const onSubmit = (formData) => {
     setSubmit({
@@ -202,7 +209,8 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   }
 
   const reset = () => {
-    setSubmit(undefined)
+    deleteCache()
+    setSubmit(null)
   }
 
   let title = useEditTrans()
@@ -220,7 +228,10 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       placement="top"
@@ -365,7 +376,7 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
 
   let [type, setType] = useState()
   let [data, setSubmit] = useState()
-  let { result, error, mutate, isLoading } = useVerifyAnnouncement(
+  let { result, error, isLoading, deleteCache } = useVerifyAnnouncement(
     {
       id: record?.id,
       type
@@ -416,7 +427,10 @@ const VerifyDialog = ({ record, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       placement="top"
       css={DialogCss}

@@ -1,10 +1,10 @@
 // import "./tracing"
 import { toDataOrError } from "./response"
-import useSWR, { cache } from "swr"
+import useSWR, { useSWRConfig } from "swr"
 import { getAcceptLang, getAcceptLangCulture } from "../i18n"
 import { isValid } from "date-fns"
 import { isNil, isEmpty, either, empty, complement } from "ramda"
-import { isObject } from "lodash-es"
+import { useEffectOnce } from "react-use"
 
 const notNil = complement(isNil)
 
@@ -100,6 +100,8 @@ const fetchApi = async (
   if (!headers["Accept-Language"]) {
     headers["Accept-Language"] = getAcceptLangCulture()
   }
+  //TODO: rm log
+  // console.log("url[", url, "], method[", method, "], data", data)
 
   headers = notNil(data)
     ? {
@@ -140,113 +142,67 @@ const dropEmptyValues = (record) => {
   }, empty(record))
 }
 
-const DefaultUpdateOptions = {
-  dedupingInterval: 100
-}
+export const useGet = (url, options) => {
+  let key = url ? [url, "GET"] : null
+  const { mutate, isLoading, data, error, ...rest } = useSWR(
+    key,
+    ([url]) => get(url),
+    options
+  )
 
-const deleteCacheBy = (source = "") => {
-  let [key, args, errorKey, isValidatingKey] = cache.serializeKey(source)
-
-  if (key) {
-    cache.delete(key)
-  }
-  if (errorKey) {
-    cache.delete(errorKey)
-  }
-  if (isValidatingKey) {
-    cache.delete(isValidatingKey)
-  }
-}
-
-const deleteErrorCacheBy = (source = "") => {
-  let [key, args, errorKey, isValidatingKey] = cache.serializeKey(source)
-
-  if (errorKey) {
-    cache.delete(errorKey)
-  }
-}
-
-export const useGet = (url, options = DefaultUpdateOptions) => {
-  let fetchData = !!url
-  let key = fetchData ? url : null
-  const { data, error, isValidating, mutate } = useSWR(key, get, options)
+  /*
+  NOTE: use options = { dedupingInterval: 0 } instead of the following workaround
+  useEffectOnce(() => {
+    //workaround to trigger mutate after call deleteCache() prev
+    if (!isLoading && key && !error && isNil(data)) {
+      mutate()
+    }
+  })
+  */
 
   return {
     key,
+    isLoading: (key && !error && isNil(data)) || isLoading,
     data,
-    isLoading: !error && isNil(data) && fetchData,
-    isValidating,
-    error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    ...rest,
+    deleteCache: () => {
+      mutate(undefined, false)
+    }
   }
 }
 
-export const usePost = (url, data, options = DefaultUpdateOptions) => {
-  let key = url ? [url, data] : null
+export const usePost = (url, data, options) => {
+  let key = url ? [url, data, "POST"] : null
   let {
     data: result,
-    error,
-    isValidating,
-    mutate
-  } = useSWR(key, (url, data) => post(url, { data }), options)
+    mutate,
+    ...rest
+  } = useSWR(key, ([url, data]) => post(url, { data }), options)
 
   return {
     key,
     result,
-    isLoading: !error && !result && key,
-    isValidating,
-    error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    ...rest,
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
-export const usePostData = (url, data, options = DefaultUpdateOptions) => {
-  let fetchData = !!url && data !== undefined
-  let key = fetchData ? [url, data] : null
-  let {
-    data: result,
-    error,
-    isValidating,
-    mutate
-  } = useSWR(key, (url, data) => post(url, { data }), options)
-
-  return {
-    key,
-    result,
-    isLoading: !error && !result && fetchData,
-    isValidating,
-    error,
-    isError: error,
-    mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
-  }
+export const usePostData = (url, data, options) => {
+  url = url && data ? url : ""
+  return usePost(url, data, options)
 }
 
-export const usePostFormData = (
-  url,
-  formData,
-  options = DefaultUpdateOptions
-) => {
-  let fetchData = !!url && !!formData
-  let key = fetchData ? [url, formData] : null
+export const usePostFormData = (url, formData, options) => {
+  let key = !!url && !!formData ? [url, formData, "POST"] : null
   let {
     data: result,
-    error,
-    isValidating,
-    mutate
+    mutate,
+    ...rest
   } = useSWR(
     key,
-    (url, formData) =>
+    ([url, formData]) =>
       post(url, {
         body: formData
       }),
@@ -256,76 +212,46 @@ export const usePostFormData = (
   return {
     key,
     result,
-    isLoading: !error && !result && fetchData,
-    isValidating,
-    error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    ...rest,
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
-export const usePutData = (url, data, options = DefaultUpdateOptions) => {
-  let fetchData = !!url && !!data
-  let key = fetchData ? [url, data] : null
+export const usePut = (url, data, options) => {
+  let key = url ? [url, data, "PUT"] : null
   let {
     data: result,
-    error,
-    isValidating,
-    mutate
-  } = useSWR(key, (url, data) => put(url, { data }), options)
+    mutate,
+    ...rest
+  } = useSWR(key, ([url, data]) => put(url, { data }), options)
 
   return {
     key,
     result,
-    isLoading: !error && !result && fetchData,
-    isValidating,
-    error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    ...rest,
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
-export const usePut = (url, settings, options = DefaultUpdateOptions) => {
-  let key = url ? [url, settings] : null
-  let { data: result, error, isValidating, mutate } = useSWR(key, put, options)
-
-  return {
-    key,
-    result,
-    isLoading: key && !error && !result,
-    isValidating,
-    error,
-    isError: error,
-    mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
-  }
+export const usePutData = (url, data, options) => {
+  url = url && data ? url : ""
+  return usePut(url, data, options)
 }
 
-export const usePatchData = (
-  url,
-  data,
-  { dropEmptyValuesDisabled = false, ...options } = DefaultUpdateOptions
-) => {
-  let key = url ? [url, data] : null
+export const usePatchData = (url, data, options) => {
+  let key = url ? [url, data, "PATCH"] : null
   let {
     data: result,
-    error,
-    isValidating,
-    mutate
+    mutate,
+    ...rest
   } = useSWR(
     key,
-    (url, data) =>
+    ([url, data]) =>
       patch(url, {
         data,
-        dropEmptyValuesDisabled
+        ...options
       }),
     options
   )
@@ -333,85 +259,48 @@ export const usePatchData = (
   return {
     key,
     result,
-    isLoading: !error && !result && key,
-    isValidating,
-    error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    ...rest,
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
-export const useDelete = (url, settings) => {
-  let fetchData = !!url
-  let key = fetchData ? [url, "DELETE"] : null
-  const {
-    data: result,
-    error,
-    isValidating,
-    mutate
-  } = useSWR(key, (url) => fetchApi("DELETE", url, settings))
-
-  return {
-    key,
-    result,
-    isLoading: !error && !result && fetchData,
-    isValidating,
-    error,
-    isError: error,
-    mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
-  }
-}
-
-export const useDeleteData = (url, data, options = DefaultUpdateOptions) => {
-  let key = url ? [url, data] : null
+export const useDelete = (url, data, options) => {
+  let key = url ? [url, data, "DELETE"] : null
   let {
     data: result,
-    error,
-    isValidating,
-    mutate
-  } = useSWR(key, (url, data) => fetchDelete(url, { data }), options)
+    mutate,
+    ...rest
+  } = useSWR(key, ([url, data]) => fetchDelete(url, { data }), options)
 
   return {
     key,
     result,
-    isLoading: !error && !result && key,
-    isValidating,
-    error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    ...rest,
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
-export const useHead = (url, settings) => {
-  let fetchData = !!url
-  let key = fetchData ? [url, "HEAD"] : null
+export const useDeleteData = (url, data, options) => {
+  url = url && data ? url : ""
+  return useDelete(url, data, options)
+}
+
+export const useHead = (url, options) => {
+  let key = url ? [url, "HEAD"] : null
   const {
     data: result,
-    error,
-    isValidating,
-    mutate
-  } = useSWR(key, (url) => fetchApi("HEAD", url, settings), settings)
+    mutate,
+    ...rest
+  } = useSWR(key, ([url]) => fetchApi("HEAD", url, options), options)
 
   return {
     key,
     result,
-    isLoading: !error && !result && fetchData,
-    isValidating,
-    error,
-    isError: error,
     mutate,
-    deleteCache: () => deleteCacheBy(key),
-    deleteErrorCache: () => deleteErrorCacheBy(key),
-    clearCache: () => cache.clear()
+    ...rest,
+    deleteCache: () => mutate(undefined, false)
   }
 }
 
@@ -420,6 +309,7 @@ const isEmptyString = (value) => typeof value == "string" && value === ""
 const isNilOrUndefined = (value) =>
   typeof value === "undefined" || value === null
 
+//TODO: rm default?
 export default {
   get,
   put,

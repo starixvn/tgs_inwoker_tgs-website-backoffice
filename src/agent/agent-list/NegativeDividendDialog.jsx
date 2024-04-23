@@ -52,13 +52,12 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
     isLoading: isLoadingAgent,
     data: agent,
     error: agentError,
-    mutate: mutateAgent,
     deleteCache: deleteAgentCache
-  } = useAgent(agentId)
+  } = useAgent(agentId, { dedupingInterval: 0 })
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateAgentNegativeDividend(agentId, formData)
+  let { isLoading, result, error, deleteCache } =
+    useUpdateAgentNegativeDividend(agentId, formData, { dedupingInterval: 0 })
 
   if (isLoadingAgent) {
     return <LoadingBackdrop {...dialog} />
@@ -74,8 +73,7 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -92,7 +90,6 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
       id={dialogId}
       onSubmitted={() => {
         deleteAgentCache()
-        mutateAgent(null, false)
         reset()
       }}
       dialog={dialog}

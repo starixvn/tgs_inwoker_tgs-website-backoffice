@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { Set, Spinner, useModalState, Box } from "bumbag"
-import PageContent from "../../page/Content"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId,
-  useUserRoleType
+  useHasSubMenuByRoute
 } from "../../user/context"
 import { Code } from "./menu"
-import BrandBar from "../../report/BrandBar"
 import { Trans, useTrans } from "../../i18n"
 import { MessengerDialogDisclosure } from "./MessengerDialog"
 import { CreateOrEditLiveChatDialogDisclosure } from "./LiveChatDialog"
@@ -38,21 +39,19 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<OperationSettingsTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-  let { isLoading, data: brand, error, mutate, deleteCache } = useBrand(brandId)
+  let brandId = usePlatformId()
+  let { isLoading, data: brand, error, deleteCache } = useBrand(brandId)
 
   return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
+    <Set orientation="vertical" isFilled height="100%">
       {isLoading && (
         <Box alignY="center" alignX="center">
           <Spinner />
@@ -69,29 +68,28 @@ const Body = () => {
 const BodyContent = ({ brandId, brand }) => {
   let agentProfitSharingType = brand?.agentDividendType
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentProfitSharingType)
+
   return (
-    <PageContent title={<OperationSettingsTrans />}>
-      <Set>
-        <MessengerDialogDisclosure
-          id="instant-messaging-dialog-disclosure"
+    <Set>
+      <MessengerDialogDisclosure
+        id="instant-messaging-dialog-disclosure"
+        brandId={brandId}
+      />
+      <CreateOrEditLiveChatDialogDisclosure
+        id="live-chat-dialog-disclosure"
+        brandId={brandId}
+      />
+      {multipleLayer && (
+        <PlatformProfitSharingSettingDialogDisclosure
+          id="profit-sharing-setting-dialog-disclosure"
           brandId={brandId}
         />
-        <CreateOrEditLiveChatDialogDisclosure
-          id="live-chat-dialog-disclosure"
-          brandId={brandId}
-        />
-        {multipleLayer && (
-          <PlatformProfitSharingSettingDialogDisclosure
-            id="profit-sharing-setting-dialog-disclosure"
-            brandId={brandId}
-          />
-        )}
-        <AllAgentDialogDisclosure
-          id="all-agent-setting-dialog-disclosure"
-          brandId={brandId}
-        />
-      </Set>
-    </PageContent>
+      )}
+      <AllAgentDialogDisclosure
+        id="all-agent-setting-dialog-disclosure"
+        brandId={brandId}
+      />
+    </Set>
   )
 }
 
@@ -143,7 +141,7 @@ const PlatformMultipleLayerProfitSharingSettingDialog = ({
       record={data?.items}
       onSubmitted={() => {
         deleteCache()
-        mutate(null, false)
+        mutate(undefined, false)
       }}
       dialog={dialog}
       {...props}
@@ -169,13 +167,11 @@ const ProfitSharingSettingFormDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   const onSubmit = (formData) => {
-    reset()
-
     setSubmit(formData)
   }
 
@@ -187,7 +183,10 @@ const ProfitSharingSettingFormDialog = ({
         brandAgentDividendConditions: clone(record)
       }}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}

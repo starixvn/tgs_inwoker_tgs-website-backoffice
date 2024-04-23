@@ -1,21 +1,10 @@
 import { fetcher } from "../fetcher.js"
 import { host } from "../host.js"
+import { getAgent } from "./getAgent.js"
 
 const API = "api/agent"
 
-/*
-export const findAgent = async (agentId) => {
-  let url = `${host}/${API}/${agentId}`
-
-  let response = await fetcher.get(`${host}/${API}/${agentId}`, {
-    failOnStatusCode: true
-  })
-  let result = await response.json()
-  return result.agent
-}
-*/
-
-export const findAgent = async (brandId, username) => {
+export const find = async (brandId, username) => {
   let url = `${host}/${API}?username=${username}&brandId=${brandId}&showAll=true`
 
   let response = await fetcher.get(url, {
@@ -23,5 +12,9 @@ export const findAgent = async (brandId, username) => {
   })
   let result = await response.json()
 
-  return result.items[0]
+  let id = result.items[0]?.id
+  return getAgent(id)
 }
+
+//TODO: rm
+export const findAgent = find

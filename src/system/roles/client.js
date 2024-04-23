@@ -34,7 +34,7 @@ export const useEditRole = (id, data) => {
 }
 
 export const useCopyRole = (id, data) => {
-    let url = id ? `${API}/${id}/copy` : ""
+    let url = id && data ? `${API}/${id}/copy` : ""
     return usePostData(url, data)
 }
 

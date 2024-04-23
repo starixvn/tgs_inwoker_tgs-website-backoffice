@@ -49,10 +49,14 @@ import { SwitchField } from "../../switch/Switch"
 import { CheckboxField } from "../../checkbox"
 import { SubmitButton } from "../../button/SubmitButton"
 import { AllAgentProfitSharingSetting } from "./AllAgentSharingSetting"
-import { SettlementIntervalTypeSelect } from "../../date/SettlementIntervalType"
+import {
+  SettlementIntervalTypeSelect,
+  Type as SettlementIntervalType
+} from "../../date/SettlementIntervalType"
 import { isDev } from "../../env"
 import {
   CardGame,
+  EGame,
   LiveDealer,
   Lottery,
   Sportsbook,
@@ -181,7 +185,7 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
     setSubmit(null)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (
@@ -204,6 +208,8 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
             },
             true
           )
+
+          reset()
         }}
         dialog={dialog}
         showActionButtons={readOnly ? false : true}
@@ -215,6 +221,7 @@ const SettlementCycleDialog = ({ brandId, readOnly, dialog, ...props }) => {
           </Box>
           <SettlementIntervalTypeSelect
             name="settlementIntervalType"
+            filter={({ value }) => value != SettlementIntervalType.Biweekly}
             required
             disabled={readOnly}
           />
@@ -276,7 +283,7 @@ const AllAgentMainSwitchField = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   useEffect(() => {
@@ -335,10 +342,7 @@ const AllGameTypeMessages = {
   LiveDealer: LiveDealer,
   CardGame: CardGame,
   Lottery: Lottery,
-  Slot: {
-    zh: "电子",
-    en: "EGame"
-  }
+  Slot: EGame
 }
 
 const AllAgentGameTypeTabs = ({ brandId, readOnly, dialog }) => {
@@ -551,7 +555,7 @@ const MultileLayerSettingDialog = ({
       useUpdate={useUpdate}
       onSubmitted={() => {
         deleteCache()
-        mutate(null, false)
+        mutate(undefined, false)
       }}
       dialog={dialog}
       title={title}
@@ -579,8 +583,8 @@ const MultileLayerSettingFormDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   const onSubmit = (data = {}) => {
@@ -600,7 +604,10 @@ const MultileLayerSettingFormDialog = ({
         }}
         onSubmit={onSubmit}
         isLoading={isLoading}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         result={result}
         error={error}
         onCloseErrorAlert={reset}
@@ -683,7 +690,7 @@ const GameTypeSettingFormCard = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   useEffect(() => {

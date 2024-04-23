@@ -14,11 +14,12 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# TODO: RUN npm run test
-RUN npm run build
+# RUN npm run build
+RUN npm run build:vite
 
 # Copy build to caddy server
 FROM caddy:2.4.6-alpine
+# FROM caddy:2.7.6-alpine
 
 # Debug Tool
 # RUN apk --no-cache add curl

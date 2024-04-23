@@ -99,7 +99,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useAddTrans()
@@ -112,7 +112,10 @@ const AddDialog = ({ brandId, onSubmitted, dialog }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="100vw"
@@ -168,7 +171,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -180,7 +183,10 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="100vw"
@@ -250,7 +256,7 @@ const WithdrawLimitInputGroup = ({
       <NumberInputField
         name={name}
         value={value}
-        min="1"
+        min="0"
         required={isEnable}
         disabled={inputDisabled}
         addonBefore={

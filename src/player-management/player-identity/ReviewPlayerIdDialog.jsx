@@ -98,7 +98,7 @@ const PlayerDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (
@@ -125,6 +125,11 @@ const ReviewDialog = ({
   dialog,
   ...props
 }) => {
+  let title = useTrans({
+    zh: "身分证审核",
+    en: "ID Verification"
+  })
+
   let defaultValues = { ...clone(record), brandId }
 
   let formMethods = useForm({ defaultValues })
@@ -143,13 +148,8 @@ const ReviewDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
-
-  let title = useTrans({
-    zh: "身分证审核",
-    en: "ID Verification"
-  })
 
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   let editable = hasUpdateAuth && isPlayerIdentityWaitingVerify(record.status)
@@ -162,6 +162,7 @@ const ReviewDialog = ({
       id="review-player-id-dialog"
       formMethods={formMethods}
       onSubmit={onSubmit}
+      onSubmitted={reset}
       actionButtonsProps={{
         submitProps: {
           "data-type": "approve"
