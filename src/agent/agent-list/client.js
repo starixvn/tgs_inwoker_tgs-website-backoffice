@@ -290,13 +290,11 @@ export const useDeleteAgentDnsZone = (agentId) => {
 }
 
 const ProductFeeApi = "/api/AgentProductFee"
-//TODO: test api integration
 export const useAgentProductFee = (agentId) => {
   let url = agentId ? `${ProductFeeApi}/${agentId}` : ""
   return useGet(url)
 }
 
-//TODO: api integration
 export const useUpdateAgentProductFee = (formData) => {
   let url = formData ? ProductFeeApi : ""
   return usePutData(url, formData)
