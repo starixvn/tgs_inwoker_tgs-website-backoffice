@@ -55,6 +55,7 @@
     "@opentelemetry/instrumentation-fetch": "0.40.0",
     "@opentelemetry/sdk-trace-web": "1.14.0",
     "@playwright/test": "1.43.1",
+    "@radix-ui/colors": "^3.0.0",
     "@snowpack/plugin-babel": "^2.1.7",
     "@snowpack/plugin-dotenv": "^2.1.0",
     "@snowpack/plugin-react-refresh": "^2.5.0",

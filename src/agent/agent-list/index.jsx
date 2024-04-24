@@ -70,8 +70,8 @@ import {
 } from "../../trans/Agent"
 import { ConfigAgentProfitSharingDialogDisclosure } from "./ConfigAgentProfitSharingDialog"
 import { NegativeDividendDialogDisclosure } from "./NegativeDividendDialog"
-import { GameTypeFeeDialogDisclosure } from "./GameTypeFeeDialog"
-import { AgentGameTypeFeeDialogDisclosure } from "./AgentGameTypeFeeDialog"
+import { ProductFeeDialogDisclosure } from "./ProductFeeDialog"
+import { AgentProductFeeDialogDisclosure } from "./AgentProductFeeDialog"
 
 export { Code }
 
@@ -180,7 +180,7 @@ const BodyContent = ({ brandId = "", brand }) => {
           isLoading={isLoading}
         />
         <Set>
-          <GameTypeFeeDialogDisclosure brandId={brand.id} />
+          <ProductFeeDialogDisclosure brandId={brand.id} />
           <AddAgentButton
             id="add-agent-dialog-disclosure"
             brand={brand}
@@ -552,7 +552,7 @@ const useColumns = ({ mutate, items = [], brand } = {}) => {
                   onSubmitted={mutate}
                 />
               )}
-              <AgentGameTypeFeeDialogDisclosure agent={value} />
+              <AgentProductFeeDialogDisclosure agent={value} />
             </Set>
           )
         }

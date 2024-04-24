@@ -289,34 +289,15 @@ export const useDeleteAgentDnsZone = (agentId) => {
   return useDelete(url)
 }
 
-//TODO: api integration
-export const useAgentGameTypeFees = (agentId) => {
-  //TODO: rm fake data
-  let { data, ...rest } = useAgent(agentId)
-  if (data) {
-    let setting = sessionStorage.getItem("agent-game-type-fee")
-    data = setting
-      ? JSON.parse(setting)
-      : {
-          liveDealer: 1,
-          sports: 2,
-          eGame: 3,
-          cardGame: 4,
-          lottery: 5,
-          virtualSports: 6
-        }
-  }
-  return { data, ...rest }
+const ProductFeeApi = "/api/AgentProductFee"
+//TODO: test api integration
+export const useAgentProductFee = (agentId) => {
+  let url = agentId ? `${ProductFeeApi}/${agentId}` : ""
+  return useGet(url)
 }
 
 //TODO: api integration
-export const useUpdateAgentGameTypeFees = (id, formData) => {
-  let { data: result, ...rest } = useAgent(id)
-  if (formData) {
-    sessionStorage.setItem("agent-game-type-fee", JSON.stringify(formData))
-  }
-  return {
-    result: formData ? true : undefined,
-    ...rest
-  }
+export const useUpdateAgentProductFee = (formData) => {
+  let url = formData ? ProductFeeApi : ""
+  return usePutData(url, formData)
 }

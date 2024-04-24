@@ -108,34 +108,13 @@ export const useUpdatePlatformAccountFundSetting = (id, formData) => {
   return usePatchData(url, formData)
 }
 
-//TODO: api integration
-export const usePlatformAgentGameTypeFees = (id) => {
-  //TODO: rm fake data
-  let { data, ...rest } = useBrandLogo(id)
-  if (data) {
-    let setting = sessionStorage.getItem("fee")
-    data = setting
-      ? JSON.parse(setting)
-      : {
-          liveDealer: 1,
-          sports: 2,
-          eGame: 3,
-          cardGame: 4,
-          lottery: 5,
-          virtualSports: 6
-        }
-  }
-  return { data, ...rest }
+const ProductFeeApi = "/api/BrandProductFee"
+export const usePlatformProductFee = (id) => {
+  let url = id ? `${ProductFeeApi}/${id}` : ""
+  return useGet(url)
 }
 
-//TODO: api integration
-export const useUpdatePlatformAgentGameTypeFees = (id, formData) => {
-  let { data: result, ...rest } = useBrandLogo(id)
-  if (formData) {
-    sessionStorage.setItem("fee", JSON.stringify(formData))
-  }
-  return {
-    result: formData ? true : undefined,
-    ...rest
-  }
+export const useUpdatePlatformProductFee = (formData) => {
+  let url = formData ? ProductFeeApi : ""
+  return usePutData(url, formData)
 }
