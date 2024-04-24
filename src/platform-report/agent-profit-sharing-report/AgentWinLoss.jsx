@@ -141,12 +141,10 @@ const ReportDialog = ({
       <FieldStack>
         <FieldValues marginLeft="1rem">
           <AgentUsernameTrans />
-          <Text.Block alignY="center">{username}</Text.Block>
+          <Box alignY="center">{username}</Box>
 
           <CompanyWinLossTrans />
-          <Text.Block alignY="center">
-            {formatNumberDecimal(winLossAmount)}
-          </Text.Block>
+          <Box alignY="center">{formatNumberDecimal(winLossAmount)}</Box>
         </FieldValues>
         <Separator />
         <Table
