@@ -26,16 +26,17 @@ import Input from "../../input/Input"
 
 export const CopyButton = ({ id, name, onSubmitted, disabled, ...props }) => {
   let dialog = Modal.useState()
-  let disclosureRef = useRef()
 
   let isDisplay = useIsDisplayMenuByRoute([CopyMenu])
   if (!isDisplay) {
     return null
   }
 
+  let dialogId = `copy-role-dialog`
+  let disclosureId = `${dialogId}-disclosure`
   return (
     <>
-      <Disclosure disabled={disabled} {...dialog}>
+      <Disclosure id={disclosureId} disabled={disabled} {...dialog}>
         <Trans zh="复制" en="Copy" />
       </Disclosure>
       {dialog.visible && (
@@ -44,14 +45,21 @@ export const CopyButton = ({ id, name, onSubmitted, disabled, ...props }) => {
           name={name}
           onSubmitted={onSubmitted}
           dialog={dialog}
-          finalFocusRef={disclosureRef}
+          dialogId={dialogId}
         />
       )}
     </>
   )
 }
 
-const CopyDialog = ({ id, name = "", onSubmitted, dialog, ...props }) => {
+const CopyDialog = ({
+  id,
+  name = "",
+  onSubmitted,
+  dialog,
+  dialogId,
+  ...props
+}) => {
   let title = useTrans({
     zh: "复制权限组",
     en: "Copy Role"
@@ -81,6 +89,7 @@ const CopyDialog = ({ id, name = "", onSubmitted, dialog, ...props }) => {
       }}
       title={title}
       dialog={dialog}
+      id={dialogId}
     >
       <Input name="name" required />
     </FormDialog>

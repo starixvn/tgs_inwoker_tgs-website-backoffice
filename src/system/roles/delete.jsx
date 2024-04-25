@@ -16,9 +16,11 @@ export const DeleteButton = ({ id, name, onSubmitted, ...props }) => {
     return null
   }
 
+  let dialogId = `delete-role-dialog`
+  let disclosureId = `${dialogId}-disclosure`
   return (
     <>
-      <Disclosure palette="danger" {...dialog}>
+      <Disclosure palette="danger" id={disclosureId} {...dialog}>
         <Trans zh="删除" en="Delete" />
       </Disclosure>
       {dialog.visible && (
@@ -27,13 +29,21 @@ export const DeleteButton = ({ id, name, onSubmitted, ...props }) => {
           name={name}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
   )
 }
 
-const DeleteDialog = ({ id, name = "", dialog, onSubmitted, ...props }) => {
+const DeleteDialog = ({
+  id,
+  name = "",
+  dialog,
+  dialogId,
+  onSubmitted,
+  ...props
+}) => {
   let [deleteId, setDelete] = useState()
   let { result, error, isLoading, mutate, deleteCache } =
     useDeleteRole(deleteId)
@@ -65,6 +75,7 @@ const DeleteDialog = ({ id, name = "", dialog, onSubmitted, ...props }) => {
       }}
       title={title}
       dialog={dialog}
+      id={dialogId}
     >
       <Alert
         title={
