@@ -595,11 +595,7 @@ const useColumns = ({
         },
         Cell: ({ value: record }) => {
           if (record?.isSeparator) {
-            return (
-              <Text.Block>
-                <Trans zh="直属代理" en="Direct Agent" />
-              </Text.Block>
-            )
+            return <Trans zh="直属代理" en="Direct Agent" />
           }
           let marginLeft = (record?.treeDepth ?? 0) * 1.5
           if (record?.isTotal) {
