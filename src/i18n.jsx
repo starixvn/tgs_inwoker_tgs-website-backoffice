@@ -220,8 +220,6 @@ export const FormattedNumberDecimalPercentage = ({
   ...props
 }) => <FormattedNumberDecimal postfix={postfix} {...props} />
 
-//TODO: what if messages not obj? return "messages" as it's?
-//TODO: use lodash's get to replace Reflect.get?
 export const getTrans = (messages = {}, locale = Locales.zh) =>
   isObject(messages)
     ? Reflect.get(messages, locale) ?? Reflect.get(messages, Locales.en) ?? ""
