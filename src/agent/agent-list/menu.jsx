@@ -1,5 +1,6 @@
 import React from "react"
 import { Locales, getTrans } from "../../i18n"
+import { ProductFee as ProductFeeMsg } from "../../trans/Platform"
 import { View as ViewMsg } from "../../trans/Action"
 
 export const Code = "agentlist"
@@ -78,7 +79,7 @@ export const label = (codes = [], locale = Locales.zh) => {
       return "Lookup Whois"
 
     case ProductFee:
-      return getTrans(ProductFee, locale)
+      return getTrans(ProductFeeMsg, locale)
     default:
       return ""
   }
