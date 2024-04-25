@@ -29,7 +29,7 @@ tasks:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202404170903.898
+image: pgtgs/backoffice-api:202404230758.904
 services:
   - name: backoffice-api
     dependencies:

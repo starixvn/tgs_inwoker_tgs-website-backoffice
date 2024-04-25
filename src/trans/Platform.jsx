@@ -377,11 +377,21 @@ export const PlatformSettlementTimeTrans = () => (
   <Trans {...PlatformSettlementTime} />
 )
 
-const ProductFee = {
+export const ProductFee = {
   zh: "产品费用",
-  en: "Product Fee"
+  en: "Product Charges",
+  vi: "Phí nền tảng"
 }
 export const ProductFeeTrans = () => <Trans {...ProductFee} />
+export const useProductFeeTrans = () => useTrans(ProductFee)
+
+const DefaultProductFee = {
+  zh: "产品费用(预设值)",
+  en: "Product Charges (Default)",
+  vi: "Phí nền tảng (Đặt cọc)"
+}
+export const DefaultProductFeeTrans = () => <Trans {...DefaultProductFee} />
+export const useDefaultProductFeeTrans = () => useTrans(DefaultProductFee)
 
 const PlatformFee = {
   zh: "平台费用",

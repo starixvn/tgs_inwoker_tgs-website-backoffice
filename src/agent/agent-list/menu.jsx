@@ -21,7 +21,7 @@ export const ClearProfitShare = "clearprofitshare"
 
 export const ChangeWithdrawalPassword = "changewithdrawalpassword"
 
-export const GameTypeFee = "gametypefee"
+export const ProductFee = "productfee"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
@@ -76,9 +76,9 @@ export const label = (codes = [], locale = Locales.zh) => {
       )
     case LookupWhois:
       return "Lookup Whois"
-    //TODO: trans
-    case GameTypeFee:
-      return "Game Type Fee"
+
+    case ProductFee:
+      return getTrans(ProductFee, locale)
     default:
       return ""
   }

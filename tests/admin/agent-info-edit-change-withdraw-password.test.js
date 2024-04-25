@@ -57,7 +57,7 @@ test("change agent withdraw password", async ({
   let [type, historyListResult] = await Promise.all([
     page
       .locator(
-        `${ViewAgentDialogSelector} [aria-labelledby="AgentHistoryList"] td[data-column-id="action"] span`
+        `${ViewAgentDialogSelector} [aria-labelledby="AgentHistoryList"] td[data-column-id="action"] span[ data-type="Update"]`
       )
       .getAttribute("data-type"),
     response.json()
@@ -69,6 +69,7 @@ test("change agent withdraw password", async ({
     .locator(
       `${ViewAgentDialogSelector} [aria-labelledby="AgentHistoryList"] td[data-column-id="modifier"]`
     )
+    .first()
     .textContent()
   expect(modifier).equals(history.modifier)
 

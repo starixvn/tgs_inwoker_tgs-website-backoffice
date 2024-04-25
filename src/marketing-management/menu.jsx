@@ -69,11 +69,6 @@ export const codeLabelPair = [
       locale,
       codes,
       label,
-      subLabelPairs: [
-        playerDepositReportPair,
-        playerWinLossReportPair,
-        marketingReportPair,
-        agentMarketingReportPair
-      ]
+      subLabelPairs: [playerDepositReportPair, marketingReportPair]
     })
 ]

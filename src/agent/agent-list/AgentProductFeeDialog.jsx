@@ -13,32 +13,34 @@ import {
 import { Disclosure } from "../../dialog/Disclosure"
 import AlertDialog from "../../dialog/Alert"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import { GameTypeFee } from "./menu"
+import { ProductFee } from "./menu"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import FormDialog from "../../form/FormDialog"
-import { useAgentGameTypeFees, useUpdateAgentGameTypeFees } from "./client"
+import { useAgentProductFee, useUpdateAgentProductFee } from "./client"
 import clone from "clone-deep"
-import { GameTypeFreeFormBody } from "./GameTypeFeeDialog"
+import { ProductFreeFormBody } from "./ProductFeeDialog"
 import { AgentUsernameTrans } from "../../trans/Agent"
 import Label from "../../form/Label"
+import { ProductFeeTrans, useProductFeeTrans } from "../../trans/Platform"
 
-export const AgentGameTypeFeeDialogDisclosure = ({
+export const AgentProductFeeDialogDisclosure = ({
   agent,
   id,
-  dialogId = "game-type-fee-dialog"
+  dialogId = "agent-product-fee-dialog"
 }) => {
   let dialog = useModalState()
 
-  let auth = useIsDisplayMenuByRoute([GameTypeFee])
+  let auth = useIsDisplayMenuByRoute([ProductFee])
   if (!auth) {
     return null
   }
 
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
-  //TODO: trans
   return (
     <>
-      <Disclosure {...dialog}>Game Type Fee</Disclosure>
+      <Disclosure {...dialog}>
+        <ProductFeeTrans />
+      </Disclosure>
       {dialog.visible && (
         <FetchDialog agent={agent} dialog={dialog} dialogId={dialogId} />
       )}
@@ -47,7 +49,7 @@ export const AgentGameTypeFeeDialogDisclosure = ({
 }
 
 const FetchDialog = ({ agent, dialog }) => {
-  let { isLoading, data, error, deleteCache } = useAgentGameTypeFees(agent.id)
+  let { isLoading, data, error, deleteCache } = useAgentProductFee(agent.id)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -68,17 +70,17 @@ const FetchDialog = ({ agent, dialog }) => {
 }
 
 const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
-  //TODO: trans
-  let title = "Game Type Fee"
+  let title = useProductFeeTrans()
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, deleteCache } = useUpdateAgentGameTypeFees(
-    agent.id,
-    formData
-  )
+  let { isLoading, result, error, deleteCache } =
+    useUpdateAgentProductFee(formData)
 
   const onSubmit = (data) => {
-    setSubmit(data)
+    setSubmit({
+      ...data,
+      agentId: agent.id
+    })
   }
 
   const reset = () => {
@@ -99,7 +101,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
       title={title}
       id={dialogId}
     >
-      <GameTypeFreeFormBody
+      <ProductFreeFormBody
         addonBefore={
           <>
             <Box
