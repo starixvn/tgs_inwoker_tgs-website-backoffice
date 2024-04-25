@@ -223,7 +223,7 @@ export const FormattedNumberDecimalPercentage = ({
 export const getTrans = (messages = {}, locale = Locales.zh) =>
   isObject(messages)
     ? Reflect.get(messages, locale) ?? Reflect.get(messages, Locales.en) ?? ""
-    : messages //return empty "" instead will be better?
+    : messages
 
 export const LangDropdownMenu = ({ ...props }) => {
   let locale = useLocale()
