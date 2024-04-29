@@ -178,7 +178,7 @@ export const usePost = (url, data, options) => {
     data: result,
     mutate,
     ...rest
-  } = useSWR(key, ([url, data]) => post(url, { data }), options)
+  } = useSWR(key, ([url, data]) => post(url, { data, ...options }), options)
 
   return {
     key,

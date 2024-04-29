@@ -421,6 +421,20 @@ export const Fixture = {
 
     use(platform)
   },
+  departmentPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "DEPT"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    use(platform)
+  },
   autoClearWageringRequirementPlatform: async (
     {
       licensee,

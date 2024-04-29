@@ -94,7 +94,8 @@ const AddDeductFundDialog = ({ brandId, onSubmitted, dialog, dialogId }) => {
       brandCode: fundData?.brandCode,
       creditAvailable: fundData?.creditAvailable,
       type: FundAction.Add,
-      expansions: {}
+      expansions: {},
+      remark: ""
     }
   })
   let doubleConfirmDialog = useModalState()
