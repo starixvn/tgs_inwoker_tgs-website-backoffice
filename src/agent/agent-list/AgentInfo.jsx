@@ -1,20 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
-import {
-  Spinner,
-  Stack,
-  Flex,
-  Box,
-  Card,
-  Set,
-  Button,
-  Text,
-  Dialog,
-  Modal,
-  Table,
-  useClassName,
-  Alert
-} from "bumbag"
+import { Spinner, Stack, Box, Heading, Set, Text, Columns, Alert } from "bumbag"
 import { FieldValues } from "../../layout/Grid"
 import {
   Trans,
@@ -35,19 +21,13 @@ import {
 } from "react-hook-form"
 import { Input, InputField } from "../../input/Input"
 import {
-  useAgent,
-  useUpdateAgent,
   useUpdateAgentV2,
-  useAgentUpdateFormData
+  useAgentUpdateFormData,
+  useAgentProductFee
 } from "./client"
 import { AgentStatusLabel, AgentStatusSelect } from "../AgentStatus"
 import { AgentLevelLabel, AgentLevelSelect, isAgentHead } from "../AgentLevel"
-import {
-  AgentTypeLabel,
-  AgentTypeSelect,
-  isAgentTypeCash,
-  isAgentTypeCredit
-} from "../AgentType"
+import { AgentTypeLabel, AgentTypeSelect } from "../AgentType"
 import clone from "clone-deep"
 import { AgentOneLayerDividendPercentageInputField } from "../AgentOneLayerDividendPercentage"
 import AgentLevel from "../AgentLevel"
@@ -82,10 +62,19 @@ import {
 } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import { LiableOrNotSwitchLabel } from "../../switch/LiableOrNotSwitch"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { ProductFee } from "./menu"
+import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import { ProductFeeTrans } from "../../trans/Platform"
 import {
-  LiableOrNotSwitch,
-  LiableOrNotSwitchLabel
-} from "../../switch/LiableOrNotSwitch"
+  CardGameTrans,
+  EGameTrans,
+  LiveDealerTrans,
+  LotteryTrans,
+  SportsbookTrans,
+  VirtualSportsTrans
+} from "../../trans/Game"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -287,13 +276,6 @@ const UpdateAgentPanel = ({
                 />
               </AgentStatusBox>
 
-              {/* 
-              TODO: rm
-              <NegativeDividendBox>
-                <LiableOrNotSwitch name="negativeAgentDividendCarryForward" />
-              </NegativeDividendBox> 
-              */}
-
               {oneLayer && !willChangeParent && (
                 <>
                   <ProfitSharingPercentageTrans />
@@ -351,71 +333,131 @@ const ViewPanel = ({ agent, brand, ...props }) => {
   let agentDividendType = brand?.agentDividendType
   let oneLayer = isAgentProfitSharingOneLayer(agentDividendType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentDividendType)
+  let productFeeAuth = useIsDisplayMenuByRoute([ProductFee])
+  console.log("agent", agent)
   return (
     <TabPanel tabId={Key} {...props}>
-      <FieldValues>
-        <UsernameBox value={agent?.username} />
+      <Columns>
+        <Columns.Column>
+          <FieldValues>
+            <UsernameBox value={agent?.username} />
 
-        <Box alignY="center">
-          <Trans zh="邀请码" en="Invitation Code" />
-        </Box>
-        <Text>{agent?.invitationCode}</Text>
-
-        <RealNameBox value={agent?.realName} />
-
-        <ParentAgentUsername value={agent?.parentUsername} />
-
-        <RegistrationBox value={agent?.registeredOn} />
-
-        <BalanceBox value={agent?.balance} />
-
-        <AgentStatusBox value={agent?.status} />
-
-        <NegativeDividendBox value={agent?.negativeAgentDividendCarryForward} />
-
-        <AgentTypeBox value={agent?.type} />
-
-        <LevelTypeBox value={agent?.levelType} />
-
-        {oneLayer && (
-          <>
             <Box alignY="center">
-              <ProfitSharingPercentageTrans />
+              <Trans zh="邀请码" en="Invitation Code" />
+            </Box>
+            <Text>{agent?.invitationCode}</Text>
+
+            <RealNameBox value={agent?.realName} />
+
+            <ParentAgentUsername value={agent?.parentUsername} />
+
+            <RegistrationBox value={agent?.registeredOn} />
+
+            <BalanceBox value={agent?.balance} />
+
+            <AgentStatusBox value={agent?.status} />
+
+            <NegativeDividendBox
+              value={agent?.negativeAgentDividendCarryForward}
+            />
+
+            <AgentTypeBox value={agent?.type} />
+
+            <LevelTypeBox value={agent?.levelType} />
+
+            {oneLayer && (
+              <>
+                <Box alignY="center">
+                  <ProfitSharingPercentageTrans />
+                </Box>
+                <Box>
+                  <FormattedNumberDecimalPercentage
+                    value={agent?.dividendPercentage}
+                  />
+                </Box>
+              </>
+            )}
+
+            {multipleLayer && (
+              <>
+                <Box alignY="center">
+                  <ProfitSharingPercentageTrans />
+                </Box>
+                <Box>
+                  <AgentProfitSharingSettingRecordDialogDisclosure
+                    record={agent?.agentDividendConditions}
+                  />
+                </Box>
+              </>
+            )}
+
+            <AccumulatedProfitSharingBox
+              value={agent?.accumulatedProfitSharing}
+            />
+
+            <Box alignY="center">
+              <DirectPlayersTrans />
             </Box>
             <Box>
-              <FormattedNumberDecimalPercentage
-                value={agent?.dividendPercentage}
-              />
+              <FormattedNumber value={agent?.playerNumber} />
             </Box>
-          </>
+
+            <RemarkTrans />
+            <Textarea value={agent?.remarks} disabled />
+          </FieldValues>
+        </Columns.Column>
+        {agent?.id && productFeeAuth && (
+          <Columns.Column>
+            <ProductFeeBox agentId={agent?.id} />
+          </Columns.Column>
         )}
-
-        {multipleLayer && (
-          <>
-            <Box alignY="center">
-              <ProfitSharingPercentageTrans />
-            </Box>
-            <Box>
-              <AgentProfitSharingSettingRecordDialogDisclosure
-                record={agent?.agentDividendConditions}
-              />
-            </Box>
-          </>
-        )}
-
-        <AccumulatedProfitSharingBox value={agent?.accumulatedProfitSharing} />
-
-        <Box alignY="center">
-          <DirectPlayersTrans />
-        </Box>
-        <Box>
-          <FormattedNumber value={agent?.playerNumber} />
-        </Box>
-
-        <RemarkTrans />
-        <Textarea value={agent?.remarks} disabled />
-      </FieldValues>
+      </Columns>
     </TabPanel>
+  )
+}
+
+const ProductFeeBox = ({ agentId }) => {
+  let { isLoading, data: productFee, error } = useAgentProductFee(agentId)
+  if (isLoading) {
+    return <Spinner />
+  }
+
+  console.log("productFee", productFee)
+  return (
+    <>
+      <Heading use="h5">
+        <ProductFeeTrans />
+      </Heading>
+      <FieldValues>
+        <LiveDealerTrans />
+        <FormattedNumberDecimalPercentage
+          value={productFee?.liveDealerPercentage}
+        />
+
+        <SportsbookTrans />
+        <FormattedNumberDecimalPercentage
+          value={productFee?.sportsPercentage}
+        />
+
+        <EGameTrans />
+        <FormattedNumberDecimalPercentage value={productFee?.slotPercentage} />
+
+        <CardGameTrans />
+        <FormattedNumberDecimalPercentage
+          value={productFee?.cardGamePercentage}
+        />
+
+        <LotteryTrans />
+        <FormattedNumberDecimalPercentage
+          value={productFee?.lotteryPercentage}
+        />
+
+        <VirtualSportsTrans />
+        <FormattedNumberDecimalPercentage
+          value={productFee?.virtualSportsPercentage}
+        />
+      </FieldValues>
+    </>
   )
 }
 

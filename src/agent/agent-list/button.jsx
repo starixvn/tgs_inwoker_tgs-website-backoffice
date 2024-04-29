@@ -19,7 +19,7 @@ import {
   Update as UpdateMenu,
   ChangeWithdrawalPassword
 } from "./menu"
-import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import {
