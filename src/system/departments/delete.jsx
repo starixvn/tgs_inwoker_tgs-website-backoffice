@@ -17,9 +17,11 @@ export const DeleteButton = ({ id, name, onSubmitted, ...props }) => {
     return null
   }
 
+  let dialogId = "delete-department-dialog"
+  let disclosureId = `${dialogId}-disclosure`
   return (
     <>
-      <Disclosure palette="danger" {...dialog}>
+      <Disclosure id={disclosureId} palette="danger" {...dialog}>
         <Trans zh="删除" en="Delete" />
       </Disclosure>
       {dialog.visible && (
@@ -28,7 +30,7 @@ export const DeleteButton = ({ id, name, onSubmitted, ...props }) => {
           name={name}
           onSubmitted={onSubmitted}
           dialog={dialog}
-          finalFocusRef={disclosureRef}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -40,7 +42,7 @@ const DeleteDialog = ({
   name = "",
   dialog,
   onSubmitted,
-  finalFocusRef,
+  dialogId,
   ...props
 }) => {
   let title = useTrans({
@@ -71,6 +73,7 @@ const DeleteDialog = ({
       }}
       title={title}
       dialog={dialog}
+      id={dialogId}
     >
       <Alert
         title={

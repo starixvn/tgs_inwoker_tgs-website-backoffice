@@ -347,6 +347,7 @@ const ChangeParentWarning = () => {
   return <Alert variant="tint" title={warning} type="warning" />
 }
 
+//TODO: agent product fee setting
 const ViewPanel = ({ agent, brand, ...props }) => {
   let agentDividendType = brand?.agentDividendType
   let oneLayer = isAgentProfitSharingOneLayer(agentDividendType)
