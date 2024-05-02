@@ -257,7 +257,7 @@ const FormBody = ({}) => {
         <Box>{getValues("brandCode")}</Box>
 
         <Box>
-          <Trans zh="平台額度" en="Platform Credits" />
+          <Trans zh="當前平台額度" en="Current Platform Credits" />
         </Box>
         <Box alignX="right">
           <FormattedNumberDecimal value={platformCredit} />
