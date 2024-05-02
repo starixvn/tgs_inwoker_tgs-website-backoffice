@@ -334,7 +334,6 @@ const ViewPanel = ({ agent, brand, ...props }) => {
   let oneLayer = isAgentProfitSharingOneLayer(agentDividendType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentDividendType)
   let productFeeAuth = useIsDisplayMenuByRoute([ProductFee])
-  console.log("agent", agent)
   return (
     <TabPanel tabId={Key} {...props}>
       <Columns>
@@ -422,7 +421,6 @@ const ProductFeeBox = ({ agentId }) => {
     return <Spinner />
   }
 
-  console.log("productFee", productFee)
   return (
     <>
       <Heading use="h5">
