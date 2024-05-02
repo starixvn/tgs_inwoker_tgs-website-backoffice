@@ -51,7 +51,7 @@ export const AlertSettingDialogDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog}>
-        <Trans zh="催收設置" en="Alert Setting" />
+        <Trans zh="催收設置" en="Debt Collection" />
       </Disclosure>
       {dialog.visible && (
         <MainSettingDialog
@@ -116,7 +116,7 @@ const MainSettingDialog = ({
 }) => {
   let title = useTrans({
     zh: "催收設置",
-    en: "Alert Setting"
+    en: "Debt Collection"
   })
 
   let tab = useTabState({

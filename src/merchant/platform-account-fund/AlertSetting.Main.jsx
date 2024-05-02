@@ -46,10 +46,6 @@ export const MainSettingPanel = ({ readOnly, ...props }) => {
         <Columns.Column>
           <Stack>
             <AutoAlertSetting readOnly={readOnly} />
-            {/* 
-            TODO: rm?
-            <AlertRecipientSetting /> 
-            */}
           </Stack>
         </Columns.Column>
       </Columns>
@@ -71,7 +67,7 @@ const AccessSuspensionSetting = ({ readOnly, ...props }) => {
           <Icon icon="info-circle" color="info" />
           <Trans
             zh="若須重啟遊戲或平台，請於加值或重置後，通知系統管理員。"
-            en="To resume the access to all games or to platform, please top-up or reset, and reach out to system administrator for reactivation."
+            en="To resume the access to all games or to platform, please add fund, and reach out to system administrator for reactivation."
           />
         </Set>
       </FieldStack>
@@ -93,7 +89,7 @@ const AutoAlertSetting = ({ readOnly }) => {
   return (
     <FieldStack>
       <Text.Block fontWeight="bold">
-        <Trans zh="通知信設置" en="Auto Alert Setting" />
+        <Trans zh="通知信設置" en="Alert E-mail Setting" />
       </Text.Block>
       <FieldStack paddingLeft="1rem">
         <Box css={SettingBodyStyle}>
@@ -106,38 +102,11 @@ const AutoAlertSetting = ({ readOnly }) => {
             <Trans zh="緊急加值通知：" en="Balance Low Alert:" />
           </Box>
           <LowBalanceAlertBox />
-        </Box>
-      </FieldStack>
-    </FieldStack>
-  )
-}
-
-//TODO: rm?
-const AlertRecipientSetting = ({}) => {
-  return (
-    <FieldStack>
-      <Text.Block fontWeight="bold">
-        <Trans zh="通知對象設置" en="Alert Recipients" />
-      </Text.Block>
-      <FieldStack paddingLeft="1rem">
-        <Box css={SettingBodyStyle}>
-          <Box css={LineHeightStyle}>
-            <Trans zh="總公司" en="Reseller" />
-            <Text color="danger">*</Text>
-          </Box>
-          <AlertRecipientInputList name="reseller" />
 
           <Box css={LineHeightStyle}>
-            <LicenseeTrans />
-            <Text color="danger">*</Text>
+            <Trans zh="平台停用通知：" en="Suspension Alert:" />
           </Box>
-          <AlertRecipientInputList name="licensee" />
-
-          <Box css={LineHeightStyle}>
-            <PlatformTrans />
-            <Text color="danger">*</Text>
-          </Box>
-          <AlertRecipientInputList name="platform" />
+          <LobbySuspensionAlert />
         </Box>
       </FieldStack>
     </FieldStack>
@@ -213,11 +182,14 @@ export const LowRiskAlertInputBox = ({ readOnly, ...props }) => {
         }
         en={
           <span css={boxBodyStyle}>
-            <Text>{"When Usage P/T is greater than "}</Text>
+            <Text>{"When the Used Credits P/T is greater than "}</Text>
             {input}
-            <Text>{", the alert will be sent every 3 hours"}</Text>
 
-            <Text>{" until the Usage P/T is ≤ "}</Text>
+            <Text>
+              {
+                ", the balance alert will be sent every 3 hours until the Used Credits P/T is ≤ "
+              }
+            </Text>
             <FormattedNumberDecimalPercentage value={balanceAlertValue} />
 
             <Text>{", or ≥ "}</Text>
@@ -260,7 +232,7 @@ export const LowBalanceAlertBox = ({ ...props }) => {
         }
         en={
           <span css={boxBodyStyle}>
-            <Text>{"When Usage P/T is greater than "}</Text>
+            <Text>{"When the Used Credits P/T is greater than "}</Text>
             <FormattedNumberDecimalPercentage
               value={gameSuspensionValue}
               placeholder="-"
@@ -300,13 +272,15 @@ export const LobbySuspensionAlert = ({}) => {
         }
         en={
           <span css={boxBodyStyle}>
-            <Text>{"When Usage P/T is greater than "}</Text>
+            <Text>{"When Used Credits P/T is greater than "}</Text>
             <FormattedNumberDecimalPercentage
               value={lobbySuspensionValue}
               placeholder="-"
             />
             <Text>
-              {", the alert will be sent every 3 hours until top-up or reset."}
+              {
+                ", the suspension alert will be sent every 3 hours until add fund."
+              }
             </Text>
           </span>
         }
