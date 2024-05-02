@@ -258,7 +258,7 @@ export const LobbySuspensionAlert = ({}) => {
   let lobbySuspensionValue = useHighRiskLobbySuspensionValue()
 
   return (
-    <Box {...props}>
+    <Box>
       <Trans
         zh={
           <span css={boxBodyStyle}>
