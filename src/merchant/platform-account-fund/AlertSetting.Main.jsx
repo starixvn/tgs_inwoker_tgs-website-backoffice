@@ -239,7 +239,7 @@ export const LowBalanceAlertBox = ({ ...props }) => {
             />
             <Text>
               {
-                ", the alert will be sent every 3 hours until top-up, reset, or the usage P/T is ≥ "
+                ", the balance low alert will be sent every 3 hours until add fund, or the Used Credits P/T is ≥ "
               }
             </Text>
             <FormattedNumberDecimalPercentage
