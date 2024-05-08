@@ -5,6 +5,7 @@ import { getAcceptLang, getAcceptLangCulture } from "../i18n"
 import { isValid } from "date-fns"
 import { isNil, isEmpty, either, empty, complement } from "ramda"
 import { useEffectOnce } from "react-use"
+import { isNull, isUndefined } from "lodash-es"
 
 const notNil = complement(isNil)
 
@@ -160,14 +161,32 @@ export const useGet = (url, options) => {
   })
   */
 
+  //TODO: not work well after call deleteCache()
+  // isLoading = (key && !error && isNil(data)) || isLoading
+
   return {
     key,
     isLoading: (key && !error && isNil(data)) || isLoading,
     data,
+    error,
     mutate,
     ...rest,
     deleteCache: () => {
+      //TODO: not work well with: isLoading = (key && !error && isNil(data)) || isLoading
       mutate(undefined, false)
+
+      // mutate(null, {
+      //   revalidate: false,
+      //   populateCache: true,
+      //   optimisticData: null
+      // })
+    },
+    emptyData: () => {
+      //TODO: empty type value?
+      mutate(
+        {},
+        false
+      )
     }
   }
 }

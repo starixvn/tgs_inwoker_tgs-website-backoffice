@@ -393,7 +393,7 @@ const TabsDialog = ({
     en: "Agent Info"
   })
 
-  const { isLoading, data, error, mutate, deleteCache } = useAgent(agentId)
+  const { isLoading, data, error, mutate } = useAgent(agentId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />

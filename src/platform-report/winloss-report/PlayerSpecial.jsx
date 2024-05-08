@@ -39,31 +39,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportPlayerSpecial } from "./client"
 import { TotalTrans } from "../../trans/Field"
-
-/*
-export const PlayerSpecial = ({ value }) => {
-  if (!Number.isFinite(value) || value === 0) {
-    return <FormattedNumberDecimal value={value} />
-  }
-
-  return (
-    <Popover.State>
-      <Popover.Disclosure use={Link}>
-        <FormattedNumberDecimal value={value} />
-      </Popover.Disclosure>
-      <Popover.Disclosure>
-        <Set orientation="horizontal" whiteSpace="nowrap" width="max-content">
-          <Icon icon={faPlus} type="font-awesome" />
-          <FormattedNumberDecimal value={value} />
-        </Set>
-      </Popover.Disclosure>
-      <Popover hasArrow usePortal>
-        TODO: table
-      </Popover>
-    </Popover.State>
-  )
-}
-*/
+import { PlatformFeeTrans, ProductFeeTrans } from "../../trans/Platform"
 
 export const PlayerSpecialDialogDisclosure = ({
   value,
@@ -109,15 +85,14 @@ const BonusAdjustTrans = {
 }
 
 const ProductFee = "productFee"
-const ProductFeeTrans = {
-  zh: "平台费用",
-  en: "Product Fee"
-}
+
+const PlatformFee = "platformCharge"
 
 const Type = {
   Bonus,
   BonusAdjust,
-  ProductFee
+  ProductFee,
+  PlatformFee
 }
 
 const TypeLabel = ({ value = "" }) => {
@@ -127,7 +102,9 @@ const TypeLabel = ({ value = "" }) => {
     case BonusAdjust:
       return <Trans {...BonusAdjustTrans} />
     case ProductFee:
-      return <Trans {...ProductFeeTrans} />
+      return <ProductFeeTrans />
+    case PlatformFee:
+      return <PlatformFeeTrans />
     default:
       return value
   }

@@ -14,6 +14,30 @@ export const useAgentDividend = (searchParams) => {
   return useGet(url)
 }
 
+export const useAgentDividendProductFee = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/dividend/product-fee`)
+    : ""
+
+  return useGet(url)
+
+  //TODO: rm fake data
+  /*
+  let { data, isLoading, error, ...rest } = useGet(url)
+  if (!isLoading) {
+    data = {
+      liveDealerAmount: 1,
+      slotAmount: 2,
+      lotteryAmount: 3,
+      cardGameAmount: 4,
+      sportsAmount: 5,
+      virtualSportsAmount: 6
+    }
+  }
+  return { data, isLoading, ...rest }
+  */
+}
+
 //TODO: rm?
 export const useAgentDividendList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/dividends`) : ""

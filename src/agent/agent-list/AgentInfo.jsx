@@ -333,6 +333,7 @@ const ViewPanel = ({ agent, brand, ...props }) => {
   let agentDividendType = brand?.agentDividendType
   let oneLayer = isAgentProfitSharingOneLayer(agentDividendType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentDividendType)
+  //TODO: rm productFeeAuth
   let productFeeAuth = useIsDisplayMenuByRoute([ProductFee])
   return (
     <TabPanel tabId={Key} {...props}>
