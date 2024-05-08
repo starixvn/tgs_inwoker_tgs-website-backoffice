@@ -108,7 +108,7 @@ const DetailDialog = ({ brandId, brandCode, month, dialog, dialogId }) => {
             <Box>
               {/* <TimeTrans /> */}
 
-              <Trans zh="計算區間" en="Settled between" />
+              <Trans zh="計算區間" en="Settled Period" />
             </Box>
             <Box>
               <FormattedDate format={DateFormat.YearMonth} value={month} />

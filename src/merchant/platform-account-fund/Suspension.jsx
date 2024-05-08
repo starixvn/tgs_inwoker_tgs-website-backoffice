@@ -83,7 +83,7 @@ export const GameSuspensionInputBox = ({ readOnly, ...props }) => {
         }
         en={
           <span css={boxBodyStyle}>
-            <Text>{"When Usage P/T exceeds "}</Text>
+            <Text>{"When Used Credits P/T exceeds "}</Text>
             {input}
             <Text>
               {", the system will suspend the players’ access to all games."}
@@ -142,7 +142,7 @@ export const HighRiskLobbySuspensionInputBox = ({ readOnly, ...props }) => {
         }
         en={
           <span css={boxBodyStyle}>
-            <Text>{"When Usage P/T exceeds "}</Text>
+            <Text>{"When Used Credits P/T exceeds "}</Text>
             {input}
             <Text>
               {", the system will suspend the players’ access to the platform."}

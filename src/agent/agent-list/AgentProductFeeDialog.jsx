@@ -22,6 +22,7 @@ import { ProductFreeFormBody } from "./ProductFeeDialog"
 import { AgentUsernameTrans } from "../../trans/Agent"
 import Label from "../../form/Label"
 import { ProductFeeTrans, useProductFeeTrans } from "../../trans/Platform"
+import { pick } from "ramda"
 
 export const AgentProductFeeDialogDisclosure = ({
   agent,
@@ -90,12 +91,27 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
 
   return (
     <FormDialog
-      defaultValues={clone(record)}
+      defaultValues={{
+        ...pick(
+          [
+            "liveDealerPercentage",
+            "sportsPercentage",
+            "slotPercentage",
+            "cardGamePercentage",
+            "lotteryPercentage",
+            "virtualSportsPercentage"
+          ],
+          record
+        )
+      }}
       onSubmit={onSubmit}
       isLoading={isLoading}
       result={result}
       error={error}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}
