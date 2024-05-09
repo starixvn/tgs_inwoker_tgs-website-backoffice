@@ -93,7 +93,7 @@ export const CodeContentPair = [Code, Content]
 const Body = () => {
   let brandId = usePlatformId()
 
-  let { isLoading, data: brand, error, deleteCache } = useBrand(brandId)
+  let { isLoading, data: brand, error, mutate } = useBrand(brandId)
 
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -105,7 +105,7 @@ const Body = () => {
       {!isLoading && brandId && brand && (
         <BodyContent brandId={brandId} brand={brand} />
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={mutate} />}
     </Set>
   )
 }

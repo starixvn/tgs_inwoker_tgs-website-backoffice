@@ -333,8 +333,7 @@ const ViewPanel = ({ agent, brand, ...props }) => {
   let agentDividendType = brand?.agentDividendType
   let oneLayer = isAgentProfitSharingOneLayer(agentDividendType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentDividendType)
-  //TODO: rm productFeeAuth
-  let productFeeAuth = useIsDisplayMenuByRoute([ProductFee])
+
   return (
     <TabPanel tabId={Key} {...props}>
       <Columns>
@@ -406,7 +405,7 @@ const ViewPanel = ({ agent, brand, ...props }) => {
             <Textarea value={agent?.remarks} disabled />
           </FieldValues>
         </Columns.Column>
-        {agent?.id && productFeeAuth && (
+        {agent?.id && (
           <Columns.Column>
             <ProductFeeBox agentId={agent?.id} />
           </Columns.Column>
