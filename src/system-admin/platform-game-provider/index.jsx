@@ -43,7 +43,7 @@ const Body = () => {
     gameProviderId: ""
   })
 
-  let { isLoading, data, error, mutate, deleteCache } =
+  let { isLoading, data, error, mutate, emptyData } =
     usePlatformGameProviderList(toApiParams(state))
 
   let gameProviders = data?.gameProviders
@@ -79,7 +79,7 @@ const Body = () => {
           }
         `}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

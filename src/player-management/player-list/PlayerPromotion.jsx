@@ -36,7 +36,7 @@ export const PlayerPromotionPanel = ({ brandId, playerCode, ...props }) => {
     to: dateRange.end
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = usePlayerPromotions(
+  let { isLoading, data, error, mutate, emptyData } = usePlayerPromotions(
     playerCode,
     isActive
       ? toApiParams({
@@ -76,7 +76,7 @@ export const PlayerPromotionPanel = ({ brandId, playerCode, ...props }) => {
           isLoading={isLoading}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </TabPanel>
   )
 }

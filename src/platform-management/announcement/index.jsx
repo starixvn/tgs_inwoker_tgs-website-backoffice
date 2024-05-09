@@ -90,7 +90,7 @@ const Body = () => {
     data = {},
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useAnnouncementList(
     isEffectiveTab
       ? {
@@ -226,7 +226,7 @@ const Body = () => {
           )}
         </TabPanel>
       </Tabs>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

@@ -60,8 +60,7 @@ export const Content = () => {
 const Body = () => {
   let brandId = usePlatformId()
 
-  let { isLoading, data, error, mutate, deleteCache } =
-    usePlatformAccountFund(brandId)
+  let { isLoading, data, error, mutate } = usePlatformAccountFund(brandId)
 
   let items = isObject(data) ? [data] : []
   let columns = usePlatformAccountFundColumns({
@@ -98,7 +97,7 @@ const Body = () => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={mutate} />}
     </Set>
   )
 }

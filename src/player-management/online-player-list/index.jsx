@@ -59,7 +59,7 @@ const Body = () => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { data, isLoading, mutate, error, deleteCache } = useOnlinePlayerList({
+  let { data, isLoading, mutate, error, emptyData } = useOnlinePlayerList({
     ...toApiParams(state),
     sortby: "username",
     brandId
@@ -93,7 +93,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

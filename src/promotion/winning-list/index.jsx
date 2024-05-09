@@ -65,9 +65,11 @@ const Body = () => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { isLoading, data, error, mutate, deleteCache } = usePromotionWinningList(
-    { ...toApiParams(state), sortby: "CreatedOn", orderby: Descending }
-  )
+  let { isLoading, data, error, mutate, emptyData } = usePromotionWinningList({
+    ...toApiParams(state),
+    sortby: "CreatedOn",
+    orderby: Descending
+  })
 
   let columns = useColumns({
     items: data?.items ?? [],
@@ -104,7 +106,7 @@ const Body = () => {
         isLoading={isLoading}
         stickyHead
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

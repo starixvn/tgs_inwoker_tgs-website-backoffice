@@ -44,7 +44,7 @@ export const PlayerVipChangeListPanel = ({ brandId, playerCode, ...props }) => {
     to: dateRange.end
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = usePlayerVipChangeList(
+  let { isLoading, data, error, mutate, emptyData } = usePlayerVipChangeList(
     isActive ? playerCode : "",
     isActive
       ? toApiParams({
@@ -84,7 +84,7 @@ export const PlayerVipChangeListPanel = ({ brandId, playerCode, ...props }) => {
           isLoading={isLoading}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </TabPanel>
   )
 }

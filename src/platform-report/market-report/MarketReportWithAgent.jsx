@@ -90,7 +90,7 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
     data = {},
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useFetch(toSearchParams())
 
   let columns = useColumns({ items: data?.items, brandId })
@@ -159,7 +159,7 @@ export const MarketReportWithAgent = ({ brandId, useFetch, exportUrl }) => {
           )
         }}
       </AutoSizer>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

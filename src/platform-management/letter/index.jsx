@@ -65,7 +65,7 @@ const Body = () => {
 
   let toSearchParams = () => ({ ...toApiParams(state) })
 
-  let { isLoading, data, error, mutate, deleteCache } = useLetterList(
+  let { isLoading, data, error, mutate, emptyData } = useLetterList(
     brandId,
     boxType,
     toSearchParams()
@@ -112,7 +112,6 @@ const Body = () => {
             operator: ""
           })
 
-          deleteCache()
           mutate(undefined, true)
 
           setBoxType(value)
@@ -148,7 +147,7 @@ const Body = () => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

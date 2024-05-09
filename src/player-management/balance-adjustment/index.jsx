@@ -76,7 +76,7 @@ const Body = () => {
     isLoading,
     mutate,
     error,
-    deleteCache
+    emptyData
   } = usePlayerList({
     ...toApiParams(state),
     sortby: "username"
@@ -111,7 +111,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

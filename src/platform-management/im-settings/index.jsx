@@ -48,7 +48,7 @@ export const Content = () => {
 
 const Body = () => {
   let brandId = usePlatformId()
-  let { isLoading, data: brand, error, deleteCache } = useBrand(brandId)
+  let { isLoading, data: brand, error, mutate } = useBrand(brandId)
 
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -60,7 +60,7 @@ const Body = () => {
       {!isLoading && brandId && brand && (
         <BodyContent brandId={brandId} brand={brand} />
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={mutate} />}
     </Set>
   )
 }
@@ -125,7 +125,7 @@ const PlatformMultipleLayerProfitSharingSettingDialog = ({
   dialog,
   ...props
 }) => {
-  let { isLoading, data, error, mutate, deleteCache } =
+  let { isLoading, data, error, mutate } =
     usePlatformAgentDividendCondition(brandId)
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -140,7 +140,6 @@ const PlatformMultipleLayerProfitSharingSettingDialog = ({
       brandId={brandId}
       record={data?.items}
       onSubmitted={() => {
-        deleteCache()
         mutate(undefined, false)
       }}
       dialog={dialog}

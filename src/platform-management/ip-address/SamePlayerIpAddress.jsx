@@ -70,7 +70,7 @@ export const SamePlayerIpAddressTabPanel = ({
 const Body = ({ brandId, table = {}, onClickIpAddress }) => {
   let { state, setState, setPageIndex, setSortOrder } = table
 
-  let { isLoading, data, error, mutate, deleteCache } =
+  let { isLoading, data, error, mutate, emptyData } =
     useSamePlayerIPAddressList(
       state?.ipType
         ? {
@@ -114,7 +114,7 @@ const Body = ({ brandId, table = {}, onClickIpAddress }) => {
           isLoading={isLoading}
         />
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </FieldStack>
   )
 }

@@ -50,7 +50,7 @@ const Body = () => {
   })
   let { pageIndex, pageSize } = state
 
-  let { isLoading, data, error, mutate, deleteCache } = useDepartmentList({
+  let { isLoading, data, error, mutate, emptyData } = useDepartmentList({
     ...toApiParams(state)
   })
   let columns = useColumns({ mutate, items: data?.items })
@@ -85,7 +85,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

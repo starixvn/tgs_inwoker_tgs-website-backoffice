@@ -46,7 +46,7 @@ const Body = () => {
     key: ""
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = useSystemSettingList({
+  let { isLoading, data, error, mutate, emptyData } = useSystemSettingList({
     ...toApiParams(state),
     sortby: "key"
   })
@@ -85,7 +85,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

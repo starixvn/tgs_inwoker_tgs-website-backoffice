@@ -90,13 +90,13 @@ const Body = () => {
     isLoading: isLoadingBrand,
     data: brand,
     error: brandError,
-    deleteCache
+    mutate: mutateBrand
   } = useBrand(brandId)
   let {
     isLoading: isLoadingAllAgent,
     data: allAgentSetting,
     error: allAgentSettingError,
-    deleteCache: deleteAllAgentSettingCache
+    mutate: mutateAllAgentSetting
   } = useAllAgentSetting(brandId)
 
   let isLoading = isLoadingBrand || isLoadingAllAgent
@@ -114,11 +114,11 @@ const Body = () => {
           allAgentSetting={allAgentSetting}
         />
       )}
-      {brandError && <AlertDialog {...brandError} onClickClose={deleteCache} />}
+      {brandError && <AlertDialog {...brandError} onClickClose={mutateBrand} />}
       {allAgentSettingError && (
         <AlertDialog
           {...allAgentSettingError}
-          onClickClose={deleteAllAgentSettingCache}
+          onClickClose={mutateAllAgentSetting}
         />
       )}
     </Set>
@@ -159,7 +159,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
     isLoading,
     mutate,
     error,
-    deleteCache
+    emptyData
   } = usePlayerList({
     ...toApiParams(state),
     sortby: "registeredTime",
@@ -205,7 +205,7 @@ const BodyContent = ({ brandId = "", brand, allAgentSetting }) => {
         isLoading={isLoading}
         getRowId={(row) => row.playerCode}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

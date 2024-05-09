@@ -151,19 +151,6 @@ export const useGet = (url, options) => {
     options
   )
 
-  /*
-  NOTE: use options = { dedupingInterval: 0 } instead of the following workaround
-  useEffectOnce(() => {
-    //workaround to trigger mutate after call deleteCache() prev
-    if (!isLoading && key && !error && isNil(data)) {
-      mutate()
-    }
-  })
-  */
-
-  //TODO: not work well after call deleteCache()
-  // isLoading = (key && !error && isNil(data)) || isLoading
-
   return {
     key,
     isLoading: (key && !error && isNil(data)) || isLoading,
@@ -172,22 +159,11 @@ export const useGet = (url, options) => {
     mutate,
     ...rest,
     deleteCache: () => {
-      //TODO: not work well with: isLoading = (key && !error && isNil(data)) || isLoading
+      //TODO: seems not work well with: isLoading = (key && !error && isNil(data)) || isLoading
       mutate(undefined, false)
-
-      //TODO: test clear error
-      // mutate((v) => {
-      //   console.log("deleteCache > mutate > value: ", v)
-      // }, false)
-
-      // mutate(null, {
-      //   revalidate: false,
-      //   populateCache: true,
-      //   optimisticData: null
-      // })
     },
     emptyData: () => {
-      //TODO: empty type value?
+      //TODO: use FP's Result or Just/Nothing instead?
       mutate({}, false)
     }
   }

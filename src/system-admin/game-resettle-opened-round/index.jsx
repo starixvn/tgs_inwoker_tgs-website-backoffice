@@ -69,7 +69,7 @@ const Body = () => {
   })
 
   let culture = useLangCode()
-  let { isLoading, data, error, mutate, deleteCache } = useGameOpenedRoundList({
+  let { isLoading, data, error, mutate, emptyData } = useGameOpenedRoundList({
     ...toApiParams(state),
     sortby: "createdOn",
     orderby: "descending",
@@ -124,7 +124,7 @@ const Body = () => {
           `}
         />
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

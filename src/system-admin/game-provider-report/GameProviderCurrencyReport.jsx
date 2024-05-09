@@ -99,8 +99,9 @@ const ReportDialog = ({ month, currencyCode, dialog, ...props }) => {
     month
   })
 
-  let { isLoading, data, error, mutate, deleteCache } =
-    useGameProviderReportList(isValid(month) ? toSearchParams() : undefined)
+  let { isLoading, data, error, mutate } = useGameProviderReportList(
+    isValid(month) ? toSearchParams() : undefined
+  )
 
   let columns = useColumns({
     items: data?.items
@@ -138,7 +139,7 @@ const ReportDialog = ({ month, currencyCode, dialog, ...props }) => {
           }}
           stickyHead
         />
-        {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+        {error && <AlertDialog {...error} onClickClose={dialog.hide} />}
       </FieldStack>
     </Dialog.Modal>
   )

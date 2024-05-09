@@ -84,7 +84,7 @@ const LicenseeBodyBox = () => {
   }, [licenseeId])
 
   let { pageSize } = state
-  let { isLoading, data, error, mutate, deleteCache } = useBrandList(
+  let { isLoading, data, error, mutate, emptyData } = useBrandList(
     {
       ...toApiParams(state),
       sortby: "code"
@@ -138,7 +138,7 @@ const LicenseeBodyBox = () => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

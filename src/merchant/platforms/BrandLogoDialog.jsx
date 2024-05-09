@@ -58,7 +58,7 @@ const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
   }
 
   if (error) {
-    return <AlertDialog {...error} onClickClose={deleteCache} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   return (

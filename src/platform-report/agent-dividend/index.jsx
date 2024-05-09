@@ -83,7 +83,7 @@ const Body = ({}) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { isLoading, data, error, mutate, deleteCache } = useAgentDividendList({
+  let { isLoading, data, error, mutate, emptyData } = useAgentDividendList({
     ...toApiParams(state),
     to: startOfNextDay(state.to),
     approvedTo: startOfNextDay(state.approvedTo)
@@ -133,7 +133,7 @@ const Body = ({}) => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

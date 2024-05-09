@@ -44,7 +44,7 @@ export const TopGameTable = ({ brandId, gameProviderCodeStylePairs = [] }) => {
     data: items = [],
     isLoading,
     error,
-    deleteCache
+    emptyData
   } = usePlatformTopGameList(brandId, { sortType, ascending, culture })
 
   return (
@@ -86,7 +86,7 @@ export const TopGameTable = ({ brandId, gameProviderCodeStylePairs = [] }) => {
             )}
           </Table.Body>
         </Table>
-        {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+        {error && <AlertDialog {...error} onClickClose={emptyData} />}
       </Card>
     </>
   )

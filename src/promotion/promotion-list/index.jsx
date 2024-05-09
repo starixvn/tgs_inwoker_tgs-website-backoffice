@@ -101,7 +101,7 @@ const Body = () => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { isLoading, data, error, mutate, deleteCache } = usePromotionList({
+  let { isLoading, data, error, mutate, emptyData } = usePromotionList({
     ...toApiParams(state),
     sortby: "number",
     from: formatDateOnly(state.from),
@@ -142,7 +142,7 @@ const Body = () => {
         mutate={mutate}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

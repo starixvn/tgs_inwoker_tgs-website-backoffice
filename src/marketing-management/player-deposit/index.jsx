@@ -115,7 +115,7 @@ const Body = ({}) => {
 
   let { agentUsername, from, to } = state
 
-  let { isLoading, data, error, mutate, deleteCache } =
+  let { isLoading, data, error, mutate, emptyData } =
     usePlayerDepositReportList({
       ...toApiParams(state, {
         toSortBy: mapSortBy,
@@ -161,7 +161,7 @@ const Body = ({}) => {
         isLoading={isLoading}
         stickyHead
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

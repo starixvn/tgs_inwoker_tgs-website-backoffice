@@ -85,19 +85,17 @@ const PlayerDialog = ({
   onSubmitted,
   ...props
 }) => {
-  let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerIdentity(playerCode)
+  let { isLoading, data, error, mutate } = usePlayerIdentity(playerCode)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
 
   if (error) {
-    return <AlertDialog {...error} onClickClose={deleteCache} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   const reset = () => {
-    deleteCache()
     mutate(undefined, false)
   }
 
@@ -136,17 +134,13 @@ const ReviewDialog = ({
   let { setValue } = formMethods
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } = useVerifyPlayerID(
-    formId,
-    formData
-  )
+  let { isLoading, result, error, mutate } = useVerifyPlayerID(formId, formData)
 
   const onSubmit = (data) => {
     setSubmit(data)
   }
 
   const reset = () => {
-    deleteCache()
     mutate(undefined, false)
     setSubmit(null)
   }
