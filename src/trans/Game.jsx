@@ -54,6 +54,7 @@ export const LiveDealer = {
   vi: "CASINO"
 }
 export const LiveDealerTrans = () => <Trans {...LiveDealer} />
+export const useLiveDealerTrans = () => useTrans(LiveDealer)
 
 export const Sportsbook = {
   zh: "体育",
@@ -61,6 +62,7 @@ export const Sportsbook = {
   vi: "Thể thao"
 }
 export const SportsbookTrans = () => <Trans {...Sportsbook} />
+export const useSportsbookTrans = () => useTrans(Sportsbook)
 
 //TODO: rm
 /*
@@ -78,6 +80,7 @@ export const EGame = {
   en: "EGame"
 }
 export const EGameTrans = () => <Trans {...EGame} />
+export const useEGameTrans = () => useTrans(EGame)
 
 export const Slot = {
   zh: "老虎机",
@@ -92,6 +95,7 @@ export const CardGame = {
   vi: "Game bài"
 }
 export const CardGameTrans = () => <Trans {...CardGame} />
+export const useCardGameTrans = () => useTrans(CardGame)
 
 export const ESports = {
   zh: "电竞",
@@ -106,6 +110,7 @@ export const VirtualSports = {
   vi: "Thể thao ảo"
 }
 export const VirtualSportsTrans = () => <Trans {...VirtualSports} />
+export const useVirtualSportsTrans = () => useTrans(VirtualSports)
 
 export const Lottery = {
   zh: "彩票",
@@ -113,6 +118,7 @@ export const Lottery = {
   vi: "Sổ xố"
 }
 export const LotteryTrans = () => <Trans {...Lottery} />
+export const useLotteryTrans = () => useTrans(Lottery)
 
 export const Fishing = {
   zh: "捕鱼",

@@ -59,12 +59,23 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
-import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import {
+  BetAmountTrans,
+  ValidBetAmountTrans,
+  useCardGameTrans,
+  useEGameTrans,
+  useLiveDealerTrans,
+  useLotteryTrans,
+  useSportsbookTrans,
+  useVirtualSportsTrans
+} from "../../trans/Game"
 import {
   AgentUsernameTrans,
   ProfitSharingPercentageTrans,
   useAgentUsernameTrans
 } from "../../trans/Agent"
+import { ProductFeeTrans } from "../../trans/Platform"
+import { ProductFeeDialogDisclosure } from "./ProductFeeDialog"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -177,7 +188,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     data: agentData,
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useAgentDividend(agentUsername ? toSearchParams() : undefined)
 
   useEffect(() => {
@@ -267,7 +278,6 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               pageIndex: 0,
               ...data
             })
-            deleteCache()
             mutate(undefined)
           }}
         />
@@ -304,10 +314,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                 />
               </List.Item>
               <List.Item>
-                <Trans
-                  zh="净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐 - 平台费用。"
-                  en="Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount - Platform Fee."
-                />
+                <NetProfitInfo />
               </List.Item>
               <List.Item>
                 <Trans
@@ -399,8 +406,24 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
           </AutoSizer>
         </Set>
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
+  )
+}
+
+const NetProfitInfo = () => {
+  let liveDealer = useLiveDealerTrans()
+  let sportsbook = useSportsbookTrans()
+  let eGame = useEGameTrans()
+  let cardGame = useCardGameTrans()
+  let lottery = useLotteryTrans()
+  let virtualSports = useVirtualSportsTrans()
+  let productFeeDetail = `${liveDealer} + ${sportsbook} + ${eGame} + ${cardGame} + ${lottery} + ${virtualSports}`
+  return (
+    <Trans
+      zh={`净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐 - 平台费用 - 产品费用(${productFeeDetail})。`}
+      en={`Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount - Platform Fee - Product Charges(${productFeeDetail}).`}
+    />
   )
 }
 
@@ -737,6 +760,30 @@ const useColumns = ({
               value={record?.winLossAmount}
               agentDividendPercentage={record?.agentDividendPercentage}
               use={Link}
+            />
+          )
+        }
+      }),
+      numberDecimalColumn({
+        id: "productFee",
+        accessor: (row) => row,
+        Header: <ProductFeeTrans />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
+        Cell: ({ value: record }) => {
+          if (!record) {
+            return null
+          }
+
+          return (
+            <ProductFeeDialogDisclosure
+              username={record?.username}
+              value={record?.productFee}
+              agentId={record?.id}
+              agentDividendPercentage={record?.agentDividendPercentage}
+              from={from}
+              to={to}
             />
           )
         }

@@ -62,7 +62,7 @@ export const AgentHistoryListPanel = ({
   })
 
   let { pageSize, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = useAgentHistoryList(
+  let { isLoading, data, error, mutate, emptyData } = useAgentHistoryList(
     isActive ? agentId : undefined,
     toApiParams({ ...state, sortby: "CreatedOn", orderby: Descending })
   )
@@ -95,7 +95,7 @@ export const AgentHistoryListPanel = ({
           isLoading={isLoading}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </TabPanel>
   )
 }

@@ -64,7 +64,7 @@ export const AgentBalanceChangePanel = ({ brandId, agentId, ...props }) => {
   })
 
   let { pageSize, transactionType, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = useAgentBalanceChanges(
+  let { isLoading, data, error, mutate, emptyData } = useAgentBalanceChanges(
     isActive
       ? toApiParams({
           ...state,
@@ -106,7 +106,7 @@ export const AgentBalanceChangePanel = ({ brandId, agentId, ...props }) => {
           isLoading={isLoading}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </TabPanel>
   )
 }

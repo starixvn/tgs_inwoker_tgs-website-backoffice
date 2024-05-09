@@ -8,6 +8,7 @@ import {
   useGameTypeTrans,
   LiveDealer as LiveDealerTrans,
   Sportsbook as SportsbookTrans,
+  EGame as EGameTrans,
   ESports as ESportsTrans,
   VirtualSports as VirtualSportsTrans,
   Slot as SlotTrans,
@@ -15,8 +16,7 @@ import {
   Lottery as LotteryTrans,
   Fishing as FishingTrans,
   Arcade as ArcadeTrans,
-  TableGame as TableGameTrans,
-  EGameTrans
+  TableGame as TableGameTrans
 } from "../trans/Game"
 
 const Sportsbook = "Sportsbook"
