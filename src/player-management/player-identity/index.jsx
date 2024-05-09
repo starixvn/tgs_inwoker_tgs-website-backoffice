@@ -98,7 +98,6 @@ const BodyContent = ({ brandId = "", brand }) => {
     isLoading,
     mutate,
     error,
-    deleteCache,
     emptyData
   } = usePlayerIdentityList({
     ...toApiParams(state),
