@@ -123,27 +123,58 @@ export const ProductFreeFormBody = ({ addonBefore, ...props }) => {
         name="liveDealerPercentage"
         required
         step="1"
+        registerOptions={{
+          valueAsNumber: true
+        }}
       />
 
       <Label required>
         <SportsbookTrans />
       </Label>
-      <PercentageNumberInputField name="sportsPercentage" required step="1" />
+      <PercentageNumberInputField
+        name="sportsPercentage"
+        required
+        step="1"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+      />
 
       <Label required>
         <EGameTrans />
       </Label>
-      <PercentageNumberInputField name="slotPercentage" required step="1" />
+      <PercentageNumberInputField
+        name="slotPercentage"
+        required
+        step="1"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+      />
 
       <Label required>
         <CardGameTrans />
       </Label>
-      <PercentageNumberInputField name="cardGamePercentage" required step="1" />
+      <PercentageNumberInputField
+        name="cardGamePercentage"
+        required
+        step="1"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+      />
 
       <Label required>
         <LotteryTrans />
       </Label>
-      <PercentageNumberInputField name="lotteryPercentage" required step="1" />
+      <PercentageNumberInputField
+        name="lotteryPercentage"
+        required
+        step="1"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+      />
 
       <Label required>
         <VirtualSportsTrans />
@@ -152,6 +183,9 @@ export const ProductFreeFormBody = ({ addonBefore, ...props }) => {
         name="virtualSportsPercentage"
         required
         step="1"
+        registerOptions={{
+          valueAsNumber: true
+        }}
       />
     </FieldValues>
   )
