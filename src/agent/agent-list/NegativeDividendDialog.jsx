@@ -59,7 +59,6 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
   let { isLoading, result, error, deleteCache } =
     useUpdateAgentNegativeDividend(agentId, formData, { dedupingInterval: 0 })
 
-  console.log("isLoadingAgent", isLoadingAgent, "agentError", agentError)
   if (isLoadingAgent) {
     return <LoadingBackdrop {...dialog} />
   }
