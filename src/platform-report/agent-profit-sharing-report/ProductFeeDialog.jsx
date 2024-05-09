@@ -36,15 +36,20 @@ export const ProductFeeDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
-  if (!Number.isFinite(value) || value === 0) {
-    return <FormattedNumberDecimal value={value} />
-  }
+  //TODO: rm when dev done
+  // if (!Number.isFinite(value) || value === 0) {
+  //   return <FormattedNumberDecimal value={value} />
+  // }
 
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
       <Disclosure id={id} {...dialog} use={use}>
-        <FormattedNumberDecimal value={value} />
+        {Number.isFinite(value) ? (
+          <FormattedNumberDecimal value={value} />
+        ) : (
+          "-"
+        )}
       </Disclosure>
       {dialog.visible && (
         <ProductFeeDialog

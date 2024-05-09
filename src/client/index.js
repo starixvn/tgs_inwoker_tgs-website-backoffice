@@ -175,6 +175,11 @@ export const useGet = (url, options) => {
       //TODO: not work well with: isLoading = (key && !error && isNil(data)) || isLoading
       mutate(undefined, false)
 
+      //TODO: test clear error
+      // mutate((v) => {
+      //   console.log("deleteCache > mutate > value: ", v)
+      // }, false)
+
       // mutate(null, {
       //   revalidate: false,
       //   populateCache: true,
@@ -183,10 +188,7 @@ export const useGet = (url, options) => {
     },
     emptyData: () => {
       //TODO: empty type value?
-      mutate(
-        {},
-        false
-      )
+      mutate({}, false)
     }
   }
 }
