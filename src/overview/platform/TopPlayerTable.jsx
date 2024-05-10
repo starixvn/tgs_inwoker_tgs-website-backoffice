@@ -52,7 +52,7 @@ export const TopPlayerTable = ({ brand, brandId, maxWidth }) => {
     data: items = [],
     isLoading,
     error,
-    emptyData
+    mutate
   } = usePlatformTopPlayerList(brandId, { sortType, ascending })
 
   return (
@@ -89,7 +89,14 @@ export const TopPlayerTable = ({ brand, brandId, maxWidth }) => {
             {!isLoading && <PlayerRows brand={brand} items={items} />}
           </Table.Body>
         </Table>
-        {error && <AlertDialog {...error} onClickClose={emptyData} />}
+        {error && (
+          <AlertDialog
+            {...error}
+            onClickClose={() => {
+              mutate([], false)
+            }}
+          />
+        )}
       </Card>
     </>
   )
