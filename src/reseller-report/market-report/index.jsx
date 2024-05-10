@@ -105,7 +105,7 @@ const ReportContent = ({ resellerId }) => {
     to: startOfNextDay(to),
     culture
   })
-  let { isLoading, data, error, mutate, deleteCache } =
+  let { isLoading, data, error, mutate, emptyData } =
     useResellerMarketReportList(toSearchParams())
 
   let columns = useColumns({ items: data?.items })
@@ -176,7 +176,7 @@ const ReportContent = ({ resellerId }) => {
           toggleColumnHidden={true}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

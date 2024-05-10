@@ -72,7 +72,7 @@ export const Panel = ({ playerCode, brandId, player, ...props }) => {
     data = {},
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useGameBetRecordList(
     isActive
       ? {
@@ -123,7 +123,7 @@ export const Panel = ({ playerCode, brandId, player, ...props }) => {
           isLoading={isLoading}
           foot={data?.items?.length > 0}
         />
-        {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+        {error && <AlertDialog {...error} onClickClose={emptyData} />}
       </Stack>
     </TabPanel>
   )

@@ -51,7 +51,7 @@ const BodyContent = ({}) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { isLoading, data, error, mutate, deleteCache } = useVipLevelList({
+  let { isLoading, data, error, mutate, emptyData } = useVipLevelList({
     ...toApiParams(state),
     sortby: "level"
   })
@@ -94,7 +94,7 @@ const BodyContent = ({}) => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

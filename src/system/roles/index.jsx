@@ -64,7 +64,7 @@ const Body = ({}) => {
     brandId: userBrandId
   })
   let { pageIndex, pageSize, name } = state
-  let { isLoading, data, error, mutate, deleteCache } = useRoleList({
+  let { isLoading, data, error, mutate, emptyData } = useRoleList({
     ...toApiParams(state),
     sortby: "name"
   })
@@ -111,7 +111,7 @@ const Body = ({}) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

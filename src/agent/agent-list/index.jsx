@@ -137,7 +137,7 @@ const BodyContent = ({ brandId = "", brand }) => {
     isLoading,
     mutate,
     error,
-    deleteCache
+    emptyData
   } = useAgentList({
     ...toApiParams(state),
     sortby: "username"
@@ -222,7 +222,7 @@ const BodyContent = ({ brandId = "", brand }) => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

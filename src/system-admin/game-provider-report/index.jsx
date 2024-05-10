@@ -109,8 +109,9 @@ const ReportContent = ({}) => {
     culture
   })
 
-  let { isLoading, data, error, mutate, deleteCache } =
-    useGameProviderReportList(validDateRange ? toSearchParams() : undefined)
+  let { isLoading, data, error, mutate, emptyData } = useGameProviderReportList(
+    validDateRange ? toSearchParams() : undefined
+  )
 
   let columns = useColumns({
     items: data?.items,
@@ -174,7 +175,7 @@ const ReportContent = ({}) => {
             }}
             stickyHead
           />
-          {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+          {error && <AlertDialog {...error} onClickClose={emptyData} />}
         </>
       )}
     </PageContent>

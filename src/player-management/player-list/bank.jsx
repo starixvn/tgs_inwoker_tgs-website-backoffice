@@ -67,7 +67,7 @@ export const Panel = ({ brandId, playerCode, edit = false, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === Key
 
-  let { isLoading, data, error, mutate, deleteCache } = usePlayerBankList(
+  let { isLoading, data, error, mutate } = usePlayerBankList(
     isActive && playerCode
   )
   let banks = data?.items
@@ -98,7 +98,7 @@ export const Panel = ({ brandId, playerCode, edit = false, ...props }) => {
           onSubmitted={mutate}
         />
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={mutate} />}
     </TabPanel>
   )
 }

@@ -116,8 +116,7 @@ const Body = ({}) => {
     isLoading: isLoadingPromotionList,
     data,
     error: promotionListError,
-    mutate,
-    deleteCache
+    mutate
   } = usePromotionPayoutList({
     ...toApiParams(state),
     from: state.start,
@@ -213,7 +212,7 @@ const Body = ({}) => {
               resetBatchPayout()
               deleteSendPromotionPayoutCache()
             } else if (promotionListError) {
-              deleteCache()
+              mutate()
             }
           }}
         />

@@ -61,11 +61,10 @@ const Body = () => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { isLoading, data, error, mutate, deleteCache } =
-    useBrandGameProviderList({
-      ...toApiParams(state),
-      sortby: "gameProviderName"
-    })
+  let { isLoading, data, error, mutate, emptyData } = useBrandGameProviderList({
+    ...toApiParams(state),
+    sortby: "gameProviderName"
+  })
 
   let columns = useColumns({ items: data?.items, mutate })
 
@@ -91,7 +90,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

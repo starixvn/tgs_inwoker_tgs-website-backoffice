@@ -151,7 +151,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
     data = {},
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useFetch(toSearchParams())
 
   let columns = useColumns({
@@ -221,7 +221,7 @@ export const PlayerContributionReport = ({ brandId, useFetch }) => {
           toggleColumnHidden={true}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

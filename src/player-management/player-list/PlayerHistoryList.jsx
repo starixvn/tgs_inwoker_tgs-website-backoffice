@@ -82,7 +82,7 @@ export const PlayerHistoryListPanel = ({ playerCode, brandId, ...props }) => {
   })
 
   let { pageSize, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = usePlayerHistoryList(
+  let { isLoading, data, error, mutate, emptyData } = usePlayerHistoryList(
     isActive ? playerCode : undefined,
     toApiParams({ ...state, sortby: "createdOn", orderby: Descending })
   )
@@ -116,7 +116,7 @@ export const PlayerHistoryListPanel = ({ playerCode, brandId, ...props }) => {
           isLoading={isLoading}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </TabPanel>
   )
 }

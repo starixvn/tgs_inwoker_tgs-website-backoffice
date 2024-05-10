@@ -83,7 +83,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
   let { pageSize, accountChangeType, from, to } = state
   let depositOrWithdraw = isDepositOrWithdrawal(accountChangeType)
 
-  let { isLoading, data, error, mutate, deleteCache } = usePlayerBalanceChanges(
+  let { isLoading, data, error, mutate, emptyData } = usePlayerBalanceChanges(
     isActive
       ? toApiParams({
           ...state,
@@ -97,7 +97,7 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
     data: total,
     error: totalError,
     mutate: mutateTotal,
-    deleteCache: deleteTotalCache
+    emptyData: emptyTotalData
   } = usePlayerBalanceChangeTotalAmount(
     isActive && depositOrWithdraw ? toApiParams(state) : undefined
   )
@@ -138,9 +138,9 @@ export const PlayerBalanceChangePanel = ({ brandId, playerCode, ...props }) => {
           isLoading={isLoading || isLoadingTotalAmount}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
       {totalError && (
-        <AlertDialog {...totalError} onClickClose={deleteTotalCache} />
+        <AlertDialog {...totalError} onClickClose={emptyTotalData} />
       )}
     </TabPanel>
   )

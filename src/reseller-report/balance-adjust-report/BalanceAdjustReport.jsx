@@ -82,7 +82,7 @@ export const BalanceAdjustReport = ({ resellerId }) => {
     to: dateRange.end
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = useBalanceAdjustList(
+  let { isLoading, data, error, mutate, emptyData } = useBalanceAdjustList(
     toApiParams(state)
   )
 
@@ -149,7 +149,7 @@ export const BalanceAdjustReport = ({ resellerId }) => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

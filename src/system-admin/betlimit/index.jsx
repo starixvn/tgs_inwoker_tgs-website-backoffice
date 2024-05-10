@@ -41,7 +41,7 @@ const Body = () => {
     keyword: ""
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = useBetLimitList({
+  let { isLoading, data, error, mutate, emptyData } = useBetLimitList({
     ...toApiParams(state),
     sortby: "id"
   })
@@ -78,7 +78,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

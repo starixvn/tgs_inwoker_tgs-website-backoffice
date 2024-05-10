@@ -67,7 +67,7 @@ const Body = () => {
     sortby: "code"
   })
   let { pageIndex, pageSize, name } = state
-  let { isLoading, data, error, mutate, deleteCache } = useGameProviderList({
+  let { isLoading, data, error, mutate, emptyData } = useGameProviderList({
     ...toApiParams(state),
     sortby: "code"
   })
@@ -102,7 +102,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

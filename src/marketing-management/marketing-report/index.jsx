@@ -99,7 +99,7 @@ const Body = () => {
   }, [brandId])
 
   let { agentUsername, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = useMarketingReport({
+  let { isLoading, data, error, mutate, emptyData } = useMarketingReport({
     ...toApiParams(state),
     from,
     to: startOfNextDay(to)
@@ -140,7 +140,7 @@ const Body = () => {
         isLoading={isLoading}
         stickyHead
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

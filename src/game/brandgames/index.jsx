@@ -73,7 +73,7 @@ const Body = () => {
   }, [brandId])
 
   let { gameProviderId, gameType, keyword } = state
-  let { isLoading, data, error, mutate, deleteCache } = useBrandGameList({
+  let { isLoading, data, error, mutate, emptyData } = useBrandGameList({
     ...toApiParams(state),
     sortby: "displayOrder"
   })
@@ -104,7 +104,7 @@ const Body = () => {
         mutate={mutate}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

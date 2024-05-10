@@ -162,11 +162,10 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   })
   let {
     isLoading,
-    isValidating,
     data: agentData,
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useAgentDividend(agentUsername ? toSearchParams() : undefined)
 
   useEffect(() => {
@@ -247,7 +246,6 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               pageIndex: 0,
               ...data
             })
-            deleteCache()
             mutate(undefined)
           }}
         />
@@ -365,7 +363,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
           </AutoSizer>
         </Set>
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

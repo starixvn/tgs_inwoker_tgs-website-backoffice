@@ -62,7 +62,7 @@ const Body = () => {
 
   let { pageIndex, pageSize, username = "" } = state
 
-  let { isLoading, data, error, mutate, deleteCache } = useAdminList({
+  let { isLoading, data, error, mutate, emptyData } = useAdminList({
     ...toApiParams(state)
   })
 
@@ -105,7 +105,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

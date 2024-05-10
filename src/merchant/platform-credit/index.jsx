@@ -44,7 +44,7 @@ const Body = () => {
   })
   let { pageIndex, pageSize, keyword } = state
 
-  let { isLoading, data, error, mutate, deleteCache } = usePlatformCreditList({
+  let { isLoading, data, error, mutate, emptyData } = usePlatformCreditList({
     ...toApiParams(state),
     sortby: "brandCode"
   })
@@ -81,7 +81,7 @@ const Body = () => {
         isLoading={isLoading}
         getRowId={(row) => row.id}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

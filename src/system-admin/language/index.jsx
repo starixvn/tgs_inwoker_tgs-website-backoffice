@@ -42,7 +42,7 @@ const Body = () => {
     name: ""
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = useLanguageList({
+  let { isLoading, data, error, mutate, emptyData } = useLanguageList({
     ...toApiParams(state),
     sortby: "cultureCode"
   })
@@ -79,7 +79,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

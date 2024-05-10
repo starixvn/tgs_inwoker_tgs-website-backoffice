@@ -72,7 +72,7 @@ export const PlayerIPAddressByUsernameTabPanel = ({
 const Body = ({ brandId, table = {}, onClickIpAddress }) => {
   let { state, setState, setPageIndex, setSortOrder } = table
 
-  let { isLoading, data, error, mutate, deleteCache } =
+  let { isLoading, data, error, mutate, emptyData } =
     usePlayerIPAddressListByUsername(
       state?.userName
         ? {
@@ -117,7 +117,7 @@ const Body = ({ brandId, table = {}, onClickIpAddress }) => {
           isLoading={isLoading}
         />
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </FieldStack>
   )
 }

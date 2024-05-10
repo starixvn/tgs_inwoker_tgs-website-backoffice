@@ -92,7 +92,7 @@ const BodyContent = ({ brandId }) => {
     data = {},
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useStationLetterList({
     ...toApiParams(state),
     status: statusFrom(statusName),
@@ -202,7 +202,7 @@ const BodyContent = ({ brandId }) => {
           )}
         </TabPanel>
       </Tabs>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

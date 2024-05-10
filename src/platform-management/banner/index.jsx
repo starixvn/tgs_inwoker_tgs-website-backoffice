@@ -89,7 +89,7 @@ const Body = () => {
 
   let { status, ...apiParamState } = state
   let isEffectiveTab = status === Effective
-  let { isLoading, data, error, mutate, deleteCache } = usePlatformBannerList(
+  let { isLoading, data, error, mutate, emptyData } = usePlatformBannerList(
     brandId,
     status,
     isEffectiveTab
@@ -207,7 +207,7 @@ const Body = () => {
           )}
         </TabPanel>
       </Tabs>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

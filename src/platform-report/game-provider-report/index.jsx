@@ -109,8 +109,9 @@ const ReportContent = ({ brandId }) => {
     culture
   })
 
-  let { isLoading, data, error, mutate, deleteCache } =
-    useGameProviderReportList(toSearchParams())
+  let { isLoading, data, error, mutate, emptyData } = useGameProviderReportList(
+    toSearchParams()
+  )
 
   let DataRetentionDays = 180
   let minDate = subDays(dateRange.start, DataRetentionDays)
@@ -177,7 +178,7 @@ const ReportContent = ({ brandId }) => {
         }}
         stickyHead
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

@@ -190,19 +190,16 @@ const Body = ({}) => {
 
   let {
     data = {},
-    isValidating,
     isLoading,
     mutate: mutateFormList,
     error,
-    deleteCache
+    emptyData
   } = useFundWithdrawFormList(brandId, toSearchParams(), {
     refreshInterval: 10 * SecondInMilliseconds
   })
 
   useEffect(() => {
     if (location?.state?.fromNotify) {
-      deleteCache()
-
       todayRange = today()
       setState({
         pageIndex: 0,
@@ -335,7 +332,7 @@ const Body = ({}) => {
         menubar={Level}
         menuAddonBefore={<Summary key="summary" total={data?.sum} />}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }
