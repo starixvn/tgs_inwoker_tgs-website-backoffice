@@ -64,6 +64,7 @@ const useAllAgentRebateData = (searchParams) => {
     error: rebateListError,
     mutate: mutateRebateList,
     deleteCache: deleteRebateListCache,
+    mutate,
     emptyData: emptyRebateListData
   } = useAllAgentRebateList(searchParams)
   let {
@@ -98,7 +99,7 @@ const useAllAgentRebateData = (searchParams) => {
       deleteRebateTotalAmountCache()
     },
     emptyData: () => {
-      emptyRebateListData()
+      mutate([], false)
       emptyRebateTotalAmountData()
     }
   }

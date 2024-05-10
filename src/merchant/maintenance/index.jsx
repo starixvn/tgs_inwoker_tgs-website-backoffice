@@ -102,7 +102,14 @@ const Body = () => {
         stickyHead
         getRowId={(row) => row.brandCode}
       />
-      {error && <AlertDialog {...error} onClickClose={emptyData} />}
+      {error && (
+        <AlertDialog
+          {...error}
+          onClickClose={() => {
+            mutate([], false)
+          }}
+        />
+      )}
     </PageContent>
   )
 }

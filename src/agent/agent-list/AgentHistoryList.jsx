@@ -34,6 +34,14 @@ import {
 import { StatusTrans } from "../../trans/Status"
 import { EmailTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
 import { TimeTrans } from "../../trans/Date"
+import {
+  CardGameTrans,
+  EGameTrans,
+  LiveDealerTrans,
+  LotteryTrans,
+  SportsbookTrans,
+  VirtualSportsTrans
+} from "../../trans/Game"
 
 const Key = "AgentHistoryList"
 
@@ -317,7 +325,14 @@ const LabelValueList = [
   [pipe(getPath, equals("/Qq")), QqLabel],
 
   [pipe(getPath, equals("/password")), PasswordLabel],
-  [pipe(getPath, equals("/withdrawPassword")), WithdrawPassword]
+  [pipe(getPath, equals("/withdrawPassword")), WithdrawPassword],
+
+  [pipe(getPath, equals("/liveDealerPercentage")), LiveDealerTrans],
+  [pipe(getPath, equals("/sportsPercentage")), SportsbookTrans],
+  [pipe(getPath, equals("/slotPercentage")), EGameTrans],
+  [pipe(getPath, equals("/cardGamePercentage")), CardGameTrans],
+  [pipe(getPath, equals("/lotteryPercentage")), LotteryTrans],
+  [pipe(getPath, equals("/virtualSportsPercentage")), VirtualSportsTrans]
 ]
 
 const toLabel = (value) => {
