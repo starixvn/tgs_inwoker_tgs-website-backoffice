@@ -40,8 +40,15 @@ import {
   LiveDealerTrans,
   LotteryTrans,
   SportsbookTrans,
-  VirtualSportsTrans
+  VirtualSportsTrans,
+  useCardGameTrans,
+  useEGameTrans,
+  useLiveDealerTrans,
+  useLotteryTrans,
+  useSportsbookTrans,
+  useVirtualSportsTrans
 } from "../../trans/Game"
+import { useProductFeeTrans } from "../../trans/Platform"
 
 const Key = "AgentHistoryList"
 
@@ -309,6 +316,39 @@ const useAgentHistoryColumns = ({ items = [], brandId }) => {
 const PasswordLabel = () => <Trans zh="登入密码" en="Login Password" />
 const WithdrawPassword = () => <Trans zh="提款密码" en="Withdrawal Password" />
 
+const ProductFee = {
+  LiveDealer: () => {
+    let productFee = useProductFeeTrans()
+    let liveDealer = useLiveDealerTrans()
+    return `${productFee}: ${liveDealer}`
+  },
+  Sportsbook: () => {
+    let productFee = useProductFeeTrans()
+    let sports = useSportsbookTrans()
+    return `${productFee}: ${sports}`
+  },
+  EGame: () => {
+    let productFee = useProductFeeTrans()
+    let egame = useEGameTrans()
+    return `${productFee}: ${egame}`
+  },
+  CardGame: () => {
+    let productFee = useProductFeeTrans()
+    let cardGame = useCardGameTrans()
+    return `${productFee}: ${cardGame}`
+  },
+  Lottery: () => {
+    let productFee = useProductFeeTrans()
+    let lottery = useLotteryTrans()
+    return `${productFee}: ${lottery}`
+  },
+  VirtualSports: () => {
+    let productFee = useProductFeeTrans()
+    let virtualSport = useVirtualSportsTrans()
+    return `${productFee}: ${virtualSport}`
+  }
+}
+
 const StringValue = ({ value = "" }) =>
   isString(value) ? value : JSON.stringify(value)
 
@@ -327,12 +367,12 @@ const LabelValueList = [
   [pipe(getPath, equals("/password")), PasswordLabel],
   [pipe(getPath, equals("/withdrawPassword")), WithdrawPassword],
 
-  [pipe(getPath, equals("/liveDealerPercentage")), LiveDealerTrans],
-  [pipe(getPath, equals("/sportsPercentage")), SportsbookTrans],
-  [pipe(getPath, equals("/slotPercentage")), EGameTrans],
-  [pipe(getPath, equals("/cardGamePercentage")), CardGameTrans],
-  [pipe(getPath, equals("/lotteryPercentage")), LotteryTrans],
-  [pipe(getPath, equals("/virtualSportsPercentage")), VirtualSportsTrans]
+  [pipe(getPath, equals("/liveDealerPercentage")), ProductFee.LiveDealer],
+  [pipe(getPath, equals("/sportsPercentage")), ProductFee.Sportsbook],
+  [pipe(getPath, equals("/slotPercentage")), ProductFee.EGame],
+  [pipe(getPath, equals("/cardGamePercentage")), ProductFee.CardGame],
+  [pipe(getPath, equals("/lotteryPercentage")), ProductFee.Lottery],
+  [pipe(getPath, equals("/virtualSportsPercentage")), ProductFee.VirtualSports]
 ]
 
 const toLabel = (value) => {
