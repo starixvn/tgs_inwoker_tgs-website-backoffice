@@ -11,7 +11,7 @@ export const API = "/api/AgentReport"
 //TODO: rm fakeClient.js
 export const useAgentDividend = (searchParams) => {
   //TODO: rm test
-  let url = searchParams ? urlWith(searchParams, `${API}/dividends`) : ""
+  let url = searchParams ? urlWith(searchParams, `${API}/AgentDividends`) : ""
   let { data, error, ...rest } = useGet(url)
   if (true) {
     data = {
