@@ -38,7 +38,7 @@ services:
       - nats
       - operator-api
       - file-service
-      - init-seeding
+      # - init-seeding
       - promotion-api
       - report-api
       - payment-api

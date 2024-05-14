@@ -554,6 +554,13 @@ const PromotionSettingsString = JSON.stringify([
           En: "Basic Deposit Bonus",
           Zh: "充就送"
         }
+      },
+      {
+        Name: "DepositRewardV2",
+        Trans: {
+          En: "Deposit Reward V2",
+          Zh: "充就送V2"
+        }
       }
     ],
     Trans: {

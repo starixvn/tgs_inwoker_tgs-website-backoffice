@@ -9,7 +9,7 @@ import {
   CardGame,
   VirtualSports,
   Lottery,
-  EGameTrans
+  EGame
 } from "../trans/Game"
 import { Default } from "../trans/Field"
 
@@ -17,7 +17,7 @@ const AllTrans = [
   ["", Default],
   ["LiveDealer", LiveDealer],
   ["Sportsbook", Sportsbook],
-  ["Slot", EGameTrans],
+  ["Slot", EGame],
   ["CardGame", CardGame],
   ["VirtualSports", VirtualSports],
   ["Lottery", Lottery]
