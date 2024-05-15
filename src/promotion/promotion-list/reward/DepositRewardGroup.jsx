@@ -1,18 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
-import {
-  Box,
-  Text,
-  Button,
-  Set,
-  Icon,
-  useModalState,
-  Dialog,
-  Card,
-  Flex,
-  Heading,
-  FieldStack
-} from "bumbag"
+import { Box, Text, Button, Set, Icon } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../../user/context"
 import FormDialog from "../../../form/FormDialog"
 import { FormattedNumberDecimal, Trans, useTrans } from "../../../i18n"
@@ -36,6 +24,10 @@ import { GameTypeTrans } from "../../../trans/Game"
 import {
   PromotionBonusLimitTrans,
   PromotionBonusPercentageTrans,
+  PromotionPlayerMaxApplyTimesPerDayTrans,
+  PromotionPlayerMaxApplyTimesPerMonthTrans,
+  PromotionPlayerMaxApplyTimesPerWeekTrans,
+  PromotionPlayerMaxApplyTimesTrans,
   PromotionTurnoverRequirementTrans,
   usePromotionBonusAmountLimitHintTrans,
   usePromotionBucketTypeNotSpecifyTrans
@@ -43,6 +35,7 @@ import {
 import { MultipliersTrans } from "../../../trans/Field"
 import { isEmpty, isNil } from "lodash-es"
 import { either, complement } from "ramda"
+import { PlayerConditionsCheckboxGroupField } from "../field/PlayerConditionsCheckboxGroupField"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 let notEmpty = complement(isNilOrEmpty)
@@ -53,16 +46,17 @@ const AccountFirstDeposit = "AccountFirstDeposit" //Account First Deposit-First 
 const DailyFirstDeposit = "DailyFirstDeposit"
 const DailySecondDeposit = "DailySecondDeposit"
 const DepositReward = "DepositReward"
+const DepositRewardV2 = "DepositRewardV2"
 
 const DepositPaymentChannelReward = "PromoteDepositChannel"
 
-//TODO: able to rm PromotionTypes? used somewhere?
 export const PromotionTypes = [
   FirstDeposit,
   AccountFirstDeposit,
   DailyFirstDeposit,
   DailySecondDeposit,
   DepositReward,
+  DepositRewardV2,
   DepositPaymentChannelReward
 ]
 
@@ -155,6 +149,113 @@ const DepositPaymentRewardRule = ({ readOnly }) => {
         required
         disabled={disabled}
       />
+
+      <NormalLabel>
+        <PromotionTurnoverRequirementTrans />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.turnoverMultiple"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        min="1"
+        required
+        disabled={disabled}
+        addonAfter={
+          <Button isStatic tabIndex="-1">
+            <MultipliersTrans />
+          </Button>
+        }
+      />
+    </FieldValues>
+  )
+}
+
+const DepositRewardV2Rule = ({ readOnly }) => {
+  let { control } = useFormContext()
+  let brandId = usePromotionBrandId()
+  // let totalFunds = useTotalFunds()
+  let disabled = readOnly
+
+  let PercentageField = "rule.percentage"
+  let percentage = useWatch({
+    control,
+    name: PercentageField
+  })
+
+  let bucketTypePlaceholder = usePromotionBucketTypeNotSpecifyTrans()
+
+  return (
+    <FieldValues>
+      <VipLevelCheckboxGroupField readOnly={readOnly} />
+
+      <PlayerConditionsCheckboxGroupField readOnly={readOnly} />
+
+      <NormalLabel>
+        <PromotionPlayerMaxApplyTimesPerDayTrans />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.dailyDepositLimitByPlayer"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <PromotionPlayerMaxApplyTimesPerWeekTrans />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.weeklyDepositLimitByPlayer"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <PromotionPlayerMaxApplyTimesPerMonthTrans />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.monthlyDepositLimitByPlayer"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        disabled={disabled}
+      />
+
+      <NormalLabel>
+        <PromotionPlayerMaxApplyTimesTrans />
+      </NormalLabel>
+      <NumberInputField
+        name="rule.totalDepositLimitByPlayer"
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        disabled={disabled}
+      />
+
+      <BucketTypeLabel />
+      <BucketTypeSelect
+        brandId={brandId}
+        disabled={disabled}
+        placeholder={bucketTypePlaceholder}
+      />
+
+      <NormalLabel>
+        <PromotionBonusPercentageTrans />
+      </NormalLabel>
+      <PercentageNumberInputField
+        name={PercentageField}
+        registerOptions={{
+          valueAsNumber: true
+        }}
+        max="999"
+        required
+        disabled={disabled}
+      />
+
+      <BonusLimitFieldBox percentage={percentage} disabled={disabled} />
 
       <NormalLabel>
         <PromotionTurnoverRequirementTrans />
@@ -371,6 +472,12 @@ export const Rewards = [
     Main: DepositRewardMain,
     Content,
     Rule: DepositRewardRule
+  },
+  {
+    PromotionType: DepositRewardV2,
+    Main: DepositRewardMain,
+    Content,
+    Rule: DepositRewardV2Rule
   },
   {
     PromotionType: FirstDeposit,
