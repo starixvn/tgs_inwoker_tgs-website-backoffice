@@ -46,7 +46,7 @@ export const PlayerConditionsCheckboxGroupField = ({
       <NormalLabel>
         <PromotionEligibilityTrans />
       </NormalLabel>
-      <Set alignY="center">
+      <Set alignY="center" data-type="player-conditions">
         {!disabled && (
           <Button
             onClick={() => {

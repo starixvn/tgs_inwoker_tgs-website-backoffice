@@ -18,6 +18,7 @@ const FirstDeposit = "FirstDeposit"
 const DailyFirstDeposit = "DailyFirstDeposit"
 const DailySecondDeposit = "DailySecondDeposit"
 const DepositReward = "DepositReward"
+const DepositRewardV2 = "DepositRewardV2"
 
 const ruleBy = (promotionType) => {
   switch (promotionType) {
@@ -30,7 +31,19 @@ const ruleBy = (promotionType) => {
           turnoverMultiple: 10
         }
       }
-
+    case DepositRewardV2:
+      return {
+        rule: {
+          playerConditions: ["Phone"],
+          dailyDepositLimitByPlayer: 1,
+          weeklyDepositLimitByPlayer: 2,
+          monthlyDepositLimitByPlayer: 3,
+          totalDepositLimitByPlayer: 4,
+          percentage: 10,
+          bonusAmountLimit: 10,
+          turnoverMultiple: 10
+        }
+      }
     default:
       return {
         rule: {
@@ -91,6 +104,9 @@ export const PromotionType = {
   },
   depositReward: {
     add: add(DepositReward)
+  },
+  depositRewardV2: {
+    add: add(DepositRewardV2)
   }
 }
 

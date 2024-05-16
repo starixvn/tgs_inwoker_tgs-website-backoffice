@@ -29,7 +29,6 @@ services:
   - name: backoffice-site
     dependencies:
       - backoffice-api
-      - init-seeding
     env:
       MODE: "production"
       LOGIN_IMAGE_URL: "//images.srvptt.com/GMS%20Logo/GMS.png"
