@@ -28,6 +28,7 @@ exclude:
 services:
   - name: backoffice-site
     dependencies:
+      - init-seeding
       - backoffice-api
     env:
       MODE: "production"

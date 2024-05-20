@@ -30,16 +30,10 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { formatDateTime } from "../../date/format"
-import { FieldValues } from "../../layout/Grid"
-import { formatNumberDecimal } from "../../number/format"
-import Separator from "../../layout/Separator"
-import { startOfNextDay } from "../../date/startOfNextDay"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportPlayerSpecial } from "./client"
 import { TotalTrans } from "../../trans/Field"
-import { PlatformFeeTrans, ProductFeeTrans } from "../../trans/Platform"
+// import { PlatformFeeTrans, ProductFeeTrans } from "../../trans/Platform"
 
 export const PlayerSpecialDialogDisclosure = ({
   value,
@@ -84,15 +78,13 @@ const BonusAdjustTrans = {
   en: "Bonus Adjust"
 }
 
-const ProductFee = "productFee"
-
-const PlatformFee = "platformCharge"
+//TODO: rm
+// const ProductFee = "productFee"
+// const PlatformFee = "platformCharge"
 
 const Type = {
   Bonus,
-  BonusAdjust,
-  ProductFee,
-  PlatformFee
+  BonusAdjust
 }
 
 const TypeLabel = ({ value = "" }) => {
@@ -101,10 +93,11 @@ const TypeLabel = ({ value = "" }) => {
       return <Trans {...BonusTrans} />
     case BonusAdjust:
       return <Trans {...BonusAdjustTrans} />
-    case ProductFee:
-      return <ProductFeeTrans />
-    case PlatformFee:
-      return <PlatformFeeTrans />
+    //TODO: rm
+    // case ProductFee:
+    //   return <ProductFeeTrans />
+    // case PlatformFee:
+    //   return <PlatformFeeTrans />
     default:
       return value
   }

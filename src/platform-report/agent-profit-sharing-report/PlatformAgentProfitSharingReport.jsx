@@ -314,7 +314,10 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
                 />
               </List.Item>
               <List.Item>
-                <NetProfitInfo />
+                <Trans
+                  zh={`净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐。`}
+                  en={`Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount.`}
+                />
               </List.Item>
               <List.Item>
                 <Trans
@@ -330,8 +333,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               </List.Item>
               <List.Item>
                 <Trans
-                  zh="分红金额 = 直属玩家贡献 + 团队贡献 - 代理调帐。"
-                  en="Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount."
+                  zh={`分红金额 = 直属玩家贡献 + 团队贡献 - 代理调帐 - 产品费用。`}
+                  en={`"Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount - Product Charges."`}
                 />
               </List.Item>
             </List>
@@ -411,7 +414,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
   )
 }
 
-const NetProfitInfo = () => {
+const ProfitSharingAmountInfo = () => {
   let liveDealer = useLiveDealerTrans()
   let sportsbook = useSportsbookTrans()
   let eGame = useEGameTrans()
@@ -419,10 +422,11 @@ const NetProfitInfo = () => {
   let lottery = useLotteryTrans()
   let virtualSports = useVirtualSportsTrans()
   let productFeeDetail = `${liveDealer} + ${sportsbook} + ${eGame} + ${cardGame} + ${lottery} + ${virtualSports}`
+
   return (
     <Trans
-      zh={`净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐 - 平台费用 - 产品费用(${productFeeDetail})。`}
-      en={`Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount - Platform Fee - Product Charges(${productFeeDetail}).`}
+      zh={`分红金额 = 直属玩家贡献 + 团队贡献 - 代理调帐 - 产品费用。`}
+      en={`"Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount - Product Charges."`}
     />
   )
 }
