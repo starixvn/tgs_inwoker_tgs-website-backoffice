@@ -11,16 +11,9 @@ tasks:
   - name: init-migration
     dependencies:
       - init-dotnet-ef
-      - init-migration-base
       - postgres
     command:
       - dotnet ef database update -s ./MigrationEntry
-  - name: init-migration-base
-    dependencies:
-      - init-dotnet-ef
-      - postgres
-    command:
-      - dotnet ef database update -s ./MigrationArchive
   - name: init-dotnet-ef
     command:
       - dotnet tool restore

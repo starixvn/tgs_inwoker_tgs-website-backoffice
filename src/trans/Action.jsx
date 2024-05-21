@@ -232,3 +232,10 @@ export const Reject = {
 }
 export const RejectTrans = () => <Trans {...Reject} />
 export const useRejectTrans = () => useTrans(Reject)
+
+const SelectAll = {
+  zh: "全选",
+  en: "All",
+  vi: "Tất cả"
+}
+export const SelectAllTrans = () => <Trans {...SelectAll} />

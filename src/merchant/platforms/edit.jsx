@@ -664,6 +664,8 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
           />
         </Box>
 
+        {/* 
+        TODO: rm
         <NormalLabel>
           <PlatformFeeTrans />
         </NormalLabel>
@@ -674,7 +676,8 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
             disabled={!editable}
             width="fit-content"
           />
-        </Box>
+        </Box> 
+        */}
 
         <NormalLabel>
           <Trans zh="自动清除流水" en="Auto Clear Wagering Requirement" />

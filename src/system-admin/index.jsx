@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react"
 import { CodeContentPair as GameProviderPair } from "./game-provider"
 import { CodeContentPair as GameProvideReportPair } from "./game-provider-report"
 import { CodeContentPair as BrandPaymentPair } from "./brand-payment"
+import { CodeContentPair as SmsPair } from "./sms"
 import { CodeContentPair as LanguagePair } from "./language"
 import { CodeContentPair as CurrencyPair } from "./currency"
 import { CodeContentPair as BetLimitPair } from "./betlimit"
@@ -26,7 +27,8 @@ const pairs = () => [
   GameRoundPair,
   GameResettleOpenedRoundPair,
   PlatformGameProviderPair,
-  GameProviderRoundPair
+  GameProviderRoundPair,
+  SmsPair
 ]
 
 export const Content = ({ codes, path = DefaultCodePath, ...props }) => (
