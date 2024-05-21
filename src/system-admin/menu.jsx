@@ -14,6 +14,7 @@ import {
   Code as BrandPaymentsCode,
   codeLabelPair as brandPaymentsPair
 } from "./brand-payment/menu"
+import { Code as SmsCode, codeLabelPair as smsPair } from "./sms/menu"
 import {
   Code as LanguageCode,
   codeLabelPair as languagePair
@@ -110,6 +111,14 @@ const labelOf = ({ locale, code }) => {
         },
         locale
       )
+    case SmsCode:
+      return getTrans(
+        {
+          zh: "Sms",
+          en: "Sms"
+        },
+        locale
+      )
     case LanguageCode:
       return getTrans(
         {
@@ -197,7 +206,8 @@ export const codeLabelPair = [
         gameOpenRoundPair,
         gameResettleOpenedRoundPair,
         platformGameProviderPair,
-        gameProviderRoundPair
+        gameProviderRoundPair,
+        smsPair
       ]
     })
 ]
