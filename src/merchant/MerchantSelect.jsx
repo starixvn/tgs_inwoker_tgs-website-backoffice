@@ -76,7 +76,6 @@ export const MerchantIdSelect = ({
   ...props
 }) => {
   let formMethods = useFormContext()
-  let { unregister } = formMethods
 
   let [resellerId, setResellerId] = useState(
     resellerProps?.value ?? resellerProps?.defaultValue
@@ -134,7 +133,7 @@ export const MerchantIdSelect = ({
   //TODO: rm when react-hook-form fix bug
   useEffect(() => {
     if (!isBrandActive) {
-      unregister(brandIdName)
+      formMethods?.unregister(brandIdName)
     }
   }, [isBrandActive])
 

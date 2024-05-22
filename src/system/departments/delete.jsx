@@ -10,7 +10,6 @@ import FormDialog from "../../form/FormDialog"
 
 export const DeleteButton = ({ id, name, onSubmitted, ...props }) => {
   let dialog = Modal.useState()
-  let disclosureRef = useRef()
 
   let isDisplay = useIsDisplayMenuByRoute([DeleteMenu])
   if (!isDisplay) {

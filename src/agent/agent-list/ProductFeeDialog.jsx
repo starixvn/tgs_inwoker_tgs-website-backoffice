@@ -111,7 +111,7 @@ const EditDialog = ({ brandId, record, dialog, dialogId, onSubmitted }) => {
   )
 }
 
-export const ProductFreeFormBody = ({ addonBefore, ...props }) => {
+const ProductFreeFormBody = ({ addonBefore, ...props }) => {
   return (
     <FieldValues {...props}>
       {addonBefore}
