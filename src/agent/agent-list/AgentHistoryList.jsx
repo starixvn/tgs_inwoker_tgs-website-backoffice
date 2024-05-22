@@ -317,35 +317,77 @@ const PasswordLabel = () => <Trans zh="登入密码" en="Login Password" />
 const WithdrawPassword = () => <Trans zh="提款密码" en="Withdrawal Password" />
 
 const ProductFee = {
-  LiveDealer: () => {
-    let productFee = useProductFeeTrans()
-    let liveDealer = useLiveDealerTrans()
-    return `${productFee}: ${liveDealer}`
+  LiveDealer: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let liveDealer = useLiveDealerTrans()
+      return `${productFee}: ${liveDealer}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let liveDealer = useLiveDealerTrans()
+      return `${productFee}: ${liveDealer}`
+    }
   },
-  Sportsbook: () => {
-    let productFee = useProductFeeTrans()
-    let sports = useSportsbookTrans()
-    return `${productFee}: ${sports}`
+  Sportsbook: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let sports = useSportsbookTrans()
+      return `${productFee}: ${sports}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let sports = useSportsbookTrans()
+      return `${productFee}: ${sports}`
+    }
   },
-  EGame: () => {
-    let productFee = useProductFeeTrans()
-    let egame = useEGameTrans()
-    return `${productFee}: ${egame}`
+  EGame: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let egame = useEGameTrans()
+      return `${productFee}: ${egame}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let egame = useEGameTrans()
+      return `${productFee}: ${egame}`
+    }
   },
-  CardGame: () => {
-    let productFee = useProductFeeTrans()
-    let cardGame = useCardGameTrans()
-    return `${productFee}: ${cardGame}`
+  CardGame: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let cardGame = useCardGameTrans()
+      return `${productFee}: ${cardGame}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let cardGame = useCardGameTrans()
+      return `${productFee}: ${cardGame}`
+    }
   },
-  Lottery: () => {
-    let productFee = useProductFeeTrans()
-    let lottery = useLotteryTrans()
-    return `${productFee}: ${lottery}`
+  Lottery: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let lottery = useLotteryTrans()
+      return `${productFee}: ${lottery}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let lottery = useLotteryTrans()
+      return `${productFee}: ${lottery}`
+    }
   },
-  VirtualSports: () => {
-    let productFee = useProductFeeTrans()
-    let virtualSport = useVirtualSportsTrans()
-    return `${productFee}: ${virtualSport}`
+  VirtualSports: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let virtualSport = useVirtualSportsTrans()
+      return `${productFee}: ${virtualSport}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let virtualSport = useVirtualSportsTrans()
+      return `${productFee}: ${virtualSport}`
+    }
   }
 }
 
@@ -367,12 +409,39 @@ const LabelValueList = [
   [pipe(getPath, equals("/password")), PasswordLabel],
   [pipe(getPath, equals("/withdrawPassword")), WithdrawPassword],
 
-  [pipe(getPath, equals("/liveDealerPercentage")), ProductFee.LiveDealer],
-  [pipe(getPath, equals("/sportsPercentage")), ProductFee.Sportsbook],
-  [pipe(getPath, equals("/slotPercentage")), ProductFee.EGame],
-  [pipe(getPath, equals("/cardGamePercentage")), ProductFee.CardGame],
-  [pipe(getPath, equals("/lotteryPercentage")), ProductFee.Lottery],
-  [pipe(getPath, equals("/virtualSportsPercentage")), ProductFee.VirtualSports]
+  [
+    pipe(getPath, equals("/currentLiveDealerPercentage")),
+    ProductFee.LiveDealer.Current
+  ],
+  [
+    pipe(getPath, equals("/nextLiveDealerPercentage")),
+    ProductFee.LiveDealer.Next
+  ],
+  [
+    pipe(getPath, equals("/currentSportsPercentage")),
+    ProductFee.Sportsbook.Current
+  ],
+  [pipe(getPath, equals("/nextSportsPercentage")), ProductFee.Sportsbook.Next],
+  [pipe(getPath, equals("/currentSlotPercentage")), ProductFee.EGame.Current],
+  [pipe(getPath, equals("/nextSlotPercentage")), ProductFee.EGame.Next],
+  [
+    pipe(getPath, equals("/currentCardGamePercentage")),
+    ProductFee.CardGame.Current
+  ],
+  [pipe(getPath, equals("/nextCardGamePercentage")), ProductFee.CardGame.Next],
+  [
+    pipe(getPath, equals("/currentLotteryPercentage")),
+    ProductFee.Lottery.Current
+  ],
+  [pipe(getPath, equals("/nextLotteryPercentage")), ProductFee.Lottery.Next],
+  [
+    pipe(getPath, equals("/currentVirtualSportsPercentage")),
+    ProductFee.VirtualSports.Current
+  ],
+  [
+    pipe(getPath, equals("/nextVirtualSportsPercentage")),
+    ProductFee.VirtualSports.Next
+  ]
 ]
 
 const toLabel = (value) => {
