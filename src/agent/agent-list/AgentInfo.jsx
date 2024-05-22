@@ -428,32 +428,136 @@ const ProductFeeBox = ({ agentId }) => {
       </Heading>
       <FieldValues>
         <LiveDealerTrans />
-        <FormattedNumberDecimalPercentage
-          value={productFee?.liveDealerPercentage}
-        />
+        <Set orientation="horizontal" isFilled>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.currentLiveDealerPercentage}
+            />
+          </Box>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.nextLiveDealerPercentage}
+            />
+          </Box>
+        </Set>
 
         <SportsbookTrans />
-        <FormattedNumberDecimalPercentage
-          value={productFee?.sportsPercentage}
-        />
+        <Set orientation="horizontal" isFilled>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.currentSportsPercentage}
+            />
+          </Box>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.nextSportsPercentage}
+            />
+          </Box>
+        </Set>
 
         <EGameTrans />
-        <FormattedNumberDecimalPercentage value={productFee?.slotPercentage} />
+        <Set orientation="horizontal" isFilled>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.currentSlotPercentage}
+            />
+          </Box>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.nextSlotPercentage}
+            />
+          </Box>
+        </Set>
 
         <CardGameTrans />
-        <FormattedNumberDecimalPercentage
-          value={productFee?.cardGamePercentage}
-        />
+        <Set orientation="horizontal" isFilled>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.currentCardGamePercentage}
+            />
+          </Box>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.nextCardGamePercentage}
+            />
+          </Box>
+        </Set>
 
         <LotteryTrans />
-        <FormattedNumberDecimalPercentage
-          value={productFee?.lotteryPercentage}
-        />
+        <Set orientation="horizontal" isFilled>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.currentLotteryPercentage}
+            />
+          </Box>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.nextLotteryPercentage}
+            />
+          </Box>
+        </Set>
 
         <VirtualSportsTrans />
-        <FormattedNumberDecimalPercentage
-          value={productFee?.virtualSportsPercentage}
-        />
+        <Set orientation="horizontal" isFilled>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.currentVirtualSportsPercentage}
+            />
+          </Box>
+          <Box
+            css={css`
+              flex: 1;
+            `}
+          >
+            <FormattedNumberDecimalPercentage
+              value={productFee?.nextVirtualSportsPercentage}
+            />
+          </Box>
+        </Set>
       </FieldValues>
     </>
   )
