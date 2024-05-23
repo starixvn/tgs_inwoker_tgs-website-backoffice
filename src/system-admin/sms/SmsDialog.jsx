@@ -12,6 +12,7 @@ import { useAddSms, useUpdateSms } from "./client"
 import { AddTrans, useAddTrans, useEditTrans } from "../../trans/Action"
 import clone from "clone-deep"
 import { stringifyJSON } from "../../text/json"
+import Backdrop from "../../dialog/Backdrop"
 
 export const AddSmsDialogDisclosure = ({
   onSubmitted,
@@ -57,27 +58,30 @@ const AddSmsDialog = ({ onSubmitted, dialog, dialogId }) => {
 
   let add = useAddTrans()
   return (
-    <FormDialog
-      defaultValues={{
-        name: "",
-        code: "",
-        setting: ""
-      }}
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      result={result}
-      onSubmitted={() => {
-        reset()
-        onSubmitted?.()
-      }}
-      error={error}
-      onCloseErrorAlert={reset}
-      dialog={dialog}
-      id={dialogId}
-      title={add}
-    >
-      <FormBody />
-    </FormDialog>
+    <Backdrop {...dialog}>
+      <FormDialog
+        defaultValues={{
+          name: "",
+          code: "",
+          setting: ""
+        }}
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        result={result}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
+        error={error}
+        onCloseErrorAlert={reset}
+        dialog={dialog}
+        hideBackdrop
+        id={dialogId}
+        title={add}
+      >
+        <FormBody />
+      </FormDialog>
+    </Backdrop>
   )
 }
 
@@ -135,26 +139,29 @@ const UpdateSmsDialog = ({
 
   let edit = useEditTrans()
   return (
-    <FormDialog
-      defaultValues={{
-        ...clone(record),
-        setting: stringifyJSON(record.setting)
-      }}
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      result={result}
-      onSubmitted={() => {
-        reset()
-        onSubmitted?.()
-      }}
-      error={error}
-      onCloseErrorAlert={reset}
-      dialog={dialog}
-      id={dialogId}
-      title={edit}
-    >
-      <FormBody />
-    </FormDialog>
+    <Backdrop {...dialog}>
+      <FormDialog
+        defaultValues={{
+          ...clone(record),
+          setting: stringifyJSON(record.setting)
+        }}
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        result={result}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
+        error={error}
+        onCloseErrorAlert={reset}
+        dialog={dialog}
+        hideBackdrop
+        id={dialogId}
+        title={edit}
+      >
+        <FormBody />
+      </FormDialog>
+    </Backdrop>
   )
 }
 

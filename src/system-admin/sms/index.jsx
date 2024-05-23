@@ -11,13 +11,15 @@ import {
   PlatformPageContent,
   usePlatformId
 } from "../../page/PlatformPageContent"
-import { useSmsList, usePlatformSmsList } from "./client"
+import { useSmsList, usePlatformSmsList, useDeletePlatformSms } from "./client"
 import AlertDialog from "../../dialog/Alert"
-import { AddSmsDialogDisclosure, UpdateSmsDialogDisclosure } from "./SmsDialog"
 import textColumn from "../../table/column/textColumn"
 import { DeleteSmsDialogDisclosure } from "./DeleteSmsDialog"
-import { PlatformSmsListDialogDisclosure } from "./PlatformSmsList"
 import { ActionTrans } from "../../trans/Action"
+import { MerchantIdSelect } from "../../merchant/MerchantSelect"
+import { Trans } from "../../i18n"
+import { SmsListDialogDisclosure } from "./SmsListDialog"
+import { AddPlatformSmsDialog } from "./AddPlatformSmsDialog"
 
 export { Code }
 
@@ -27,9 +29,8 @@ export const Content = () => {
     return null
   }
 
-  //TODO: title
   return (
-    <PageContent title="Sms">
+    <PageContent title={<Trans zh="簡訊商管理" en="SMS Management" />}>
       <Body />
     </PageContent>
   )
@@ -38,19 +39,28 @@ export const Content = () => {
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let { isLoading, data: items, error, mutate } = useSmsList()
+  let { state, setState, setPageIndex, setSortOrder } = useTable({})
+  let {
+    isLoading,
+    data: items,
+    error,
+    mutate
+  } = usePlatformSmsList(state.brandId)
 
-  let { state, setPageIndex, setSortOrder } = useTable({})
   let columns = useColumns({ items, mutate })
   return (
     <Set orientation="vertical" isFilled height="100%">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
-        <Box>
-          <AddSmsDialogDisclosure onSubmitted={mutate} />
-        </Box>
-        <Box>
-          <PlatformSmsListDialogDisclosure />
-        </Box>
+        <SearchBar
+          search={(data) => {
+            setState(data)
+          }}
+          isLoading={isLoading}
+        />
+        <Set>
+          <SmsListDialogDisclosure />
+          <AddPlatformSmsDialog brandId={state.brandId} onSubmitted={mutate} />
+        </Set>
       </Level>
       <Table
         columns={columns}
@@ -73,12 +83,7 @@ const useColumns = ({ items = [], mutate }) => {
     let columns = [
       textColumn({
         accessor: "name",
-        Header: "Name",
-        disableSortBy: true
-      }),
-      textColumn({
-        accessor: "code",
-        Header: "Code",
+        Header: <Trans zh="簡訊商名稱" en="Name" />,
         disableSortBy: true
       }),
       textColumn({
@@ -89,14 +94,10 @@ const useColumns = ({ items = [], mutate }) => {
         Cell: ({ value: record }) => {
           return (
             <Set alignX="center">
-              <UpdateSmsDialogDisclosure
-                smsSettingId={record?.smsSettingId}
-                record={record}
-                onSubmitted={mutate}
-              />
               <DeleteSmsDialogDisclosure
                 name={record?.name}
                 smsSettingId={record?.smsSettingId}
+                useDelete={useDeletePlatformSms}
                 onSubmitted={mutate}
               />
             </Set>
@@ -108,7 +109,6 @@ const useColumns = ({ items = [], mutate }) => {
   }, [JSON.stringify(items)])
 }
 
-//TODO: seems no need?
 const SearchBar = ({ search, isLoading }) => {
   let formMethods = useForm()
   const onSubmit = (data) => search?.(data)
@@ -117,6 +117,13 @@ const SearchBar = ({ search, isLoading }) => {
     <FormProvider {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <Set>
+          <MerchantIdSelect
+            resellerProps={{ required: false }}
+            licenseeProps={{ required: false }}
+            brandProps={{
+              required: true
+            }}
+          />
           <SearchButton isLoading={isLoading} disabled={isLoading} />
         </Set>
       </form>

@@ -5,13 +5,14 @@ import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update, View } from "./menu"
 import { DeleteDisclosure } from "../../dialog/Disclosure"
 import { DeleteTrans, useDeleteTrans } from "../../trans/Action"
-import { useDeleteSms } from "./client"
 import { Trans } from "../../i18n"
 import FormDialog from "../../form/FormDialog"
+import Backdrop from "../../dialog/Backdrop"
 
 export const DeleteSmsDialogDisclosure = ({
   name,
   smsSettingId,
+  useDelete,
   onSubmitted,
   id,
   dialogId = "delete-sms-dialog"
@@ -31,6 +32,7 @@ export const DeleteSmsDialogDisclosure = ({
         <DeleteSmsDialog
           name={name}
           smsSettingId={smsSettingId}
+          useDelete={useDelete}
           dialog={dialog}
           dialogId={dialogId}
           onSubmitted={onSubmitted}
@@ -43,12 +45,14 @@ export const DeleteSmsDialogDisclosure = ({
 const DeleteSmsDialog = ({
   name,
   smsSettingId,
+  useDelete,
   dialog,
   dialogId,
   onSubmitted
 }) => {
+  let title = useDeleteTrans()
   let [deleteId, setDeleteId] = useState()
-  let { isLoading, result, error, mutate } = useDeleteSms(deleteId)
+  let { isLoading, result, error, mutate } = useDelete(deleteId)
 
   const onSubmit = () => {
     setDeleteId(smsSettingId)
@@ -60,37 +64,40 @@ const DeleteSmsDialog = ({
   }
 
   return (
-    <FormDialog
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      result={result}
-      error={error}
-      onCloseErrorAlert={reset}
-      onSubmitted={() => {
-        reset()
-        onSubmitted?.()
-      }}
-      submitText={<DeleteTrans />}
-      title={" "}
-      dialog={dialog}
-      id={dialogId}
-      actionButtonsProps={{
-        submitProps: {
-          palette: "danger",
-          variant: "outlined"
-        }
-      }}
-    >
-      <Alert
-        title={
-          <Trans
-            zh={`确认删除 “${name}”`}
-            en={`Confirm delete the “${name}”？`}
-          />
-        }
-        type="warning"
-        variant=""
-      />
-    </FormDialog>
+    <Backdrop {...dialog}>
+      <FormDialog
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        result={result}
+        error={error}
+        onCloseErrorAlert={reset}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
+        submitText={<DeleteTrans />}
+        title={title}
+        dialog={dialog}
+        hideBackdrop
+        id={dialogId}
+        actionButtonsProps={{
+          submitProps: {
+            palette: "danger",
+            variant: "outlined"
+          }
+        }}
+      >
+        <Alert
+          title={
+            <Trans
+              zh={`确认删除 “${name}”`}
+              en={`Confirm delete the “${name}”？`}
+            />
+          }
+          type="warning"
+          variant=""
+        />
+      </FormDialog>
+    </Backdrop>
   )
 }
