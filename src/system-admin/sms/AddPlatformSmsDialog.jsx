@@ -59,10 +59,11 @@ const usePlatformSmsSettingTrans = () => useTrans(PlatformSmsSetting)
 
 const AddDialog = ({ brandId, dialog, dialogId, onSubmitted }) => {
   let title = usePlatformSmsSettingTrans()
+
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate } = useAddPlatformSms(
     formData?.brandId,
-    formData
+    formData?.smsSettingId
   )
 
   const onSubmit = (data) => {
