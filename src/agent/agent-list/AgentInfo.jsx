@@ -415,6 +415,7 @@ const ViewPanel = ({ agent, brand, ...props }) => {
   )
 }
 
+//TODO: add CurrentCycle, NextCycle
 const ProductFeeBox = ({ agentId }) => {
   let { isLoading, data: productFee, error } = useAgentProductFee(agentId)
   if (isLoading) {

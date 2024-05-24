@@ -33,7 +33,6 @@ import textColumn from "../../table/column/textColumn"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportPlayerSpecial } from "./client"
 import { TotalTrans } from "../../trans/Field"
-// import { PlatformFeeTrans, ProductFeeTrans } from "../../trans/Platform"
 
 export const PlayerSpecialDialogDisclosure = ({
   value,
@@ -78,10 +77,6 @@ const BonusAdjustTrans = {
   en: "Bonus Adjust"
 }
 
-//TODO: rm
-// const ProductFee = "productFee"
-// const PlatformFee = "platformCharge"
-
 const Type = {
   Bonus,
   BonusAdjust
@@ -93,11 +88,6 @@ const TypeLabel = ({ value = "" }) => {
       return <Trans {...BonusTrans} />
     case BonusAdjust:
       return <Trans {...BonusAdjustTrans} />
-    //TODO: rm
-    // case ProductFee:
-    //   return <ProductFeeTrans />
-    // case PlatformFee:
-    //   return <PlatformFeeTrans />
     default:
       return value
   }

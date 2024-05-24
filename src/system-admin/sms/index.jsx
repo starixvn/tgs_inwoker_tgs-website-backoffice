@@ -11,7 +11,11 @@ import {
   PlatformPageContent,
   usePlatformId
 } from "../../page/PlatformPageContent"
-import { useSmsList, usePlatformSmsList, useDeletePlatformSms } from "./client"
+import {
+  useSmsList,
+  usePlatformSmsList,
+  useDeletePlatformSms
+} from "../../sms/client"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
 import { DeleteSmsDialogDisclosure } from "./DeleteSmsDialog"

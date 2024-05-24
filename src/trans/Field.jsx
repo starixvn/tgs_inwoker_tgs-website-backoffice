@@ -227,3 +227,19 @@ const BalanceOfCurrentPeriod = {
 export const BalanceOfCurrentPeriodTrans = () => (
   <Trans {...BalanceOfCurrentPeriod} />
 )
+
+const CurrentCycle = {
+  zh: "本期",
+  en: "Current",
+  vi: "Hiện tại"
+}
+export const CurrentCycleTrans = () => <Trans {...CurrentCycle} />
+export const useCurrentCycleTrans = () => useTrans(CurrentCycle)
+
+const NextCycle = {
+  zh: "下期",
+  en: "Next",
+  vi: "Kỳ tiếp theo"
+}
+export const NextCycleTrans = () => <Trans {...NextCycle} />
+export const useNextCycleTrans = () => useTrans(NextCycle)

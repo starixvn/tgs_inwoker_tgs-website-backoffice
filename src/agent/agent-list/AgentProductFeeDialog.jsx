@@ -32,6 +32,7 @@ import {
   SportsbookTrans,
   VirtualSportsTrans
 } from "../../trans/Game"
+import { CurrentCycleTrans, NextCycleTrans } from "../../trans/Field"
 
 export const AgentProductFeeDialogDisclosure = ({
   agent,
@@ -100,22 +101,6 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
 
   return (
     <FormDialog
-      /*
-      TODO: need to pick?
-      defaultValues={{
-        ...pick(
-          [
-            "liveDealerPercentage",
-            "sportsPercentage",
-            "slotPercentage",
-            "cardGamePercentage",
-            "lotteryPercentage",
-            "virtualSportsPercentage"
-          ],
-          record
-        )
-      }}
-      */
       defaultValues={clone(record)}
       onSubmit={onSubmit}
       isLoading={isLoading}
@@ -147,7 +132,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
         <Set orientation="horizontal" isFilled>
           <PercentageNumberInputField
             name="currentLiveDealerPercentage"
-            label="Current"
+            label={<CurrentCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -159,7 +144,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
           />
           <PercentageNumberInputField
             name="nextLiveDealerPercentage"
-            label="Next"
+            label={<NextCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -177,7 +162,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
         <Set orientation="horizontal">
           <PercentageNumberInputField
             name="currentSportsPercentage"
-            label="Current"
+            label={<CurrentCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -189,7 +174,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
           />
           <PercentageNumberInputField
             name="nextSportsPercentage"
-            label="Next"
+            label={<NextCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -207,7 +192,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
         <Set orientation="horizontal">
           <PercentageNumberInputField
             name="currentSlotPercentage"
-            label="Current"
+            label={<CurrentCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -219,7 +204,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
           />
           <PercentageNumberInputField
             name="nextSlotPercentage"
-            label="Next"
+            label={<NextCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -237,7 +222,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
         <Set orientation="horizontal">
           <PercentageNumberInputField
             name="currentCardGamePercentage"
-            label="Current"
+            label={<CurrentCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -249,7 +234,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
           />
           <PercentageNumberInputField
             name="nextCardGamePercentage"
-            label="Next"
+            label={<NextCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -267,7 +252,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
         <Set orientation="horizontal">
           <PercentageNumberInputField
             name="currentLotteryPercentage"
-            label="Current"
+            label={<CurrentCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -279,7 +264,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
           />
           <PercentageNumberInputField
             name="nextLotteryPercentage"
-            label="Next"
+            label={<NextCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -297,7 +282,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
         <Set orientation="horizontal">
           <PercentageNumberInputField
             name="currentVirtualSportsPercentage"
-            label="Current"
+            label={<CurrentCycleTrans />}
             required
             step="1"
             registerOptions={{
@@ -309,7 +294,7 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
           />
           <PercentageNumberInputField
             name="nextVirtualSportsPercentage"
-            label="Next"
+            label={<NextCycleTrans />}
             required
             step="1"
             registerOptions={{

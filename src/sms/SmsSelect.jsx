@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { useSmsList } from "./client"
-import { Select } from "../../select/Select"
-import { useTrans } from "../../i18n"
+import { Select } from "../select/Select"
+import { useTrans } from "../i18n"
+import { useSMSProviderTrans } from "../trans/Sms"
 
-//TODO: filter fn?
+//TODO: filter fn
 export const SmsSelect = ({ name = "smsSettingId", placeholder, ...props }) => {
-  let defaultPlaceholder = useTrans({
-    zh: "簡訊商",
-    en: "SMS Provider"
-  })
+  let defaultPlaceholder = useSMSProviderTrans()
   placeholder = placeholder ?? defaultPlaceholder
   let { isLoading, data: items = [], error } = useSmsList()
 
