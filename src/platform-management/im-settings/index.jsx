@@ -30,6 +30,7 @@ import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
 import { AllAgentDialogDisclosure } from "./AllAgentDialog"
 import { OperationSettingsTrans } from "../../trans/Platform"
+import { SmsVerificationDialogDisclosure } from "./SmsVerificationDialog"
 
 export { Code }
 
@@ -89,6 +90,10 @@ const BodyContent = ({ brandId, brand }) => {
         id="all-agent-setting-dialog-disclosure"
         brandId={brandId}
       />
+      {/* 
+      TODO: update api
+      <SmsVerificationDialogDisclosure brandId={brandId} /> 
+      */}
     </Set>
   )
 }

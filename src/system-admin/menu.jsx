@@ -114,8 +114,8 @@ const labelOf = ({ locale, code }) => {
     case SmsCode:
       return getTrans(
         {
-          zh: "Sms",
-          en: "Sms"
+          zh: "簡訊商管理",
+          en: "SMS Management"
         },
         locale
       )

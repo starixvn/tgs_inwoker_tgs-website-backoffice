@@ -171,7 +171,6 @@ export const OperationSettings = {
 }
 export const OperationSettingsTrans = () => <Trans {...OperationSettings} />
 
-//TODO: vi with Banners?
 const AnnouncementMainMarquee = {
   zh: "首页跑马灯",
   en: "Main Marquee",
@@ -393,8 +392,11 @@ const DefaultProductFee = {
 export const DefaultProductFeeTrans = () => <Trans {...DefaultProductFee} />
 export const useDefaultProductFeeTrans = () => useTrans(DefaultProductFee)
 
+/*
+TODO: rm
 const PlatformFee = {
   zh: "平台费用",
   en: "Platform Fee"
 }
 export const PlatformFeeTrans = () => <Trans {...PlatformFee} />
+*/

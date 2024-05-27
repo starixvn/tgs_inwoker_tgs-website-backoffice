@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: sms-service
-image: pgtgs/sms-service:202405160212.47
+image: pgtgs/sms-service:202405230817.49
 services:
   - name: sms-service
     dependencies:

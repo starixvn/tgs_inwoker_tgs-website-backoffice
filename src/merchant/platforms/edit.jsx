@@ -81,7 +81,6 @@ import {
 } from "../../trans/Agent"
 import Switch from "../../switch/Switch"
 import { AutoOrManualSwitch } from "../../switch/AutoOrManualSwitch"
-import { PlatformFeeTrans } from "../../trans/Platform"
 
 export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -663,21 +662,6 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
             disabled={readonly || !isAdd}
           />
         </Box>
-
-        {/* 
-        TODO: rm
-        <NormalLabel>
-          <PlatformFeeTrans />
-        </NormalLabel>
-        <Box>
-          <PercentageNumberInputField
-            name="platformCharge"
-            readOnly={readonly}
-            disabled={!editable}
-            width="fit-content"
-          />
-        </Box> 
-        */}
 
         <NormalLabel>
           <Trans zh="自动清除流水" en="Auto Clear Wagering Requirement" />

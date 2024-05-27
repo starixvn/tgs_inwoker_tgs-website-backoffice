@@ -47,7 +47,9 @@ import {
   InstantMessagingTrans,
   useInstantMessagingTrans
 } from "../../trans/Platform"
+import Modal from "../../dialog/Modal"
 
+//TODO: fine tune layout & add test cases
 export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
 
@@ -83,13 +85,12 @@ const InstantMessagingDialog = ({ brandId, dialog }) => {
 
   let items = data ?? []
   return (
-    <Dialog.Modal
+    <Modal
       {...dialog}
       title={title}
-      hideOnClickOutside={false}
-      width="50vw"
-      maxWidth="80vw"
-      showCloseButton
+      css={css`
+        min-width: 50vw;
+      `}
     >
       <Stack>
         <TwoColumns>
@@ -105,7 +106,7 @@ const InstantMessagingDialog = ({ brandId, dialog }) => {
           <AddMessengerCard brandId={brandId} onSubmitted={mutate} />
         </TwoColumns>
       </Stack>
-    </Dialog.Modal>
+    </Modal>
   )
 }
 

@@ -6,7 +6,7 @@ import {
   useDelete,
   usePostFormData,
   usePatchData
-} from "../../client"
+} from "../client"
 
 const API = "/api/sms"
 
@@ -57,3 +57,6 @@ export const useApplyPlatformSms = (brandId, formData) => {
   let url = brandId && formData ? `${PlatformApi}/${brandId}` : ""
   return usePatchData(url, formData)
 }
+
+//TODO
+export const useUpdatePlatformSmsSetting = (brandId, data) => {}
