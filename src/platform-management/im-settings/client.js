@@ -66,9 +66,9 @@ export const useUpdatePlatformAgentDividendCondition = (data) => {
   return usePutData(url, data)
 }
 
-export const useUpdatePlatformSms = (brandId, applySms, enableSms) => {
+export const useUpdatePlatformSms = (brandId, smsSettingId, enableSms) => {
   let items = [
-    useApplyPlatformSms(brandId, applySms),
+    useApplyPlatformSms(brandId, smsSettingId),
     useEnablePlatformSms(brandId, enableSms)
   ]
 

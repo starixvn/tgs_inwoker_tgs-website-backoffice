@@ -111,21 +111,21 @@ const SettingDialog = ({
 }) => {
   let title = useSMSVerificationTrans()
 
-  let [smsSetting, setSmsSetting] = useState()
+  let [smsSettingId, setSmsSettingId] = useState()
   let [enableSms, setEnableSms] = useState()
   let { isLoading, result, error, mutate } = useUpdatePlatformSms(
     brandId,
-    smsSetting,
+    smsSettingId,
     enableSms
   )
 
-  const onSubmit = ({ enableSms, ...data }) => {
-    setSmsSetting(data)
+  const onSubmit = ({ smsSettingId, enableSms, ...data }) => {
+    setSmsSettingId(smsSettingId)
     setEnableSms(enableSms)
   }
 
   const reset = () => {
-    setSmsSetting(null)
+    setSmsSettingId(null)
     mutate(undefined, false)
   }
 
