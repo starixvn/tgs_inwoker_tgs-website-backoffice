@@ -57,6 +57,3 @@ export const useApplyPlatformSms = (brandId, formData) => {
   let url = brandId && formData ? `${PlatformApi}/${brandId}` : ""
   return usePatchData(url, formData)
 }
-
-//TODO
-export const useUpdatePlatformSmsSetting = (brandId, data) => {}

@@ -92,8 +92,8 @@ const BodyContent = ({ brandId, brand }) => {
       />
       {/* 
       TODO: update api
-      <SmsVerificationDialogDisclosure brandId={brandId} /> 
       */}
+      <SmsVerificationDialogDisclosure brandId={brandId} />
     </Set>
   )
 }

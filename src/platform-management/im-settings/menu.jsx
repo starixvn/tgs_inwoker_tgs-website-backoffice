@@ -15,6 +15,10 @@ export const UpdateAllAgent = "updateallagent"
 
 export const ViewAllAgent = "viewallagent"
 
+export const ViewSms = "viewsms"
+
+export const UpdateSms = "updatesms"
+
 export const label = ({ codes = [], locale = Locales.zh }) => {
   let [code = ""] = codes
   code = code.toLowerCase()
@@ -65,6 +69,22 @@ export const label = ({ codes = [], locale = Locales.zh }) => {
         {
           zh: "编辑全民代理",
           en: "Edit All Agent"
+        },
+        locale
+      )
+    case ViewSms:
+      return getTrans(
+        {
+          zh: "查看简讯验证",
+          en: "View SMS Verification"
+        },
+        locale
+      )
+    case UpdateSms:
+      return getTrans(
+        {
+          zh: "编辑简讯验证",
+          en: "Edit SMS Verification"
         },
         locale
       )
