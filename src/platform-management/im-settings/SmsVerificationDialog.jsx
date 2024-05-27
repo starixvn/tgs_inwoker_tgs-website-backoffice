@@ -129,8 +129,6 @@ const SettingDialog = ({
     mutate(undefined, false)
   }
 
-  //TODO
-  console.log("defaultValues", defaultValues)
   return (
     <FormDialog
       defaultValues={defaultValues}
