@@ -49,6 +49,7 @@ import {
   useVirtualSportsTrans
 } from "../../trans/Game"
 import { useProductFeeTrans } from "../../trans/Platform"
+import { useCurrentCycleTrans, useNextCycleTrans } from "../../trans/Field"
 
 const Key = "AgentHistoryList"
 
@@ -321,72 +322,84 @@ const ProductFee = {
     Current: () => {
       let productFee = useProductFeeTrans()
       let liveDealer = useLiveDealerTrans()
-      return `${productFee}: ${liveDealer}`
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${liveDealer}`
     },
     Next: () => {
       let productFee = useProductFeeTrans()
       let liveDealer = useLiveDealerTrans()
-      return `${productFee}: ${liveDealer}`
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${liveDealer}`
     }
   },
   Sportsbook: {
     Current: () => {
       let productFee = useProductFeeTrans()
       let sports = useSportsbookTrans()
-      return `${productFee}: ${sports}`
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${sports}`
     },
     Next: () => {
       let productFee = useProductFeeTrans()
       let sports = useSportsbookTrans()
-      return `${productFee}: ${sports}`
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${sports}`
     }
   },
   EGame: {
     Current: () => {
       let productFee = useProductFeeTrans()
       let egame = useEGameTrans()
-      return `${productFee}: ${egame}`
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${egame}`
     },
     Next: () => {
       let productFee = useProductFeeTrans()
       let egame = useEGameTrans()
-      return `${productFee}: ${egame}`
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${egame}`
     }
   },
   CardGame: {
     Current: () => {
       let productFee = useProductFeeTrans()
       let cardGame = useCardGameTrans()
-      return `${productFee}: ${cardGame}`
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${cardGame}`
     },
     Next: () => {
       let productFee = useProductFeeTrans()
       let cardGame = useCardGameTrans()
-      return `${productFee}: ${cardGame}`
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${cardGame}`
     }
   },
   Lottery: {
     Current: () => {
       let productFee = useProductFeeTrans()
       let lottery = useLotteryTrans()
-      return `${productFee}: ${lottery}`
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${lottery}`
     },
     Next: () => {
       let productFee = useProductFeeTrans()
       let lottery = useLotteryTrans()
-      return `${productFee}: ${lottery}`
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${lottery}`
     }
   },
   VirtualSports: {
     Current: () => {
       let productFee = useProductFeeTrans()
       let virtualSport = useVirtualSportsTrans()
-      return `${productFee}: ${virtualSport}`
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${virtualSport}`
     },
     Next: () => {
       let productFee = useProductFeeTrans()
       let virtualSport = useVirtualSportsTrans()
-      return `${productFee}: ${virtualSport}`
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${virtualSport}`
     }
   }
 }
