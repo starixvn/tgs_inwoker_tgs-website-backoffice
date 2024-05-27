@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from "react"
 import { css, Global } from "@emotion/react"
-import { Spinner, Stack, Box, Heading, Set, Text, Columns, Alert } from "bumbag"
+import {
+  Spinner,
+  Stack,
+  Box,
+  Heading,
+  Set,
+  Text,
+  Columns,
+  Alert,
+  FieldStack,
+  Flex
+} from "bumbag"
 import { FieldValues } from "../../layout/Grid"
 import {
   Trans,
@@ -42,7 +53,7 @@ import {
 } from "../AgentProfitSharingType"
 import Textarea from "../../textarea"
 import { ClearProfitShareDialogDisclosure } from "./ClearProfitShareDialog"
-import { isEmpty, isNil } from "lodash-es"
+import { isEmpty, isNil, isObject } from "lodash-es"
 import { either } from "ramda"
 import { diff } from "../../object/diff"
 import {
@@ -75,6 +86,7 @@ import {
   SportsbookTrans,
   VirtualSportsTrans
 } from "../../trans/Game"
+import { CurrentCycleTrans, NextCycleTrans } from "../../trans/Field"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -415,151 +427,48 @@ const ViewPanel = ({ agent, brand, ...props }) => {
   )
 }
 
-//TODO: add CurrentCycle, NextCycle
 const ProductFeeBox = ({ agentId }) => {
   let { isLoading, data: productFee, error } = useAgentProductFee(agentId)
   if (isLoading) {
     return <Spinner />
   }
 
+  const items = [
+    ["LiveDealer", LiveDealerTrans],
+    ["Sports", SportsbookTrans],
+    ["Slot", EGameTrans],
+    ["CardGame", CardGameTrans],
+    ["Lottery", LotteryTrans],
+    ["VirtualSports", VirtualSportsTrans]
+  ]
+
   return (
     <>
       <Heading use="h5">
         <ProductFeeTrans />
       </Heading>
-      <FieldValues>
-        <LiveDealerTrans />
-        <Set orientation="horizontal" isFilled>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.currentLiveDealerPercentage}
-            />
-          </Box>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.nextLiveDealerPercentage}
-            />
-          </Box>
-        </Set>
-
-        <SportsbookTrans />
-        <Set orientation="horizontal" isFilled>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.currentSportsPercentage}
-            />
-          </Box>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.nextSportsPercentage}
-            />
-          </Box>
-        </Set>
-
-        <EGameTrans />
-        <Set orientation="horizontal" isFilled>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.currentSlotPercentage}
-            />
-          </Box>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.nextSlotPercentage}
-            />
-          </Box>
-        </Set>
-
-        <CardGameTrans />
-        <Set orientation="horizontal" isFilled>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.currentCardGamePercentage}
-            />
-          </Box>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.nextCardGamePercentage}
-            />
-          </Box>
-        </Set>
-
-        <LotteryTrans />
-        <Set orientation="horizontal" isFilled>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.currentLotteryPercentage}
-            />
-          </Box>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.nextLotteryPercentage}
-            />
-          </Box>
-        </Set>
-
-        <VirtualSportsTrans />
-        <Set orientation="horizontal" isFilled>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.currentVirtualSportsPercentage}
-            />
-          </Box>
-          <Box
-            css={css`
-              flex: 1;
-            `}
-          >
-            <FormattedNumberDecimalPercentage
-              value={productFee?.nextVirtualSportsPercentage}
-            />
-          </Box>
-        </Set>
-      </FieldValues>
+      <FieldStack>
+        {items.map(([key, LabelTrans]) => {
+          let currentValue = isObject(productFee)
+            ? Reflect.get(productFee, `current${key}Percentage`)
+            : null
+          let nextValue = isObject(productFee)
+            ? Reflect.get(productFee, `next${key}Percentage`)
+            : null
+          return (
+            <Box key={key}>
+              <Flex orientation="horizontal">
+                <CurrentCycleTrans />-<LabelTrans />:
+                <FormattedNumberDecimalPercentage value={currentValue} />
+              </Flex>
+              <Flex orientation="horizontal">
+                <NextCycleTrans />-<LabelTrans />:
+                <FormattedNumberDecimalPercentage value={nextValue} />
+              </Flex>
+            </Box>
+          )
+        })}
+      </FieldStack>
     </>
   )
 }
