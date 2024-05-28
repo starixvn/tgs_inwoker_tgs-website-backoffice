@@ -133,7 +133,7 @@ export const usePlatformSocialMediaList = (brandId) => {
 /*
 data = { name, type, url }
 */
-export const useUpdatePlatformSocialMedia = (brandId, data) => {
+export const useAddPlatformSocialMedia = (brandId, data) => {
   let url = brandId && data ? `${SocialMediaApi}/${brandId}` : ""
   return usePutData(url, data)
 }
@@ -144,4 +144,12 @@ export const useDeletePlatformSocialMedia = (brandId, socialMediaId) => {
       ? `${SocialMediaApi}/${brandId}/${socialMediaId}`
       : ""
   return useDelete(url)
+}
+
+export const useChangePlatformSocialMediaOrder = (socialMediaId, order) => {
+  let url =
+    socialMediaId && Number.isFinite(order)
+      ? `${SocialMediaApi}/order/${socialMediaId}`
+      : ""
+  return usePatchData(url, order)
 }
