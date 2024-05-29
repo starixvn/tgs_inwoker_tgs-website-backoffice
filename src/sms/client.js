@@ -50,13 +50,7 @@ export const useDeletePlatformSms = (brandId, smsSettingId) => {
   return useDelete(url)
 }
 
-/*
- formData = { smsSettingId }
-*/
-export const useApplyPlatformSms = (brandId, formData) => {
-  let url = brandId && formData ? `${PlatformApi}/${brandId}` : ""
-  return usePatchData(url, formData)
+export const useApplyPlatformSms = (brandId, smsSettingId) => {
+  let url = brandId && smsSettingId ? `${PlatformApi}/apply/${brandId}` : ""
+  return usePatchData(url, smsSettingId)
 }
-
-//TODO
-export const useUpdatePlatformSmsSetting = (brandId, data) => {}

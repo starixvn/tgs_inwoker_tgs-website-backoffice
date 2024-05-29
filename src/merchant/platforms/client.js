@@ -118,3 +118,38 @@ export const useUpdatePlatformProductFee = (formData) => {
   let url = formData ? ProductFeeApi : ""
   return usePutData(url, formData)
 }
+
+export const useEnablePlatformSms = (brandId, bool) => {
+  let url = !brandId || isNil(bool) ? "" : `${API}/enable-sms/${brandId}`
+  return usePatchData(url, bool)
+}
+
+const SocialMediaApi = "/api/brand/social"
+export const usePlatformSocialMediaList = (brandId) => {
+  let url = brandId ? `${SocialMediaApi}/${brandId}` : ""
+  return useGet(url)
+}
+
+/*
+data = { name, type, url }
+*/
+export const useAddPlatformSocialMedia = (brandId, data) => {
+  let url = brandId && data ? `${SocialMediaApi}/${brandId}` : ""
+  return usePutData(url, data)
+}
+
+export const useDeletePlatformSocialMedia = (brandId, socialMediaId) => {
+  let url =
+    brandId && socialMediaId
+      ? `${SocialMediaApi}/${brandId}/${socialMediaId}`
+      : ""
+  return useDelete(url)
+}
+
+export const useChangePlatformSocialMediaOrder = (socialMediaId, order) => {
+  let url =
+    socialMediaId && Number.isFinite(order)
+      ? `${SocialMediaApi}/order/${socialMediaId}`
+      : ""
+  return usePatchData(url, order)
+}

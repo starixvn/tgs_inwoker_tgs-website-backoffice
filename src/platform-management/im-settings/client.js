@@ -10,6 +10,9 @@ import {
   usePostFormData,
   useDelete
 } from "../../client"
+import { useApiMerge } from "../../client/useApiMerge."
+import { useEnablePlatformSms } from "../../merchant/platforms/client"
+import { useApplyPlatformSms } from "../../sms/client"
 
 let API = "/api/BrandCommunication"
 
@@ -61,4 +64,13 @@ export const usePlatformAgentDividendCondition = (brandId) => {
 export const useUpdatePlatformAgentDividendCondition = (data) => {
   let url = data?.brandId ? `/api/BrandAgentDividendCondition` : ""
   return usePutData(url, data)
+}
+
+export const useUpdatePlatformSms = (brandId, smsSettingId, enableSms) => {
+  let items = [
+    useApplyPlatformSms(brandId, smsSettingId),
+    useEnablePlatformSms(brandId, enableSms)
+  ]
+
+  return useApiMerge(items)
 }

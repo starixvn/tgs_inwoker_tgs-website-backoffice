@@ -20,10 +20,15 @@ import { Trans, useTrans } from "../../i18n"
 export const SmsListDialogDisclosure = ({}) => {
   let dialog = useModalState()
 
+  let hasAuth = useIsDisplayMenuByRoute([Update])
+  if (!hasAuth) {
+    return null
+  }
+
   return (
     <>
       <Disclosure {...dialog}>
-        <SmsProviderTrans />
+        <Trans zh="新增简讯商" en="Add SMS Provider" />
       </Disclosure>
       {dialog.visible && <ListDialog dialog={dialog} />}
     </>
@@ -34,7 +39,7 @@ const SmsProvider = {
   zh: "簡訊商",
   en: "SMS Provider"
 }
-const SmsProviderTrans = () => <Trans zh="簡訊商" en="SMS Provider" />
+const SmsProviderTrans = () => <Trans {...SmsProvider} />
 const useSmsProviderTrans = () => useTrans(SmsProvider)
 
 const ListDialog = ({ dialog }) => {
@@ -73,12 +78,12 @@ const useColumns = ({ items, mutate }) => {
     let columns = [
       textColumn({
         accessor: "name",
-        Header: <Trans zh="簡訊商名稱" en="Name" />,
+        Header: <Trans zh="簡訊商名稱" en="SMS Provider Name" />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "code",
-        Header: <Trans zh="簡訊商代碼" en="Code" />,
+        Header: <Trans zh="簡訊商代碼" en="SMS Provider Code" />,
         disableSortBy: true
       }),
       textColumn({

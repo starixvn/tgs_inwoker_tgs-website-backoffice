@@ -35,12 +35,6 @@ import { StatusTrans } from "../../trans/Status"
 import { EmailTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
 import { TimeTrans } from "../../trans/Date"
 import {
-  CardGameTrans,
-  EGameTrans,
-  LiveDealerTrans,
-  LotteryTrans,
-  SportsbookTrans,
-  VirtualSportsTrans,
   useCardGameTrans,
   useEGameTrans,
   useLiveDealerTrans,

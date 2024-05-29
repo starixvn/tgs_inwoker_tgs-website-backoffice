@@ -243,3 +243,10 @@ const NextCycle = {
 }
 export const NextCycleTrans = () => <Trans {...NextCycle} />
 export const useNextCycleTrans = () => useTrans(NextCycle)
+
+//TODO: trans
+const SocialMedia = {
+  en: "Social Media"
+}
+export const SocialMediaTrans = () => <Trans {...SocialMedia} />
+export const useSocialMediaTrans = () => useTrans(SocialMedia)
