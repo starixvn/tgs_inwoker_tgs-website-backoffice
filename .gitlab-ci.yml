@@ -24,7 +24,7 @@ docker_push:
   stage: push
   script:
     - docker push ${Registry}${Image}:${TAG}
-    - docker push ${Registry}${Image}:${kube_ns}
+    - docker push ${Registry}${Image}:latest
   only:
     - main
     - release
