@@ -20,6 +20,11 @@ import { Trans, useTrans } from "../../i18n"
 export const SmsListDialogDisclosure = ({}) => {
   let dialog = useModalState()
 
+  let hasAuth = useIsDisplayMenuByRoute([Update])
+  if (!hasAuth) {
+    return null
+  }
+
   return (
     <>
       <Disclosure {...dialog}>
