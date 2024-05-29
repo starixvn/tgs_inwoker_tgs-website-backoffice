@@ -1,0 +1,58 @@
+variables:
+  Registry: "pgtgs/"
+  Image: "backoffice-site"
+  
+stages:
+  - build
+  - push
+  - deploy
+
+before_script:
+  - export TAG=$(date +%Y-%m%d-%H%M)
+
+docker_build:
+  stage: build
+  script:
+    - docker build -t ${Registry}${Image}:${TAG} .
+    - docker tag ${Registry}${Image}:${TAG} ${Registry}${Image}:${kube_ns}
+  only:
+    - main
+    - release
+    - develop
+    
+docker_push:
+  stage: push
+  script:
+    - docker push ${Registry}${Image}:${TAG}
+    - docker push ${Registry}${Image}:${kube_ns}
+  only:
+    - main
+    - release
+    - develop
+
+deploy-dev:
+  stage: deploy
+  script:
+    - export KUBECONFIG="KubeConfig_Raypro_dev"
+    - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n dev
+  when: manual
+  only:
+    - develop
+
+deploy-staging:
+  stage: deploy
+  script:
+    - export KUBECONFIG="KubeConfig_Raypro_staging"
+    - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n staging
+  when: manual
+  only:
+    - release
+
+deploy-prod:
+  stage: deploy
+  script:
+    - export KUBECONFIG="KubeConfig_Raypro_prod"
+    - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n prod
+  when: manual
+  only:
+    - main
