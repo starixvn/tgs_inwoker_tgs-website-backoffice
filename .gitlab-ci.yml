@@ -14,6 +14,7 @@ before_script:
 docker_build:
   stage: build
   script:
+    - docker login --username $docker_user --password $docker_password
     - docker build -t ${Registry}${Image}:${TAG} .
     - docker tag ${Registry}${Image}:${TAG} ${Registry}${Image}:latest
     - docker push ${Registry}${Image}:${TAG}
