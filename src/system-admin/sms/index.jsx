@@ -63,7 +63,13 @@ const Body = () => {
         />
         <Set>
           <SmsListDialogDisclosure />
-          <AddPlatformSmsDialog brandId={state.brandId} onSubmitted={mutate} />
+          <AddPlatformSmsDialog
+            brandId={state.brandId}
+            onSubmitted={() => {
+              console.log("before mutate platform sms")
+              mutate()
+            }}
+          />
         </Set>
       </Level>
       <Table

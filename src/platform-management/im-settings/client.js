@@ -66,6 +66,8 @@ export const useUpdatePlatformAgentDividendCondition = (data) => {
   return usePutData(url, data)
 }
 
+//TODO: rm
+/*
 export const useUpdatePlatformSms = (brandId, smsSettingId, enableSms) => {
   let items = [
     useApplyPlatformSms(brandId, smsSettingId),
@@ -74,3 +76,4 @@ export const useUpdatePlatformSms = (brandId, smsSettingId, enableSms) => {
 
   return useApiMerge(items)
 }
+*/
