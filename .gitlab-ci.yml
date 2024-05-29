@@ -14,8 +14,6 @@ before_script:
 docker_build:
   stage: build
   script:
-    - echo "docker_user=$docker_user"
-    - echo "docker_pwd=$docker_token"
     - docker login --username $docker_user --password $docker_token
     - docker build -t ${Registry}${Image}:${TAG} .
     - docker tag ${Registry}${Image}:${TAG} ${Registry}${Image}:latest
