@@ -14,7 +14,7 @@ docker_build:
   stage: build
   script:
     - docker build -t ${Registry}${Image}:${TAG} .
-    - docker tag ${Registry}${Image}:${TAG} ${Registry}${Image}:${kube_ns}
+    - docker tag ${Registry}${Image}:${TAG} ${Registry}${Image}:latest
   only:
     - main
     - release
