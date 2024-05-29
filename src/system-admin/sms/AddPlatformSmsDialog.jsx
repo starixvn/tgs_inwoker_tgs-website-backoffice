@@ -12,7 +12,12 @@ import {
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update, View } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
-import { useAddPlatformSms, useDeleteSms, useSmsList } from "../../sms/client"
+import {
+  useAddPlatformSms,
+  useDeleteSms,
+  usePlatformSmsList,
+  useSmsList
+} from "../../sms/client"
 import Disclosure from "../../dialog/Disclosure"
 import { Trans, useTrans } from "../../i18n"
 import Backdrop from "../../dialog/Backdrop"
@@ -99,6 +104,15 @@ const AddDialog = ({ brandId, dialog, dialogId, onSubmitted }) => {
 }
 
 const FormBody = ({}) => {
+  let { control } = useFormContext()
+  let brandId = useWatch({
+    control,
+    name: "brandId"
+  })
+  let { isLoading, data: items } = usePlatformSmsList(brandId)
+
+  let platformSmsSettingIds =
+    items?.map(({ smsSettingId }) => smsSettingId) ?? []
   return (
     <FieldStack>
       <FieldWrapper label={<PlatformTrans />}>
@@ -111,7 +125,12 @@ const FormBody = ({}) => {
         />
       </FieldWrapper>
       <FieldWrapper label={<Trans zh="簡訊商名稱" en="SMS Provider Name" />}>
-        <SmsSelect required />
+        <SmsSelect
+          filter={({ smsSettingId }) =>
+            !platformSmsSettingIds.includes(smsSettingId)
+          }
+          required
+        />
       </FieldWrapper>
     </FieldStack>
   )

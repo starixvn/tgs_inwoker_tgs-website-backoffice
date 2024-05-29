@@ -5,13 +5,17 @@ import { Select } from "../select/Select"
 import { useTrans } from "../i18n"
 import { useSMSProviderTrans } from "../trans/Sms"
 
-//TODO: filter fn
-export const SmsSelect = ({ name = "smsSettingId", placeholder, ...props }) => {
+export const SmsSelect = ({
+  name = "smsSettingId",
+  filter: predicate = () => true,
+  placeholder,
+  ...props
+}) => {
   let defaultPlaceholder = useSMSProviderTrans()
   placeholder = placeholder ?? defaultPlaceholder
   let { isLoading, data: items = [], error } = useSmsList()
 
-  let options = items?.map(({ name, smsSettingId }) => ({
+  let options = items?.filter(predicate)?.map(({ name, smsSettingId }) => ({
     label: name,
     value: smsSettingId
   }))
