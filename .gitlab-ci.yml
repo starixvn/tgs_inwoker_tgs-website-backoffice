@@ -35,7 +35,8 @@ deploy-dev:
   script:
     - export KUBECONFIG="KubeConfig_Raypro_dev"
     - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n dev
-  when: manual
+  tags:
+    - gitlab-runner
   only:
     - develop
 
@@ -44,7 +45,6 @@ deploy-staging:
   script:
     - export KUBECONFIG="KubeConfig_Raypro_staging"
     - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n staging
-  when: manual
   only:
     - release
 
