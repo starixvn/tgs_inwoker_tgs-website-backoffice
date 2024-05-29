@@ -28,6 +28,7 @@ deploy-dev:
   stage: deploy
   script:
     - export KUBECONFIG="KubeConfig_Raypro_dev"
+    - echo "KUBECONFIG=$KUBECONFIG"
     - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n dev
   tags:
     - gitlab-runner
