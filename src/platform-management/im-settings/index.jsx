@@ -31,6 +31,7 @@ import clone from "clone-deep"
 import { AllAgentDialogDisclosure } from "./AllAgentDialog"
 import { OperationSettingsTrans } from "../../trans/Platform"
 import { SmsVerificationDialogDisclosure } from "./SmsVerificationDialog"
+import { SocialMediaListDialogDisclosure } from "./SocialMediaListDialog"
 
 export { Code }
 
@@ -49,7 +50,7 @@ export const Content = () => {
 
 const Body = () => {
   let brandId = usePlatformId()
-  let { isLoading, data: brand, error, mutate } = useBrand(brandId)
+  let { isLoading, data: brand, error, mutate, emptyData } = useBrand(brandId)
 
   return (
     <Set orientation="vertical" isFilled height="100%">
@@ -61,7 +62,7 @@ const Body = () => {
       {!isLoading && brandId && brand && (
         <BodyContent brandId={brandId} brand={brand} />
       )}
-      {error && <AlertDialog {...error} onClickClose={mutate} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }
@@ -90,10 +91,8 @@ const BodyContent = ({ brandId, brand }) => {
         id="all-agent-setting-dialog-disclosure"
         brandId={brandId}
       />
-      {/* 
-      TODO: update api
-      */}
       <SmsVerificationDialogDisclosure brandId={brandId} />
+      <SocialMediaListDialogDisclosure brandId={brandId} />
     </Set>
   )
 }

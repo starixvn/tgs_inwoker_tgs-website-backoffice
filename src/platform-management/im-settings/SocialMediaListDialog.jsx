@@ -49,11 +49,18 @@ import Backdrop from "../../dialog/Backdrop"
 import { InputField } from "../../input/Input"
 import { SocialMediaTrans, useSocialMediaTrans } from "../../trans/Field"
 import { SelectField } from "../../select/Select"
-import { Table } from "../../table"
+import { Table, useTable } from "../../table"
+import { Trans } from "../../i18n"
+import { isDev } from "../../env"
 
 //TODO: test case
 export const SocialMediaListDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
+
+  let devEnv = isDev()
+  if (!devEnv) {
+    return null
+  }
 
   let viewAuth = useIsDisplayMenuByRoute([View])
   let editable = useIsDisplayMenuByRoute([Update])
@@ -65,7 +72,7 @@ export const SocialMediaListDialogDisclosure = ({ brandId, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans en="Social Media Setting" />
+        <Trans en="Social Media" />
       </Disclosure>
       {dialog.visible && (
         <ListDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
@@ -76,6 +83,7 @@ export const SocialMediaListDialogDisclosure = ({ brandId, ...props }) => {
 
 const ListDialog = ({ brandId, dialog, ...props }) => {
   let title = useSocialMediaTrans()
+  let { state, setPageIndex, setSortOrder } = useTable()
   let {
     isLoading,
     data: items = [],
@@ -197,6 +205,7 @@ const useColumns = ({ mutate, brandId, items = [] }) => {
         id: "actions",
         accessor: (row) => row,
         Header: <ActionTrans />,
+        disableSortBy: true,
         Cell: ({ value: record }) => {
           return (
             <Set alignX="center">
@@ -274,35 +283,41 @@ const AddDialog = ({ brandId, dialog, onSubmitted }) => {
     mutate(undefined, false)
   }
 
-  //TODO: init order?
   return (
-    <FormDialog
-      defaultValues={{}}
-      onSubmit={onSubmit}
-      onSubmitted={() => {
-        reset()
-        onSubmitted?.()
-      }}
-      isLoading={isLoading}
-      result={result}
-      error={error}
-      onCloseErrorAlert={reset}
-      dialog={dialog}
-      title={title}
-    >
-      <FormBody />
-    </FormDialog>
+    <Backdrop {...dialog}>
+      <FormDialog
+        defaultValues={{}}
+        onSubmit={onSubmit}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
+        isLoading={isLoading}
+        result={result}
+        error={error}
+        onCloseErrorAlert={reset}
+        dialog={dialog}
+        hideBackdrop
+        title={title}
+      >
+        <FormBody />
+      </FormDialog>
+    </Backdrop>
   )
 }
 
 const FormBody = ({}) => {
   return (
     <FieldStack>
-      <FieldStack orientation="horizontal">
-        <InputField name="name" label="Name" />
-        <SocialMediaSelectField name="type" label={<SocialMediaTrans />} />
+      <FieldStack alignY="bottom" orientation="horizontal">
+        <InputField name="name" required label="Name" />
+        <SocialMediaSelectField
+          name="type"
+          required
+          label={<SocialMediaTrans />}
+        />
       </FieldStack>
-      <InputField name="url" label="URL" />
+      <InputField name="url" type="url" required label="URL" />
     </FieldStack>
   )
 }
