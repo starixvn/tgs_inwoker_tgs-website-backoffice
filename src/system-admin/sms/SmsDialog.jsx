@@ -78,6 +78,9 @@ const AddSmsDialog = ({ onSubmitted, dialog, dialogId }) => {
         hideBackdrop
         id={dialogId}
         title={add}
+        css={css`
+          min-width: 50vw;
+        `}
       >
         <FormBody />
       </FormDialog>
@@ -94,10 +97,12 @@ export const UpdateSmsDialogDisclosure = ({
 }) => {
   let dialog = useModalState()
 
-  //TODO: readOnly auth
+  let hasAuth = useIsDisplayMenuByRoute([Update])
+  if (!hasAuth) {
+    return null
+  }
 
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
-
   return (
     <>
       <EditDisclosure {...dialog} />
@@ -114,7 +119,6 @@ export const UpdateSmsDialogDisclosure = ({
   )
 }
 
-//TODO: need ViewSmsDialog?
 const UpdateSmsDialog = ({
   smsSettingId,
   record = {},
@@ -158,6 +162,9 @@ const UpdateSmsDialog = ({
         hideBackdrop
         id={dialogId}
         title={edit}
+        css={css`
+          min-width: 50vw;
+        `}
       >
         <FormBody />
       </FormDialog>
@@ -167,17 +174,30 @@ const UpdateSmsDialog = ({
 
 const FormBody = ({ readOnly }) => {
   return (
-    <FieldStack>
-      <FieldStack orientation="horizontal">
-        <InputField name="name" label="Name" />
-        <InputField name="code" label="Code" />
-      </FieldStack>
-      <JsonEditor
-        name="setting"
-        height="40vh"
-        readOnly={readOnly}
-        disabled={readOnly}
-      />
-    </FieldStack>
+    <Columns>
+      <Columns.Column>
+        <FieldStack>
+          <InputField
+            name="name"
+            label={<Trans zh="简讯商名称" en="SMS Provider Name" />}
+            required
+          />
+          <InputField
+            name="code"
+            label={<Trans zh="简讯商代码" en="简讯商代码" />}
+            required
+          />
+        </FieldStack>
+      </Columns.Column>
+      <Columns.Column>
+        <JsonEditor
+          name="setting"
+          height="40vh"
+          required
+          readOnly={readOnly}
+          disabled={readOnly}
+        />
+      </Columns.Column>
+    </Columns>
   )
 }

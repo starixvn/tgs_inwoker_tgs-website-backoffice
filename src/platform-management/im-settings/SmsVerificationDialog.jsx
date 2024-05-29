@@ -30,6 +30,7 @@ import Modal from "../../dialog/Modal"
 import { FieldValues } from "../../layout/Grid"
 import Switch from "../../switch/Switch"
 import { PlatformSmsSelect } from "../../sms/PlatformSmsSelect"
+import { useFormContext, useWatch } from "react-hook-form"
 
 //TODO: test case
 export const SmsVerificationDialogDisclosure = ({ brandId, ...props }) => {
@@ -87,7 +88,7 @@ const FetchDialog = ({ brandId, dialog, ...props }) => {
         smsSettingId
       }}
       onSubmitted={() => {
-        mutateBrand(undefined, false)
+        mutateBrand()
         mutateSmsList(undefined, false)
       }}
       brandId={brandId}
@@ -119,13 +120,14 @@ const SettingDialog = ({
     enableSms
   )
 
-  const onSubmit = ({ smsSettingId, enableSms, ...data }) => {
+  const onSubmit = ({ smsSettingId, enableSms }) => {
     setSmsSettingId(smsSettingId)
     setEnableSms(enableSms)
   }
 
   const reset = () => {
     setSmsSettingId(null)
+    setEnableSms(null)
     mutate(undefined, false)
   }
 
@@ -151,15 +153,23 @@ const SettingDialog = ({
 }
 
 const FormBody = ({ brandId, readOnly }) => {
+  let { control } = useFormContext()
+
+  const EnableSmsField = "enableSms"
+  let enableSms = useWatch({
+    control,
+    name: EnableSmsField
+  })
   return (
     <FieldValues>
       <SMSVerificationTrans />
-      <Switch name="enableSms" disabled={readOnly} />
+      <Switch name={EnableSmsField} disabled={readOnly} />
 
       <SMSProviderTrans />
       <PlatformSmsSelect
         name="smsSettingId"
         brandId={brandId}
+        required={enableSms}
         disabled={readOnly}
         readOnly={readOnly}
       />
