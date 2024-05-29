@@ -8,6 +8,7 @@ stages:
   - deploy
 
 before_script:
+  - docker system prune -a -f
   - export TAG=$(date +%Y-%m%d-%H%M)
 
 docker_build:
@@ -15,14 +16,6 @@ docker_build:
   script:
     - docker build -t ${Registry}${Image}:${TAG} .
     - docker tag ${Registry}${Image}:${TAG} ${Registry}${Image}:latest
-  only:
-    - main
-    - release
-    - develop
-    
-docker_push:
-  stage: push
-  script:
     - docker push ${Registry}${Image}:${TAG}
     - docker push ${Registry}${Image}:latest
   only:
