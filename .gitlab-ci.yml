@@ -34,7 +34,6 @@ deploy-dev:
   script:
     - export KUBECONFIG="$KubeConfig_Raypro_dev"
     - TAG=$(cat tag.txt)
-    - echo "TAG=$TAG"
     - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n dev
   tags:
     - gitlab-runner
@@ -48,7 +47,6 @@ deploy-staging:
   script:
     - export KUBECONFIG="$KubeConfig_Raypro_staging"
     - TAG=$(cat tag.txt)
-    - echo "TAG=$TAG"
     - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n staging
   dependencies:
     - docker_build
@@ -60,7 +58,6 @@ deploy-prod:
   script:
     - export KUBECONFIG="$KubeConfig_Raypro_prod"
     - TAG=$(cat tag.txt)
-    - echo "TAG=$TAG"
     - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n prod
   dependencies:
     - docker_build
