@@ -150,10 +150,27 @@ const useColumns = ({ items = [] }) => {
         accessor: "profitAmount",
         Header: (
           <Trans
+            zh="公司輸贏x10%(負值以0表示)"
+            en="Company W/L*10% (Any negative result will be considered as 0)"
+          />
+        ),
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        id: "winLoss",
+        accessor: (row) => row,
+        Header: (
+          <Trans
             zh="公司輸贏(負值以0表示)"
             en="Company W/L (Any negative result will be considered as 0)"
           />
         ),
+        toValue: ({ value: record }) => {
+          if (Number.isFinite(record?.winLoss) && record?.winLoss < 0) {
+            return Math.abs(record.winLoss)
+          }
+          return 0
+        },
         disableSortBy: true
       })
     ],

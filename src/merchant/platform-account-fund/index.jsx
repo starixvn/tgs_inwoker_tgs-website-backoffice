@@ -154,7 +154,12 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
           numberDecimalColumn({
             id: "creditUsed",
             accessor: (row) => row,
-            Header: <Trans zh="已使用額度" en="Used Credits" />,
+            Header: (
+              <Trans
+                zh="公司輸贏x10%(負值以0表示)"
+                en="Used Credit (winlose*10%)"
+              />
+            ),
             disableSortBy: true,
             Cell: ({ value: record }) => {
               return (
@@ -166,6 +171,17 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
                 />
               )
             }
+          })
+        ]
+      },
+      {
+        id: "platformBalance",
+        Header: "",
+        columns: [
+          numberDecimalPercentageColumn({
+            accessor: "creditAvailable",
+            Header: <Trans zh="平台餘額" en="Platform Balance" />,
+            disableSortBy: true
           })
         ]
       },
