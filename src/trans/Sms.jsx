@@ -9,6 +9,8 @@ const SMSProvider = {
 export const SMSProviderTrans = () => <Trans {...SMSProvider} />
 export const useSMSProviderTrans = () => useTrans(SMSProvider)
 
+//TODO: rm
+/*
 const SMSVerification = {
   zh: "简讯验证",
   en: "SMS Verification",
@@ -16,6 +18,7 @@ const SMSVerification = {
 }
 export const SMSVerificationTrans = () => <Trans {...SMSVerification} />
 export const useSMSVerificationTrans = () => useTrans(SMSVerification)
+*/
 
 const SMSProviderManagement = {
   zh: "简讯商管理",

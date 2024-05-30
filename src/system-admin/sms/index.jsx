@@ -24,6 +24,7 @@ import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { Trans } from "../../i18n"
 import { SmsListDialogDisclosure } from "./SmsListDialog"
 import { AddPlatformSmsDialog } from "./AddPlatformSmsDialog"
+import { PlatformSmsStatusDialogDisclosure } from "./PlatformSmsStatusDialog"
 
 export { Code }
 
@@ -63,13 +64,10 @@ const Body = () => {
         />
         <Set>
           <SmsListDialogDisclosure />
-          <AddPlatformSmsDialog
-            brandId={state.brandId}
-            onSubmitted={() => {
-              console.log("before mutate platform sms")
-              mutate()
-            }}
-          />
+          <AddPlatformSmsDialog brandId={state.brandId} onSubmitted={mutate} />
+          {state.brandId && (
+            <PlatformSmsStatusDialogDisclosure brandId={state.brandId} />
+          )}
         </Set>
       </Level>
       <Table
