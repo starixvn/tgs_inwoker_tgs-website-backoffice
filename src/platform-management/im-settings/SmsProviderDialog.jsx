@@ -16,13 +16,8 @@ import { ViewSms, UpdateSms } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Disclosure } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
-import {
-  SMSProviderTrans,
-  SMSVerificationTrans,
-  useSMSVerificationTrans
-} from "../../trans/Sms"
-import { useUpdatePlatformSms } from "./client"
-import { useSmsList } from "../../sms/client"
+import { SMSProviderTrans, useSMSProviderTrans } from "../../trans/Sms"
+import { useApplyPlatformSms, useSmsList } from "../../sms/client"
 import { useBrand } from "../../merchant/platforms/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
@@ -33,7 +28,7 @@ import { PlatformSmsSelect } from "../../sms/PlatformSmsSelect"
 import { useFormContext, useWatch } from "react-hook-form"
 
 //TODO: test case
-export const SmsVerificationDialogDisclosure = ({ brandId, ...props }) => {
+export const SmsProviderDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
 
   let viewAuth = useIsDisplayMenuByRoute([ViewSms])
@@ -46,7 +41,7 @@ export const SmsVerificationDialogDisclosure = ({ brandId, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <SMSVerificationTrans />
+        <SMSProviderTrans />
       </Disclosure>
       {dialog.visible && (
         <FetchDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
@@ -83,7 +78,6 @@ const FetchDialog = ({ brandId, dialog, ...props }) => {
   return (
     <SettingDialog
       defaultValues={{
-        enableSms: brand?.enableSms,
         smsSettingId: sms?.smsSettingId
       }}
       onSubmitted={() => {
@@ -109,24 +103,20 @@ const SettingDialog = ({
   dialogId,
   ...props
 }) => {
-  let title = useSMSVerificationTrans()
+  let title = useSMSProviderTrans()
 
   let [smsSettingId, setSmsSettingId] = useState()
-  let [enableSms, setEnableSms] = useState()
-  let { isLoading, result, error, mutate } = useUpdatePlatformSms(
+  let { isLoading, result, error, mutate } = useApplyPlatformSms(
     brandId,
-    smsSettingId,
-    enableSms
+    smsSettingId
   )
 
-  const onSubmit = ({ smsSettingId, enableSms }) => {
+  const onSubmit = ({ smsSettingId }) => {
     setSmsSettingId(smsSettingId)
-    setEnableSms(enableSms)
   }
 
   const reset = () => {
     setSmsSettingId(null)
-    setEnableSms(null)
     mutate(undefined, false)
   }
 
@@ -152,23 +142,12 @@ const SettingDialog = ({
 }
 
 const FormBody = ({ brandId, readOnly }) => {
-  let { control } = useFormContext()
-
-  const EnableSmsField = "enableSms"
-  let enableSms = useWatch({
-    control,
-    name: EnableSmsField
-  })
   return (
     <FieldValues>
-      <SMSVerificationTrans />
-      <Switch name={EnableSmsField} disabled={readOnly} />
-
-      <SMSProviderTrans />
       <PlatformSmsSelect
         name="smsSettingId"
         brandId={brandId}
-        required={enableSms}
+        required
         disabled={readOnly}
         readOnly={readOnly}
       />

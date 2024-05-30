@@ -30,7 +30,7 @@ import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
 import { AllAgentDialogDisclosure } from "./AllAgentDialog"
 import { OperationSettingsTrans } from "../../trans/Platform"
-import { SmsVerificationDialogDisclosure } from "./SmsVerificationDialog"
+import { SmsProviderDialogDisclosure } from "./SmsProviderDialog"
 import { SocialMediaListDialogDisclosure } from "./SocialMediaListDialog"
 
 export { Code }
@@ -91,7 +91,7 @@ const BodyContent = ({ brandId, brand }) => {
         id="all-agent-setting-dialog-disclosure"
         brandId={brandId}
       />
-      <SmsVerificationDialogDisclosure brandId={brandId} />
+      <SmsProviderDialogDisclosure brandId={brandId} />
       <SocialMediaListDialogDisclosure brandId={brandId} />
     </Set>
   )

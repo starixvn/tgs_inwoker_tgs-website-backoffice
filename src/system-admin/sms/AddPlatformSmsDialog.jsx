@@ -49,7 +49,12 @@ export const AddPlatformSmsDialog = ({
         <PlatformSmsSettingTrans />
       </Disclosure>
       {dialog.visible && (
-        <AddDialog brandId={brandId} dialog={dialog} dialogId={dialogId} />
+        <AddDialog
+          brandId={brandId}
+          dialog={dialog}
+          dialogId={dialogId}
+          onSubmitted={onSubmitted}
+        />
       )}
     </>
   )

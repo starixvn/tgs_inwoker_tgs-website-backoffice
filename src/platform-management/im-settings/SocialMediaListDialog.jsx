@@ -21,8 +21,6 @@ import {
   Disclosure
 } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
-import { useUpdatePlatformSms } from "./client"
-import { useSmsList } from "../../sms/client"
 import {
   useAddPlatformSocialMedia,
   useBrand,
