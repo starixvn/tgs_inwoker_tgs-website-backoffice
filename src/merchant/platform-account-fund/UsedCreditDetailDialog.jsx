@@ -132,7 +132,7 @@ const useColumns = ({ items = [] }) => {
   return useMemo(
     () => [
       textColumn({
-        accessor: "gameProviderCode",
+        accessor: "gameProviderName",
         Header: <GameProviderTrans />,
         TotalCell: () => <TotalTrans />,
         textAlign: "left",
