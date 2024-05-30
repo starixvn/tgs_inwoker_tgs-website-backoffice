@@ -165,9 +165,9 @@ const useColumns = ({ items = [] }) => {
             en="Company W/L (Any negative result will be considered as 0)"
           />
         ),
-        toValue: ({ winLoss }) => {
-          if (Number.isFinite(winLoss) && winLoss < 0) {
-            return Math.abs(winLoss)
+        toValue: (record) => {
+          if (Number.isFinite(record?.winLoss) && record?.winLoss < 0) {
+            return Math.abs(record.winLoss)
           }
           return 0
         },
