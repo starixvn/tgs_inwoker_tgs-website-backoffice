@@ -97,7 +97,14 @@ const Body = () => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={mutate} />}
+      {error && (
+        <AlertDialog
+          {...error}
+          onClickClose={() => {
+            mutate()
+          }}
+        />
+      )}
     </Set>
   )
 }
