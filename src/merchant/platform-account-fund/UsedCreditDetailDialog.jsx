@@ -33,14 +33,6 @@ export const UsedCreditDetailDialog = ({
 }) => {
   let dialog = useModalState()
 
-  /*
-  TODO: seems able to rm
-  let isEmpty = Number.isFinite(value) && value === 0
-  if (isEmpty) {
-    return <FormattedNumber value={value} />
-  }
-  */
-
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
@@ -165,6 +157,7 @@ const useColumns = ({ items = [] }) => {
             en="Company W/L (Any negative result will be considered as 0)"
           />
         ),
+        TotalCell: () => "",
         toValue: (record) => {
           if (Number.isFinite(record?.winLoss) && record?.winLoss < 0) {
             return Math.abs(record.winLoss)
