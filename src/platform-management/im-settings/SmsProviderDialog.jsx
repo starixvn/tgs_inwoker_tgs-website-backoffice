@@ -74,11 +74,11 @@ const FetchDialog = ({ brandId, dialog, ...props }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  let sms = smsList?.find(({ code }) => code === brand?.smsVendorCode) ?? ""
+  // let sms = smsList?.find(({ code }) => code === brand?.smsVendorCode) ?? ""
   return (
     <SettingDialog
       defaultValues={{
-        smsSettingId: sms?.smsSettingId
+        smsSettingId: "" //sms?.smsSettingId
       }}
       onSubmitted={() => {
         mutateBrand()

@@ -118,7 +118,14 @@ const Body = ({ brandId, agentId, readOnly, ...props }) => {
           }}
         />
       </FieldStack>
-      {error && <AlertDialog {...error} onClickClose={mutate} />}
+      {error && (
+        <AlertDialog
+          {...error}
+          onClickClose={() => {
+            mutate()
+          }}
+        />
+      )}
     </TabPanel>
   )
 }

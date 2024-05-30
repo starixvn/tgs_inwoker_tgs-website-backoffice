@@ -98,7 +98,14 @@ export const Panel = ({ brandId, playerCode, edit = false, ...props }) => {
           onSubmitted={mutate}
         />
       )}
-      {error && <AlertDialog {...error} onClickClose={mutate} />}
+      {error && (
+        <AlertDialog
+          {...error}
+          onClickClose={() => {
+            mutate()
+          }}
+        />
+      )}
     </TabPanel>
   )
 }

@@ -77,7 +77,14 @@ const Body = () => {
       {!isLoading && brandId && brand && (
         <BodyContent brandId={brandId} brand={brand} />
       )}
-      {error && <AlertDialog {...error} onClickClose={mutate} />}
+      {error && (
+        <AlertDialog
+          {...error}
+          onClickClose={() => {
+            mutate()
+          }}
+        />
+      )}
     </Set>
   )
 }
