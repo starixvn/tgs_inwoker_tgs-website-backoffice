@@ -178,7 +178,7 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
         id: "platformBalance",
         Header: "",
         columns: [
-          numberDecimalPercentageColumn({
+          numberDecimalColumn({
             accessor: "creditAvailable",
             Header: <Trans zh="平台餘額" en="Platform Balance" />,
             disableSortBy: true
