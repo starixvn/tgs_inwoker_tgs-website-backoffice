@@ -156,7 +156,7 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
             accessor: (row) => row,
             Header: (
               <Trans
-                zh="公司輸贏x10%(負值以0表示)"
+                zh="實際使用額度(輸贏x10%)"
                 en="Used Credit (winlose*10%)"
               />
             ),
