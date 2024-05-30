@@ -33,14 +33,6 @@ export const UsedCreditDetailDialog = ({
 }) => {
   let dialog = useModalState()
 
-  /*
-  TODO: seems able to rm
-  let isEmpty = Number.isFinite(value) && value === 0
-  if (isEmpty) {
-    return <FormattedNumber value={value} />
-  }
-  */
-
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
@@ -108,7 +100,7 @@ const DetailDialog = ({ brandId, brandCode, month, dialog, dialogId }) => {
             <Box>
               {/* <TimeTrans /> */}
 
-              <Trans zh="計算區間" en="Settled between" />
+              <Trans zh="計算區間" en="Settled Period" />
             </Box>
             <Box>
               <FormattedDate format={DateFormat.YearMonth} value={month} />
@@ -140,7 +132,7 @@ const useColumns = ({ items = [] }) => {
   return useMemo(
     () => [
       textColumn({
-        accessor: "gameProviderCode",
+        accessor: "gameProviderName",
         Header: <GameProviderTrans />,
         TotalCell: () => <TotalTrans />,
         textAlign: "left",
@@ -150,10 +142,28 @@ const useColumns = ({ items = [] }) => {
         accessor: "profitAmount",
         Header: (
           <Trans
+            zh="公司輸贏x10%(負值以0表示)"
+            en="Company W/L*10% (Any negative result will be considered as 0)"
+          />
+        ),
+        disableSortBy: true
+      }),
+      numberDecimalColumn({
+        id: "winLoss",
+        accessor: (row) => row,
+        Header: (
+          <Trans
             zh="公司輸贏(負值以0表示)"
             en="Company W/L (Any negative result will be considered as 0)"
           />
         ),
+        TotalCell: () => "",
+        toValue: (record) => {
+          if (Number.isFinite(record?.winLoss) && record?.winLoss < 0) {
+            return Math.abs(record.winLoss)
+          }
+          return 0
+        },
         disableSortBy: true
       })
     ],

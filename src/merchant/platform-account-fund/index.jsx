@@ -60,8 +60,7 @@ export const Content = () => {
 const Body = () => {
   let brandId = usePlatformId()
 
-  let { isLoading, data, error, mutate, deleteCache } =
-    usePlatformAccountFund(brandId)
+  let { isLoading, data, error, mutate } = usePlatformAccountFund(brandId)
 
   let items = isObject(data) ? [data] : []
   let columns = usePlatformAccountFundColumns({
@@ -98,7 +97,7 @@ const Body = () => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={mutate} />}
     </Set>
   )
 }
@@ -155,7 +154,12 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
           numberDecimalColumn({
             id: "creditUsed",
             accessor: (row) => row,
-            Header: <Trans zh="已使用額度" en="Used Credits" />,
+            Header: (
+              <Trans
+                zh="實際使用額度(輸贏x10%)"
+                en="Used Credit (winlose*10%)"
+              />
+            ),
             disableSortBy: true,
             Cell: ({ value: record }) => {
               return (
@@ -167,6 +171,17 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
                 />
               )
             }
+          })
+        ]
+      },
+      {
+        id: "platformBalance",
+        Header: "",
+        columns: [
+          numberDecimalColumn({
+            accessor: "creditAvailable",
+            Header: <Trans zh="平台餘額" en="Platform Balance" />,
+            disableSortBy: true
           })
         ]
       },
