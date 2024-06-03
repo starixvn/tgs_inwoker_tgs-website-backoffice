@@ -237,16 +237,6 @@ export const usePutData = (url, data, options) => {
   return usePut(url, data, options)
 }
 
-export const usePutData = (url, data, options) => {
-  url = url && data ? url : ""
-  return usePut(url, data, options)
-}
-
-export const usePutData = (url, data, options) => {
-  url = url && data ? url : ""
-  return usePut(url, data, options)
-}
-
 export const usePatchData = (url, data, options) => {
   let key = url ? [url, data, "PATCH"] : null
   let {
