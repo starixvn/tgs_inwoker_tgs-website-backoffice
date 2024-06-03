@@ -42,6 +42,7 @@ const SMSProviderCode = {
   vi: "Mã nhà cung cấp SMS"
 }
 export const SMSProviderCodeTrans = () => <Trans {...SMSProviderCode} />
+export const useSMSProviderCodeTrans = () => useTrans(SMSProviderCode)
 
 const SetupSMSProviderWithPlatform = {
   zh: "设定简讯商平台",

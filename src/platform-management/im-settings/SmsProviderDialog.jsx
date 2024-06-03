@@ -19,6 +19,7 @@ import FormDialog from "../../form/FormDialog"
 import {
   SMSProviderCodeTrans,
   SMSProviderTrans,
+  useSMSProviderCodeTrans,
   useSMSProviderTrans
 } from "../../trans/Sms"
 import {
@@ -155,12 +156,11 @@ const SettingDialog = ({
 }
 
 const FormBody = ({ brandId, smsVendorCode, readOnly }) => {
+  let smsProviderCodeString = useSMSProviderCodeTrans()
   return (
     <FieldStack>
       {smsVendorCode && (
-        <Set orientation="horizontal">
-          <SMSProviderCodeTrans /> {smsVendorCode}
-        </Set>
+        <Set orientation="horizontal">{`${smsProviderCodeString}: ${smsVendorCode}`}</Set>
       )}
       <PlatformSmsSelect
         name="smsSettingId"
