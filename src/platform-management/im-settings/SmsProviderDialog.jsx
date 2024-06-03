@@ -160,7 +160,7 @@ const FormBody = ({ brandId, smsVendorCode, readOnly }) => {
   return (
     <FieldStack>
       {smsVendorCode && (
-        <Set orientation="horizontal">{`${smsProviderCodeString}: ${smsVendorCode}`}</Set>
+        <Box>{`${smsProviderCodeString}: ${smsVendorCode}`}</Box>
       )}
       <PlatformSmsSelect
         name="smsSettingId"
