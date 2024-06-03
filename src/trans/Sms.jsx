@@ -44,6 +44,18 @@ const SMSProviderCode = {
 export const SMSProviderCodeTrans = () => <Trans {...SMSProviderCode} />
 export const useSMSProviderCodeTrans = () => useTrans(SMSProviderCode)
 
+const CurrentSMSProvider = {
+  zh: "目前使用的简讯商",
+  en: "Current SMS Provider"
+}
+export const useCurrentSMSProviderTrans = () => useTrans(CurrentSMSProvider)
+
+const ChangeSMSProvider = {
+  zh: "切换简讯商",
+  en: "Change SMS Provider"
+}
+export const useChangeSMSProviderTrans = () => useTrans(ChangeSMSProvider)
+
 const SetupSMSProviderWithPlatform = {
   zh: "设定简讯商平台",
   en: "Setup SMS Provider with Platform",

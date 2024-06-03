@@ -229,7 +229,8 @@ const SocialMediaList = [
   "Instagram",
   "Threads",
   "Tiktok",
-  "Telegram"
+  "Telegram",
+  "Whatsapp"
 ]
 const SocialMediaSelectField = ({ placeholder, ...props }) => {
   let defaultPlaceholder = useSocialMediaTypeTrans()
