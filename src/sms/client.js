@@ -31,8 +31,13 @@ export const useDeleteSms = (settingId) => {
 }
 
 const PlatformApi = "/api/brand/sms"
-export const usePlatformSmsList = (brandId) => {
+export const usePlatformSms = (brandId) => {
   let url = brandId ? `${PlatformApi}/${brandId}` : ""
+  return useGet(url)
+}
+
+export const usePlatformSmsList = (brandId) => {
+  let url = brandId ? `${PlatformApi}/options/${brandId}` : ""
   return useGet(url)
 }
 

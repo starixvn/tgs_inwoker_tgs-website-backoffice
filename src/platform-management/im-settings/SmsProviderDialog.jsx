@@ -16,9 +16,16 @@ import { ViewSms, UpdateSms } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Disclosure } from "../../dialog/Disclosure"
 import FormDialog from "../../form/FormDialog"
-import { SMSProviderTrans, useSMSProviderTrans } from "../../trans/Sms"
-import { useApplyPlatformSms, useSmsList } from "../../sms/client"
-import { useBrand } from "../../merchant/platforms/client"
+import {
+  SMSProviderCodeTrans,
+  SMSProviderTrans,
+  useSMSProviderTrans
+} from "../../trans/Sms"
+import {
+  useApplyPlatformSms,
+  usePlatformSms,
+  useSmsList
+} from "../../sms/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import Modal from "../../dialog/Modal"
@@ -56,7 +63,7 @@ const FetchDialog = ({ brandId, dialog, ...props }) => {
     data: brand,
     error: brandError,
     mutate: mutateBrand
-  } = useBrand(brandId)
+  } = usePlatformSms(brandId)
   let {
     isLoading: isLoadingSmsList,
     data: smsList,
@@ -85,6 +92,7 @@ const FetchDialog = ({ brandId, dialog, ...props }) => {
         mutateSmsList(undefined, false)
       }}
       brandId={brandId}
+      smsVendorCode={brand?.smsVendorCode}
       dialog={dialog}
       {...props}
     />
@@ -96,6 +104,7 @@ defaultValues = { enableSms, smsSettingId  }
 */
 const SettingDialog = ({
   brandId,
+  smsVendorCode,
   defaultValues,
   onSubmitted,
   readOnly,
@@ -136,14 +145,23 @@ const SettingDialog = ({
       title={title}
       showActionButtons={readOnly ? false : true}
     >
-      <FormBody brandId={brandId} readOnly={readOnly} />
+      <FormBody
+        brandId={brandId}
+        smsVendorCode={smsVendorCode}
+        readOnly={readOnly}
+      />
     </FormDialog>
   )
 }
 
-const FormBody = ({ brandId, readOnly }) => {
+const FormBody = ({ brandId, smsVendorCode, readOnly }) => {
   return (
-    <FieldValues>
+    <FieldStack>
+      {smsVendorCode && (
+        <Set orientation="horizontal">
+          <SMSProviderCodeTrans /> {smsVendorCode}
+        </Set>
+      )}
       <PlatformSmsSelect
         name="smsSettingId"
         brandId={brandId}
@@ -151,6 +169,6 @@ const FormBody = ({ brandId, readOnly }) => {
         disabled={readOnly}
         readOnly={readOnly}
       />
-    </FieldValues>
+    </FieldStack>
   )
 }

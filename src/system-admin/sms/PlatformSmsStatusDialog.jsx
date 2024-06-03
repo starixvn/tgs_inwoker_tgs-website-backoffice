@@ -20,6 +20,7 @@ import { useBrand, useEnablePlatformSms } from "../../merchant/platforms/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import Switch from "../../switch/Switch"
+import { usePlatformSms } from "../../sms/client"
 
 export const PlatformSmsStatusDialogDisclosure = ({ brandId }) => {
   let dialog = useModalState()
@@ -47,7 +48,7 @@ export const PlatformSmsStatusTrans = () => <Trans {...PlatformSmsStatus} />
 export const usePlatformSmsStatusTrans = () => useTrans(PlatformSmsStatus)
 
 const FetchDialog = ({ brandId, dialog }) => {
-  let { isLoading, data: brand, error, mutate } = useBrand(brandId)
+  let { isLoading, data: brand, error, mutate } = usePlatformSms(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
