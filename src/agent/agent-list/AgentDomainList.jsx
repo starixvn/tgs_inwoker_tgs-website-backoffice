@@ -80,7 +80,6 @@ const Body = ({ brandId, agentId, readOnly, ...props }) => {
     deleteCache
   } = useAgentDomainList(brandId, agentId)
 
-  console.log("domain list", urls)
   if (isLoading) {
     return (
       <TabPanel tabId={Key} {...props}>
