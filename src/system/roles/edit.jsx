@@ -583,9 +583,14 @@ const EditRoleDialog = ({ id, record, dialog, dialogId, onSubmitted }) => {
       menus={menus}
       record={record}
       dialog={dialog}
+<<<<<<< HEAD
       dialogId={dialogId}
       onSubmitted={() => {
         deleteCache()
+=======
+      onSubmitted={(data) => {
+        mutate(undefined, false)
+>>>>>>> 86e9393c (update swr lib)
         onSubmitted?.()
       }}
     />

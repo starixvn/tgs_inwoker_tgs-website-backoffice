@@ -232,6 +232,11 @@ export const usePut = (url, data, options) => {
   }
 }
 
+export const usePutData = (url, data) => {
+  url = url && data ? url : ""
+  return usePut(url, data)
+}
+
 export const usePutData = (url, data, options) => {
   url = url && data ? url : ""
   return usePut(url, data, options)
