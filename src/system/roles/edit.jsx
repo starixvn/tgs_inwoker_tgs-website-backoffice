@@ -527,7 +527,7 @@ const autoDisplayParentMenu = (path = [], menus) => {
   }
 }
 
-export const EditButton = ({ id, record, ...props }) => {
+export const EditButton = ({ id, record, onSubmitted, ...props }) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
