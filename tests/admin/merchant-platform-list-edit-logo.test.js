@@ -8,6 +8,7 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
+console.warn("FIXME: test case failed")
 test("edit platform logo", async ({ page, platform }) => {
   await gotoPlatformListPage(page, platform.licenseeId)
 
