@@ -9,7 +9,6 @@ import { urlIncludes } from "../page/response.js"
 
 const test = base.extend(Fixture)
 
-console.warn("FIXME: edit game failed")
 test("search, edit game and toggle tags, status", async ({ page }) => {
   let brandId = await gotoPlatformGameListPage(page)
   let criteria = await randomGame(page)
