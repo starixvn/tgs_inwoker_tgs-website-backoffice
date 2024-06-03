@@ -232,9 +232,9 @@ export const usePut = (url, data, options) => {
   }
 }
 
-export const usePutData = (url, data) => {
+export const usePutData = (url, data, options) => {
   url = url && data ? url : ""
-  return usePut(url, data)
+  return usePut(url, data, options)
 }
 
 export const usePutData = (url, data, options) => {
