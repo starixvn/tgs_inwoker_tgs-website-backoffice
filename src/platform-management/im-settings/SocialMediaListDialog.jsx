@@ -45,7 +45,13 @@ import {
 } from "../../trans/Action"
 import Backdrop from "../../dialog/Backdrop"
 import { InputField } from "../../input/Input"
-import { SocialMediaTrans, useSocialMediaTrans } from "../../trans/Field"
+import {
+  NameTrans,
+  SocialMediaTrans,
+  SocialMediaTypeTrans,
+  useSocialMediaTrans,
+  useSocialMediaTypeTrans
+} from "../../trans/Field"
 import { SelectField } from "../../select/Select"
 import { Table, useTable } from "../../table"
 import { Trans } from "../../i18n"
@@ -54,11 +60,6 @@ import { isDev } from "../../env"
 //TODO: test case
 export const SocialMediaListDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
-
-  let devEnv = isDev()
-  if (!devEnv) {
-    return null
-  }
 
   let viewAuth = useIsDisplayMenuByRoute([View])
   let editable = useIsDisplayMenuByRoute([Update])
@@ -70,7 +71,7 @@ export const SocialMediaListDialogDisclosure = ({ brandId, ...props }) => {
   return (
     <>
       <Disclosure {...dialog} {...props}>
-        <Trans en="Social Media" />
+        <SocialMediaTrans />
       </Disclosure>
       {dialog.visible && (
         <ListDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
@@ -186,12 +187,12 @@ const useColumns = ({ mutate, brandId, items = [] }) => {
       }),
       textColumn({
         accessor: "name",
-        Header: <Trans en="Name" />,
+        Header: <NameTrans />,
         disableSortBy: true
       }),
       textColumn({
         accessor: "type",
-        Header: <Trans en="Type" />,
+        Header: <SocialMediaTrans />,
         disableSortBy: true
       }),
       textColumn({
@@ -228,10 +229,11 @@ const SocialMediaList = [
   "Instagram",
   "Threads",
   "Tiktok",
-  "Telegram"
+  "Telegram",
+  "Whatsapp"
 ]
 const SocialMediaSelectField = ({ placeholder, ...props }) => {
-  let defaultPlaceholder = useSocialMediaTrans()
+  let defaultPlaceholder = useSocialMediaTypeTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
   let options = SocialMediaList.map((socialMedia) => ({
@@ -308,7 +310,7 @@ const FormBody = ({}) => {
   return (
     <FieldStack>
       <FieldStack alignY="bottom" orientation="horizontal">
-        <InputField name="name" required label="Name" />
+        <InputField name="name" required label={<NameTrans />} />
         <SocialMediaSelectField
           name="type"
           required
