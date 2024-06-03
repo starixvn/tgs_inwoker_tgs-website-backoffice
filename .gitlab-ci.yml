@@ -34,8 +34,6 @@ deploy-dev:
     - export KUBECONFIG="$KubeConfig_Raypro_dev"
     - TAG=$(cat tag.txt)
     - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n dev
-  tags:
-    - gitlab-runner
   dependencies:
     - docker_build
   only:
