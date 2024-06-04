@@ -584,8 +584,8 @@ const EditRoleDialog = ({ id, record, dialog, dialogId, onSubmitted }) => {
       record={record}
       dialog={dialog}
       dialogId={dialogId}
-      onSubmitted={(data) => {
-        mutate(undefined, false)
+      onSubmitted={() => {
+        deleteCache()
         onSubmitted?.()
       }}
     />
