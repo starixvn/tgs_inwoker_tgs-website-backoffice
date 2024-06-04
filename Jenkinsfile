@@ -74,19 +74,19 @@ pipeline {
                 }
             }
         }
-        //stage('Add Tag on Prod') {
-        //    when {
-        //       expression {
-        //            return env.kube_ns == 'prod';
-        //        }
-        //    }			
-        //    steps {	
-        //        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId:'gitssh-user-pwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-        //            sh "git tag -a ${TAG} -m ${TAG}"
-        //            sh "git push https://$USERNAME:$PASSWORD@${GitUrl} --tags"
-        //        }
-        //    }
-        //}
+        stage('Add Tag on Prod') {
+            when {
+                expression {
+                    return env.kube_ns == 'prod';
+                }
+            }			
+            steps {	
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId:'gitssh-user-pwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                    sh "git tag -a ${TAG} -m ${TAG}"
+                    sh "git push https://$USERNAME:$PASSWORD@${GitUrl} --tags"
+                }
+            }
+        }
         //stage('Remove Image Tags') {					
         //    steps {	
         //        withCredentials([string(credentialsId: "GitLabToken", variable: "GitLabToken")]) {					
