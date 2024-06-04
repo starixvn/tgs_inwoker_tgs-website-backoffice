@@ -34,7 +34,7 @@ import AlertDialog from "../../dialog/Alert"
 import Modal from "../../dialog/Modal"
 import { FieldValues } from "../../layout/Grid"
 import Switch from "../../switch/Switch"
-import { PlatformSmsSelectField } from "../../sms/PlatformSmsSelect"
+import { PlatformSmsSelect } from "../../sms/PlatformSmsSelect"
 import { useFormContext, useWatch } from "react-hook-form"
 import { SWRConfig } from "swr"
 import { DisabledTrans } from "../../trans/Status"
@@ -146,7 +146,7 @@ const FormBody = ({ brandId, smsVendorCode, enableSms, readOnly }) => {
     <FieldStack>
       {smsVendorCode && <Box>{`${currentSmsProvider}: ${smsVendorCode}`}</Box>}
       {enableSms && (
-        <PlatformSmsSelectField
+        <PlatformSmsSelect
           name="smsSettingId"
           brandId={brandId}
           placeholder={changeSmsProvider}
