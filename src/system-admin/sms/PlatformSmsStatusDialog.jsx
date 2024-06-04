@@ -23,7 +23,7 @@ import AlertDialog from "../../dialog/Alert"
 import Switch, { SwitchField } from "../../switch/Switch"
 import { usePlatformSms, useUpdatePlatformSmsSettings } from "../../sms/client"
 import { StatusTrans } from "../../trans/Status"
-import { PlatformSmsSelectField } from "../../sms/PlatformSmsSelect"
+import { PlatformSmsSelect } from "../../sms/PlatformSmsSelect"
 import {
   useChangeSMSProviderTrans,
   useCurrentSMSProviderTrans
@@ -74,7 +74,8 @@ const FetchDialog = ({ brandId, dialog }) => {
     <StatusFormDialog
       brandId={brandId}
       defaultValues={{
-        enableSms: brand?.enableSms
+        enableSms: brand?.enableSms,
+        smsSettingId: ""
       }}
       smsVendorCode={brand?.smsVendorCode}
       dialog={dialog}
@@ -138,13 +139,16 @@ const FormBody = ({ brandId, smsVendorCode }) => {
     <Stack>
       <SwitchField name={EnableSmsField} label={<StatusTrans />} />
       {enableSms && (
-        <PlatformSmsSelectField
-          name="smsSettingId"
-          brandId={brandId}
+        <FieldWrapper
           label={smsVendorCode && `${currentSmsProvider}: ${smsVendorCode}`}
-          placeholder={changeSmsProviderPlaceholder}
-          required
-        />
+        >
+          <PlatformSmsSelect
+            name="smsSettingId"
+            brandId={brandId}
+            placeholder={changeSmsProviderPlaceholder}
+            required
+          />
+        </FieldWrapper>
       )}
     </Stack>
   )

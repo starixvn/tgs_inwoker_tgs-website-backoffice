@@ -4,7 +4,7 @@ import { usePlatformSmsList } from "./client"
 import { Select, SelectField } from "../select/Select"
 import { useSMSProviderTrans } from "../trans/Sms"
 
-export const PlatformSmsSelectField = ({ brandId, placeholder, ...props }) => {
+export const PlatformSmsSelect = ({ brandId, placeholder, ...props }) => {
   let defaultPlaceholder = useSMSProviderTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
@@ -16,7 +16,7 @@ export const PlatformSmsSelectField = ({ brandId, placeholder, ...props }) => {
   }))
 
   return (
-    <SelectField
+    <Select
       placeholder={placeholder}
       isLoading={isLoading}
       options={options}
