@@ -48,7 +48,13 @@ export const PlatformSmsStatusTrans = () => <Trans {...PlatformSmsStatus} />
 export const usePlatformSmsStatusTrans = () => useTrans(PlatformSmsStatus)
 
 const FetchDialog = ({ brandId, dialog }) => {
-  let { isLoading, data: brand, error, mutate } = usePlatformSms(brandId)
+  let {
+    isLoading,
+    data: brand,
+    error,
+    mutate,
+    deleteCache
+  } = usePlatformSms(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -64,7 +70,7 @@ const FetchDialog = ({ brandId, dialog }) => {
       defaultValues={{
         enableSms: brand?.enableSms
       }}
-      onSubmitted={mutate}
+      onSubmitted={deleteCache}
       dialog={dialog}
     />
   )

@@ -29,6 +29,7 @@ import {
   SMSProviderManagementTrans,
   SMSProviderNameTrans
 } from "../../trans/Sms"
+import { DeletePlatformSmsDialogDisclosure } from "./DeletePlatformSmsDialog"
 
 export { Code }
 
@@ -56,7 +57,7 @@ const Body = () => {
     mutate
   } = usePlatformSmsList(state.brandId)
 
-  let columns = useColumns({ items, mutate })
+  let columns = useColumns({ items, mutate, brandId: state.brandId })
   return (
     <Set orientation="vertical" isFilled height="100%">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
@@ -90,7 +91,7 @@ const Body = () => {
   )
 }
 
-const useColumns = ({ items = [], mutate }) => {
+const useColumns = ({ items = [], mutate, brandId }) => {
   return useMemo(() => {
     let columns = [
       textColumn({
@@ -106,10 +107,10 @@ const useColumns = ({ items = [], mutate }) => {
         Cell: ({ value: record }) => {
           return (
             <Set alignX="center">
-              <DeleteSmsDialogDisclosure
+              <DeletePlatformSmsDialogDisclosure
                 name={record?.name}
+                brandId={brandId}
                 smsSettingId={record?.smsSettingId}
-                useDelete={useDeletePlatformSms}
                 onSubmitted={mutate}
               />
             </Set>

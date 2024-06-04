@@ -62,37 +62,27 @@ export const SmsProviderDialogDisclosure = ({ brandId, ...props }) => {
 
 const FetchDialog = ({ brandId, dialog, ...props }) => {
   let {
-    isLoading: isLoadingBrand,
+    isLoading,
     data: brand,
-    error: brandError,
+    error,
     mutate: mutateBrand
   } = usePlatformSms(brandId)
-  let {
-    isLoading: isLoadingSmsList,
-    data: smsList,
-    error: smsListError,
-    mutate: mutateSmsList
-  } = useSmsList()
 
-  let isLoading = isLoadingBrand || isLoadingSmsList
   if (isLoading) {
     return <LoadingBackdrop {...dialog} onClickClose={dialog.hide} />
   }
 
-  let error = brandError || smsListError
   if (error) {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  // let sms = smsList?.find(({ code }) => code === brand?.smsVendorCode) ?? ""
   return (
     <SettingDialog
       defaultValues={{
-        smsSettingId: "" //sms?.smsSettingId
+        smsSettingId: ""
       }}
       onSubmitted={() => {
-        mutateBrand()
-        mutateSmsList(undefined, false)
+        mutateBrand(undefined, false)
       }}
       brandId={brandId}
       smsVendorCode={brand?.smsVendorCode}
