@@ -115,7 +115,7 @@ const labelOf = ({ locale, code }) => {
       return getTrans(
         {
           zh: "簡訊商管理",
-          en: "SMS Management"
+          en: "SMS Provider Management"
         },
         locale
       )

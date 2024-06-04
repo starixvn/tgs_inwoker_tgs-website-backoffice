@@ -20,10 +20,9 @@ export const SMSVerificationTrans = () => <Trans {...SMSVerification} />
 export const useSMSVerificationTrans = () => useTrans(SMSVerification)
 */
 
-const SMSProviderManagement = {
+export const SMSProviderManagement = {
   zh: "简讯商管理",
-  en: "SMS Provider Management",
-  vi: "Quản lý nhà cung cấp SMS"
+  en: "SMS Provider Management"
 }
 export const SMSProviderManagementTrans = () => (
   <Trans {...SMSProviderManagement} />
@@ -31,15 +30,13 @@ export const SMSProviderManagementTrans = () => (
 
 const SMSProviderName = {
   zh: "简讯商名称",
-  en: "SMS Provider Name",
-  vi: "Tên nhà cung cấp SMS"
+  en: "SMS Provider Name"
 }
 export const SMSProviderNameTrans = () => <Trans {...SMSProviderName} />
 
 const SMSProviderCode = {
   zh: "简讯商代码",
-  en: "SMS Provider Code",
-  vi: "Mã nhà cung cấp SMS"
+  en: "SMS Provider Code"
 }
 export const SMSProviderCodeTrans = () => <Trans {...SMSProviderCode} />
 export const useSMSProviderCodeTrans = () => useTrans(SMSProviderCode)
@@ -58,9 +55,10 @@ export const useChangeSMSProviderTrans = () => useTrans(ChangeSMSProvider)
 
 const SetupSMSProviderWithPlatform = {
   zh: "设定简讯商平台",
-  en: "Setup SMS Provider with Platform",
-  vi: "Chỉ định nhà cung cấp SMS cho nền tảng"
+  en: "Setup SMS Provider with Platform"
 }
 export const SetupSMSProviderWithPlatformTrans = () => (
   <Trans {...SetupSMSProviderWithPlatform} />
 )
+export const useSetupSMSProviderWithPlatformTrans = () =>
+  useTrans(SetupSMSProviderWithPlatform)
