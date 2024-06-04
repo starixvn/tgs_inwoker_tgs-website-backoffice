@@ -15,6 +15,7 @@ import {
 import { useAgent, useUpdateAgentNegativeDividend } from "./client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { LiableOrNotSwitch } from "../../switch/LiableOrNotSwitch"
+import { SWRConfig } from "swr"
 
 export const NegativeDividendDialogDisclosure = ({
   agentId,
@@ -34,12 +35,14 @@ export const NegativeDividendDialogDisclosure = ({
         <NegativeDividendTrans />
       </Disclosure>
       {dialog.visible && (
-        <SettingDialog
-          agentId={agentId}
-          readOnly={readOnly}
-          dialog={dialog}
-          dialogId={dialogId}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <SettingDialog
+            agentId={agentId}
+            readOnly={readOnly}
+            dialog={dialog}
+            dialogId={dialogId}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -51,8 +54,7 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
   let {
     isLoading: isLoadingAgent,
     data: agent,
-    error: agentError,
-    deleteCache: deleteAgentCache
+    error: agentError
   } = useAgent(agentId, { dedupingInterval: 0 })
 
   let [formData, setSubmit] = useState()
@@ -88,10 +90,6 @@ const SettingDialog = ({ agentId, readOnly, dialog, dialogId, ...props }) => {
       error={error}
       onCloseErrorAlert={reset}
       id={dialogId}
-      onSubmitted={() => {
-        deleteAgentCache()
-        reset()
-      }}
       dialog={dialog}
       title={title}
       showActionButtons={readOnly ? false : true}

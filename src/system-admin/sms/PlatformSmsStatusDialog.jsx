@@ -7,7 +7,8 @@ import {
   Dialog,
   Box,
   Level,
-  FieldWrapper
+  FieldWrapper,
+  Stack
 } from "bumbag"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import { Update, View } from "./menu"
@@ -19,8 +20,15 @@ import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { useBrand, useEnablePlatformSms } from "../../merchant/platforms/client"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import Switch from "../../switch/Switch"
-import { usePlatformSms } from "../../sms/client"
+import Switch, { SwitchField } from "../../switch/Switch"
+import { usePlatformSms, useUpdatePlatformSmsSettings } from "../../sms/client"
+import { StatusTrans } from "../../trans/Status"
+import { PlatformSmsSelectField } from "../../sms/PlatformSmsSelect"
+import {
+  useChangeSMSProviderTrans,
+  useCurrentSMSProviderTrans
+} from "../../trans/Sms"
+import { SWRConfig } from "swr"
 
 export const PlatformSmsStatusDialogDisclosure = ({ brandId }) => {
   let dialog = useModalState()
@@ -35,7 +43,11 @@ export const PlatformSmsStatusDialogDisclosure = ({ brandId }) => {
       <Disclosure {...dialog}>
         <Trans en="Platform SMS Status" zh="平台简讯状态" />
       </Disclosure>
-      {dialog.visible && <FetchDialog brandId={brandId} dialog={dialog} />}
+      {dialog.visible && (
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <FetchDialog brandId={brandId} dialog={dialog} />
+        </SWRConfig>
+      )}
     </>
   )
 }
@@ -48,13 +60,7 @@ export const PlatformSmsStatusTrans = () => <Trans {...PlatformSmsStatus} />
 export const usePlatformSmsStatusTrans = () => useTrans(PlatformSmsStatus)
 
 const FetchDialog = ({ brandId, dialog }) => {
-  let {
-    isLoading,
-    data: brand,
-    error,
-    mutate,
-    deleteCache
-  } = usePlatformSms(brandId)
+  let { isLoading, data: brand, error } = usePlatformSms(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -70,26 +76,35 @@ const FetchDialog = ({ brandId, dialog }) => {
       defaultValues={{
         enableSms: brand?.enableSms
       }}
-      onSubmitted={deleteCache}
+      smsVendorCode={brand?.smsVendorCode}
       dialog={dialog}
     />
   )
 }
 
-const StatusFormDialog = ({ brandId, defaultValues, dialog, onSubmitted }) => {
+const StatusFormDialog = ({
+  brandId,
+  defaultValues,
+  smsVendorCode,
+  dialog
+}) => {
   let title = usePlatformSmsStatusTrans()
   let [enableSms, setEnableSms] = useState()
-  let { isLoading, result, error, mutate } = useEnablePlatformSms(
+  let [smsSettingId, setSmsSettingId] = useState()
+  let { isLoading, result, error, mutate } = useUpdatePlatformSmsSettings(
     brandId,
-    enableSms
+    enableSms,
+    smsSettingId
   )
 
-  const onSubmit = ({ enableSms }) => {
+  const onSubmit = ({ enableSms, smsSettingId }) => {
     setEnableSms(enableSms)
+    setSmsSettingId(smsSettingId)
   }
 
   const reset = () => {
     setEnableSms(null)
+    setSmsSettingId(null)
     mutate(undefined, false)
   }
 
@@ -100,15 +115,37 @@ const StatusFormDialog = ({ brandId, defaultValues, dialog, onSubmitted }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onSubmitted={() => {
-        reset()
-        onSubmitted?.()
-      }}
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}
     >
-      <Switch name="enableSms" />
+      <FormBody brandId={brandId} smsVendorCode={smsVendorCode} />
     </FormDialog>
+  )
+}
+
+const FormBody = ({ brandId, smsVendorCode }) => {
+  let { control } = useFormContext()
+  let currentSmsProvider = useCurrentSMSProviderTrans()
+  let changeSmsProviderPlaceholder = useChangeSMSProviderTrans()
+
+  const EnableSmsField = "enableSms"
+  let enableSms = useWatch({
+    control,
+    name: EnableSmsField
+  })
+  return (
+    <Stack>
+      <SwitchField name={EnableSmsField} label={<StatusTrans />} />
+      {enableSms && (
+        <PlatformSmsSelectField
+          name="smsSettingId"
+          brandId={brandId}
+          label={smsVendorCode && `${currentSmsProvider}: ${smsVendorCode}`}
+          placeholder={changeSmsProviderPlaceholder}
+          required
+        />
+      )}
+    </Stack>
   )
 }

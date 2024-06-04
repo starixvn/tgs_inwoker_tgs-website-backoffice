@@ -33,6 +33,7 @@ import {
   VirtualSportsTrans
 } from "../../trans/Game"
 import { CurrentCycleTrans, NextCycleTrans } from "../../trans/Field"
+import { SWRConfig } from "swr"
 
 export const AgentProductFeeDialogDisclosure = ({
   agent,
@@ -53,14 +54,16 @@ export const AgentProductFeeDialogDisclosure = ({
         <ProductFeeTrans />
       </Disclosure>
       {dialog.visible && (
-        <FetchDialog agent={agent} dialog={dialog} dialogId={dialogId} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <FetchDialog agent={agent} dialog={dialog} dialogId={dialogId} />
+        </SWRConfig>
       )}
     </>
   )
 }
 
 const FetchDialog = ({ agent, dialog }) => {
-  let { isLoading, data, error, deleteCache } = useAgentProductFee(agent.id)
+  let { isLoading, data, error } = useAgentProductFee(agent.id)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -70,17 +73,10 @@ const FetchDialog = ({ agent, dialog }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  return (
-    <EditDialog
-      agent={agent}
-      record={data}
-      dialog={dialog}
-      onSubmitted={deleteCache}
-    />
-  )
+  return <EditDialog agent={agent} record={data} dialog={dialog} />
 }
 
-const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
+const EditDialog = ({ agent, record, dialog, dialogId }) => {
   let title = useProductFeeTrans()
 
   let [formData, setSubmit] = useState()
@@ -106,10 +102,6 @@ const EditDialog = ({ agent, record, dialog, dialogId, onSubmitted }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onSubmitted={() => {
-        reset()
-        onSubmitted?.()
-      }}
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}

@@ -27,6 +27,7 @@ import {
   DefaultProductFeeTrans,
   useDefaultProductFeeTrans
 } from "../../trans/Platform"
+import { SWRConfig } from "swr"
 
 export const ProductFeeDialogDisclosure = ({
   brandId,
@@ -47,14 +48,16 @@ export const ProductFeeDialogDisclosure = ({
         <DefaultProductFeeTrans />
       </Disclosure>
       {dialog.visible && (
-        <FetchDialog brandId={brandId} dialog={dialog} dialogId={dialogId} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <FetchDialog brandId={brandId} dialog={dialog} dialogId={dialogId} />
+        </SWRConfig>
       )}
     </>
   )
 }
 
 const FetchDialog = ({ brandId, dialog }) => {
-  let { isLoading, data, error, deleteCache } = usePlatformProductFee(brandId)
+  let { isLoading, data, error } = usePlatformProductFee(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
@@ -64,17 +67,10 @@ const FetchDialog = ({ brandId, dialog }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  return (
-    <EditDialog
-      brandId={brandId}
-      record={data}
-      dialog={dialog}
-      onSubmitted={deleteCache}
-    />
-  )
+  return <EditDialog brandId={brandId} record={data} dialog={dialog} />
 }
 
-const EditDialog = ({ brandId, record, dialog, dialogId, onSubmitted }) => {
+const EditDialog = ({ brandId, record, dialog, dialogId }) => {
   let title = useDefaultProductFeeTrans()
 
   let [formData, setSubmit] = useState()
@@ -100,7 +96,6 @@ const EditDialog = ({ brandId, record, dialog, dialogId, onSubmitted }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onSubmitted={onSubmitted}
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}
