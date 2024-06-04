@@ -72,7 +72,8 @@ function App() {
       value={{
         dedupingInterval: 200,
         revalidateOnFocus: false,
-        shouldRetryOnError: false
+        shouldRetryOnError: false,
+        revalidateOnMount: true
       }}
     >
       <Routes>
