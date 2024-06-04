@@ -64,6 +64,7 @@ const Body = () => {
         <SearchBar
           search={(data) => {
             setState(data)
+            mutate()
           }}
           isLoading={isLoading}
         />
