@@ -25,6 +25,10 @@ import { Trans } from "../../i18n"
 import { SmsListDialogDisclosure } from "./SmsListDialog"
 import { AddPlatformSmsDialog } from "./AddPlatformSmsDialog"
 import { PlatformSmsStatusDialogDisclosure } from "./PlatformSmsStatusDialog"
+import {
+  SMSProviderManagementTrans,
+  SMSProviderNameTrans
+} from "../../trans/Sms"
 
 export { Code }
 
@@ -35,7 +39,7 @@ export const Content = () => {
   }
 
   return (
-    <PageContent title={<Trans zh="簡訊商管理" en="SMS Management" />}>
+    <PageContent title={<SMSProviderManagementTrans />}>
       <Body />
     </PageContent>
   )
@@ -91,7 +95,7 @@ const useColumns = ({ items = [], mutate }) => {
     let columns = [
       textColumn({
         accessor: "name",
-        Header: <Trans zh="簡訊商名稱" en="Name" />,
+        Header: <SMSProviderNameTrans />,
         disableSortBy: true
       }),
       textColumn({

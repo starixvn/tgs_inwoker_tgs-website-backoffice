@@ -13,6 +13,7 @@ import { AddTrans, useAddTrans, useEditTrans } from "../../trans/Action"
 import clone from "clone-deep"
 import { stringifyJSON } from "../../text/json"
 import Backdrop from "../../dialog/Backdrop"
+import { SMSProviderCodeTrans, SMSProviderNameTrans } from "../../trans/Sms"
 
 export const AddSmsDialogDisclosure = ({
   onSubmitted,
@@ -177,16 +178,8 @@ const FormBody = ({ readOnly }) => {
     <Columns>
       <Columns.Column>
         <FieldStack>
-          <InputField
-            name="name"
-            label={<Trans zh="简讯商名称" en="SMS Provider Name" />}
-            required
-          />
-          <InputField
-            name="code"
-            label={<Trans zh="简讯商代码" en="简讯商代码" />}
-            required
-          />
+          <InputField name="name" label={<SMSProviderNameTrans />} required />
+          <InputField name="code" label={<SMSProviderCodeTrans />} required />
         </FieldStack>
       </Columns.Column>
       <Columns.Column>

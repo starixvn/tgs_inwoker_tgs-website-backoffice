@@ -26,6 +26,11 @@ import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { SmsSelect } from "../../sms/SmsSelect"
 import { useForm, useFormContext, useWatch } from "react-hook-form"
 import { PlatformTrans } from "../../trans/Platform"
+import {
+  SMSProviderNameTrans,
+  SetupSMSProviderWithPlatformTrans,
+  useSetupSMSProviderWithPlatformTrans
+} from "../../trans/Sms"
 
 export const AddPlatformSmsDialog = ({
   brandId,
@@ -46,7 +51,7 @@ export const AddPlatformSmsDialog = ({
   return (
     <>
       <Disclosure {...dialog}>
-        <PlatformSmsSettingTrans />
+        <SetupSMSProviderWithPlatformTrans />
       </Disclosure>
       {dialog.visible && (
         <AddDialog
@@ -60,15 +65,8 @@ export const AddPlatformSmsDialog = ({
   )
 }
 
-const PlatformSmsSetting = {
-  zh: "設定簡訊商平台",
-  en: "Platform SMS Setting"
-}
-const PlatformSmsSettingTrans = () => <Trans {...PlatformSmsSetting} />
-const usePlatformSmsSettingTrans = () => useTrans(PlatformSmsSetting)
-
 const AddDialog = ({ brandId, dialog, dialogId, onSubmitted }) => {
-  let title = usePlatformSmsSettingTrans()
+  let title = useSetupSMSProviderWithPlatformTrans()
 
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate } = useAddPlatformSms(
@@ -129,7 +127,7 @@ const FormBody = ({}) => {
           }}
         />
       </FieldWrapper>
-      <FieldWrapper label={<Trans zh="簡訊商名稱" en="SMS Provider Name" />}>
+      <FieldWrapper label={<SMSProviderNameTrans />}>
         <SmsSelect
           filter={({ smsSettingId }) =>
             !platformSmsSettingIds.includes(smsSettingId)
