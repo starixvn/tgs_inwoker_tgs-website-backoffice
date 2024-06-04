@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { usePlatformSmsList } from "./client"
-import Select from "../select/Select"
+import { Select, SelectField } from "../select/Select"
 import { useSMSProviderTrans } from "../trans/Sms"
 
-export const PlatformSmsSelect = ({ brandId, placeholder, ...props }) => {
+export const PlatformSmsSelectField = ({ brandId, placeholder, ...props }) => {
   let defaultPlaceholder = useSMSProviderTrans()
   placeholder = placeholder ?? defaultPlaceholder
 
@@ -16,7 +16,7 @@ export const PlatformSmsSelect = ({ brandId, placeholder, ...props }) => {
   }))
 
   return (
-    <Select
+    <SelectField
       placeholder={placeholder}
       isLoading={isLoading}
       options={options}

@@ -34,8 +34,10 @@ import AlertDialog from "../../dialog/Alert"
 import Modal from "../../dialog/Modal"
 import { FieldValues } from "../../layout/Grid"
 import Switch from "../../switch/Switch"
-import { PlatformSmsSelect } from "../../sms/PlatformSmsSelect"
+import { PlatformSmsSelectField } from "../../sms/PlatformSmsSelect"
 import { useFormContext, useWatch } from "react-hook-form"
+import { SWRConfig } from "swr"
+import { DisabledTrans } from "../../trans/Status"
 
 //TODO: test case
 export const SmsProviderDialogDisclosure = ({ brandId, ...props }) => {
@@ -54,19 +56,16 @@ export const SmsProviderDialogDisclosure = ({ brandId, ...props }) => {
         <SMSProviderTrans />
       </Disclosure>
       {dialog.visible && (
-        <FetchDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <FetchDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )
 }
 
 const FetchDialog = ({ brandId, dialog, ...props }) => {
-  let {
-    isLoading,
-    data: brand,
-    error,
-    mutate: mutateBrand
-  } = usePlatformSms(brandId)
+  let { isLoading, data: brand, error } = usePlatformSms(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} onClickClose={dialog.hide} />
@@ -81,25 +80,20 @@ const FetchDialog = ({ brandId, dialog, ...props }) => {
       defaultValues={{
         smsSettingId: ""
       }}
-      onSubmitted={() => {
-        mutateBrand(undefined, false)
-      }}
       brandId={brandId}
       smsVendorCode={brand?.smsVendorCode}
+      enableSms={brand?.enableSms}
       dialog={dialog}
       {...props}
     />
   )
 }
 
-/*
-defaultValues = { enableSms, smsSettingId  }
-*/
 const SettingDialog = ({
   brandId,
   smsVendorCode,
+  enableSms,
   defaultValues,
-  onSubmitted,
   readOnly,
   dialog,
   dialogId,
@@ -129,38 +123,41 @@ const SettingDialog = ({
       isLoading={isLoading}
       result={result}
       error={error}
-      onSubmitted={() => {
-        reset()
-        onSubmitted?.()
-      }}
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}
-      showActionButtons={readOnly ? false : true}
+      showActionButtons={readOnly || !enableSms ? false : true}
     >
       <FormBody
         brandId={brandId}
         smsVendorCode={smsVendorCode}
+        enableSms={enableSms}
         readOnly={readOnly}
       />
     </FormDialog>
   )
 }
 
-const FormBody = ({ brandId, smsVendorCode, readOnly }) => {
+//TODO: if enableSms = false, set select disabled?
+const FormBody = ({ brandId, smsVendorCode, enableSms, readOnly }) => {
   let currentSmsProvider = useCurrentSMSProviderTrans()
   let changeSmsProvider = useChangeSMSProviderTrans()
   return (
     <FieldStack>
       {smsVendorCode && <Box>{`${currentSmsProvider}: ${smsVendorCode}`}</Box>}
-      <PlatformSmsSelect
-        name="smsSettingId"
-        brandId={brandId}
-        placeholder={changeSmsProvider}
-        required
-        disabled={readOnly}
-        readOnly={readOnly}
-      />
+      {enableSms && (
+        <PlatformSmsSelectField
+          name="smsSettingId"
+          brandId={brandId}
+          placeholder={changeSmsProvider}
+          required
+          disabled={readOnly}
+          readOnly={readOnly}
+        />
+      )}
+      {!enableSms && (
+        <Alert variant="tint" title={<DisabledTrans />} type="warning" />
+      )}
     </FieldStack>
   )
 }

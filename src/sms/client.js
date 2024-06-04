@@ -7,6 +7,8 @@ import {
   usePostFormData,
   usePatchData
 } from "../client"
+import { useApiMerge } from "../client/useApiMerge."
+import { useEnablePlatformSms } from "../merchant/platforms/client"
 
 const API = "/api/sms"
 
@@ -58,4 +60,17 @@ export const useDeletePlatformSms = (brandId, smsSettingId) => {
 export const useApplyPlatformSms = (brandId, smsSettingId) => {
   let url = brandId && smsSettingId ? `${PlatformApi}/apply/${brandId}` : ""
   return usePatchData(url, smsSettingId)
+}
+
+export const useUpdatePlatformSmsSettings = (
+  brandId,
+  enableSms,
+  smsSettingId
+) => {
+  let items = [
+    useEnablePlatformSms(brandId, enableSms),
+    useApplyPlatformSms(brandId, smsSettingId)
+  ]
+
+  return useApiMerge(items)
 }
