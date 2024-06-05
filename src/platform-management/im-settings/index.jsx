@@ -32,6 +32,7 @@ import { AllAgentDialogDisclosure } from "./AllAgentDialog"
 import { OperationSettingsTrans } from "../../trans/Platform"
 import { SmsProviderDialogDisclosure } from "./SmsProviderDialog"
 import { SocialMediaListDialogDisclosure } from "./SocialMediaListDialog"
+import { SWRConfig } from "swr"
 
 export { Code }
 
@@ -115,10 +116,12 @@ const PlatformProfitSharingSettingDialogDisclosure = ({
         <Trans zh="阶梯式分红设定" en="Tier-based Profit Sharing Setting" />
       </Disclosure>
       {dialog.visible && (
-        <PlatformMultipleLayerProfitSharingSettingDialog
-          brandId={brandId}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <PlatformMultipleLayerProfitSharingSettingDialog
+            brandId={brandId}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

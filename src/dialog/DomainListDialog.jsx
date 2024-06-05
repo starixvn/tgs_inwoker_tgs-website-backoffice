@@ -29,6 +29,7 @@ import {
   faPlus,
   faTimes
 } from "@fortawesome/free-solid-svg-icons"
+import { SWRConfig } from "swr"
 
 export const DomainListDialogDisclosure = ({
   brandId,
@@ -47,13 +48,15 @@ export const DomainListDialogDisclosure = ({
         <Trans zh="域名" en="Domain" />
       </Disclosure>
       {dialog.visible && (
-        <DomainsDialog
-          readOnly={readOnly}
-          domains={domains}
-          useFetch={useFetch}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <DomainsDialog
+            readOnly={readOnly}
+            domains={domains}
+            useFetch={useFetch}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

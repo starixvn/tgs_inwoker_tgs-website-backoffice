@@ -56,6 +56,7 @@ import { parseJSON, stringifyJSON } from "../../text/json"
 import { Update } from "./menu"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import { PaymentLimitTrans } from "../../trans/Payment"
+import { SWRConfig } from "swr"
 
 //TODO: rename to PlatformPaymentDisclosure?
 export const EditBrandPaymentDisclosure = ({
@@ -78,13 +79,15 @@ export const EditBrandPaymentDisclosure = ({
         <EditDisclosure id={id} {...dialog} />
       )}
       {dialog.visible && (
-        <EditDialog
-          platformPaymentId={platformPaymentId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-          dialogId={dialogId}
-          readOnly={readOnly}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            platformPaymentId={platformPaymentId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+            dialogId={dialogId}
+            readOnly={readOnly}
+          />
+        </SWRConfig>
       )}
     </>
   )

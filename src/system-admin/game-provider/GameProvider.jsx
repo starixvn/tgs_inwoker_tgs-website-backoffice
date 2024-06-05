@@ -51,6 +51,7 @@ import { sortBy } from "lodash-es"
 import { StatusTrans } from "../../trans/Status"
 import { useGameProviderTrans } from "../../trans/Game"
 import { BasicInformationTrans } from "../../trans/Field"
+import { SWRConfig } from "swr"
 
 export const ViewGameProviderDisclosure = ({ gameProviderId }) => {
   let dialog = useModalState()
@@ -63,7 +64,9 @@ export const ViewGameProviderDisclosure = ({ gameProviderId }) => {
     <>
       <ViewDisclosure {...dialog} />
       {dialog.visible && (
-        <ViewDialog gameProviderId={gameProviderId} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog gameProviderId={gameProviderId} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )
@@ -126,11 +129,13 @@ export const EditGameProviderButton = ({
     <>
       <EditDisclosure {...dialog} />
       {dialog.visible && (
-        <EditDialog
-          gameProviderId={gameProviderId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            gameProviderId={gameProviderId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -147,7 +152,9 @@ export const AddGameProviderButton = ({ onSubmitted, ...props }) => {
     <>
       <AddDisclosure {...dialog} />
       {dialog.visible && (
-        <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )

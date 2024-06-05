@@ -58,6 +58,7 @@ import {
   PromotionNameTrans,
   useViewPromotionTrans
 } from "../../trans/Promotion"
+import { SWRConfig } from "swr"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -188,12 +189,14 @@ export const EditPromotionDisclosure = ({
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <EditDialog
-          brandId={brandId}
-          promotionId={promotionId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={brandId}
+            promotionId={promotionId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -394,11 +397,13 @@ export const ViewPromotionDisclosure = ({
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ViewDialog
-          brandId={brandId}
-          promotionId={promotionId}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog
+            brandId={brandId}
+            promotionId={promotionId}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

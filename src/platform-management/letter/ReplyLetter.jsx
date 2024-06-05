@@ -43,6 +43,7 @@ import { isSentBox } from "./BoxType"
 import AlertDialog from "../../dialog/Alert"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import { DoubleConfirmDialogDisclosure } from "./DoubleConfirmDialog"
+import { SWRConfig } from "swr"
 
 export const ReplyLetterDisclosure = ({
   brandId,
@@ -71,14 +72,16 @@ export const ReplyLetterDisclosure = ({
         <Trans zh="回覆" en="Reply" />
       </Disclosure>
       {dialog.visible && (
-        <ReplyLetterDialog
-          brandId={brandId}
-          boxType={boxType}
-          letterId={letterId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-          dialogId={dialogId}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ReplyLetterDialog
+            brandId={brandId}
+            boxType={boxType}
+            letterId={letterId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+            dialogId={dialogId}
+          />
+        </SWRConfig>
       )}
     </>
   )
