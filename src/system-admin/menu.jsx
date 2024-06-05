@@ -50,6 +50,7 @@ import {
 import { getTrans, useTrans } from "../i18n"
 import { faCogs } from "@fortawesome/free-solid-svg-icons"
 import { GameProviderReport } from "../trans/Game"
+import { SMSProviderManagement } from "../trans/Sms"
 
 export const Code = "systemadmin"
 
@@ -112,13 +113,7 @@ const labelOf = ({ locale, code }) => {
         locale
       )
     case SmsCode:
-      return getTrans(
-        {
-          zh: "簡訊商管理",
-          en: "SMS Provider Management"
-        },
-        locale
-      )
+      return getTrans(SMSProviderManagement, locale)
     case LanguageCode:
       return getTrans(
         {

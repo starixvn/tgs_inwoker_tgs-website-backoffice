@@ -34,6 +34,7 @@ import {
 } from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
 import { TransactionAmountTrans } from "../../trans/Field"
+import { SWRConfig } from "swr"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -55,13 +56,15 @@ export const PlayerDeductBalanceDisclosure = ({
         <DeductBalanceTrans />
       </Disclosure>
       {dialog.visible && (
-        <DeductDialog
-          brandId={brandId}
-          username={username}
-          playerCode={playerCode}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <DeductDialog
+            brandId={brandId}
+            username={username}
+            playerCode={playerCode}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

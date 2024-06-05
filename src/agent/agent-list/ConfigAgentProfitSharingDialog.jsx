@@ -59,6 +59,7 @@ import {
   UserNameTrans
 } from "../../trans/User"
 import { ProfitSharingBox } from "./button"
+import { SWRConfig } from "swr"
 
 export const ConfigAgentProfitSharingDialogDisclosure = ({
   brand,
@@ -95,12 +96,14 @@ export const ConfigAgentProfitSharingDialogDisclosure = ({
         <Trans zh="配置" en="Config" />
       </Disclosure>
       {dialog.visible && (
-        <ConfigDialog
-          brand={brand}
-          agentId={agent.id}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ConfigDialog
+            brand={brand}
+            agentId={agent.id}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

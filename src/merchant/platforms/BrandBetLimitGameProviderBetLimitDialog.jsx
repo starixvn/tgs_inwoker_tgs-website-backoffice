@@ -49,6 +49,7 @@ import {
 import { CurrencyTrans } from "../../trans/Payment.jsx"
 import { SupportingDeviceTrans } from "../../trans/Field.jsx"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter.jsx"
+import { SWRConfig } from "swr"
 
 export const EditBrandBetLimitGameProviderBetLimit = ({
   record,
@@ -66,21 +67,25 @@ export const EditBrandBetLimitGameProviderBetLimit = ({
         <Trans zh="限红组" en="Bet Limit Group" />
       </Disclosure>
       {editable && dialog.visible && (
-        <EditDialog
-          brandId={record?.id}
-          brandCode={record?.code}
-          licenseeId={record?.licenseeId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={record?.id}
+            brandCode={record?.code}
+            licenseeId={record?.licenseeId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
       {readonly && dialog.visible && (
-        <ViewDialog
-          brandId={record?.id}
-          brandCode={record?.code}
-          licenseeId={record?.licenseeId}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog
+            brandId={record?.id}
+            brandCode={record?.code}
+            licenseeId={record?.licenseeId}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

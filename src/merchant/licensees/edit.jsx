@@ -46,6 +46,7 @@ import { sortBy } from "lodash-es"
 import { isDev } from "../../env"
 import { AddTrans, EditTrans } from "../../trans/Action"
 import { BasicInformationTrans } from "../../trans/Field"
+import { SWRConfig } from "swr"
 
 export const AddButton = ({ onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -61,7 +62,9 @@ export const AddButton = ({ onSubmitted, ...props }) => {
         <AddTrans />
       </Disclosure>
       {dialog.visible && (
-        <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )
@@ -166,12 +169,14 @@ export const ViewButton = ({ record, ...props }) => {
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ViewDialog
-          id={record?.id}
-          resellerId={record?.resellerId}
-          record={record}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog
+            id={record?.id}
+            resellerId={record?.resellerId}
+            record={record}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -252,12 +257,14 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
         <EditTrans />
       </Disclosure>
       {dialog.visible && (
-        <EditDialog
-          id={record?.id}
-          resellerId={record?.resellerId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            id={record?.id}
+            resellerId={record?.resellerId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

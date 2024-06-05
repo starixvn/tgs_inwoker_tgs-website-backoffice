@@ -27,6 +27,7 @@ import {
   useFundAction
 } from "./FundAction"
 import { PlatformTrans } from "../../trans/Platform"
+import { SWRConfig } from "swr"
 
 const AddOrDeductFund = {
   zh: "上/下分",
@@ -55,12 +56,14 @@ export const FundActionDialogDisclosure = ({
         <AddOrDeductFundTrans />
       </Disclosure>
       {dialog.visible && (
-        <AddDeductFundDialog
-          brandId={brandId}
-          dialog={dialog}
-          dialogId={dialogId}
-          onSubmitted={onSubmitted}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <AddDeductFundDialog
+            brandId={brandId}
+            dialog={dialog}
+            dialogId={dialogId}
+            onSubmitted={onSubmitted}
+          />
+        </SWRConfig>
       )}
     </>
   )

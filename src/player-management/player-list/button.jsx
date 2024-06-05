@@ -46,6 +46,7 @@ import {
   PlayerHistoryListPanel,
   PlayerHistoryListTab
 } from "./PlayerHistoryList"
+import { SWRConfig } from "swr"
 
 export const ViewButton = ({
   player,
@@ -97,16 +98,18 @@ export const EditButton = ({
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <TabsDialog
-          id="edit-player-dialog"
-          edit={true}
-          brandId={brandId}
-          brand={brand}
-          playerCode={player.playerCode}
-          showParentUsername={showParentUsername}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <TabsDialog
+            id="edit-player-dialog"
+            edit={true}
+            brandId={brandId}
+            brand={brand}
+            playerCode={player.playerCode}
+            showParentUsername={showParentUsername}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

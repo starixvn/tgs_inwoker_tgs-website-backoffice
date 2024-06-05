@@ -39,6 +39,7 @@ import {
   usePresetMaintenanceTrans
 } from "../../trans/Game"
 import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
+import { SWRConfig } from "swr"
 
 export const EditPresetButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -53,7 +54,13 @@ export const EditPresetButton = ({ record, onSubmitted, ...props }) => {
         <PresetMaintenanceTrans />
       </Disclosure>
       {dialog.visible && (
-        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            record={record}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

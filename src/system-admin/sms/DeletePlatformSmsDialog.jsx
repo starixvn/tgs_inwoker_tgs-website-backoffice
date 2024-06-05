@@ -9,6 +9,7 @@ import { Trans } from "../../i18n"
 import FormDialog from "../../form/FormDialog"
 import Backdrop from "../../dialog/Backdrop"
 import { useDeletePlatformSms } from "../../sms/client"
+import { SWRConfig } from "swr"
 
 export const DeletePlatformSmsDialogDisclosure = ({
   name,
@@ -30,14 +31,16 @@ export const DeletePlatformSmsDialogDisclosure = ({
     <>
       <DeleteDisclosure {...dialog} />
       {dialog.visible && (
-        <DeleteDialog
-          name={name}
-          brandId={brandId}
-          smsSettingId={smsSettingId}
-          dialog={dialog}
-          dialogId={dialogId}
-          onSubmitted={onSubmitted}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <DeleteDialog
+            name={name}
+            brandId={brandId}
+            smsSettingId={smsSettingId}
+            dialog={dialog}
+            dialogId={dialogId}
+            onSubmitted={onSubmitted}
+          />
+        </SWRConfig>
       )}
     </>
   )
