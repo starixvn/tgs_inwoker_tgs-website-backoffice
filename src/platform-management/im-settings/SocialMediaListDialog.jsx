@@ -327,7 +327,21 @@ const FormBody = ({}) => {
           label={<SocialMediaTrans />}
         />
       </FieldStack>
-      <InputField name="url" type="url" required label="URL" />
+      <InputField
+        name="url"
+        type="url"
+        registerOptions={{
+          validate: (v) => {
+            let missingSlashRegex = /^(file|http|https|ftp):(?!\/\/)/
+            if (missingSlashRegex.test(v)) {
+              return false
+            }
+            return true
+          }
+        }}
+        required
+        label="URL"
+      />
     </FieldStack>
   )
 }
