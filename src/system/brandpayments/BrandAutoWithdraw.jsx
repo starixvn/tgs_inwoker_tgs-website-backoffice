@@ -33,6 +33,7 @@ import {
   PaymentChannelTrans,
   PaymentMinMaxLimitTrans
 } from "../../trans/Payment"
+import { SWRConfig } from "swr"
 
 export const BrandAutoWithdrawDialogDisclosure = ({
   brandId,
@@ -54,11 +55,13 @@ export const BrandAutoWithdrawDialogDisclosure = ({
         <Trans zh="自动提款设定" en="Auto Payments" />
       </Disclosure>
       {dialog.visible && (
-        <AutoWithdrawDialog
-          brandId={brandId}
-          dialog={dialog}
-          dialogId={dialogId}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <AutoWithdrawDialog
+            brandId={brandId}
+            dialog={dialog}
+            dialogId={dialogId}
+          />
+        </SWRConfig>
       )}
     </>
   )

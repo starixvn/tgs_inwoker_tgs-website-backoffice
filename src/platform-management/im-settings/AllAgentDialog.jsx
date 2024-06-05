@@ -64,6 +64,7 @@ import {
   VirtualSports,
   WinLossTrans
 } from "../../trans/Game"
+import { SWRConfig } from "swr"
 
 export const AllAgentDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -146,12 +147,14 @@ const SettlementCycleDialogDisclosure = ({ brandId, readOnly }) => {
     <>
       <Disclosure {...dialog}>{label}</Disclosure>
       {dialog.visible && (
-        <SettlementCycleDialog
-          brandId={brandId}
-          readOnly={readOnly}
-          title={label}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <SettlementCycleDialog
+            brandId={brandId}
+            readOnly={readOnly}
+            title={label}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -505,18 +508,22 @@ const WinLossSettingDialogDisclosure = ({
         {label}
       </Disclosure>
       {dialog.visible && (
-        <MultileLayerSettingDialog
-          id="win-loss-setting-dialog"
-          brandId={brandId}
-          gameType={gameType}
-          readOnly={readOnly}
-          useFetch={useAllAgentWinLossCondition}
-          useUpdate={useUpdateAllAgentWinLossCondition}
-          dialog={dialog}
-          title={label}
-          netProfitLabel={<WinLossTrans />}
-          profitSharingPercentageLabel={<Trans zh="返佣比例" en="Rebate PT" />}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <MultileLayerSettingDialog
+            id="win-loss-setting-dialog"
+            brandId={brandId}
+            gameType={gameType}
+            readOnly={readOnly}
+            useFetch={useAllAgentWinLossCondition}
+            useUpdate={useUpdateAllAgentWinLossCondition}
+            dialog={dialog}
+            title={label}
+            netProfitLabel={<WinLossTrans />}
+            profitSharingPercentageLabel={
+              <Trans zh="返佣比例" en="Rebate PT" />
+            }
+          />
+        </SWRConfig>
       )}
     </>
   )

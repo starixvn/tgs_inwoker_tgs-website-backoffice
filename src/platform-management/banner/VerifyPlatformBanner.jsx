@@ -26,6 +26,7 @@ import {
   useVerifyTrans,
   useViewTrans
 } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const VerifyPlatformBannerDisclosure = ({
   brandId,
@@ -44,12 +45,14 @@ export const VerifyPlatformBannerDisclosure = ({
     <>
       <ReviewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <VerifyDialog
-          brandId={brandId}
-          record={record}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <VerifyDialog
+            brandId={brandId}
+            record={record}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

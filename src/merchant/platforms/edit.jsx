@@ -192,11 +192,13 @@ export const ViewButton = ({ record, ...props }) => {
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ViewDialog
-          brandId={record?.id}
-          licenseeId={record?.licenseeId}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog
+            brandId={record?.id}
+            licenseeId={record?.licenseeId}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -278,12 +280,14 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
         <EditTrans />
       </Disclosure>
       {dialog.visible && (
-        <EditDialog
-          brandId={record?.id}
-          licenseeId={record?.licenseeId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={record?.id}
+            licenseeId={record?.licenseeId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

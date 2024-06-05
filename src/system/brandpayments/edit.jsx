@@ -90,6 +90,7 @@ import {
 } from "../../trans/Payment"
 import { StatusTrans } from "../../trans/Status"
 import { useAddTrans, useEditTrans } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const EditButton = ({
   brandId,
@@ -111,13 +112,15 @@ export const EditButton = ({
     <>
       <EditDisclosure id={id} {...dialog} />
       {dialog.visible && (
-        <EditDialog
-          brandId={brandId}
-          platformPaymentId={platformPaymentId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-          dialogId={dialogId}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={brandId}
+            platformPaymentId={platformPaymentId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+            dialogId={dialogId}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -254,14 +257,16 @@ export const AddBrandPaymentButton = ({
     <>
       <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <AddDialog
-          id="add-payment-dialog"
-          brandId={brandId}
-          transferType={transferType}
-          useFetch={useFetch}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <AddDialog
+            id="add-payment-dialog"
+            brandId={brandId}
+            transferType={transferType}
+            useFetch={useFetch}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

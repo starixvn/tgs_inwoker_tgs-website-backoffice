@@ -36,6 +36,7 @@ import {
 } from "../../trans/Field"
 import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 import { useAddTrans, useEditTrans, useViewTrans } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,
@@ -127,12 +128,14 @@ export const EditPlatformBannerDisclosure = ({
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <EditDialog
-          brandId={brandId}
-          record={record}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={brandId}
+            record={record}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -210,7 +213,9 @@ export const ViewPlatformBannerDisclosure = ({ brandId, record, ...props }) => {
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ViewDialog brandId={brandId} record={record} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog brandId={brandId} record={record} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )

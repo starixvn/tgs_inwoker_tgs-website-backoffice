@@ -653,19 +653,21 @@ const BetLimitRow = ({
               <>
                 <ConfigIconDisclosure {...dialog} />
                 {dialog.visible && (
-                  <BetLimitDialog
-                    group={group}
-                    betLimit={betLimit}
-                    gameProviders={gameProviders}
-                    dialog={dialog}
-                    value={value}
-                    readonly={readonly}
-                    onChange={(data) => {
-                      if (editable) {
-                        setValue(name, data)
-                      }
-                    }}
-                  />
+                  <SWRConfig value={{ provider: () => new Map() }}>
+                    <BetLimitDialog
+                      group={group}
+                      betLimit={betLimit}
+                      gameProviders={gameProviders}
+                      dialog={dialog}
+                      value={value}
+                      readonly={readonly}
+                      onChange={(data) => {
+                        if (editable) {
+                          setValue(name, data)
+                        }
+                      }}
+                    />
+                  </SWRConfig>
                 )}
               </>
             )
@@ -837,17 +839,19 @@ const GameProviderRow = ({ gameProvider, readonly = false }) => {
                   <GameListTrans />
                 </Disclosure>
                 {dialog.visible && (
-                  <GameProviderGameListDialog
-                    gameProviderId={gameProvider.gameProviderId}
-                    value={value}
-                    readonly={readonly}
-                    dialog={dialog}
-                    onChange={(data) => {
-                      if (editable) {
-                        setValue(name, data)
-                      }
-                    }}
-                  />
+                  <SWRConfig value={{ provider: () => new Map() }}>
+                    <GameProviderGameListDialog
+                      gameProviderId={gameProvider.gameProviderId}
+                      value={value}
+                      readonly={readonly}
+                      dialog={dialog}
+                      onChange={(data) => {
+                        if (editable) {
+                          setValue(name, data)
+                        }
+                      }}
+                    />
+                  </SWRConfig>
                 )}
               </>
             )

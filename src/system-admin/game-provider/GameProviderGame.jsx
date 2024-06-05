@@ -49,6 +49,7 @@ import {
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { SubGameProviderSelectField } from "../../game/providers/SubGameProviderSelect"
+import { SWRConfig } from "swr"
 
 export const ViewGameProviderGameDisclosure = ({ gameProviderId, record }) => {
   let dialog = useModalState()
@@ -62,11 +63,13 @@ export const ViewGameProviderGameDisclosure = ({ gameProviderId, record }) => {
     <>
       <ViewDisclosure {...dialog} />
       {dialog.visible && (
-        <ViewDialog
-          gameProviderId={gameProviderId}
-          record={record}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog
+            gameProviderId={gameProviderId}
+            record={record}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -116,12 +119,14 @@ export const EditGameProviderGameDisclosure = ({
     <>
       <EditDisclosure {...dialog} />
       {dialog.visible && (
-        <EditGameDialog
-          gameProviderId={gameProviderId}
-          record={record}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditGameDialog
+            gameProviderId={gameProviderId}
+            record={record}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
