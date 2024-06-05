@@ -29,6 +29,7 @@ import { InputField } from "../../input/Input"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { useFormContext, useWatch } from "react-hook-form"
+import { SWRConfig } from "swr"
 
 export const BrandLogoDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -44,7 +45,9 @@ export const BrandLogoDialogDisclosure = ({ brandId, ...props }) => {
         <Trans zh="Logo" en="Logo" />
       </Disclosure>
       {dialog.visible && (
-        <LoadingViewOrEditDialog brandId={brandId} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <LoadingViewOrEditDialog brandId={brandId} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )

@@ -56,6 +56,7 @@ import { SelectField } from "../../select/Select"
 import { Table, useTable } from "../../table"
 import { Trans } from "../../i18n"
 import { isDev } from "../../env"
+import { SWRConfig } from "swr"
 
 //TODO: test case
 export const SocialMediaListDialogDisclosure = ({ brandId, ...props }) => {
@@ -74,7 +75,9 @@ export const SocialMediaListDialogDisclosure = ({ brandId, ...props }) => {
         <SocialMediaTrans />
       </Disclosure>
       {dialog.visible && (
-        <ListDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ListDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )
@@ -96,7 +99,7 @@ const ListDialog = ({ brandId, dialog, ...props }) => {
     mutate
   })
   if (isLoading) {
-    return <LoadingBackdrop {...dialog} onClickClose={dialog.hide} />
+    return <LoadingBackdrop {...dialog} />
   }
 
   if (error) {
@@ -104,7 +107,14 @@ const ListDialog = ({ brandId, dialog, ...props }) => {
   }
 
   return (
-    <Modal title={title} {...dialog} {...props}>
+    <Modal
+      title={title}
+      {...dialog}
+      css={css`
+        min-width: 50vw;
+      `}
+      {...props}
+    >
       <FieldStack>
         <Box alignX="right">
           <AddDialogDisclosure brandId={brandId} onSubmitted={mutate} />

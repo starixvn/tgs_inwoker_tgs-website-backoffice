@@ -4,6 +4,7 @@ import { Trans, useTrans } from "../i18n"
 import { DeleteDisclosure } from "./Disclosure"
 import FormDialog from "../form/FormDialog"
 import { isDev } from "../env"
+import { SWRConfig } from "swr"
 
 export const ConfirmDeleteDialogDisclosure = ({
   dialogId,
@@ -20,15 +21,17 @@ export const ConfirmDeleteDialogDisclosure = ({
     <>
       <DeleteDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ConfirmDeleteDialog
-          id={dialogId}
-          defaultValues={defaultValues}
-          useFetch={useFetch}
-          dialog={dialog}
-          addonAfter={addonAfter}
-          onSubmit={onSubmit}
-          onSubmitted={onSubmitted}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ConfirmDeleteDialog
+            id={dialogId}
+            defaultValues={defaultValues}
+            useFetch={useFetch}
+            dialog={dialog}
+            addonAfter={addonAfter}
+            onSubmit={onSubmit}
+            onSubmitted={onSubmitted}
+          />
+        </SWRConfig>
       )}
     </>
   )

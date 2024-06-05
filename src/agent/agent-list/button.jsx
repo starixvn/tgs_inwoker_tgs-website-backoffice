@@ -96,6 +96,7 @@ import {
   UserNameTrans
 } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const AddAgentButton = ({ brand, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -363,13 +364,15 @@ export const EditButton = ({ brand, agent, onSubmitted, ...props }) => {
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <TabsDialog
-          brand={brand}
-          agent={agent}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-          dialogId="edit-agent-dialog"
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <TabsDialog
+            brand={brand}
+            agent={agent}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+            dialogId="edit-agent-dialog"
+          />
+        </SWRConfig>
       )}
     </>
   )

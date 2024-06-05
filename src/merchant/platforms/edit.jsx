@@ -81,6 +81,7 @@ import {
 } from "../../trans/Agent"
 import Switch from "../../switch/Switch"
 import { AutoOrManualSwitch } from "../../switch/AutoOrManualSwitch"
+import { SWRConfig } from "swr"
 
 export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -94,11 +95,13 @@ export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
     <>
       <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <CurrentAddDialog
-          licenseeId={licenseeId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <CurrentAddDialog
+            licenseeId={licenseeId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )

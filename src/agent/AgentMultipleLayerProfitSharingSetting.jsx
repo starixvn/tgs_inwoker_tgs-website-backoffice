@@ -42,6 +42,7 @@ import LoadingBackdrop from "../dialog/LoadingBackdrop"
 import { Name } from "./AgentEgameRebatePercentage"
 import { NetProfitTrans } from "../trans/Field"
 import { ProfitSharingPercentageTrans } from "../trans/Agent"
+import { SWRConfig } from "swr"
 
 export const AgentMultipleLayerProfitSharingSettingDialogDisclosure = ({
   name = "agentDividendConditions",
@@ -128,7 +129,11 @@ export const ViewAgentProfitSharingSettingDialogDisclosure = ({
       <Disclosure {...dialog} {...props}>
         <Trans zh="分红设置" en="Profit Sharing Setting" />
       </Disclosure>
-      {dialog.visible && <AgentDialog agentId={agentId} dialog={dialog} />}
+      {dialog.visible && (
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <AgentDialog agentId={agentId} dialog={dialog} />
+        </SWRConfig>
+      )}
     </>
   )
 }

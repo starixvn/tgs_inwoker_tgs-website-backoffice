@@ -8,6 +8,7 @@ import { DeleteTrans, useDeleteTrans } from "../../trans/Action"
 import { Trans } from "../../i18n"
 import FormDialog from "../../form/FormDialog"
 import Backdrop from "../../dialog/Backdrop"
+import { SWRConfig } from "swr"
 
 export const DeleteSmsDialogDisclosure = ({
   name,
@@ -29,14 +30,16 @@ export const DeleteSmsDialogDisclosure = ({
     <>
       <DeleteDisclosure {...dialog} />
       {dialog.visible && (
-        <DeleteSmsDialog
-          name={name}
-          smsSettingId={smsSettingId}
-          useDelete={useDelete}
-          dialog={dialog}
-          dialogId={dialogId}
-          onSubmitted={onSubmitted}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <DeleteSmsDialog
+            name={name}
+            smsSettingId={smsSettingId}
+            useDelete={useDelete}
+            dialog={dialog}
+            dialogId={dialogId}
+            onSubmitted={onSubmitted}
+          />
+        </SWRConfig>
       )}
     </>
   )
