@@ -138,7 +138,6 @@ const SettingDialog = ({
   )
 }
 
-//TODO: if enableSms = false, set select disabled?
 const FormBody = ({ brandId, smsVendorCode, enableSms, readOnly }) => {
   let currentSmsProvider = useCurrentSMSProviderTrans()
   let changeSmsProvider = useChangeSMSProviderTrans()
