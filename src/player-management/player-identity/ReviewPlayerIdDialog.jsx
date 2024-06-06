@@ -42,6 +42,7 @@ import { RejectTrans, RemarkTrans } from "../../trans/Action"
 import { ApplicationTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import { AttachmentTrans } from "../../trans/Field"
+import { SWRConfig } from "swr"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
@@ -64,13 +65,15 @@ export const ReviewPlayerIdDialogDisclosure = ({
         <ViewDisclosure {...dialog} {...props} />
       )}
       {dialog.visible && (
-        <PlayerDialog
-          brandId={brandId}
-          playerCode={playerCode}
-          formId={formId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <PlayerDialog
+            brandId={brandId}
+            playerCode={playerCode}
+            formId={formId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
