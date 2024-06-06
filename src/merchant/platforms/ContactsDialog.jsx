@@ -24,6 +24,7 @@ import AlertDialog from "../../dialog/Alert"
 import { isEmpty } from "lodash-es"
 import { faMinus, faCog, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { repeat } from "ramda"
+import { SWRConfig } from "swr"
 
 const Contacts = {
   zh: "聯絡資訊",
@@ -53,12 +54,14 @@ export const ContactsDialogDisclosure = ({
         <ContactsTrans />
       </Disclosure>
       {dialog.visible && (
-        <ContactsDialog
-          brandId={brandId}
-          dialog={dialog}
-          dialogId={dialogId}
-          readOnly={!editable}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ContactsDialog
+            brandId={brandId}
+            dialog={dialog}
+            dialogId={dialogId}
+            readOnly={!editable}
+          />
+        </SWRConfig>
       )}
     </>
   )

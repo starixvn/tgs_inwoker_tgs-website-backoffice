@@ -340,13 +340,15 @@ export const ViewButton = ({ brand, agent, ...props }) => {
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <TabsDialog
-          brand={brand}
-          agent={agent}
-          readonly
-          dialog={dialog}
-          dialogId="view-agent-dialog"
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <TabsDialog
+            brand={brand}
+            agent={agent}
+            readonly
+            dialog={dialog}
+            dialogId="view-agent-dialog"
+          />
+        </SWRConfig>
       )}
     </>
   )

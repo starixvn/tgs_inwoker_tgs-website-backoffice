@@ -234,20 +234,3 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
     </Backdrop>
   )
 }
-
-export const ViewSubGameProviderDisclosure = ({ record, ...props }) => {
-  let dialog = useModalState()
-  let isDisplay = useIsDisplayMenuByRoute([View])
-  if (!isDisplay) {
-    return null
-  }
-
-  return (
-    <>
-      <ViewDisclosure {...dialog} />
-      {dialog.visible && <ViewDialog record={record} dialog={dialog} />}
-    </>
-  )
-}
-
-const ViewDialog = ({ record, dialog }) => {}
