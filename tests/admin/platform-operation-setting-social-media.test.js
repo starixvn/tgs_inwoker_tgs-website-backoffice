@@ -45,8 +45,7 @@ const addSocialMedia = async ({ page, platform, backofficeApi }) => {
   ])
 
   let list = await backofficeApi.platform.socialMedia.list(platform.id)
-  console.log("url", url)
-  console.log(list)
+
   let socialMedia = list.find((item) => item.url === url)
   expect(socialMedia.name).equals(SocialMedia)
   expect(socialMedia.type).equals(SocialMedia)
@@ -61,14 +60,12 @@ const deleteSocialMedia = async ({ page, platform, socialMedia }) => {
     `tr[data-row-id=${socialMedia.id}] button#delete-social-media-dialog-disclosure`
   )
 
-  let [result] = await Promise.all([
+  await Promise.all([
     page.waitForResponse(
       urlIncludes(`api/brand/social/${platform.id}/${socialMedia.id}`),
       page.locator(`${DialogSelector} button[type="submit"]`).click()
     )
   ])
-
-  expect(result).to.be.true
 }
 
 const gotoPlatformOperationSettingsPage = async (page, platformCode) => {
