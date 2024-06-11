@@ -10,6 +10,7 @@ import * as allAgent from "./allAgent.js"
 import * as accountFund from "./accountFund.js"
 import * as contacts from "./contacts.js"
 import * as vip from "./vip.js"
+import * as socialMedia from "./socialMedia.js"
 
 export default {
   findPlatform,
@@ -23,5 +24,6 @@ export default {
   allAgent,
   accountFund,
   contacts,
-  vip
+  vip,
+  socialMedia
 }
