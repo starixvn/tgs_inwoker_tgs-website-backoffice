@@ -5,7 +5,8 @@ export const BankType = {
   ThirdParty: "ThirdParty",
   FPS: "FPS",
   EWallet: "EWallet",
-  Pulsa: "Pulsa"
+  Pulsa: "Pulsa",
+  Coinsph: "Coinsph"
 }
 
 export default BankType

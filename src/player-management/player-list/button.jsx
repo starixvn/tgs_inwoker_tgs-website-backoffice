@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css, Global } from "@emotion/react"
 import { Box, Dialog, useModalState } from "bumbag"
-import { View as ViewMenu, Update as UpdateMenu, Contact } from "./menu"
+import { View as ViewMenu, Update as UpdateMenu, Contact, Bank } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
 import {
   PlayerInfoTab,
@@ -46,6 +46,7 @@ import {
   PlayerHistoryListPanel,
   PlayerHistoryListTab
 } from "./PlayerHistoryList"
+import { SWRConfig } from "swr"
 
 export const ViewButton = ({
   player,
@@ -97,16 +98,18 @@ export const EditButton = ({
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <TabsDialog
-          id="edit-player-dialog"
-          edit={true}
-          brandId={brandId}
-          brand={brand}
-          playerCode={player.playerCode}
-          showParentUsername={showParentUsername}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <TabsDialog
+            id="edit-player-dialog"
+            edit={true}
+            brandId={brandId}
+            brand={brand}
+            playerCode={player.playerCode}
+            showParentUsername={showParentUsername}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -157,10 +160,6 @@ const TabsDialog = ({
   let error = playerError || wageringRequirementError || playerPaymentError
   let player = { ...data, wageringRequirement, playerPayment }
 
-  const onBankSubmitted = () => {
-    mutate()
-  }
-
   const onClickClose = dialog.hide
 
   return (
@@ -207,7 +206,6 @@ const TabsDialog = ({
                 dialog.hide()
                 mutate()
               }}
-              onBankSubmitted={onBankSubmitted}
               onClickClose={onClickClose}
             />
           )}
@@ -277,7 +275,6 @@ const ViewTabs = ({
   )
 }
 
-//TODO: rm onBankSubmitted
 const EditTabs = ({
   brandId,
   brand,
@@ -286,16 +283,16 @@ const EditTabs = ({
   showParentUsername,
   tab,
   onSubmitted,
-  onBankSubmitted,
   onClickClose
 }) => {
   let contactAuth = useIsDisplayMenuByRoute([Contact])
+  let bankAuth = useIsDisplayMenuByRoute([Bank])
   return (
     <Tabs isFitted>
       <TabList use={TabList} {...tab}>
         <PlayerInfoTab {...tab} />
         {contactAuth && <ContractTab {...tab} />}
-        <BankTab {...tab} />
+        {bankAuth && <BankTab {...tab} />}
         <PasswordTab {...tab} />
       </TabList>
       <PlayerInfoEditPanel
@@ -317,14 +314,15 @@ const EditTabs = ({
           {...tab}
         />
       )}
-      <BankPanel
-        brandId={brandId}
-        playerCode={playerCode}
-        banks={player.banks}
-        edit={true}
-        onSubmitted={onBankSubmitted}
-        {...tab}
-      />
+      {bankAuth && (
+        <BankPanel
+          brandId={brandId}
+          playerCode={playerCode}
+          banks={player.banks}
+          edit={true}
+          {...tab}
+        />
+      )}
       <PasswordPanel
         playerCode={playerCode}
         onSubmitted={onSubmitted}

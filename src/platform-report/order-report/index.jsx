@@ -98,6 +98,8 @@ export const Body = () => {
         onBrandChange={(value) => {
           setBrandId(value)
         }}
+        paddingTop="0.5rem"
+        paddingLeft="0.5rem"
       />
       {brandId && <ReportContent brandId={brandId} />}
     </Set>
@@ -149,7 +151,7 @@ const ReportContent = ({ brandId }) => {
     data = {},
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useGameRoundList({
     ...toApiParams(state),
     orderby: "descending",
@@ -210,7 +212,7 @@ const ReportContent = ({ brandId }) => {
         getRowId={(row) => row.id}
         stickyHead
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

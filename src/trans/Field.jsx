@@ -227,3 +227,40 @@ const BalanceOfCurrentPeriod = {
 export const BalanceOfCurrentPeriodTrans = () => (
   <Trans {...BalanceOfCurrentPeriod} />
 )
+
+const CurrentCycle = {
+  zh: "本期",
+  en: "Current",
+  vi: "Hiện tại"
+}
+export const CurrentCycleTrans = () => <Trans {...CurrentCycle} />
+export const useCurrentCycleTrans = () => useTrans(CurrentCycle)
+
+const NextCycle = {
+  zh: "下期",
+  en: "Next",
+  vi: "Kỳ tiếp theo"
+}
+export const NextCycleTrans = () => <Trans {...NextCycle} />
+export const useNextCycleTrans = () => useTrans(NextCycle)
+
+const SocialMedia = {
+  en: "Social Media",
+  zh: "社群媒体"
+}
+export const SocialMediaTrans = () => <Trans {...SocialMedia} />
+export const useSocialMediaTrans = () => useTrans(SocialMedia)
+
+//TODO: rm?
+const SocialMediaType = {
+  en: "Type",
+  zh: "社群媒体"
+}
+export const SocialMediaTypeTrans = () => <Trans {...SocialMediaType} />
+export const useSocialMediaTypeTrans = () => useTrans(SocialMediaType)
+
+const Name = {
+  en: "Name",
+  zh: "名称"
+}
+export const NameTrans = () => <Trans {...Name} />

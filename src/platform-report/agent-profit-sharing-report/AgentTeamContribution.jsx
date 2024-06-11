@@ -53,6 +53,7 @@ import { startOfNextDay } from "../../date/startOfNextDay"
 import { NetProfitTrans, TotalTrans } from "../../trans/Field"
 import {
   CardGameTrans,
+  EGameTrans,
   LiveDealerTrans,
   LotteryTrans,
   SportsbookTrans,
@@ -155,12 +156,12 @@ const ReportDialog = ({
               <FieldStack>
                 <FieldValues marginLeft="1rem">
                   <AgentUsernameTrans />
-                  <Text.Block alignY="center">{username}</Text.Block>
+                  <Box alignY="center">{username}</Box>
 
                   <Trans zh="上交分紅" en="Profit Sharing Amount" />
-                  <Text.Block alignY="center">
+                  <Box alignY="center">
                     <FormattedNumberDecimal value={value} />
-                  </Text.Block>
+                  </Box>
                 </FieldValues>
                 <Alert variant="bordered" type="info" marginBottom="2.5rem">
                   <List listStyleType="disc" listStylePosition="inside">
@@ -285,7 +286,7 @@ const useColumns = ({ items = [] }) => {
 
       numberDecimalColumn({
         accessor: "slotWinLoss",
-        Header: <Trans zh="电子" en="EGame" />,
+        Header: <EGameTrans />,
         sumColumn: "slotWinLoss",
         disableSortBy: true
       }),

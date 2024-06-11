@@ -105,7 +105,7 @@ const Body = ({}) => {
     keyword: ""
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = useBrandPaymentList({
+  let { isLoading, data, error, mutate, emptyData } = useBrandPaymentList({
     ...toApiParams(state),
     transferType,
     sortby: "number"
@@ -123,8 +123,7 @@ const Body = ({}) => {
     setState({
       pageIndex: 0
     })
-    deleteCache()
-    mutate(null)
+    mutate(undefined)
   }
 
   return (
@@ -189,7 +188,7 @@ const Body = ({}) => {
           />
         </Tabs.Panel>
       </Tabs>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }
@@ -359,7 +358,7 @@ const BrandPaymentBalance = ({ brandId, brandPaymentId }) => {
         onClick={() => {
           if (!isLoading) {
             deleteCache()
-            mutate(null)
+            mutate(undefined)
           }
         }}
       >

@@ -57,7 +57,7 @@ const Body = () => {
     data: items,
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useMaintenanceList({
     ...toApiParams(state)
   })
@@ -102,7 +102,14 @@ const Body = () => {
         stickyHead
         getRowId={(row) => row.brandCode}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && (
+        <AlertDialog
+          {...error}
+          onClickClose={() => {
+            mutate([], false)
+          }}
+        />
+      )}
     </PageContent>
   )
 }

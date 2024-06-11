@@ -56,6 +56,7 @@ import { parseJSON, stringifyJSON } from "../../text/json"
 import { Update } from "./menu"
 import BrandPaymentTransferType from "../../system/brandpayments/BrandPaymentTransferType"
 import { PaymentLimitTrans } from "../../trans/Payment"
+import { SWRConfig } from "swr"
 
 //TODO: rename to PlatformPaymentDisclosure?
 export const EditBrandPaymentDisclosure = ({
@@ -78,13 +79,15 @@ export const EditBrandPaymentDisclosure = ({
         <EditDisclosure id={id} {...dialog} />
       )}
       {dialog.visible && (
-        <EditDialog
-          platformPaymentId={platformPaymentId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-          dialogId={dialogId}
-          readOnly={readOnly}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            platformPaymentId={platformPaymentId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+            dialogId={dialogId}
+            readOnly={readOnly}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -182,7 +185,7 @@ const EditDialog = ({
 
   const resetPlatformPayment = () => {
     deletePlatformCache()
-    mutatePlatformPayment(null, false)
+    mutatePlatformPayment(undefined, false)
   }
 
   if (platformPaymentError) {
@@ -200,7 +203,7 @@ const EditDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let editable = !readOnly
@@ -213,6 +216,7 @@ const EditDialog = ({
       onSubmit={onSubmit}
       onSubmitted={() => {
         resetPlatformPayment()
+        reset()
         onSubmitted?.()
       }}
       isLoading={isLoading}
@@ -250,7 +254,7 @@ const AddDepositDialog = ({ title, brandId, dialog, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -266,7 +270,10 @@ const AddDepositDialog = ({ title, brandId, dialog, onSubmitted }) => {
         extendedData: JSON.stringify({})
       }}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}
@@ -297,7 +304,7 @@ const AddWithdrawDialog = ({ title, brandId, dialog, onSubmitted }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -313,7 +320,10 @@ const AddWithdrawDialog = ({ title, brandId, dialog, onSubmitted }) => {
         extendedData: JSON.stringify({})
       }}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       isLoading={isLoading}
       result={result}
       error={error}

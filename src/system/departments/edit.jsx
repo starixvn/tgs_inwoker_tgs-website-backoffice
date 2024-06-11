@@ -40,26 +40,38 @@ import {
   PlatformTrans
 } from "../../trans/Platform"
 
-export const AddButton = ({ onSubmitted, ...props }) => {
+export const AddButton = ({
+  onSubmitted,
+  id,
+  dialogId = "add-department-dialog",
+  ...props
+}) => {
   let dialog = Modal.useState()
   let isDisplay = useIsDisplayMenuByRoute([CreateMenu])
   if (!isDisplay) {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <AddTrans />
       </Disclosure>
       {dialog.visible && (
-        <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
+        <AddDialog
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
       )}
     </>
   )
 }
 
-const AddDialog = ({ onSubmitted, dialog, ...props }) => {
+const AddDialog = ({ onSubmitted, dialog, dialogId, ...props }) => {
+  let title = useAddTrans()
+
   let userResellerId = useUserResellerId()
   let userLicenseeId = useUserLicenseeId()
   let userBrandId = useUserBrandId()
@@ -82,10 +94,8 @@ const AddDialog = ({ onSubmitted, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
-
-  let title = useAddTrans()
 
   return (
     <FormDialog
@@ -97,10 +107,14 @@ const AddDialog = ({ onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       minWidth="50vw"
+      id={dialogId}
     >
       <EditBody isAdd={true} />
     </FormDialog>
@@ -181,9 +195,11 @@ export const EditButton = ({ id = "", record, onSubmitted, ...props }) => {
     return null
   }
 
+  let dialogId = "edit-department-dialog"
+  let disclosureId = `${dialogId}-disclosure`
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={disclosureId} {...dialog}>
         <EditTrans />
       </Disclosure>
       {dialog.visible && (
@@ -192,13 +208,23 @@ export const EditButton = ({ id = "", record, onSubmitted, ...props }) => {
           record={record}
           onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
         />
       )}
     </>
   )
 }
 
-const EditDialog = ({ id, record = {}, dialog, onSubmitted, ...props }) => {
+const EditDialog = ({
+  id,
+  record = {},
+  dialog,
+  dialogId,
+  onSubmitted,
+  ...props
+}) => {
+  let title = useEditTrans()
+
   let [submitData, setSubmit] = useState()
   let { result, error, isLoading, mutate, deleteCache } = useEditDepartment(
     id,
@@ -223,10 +249,8 @@ const EditDialog = ({ id, record = {}, dialog, onSubmitted, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
-
-  let title = useEditTrans()
 
   return (
     <FormDialog
@@ -236,9 +260,13 @@ const EditDialog = ({ id, record = {}, dialog, onSubmitted, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
+      id={dialogId}
     >
       <EditBody record={record} />
     </FormDialog>

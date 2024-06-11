@@ -82,7 +82,7 @@ export const BalanceAdjustReport = ({ resellerId }) => {
     to: dateRange.end
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = useBalanceAdjustList(
+  let { isLoading, data, error, mutate, emptyData } = useBalanceAdjustList(
     toApiParams(state)
   )
 
@@ -101,7 +101,7 @@ export const BalanceAdjustReport = ({ resellerId }) => {
 
   let pageWidth = useResellerPageContentWidth()
   return (
-    <Set orientation="vertical" isFilled height="100%" spacing="major-2">
+    <Set orientation="vertical" isFilled height="100%">
       <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           from={state?.from}
@@ -149,7 +149,7 @@ export const BalanceAdjustReport = ({ resellerId }) => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

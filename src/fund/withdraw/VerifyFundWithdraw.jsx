@@ -29,6 +29,7 @@ import ReviewFund from "../ReviewFund"
 import { AuditAutoClearBucketDialogDisclosure } from "./AuditAutoClearBucketDialog"
 import { isDev } from "../../env"
 import { RejectTrans, useApproveTrans } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const FundWithdrawVerified = "FundWithdrawVerified"
 
@@ -60,13 +61,15 @@ export const VerifyFundWithdrawDisclosure = ({
     <>
       <ReviewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <VerifyFundWithdrawDialog
-          brandId={brandId}
-          formId={formId}
-          playerCode={playerCode}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <VerifyFundWithdrawDialog
+            brandId={brandId}
+            formId={formId}
+            playerCode={playerCode}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -128,13 +131,13 @@ const VerifyFundWithdrawDialog = ({
 
   const resetVerifyFundWithdrawForm = () => {
     deleteCache()
-    mutate(null, false)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   const reset = () => {
     deleteFundWithdrawFormCache()
-    mutateFundWithdrawForm(null, false)
+    mutateFundWithdrawForm(undefined, false)
 
     resetVerifyFundWithdrawForm()
   }

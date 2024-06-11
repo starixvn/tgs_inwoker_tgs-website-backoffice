@@ -137,7 +137,8 @@ const useSystemGameRoundData = (searchParams) => {
     data: roundListData,
     error: roundListError,
     mutate: mutateRoundList,
-    deleteCache: deleteRoundListCache
+    deleteCache: deleteRoundListCache,
+    emptyData: emptyRoundListData
   } = useSystemGameRoundList(searchParams)
 
   let {
@@ -145,7 +146,8 @@ const useSystemGameRoundData = (searchParams) => {
     data: total,
     error: totalError,
     mutate: mutateTotal,
-    deleteCache: deleteTotalCache
+    deleteCache: deleteTotalCache,
+    emptyData: emptyTotalData
   } = useSystemGameRoundListTotal(searchParams)
 
   return {
@@ -159,6 +161,10 @@ const useSystemGameRoundData = (searchParams) => {
     deleteCache: () => {
       deleteRoundListCache()
       deleteTotalCache()
+    },
+    emptyData: () => {
+      emptyRoundListData()
+      emptyTotalData()
     }
   }
 }
@@ -194,7 +200,7 @@ const ReportContent = ({}) => {
     culture
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = useSystemGameRoundData(
+  let { isLoading, data, error, mutate, emptyData } = useSystemGameRoundData(
     toSearchParams()
   )
 
@@ -278,7 +284,7 @@ const ReportContent = ({}) => {
           `}
         />
       </FieldStack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

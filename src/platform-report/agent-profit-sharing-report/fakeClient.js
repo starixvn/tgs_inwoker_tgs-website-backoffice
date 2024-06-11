@@ -1,4 +1,3 @@
-import useSWR, { cache } from "swr"
 import {
   urlWith,
   useGet,
@@ -12,8 +11,8 @@ export const API = "/api/AgentReport"
 //TODO: rm fakeClient.js
 export const useAgentDividend = (searchParams) => {
   //TODO: rm test
-  let url = searchParams ? urlWith(searchParams, `${API}/dividends`) : ""
-  let { data, ...rest } = useGet(url)
+  let url = searchParams ? urlWith(searchParams, `${API}/AgentDividends`) : ""
+  let { data, error, ...rest } = useGet(url)
   if (true) {
     data = {
       subTotalCount: 2,

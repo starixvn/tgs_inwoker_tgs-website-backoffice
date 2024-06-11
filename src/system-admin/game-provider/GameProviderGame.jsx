@@ -49,6 +49,7 @@ import {
 import { View, Update } from "./menu"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { SubGameProviderSelectField } from "../../game/providers/SubGameProviderSelect"
+import { SWRConfig } from "swr"
 
 export const ViewGameProviderGameDisclosure = ({ gameProviderId, record }) => {
   let dialog = useModalState()
@@ -62,11 +63,13 @@ export const ViewGameProviderGameDisclosure = ({ gameProviderId, record }) => {
     <>
       <ViewDisclosure {...dialog} />
       {dialog.visible && (
-        <ViewDialog
-          gameProviderId={gameProviderId}
-          record={record}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog
+            gameProviderId={gameProviderId}
+            record={record}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -116,12 +119,14 @@ export const EditGameProviderGameDisclosure = ({
     <>
       <EditDisclosure {...dialog} />
       {dialog.visible && (
-        <EditGameDialog
-          gameProviderId={gameProviderId}
-          record={record}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditGameDialog
+            gameProviderId={gameProviderId}
+            record={record}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -171,15 +176,18 @@ const AddGameDialog = ({ gameProviderId, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(false, undefined)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
   return (
     <Backdrop {...dialog}>
       <FormDialog
         defaultValues={{ gameProviderId, status: GameStatus.Active }}
         onSubmit={onSubmit}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         result={result}
         isLoading={isLoading}
         error={error}
@@ -217,15 +225,18 @@ const EditGameDialog = ({ gameProviderId, record, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(false, undefined)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
   return (
     <Backdrop {...dialog}>
       <FormDialog
         defaultValues={{ gameProviderId, ...clone(record) }}
         onSubmit={onSubmit}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         result={result}
         isLoading={isLoading}
         error={error}

@@ -10,16 +10,17 @@ import FormDialog from "../../form/FormDialog"
 
 export const DeleteButton = ({ id, name, onSubmitted, ...props }) => {
   let dialog = Modal.useState()
-  let disclosureRef = useRef()
 
   let isDisplay = useIsDisplayMenuByRoute([DeleteMenu])
   if (!isDisplay) {
     return null
   }
 
+  let dialogId = "delete-department-dialog"
+  let disclosureId = `${dialogId}-disclosure`
   return (
     <>
-      <Disclosure palette="danger" {...dialog}>
+      <Disclosure id={disclosureId} palette="danger" {...dialog}>
         <Trans zh="删除" en="Delete" />
       </Disclosure>
       {dialog.visible && (
@@ -28,7 +29,7 @@ export const DeleteButton = ({ id, name, onSubmitted, ...props }) => {
           name={name}
           onSubmitted={onSubmitted}
           dialog={dialog}
-          finalFocusRef={disclosureRef}
+          dialogId={dialogId}
         />
       )}
     </>
@@ -40,22 +41,23 @@ const DeleteDialog = ({
   name = "",
   dialog,
   onSubmitted,
-  finalFocusRef,
+  dialogId,
   ...props
 }) => {
-  let [deleteId, setDelete] = useState()
-  let { result, error, isLoading } = useDeleteDepartment(deleteId)
-
-  const submit = () => setDelete(id)
-
-  const clearResult = () => {
-    setDelete(null)
-  }
-
   let title = useTrans({
     zh: "删除部门",
     en: "Delete Department"
   })
+
+  let [deleteId, setDelete] = useState()
+  let { result, error, isLoading, deleteCache } = useDeleteDepartment(deleteId)
+
+  const submit = () => setDelete(id)
+
+  const reset = () => {
+    deleteCache()
+    setDelete(null)
+  }
 
   return (
     <FormDialog
@@ -63,10 +65,14 @@ const DeleteDialog = ({
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
-      onSubmitted={onSubmitted}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
+      id={dialogId}
     >
       <Alert
         title={

@@ -421,6 +421,20 @@ export const Fixture = {
 
     use(platform)
   },
+  departmentPlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "DEPT"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    use(platform)
+  },
   autoClearWageringRequirementPlatform: async (
     {
       licensee,
@@ -539,6 +553,13 @@ const PromotionSettingsString = JSON.stringify([
         Trans: {
           En: "Basic Deposit Bonus",
           Zh: "充就送"
+        }
+      },
+      {
+        Name: "DepositRewardV2",
+        Trans: {
+          En: "Deposit Reward V2",
+          Zh: "充就送V2"
         }
       }
     ],

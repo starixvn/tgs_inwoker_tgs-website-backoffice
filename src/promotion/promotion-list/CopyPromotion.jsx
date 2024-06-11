@@ -30,6 +30,7 @@ import FormDialog from "../../form/FormDialog"
 import { useAddPromotion } from "./client"
 import clone from "clone-deep"
 import { PromotionTypes as OfflinePromotionTypes } from "./reward/OfflineRewardGroup"
+import { SWRConfig } from "swr"
 
 const NotPromtion = [...OfflinePromotionTypes]
 export const CopyPromotionDisclosure = ({
@@ -57,12 +58,14 @@ export const CopyPromotionDisclosure = ({
         <Trans zh="复制" en="Copy" />
       </Disclosure>
       {dialog.visible && (
-        <CopyDialog
-          brandId={brandId}
-          promotionId={promotionId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <CopyDialog
+            brandId={brandId}
+            promotionId={promotionId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -138,7 +141,7 @@ const CopyDialog = ({ brandId, promotionId, dialog, onSubmitted }) => {
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -150,7 +153,10 @@ const CopyDialog = ({ brandId, promotionId, dialog, onSubmitted }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="85vw"

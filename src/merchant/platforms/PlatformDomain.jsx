@@ -56,20 +56,14 @@ const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
   let editable = useIsDisplayMenuByRoute([Update])
   let readOnly = !editable
 
-  let {
-    isLoading,
-    data: record,
-    error,
-    mutate,
-    deleteCache
-  } = useBrand(brandId)
+  let { isLoading, data: record, error, mutate } = useBrand(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
 
   if (error) {
-    return <AlertDialog {...error} onClickClose={deleteCache} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   const onSubmit = (domains) => {
@@ -79,7 +73,6 @@ const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
   }
 
   const reset = () => {
-    deleteCache()
     mutate(undefined, false)
   }
 

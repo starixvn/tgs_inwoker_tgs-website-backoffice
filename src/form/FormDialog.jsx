@@ -103,6 +103,10 @@ export const FormDialog = ({
             min-height: max-content;
             max-height: 85vh;
           }
+
+          & .bb-DialogTitle {
+            padding-right: 2rem;
+          }
         `}
         {...props}
       >

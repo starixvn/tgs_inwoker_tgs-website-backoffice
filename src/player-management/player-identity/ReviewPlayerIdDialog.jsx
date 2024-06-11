@@ -42,6 +42,7 @@ import { RejectTrans, RemarkTrans } from "../../trans/Action"
 import { ApplicationTimeTrans } from "../../trans/Date"
 import { StatusTrans } from "../../trans/Status"
 import { AttachmentTrans } from "../../trans/Field"
+import { SWRConfig } from "swr"
 
 export const ReviewPlayerIdDialogDisclosure = ({
   brandId,
@@ -64,13 +65,15 @@ export const ReviewPlayerIdDialogDisclosure = ({
         <ViewDisclosure {...dialog} {...props} />
       )}
       {dialog.visible && (
-        <PlayerDialog
-          brandId={brandId}
-          playerCode={playerCode}
-          formId={formId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <PlayerDialog
+            brandId={brandId}
+            playerCode={playerCode}
+            formId={formId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -85,20 +88,18 @@ const PlayerDialog = ({
   onSubmitted,
   ...props
 }) => {
-  let { isLoading, data, error, mutate, deleteCache } =
-    usePlayerIdentity(playerCode)
+  let { isLoading, data, error, mutate } = usePlayerIdentity(playerCode)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
 
   if (error) {
-    return <AlertDialog {...error} onClickClose={deleteCache} />
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   const reset = () => {
-    deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (
@@ -125,31 +126,27 @@ const ReviewDialog = ({
   dialog,
   ...props
 }) => {
+  let title = useTrans({
+    zh: "身分证审核",
+    en: "ID Verification"
+  })
+
   let defaultValues = { ...clone(record), brandId }
 
   let formMethods = useForm({ defaultValues })
   let { setValue } = formMethods
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } = useVerifyPlayerID(
-    formId,
-    formData
-  )
+  let { isLoading, result, error, mutate } = useVerifyPlayerID(formId, formData)
 
   const onSubmit = (data) => {
     setSubmit(data)
   }
 
   const reset = () => {
-    deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
-
-  let title = useTrans({
-    zh: "身分证审核",
-    en: "ID Verification"
-  })
 
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
   let editable = hasUpdateAuth && isPlayerIdentityWaitingVerify(record.status)
@@ -162,6 +159,7 @@ const ReviewDialog = ({
       id="review-player-id-dialog"
       formMethods={formMethods}
       onSubmit={onSubmit}
+      onSubmitted={reset}
       actionButtonsProps={{
         submitProps: {
           "data-type": "approve"

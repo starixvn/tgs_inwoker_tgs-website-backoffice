@@ -12,8 +12,12 @@ import {
   Level
 } from "bumbag"
 import PageContent from "../../page/Content"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import {
   useIsDisplayMenuByRoute,
@@ -28,10 +32,6 @@ import { InputField } from "../../input/Input"
 import BrandBar from "../../report/BrandBar"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import numberColumn, {
-  numberDecimalColumn,
-  numberDecimalPercentageColumn
-} from "../../table/column/numberColumn"
 import { PlayerAddBalanceDisclosure } from "./PlayerAddBalance"
 import { PlayerDeductBalanceDisclosure } from "./PlayerDeductBalance"
 import { usePlayerList } from "../player-list/client"
@@ -50,29 +50,20 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<PlayerBalanceAdjustmentTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
+  let brandId = usePlatformId()
 
-  return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
-  )
-}
-
-const BodyContent = ({ brandId = "" }) => {
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     username: ""
   })
 
@@ -80,58 +71,48 @@ const BodyContent = ({ brandId = "" }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { pageIndex, pageSize, username } = state
   let {
     data = {},
     isLoading,
     mutate,
     error,
-    deleteCache
-  } = usePlayerList(
-    brandId
-      ? {
-          ...toApiParams(state),
-          sortby: "username",
-          brandId
-        }
-      : undefined
-  )
+    emptyData
+  } = usePlayerList({
+    ...toApiParams(state),
+    sortby: "username"
+  })
 
   let columns = useColumns({ mutate, items: data?.items, brandId })
   return (
-    <PageContent
-      title={<PlayerBalanceAdjustmentTrans />}
-      actionBar={
-        <Flex justifyContent="space-between">
-          <SearchBar
-            brandId={brandId}
-            search={(data) => {
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading}
-          />
-          <Box>
-            <PlayerBatchAddBalanceDisclosure brandId={brandId} />
-          </Box>
-        </Flex>
-      }
-    >
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          brandId={brandId}
+          search={(data) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+        <Box>
+          <PlayerBatchAddBalanceDisclosure brandId={brandId} />
+        </Box>
+      </Level>
       <Table
         columns={columns}
         data={data?.items}
         initialState={state}
         controlledState={state}
-        pageCount={pageCount(pageSize, data?.totalCount)}
+        pageCount={pageCount(state.pageSize, data?.totalCount)}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
+    </Set>
   )
 }
 

@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { css } from "@emotion/react"
-import { Box, Button, Set, Text, Flex, Stack, Dialog, Group } from "bumbag"
-import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
+import { Box, Button, Set, Text, Level, Stack, Dialog, Group } from "bumbag"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Code, View, Update } from "./menu"
 import textColumn from "../../table/column/textColumn"
-import dateTimeColumn from "../../table/column/dateTime"
 import {
   useForm,
   FormProvider,
@@ -14,7 +18,6 @@ import {
 } from "react-hook-form"
 import { Input, InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
-import { PageContent } from "../../page/Content"
 import AlertDialog from "../../dialog/Alert"
 import { Trans, useTrans } from "../../i18n"
 import {
@@ -75,32 +78,21 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<PromotionManagementTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
-  )
-}
-
-const BodyContent = ({ brandId }) => {
+  let brandId = usePlatformId()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     status: "",
     name: "",
-    brandId,
     from: undefined,
     to: undefined
   })
@@ -109,46 +101,38 @@ const BodyContent = ({ brandId }) => {
     setState({ pageIndex: 0, brandId })
   }, [brandId])
 
-  let { isLoading, data, error, mutate, deleteCache } = usePromotionList(
-    brandId
-      ? {
-          ...toApiParams(state),
-          sortby: "number",
-          from: formatDateOnly(state.from),
-          to: formatDateOnly(state.to)
-        }
-      : undefined
-  )
+  let { isLoading, data, error, mutate, emptyData } = usePromotionList({
+    ...toApiParams(state),
+    sortby: "number",
+    from: formatDateOnly(state.from),
+    to: formatDateOnly(state.to)
+  })
 
   return (
-    <PageContent
-      title={<PromotionManagementTrans />}
-      actionBar={
-        <Flex justifyContent="space-between">
-          <SearchBar
-            status={state?.status}
-            name={state?.name}
-            search={({ start, end, ...data } = {}) => {
-              setState({
-                pageIndex: 0,
-                from: start,
-                to: end,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading}
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          status={state?.status}
+          name={state?.name}
+          search={({ start, end, ...data } = {}) => {
+            setState({
+              pageIndex: 0,
+              from: start,
+              to: end,
+              ...data
+            })
+            mutate()
+          }}
+          isLoading={isLoading}
+        />
+        <Box>
+          <AddPromotionDisclosure
+            id="add-promotion-dialog-disclosure"
+            brandId={brandId}
+            onSubmitted={mutate}
           />
-          <Box>
-            <AddPromotionDisclosure
-              id="add-promotion-dialog-disclosure"
-              brandId={brandId}
-              onSubmitted={mutate}
-            />
-          </Box>
-        </Flex>
-      }
-    >
+        </Box>
+      </Level>
       <DataTable
         brandId={brandId}
         state={state}
@@ -158,8 +142,8 @@ const BodyContent = ({ brandId }) => {
         mutate={mutate}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
+    </Set>
   )
 }
 

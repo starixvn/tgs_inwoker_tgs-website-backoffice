@@ -10,7 +10,7 @@ export const AgentIngressApplyButton = ({ agentId, ...props }) => {
 
   const reset = () => {
     setSubmit(undefined)
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const AgentIngressDeleteButton = ({ agentId, ...props }) => {
 
   const reset = () => {
     setSubmit(undefined)
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   useEffect(() => {

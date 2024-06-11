@@ -49,7 +49,8 @@ import {
   Lottery,
   Sportsbook,
   ValidBetAmountTrans,
-  VirtualSports
+  VirtualSports,
+  EGame
 } from "../../trans/Game"
 import { TotalTrans } from "../../trans/Field"
 
@@ -247,10 +248,7 @@ const AllGameTypeMessages = {
   LiveDealer: LiveDealer,
   CardGame: CardGame,
   Lottery: Lottery,
-  Slot: {
-    zh: "电子",
-    en: "EGame"
-  }
+  Slot: EGame
 }
 
 const RebateLabel = () => <Trans zh="返水金额" en="Rebate" />

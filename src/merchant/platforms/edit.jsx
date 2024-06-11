@@ -47,7 +47,7 @@ import { toCheckedFieldName } from "../../currency/CurrencyCheckboxGroup"
 import CurrencyBetLimitFieldsBox, {
   flatCheckedCurrencyBetLimits
 } from "../CurrencyBetLimitFieldsBox"
-import SettlementIntervalType, {
+import {
   isMonthlySettlementInterval,
   MonthlyDaySelect,
   SettlementIntervalTypeSelect
@@ -81,6 +81,7 @@ import {
 } from "../../trans/Agent"
 import Switch from "../../switch/Switch"
 import { AutoOrManualSwitch } from "../../switch/AutoOrManualSwitch"
+import { SWRConfig } from "swr"
 
 export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -94,11 +95,13 @@ export const AddButton = ({ licenseeId, onSubmitted, ...props }) => {
     <>
       <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <CurrentAddDialog
-          licenseeId={licenseeId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <CurrentAddDialog
+            licenseeId={licenseeId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -138,7 +141,7 @@ const CurrentAddDialog = ({ licenseeId, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -189,11 +192,13 @@ export const ViewButton = ({ record, ...props }) => {
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ViewDialog
-          brandId={record?.id}
-          licenseeId={record?.licenseeId}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog
+            brandId={record?.id}
+            licenseeId={record?.licenseeId}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -275,12 +280,14 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
         <EditTrans />
       </Disclosure>
       {dialog.visible && (
-        <EditDialog
-          brandId={record?.id}
-          licenseeId={record?.licenseeId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={record?.id}
+            licenseeId={record?.licenseeId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -355,7 +362,7 @@ const EditDialog = ({ brandId, licenseeId, onSubmitted, dialog, ...props }) => {
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let record = {
@@ -660,18 +667,6 @@ const EditBody = ({ record, readonly, isAdd = false, businessType }) => {
             name="timeSpanMinutes"
             defaultValue={isAdd ? SystemZoneOffset : undefined}
             disabled={readonly || !isAdd}
-          />
-        </Box>
-
-        <NormalLabel>
-          <Trans zh="产品费用" en="Product Fee" />
-        </NormalLabel>
-        <Box>
-          <PercentageNumberInputField
-            name="platformCharge"
-            readOnly={readonly}
-            disabled={!editable}
-            width="fit-content"
           />
         </Box>
 

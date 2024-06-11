@@ -235,3 +235,48 @@ const PromotionBonusAmount = {
 export const PromotionBonusAmountTrans = () => (
   <Trans {...PromotionBonusAmount} />
 )
+
+const PromotionPlayerMaxApplyTimesPerDay = {
+  zh: "玩家每日可申请次数",
+  en: "Max. number of times to apply per day",
+  vi: "Số lần áp dụng tối đa mỗi ngày"
+}
+export const PromotionPlayerMaxApplyTimesPerDayTrans = () => (
+  <Trans {...PromotionPlayerMaxApplyTimesPerDay} />
+)
+
+const PromotionPlayerMaxApplyTimesPerWeek = {
+  zh: "玩家每周可申请次数",
+  en: "Max. number of times to apply per week",
+  vi: "Số lần nộp hồ sơ tối đa mỗi tuần"
+}
+export const PromotionPlayerMaxApplyTimesPerWeekTrans = () => (
+  <Trans {...PromotionPlayerMaxApplyTimesPerWeek} />
+)
+
+const PromotionPlayerMaxApplyTimesPerMonth = {
+  zh: "玩家每月可申请次数",
+  en: "Max. number of times to apply per month",
+  vi: "Số lần nộp đơn tối đa mỗi tháng"
+}
+export const PromotionPlayerMaxApplyTimesPerMonthTrans = () => (
+  <Trans {...PromotionPlayerMaxApplyTimesPerMonth} />
+)
+
+const PromotionPlayerMaxApplyTimes = {
+  zh: "玩家本活动可申请次数",
+  en: "Max. number of times to apply this promo",
+  vi: "Số lần tối đa được áp dụng khuyến mãi này"
+}
+export const PromotionPlayerMaxApplyTimesTrans = () => (
+  <Trans {...PromotionPlayerMaxApplyTimes} />
+)
+
+const PromotionEligibility = {
+  zh: "参加条件",
+  en: "Eligibility",
+  vi: "đủ điều kiện"
+}
+export const PromotionEligibilityTrans = () => (
+  <Trans {...PromotionEligibility} />
+)

@@ -88,8 +88,9 @@ const Body = ({}) => {
     culture
   })
 
-  let { isLoading, data, error, mutate, deleteCache } =
-    useGameProviderReportList(toSearchParams())
+  let { isLoading, data, error, mutate, emptyData } = useGameProviderReportList(
+    toSearchParams()
+  )
 
   let columns = useColumns({
     items: data?.items
@@ -136,7 +137,7 @@ const Body = ({}) => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

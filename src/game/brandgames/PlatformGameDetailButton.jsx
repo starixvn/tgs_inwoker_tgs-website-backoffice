@@ -36,6 +36,7 @@ import {
 } from "../../trans/Field.jsx"
 import { SpecialProcessingTrans } from "../../trans/Action.jsx"
 import { VipCommissionRebateTrans } from "../../trans/Vip.jsx"
+import { SWRConfig } from "swr"
 
 export const PlatformGameDetailButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -53,12 +54,14 @@ export const PlatformGameDetailButton = ({ record, onSubmitted, ...props }) => {
         <GameDetailTrans />
       </Disclosure>
       {dialog.visible && (
-        <PlatformGameDetailDialog
-          record={record}
-          readOnly={readOnly}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <PlatformGameDetailDialog
+            record={record}
+            readOnly={readOnly}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -90,11 +93,11 @@ const PlatformGameDetailDialog = ({
   }
 
   const reset = () => {
-    mutatebrandGame(undefined, false)
     deleteBrandGameCache()
+    mutatebrandGame(undefined, false)
 
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useGameDetailTrans()

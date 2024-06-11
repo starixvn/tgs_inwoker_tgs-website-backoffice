@@ -24,9 +24,9 @@ export const useAgentList = (searchParams) => {
   return useGet(url)
 }
 
-export const useAgent = (id) => {
+export const useAgent = (id, options) => {
   let url = id ? `${API}/${id}` : ""
-  let { data, ...rest } = useGet(url)
+  let { data, ...rest } = useGet(url, options)
   return {
     data: data?.agent,
     ...rest
@@ -144,8 +144,7 @@ export const useUpdateAgentInfo = (agentId, data) => {
   let url = agentId && data ? `${API}/info/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
@@ -153,12 +152,11 @@ export const useUpdateAgentStatus = (agentId, data) => {
   let url = agentId && data ? `${API}/status/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
-export const useUpdateAgentNegativeDividend = (agentId, data) => {
+export const useUpdateAgentNegativeDividend = (agentId, data, options) => {
   let url =
     agentId && data
       ? `${API}/negative-agent-dividend-carry-forward/${agentId}`
@@ -166,7 +164,7 @@ export const useUpdateAgentNegativeDividend = (agentId, data) => {
 
   return usePatchData(url, data, {
     dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    ...options
   })
 }
 
@@ -174,8 +172,7 @@ export const useUpdateAgentOneLayer = (agentId, data) => {
   let url = agentId && data ? `${API}/one-layer/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
@@ -183,8 +180,7 @@ export const useUpdateAgentMultipleLayer = (agentId, data) => {
   let url = agentId && data ? `${API}/multiple-layer/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
@@ -192,8 +188,7 @@ export const useUpdateAgentContact = (agentId, data) => {
   let url = agentId && data ? `${API}/contact/${agentId}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
@@ -208,12 +203,12 @@ export const useUpdateAgentWithdrawPassword = (data) => {
 }
 
 export const useAddAgentBank = (agentId, data) => {
-  let url = agentId ? `${API}/${agentId}/bank` : ""
+  let url = agentId && data ? `${API}/${agentId}/bank` : ""
   return usePostData(url, data)
 }
 
 export const useUpdateAgentBank = (id, data) => {
-  let url = id ? `${API}/bank/${id}` : ""
+  let url = id && data ? `${API}/bank/${id}` : ""
   return usePutData(url, data)
 }
 
@@ -292,4 +287,15 @@ export const useCreateAgentDnsZone = (agentId) => {
 export const useDeleteAgentDnsZone = (agentId) => {
   let url = agentId ? `${DomainSettingApi}/dns-zone/${agentId}` : ""
   return useDelete(url)
+}
+
+const ProductFeeApi = "/api/AgentProductFee"
+export const useAgentProductFee = (agentId) => {
+  let url = agentId ? `${ProductFeeApi}/${agentId}` : ""
+  return useGet(url)
+}
+
+export const useUpdateAgentProductFee = (formData) => {
+  let url = formData ? ProductFeeApi : ""
+  return usePutData(url, formData)
 }

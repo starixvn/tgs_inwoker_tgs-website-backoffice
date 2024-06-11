@@ -1,4 +1,3 @@
-import useSWR, { cache } from "swr"
 import {
   urlWith,
   useGet,
@@ -15,11 +14,21 @@ export const useAgentDividend = (searchParams) => {
   return useGet(url)
 }
 
-//TODO: rm?
+export const useAgentDividendProductFee = (searchParams) => {
+  let url = searchParams
+    ? urlWith(searchParams, `${API}/dividend/product-fee`)
+    : ""
+
+  return useGet(url)
+}
+
+//TODO: rm
+/*
 export const useAgentDividendList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/dividends`) : ""
   return useGet(url)
 }
+*/
 
 export const useAgentDividendDetailList = (searchParams) => {
   let url = searchParams ? urlWith(searchParams, `${API}/dividendDetails`) : ""

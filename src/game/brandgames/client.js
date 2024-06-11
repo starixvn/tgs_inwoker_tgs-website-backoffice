@@ -1,4 +1,3 @@
-import useSWR, { cache } from "swr"
 import {
   urlWith,
   useGet,
@@ -15,9 +14,9 @@ export const useBrandGameList = (searchParams) => {
   return useGet(url)
 }
 
-export const useBrandGame = (id) => {
+export const useBrandGame = (id, options) => {
   let url = id ? `${API}/${id}` : undefined
-  let { data, ...result } = useGet(url)
+  let { data, ...result } = useGet(url, options)
   return {
     data: data?.brandGame,
     ...result

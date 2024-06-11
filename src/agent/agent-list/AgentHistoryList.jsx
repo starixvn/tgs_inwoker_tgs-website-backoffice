@@ -34,6 +34,16 @@ import {
 import { StatusTrans } from "../../trans/Status"
 import { EmailTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
 import { TimeTrans } from "../../trans/Date"
+import {
+  useCardGameTrans,
+  useEGameTrans,
+  useLiveDealerTrans,
+  useLotteryTrans,
+  useSportsbookTrans,
+  useVirtualSportsTrans
+} from "../../trans/Game"
+import { useProductFeeTrans } from "../../trans/Platform"
+import { useCurrentCycleTrans, useNextCycleTrans } from "../../trans/Field"
 
 const Key = "AgentHistoryList"
 
@@ -62,7 +72,7 @@ export const AgentHistoryListPanel = ({
   })
 
   let { pageSize, from, to } = state
-  let { isLoading, data, error, mutate, deleteCache } = useAgentHistoryList(
+  let { isLoading, data, error, mutate, emptyData } = useAgentHistoryList(
     isActive ? agentId : undefined,
     toApiParams({ ...state, sortby: "CreatedOn", orderby: Descending })
   )
@@ -95,7 +105,7 @@ export const AgentHistoryListPanel = ({
           isLoading={isLoading}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </TabPanel>
   )
 }
@@ -301,6 +311,93 @@ const useAgentHistoryColumns = ({ items = [], brandId }) => {
 const PasswordLabel = () => <Trans zh="登入密码" en="Login Password" />
 const WithdrawPassword = () => <Trans zh="提款密码" en="Withdrawal Password" />
 
+const ProductFee = {
+  LiveDealer: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let liveDealer = useLiveDealerTrans()
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${liveDealer}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let liveDealer = useLiveDealerTrans()
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${liveDealer}`
+    }
+  },
+  Sportsbook: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let sports = useSportsbookTrans()
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${sports}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let sports = useSportsbookTrans()
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${sports}`
+    }
+  },
+  EGame: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let egame = useEGameTrans()
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${egame}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let egame = useEGameTrans()
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${egame}`
+    }
+  },
+  CardGame: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let cardGame = useCardGameTrans()
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${cardGame}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let cardGame = useCardGameTrans()
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${cardGame}`
+    }
+  },
+  Lottery: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let lottery = useLotteryTrans()
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${lottery}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let lottery = useLotteryTrans()
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${lottery}`
+    }
+  },
+  VirtualSports: {
+    Current: () => {
+      let productFee = useProductFeeTrans()
+      let virtualSport = useVirtualSportsTrans()
+      let current = useCurrentCycleTrans()
+      return `${productFee}: ${current}-${virtualSport}`
+    },
+    Next: () => {
+      let productFee = useProductFeeTrans()
+      let virtualSport = useVirtualSportsTrans()
+      let next = useNextCycleTrans()
+      return `${productFee}: ${next}-${virtualSport}`
+    }
+  }
+}
+
 const StringValue = ({ value = "" }) =>
   isString(value) ? value : JSON.stringify(value)
 
@@ -317,7 +414,41 @@ const LabelValueList = [
   [pipe(getPath, equals("/Qq")), QqLabel],
 
   [pipe(getPath, equals("/password")), PasswordLabel],
-  [pipe(getPath, equals("/withdrawPassword")), WithdrawPassword]
+  [pipe(getPath, equals("/withdrawPassword")), WithdrawPassword],
+
+  [
+    pipe(getPath, equals("/currentLiveDealerPercentage")),
+    ProductFee.LiveDealer.Current
+  ],
+  [
+    pipe(getPath, equals("/nextLiveDealerPercentage")),
+    ProductFee.LiveDealer.Next
+  ],
+  [
+    pipe(getPath, equals("/currentSportsPercentage")),
+    ProductFee.Sportsbook.Current
+  ],
+  [pipe(getPath, equals("/nextSportsPercentage")), ProductFee.Sportsbook.Next],
+  [pipe(getPath, equals("/currentSlotPercentage")), ProductFee.EGame.Current],
+  [pipe(getPath, equals("/nextSlotPercentage")), ProductFee.EGame.Next],
+  [
+    pipe(getPath, equals("/currentCardGamePercentage")),
+    ProductFee.CardGame.Current
+  ],
+  [pipe(getPath, equals("/nextCardGamePercentage")), ProductFee.CardGame.Next],
+  [
+    pipe(getPath, equals("/currentLotteryPercentage")),
+    ProductFee.Lottery.Current
+  ],
+  [pipe(getPath, equals("/nextLotteryPercentage")), ProductFee.Lottery.Next],
+  [
+    pipe(getPath, equals("/currentVirtualSportsPercentage")),
+    ProductFee.VirtualSports.Current
+  ],
+  [
+    pipe(getPath, equals("/nextVirtualSportsPercentage")),
+    ProductFee.VirtualSports.Next
+  ]
 ]
 
 const toLabel = (value) => {

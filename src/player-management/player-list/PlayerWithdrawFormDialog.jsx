@@ -37,6 +37,8 @@ import {
   useWithdrawFormTrans
 } from "../../trans/User"
 import { usePlayerNoteTrans } from "../../trans/Player"
+import { useBankTrans } from "../../trans/Payment"
+import { SWRConfig } from "swr"
 
 export const PlayerWithdrawFormDialogDisclosure = ({
   brandId,
@@ -60,13 +62,15 @@ export const PlayerWithdrawFormDialogDisclosure = ({
         <WithdrawFormTrans />
       </Disclosure>
       {dialog.visible && (
-        <WithdrawFormDialog
-          brandId={brandId}
-          player={player}
-          playerCode={playerCode}
-          dialog={dialog}
-          dialogId={dialogId}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <WithdrawFormDialog
+            brandId={brandId}
+            player={player}
+            playerCode={playerCode}
+            dialog={dialog}
+            dialogId={dialogId}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -135,7 +139,7 @@ const WithdrawFormDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(null)
   }
 
@@ -154,6 +158,7 @@ const WithdrawFormDialog = ({
         bankInfoId: defaultBankInfo?.id
       }}
       onSubmit={onSubmit}
+      onSubmitted={reset}
       isLoading={isLoading}
       result={result}
       error={error}
@@ -207,10 +212,7 @@ const BankInfoSelect = ({
   bankInfoList = [],
   ...props
 }) => {
-  let label = useTrans({
-    zh: "银行卡",
-    en: "Bank"
-  })
+  let label = useBankTrans()
 
   let options = bankInfoList.map((bankInfo) => {
     return {

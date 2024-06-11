@@ -32,6 +32,7 @@ import {
   VendorTrans
 } from "../../trans/Field"
 import { EndTimeTrans, StartTimeTrans, WeeklyTrans } from "../../trans/Date"
+import { SWRConfig } from "swr"
 
 export const EditButton = ({ record, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -44,7 +45,13 @@ export const EditButton = ({ record, onSubmitted, ...props }) => {
     <>
       <EditDisclosure {...dialog} />
       {dialog.visible && (
-        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            record={record}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -62,7 +69,7 @@ const EditDialog = ({ record, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useEditTrans()

@@ -1,34 +1,26 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
-import { Box, Button, Set, Text, Flex, Dialog, Stack } from "bumbag"
+import { Box, Button, Set, Level, Dialog } from "bumbag"
+import {
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserRoleType,
-  useUserRoleId,
-  useUserBrandId
+  useHasSubMenuByRoute
 } from "../../user/context"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import { Code, Update } from "./menu"
 import textColumn from "../../table/column/textColumn"
-import dateTimeColumn from "../../table/column/dateTime"
 import { useForm, FormProvider } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import SearchButton from "../../button/SearchButton"
-import { PageContent } from "../../page/Content"
 import AlertDialog from "../../dialog/Alert"
 import {
   FormatHourMinuteSecondDayMonthYear,
-  FormattedNumberDecimal,
-  Trans,
-  useTrans
+  FormattedNumberDecimal
 } from "../../i18n"
-import equals from "fast-deep-equal"
-import BrandBar from "../../report/BrandBar"
-import { formatDateTime, formatDayMonthYear } from "../../date/format"
-import { GameTypeLabel } from "../../game/GameType"
-import { useGameTypeGroupList } from "../../game/client"
-import { formatNumber } from "../../number/format"
 import { usePromotionPayoutList, useSendPromotionPayout } from "./client"
 import {
   PromotionTypeGroupSelect,
@@ -36,10 +28,6 @@ import {
   usePromotionGroupLabelOf
 } from "../PromotionType"
 import { Checkbox } from "../../checkbox/Checkbox"
-import {
-  PromotionManualPayoutDisclosure,
-  ViewPromotionManualPayoutDisclosure
-} from "./ManualPayout"
 import { PayoutStatusLabel } from "./PayoutStatus"
 import clone from "clone-deep"
 import { DateInputRangeField } from "../../date/DateTimeRangeInput"
@@ -59,7 +47,7 @@ import {
 import { StatusTrans } from "../../trans/Status"
 import { CreatedTimeTrans, SentOnTrans } from "../../trans/Date"
 import { isDev } from "../../env"
-import { VerifyPayoutDialogDisclosure } from "./VerifyPayoutDialog"
+import { ReviewPayoutDialogDisclosure } from "./ReviewPayoutDialog"
 import { ViewPayoutDialogDisclosure } from "./ViewPayoutDialog"
 
 export { Code }
@@ -70,26 +58,14 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<PromotionPayoutsTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
-
-const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
-  )
-}
 
 const includePayout = (record = {}, list = []) => {
   return !!list.find(
@@ -99,10 +75,10 @@ const includePayout = (record = {}, list = []) => {
   )
 }
 
-const BodyContent = ({ brandId }) => {
+const Body = ({}) => {
+  let brandId = usePlatformId()
   let hasUpdateAuth = useIsDisplayMenuByRoute([Update])
 
-  let todayRange = today()
   let [batchPayouts, setBatchPayouts] = useState([])
 
   const appendBatchPayout = (record) => {
@@ -140,8 +116,7 @@ const BodyContent = ({ brandId }) => {
     isLoading: isLoadingPromotionList,
     data,
     error: promotionListError,
-    mutate,
-    deleteCache
+    mutate
   } = usePromotionPayoutList({
     ...toApiParams(state),
     from: state.start,
@@ -153,7 +128,6 @@ const BodyContent = ({ brandId }) => {
     isLoading: isLoadingSendPromotionPayout,
     result,
     error: sendPromotionPayoutError,
-    mutate: mutateSendPromotionPayout,
     deleteCache: deleteSendPromotionPayoutCache
   } = useSendPromotionPayout(formData)
 
@@ -177,65 +151,59 @@ const BodyContent = ({ brandId }) => {
     dropBatchPayout,
     resetBatchPayout
   })
+
   return (
-    <PageContent
-      title={<PromotionPayoutsTrans />}
-      actionBar={
-        <Flex justifyContent="space-between">
-          <SearchBar
-            promotionGroup={state?.promotionGroup}
-            username={state?.username}
-            promotionName={state?.promotionName}
-            start={state?.start}
-            end={state?.end}
-            search={(data = {}) => {
-              setState({
-                pageIndex: 0,
-                ...data
-              })
-              mutate()
-            }}
-            isLoading={isLoading}
-          />
-        </Flex>
-      }
-    >
-      <Stack>
-        <Table
-          id="payout"
-          columns={columns}
-          data={data?.items}
-          initialState={state}
-          controlledState={state}
-          pageCount={pageCount(state?.pageSize, data?.totalCount)}
-          setPageIndex={setPageIndex}
-          setSortOrder={setSortOrder}
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
+        <SearchBar
+          promotionGroup={state?.promotionGroup}
+          username={state?.username}
+          promotionName={state?.promotionName}
+          start={state?.start}
+          end={state?.end}
+          search={(data = {}) => {
+            setState({
+              pageIndex: 0,
+              ...data
+            })
+            mutate()
+          }}
           isLoading={isLoading}
         />
-        {hasUpdateAuth && (
-          <Dialog.Footer position="sticky" bottom="0">
-            <Button
-              isLoading={isLoadingSendPromotionPayout}
-              onClick={() => {
-                let players = batchPayouts.map(
-                  ({ promotionBonusId, playerCode, ...record }) => {
-                    return {
-                      promotionBonusId,
-                      playerCode
-                    }
+      </Level>
+      <Table
+        id="payout"
+        columns={columns}
+        data={data?.items}
+        initialState={state}
+        controlledState={state}
+        pageCount={pageCount(state?.pageSize, data?.totalCount)}
+        setPageIndex={setPageIndex}
+        setSortOrder={setSortOrder}
+        isLoading={isLoading}
+      />
+      {hasUpdateAuth && (
+        <Dialog.Footer position="sticky" bottom="0">
+          <Button
+            isLoading={isLoadingSendPromotionPayout}
+            onClick={() => {
+              let players = batchPayouts.map(
+                ({ promotionBonusId, playerCode, ...record }) => {
+                  return {
+                    promotionBonusId,
+                    playerCode
                   }
-                )
-                if (players.length > 0) {
-                  setSubmit({ players })
                 }
-              }}
-            >
-              <PromotionBatchPayoutTrans />
-            </Button>
-          </Dialog.Footer>
-        )}
-      </Stack>
-
+              )
+              if (players.length > 0) {
+                setSubmit({ players })
+              }
+            }}
+          >
+            <PromotionBatchPayoutTrans />
+          </Button>
+        </Dialog.Footer>
+      )}
       {error && (
         <AlertDialog
           {...error}
@@ -243,15 +211,13 @@ const BodyContent = ({ brandId }) => {
             if (sendPromotionPayoutError) {
               resetBatchPayout()
               deleteSendPromotionPayoutCache()
-              mutateSendPromotionPayout({ data: undefined }, false)
             } else if (promotionListError) {
-              deleteCache()
-              mutate({ data: undefined }, false)
+              mutate()
             }
           }}
         />
       )}
-    </PageContent>
+    </Set>
   )
 }
 
@@ -433,36 +399,15 @@ const useColumns = ({
           Cell: ({ value: record }) => {
             let paid = !!record?.sentOn
 
-            let devEnv = isDev()
             return (
               <Set orientation="horizontal" alignX="center">
-                {!paid && !devEnv && (
-                  <PromotionManualPayoutDisclosure
-                    brandId={brandId}
+                {!paid && (
+                  <ReviewPayoutDialogDisclosure
                     record={record}
                     onSubmitted={mutate}
                   />
                 )}
-                {!paid && devEnv && (
-                  <VerifyPayoutDialogDisclosure
-                    brandId={brandId}
-                    record={record}
-                    onSubmitted={mutate}
-                  />
-                )}
-                {!devEnv && (
-                  <ViewPromotionManualPayoutDisclosure
-                    id="view-promotion-payout-dialog-disclosure"
-                    brandId={brandId}
-                    record={record}
-                  />
-                )}
-                {devEnv && (
-                  <ViewPayoutDialogDisclosure
-                    brandId={brandId}
-                    record={record}
-                  />
-                )}
+                <ViewPayoutDialogDisclosure record={record} />
               </Set>
             )
           }

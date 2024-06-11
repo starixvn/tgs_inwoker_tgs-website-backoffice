@@ -14,7 +14,7 @@ import FormDialog from "../../form/FormDialog"
 import clone from "clone-deep"
 import { FieldValues } from "../../layout/Grid"
 import { PromotionTypeLabel, usePromotionGroupLabelOf } from "../PromotionType"
-import { useSendPromotionPayout, useVerifyPromotionPayout } from "./client"
+import { useSendPromotionPayout, useReviewPromotionPayout } from "./client"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { UserNameTrans } from "../../trans/User"
 import {

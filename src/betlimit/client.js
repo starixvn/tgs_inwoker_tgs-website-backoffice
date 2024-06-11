@@ -1,4 +1,3 @@
-import useSWR, { cache } from "swr"
 import {
   urlWith,
   useGet,
@@ -16,12 +15,13 @@ export const useBetLimitList = (searchParams) => {
 }
 
 export const useBetLimit = (id) => {
-  let url = id ? `${API}/${id}` : undefined
+  let url = id ? `${API}/${id}` : ""
   return useGet(url)
 }
 
 export const useAddBetLimit = (data) => {
-  return usePostData(API, data)
+  let url = data ? API : ""
+  return usePostData(url, data)
 }
 
 export const useUpdateBetLimit = (id, data) => {

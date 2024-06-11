@@ -61,6 +61,8 @@ const Body = () => {
         onBrandChange={(value) => {
           setBrandId(value)
         }}
+        paddingTop="0.5rem"
+        paddingLeft="0.5rem"
       />
       {brandId && <BodyContent brandId={brandId} />}
     </Set>
@@ -90,7 +92,7 @@ const BodyContent = ({ brandId }) => {
     data = {},
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useStationLetterList({
     ...toApiParams(state),
     status: statusFrom(statusName),
@@ -200,7 +202,7 @@ const BodyContent = ({ brandId }) => {
           )}
         </TabPanel>
       </Tabs>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

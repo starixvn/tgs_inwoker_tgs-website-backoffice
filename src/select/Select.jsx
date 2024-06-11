@@ -138,9 +138,12 @@ export const SelectField = ({
     <_SelectField
       options={options}
       selectRef={selectRef}
-      {...formProps}
       state={state}
       validationText={validationText}
+      selectProps={{
+        required: props.required
+      }}
+      {...formProps}
       {...props}
     />
   )

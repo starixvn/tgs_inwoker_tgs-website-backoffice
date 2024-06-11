@@ -62,6 +62,7 @@ import { PaidTimeTrans, WithdrawAmountTrans } from "../../trans/Payment"
 import { StatusTrans } from "../../trans/Status"
 import { CSNoteTrans } from "../../trans/Field"
 import { PlayerNoteTrans } from "../../trans/Player"
+import { SWRConfig } from "swr"
 
 export const ViewFundWithdrawDisclosure = ({
   brandId,
@@ -84,11 +85,13 @@ export const ViewFundWithdrawDisclosure = ({
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ViewFundWithdrawDialog
-          brandId={brandId}
-          formId={formId}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewFundWithdrawDialog
+            brandId={brandId}
+            formId={formId}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -115,7 +118,7 @@ const ViewFundWithdrawDialog = ({ brandId, formId, dialog, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (

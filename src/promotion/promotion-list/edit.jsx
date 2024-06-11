@@ -58,6 +58,7 @@ import {
   PromotionNameTrans,
   useViewPromotionTrans
 } from "../../trans/Promotion"
+import { SWRConfig } from "swr"
 
 export const AddPromotionDisclosure = ({ brandId, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -91,15 +92,14 @@ export const DialogCss = css`
 `
 
 const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
-  let [formData, setSubmit] = useState()
-
-  let { result, isLoading, error, mutate, deleteCache } =
-    useAddPromotion(formData)
-
   let title = useTrans({
     zh: "新增活动",
     en: "Create Promotion"
   })
+
+  let [formData, setSubmit] = useState()
+  let { result, isLoading, error, mutate, deleteCache } =
+    useAddPromotion(formData)
 
   const onSubmit = (data) => {
     let formData = normalizeFormData(data)
@@ -112,7 +112,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -128,7 +128,10 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="85vw"
@@ -186,12 +189,14 @@ export const EditPromotionDisclosure = ({
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <EditDialog
-          brandId={brandId}
-          promotionId={promotionId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={brandId}
+            promotionId={promotionId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -204,6 +209,11 @@ const EditDialog = ({
   dialog,
   ...props
 }) => {
+  let title = useTrans({
+    zh: "编辑活动",
+    en: "Edit Promotion"
+  })
+
   let [formData, setSubmit] = useState()
 
   let {
@@ -217,11 +227,6 @@ const EditDialog = ({
     promotionId,
     formData
   )
-
-  let title = useTrans({
-    zh: "编辑活动",
-    en: "Edit Promotion"
-  })
 
   if (isLoadingFormData) {
     return <LoadingBackdrop {...dialog} />
@@ -244,7 +249,7 @@ const EditDialog = ({
 
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -392,11 +397,13 @@ export const ViewPromotionDisclosure = ({
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ViewDialog
-          brandId={brandId}
-          promotionId={promotionId}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog
+            brandId={brandId}
+            promotionId={promotionId}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -420,7 +427,7 @@ const ViewDialog = ({ brandId, promotionId, dialog, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (

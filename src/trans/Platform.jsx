@@ -171,7 +171,6 @@ export const OperationSettings = {
 }
 export const OperationSettingsTrans = () => <Trans {...OperationSettings} />
 
-//TODO: vi with Banners?
 const AnnouncementMainMarquee = {
   zh: "首页跑马灯",
   en: "Main Marquee",
@@ -376,3 +375,28 @@ const PlatformSettlementTime = {
 export const PlatformSettlementTimeTrans = () => (
   <Trans {...PlatformSettlementTime} />
 )
+
+export const ProductFee = {
+  zh: "产品费用",
+  en: "Product Charges",
+  vi: "Phí sản phẩm"
+}
+export const ProductFeeTrans = () => <Trans {...ProductFee} />
+export const useProductFeeTrans = () => useTrans(ProductFee)
+
+const DefaultProductFee = {
+  zh: "产品费用(预设值)",
+  en: "Product Charges (Default)",
+  vi: "Phí sản phẩm (Đặt cọc)"
+}
+export const DefaultProductFeeTrans = () => <Trans {...DefaultProductFee} />
+export const useDefaultProductFeeTrans = () => useTrans(DefaultProductFee)
+
+/*
+TODO: rm
+const PlatformFee = {
+  zh: "平台费用",
+  en: "Platform Fee"
+}
+export const PlatformFeeTrans = () => <Trans {...PlatformFee} />
+*/

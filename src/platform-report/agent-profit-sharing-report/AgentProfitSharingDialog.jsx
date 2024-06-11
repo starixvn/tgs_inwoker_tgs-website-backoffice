@@ -139,12 +139,10 @@ const ReportDialog = ({
       <FieldStack>
         <FieldValues marginLeft="1rem">
           <AgentUsernameTrans />
-          <Text.Block alignY="center">{username}</Text.Block>
+          <Box alignY="center">{username}</Box>
 
           <Trans zh="分红金额" en="Profit Sharing Amount" />
-          <Text.Block alignY="center">
-            {formatNumberDecimal(bonusAmount)}
-          </Text.Block>
+          <Box alignY="center">{formatNumberDecimal(bonusAmount)}</Box>
         </FieldValues>
         <Separator />
         <Table

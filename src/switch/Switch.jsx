@@ -84,6 +84,9 @@ export const SwitchField = ({
       switchRef={switchRef}
       state={state}
       validationText={validationText}
+      css={css`
+        width: max-content;
+      `}
       {...formProps}
       {...props}
     />

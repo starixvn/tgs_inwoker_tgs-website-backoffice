@@ -59,12 +59,23 @@ import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
 import { useTableColumnHiddenLocalStorage } from "../../table/ActionBar"
 import { BonusAmountTrans, NetProfitTrans, TotalTrans } from "../../trans/Field"
-import { BetAmountTrans, ValidBetAmountTrans } from "../../trans/Game"
+import {
+  BetAmountTrans,
+  ValidBetAmountTrans,
+  useCardGameTrans,
+  useEGameTrans,
+  useLiveDealerTrans,
+  useLotteryTrans,
+  useSportsbookTrans,
+  useVirtualSportsTrans
+} from "../../trans/Game"
 import {
   AgentUsernameTrans,
   ProfitSharingPercentageTrans,
   useAgentUsernameTrans
 } from "../../trans/Agent"
+import { ProductFeeTrans } from "../../trans/Platform"
+import { ProductFeeDialogDisclosure } from "./ProductFeeDialog"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -177,7 +188,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
     data: agentData,
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useAgentDividend(agentUsername ? toSearchParams() : undefined)
 
   useEffect(() => {
@@ -267,8 +278,7 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               pageIndex: 0,
               ...data
             })
-            deleteCache()
-            mutate(null)
+            mutate(undefined)
           }}
         />
         {agentData?.mainItems?.length > 0 && (
@@ -305,8 +315,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               </List.Item>
               <List.Item>
                 <Trans
-                  zh="净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐 - 平台费用。"
-                  en="Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount - Platform Fee."
+                  zh={`净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐。`}
+                  en={`Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount.`}
                 />
               </List.Item>
               <List.Item>
@@ -323,8 +333,8 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
               </List.Item>
               <List.Item>
                 <Trans
-                  zh="分红金额 = 直属玩家贡献 + 团队贡献 - 代理调帐。"
-                  en="Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount."
+                  zh={`分红金额 = 直属玩家贡献 + 团队贡献 - 代理调帐 - 产品费用。`}
+                  en={`"Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount - Product Charges."`}
                 />
               </List.Item>
             </List>
@@ -399,10 +409,30 @@ export const PlatformAgentProfitSharingReport = ({ brandId }) => {
           </AutoSizer>
         </Set>
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }
+
+/*
+TODO: rm
+const ProfitSharingAmountInfo = () => {
+  let liveDealer = useLiveDealerTrans()
+  let sportsbook = useSportsbookTrans()
+  let eGame = useEGameTrans()
+  let cardGame = useCardGameTrans()
+  let lottery = useLotteryTrans()
+  let virtualSports = useVirtualSportsTrans()
+  let productFeeDetail = `${liveDealer} + ${sportsbook} + ${eGame} + ${cardGame} + ${lottery} + ${virtualSports}`
+
+  return (
+    <Trans
+      zh={`分红金额 = 直属玩家贡献 + 团队贡献 - 代理调帐 - 产品费用。`}
+      en={`"Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount - Product Charges."`}
+    />
+  )
+}
+*/
 
 const AgentBreadcrumb = ({ treePaths = [], backToTreePath }) => {
   if (treePaths.length === 0) {
@@ -595,11 +625,7 @@ const useColumns = ({
         },
         Cell: ({ value: record }) => {
           if (record?.isSeparator) {
-            return (
-              <Text.Block>
-                <Trans zh="直属代理" en="Direct Agent" />
-              </Text.Block>
-            )
+            return <Trans zh="直属代理" en="Direct Agent" />
           }
           let marginLeft = (record?.treeDepth ?? 0) * 1.5
           if (record?.isTotal) {
@@ -741,6 +767,30 @@ const useColumns = ({
               value={record?.winLossAmount}
               agentDividendPercentage={record?.agentDividendPercentage}
               use={Link}
+            />
+          )
+        }
+      }),
+      numberDecimalColumn({
+        id: "productFee",
+        accessor: (row) => row,
+        Header: <ProductFeeTrans />,
+        headCell: {
+          whiteSpace: "nowrap"
+        },
+        Cell: ({ value: record }) => {
+          if (!record) {
+            return null
+          }
+
+          return (
+            <ProductFeeDialogDisclosure
+              username={record?.username}
+              value={record?.productFee}
+              agentId={record?.id}
+              agentDividendPercentage={record?.agentDividendPercentage}
+              from={from}
+              to={to}
             />
           )
         }

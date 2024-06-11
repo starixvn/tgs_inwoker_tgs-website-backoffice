@@ -99,7 +99,7 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
   return (
     <FormDialog
@@ -115,7 +115,10 @@ const AddDialog = ({ brandId, username, playerCode, onSubmitted, dialog }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
     >
@@ -227,7 +230,7 @@ const AddTurnoverRequirementDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
   return (
     <FormDialog
@@ -243,7 +246,10 @@ const AddTurnoverRequirementDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
     >

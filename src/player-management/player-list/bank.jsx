@@ -49,8 +49,9 @@ import {
   BankAccountTrans,
   PaymentChannelTrans
 } from "../../trans/Payment"
-import { CancelTrans, SubmitTrans } from "../../trans/Action"
+import { CancelTrans, OperatorTrans, SubmitTrans } from "../../trans/Action"
 import { isDev } from "../../env"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export const Key = "banks"
 
@@ -62,31 +63,18 @@ export const Tab = ({ ...props }) => {
   )
 }
 
-//TODO: rm onSubmitted from parent?
-//TODO: rm banks param from parent
-export const Panel = ({
-  brandId,
-  playerCode,
-  banks = [],
-  edit = false,
-  onSubmitted,
-  ...props
-}) => {
+export const Panel = ({ brandId, playerCode, edit = false, ...props }) => {
   let { selectedId } = props
   let isActive = selectedId === Key
 
-  //TODO: rm isDev when ready to stg
-  let { isLoading, data, error, mutate, deleteCache } = usePlayerBankList(
-    isDev() && isActive && playerCode
+  let { isLoading, data, error, mutate } = usePlayerBankList(
+    isActive && playerCode
   )
-  /*
-  TODO: fix test case for dev env
-  */
-  banks = isDev() ? data?.items : banks
+  let banks = data?.items
 
   return (
     <TabPanel tabId={Key} {...props}>
-      {isDev() && isLoading && (
+      {isLoading && (
         <Box alignY="center" alignX="center">
           <Spinner />
         </Box>
@@ -98,10 +86,7 @@ export const Panel = ({
             brandId={brandId}
             playerCode={playerCode}
             record={bank}
-            onSubmitted={() => {
-              mutate()
-              onSubmitted?.()
-            }}
+            onSubmitted={mutate}
             edit={edit}
           />
         ))}
@@ -110,13 +95,17 @@ export const Panel = ({
         <AddBank
           brandId={brandId}
           playerCode={playerCode}
-          onSubmitted={() => {
+          onSubmitted={mutate}
+        />
+      )}
+      {error && (
+        <AlertDialog
+          {...error}
+          onClickClose={() => {
             mutate()
-            onSubmitted?.()
           }}
         />
       )}
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
     </TabPanel>
   )
 }
@@ -133,6 +122,23 @@ const IsDefaultSwitch = ({
       `}
       {...props}
     />
+  )
+}
+
+const UpdateInfoBox = ({ record }) => {
+  return (
+    <>
+      <Box alignY="center">
+        <OperatorTrans />
+      </Box>
+      <Box alignY="center">{record?.modifier}</Box>
+      <Box alignY="center">
+        <UpdatedTimeTrans />
+      </Box>
+      <Box alignY="center">
+        <FormattedDateTime value={record?.updatedOn} />
+      </Box>
+    </>
   )
 }
 
@@ -210,6 +216,7 @@ const Bank = ({
         <PaymentChannelLabel value={record?.paymentChannelId} />
 
         <ViewBox record={record} />
+        <UpdateInfoBox record={record} />
       </FieldValues>
     </Card>
   )
@@ -418,7 +425,7 @@ const AddDialog = ({ brandId, playerCode, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -433,7 +440,10 @@ const AddDialog = ({ brandId, playerCode, onSubmitted, dialog }) => {
         result={result}
         error={error}
         onCloseErrorAlert={reset}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         dialog={dialog}
       >
         <EditBody brandId={brandId} />
@@ -462,7 +472,7 @@ const EditDialog = ({ brandId, playerCode, record, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -475,7 +485,10 @@ const EditDialog = ({ brandId, playerCode, record, onSubmitted, dialog }) => {
         result={result}
         error={error}
         onCloseErrorAlert={reset}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         dialog={dialog}
       >
         <EditBody brandId={brandId} />
@@ -661,7 +674,7 @@ const DeleteDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setDeleteId(undefined)
   }
 
@@ -698,7 +711,7 @@ const SetDefaultDialog = ({ playerCode, bank, onSubmitted, dialog }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setId(undefined)
   }
 

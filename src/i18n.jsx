@@ -8,6 +8,7 @@ import {
   formatHourMinuteSecondDayMonthYear,
   HourMinuteSecondDayMonthYear
 } from "./date/format"
+import { isObject } from "lodash-es"
 
 registerLocale("en", enUS)
 registerLocale("zh", zhCN)
@@ -220,7 +221,9 @@ export const FormattedNumberDecimalPercentage = ({
 }) => <FormattedNumberDecimal postfix={postfix} {...props} />
 
 export const getTrans = (messages = {}, locale = Locales.zh) =>
-  Reflect.get(messages, locale) ?? Reflect.get(messages, Locales.en) ?? ""
+  isObject(messages)
+    ? Reflect.get(messages, locale) ?? Reflect.get(messages, Locales.en) ?? ""
+    : messages
 
 export const LangDropdownMenu = ({ ...props }) => {
   let locale = useLocale()

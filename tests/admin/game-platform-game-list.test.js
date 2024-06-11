@@ -120,7 +120,11 @@ const toggleField = async (page, field) => {
 
 const openEditDialog = async (page) => {
   let DialogSelector = `#edit-game-dialog`
-  await openDialog(page, DialogSelector)
+
+  await Promise.all([
+    page.waitForResponse(urlIncludes(`/api/brandgame`)),
+    openDialog(page, DialogSelector)
+  ])
   return DialogSelector
 }
 
@@ -135,6 +139,7 @@ const edit = async (page) => {
     `${effectiveBettingPercentage}`
   )
 
+  console.log("effectiveBettingPercentage", effectiveBettingPercentage)
   let RebateCheckboxSelector = `${DialogSelector} input[name="rebate"]`
   let rebate = !(await page.isChecked(RebateCheckboxSelector))
   await page.click(`${RebateCheckboxSelector} + div.bb-SwitchIcon`)

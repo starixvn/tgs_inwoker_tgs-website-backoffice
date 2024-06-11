@@ -38,6 +38,7 @@ export const numberColumn = ({
     Cell,
     headCell: {
       textAlign: "center",
+      whiteSpace,
       ...headCellProps
     },
     cell: {

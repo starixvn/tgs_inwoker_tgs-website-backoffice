@@ -49,7 +49,7 @@ export const useViewTrans = () => useTrans(View)
 const Edit = {
   zh: "修改",
   en: "Edit",
-  vi: "Đang chỉnh sửa"
+  vi: "Biên tập"
 }
 export const EditTrans = () => <Trans {...Edit} />
 export const useEditTrans = () => useTrans(Edit)
@@ -205,14 +205,16 @@ export const ReviewTrans = () => <Trans {...Review} />
 
 const Add = {
   zh: "新增",
-  en: "Add"
+  en: "Add",
+  vi: "Thêm vào"
 }
 export const AddTrans = (props) => <Trans {...Add} {...props} />
 export const useAddTrans = () => useTrans(Add)
 
 const Delete = {
   zh: "删除",
-  en: "Delete"
+  en: "Delete",
+  vi: "Xóa bỏ"
 }
 export const DeleteTrans = () => <Trans {...Delete} />
 export const useDeleteTrans = () => useTrans(Delete)
@@ -232,3 +234,10 @@ export const Reject = {
 }
 export const RejectTrans = () => <Trans {...Reject} />
 export const useRejectTrans = () => useTrans(Reject)
+
+const SelectAll = {
+  zh: "全选",
+  en: "All",
+  vi: "Tất cả"
+}
+export const SelectAllTrans = () => <Trans {...SelectAll} />

@@ -34,8 +34,10 @@ import { Features, isDev, isFeatureEnabled } from "../../env"
 import Checkbox from "../../checkbox"
 import { MerchantIdSelect } from "../../merchant/MerchantSelect"
 import { nextRoleType, useRoleTypeOptions } from "./type"
-import { ActionTrans } from "../../trans/Action"
+import { ActionTrans, OperatorTrans } from "../../trans/Action"
 import { LicenseeTrans, PlatformTrans } from "../../trans/Platform"
+import dateTimeColumn from "../../table/column/dateTime"
+import { UpdatedTimeTrans } from "../../trans/Date"
 
 export { Code }
 
@@ -62,7 +64,7 @@ const Body = ({}) => {
     brandId: userBrandId
   })
   let { pageIndex, pageSize, name } = state
-  let { isLoading, data, error, mutate, deleteCache } = useRoleList({
+  let { isLoading, data, error, mutate, emptyData } = useRoleList({
     ...toApiParams(state),
     sortby: "name"
   })
@@ -109,7 +111,7 @@ const Body = ({}) => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }
@@ -247,6 +249,22 @@ const useColumns = ({ mutate, items = [] }) => {
         )
       }
     })
+
+    columns.push(
+      textColumn({
+        accessor: "updatedByUsername",
+        Header: <OperatorTrans />,
+        disableSortBy: true
+      })
+    )
+
+    columns.push(
+      dateTimeColumn({
+        accessor: "updatedOn",
+        Header: <UpdatedTimeTrans />,
+        disableSortBy: true
+      })
+    )
 
     if (hasAnyMenu) {
       columns.push({

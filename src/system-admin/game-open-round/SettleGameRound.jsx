@@ -102,7 +102,7 @@ const SettleGameRoundDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -117,7 +117,10 @@ const SettleGameRoundDialog = ({
       isLoading={isLoading}
       result={result}
       error={error}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       onCloseErrorAlert={reset}
       title={title}
       dialog={dialog}

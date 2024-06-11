@@ -28,6 +28,7 @@ export const Input = ({
       minLength: props.minLength,
       maxLength: props.maxLength,
       validate: props.validate,
+      pattern: props.pattern,
       ...registerOptions
     })
     formProps = rest
@@ -66,6 +67,7 @@ export const InputField = ({
       minLength: props.minLength,
       maxLength: props.maxLength,
       validate: props.validate,
+      pattern: props.pattern,
       ...registerOptions
     })
     formProps = rest
@@ -113,7 +115,8 @@ export const InputField = ({
         min: props.min,
         max: props.max,
         minLength: props.minLength,
-        maxLength: props.maxLength
+        maxLength: props.maxLength,
+        pattern: props.pattern
       }}
       {...formProps}
       {...props}

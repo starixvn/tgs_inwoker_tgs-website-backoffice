@@ -32,6 +32,7 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import clone from "clone-deep"
 import { useBrand } from "../platforms/client"
+import { SWRConfig } from "swr"
 
 export const AlertSettingDialogDisclosure = ({
   brandId,
@@ -51,15 +52,17 @@ export const AlertSettingDialogDisclosure = ({
   return (
     <>
       <Disclosure id={id} {...dialog}>
-        <Trans zh="催收設置" en="Alert Setting" />
+        <Trans zh="催收設置" en="Debt Collection" />
       </Disclosure>
       {dialog.visible && (
-        <MainSettingDialog
-          brandId={brandId}
-          dialog={dialog}
-          dialogId={dialogId}
-          readOnly={!editable}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <MainSettingDialog
+            brandId={brandId}
+            dialog={dialog}
+            dialogId={dialogId}
+            readOnly={!editable}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -116,7 +119,7 @@ const MainSettingDialog = ({
 }) => {
   let title = useTrans({
     zh: "催收設置",
-    en: "Alert Setting"
+    en: "Debt Collection"
   })
 
   let tab = useTabState({
@@ -150,7 +153,7 @@ const MainSettingDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (

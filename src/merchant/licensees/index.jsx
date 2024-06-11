@@ -45,7 +45,7 @@ const Body = () => {
   })
   let { pageIndex, pageSize, keyword } = state
 
-  let { isLoading, data, error, mutate, deleteCache } = useLicenseeList({
+  let { isLoading, data, error, mutate, emptyData } = useLicenseeList({
     ...toApiParams(state),
     sortby: "code",
     hideArchieved: false
@@ -82,7 +82,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

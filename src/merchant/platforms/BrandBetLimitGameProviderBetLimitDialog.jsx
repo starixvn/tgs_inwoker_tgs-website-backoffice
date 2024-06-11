@@ -27,7 +27,6 @@ import useLicenseeBrand from "./useLicenseeBrand"
 import Backdrop from "../../dialog/Backdrop"
 import { useGameProviderBetLimitList } from "../../game/providers/betlimits/client"
 import { Select } from "../../select/Select"
-import { useGameProvider } from "../../game/providers/client"
 import { Checkbox } from "../../checkbox"
 import clone from "clone-deep"
 import { SportsSwitch } from "./SportsSwitch"
@@ -50,6 +49,7 @@ import {
 import { CurrencyTrans } from "../../trans/Payment.jsx"
 import { SupportingDeviceTrans } from "../../trans/Field.jsx"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter.jsx"
+import { SWRConfig } from "swr"
 
 export const EditBrandBetLimitGameProviderBetLimit = ({
   record,
@@ -67,21 +67,25 @@ export const EditBrandBetLimitGameProviderBetLimit = ({
         <Trans zh="限红组" en="Bet Limit Group" />
       </Disclosure>
       {editable && dialog.visible && (
-        <EditDialog
-          brandId={record?.id}
-          brandCode={record?.code}
-          licenseeId={record?.licenseeId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={record?.id}
+            brandCode={record?.code}
+            licenseeId={record?.licenseeId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
       {readonly && dialog.visible && (
-        <ViewDialog
-          brandId={record?.id}
-          brandCode={record?.code}
-          licenseeId={record?.licenseeId}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog
+            brandId={record?.id}
+            brandCode={record?.code}
+            licenseeId={record?.licenseeId}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -176,8 +180,7 @@ const EditDialog = ({
     isLoading: isLoadingBrand,
     error: brandError,
     mutateBrand,
-    deleteBrandCache,
-    clearCache
+    deleteBrandCache
   } = useLicenseeBrand({ brandId, licenseeId })
 
   let [formData, setSubmit] = useState()
@@ -203,7 +206,7 @@ const EditDialog = ({
     deleteBrandCache()
     mutateBrand(undefined, false)
 
-    setSubmit(undefined)
+    setSubmit(null)
     mutate(undefined, false)
   }
 
@@ -650,19 +653,21 @@ const BetLimitRow = ({
               <>
                 <ConfigIconDisclosure {...dialog} />
                 {dialog.visible && (
-                  <BetLimitDialog
-                    group={group}
-                    betLimit={betLimit}
-                    gameProviders={gameProviders}
-                    dialog={dialog}
-                    value={value}
-                    readonly={readonly}
-                    onChange={(data) => {
-                      if (editable) {
-                        setValue(name, data)
-                      }
-                    }}
-                  />
+                  <SWRConfig value={{ provider: () => new Map() }}>
+                    <BetLimitDialog
+                      group={group}
+                      betLimit={betLimit}
+                      gameProviders={gameProviders}
+                      dialog={dialog}
+                      value={value}
+                      readonly={readonly}
+                      onChange={(data) => {
+                        if (editable) {
+                          setValue(name, data)
+                        }
+                      }}
+                    />
+                  </SWRConfig>
                 )}
               </>
             )
@@ -834,17 +839,19 @@ const GameProviderRow = ({ gameProvider, readonly = false }) => {
                   <GameListTrans />
                 </Disclosure>
                 {dialog.visible && (
-                  <GameProviderGameListDialog
-                    gameProviderId={gameProvider.gameProviderId}
-                    value={value}
-                    readonly={readonly}
-                    dialog={dialog}
-                    onChange={(data) => {
-                      if (editable) {
-                        setValue(name, data)
-                      }
-                    }}
-                  />
+                  <SWRConfig value={{ provider: () => new Map() }}>
+                    <GameProviderGameListDialog
+                      gameProviderId={gameProvider.gameProviderId}
+                      value={value}
+                      readonly={readonly}
+                      dialog={dialog}
+                      onChange={(data) => {
+                        if (editable) {
+                          setValue(name, data)
+                        }
+                      }}
+                    />
+                  </SWRConfig>
                 )}
               </>
             )

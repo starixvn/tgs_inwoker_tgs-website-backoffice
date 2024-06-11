@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: agent-service
-image: pgtgs/agent-service:202402200213.128
+image: pgtgs/agent-service:202405310720.161
 services:
   - name: agent-service
     dependencies:
@@ -9,11 +9,13 @@ services:
       - player-api
       - cash-service
       - agent-dividend-service
+      - brand-cert-api
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       AgentService__PlayerServiceBaseUrl: "http://player-api"
       AgentService__CashBaseUrl: "http://cash-service"
       AgentService__AgentDividendServiceBaseUrl: "http://agent-dividend-service"
+      AgentService__BrandCertificateUrl: "http://brand-cert-api"
     ports:
       - name: http
         containerPort: 8080

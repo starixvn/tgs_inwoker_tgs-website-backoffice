@@ -33,6 +33,7 @@ import {
   PaymentChannelTrans,
   PaymentMinMaxLimitTrans
 } from "../../trans/Payment"
+import { SWRConfig } from "swr"
 
 export const BrandAutoWithdrawDialogDisclosure = ({
   brandId,
@@ -54,11 +55,13 @@ export const BrandAutoWithdrawDialogDisclosure = ({
         <Trans zh="自动提款设定" en="Auto Payments" />
       </Disclosure>
       {dialog.visible && (
-        <AutoWithdrawDialog
-          brandId={brandId}
-          dialog={dialog}
-          dialogId={dialogId}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <AutoWithdrawDialog
+            brandId={brandId}
+            dialog={dialog}
+            dialogId={dialogId}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -178,7 +181,7 @@ const AutoWithdrawDialog = ({ brandId, dialog, dialogId, ...props }) => {
         {...error}
         onClickClose={() => {
           deleteCache()
-          mutate(null, false)
+          mutate(undefined, false)
           dialog.hide()
         }}
       />
@@ -187,7 +190,7 @@ const AutoWithdrawDialog = ({ brandId, dialog, dialogId, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (
@@ -227,14 +230,17 @@ const AutoWithdrawFormDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
     <FormDialog
       defaultValues={clone(brandAutoWithdraw)}
       onSubmit={onSubmit}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       result={result}
       isLoading={isLoading}
       error={error}

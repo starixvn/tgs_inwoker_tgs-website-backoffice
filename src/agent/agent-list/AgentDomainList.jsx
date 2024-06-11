@@ -114,11 +114,18 @@ const Body = ({ brandId, agentId, readOnly, ...props }) => {
           readOnly={readOnly}
           onSubmitted={() => {
             deleteCache()
-            mutate(null)
+            mutate(undefined)
           }}
         />
       </FieldStack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && (
+        <AlertDialog
+          {...error}
+          onClickClose={() => {
+            mutate()
+          }}
+        />
+      )}
     </TabPanel>
   )
 }
@@ -195,7 +202,7 @@ const AddDomainInputField = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (
@@ -254,7 +261,7 @@ const DeleteDomainInputField = ({
     setSubmit(undefined)
 
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   return (

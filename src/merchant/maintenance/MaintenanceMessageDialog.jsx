@@ -39,6 +39,7 @@ import { useBrandLanguageCodes } from "../../dialog/LocalizationDialog"
 import Backdrop from "../../dialog/Backdrop"
 import { useMaintenanceMessage, useUpdateMaintenanceMessage } from "./client"
 import { TextareaField } from "../../textarea"
+import { SWRConfig } from "swr"
 
 export const ViewMaintenanceMessageDisclosure = ({
   brandMaintenanceId,
@@ -56,12 +57,14 @@ export const ViewMaintenanceMessageDisclosure = ({
     <>
       <ViewDisclosure id={`${dialogId}-disclosure`} {...dialog} />
       {dialog.visible && (
-        <MaintenanceMessageFormDialog
-          brandMaintenanceId={brandMaintenanceId}
-          dialogId={dialogId}
-          readOnly
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <MaintenanceMessageFormDialog
+            brandMaintenanceId={brandMaintenanceId}
+            dialogId={dialogId}
+            readOnly
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -84,12 +87,14 @@ export const EditMaintenanceMessageDisclosure = ({
     <>
       <EditDisclosure id={`${dialogId}-disclosure`} {...dialog} />
       {dialog.visible && (
-        <MaintenanceMessageFormDialog
-          brandMaintenanceId={brandMaintenanceId}
-          dialogId={dialogId}
-          dialog={dialog}
-          onSubmitted={onSubmitted}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <MaintenanceMessageFormDialog
+            brandMaintenanceId={brandMaintenanceId}
+            dialogId={dialogId}
+            dialog={dialog}
+            onSubmitted={onSubmitted}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -122,7 +127,7 @@ const MaintenanceMessageFormDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(null)
   }
 

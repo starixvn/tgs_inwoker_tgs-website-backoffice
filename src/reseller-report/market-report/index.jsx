@@ -65,7 +65,12 @@ export const Body = () => {
 
   return (
     <Set orientation="vertical" isFilled>
-      <BrandBar end={Reseller} onResellerChange={setResellerId} />
+      <BrandBar
+        end={Reseller}
+        onResellerChange={setResellerId}
+        paddingTop="0.5rem"
+        paddingLeft="0.5rem"
+      />
       {resellerId && <ReportContent resellerId={resellerId} />}
     </Set>
   )
@@ -100,7 +105,7 @@ const ReportContent = ({ resellerId }) => {
     to: startOfNextDay(to),
     culture
   })
-  let { isLoading, data, error, mutate, deleteCache } =
+  let { isLoading, data, error, mutate, emptyData } =
     useResellerMarketReportList(toSearchParams())
 
   let columns = useColumns({ items: data?.items })
@@ -171,7 +176,7 @@ const ReportContent = ({ resellerId }) => {
           toggleColumnHidden={true}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

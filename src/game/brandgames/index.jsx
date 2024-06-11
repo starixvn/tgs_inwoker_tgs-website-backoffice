@@ -1,19 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
+import { Stack, Button, Set, Level, Text, Box, Dialog } from "bumbag"
 import {
-  Heading,
-  Stack,
-  Button,
-  Set,
-  Text,
-  Box,
-  Input,
-  Switch,
-  Dialog
-} from "bumbag"
-import PageContent from "../../page/Content"
-import sequenceColumn from "../../table/column/sequence"
-import dateTimeColumn from "../../table/column/dateTime"
+  PlatformPageContent,
+  usePlatformId,
+  usePlatformPageContentWidth
+} from "../../page/PlatformPageContent"
 import {
   useIsDisplayMenuByRoute,
   useHasSubMenuByRoute,
@@ -34,7 +26,6 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { InputField } from "../../input/Input"
 import { BrandGameProviderSelect } from "../brandproviders/BrandGameProviderSelect"
 import AlertDialog from "../../dialog/Alert"
-import BrandBar from "../../report/BrandBar"
 import { GameTypeLabel, AllGameTypeSelect } from "../GameType"
 import { NumberInput } from "../../input/NumberInput"
 import { ActionTrans, ConfirmOrderTrans } from "../../trans/Action.jsx"
@@ -59,44 +50,37 @@ export const Content = () => {
     return null
   }
 
-  return <Body />
+  return (
+    <PlatformPageContent title={<GameListTrans />}>
+      <Body />
+    </PlatformPageContent>
+  )
 }
 
 export const CodeContentPair = [Code, Content]
 
 const Body = () => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set orientation="vertical" isFilled>
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && <BodyContent brandId={brandId} />}
-    </Set>
-  )
-}
-
-const BodyContent = ({ brandId }) => {
+  let brandId = usePlatformId()
   let { state, setState, setPageIndex, setSortOrder } = useTable({
+    brandId,
     gameProviderId: "",
     gameType: "",
     keyword: ""
   })
-  let { pageIndex, pageSize, gameProviderId, gameType, keyword } = state
-  let { isLoading, data, error, mutate, deleteCache } = useBrandGameList({
+
+  useEffect(() => {
+    setState({ pageIndex: 0, brandId })
+  }, [brandId])
+
+  let { gameProviderId, gameType, keyword } = state
+  let { isLoading, data, error, mutate, emptyData } = useBrandGameList({
     ...toApiParams(state),
-    sortby: "displayOrder",
-    brandId
+    sortby: "displayOrder"
   })
 
   return (
-    <PageContent
-      title={<GameListTrans />}
-      actionBar={
+    <Set orientation="vertical" isFilled height="100%">
+      <Level alignY="bottom" alignX="left" verticalBelow="mobile">
         <SearchBar
           brandId={brandId}
           gameProviderId={gameProviderId}
@@ -110,19 +94,18 @@ const BodyContent = ({ brandId }) => {
             mutate()
           }}
         />
-      }
-    >
+      </Level>
       <DataTable
         controlledState={state}
         data={data}
-        pageSize={pageSize}
+        pageSize={state.pageSize}
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         mutate={mutate}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
-    </PageContent>
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
+    </Set>
   )
 }
 

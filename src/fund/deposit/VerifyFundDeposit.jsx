@@ -21,6 +21,7 @@ import { FormBody } from "./ViewFundDeposit"
 import ReviewFund from "../ReviewFund"
 import { useFundDepositFormData } from "./useFundDepositFormData"
 import { RejectTrans, useApproveTrans } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const FundDepositVerified = "FundDepositVerified"
 
@@ -52,13 +53,15 @@ export const VerifyFundDepositDisclosure = ({
     <>
       <ReviewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <VerifyFundDepositDialog
-          brandId={brandId}
-          formId={formId}
-          playerCode={playerCode}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <VerifyFundDepositDialog
+            brandId={brandId}
+            formId={formId}
+            playerCode={playerCode}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -118,7 +121,7 @@ const VerifyFundDepositDialog = ({
   const resetVerifyFundDepositForm = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   const reset = () => {

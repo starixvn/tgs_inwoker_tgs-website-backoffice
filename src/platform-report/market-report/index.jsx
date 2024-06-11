@@ -63,34 +63,3 @@ const ReportBody = () => {
     />
   )
 }
-
-/*
-TODO: rm
-export const Body = ({ setReportFeatureFlag }) => {
-  let userBrandId = useUserBrandId()
-  let [brandId, setBrandId] = useState(userBrandId)
-
-  return (
-    <Set
-      orientation="vertical"
-      isFilled
-      onClick={() => {
-        setReportFeatureFlag(isFeatureMarketReportWithAgentProfit())
-      }}
-    >
-      <BrandBar
-        onBrandChange={(value) => {
-          setBrandId(value)
-        }}
-      />
-      {brandId && (
-        <MarketReport
-          brandId={brandId}
-          useFetch={useMarketReportList}
-          exportUrl={`${API}/exportMarkets`}
-        />
-      )}
-    </Set>
-  )
-}
-*/

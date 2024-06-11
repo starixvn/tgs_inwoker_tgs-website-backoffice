@@ -32,6 +32,16 @@ const theme = {
   PageContent: {
     defaultProps: {
       breakpoint: "widescreen"
+    },
+    styles: {
+      base: {
+        padding: "0.5rem"
+      }
+    }
+  },
+  Set: {
+    defaultProps: {
+      spacing: "minor-2"
     }
   },
   Table: {
@@ -39,8 +49,15 @@ const theme = {
       styles: {
         base: {
           fontSize: "1rem",
-          padding: "0.6rem 1rem",
+          padding: "0.5rem",
           textTransform: "none"
+        }
+      }
+    },
+    Cell: {
+      styles: {
+        base: {
+          padding: "0.25rem 0.5rem"
         }
       }
     }

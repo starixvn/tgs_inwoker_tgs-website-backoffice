@@ -1,4 +1,3 @@
-import useSWR, { cache } from "swr"
 import {
   urlWith,
   useGet,
@@ -21,11 +20,18 @@ export const usePlatformAccountFundHistory = (brandId) => {
   return useGet(url)
 }
 
-export const useUpdatePlatformAccountFund = (brandId, type, formData) => {
+export const useUpdatePlatformAccountFund = (
+  brandId,
+  type,
+  formData,
+  options = {
+    dropEmptyValuesDisabled: true
+  }
+) => {
   if (isAddFund(type)) {
-    return useAddPlatformAccountFund(brandId, formData)
+    return useAddPlatformAccountFund(brandId, formData, options)
   } else if (isDeductFund(type)) {
-    return useDeductPlatformAccountFund(brandId, formData)
+    return useDeductPlatformAccountFund(brandId, formData, options)
   }
 
   let url = "" //empty
@@ -33,14 +39,14 @@ export const useUpdatePlatformAccountFund = (brandId, type, formData) => {
 }
 
 const TxApi = "/api/brandgamecredittxn"
-export const useAddPlatformAccountFund = (brandId, formData) => {
+export const useAddPlatformAccountFund = (brandId, formData, options) => {
   let url = brandId && formData ? `${TxApi}/${brandId}/credit` : ""
-  return usePostData(url, formData)
+  return usePostData(url, formData, options)
 }
 
-export const useDeductPlatformAccountFund = (brandId, formData) => {
+export const useDeductPlatformAccountFund = (brandId, formData, options) => {
   let url = brandId && formData ? `${TxApi}/${brandId}/debit` : ""
-  return usePostData(url, formData)
+  return usePostData(url, formData, options)
 }
 
 export const usePlatformAccountFundActionDetail = (brandId, searchParams) => {

@@ -53,7 +53,7 @@ const StartMaintenanceDialog = ({ dialog, onSubmitted, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(undefined)
   }
 

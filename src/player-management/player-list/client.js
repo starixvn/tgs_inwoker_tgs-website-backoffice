@@ -106,40 +106,35 @@ export const useUpdatePlayerInfo = (playerCode, data) => {
   let url = playerCode && data ? `${API}/info/${playerCode}` : ""
 
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
 export const useUpdatePlayerStatus = (playerCode, data) => {
   let url = playerCode && data ? `${API}/status/${playerCode}` : ""
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
 export const useUpdatePlayerAgent = (playerCode, data) => {
   let url = playerCode && data ? `${API}/agent/${playerCode}` : ""
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
 export const useUpdatePlayerAllAgentPlayer = (playerCode, data) => {
   let url = playerCode && data ? `${API}/parent-player/${playerCode}` : ""
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 
 export const useUpdatePlayerContact = (playerCode, data) => {
   let url = playerCode && data ? `${API}/contact/${playerCode}` : ""
   return usePatchData(url, data, {
-    dropEmptyValuesDisabled: true,
-    dedupingInterval: 100
+    dropEmptyValuesDisabled: true
   })
 }
 

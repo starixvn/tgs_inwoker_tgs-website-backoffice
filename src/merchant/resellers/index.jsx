@@ -52,7 +52,7 @@ const Body = () => {
   })
   let { pageIndex, pageSize, keyword } = state
 
-  let { isLoading, data, error, mutate, deleteCache } = useResellerList({
+  let { isLoading, data, error, mutate, emptyData } = useResellerList({
     ...toApiParams(state),
     sortby: "code",
     hideArchieved: false
@@ -62,7 +62,11 @@ const Body = () => {
 
   return (
     <PageContent
-      title={<Trans zh="总公司列表" en="Resellers" />}
+      title={
+        <Box id="page-title">
+          <Trans zh="总公司列表" en="Resellers" />
+        </Box>
+      }
       actionBar={
         <>
           <SearchForm
@@ -89,7 +93,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

@@ -62,6 +62,7 @@ import {
   useEnabledTrans,
   useStatusTrans
 } from "../../trans/Status.jsx"
+import { SWRConfig } from "swr"
 
 export const AddGameProviderConfigDisclosure = ({
   gameProviderId,
@@ -107,8 +108,8 @@ const AddConfigDialog = ({ gameProviderId, onSubmitted, dialog, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(false, undefined)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   return (
@@ -116,7 +117,10 @@ const AddConfigDialog = ({ gameProviderId, onSubmitted, dialog, ...props }) => {
       <FormDialog
         defaultValues={{ status: Active }}
         onSubmit={onSubmit}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         result={result}
         isLoading={isLoading}
         error={error}
@@ -143,7 +147,11 @@ export const ViewGameProviderConfigDisclosure = ({ id }) => {
   return (
     <>
       <ViewDisclosure {...dialog} />
-      {dialog.visible && <ViewDialog id={id} dialog={dialog} />}
+      {dialog.visible && (
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog id={id} dialog={dialog} />
+        </SWRConfig>
+      )}
     </>
   )
 }
@@ -194,7 +202,9 @@ export const EditGameProviderConfigDisclosure = ({ id, onSubmitted }) => {
     <>
       <EditDisclosure {...dialog} />
       {dialog.visible && (
-        <EditConfigDialog id={id} onSubmitted={onSubmitted} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditConfigDialog id={id} onSubmitted={onSubmitted} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )
@@ -241,8 +251,8 @@ const EditConfigDialog = ({ id, onSubmitted, dialog, ...props }) => {
     mutateGameProviderConfig(undefined, false)
 
     deleteCache()
-    mutate(false, undefined)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   return (

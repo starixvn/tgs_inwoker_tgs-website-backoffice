@@ -47,7 +47,9 @@ import {
   InstantMessagingTrans,
   useInstantMessagingTrans
 } from "../../trans/Platform"
+import Modal from "../../dialog/Modal"
 
+//TODO: fine tune layout & add test cases
 export const MessengerDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
 
@@ -83,13 +85,12 @@ const InstantMessagingDialog = ({ brandId, dialog }) => {
 
   let items = data ?? []
   return (
-    <Dialog.Modal
+    <Modal
       {...dialog}
       title={title}
-      hideOnClickOutside={false}
-      width="50vw"
-      maxWidth="80vw"
-      showCloseButton
+      css={css`
+        min-width: 50vw;
+      `}
     >
       <Stack>
         <TwoColumns>
@@ -105,7 +106,7 @@ const InstantMessagingDialog = ({ brandId, dialog }) => {
           <AddMessengerCard brandId={brandId} onSubmitted={mutate} />
         </TwoColumns>
       </Stack>
-    </Dialog.Modal>
+    </Modal>
   )
 }
 
@@ -146,7 +147,7 @@ const AddDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -161,7 +162,10 @@ const AddDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
         isLoading={isLoading}
         result={result}
         error={error}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         onCloseErrorAlert={reset}
         dialog={dialog}
         hideBackdrop={true}
@@ -236,7 +240,7 @@ const DeleteDialog = ({ id, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -315,7 +319,7 @@ const EditDialog = ({ brandId, record, dialog, onSubmitted, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let defaultValues = {
@@ -334,7 +338,10 @@ const EditDialog = ({ brandId, record, dialog, onSubmitted, ...props }) => {
         isLoading={isLoading}
         result={result}
         error={error}
-        onSubmitted={onSubmitted}
+        onSubmitted={() => {
+          reset()
+          onSubmitted?.()
+        }}
         onCloseErrorAlert={reset}
         dialog={dialog}
         hideBackdrop={true}

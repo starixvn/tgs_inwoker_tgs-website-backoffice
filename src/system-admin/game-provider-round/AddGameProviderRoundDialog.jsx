@@ -97,8 +97,8 @@ const AddRoundDialog = ({ onSubmitted, dialog, dialogId, ...props }) => {
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   return (
@@ -110,7 +110,10 @@ const AddRoundDialog = ({ onSubmitted, dialog, dialogId, ...props }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       onCloseErrorAlert={reset}
       title={title}
       dialog={dialog}

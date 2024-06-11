@@ -34,6 +34,7 @@ import {
 } from "../../trans/Action"
 import { UserNameTrans } from "../../trans/User"
 import { TransactionAmountTrans } from "../../trans/Field"
+import { SWRConfig } from "swr"
 
 export const PlayerDeductBalanceDisclosure = ({
   brandId,
@@ -55,13 +56,15 @@ export const PlayerDeductBalanceDisclosure = ({
         <DeductBalanceTrans />
       </Disclosure>
       {dialog.visible && (
-        <DeductDialog
-          brandId={brandId}
-          username={username}
-          playerCode={playerCode}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <DeductDialog
+            brandId={brandId}
+            username={username}
+            playerCode={playerCode}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -74,14 +77,14 @@ const DeductDialog = ({
   onSubmitted,
   dialog
 }) => {
-  let [formData, setSubmit] = useState()
-  let { result, isLoading, error, mutate, deleteCache } =
-    usePlayerAdjustReduceBalance(playerCode, formData)
-
   let title = useTrans({
     zh: "余额扣分",
     en: "Deduct Balance"
   })
+
+  let [formData, setSubmit] = useState()
+  let { result, isLoading, error, mutate, deleteCache } =
+    usePlayerAdjustReduceBalance(playerCode, formData)
 
   const onSubmit = (data) => {
     setSubmit(data)
@@ -90,7 +93,7 @@ const DeductDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -102,7 +105,10 @@ const DeductDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
     >

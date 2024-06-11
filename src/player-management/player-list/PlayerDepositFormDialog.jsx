@@ -54,6 +54,7 @@ import {
 } from "../../trans/User"
 import { useDepositAmountTrans } from "../../trans/Payment"
 import { usePlayerNoteTrans } from "../../trans/Player"
+import { SWRConfig } from "swr"
 
 export const PlayerDepositFormDialogDisclosure = ({
   brandId,
@@ -76,12 +77,14 @@ export const PlayerDepositFormDialogDisclosure = ({
         <DepositFormTrans />
       </Disclosure>
       {dialog.visible && (
-        <DepositFormDialog
-          dialogId={dialogId}
-          brandId={brandId}
-          playerCode={playerCode}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <DepositFormDialog
+            dialogId={dialogId}
+            brandId={brandId}
+            playerCode={playerCode}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -152,7 +155,7 @@ const DepositFormDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
     setSubmit(null)
   }
 
@@ -169,6 +172,7 @@ const DepositFormDialog = ({
         playerCode
       }}
       onSubmit={onSubmit}
+      onSubmitted={reset}
       isLoading={isLoading}
       result={result}
       error={error}

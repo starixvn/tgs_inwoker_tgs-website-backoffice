@@ -111,6 +111,7 @@ artifacts
 
 # 
 .playwright/
+test-results
 build/
 .docker/
 

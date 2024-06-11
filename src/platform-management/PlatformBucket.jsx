@@ -8,20 +8,16 @@ import {
   Sportsbook,
   CardGame,
   VirtualSports,
-  Lottery
+  Lottery,
+  EGame
 } from "../trans/Game"
 import { Default } from "../trans/Field"
-
-const EGameTrans = {
-  zh: "电子",
-  en: "EGame"
-}
 
 const AllTrans = [
   ["", Default],
   ["LiveDealer", LiveDealer],
   ["Sportsbook", Sportsbook],
-  ["Slot", EGameTrans],
+  ["Slot", EGame],
   ["CardGame", CardGame],
   ["VirtualSports", VirtualSports],
   ["Lottery", Lottery]

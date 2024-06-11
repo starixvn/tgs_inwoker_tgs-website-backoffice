@@ -1,5 +1,4 @@
-import useSWR, { cache } from "swr"
-import client, {
+import {
   urlWith,
   get,
   put,
@@ -11,6 +10,9 @@ import client, {
   usePostFormData,
   useDelete
 } from "../../client"
+import { useApiMerge } from "../../client/useApiMerge."
+import { useEnablePlatformSms } from "../../merchant/platforms/client"
+import { useApplyPlatformSms } from "../../sms/client"
 
 let API = "/api/BrandCommunication"
 
@@ -63,3 +65,15 @@ export const useUpdatePlatformAgentDividendCondition = (data) => {
   let url = data?.brandId ? `/api/BrandAgentDividendCondition` : ""
   return usePutData(url, data)
 }
+
+//TODO: rm
+/*
+export const useUpdatePlatformSms = (brandId, smsSettingId, enableSms) => {
+  let items = [
+    useApplyPlatformSms(brandId, smsSettingId),
+    useEnablePlatformSms(brandId, enableSms)
+  ]
+
+  return useApiMerge(items)
+}
+*/

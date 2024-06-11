@@ -80,6 +80,8 @@ export const Body = () => {
         onLicenseeChange={(value) => {
           setLicenseeId(value)
         }}
+        paddingTop="0.5rem"
+        paddingLeft="0.5rem"
       />
       {licenseeId && <ReportContent licenseeId={licenseeId} />}
     </Set>
@@ -116,7 +118,7 @@ const ReportContent = ({ licenseeId }) => {
     culture
   })
 
-  let { isLoading, data, error, mutate, deleteCache } =
+  let { isLoading, data, error, mutate, emptyData } =
     useLicenseeMarketReportList(toSearchParams())
 
   let columns = useColumns({ items: data?.items })
@@ -182,7 +184,7 @@ const ReportContent = ({ licenseeId }) => {
           toggleColumnHidden={true}
         />
       </Stack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

@@ -63,14 +63,17 @@ const useAllAgentRebateData = (searchParams) => {
     data: rebateList,
     error: rebateListError,
     mutate: mutateRebateList,
-    deleteCache: deleteRebateListCache
+    deleteCache: deleteRebateListCache,
+    mutate,
+    emptyData: emptyRebateListData
   } = useAllAgentRebateList(searchParams)
   let {
     isLoading: isLoadingTotalAmount,
     data: rebateTotalAmount,
     error: rebateTotalAmountError,
     mutate: mutateRebateTotalAmount,
-    deleteCache: deleteRebateTotalAmountCache
+    deleteCache: deleteRebateTotalAmountCache,
+    emptyData: emptyRebateTotalAmountData
   } = useAllAgentRebateTotalAmount(searchParams)
 
   let isLoading = isLoadingRebateList || isLoadingTotalAmount
@@ -94,6 +97,10 @@ const useAllAgentRebateData = (searchParams) => {
     deleteCache: () => {
       deleteRebateListCache()
       deleteRebateTotalAmountCache()
+    },
+    emptyData: () => {
+      mutate([], false)
+      emptyRebateTotalAmountData()
     }
   }
 }
@@ -117,7 +124,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
     ...toApiParams(state),
     to: startOfNextDay(state.to)
   })
-  let { isLoading, data, error, mutate, deleteCache } = useAllAgentRebateData(
+  let { isLoading, data, error, mutate, emptyData } = useAllAgentRebateData(
     toSearchParams()
   )
 
@@ -141,8 +148,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
               pageIndex: 0,
               ...data
             })
-            deleteCache()
-            mutate(null)
+            mutate(undefined)
           }}
         />
       </Level>
@@ -181,7 +187,7 @@ export const AllAgentRebateReport = ({ brandId }) => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

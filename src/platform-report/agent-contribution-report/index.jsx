@@ -99,6 +99,8 @@ export const Body = () => {
         onBrandChange={(value) => {
           setBrandId(value)
         }}
+        paddingTop="0.5rem"
+        paddingLeft="0.5rem"
       />
       {brandId && <ReportContent brandId={brandId} />}
     </Set>
@@ -148,7 +150,7 @@ const ReportContent = ({ brandId }) => {
     data = {},
     error,
     mutate,
-    deleteCache
+    emptyData
   } = useAgentContributionList(username ? toSearchParams() : undefined)
 
   let columns = useColumns({
@@ -223,7 +225,7 @@ const ReportContent = ({ brandId }) => {
           />
         )}
       </FieldStack>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

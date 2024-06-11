@@ -78,8 +78,8 @@ const Report = () => {
                 </List.Item>
                 <List.Item>
                   <Trans
-                    zh={`玩家特别: 该代理线全部玩家的"红利金额" + "调帐"(公司、代理、优惠) + "平台费用"(该玩家总输赢 x 该平台的产品费用%)`}
-                    en="Player Special: The total cost from down line players, which is including Bonus Amount + Adjustment Amount (Bonus, Company, Agent) + Platform Fee (Player Winloss * Platform Fee(%))"
+                    zh={`玩家特别: 该代理线全部玩家的"红利金额" + "调帐"(公司、代理、优惠)`}
+                    en="Player Special: The total cost from down line players, which is including Bonus Amount + Adjustment Amount (Bonus, Company, Agent)"
                   />
                 </List.Item>
                 <List.Item>

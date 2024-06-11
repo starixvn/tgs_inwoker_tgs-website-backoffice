@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: player-api
-image: pgtgs/player-api:202402170737.207
+image: pgtgs/player-api:202405100651.209
 services:
   - name: player-api
     dependencies:

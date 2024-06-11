@@ -101,7 +101,7 @@ const AdjustLockedAmountDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -109,6 +109,7 @@ const AdjustLockedAmountDialog = ({
       id={dialogId}
       defaultValues={{}}
       onSubmit={onSubmit}
+      onSubmitted={reset}
       isLoading={isLoading}
       result={result}
       error={error}

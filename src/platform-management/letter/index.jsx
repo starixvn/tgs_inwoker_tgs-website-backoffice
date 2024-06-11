@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { Box, Flex, Set, Button, Text, Icon, Level } from "bumbag"
-import PageContent from "../../page/Content"
 import {
   useIsDisplayMenuByRoute,
-  useHasSubMenuByRoute,
-  useUserBrandId,
-  useUserRoleType
+  useHasSubMenuByRoute
 } from "../../user/context"
 import { Code } from "./menu"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
@@ -68,7 +65,7 @@ const Body = () => {
 
   let toSearchParams = () => ({ ...toApiParams(state) })
 
-  let { isLoading, data, error, mutate, deleteCache } = useLetterList(
+  let { isLoading, data, error, mutate, emptyData } = useLetterList(
     brandId,
     boxType,
     toSearchParams()
@@ -94,7 +91,7 @@ const Body = () => {
               pageIndex: 0,
               ...data
             })
-            mutate(null, true)
+            mutate(undefined, true)
           }}
         />
         <Box>
@@ -115,8 +112,7 @@ const Body = () => {
             operator: ""
           })
 
-          deleteCache()
-          mutate(null, true)
+          mutate(undefined, true)
 
           setBoxType(value)
         }}
@@ -151,7 +147,7 @@ const Body = () => {
           }}
         </AutoSizer>
       </Box>
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </Set>
   )
 }

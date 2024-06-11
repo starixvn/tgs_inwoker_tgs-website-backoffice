@@ -15,6 +15,7 @@ import { FormBody } from "./ViewFundWithdraw"
 import { useFundWithdrawForm, useVerifyFundWithdrawForm } from "./client"
 import ReviewFund from "../ReviewFund"
 import { RejectTrans, useRejectTrans } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const FundWithdrawVerified = "FundWithdrawVerified"
 
@@ -47,12 +48,14 @@ export const RejectFundWithdrawDisclosure = ({
         <RejectTrans />
       </Disclosure>
       {dialog.visible && (
-        <RejectFundWithdrawDialog
-          brandId={brandId}
-          formId={formId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <RejectFundWithdrawDialog
+            brandId={brandId}
+            formId={formId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -106,8 +109,8 @@ const RejectFundWithdrawDialog = ({
     mutateFundWithdrawForm(null, false)
 
     deleteCache()
-    mutate(null, false)
-    setSubmit(undefined)
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   return (

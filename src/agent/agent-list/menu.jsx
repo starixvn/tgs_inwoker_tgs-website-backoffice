@@ -1,5 +1,6 @@
 import React from "react"
 import { Locales, getTrans } from "../../i18n"
+import { ProductFee as ProductFeeMsg } from "../../trans/Platform"
 import { View as ViewMsg } from "../../trans/Action"
 
 export const Code = "agentlist"
@@ -20,6 +21,8 @@ export const LookupWhois = "lookupwhois"
 export const ClearProfitShare = "clearprofitshare"
 
 export const ChangeWithdrawalPassword = "changewithdrawalpassword"
+
+export const ProductFee = "productfee"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
@@ -74,6 +77,9 @@ export const label = (codes = [], locale = Locales.zh) => {
       )
     case LookupWhois:
       return "Lookup Whois"
+
+    case ProductFee:
+      return getTrans(ProductFeeMsg, locale)
     default:
       return ""
   }

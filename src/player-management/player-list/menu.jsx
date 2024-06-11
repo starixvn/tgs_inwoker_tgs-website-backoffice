@@ -5,6 +5,7 @@ import {
   WithdrawForm as WithdrawFormMsg
 } from "../../trans/User"
 import { UpgradeToAgent } from "../../trans/Agent"
+import { Bank as BankMsg } from "../../trans/Payment"
 
 export const Code = "playerlist"
 
@@ -25,6 +26,8 @@ export const BalanceChangeUnsaved = "balancechangeunsaved"
 export const EditIdNumber = "editidnumber"
 
 export const UpgradePlayerToAgent = "upgradetoagent"
+
+export const Bank = "bank"
 
 export const codeLabelPair = [Code, ({ codes, locale }) => label(codes, locale)]
 
@@ -87,6 +90,8 @@ export const label = (codes = [], locale = Locales.zh) => {
       )
     case UpgradePlayerToAgent:
       return getTrans(UpgradeToAgent, locale)
+    case Bank:
+      return getTrans(BankMsg, locale)
     default:
       return ""
   }

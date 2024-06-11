@@ -13,6 +13,7 @@ import {
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import Switch from "../../switch/Switch"
+import { SWRConfig } from "swr"
 
 export const AccountFundSettingDialogDisclosure = ({
   brandId,
@@ -36,12 +37,14 @@ export const AccountFundSettingDialogDisclosure = ({
         <AccountFundsTrans />
       </Disclosure>
       {dialog.visible && (
-        <SettingDialog
-          brandId={brandId}
-          dialog={dialog}
-          dialogId={dialogId}
-          readOnly={!editable}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <SettingDialog
+            brandId={brandId}
+            dialog={dialog}
+            dialogId={dialogId}
+            readOnly={!editable}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -77,7 +80,7 @@ const SettingDialog = ({ brandId, readOnly, dialog, dialogId, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (

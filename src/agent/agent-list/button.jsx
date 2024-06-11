@@ -19,7 +19,7 @@ import {
   Update as UpdateMenu,
   ChangeWithdrawalPassword
 } from "./menu"
-import { useIsDisplayMenuByRoute, useUserBrandId } from "../../user/context"
+import { useIsDisplayMenuByRoute } from "../../user/context"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
 import {
@@ -96,6 +96,7 @@ import {
   UserNameTrans
 } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const AddAgentButton = ({ brand, onSubmitted, ...props }) => {
   let dialog = useModalState()
@@ -131,7 +132,7 @@ const AddDialog = ({ brand, onSubmitted, dialog }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useTrans({
@@ -152,7 +153,10 @@ const AddDialog = ({ brand, onSubmitted, dialog }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       maxWidth="100vw"
@@ -336,13 +340,15 @@ export const ViewButton = ({ brand, agent, ...props }) => {
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <TabsDialog
-          brand={brand}
-          agent={agent}
-          readonly
-          dialog={dialog}
-          dialogId="view-agent-dialog"
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <TabsDialog
+            brand={brand}
+            agent={agent}
+            readonly
+            dialog={dialog}
+            dialogId="view-agent-dialog"
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -360,13 +366,15 @@ export const EditButton = ({ brand, agent, onSubmitted, ...props }) => {
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <TabsDialog
-          brand={brand}
-          agent={agent}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-          dialogId="edit-agent-dialog"
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <TabsDialog
+            brand={brand}
+            agent={agent}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+            dialogId="edit-agent-dialog"
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -390,7 +398,7 @@ const TabsDialog = ({
     en: "Agent Info"
   })
 
-  const { isLoading, data, error, mutate, deleteCache } = useAgent(agentId)
+  const { isLoading, data, error, mutate } = useAgent(agentId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />

@@ -90,6 +90,7 @@ import {
 } from "../../trans/Payment"
 import { StatusTrans } from "../../trans/Status"
 import { useAddTrans, useEditTrans } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const EditButton = ({
   brandId,
@@ -111,13 +112,15 @@ export const EditButton = ({
     <>
       <EditDisclosure id={id} {...dialog} />
       {dialog.visible && (
-        <EditDialog
-          brandId={brandId}
-          platformPaymentId={platformPaymentId}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-          dialogId={dialogId}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={brandId}
+            platformPaymentId={platformPaymentId}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+            dialogId={dialogId}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -160,8 +163,14 @@ const EditDialog = ({
   }
 
   const resetPlatformPayment = () => {
-    mutatePlatformPayment(null, false)
+    mutatePlatformPayment(undefined, false)
     deletePlatformPaymentCache()
+  }
+
+  const reset = () => {
+    deleteCache()
+    mutate(undefined, false)
+    setSubmit(null)
   }
 
   return (
@@ -189,13 +198,10 @@ const EditDialog = ({
       result={result}
       isLoading={isLoading}
       error={error}
-      onCloseErrorAlert={() => {
-        deleteCache()
-        mutate(undefined, false)
-        setSubmit(undefined)
-      }}
+      onCloseErrorAlert={reset}
       onSubmitted={() => {
         resetPlatformPayment()
+        reset()
         onSubmitted?.()
       }}
       title={title}
@@ -251,14 +257,16 @@ export const AddBrandPaymentButton = ({
     <>
       <AddDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <AddDialog
-          id="add-payment-dialog"
-          brandId={brandId}
-          transferType={transferType}
-          useFetch={useFetch}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <AddDialog
+            id="add-payment-dialog"
+            brandId={brandId}
+            transferType={transferType}
+            useFetch={useFetch}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -363,7 +371,7 @@ const AddDialog = ({
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -387,7 +395,10 @@ const AddDialog = ({
       isLoading={isLoading}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       showCloseButton
       width="80vw"
@@ -770,7 +781,7 @@ const UploadListColumn = ({ name = "", title, fileName = "" }) => {
 
   let uploadFileInputRef = useRef()
   let [formData, setFormData] = useState()
-  let { result, isLoading, error, clearCache, deleteCache } =
+  let { result, isLoading, error, deleteCache } =
     useBrandPaymentUpload(formData)
 
   const resetFormData = () => {

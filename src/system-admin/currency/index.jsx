@@ -43,7 +43,7 @@ const Body = () => {
     name: ""
   })
 
-  let { isLoading, data, error, mutate, deleteCache } = useCurrencyList({
+  let { isLoading, data, error, mutate, emptyData } = useCurrencyList({
     ...toApiParams(state),
     sortby: "code"
   })
@@ -80,7 +80,7 @@ const Body = () => {
         setSortOrder={setSortOrder}
         isLoading={isLoading}
       />
-      {error && <AlertDialog {...error} onClickClose={deleteCache} />}
+      {error && <AlertDialog {...error} onClickClose={emptyData} />}
     </PageContent>
   )
 }

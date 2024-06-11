@@ -149,7 +149,7 @@ const BatchUploadButton = ({ name = FieldName, palette, variant }) => {
 
     setFormData(null)
     deleteCache()
-    mutate(null, false)
+    mutate(undefined, false)
   }
 
   let { getRootProps, getInputProps } = useDropzone({

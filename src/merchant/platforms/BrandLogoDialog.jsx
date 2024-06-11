@@ -29,6 +29,7 @@ import { InputField } from "../../input/Input"
 import { CloseButtonFooter } from "../../form/ConfirmButtonFooter"
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { useFormContext, useWatch } from "react-hook-form"
+import { SWRConfig } from "swr"
 
 export const BrandLogoDialogDisclosure = ({ brandId, ...props }) => {
   let dialog = useModalState()
@@ -44,39 +45,30 @@ export const BrandLogoDialogDisclosure = ({ brandId, ...props }) => {
         <Trans zh="Logo" en="Logo" />
       </Disclosure>
       {dialog.visible && (
-        <LoadingViewOrEditDialog brandId={brandId} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <LoadingViewOrEditDialog brandId={brandId} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )
 }
 
 const LoadingViewOrEditDialog = ({ brandId, dialog, ...props }) => {
-  let {
-    isLoading,
-    data: record,
-    error,
-    mutate,
-    deleteCache
-  } = useBrandLogo(brandId)
+  let { isLoading, data: record, error, deleteCache } = useBrandLogo(brandId)
 
   if (isLoading) {
     return <LoadingBackdrop {...dialog} />
   }
 
   if (error) {
-    return <AlertDialog {...error} onClickClose={deleteCache} />
-  }
-
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
   return (
     <ViewOrEditDialog
       brandId={brandId}
       record={record}
-      onSubmitted={reset}
+      onSubmitted={deleteCache}
       dialog={dialog}
       {...props}
     />
@@ -99,8 +91,7 @@ const ViewOrEditDialog = ({
   })
 
   let [formData, setSubmit] = useState()
-  let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateBrandLogo(formData)
+  let { isLoading, result, error, deleteCache } = useUpdateBrandLogo(formData)
 
   const onSubmit = (data) => {
     setSubmit(data)
@@ -108,8 +99,7 @@ const ViewOrEditDialog = ({
 
   const reset = () => {
     deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   return (
@@ -121,7 +111,10 @@ const ViewOrEditDialog = ({
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       dialog={dialog}
       title={title}
       showActionButtons={readOnly ? false : true}
@@ -179,46 +172,3 @@ const FormBody = ({ readOnly }) => {
     </FieldStack>
   )
 }
-
-/*
-const DeleteDialog = ({ brandId, dialog, onSubmitted, ...props }) => {
-  let [formData, setSubmit] = useState()
-
-  let { isLoading, result, error, mutate, deleteCache } =
-    useUpdateBrandLogo(formData)
-
-  const onSubmit = () => {
-    reset()
-
-    setSubmit({ brandId })
-  }
-
-  const reset = () => {
-    deleteCache()
-    mutate(undefined, false)
-    setSubmit(undefined)
-  }
-
-  return (
-    <FormDialog
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      result={result}
-      error={error}
-      onCloseErrorAlert={reset}
-      onSubmitted={() => {
-        onSubmitted?.(undefined)
-
-        reset()
-      }}
-      dialog={dialog}
-    >
-      <Alert
-        title={<Trans zh={`确认删除`} en={`Confirm delete？`} />}
-        type="warning"
-        variant=""
-      ></Alert>
-    </FormDialog>
-  )
-}
-*/

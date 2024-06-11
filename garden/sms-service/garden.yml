@@ -1,0 +1,18 @@
+kind: Module
+type: container
+name: sms-service
+image: pgtgs/sms-service:202405230817.49
+services:
+  - name: sms-service
+    dependencies:
+      - postgres
+      - nats
+      - rabbitmq
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      Sms__RabbitMQUrl: "amqp://rabbitmq:5672"
+    ports:
+      - name: http
+        containerPort: 8080
+        servicePort: 80

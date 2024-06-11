@@ -14,6 +14,7 @@ import {
   Code as BrandPaymentsCode,
   codeLabelPair as brandPaymentsPair
 } from "./brand-payment/menu"
+import { Code as SmsCode, codeLabelPair as smsPair } from "./sms/menu"
 import {
   Code as LanguageCode,
   codeLabelPair as languagePair
@@ -49,6 +50,7 @@ import {
 import { getTrans, useTrans } from "../i18n"
 import { faCogs } from "@fortawesome/free-solid-svg-icons"
 import { GameProviderReport } from "../trans/Game"
+import { SMSProviderManagement } from "../trans/Sms"
 
 export const Code = "systemadmin"
 
@@ -110,6 +112,8 @@ const labelOf = ({ locale, code }) => {
         },
         locale
       )
+    case SmsCode:
+      return getTrans(SMSProviderManagement, locale)
     case LanguageCode:
       return getTrans(
         {
@@ -197,7 +201,8 @@ export const codeLabelPair = [
         gameOpenRoundPair,
         gameResettleOpenedRoundPair,
         platformGameProviderPair,
-        gameProviderRoundPair
+        gameProviderRoundPair,
+        smsPair
       ]
     })
 ]

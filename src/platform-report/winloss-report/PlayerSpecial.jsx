@@ -30,40 +30,9 @@ import {
 } from "../../table/column/numberColumn"
 import AlertDialog from "../../dialog/Alert"
 import textColumn from "../../table/column/textColumn"
-import { formatDateTime } from "../../date/format"
-import { FieldValues } from "../../layout/Grid"
-import { formatNumberDecimal } from "../../number/format"
-import Separator from "../../layout/Separator"
-import { startOfNextDay } from "../../date/startOfNextDay"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../dialog/Modal"
 import { useWinlossReportPlayerSpecial } from "./client"
 import { TotalTrans } from "../../trans/Field"
-
-/*
-export const PlayerSpecial = ({ value }) => {
-  if (!Number.isFinite(value) || value === 0) {
-    return <FormattedNumberDecimal value={value} />
-  }
-
-  return (
-    <Popover.State>
-      <Popover.Disclosure use={Link}>
-        <FormattedNumberDecimal value={value} />
-      </Popover.Disclosure>
-      <Popover.Disclosure>
-        <Set orientation="horizontal" whiteSpace="nowrap" width="max-content">
-          <Icon icon={faPlus} type="font-awesome" />
-          <FormattedNumberDecimal value={value} />
-        </Set>
-      </Popover.Disclosure>
-      <Popover hasArrow usePortal>
-        TODO: table
-      </Popover>
-    </Popover.State>
-  )
-}
-*/
 
 export const PlayerSpecialDialogDisclosure = ({
   value,
@@ -108,16 +77,9 @@ const BonusAdjustTrans = {
   en: "Bonus Adjust"
 }
 
-const ProductFee = "productFee"
-const ProductFeeTrans = {
-  zh: "平台费用",
-  en: "Product Fee"
-}
-
 const Type = {
   Bonus,
-  BonusAdjust,
-  ProductFee
+  BonusAdjust
 }
 
 const TypeLabel = ({ value = "" }) => {
@@ -126,8 +88,6 @@ const TypeLabel = ({ value = "" }) => {
       return <Trans {...BonusTrans} />
     case BonusAdjust:
       return <Trans {...BonusAdjustTrans} />
-    case ProductFee:
-      return <Trans {...ProductFeeTrans} />
     default:
       return value
   }

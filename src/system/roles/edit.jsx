@@ -67,26 +67,36 @@ import {
 } from "../../trans/Action"
 import { LicenseeTrans, PlatformTrans } from "../../trans/Platform"
 
-export const AddButton = ({ onSubmitted, ...props }) => {
+export const AddButton = ({
+  onSubmitted,
+  id,
+  dialogId = "add-role-dialog",
+  ...props
+}) => {
   let dialog = useModalState()
   let isDisplay = useIsDisplayMenuByRoute([CreateMenu])
   if (!isDisplay) {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <AddTrans />
       </Disclosure>
       {dialog.visible && (
-        <AddDialog onSubmitted={onSubmitted} dialog={dialog} />
+        <AddDialog
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
       )}
     </>
   )
 }
 
-const AddDialog = ({ dialog, onSubmitted }) => {
+const AddDialog = ({ dialog, dialogId, onSubmitted }) => {
   let formMethods = useForm()
   let { register, watch, setValue, getValues } = formMethods
 
@@ -106,8 +116,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
   let {
     menus,
     isLoading: isLoadingMenus,
-    error: roleMenusError,
-    mutate
+    error: roleMenusError
   } = useMenus(formData)
 
   let userResellerId = useUserResellerId()
@@ -122,7 +131,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
   let roleTypeOptions = useRoleTypeOptions()
   let [menusState, setMenus] = useState()
   let [submitData, setSubmit] = useState()
-  let { result, error, isLoading } = useAddRole(submitData)
+  let { result, error, isLoading, deleteCache } = useAddRole(submitData)
 
   useEffect(() => {
     let roleId = sameRoleType ? userRoleId : templateId
@@ -145,8 +154,9 @@ const AddDialog = ({ dialog, onSubmitted }) => {
 
   let title = useAddTrans()
 
-  const clearResult = () => {
-    setSubmit(undefined)
+  const reset = () => {
+    deleteCache()
+    setSubmit(null)
   }
 
   //Note.
@@ -199,8 +209,11 @@ const AddDialog = ({ dialog, onSubmitted }) => {
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
-      onSubmitted={onSubmitted}
+      onCloseErrorAlert={reset}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       placement="top"
@@ -211,6 +224,7 @@ const AddDialog = ({ dialog, onSubmitted }) => {
           position: relative;
         }
       `}
+      id={dialogId}
     >
       <>
         {roleTypeOptions.length == 1 && (
@@ -521,26 +535,28 @@ export const EditButton = ({ id, record, onSubmitted, ...props }) => {
     return null
   }
 
+  let dialogId = `edit-role-dialog`
+  let disclosureId = `${dialogId}-disclosure`
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={disclosureId} {...dialog}>
         <EditTrans />
       </Disclosure>
       {dialog.visible && (
         <EditRoleDialog
           id={id}
           record={record}
-          onSubmitted={onSubmitted}
           dialog={dialog}
+          dialogId={dialogId}
+          onSubmitted={onSubmitted}
         />
       )}
     </>
   )
 }
 
-const EditRoleDialog = ({ id, record, dialog, onSubmitted }) => {
-  let { role, isLoading, isValidating, error, mutate, deleteCache } =
-    useRole(id)
+const EditRoleDialog = ({ id, record, dialog, dialogId, onSubmitted }) => {
+  let { role, isLoading, error, deleteCache } = useRole(id)
   let userRoleType = useUserRoleType()
   let [menus, setMenus] = useState()
 
@@ -567,9 +583,10 @@ const EditRoleDialog = ({ id, record, dialog, onSubmitted }) => {
       menus={menus}
       record={record}
       dialog={dialog}
-      onSubmitted={(data) => {
-        mutate(false, undefined)
-        onSubmitted && onSubmitted()
+      dialogId={dialogId}
+      onSubmitted={() => {
+        deleteCache()
+        onSubmitted?.()
       }}
     />
   )
@@ -582,11 +599,12 @@ const EditDialog = ({
   menus = [],
   record,
   dialog,
+  dialogId,
   onSubmitted
 }) => {
   let [menusState, setMenus] = useState(cloneDeep(menus))
   let [submitData, setSubmit] = useState()
-  let { result, error, isLoading } = useEditRole(id, submitData)
+  let { result, error, isLoading, deleteCache } = useEditRole(id, submitData)
 
   useEffect(() => {
     setMenus(cloneDeep(menus))
@@ -594,7 +612,8 @@ const EditDialog = ({
 
   let title = useEditTrans()
 
-  const clearResult = () => {
+  const reset = () => {
+    deleteCache()
     setSubmit(null)
   }
 
@@ -611,9 +630,10 @@ const EditDialog = ({
       isLoading={isLoading}
       result={result}
       error={error}
-      onCloseErrorAlert={clearResult}
+      onCloseErrorAlert={reset}
       onSubmitted={() => {
-        onSubmitted && onSubmitted(submitData)
+        reset()
+        onSubmitted?.()
       }}
       title={title}
       dialog={dialog}
@@ -625,6 +645,7 @@ const EditDialog = ({
           position: relative;
         }
       `}
+      id={dialogId}
     >
       <>
         {roleTypeOptions.length > 1 && (
@@ -692,7 +713,14 @@ const MenuTableContent = ({ menu = {}, setChecked }) => {
       <Table.Head>
         <Table.Row>
           <Table.HeadCell colSpan="2">
-            <MenuCheckbox menu={menu} setChecked={setChecked} />
+            <MenuCheckbox
+              menu={menu}
+              setChecked={setChecked}
+              inputProps={{
+                "data-type": "module",
+                "data-module": menu.code
+              }}
+            />
           </Table.HeadCell>
         </Table.Row>
       </Table.Head>
@@ -711,6 +739,11 @@ const MenuTableContent = ({ menu = {}, setChecked }) => {
                   path={[moduleCode]}
                   menu={menu}
                   setChecked={setChecked}
+                  inputProps={{
+                    "data-type": "sub-module",
+                    "data-module": moduleCode,
+                    "data-sub-module": subMenuCode
+                  }}
                 />
               </Table.Cell>
               <Table.Cell>
@@ -735,7 +768,7 @@ const MenuTableContent = ({ menu = {}, setChecked }) => {
   )
 }
 
-const MenuCheckbox = ({ path = [], menu = {}, setChecked }) => {
+const MenuCheckbox = ({ path = [], menu = {}, setChecked, ...props }) => {
   let { code } = menu
   let menuPath = [...path, code]
   let label = useMenuLabel({ codes: menuPath })
@@ -753,6 +786,7 @@ const MenuCheckbox = ({ path = [], menu = {}, setChecked }) => {
       }}
       display="inline-flex"
       marginRight="major-1"
-    ></Checkbox>
+      {...props}
+    />
   )
 }

@@ -1,4 +1,3 @@
-import useSWR, { cache } from "swr"
 import {
   urlWith,
   useGet,
@@ -62,9 +61,9 @@ export const useSyncBrandGameList = (id) => {
   return useGet(url)
 }
 
-export const useBrandLogo = (id) => {
+export const useBrandLogo = (id, options) => {
   let url = id ? `${API}/logo/${id}` : ""
-  let { data, ...rest } = useGet(url)
+  let { data, ...rest } = useGet(url, options)
   return {
     data: data?.data,
     ...rest
@@ -107,4 +106,50 @@ export const usePlatformAccountFundSetting = (id) => {
 export const useUpdatePlatformAccountFundSetting = (id, formData) => {
   let url = id && notNil(formData) ? `${API}/platform-account-fund/${id}` : ""
   return usePatchData(url, formData)
+}
+
+const ProductFeeApi = "/api/BrandProductFee"
+export const usePlatformProductFee = (id) => {
+  let url = id ? `${ProductFeeApi}/${id}` : ""
+  return useGet(url)
+}
+
+export const useUpdatePlatformProductFee = (formData) => {
+  let url = formData ? ProductFeeApi : ""
+  return usePutData(url, formData)
+}
+
+export const useEnablePlatformSms = (brandId, bool) => {
+  let url = !brandId || isNil(bool) ? "" : `${API}/enable-sms/${brandId}`
+  return usePatchData(url, bool)
+}
+
+const SocialMediaApi = "/api/brand/social"
+export const usePlatformSocialMediaList = (brandId) => {
+  let url = brandId ? `${SocialMediaApi}/${brandId}` : ""
+  return useGet(url)
+}
+
+/*
+data = { name, type, url }
+*/
+export const useAddPlatformSocialMedia = (brandId, data) => {
+  let url = brandId && data ? `${SocialMediaApi}/${brandId}` : ""
+  return usePutData(url, data)
+}
+
+export const useDeletePlatformSocialMedia = (brandId, socialMediaId) => {
+  let url =
+    brandId && socialMediaId
+      ? `${SocialMediaApi}/${brandId}/${socialMediaId}`
+      : ""
+  return useDelete(url)
+}
+
+export const useChangePlatformSocialMediaOrder = (socialMediaId, order) => {
+  let url =
+    socialMediaId && Number.isFinite(order)
+      ? `${SocialMediaApi}/order/${socialMediaId}`
+      : ""
+  return usePatchData(url, order)
 }

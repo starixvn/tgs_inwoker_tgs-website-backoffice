@@ -36,6 +36,7 @@ import {
 } from "../../trans/Field"
 import { EndTimeTrans, StartTimeTrans } from "../../trans/Date"
 import { useAddTrans, useEditTrans, useViewTrans } from "../../trans/Action"
+import { SWRConfig } from "swr"
 
 export const AddPlatformBannerDisclosure = ({
   brandId,
@@ -77,7 +78,7 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     deleteCache()
     mutate(undefined, false)
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useAddTrans()
@@ -97,7 +98,10 @@ const AddDialog = ({ brandId, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       placement="top"
@@ -124,12 +128,14 @@ export const EditPlatformBannerDisclosure = ({
     <>
       <EditDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <EditDialog
-          brandId={brandId}
-          record={record}
-          onSubmitted={onSubmitted}
-          dialog={dialog}
-        />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <EditDialog
+            brandId={brandId}
+            record={record}
+            onSubmitted={onSubmitted}
+            dialog={dialog}
+          />
+        </SWRConfig>
       )}
     </>
   )
@@ -155,7 +161,7 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
   const reset = () => {
     mutate(undefined, false)
     deleteCache()
-    setSubmit(undefined)
+    setSubmit(null)
   }
 
   let title = useEditTrans()
@@ -182,7 +188,10 @@ const EditDialog = ({ brandId, record, onSubmitted, dialog, ...props }) => {
       result={result}
       error={error}
       onCloseErrorAlert={reset}
-      onSubmitted={onSubmitted}
+      onSubmitted={() => {
+        reset()
+        onSubmitted?.()
+      }}
       title={title}
       dialog={dialog}
       placement="top"
@@ -204,7 +213,9 @@ export const ViewPlatformBannerDisclosure = ({ brandId, record, ...props }) => {
     <>
       <ViewDisclosure {...dialog} {...props} />
       {dialog.visible && (
-        <ViewDialog brandId={brandId} record={record} dialog={dialog} />
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <ViewDialog brandId={brandId} record={record} dialog={dialog} />
+        </SWRConfig>
       )}
     </>
   )

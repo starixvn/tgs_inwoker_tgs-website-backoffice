@@ -29,16 +29,16 @@ tasks:
 kind: Module
 type: container
 name: backoffice-api
-image: pgtgs/backoffice-api:202403190628.875
+image: pgtgs/backoffice-api:202406040705.970
 services:
   - name: backoffice-api
     dependencies:
       - postgres
+      - init-seeding
       - redis
       - nats
       - operator-api
       - file-service
-      - init-seeding
       - promotion-api
       - report-api
       - payment-api
@@ -50,6 +50,7 @@ services:
       - brand-game-credit
       - notification-contact
       - agent-dividend-service
+      - sms-service
     env:
       ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
       ConnectionStrings__RedisConfigurationString: "redis,abortConnect=false,connectTimeout=3000"
@@ -74,6 +75,7 @@ services:
       BackOffice__BrandGameCreditsBaseUrl: "http://brand-game-credit"
       BackOffice__NotificationContactsBaseUrl: "http://notification-contact"
       BackOffice__AgentDividendBaseUrl: "http://agent-dividend-service"
+      BackOffice__SmsBaseUrl: "http://sms-service"
       OTEL_SERVICE_NAME: "BackOffice-Api(local)"
       # OTEL_EXPORTER_OTLP_ENDPOINT: "http://jaeger-collector.default.svc.cluster.local:4317"
       # TODO: NODE_IP required?

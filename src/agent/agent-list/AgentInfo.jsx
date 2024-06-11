@@ -3,17 +3,14 @@ import { css, Global } from "@emotion/react"
 import {
   Spinner,
   Stack,
-  Flex,
   Box,
-  Card,
+  Heading,
   Set,
-  Button,
   Text,
-  Dialog,
-  Modal,
-  Table,
-  useClassName,
-  Alert
+  Columns,
+  Alert,
+  FieldStack,
+  Flex
 } from "bumbag"
 import { FieldValues } from "../../layout/Grid"
 import {
@@ -35,19 +32,13 @@ import {
 } from "react-hook-form"
 import { Input, InputField } from "../../input/Input"
 import {
-  useAgent,
-  useUpdateAgent,
   useUpdateAgentV2,
-  useAgentUpdateFormData
+  useAgentUpdateFormData,
+  useAgentProductFee
 } from "./client"
 import { AgentStatusLabel, AgentStatusSelect } from "../AgentStatus"
 import { AgentLevelLabel, AgentLevelSelect, isAgentHead } from "../AgentLevel"
-import {
-  AgentTypeLabel,
-  AgentTypeSelect,
-  isAgentTypeCash,
-  isAgentTypeCredit
-} from "../AgentType"
+import { AgentTypeLabel, AgentTypeSelect } from "../AgentType"
 import clone from "clone-deep"
 import { AgentOneLayerDividendPercentageInputField } from "../AgentOneLayerDividendPercentage"
 import AgentLevel from "../AgentLevel"
@@ -62,7 +53,7 @@ import {
 } from "../AgentProfitSharingType"
 import Textarea from "../../textarea"
 import { ClearProfitShareDialogDisclosure } from "./ClearProfitShareDialog"
-import { isEmpty, isNil } from "lodash-es"
+import { isEmpty, isNil, isObject } from "lodash-es"
 import { either } from "ramda"
 import { diff } from "../../object/diff"
 import {
@@ -82,10 +73,20 @@ import {
 } from "../../trans/User"
 import { RemarkTrans } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
+import { LiableOrNotSwitchLabel } from "../../switch/LiableOrNotSwitch"
+import { useIsDisplayMenuByRoute } from "../../user/context"
+import { ProductFee } from "./menu"
+import LoadingBackdrop from "../../dialog/LoadingBackdrop"
+import { ProductFeeTrans } from "../../trans/Platform"
 import {
-  LiableOrNotSwitch,
-  LiableOrNotSwitchLabel
-} from "../../switch/LiableOrNotSwitch"
+  CardGameTrans,
+  EGameTrans,
+  LiveDealerTrans,
+  LotteryTrans,
+  SportsbookTrans,
+  VirtualSportsTrans
+} from "../../trans/Game"
+import { CurrentCycleTrans, NextCycleTrans } from "../../trans/Field"
 
 let isNilOrEmpty = either(isNil, isEmpty)
 
@@ -287,13 +288,6 @@ const UpdateAgentPanel = ({
                 />
               </AgentStatusBox>
 
-              {/* 
-              TODO: rm
-              <NegativeDividendBox>
-                <LiableOrNotSwitch name="negativeAgentDividendCarryForward" />
-              </NegativeDividendBox> 
-              */}
-
               {oneLayer && !willChangeParent && (
                 <>
                   <ProfitSharingPercentageTrans />
@@ -351,71 +345,131 @@ const ViewPanel = ({ agent, brand, ...props }) => {
   let agentDividendType = brand?.agentDividendType
   let oneLayer = isAgentProfitSharingOneLayer(agentDividendType)
   let multipleLayer = isAgentProfitSharingMultipleLayer(agentDividendType)
+
   return (
     <TabPanel tabId={Key} {...props}>
-      <FieldValues>
-        <UsernameBox value={agent?.username} />
+      <Columns>
+        <Columns.Column>
+          <FieldValues>
+            <UsernameBox value={agent?.username} />
 
-        <Box alignY="center">
-          <Trans zh="邀请码" en="Invitation Code" />
-        </Box>
-        <Text>{agent?.invitationCode}</Text>
-
-        <RealNameBox value={agent?.realName} />
-
-        <ParentAgentUsername value={agent?.parentUsername} />
-
-        <RegistrationBox value={agent?.registeredOn} />
-
-        <BalanceBox value={agent?.balance} />
-
-        <AgentStatusBox value={agent?.status} />
-
-        <NegativeDividendBox value={agent?.negativeAgentDividendCarryForward} />
-
-        <AgentTypeBox value={agent?.type} />
-
-        <LevelTypeBox value={agent?.levelType} />
-
-        {oneLayer && (
-          <>
             <Box alignY="center">
-              <ProfitSharingPercentageTrans />
+              <Trans zh="邀请码" en="Invitation Code" />
+            </Box>
+            <Text>{agent?.invitationCode}</Text>
+
+            <RealNameBox value={agent?.realName} />
+
+            <ParentAgentUsername value={agent?.parentUsername} />
+
+            <RegistrationBox value={agent?.registeredOn} />
+
+            <BalanceBox value={agent?.balance} />
+
+            <AgentStatusBox value={agent?.status} />
+
+            <NegativeDividendBox
+              value={agent?.negativeAgentDividendCarryForward}
+            />
+
+            <AgentTypeBox value={agent?.type} />
+
+            <LevelTypeBox value={agent?.levelType} />
+
+            {oneLayer && (
+              <>
+                <Box alignY="center">
+                  <ProfitSharingPercentageTrans />
+                </Box>
+                <Box>
+                  <FormattedNumberDecimalPercentage
+                    value={agent?.dividendPercentage}
+                  />
+                </Box>
+              </>
+            )}
+
+            {multipleLayer && (
+              <>
+                <Box alignY="center">
+                  <ProfitSharingPercentageTrans />
+                </Box>
+                <Box>
+                  <AgentProfitSharingSettingRecordDialogDisclosure
+                    record={agent?.agentDividendConditions}
+                  />
+                </Box>
+              </>
+            )}
+
+            <AccumulatedProfitSharingBox
+              value={agent?.accumulatedProfitSharing}
+            />
+
+            <Box alignY="center">
+              <DirectPlayersTrans />
             </Box>
             <Box>
-              <FormattedNumberDecimalPercentage
-                value={agent?.dividendPercentage}
-              />
+              <FormattedNumber value={agent?.playerNumber} />
             </Box>
-          </>
+
+            <RemarkTrans />
+            <Textarea value={agent?.remarks} disabled />
+          </FieldValues>
+        </Columns.Column>
+        {agent?.id && (
+          <Columns.Column>
+            <ProductFeeBox agentId={agent?.id} />
+          </Columns.Column>
         )}
-
-        {multipleLayer && (
-          <>
-            <Box alignY="center">
-              <ProfitSharingPercentageTrans />
-            </Box>
-            <Box>
-              <AgentProfitSharingSettingRecordDialogDisclosure
-                record={agent?.agentDividendConditions}
-              />
-            </Box>
-          </>
-        )}
-
-        <AccumulatedProfitSharingBox value={agent?.accumulatedProfitSharing} />
-
-        <Box alignY="center">
-          <DirectPlayersTrans />
-        </Box>
-        <Box>
-          <FormattedNumber value={agent?.playerNumber} />
-        </Box>
-
-        <RemarkTrans />
-        <Textarea value={agent?.remarks} disabled />
-      </FieldValues>
+      </Columns>
     </TabPanel>
+  )
+}
+
+const ProductFeeBox = ({ agentId }) => {
+  let { isLoading, data: productFee, error } = useAgentProductFee(agentId)
+  if (isLoading) {
+    return <Spinner />
+  }
+
+  const items = [
+    ["LiveDealer", LiveDealerTrans],
+    ["Sports", SportsbookTrans],
+    ["Slot", EGameTrans],
+    ["CardGame", CardGameTrans],
+    ["Lottery", LotteryTrans],
+    ["VirtualSports", VirtualSportsTrans]
+  ]
+
+  return (
+    <>
+      <Heading use="h5">
+        <ProductFeeTrans />
+      </Heading>
+      <FieldStack>
+        {items.map(([key, LabelTrans]) => {
+          let currentValue = isObject(productFee)
+            ? Reflect.get(productFee, `current${key}Percentage`)
+            : null
+          let nextValue = isObject(productFee)
+            ? Reflect.get(productFee, `next${key}Percentage`)
+            : null
+          return (
+            <Box key={key}>
+              <Flex orientation="horizontal">
+                <CurrentCycleTrans />-<LabelTrans />:
+                <FormattedNumberDecimalPercentage value={currentValue} />
+              </Flex>
+              <Flex orientation="horizontal">
+                <NextCycleTrans />-<LabelTrans />:
+                <FormattedNumberDecimalPercentage value={nextValue} />
+              </Flex>
+            </Box>
+          )
+        })}
+      </FieldStack>
+    </>
   )
 }
 
