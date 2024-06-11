@@ -61,7 +61,6 @@ const Body = () => {
   let brandId = usePlatformId()
 
   let { isLoading, data, error, mutate } = usePlatformAccountFund(brandId)
-  let { isLoading, data, error, mutate } = usePlatformAccountFund(brandId)
 
   let items = isObject(data) ? [data] : []
   let columns = usePlatformAccountFundColumns({
@@ -162,12 +161,6 @@ export const usePlatformAccountFundColumns = ({ brandId, items = [] }) => {
           numberDecimalColumn({
             id: "creditUsed",
             accessor: (row) => row,
-            Header: (
-              <Trans
-                zh="實際使用額度(輸贏x10%)"
-                en="Used Credit (winlose*10%)"
-              />
-            ),
             Header: (
               <Trans
                 zh="實際使用額度(輸贏x10%)"
