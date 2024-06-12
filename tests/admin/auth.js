@@ -497,6 +497,9 @@ export const Fixture = {
     })
     use(depositPayment)
   },
+  smsPlatform: ({}) => {
+    //TODO: platform for sms test
+  },
   licensee: async ({ licenseeCode, backofficeApi }, use) => {
     let licensee = await backofficeApi.licensee.findLicensee(licenseeCode)
     use(licensee)

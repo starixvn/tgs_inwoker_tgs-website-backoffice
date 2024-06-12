@@ -57,7 +57,7 @@ const deleteSocialMedia = async ({ page, platform, socialMedia }) => {
   await openDialog(
     page,
     DialogSelector,
-    `tr[data-row-id=${socialMedia.id}] button#delete-social-media-dialog-disclosure`
+    `tr[data-row-id="${socialMedia.id}"] button#delete-social-media-dialog-disclosure`
   )
 
   await Promise.all([
