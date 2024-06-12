@@ -512,6 +512,15 @@ export const Fixture = {
       }
     }
 
+    let platformSmsInfo = await backofficeApi.platform.sms.info(platform.id)
+    if (!platformSmsInfo.enableSms) {
+      await backofficeApi.platform.sms.enable(platform.id, true)
+    }
+    if (!platformSmsInfo.smsVendorCode) {
+      let first = smsList[0]
+      await backofficeApi.platform.sms.apply(platform.id, first.smsSettingId)
+    }
+
     use(platform)
   },
   autoClearWageringRequirementPlatformDepositPayment: async (
