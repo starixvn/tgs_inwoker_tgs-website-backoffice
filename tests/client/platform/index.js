@@ -11,6 +11,7 @@ import * as accountFund from "./accountFund.js"
 import * as contacts from "./contacts.js"
 import * as vip from "./vip.js"
 import * as socialMedia from "./socialMedia.js"
+import * as sms from "./sms.js"
 
 export default {
   findPlatform,
@@ -25,5 +26,6 @@ export default {
   accountFund,
   contacts,
   vip,
-  socialMedia
+  socialMedia,
+  sms
 }

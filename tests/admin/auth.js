@@ -478,6 +478,42 @@ export const Fixture = {
 
     use(platform)
   },
+  smsList: async ({ backofficeApi }, use) => {
+    let list = await backofficeApi.system.admin.sms.list()
+    if (list.length === 0) {
+      await backofficeApi.system.admin.sms.add({ name: "a" })
+      await backofficeApi.system.admin.sms.add({ name: "b" })
+      list = await backofficeApi.system.admin.sms.list()
+    }
+    use(list)
+  },
+  smsPlatform: async ({ backofficeApi, licensee, smsList }, use) => {
+    const PlatformCode = "SMS"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let platformSmsList = await backofficeApi.platform.sms.list(platform.id)
+    if (platformSmsList.length === 0) {
+      let platformSmsNames = platformSmsList.map(({ name }) => name)
+      let first = smsList[0]
+      if (!platformSmsNames.includes(first.name)) {
+        await backofficeApi.platform.sms.add(platform.id, first.smsSettingId)
+      }
+
+      let second = smsList[1]
+      if (!platformSmsNames.includes(second.name)) {
+        await backofficeApi.platform.sms.add(platform.id, second.smsSettingId)
+      }
+    }
+
+    use(platform)
+  },
   autoClearWageringRequirementPlatformDepositPayment: async (
     {
       autoClearWageringRequirementPlatform: platform,
@@ -496,9 +532,6 @@ export const Fixture = {
       }
     })
     use(depositPayment)
-  },
-  smsPlatform: ({}) => {
-    //TODO: platform for sms test
   },
   licensee: async ({ licenseeCode, backofficeApi }, use) => {
     let licensee = await backofficeApi.licensee.findLicensee(licenseeCode)
