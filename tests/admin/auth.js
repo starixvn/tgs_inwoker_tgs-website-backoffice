@@ -430,6 +430,7 @@ export const Fixture = {
         licenseeId: licensee.id,
         code: PlatformCode
       })
+
       platform = await backofficeApi.platform.findPlatform(PlatformCode)
     }
 
@@ -481,8 +482,11 @@ export const Fixture = {
   smsList: async ({ backofficeApi }, use) => {
     let list = await backofficeApi.system.admin.sms.list()
     if (list.length === 0) {
-      await backofficeApi.system.admin.sms.add({ name: "a" })
-      await backofficeApi.system.admin.sms.add({ name: "b" })
+      let name = "a"
+      await backofficeApi.system.admin.sms.add({ name, code: name })
+
+      name = "b"
+      await backofficeApi.system.admin.sms.add({ name, code: name })
       list = await backofficeApi.system.admin.sms.list()
     }
     use(list)
@@ -510,6 +514,7 @@ export const Fixture = {
       if (!platformSmsNames.includes(second.name)) {
         await backofficeApi.platform.sms.add(platform.id, second.smsSettingId)
       }
+      platformSmsList = await backofficeApi.platform.sms.list(platform.id)
     }
 
     let platformSmsInfo = await backofficeApi.platform.sms.info(platform.id)
@@ -521,7 +526,10 @@ export const Fixture = {
       await backofficeApi.platform.sms.apply(platform.id, first.smsSettingId)
     }
 
-    use(platform)
+    use({
+      ...platform,
+      smsList: platformSmsList
+    })
   },
   autoClearWageringRequirementPlatformDepositPayment: async (
     {

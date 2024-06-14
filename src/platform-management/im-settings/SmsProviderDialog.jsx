@@ -40,7 +40,12 @@ import { SWRConfig } from "swr"
 import { DisabledTrans } from "../../trans/Status"
 
 //TODO: test case
-export const SmsProviderDialogDisclosure = ({ brandId, ...props }) => {
+export const SmsProviderDialogDisclosure = ({
+  brandId,
+  id,
+  dialogId = "sms-provider-dialog",
+  ...props
+}) => {
   let dialog = useModalState()
 
   let viewAuth = useIsDisplayMenuByRoute([ViewSms])
@@ -50,14 +55,20 @@ export const SmsProviderDialogDisclosure = ({ brandId, ...props }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         <SMSProviderTrans />
       </Disclosure>
       {dialog.visible && (
         <SWRConfig value={{ provider: () => new Map() }}>
-          <FetchDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
+          <FetchDialog
+            brandId={brandId}
+            readOnly={readOnly}
+            dialog={dialog}
+            dialogId={dialogId}
+          />
         </SWRConfig>
       )}
     </>
@@ -125,6 +136,7 @@ const SettingDialog = ({
       error={error}
       onCloseErrorAlert={reset}
       dialog={dialog}
+      id={dialogId}
       title={title}
       showActionButtons={readOnly || !enableSms ? false : true}
     >
@@ -143,7 +155,11 @@ const FormBody = ({ brandId, smsVendorCode, enableSms, readOnly }) => {
   let changeSmsProvider = useChangeSMSProviderTrans()
   return (
     <FieldStack>
-      {smsVendorCode && <Box>{`${currentSmsProvider}: ${smsVendorCode}`}</Box>}
+      {smsVendorCode && (
+        <Box
+          data-sms-code={smsVendorCode}
+        >{`${currentSmsProvider}: ${smsVendorCode}`}</Box>
+      )}
       {enableSms && (
         <PlatformSmsSelect
           name="smsSettingId"

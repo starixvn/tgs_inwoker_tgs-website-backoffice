@@ -10,7 +10,7 @@ export const add = async (brandId, smsSettingId) => {
   if (!smsSettingId) {
     throw "smsSettingId required"
   }
-  let url = `${host}/${API}/${brandId}/sms`
+  let url = `${host}/${API}/sms/${brandId}`
 
   let response = await fetcher.post(url, {
     data: smsSettingId,
