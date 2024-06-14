@@ -69,10 +69,8 @@ export const addPlatform = async ({
   }
   console.log("add platform payload", data)
   let response = await fetcher.post(url, {
-    data
-    /*
+    data,
     failOnStatusCode: true
-    */
   })
 
   let result = await response.json()
