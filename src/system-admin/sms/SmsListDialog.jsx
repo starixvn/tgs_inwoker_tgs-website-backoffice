@@ -17,7 +17,10 @@ import { AddSmsDialogDisclosure, UpdateSmsDialogDisclosure } from "./SmsDialog"
 import { DeleteSmsDialogDisclosure } from "./DeleteSmsDialog"
 import { Trans, useTrans } from "../../i18n"
 
-export const SmsListDialogDisclosure = ({}) => {
+export const SmsListDialogDisclosure = ({
+  id,
+  dialogId = "sms-list-dialog"
+}) => {
   let dialog = useModalState()
 
   let hasAuth = useIsDisplayMenuByRoute([Update])
@@ -25,12 +28,13 @@ export const SmsListDialogDisclosure = ({}) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <Trans zh="新增简讯商" en="Add SMS Provider" />
       </Disclosure>
-      {dialog.visible && <ListDialog dialog={dialog} />}
+      {dialog.visible && <ListDialog dialog={dialog} dialogId={dialogId} />}
     </>
   )
 }
@@ -42,7 +46,7 @@ const SmsProvider = {
 const SmsProviderTrans = () => <Trans {...SmsProvider} />
 const useSmsProviderTrans = () => useTrans(SmsProvider)
 
-const ListDialog = ({ dialog }) => {
+const ListDialog = ({ dialog, dialogId }) => {
   let title = useSmsProviderTrans()
   let { state, setState, setPageIndex, setSortOrder } = useTable({})
   let { isLoading, data: items, error, mutate } = useSmsList()
@@ -52,7 +56,7 @@ const ListDialog = ({ dialog }) => {
     mutate
   })
   return (
-    <Modal title={title} {...dialog} placement="top">
+    <Modal title={title} {...dialog} id={dialogId} placement="top">
       <FieldStack>
         <Box alignY="bottom" alignX="right">
           <AddSmsDialogDisclosure onSubmitted={mutate} />

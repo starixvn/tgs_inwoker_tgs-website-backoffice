@@ -39,7 +39,6 @@ import { useFormContext, useWatch } from "react-hook-form"
 import { SWRConfig } from "swr"
 import { DisabledTrans } from "../../trans/Status"
 
-//TODO: test case
 export const SmsProviderDialogDisclosure = ({
   brandId,
   id,

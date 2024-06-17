@@ -491,6 +491,18 @@ export const Fixture = {
     }
     use(list)
   },
+  adminSmsPlatform: async ({ backofficeApi, licensee }, use) => {
+    const PlatformCode = "SMS_ADMIN"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+    use(platform)
+  },
   smsPlatform: async ({ backofficeApi, licensee, smsList }, use) => {
     const PlatformCode = "SMS"
     let platform = await backofficeApi.platform.findPlatform(PlatformCode)

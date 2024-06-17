@@ -30,7 +30,7 @@ export const AddSmsDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <AddTrans />
       </Disclosure>
       {dialog.visible && (
