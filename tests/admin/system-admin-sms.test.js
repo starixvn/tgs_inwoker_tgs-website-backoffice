@@ -21,6 +21,7 @@ test("system admin sms settings", async ({
 
   await addPlatformSms({ page, backofficeApi, platform, sms })
   await applyPlatformSms({ page, backofficeApi, platform, sms })
+  await deletePlatformSms({ page, backofficeApi, platform, sms })
 })
 
 const searchPlatfromSmsList = async ({ page, platform }) => {
@@ -74,7 +75,6 @@ const addPlatformSms = async ({ page, backofficeApi, platform, sms }) => {
   let DialogSelector = `#add-platform-sms-dialog`
 
   await Promise.all([
-    page.waitForResponse(urlIncludes(`api/sms`)),
     page.waitForResponse(urlIncludes(`api/brand/sms/options/${platform.id}`)),
     openDialog(page, DialogSelector)
   ])
@@ -98,5 +98,35 @@ const addPlatformSms = async ({ page, backofficeApi, platform, sms }) => {
 }
 
 const applyPlatformSms = async ({ page, backofficeApi, platform, sms }) => {
-  console.warn("TODO: system admin sms > apply platform sms")
+  let DialogSelector = `#platform-sms-dialog`
+  await openDialog(page, DialogSelector)
+
+  await page
+    .locator(`${DialogSelector} input[name="enableSms"] + .bb-SwitchIcon`)
+    .click()
+
+  await selectByValue(
+    page,
+    `${DialogSelector} select[name="smsSettingId"]`,
+    sms.smsSettingId
+  )
+
+  let [statusResponse, applyResponse] = await Promise.all([
+    page.waitForResponse(urlIncludes(`api/brand/enable-sms/${platform.id}`)),
+    page.waitForResponse(urlIncludes(`api/brand/sms/apply/${platform.id}`)),
+    page.locator(`${DialogSelector} button[type="submit"]`).click()
+  ])
+
+  expect(statusResponse.ok()).to.be.true
+  expect(applyResponse.ok()).to.be.true
+}
+
+const deletePlatformSms = async ({ page, backofficeApi, platform, sms }) => {
+  let DialogSelector = `#delete-platform-sms-dialog`
+
+  console.warn("TODO: delete platform Sms")
+}
+
+const deleteSms = async ({ page, backofficeApi, sms }) => {
+  console.warn("TODO: delete Sms")
 }

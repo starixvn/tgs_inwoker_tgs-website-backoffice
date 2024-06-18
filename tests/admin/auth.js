@@ -501,6 +501,7 @@ export const Fixture = {
       })
       platform = await backofficeApi.platform.findPlatform(PlatformCode)
     }
+    await backofficeApi.platform.sms.enable(platform.id, false)
     use(platform)
   },
   smsPlatform: async ({ backofficeApi, licensee, smsList }, use) => {

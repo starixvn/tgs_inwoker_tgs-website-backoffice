@@ -17,7 +17,7 @@ export const DeletePlatformSmsDialogDisclosure = ({
   smsSettingId,
   onSubmitted,
   id,
-  dialogId = "delete-sms-dialog"
+  dialogId = "delete-platform-sms-dialog"
 }) => {
   let dialog = useModalState()
 
