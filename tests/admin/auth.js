@@ -481,14 +481,26 @@ export const Fixture = {
   },
   smsList: async ({ backofficeApi }, use) => {
     let list = await backofficeApi.system.admin.sms.list()
-    if (list.length === 0) {
-      let name = "a"
-      await backofficeApi.system.admin.sms.add({ name, code: name })
 
-      name = "b"
+    let sync
+    let name = "a"
+    let sms = list.find((item) => item.name === name)
+    if (!sms) {
       await backofficeApi.system.admin.sms.add({ name, code: name })
+      sync = true
+    }
+
+    name = "b"
+    sms = list.find((item) => item.name === name)
+    if (!sms) {
+      await backofficeApi.system.admin.sms.add({ name, code: name })
+      sync = true
+    }
+
+    if (sync) {
       list = await backofficeApi.system.admin.sms.list()
     }
+
     use(list)
   },
   adminSmsPlatform: async ({ backofficeApi, licensee }, use) => {

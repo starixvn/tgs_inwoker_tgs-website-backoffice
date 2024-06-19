@@ -70,6 +70,7 @@ const ListDialog = ({ dialog, dialogId }) => {
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
           isLoading={isLoading}
+          getRowId={(row, index) => row.smsSettingId ?? index}
         />
       </FieldStack>
       {error && <AlertDialog {...error} onClickClose={dialog.hide} />}

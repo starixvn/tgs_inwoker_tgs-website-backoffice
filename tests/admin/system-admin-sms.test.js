@@ -152,6 +152,13 @@ const deletePlatformSms = async ({ page, backofficeApi, platform, sms }) => {
   expect(deletedPlatformSms).to.be.undefined
 }
 
+const updateSms = async ({ page, backofficeApi, platform, sms }) => {
+  console.log("TODO: edit > update > sms")
+}
+
 const deleteSms = async ({ page, backofficeApi, sms }) => {
+  let SmsListDialogSelector = `#sms-list-dialog`
+  await openDialog(page, SmsListDialogSelector)
+
   console.warn("TODO: delete Sms")
 }

@@ -106,7 +106,7 @@ export const UpdateSmsDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure id={id} {...dialog} />
       {dialog.visible && (
         <UpdateSmsDialog
           smsSettingId={smsSettingId}

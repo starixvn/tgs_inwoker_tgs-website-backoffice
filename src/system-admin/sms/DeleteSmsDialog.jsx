@@ -28,7 +28,7 @@ export const DeleteSmsDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <DeleteDisclosure {...dialog} />
+      <DeleteDisclosure id={id} {...dialog} />
       {dialog.visible && (
         <SWRConfig value={{ provider: () => new Map() }}>
           <DeleteSmsDialog
