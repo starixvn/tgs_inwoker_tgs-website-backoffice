@@ -22,6 +22,7 @@ test("system admin sms settings", async ({
   await addPlatformSms({ page, backofficeApi, platform, sms })
   await applyPlatformSms({ page, backofficeApi, platform, sms })
   await deletePlatformSms({ page, backofficeApi, platform, sms })
+  await deleteSms({ page, backofficeApi, sms })
 })
 
 const searchPlatfromSmsList = async ({ page, platform }) => {
@@ -58,9 +59,17 @@ const addSms = async ({ page, backofficeApi }) => {
   await page.keyboard.press("Backspace")
   await page.keyboard.type(setting)
 
+  const halfSecond = 500
+  await page.waitForTimeout(halfSecond)
+
+  let submitButton = page.locator(
+    `${AddSmsDialogSelector} button[type="submit"]`
+  )
+  await submitButton.focus()
+
   await Promise.all([
     page.waitForResponse(urlIncludes(`api/sms`)),
-    page.locator(`${AddSmsDialogSelector} button[type="submit"]`).click()
+    submitButton.click()
   ])
 
   let smsList = await backofficeApi.system.admin.sms.list()
@@ -97,7 +106,7 @@ const addPlatformSms = async ({ page, backofficeApi, platform, sms }) => {
   expect(platformSms).not.empty
 }
 
-const applyPlatformSms = async ({ page, backofficeApi, platform, sms }) => {
+const applyPlatformSms = async ({ page, platform, sms }) => {
   let DialogSelector = `#platform-sms-dialog`
   await openDialog(page, DialogSelector)
 
@@ -123,8 +132,24 @@ const applyPlatformSms = async ({ page, backofficeApi, platform, sms }) => {
 
 const deletePlatformSms = async ({ page, backofficeApi, platform, sms }) => {
   let DialogSelector = `#delete-platform-sms-dialog`
+  await openDialog(
+    page,
+    DialogSelector,
+    `[data-row-id="${sms.smsSettingId}"] ${DialogSelector}-disclosure`
+  )
 
-  console.warn("TODO: delete platform Sms")
+  await Promise.all([
+    page.waitForResponse(
+      urlIncludes(`api/brand/sms/${platform.id}/${sms.smsSettingId}`)
+    ),
+    page.locator(`${DialogSelector} button[type="submit"]`).click()
+  ])
+
+  let platfromSmsList = await backofficeApi.platform.sms.list(platform.id)
+  let deletedPlatformSms = platfromSmsList.find(
+    (item) => item.smsSettingId === sms.smsSettingId
+  )
+  expect(deletedPlatformSms).to.be.undefined
 }
 
 const deleteSms = async ({ page, backofficeApi, sms }) => {
