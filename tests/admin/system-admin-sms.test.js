@@ -22,6 +22,8 @@ test("system admin sms settings", async ({
   await addPlatformSms({ page, backofficeApi, platform, sms })
   await applyPlatformSms({ page, backofficeApi, platform, sms })
   await deletePlatformSms({ page, backofficeApi, platform, sms })
+
+  sms = await updateSms({ page, backofficeApi, sms })
   await deleteSms({ page, backofficeApi, sms })
 })
 
@@ -153,12 +155,66 @@ const deletePlatformSms = async ({ page, backofficeApi, platform, sms }) => {
 }
 
 const updateSms = async ({ page, backofficeApi, platform, sms }) => {
-  console.log("TODO: edit > update > sms")
+  let SmsListDialogSelector = `#sms-list-dialog`
+  await openDialog(page, SmsListDialogSelector)
+
+  let DialogSelector = `#update-sms-dialog`
+  await openDialog(
+    page,
+    DialogSelector,
+    `[data-row-id="${sms.smsSettingId}"] ${DialogSelector}-disclosure`
+  )
+
+  let setting = JSON.stringify({
+    a: faker.lorem.word()
+  })
+
+  let settingJson = JSON.stringify(setting)
+
+  await page.click(`${DialogSelector} .monaco-editor .monaco-mouse-cursor-text`)
+  await page.keyboard.press("Control+A")
+  await page.keyboard.press("Backspace")
+  await page.keyboard.type(settingJson)
+
+  const halfSecond = 500
+  await page.waitForTimeout(halfSecond)
+
+  let submitButton = page.locator(`${DialogSelector} button[type="submit"]`)
+  await submitButton.focus()
+
+  let [response] = await Promise.all([
+    page.waitForResponse(urlIncludes(`api/sms/${sms.smsSettingId}`)),
+    submitButton.click()
+  ])
+
+  expect(response.ok()).to.be.true
+  await page.locator(`${SmsListDialogSelector} .bb-DialogClose`).click()
+
+  let updatedSms = await backofficeApi.system.admin.sms.find(sms.smsSettingId)
+  expect(updatedSms.setting).equals(setting)
+
+  return updatedSms
 }
 
 const deleteSms = async ({ page, backofficeApi, sms }) => {
   let SmsListDialogSelector = `#sms-list-dialog`
   await openDialog(page, SmsListDialogSelector)
 
-  console.warn("TODO: delete Sms")
+  let DelteDialogSelector = `#delete-sms-dialog`
+  await openDialog(
+    page,
+    DelteDialogSelector,
+    `[data-row-id="${sms.smsSettingId}"] ${DelteDialogSelector}-disclosure`
+  )
+
+  await Promise.all([
+    page.waitForResponse(urlIncludes(`api/sms/${sms.smsSettingId}`)),
+    page.locator(`${DelteDialogSelector} button[type="submit"]`).click()
+  ])
+
+  let smsList = await backofficeApi.system.admin.sms.list()
+  let deletedSms = smsList.find(
+    (item) => item.smsSettingId === sms.smsSettingId
+  )
+  expect(deletedSms).to.be.undefined
 }

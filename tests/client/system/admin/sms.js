@@ -30,3 +30,9 @@ export const list = async () => {
   let result = await response.json()
   return result
 }
+
+export const find = async (smsSettingId) => {
+  let items = await list()
+  let item = items.find((item) => item.smsSettingId === smsSettingId)
+  return item
+}
