@@ -588,6 +588,20 @@ export const Fixture = {
 
     let agent = await backofficeApi.agent.addAgent({ brandId })
     use(agent)
+  },
+  systemAdminSetting: async ({ backofficeApi }, use) => {
+    const key = "__SettingTest__"
+    let setting = await backofficeApi.system.admin.setting.get(key)
+    if (!setting) {
+      await backofficeApi.system.admin.setting.add({
+        key
+      })
+      setting = await backofficeApi.system.admin.setting.get(key)
+    }
+    use({
+      key,
+      value: setting
+    })
   }
 }
 

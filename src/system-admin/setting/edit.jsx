@@ -121,7 +121,12 @@ const AddDialog = ({ dialog, onSubmitted }) => {
   )
 }
 
-export const EditSettingDisclosure = ({ record, onSubmitted }) => {
+export const EditSettingDisclosure = ({
+  record,
+  onSubmitted,
+  id,
+  dialogId = "edit-setting-dialog"
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -129,17 +134,23 @@ export const EditSettingDisclosure = ({ record, onSubmitted }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure id={id} {...dialog} />
       {dialog.visible && (
-        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+        <EditDialog
+          record={record}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
       )}
     </>
   )
 }
 
-const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
+const EditDialog = ({ record, onSubmitted, dialog, dialogId, ...props }) => {
   let { key, value, description } = record
 
   let title = useTrans({
@@ -183,6 +194,7 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
       }}
       title={title}
       dialog={dialog}
+      id={dialogId}
       showActionButtons
       maxWidth="90vw"
       width="90vw"
@@ -213,7 +225,11 @@ const EditDialog = ({ record, onSubmitted, dialog, ...props }) => {
   )
 }
 
-export const ViewSettingDisclosure = ({ record }) => {
+export const ViewSettingDisclosure = ({
+  record,
+  id,
+  dialogId = "view-setting-dialog"
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute()
@@ -221,15 +237,18 @@ export const ViewSettingDisclosure = ({ record }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <ViewDisclosure {...dialog} />
-      {dialog.visible && <ViewDialog record={record} dialog={dialog} />}
+      <ViewDisclosure id={id} {...dialog} />
+      {dialog.visible && (
+        <ViewDialog record={record} dialog={dialog} dialogId={dialogId} />
+      )}
     </>
   )
 }
 
-const ViewDialog = ({ record, dialog }) => {
+const ViewDialog = ({ record, dialog, dialogId }) => {
   let { key, value, description } = record
   let title = useTrans({
     zh: "查看设定",
@@ -243,6 +262,7 @@ const ViewDialog = ({ record, dialog }) => {
       showCloseButton
       showActionButtons={false}
       {...dialog}
+      id={dialogId}
       maxWidth="90vw"
       width="90vw"
       height="90vh"
