@@ -1,7 +1,7 @@
 import { isDev } from "../env"
 import {
   ConsoleSpanExporter,
-  SimpleSpanProcessor,
+  BatchSpanProcessor,
   WebTracerProvider
 } from "@opentelemetry/sdk-trace-web"
 import { FetchInstrumentation } from "@opentelemetry/instrumentation-fetch"
@@ -11,7 +11,7 @@ import { registerInstrumentations } from "@opentelemetry/instrumentation"
 if (isDev()) {
   const provider = new WebTracerProvider()
 
-  provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()))
+  provider.addSpanProcessor(new BatchSpanProcessor(new ConsoleSpanExporter()))
 
   provider.register({
     contextManager: new ZoneContextManager()

@@ -17,7 +17,8 @@ test("system admin setting view & update", async ({
 
   await search({ page, setting })
 
-  console.warn("TODO: system admin setting")
+  setting = await edit({ page, backofficeApi, setting })
+  await view({ page, backofficeApi, setting })
 })
 
 const search = async ({ page, setting }) => {
@@ -29,6 +30,13 @@ const search = async ({ page, setting }) => {
   ])
 }
 
-const edit = async ({ page, setting }) => {}
+const edit = async ({ page, backofficeApi, setting }) => {
+  console.warn("TODO: edit system admin setting")
 
-const view = async ({ page, setting }) => {}
+  //TODO: return updated setting
+  return setting
+}
+
+const view = async ({ page, setting }) => {
+  console.warn("TODO: view system admin setting")
+}
