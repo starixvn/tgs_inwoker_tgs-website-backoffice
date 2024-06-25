@@ -8,7 +8,7 @@ import { selectByValue } from "../page/select.js"
 
 const test = base.extend(Fixture)
 
-test("system admin setting view & update", async ({
+test("system admin setting", async ({
   page,
   backofficeApi,
   systemAdminSetting: setting
@@ -17,8 +17,9 @@ test("system admin setting view & update", async ({
 
   await search({ page, setting })
 
-  setting = await edit({ page, backofficeApi, setting })
-  await view({ page, backofficeApi, setting })
+  setting = await edit({ page, backofficeApi, key: setting.key })
+
+  await view({ page })
 })
 
 const search = async ({ page, setting }) => {
@@ -30,13 +31,44 @@ const search = async ({ page, setting }) => {
   ])
 }
 
-const edit = async ({ page, backofficeApi, setting }) => {
-  console.warn("TODO: edit system admin setting")
+const edit = async ({ page, backofficeApi, key }) => {
+  let DialogSelector = `#edit-setting-dialog`
+  await openDialog(page, DialogSelector)
 
-  //TODO: return updated setting
-  return setting
+  let value = {
+    a: faker.lorem.word()
+  }
+  let jsonString = JSON.stringify(value)
+  await page.click(`${DialogSelector} .monaco-editor .monaco-mouse-cursor-text`)
+  await page.keyboard.press("Control+A")
+  await page.keyboard.press("Backspace")
+  await page.keyboard.type(jsonString)
+
+  /*
+  const halfSecond = 500
+  await page.waitForTimeout(halfSecond)
+  */
+
+  let submitButton = page.locator(`${DialogSelector} button[type="submit"]`)
+  await submitButton.focus()
+
+  await Promise.all([
+    page.waitForResponse(urlIncludes(`api/setting/`)),
+    submitButton.click()
+  ])
+
+  let updated = await backofficeApi.system.admin.setting.get(key)
+  expect(updated).to.deep.equal(value)
+
+  return {
+    key,
+    value
+  }
 }
 
-const view = async ({ page, setting }) => {
-  console.warn("TODO: view system admin setting")
+const view = async ({ page }) => {
+  let DialogSelector = `#view-setting-dialog`
+  await openDialog(page, DialogSelector)
+
+  await page.locator(`${DialogSelector} .bb-DialogClose`)
 }

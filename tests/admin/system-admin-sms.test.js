@@ -61,8 +61,10 @@ const addSms = async ({ page, backofficeApi }) => {
   await page.keyboard.press("Backspace")
   await page.keyboard.type(setting)
 
+  /*
   const halfSecond = 500
   await page.waitForTimeout(halfSecond)
+  */
 
   let submitButton = page.locator(
     `${AddSmsDialogSelector} button[type="submit"]`
