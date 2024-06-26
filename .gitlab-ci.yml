@@ -32,6 +32,7 @@ deploy-dev:
   stage: deploy
   script:
     - export KUBECONFIG="$KubeConfig_Raypro_dev"
+    - echo "KUBECONFIG=$KUBECONFIG"
     - TAG=$(cat tag.txt)
     - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n dev
   dependencies:
