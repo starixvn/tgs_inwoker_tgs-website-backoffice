@@ -77,9 +77,23 @@ const BonusAdjustTrans = {
   en: "Bonus Adjust"
 }
 
+const CompanyAdjust = "companyAdjust"
+const CompanyAdjustTrans = {
+  zh: "公司调帐",
+  en: "Company Adjust"
+}
+
+const AgentAdjust = "agentAdjust"
+const AgentAdjustTrans = {
+  zh: "代理调帐",
+  en: "Agent Adjust"
+}
+
 const Type = {
   Bonus,
-  BonusAdjust
+  BonusAdjust,
+  CompanyAdjust,
+  AgentAdjust
 }
 
 const TypeLabel = ({ value = "" }) => {
@@ -88,6 +102,10 @@ const TypeLabel = ({ value = "" }) => {
       return <Trans {...BonusTrans} />
     case BonusAdjust:
       return <Trans {...BonusAdjustTrans} />
+    case CompanyAdjust:
+      return <Trans {...CompanyAdjustTrans} />
+    case AgentAdjust:
+      return <Trans {...AgentAdjustTrans} />
     default:
       return value
   }

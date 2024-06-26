@@ -430,6 +430,7 @@ export const Fixture = {
         licenseeId: licensee.id,
         code: PlatformCode
       })
+
       platform = await backofficeApi.platform.findPlatform(PlatformCode)
     }
 
@@ -478,6 +479,83 @@ export const Fixture = {
 
     use(platform)
   },
+  smsList: async ({ backofficeApi }, use) => {
+    let list = await backofficeApi.system.admin.sms.list()
+
+    let sync
+    let name = "a"
+    let sms = list.find((item) => item.name === name)
+    if (!sms) {
+      await backofficeApi.system.admin.sms.add({ name, code: name })
+      sync = true
+    }
+
+    name = "b"
+    sms = list.find((item) => item.name === name)
+    if (!sms) {
+      await backofficeApi.system.admin.sms.add({ name, code: name })
+      sync = true
+    }
+
+    if (sync) {
+      list = await backofficeApi.system.admin.sms.list()
+    }
+
+    use(list)
+  },
+  adminSmsPlatform: async ({ backofficeApi, licensee }, use) => {
+    const PlatformCode = "SMS_ADMIN"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+    await backofficeApi.platform.sms.enable(platform.id, false)
+    use(platform)
+  },
+  smsPlatform: async ({ backofficeApi, licensee, smsList }, use) => {
+    const PlatformCode = "SMS"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let platformSmsList = await backofficeApi.platform.sms.list(platform.id)
+    if (platformSmsList.length === 0) {
+      let platformSmsNames = platformSmsList.map(({ name }) => name)
+      let first = smsList[0]
+      if (!platformSmsNames.includes(first.name)) {
+        await backofficeApi.platform.sms.add(platform.id, first.smsSettingId)
+      }
+
+      let second = smsList[1]
+      if (!platformSmsNames.includes(second.name)) {
+        await backofficeApi.platform.sms.add(platform.id, second.smsSettingId)
+      }
+      platformSmsList = await backofficeApi.platform.sms.list(platform.id)
+    }
+
+    let platformSmsInfo = await backofficeApi.platform.sms.info(platform.id)
+    if (!platformSmsInfo.enableSms) {
+      await backofficeApi.platform.sms.enable(platform.id, true)
+    }
+    if (!platformSmsInfo.smsVendorCode) {
+      let first = smsList[0]
+      await backofficeApi.platform.sms.apply(platform.id, first.smsSettingId)
+    }
+
+    use({
+      ...platform,
+      smsList: platformSmsList
+    })
+  },
   autoClearWageringRequirementPlatformDepositPayment: async (
     {
       autoClearWageringRequirementPlatform: platform,
@@ -510,6 +588,20 @@ export const Fixture = {
 
     let agent = await backofficeApi.agent.addAgent({ brandId })
     use(agent)
+  },
+  systemAdminSetting: async ({ backofficeApi }, use) => {
+    const key = "__SettingTest__"
+    let setting = await backofficeApi.system.admin.setting.get(key)
+    if (!setting) {
+      await backofficeApi.system.admin.setting.add({
+        key
+      })
+      setting = await backofficeApi.system.admin.setting.get(key)
+    }
+    use({
+      key,
+      value: setting
+    })
   }
 }
 

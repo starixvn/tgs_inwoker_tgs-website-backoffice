@@ -22,7 +22,12 @@ import { InputField, Input } from "../../input/Input"
 import clone from "clone-deep"
 import { useAddLanguage, useUpdateLanguage } from "../../language/client"
 
-export const EditLangDisclosure = ({ record, onSubmitted }) => {
+export const EditLangDisclosure = ({
+  record,
+  onSubmitted,
+  id,
+  dialogId = "edit-lang-dialog"
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -30,17 +35,29 @@ export const EditLangDisclosure = ({ record, onSubmitted }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure id={id} {...dialog} />
       {dialog.visible && (
-        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+        <EditDialog
+          record={record}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
       )}
     </>
   )
 }
 
-const EditDialog = ({ record = {}, onSubmitted, dialog, ...props }) => {
+const EditDialog = ({
+  record = {},
+  onSubmitted,
+  dialog,
+  dialogId,
+  ...props
+}) => {
   let [formData, setSubmit] = useState()
 
   let { result, isLoading, error, mutate, deleteCache } = useUpdateLanguage(
@@ -78,6 +95,7 @@ const EditDialog = ({ record = {}, onSubmitted, dialog, ...props }) => {
       }}
       title={title}
       dialog={dialog}
+      id={dialogId}
     >
       <FormBody />
     </FormDialog>

@@ -58,7 +58,7 @@ const Body = () => {
       actionBar={
         <Level>
           <SearchBar
-            key={state?.key}
+            _key={state?.key}
             search={(data) => {
               setState({
                 pageIndex: 0,
@@ -90,7 +90,7 @@ const Body = () => {
   )
 }
 
-const SearchBar = ({ key = "", search, isLoading }) => {
+const SearchBar = ({ _key: key = "", search, isLoading }) => {
   let formMethods = useForm({
     defaultValues: { key }
   })

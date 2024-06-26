@@ -47,10 +47,9 @@ export const AddPlatformSmsDialog = ({
   }
 
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
-
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <SetupSMSProviderWithPlatformTrans />
       </Disclosure>
       {dialog.visible && (

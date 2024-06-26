@@ -17,7 +17,7 @@ export const DeletePlatformSmsDialogDisclosure = ({
   smsSettingId,
   onSubmitted,
   id,
-  dialogId = "delete-sms-dialog"
+  dialogId = "delete-platform-sms-dialog"
 }) => {
   let dialog = useModalState()
 
@@ -29,7 +29,7 @@ export const DeletePlatformSmsDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <DeleteDisclosure {...dialog} />
+      <DeleteDisclosure id={id} {...dialog} />
       {dialog.visible && (
         <SWRConfig value={{ provider: () => new Map() }}>
           <DeleteDialog

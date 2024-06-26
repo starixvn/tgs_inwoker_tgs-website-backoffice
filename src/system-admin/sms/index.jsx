@@ -84,6 +84,7 @@ const Body = () => {
         setPageIndex={setPageIndex}
         setSortOrder={setSortOrder}
         isLoading={isLoading}
+        getRowId={(row, index) => row.smsSettingId ?? index}
       />
       {error && (
         <AlertDialog {...error} onClickClose={() => mutate([], false)} />
