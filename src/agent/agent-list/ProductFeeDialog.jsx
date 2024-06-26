@@ -44,7 +44,7 @@ export const ProductFeeDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <DefaultProductFeeTrans />
       </Disclosure>
       {dialog.visible && (
@@ -56,7 +56,7 @@ export const ProductFeeDialogDisclosure = ({
   )
 }
 
-const FetchDialog = ({ brandId, dialog }) => {
+const FetchDialog = ({ brandId, dialog, dialogId }) => {
   let { isLoading, data, error } = usePlatformProductFee(brandId)
 
   if (isLoading) {
@@ -67,7 +67,14 @@ const FetchDialog = ({ brandId, dialog }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  return <EditDialog brandId={brandId} record={data} dialog={dialog} />
+  return (
+    <EditDialog
+      brandId={brandId}
+      record={data}
+      dialog={dialog}
+      dialogId={dialogId}
+    />
+  )
 }
 
 const EditDialog = ({ brandId, record, dialog, dialogId }) => {
