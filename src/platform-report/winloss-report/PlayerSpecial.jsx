@@ -67,7 +67,7 @@ export const PlayerSpecialDialogDisclosure = ({
 
 const Bonus = "bonus"
 const BonusTrans = {
-  zh: "优惠",
+  zh: "红利",
   en: "Bonus"
 }
 

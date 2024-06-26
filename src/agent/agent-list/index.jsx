@@ -62,6 +62,7 @@ import {
   AgentLevelTrans,
   AgentListRemarkInfoTrans,
   AgentListStatusInfoTrans,
+  AgentTeamInfoTrans,
   AgentTypeTrans,
   AgentsTrans,
   DirectPlayersTrans,
@@ -203,6 +204,9 @@ const BodyContent = ({ brandId = "", brand }) => {
             </List.Item>
             <List.Item>
               <AgentListRemarkInfoTrans />
+            </List.Item>
+            <List.Item>
+              <AgentTeamInfoTrans />
             </List.Item>
           </List>
         </Alert>
