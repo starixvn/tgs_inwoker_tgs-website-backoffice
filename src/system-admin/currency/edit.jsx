@@ -22,7 +22,12 @@ import { InputField, Input } from "../../input/Input"
 import clone from "clone-deep"
 import { useAddCurrency, useUpdateCurrency } from "../../currency/client"
 
-export const EditCurrencyDisclosure = ({ record, onSubmitted }) => {
+export const EditCurrencyDisclosure = ({
+  record,
+  onSubmitted,
+  id,
+  dialogId = "edit-currency-dialog"
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([UpdateMenu])
@@ -30,17 +35,29 @@ export const EditCurrencyDisclosure = ({ record, onSubmitted }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <EditDisclosure {...dialog} />
+      <EditDisclosure id={id} {...dialog} />
       {dialog.visible && (
-        <EditDialog record={record} onSubmitted={onSubmitted} dialog={dialog} />
+        <EditDialog
+          record={record}
+          onSubmitted={onSubmitted}
+          dialog={dialog}
+          dialogId={dialogId}
+        />
       )}
     </>
   )
 }
 
-const EditDialog = ({ record = {}, onSubmitted, dialog, ...props }) => {
+const EditDialog = ({
+  record = {},
+  onSubmitted,
+  dialog,
+  dialogId,
+  ...props
+}) => {
   let [formData, setSubmit] = useState()
 
   let { result, isLoading, error, mutate, deleteCache } = useUpdateCurrency(
@@ -75,6 +92,7 @@ const EditDialog = ({ record = {}, onSubmitted, dialog, ...props }) => {
       onSubmitted={onSubmitted}
       title={title}
       dialog={dialog}
+      id={dialogId}
     >
       <FormBody />
     </FormDialog>
