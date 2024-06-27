@@ -39,7 +39,6 @@ import {
 import { useAgentList, useAgent } from "./agent-list/client"
 import { AlertDialog } from "../dialog/Alert"
 import LoadingBackdrop from "../dialog/LoadingBackdrop"
-import { Name } from "./AgentEgameRebatePercentage"
 import { NetProfitTrans } from "../trans/Field"
 import { ProfitSharingPercentageTrans } from "../trans/Agent"
 import { SWRConfig } from "swr"

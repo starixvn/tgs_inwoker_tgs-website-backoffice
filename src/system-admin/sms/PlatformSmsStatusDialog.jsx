@@ -30,7 +30,11 @@ import {
 } from "../../trans/Sms"
 import { SWRConfig } from "swr"
 
-export const PlatformSmsStatusDialogDisclosure = ({ brandId }) => {
+export const PlatformSmsStatusDialogDisclosure = ({
+  brandId,
+  id,
+  dialogId = "platform-sms-dialog"
+}) => {
   let dialog = useModalState()
 
   let hasAuth = useIsDisplayMenuByRoute([Update])
@@ -38,14 +42,15 @@ export const PlatformSmsStatusDialogDisclosure = ({ brandId }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <Trans en="Platform SMS Status" zh="平台简讯状态" />
       </Disclosure>
       {dialog.visible && (
         <SWRConfig value={{ provider: () => new Map() }}>
-          <FetchDialog brandId={brandId} dialog={dialog} />
+          <FetchDialog brandId={brandId} dialog={dialog} dialogId={dialogId} />
         </SWRConfig>
       )}
     </>
@@ -59,7 +64,7 @@ const PlatformSmsStatus = {
 export const PlatformSmsStatusTrans = () => <Trans {...PlatformSmsStatus} />
 export const usePlatformSmsStatusTrans = () => useTrans(PlatformSmsStatus)
 
-const FetchDialog = ({ brandId, dialog }) => {
+const FetchDialog = ({ brandId, dialog, ...props }) => {
   let { isLoading, data: brand, error } = usePlatformSms(brandId)
 
   if (isLoading) {
@@ -79,6 +84,7 @@ const FetchDialog = ({ brandId, dialog }) => {
       }}
       smsVendorCode={brand?.smsVendorCode}
       dialog={dialog}
+      {...props}
     />
   )
 }
@@ -87,7 +93,8 @@ const StatusFormDialog = ({
   brandId,
   defaultValues,
   smsVendorCode,
-  dialog
+  dialog,
+  dialogId
 }) => {
   let title = usePlatformSmsStatusTrans()
   let [enableSms, setEnableSms] = useState()
@@ -118,6 +125,7 @@ const StatusFormDialog = ({
       error={error}
       onCloseErrorAlert={reset}
       dialog={dialog}
+      id={dialogId}
       title={title}
     >
       <FormBody brandId={brandId} smsVendorCode={smsVendorCode} />

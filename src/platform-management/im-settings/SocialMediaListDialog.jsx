@@ -59,7 +59,12 @@ import { isDev } from "../../env"
 import { SWRConfig } from "swr"
 
 //TODO: test case
-export const SocialMediaListDialogDisclosure = ({ brandId, ...props }) => {
+export const SocialMediaListDialogDisclosure = ({
+  brandId,
+  id,
+  dialogId = "social-media-list-dialog",
+  ...props
+}) => {
   let dialog = useModalState()
 
   let viewAuth = useIsDisplayMenuByRoute([View])
@@ -69,21 +74,27 @@ export const SocialMediaListDialogDisclosure = ({ brandId, ...props }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog} {...props}>
+      <Disclosure id={id} {...dialog} {...props}>
         <SocialMediaTrans />
       </Disclosure>
       {dialog.visible && (
         <SWRConfig value={{ provider: () => new Map() }}>
-          <ListDialog brandId={brandId} readOnly={readOnly} dialog={dialog} />
+          <ListDialog
+            brandId={brandId}
+            readOnly={readOnly}
+            dialog={dialog}
+            dialogId={dialogId}
+          />
         </SWRConfig>
       )}
     </>
   )
 }
 
-const ListDialog = ({ brandId, dialog, ...props }) => {
+const ListDialog = ({ brandId, dialog, dialogId, ...props }) => {
   let title = useSocialMediaTrans()
   let { state, setPageIndex, setSortOrder } = useTable()
   let {
@@ -110,6 +121,7 @@ const ListDialog = ({ brandId, dialog, ...props }) => {
     <Modal
       title={title}
       {...dialog}
+      id={dialogId}
       css={css`
         min-width: 50vw;
       `}
@@ -128,6 +140,7 @@ const ListDialog = ({ brandId, dialog, ...props }) => {
           setPageIndex={setPageIndex}
           setSortOrder={setSortOrder}
           isLoading={isLoading}
+          getRowId={(row, index) => row.id ?? index}
         />
       </FieldStack>
     </Modal>
@@ -254,7 +267,12 @@ const SocialMediaSelectField = ({ placeholder, ...props }) => {
   return <SelectField placeholder={placeholder} options={options} {...props} />
 }
 
-const AddDialogDisclosure = ({ brandId, onSubmitted }) => {
+const AddDialogDisclosure = ({
+  brandId,
+  id,
+  dialogId = "add-social-media-dialog",
+  onSubmitted
+}) => {
   let dialog = useModalState()
 
   let isDisplay = useIsDisplayMenuByRoute([Update])
@@ -262,13 +280,15 @@ const AddDialogDisclosure = ({ brandId, onSubmitted }) => {
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <AddDisclosure {...dialog} />
+      <AddDisclosure id={id} {...dialog} />
       {dialog.visible && (
         <AddDialog
           brandId={brandId}
           dialog={dialog}
+          dialogId={dialogId}
           onSubmitted={onSubmitted}
         />
       )}
@@ -276,7 +296,7 @@ const AddDialogDisclosure = ({ brandId, onSubmitted }) => {
   )
 }
 
-const AddDialog = ({ brandId, dialog, onSubmitted }) => {
+const AddDialog = ({ brandId, dialog, dialogId, onSubmitted }) => {
   let title = useAddTrans()
   let [formData, setSubmit] = useState()
   let { isLoading, result, error, mutate } = useAddPlatformSocialMedia(
@@ -307,6 +327,7 @@ const AddDialog = ({ brandId, dialog, onSubmitted }) => {
         error={error}
         onCloseErrorAlert={reset}
         dialog={dialog}
+        id={dialogId}
         hideBackdrop
         title={title}
       >
@@ -350,6 +371,8 @@ const DeleteDialogDisclosure = ({
   name,
   brandId,
   socialMediaId,
+  id,
+  dialogId = "delete-social-media-dialog",
   onSubmitted
 }) => {
   let dialog = useModalState()
@@ -359,15 +382,17 @@ const DeleteDialogDisclosure = ({
     return null
   }
 
+  id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <DeleteDisclosure {...dialog} />
+      <DeleteDisclosure id={id} {...dialog} />
       {dialog.visible && (
         <DeleteDialog
           name={name}
           brandId={brandId}
           socialMediaId={socialMediaId}
           dialog={dialog}
+          dialogId={dialogId}
           onSubmitted={onSubmitted}
         />
       )}
@@ -380,6 +405,7 @@ const DeleteDialog = ({
   brandId,
   socialMediaId,
   dialog,
+  dialogId,
   onSubmitted
 }) => {
   let title = useDeleteTrans()
@@ -413,6 +439,7 @@ const DeleteDialog = ({
         submitText={<DeleteTrans />}
         title={title}
         dialog={dialog}
+        id={dialogId}
         hideBackdrop
         actionButtonsProps={{
           submitProps: {

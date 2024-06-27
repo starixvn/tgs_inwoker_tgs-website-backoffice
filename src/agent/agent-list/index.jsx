@@ -62,6 +62,7 @@ import {
   AgentLevelTrans,
   AgentListRemarkInfoTrans,
   AgentListStatusInfoTrans,
+  AgentTeamInfoTrans,
   AgentTypeTrans,
   AgentsTrans,
   DirectPlayersTrans,
@@ -204,6 +205,9 @@ const BodyContent = ({ brandId = "", brand }) => {
             <List.Item>
               <AgentListRemarkInfoTrans />
             </List.Item>
+            <List.Item>
+              <AgentTeamInfoTrans />
+            </List.Item>
           </List>
         </Alert>
       </Box>
@@ -340,152 +344,6 @@ const useColumns = ({ mutate, items = [], brand } = {}) => {
           )
         }
       }),
-      /*
-      textColumn({
-        id: AgentLiveDealerRebatePercentage.Name,
-        accessor: (row) => row,
-        Header: <Trans zh="真人返佣%" en="Live Dealer Rebate %" />,
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          let isCredit = isAgentTypeCredit(value?.type)
-          if (!isCredit) {
-            return "-"
-          }
-
-          let configRequired = isAgentConfigRequired(value?.agentStatus)
-          if (configRequired) {
-            return "-"
-          }
-
-          return (
-            <FormattedNumberDecimal
-              value={value?.liveDealerRebatePercentage}
-              postfix="%"
-            />
-          )
-        }
-      }),
-      textColumn({
-        id: AgentEgameRebatePercentage.Name,
-        accessor: (row) => row,
-        Header: <Trans zh="电子返佣%" en="EGame Rebate %" />,
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          let isCredit = isAgentTypeCredit(value?.type)
-          if (!isCredit) {
-            return "-"
-          }
-
-          let configRequired = isAgentConfigRequired(value?.agentStatus)
-          if (configRequired) {
-            return "-"
-          }
-
-          return (
-            <FormattedNumberDecimal
-              value={value?.slotRebatePercentage}
-              postfix="%"
-            />
-          )
-        }
-      }),
-      textColumn({
-        id: AgentCardGameRebatePercentage.Name,
-        accessor: (row) => row,
-        Header: <Trans zh="棋牌返佣%" en="Card Game Rebate %" />,
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          let isCredit = isAgentTypeCredit(value?.type)
-          if (!isCredit) {
-            return "-"
-          }
-
-          let configRequired = isAgentConfigRequired(value?.agentStatus)
-          if (configRequired) {
-            return "-"
-          }
-
-          return (
-            <FormattedNumberDecimal
-              value={value?.cardGameRebatePercentage}
-              postfix="%"
-            />
-          )
-        }
-      }),
-      textColumn({
-        id: AgentLotteryRebatePercentage.Name,
-        accessor: (row) => row,
-        Header: <Trans zh="彩票返佣%" en="Lottery Rebate %" />,
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          let isCredit = isAgentTypeCredit(value?.type)
-          if (!isCredit) {
-            return "-"
-          }
-
-          let configRequired = isAgentConfigRequired(value?.agentStatus)
-          if (configRequired) {
-            return "-"
-          }
-
-          return (
-            <FormattedNumberDecimal
-              value={value?.lotteryRebatePercentage}
-              postfix="%"
-            />
-          )
-        }
-      }),
-      textColumn({
-        id: AgentSportsRebatePercentage.Name,
-        accessor: (row) => row,
-        Header: <Trans zh="体育返佣%" en="Sports Rebate %" />,
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          let isCredit = isAgentTypeCredit(value?.type)
-          if (!isCredit) {
-            return "-"
-          }
-
-          let configRequired = isAgentConfigRequired(value?.agentStatus)
-          if (configRequired) {
-            return "-"
-          }
-
-          return (
-            <FormattedNumberDecimal
-              value={value?.sportsRebatePercentage}
-              postfix="%"
-            />
-          )
-        }
-      }),
-      textColumn({
-        id: AgentVirtualSportsRebatePercentage.Name,
-        accessor: (row) => row,
-        Header: <Trans zh="虚拟体育返佣%" en="Virtual Sports Rebate %" />,
-        disableSortBy: true,
-        Cell: ({ value }) => {
-          let isCredit = isAgentTypeCredit(value?.type)
-          if (!isCredit) {
-            return "-"
-          }
-
-          let configRequired = isAgentConfigRequired(value?.agentStatus)
-          if (configRequired) {
-            return "-"
-          }
-
-          return (
-            <FormattedNumberDecimal
-              value={value?.virtualSportsRebatePercentage}
-              postfix="%"
-            />
-          )
-        }
-      }),
-      */
       textColumn({
         accessor: "agentStatus",
         Header: <ConfigStatusTrans />,

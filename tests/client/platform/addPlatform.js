@@ -67,12 +67,10 @@ export const addPlatform = async ({
     domains,
     ...formData
   }
-
+  console.log("add platform payload", data)
   let response = await fetcher.post(url, {
-    data
-    /*
+    data,
     failOnStatusCode: true
-    */
   })
 
   let result = await response.json()

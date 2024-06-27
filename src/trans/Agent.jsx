@@ -59,6 +59,12 @@ const AgentListRemarkInfo = {
 }
 export const AgentListRemarkInfoTrans = () => <Trans {...AgentListRemarkInfo} />
 
+const AgentTeamInfo = {
+  zh: "团队人数和直属玩家人数不计算状态”注册中”的玩家",
+  en: `The number of team members and the number of direct players do not include players with the status "registering".`
+}
+export const AgentTeamInfoTrans = () => <Trans {...AgentTeamInfo} />
+
 const UpperLevelAgent = {
   zh: "上级代理",
   en: "Upper Level Agent",
