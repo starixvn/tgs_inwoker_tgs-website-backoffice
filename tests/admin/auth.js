@@ -315,6 +315,35 @@ export const Fixture = {
     await backofficeApi.platform.allAgent.enable(platform.id)
     use(platform)
   },
+  agentProductFeePlatform: async ({ licensee, backofficeApi }, use) => {
+    const PlatformCode = "AG-PRODUCT-FEE"
+    let platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    if (!platform) {
+      platform = await backofficeApi.platform.addPlatform({
+        licenseeId: licensee.id,
+        code: PlatformCode
+      })
+      platform = await backofficeApi.platform.findPlatform(PlatformCode)
+    }
+
+    let productFee = {
+      cardGamePercentage: 10,
+      liveDealerPercentage: 11,
+      lotteryPercentage: 12,
+      slotPercentage: 13,
+      sportsPercentage: 14,
+      virtualSportsPercentage: 15
+    }
+    await backofficeApi.platform.productFee.set({
+      ...productFee,
+      brandId: platform.id
+    })
+
+    use({
+      ...platform,
+      productFee
+    })
+  },
   reviewPlayerIdPlatform: async ({ licensee, backofficeApi }, use) => {
     const PlatformCode = "REVIEW-PLAYER-ID"
     let platform = await backofficeApi.platform.findPlatform(PlatformCode)
