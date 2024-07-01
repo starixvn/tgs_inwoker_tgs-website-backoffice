@@ -78,12 +78,14 @@ const BonusAdjustTrans = {
 }
 
 const CompanyAdjust = "companyAdjust"
+//TODO: use CompanyAdjustTrans from trans/Platform
 const CompanyAdjustTrans = {
   zh: "公司调帐",
   en: "Company Adjust"
 }
 
 const AgentAdjust = "agentAdjust"
+//TODO: use AgentAdjustTrans from trans/Action
 const AgentAdjustTrans = {
   zh: "代理调帐",
   en: "Agent Adjust"

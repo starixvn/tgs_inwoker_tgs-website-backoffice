@@ -1,25 +1,30 @@
 variables:
   Registry: "pgtgs/"
   Image: "backoffice-site"
-  
+
 stages:
   - build
-  - push
   - deploy
-
-before_script:
-  - docker system prune -a -f
-  - export TAG=$(date +%Y-%m%d-%H%M)
 
 docker_build:
   stage: build
+  image: pgtgs/tgs-lobby-build:latest
+  tags:
+    - saas-linux-xlarge-amd64
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+    GIT_STRATEGY: clone
   script:
+    - docker info
     - docker login --username $docker_user --password $docker_token
+    - export TAG=$(date +%Y-%m%d-%H%M)
     - echo $TAG > tag.txt
     - docker build -t ${Registry}${Image}:${TAG} .
-    - docker tag ${Registry}${Image}:${TAG} ${Registry}${Image}:latest
     - docker push ${Registry}${Image}:${TAG}
-    - docker push ${Registry}${Image}:latest
   artifacts:
     paths:
       - tag.txt
@@ -28,36 +33,42 @@ docker_build:
     - release
     - develop
 
-deploy-dev:
+.deploy_template: &deploy_template
   stage: deploy
-  script:
-    - export KUBECONFIG="$KubeConfig_Raypro_dev"
+  image:
+    name: bitnami/kubectl:1.30
+    entrypoint: [""]
+  before_script:
     - TAG=$(cat tag.txt)
-    - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n dev
+  script:
+    - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n ${CI_ENVIRONMENT_NAME}
   dependencies:
     - docker_build
+
+deploy-dev:
+  <<: *deploy_template
+  tags:
+    - dev
+  variables:
+    CI_ENVIRONMENT_NAME: dev
   only:
     - develop
 
 deploy-staging:
-  stage: deploy
-  script:
-    - export KUBECONFIG="$KubeConfig_Raypro_staging"
-    - TAG=$(cat tag.txt)
-    - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n staging
-  dependencies:
-    - docker_build
+  <<: *deploy_template
+  tags:
+    - staging
+  variables:
+    CI_ENVIRONMENT_NAME: staging
   only:
     - release
 
 deploy-prod:
-  stage: deploy
-  script:
-    - export KUBECONFIG="$KubeConfig_Raypro_prod"
-    - TAG=$(cat tag.txt)
-    - kubectl set image deployment/${Image} ${Image}=${Registry}${Image}:${TAG} --record -n prod
-  dependencies:
-    - docker_build
+  <<: *deploy_template
+  tags:
+    - prod
+  variables:
+    CI_ENVIRONMENT_NAME: prod
   when: manual
   only:
     - main
