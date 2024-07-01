@@ -12,6 +12,7 @@ import * as contacts from "./contacts.js"
 import * as vip from "./vip.js"
 import * as socialMedia from "./socialMedia.js"
 import * as sms from "./sms.js"
+import * as productFee from "./productFee.js"
 
 export default {
   findPlatform,
@@ -27,5 +28,6 @@ export default {
   contacts,
   vip,
   socialMedia,
-  sms
+  sms,
+  productFee
 }
