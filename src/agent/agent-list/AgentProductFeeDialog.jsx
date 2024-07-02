@@ -50,7 +50,7 @@ export const AgentProductFeeDialogDisclosure = ({
   id = id ?? (dialogId ? `${dialogId}-disclosure` : undefined)
   return (
     <>
-      <Disclosure {...dialog}>
+      <Disclosure id={id} {...dialog}>
         <ProductFeeTrans />
       </Disclosure>
       {dialog.visible && (
@@ -62,7 +62,7 @@ export const AgentProductFeeDialogDisclosure = ({
   )
 }
 
-const FetchDialog = ({ agent, dialog }) => {
+const FetchDialog = ({ agent, dialog, dialogId }) => {
   let { isLoading, data, error } = useAgentProductFee(agent.id)
 
   if (isLoading) {
@@ -73,7 +73,14 @@ const FetchDialog = ({ agent, dialog }) => {
     return <AlertDialog {...error} onClickClose={dialog.hide} />
   }
 
-  return <EditDialog agent={agent} record={data} dialog={dialog} />
+  return (
+    <EditDialog
+      agent={agent}
+      record={data}
+      dialog={dialog}
+      dialogId={dialogId}
+    />
+  )
 }
 
 const EditDialog = ({ agent, record, dialog, dialogId }) => {

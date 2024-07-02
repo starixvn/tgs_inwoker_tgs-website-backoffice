@@ -5,6 +5,7 @@ import { find, findAgent } from "./findAgent.js"
 import { updateInfo } from "./updateInfo.js"
 import { updateContact } from "./updateContact.js"
 import domain from "./domain.js"
+import * as productFee from "./productFee.js"
 
 export default {
   addAgent,
@@ -14,5 +15,6 @@ export default {
   findAgent,
   updateInfo,
   updateContact,
-  domain
+  domain,
+  productFee
 }
