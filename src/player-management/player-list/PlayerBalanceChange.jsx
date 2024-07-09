@@ -296,6 +296,12 @@ const GameProviderFundOutTrans = {
   en: "Game Fund Out"
 }
 
+/*
+GameProviderFundOutLock
+GameProviderFundOutCommit
+GameProviderFundOutRollback 
+*/
+
 const GameProviderDeposit = "GameProviderDeposit"
 const GameProviderDepositTrans = {
   zh: "上分",
