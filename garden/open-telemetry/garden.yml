@@ -7,3 +7,9 @@ dependencies:
 files:
   - otel-collector.yaml
   # - otel-configmap.yaml
+namespace: observability
+portForwards:
+  - name: otel-query
+    resource: service/otel-collector
+    targetPort: 4318
+    localPort: 4318

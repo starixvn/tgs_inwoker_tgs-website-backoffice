@@ -24,6 +24,11 @@ export default defineConfig({
           // proxy will be an instance of 'http-proxy'
         }
       }
+      // "/trace-api": {
+      //   target: "http://localhost:4318",
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/trace-api/, "/v1/traces")
+      // }
     }
   },
   build: {
