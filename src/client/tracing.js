@@ -17,6 +17,7 @@ if (isDev()) {
   provider.addSpanProcessor(
     new BatchSpanProcessor(
       new ConsoleSpanExporter()
+
       /*
       new OTLPTraceExporter({
         url: "/trace-api"

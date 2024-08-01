@@ -28,6 +28,7 @@ import { faBell } from "@fortawesome/free-solid-svg-icons"
 import anime from "animejs/lib/anime.es.js"
 import { play } from "../audio/player"
 import { isDev } from "../env"
+import { formatHourMinute } from "../date/format"
 
 const SecondInMilliseconds = 1000
 
@@ -39,6 +40,7 @@ export const TopNavNotifyItem = ({
   status,
   updateFetchEventName = "",
   audio,
+  errorTitle,
   children,
   ...props
 }) => {
@@ -56,6 +58,8 @@ export const TopNavNotifyItem = ({
   })
 
   let [unprocessed, setUnprocessed] = useState(0)
+
+  const toasts = useToasts()
 
   const reset = () => {
     deleteCache()
@@ -91,6 +95,19 @@ export const TopNavNotifyItem = ({
       mutate(undefined, false) //reset total > null > play alarm next effect
     }
   }, [total])
+
+  /*
+  useEffect(() => {
+    if (error?.title) {
+      toasts.danger({
+        title: errorTitle,
+        message: `${formatHourMinute(new Date())}: ${error.title}`,
+        showCountdown: false,
+        timeout: 0
+      })
+    }
+  }, [error?.title])
+  */
 
   return (
     unprocessed > 0 && (

@@ -38,7 +38,7 @@ import { withdraw } from "../../audio/withdraw"
 import { FundWithdrawVerified } from "./VerifyFundWithdraw"
 import FundWithdrawStatus from "./FundWithdrawStatus"
 import { isDev } from "../../env"
-import { useWithdrawTrans } from "../../trans/Payment"
+import { useWithdrawNotifyTrans, useWithdrawTrans } from "../../trans/Payment"
 
 export const FundWithdrawTopNavItem = ({
   href = `${DefaultUrl}/${Code}`,
@@ -57,7 +57,7 @@ export const FundWithdrawTopNavItem = ({
 const Body = ({ brandId, ...props }) => {
   let playAlertSound = useIsDisplayMenuByCodes([ParentCode, Code, Update])
   let label = useWithdrawTrans()
-
+  let errorTitle = useWithdrawNotifyTrans()
   return (
     <TopNavNotifyItem
       brandId={brandId}
@@ -65,6 +65,7 @@ const Body = ({ brandId, ...props }) => {
       useFetch={useUnprocessedFundWithdrawForm}
       status={FundWithdrawStatus.UnprocessedStatus}
       updateFetchEventName={FundWithdrawVerified}
+      errorTitle={errorTitle}
       {...props}
     >
       {label}

@@ -97,6 +97,7 @@ import { StatusTrans } from "../../trans/Status"
 import { useTotalWithdrawAmountTrans } from "../../trans/Field"
 import { Code as PageCode } from "./menu"
 import { Code as ModuleCode } from "../menu"
+import { UpperLevelAgentTrans } from "../../trans/Agent"
 
 const MainTable = "main"
 const TableLocalStorageKey = `${ModuleCode}:${PageCode}:${MainTable}`
@@ -608,6 +609,13 @@ const useColumns = ({
         disableSortBy: true,
         Cell: StatusCell
       }),
+      /*
+      noWrapTextColumn({
+        accessor: "agentUsername",
+        Header: <UpperLevelAgentTrans />,
+        disableSortBy: true
+      }),
+      */
       noWrapTextColumn({
         accessor: "reviewedUserName",
         Header: <OperatorTrans />,
