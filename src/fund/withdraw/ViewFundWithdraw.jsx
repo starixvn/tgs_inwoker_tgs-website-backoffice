@@ -147,7 +147,7 @@ export const FormBody = ({ brandId, record, readonly }) => {
           <NormalLabel>
             <UserNameTrans />
           </NormalLabel>
-          <Box alignY="center">{record?.userName}</Box>
+          <Box alignY="center">{record?.username}</Box>
 
           <RealNameBox record={record} />
 

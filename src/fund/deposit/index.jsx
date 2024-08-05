@@ -543,7 +543,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
     let columns = [
       sequenceColumn(),
       noWrapTextColumn({
-        accessor: "userName",
+        accessor: "username",
         Header: <UserNameTrans />,
         disableSortBy: true
       }),
@@ -630,15 +630,13 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         disableSortBy: true,
         Cell: StatusCell
       }),
-      /*
       noWrapTextColumn({
-        accessor: "agentUsername",
+        accessor: "agentName",
         Header: <UpperLevelAgentTrans />,
         disableSortBy: true
       }),
-      */
       noWrapTextColumn({
-        accessor: "reviewedUserName",
+        accessor: "reviewedUsername",
         Header: <OperatorTrans />,
         disableSortBy: true
       }),

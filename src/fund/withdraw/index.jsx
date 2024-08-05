@@ -554,7 +554,7 @@ const useColumns = ({
     let columns = [
       sequenceColumn(),
       noWrapTextColumn({
-        accessor: "userName",
+        accessor: "username",
         Header: <UserNameTrans />,
         disableSortBy: true
       }),
@@ -609,15 +609,13 @@ const useColumns = ({
         disableSortBy: true,
         Cell: StatusCell
       }),
-      /*
       noWrapTextColumn({
-        accessor: "agentUsername",
+        accessor: "agentName",
         Header: <UpperLevelAgentTrans />,
         disableSortBy: true
       }),
-      */
       noWrapTextColumn({
-        accessor: "reviewedUserName",
+        accessor: "reviewedUsername",
         Header: <OperatorTrans />,
         disableSortBy: true
       }),
