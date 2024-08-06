@@ -26,19 +26,21 @@ export const isDev = () => {
   return (
     window?.env?.mode?.toLowerCase?.() === Development ||
     boolean(import.meta.env.SNOWPACK_PUBLIC_IS_DEV) ||
+    boolean(import.meta.env.VITE_IS_DEV) ||
     import.meta.env.DEV
   )
 }
 
 const isLocal = () => {
   let value =
-    import.meta.env.SNOWPACK_PUBLIC_IS_LOCAL ?? import.meta.env.VITA_IS_LOCAL
+    import.meta.env.SNOWPACK_PUBLIC_IS_LOCAL ?? import.meta.env.VITE_IS_LOCAL
   return boolean(value)
 }
 
 export const isLocalDev = () => {
   let dev = isDev()
   let local = isLocal()
+  console.log("isLocalDev", dev && local)
   return dev && local
 }
 
