@@ -19,9 +19,9 @@ export const ViewSms = "viewsms"
 
 export const UpdateSms = "updatesms"
 
-export const ViewContactField = "viewcontactfield"
+export const ViewPlayerContactField = "viewplayercontactfield"
 
-export const UpdateContactField = "updatecontactfield"
+export const UpdatePlayerContactField = "updateplayercontactfield"
 
 export const label = ({ codes = [], locale = Locales.zh }) => {
   let [code = ""] = codes
@@ -92,7 +92,7 @@ export const label = ({ codes = [], locale = Locales.zh }) => {
         },
         locale
       )
-    case ViewContactField:
+    case ViewPlayerContactField:
       return getTrans(
         {
           zh: "查看联系信息",
@@ -100,7 +100,7 @@ export const label = ({ codes = [], locale = Locales.zh }) => {
         },
         locale
       )
-    case UpdateContactField:
+    case UpdatePlayerContactField:
       return getTrans(
         {
           zh: "编辑联系信息",
