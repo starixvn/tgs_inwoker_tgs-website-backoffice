@@ -21,7 +21,6 @@ import { equals, includes, pipe, prop } from "ramda"
 import Modal from "../../dialog/Modal"
 import { DetailDisclosure } from "../../dialog/Disclosure"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
-import { QqLabel, WeChatLabel } from "./AgentContactInfo"
 import { AgentStatusLabel } from "../AgentStatus"
 import {
   ActionTypeTrans,
@@ -32,7 +31,13 @@ import {
   RemarkTrans
 } from "../../trans/Action"
 import { StatusTrans } from "../../trans/Status"
-import { EmailTrans, PhoneTrans, RealNameTrans } from "../../trans/User"
+import {
+  EmailTrans,
+  PhoneTrans,
+  QQTrans,
+  RealNameTrans,
+  WeChatTrans
+} from "../../trans/User"
 import { TimeTrans } from "../../trans/Date"
 import {
   useCardGameTrans,
@@ -410,8 +415,8 @@ const LabelValueList = [
 
   [pipe(getPath, equals("/Phone")), PhoneTrans],
   [pipe(getPath, equals("/Email")), EmailTrans],
-  [pipe(getPath, equals("/Wechat")), WeChatLabel],
-  [pipe(getPath, equals("/Qq")), QqLabel],
+  [pipe(getPath, equals("/Wechat")), WeChatTrans],
+  [pipe(getPath, equals("/Qq")), QQTrans],
 
   [pipe(getPath, equals("/password")), PasswordLabel],
   [pipe(getPath, equals("/withdrawPassword")), WithdrawPassword],

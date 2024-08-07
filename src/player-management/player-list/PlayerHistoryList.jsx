@@ -24,15 +24,6 @@ import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import Modal from "../../dialog/Modal"
 import { PlayerStatusLabel } from "../PlayerStatus"
 import { equals, includes, pipe, prop } from "ramda"
-import {
-  QQLabel,
-  LineLabel,
-  MessengerLabel,
-  ViberLabel,
-  WhatsappLabel,
-  WeChatLabel,
-  ZaloTrans
-} from "./contact"
 import { boolean } from "boolean"
 import { PlayerIdentityStateIcon } from "../player-identity/PlayerIdentityState"
 import { isString } from "lodash-es"
@@ -51,10 +42,17 @@ import {
   BirthdayTrans,
   EmailTrans,
   ICNumberTrans,
+  LineTrans,
+  MessengerTrans,
   PhoneTrans,
+  QQTrans,
   RealNameTrans,
   TelegramTrans,
-  UserNameTrans
+  UserNameTrans,
+  ViberTrans,
+  WeChatTrans,
+  WhatsAppTrans,
+  ZaloTrans
 } from "../../trans/User"
 import { VipLevelTrans } from "../../trans/Vip"
 import { UpperLevelAgentTrans } from "../../trans/Agent"
@@ -391,13 +389,13 @@ const LabelValueList = [
   [pipe(getPath, includes("/AreaCode")), AreaCodeLabel],
   [pipe(getPath, equals("/Phone")), PhoneTrans],
   [pipe(getPath, includes("/Email")), EmailTrans],
-  [pipe(getPath, equals("/properties/Qq")), QQLabel],
-  [pipe(getPath, equals("/properties/Wechat")), WeChatLabel],
+  [pipe(getPath, equals("/properties/Qq")), QQTrans],
+  [pipe(getPath, equals("/properties/Wechat")), WeChatTrans],
   [pipe(getPath, equals("/properties/Telegram")), TelegramTrans],
-  [pipe(getPath, equals("/properties/Viber")), ViberLabel],
-  [pipe(getPath, equals("/properties/FacebookMessenger")), MessengerLabel],
-  [pipe(getPath, equals("/properties/Line")), LineLabel],
-  [pipe(getPath, equals("/properties/WhatsApp")), WhatsappLabel],
+  [pipe(getPath, equals("/properties/Viber")), ViberTrans],
+  [pipe(getPath, equals("/properties/FacebookMessenger")), MessengerTrans],
+  [pipe(getPath, equals("/properties/Line")), LineTrans],
+  [pipe(getPath, equals("/properties/WhatsApp")), WhatsAppTrans],
   [pipe(getPath, equals("/properties/Zalo")), ZaloTrans],
 
   [pipe(getPath, equals("/password")), PasswordLabel],

@@ -30,8 +30,15 @@ import { isDev } from "../../env"
 import {
   ContactInfoTrans,
   EmailTrans,
+  LineTrans,
+  MessengerTrans,
   PhoneTrans,
-  TelegramTrans
+  QQTrans,
+  TelegramTrans,
+  ViberTrans,
+  WeChatTrans,
+  WhatsAppTrans,
+  ZaloTrans
 } from "../../trans/User"
 
 export const Key = "contact"
@@ -43,8 +50,6 @@ export const Tab = ({ ...props }) => {
     </_Tab>
   )
 }
-
-export const ZaloTrans = () => <Trans zh="Zalo" en="Zalo" />
 
 export const Panel = ({ player = {}, ...props }) => {
   return (
@@ -59,25 +64,25 @@ export const Panel = ({ player = {}, ...props }) => {
         <EmailTrans />
         <Text data-field="email">{player?.properties?.Email}</Text>
 
-        <QQLabel />
+        <QQTrans />
         <Text>{player?.properties?.Qq}</Text>
 
-        <WeChatLabel />
+        <WeChatTrans />
         <Text>{player?.properties?.Wechat}</Text>
 
         <TelegramTrans />
         <Text>{player?.properties?.Telegram}</Text>
 
-        <ViberLabel />
+        <ViberTrans />
         <Text>{player?.properties?.Viber}</Text>
 
-        <MessengerLabel />
+        <MessengerTrans />
         <Text>{player?.properties?.FacebookMessenger}</Text>
 
-        <LineLabel />
+        <LineTrans />
         <Text>{player?.properties?.Line}</Text>
 
-        <WhatsappLabel />
+        <WhatsAppTrans />
         <Text>{player?.properties?.WhatsApp}</Text>
 
         <ZaloTrans />
@@ -158,12 +163,12 @@ const Body = ({ onClickClose }) => {
           <EmailInput name="properties.Email" />
         </Box>
 
-        <QQLabel />
+        <QQTrans />
         <Box>
           <Input name="properties.Qq" />
         </Box>
 
-        <WeChatLabel />
+        <WeChatTrans />
         <Box>
           <Input name="properties.Wechat" />
         </Box>
@@ -173,22 +178,22 @@ const Body = ({ onClickClose }) => {
           <Input name="properties.Telegram" />
         </Box>
 
-        <ViberLabel />
+        <ViberTrans />
         <Box>
           <Input name="properties.Viber" />
         </Box>
 
-        <MessengerLabel />
+        <MessengerTrans />
         <Box>
           <Input name="properties.FacebookMessenger" />
         </Box>
 
-        <LineLabel />
+        <LineTrans />
         <Box>
           <Input name="properties.Line" />
         </Box>
 
-        <WhatsappLabel />
+        <WhatsAppTrans />
         <Box>
           <Input name="properties.WhatsApp" />
         </Box>
@@ -204,15 +209,3 @@ const Body = ({ onClickClose }) => {
     </Stack>
   )
 }
-
-export const QQLabel = () => <Trans zh="QQ" en="QQ" />
-
-export const WeChatLabel = () => <Trans zh="微信" en="WeChat" />
-
-export const ViberLabel = () => <Trans zh="Viber" en="Viber" />
-
-export const MessengerLabel = () => <Trans zh="Messenger" en="Messenger" />
-
-export const LineLabel = () => <Trans zh="Line" en="Line" />
-
-export const WhatsappLabel = () => <Trans zh="Whatsapp" en="Whatsapp" />

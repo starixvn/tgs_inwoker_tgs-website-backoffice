@@ -4,23 +4,25 @@ import { useTrans, Trans } from "../../i18n"
 import { useFormContext } from "react-hook-form"
 import { Select } from "../../select/Select"
 import {
+  LineTrans,
+  SkypeTrans,
   TelegramTrans,
+  ViberTrans,
+  WeChatTrans,
+  WhatsAppTrans,
   ZaloTrans,
+  useLineTrans,
+  useSkypeTrans,
   useTelegramTrans,
+  useViberTrans,
+  useWeChatTrans,
+  useWhatsAppTrans,
   useZaloTrans
 } from "../../trans/User"
 
 const WeChat = "WeChat"
-const WeChatTrans = {
-  zh: "微信",
-  en: "WeChat"
-}
 
 const WhatsApp = "WhatsApp"
-const WhatsAppTrans = {
-  zh: "WhatsApp",
-  en: "WhatsApp"
-}
 
 const Telegram = "Telegram"
 
@@ -31,22 +33,10 @@ const KakaoTalkTrans = {
 }
 
 const Line = "Line"
-const LineTrans = {
-  zh: "LINE",
-  en: "LINE"
-}
 
 const Skype = "Skype"
-const SkypeTrans = {
-  zh: "Skype",
-  en: "Skype"
-}
 
 const Viber = "Viber"
-const ViberTrans = {
-  zh: "Viber",
-  en: "Viber"
-}
 
 const Zalo = "Zalo"
 
@@ -72,11 +62,11 @@ export const GeneralMessengerTypeSelect = ({ ...props }) => {
   })
   let options = [
     {
-      label: useTrans(WeChatTrans),
+      label: useWeChatTrans(),
       value: WeChat
     },
     {
-      label: useTrans(WhatsAppTrans),
+      label: useWhatsAppTrans(),
       value: WhatsApp
     },
     {
@@ -88,15 +78,15 @@ export const GeneralMessengerTypeSelect = ({ ...props }) => {
       value: KakaoTalk
     },
     {
-      label: useTrans(LineTrans),
+      label: useLineTrans(),
       value: Line
     },
     {
-      label: useTrans(SkypeTrans),
+      label: useSkypeTrans(),
       value: Skype
     },
     {
-      label: useTrans(ViberTrans),
+      label: useViberTrans(),
       value: Viber
     },
     {
@@ -111,19 +101,19 @@ export const GeneralMessengerTypeSelect = ({ ...props }) => {
 export const GeneralMessengerTypeLabel = ({ value = "" }) => {
   switch (value) {
     case WeChat:
-      return <Trans {...WeChatTrans} />
+      return <WeChatTrans />
     case WhatsApp:
-      return <Trans {...WhatsAppTrans} />
+      return <WhatsAppTrans />
     case Telegram:
       return <TelegramTrans />
     case KakaoTalk:
       return <Trans {...KakaoTalkTrans} />
     case Line:
-      return <Trans {...LineTrans} />
+      return <LineTrans />
     case Skype:
-      return <Trans {...SkypeTrans} />
+      return <SkypeTrans />
     case Viber:
-      return <Trans {...ViberTrans} />
+      return <ViberTrans />
     case Zalo:
       return <ZaloTrans />
     default:

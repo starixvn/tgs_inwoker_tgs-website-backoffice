@@ -11,7 +11,7 @@ import {
   DropdownMenu,
   Group,
   FieldStack,
-  Level
+  SwitchGroup
 } from "bumbag"
 import {
   View,
@@ -34,8 +34,10 @@ import AlertDialog from "../../dialog/Alert"
 import Modal from "../../dialog/Modal"
 import {
   usePlatformPlayerContactFieldList,
-  usePlayerContactFieldList
+  usePlayerContactFieldList,
+  useUpdatePlatformPlayerContactFieldList
 } from "./client"
+import Switch from "../../switch/Switch"
 
 export const PlayerContactFieldDialogDisclosure = ({
   brandId,
@@ -72,7 +74,7 @@ export const PlayerContactFieldDialogDisclosure = ({
       </Disclosure>
       {dialog.visible && (
         <SWRConfig value={{ provider: () => new Map() }}>
-          <SettingDialog
+          <FetchDialog
             brandId={brandId}
             playerContactFields={playerContactFields}
             readOnly={readOnly}
@@ -87,16 +89,91 @@ export const PlayerContactFieldDialogDisclosure = ({
 }
 
 const FetchDialog = ({ brandId, dialog, ...props }) => {
-  let { isLoading } = usePlatformPlayerContactFieldList(brandId)
-}
+  let {
+    isLoading,
+    data: platformPlayerContactFields,
+    error
+  } = usePlatformPlayerContactFieldList(brandId)
 
-const SettingDialog = ({ brandId, dialog, dialogId, ...props }) => {
-  let title = useContactInfoTrans()
+  if (isLoading) {
+    return <LoadingBackdrop {...dialog} onClickClose={dialog.hide} />
+  }
+
+  if (error) {
+    return <AlertDialog {...error} onClickClose={dialog.hide} />
+  }
 
   return (
-    <FormDialog title={title} {...dialog} id={dialogId} {...props}>
+    <SettingDialog
+      brandId={brandId}
+      platformPlayerContactFields={platformPlayerContactFields}
+      dialog={dialog}
+      {...props}
+    />
+  )
+}
+
+//TODO: init form default value
+//TODO: select switch checkbox group?
+//TODO: integrate update api
+const SettingDialog = ({
+  brandId,
+  playerContactFields = [],
+  platformPlayerContactFields,
+  dialog,
+  dialogId,
+  ...props
+}) => {
+  let title = useContactInfoTrans()
+  let [formData, setSubmit] = useState()
+  let {} = useUpdatePlatformPlayerContactFieldList(brandId, formData)
+
+  const FieldName = "contacts"
+
+  let defaultValues = {}
+  Reflect.set(
+    defaultValues,
+    FieldName,
+    Object.fromEntries(
+      playerContactFields.map((field) => {
+        let setting = platformPlayerContactFields.find(
+          (item) => item.name === field
+        )
+        let visible = setting?.isVisualized ?? false
+        return [field, visible]
+      })
+    )
+  )
+
+  console.log("defaultValues", defaultValues)
+
+  const onSubmit = (data) => {
+    //TODO:
+    setSubmit(data)
+  }
+
+  const reset = () => {
+    setSubmit(null)
+    mutate(undefined, false)
+  }
+
+  return (
+    <FormDialog
+      defaultValues={defaultValues}
+      {...dialog}
+      title={title}
+      id={dialogId}
+      {...props}
+    >
       <Stack>
         <Info />
+        <Box>
+          {playerContactFields.map((field) => {
+            return <Switch name={`${FieldName}.${field}`} label={field} />
+          })}
+          {JSON.stringify(playerContactFields)}
+        </Box>
+        <Box>{JSON.stringify(platformPlayerContactFields)}</Box>
       </Stack>
     </FormDialog>
   )
