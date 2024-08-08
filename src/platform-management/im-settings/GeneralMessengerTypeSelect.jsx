@@ -4,6 +4,7 @@ import { useTrans, Trans } from "../../i18n"
 import { useFormContext } from "react-hook-form"
 import { Select } from "../../select/Select"
 import {
+  KakaoTalkTrans,
   LineTrans,
   SkypeTrans,
   TelegramTrans,
@@ -11,6 +12,7 @@ import {
   WeChatTrans,
   WhatsAppTrans,
   ZaloTrans,
+  useKakaoTalkTrans,
   useLineTrans,
   useSkypeTrans,
   useTelegramTrans,
@@ -27,10 +29,6 @@ const WhatsApp = "WhatsApp"
 const Telegram = "Telegram"
 
 const KakaoTalk = "KakaoTalk"
-const KakaoTalkTrans = {
-  zh: "KakaoTalk",
-  en: "KakaoTalk"
-}
 
 const Line = "Line"
 
@@ -74,7 +72,7 @@ export const GeneralMessengerTypeSelect = ({ ...props }) => {
       value: Telegram
     },
     {
-      label: useTrans(KakaoTalkTrans),
+      label: useKakaoTalkTrans(),
       value: KakaoTalk
     },
     {
@@ -107,7 +105,7 @@ export const GeneralMessengerTypeLabel = ({ value = "" }) => {
     case Telegram:
       return <TelegramTrans />
     case KakaoTalk:
-      return <Trans {...KakaoTalkTrans} />
+      return <KakaoTalkTrans />
     case Line:
       return <LineTrans />
     case Skype:

@@ -76,6 +76,12 @@ const WhatsApp = {
 export const WhatsAppTrans = () => <Trans {...WhatsApp} />
 export const useWhatsAppTrans = () => useTrans(WhatsApp)
 
+const KakaoTalk = {
+  en: "KakaoTalk"
+}
+export const KakaoTalkTrans = () => <Trans {...KakaoTalk} />
+export const useKakaoTalkTrans = () => useTrans(KakaoTalk)
+
 const WeChat = {
   zh: "微信",
   en: "WeChat"

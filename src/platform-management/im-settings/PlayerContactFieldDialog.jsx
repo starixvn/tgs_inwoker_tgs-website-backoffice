@@ -38,6 +38,8 @@ import {
   useUpdatePlatformPlayerContactFieldList
 } from "./client"
 import Switch from "../../switch/Switch"
+import { TwoColumns } from "../../layout/Grid"
+import { useFormContext, useWatch } from "react-hook-form"
 
 export const PlayerContactFieldDialogDisclosure = ({
   brandId,
@@ -91,12 +93,12 @@ export const PlayerContactFieldDialogDisclosure = ({
 const FetchDialog = ({ brandId, dialog, ...props }) => {
   let {
     isLoading,
-    data: platformPlayerContactFields,
+    data: record,
     error
   } = usePlatformPlayerContactFieldList(brandId)
 
   if (isLoading) {
-    return <LoadingBackdrop {...dialog} onClickClose={dialog.hide} />
+    return <LoadingBackdrop {...dialog} />
   }
 
   if (error) {
@@ -106,50 +108,45 @@ const FetchDialog = ({ brandId, dialog, ...props }) => {
   return (
     <SettingDialog
       brandId={brandId}
-      platformPlayerContactFields={platformPlayerContactFields}
+      record={record}
       dialog={dialog}
       {...props}
     />
   )
 }
 
-//TODO: init form default value
-//TODO: select switch checkbox group?
-//TODO: integrate update api
+const ContactFieldsName = "contacts"
+
 const SettingDialog = ({
   brandId,
   playerContactFields = [],
-  platformPlayerContactFields,
+  record = [],
   dialog,
   dialogId,
   ...props
 }) => {
   let title = useContactInfoTrans()
   let [formData, setSubmit] = useState()
-  let {} = useUpdatePlatformPlayerContactFieldList(brandId, formData)
+  let { isLoading, result, error, mutate } =
+    useUpdatePlatformPlayerContactFieldList(brandId, formData)
 
-  const FieldName = "contacts"
-
+  //TODO: move to a fn?
   let defaultValues = {}
   Reflect.set(
     defaultValues,
-    FieldName,
+    ContactFieldsName,
     Object.fromEntries(
       playerContactFields.map((field) => {
-        let setting = platformPlayerContactFields.find(
-          (item) => item.name === field
-        )
+        let setting = record.find((item) => item.name === field)
         let visible = setting?.isVisualized ?? false
         return [field, visible]
       })
     )
   )
 
-  console.log("defaultValues", defaultValues)
-
   const onSubmit = (data) => {
-    //TODO:
-    setSubmit(data)
+    let formData = Reflect.get(data, ContactFieldsName)
+    setSubmit(formData)
   }
 
   const reset = () => {
@@ -160,23 +157,55 @@ const SettingDialog = ({
   return (
     <FormDialog
       defaultValues={defaultValues}
-      {...dialog}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      onCloseErrorAlert={reset}
+      dialog={dialog}
       title={title}
       id={dialogId}
       {...props}
     >
       <Stack>
         <Info />
-        <Box>
-          {playerContactFields.map((field) => {
-            return <Switch name={`${FieldName}.${field}`} label={field} />
-          })}
-          {JSON.stringify(playerContactFields)}
-        </Box>
-        <Box>{JSON.stringify(platformPlayerContactFields)}</Box>
+        <TwoColumns>
+          <ContactFieldSelectGroup items={playerContactFields} />
+        </TwoColumns>
       </Stack>
     </FormDialog>
   )
+}
+
+const MaxContactFieldSize = 3
+const ContactFieldSelectGroup = ({
+  name = ContactFieldsName,
+  max = MaxContactFieldSize,
+  items = []
+}) => {
+  let { control } = useFormContext()
+
+  let fields = useWatch({
+    control,
+    name
+  })
+
+  let selectedSize = Object.entries(fields).reduce((size, [_, selected]) => {
+    return selected ? size + 1 : size
+  }, 0)
+
+  return items.map((field) => {
+    let selected = Reflect.get(fields, field)
+    let disabled = !(selectedSize < max || selected)
+    return (
+      <Switch
+        key={field}
+        name={`${ContactFieldsName}.${field}`}
+        label={field}
+        disabled={disabled}
+      />
+    )
+  })
 }
 
 const Info = () => {
