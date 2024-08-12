@@ -8,7 +8,8 @@ import {
   usePostData,
   usePutData,
   usePostFormData,
-  useDelete
+  useDelete,
+  usePatchData
 } from "../../client"
 import { useApiMerge } from "../../client/useApiMerge."
 import { useEnablePlatformSms } from "../../merchant/platforms/client"
@@ -64,4 +65,20 @@ export const usePlatformAgentDividendCondition = (brandId) => {
 export const useUpdatePlatformAgentDividendCondition = (data) => {
   let url = data?.brandId ? `/api/BrandAgentDividendCondition` : ""
   return usePutData(url, data)
+}
+
+const BrandPlayerContactApi = "/api/brand/player-contract"
+export const usePlayerContactFieldList = () => {
+  let url = BrandPlayerContactApi
+  return useGet(url)
+}
+
+export const usePlatformPlayerContactFieldList = (brandId) => {
+  let url = brandId ? `${BrandPlayerContactApi}/${brandId}/display` : ""
+  return useGet(url)
+}
+
+export const useUpdatePlatformPlayerContactFieldList = (brandId, data) => {
+  let url = brandId && data ? `${BrandPlayerContactApi}/${brandId}` : ""
+  return usePatchData(url, data)
 }

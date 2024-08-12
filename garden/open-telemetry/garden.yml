@@ -3,7 +3,20 @@ name: open-telemetry
 type: kubernetes
 disabled: true
 dependencies:
+  - cert-manager
   - jaeger
 files:
-  - otel-collector.yaml
+  # - opentelemetry-operator.yaml
+  - opentelemetry-collector.yaml
+  # - otel-collector.yaml
   # - otel-configmap.yaml
+namespace: observability
+portForwards:
+  - name: otel-collector
+    resource: service/otel-collector
+    targetPort: 4318
+    localPort: 4318
+# tasks:
+#   - name: init-opentelemetry-operator
+#     command:
+#       - kubectl apply -f ./opentelemetry-operator.yam

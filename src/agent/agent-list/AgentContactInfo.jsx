@@ -25,7 +25,13 @@ import { useUpdateAgent, useUpdateAgentContact } from "./client"
 import clone from "clone-deep"
 import { isDev } from "../../env"
 import { diff } from "../../object/diff"
-import { ContactInfoTrans, EmailTrans, PhoneTrans } from "../../trans/User"
+import {
+  ContactInfoTrans,
+  EmailTrans,
+  PhoneTrans,
+  QQTrans,
+  WeChatTrans
+} from "../../trans/User"
 
 const Key = "AgentContactInfo"
 
@@ -158,13 +164,11 @@ const EmailBox = ({ value = "", children }) => {
   )
 }
 
-export const QqLabel = () => <Trans zh="QQ" en="QQ" />
-
 const QqBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <QqLabel />
+        <QQTrans />
       </Box>
 
       {children ? children : <Text>{value}</Text>}
@@ -172,13 +176,11 @@ const QqBox = ({ value = "", children }) => {
   )
 }
 
-export const WeChatLabel = () => <Trans zh="微信号" en="WeChat" />
-
 const WeChatBox = ({ value = "", children }) => {
   return (
     <>
       <Box alignY="center">
-        <WeChatLabel />
+        <WeChatTrans />
       </Box>
 
       {children ? children : <Text>{value}</Text>}

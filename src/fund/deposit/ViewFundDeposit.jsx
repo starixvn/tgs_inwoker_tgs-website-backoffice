@@ -163,7 +163,7 @@ export const FormBody = ({
           <NormalLabel>
             <UserNameTrans />
           </NormalLabel>
-          <Box alignY="center">{record?.userName}</Box>
+          <Box alignY="center">{record?.username}</Box>
 
           <PlayerBox player={player} />
 

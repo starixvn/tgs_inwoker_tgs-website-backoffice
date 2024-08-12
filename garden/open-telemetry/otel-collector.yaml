@@ -27,6 +27,8 @@ data:
         protocols:
           grpc:
             endpoint: "0.0.0.0:4317"
+          http:
+            endpoint: "0.0.0.0:4318"
 
     processors:
       batch:
@@ -59,10 +61,10 @@ metadata:
 spec:
   ports:
     - name: otlp # Default endpoint for otlp receiver.
-      port: 4317
+      port: 4318
       protocol: TCP
-      targetPort: 4317
-      # nodePort: 30080
+      targetPort: 4318
+      # nodePort: 31118
     - name: metrics # Default endpoint for metrics.
       port: 8889
       protocol: TCP
@@ -107,7 +109,7 @@ spec:
           env:
             - name: GOGC
               value: "80"
-          image: otel/opentelemetry-collector:0.6.0
+          image: otel/opentelemetry-collector:0.104.0
           name: otel-collector
           resources:
             limits:
@@ -117,7 +119,8 @@ spec:
               cpu: 200m
               memory: 400Mi
           ports:
-            - containerPort: 4317 # Default endpoint for otlp receiver.
+            - containerPort: 4317 # otlp grpc receiver.
+            - containerPort: 4318 # otlp http receiver.
             - containerPort: 8889 # Default endpoint for querying metrics.
           volumeMounts:
             - name: otel-collector-config-vol

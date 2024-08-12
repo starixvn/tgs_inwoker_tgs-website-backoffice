@@ -19,6 +19,10 @@ export const ViewSms = "viewsms"
 
 export const UpdateSms = "updatesms"
 
+export const ViewPlayerContactField = "viewplayercontactfield"
+
+export const UpdatePlayerContactField = "updateplayercontactfield"
+
 export const label = ({ codes = [], locale = Locales.zh }) => {
   let [code = ""] = codes
   code = code.toLowerCase()
@@ -85,6 +89,22 @@ export const label = ({ codes = [], locale = Locales.zh }) => {
         {
           zh: "编辑简讯验证",
           en: "Edit SMS Verification"
+        },
+        locale
+      )
+    case ViewPlayerContactField:
+      return getTrans(
+        {
+          zh: "查看联系信息",
+          en: "View Contact Info"
+        },
+        locale
+      )
+    case UpdatePlayerContactField:
+      return getTrans(
+        {
+          zh: "编辑联系信息",
+          en: "Edit Contact Info"
         },
         locale
       )
