@@ -612,7 +612,10 @@ const useColumns = ({
       noWrapTextColumn({
         accessor: "agentName",
         Header: <UpperLevelAgentTrans />,
-        disableSortBy: true
+        disableSortBy: true,
+        Cell: ({ value = "-" }) => {
+          return value || "-"
+        }
       }),
       noWrapTextColumn({
         accessor: "reviewedUsername",
