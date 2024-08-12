@@ -27,7 +27,18 @@ import {
 } from "../../dialog/Disclosure"
 import { FormDialog } from "../../form/FormDialog"
 import { SWRConfig } from "swr"
-import { ContactInfoTrans, useContactInfoTrans } from "../../trans/User"
+import {
+  ContactInfoTrans,
+  useContactInfoTrans,
+  useLineTrans,
+  useMessengerTrans,
+  useQQTrans,
+  useTelegramTrans,
+  useViberTrans,
+  useWeChatTrans,
+  useWhatsAppTrans,
+  useZaloTrans
+} from "../../trans/User"
 import { useTrans } from "../../i18n"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
@@ -177,6 +188,38 @@ const SettingDialog = ({
   )
 }
 
+const Contact = {
+  Line: "Line",
+  Viber: "Viber",
+  Telegram: "Telegram",
+  FacebookMessenger: "FacebookMessenger",
+  WhatsApp: "WhatsApp",
+  Qq: "Qq",
+  Wechat: "Wechat",
+  Zalo: "Zalo"
+}
+
+const useContactLabel = (field = "") => {
+  switch (field) {
+    case Contact.Line:
+      return useLineTrans()
+    case Contact.Viber:
+      return useViberTrans()
+    case Contact.Telegram:
+      return useTelegramTrans()
+    case Contact.FacebookMessenger:
+      return useMessengerTrans()
+    case Contact.WhatsApp:
+      return useWhatsAppTrans()
+    case Contact.Qq:
+      return useQQTrans()
+    case Contact.Wechat:
+      return useWeChatTrans()
+    case Contact.Zalo:
+      return useZaloTrans()
+  }
+}
+
 const MaxContactFieldSize = 3
 const ContactFieldSelectGroup = ({
   name = ContactFieldsName,
@@ -195,13 +238,14 @@ const ContactFieldSelectGroup = ({
   }, 0)
 
   return items.map((field) => {
+    let label = useContactLabel(field)
     let selected = Reflect.get(fields, field)
     let disabled = !(selectedSize < max || selected)
     return (
       <Switch
         key={field}
         name={`${ContactFieldsName}.${field}`}
-        label={field}
+        label={label}
         disabled={disabled}
       />
     )
