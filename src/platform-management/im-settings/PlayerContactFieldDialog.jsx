@@ -20,11 +20,7 @@ import {
   UpdatePlayerContactField
 } from "./menu"
 import { useIsDisplayMenuByRoute } from "../../user/context"
-import {
-  AddDisclosure,
-  DeleteDisclosure,
-  Disclosure
-} from "../../dialog/Disclosure"
+import { Disclosure } from "../../dialog/Disclosure"
 import { FormDialog } from "../../form/FormDialog"
 import { SWRConfig } from "swr"
 import {
@@ -42,7 +38,6 @@ import {
 import { useTrans } from "../../i18n"
 import LoadingBackdrop from "../../dialog/LoadingBackdrop"
 import AlertDialog from "../../dialog/Alert"
-import Modal from "../../dialog/Modal"
 import {
   usePlatformPlayerContactFieldList,
   usePlayerContactFieldList,
@@ -64,7 +59,6 @@ export const PlayerContactFieldDialogDisclosure = ({
     data: playerContactFields,
     error
   } = usePlayerContactFieldList()
-  //TODO: error > alert dialog & disable btn
 
   let viewAuth = useIsDisplayMenuByRoute([ViewPlayerContactField])
   let editable = useIsDisplayMenuByRoute([UpdatePlayerContactField])
@@ -132,6 +126,7 @@ const SettingDialog = ({
   brandId,
   playerContactFields = [],
   record = [],
+  readOnly,
   dialog,
   dialogId,
   ...props
@@ -141,7 +136,6 @@ const SettingDialog = ({
   let { isLoading, result, error, mutate } =
     useUpdatePlatformPlayerContactFieldList(brandId, formData)
 
-  //TODO: move to a fn?
   let defaultValues = {}
   Reflect.set(
     defaultValues,
@@ -175,13 +169,17 @@ const SettingDialog = ({
       onCloseErrorAlert={reset}
       dialog={dialog}
       title={title}
+      showActionButtons={readOnly ? false : true}
       id={dialogId}
       {...props}
     >
       <Stack>
         <Info />
         <TwoColumns>
-          <ContactFieldSelectGroup items={playerContactFields} />
+          <ContactFieldSelectGroup
+            items={playerContactFields}
+            readOnly={readOnly}
+          />
         </TwoColumns>
       </Stack>
     </FormDialog>
@@ -224,7 +222,8 @@ const MaxContactFieldSize = 3
 const ContactFieldSelectGroup = ({
   name = ContactFieldsName,
   max = MaxContactFieldSize,
-  items = []
+  items = [],
+  readOnly
 }) => {
   let { control } = useFormContext()
 
@@ -246,7 +245,7 @@ const ContactFieldSelectGroup = ({
         key={field}
         name={`${ContactFieldsName}.${field}`}
         label={label}
-        disabled={disabled}
+        disabled={disabled || readOnly}
       />
     )
   })
