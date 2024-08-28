@@ -71,7 +71,7 @@ export const MessengerTrans = () => <Trans {...Messenger} />
 export const useMessengerTrans = () => useTrans(Messenger)
 
 const WhatsApp = {
-  zh: "WhatsApp"
+  en: "WhatsApp"
 }
 export const WhatsAppTrans = () => <Trans {...WhatsApp} />
 export const useWhatsAppTrans = () => useTrans(WhatsApp)
