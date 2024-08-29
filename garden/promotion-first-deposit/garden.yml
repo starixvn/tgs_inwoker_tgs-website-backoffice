@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: promotion-first-deposit
 image: pgtgs/promotion-first-deposit-service:202404010715.8
+disabled: true
 services:
   - name: promotion-first-deposit
     dependencies:
