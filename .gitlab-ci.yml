@@ -11,6 +11,7 @@ docker_build:
   image: pgtgs/tgs-lobby-build:latest
   tags:
     - saas-linux-xlarge-amd64
+    - saas-linux-large-amd64
   services:
     - docker:20.10.16-dind
   variables:
