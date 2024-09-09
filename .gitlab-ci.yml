@@ -8,7 +8,6 @@ stages:
 
 docker_build:
   stage: build
-  ##image: pgtgs/tgs-lobby-build:latest
   script:
     - docker info
     - docker login --username $docker_user --password $docker_pwd
