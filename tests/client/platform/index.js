@@ -13,6 +13,7 @@ import * as vip from "./vip.js"
 import * as socialMedia from "./socialMedia.js"
 import * as sms from "./sms.js"
 import * as productFee from "./productFee.js"
+import * as playerContactField from "./playerContactField.js"
 
 export default {
   findPlatform,
@@ -29,5 +30,6 @@ export default {
   vip,
   socialMedia,
   sms,
-  productFee
+  productFee,
+  playerContactField
 }
