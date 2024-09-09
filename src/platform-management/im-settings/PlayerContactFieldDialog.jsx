@@ -243,6 +243,7 @@ const ContactFieldSelectGroup = ({
     return (
       <Switch
         key={field}
+        data-type={field}
         name={`${ContactFieldsName}.${field}`}
         label={label}
         disabled={disabled || readOnly}
