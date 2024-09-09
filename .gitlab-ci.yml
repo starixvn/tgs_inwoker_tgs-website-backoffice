@@ -11,7 +11,7 @@ docker_build:
   ##image: pgtgs/tgs-lobby-build:latest
   script:
     - docker info
-    - docker login --username $docker_user --password $docker_token
+    - docker login --username $docker_user --password $docker_pwd
     - export TAG=$(date +%Y-%m%d-%H%M)
     - echo $TAG > tag.txt
     - docker build -t ${Registry}${Image}:${TAG} .
@@ -21,7 +21,6 @@ docker_build:
       - tag.txt
   only:
     - main
-    - master
     - release
     - develop
 
