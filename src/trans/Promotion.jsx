@@ -280,3 +280,17 @@ const PromotionEligibility = {
 export const PromotionEligibilityTrans = () => (
   <Trans {...PromotionEligibility} />
 )
+
+const Leaderboard = {
+  zh: "排行榜",
+  en: "Leaderboard",
+  vi: "Bảng xếp hạng"
+}
+export const LeaderboardTrans = () => <Trans {...Leaderboard} />
+
+const Milestone = {
+  zh: "里程碑",
+  en: "Milestone",
+  vi: "Cột mốc"
+}
+export const MilestoneTrans = () => <Trans {...Milestone} />

@@ -41,6 +41,19 @@ import {
 } from "../../trans/Field"
 
 const FieldName = "content"
+
+export const ContentBox = ({ body: Body = FieldValues, children }) => {
+  return (
+    <>
+      <Separator />
+      <Heading use="h5">
+        <PromotionContentTrans />
+      </Heading>
+      <Body>{children}</Body>
+    </>
+  )
+}
+
 export const ContentSetting = ({ readOnly }) => {
   let brandId = usePromotionBrandId()
 
@@ -131,7 +144,7 @@ export const ContentSetting = ({ readOnly }) => {
   )
 }
 
-const HtmlEditorDisclosure = ({ brandId, name, readOnly }) => {
+export const HtmlEditorDisclosure = ({ brandId, name, readOnly }) => {
   let dialog = useModalState()
 
   let editTitle = useTrans({

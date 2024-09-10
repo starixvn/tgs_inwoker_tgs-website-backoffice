@@ -33,7 +33,7 @@ import {
   useUpdateGameProviderReport,
   useUpdatePlatformGameProviderReport
 } from "./client"
-import { subDays, isValid, addMinutes } from "date-fns"
+import { isValid, addMonths, startOfMonth } from "date-fns"
 import numberColumn, {
   numberDecimalColumn
 } from "../../table/column/numberColumn"
@@ -78,6 +78,12 @@ export const Content = () => {
 
 export const CodeContentPair = [Code, Content]
 
+const startOfSixMonthsAgo = () => {
+  let sixMonthsAgo = addMonths(new Date(), -6)
+  let start = startOfMonth(sixMonthsAgo)
+  return start
+}
+
 const ReportContent = ({}) => {
   let monthPlaceholder = useTrans({
     en: "Month",
@@ -118,13 +124,19 @@ const ReportContent = ({}) => {
     month
   })
 
+  let minDate = startOfSixMonthsAgo()
+
   return (
     <PageContent
       actionBar={
         <Set orientation="vertical">
           <FormProvider {...formMethods}>
             <Set marginBottom="1.5rem">
-              <DateMonthInput name="month" placeholder={monthPlaceholder} />
+              <DateMonthInput
+                name="month"
+                minDate={minDate}
+                placeholder={monthPlaceholder}
+              />
               <UpdateGameProviderReportButton month={month} />
               <UpdatePlatformGameProviderReport month={month} />
             </Set>
