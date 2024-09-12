@@ -33,6 +33,7 @@ import { OperationSettingsTrans } from "../../trans/Platform"
 import { SmsProviderDialogDisclosure } from "./SmsProviderDialog"
 import { SocialMediaListDialogDisclosure } from "./SocialMediaListDialog"
 import { SWRConfig } from "swr"
+import { PlayerContactFieldDialogDisclosure } from "./PlayerContactFieldDialog"
 
 export { Code }
 
@@ -94,6 +95,7 @@ const BodyContent = ({ brandId, brand }) => {
       />
       <SmsProviderDialogDisclosure brandId={brandId} />
       <SocialMediaListDialogDisclosure brandId={brandId} />
+      <PlayerContactFieldDialogDisclosure brandId={brandId} />
     </Set>
   )
 }

@@ -309,6 +309,13 @@ const Deposit = {
 export const DepositTrans = () => <Trans {...Deposit} />
 export const useDepositTrans = () => useTrans(Deposit)
 
+const DepositNotify = {
+  zh: "存款通知",
+  en: "Deposit Notify"
+}
+export const DepositNotifyTrans = () => <Trans {...DepositNotify} />
+export const useDepositNotifyTrans = () => useTrans(DepositNotify)
+
 const Withdraw = {
   zh: "提款",
   en: "Withdraw",
@@ -316,6 +323,13 @@ const Withdraw = {
 }
 export const WithdrawTrans = () => <Trans {...Withdraw} />
 export const useWithdrawTrans = () => useTrans(Withdraw)
+
+const WithdrawNotify = {
+  zh: "提款通知",
+  en: "Withdraw Notify"
+}
+export const WithdrawNotifyTrans = () => <Trans {...WithdrawNotify} />
+export const useWithdrawNotifyTrans = () => useTrans(WithdrawNotify)
 
 const ReviewingWithdrawal = {
   zh: "待處理提款",

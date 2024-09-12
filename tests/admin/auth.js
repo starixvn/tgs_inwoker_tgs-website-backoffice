@@ -825,5 +825,21 @@ const PromotionSettingsString = JSON.stringify([
       Zh: "線下活動",
       Vi: "Hoạt động dưới tuyến"
     }
+  },
+  {
+    Name: "Leaderboard",
+    Types: [
+      {
+        Name: "LeaderboardMilestoneReward",
+        Trans: {
+          En: "Milestone",
+          Zh: "里程碑"
+        }
+      }
+    ],
+    Trans: {
+      En: "Leaderboard",
+      Zh: "排行榜"
+    }
   }
 ])

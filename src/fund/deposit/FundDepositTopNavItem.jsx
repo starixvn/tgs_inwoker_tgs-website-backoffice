@@ -32,7 +32,7 @@ import { deposit } from "../../audio/deposit"
 import { FundDepositVerified } from "./VerifyFundDeposit"
 import FundDepositStatus from "./FundDepositStatus"
 import { isDev } from "../../env"
-import { useDepositTrans } from "../../trans/Payment"
+import { useDepositNotifyTrans, useDepositTrans } from "../../trans/Payment"
 
 export const FundDepositTopNavItem = ({
   href = `${DefaultUrl}/${Code}`,
@@ -51,7 +51,7 @@ export const FundDepositTopNavItem = ({
 const Body = ({ brandId, ...props }) => {
   let playAlertSound = useIsDisplayMenuByCodes([ParentCode, Code, Update])
   let label = useDepositTrans()
-
+  let errorTitle = useDepositNotifyTrans()
   return (
     <TopNavNotifyItem
       brandId={brandId}
@@ -59,6 +59,7 @@ const Body = ({ brandId, ...props }) => {
       useFetch={useUnprocessedFundDepositForm}
       status={FundDepositStatus.UnprocessedStatus}
       updateFetchEventName={FundDepositVerified}
+      errorTitle={errorTitle}
       {...props}
     >
       {label}

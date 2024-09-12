@@ -111,7 +111,9 @@ export const TransactionTypeSelect = ({ placeholder, ...props }) => {
 
   let playerAdjustOptions = usePlayerAdjustBalanceTypeOptionList()
   let options = [
-    ...playerAdjustOptions,
+    ...playerAdjustOptions?.filter(
+      ({ value: type }) => type != PlayerAdjustBalanceType.Transfer
+    ),
     {
       label: useTrans(RebateTrans),
       value: Rebate
@@ -119,7 +121,8 @@ export const TransactionTypeSelect = ({ placeholder, ...props }) => {
     {
       label: useTrans(PromotionTrans),
       value: Promotion
-    },
+    }
+    /*
     {
       label: useTrans(UnsettledBetManualTrans),
       value: UnsettledBetManual
@@ -128,6 +131,7 @@ export const TransactionTypeSelect = ({ placeholder, ...props }) => {
       label: useTrans(AdjustResettledBetManualTrans),
       value: AdjustResettledBetManual
     }
+    */
   ]
 
   return <Select placeholder={placeholder} options={options} {...props} />

@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: promotion-daily-second-deposit
 image: pgtgs/promotion-daily-second-deposit-service:202404020554.5
+disabled: true
 services:
   - name: promotion-daily-second-deposit
     dependencies:

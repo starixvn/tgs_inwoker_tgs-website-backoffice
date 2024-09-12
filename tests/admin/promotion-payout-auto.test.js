@@ -23,7 +23,7 @@ test("promotion payout auto", async ({
     autoSentPlayerBonus,
     brandId: platform.id
   })
-
+  console.log("player.username", player.username)
   let ExpectedDepositAmount = 10
   let formId = await backofficeApi.player.applyBankManualDepositForm({
     brandId: platform.id,

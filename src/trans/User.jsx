@@ -46,17 +46,66 @@ const Email = {
 }
 export const EmailTrans = () => <Trans {...Email} />
 
+const Skype = {
+  en: "Skype"
+}
+export const SkypeTrans = () => <Trans {...Skype} />
+export const useSkypeTrans = () => useTrans(Skype)
+
+const Line = {
+  en: "Line"
+}
+export const LineTrans = () => <Trans {...Line} />
+export const useLineTrans = () => useTrans(Line)
+
 const Telegram = {
   en: "Telegram"
 }
 export const TelegramTrans = () => <Trans {...Telegram} />
 export const useTelegramTrans = () => useTrans(Telegram)
 
+const Messenger = {
+  en: "Messenger"
+}
+export const MessengerTrans = () => <Trans {...Messenger} />
+export const useMessengerTrans = () => useTrans(Messenger)
+
+const WhatsApp = {
+  en: "WhatsApp"
+}
+export const WhatsAppTrans = () => <Trans {...WhatsApp} />
+export const useWhatsAppTrans = () => useTrans(WhatsApp)
+
+const KakaoTalk = {
+  en: "KakaoTalk"
+}
+export const KakaoTalkTrans = () => <Trans {...KakaoTalk} />
+export const useKakaoTalkTrans = () => useTrans(KakaoTalk)
+
+const WeChat = {
+  zh: "微信",
+  en: "WeChat"
+}
+export const WeChatTrans = () => <Trans {...WeChat} />
+export const useWeChatTrans = () => useTrans(WeChat)
+
+const QQ = {
+  en: "QQ"
+}
+export const QQTrans = () => <Trans {...QQ} />
+export const useQQTrans = () => useTrans(QQ)
+
 const Zalo = {
   en: "Zalo"
 }
 export const ZaloTrans = () => <Trans {...Zalo} />
 export const useZaloTrans = () => useTrans(Zalo)
+
+const Viber = {
+  en: "Viber"
+}
+export const ViberTrans = () => <Trans {...Viber} />
+export const useViberTrans = () => useTrans(Viber)
 
 const RealName = {
   zh: "真实姓名",

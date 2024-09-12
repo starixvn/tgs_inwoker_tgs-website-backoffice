@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: cash-query
-image: pgtgs/cashservice-query:202403250823.222
+image: pgtgs/cashservice-query:202407080257.229
 services:
   - name: cash-query
     dependencies:

@@ -196,6 +196,7 @@ const DepositRewardV2Rule = ({ readOnly }) => {
       </NormalLabel>
       <NumberInputField
         name="rule.dailyDepositLimitByPlayer"
+        min="1"
         registerOptions={{
           valueAsNumber: true
         }}
@@ -207,6 +208,7 @@ const DepositRewardV2Rule = ({ readOnly }) => {
       </NormalLabel>
       <NumberInputField
         name="rule.weeklyDepositLimitByPlayer"
+        min="1"
         registerOptions={{
           valueAsNumber: true
         }}
@@ -218,6 +220,7 @@ const DepositRewardV2Rule = ({ readOnly }) => {
       </NormalLabel>
       <NumberInputField
         name="rule.monthlyDepositLimitByPlayer"
+        min="1"
         registerOptions={{
           valueAsNumber: true
         }}
@@ -229,6 +232,7 @@ const DepositRewardV2Rule = ({ readOnly }) => {
       </NormalLabel>
       <NumberInputField
         name="rule.totalDepositLimitByPlayer"
+        min="1"
         registerOptions={{
           valueAsNumber: true
         }}

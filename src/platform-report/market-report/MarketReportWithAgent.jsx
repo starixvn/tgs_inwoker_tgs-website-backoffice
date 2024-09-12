@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css, Global } from "@emotion/react"
 import { useForm, FormProvider, useFormContext } from "react-hook-form"
 import { Stack, Box, Button, Set, Level, Alert, List } from "bumbag"
-import PageContent from "../../page/Content"
 import { useTable, Table, pageCount, toApiParams } from "../../table"
 import {
   FormattedNumber,

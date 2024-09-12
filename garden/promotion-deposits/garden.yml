@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-deposits
-image: pgtgs/deposit-promotion:202403280327.5
+image: pgtgs/deposit-promotion:202408220654.53
 services:
   - name: promotion-deposits
     dependencies:
