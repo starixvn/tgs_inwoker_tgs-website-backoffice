@@ -25,6 +25,7 @@ import DepositLotteryReward from "./DepositLotteryReward"
 import DummyReward from "./DummyReward"
 import OfflineLoginReward from "./OfflineLoginReward"
 import OfflineDepositReward from "./OfflineDepositReward"
+import LeaderboardMilestoneReward from "./LeaderboardMilestoneReward"
 import { useIsPromotionStarted } from "../usePromotionFormData"
 import { PromotionRuleSettingsTrans } from "../../../trans/Promotion"
 
@@ -37,7 +38,8 @@ const rewards = () => [
   DepositLotteryReward,
   DummyReward,
   OfflineLoginReward,
-  OfflineDepositReward
+  OfflineDepositReward,
+  LeaderboardMilestoneReward
 ]
 
 export const Main = ({ readOnly, ...props }) => {
