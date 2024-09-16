@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
-import { Box, Text, Set, Icon, Table, FieldStack, Stack } from "bumbag"
+import { Box, Text, Set, Icon, Table, FieldStack, Stack, Button } from "bumbag"
 import { MainSetting } from "../MainSetting"
 import {
   HtmlEditorDisclosure,
@@ -28,6 +28,7 @@ import { useFieldArray, useFormContext, useWatch } from "react-hook-form"
 import { NumberInput } from "../../../input/NumberInput"
 import { useMount } from "react-use"
 import Separator from "../../../layout/Separator"
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 
 //TODO: confirm backend promotion type code/name
 export const PromotionType = "Milestone"
@@ -151,12 +152,6 @@ const MilestoneSettings = ({ name = MilestoneFieldName, readOnly }) => {
     }
   })
 
-  let values = useWatch({
-    name,
-    control
-  })
-
-  //TODO: AddMilestoneRow
   return (
     <Table>
       <Table.Head>
@@ -179,7 +174,7 @@ const MilestoneSettings = ({ name = MilestoneFieldName, readOnly }) => {
       </Table.Head>
       <Table.Body>
         {fieldArray.fields.map((field, index) => (
-          <MilestoneSettingRow
+          <SettingRow
             name={name}
             key={index}
             field={field}
@@ -188,12 +183,60 @@ const MilestoneSettings = ({ name = MilestoneFieldName, readOnly }) => {
             readOnly={readOnly}
           />
         ))}
+        {!readOnly && <AddSettingRow fieldArray={fieldArray} />}
       </Table.Body>
     </Table>
   )
 }
 
-const MilestoneSettingRow = ({ name, field, index, readOnly }) => {
+const RemoveButton = ({ index, fieldArray, ...props }) =>
+  useMemo(
+    () => (
+      <Button
+        size="small"
+        palette="danger"
+        variant="ghost"
+        onClick={() => {
+          fieldArray.remove(index)
+        }}
+        {...props}
+      >
+        <Icon icon={faMinus} type="font-awesome" />
+      </Button>
+    ),
+    [index, fieldArray]
+  )
+
+const AddSettingRow = ({ fieldArray }) =>
+  useMemo(
+    () => (
+      <Table.Row>
+        <Table.Cell>
+          <Button
+            size="small"
+            variant="ghost"
+            onClick={() => {
+              fieldArray.append({})
+            }}
+          >
+            <Icon icon={faPlus} type="font-awesome" />
+          </Button>
+        </Table.Cell>
+      </Table.Row>
+    ),
+    [fieldArray]
+  )
+
+const DefaultMinRow = 1
+
+const SettingRow = ({
+  name,
+  field,
+  index,
+  fieldArray,
+  readOnly,
+  minRow = DefaultMinRow
+}) => {
   let { control } = useFormContext()
 
   let BonusFieldName = `${name}.${index}.bonus`
@@ -204,19 +247,12 @@ const MilestoneSettingRow = ({ name, field, index, readOnly }) => {
 
   let disabled = readOnly
 
-  //TODO: delete row btn
   return (
     <Table.Row data-index={index}>
-      <Table.Cell>
+      <Table.Cell textAlign={"center"}>
         <Box>
           {index + 1}
-          {field.level && (
-            <Input
-              type="hidden"
-              name={`${name}.${index}.level`}
-              value={index}
-            />
-          )}
+          <Input type="hidden" name={`${name}.${index}.level`} value={index} />
         </Box>
       </Table.Cell>
       <Table.Cell>
@@ -271,7 +307,19 @@ const MilestoneSettingRow = ({ name, field, index, readOnly }) => {
           required
         />
       </Table.Cell>
-      <Table.Cell></Table.Cell>
+      <Table.Cell>
+        {!readOnly && (
+          <RemoveButton
+            index={index}
+            fieldArray={fieldArray}
+            css={css`
+              visibility: ${fieldArray.fields.length > minRow
+                ? "visible"
+                : "hidden"};
+            `}
+          />
+        )}
+      </Table.Cell>
     </Table.Row>
   )
 }
