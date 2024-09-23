@@ -351,7 +351,6 @@ const BrandPaymentCheckboxGroupTable = ({
             stickyHead
             containerProps={{
               maxHeight: "60vh",
-              minHeight: "max-content",
               overflow: "auto"
             }}
           />

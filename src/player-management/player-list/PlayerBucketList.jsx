@@ -107,7 +107,6 @@ const PlayerBucketListDialog = ({ playerCode, dialog, dialogId }) => {
           stickyHead
           containerProps={{
             maxHeight: "85vh",
-            minHeight: "max-content",
             overflow: "auto"
           }}
         />
@@ -224,7 +223,6 @@ const PlayerBucketItemsDialog = ({
         stickyHead
         containerProps={{
           maxHeight: "80vh",
-          minHeight: "max-content",
           overflow: "auto"
         }}
       />
@@ -379,7 +377,6 @@ const BucketHistoryDialog = ({
           stickyHead
           containerProps={{
             maxHeight: "70vh",
-            minHeight: "max-content",
             overflow: "auto"
           }}
         />

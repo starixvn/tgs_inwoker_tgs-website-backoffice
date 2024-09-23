@@ -30,7 +30,6 @@ import { useMount } from "react-use"
 import Separator from "../../../layout/Separator"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
 
-//TODO: confirm backend promotion type code/name
 export const PromotionType = "Milestone"
 
 export const Main = (props) => (
