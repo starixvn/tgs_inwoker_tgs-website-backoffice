@@ -14,7 +14,7 @@ import { urlIncludes } from "../page/response.js"
 const test = base.extend(Fixture)
 
 console.log("TODO: player bucket list")
-test.skip("view player bucket list", async ({
+test("view player bucket list", async ({
   page,
   platform,
   player,
