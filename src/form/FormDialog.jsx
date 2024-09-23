@@ -100,7 +100,6 @@ export const FormDialog = ({
           max-width: 85vw;
 
           & .bb-DialogContent {
-            min-height: max-content;
             max-height: 85vh;
           }
 

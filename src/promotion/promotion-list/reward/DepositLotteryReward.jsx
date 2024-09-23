@@ -226,7 +226,6 @@ const BasicSettingDialog = ({
         maxWidth="90vw"
         css={css`
           & .bb-DialogContent {
-            height: max-content;
             max-height: 90vh;
           }
         `}
@@ -579,7 +578,6 @@ const RouletteSettingDialog = ({
         maxWidth="90vw"
         css={css`
           & .bb-DialogContent {
-            height: max-content;
             max-height: 90vh;
           }
         `}
