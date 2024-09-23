@@ -136,7 +136,7 @@ export const Rule = ({ readOnly }) => {
   )
 }
 
-const MilestoneFieldName = "rules.conditions"
+const MilestoneFieldName = "rule.conditions"
 const MilestoneSettings = ({ name = MilestoneFieldName, readOnly }) => {
   let { control } = useFormContext()
 
