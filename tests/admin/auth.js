@@ -830,7 +830,7 @@ const PromotionSettingsString = JSON.stringify([
     Name: "Leaderboard",
     Types: [
       {
-        Name: "LeaderboardMilestoneReward",
+        Name: "Milestone",
         Trans: {
           En: "Milestone",
           Zh: "里程碑"

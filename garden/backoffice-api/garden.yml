@@ -34,7 +34,7 @@ services:
   - name: backoffice-api
     dependencies:
       - postgres
-      - init-seeding
+      # - init-seeding
       - redis
       - nats
       - operator-api

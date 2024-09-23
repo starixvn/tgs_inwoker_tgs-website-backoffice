@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import App from "./App"
 import "./reset.css"
 import "./index.css"
-import { Provider as BumbagProvider, ToastManager } from "bumbag"
+import { borderRadius, Provider as BumbagProvider, ToastManager } from "bumbag"
 import { Provider as UserProvider } from "./user/context"
 import { BrowserRouter } from "react-router-dom"
 import { Provider as I18nProvider } from "./i18n"
@@ -45,6 +45,11 @@ const theme = {
     }
   },
   Table: {
+    styles: {
+      base: {
+        borderRadius: "0"
+      }
+    },
     HeadCell: {
       styles: {
         base: {

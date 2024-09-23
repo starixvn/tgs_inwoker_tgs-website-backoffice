@@ -228,9 +228,26 @@ export const PromotionBucketTypeNotSpecifyTrans = () => (
 export const usePromotionBucketTypeNotSpecifyTrans = () =>
   useTrans(PromotionBucketTypeNotSpecify)
 
+const PromotionMinValidBet = {
+  zh: "最低有效投注",
+  en: "Minimum Valid Bet",
+  vi: "Cược hợp lệ tối thiểu"
+}
+export const PromotionMinValidBetTrans = () => (
+  <Trans {...PromotionMinValidBet} />
+)
+
+const PromotionMinDeposit = {
+  zh: "最低存款",
+  en: "Minimum Deposit",
+  vi: "Tiền gửi tối thiểu"
+}
+export const PromotionMinDepositTrans = () => <Trans {...PromotionMinDeposit} />
+
 const PromotionBonusAmount = {
   zh: "彩金金额",
-  en: "Bonus Amount"
+  en: "Bonus Amount",
+  vi: "Thưởng"
 }
 export const PromotionBonusAmountTrans = () => (
   <Trans {...PromotionBonusAmount} />

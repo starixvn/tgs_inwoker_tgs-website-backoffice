@@ -36,7 +36,7 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@ariakit/react": "0.4.7",
+    "@ariakit/react": "0.4.11",
     "@arrow-js/core": "^1.0.0-alpha.9",
     "@babel/preset-env": "7.24.4",
     "@babel/preset-react": "7.24.1",

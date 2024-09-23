@@ -119,7 +119,6 @@ const DetailDialog = ({ brandId, brandCode, month, dialog, dialogId }) => {
           stickyHead
           containerProps={{
             maxHeight: "70vh",
-            minHeight: "max-content",
             overflow: "auto"
           }}
         />

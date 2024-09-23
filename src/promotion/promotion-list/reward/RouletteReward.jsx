@@ -249,7 +249,6 @@ const SettingDialog = ({ record = {}, readOnly, dialog, onChange }) => {
         maxWidth="90vw"
         css={css`
           & .bb-DialogContent {
-            height: max-content;
             max-height: 90vh;
           }
         `}

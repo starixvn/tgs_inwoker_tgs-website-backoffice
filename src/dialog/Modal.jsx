@@ -38,7 +38,6 @@ export const Modal = ({
           max-width: 85vw;
 
           & .bb-DialogContent {
-            min-height: max-content;
             max-height: 95vh;
           }
         `}
