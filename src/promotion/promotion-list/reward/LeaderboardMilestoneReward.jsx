@@ -251,7 +251,14 @@ const SettingRow = ({
       <Table.Cell textAlign={"center"}>
         <Box>
           {index + 1}
-          <Input type="hidden" name={`${name}.${index}.level`} value={index} />
+          <Input
+            type="hidden"
+            name={`${name}.${index}.level`}
+            value={index}
+            registerOptions={{
+              valueAsNumber: true
+            }}
+          />
         </Box>
       </Table.Cell>
       <Table.Cell>
