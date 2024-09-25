@@ -264,3 +264,10 @@ const Name = {
   zh: "名称"
 }
 export const NameTrans = () => <Trans {...Name} />
+
+const Item = {
+  en: "Item",
+  zh: "項目",
+  vi: "Hạng mục"
+}
+export const ItemTrans = () => <Trans {...Item} />

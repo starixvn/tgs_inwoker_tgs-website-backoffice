@@ -29,6 +29,8 @@ import {
   PayoutAmountTrans,
   useManualPayoutTrans
 } from "../../trans/Payment"
+import { PromotionType as Milestone } from "../promotion-list/reward/LeaderboardMilestoneReward"
+import { ItemTrans } from "../../trans/Field"
 
 export const ViewPayoutDialogDisclosure = ({
   brandId,
@@ -107,6 +109,8 @@ export const ViewPayoutFormBody = ({ record }) => {
           <PromotionTypeLabel value={record?.promotionType} />
         </Box>
 
+        <DetailBox record={record} />
+
         <CreatedTimeTrans />
         <Box alignY="center">
           <FormattedDateTime value={record?.createdOn} placeholder="-" />
@@ -128,4 +132,25 @@ export const ViewPayoutFormBody = ({ record }) => {
       </FieldValues>
     </FieldStack>
   )
+}
+
+//TODO: confirm backend naming
+const DetailBox = ({ record = {} }) => {
+  let { promotionType } = record
+
+  switch (promotionType) {
+    case Milestone:
+      return (
+        <>
+          <ItemTrans />
+          <Box alignY="center">
+            {Number.isFinite(record?.detail?.item)
+              ? `${record?.detail.item + 1}`
+              : "-"}
+          </Box>
+        </>
+      )
+    default:
+      return null
+  }
 }
