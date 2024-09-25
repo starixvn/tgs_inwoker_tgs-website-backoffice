@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box, Text, Set, Icon, Table, FieldStack, Stack, Button } from "bumbag"
 import { MainSetting } from "../MainSetting"
+import { ContentSetting } from "../ContentSetting"
 import {
   HtmlEditorDisclosure,
   ContentBox as ContentBody
@@ -36,52 +37,7 @@ export const Main = (props) => (
   <MainSetting totalFundsUnlimited={true} {...props} />
 )
 
-export const Content = ({ readOnly }) => {
-  let brandId = usePromotionBrandId()
-
-  let disabled = readOnly
-  return (
-    <ContentBody>
-      <NormalLabel>
-        <PromotionSubTitleTrans />
-      </NormalLabel>
-      <Box alignY="center">
-        <InputField
-          name="subSubject"
-          brandId={brandId}
-          showLocalizationAddonAfter
-          disabled={disabled}
-          readOnly={readOnly}
-          required
-        />
-      </Box>
-
-      <NormalLabel>
-        <PromotionContentTrans />
-      </NormalLabel>
-      <Box alignY="center">
-        <HtmlEditorDisclosure
-          brandId={brandId}
-          name="content"
-          disabled={disabled}
-          readOnly={readOnly}
-        />
-      </Box>
-
-      <NormalLabel>
-        <PromotionRulesTrans />
-      </NormalLabel>
-      <Box alignY="center">
-        <HtmlEditorDisclosure
-          brandId={brandId}
-          name="terms"
-          disabled={disabled}
-          readOnly={readOnly}
-        />
-      </Box>
-    </ContentBody>
-  )
-}
+const Content = ContentSetting
 
 const BucketTypeSelect = ({
   name = "rule.bucketTypes[0]",
