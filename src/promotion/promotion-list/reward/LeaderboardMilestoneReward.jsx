@@ -30,6 +30,7 @@ import { NumberInput } from "../../../input/NumberInput"
 import { useMount } from "react-use"
 import Separator from "../../../layout/Separator"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { OrderTrans } from "../../../trans/Field"
 
 export const PromotionType = "Milestone"
 
@@ -111,7 +112,9 @@ const MilestoneSettings = ({ name = MilestoneFieldName, readOnly }) => {
     <Table>
       <Table.Head>
         <Table.Row>
-          <Table.HeadCell></Table.HeadCell>
+          <Table.HeadCell>
+            <OrderTrans />
+          </Table.HeadCell>
           <Table.HeadCell>
             <PromotionMinValidBetTrans />
           </Table.HeadCell>
