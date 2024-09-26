@@ -833,13 +833,15 @@ const PromotionSettingsString = JSON.stringify([
         Name: "Milestone",
         Trans: {
           En: "Milestone",
-          Zh: "里程碑"
+          Zh: "里程碑",
+          Vi: "Cột mốc"
         }
       }
     ],
     Trans: {
       En: "Leaderboard",
-      Zh: "排行榜"
+      Zh: "排行榜",
+      Vi: "Bảng xếp hạng"
     }
   }
 ])
