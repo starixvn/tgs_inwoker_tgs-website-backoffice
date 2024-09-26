@@ -134,7 +134,6 @@ export const ViewPayoutFormBody = ({ record }) => {
   )
 }
 
-//TODO: confirm backend naming
 const DetailBox = ({ record = {} }) => {
   let { promotionType } = record
 
@@ -144,8 +143,8 @@ const DetailBox = ({ record = {} }) => {
         <>
           <ItemTrans />
           <Box alignY="center">
-            {Number.isFinite(record?.detail?.item)
-              ? `${record?.detail.item + 1}`
+            {Number.isFinite(record?.detail?.milestoneLevel)
+              ? `${record?.detail.milestoneLevel + 1}`
               : "-"}
           </Box>
         </>

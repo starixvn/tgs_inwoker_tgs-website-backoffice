@@ -1,7 +1,7 @@
 kind: Module
 type: container
 name: promotion-milestone
-image: pgtgs/promotion-milestone-service:202409230529.12
+image: pgtgs/promotion-milestone-service:202409260439.26
 services:
   - name: promotion-milestone
     dependencies:
