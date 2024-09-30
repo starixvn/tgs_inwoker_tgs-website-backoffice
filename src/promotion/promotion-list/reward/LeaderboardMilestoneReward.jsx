@@ -225,7 +225,7 @@ const SettingRow = ({
           name={`${name}.${index}.minimumValidBet`}
           readOnly={readOnly}
           disabled={disabled}
-          min={0}
+          min={1}
           size="small"
           registerOptions={{
             valueAsNumber: true
@@ -238,7 +238,7 @@ const SettingRow = ({
           name={`${name}.${index}.minimumDeposit`}
           readOnly={readOnly}
           disabled={disabled}
-          min={0}
+          min={1}
           size="small"
           registerOptions={{
             valueAsNumber: true
@@ -251,7 +251,7 @@ const SettingRow = ({
           name={BonusFieldName}
           readOnly={readOnly}
           disabled={disabled}
-          min={0}
+          min={1}
           size="small"
           registerOptions={{
             valueAsNumber: true
@@ -264,7 +264,7 @@ const SettingRow = ({
           name={`${name}.${index}.turnoverMultiple`}
           readOnly={readOnly}
           disabled={disabled}
-          min={bouns > 1 ? 1 : 0}
+          min={1}
           size="small"
           registerOptions={{
             valueAsNumber: true
