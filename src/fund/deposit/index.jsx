@@ -660,8 +660,7 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         Header: <PromotionAmountTrans />,
         disableSortBy: true,
         toValue: (record = {}) => {
-          //TODO: confirm backend field name & test case
-          let amount = record?.promotionDetail?.bonus ?? record?.bonus
+          let amount = record?.promotionDetail?.bonusAmount ?? record?.bonus
           return amount
         }
       })
