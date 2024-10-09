@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react"
 import { css } from "@emotion/react"
 import { Box, Text, Set, Icon, Table, FieldStack, Stack, Button } from "bumbag"
 import { MainSetting } from "../MainSetting"
+import { ContentSetting } from "../ContentSetting"
 import {
   HtmlEditorDisclosure,
   ContentBox as ContentBody
@@ -29,6 +30,7 @@ import { NumberInput } from "../../../input/NumberInput"
 import { useMount } from "react-use"
 import Separator from "../../../layout/Separator"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { OrderTrans } from "../../../trans/Field"
 
 export const PromotionType = "Milestone"
 
@@ -36,52 +38,7 @@ export const Main = (props) => (
   <MainSetting totalFundsUnlimited={true} {...props} />
 )
 
-export const Content = ({ readOnly }) => {
-  let brandId = usePromotionBrandId()
-
-  let disabled = readOnly
-  return (
-    <ContentBody>
-      <NormalLabel>
-        <PromotionSubTitleTrans />
-      </NormalLabel>
-      <Box alignY="center">
-        <InputField
-          name="subSubject"
-          brandId={brandId}
-          showLocalizationAddonAfter
-          disabled={disabled}
-          readOnly={readOnly}
-          required
-        />
-      </Box>
-
-      <NormalLabel>
-        <PromotionContentTrans />
-      </NormalLabel>
-      <Box alignY="center">
-        <HtmlEditorDisclosure
-          brandId={brandId}
-          name="content"
-          disabled={disabled}
-          readOnly={readOnly}
-        />
-      </Box>
-
-      <NormalLabel>
-        <PromotionRulesTrans />
-      </NormalLabel>
-      <Box alignY="center">
-        <HtmlEditorDisclosure
-          brandId={brandId}
-          name="terms"
-          disabled={disabled}
-          readOnly={readOnly}
-        />
-      </Box>
-    </ContentBody>
-  )
-}
+const Content = ContentSetting
 
 const BucketTypeSelect = ({
   name = "rule.bucketTypes[0]",
@@ -136,7 +93,7 @@ export const Rule = ({ readOnly }) => {
   )
 }
 
-const MilestoneFieldName = "rules.conditions"
+const MilestoneFieldName = "rule.conditions"
 const MilestoneSettings = ({ name = MilestoneFieldName, readOnly }) => {
   let { control } = useFormContext()
 
@@ -155,7 +112,9 @@ const MilestoneSettings = ({ name = MilestoneFieldName, readOnly }) => {
     <Table>
       <Table.Head>
         <Table.Row>
-          <Table.HeadCell></Table.HeadCell>
+          <Table.HeadCell>
+            <OrderTrans />
+          </Table.HeadCell>
           <Table.HeadCell>
             <PromotionMinValidBetTrans />
           </Table.HeadCell>
@@ -251,7 +210,14 @@ const SettingRow = ({
       <Table.Cell textAlign={"center"}>
         <Box>
           {index + 1}
-          <Input type="hidden" name={`${name}.${index}.level`} value={index} />
+          <Input
+            type="hidden"
+            name={`${name}.${index}.level`}
+            value={index}
+            registerOptions={{
+              valueAsNumber: true
+            }}
+          />
         </Box>
       </Table.Cell>
       <Table.Cell>
@@ -259,7 +225,7 @@ const SettingRow = ({
           name={`${name}.${index}.minimumValidBet`}
           readOnly={readOnly}
           disabled={disabled}
-          min={0}
+          min={1}
           size="small"
           registerOptions={{
             valueAsNumber: true
@@ -272,7 +238,7 @@ const SettingRow = ({
           name={`${name}.${index}.minimumDeposit`}
           readOnly={readOnly}
           disabled={disabled}
-          min={0}
+          min={1}
           size="small"
           registerOptions={{
             valueAsNumber: true
@@ -285,7 +251,7 @@ const SettingRow = ({
           name={BonusFieldName}
           readOnly={readOnly}
           disabled={disabled}
-          min={0}
+          min={1}
           size="small"
           registerOptions={{
             valueAsNumber: true
@@ -298,7 +264,7 @@ const SettingRow = ({
           name={`${name}.${index}.turnoverMultiple`}
           readOnly={readOnly}
           disabled={disabled}
-          min={bouns > 1 ? 1 : 0}
+          min={1}
           size="small"
           registerOptions={{
             valueAsNumber: true

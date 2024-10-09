@@ -1,0 +1,20 @@
+kind: Module
+type: container
+name: promotion-milestone
+image: pgtgs/promotion-milestone-service:202409260439.26
+services:
+  - name: promotion-milestone
+    dependencies:
+      - postgres
+      - redis
+      - nats
+      - promotion-api
+    env:
+      ConnectionStrings__Tgs: "Server=postgres;Database=tgs;User Id=tgs;Password=1qaz2wsx!@"
+      ConnectionStrings__Redis: "redis,abortConnect=false,connectTimeout=3000"
+      ConnectionStrings__Nats: "nats://nats:4222"
+      Milestone__PromotionServiceBaseUrl: "http://promotion-api"
+    ports:
+      - name: http
+        containerPort: 8080
+        servicePort: 80

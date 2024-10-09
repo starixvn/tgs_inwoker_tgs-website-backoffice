@@ -480,7 +480,7 @@ const SearchBar = ({
               name="method"
               placeholder={paymentMethodPlaceholder}
             />
-            <FundDepositStatusSelect name="status" />
+            <FundDepositStatusSelect id="status" name="status" />
             <InputField
               name="thirdOrderNo"
               placeholder={externalIdPlaceholder}
@@ -655,9 +655,14 @@ const useColumns = ({ brandId, items = [], mutate, setDelayUpdate }) => {
         disableSortBy: true
       }),
       numberDecimalColumn({
-        accessor: "bonus",
+        id: "bonus",
+        accessor: (row) => row,
         Header: <PromotionAmountTrans />,
-        disableSortBy: true
+        disableSortBy: true,
+        toValue: (record = {}) => {
+          let amount = record?.promotionDetail?.bonusAmount ?? record?.bonus
+          return amount
+        }
       })
     ]
 
